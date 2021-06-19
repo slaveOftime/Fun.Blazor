@@ -15,7 +15,7 @@ open Bolero.Html
 module evt =
     let inline boleroCallback<'T> name callback =
         attr.callback<'T> name callback
-        |> FelizNode.BoleroAttr
+        |> FunBlazorNode.BoleroAttr
 
     /// Create a handler for a HTML event of type EventArgs.
     let inline event<'T when 'T :> EventArgs> eventName (callback: ^T -> unit) =

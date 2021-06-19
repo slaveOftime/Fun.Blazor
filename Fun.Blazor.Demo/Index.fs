@@ -8,7 +8,7 @@ open Fun.Blazor
 type Index () =
     inherit Component()
     
-    override _.Render() = html.toBolero home
+    override _.Render() = home.ToBoleroNode()
 
 
     static member page =
@@ -41,4 +41,4 @@ type Index () =
                 ]
             ])
         ]
-        |> FelizNode.ToBoleroNode
+        |> FunBlazorNode.ToBoleroNode

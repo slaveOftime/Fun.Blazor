@@ -46,7 +46,7 @@ type DIComponent<'T>() as this =
     let localStore = new LocalStore()
 
     let blazorLifecycle =
-        { new IComponentLifecycle with
+        { new IComponentHook with
             member _.ParametersSet = parametersSet.Publish
             member _.Initialized = initialized.Publish
             member _.AfterRender = afterRenderEvent.Publish
@@ -55,12 +55,12 @@ type DIComponent<'T>() as this =
             member _.StateHasChanged () = this.ForceSetState() } 
 
     let handleNotFoundType ty =
-        if ty = typeof<IComponentLifecycle> then box blazorLifecycle
+        if ty = typeof<IComponentHook> then box blazorLifecycle
         elif ty = typeof<ILocalStore> then box localStore
         else null
 
     [<Parameter>]
-    member val RenderFn = Unchecked.defaultof<'T -> FelizNode> with get, set
+    member val RenderFn = Unchecked.defaultof<'T -> FunBlazorNode> with get, set
 
     [<Inject>]
     member val Services = Unchecked.defaultof<IServiceProvider> with get, set
@@ -73,7 +73,7 @@ type DIComponent<'T>() as this =
         | None ->
             let depsType, tailFunc = Reflection.FSharpType.GetFunctionElements(this.RenderFn.GetType())
             let services = this.Services.GetMultipleServices(depsType, handleNotFoundType) :?> 'T
-            let newNode = this.RenderFn services |> FelizNode.ToBoleroNode
+            let newNode = this.RenderFn services |> FunBlazorNode.ToBoleroNode
             node <- Some newNode
             newNode
 

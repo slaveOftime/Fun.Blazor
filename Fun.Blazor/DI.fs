@@ -6,6 +6,6 @@ open Fun.Blazor
 
 
 type IServiceCollection with
-    member this.AddFelizBolero() =
+    member this.AddFunBlazor() =
        this.AddScoped<IShareStore, ShareStore>() |> ignore
        this

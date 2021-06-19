@@ -16,7 +16,7 @@ type Startup() =
         services.AddBoleroHost(true, true) |> ignore
         services.AddMatBlazor() |> ignore
         services.AddAntDesign() |> ignore
-        services.AddFelizBolero() |> ignore
+        services.AddFunBlazor() |> ignore
 
     member this.Configure(app: IApplicationBuilder, env: IWebHostEnvironment) =
         app

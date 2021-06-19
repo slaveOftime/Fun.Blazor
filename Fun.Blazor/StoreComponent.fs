@@ -19,14 +19,14 @@ type StoreComponent<'T> () as this =
     member val Store = Unchecked.defaultof<IObservable<'T>> with get, set
 
     [<Parameter>]
-    member val RenderFn = Unchecked.defaultof<'T -> FelizNode> with get, set
+    member val RenderFn = Unchecked.defaultof<'T -> FunBlazorNode> with get, set
 
 
     member internal _.StateHasChanged() = base.StateHasChanged()
     member internal _.Rerender() = this.InvokeAsync(this.StateHasChanged) |> ignore
 
 
-    override _.Render() = this.RenderFn value |> FelizNode.ToBoleroNode
+    override _.Render() = this.RenderFn value |> FunBlazorNode.ToBoleroNode
 
     override _.OnInitialized() =
         base.OnInitialized()

@@ -9,11 +9,11 @@ open Fun.Blazor.Web.Internal
 type affix<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member affix (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Affix>
-    static member affix (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Affix>
+    static member affix (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Affix>
     static member inline offsetBottom (x: System.Int32) = "OffsetBottom" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline offsetTop (x: System.Int32) = "OffsetTop" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline targetSelector (x: System.String) = "TargetSelector" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline onChange fn = (Bolero.Html.attr.callback<System.Boolean> "OnChange" (fun e -> fn e)) |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -25,7 +25,7 @@ type affix<'FelizBoleroNode> =
 type alert<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member alert (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Alert>
-    static member alert (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Alert>
+    static member alert (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Alert>
     static member inline afterClose fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> "AfterClose" (fun e -> fn e)) |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline banner (x: System.Boolean) = "Banner" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline closable (x: System.Boolean) = "Closable" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -37,7 +37,7 @@ type alert<'FelizBoleroNode> =
     static member inline showIcon (x: System.Nullable<System.Boolean>) = "ShowIcon" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline ``type`` (x: System.String) = "Type" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline onClose fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> "OnClose" (fun e -> fn e)) |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline classes (x: string list) = attr.classes x |> GenericFelizNode<'FelizBoleroNode>.create
@@ -48,9 +48,9 @@ type alert<'FelizBoleroNode> =
 type anchor<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member anchor (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Anchor>
-    static member anchor (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Anchor>
+    static member anchor (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Anchor>
     static member inline key (x: System.String) = "Key" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline affix (x: System.Boolean) = "Affix" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline bounds (x: System.Int32) = "Bounds" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -71,8 +71,8 @@ type anchor<'FelizBoleroNode> =
 type anchorLink<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member anchorLink (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.AnchorLink>
-    static member anchorLink (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.AnchorLink>
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member anchorLink (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.AnchorLink>
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline href (x: System.String) = "Href" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline title (x: System.String) = "Title" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -86,7 +86,7 @@ type anchorLink<'FelizBoleroNode> =
 type autoComplete<'FelizBoleroNode, 'TOption> =
     inherit antInputComponentBase<'FelizBoleroNode, System.String>
     static member autoComplete (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.AutoComplete<'TOption>>
-    static member autoComplete (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.AutoComplete<'TOption>>
+    static member autoComplete (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.AutoComplete<'TOption>>
     static member inline placeholder (x: System.String) = "Placeholder" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline disabled (x: System.Boolean) = "Disabled" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline defaultActiveFirstOption (x: System.Boolean) = "DefaultActiveFirstOption" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -97,7 +97,7 @@ type autoComplete<'FelizBoleroNode, 'TOption> =
     static member inline onActiveChange fn = (Bolero.Html.attr.callback<AntDesign.AutoCompleteOption> "OnActiveChange" (fun e -> fn e)) |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline onInput fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.ChangeEventArgs> "OnInput" (fun e -> fn e)) |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline onPanelVisibleChange fn = (Bolero.Html.attr.callback<System.Boolean> "OnPanelVisibleChange" (fun e -> fn e)) |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline optionTemplate (x: Microsoft.AspNetCore.Components.RenderFragment<AntDesign.AutoCompleteDataItem<'TOption>>) = "OptionTemplate" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline optionFormat (x: System.Func<AntDesign.AutoCompleteDataItem<'TOption>, System.String>) = "OptionFormat" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -168,10 +168,10 @@ type autoCompleteInput<'FelizBoleroNode, 'TValue> =
 type autoCompleteOptGroup<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member autoCompleteOptGroup (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.AutoCompleteOptGroup>
-    static member autoCompleteOptGroup (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.AutoCompleteOptGroup>
+    static member autoCompleteOptGroup (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.AutoCompleteOptGroup>
     static member inline label (x: System.String) = "Label" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline labelFragment (x: Microsoft.AspNetCore.Components.RenderFragment) = "LabelFragment" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline classes (x: string list) = attr.classes x |> GenericFelizNode<'FelizBoleroNode>.create
@@ -182,8 +182,8 @@ type autoCompleteOptGroup<'FelizBoleroNode> =
 type autoCompleteOption<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member autoCompleteOption (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.AutoCompleteOption>
-    static member autoCompleteOption (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.AutoCompleteOption>
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member autoCompleteOption (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.AutoCompleteOption>
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline value (x: System.Object) = "Value" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline label (x: System.String) = "Label" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -243,8 +243,8 @@ type autoCompleteSearch<'FelizBoleroNode> =
 type avatar<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member avatar (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Avatar>
-    static member avatar (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Avatar>
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member avatar (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Avatar>
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline shape (x: System.String) = "Shape" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline size (x: System.String) = "Size" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -263,8 +263,8 @@ type avatar<'FelizBoleroNode> =
 type avatarGroup<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member avatarGroup (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.AvatarGroup>
-    static member avatarGroup (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.AvatarGroup>
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member avatarGroup (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.AvatarGroup>
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline maxCount (x: System.Int32) = "MaxCount" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline maxStyle (x: System.String) = "MaxStyle" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -278,9 +278,9 @@ type avatarGroup<'FelizBoleroNode> =
 type backTop<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member backTop (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.BackTop>
-    static member backTop (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.BackTop>
+    static member backTop (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.BackTop>
     static member inline icon (x: System.String) = "Icon" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline visibilityHeight (x: System.Double) = "VisibilityHeight" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline targetSelector (x: System.String) = "TargetSelector" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -294,7 +294,7 @@ type backTop<'FelizBoleroNode> =
 type badge<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member badge (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Badge>
-    static member badge (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Badge>
+    static member badge (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Badge>
     static member inline color (x: System.String) = "Color" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline count (x: System.Nullable<System.Int32>) = "Count" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline countTemplate (x: Microsoft.AspNetCore.Components.RenderFragment) = "CountTemplate" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -306,7 +306,7 @@ type badge<'FelizBoleroNode> =
     static member inline text (x: System.String) = "Text" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline title (x: System.String) = "Title" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline size (x: System.String) = "Size" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline classes (x: string list) = attr.classes x |> GenericFelizNode<'FelizBoleroNode>.create
@@ -317,12 +317,12 @@ type badge<'FelizBoleroNode> =
 type badgeRibbon<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member badgeRibbon (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.BadgeRibbon>
-    static member badgeRibbon (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.BadgeRibbon>
+    static member badgeRibbon (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.BadgeRibbon>
     static member inline color (x: System.String) = "Color" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline text (x: System.String) = "Text" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline textTemplate (x: Microsoft.AspNetCore.Components.RenderFragment) = "TextTemplate" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline placement (x: System.String) = "Placement" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline classes (x: string list) = attr.classes x |> GenericFelizNode<'FelizBoleroNode>.create
@@ -333,8 +333,8 @@ type badgeRibbon<'FelizBoleroNode> =
 type breadcrumb<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member breadcrumb (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Breadcrumb>
-    static member breadcrumb (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Breadcrumb>
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member breadcrumb (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Breadcrumb>
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline autoGenerate (x: System.Boolean) = "AutoGenerate" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline separator (x: System.String) = "Separator" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -348,9 +348,9 @@ type breadcrumb<'FelizBoleroNode> =
 type button<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member button (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Button>
-    static member button (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Button>
+    static member button (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Button>
     static member inline block (x: System.Boolean) = "Block" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline danger (x: System.Boolean) = "Danger" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline disabled (x: System.Boolean) = "Disabled" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -372,8 +372,8 @@ type button<'FelizBoleroNode> =
 type buttonGroup<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member buttonGroup (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.ButtonGroup>
-    static member buttonGroup (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.ButtonGroup>
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member buttonGroup (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.ButtonGroup>
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline size (x: System.String) = "Size" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -411,8 +411,8 @@ type calendar<'FelizBoleroNode> =
 type card<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member card (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Card>
-    static member card (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Card>
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member card (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Card>
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline body (x: Microsoft.AspNetCore.Components.RenderFragment) = "Body" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline actionTemplate (x: Microsoft.AspNetCore.Components.RenderFragment) = "ActionTemplate" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -437,8 +437,8 @@ type card<'FelizBoleroNode> =
 type cardAction<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member cardAction (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.CardAction>
-    static member cardAction (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.CardAction>
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member cardAction (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.CardAction>
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline classes (x: string list) = attr.classes x |> GenericFelizNode<'FelizBoleroNode>.create
@@ -449,8 +449,8 @@ type cardAction<'FelizBoleroNode> =
 type cardGrid<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member cardGrid (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.CardGrid>
-    static member cardGrid (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.CardGrid>
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member cardGrid (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.CardGrid>
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline hoverable (x: System.Boolean) = "Hoverable" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -462,8 +462,8 @@ type cardGrid<'FelizBoleroNode> =
 type carousel<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member carousel (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Carousel>
-    static member carousel (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Carousel>
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member carousel (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Carousel>
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline dotPosition (x: System.String) = "DotPosition" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline autoplay (x: System.TimeSpan) = "Autoplay" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -477,8 +477,8 @@ type carousel<'FelizBoleroNode> =
 type carouselSlick<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member carouselSlick (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.CarouselSlick>
-    static member carouselSlick (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.CarouselSlick>
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member carouselSlick (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.CarouselSlick>
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline refBack (x: AntDesign.ForwardRef) = "RefBack" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -515,8 +515,8 @@ type cascader<'FelizBoleroNode> =
 type checkbox<'FelizBoleroNode> =
     inherit antInputBoolComponentBase<'FelizBoleroNode>
     static member checkbox (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Checkbox>
-    static member checkbox (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Checkbox>
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member checkbox (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Checkbox>
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline checkedChange fn = (Bolero.Html.attr.callback<System.Boolean> "CheckedChange" (fun e -> fn e)) |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline checkedExpression (x: System.Linq.Expressions.Expression<System.Func<System.Boolean>>) = "CheckedExpression" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -543,8 +543,8 @@ type checkbox<'FelizBoleroNode> =
 type checkboxGroup<'FelizBoleroNode> =
     inherit antInputComponentBase<'FelizBoleroNode, System.String[]>
     static member checkboxGroup (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.CheckboxGroup>
-    static member checkboxGroup (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.CheckboxGroup>
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member checkboxGroup (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.CheckboxGroup>
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline options (x: OneOf.OneOf<System.Collections.Generic.IEnumerable<AntDesign.CheckboxOption>, System.Collections.Generic.IEnumerable<System.String>>) = "Options" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline mixedMode (x: AntDesign.CheckboxGroupMixedMode) = "MixedMode" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -566,7 +566,7 @@ type checkboxGroup<'FelizBoleroNode> =
 type collapse<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member collapse (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Collapse>
-    static member collapse (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Collapse>
+    static member collapse (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Collapse>
     static member inline accordion (x: System.Boolean) = "Accordion" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline bordered (x: System.Boolean) = "Bordered" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline expandIconPosition (x: System.String) = "ExpandIconPosition" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -574,7 +574,7 @@ type collapse<'FelizBoleroNode> =
     static member inline onChange fn = (Bolero.Html.attr.callback<System.Collections.Generic.IEnumerable<System.String>> "OnChange" (fun e -> fn e)) |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline expandIcon (x: System.String) = "ExpandIcon" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline expandIconTemplate (x: Microsoft.AspNetCore.Components.RenderFragment<System.Boolean>) = "ExpandIconTemplate" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline classes (x: string list) = attr.classes x |> GenericFelizNode<'FelizBoleroNode>.create
@@ -585,7 +585,7 @@ type collapse<'FelizBoleroNode> =
 type panel<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member panel (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Panel>
-    static member panel (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Panel>
+    static member panel (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Panel>
     static member inline active (x: System.Boolean) = "Active" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline key (x: System.String) = "Key" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline disabled (x: System.Boolean) = "Disabled" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -595,7 +595,7 @@ type panel<'FelizBoleroNode> =
     static member inline header (x: System.String) = "Header" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline headerTemplate (x: Microsoft.AspNetCore.Components.RenderFragment) = "HeaderTemplate" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline onActiveChange fn = (Bolero.Html.attr.callback<System.Boolean> "OnActiveChange" (fun e -> fn e)) |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline classes (x: string list) = attr.classes x |> GenericFelizNode<'FelizBoleroNode>.create
@@ -606,14 +606,14 @@ type panel<'FelizBoleroNode> =
 type comment<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member comment (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Comment>
-    static member comment (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Comment>
+    static member comment (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Comment>
     static member inline author (x: System.String) = "Author" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline authorTemplate (x: Microsoft.AspNetCore.Components.RenderFragment) = "AuthorTemplate" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline avatar (x: System.String) = "Avatar" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline avatarTemplate (x: Microsoft.AspNetCore.Components.RenderFragment) = "AvatarTemplate" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline content (x: System.String) = "Content" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline contentTemplate (x: Microsoft.AspNetCore.Components.RenderFragment) = "ContentTemplate" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline datetime (x: System.String) = "Datetime" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline datetimeTemplate (x: Microsoft.AspNetCore.Components.RenderFragment) = "DatetimeTemplate" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -627,9 +627,9 @@ type comment<'FelizBoleroNode> =
 type configProvider<'FelizBoleroNode> =
     inherit antComponentBase<'FelizBoleroNode>
     static member configProvider (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.ConfigProvider>
-    static member configProvider (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.ConfigProvider>
+    static member configProvider (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.ConfigProvider>
     static member inline direction (x: System.String) = "Direction" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline refBack (x: AntDesign.ForwardRef) = "RefBack" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
         
@@ -644,8 +644,8 @@ type antComponentBase<'FelizBoleroNode> =
 type antContainerComponentBase<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member antContainerComponentBase (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.AntContainerComponentBase>
-    static member antContainerComponentBase (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.AntContainerComponentBase>
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member antContainerComponentBase (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.AntContainerComponentBase>
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline tag (x: System.String) = "Tag" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -1105,7 +1105,7 @@ type yearPicker<'FelizBoleroNode, 'TValue> =
 type descriptions<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member descriptions (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Descriptions>
-    static member descriptions (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Descriptions>
+    static member descriptions (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Descriptions>
     static member inline bordered (x: System.Boolean) = "Bordered" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline layout (x: System.String) = "Layout" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline column (x: OneOf.OneOf<System.Int32, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.Int32>>>) = "Column" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -1113,7 +1113,7 @@ type descriptions<'FelizBoleroNode> =
     static member inline title (x: System.String) = "Title" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline titleTemplate (x: Microsoft.AspNetCore.Components.RenderFragment) = "TitleTemplate" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline colon (x: System.Boolean) = "Colon" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline classes (x: string list) = attr.classes x |> GenericFelizNode<'FelizBoleroNode>.create
@@ -1124,11 +1124,11 @@ type descriptions<'FelizBoleroNode> =
 type descriptionsItem<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member descriptionsItem (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.DescriptionsItem>
-    static member descriptionsItem (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.DescriptionsItem>
+    static member descriptionsItem (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.DescriptionsItem>
     static member inline title (x: System.String) = "Title" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline titleTemplate (x: Microsoft.AspNetCore.Components.RenderFragment) = "TitleTemplate" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline span (x: System.Int32) = "Span" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline classes (x: string list) = attr.classes x |> GenericFelizNode<'FelizBoleroNode>.create
@@ -1139,8 +1139,8 @@ type descriptionsItem<'FelizBoleroNode> =
 type divider<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member divider (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Divider>
-    static member divider (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Divider>
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member divider (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Divider>
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline text (x: System.String) = "Text" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline plain (x: System.Boolean) = "Plain" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -1156,8 +1156,8 @@ type divider<'FelizBoleroNode> =
 type drawer<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member drawer (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Drawer>
-    static member drawer (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Drawer>
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member drawer (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Drawer>
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline content (x: OneOf.OneOf<Microsoft.AspNetCore.Components.RenderFragment, System.String>) = "Content" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline closable (x: System.Boolean) = "Closable" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -1197,9 +1197,9 @@ type drawerContainer<'FelizBoleroNode> =
 type dropdown<'FelizBoleroNode> =
     inherit overlayTrigger<'FelizBoleroNode>
     static member dropdown (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Dropdown>
-    static member dropdown (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Dropdown>
+    static member dropdown (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Dropdown>
     static member inline boundaryAdjustMode (x: AntDesign.TriggerBoundaryAdjustMode) = "BoundaryAdjustMode" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline complexAutoCloseAndVisible (x: System.Boolean) = "ComplexAutoCloseAndVisible" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline disabled (x: System.Boolean) = "Disabled" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -1234,7 +1234,7 @@ type dropdown<'FelizBoleroNode> =
 type dropdownButton<'FelizBoleroNode> =
     inherit dropdown<'FelizBoleroNode>
     static member dropdownButton (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.DropdownButton>
-    static member dropdownButton (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.DropdownButton>
+    static member dropdownButton (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.DropdownButton>
     static member inline block (x: System.Boolean) = "Block" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline buttonsRender (x: System.Func<Microsoft.AspNetCore.Components.RenderFragment, Microsoft.AspNetCore.Components.RenderFragment, Microsoft.AspNetCore.Components.RenderFragment>) = "ButtonsRender" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline danger (x: System.Boolean) = "Danger" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -1244,7 +1244,7 @@ type dropdownButton<'FelizBoleroNode> =
     static member inline size (x: System.String) = "Size" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline ``type`` (x: System.ValueTuple<System.String, System.String>) = "Type" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline boundaryAdjustMode (x: AntDesign.TriggerBoundaryAdjustMode) = "BoundaryAdjustMode" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline complexAutoCloseAndVisible (x: System.Boolean) = "ComplexAutoCloseAndVisible" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline disabled (x: System.Boolean) = "Disabled" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -1279,12 +1279,12 @@ type dropdownButton<'FelizBoleroNode> =
 type empty<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member empty (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Empty>
-    static member empty (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Empty>
+    static member empty (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Empty>
     static member inline prefixCls (x: System.String) = "PrefixCls" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline imageStyle (x: System.String) = "ImageStyle" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline small (x: System.Boolean) = "Small" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline simple (x: System.Boolean) = "Simple" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline description (x: OneOf.OneOf<System.String, System.Nullable<System.Boolean>>) = "Description" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline descriptionTemplate (x: Microsoft.AspNetCore.Components.RenderFragment) = "DescriptionTemplate" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -1326,8 +1326,8 @@ type form<'FelizBoleroNode, 'TModel> =
 type formItem<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member formItem (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.FormItem>
-    static member formItem (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.FormItem>
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member formItem (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.FormItem>
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline label (x: System.String) = "Label" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline labelTemplate (x: Microsoft.AspNetCore.Components.RenderFragment) = "LabelTemplate" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -1349,9 +1349,9 @@ type formItem<'FelizBoleroNode> =
 type formProvider<'FelizBoleroNode> =
     inherit antComponentBase<'FelizBoleroNode>
     static member formProvider (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.FormProvider>
-    static member formProvider (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.FormProvider>
+    static member formProvider (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.FormProvider>
     static member inline onFormFinish fn = (Bolero.Html.attr.callback<AntDesign.FormProviderFinishEventArgs> "OnFormFinish" (fun e -> fn e)) |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline refBack (x: AntDesign.ForwardRef) = "RefBack" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
         
@@ -1375,8 +1375,8 @@ type formValidationMessageItem<'FelizBoleroNode> =
 type col<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member col (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Col>
-    static member col (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Col>
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member col (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Col>
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline flex (x: OneOf.OneOf<System.String, System.Int32>) = "Flex" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline span (x: OneOf.OneOf<System.String, System.Int32>) = "Span" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -1399,8 +1399,8 @@ type col<'FelizBoleroNode> =
 type gridCol<'FelizBoleroNode> =
     inherit col<'FelizBoleroNode>
     static member gridCol (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.GridCol>
-    static member gridCol (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.GridCol>
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member gridCol (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.GridCol>
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline flex (x: OneOf.OneOf<System.String, System.Int32>) = "Flex" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline span (x: OneOf.OneOf<System.String, System.Int32>) = "Span" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -1423,8 +1423,8 @@ type gridCol<'FelizBoleroNode> =
 type row<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member row (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Row>
-    static member row (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Row>
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member row (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Row>
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline ``type`` (x: System.String) = "Type" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline align (x: System.String) = "Align" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -1524,8 +1524,8 @@ type imagePreviewContainer<'FelizBoleroNode> =
 type imagePreviewGroup<'FelizBoleroNode> =
     
     static member imagePreviewGroup (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.ImagePreviewGroup>
-    static member imagePreviewGroup (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.ImagePreviewGroup>
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member imagePreviewGroup (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.ImagePreviewGroup>
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
         
 
@@ -1598,8 +1598,8 @@ type input<'FelizBoleroNode, 'TValue> =
 type inputGroup<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member inputGroup (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.InputGroup>
-    static member inputGroup (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.InputGroup>
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inputGroup (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.InputGroup>
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline compact (x: System.Boolean) = "Compact" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline size (x: System.String) = "Size" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -1748,9 +1748,9 @@ type textArea<'FelizBoleroNode> =
 type sider<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member sider (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Sider>
-    static member sider (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Sider>
+    static member sider (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Sider>
     static member inline collapsible (x: System.Boolean) = "Collapsible" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline trigger (x: Microsoft.AspNetCore.Components.RenderFragment) = "Trigger" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline noTrigger (x: System.Boolean) = "NoTrigger" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -1794,12 +1794,12 @@ type antList<'FelizBoleroNode, 'TItem> =
 type listItem<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member listItem (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.ListItem>
-    static member listItem (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.ListItem>
+    static member listItem (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.ListItem>
     static member inline content (x: System.String) = "Content" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline extra (x: Microsoft.AspNetCore.Components.RenderFragment) = "Extra" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline actions (x: System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Components.RenderFragment>) = "Actions" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline grid (x: AntDesign.ListGridType) = "Grid" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline colStyle (x: System.String) = "ColStyle" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline itemCount (x: System.Int32) = "ItemCount" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -1830,7 +1830,7 @@ type listItemMeta<'FelizBoleroNode> =
 type mentions<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member mentions (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Mentions>
-    static member mentions (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Mentions>
+    static member mentions (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Mentions>
     static member inline autoFocus (x: System.Boolean) = "AutoFocus" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline disable (x: System.Boolean) = "Disable" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline readonly (x: System.Boolean) = "Readonly" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -1842,7 +1842,7 @@ type mentions<'FelizBoleroNode> =
     static member inline placement (x: System.String) = "Placement" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline rows (x: System.Int32) = "Rows" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline loading (x: System.Boolean) = "Loading" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline valueChange fn = (Bolero.Html.attr.callback<System.String> "ValueChange" (fun e -> fn e)) |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline onFocus fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.FocusEventArgs> "OnFocus" (fun e -> fn e)) |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -1858,10 +1858,10 @@ type mentions<'FelizBoleroNode> =
 type mentionsOption<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member mentionsOption (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.MentionsOption>
-    static member mentionsOption (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.MentionsOption>
+    static member mentionsOption (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.MentionsOption>
     static member inline value (x: System.String) = "Value" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline disable (x: System.Boolean) = "Disable" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline classes (x: string list) = attr.classes x |> GenericFelizNode<'FelizBoleroNode>.create
@@ -1872,10 +1872,10 @@ type mentionsOption<'FelizBoleroNode> =
 type menu<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member menu (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Menu>
-    static member menu (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Menu>
+    static member menu (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Menu>
     static member inline theme (x: AntDesign.MenuTheme) = "Theme" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline mode (x: AntDesign.MenuMode) = "Mode" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline onSubmenuClicked fn = (Bolero.Html.attr.callback<AntDesign.SubMenu> "OnSubmenuClicked" (fun e -> fn e)) |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline onMenuItemClicked fn = (Bolero.Html.attr.callback<AntDesign.MenuItem> "OnMenuItemClicked" (fun e -> fn e)) |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -1902,8 +1902,8 @@ type menu<'FelizBoleroNode> =
 type menuItem<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member menuItem (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.MenuItem>
-    static member menuItem (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.MenuItem>
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member menuItem (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.MenuItem>
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline key (x: System.String) = "Key" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline disabled (x: System.Boolean) = "Disabled" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -1921,10 +1921,10 @@ type menuItem<'FelizBoleroNode> =
 type menuItemGroup<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member menuItemGroup (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.MenuItemGroup>
-    static member menuItemGroup (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.MenuItemGroup>
+    static member menuItemGroup (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.MenuItemGroup>
     static member inline title (x: System.String) = "Title" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline titleTemplate (x: Microsoft.AspNetCore.Components.RenderFragment) = "TitleTemplate" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline key (x: System.String) = "Key" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -1936,10 +1936,10 @@ type menuItemGroup<'FelizBoleroNode> =
 type menuLink<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member menuLink (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.MenuLink>
-    static member menuLink (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.MenuLink>
+    static member menuLink (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.MenuLink>
     static member inline activeClass (x: System.String) = "ActiveClass" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline href (x: System.String) = "Href" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline attributes (x: System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.Object>>) = "Attributes" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline ``match`` (x: Microsoft.AspNetCore.Components.Routing.NavLinkMatch) = "Match" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -1952,11 +1952,11 @@ type menuLink<'FelizBoleroNode> =
 type subMenu<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member subMenu (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.SubMenu>
-    static member subMenu (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.SubMenu>
+    static member subMenu (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.SubMenu>
     static member inline placement (x: AntDesign.PlacementType) = "Placement" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline title (x: System.String) = "Title" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline titleTemplate (x: Microsoft.AspNetCore.Components.RenderFragment) = "TitleTemplate" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline key (x: System.String) = "Key" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline disabled (x: System.Boolean) = "Disabled" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -2015,9 +2015,9 @@ type confirm<'FelizBoleroNode> =
 type dialog<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member dialog (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Dialog>
-    static member dialog (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Dialog>
+    static member dialog (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Dialog>
     static member inline config (x: AntDesign.DialogOptions) = "Config" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline visible (x: System.Boolean) = "Visible" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -2029,9 +2029,9 @@ type dialog<'FelizBoleroNode> =
 type dialogWrapper<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member dialogWrapper (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.DialogWrapper>
-    static member dialogWrapper (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.DialogWrapper>
+    static member dialogWrapper (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.DialogWrapper>
     static member inline config (x: AntDesign.DialogOptions) = "Config" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline destroyOnClose (x: System.Boolean) = "DestroyOnClose" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline visible (x: System.Boolean) = "Visible" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -2047,7 +2047,7 @@ type dialogWrapper<'FelizBoleroNode> =
 type modal<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member modal (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Modal>
-    static member modal (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Modal>
+    static member modal (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Modal>
     static member inline modalRef (x: AntDesign.ModalRef) = "ModalRef" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline afterClose (x: System.Func<System.Threading.Tasks.Task>) = "AfterClose" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline bodyStyle (x: System.String) = "BodyStyle" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -2077,7 +2077,7 @@ type modal<'FelizBoleroNode> =
     static member inline onOk fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> "OnOk" (fun e -> fn e)) |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline okButtonProps (x: AntDesign.ButtonProps) = "OkButtonProps" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline cancelButtonProps (x: AntDesign.ButtonProps) = "CancelButtonProps" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline locale (x: AntDesign.ModalLocale) = "Locale" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -2225,7 +2225,7 @@ type paginationOptions<'FelizBoleroNode> =
 type popconfirm<'FelizBoleroNode> =
     inherit overlayTrigger<'FelizBoleroNode>
     static member popconfirm (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Popconfirm>
-    static member popconfirm (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Popconfirm>
+    static member popconfirm (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Popconfirm>
     static member inline title (x: System.String) = "Title" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline titleTemplate (x: Microsoft.AspNetCore.Components.RenderFragment) = "TitleTemplate" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline cancelText (x: System.String) = "CancelText" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -2241,7 +2241,7 @@ type popconfirm<'FelizBoleroNode> =
     static member inline mouseEnterDelay (x: System.Double) = "MouseEnterDelay" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline mouseLeaveDelay (x: System.Double) = "MouseLeaveDelay" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline boundaryAdjustMode (x: AntDesign.TriggerBoundaryAdjustMode) = "BoundaryAdjustMode" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline complexAutoCloseAndVisible (x: System.Boolean) = "ComplexAutoCloseAndVisible" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline disabled (x: System.Boolean) = "Disabled" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -2276,7 +2276,7 @@ type popconfirm<'FelizBoleroNode> =
 type popover<'FelizBoleroNode> =
     inherit overlayTrigger<'FelizBoleroNode>
     static member popover (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Popover>
-    static member popover (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Popover>
+    static member popover (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Popover>
     static member inline title (x: System.String) = "Title" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline titleTemplate (x: Microsoft.AspNetCore.Components.RenderFragment) = "TitleTemplate" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline content (x: System.String) = "Content" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -2285,7 +2285,7 @@ type popover<'FelizBoleroNode> =
     static member inline mouseEnterDelay (x: System.Double) = "MouseEnterDelay" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline mouseLeaveDelay (x: System.Double) = "MouseLeaveDelay" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline boundaryAdjustMode (x: AntDesign.TriggerBoundaryAdjustMode) = "BoundaryAdjustMode" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline complexAutoCloseAndVisible (x: System.Boolean) = "ComplexAutoCloseAndVisible" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline disabled (x: System.Boolean) = "Disabled" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -2345,8 +2345,8 @@ type progress<'FelizBoleroNode> =
 type radio<'FelizBoleroNode, 'TValue> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member radio (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Radio<'TValue>>
-    static member radio (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Radio<'TValue>>
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member radio (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Radio<'TValue>>
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline value (x: 'TValue) = "Value" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline autoFocus (x: System.Boolean) = "AutoFocus" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -2365,8 +2365,8 @@ type radio<'FelizBoleroNode, 'TValue> =
 type radioGroup<'FelizBoleroNode, 'TValue> =
     inherit antInputComponentBase<'FelizBoleroNode, 'TValue>
     static member radioGroup (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.RadioGroup<'TValue>>
-    static member radioGroup (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.RadioGroup<'TValue>>
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member radioGroup (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.RadioGroup<'TValue>>
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline disabled (x: System.Boolean) = "Disabled" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline buttonStyle (x: System.String) = "ButtonStyle" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -2389,8 +2389,8 @@ type radioGroup<'FelizBoleroNode, 'TValue> =
 type rate<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member rate (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Rate>
-    static member rate (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Rate>
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member rate (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Rate>
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline allowClear (x: System.Boolean) = "AllowClear" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline allowHalf (x: System.Boolean) = "AllowHalf" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -2431,7 +2431,7 @@ type rateItem<'FelizBoleroNode> =
 type result<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member result (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Result>
-    static member result (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Result>
+    static member result (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Result>
     static member inline title (x: System.String) = "Title" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline titleTemplate (x: Microsoft.AspNetCore.Components.RenderFragment) = "TitleTemplate" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline subTitle (x: System.String) = "SubTitle" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -2440,7 +2440,7 @@ type result<'FelizBoleroNode> =
     static member inline status (x: System.String) = "Status" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline icon (x: System.String) = "Icon" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline isShowIcon (x: System.Boolean) = "IsShowIcon" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline classes (x: string list) = attr.classes x |> GenericFelizNode<'FelizBoleroNode>.create
@@ -2617,7 +2617,7 @@ type simpleSelectOption<'FelizBoleroNode> =
 type skeleton<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member skeleton (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Skeleton>
-    static member skeleton (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Skeleton>
+    static member skeleton (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Skeleton>
     static member inline active (x: System.Boolean) = "Active" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline loading (x: System.Boolean) = "Loading" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline title (x: System.Boolean) = "Title" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -2628,7 +2628,7 @@ type skeleton<'FelizBoleroNode> =
     static member inline paragraph (x: System.Boolean) = "Paragraph" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline paragraphRows (x: System.Nullable<System.Int32>) = "ParagraphRows" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline paragraphWidth (x: OneOf.OneOf<System.Nullable<System.Int32>, System.String, System.Collections.Generic.IEnumerable<OneOf.OneOf<System.Nullable<System.Int32>, System.String>>>) = "ParagraphWidth" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline classes (x: string list) = attr.classes x |> GenericFelizNode<'FelizBoleroNode>.create
@@ -2687,13 +2687,13 @@ type slider<'FelizBoleroNode, 'TValue> =
 type space<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member space (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Space>
-    static member space (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Space>
+    static member space (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Space>
     static member inline align (x: System.String) = "Align" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline direction (x: AntDesign.DirectionVHType) = "Direction" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline size (x: OneOf.OneOf<System.String, System.ValueTuple<System.String, System.String>>) = "Size" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline wrap (x: System.Boolean) = "Wrap" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline split (x: Microsoft.AspNetCore.Components.RenderFragment) = "Split" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline classes (x: string list) = attr.classes x |> GenericFelizNode<'FelizBoleroNode>.create
@@ -2704,8 +2704,8 @@ type space<'FelizBoleroNode> =
 type spaceItem<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member spaceItem (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.SpaceItem>
-    static member spaceItem (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.SpaceItem>
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member spaceItem (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.SpaceItem>
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline classes (x: string list) = attr.classes x |> GenericFelizNode<'FelizBoleroNode>.create
@@ -2716,14 +2716,14 @@ type spaceItem<'FelizBoleroNode> =
 type spin<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member spin (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Spin>
-    static member spin (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Spin>
+    static member spin (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Spin>
     static member inline size (x: System.String) = "Size" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline tip (x: System.String) = "Tip" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline delay (x: System.Int32) = "Delay" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline spinning (x: System.Boolean) = "Spinning" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline wrapperClassName (x: System.String) = "WrapperClassName" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline indicator (x: Microsoft.AspNetCore.Components.RenderFragment) = "Indicator" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline classes (x: string list) = attr.classes x |> GenericFelizNode<'FelizBoleroNode>.create
@@ -2734,7 +2734,7 @@ type spin<'FelizBoleroNode> =
 type countDown<'FelizBoleroNode> =
     inherit statisticComponentBase<'FelizBoleroNode, System.DateTime>
     static member countDown (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.CountDown>
-    static member countDown (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.CountDown>
+    static member countDown (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.CountDown>
     static member inline format (x: System.String) = "Format" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline onFinish (x: Microsoft.AspNetCore.Components.EventCallback) = "OnFinish" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline prefix (x: System.String) = "Prefix" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -2745,7 +2745,7 @@ type countDown<'FelizBoleroNode> =
     static member inline titleTemplate (x: Microsoft.AspNetCore.Components.RenderFragment) = "TitleTemplate" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline value (x: System.DateTime) = "Value" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline valueStyle (x: System.String) = "ValueStyle" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline classes (x: string list) = attr.classes x |> GenericFelizNode<'FelizBoleroNode>.create
@@ -2756,7 +2756,7 @@ type countDown<'FelizBoleroNode> =
 type statistic<'FelizBoleroNode, 'TValue> =
     inherit statisticComponentBase<'FelizBoleroNode, 'TValue>
     static member statistic (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Statistic<'TValue>>
-    static member statistic (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Statistic<'TValue>>
+    static member statistic (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Statistic<'TValue>>
     static member inline decimalSeparator (x: System.String) = "DecimalSeparator" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline groupSeparator (x: System.String) = "GroupSeparator" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline precision (x: System.Int32) = "Precision" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -2768,7 +2768,7 @@ type statistic<'FelizBoleroNode, 'TValue> =
     static member inline titleTemplate (x: Microsoft.AspNetCore.Components.RenderFragment) = "TitleTemplate" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline value (x: 'TValue) = "Value" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline valueStyle (x: System.String) = "ValueStyle" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline classes (x: string list) = attr.classes x |> GenericFelizNode<'FelizBoleroNode>.create
@@ -2779,7 +2779,7 @@ type statistic<'FelizBoleroNode, 'TValue> =
 type statisticComponentBase<'FelizBoleroNode, 'T> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member statisticComponentBase (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.StatisticComponentBase<'T>>
-    static member statisticComponentBase (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.StatisticComponentBase<'T>>
+    static member statisticComponentBase (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.StatisticComponentBase<'T>>
     static member inline prefix (x: System.String) = "Prefix" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline prefixTemplate (x: Microsoft.AspNetCore.Components.RenderFragment) = "PrefixTemplate" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline suffix (x: System.String) = "Suffix" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -2788,7 +2788,7 @@ type statisticComponentBase<'FelizBoleroNode, 'T> =
     static member inline titleTemplate (x: Microsoft.AspNetCore.Components.RenderFragment) = "TitleTemplate" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline value (x: 'T) = "Value" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline valueStyle (x: System.String) = "ValueStyle" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline classes (x: string list) = attr.classes x |> GenericFelizNode<'FelizBoleroNode>.create
@@ -2819,7 +2819,7 @@ type step<'FelizBoleroNode> =
 type steps<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member steps (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Steps>
-    static member steps (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Steps>
+    static member steps (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Steps>
     static member inline current (x: System.Int32) = "Current" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline percent (x: System.Nullable<System.Double>) = "Percent" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline progressDot (x: Microsoft.AspNetCore.Components.RenderFragment) = "ProgressDot" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -2830,7 +2830,7 @@ type steps<'FelizBoleroNode> =
     static member inline size (x: System.String) = "Size" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline startIndex (x: System.Int32) = "StartIndex" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline status (x: System.String) = "Status" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline onChange fn = (Bolero.Html.attr.callback<System.Int32> "OnChange" (fun e -> fn e)) |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -2871,7 +2871,7 @@ type switch<'FelizBoleroNode> =
 type actionColumn<'FelizBoleroNode> =
     inherit columnBase<'FelizBoleroNode>
     static member actionColumn (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.ActionColumn>
-    static member actionColumn (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.ActionColumn>
+    static member actionColumn (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.ActionColumn>
     static member inline title (x: System.String) = "Title" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline titleTemplate (x: Microsoft.AspNetCore.Components.RenderFragment) = "TitleTemplate" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline width (x: System.String) = "Width" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -2880,7 +2880,7 @@ type actionColumn<'FelizBoleroNode> =
     static member inline colSpan (x: System.Int32) = "ColSpan" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline headerColSpan (x: System.Int32) = "HeaderColSpan" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline ``fixed`` (x: System.String) = "Fixed" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline ellipsis (x: System.Boolean) = "Ellipsis" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -2892,7 +2892,7 @@ type actionColumn<'FelizBoleroNode> =
 type column<'FelizBoleroNode, 'TData> =
     inherit columnBase<'FelizBoleroNode>
     static member column (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Column<'TData>>
-    static member column (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Column<'TData>>
+    static member column (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Column<'TData>>
     static member inline fieldChanged fn = (Bolero.Html.attr.callback<'TData> "FieldChanged" (fun e -> fn e)) |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline fieldExpression (x: System.Linq.Expressions.Expression<System.Func<'TData>>) = "FieldExpression" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline cellRender (x: Microsoft.AspNetCore.Components.RenderFragment<'TData>) = "CellRender" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -2919,7 +2919,7 @@ type column<'FelizBoleroNode, 'TData> =
     static member inline colSpan (x: System.Int32) = "ColSpan" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline headerColSpan (x: System.Int32) = "HeaderColSpan" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline ``fixed`` (x: System.String) = "Fixed" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline ellipsis (x: System.Boolean) = "Ellipsis" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -2931,7 +2931,7 @@ type column<'FelizBoleroNode, 'TData> =
 type columnBase<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member columnBase (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.ColumnBase>
-    static member columnBase (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.ColumnBase>
+    static member columnBase (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.ColumnBase>
     static member inline title (x: System.String) = "Title" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline titleTemplate (x: Microsoft.AspNetCore.Components.RenderFragment) = "TitleTemplate" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline width (x: System.String) = "Width" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -2940,7 +2940,7 @@ type columnBase<'FelizBoleroNode> =
     static member inline colSpan (x: System.Int32) = "ColSpan" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline headerColSpan (x: System.Int32) = "HeaderColSpan" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline ``fixed`` (x: System.String) = "Fixed" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline ellipsis (x: System.Boolean) = "Ellipsis" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -2952,7 +2952,7 @@ type columnBase<'FelizBoleroNode> =
 type selection<'FelizBoleroNode> =
     inherit columnBase<'FelizBoleroNode>
     static member selection (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Selection>
-    static member selection (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Selection>
+    static member selection (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Selection>
     static member inline ``type`` (x: System.String) = "Type" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline disabled (x: System.Boolean) = "Disabled" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline key (x: System.String) = "Key" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -2965,7 +2965,7 @@ type selection<'FelizBoleroNode> =
     static member inline colSpan (x: System.Int32) = "ColSpan" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline headerColSpan (x: System.Int32) = "HeaderColSpan" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline ``fixed`` (x: System.String) = "Fixed" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline ellipsis (x: System.Boolean) = "Ellipsis" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -3028,11 +3028,11 @@ type table<'FelizBoleroNode, 'TItem> =
 type tabPane<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member tabPane (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.TabPane>
-    static member tabPane (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.TabPane>
+    static member tabPane (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.TabPane>
     static member inline forceRender (x: System.Boolean) = "ForceRender" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline key (x: System.String) = "Key" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline tab (x: Microsoft.AspNetCore.Components.RenderFragment) = "Tab" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline disabled (x: System.Boolean) = "Disabled" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline closable (x: System.Boolean) = "Closable" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -3045,8 +3045,8 @@ type tabPane<'FelizBoleroNode> =
 type tabs<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member tabs (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Tabs>
-    static member tabs (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Tabs>
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member tabs (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Tabs>
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline activeKey (x: System.String) = "ActiveKey" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline activeKeyChanged fn = (Bolero.Html.attr.callback<System.String> "ActiveKeyChanged" (fun e -> fn e)) |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -3078,8 +3078,8 @@ type tabs<'FelizBoleroNode> =
 type tag<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member tag (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Tag>
-    static member tag (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Tag>
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member tag (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Tag>
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline closable (x: System.Boolean) = "Closable" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline checkable (x: System.Boolean) = "Checkable" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -3149,12 +3149,12 @@ type timePicker<'FelizBoleroNode, 'TValue> =
 type timeline<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member timeline (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Timeline>
-    static member timeline (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Timeline>
+    static member timeline (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Timeline>
     static member inline mode (x: System.String) = "Mode" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline reverse (x: System.Boolean) = "Reverse" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline pending (x: OneOf.OneOf<System.String, Microsoft.AspNetCore.Components.RenderFragment>) = "Pending" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline pendingDot (x: Microsoft.AspNetCore.Components.RenderFragment) = "PendingDot" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline classes (x: string list) = attr.classes x |> GenericFelizNode<'FelizBoleroNode>.create
@@ -3165,8 +3165,8 @@ type timeline<'FelizBoleroNode> =
 type timelineItem<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member timelineItem (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.TimelineItem>
-    static member timelineItem (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.TimelineItem>
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member timelineItem (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.TimelineItem>
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline dot (x: Microsoft.AspNetCore.Components.RenderFragment) = "Dot" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline color (x: System.String) = "Color" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -3179,13 +3179,13 @@ type timelineItem<'FelizBoleroNode> =
 type tooltip<'FelizBoleroNode> =
     inherit overlayTrigger<'FelizBoleroNode>
     static member tooltip (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Tooltip>
-    static member tooltip (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Tooltip>
+    static member tooltip (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Tooltip>
     static member inline title (x: OneOf.OneOf<System.String, Microsoft.AspNetCore.Components.RenderFragment, Microsoft.AspNetCore.Components.MarkupString>) = "Title" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline arrowPointAtCenter (x: System.Boolean) = "ArrowPointAtCenter" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline mouseEnterDelay (x: System.Double) = "MouseEnterDelay" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline mouseLeaveDelay (x: System.Double) = "MouseLeaveDelay" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline boundaryAdjustMode (x: AntDesign.TriggerBoundaryAdjustMode) = "BoundaryAdjustMode" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline complexAutoCloseAndVisible (x: System.Boolean) = "ComplexAutoCloseAndVisible" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline disabled (x: System.Boolean) = "Disabled" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -3220,7 +3220,7 @@ type tooltip<'FelizBoleroNode> =
 type transfer<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member transfer (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Transfer>
-    static member transfer (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Transfer>
+    static member transfer (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Transfer>
     static member inline dataSource (x: System.Collections.Generic.IEnumerable<AntDesign.TransferItem>) = "DataSource" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline titles (x: System.Collections.Generic.IEnumerable<System.String>) = "Titles" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline operations (x: System.Collections.Generic.IEnumerable<System.String>) = "Operations" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -3237,7 +3237,7 @@ type transfer<'FelizBoleroNode> =
     static member inline locale (x: AntDesign.TransferLocale) = "Locale" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline footer (x: System.String) = "Footer" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline footerTemplate (x: Microsoft.AspNetCore.Components.RenderFragment) = "FooterTemplate" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline classes (x: string list) = attr.classes x |> GenericFelizNode<'FelizBoleroNode>.create
@@ -3248,7 +3248,7 @@ type transfer<'FelizBoleroNode> =
 type tree<'FelizBoleroNode, 'TItem> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member tree (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Tree<'TItem>>
-    static member tree (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Tree<'TItem>>
+    static member tree (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Tree<'TItem>>
     static member inline showExpand (x: System.Boolean) = "ShowExpand" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline showLine (x: System.Boolean) = "ShowLine" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline showIcon (x: System.Boolean) = "ShowIcon" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -3341,7 +3341,7 @@ type treeNodeSwitcher<'FelizBoleroNode, 'TItem> =
 type link<'FelizBoleroNode> =
     inherit typographyBase<'FelizBoleroNode>
     static member link (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Link>
-    static member link (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Link>
+    static member link (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Link>
     static member inline code (x: System.Boolean) = "Code" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline keyboard (x: System.Boolean) = "Keyboard" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline copyable (x: System.Boolean) = "Copyable" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -3357,7 +3357,7 @@ type link<'FelizBoleroNode> =
     static member inline strong (x: System.Boolean) = "Strong" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline onChange (x: System.Action) = "OnChange" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline ``type`` (x: System.String) = "Type" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline classes (x: string list) = attr.classes x |> GenericFelizNode<'FelizBoleroNode>.create
@@ -3368,7 +3368,7 @@ type link<'FelizBoleroNode> =
 type paragraph<'FelizBoleroNode> =
     inherit typographyBase<'FelizBoleroNode>
     static member paragraph (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Paragraph>
-    static member paragraph (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Paragraph>
+    static member paragraph (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Paragraph>
     static member inline code (x: System.Boolean) = "Code" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline keyboard (x: System.Boolean) = "Keyboard" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline copyable (x: System.Boolean) = "Copyable" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -3384,7 +3384,7 @@ type paragraph<'FelizBoleroNode> =
     static member inline strong (x: System.Boolean) = "Strong" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline onChange (x: System.Action) = "OnChange" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline ``type`` (x: System.String) = "Type" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline classes (x: string list) = attr.classes x |> GenericFelizNode<'FelizBoleroNode>.create
@@ -3395,7 +3395,7 @@ type paragraph<'FelizBoleroNode> =
 type text<'FelizBoleroNode> =
     inherit typographyBase<'FelizBoleroNode>
     static member text (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Text>
-    static member text (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Text>
+    static member text (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Text>
     static member inline code (x: System.Boolean) = "Code" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline keyboard (x: System.Boolean) = "Keyboard" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline copyable (x: System.Boolean) = "Copyable" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -3411,7 +3411,7 @@ type text<'FelizBoleroNode> =
     static member inline strong (x: System.Boolean) = "Strong" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline onChange (x: System.Action) = "OnChange" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline ``type`` (x: System.String) = "Type" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline classes (x: string list) = attr.classes x |> GenericFelizNode<'FelizBoleroNode>.create
@@ -3422,7 +3422,7 @@ type text<'FelizBoleroNode> =
 type title<'FelizBoleroNode> =
     inherit typographyBase<'FelizBoleroNode>
     static member title (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Title>
-    static member title (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Title>
+    static member title (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Title>
     static member inline level (x: System.Int32) = "Level" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline copyable (x: System.Boolean) = "Copyable" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline copyConfig (x: AntDesign.TypographyCopyableConfig) = "CopyConfig" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -3437,7 +3437,7 @@ type title<'FelizBoleroNode> =
     static member inline strong (x: System.Boolean) = "Strong" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline onChange (x: System.Action) = "OnChange" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline ``type`` (x: System.String) = "Type" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline classes (x: string list) = attr.classes x |> GenericFelizNode<'FelizBoleroNode>.create
@@ -3448,7 +3448,7 @@ type title<'FelizBoleroNode> =
 type typographyBase<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member typographyBase (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.TypographyBase>
-    static member typographyBase (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.TypographyBase>
+    static member typographyBase (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.TypographyBase>
     static member inline copyable (x: System.Boolean) = "Copyable" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline copyConfig (x: AntDesign.TypographyCopyableConfig) = "CopyConfig" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline delete (x: System.Boolean) = "Delete" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -3462,7 +3462,7 @@ type typographyBase<'FelizBoleroNode> =
     static member inline strong (x: System.Boolean) = "Strong" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline onChange (x: System.Action) = "OnChange" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline ``type`` (x: System.String) = "Type" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline classes (x: string list) = attr.classes x |> GenericFelizNode<'FelizBoleroNode>.create
@@ -3473,7 +3473,7 @@ type typographyBase<'FelizBoleroNode> =
 type upload<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member upload (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Upload>
-    static member upload (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Upload>
+    static member upload (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Upload>
     static member inline beforeUpload (x: System.Func<AntDesign.UploadFileItem, System.Boolean>) = "BeforeUpload" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline beforeAllUploadAsync (x: System.Func<System.Collections.Generic.IEnumerable<AntDesign.UploadFileItem>, System.Threading.Tasks.Task<System.Boolean>>) = "BeforeAllUploadAsync" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline beforeAllUpload (x: System.Func<System.Collections.Generic.IEnumerable<AntDesign.UploadFileItem>, System.Boolean>) = "BeforeAllUpload" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -3497,7 +3497,7 @@ type upload<'FelizBoleroNode> =
     static member inline onRemove (x: System.Func<AntDesign.UploadFileItem, System.Threading.Tasks.Task<System.Boolean>>) = "OnRemove" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline onPreview fn = (Bolero.Html.attr.callback<AntDesign.UploadFileItem> "OnPreview" (fun e -> fn e)) |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline onDownload fn = (Bolero.Html.attr.callback<AntDesign.UploadFileItem> "OnDownload" (fun e -> fn e)) |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline showButton (x: System.Boolean) = "ShowButton" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -3509,8 +3509,8 @@ type upload<'FelizBoleroNode> =
 type breadcrumbItem<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member breadcrumbItem (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.BreadcrumbItem>
-    static member breadcrumbItem (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.BreadcrumbItem>
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member breadcrumbItem (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.BreadcrumbItem>
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline overlay (x: System.Object) = "Overlay" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -3558,8 +3558,8 @@ type antContainer<'FelizBoleroNode> =
 type template<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member template (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Template>
-    static member template (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Template>
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member template (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Template>
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline ``if`` (x: System.Func<System.Boolean>) = "If" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -3593,8 +3593,8 @@ type emptySimpleImg<'FelizBoleroNode> =
 type content<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member content (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Content>
-    static member content (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Content>
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member content (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Content>
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline classes (x: string list) = attr.classes x |> GenericFelizNode<'FelizBoleroNode>.create
@@ -3605,8 +3605,8 @@ type content<'FelizBoleroNode> =
 type footer<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member footer (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Footer>
-    static member footer (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Footer>
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member footer (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Footer>
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline classes (x: string list) = attr.classes x |> GenericFelizNode<'FelizBoleroNode>.create
@@ -3617,8 +3617,8 @@ type footer<'FelizBoleroNode> =
 type header<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member header (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Header>
-    static member header (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Header>
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member header (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Header>
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline classes (x: string list) = attr.classes x |> GenericFelizNode<'FelizBoleroNode>.create
@@ -3629,8 +3629,8 @@ type header<'FelizBoleroNode> =
 type layout<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member layout (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Layout>
-    static member layout (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Layout>
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member layout (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Layout>
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline classes (x: string list) = attr.classes x |> GenericFelizNode<'FelizBoleroNode>.create
@@ -3670,7 +3670,7 @@ type paginationPager<'FelizBoleroNode> =
 type summaryCell<'FelizBoleroNode> =
     inherit columnBase<'FelizBoleroNode>
     static member summaryCell (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.SummaryCell>
-    static member summaryCell (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.SummaryCell>
+    static member summaryCell (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.SummaryCell>
     static member inline title (x: System.String) = "Title" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline titleTemplate (x: Microsoft.AspNetCore.Components.RenderFragment) = "TitleTemplate" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline width (x: System.String) = "Width" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -3679,7 +3679,7 @@ type summaryCell<'FelizBoleroNode> =
     static member inline colSpan (x: System.Int32) = "ColSpan" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline headerColSpan (x: System.Int32) = "HeaderColSpan" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline ``fixed`` (x: System.String) = "Fixed" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline ellipsis (x: System.Boolean) = "Ellipsis" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -3691,8 +3691,8 @@ type summaryCell<'FelizBoleroNode> =
 type summaryRow<'FelizBoleroNode> =
     
     static member summaryRow (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.SummaryRow>
-    static member summaryRow (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.SummaryRow>
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member summaryRow (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.SummaryRow>
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
         
 
@@ -3755,9 +3755,9 @@ type calendarPanelChooser<'FelizBoleroNode> =
 type element<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member element (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Internal.Element>
-    static member element (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Internal.Element>
+    static member element (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Internal.Element>
     static member inline htmlTag (x: System.String) = "HtmlTag" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline refChanged fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.ElementReference> "RefChanged" (fun e -> fn e)) |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline attributes (x: System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.Object>>) = "Attributes" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -3770,9 +3770,9 @@ type element<'FelizBoleroNode> =
 type overlay<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member overlay (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Internal.Overlay>
-    static member overlay (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Internal.Overlay>
+    static member overlay (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Internal.Overlay>
     static member inline overlayChildPrefixCls (x: System.String) = "OverlayChildPrefixCls" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline onOverlayMouseEnter (x: Microsoft.AspNetCore.Components.EventCallback) = "OnOverlayMouseEnter" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline onOverlayMouseLeave (x: Microsoft.AspNetCore.Components.EventCallback) = "OnOverlayMouseLeave" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -3792,9 +3792,9 @@ type overlay<'FelizBoleroNode> =
 type overlayTrigger<'FelizBoleroNode> =
     inherit antDomComponentBase<'FelizBoleroNode>
     static member overlayTrigger (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Internal.OverlayTrigger>
-    static member overlayTrigger (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Internal.OverlayTrigger>
+    static member overlayTrigger (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Internal.OverlayTrigger>
     static member inline boundaryAdjustMode (x: AntDesign.TriggerBoundaryAdjustMode) = "BoundaryAdjustMode" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline complexAutoCloseAndVisible (x: System.Boolean) = "ComplexAutoCloseAndVisible" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline disabled (x: System.Boolean) = "Disabled" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -3941,10 +3941,10 @@ type pickerPanelBase<'FelizBoleroNode> =
 type subMenuTrigger<'FelizBoleroNode> =
     inherit overlayTrigger<'FelizBoleroNode>
     static member subMenuTrigger (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Internal.SubMenuTrigger>
-    static member subMenuTrigger (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Internal.SubMenuTrigger>
+    static member subMenuTrigger (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Internal.SubMenuTrigger>
     static member inline triggerClass (x: System.String) = "TriggerClass" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline boundaryAdjustMode (x: AntDesign.TriggerBoundaryAdjustMode) = "BoundaryAdjustMode" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline complexAutoCloseAndVisible (x: System.Boolean) = "ComplexAutoCloseAndVisible" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline disabled (x: System.Boolean) = "Disabled" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -3979,8 +3979,8 @@ type subMenuTrigger<'FelizBoleroNode> =
 type uploadButton<'FelizBoleroNode> =
     inherit antComponentBase<'FelizBoleroNode>
     static member uploadButton (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Internal.UploadButton>
-    static member uploadButton (nodes: FelizNode list) = nodes |> html.blazor<AntDesign.Internal.UploadButton>
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member uploadButton (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Internal.UploadButton>
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline listType (x: System.String) = "ListType" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline showButton (x: System.Boolean) = "ShowButton" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create

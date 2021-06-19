@@ -20,10 +20,10 @@ type virtualize<'FelizBoleroNode, 'TItem> =
 type navLink<'FelizBoleroNode> =
     
     static member navLink (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.AspNetCore.Components.Routing.NavLink>
-    static member navLink (nodes: FelizNode list) = nodes |> html.blazor<Microsoft.AspNetCore.Components.Routing.NavLink>
+    static member navLink (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.AspNetCore.Components.Routing.NavLink>
     static member inline activeClass (x: System.String) = "ActiveClass" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline additionalAttributes (x: System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.Object>>) = "AdditionalAttributes" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline ``match`` (x: Microsoft.AspNetCore.Components.Routing.NavLinkMatch) = "Match" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
         
@@ -107,8 +107,8 @@ type inputRadio<'FelizBoleroNode, 'TValue> =
 type inputRadioGroup<'FelizBoleroNode, 'TValue> =
     inherit inputBase<'FelizBoleroNode, 'TValue>
     static member inputRadioGroup (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.AspNetCore.Components.Forms.InputRadioGroup<'TValue>>
-    static member inputRadioGroup (nodes: FelizNode list) = nodes |> html.blazor<Microsoft.AspNetCore.Components.Forms.InputRadioGroup<'TValue>>
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inputRadioGroup (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.AspNetCore.Components.Forms.InputRadioGroup<'TValue>>
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline name (x: System.String) = "Name" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline additionalAttributes (x: System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.Object>>) = "AdditionalAttributes" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -121,8 +121,8 @@ type inputRadioGroup<'FelizBoleroNode, 'TValue> =
 type inputSelect<'FelizBoleroNode, 'TValue> =
     inherit inputBase<'FelizBoleroNode, 'TValue>
     static member inputSelect (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.AspNetCore.Components.Forms.InputSelect<'TValue>>
-    static member inputSelect (nodes: FelizNode list) = nodes |> html.blazor<Microsoft.AspNetCore.Components.Forms.InputSelect<'TValue>>
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inputSelect (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.AspNetCore.Components.Forms.InputSelect<'TValue>>
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline additionalAttributes (x: System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.Object>>) = "AdditionalAttributes" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline value (x: 'TValue) = "Value" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create

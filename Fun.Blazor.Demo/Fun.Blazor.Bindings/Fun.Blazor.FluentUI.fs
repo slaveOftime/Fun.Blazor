@@ -9,12 +9,12 @@ open Fun.Blazor.Web.Internal
 type navLinkFluentAnchor<'FelizBoleroNode> =
     inherit navLink<'FelizBoleroNode>
     static member navLinkFluentAnchor (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.NavLinkFluentAnchor>
-    static member navLinkFluentAnchor (nodes: FelizNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.NavLinkFluentAnchor>
+    static member navLinkFluentAnchor (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.NavLinkFluentAnchor>
     static member inline href (x: System.String) = "Href" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline appearance (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Appearance>) = "Appearance" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline activeClass (x: System.String) = "ActiveClass" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline additionalAttributes (x: System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.Object>>) = "AdditionalAttributes" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline ``match`` (x: Microsoft.AspNetCore.Components.Routing.NavLinkMatch) = "Match" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
         
@@ -22,8 +22,8 @@ type navLinkFluentAnchor<'FelizBoleroNode> =
 type fluentDesignSystemProvider<'FelizBoleroNode> =
     
     static member fluentDesignSystemProvider (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentDesignSystemProvider>
-    static member fluentDesignSystemProvider (nodes: FelizNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentDesignSystemProvider>
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member fluentDesignSystemProvider (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentDesignSystemProvider>
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline additionalAttributes (x: System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.Object>>) = "AdditionalAttributes" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
         
@@ -42,8 +42,8 @@ type fluentInputBase<'FelizBoleroNode, 'TValue> =
 type fluentAccordion<'FelizBoleroNode> =
     
     static member fluentAccordion (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentAccordion>
-    static member fluentAccordion (nodes: FelizNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentAccordion>
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member fluentAccordion (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentAccordion>
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline expandMode (x: System.Nullable<Microsoft.Fast.Components.FluentUI.ExpandMode>) = "ExpandMode" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline additionalAttributes (x: System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.Object>>) = "AdditionalAttributes" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -52,8 +52,8 @@ type fluentAccordion<'FelizBoleroNode> =
 type fluentAccordionItem<'FelizBoleroNode> =
     
     static member fluentAccordionItem (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentAccordionItem>
-    static member fluentAccordionItem (nodes: FelizNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentAccordionItem>
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member fluentAccordionItem (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentAccordionItem>
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline expanded (x: System.Nullable<System.Boolean>) = "Expanded" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline additionalAttributes (x: System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.Object>>) = "AdditionalAttributes" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -62,10 +62,10 @@ type fluentAccordionItem<'FelizBoleroNode> =
 type fluentAnchor<'FelizBoleroNode> =
     
     static member fluentAnchor (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentAnchor>
-    static member fluentAnchor (nodes: FelizNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentAnchor>
+    static member fluentAnchor (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentAnchor>
     static member inline href (x: System.String) = "Href" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline appearance (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Appearance>) = "Appearance" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline additionalAttributes (x: System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.Object>>) = "AdditionalAttributes" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
         
@@ -73,11 +73,11 @@ type fluentAnchor<'FelizBoleroNode> =
 type fluentBadge<'FelizBoleroNode> =
     
     static member fluentBadge (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentBadge>
-    static member fluentBadge (nodes: FelizNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentBadge>
+    static member fluentBadge (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentBadge>
     static member inline color (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Color>) = "Color" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline fill (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Fill>) = "Fill" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline appearance (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Appearance>) = "Appearance" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline additionalAttributes (x: System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.Object>>) = "AdditionalAttributes" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
         
@@ -85,8 +85,8 @@ type fluentBadge<'FelizBoleroNode> =
 type fluentBreadcrumb<'FelizBoleroNode> =
     
     static member fluentBreadcrumb (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentBreadcrumb>
-    static member fluentBreadcrumb (nodes: FelizNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentBreadcrumb>
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member fluentBreadcrumb (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentBreadcrumb>
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline additionalAttributes (x: System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.Object>>) = "AdditionalAttributes" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
         
@@ -94,9 +94,9 @@ type fluentBreadcrumb<'FelizBoleroNode> =
 type fluentBreadcrumbItem<'FelizBoleroNode> =
     
     static member fluentBreadcrumbItem (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentBreadcrumbItem>
-    static member fluentBreadcrumbItem (nodes: FelizNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentBreadcrumbItem>
+    static member fluentBreadcrumbItem (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentBreadcrumbItem>
     static member inline href (x: System.String) = "Href" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline additionalAttributes (x: System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.Object>>) = "AdditionalAttributes" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
         
@@ -104,11 +104,11 @@ type fluentBreadcrumbItem<'FelizBoleroNode> =
 type fluentButton<'FelizBoleroNode> =
     
     static member fluentButton (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentButton>
-    static member fluentButton (nodes: FelizNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentButton>
+    static member fluentButton (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentButton>
     static member inline appearance (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Appearance>) = "Appearance" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline disabled (x: System.Nullable<System.Boolean>) = "Disabled" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline autofocus (x: System.Nullable<System.Boolean>) = "Autofocus" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline additionalAttributes (x: System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.Object>>) = "AdditionalAttributes" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
         
@@ -116,8 +116,8 @@ type fluentButton<'FelizBoleroNode> =
 type fluentCard<'FelizBoleroNode> =
     
     static member fluentCard (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentCard>
-    static member fluentCard (nodes: FelizNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentCard>
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member fluentCard (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentCard>
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline additionalAttributes (x: System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.Object>>) = "AdditionalAttributes" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
         
@@ -125,11 +125,11 @@ type fluentCard<'FelizBoleroNode> =
 type fluentCheckbox<'FelizBoleroNode> =
     inherit fluentInputBase<'FelizBoleroNode, System.Boolean>
     static member fluentCheckbox (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentCheckbox>
-    static member fluentCheckbox (nodes: FelizNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentCheckbox>
+    static member fluentCheckbox (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentCheckbox>
     static member inline href (x: System.String) = "Href" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline disabled (x: System.Nullable<System.Boolean>) = "Disabled" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline required (x: System.Nullable<System.Boolean>) = "Required" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline additionalAttributes (x: System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.Object>>) = "AdditionalAttributes" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline value (x: System.Boolean) = "Value" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -141,12 +141,12 @@ type fluentCheckbox<'FelizBoleroNode> =
 type fluentCombobox<'FelizBoleroNode> =
     inherit fluentInputBase<'FelizBoleroNode, System.String>
     static member fluentCombobox (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentCombobox>
-    static member fluentCombobox (nodes: FelizNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentCombobox>
+    static member fluentCombobox (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentCombobox>
     static member inline filled (x: System.Nullable<System.Boolean>) = "Filled" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline disabled (x: System.Nullable<System.Boolean>) = "Disabled" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline autocomplete (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Autocomplete>) = "Autocomplete" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline position (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Position>) = "Position" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline additionalAttributes (x: System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.Object>>) = "AdditionalAttributes" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline value (x: System.String) = "Value" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -158,9 +158,9 @@ type fluentCombobox<'FelizBoleroNode> =
 type fluentDialog<'FelizBoleroNode> =
     
     static member fluentDialog (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentDialog>
-    static member fluentDialog (nodes: FelizNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentDialog>
+    static member fluentDialog (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentDialog>
     static member inline modal (x: System.Nullable<System.Boolean>) = "Modal" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline additionalAttributes (x: System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.Object>>) = "AdditionalAttributes" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
         
@@ -168,8 +168,8 @@ type fluentDialog<'FelizBoleroNode> =
 type fluentDivider<'FelizBoleroNode> =
     
     static member fluentDivider (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentDivider>
-    static member fluentDivider (nodes: FelizNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentDivider>
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member fluentDivider (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentDivider>
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline additionalAttributes (x: System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.Object>>) = "AdditionalAttributes" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
         
@@ -177,10 +177,10 @@ type fluentDivider<'FelizBoleroNode> =
 type fluentFlipper<'FelizBoleroNode> =
     
     static member fluentFlipper (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentFlipper>
-    static member fluentFlipper (nodes: FelizNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentFlipper>
+    static member fluentFlipper (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentFlipper>
     static member inline disabled (x: System.Nullable<System.Boolean>) = "Disabled" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline direction (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Direction>) = "Direction" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline additionalAttributes (x: System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.Object>>) = "AdditionalAttributes" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
         
@@ -188,8 +188,8 @@ type fluentFlipper<'FelizBoleroNode> =
 type fluentListbox<'FelizBoleroNode> =
     
     static member fluentListbox (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentListbox>
-    static member fluentListbox (nodes: FelizNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentListbox>
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member fluentListbox (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentListbox>
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline additionalAttributes (x: System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.Object>>) = "AdditionalAttributes" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
         
@@ -197,8 +197,8 @@ type fluentListbox<'FelizBoleroNode> =
 type fluentMenu<'FelizBoleroNode> =
     
     static member fluentMenu (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentMenu>
-    static member fluentMenu (nodes: FelizNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentMenu>
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member fluentMenu (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentMenu>
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline additionalAttributes (x: System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.Object>>) = "AdditionalAttributes" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
         
@@ -206,10 +206,10 @@ type fluentMenu<'FelizBoleroNode> =
 type fluentMenuItem<'FelizBoleroNode> =
     
     static member fluentMenuItem (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentMenuItem>
-    static member fluentMenuItem (nodes: FelizNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentMenuItem>
+    static member fluentMenuItem (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentMenuItem>
     static member inline disabled (x: System.Nullable<System.Boolean>) = "Disabled" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline ``checked`` (x: System.Nullable<System.Boolean>) = "Checked" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline additionalAttributes (x: System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.Object>>) = "AdditionalAttributes" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
         
@@ -217,24 +217,24 @@ type fluentMenuItem<'FelizBoleroNode> =
 type fluentOption<'FelizBoleroNode> =
     
     static member fluentOption (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentOption>
-    static member fluentOption (nodes: FelizNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentOption>
+    static member fluentOption (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentOption>
     static member inline disabled (x: System.Nullable<System.Boolean>) = "Disabled" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline value (x: System.String) = "Value" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline selected (x: System.Nullable<System.Boolean>) = "Selected" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline additionalAttributes (x: System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.Object>>) = "AdditionalAttributes" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
         
 
 type fluentProgress<'FelizBoleroNode> =
     
     static member fluentProgress (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentProgress>
-    static member fluentProgress (nodes: FelizNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentProgress>
+    static member fluentProgress (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentProgress>
     static member inline min (x: System.Nullable<System.Int32>) = "Min" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline max (x: System.Nullable<System.Int32>) = "Max" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline value (x: System.String) = "Value" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline paused (x: System.Nullable<System.Boolean>) = "Paused" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline additionalAttributes (x: System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.Object>>) = "AdditionalAttributes" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
         
@@ -242,12 +242,12 @@ type fluentProgress<'FelizBoleroNode> =
 type fluentProgressRing<'FelizBoleroNode> =
     
     static member fluentProgressRing (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentProgressRing>
-    static member fluentProgressRing (nodes: FelizNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentProgressRing>
+    static member fluentProgressRing (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentProgressRing>
     static member inline min (x: System.Nullable<System.Int32>) = "Min" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline max (x: System.Nullable<System.Int32>) = "Max" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline value (x: System.String) = "Value" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline paused (x: System.Nullable<System.Boolean>) = "Paused" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline additionalAttributes (x: System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.Object>>) = "AdditionalAttributes" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
         
@@ -255,12 +255,12 @@ type fluentProgressRing<'FelizBoleroNode> =
 type fluentRadio<'FelizBoleroNode> =
     
     static member fluentRadio (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentRadio>
-    static member fluentRadio (nodes: FelizNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentRadio>
+    static member fluentRadio (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentRadio>
     static member inline value (x: System.String) = "Value" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline required (x: System.Nullable<System.Boolean>) = "Required" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline disabled (x: System.Nullable<System.Boolean>) = "Disabled" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline ``checked`` (x: System.Nullable<System.Boolean>) = "Checked" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline additionalAttributes (x: System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.Object>>) = "AdditionalAttributes" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
         
@@ -268,11 +268,11 @@ type fluentRadio<'FelizBoleroNode> =
 type fluentRadioGroup<'FelizBoleroNode> =
     inherit fluentInputBase<'FelizBoleroNode, System.String>
     static member fluentRadioGroup (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentRadioGroup>
-    static member fluentRadioGroup (nodes: FelizNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentRadioGroup>
+    static member fluentRadioGroup (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentRadioGroup>
     static member inline name (x: System.String) = "Name" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline required (x: System.Nullable<System.Boolean>) = "Required" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline orientation (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Orientation>) = "Orientation" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline additionalAttributes (x: System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.Object>>) = "AdditionalAttributes" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline value (x: System.String) = "Value" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -284,12 +284,12 @@ type fluentRadioGroup<'FelizBoleroNode> =
 type fluentSelect<'FelizBoleroNode> =
     inherit fluentInputBase<'FelizBoleroNode, System.String>
     static member fluentSelect (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSelect>
-    static member fluentSelect (nodes: FelizNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSelect>
+    static member fluentSelect (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSelect>
     static member inline disabled (x: System.Nullable<System.Boolean>) = "Disabled" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline filled (x: System.Nullable<System.Boolean>) = "Filled" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline name (x: System.String) = "Name" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline position (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Position>) = "Position" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline additionalAttributes (x: System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.Object>>) = "AdditionalAttributes" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline value (x: System.String) = "Value" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -301,11 +301,11 @@ type fluentSelect<'FelizBoleroNode> =
 type fluentSkeleton<'FelizBoleroNode> =
     
     static member fluentSkeleton (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSkeleton>
-    static member fluentSkeleton (nodes: FelizNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSkeleton>
+    static member fluentSkeleton (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSkeleton>
     static member inline shape (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Shape>) = "Shape" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline shimmer (x: System.Nullable<System.Boolean>) = "Shimmer" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline pattern (x: System.String) = "Pattern" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline additionalAttributes (x: System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.Object>>) = "AdditionalAttributes" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
         
@@ -313,14 +313,14 @@ type fluentSkeleton<'FelizBoleroNode> =
 type fluentSlider<'FelizBoleroNode> =
     inherit fluentInputBase<'FelizBoleroNode, System.Int32>
     static member fluentSlider (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSlider>
-    static member fluentSlider (nodes: FelizNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSlider>
+    static member fluentSlider (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSlider>
     static member inline orientation (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Orientation>) = "Orientation" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline min (x: System.Nullable<System.Int32>) = "Min" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline max (x: System.Nullable<System.Int32>) = "Max" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline step (x: System.Nullable<System.Int32>) = "Step" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline disabled (x: System.Nullable<System.Boolean>) = "Disabled" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline readonly (x: System.Nullable<System.Boolean>) = "Readonly" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline additionalAttributes (x: System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.Object>>) = "AdditionalAttributes" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline value (x: System.Int32) = "Value" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -332,8 +332,8 @@ type fluentSlider<'FelizBoleroNode> =
 type fluentSliderLabel<'FelizBoleroNode> =
     
     static member fluentSliderLabel (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSliderLabel>
-    static member fluentSliderLabel (nodes: FelizNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSliderLabel>
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member fluentSliderLabel (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSliderLabel>
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline position (x: System.Nullable<System.Int32>) = "Position" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline hideMark (x: System.Nullable<System.Boolean>) = "HideMark" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -343,11 +343,11 @@ type fluentSliderLabel<'FelizBoleroNode> =
 type fluentSwitch<'FelizBoleroNode> =
     
     static member fluentSwitch (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSwitch>
-    static member fluentSwitch (nodes: FelizNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSwitch>
+    static member fluentSwitch (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSwitch>
     static member inline disabled (x: System.Nullable<System.Boolean>) = "Disabled" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline ``checked`` (x: System.Nullable<System.Boolean>) = "Checked" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline required (x: System.Nullable<System.Boolean>) = "Required" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline additionalAttributes (x: System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.Object>>) = "AdditionalAttributes" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
         
@@ -355,8 +355,8 @@ type fluentSwitch<'FelizBoleroNode> =
 type fluentTab<'FelizBoleroNode> =
     
     static member fluentTab (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTab>
-    static member fluentTab (nodes: FelizNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTab>
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member fluentTab (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTab>
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline additionalAttributes (x: System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.Object>>) = "AdditionalAttributes" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
         
@@ -364,8 +364,8 @@ type fluentTab<'FelizBoleroNode> =
 type fluentTabPanel<'FelizBoleroNode> =
     
     static member fluentTabPanel (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTabPanel>
-    static member fluentTabPanel (nodes: FelizNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTabPanel>
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member fluentTabPanel (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTabPanel>
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline additionalAttributes (x: System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.Object>>) = "AdditionalAttributes" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
         
@@ -373,10 +373,10 @@ type fluentTabPanel<'FelizBoleroNode> =
 type fluentTabs<'FelizBoleroNode> =
     
     static member fluentTabs (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTabs>
-    static member fluentTabs (nodes: FelizNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTabs>
+    static member fluentTabs (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTabs>
     static member inline activeIndicator (x: System.Nullable<System.Boolean>) = "ActiveIndicator" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline orientation (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Orientation>) = "Orientation" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline additionalAttributes (x: System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.Object>>) = "AdditionalAttributes" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
         
@@ -384,7 +384,7 @@ type fluentTabs<'FelizBoleroNode> =
 type fluentTextArea<'FelizBoleroNode> =
     inherit fluentInputBase<'FelizBoleroNode, System.String>
     static member fluentTextArea (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTextArea>
-    static member fluentTextArea (nodes: FelizNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTextArea>
+    static member fluentTextArea (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTextArea>
     static member inline disabled (x: System.Nullable<System.Boolean>) = "Disabled" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline readonly (x: System.Nullable<System.Boolean>) = "Readonly" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline required (x: System.Nullable<System.Boolean>) = "Required" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -392,7 +392,7 @@ type fluentTextArea<'FelizBoleroNode> =
     static member inline resize (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Resize>) = "Resize" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline appearance (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Appearance>) = "Appearance" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline placeholder (x: System.String) = "Placeholder" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline additionalAttributes (x: System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.Object>>) = "AdditionalAttributes" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline value (x: System.String) = "Value" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -404,7 +404,7 @@ type fluentTextArea<'FelizBoleroNode> =
 type fluentTextField<'FelizBoleroNode> =
     inherit fluentInputBase<'FelizBoleroNode, System.String>
     static member fluentTextField (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTextField>
-    static member fluentTextField (nodes: FelizNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTextField>
+    static member fluentTextField (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTextField>
     static member inline disabled (x: System.Nullable<System.Boolean>) = "Disabled" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline readonly (x: System.Nullable<System.Boolean>) = "Readonly" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline required (x: System.Nullable<System.Boolean>) = "Required" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -412,7 +412,7 @@ type fluentTextField<'FelizBoleroNode> =
     static member inline resize (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Resize>) = "Resize" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline appearance (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Appearance>) = "Appearance" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline placeholder (x: System.String) = "Placeholder" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline additionalAttributes (x: System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.Object>>) = "AdditionalAttributes" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline value (x: System.String) = "Value" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -424,8 +424,8 @@ type fluentTextField<'FelizBoleroNode> =
 type fluentTreeItem<'FelizBoleroNode> =
     
     static member fluentTreeItem (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTreeItem>
-    static member fluentTreeItem (nodes: FelizNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTreeItem>
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member fluentTreeItem (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTreeItem>
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline disabled (x: System.Nullable<System.Boolean>) = "Disabled" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline selected (x: System.Nullable<System.Boolean>) = "Selected" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
@@ -436,8 +436,8 @@ type fluentTreeItem<'FelizBoleroNode> =
 type fluentTreeView<'FelizBoleroNode> =
     
     static member fluentTreeView (nodes: GenericFelizNode<'FelizBoleroNode> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTreeView>
-    static member fluentTreeView (nodes: FelizNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTreeView>
-    static member inline children (nodes: FelizNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
+    static member fluentTreeView (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTreeView>
+    static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline children (text: string) = attr.children text |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline renderCollapsedNodes (x: System.Nullable<System.Boolean>) = "RenderCollapsedNodes" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create
     static member inline additionalAttributes (x: System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.Object>>) = "AdditionalAttributes" => x |> BoleroAttr |> GenericFelizNode<'FelizBoleroNode>.create

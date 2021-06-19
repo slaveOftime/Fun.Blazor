@@ -8,18 +8,18 @@ open Microsoft.AspNetCore.Components.Routing
 
 
 type BoleroHtmlEngine (mk, ofStr, empty) =
-    inherit Feliz.HtmlEngine<FelizNode>(mk, ofStr, empty)
+    inherit Feliz.HtmlEngine<FunBlazorNode>(mk, ofStr, empty)
 
-    member _.toBolero x = FelizNode.ToBoleroNode x
+    member _.toBolero x = FunBlazorNode.ToBoleroNode x
 
-    member _.blazor<'Component when 'Component :> Microsoft.AspNetCore.Components.IComponent> (nodes: FelizNode list) =
-        let nodes, attrs = nodes |> FelizNode.GetBoleroNodesAndAttrs
+    member _.blazor<'Component when 'Component :> Microsoft.AspNetCore.Components.IComponent> (nodes: FunBlazorNode list) =
+        let nodes, attrs = nodes |> FunBlazorNode.GetBoleroNodesAndAttrs
         BoleroNode (Bolero.Html.comp<'Component> attrs nodes)
 
     member _.bolero x = BoleroNode x
 
 
-    member html.watch (defaultValue: 'T, store: IObservable<'T>, render: 'T -> FelizNode, ?key) =
+    member html.watch (defaultValue: 'T, store: IObservable<'T>, render: 'T -> FunBlazorNode, ?key) =
         html.bolero 
             (Bolero.Node.BlazorComponent<StoreComponent<'T>>
                 ([
@@ -32,13 +32,13 @@ type BoleroHtmlEngine (mk, ofStr, empty) =
                 ]
                 ,[]))
 
-    member html.watch (store: IObservable<'T>, render: 'T -> FelizNode, ?key) = html.watch (Unchecked.defaultof<'T>, store, render, key = Option.defaultWith (fun () -> System.Random().Next() |> box) key)
-    member html.watch (key, store: IObservable<'T>, render: 'T -> FelizNode) = html.watch (Unchecked.defaultof<'T>, store, render, key = key)
-    member html.watch (store: IStore<'T>, render: 'T -> FelizNode, ?key) = html.watch (store.Current, store.Observable, render, key = Option.defaultWith (fun () -> System.Random().Next() |> box) key)
-    member html.watch (key, store: IStore<'T>, render: 'T -> FelizNode) = html.watch (store.Current, store.Observable, render, key = key)
+    member html.watch (store: IObservable<'T>, render: 'T -> FunBlazorNode, ?key) = html.watch (Unchecked.defaultof<'T>, store, render, key = Option.defaultWith (fun () -> System.Random().Next() |> box) key)
+    member html.watch (key, store: IObservable<'T>, render: 'T -> FunBlazorNode) = html.watch (Unchecked.defaultof<'T>, store, render, key = key)
+    member html.watch (store: IStore<'T>, render: 'T -> FunBlazorNode, ?key) = html.watch (store.Current, store.Observable, render, key = Option.defaultWith (fun () -> System.Random().Next() |> box) key)
+    member html.watch (key, store: IStore<'T>, render: 'T -> FunBlazorNode) = html.watch (store.Current, store.Observable, render, key = key)
 
 
-    member html.inject (render: 'T -> FelizNode) =
+    member html.inject (render: 'T -> FunBlazorNode) =
         html.bolero 
             (Bolero.Node.BlazorComponent<DIComponent<'T>>
                 ([
@@ -47,7 +47,7 @@ type BoleroHtmlEngine (mk, ofStr, empty) =
                 ]
                 ,[]))
 
-    member html.inject (key: obj, render: 'T -> FelizNode) =
+    member html.inject (key: obj, render: 'T -> FunBlazorNode) =
         html.bolero 
             (Bolero.Node.BlazorComponent<DIComponent<'T>>
                 ([
@@ -60,7 +60,7 @@ type BoleroHtmlEngine (mk, ofStr, empty) =
     member html.elmish 
         (initState: unit -> 'Model * Cmd<'Msg>
         ,updateState: 'Msg -> 'Model -> 'Model * Cmd<'Msg>
-        ,render: 'Model -> Dispatch<'Msg> -> FelizNode
+        ,render: 'Model -> Dispatch<'Msg> -> FunBlazorNode
         ,?mapProgram: Bolero.Program<'Model, 'Msg> -> Bolero.Program<'Model, 'Msg>)
         =
         html.bolero 
@@ -79,8 +79,8 @@ type BoleroHtmlEngine (mk, ofStr, empty) =
 
     member html.raw x = Bolero.RawHtml x |> BoleroNode
 
-    member html.doctype (nodes) = Bolero.Server.Html.doctypeHtml [] (nodes |> List.map FelizNode.ToBoleroNode) |> BoleroNode
-    member html.html (lang: string, nodes) = Bolero.Html.html [ Bolero.Html.attr.lang lang ] (nodes |> List.map FelizNode.ToBoleroNode) |> BoleroNode
+    member html.doctype (nodes) = Bolero.Server.Html.doctypeHtml [] (nodes |> List.map FunBlazorNode.ToBoleroNode) |> BoleroNode
+    member html.html (lang: string, nodes) = Bolero.Html.html [ Bolero.Html.attr.lang lang ] (nodes |> List.map FunBlazorNode.ToBoleroNode) |> BoleroNode
 
     member html.title (x: string) = html.custom ("title", [ html.text x ])
     member html.link x = html.custom ("link", x)
@@ -98,7 +98,7 @@ type BoleroHtmlEngine (mk, ofStr, empty) =
     member html.scriptRaw x = html.script [ html.raw x ]
     member html.stylesheet x = html.link [ Attr ("rel", Choice1Of2 "stylesheet"); Attr ("href", Choice1Of2 x) ]
     
-    member html.route (render) = html.inject (fun (lifecycle: IComponentLifecycle, nav: NavigationManager, interception: INavigationInterception, localStore: ILocalStore) ->
+    member html.route (render) = html.inject (fun (lifecycle: IComponentHook, nav: NavigationManager, interception: INavigationInterception, localStore: ILocalStore) ->
         let location = localStore.Create nav.Uri
 
         lifecycle.AfterRender.Add (function
@@ -115,7 +115,7 @@ type BoleroHtmlEngine (mk, ofStr, empty) =
 
 
 type BoleroAttrEngine (mk, mkBool) =
-    inherit Feliz.AttrEngine<FelizNode>(mk, mkBool)
+    inherit Feliz.AttrEngine<FunBlazorNode>(mk, mkBool)
     
     member _.children nodes = Fragment nodes
     member _.children x = BoleroNode (Bolero.Html.text x)

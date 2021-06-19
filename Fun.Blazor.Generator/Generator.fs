@@ -35,7 +35,7 @@ let private getMetaInfo (tys: Type seq) =
 
                     elif prop.Name = "ChildContent" then
                         Some [ 
-                            $"    static member inline children (nodes: {nameof FelizNode} list) = attr.children nodes"
+                            $"    static member inline children (nodes: {nameof FunBlazorNode} list) = attr.children nodes"
                             $"    static member inline children (text: string) = attr.children text"
                         ]
 
@@ -98,7 +98,7 @@ let generateCode (tys: Type seq) =
 
             let maker2 =
                 if meta.hasChildren then
-                    $"static member { lowerFirstCase meta.name } (nodes: {nameof FelizNode} list) = nodes |> html.blazor<{meta.ns}.{meta.name}{meta.generics |> getTypeNames |> createGenerics |> closeGenerics}>"
+                    $"static member { lowerFirstCase meta.name } (nodes: {nameof FunBlazorNode} list) = nodes |> html.blazor<{meta.ns}.{meta.name}{meta.generics |> getTypeNames |> createGenerics |> closeGenerics}>"
                 else
                     ""
 

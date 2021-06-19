@@ -3,10 +3,10 @@
 open System
 
 
-type FelizNode =
-    | Elt of tag: string * FelizNode list
+type FunBlazorNode =
+    | Elt of tag: string * FunBlazorNode list
     | Attr of key: string * value: Choice<string, bool>
-    | Fragment of FelizNode list
+    | Fragment of FunBlazorNode list
     | Text of string
     | BoleroNode of Bolero.Node
     | BoleroAttr of Bolero.Attr
@@ -45,17 +45,19 @@ type FelizNode =
         getBoleroNodeAndAttrs nodes
 
     static member ToBoleroNode node =
-        let nodes, _ = FelizNode.GetBoleroNodesAndAttrs [ node ]
+        let nodes, _ = FunBlazorNode.GetBoleroNodesAndAttrs [ node ]
         Bolero.ForEach nodes
+
+    member this.ToBoleroNode () = FunBlazorNode.ToBoleroNode this
 
 
 type [<Struct>] GenericFelizNode<'T> =
-    { Node: FelizNode }
+    { Node: FunBlazorNode }
 
     static member create x: GenericFelizNode<'T> = { Node = x }
 
 
-type IComponentLifecycle =
+type IComponentHook =
     abstract ParametersSet: IEvent<unit>
     abstract Initialized: IEvent<unit>
     abstract AfterRender: IEvent<bool>
