@@ -57,6 +57,7 @@ let startGenerate (projectFile: string) (codesDirName: string) =
 
     let project = XDocument.Load projectFile
 
+    let target = project.Element(xn "Project").Element(xn "PropertyGroup").Element(xn "TargetFramework").Value
 
     let codeFiles =
         project.Element(xn "Project").Elements(xn "ItemGroup")
@@ -67,7 +68,7 @@ let startGenerate (projectFile: string) (codesDirName: string) =
         |> Seq.map (fun x ->
             let name = x.Attribute(xn FunBlazorNamespaceAttr).Value
             let package = x.Attribute(xn "Include").Value
-            let dll = Path.GetDirectoryName(projectFile) </> "bin" </> "Debug" </> "net5.0" </> package + ".dll"
+            let dll = Path.GetDirectoryName(projectFile) </> "bin" </> "Debug" </> target </> package + ".dll"
             name, dll)
         |> Seq.toList
         |> List.map (createCodeFile projectFile codesDirName)

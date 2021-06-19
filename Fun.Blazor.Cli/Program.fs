@@ -55,7 +55,7 @@ module Program =
 
     [<EntryPoint>]
     let main args =
-        AnsiConsole.Render(FigletText("Fun.Blazor.Cli"))
+        AnsiConsole.Render(FigletText("Fun.Blazor.Cli", Color = Color.CadetBlue))
 
         let application = CommandApp()
 
