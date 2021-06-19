@@ -45,7 +45,7 @@ namespace rec {name}
         
         File.WriteAllText(path, code)
 
-        AnsiConsole.MarkupLine $"Generated code for [purple]{name}[/]: {path}"
+        AnsiConsole.MarkupLine $"Generated code for [green]{name}[/]: {path}"
 
         path
 
@@ -53,11 +53,32 @@ namespace rec {name}
 
 let startGenerate (projectFile: string) (codesDirName: string) =
     AnsiConsole.MarkupLine $"Found project: [green]{projectFile}[/]"
-    AnsiConsole.WriteLine ()
 
     let project = XDocument.Load projectFile
 
     let target = project.Element(xn "Project").Element(xn "PropertyGroup").Element(xn "TargetFramework").Value
+        
+            
+    AnsiConsole.WriteLine ()
+    AnsiConsole.MarkupLine "Clean old generated code files"
+
+    project.Element(xn "Project").Elements(xn "ItemGroup")
+    |> Seq.map (fun x -> x.Elements(xn "Compile"))
+    |> Seq.concat
+    |> Seq.filter (fun x -> x.Attribute(xn "Include").Value.StartsWith codesDirName)
+    |> Seq.toList
+    |> Seq.iter (fun x -> 
+        try 
+            let file = Path.GetDirectoryName projectFile </> codesDirName </> x.Attribute(xn "Include").Value
+            File.Delete file
+        with _ ->
+            ()
+
+        try x.Parent.Remove() with _ -> ())
+
+        
+    AnsiConsole.WriteLine ()
+    AnsiConsole.MarkupLine "Generate codes"
 
     let codeFiles =
         project.Element(xn "Project").Elements(xn "ItemGroup")
@@ -74,13 +95,8 @@ let startGenerate (projectFile: string) (codesDirName: string) =
         |> List.map (createCodeFile projectFile codesDirName)
 
 
-    project.Element(xn "Project").Elements(xn "ItemGroup")
-    |> Seq.map (fun x -> x.Elements(xn "Compile"))
-    |> Seq.concat
-    |> Seq.filter (fun x -> x.Attribute(xn "Include").Value.StartsWith codesDirName)
-    |> Seq.toList
-    |> Seq.iter (fun x -> try x.Parent.Remove() with _ -> ())
-
+    AnsiConsole.WriteLine ()
+    AnsiConsole.MarkupLine "Attach generated code files"
 
     let codeItemGroup = XElement(xn "ItemGroup")
 
@@ -91,7 +107,15 @@ let startGenerate (projectFile: string) (codesDirName: string) =
     codeFiles
     |> List.iter (fun file ->
         let code = XElement(xn "Compile")
-        code.Add(XAttribute(xn "Include", codesDirName </> Path.GetFileName file))
-        codeItemGroup.Add code)
+        let codePath = codesDirName </> Path.GetFileName file
+
+        code.Add(XAttribute(xn "Include", codePath))
+        codeItemGroup.Add code
+
+        AnsiConsole.MarkupLine $"Attach file: [green]{codePath}[/]")
+
+    
+    AnsiConsole.WriteLine ()
+    AnsiConsole.MarkupLine $"Save project file changes: [green]{projectFile}[/]"
 
     project.Save projectFile

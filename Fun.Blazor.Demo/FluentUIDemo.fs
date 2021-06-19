@@ -7,20 +7,20 @@ open Fun.Blazor.FluentUI
 
 
 let fluentUIDemo = html.inject (fun () ->
-    fluentDesignSystemProvider.fluentDesignSystemProvider [
-        fluentCard.fluentCard [
-            fluentProgress.fluentProgress [
+    fluentDesignSystemProvider.create [
+        fluentCard.create [
+            fluentProgress.create [
                 fluentProgress.children "progress"
             ]
-            fluentMenu.fluentMenu [
+            fluentMenu.create [
                 for i in 0..10 do
-                    fluentMenuItem.fluentMenuItem [
+                    fluentMenuItem.create [
                         html.text $"hi {i}"
                     ]
             ]
             html.div [
                 attr.styles [ style.margin 10 ]
-                fluentSkeleton.fluentSkeleton [
+                fluentSkeleton.create [
                     fluentSkeleton.shape Shape.Circle
                     !!(attr.styles [
                         style.width 50
@@ -28,7 +28,7 @@ let fluentUIDemo = html.inject (fun () ->
                     ])
                 ]
                 for _ in 1..3 do
-                    fluentSkeleton.fluentSkeleton [
+                    fluentSkeleton.create [
                         fluentSkeleton.shape Shape.Rect
                         !!(attr.styles [
                             style.borderRadius 4
@@ -36,7 +36,7 @@ let fluentUIDemo = html.inject (fun () ->
                             style.height 10
                         ])
                     ]
-                fluentSkeleton.fluentSkeleton [
+                fluentSkeleton.create [
                     fluentSkeleton.shape Shape.Rect
                     !!(attr.styles [
                         style.borderRadius 4

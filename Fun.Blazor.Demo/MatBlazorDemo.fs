@@ -16,27 +16,27 @@ let theme =
 let matBlazorDemo = html.inject (fun (localStore: ILocalStore) ->
     let isMenuOpen = localStore.Create false
 
-    matThemeProvider.matThemeProvider [
+    matThemeProvider.create [
         matThemeProvider.theme theme
         matThemeProvider.children [
-            matAppBarContainer.matAppBarContainer [
-                matAppBar.matAppBar [
+            matAppBarContainer.create [
+                matAppBar.create [
                     matAppBar.``fixed`` true
                     matAppBar.children [
-                        matAppBarRow.matAppBarRow [
-                            matAppBarSection.matAppBarSection [
-                                matIconButton.matIconButton [
+                        matAppBarRow.create [
+                            matAppBarSection.create [
+                                matIconButton.create [
                                     matIconButton.icon "menu"
                                     matIconButton.onClick (fun _ -> isMenuOpen.Publish not)
                                 ]
-                                matAppBarTitle.matAppBarTitle [
+                                matAppBarTitle.create [
                                     html.text "Slaveoftime"
                                 ]
                             ]
-                            matAppBarSection.matAppBarSection [
+                            matAppBarSection.create [
                                 matAppBarSection.align MatAppBarSectionAlign.End
                                 matAppBarSection.children [
-                                    matIconButton.matIconButton [
+                                    matIconButton.create [
                                         matIconButton.icon "favorite"
                                     ]                            
                                 ]
@@ -44,35 +44,35 @@ let matBlazorDemo = html.inject (fun (localStore: ILocalStore) ->
                         ]
                     ]
                 ]
-                matAppBarContent.matAppBarContent [
-                    matSelect<string>.matSelect [
+                matAppBarContent.create [
+                    matSelect<string>.create [
                         matSelect.label "Pick a item"
                         matSelect.value ""
                         matSelect.children [
                             for i in [1..10] do
-                                matOptionString.matOptionString [
+                                matOptionString.create [
                                     matOptionString.value (string i)
                                     matOptionString.children (string i)
                                 ]
                         ]
                     ]
                     
-                    matDivider.matDivider []
+                    matDivider.create []
 
-                    matTextField<string>.matTextField [
+                    matTextField<string>.create [
                         matTextField.value "test"
                         matTextField.label "World"
                     ]
 
                     html.watch (isMenuOpen, fun isMenuOpen ->
-                        matCheckbox<bool>.matCheckbox [
+                        matCheckbox<bool>.create [
                             matCheckbox.label "Check a go"
                             matCheckbox.value isMenuOpen
                         ]
                     )
                     html.watch (isMenuOpen, fun isOpen ->
                         if isOpen then
-                            matDrawerContainer.matDrawerContainer [
+                            matDrawerContainer.create [
                                 matDrawerContainer.styles [ 
                                     style.positionAbsolute
                                     style.top 0
@@ -80,13 +80,13 @@ let matBlazorDemo = html.inject (fun (localStore: ILocalStore) ->
                                     style.height (length.vh 100)
                                 ]
                                 matDrawerContainer.children [
-                                    matDrawer.matDrawer [
+                                    matDrawer.create [
                                         !!(evt.click (fun _ -> isMenuOpen.Publish not))
                                         matDrawer.opened isOpen
                                         matDrawer.mode MatDrawerMode.Modal
                                         matDrawer.children [
                                             html.text "Drawer"
-                                            matTextField<string>.matTextField [
+                                            matTextField<string>.create [
                                                 matTextField.value "test"
                                                 matTextField.label "World"
                                             ]

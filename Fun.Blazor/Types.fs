@@ -44,24 +44,24 @@ type FunBlazorNode =
                 ([], [])
         getBoleroNodeAndAttrs nodes
 
-    static member ToBoleroNode node =
+    static member ToBolero node =
         let nodes, _ = FunBlazorNode.GetBoleroNodesAndAttrs [ node ]
         Bolero.ForEach nodes
 
-    member this.ToBoleroNode () = FunBlazorNode.ToBoleroNode this
+    member this.ToBolero () = FunBlazorNode.ToBolero this
 
 
-type [<Struct>] GenericFelizNode<'T> =
+type [<Struct>] GenericFunBlazorNode<'T> =
     { Node: FunBlazorNode }
 
-    static member create x: GenericFelizNode<'T> = { Node = x }
+    static member create x: GenericFunBlazorNode<'T> = { Node = x }
 
 
 type IComponentHook =
-    abstract ParametersSet: IEvent<unit>
-    abstract Initialized: IEvent<unit>
-    abstract AfterRender: IEvent<bool>
-    abstract Dispose: IEvent<unit>
+    //abstract OnParametersSet: IEvent<unit>
+    //abstract OnInitialized: IEvent<unit>
+    abstract OnAfterRender: IEvent<bool>
+    abstract OnDispose: IEvent<unit>
     abstract AddDispose: IDisposable -> unit
     abstract StateHasChanged: unit -> unit
 
@@ -72,10 +72,16 @@ type IStore<'T> =
     abstract Observable: IObservable<'T>
     abstract Current: 'T
 
+
 type ILocalStore =
+    /// Create an IStore and hold in component and dispose it after component disposed
     abstract Create: 'T -> IStore<'T>
 
+
 type IShareStore =
+    /// Create an IStore and share between components and dispose it after session disposed
     abstract Create: string * 'T -> IStore<'T>
+
+    /// Create an IStore and share between components and dispose it after session disposed
     abstract Create: 'T -> IStore<'T>
     

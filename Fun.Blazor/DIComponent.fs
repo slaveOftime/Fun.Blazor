@@ -47,10 +47,10 @@ type DIComponent<'T>() as this =
 
     let blazorLifecycle =
         { new IComponentHook with
-            member _.ParametersSet = parametersSet.Publish
-            member _.Initialized = initialized.Publish
-            member _.AfterRender = afterRenderEvent.Publish
-            member _.Dispose = disposeEvent.Publish
+            //member _.ParametersSet = parametersSet.Publish
+            //member _.Initialized = initialized.Publish
+            member _.OnAfterRender = afterRenderEvent.Publish
+            member _.OnDispose = disposeEvent.Publish
             member _.AddDispose dispose = disposes.Add dispose
             member _.StateHasChanged () = this.ForceSetState() } 
 
@@ -73,7 +73,7 @@ type DIComponent<'T>() as this =
         | None ->
             let depsType, tailFunc = Reflection.FSharpType.GetFunctionElements(this.RenderFn.GetType())
             let services = this.Services.GetMultipleServices(depsType, handleNotFoundType) :?> 'T
-            let newNode = this.RenderFn services |> FunBlazorNode.ToBoleroNode
+            let newNode = this.RenderFn services |> FunBlazorNode.ToBolero
             node <- Some newNode
             newNode
 

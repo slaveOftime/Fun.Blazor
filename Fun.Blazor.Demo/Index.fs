@@ -8,7 +8,7 @@ open Fun.Blazor
 type Index () =
     inherit Component()
     
-    override _.Render() = home.ToBoleroNode()
+    override _.Render() = home.ToBolero()
 
 
     static member page =
@@ -16,7 +16,7 @@ type Index () =
         html.doctype [
             html.html ("en", [
                 html.head [
-                    html.title "Feliz Bolero"
+                    html.title "Fun Blazor"
                     html.baseUrl "/"
                     html.meta [ attr.charsetUtf8 ]
                     html.meta [ attr.name "viewport"; attr.content "width=device-width, initial-scale=1.0" ]
@@ -41,4 +41,4 @@ type Index () =
                 ]
             ])
         ]
-        |> FunBlazorNode.ToBoleroNode
+        |> FunBlazorNode.ToBolero

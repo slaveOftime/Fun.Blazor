@@ -10,17 +10,17 @@ let home = html.inject (fun (localStore: ILocalStore) ->
     
     html.div [
         html.watch (index, fun d ->
-            matTabGroup.matTabGroup [
+            matTabGroup.create [
                 matTabGroup.activeIndex d
                 matTabGroup.activeIndexChanged index.Publish
                 matTabGroup.children [
-                    matTab.matTab [
+                    matTab.create [
                         matTab.label "MatBlazor"
                     ]
-                    matTab.matTab [
+                    matTab.create [
                         matTab.label "AntDesign"
                     ]
-                    matTab.matTab [
+                    matTab.create [
                         matTab.label "FluentDesign"
                     ]
                 ]

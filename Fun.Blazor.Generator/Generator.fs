@@ -48,7 +48,7 @@ let private getMetaInfo (tys: Type seq) =
                         Some [ $"    static member inline {name} (x: {getTypeFullName prop.PropertyType}) = \"{prop.Name}\" => x |> {nameof BoleroAttr}" ])
 
             |> Seq.concat
-            |> Seq.map (fun x -> $"{x} |> {nameof GenericFelizNode}<{felizBoleroGeneric}>.create")
+            |> Seq.map (fun x -> $"{x} |> {nameof GenericFunBlazorNode}<{funBlazorGeneric}>.create")
             |> String.concat "\n"
 
 
@@ -94,18 +94,18 @@ let generateCode (tys: Type seq) =
             let inheirit' =
                 match meta.inheritInfo with
                 | None -> ""
-                | Some (ty, generics) -> $"inherit {lowerFirstCase ty}{ felizBoleroGeneric::(getTypeNames generics) |> createGenerics |> closeGenerics }"
+                | Some (ty, generics) -> $"inherit {lowerFirstCase ty}{ funBlazorGeneric::(getTypeNames generics) |> createGenerics |> closeGenerics }"
 
             let maker2 =
                 if meta.hasChildren then
-                    $"static member { lowerFirstCase meta.name } (nodes: {nameof FunBlazorNode} list) = nodes |> html.blazor<{meta.ns}.{meta.name}{meta.generics |> getTypeNames |> createGenerics |> closeGenerics}>"
+                    $"static member create (nodes: {nameof FunBlazorNode} list) = nodes |> html.blazor<{meta.ns}.{meta.name}{meta.generics |> getTypeNames |> createGenerics |> closeGenerics}>"
                 else
                     ""
 
             sprintf $"""
-type { lowerFirstCase meta.name }{ felizBoleroGeneric::(getTypeNames meta.generics) |> createGenerics |> appendStr (createConstraint meta.generics) |> closeGenerics } =
+type { lowerFirstCase meta.name }{ funBlazorGeneric::(getTypeNames meta.generics) |> createGenerics |> appendStr (createConstraint meta.generics) |> closeGenerics } =
     {inheirit'}
-    static member { lowerFirstCase meta.name } (nodes: {nameof GenericFelizNode}<{felizBoleroGeneric}> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<{meta.ns}.{meta.name}{meta.generics |> getTypeNames |> createGenerics |> closeGenerics}>
+    static member create (nodes: {nameof GenericFunBlazorNode}<{funBlazorGeneric}> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<{meta.ns}.{meta.name}{meta.generics |> getTypeNames |> createGenerics |> closeGenerics}>
     {maker2}
 {meta.props}
         """)

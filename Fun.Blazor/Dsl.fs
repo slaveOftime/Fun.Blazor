@@ -7,10 +7,10 @@ open Microsoft.AspNetCore.Components
 open Microsoft.AspNetCore.Components.Routing
 
 
-type BoleroHtmlEngine (mk, ofStr, empty) =
+type FunBlazorHtmlEngine (mk, ofStr, empty) =
     inherit Feliz.HtmlEngine<FunBlazorNode>(mk, ofStr, empty)
 
-    member _.toBolero x = FunBlazorNode.ToBoleroNode x
+    member _.toBolero x = FunBlazorNode.ToBolero x
 
     member _.blazor<'Component when 'Component :> Microsoft.AspNetCore.Components.IComponent> (nodes: FunBlazorNode list) =
         let nodes, attrs = nodes |> FunBlazorNode.GetBoleroNodesAndAttrs
@@ -79,8 +79,8 @@ type BoleroHtmlEngine (mk, ofStr, empty) =
 
     member html.raw x = Bolero.RawHtml x |> BoleroNode
 
-    member html.doctype (nodes) = Bolero.Server.Html.doctypeHtml [] (nodes |> List.map FunBlazorNode.ToBoleroNode) |> BoleroNode
-    member html.html (lang: string, nodes) = Bolero.Html.html [ Bolero.Html.attr.lang lang ] (nodes |> List.map FunBlazorNode.ToBoleroNode) |> BoleroNode
+    member html.doctype (nodes) = Bolero.Server.Html.doctypeHtml [] (nodes |> List.map FunBlazorNode.ToBolero) |> BoleroNode
+    member html.html (lang: string, nodes) = Bolero.Html.html [ Bolero.Html.attr.lang lang ] (nodes |> List.map FunBlazorNode.ToBolero) |> BoleroNode
 
     member html.title (x: string) = html.custom ("title", [ html.text x ])
     member html.link x = html.custom ("link", x)
@@ -101,7 +101,7 @@ type BoleroHtmlEngine (mk, ofStr, empty) =
     member html.route (render) = html.inject (fun (lifecycle: IComponentHook, nav: NavigationManager, interception: INavigationInterception, localStore: ILocalStore) ->
         let location = localStore.Create nav.Uri
 
-        lifecycle.AfterRender.Add (function
+        lifecycle.OnAfterRender.Add (function
             | true ->
                 interception.EnableNavigationInterceptionAsync() |> ignore
                 nav.LocationChanged.Add (fun e -> location.Publish e.Location)
@@ -114,7 +114,11 @@ type BoleroHtmlEngine (mk, ofStr, empty) =
         ))
 
 
-type BoleroAttrEngine (mk, mkBool) =
+type FunBlazorSvgEngine (mk, ofStr, empty) =
+    inherit Feliz.SvgEngine<FunBlazorNode>(mk, ofStr, empty)
+
+
+type FunBlazorAttrEngine (mk, mkBool) =
     inherit Feliz.AttrEngine<FunBlazorNode>(mk, mkBool)
     
     member _.children nodes = Fragment nodes
@@ -131,8 +135,10 @@ type BoleroAttrEngine (mk, mkBool) =
 
 [<AutoOpen>]
 module Dsl =
-    let html = BoleroHtmlEngine((fun tag nodes -> Elt(tag, List.ofSeq nodes)), Text, (fun () -> Fragment []))
+    let html = FunBlazorHtmlEngine((fun tag nodes -> Elt(tag, List.ofSeq nodes)), Text, (fun () -> Fragment []))
 
-    let attr = BoleroAttrEngine((fun k v -> Attr(k, Choice1Of2 v)), (fun k v -> Attr(k, Choice2Of2 v)))
+    let svg = FunBlazorSvgEngine((fun tag nodes -> Elt(tag, List.ofSeq nodes)), Text, (fun () -> Fragment []))
+
+    let attr = FunBlazorAttrEngine((fun k v -> Attr(k, Choice1Of2 v)), (fun k v -> Attr(k, Choice2Of2 v)))
 
     let style = Feliz.CssEngine(fun k v -> k, v)

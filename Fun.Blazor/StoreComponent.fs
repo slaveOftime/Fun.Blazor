@@ -26,7 +26,7 @@ type StoreComponent<'T> () as this =
     member internal _.Rerender() = this.InvokeAsync(this.StateHasChanged) |> ignore
 
 
-    override _.Render() = this.RenderFn value |> FunBlazorNode.ToBoleroNode
+    override _.Render() = this.RenderFn value |> FunBlazorNode.ToBolero
 
     override _.OnInitialized() =
         base.OnInitialized()

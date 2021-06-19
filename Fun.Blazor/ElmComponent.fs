@@ -28,5 +28,5 @@ type ElmComponent<'Model, 'Msg> () =
         Program.mkProgram
             (fun _ -> this.Init())
             (fun msg model -> this.Update msg model)
-            (fun model dispatch -> this.Render model dispatch |> FunBlazorNode.ToBoleroNode)
+            (fun model dispatch -> this.Render model dispatch |> FunBlazorNode.ToBolero)
         |> this.MapProgram
