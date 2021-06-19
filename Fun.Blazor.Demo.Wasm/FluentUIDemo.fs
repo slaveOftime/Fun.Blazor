@@ -1,5 +1,5 @@
 ﻿[<AutoOpen>]
-module Fun.Blazor.Demo.FluentUIDemo
+module Fun.Blazor.Demo.Wasm.FluentUIDemo
 
 open Microsoft.Fast.Components.FluentUI
 open Fun.Blazor

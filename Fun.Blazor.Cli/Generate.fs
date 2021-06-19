@@ -1,8 +1,10 @@
 ﻿module Fun.Blazor.Cli.Generate
 
+open System
 open System.IO
 open System.Reflection
 open System.Xml.Linq
+open Microsoft.Extensions.Configuration
 open Spectre.Console
 
 open Fun.Blazor.Generator
@@ -89,8 +91,28 @@ let startGenerate (projectFile: string) (codesDirName: string) =
         |> Seq.map (fun x ->
             let name = x.Attribute(xn FunBlazorNamespaceAttr).Value
             let package = x.Attribute(xn "Include").Value
-            let dll = Path.GetDirectoryName(projectFile) </> "bin" </> "Debug" </> target </> package + ".dll"
+            let version = x.Attribute(xn "Version").Value
+
+            //Use this in the future
+            //let config = ConfigurationBuilder().AddJsonFile(Path.GetDirectoryName projectFile </> "obj" </> "project.assets.json").Build()
+
+            let findAnotherOneIfNotExist fn path = if File.Exists path then path else fn()
+
+            let dll =
+                let userDir = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)
+                Path.GetDirectoryName projectFile </> "bin" </> "Debug" </> target </> package + ".dll"
+                |> findAnotherOneIfNotExist (fun () -> userDir </> ".nuget" </> "packages" </> package </> version </> "lib" </> target </> package + ".dll")
+                |> findAnotherOneIfNotExist (fun () -> userDir </> ".nuget" </> "packages" </> package </> version </> "lib" </> "netstandard2.0" </> package + ".dll")
+                |> findAnotherOneIfNotExist (fun () -> userDir </> ".nuget" </> "packages" </> package </> version </> "lib" </> "netstandard2.1" </> package + ".dll")
+                |> findAnotherOneIfNotExist (fun () -> userDir </> ".nuget" </> "packages" </> package </> version </> "lib" </> "netcoreapp2.0" </> package + ".dll")
+                |> findAnotherOneIfNotExist (fun () -> userDir </> ".nuget" </> "packages" </> package </> version </> "lib" </> "netcoreapp2.2" </> package + ".dll")
+                |> findAnotherOneIfNotExist (fun () -> userDir </> ".nuget" </> "packages" </> package </> version </> "lib" </> "netcoreapp3.0" </> package + ".dll")
+                |> findAnotherOneIfNotExist (fun () -> userDir </> ".nuget" </> "packages" </> package </> version </> "lib" </> "netcoreapp3.1" </> package + ".dll")
+                |> findAnotherOneIfNotExist (fun () -> userDir </> ".nuget" </> "packages" </> package </> version </> "lib" </> "net5.0" </> package + ".dll")
+                |> findAnotherOneIfNotExist (fun () -> userDir </> ".nuget" </> "packages" </> package </> version </> "lib" </> "net6.0" </> package + ".dll")
+
             name, dll)
+
         |> Seq.toList
         |> List.map (createCodeFile projectFile codesDirName)
 

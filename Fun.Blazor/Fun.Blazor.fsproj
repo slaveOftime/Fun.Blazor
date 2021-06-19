@@ -22,7 +22,6 @@
 
 	<ItemGroup>
 		<PackageReference Include="Bolero" Version="0.17.25" />
-		<PackageReference Include="Bolero.Server" Version="0.17.25" />
 		<PackageReference Include="Feliz.Engine" Version="1.0.0-beta-004" />
 		<PackageReference Include="FSharp.Control.Reactive" Version="5.0.2" />
 		<PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />

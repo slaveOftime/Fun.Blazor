@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
@@ -13,14 +13,16 @@
     <Compile Include="MatBlazorDemo.fs" />
     <Compile Include="FluentUIDemo.fs" />
     <Compile Include="Home.fs" />
-    <Compile Include="Index.fs" />
+    <Compile Include="App.fs" />
     <Compile Include="Startup.fs" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Bolero.Build" Version="0.17.25" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.7" PrivateAssets="all" />
     <PackageReference FunBlazorNamespace="Fun.Blazor.FluentUI" Include="Microsoft.Fast.Components.FluentUI" Version="0.2.0" />
     <PackageReference FunBlazorNamespace="Fun.Blazor.AntDesign" Include="AntDesign" Version="0.8.2" />
     <PackageReference FunBlazorNamespace="Fun.Blazor.MatBlazor" Include="MatBlazor" Version="2.8.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="5.0.*" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fun.Blazor\Fun.Blazor.fsproj" />

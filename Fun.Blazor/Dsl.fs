@@ -79,7 +79,6 @@ type FunBlazorHtmlEngine (mk, ofStr, empty) =
 
     member html.raw x = Bolero.RawHtml x |> BoleroNode
 
-    member html.doctype (nodes) = Bolero.Server.Html.doctypeHtml [] (nodes |> List.map FunBlazorNode.ToBolero) |> BoleroNode
     member html.html (lang: string, nodes) = Bolero.Html.html [ Bolero.Html.attr.lang lang ] (nodes |> List.map FunBlazorNode.ToBolero) |> BoleroNode
 
     member html.title (x: string) = html.custom ("title", [ html.text x ])

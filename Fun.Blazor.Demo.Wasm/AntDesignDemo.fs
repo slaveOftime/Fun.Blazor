@@ -1,5 +1,5 @@
 ﻿[<AutoOpen>]
-module Fun.Blazor.Demo.AntDesignDemo
+module Fun.Blazor.Demo.Wasm.AntDesignDemo
 
 open AntDesign
 open Fun.Blazor

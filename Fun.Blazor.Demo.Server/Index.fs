@@ -1,19 +1,13 @@
 namespace Fun.Blazor.Demo
 
-open Bolero
 open Bolero.Server.Html
 open Fun.Blazor
 
 
 type Index () =
-    inherit Component()
-    
-    override _.Render() = home.ToBolero()
-
 
     static member page =
-
-        html.doctype [
+        doctypeHtml [] [
             html.html ("en", [
                 html.head [
                     html.title "Fun Blazor"
@@ -24,7 +18,7 @@ type Index () =
                 html.body [
                     attr.styles [ style.margin 0 ]
                     attr.children [
-                        html.bolero rootComp<Index>
+                        html.bolero rootComp<Wasm.App>
                         html.bolero boleroScript
                 
                         html.script "_content/MatBlazor/dist/matBlazor.js"
@@ -40,5 +34,5 @@ type Index () =
                     ]
                 ]
             ])
+            |> html.toBolero
         ]
-        |> FunBlazorNode.ToBolero

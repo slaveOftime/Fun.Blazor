@@ -1,5 +1,5 @@
 [<AutoOpen>]
-module Fun.Blazor.Demo.Home
+module Fun.Blazor.Demo.Wasm.Home
 
 open Fun.Blazor
 open Fun.Blazor.MatBlazor
