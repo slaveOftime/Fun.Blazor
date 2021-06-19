@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Fun.Blazor.Cli": {
+      "commandName": "Project",
+      "commandLineArgs": "generate \"..\\..\\..\\..\\Fun.Blazor.Demo\\Fun.Blazor.Demo.fsproj\""
+    }
+  }
+}

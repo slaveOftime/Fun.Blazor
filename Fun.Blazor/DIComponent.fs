@@ -1,0 +1,99 @@
+﻿namespace Fun.Blazor
+
+open System
+open System.Collections.Generic
+open Microsoft.AspNetCore.Components
+open Bolero
+
+
+[<AutoOpen>]
+module ServiceProviderExtensions =
+    type IServiceProvider with
+        member sp.GetMultipleServices(depsType: Type, handleNotFoundType) =
+            let getSvc x =
+                let svc = sp.GetService(x)
+                if svc = null then handleNotFoundType x
+                else svc
+
+            if depsType = typeof<unit> then
+                box ()
+            elif Reflection.FSharpType.IsTuple depsType then
+                let svcs =
+                    depsType
+                    |> Reflection.FSharpType.GetTupleElements
+                    |> Array.map getSvc
+                Reflection.FSharpValue.MakeTuple(svcs, depsType)
+            else
+                getSvc depsType
+
+        member sp.GetMultipleServices(depsType: Type) = sp.GetMultipleServices(depsType, fun _ -> null)
+
+        member sp.GetMultipleServices<'Types>() =
+            sp.GetMultipleServices(typeof<'Types>, fun _ -> null)
+            |> unbox<'Types>
+
+
+type DIComponent<'T>() as this =
+    inherit Component()
+    
+    let mutable node = None
+
+    let parametersSet = new Event<unit>()
+    let initialized = new Event<unit>()
+    let afterRenderEvent = new Event<bool>()
+    let disposeEvent = new Event<unit>()
+    let disposes = new List<IDisposable>()
+    let localStore = new LocalStore()
+
+    let blazorLifecycle =
+        { new IComponentLifecycle with
+            member _.ParametersSet = parametersSet.Publish
+            member _.Initialized = initialized.Publish
+            member _.AfterRender = afterRenderEvent.Publish
+            member _.Dispose = disposeEvent.Publish
+            member _.AddDispose dispose = disposes.Add dispose
+            member _.StateHasChanged () = this.ForceSetState() } 
+
+    let handleNotFoundType ty =
+        if ty = typeof<IComponentLifecycle> then box blazorLifecycle
+        elif ty = typeof<ILocalStore> then box localStore
+        else null
+
+    [<Parameter>]
+    member val RenderFn = Unchecked.defaultof<'T -> FelizNode> with get, set
+
+    [<Inject>]
+    member val Services = Unchecked.defaultof<IServiceProvider> with get, set
+
+    member internal _.StateHasChanged() = base.StateHasChanged()
+    member internal _.ForceSetState() = this.InvokeAsync(this.StateHasChanged) |> ignore
+
+    override _.Render() =
+        match node with
+        | None ->
+            let depsType, tailFunc = Reflection.FSharpType.GetFunctionElements(this.RenderFn.GetType())
+            let services = this.Services.GetMultipleServices(depsType, handleNotFoundType) :?> 'T
+            let newNode = this.RenderFn services |> FelizNode.ToBoleroNode
+            node <- Some newNode
+            newNode
+
+        | Some node ->
+            node
+        
+    override _.OnParametersSet () =
+        base.OnParametersSet()
+        parametersSet.Trigger()
+
+    override _.OnInitialized () =
+        base.OnInitialized()
+        initialized.Trigger()
+
+    override _.OnAfterRender firstRender =
+        base.OnAfterRender firstRender
+        afterRenderEvent.Trigger firstRender
+
+    interface IDisposable with
+        member _.Dispose () =
+            disposeEvent.Trigger()
+            (localStore :> IDisposable).Dispose()
+            disposes |> Seq.iter (fun x -> x.Dispose())

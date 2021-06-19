@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Include="Types.fs" />
+		<Compile Include="Uitls.fs" />
+		<Compile Include="Store.fs" />
+		<Compile Include="Router.fs" />
+		<Compile Include="DIComponent.fs" />
+		<Compile Include="ElmComponent.fs" />
+		<Compile Include="StoreComponent.fs" />
+		<Compile Include="Events.fs" />
+		<Compile Include="Dsl.fs" />
+		<Compile Include="Web.fs" />
+		<Compile Include="DI.fs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Bolero" Version="0.17.25" />
+		<PackageReference Include="Bolero.Server" Version="0.17.25" />
+		<PackageReference Include="Feliz.Engine" Version="1.0.0-beta-004" />
+		<PackageReference Include="FSharp.Control.Reactive" Version="5.0.2" />
+		<PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
+	</ItemGroup>
+
+</Project>
