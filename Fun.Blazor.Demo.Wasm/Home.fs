@@ -1,43 +1,176 @@
 [<AutoOpen>]
 module Fun.Blazor.Demo.Wasm.Home
 
+open MudBlazor
 open Fun.Blazor
-open Fun.Blazor.MatBlazor
+open Fun.Blazor.MudBlazor
 open Fun.Blazor.Demo.Wasm.DemoMudBlazor
-open Fun.Blazor.Demo.Wasm.DemoMatBlazor
 open Fun.Blazor.Demo.Wasm.DemoAntDesign
 open Fun.Blazor.Demo.Wasm.DemoFluentUI
 
 
-let home = html.inject (fun (localStore: ILocalStore) ->
-    let index = localStore.Create 0
+let defaultTheme =
+    MudTheme
+        (Palette =
+            Palette(
+                Primary = "#64a689",
+                Secondary = "#a664a2",
+                Black = "#212121"))
+
+let darkTheme =
+    MudTheme
+        (Palette =
+            Palette(
+                Black = "#27272f",
+                Background = "#32333d",
+                BackgroundGrey = "#27272f",
+                Surface = "#373740",
+                DrawerBackground = "#27272f",
+                DrawerText = "rgba(255,255,255, 0.50)",
+                DrawerIcon = "rgba(255,255,255, 0.50)",
+                AppbarBackground = "#27272f",
+                AppbarText = "rgba(255,255,255, 0.70)",
+                TextPrimary = "rgba(255,255,255, 0.70)",
+                TextSecondary = "rgba(255,255,255, 0.50)",
+                ActionDefault = "#adadb1",
+                ActionDisabled = "rgba(255,255,255, 0.26)",
+                ActionDisabledBackground = "rgba(255,255,255, 0.12)",
+                Divider = "rgba(255,255,255, 0.12)",
+                DividerLight = "rgba(255,255,255, 0.06)",
+                TableLines = "rgba(255,255,255, 0.12)",
+                LinesDefault = "rgba(255,255,255, 0.12)",
+                LinesInputs = "rgba(255,255,255, 0.3)",
+                TextDisabled = "rgba(255,255,255, 0.2)"))
+
+
+let navmenu =
+    mudNavMenu.create [
+        mudNavGroup.create [
+            mudNavGroup.title "Demos"
+            mudNavGroup.icon Icons.Material.Filled.School
+            mudNavGroup.expanded true
+            mudNavGroup.children [
+                mudNavLink.create [
+                    mudNavLink.href "/mudblazor"
+                    mudNavLink.children "MudBlazor"
+                ]
+                mudNavLink.create [
+                    mudNavLink.href "/antdesign"
+                    mudNavLink.children "Antdesign"
+                ]
+                mudNavLink.create [
+                    mudNavLink.href "/fluentui"
+                    mudNavLink.children "FluentUI"
+                ]
+            ]
+        ]
+    ]
+
+
+let home = html.inject (fun (localStore: ILocalStore, shareStore: IShareStore) ->
+    let isDarkMode = shareStore.Create ("isDarkMode", false)
+    let openMenu = localStore.Create false
     
     html.div [
-        html.watch (index, fun d ->
-            matTabGroup.create [
-                matTabGroup.activeIndex d
-                matTabGroup.activeIndexChanged index.Publish
-                matTabGroup.children [
-                    matTab.create [
-                        matTab.label "MudBlazor"
-                    ]
-                    matTab.create [
-                        matTab.label "MatBlazor"
-                    ]
-                    matTab.create [
-                        matTab.label "AntDesign"
-                    ]
-                    matTab.create [
-                        matTab.label "FluentDesign"
+        html.watch (isDarkMode, fun isDark ->
+            mudThemeProvider.create [
+                mudThemeProvider.theme (if isDark then darkTheme else defaultTheme)
+            ]
+        )
+        mudDialogProvider.create []
+        mudSnackbarProvider.create []
+
+        mudSwipeArea.create [
+            mudSwipeArea.onSwipe (fun _ -> openMenu.Publish not)
+            mudSwipeArea.children [
+                mudLayout.create [
+                    mudLayout.rightToLeft false
+                    mudLayout.children [
+                        mudAppBar.create [
+                            mudAppBar.color Color.Primary
+                            mudAppBar.elevation 25
+                            mudAppBar.dense true
+                            mudAppBar.children [
+                                mudIconButton.create [
+                                    mudIconButton.icon Icons.Material.Filled.Menu
+                                    mudIconButton.color Color.Inherit
+                                    mudIconButton.edge Edge.Start
+                                    mudIconButton.onClick (fun _ -> openMenu.Publish not)
+                                ]
+                                mudText.create [
+                                    mudText.typo Typo.h6
+                                    mudText.color Color.Default
+                                    mudText.children "Fun Blazor"
+                                ]
+                                html.blazor<MudSpacer> []
+                                mudTooltip.create [
+                                    mudTooltip.text "Toggel light/dark theme"
+                                    mudTooltip.children [
+                                        mudIconButton.create [
+                                            mudIconButton.icon Icons.Material.Filled.Brightness4
+                                            mudIconButton.color Color.Inherit
+                                            mudIconButton.onClick (fun _ -> isDarkMode.Publish not)
+                                        ]
+                                    ]
+                                ]
+                                mudTooltip.create [
+                                    mudTooltip.text "Github repository"
+                                    mudTooltip.children [
+                                        mudIconButton.create [
+                                            mudIconButton.icon Icons.Custom.Brands.GitHub
+                                            mudIconButton.color Color.Inherit
+                                            mudIconButton.link "https://github.com/slaveOftime/Fun.Blazor"
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ]
+                        html.watch (openMenu, fun isOpen ->
+                            mudDrawer.create [
+                                mudDrawer.open' isOpen
+                                mudDrawer.elevation 25
+                                mudDrawer.openChanged openMenu.Publish
+                                mudDrawer.children [
+                                    //mudDrawerHeader.create [
+                                    //    mudDrawerHeader.linkToIndex true
+                                    //    mudDrawerHeader.children [
+                                    //        mudIconButton.create [
+                                    //            mudIconButton.color Color.Primary
+                                    //            mudIconButton.icon Icons.Custom.Brands.GitHub
+                                    //        ]
+                                    //    ]
+                                    //]
+                                    navmenu
+                                ]
+                            ]
+                        )
+                        mudMainContent.create [
+                            mudMainContent.styles [
+                                style.paddingTop 100
+                                style.paddingBottom 64
+                                style.paddingRight 30
+                            ]
+                            mudMainContent.children [ 
+                                html.route (function
+                                    | [ "mudblazor" ] -> demoMudBlazor
+                                    | [ "antdesign" ] -> demoAntDesign
+                                    | [ "fluentui" ] -> demoFluentUI
+                                    | _ -> html.none
+                                )
+                                mudScrollToTop.create [
+                                    mudScrollToTop.topOffset 400
+                                    mudScrollToTop.children [
+                                    
+                                    ]
+                                ]
+                            ]
+                        ]
                     ]
                 ]
             ]
-        )
-        html.watch (index, function
-            | 0 -> demoMudBlazor
-            | 1 -> demoMatBlazor
-            | 2 -> DemoAntDesign
-            | 3 -> demoFluentUI
-            | _ -> html.none
-        )
+        ]
+
+        html.stylesheet "https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+        html.stylesheet "_content/MudBlazor/MudBlazor.min.css"
+        html.script "_content/MudBlazor/MudBlazor.min.js"
     ])

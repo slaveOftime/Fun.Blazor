@@ -10,6 +10,7 @@ type affix<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Affix>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Affix>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Affix>
     static member inline offsetBottom (x: System.Int32) = "OffsetBottom" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline offsetTop (x: System.Int32) = "OffsetTop" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline targetSelector (x: System.String) = "TargetSelector" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -26,6 +27,7 @@ type alert<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Alert>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Alert>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Alert>
     static member inline afterClose fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> "AfterClose" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline banner (x: System.Boolean) = "Banner" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline closable (x: System.Boolean) = "Closable" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -49,6 +51,7 @@ type anchor<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Anchor>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Anchor>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Anchor>
     static member inline key (x: System.String) = "Key" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -72,6 +75,7 @@ type anchorLink<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.AnchorLink>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.AnchorLink>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.AnchorLink>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline href (x: System.String) = "Href" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -87,6 +91,7 @@ type autoComplete<'FunBlazorGeneric, 'TOption> =
     inherit antInputComponentBase<'FunBlazorGeneric, System.String>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.AutoComplete<'TOption>>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.AutoComplete<'TOption>>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.AutoComplete<'TOption>>
     static member inline placeholder (x: System.String) = "Placeholder" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline disabled (x: System.Boolean) = "Disabled" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline defaultActiveFirstOption (x: System.Boolean) = "DefaultActiveFirstOption" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -127,7 +132,7 @@ type autoComplete<'FunBlazorGeneric, 'TOption> =
 type autoCompleteInput<'FunBlazorGeneric, 'TValue> =
     inherit input<'FunBlazorGeneric, 'TValue>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.AutoCompleteInput<'TValue>>
-    
+
     static member inline addOnBefore (x: Microsoft.AspNetCore.Components.RenderFragment) = "AddOnBefore" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline addOnAfter (x: Microsoft.AspNetCore.Components.RenderFragment) = "AddOnAfter" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline allowClear (x: System.Boolean) = "AllowClear" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -169,6 +174,7 @@ type autoCompleteOptGroup<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.AutoCompleteOptGroup>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.AutoCompleteOptGroup>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.AutoCompleteOptGroup>
     static member inline label (x: System.String) = "Label" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline labelFragment (x: Microsoft.AspNetCore.Components.RenderFragment) = "LabelFragment" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -183,6 +189,7 @@ type autoCompleteOption<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.AutoCompleteOption>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.AutoCompleteOption>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.AutoCompleteOption>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline value (x: System.Object) = "Value" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -198,7 +205,7 @@ type autoCompleteOption<'FunBlazorGeneric> =
 type autoCompleteSearch<'FunBlazorGeneric> =
     inherit search<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.AutoCompleteSearch>
-    
+
     static member inline classicSearchIcon (x: System.Boolean) = "ClassicSearchIcon" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline enterButton (x: OneOf.OneOf<System.Boolean, System.String>) = "EnterButton" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline loading (x: System.Boolean) = "Loading" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -244,6 +251,7 @@ type avatar<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Avatar>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Avatar>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Avatar>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline shape (x: System.String) = "Shape" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -264,6 +272,7 @@ type avatarGroup<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.AvatarGroup>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.AvatarGroup>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.AvatarGroup>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline maxCount (x: System.Int32) = "MaxCount" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -279,6 +288,7 @@ type backTop<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.BackTop>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.BackTop>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.BackTop>
     static member inline icon (x: System.String) = "Icon" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -295,6 +305,7 @@ type badge<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Badge>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Badge>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Badge>
     static member inline color (x: System.String) = "Color" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline count (x: System.Nullable<System.Int32>) = "Count" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline countTemplate (x: Microsoft.AspNetCore.Components.RenderFragment) = "CountTemplate" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -318,6 +329,7 @@ type badgeRibbon<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.BadgeRibbon>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.BadgeRibbon>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.BadgeRibbon>
     static member inline color (x: System.String) = "Color" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline text (x: System.String) = "Text" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline textTemplate (x: Microsoft.AspNetCore.Components.RenderFragment) = "TextTemplate" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -334,6 +346,7 @@ type breadcrumb<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Breadcrumb>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Breadcrumb>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Breadcrumb>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline autoGenerate (x: System.Boolean) = "AutoGenerate" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -349,6 +362,7 @@ type button<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Button>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Button>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Button>
     static member inline block (x: System.Boolean) = "Block" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -373,6 +387,7 @@ type buttonGroup<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.ButtonGroup>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.ButtonGroup>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.ButtonGroup>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline size (x: System.String) = "Size" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -385,7 +400,7 @@ type buttonGroup<'FunBlazorGeneric> =
 type calendar<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Calendar>
-    
+
     static member inline value (x: System.DateTime) = "Value" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline defaultValue (x: System.DateTime) = "DefaultValue" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline validRange (x: System.Collections.Generic.IEnumerable<System.DateTime>) = "ValidRange" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -412,6 +427,7 @@ type card<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Card>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Card>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Card>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline body (x: Microsoft.AspNetCore.Components.RenderFragment) = "Body" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -438,6 +454,7 @@ type cardAction<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.CardAction>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.CardAction>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.CardAction>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -450,6 +467,7 @@ type cardGrid<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.CardGrid>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.CardGrid>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.CardGrid>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline hoverable (x: System.Boolean) = "Hoverable" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -463,6 +481,7 @@ type carousel<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Carousel>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Carousel>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Carousel>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline dotPosition (x: System.String) = "DotPosition" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -478,6 +497,7 @@ type carouselSlick<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.CarouselSlick>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.CarouselSlick>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.CarouselSlick>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -487,7 +507,7 @@ type carouselSlick<'FunBlazorGeneric> =
 type cascader<'FunBlazorGeneric> =
     inherit antInputComponentBase<'FunBlazorGeneric, System.String>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Cascader>
-    
+
     static member inline allowClear (x: System.Boolean) = "AllowClear" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline changeOnSelect (x: System.Boolean) = "ChangeOnSelect" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline defaultValue (x: System.String) = "DefaultValue" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -516,6 +536,7 @@ type checkbox<'FunBlazorGeneric> =
     inherit antInputBoolComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Checkbox>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Checkbox>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Checkbox>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline checkedChange fn = (Bolero.Html.attr.callback<System.Boolean> "CheckedChange" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -544,6 +565,7 @@ type checkboxGroup<'FunBlazorGeneric> =
     inherit antInputComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<System.String>>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.CheckboxGroup>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.CheckboxGroup>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.CheckboxGroup>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline options (x: OneOf.OneOf<System.Collections.Generic.IEnumerable<AntDesign.CheckboxOption>, System.Collections.Generic.IEnumerable<System.String>>) = "Options" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -567,6 +589,7 @@ type collapse<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Collapse>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Collapse>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Collapse>
     static member inline accordion (x: System.Boolean) = "Accordion" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline bordered (x: System.Boolean) = "Bordered" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline expandIconPosition (x: System.String) = "ExpandIconPosition" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -586,6 +609,7 @@ type panel<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Panel>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Panel>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Panel>
     static member inline active (x: System.Boolean) = "Active" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline key (x: System.String) = "Key" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline disabled (x: System.Boolean) = "Disabled" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -607,6 +631,7 @@ type comment<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Comment>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Comment>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Comment>
     static member inline author (x: System.String) = "Author" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline authorTemplate (x: Microsoft.AspNetCore.Components.RenderFragment) = "AuthorTemplate" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline avatar (x: System.String) = "Avatar" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -628,6 +653,7 @@ type configProvider<'FunBlazorGeneric> =
     inherit antComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.ConfigProvider>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.ConfigProvider>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.ConfigProvider>
     static member inline direction (x: System.String) = "Direction" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -637,7 +663,7 @@ type configProvider<'FunBlazorGeneric> =
 type antComponentBase<'FunBlazorGeneric> =
     
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.AntComponentBase>
-    
+
     static member inline refBack (x: AntDesign.ForwardRef) = "RefBack" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
         
 
@@ -645,6 +671,7 @@ type antContainerComponentBase<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.AntContainerComponentBase>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.AntContainerComponentBase>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.AntContainerComponentBase>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline tag (x: System.String) = "Tag" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -657,7 +684,7 @@ type antContainerComponentBase<'FunBlazorGeneric> =
 type antDomComponentBase<'FunBlazorGeneric> =
     inherit antComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.AntDomComponentBase>
-    
+
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline classes (x: string list) = attr.classes x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline styles (x: (string * string) list) = attr.styles x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -667,7 +694,7 @@ type antDomComponentBase<'FunBlazorGeneric> =
 type antInputBoolComponentBase<'FunBlazorGeneric> =
     inherit antInputComponentBase<'FunBlazorGeneric, System.Boolean>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.AntInputBoolComponentBase>
-    
+
     static member inline autoFocus (x: System.Boolean) = "AutoFocus" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline checked' (x: System.Boolean) = "Checked" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline onChange fn = (Bolero.Html.attr.callback<System.Boolean> "OnChange" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -689,7 +716,7 @@ type antInputBoolComponentBase<'FunBlazorGeneric> =
 type antInputComponentBase<'FunBlazorGeneric, 'TValue> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.AntInputComponentBase<'TValue>>
-    
+
     static member inline additionalAttributes (x: System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.Object>>) = "AdditionalAttributes" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline value (x: 'TValue) = "Value" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline valueChanged fn = (Bolero.Html.attr.callback<'TValue> "ValueChanged" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -706,7 +733,7 @@ type antInputComponentBase<'FunBlazorGeneric, 'TValue> =
 type templateComponentBase<'FunBlazorGeneric, 'TComponentOptions> =
     inherit antComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.TemplateComponentBase<'TComponentOptions>>
-    
+
     static member inline options (x: 'TComponentOptions) = "Options" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline refBack (x: AntDesign.ForwardRef) = "RefBack" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
         
@@ -714,7 +741,7 @@ type templateComponentBase<'FunBlazorGeneric, 'TComponentOptions> =
 type feedbackComponent<'FunBlazorGeneric, 'TComponentOptions> =
     inherit templateComponentBase<'FunBlazorGeneric, 'TComponentOptions>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.FeedbackComponent<'TComponentOptions>>
-    
+
     static member inline feedbackRef (x: AntDesign.IFeedbackRef) = "FeedbackRef" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline options (x: 'TComponentOptions) = "Options" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline refBack (x: AntDesign.ForwardRef) = "RefBack" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -723,7 +750,7 @@ type feedbackComponent<'FunBlazorGeneric, 'TComponentOptions> =
 type feedbackComponent<'FunBlazorGeneric, 'TComponentOptions, 'TResult> =
     inherit feedbackComponent<'FunBlazorGeneric, 'TComponentOptions>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.FeedbackComponent<'TComponentOptions, 'TResult>>
-    
+
     static member inline feedbackRef (x: AntDesign.IFeedbackRef) = "FeedbackRef" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline options (x: 'TComponentOptions) = "Options" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline refBack (x: AntDesign.ForwardRef) = "RefBack" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -732,7 +759,7 @@ type feedbackComponent<'FunBlazorGeneric, 'TComponentOptions, 'TResult> =
 type datePicker<'FunBlazorGeneric, 'TValue> =
     inherit datePickerBase<'FunBlazorGeneric, 'TValue>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.DatePicker<'TValue>>
-    
+
     static member inline onChange fn = (Bolero.Html.attr.callback<AntDesign.DateTimeChangedEventArgs> "OnChange" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline prefixCls (x: System.String) = "PrefixCls" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline picker (x: System.String) = "Picker" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -781,7 +808,7 @@ type datePicker<'FunBlazorGeneric, 'TValue> =
 type datePickerBase<'FunBlazorGeneric, 'TValue> =
     inherit antInputComponentBase<'FunBlazorGeneric, 'TValue>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.DatePickerBase<'TValue>>
-    
+
     static member inline prefixCls (x: System.String) = "PrefixCls" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline picker (x: System.String) = "Picker" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline popupContainerSelector (x: System.String) = "PopupContainerSelector" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -829,7 +856,7 @@ type datePickerBase<'FunBlazorGeneric, 'TValue> =
 type datePickerPanelBase<'FunBlazorGeneric, 'TValue> =
     inherit pickerPanelBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.DatePickerPanelBase<'TValue>>
-    
+
     static member inline prefixCls (x: System.String) = "PrefixCls" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline picker (x: System.String) = "Picker" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline isRange (x: System.Boolean) = "IsRange" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -860,7 +887,7 @@ type datePickerPanelBase<'FunBlazorGeneric, 'TValue> =
 type monthPicker<'FunBlazorGeneric, 'TValue> =
     inherit datePicker<'FunBlazorGeneric, 'TValue>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.MonthPicker<'TValue>>
-    
+
     static member inline onChange fn = (Bolero.Html.attr.callback<AntDesign.DateTimeChangedEventArgs> "OnChange" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline prefixCls (x: System.String) = "PrefixCls" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline picker (x: System.String) = "Picker" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -909,7 +936,7 @@ type monthPicker<'FunBlazorGeneric, 'TValue> =
 type quarterPicker<'FunBlazorGeneric, 'TValue> =
     inherit datePicker<'FunBlazorGeneric, 'TValue>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.QuarterPicker<'TValue>>
-    
+
     static member inline onChange fn = (Bolero.Html.attr.callback<AntDesign.DateTimeChangedEventArgs> "OnChange" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline prefixCls (x: System.String) = "PrefixCls" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline picker (x: System.String) = "Picker" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -958,7 +985,7 @@ type quarterPicker<'FunBlazorGeneric, 'TValue> =
 type rangePicker<'FunBlazorGeneric, 'TValue> =
     inherit datePickerBase<'FunBlazorGeneric, 'TValue>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.RangePicker<'TValue>>
-    
+
     static member inline value (x: 'TValue) = "Value" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline onChange fn = (Bolero.Html.attr.callback<AntDesign.DateRangeChangedEventArgs> "OnChange" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline prefixCls (x: System.String) = "PrefixCls" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1007,7 +1034,7 @@ type rangePicker<'FunBlazorGeneric, 'TValue> =
 type weekPicker<'FunBlazorGeneric, 'TValue> =
     inherit datePicker<'FunBlazorGeneric, 'TValue>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.WeekPicker<'TValue>>
-    
+
     static member inline onChange fn = (Bolero.Html.attr.callback<AntDesign.DateTimeChangedEventArgs> "OnChange" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline prefixCls (x: System.String) = "PrefixCls" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline picker (x: System.String) = "Picker" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1056,7 +1083,7 @@ type weekPicker<'FunBlazorGeneric, 'TValue> =
 type yearPicker<'FunBlazorGeneric, 'TValue> =
     inherit datePicker<'FunBlazorGeneric, 'TValue>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.YearPicker<'TValue>>
-    
+
     static member inline onChange fn = (Bolero.Html.attr.callback<AntDesign.DateTimeChangedEventArgs> "OnChange" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline prefixCls (x: System.String) = "PrefixCls" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline picker (x: System.String) = "Picker" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1106,6 +1133,7 @@ type descriptions<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Descriptions>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Descriptions>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Descriptions>
     static member inline bordered (x: System.Boolean) = "Bordered" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline layout (x: System.String) = "Layout" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline column (x: OneOf.OneOf<System.Int32, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.Int32>>>) = "Column" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1125,6 +1153,7 @@ type descriptionsItem<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.DescriptionsItem>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.DescriptionsItem>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.DescriptionsItem>
     static member inline title (x: System.String) = "Title" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline titleTemplate (x: Microsoft.AspNetCore.Components.RenderFragment) = "TitleTemplate" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline span (x: System.Int32) = "Span" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1140,6 +1169,7 @@ type divider<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Divider>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Divider>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Divider>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline text (x: System.String) = "Text" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1157,6 +1187,7 @@ type drawer<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Drawer>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Drawer>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Drawer>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline content (x: OneOf.OneOf<Microsoft.AspNetCore.Components.RenderFragment, System.String>) = "Content" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1187,7 +1218,7 @@ type drawer<'FunBlazorGeneric> =
 type drawerContainer<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.DrawerContainer>
-    
+
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline classes (x: string list) = attr.classes x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline styles (x: (string * string) list) = attr.styles x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1198,6 +1229,7 @@ type dropdown<'FunBlazorGeneric> =
     inherit overlayTrigger<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Dropdown>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Dropdown>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Dropdown>
     static member inline boundaryAdjustMode (x: AntDesign.TriggerBoundaryAdjustMode) = "BoundaryAdjustMode" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1235,6 +1267,7 @@ type dropdownButton<'FunBlazorGeneric> =
     inherit dropdown<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.DropdownButton>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.DropdownButton>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.DropdownButton>
     static member inline block (x: System.Boolean) = "Block" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline buttonsRender (x: System.Func<Microsoft.AspNetCore.Components.RenderFragment, Microsoft.AspNetCore.Components.RenderFragment, Microsoft.AspNetCore.Components.RenderFragment>) = "ButtonsRender" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline danger (x: System.Boolean) = "Danger" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1280,6 +1313,7 @@ type empty<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Empty>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Empty>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Empty>
     static member inline prefixCls (x: System.String) = "PrefixCls" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline imageStyle (x: System.String) = "ImageStyle" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline small (x: System.Boolean) = "Small" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1299,7 +1333,7 @@ type empty<'FunBlazorGeneric> =
 type form<'FunBlazorGeneric, 'TModel> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Form<'TModel>>
-    
+
     static member inline layout (x: System.String) = "Layout" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (x: Microsoft.AspNetCore.Components.RenderFragment<'TModel>) = "ChildContent" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline labelCol (x: AntDesign.ColLayoutParam) = "LabelCol" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1327,6 +1361,7 @@ type formItem<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.FormItem>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.FormItem>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.FormItem>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline label (x: System.String) = "Label" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1350,6 +1385,7 @@ type formProvider<'FunBlazorGeneric> =
     inherit antComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.FormProvider>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.FormProvider>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.FormProvider>
     static member inline onFormFinish fn = (Bolero.Html.attr.callback<AntDesign.FormProviderFinishEventArgs> "OnFormFinish" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1359,7 +1395,7 @@ type formProvider<'FunBlazorGeneric> =
 type formValidationMessage<'FunBlazorGeneric, 'TValue> =
     
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.FormValidationMessage<'TValue>>
-    
+
     static member inline additionalAttributes (x: System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.Object>>) = "AdditionalAttributes" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline control (x: AntDesign.AntInputComponentBase<'TValue>) = "Control" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
         
@@ -1367,7 +1403,7 @@ type formValidationMessage<'FunBlazorGeneric, 'TValue> =
 type formValidationMessageItem<'FunBlazorGeneric> =
     
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.FormValidationMessageItem>
-    
+
     static member inline message (x: System.String) = "Message" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline additionalAttributes (x: System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.Object>>) = "AdditionalAttributes" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
         
@@ -1376,6 +1412,7 @@ type col<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Col>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Col>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Col>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline flex (x: OneOf.OneOf<System.String, System.Int32>) = "Flex" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1400,6 +1437,7 @@ type gridCol<'FunBlazorGeneric> =
     inherit col<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.GridCol>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.GridCol>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.GridCol>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline flex (x: OneOf.OneOf<System.String, System.Int32>) = "Flex" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1424,6 +1462,7 @@ type row<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Row>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Row>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Row>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline type' (x: System.String) = "Type" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1442,7 +1481,7 @@ type row<'FunBlazorGeneric> =
 type icon<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Icon>
-    
+
     static member inline spin (x: System.Boolean) = "Spin" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline rotate (x: System.Int32) = "Rotate" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline type' (x: System.String) = "Type" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1465,7 +1504,7 @@ type icon<'FunBlazorGeneric> =
 type iconFont<'FunBlazorGeneric> =
     inherit icon<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.IconFont>
-    
+
     static member inline spin (x: System.Boolean) = "Spin" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline rotate (x: System.Int32) = "Rotate" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline type' (x: System.String) = "Type" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1488,7 +1527,7 @@ type iconFont<'FunBlazorGeneric> =
 type image<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Image>
-    
+
     static member inline alt (x: System.String) = "Alt" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline fallback (x: System.String) = "Fallback" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline height (x: System.String) = "Height" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1507,14 +1546,14 @@ type image<'FunBlazorGeneric> =
 type imagePreview<'FunBlazorGeneric> =
     
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.ImagePreview>
-    
+
     static member inline imageRef (x: AntDesign.ImageRef) = "ImageRef" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
         
 
 type imagePreviewContainer<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.ImagePreviewContainer>
-    
+
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline classes (x: string list) = attr.classes x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline styles (x: (string * string) list) = attr.styles x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1525,6 +1564,7 @@ type imagePreviewGroup<'FunBlazorGeneric> =
     
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.ImagePreviewGroup>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.ImagePreviewGroup>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.ImagePreviewGroup>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
         
@@ -1532,7 +1572,7 @@ type imagePreviewGroup<'FunBlazorGeneric> =
 type inputNumber<'FunBlazorGeneric, 'TValue> =
     inherit antInputComponentBase<'FunBlazorGeneric, 'TValue>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.InputNumber<'TValue>>
-    
+
     static member inline formatter (x: System.Func<'TValue, System.String>) = "Formatter" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline parser (x: System.Func<System.String, System.String>) = "Parser" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline step (x: 'TValue) = "Step" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1557,7 +1597,7 @@ type inputNumber<'FunBlazorGeneric, 'TValue> =
 type input<'FunBlazorGeneric, 'TValue> =
     inherit antInputComponentBase<'FunBlazorGeneric, 'TValue>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Input<'TValue>>
-    
+
     static member inline addOnBefore (x: Microsoft.AspNetCore.Components.RenderFragment) = "AddOnBefore" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline addOnAfter (x: Microsoft.AspNetCore.Components.RenderFragment) = "AddOnAfter" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline allowClear (x: System.Boolean) = "AllowClear" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1599,6 +1639,7 @@ type inputGroup<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.InputGroup>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.InputGroup>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.InputGroup>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline compact (x: System.Boolean) = "Compact" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1612,7 +1653,7 @@ type inputGroup<'FunBlazorGeneric> =
 type inputPassword<'FunBlazorGeneric> =
     inherit input<'FunBlazorGeneric, System.String>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.InputPassword>
-    
+
     static member inline iconRender (x: Microsoft.AspNetCore.Components.RenderFragment) = "IconRender" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline showPassword (x: System.Boolean) = "ShowPassword" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline visibilityToggle (x: System.Boolean) = "VisibilityToggle" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1656,7 +1697,7 @@ type inputPassword<'FunBlazorGeneric> =
 type search<'FunBlazorGeneric> =
     inherit input<'FunBlazorGeneric, System.String>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Search>
-    
+
     static member inline classicSearchIcon (x: System.Boolean) = "ClassicSearchIcon" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline enterButton (x: OneOf.OneOf<System.Boolean, System.String>) = "EnterButton" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline loading (x: System.Boolean) = "Loading" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1701,7 +1742,7 @@ type search<'FunBlazorGeneric> =
 type textArea<'FunBlazorGeneric> =
     inherit input<'FunBlazorGeneric, System.String>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.TextArea>
-    
+
     static member inline autoSize (x: System.Boolean) = "AutoSize" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline defaultToEmptyString (x: System.Boolean) = "DefaultToEmptyString" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline maxRows (x: System.UInt32) = "MaxRows" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1749,6 +1790,7 @@ type sider<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Sider>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Sider>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Sider>
     static member inline collapsible (x: System.Boolean) = "Collapsible" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1770,7 +1812,7 @@ type sider<'FunBlazorGeneric> =
 type antList<'FunBlazorGeneric, 'TItem> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.AntList<'TItem>>
-    
+
     static member inline dataSource (x: System.Collections.Generic.IEnumerable<'TItem>) = "DataSource" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline bordered (x: System.Boolean) = "Bordered" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline header (x: Microsoft.AspNetCore.Components.RenderFragment) = "Header" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1795,6 +1837,7 @@ type listItem<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.ListItem>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.ListItem>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.ListItem>
     static member inline content (x: System.String) = "Content" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline extra (x: Microsoft.AspNetCore.Components.RenderFragment) = "Extra" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline actions (x: System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Components.RenderFragment>) = "Actions" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1814,7 +1857,7 @@ type listItem<'FunBlazorGeneric> =
 type listItemMeta<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.ListItemMeta>
-    
+
     static member inline title (x: System.String) = "Title" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline titleTemplate (x: Microsoft.AspNetCore.Components.RenderFragment) = "TitleTemplate" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline avatar (x: System.String) = "Avatar" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1831,6 +1874,7 @@ type mentions<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Mentions>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Mentions>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Mentions>
     static member inline autoFocus (x: System.Boolean) = "AutoFocus" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline disable (x: System.Boolean) = "Disable" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline readonly (x: System.Boolean) = "Readonly" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1859,6 +1903,7 @@ type mentionsOption<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.MentionsOption>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.MentionsOption>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.MentionsOption>
     static member inline value (x: System.String) = "Value" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline disable (x: System.Boolean) = "Disable" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1873,6 +1918,7 @@ type menu<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Menu>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Menu>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Menu>
     static member inline theme (x: AntDesign.MenuTheme) = "Theme" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline mode (x: AntDesign.MenuMode) = "Mode" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1903,6 +1949,7 @@ type menuItem<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.MenuItem>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.MenuItem>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.MenuItem>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline key (x: System.String) = "Key" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1922,6 +1969,7 @@ type menuItemGroup<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.MenuItemGroup>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.MenuItemGroup>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.MenuItemGroup>
     static member inline title (x: System.String) = "Title" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline titleTemplate (x: Microsoft.AspNetCore.Components.RenderFragment) = "TitleTemplate" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1937,6 +1985,7 @@ type menuLink<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.MenuLink>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.MenuLink>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.MenuLink>
     static member inline activeClass (x: System.String) = "ActiveClass" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline href (x: System.String) = "Href" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1953,6 +2002,7 @@ type subMenu<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.SubMenu>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.SubMenu>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.SubMenu>
     static member inline placement (x: AntDesign.PlacementType) = "Placement" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline title (x: System.String) = "Title" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline titleTemplate (x: Microsoft.AspNetCore.Components.RenderFragment) = "TitleTemplate" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1971,7 +2021,7 @@ type subMenu<'FunBlazorGeneric> =
 type message<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Message>
-    
+
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline classes (x: string list) = attr.classes x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline styles (x: (string * string) list) = attr.styles x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1981,7 +2031,7 @@ type message<'FunBlazorGeneric> =
 type messageItem<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.MessageItem>
-    
+
     static member inline config (x: AntDesign.MessageConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline classes (x: string list) = attr.classes x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1992,7 +2042,7 @@ type messageItem<'FunBlazorGeneric> =
 type comfirmContainer<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.ComfirmContainer>
-    
+
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline classes (x: string list) = attr.classes x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline styles (x: (string * string) list) = attr.styles x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2002,7 +2052,7 @@ type comfirmContainer<'FunBlazorGeneric> =
 type confirm<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Confirm>
-    
+
     static member inline config (x: AntDesign.ConfirmOptions) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline confirmRef (x: AntDesign.ConfirmRef) = "ConfirmRef" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline onRemove fn = (Bolero.Html.attr.callback<AntDesign.ConfirmRef> "OnRemove" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2016,6 +2066,7 @@ type dialog<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Dialog>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Dialog>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Dialog>
     static member inline config (x: AntDesign.DialogOptions) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2030,6 +2081,7 @@ type dialogWrapper<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.DialogWrapper>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.DialogWrapper>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.DialogWrapper>
     static member inline config (x: AntDesign.DialogOptions) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2048,6 +2100,7 @@ type modal<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Modal>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Modal>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Modal>
     static member inline modalRef (x: AntDesign.ModalRef) = "ModalRef" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline afterClose (x: System.Func<System.Threading.Tasks.Task>) = "AfterClose" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline bodyStyle (x: System.String) = "BodyStyle" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2089,7 +2142,7 @@ type modal<'FunBlazorGeneric> =
 type modalContainer<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.ModalContainer>
-    
+
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline classes (x: string list) = attr.classes x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline styles (x: (string * string) list) = attr.styles x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2099,7 +2152,7 @@ type modalContainer<'FunBlazorGeneric> =
 type modalFooter<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.ModalFooter>
-    
+
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline classes (x: string list) = attr.classes x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline styles (x: (string * string) list) = attr.styles x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2109,7 +2162,7 @@ type modalFooter<'FunBlazorGeneric> =
 type notification<'FunBlazorGeneric> =
     inherit notificationBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Notification>
-    
+
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline classes (x: string list) = attr.classes x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline styles (x: (string * string) list) = attr.styles x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2119,7 +2172,7 @@ type notification<'FunBlazorGeneric> =
 type notificationBase<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.NotificationBase>
-    
+
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline classes (x: string list) = attr.classes x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline styles (x: (string * string) list) = attr.styles x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2129,7 +2182,7 @@ type notificationBase<'FunBlazorGeneric> =
 type notificationItem<'FunBlazorGeneric> =
     inherit notificationBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.NotificationItem>
-    
+
     static member inline config (x: AntDesign.NotificationConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline onClose (x: System.Func<AntDesign.NotificationConfig, System.Threading.Tasks.Task>) = "OnClose" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2141,7 +2194,7 @@ type notificationItem<'FunBlazorGeneric> =
 type pageHeader<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.PageHeader>
-    
+
     static member inline ghost (x: System.Boolean) = "Ghost" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline backIcon (x: OneOf.OneOf<System.Nullable<System.Boolean>, System.String>) = "BackIcon" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline backIconTemplate (x: Microsoft.AspNetCore.Components.RenderFragment) = "BackIconTemplate" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2167,7 +2220,7 @@ type pageHeader<'FunBlazorGeneric> =
 type pagination<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Pagination>
-    
+
     static member inline total (x: System.Int32) = "Total" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline defaultCurrent (x: System.Int32) = "DefaultCurrent" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline disabled (x: System.Boolean) = "Disabled" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2206,7 +2259,7 @@ type pagination<'FunBlazorGeneric> =
 type paginationOptions<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.PaginationOptions>
-    
+
     static member inline isSmall (x: System.Boolean) = "IsSmall" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline disabled (x: System.Boolean) = "Disabled" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline rootPrefixCls (x: System.String) = "RootPrefixCls" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2226,6 +2279,7 @@ type popconfirm<'FunBlazorGeneric> =
     inherit overlayTrigger<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Popconfirm>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Popconfirm>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Popconfirm>
     static member inline title (x: System.String) = "Title" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline titleTemplate (x: Microsoft.AspNetCore.Components.RenderFragment) = "TitleTemplate" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline cancelText (x: System.String) = "CancelText" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2277,6 +2331,7 @@ type popover<'FunBlazorGeneric> =
     inherit overlayTrigger<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Popover>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Popover>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Popover>
     static member inline title (x: System.String) = "Title" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline titleTemplate (x: Microsoft.AspNetCore.Components.RenderFragment) = "TitleTemplate" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline content (x: System.String) = "Content" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2320,7 +2375,7 @@ type popover<'FunBlazorGeneric> =
 type progress<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Progress>
-    
+
     static member inline size (x: AntDesign.ProgressSize) = "Size" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline type' (x: AntDesign.ProgressType) = "Type" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline format (x: System.Func<System.Double, System.String>) = "Format" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2346,6 +2401,7 @@ type radio<'FunBlazorGeneric, 'TValue> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Radio<'TValue>>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Radio<'TValue>>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Radio<'TValue>>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline value (x: 'TValue) = "Value" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2366,6 +2422,7 @@ type radioGroup<'FunBlazorGeneric, 'TValue> =
     inherit antInputComponentBase<'FunBlazorGeneric, 'TValue>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.RadioGroup<'TValue>>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.RadioGroup<'TValue>>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.RadioGroup<'TValue>>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline disabled (x: System.Boolean) = "Disabled" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2390,6 +2447,7 @@ type rate<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Rate>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Rate>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Rate>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline allowClear (x: System.Boolean) = "AllowClear" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2413,7 +2471,7 @@ type rate<'FunBlazorGeneric> =
 type rateItem<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.RateItem>
-    
+
     static member inline allowHalf (x: System.Boolean) = "AllowHalf" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline onItemHover fn = (Bolero.Html.attr.callback<System.Boolean> "OnItemHover" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline onItemClick fn = (Bolero.Html.attr.callback<System.Boolean> "OnItemClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2432,6 +2490,7 @@ type result<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Result>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Result>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Result>
     static member inline title (x: System.String) = "Title" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline titleTemplate (x: Microsoft.AspNetCore.Components.RenderFragment) = "TitleTemplate" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline subTitle (x: System.String) = "SubTitle" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2451,7 +2510,7 @@ type result<'FunBlazorGeneric> =
 type select<'FunBlazorGeneric, 'TItemValue, 'TItem> =
     inherit antInputComponentBase<'FunBlazorGeneric, 'TItemValue>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Select<'TItemValue, 'TItem>>
-    
+
     static member inline allowClear (x: System.Boolean) = "AllowClear" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline autoClearSearchValue (x: System.Boolean) = "AutoClearSearchValue" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline bordered (x: System.Boolean) = "Bordered" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2521,7 +2580,7 @@ type select<'FunBlazorGeneric, 'TItemValue, 'TItem> =
 type selectOption<'FunBlazorGeneric, 'TItemValue, 'TItem> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.SelectOption<'TItemValue, 'TItem>>
-    
+
     static member inline value (x: 'TItemValue) = "Value" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline label (x: System.String) = "Label" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline disabled (x: System.Boolean) = "Disabled" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2534,7 +2593,7 @@ type selectOption<'FunBlazorGeneric, 'TItemValue, 'TItem> =
 type simpleSelect<'FunBlazorGeneric> =
     inherit select<'FunBlazorGeneric, System.String, System.String>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.SimpleSelect>
-    
+
     static member inline allowClear (x: System.Boolean) = "AllowClear" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline autoClearSearchValue (x: System.Boolean) = "AutoClearSearchValue" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline bordered (x: System.Boolean) = "Bordered" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2604,7 +2663,7 @@ type simpleSelect<'FunBlazorGeneric> =
 type simpleSelectOption<'FunBlazorGeneric> =
     inherit selectOption<'FunBlazorGeneric, System.String, System.String>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.SimpleSelectOption>
-    
+
     static member inline value (x: System.String) = "Value" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline label (x: System.String) = "Label" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline disabled (x: System.Boolean) = "Disabled" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2618,6 +2677,7 @@ type skeleton<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Skeleton>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Skeleton>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Skeleton>
     static member inline active (x: System.Boolean) = "Active" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline loading (x: System.Boolean) = "Loading" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline title (x: System.Boolean) = "Title" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2639,7 +2699,7 @@ type skeleton<'FunBlazorGeneric> =
 type skeletonElement<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.SkeletonElement>
-    
+
     static member inline active (x: System.Boolean) = "Active" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline type' (x: System.String) = "Type" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline size (x: OneOf.OneOf<System.Nullable<System.Int32>, System.String>) = "Size" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2653,7 +2713,7 @@ type skeletonElement<'FunBlazorGeneric> =
 type slider<'FunBlazorGeneric, 'TValue> =
     inherit antInputComponentBase<'FunBlazorGeneric, 'TValue>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Slider<'TValue>>
-    
+
     static member inline defaultValue (x: 'TValue) = "DefaultValue" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline disabled (x: System.Boolean) = "Disabled" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline dots (x: System.Boolean) = "Dots" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2688,6 +2748,7 @@ type space<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Space>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Space>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Space>
     static member inline align (x: System.String) = "Align" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline direction (x: AntDesign.DirectionVHType) = "Direction" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline size (x: OneOf.OneOf<System.String, System.ValueTuple<System.String, System.String>>) = "Size" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2705,6 +2766,7 @@ type spaceItem<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.SpaceItem>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.SpaceItem>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.SpaceItem>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2717,6 +2779,7 @@ type spin<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Spin>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Spin>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Spin>
     static member inline size (x: System.String) = "Size" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline tip (x: System.String) = "Tip" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline delay (x: System.Int32) = "Delay" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2735,6 +2798,7 @@ type countDown<'FunBlazorGeneric> =
     inherit statisticComponentBase<'FunBlazorGeneric, System.DateTime>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.CountDown>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.CountDown>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.CountDown>
     static member inline format (x: System.String) = "Format" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline onFinish (x: Microsoft.AspNetCore.Components.EventCallback) = "OnFinish" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline prefix (x: System.String) = "Prefix" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2757,6 +2821,7 @@ type statistic<'FunBlazorGeneric, 'TValue> =
     inherit statisticComponentBase<'FunBlazorGeneric, 'TValue>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Statistic<'TValue>>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Statistic<'TValue>>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Statistic<'TValue>>
     static member inline decimalSeparator (x: System.String) = "DecimalSeparator" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline groupSeparator (x: System.String) = "GroupSeparator" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline precision (x: System.Int32) = "Precision" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2780,6 +2845,7 @@ type statisticComponentBase<'FunBlazorGeneric, 'T> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.StatisticComponentBase<'T>>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.StatisticComponentBase<'T>>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.StatisticComponentBase<'T>>
     static member inline prefix (x: System.String) = "Prefix" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline prefixTemplate (x: Microsoft.AspNetCore.Components.RenderFragment) = "PrefixTemplate" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline suffix (x: System.String) = "Suffix" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2799,7 +2865,7 @@ type statisticComponentBase<'FunBlazorGeneric, 'T> =
 type step<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Step>
-    
+
     static member inline icon (x: System.String) = "Icon" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline status (x: System.String) = "Status" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline title (x: System.String) = "Title" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2820,6 +2886,7 @@ type steps<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Steps>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Steps>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Steps>
     static member inline current (x: System.Int32) = "Current" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline percent (x: System.Nullable<System.Double>) = "Percent" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline progressDot (x: Microsoft.AspNetCore.Components.RenderFragment) = "ProgressDot" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2842,7 +2909,7 @@ type steps<'FunBlazorGeneric> =
 type switch<'FunBlazorGeneric> =
     inherit antInputBoolComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Switch>
-    
+
     static member inline loading (x: System.Boolean) = "Loading" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline checkedChildren (x: System.String) = "CheckedChildren" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline checkedChildrenTemplate (x: Microsoft.AspNetCore.Components.RenderFragment) = "CheckedChildrenTemplate" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2872,6 +2939,7 @@ type actionColumn<'FunBlazorGeneric> =
     inherit columnBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.ActionColumn>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.ActionColumn>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.ActionColumn>
     static member inline title (x: System.String) = "Title" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline titleTemplate (x: Microsoft.AspNetCore.Components.RenderFragment) = "TitleTemplate" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline width (x: System.String) = "Width" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2893,6 +2961,7 @@ type column<'FunBlazorGeneric, 'TData> =
     inherit columnBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Column<'TData>>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Column<'TData>>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Column<'TData>>
     static member inline fieldChanged fn = (Bolero.Html.attr.callback<'TData> "FieldChanged" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline fieldExpression (x: System.Linq.Expressions.Expression<System.Func<'TData>>) = "FieldExpression" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline cellRender (x: Microsoft.AspNetCore.Components.RenderFragment<'TData>) = "CellRender" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2932,6 +3001,7 @@ type columnBase<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.ColumnBase>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.ColumnBase>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.ColumnBase>
     static member inline title (x: System.String) = "Title" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline titleTemplate (x: Microsoft.AspNetCore.Components.RenderFragment) = "TitleTemplate" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline width (x: System.String) = "Width" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2953,6 +3023,7 @@ type selection<'FunBlazorGeneric> =
     inherit columnBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Selection>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Selection>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Selection>
     static member inline type' (x: System.String) = "Type" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline disabled (x: System.Boolean) = "Disabled" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline key (x: System.String) = "Key" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2977,7 +3048,7 @@ type selection<'FunBlazorGeneric> =
 type table<'FunBlazorGeneric, 'TItem> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Table<'TItem>>
-    
+
     static member inline renderMode (x: AntDesign.RenderMode) = "RenderMode" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline dataSource (x: System.Collections.Generic.IEnumerable<'TItem>) = "DataSource" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (x: Microsoft.AspNetCore.Components.RenderFragment<'TItem>) = "ChildContent" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3029,6 +3100,7 @@ type tabPane<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.TabPane>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.TabPane>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.TabPane>
     static member inline forceRender (x: System.Boolean) = "ForceRender" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline key (x: System.String) = "Key" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline tab (x: Microsoft.AspNetCore.Components.RenderFragment) = "Tab" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3046,6 +3118,7 @@ type tabs<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Tabs>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Tabs>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Tabs>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline activeKey (x: System.String) = "ActiveKey" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3079,6 +3152,7 @@ type tag<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Tag>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Tag>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Tag>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline closable (x: System.Boolean) = "Closable" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3100,7 +3174,7 @@ type tag<'FunBlazorGeneric> =
 type timePicker<'FunBlazorGeneric, 'TValue> =
     inherit datePicker<'FunBlazorGeneric, 'TValue>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.TimePicker<'TValue>>
-    
+
     static member inline onChange fn = (Bolero.Html.attr.callback<AntDesign.DateTimeChangedEventArgs> "OnChange" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline prefixCls (x: System.String) = "PrefixCls" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline picker (x: System.String) = "Picker" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3150,6 +3224,7 @@ type timeline<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Timeline>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Timeline>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Timeline>
     static member inline mode (x: System.String) = "Mode" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline reverse (x: System.Boolean) = "Reverse" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline pending (x: OneOf.OneOf<System.String, Microsoft.AspNetCore.Components.RenderFragment>) = "Pending" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3166,6 +3241,7 @@ type timelineItem<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.TimelineItem>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.TimelineItem>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.TimelineItem>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline dot (x: Microsoft.AspNetCore.Components.RenderFragment) = "Dot" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3180,6 +3256,7 @@ type tooltip<'FunBlazorGeneric> =
     inherit overlayTrigger<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Tooltip>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Tooltip>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Tooltip>
     static member inline title (x: OneOf.OneOf<System.String, Microsoft.AspNetCore.Components.RenderFragment, Microsoft.AspNetCore.Components.MarkupString>) = "Title" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline arrowPointAtCenter (x: System.Boolean) = "ArrowPointAtCenter" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline mouseEnterDelay (x: System.Double) = "MouseEnterDelay" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3221,6 +3298,7 @@ type transfer<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Transfer>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Transfer>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Transfer>
     static member inline dataSource (x: System.Collections.Generic.IEnumerable<AntDesign.TransferItem>) = "DataSource" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline titles (x: System.Collections.Generic.IEnumerable<System.String>) = "Titles" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline operations (x: System.Collections.Generic.IEnumerable<System.String>) = "Operations" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3249,6 +3327,7 @@ type tree<'FunBlazorGeneric, 'TItem> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Tree<'TItem>>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Tree<'TItem>>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Tree<'TItem>>
     static member inline showExpand (x: System.Boolean) = "ShowExpand" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline showLine (x: System.Boolean) = "ShowLine" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline showIcon (x: System.Boolean) = "ShowIcon" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3296,14 +3375,14 @@ type tree<'FunBlazorGeneric, 'TItem> =
 type treeIndent<'FunBlazorGeneric, 'TItem> =
     
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.TreeIndent<'TItem>>
-    
+
     static member inline treeLevel (x: System.Int32) = "TreeLevel" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
         
 
 type treeNode<'FunBlazorGeneric, 'TItem> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.TreeNode<'TItem>>
-    
+
     static member inline nodes (x: Microsoft.AspNetCore.Components.RenderFragment) = "Nodes" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline key (x: System.String) = "Key" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline disabled (x: System.Boolean) = "Disabled" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3327,21 +3406,29 @@ type treeNode<'FunBlazorGeneric, 'TItem> =
 type treeNodeCheckbox<'FunBlazorGeneric, 'TItem> =
     
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.TreeNodeCheckbox<'TItem>>
-    
+
     static member inline onCheckBoxClick fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> "OnCheckBoxClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
         
 
 type treeNodeSwitcher<'FunBlazorGeneric, 'TItem> =
     
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.TreeNodeSwitcher<'TItem>>
-    
+
     static member inline onSwitcherClick fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> "OnSwitcherClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+        
+
+type treeNodeTitle<'FunBlazorGeneric, 'TItem> =
+    
+    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.TreeNodeTitle<'TItem>>
+
+
         
 
 type link<'FunBlazorGeneric> =
     inherit typographyBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Link>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Link>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Link>
     static member inline code (x: System.Boolean) = "Code" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline keyboard (x: System.Boolean) = "Keyboard" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline copyable (x: System.Boolean) = "Copyable" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3369,6 +3456,7 @@ type paragraph<'FunBlazorGeneric> =
     inherit typographyBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Paragraph>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Paragraph>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Paragraph>
     static member inline code (x: System.Boolean) = "Code" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline keyboard (x: System.Boolean) = "Keyboard" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline copyable (x: System.Boolean) = "Copyable" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3396,6 +3484,7 @@ type text<'FunBlazorGeneric> =
     inherit typographyBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Text>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Text>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Text>
     static member inline code (x: System.Boolean) = "Code" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline keyboard (x: System.Boolean) = "Keyboard" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline copyable (x: System.Boolean) = "Copyable" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3423,6 +3512,7 @@ type title<'FunBlazorGeneric> =
     inherit typographyBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Title>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Title>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Title>
     static member inline level (x: System.Int32) = "Level" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline copyable (x: System.Boolean) = "Copyable" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline copyConfig (x: AntDesign.TypographyCopyableConfig) = "CopyConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3449,6 +3539,7 @@ type typographyBase<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.TypographyBase>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.TypographyBase>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.TypographyBase>
     static member inline copyable (x: System.Boolean) = "Copyable" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline copyConfig (x: AntDesign.TypographyCopyableConfig) = "CopyConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline delete (x: System.Boolean) = "Delete" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3474,6 +3565,7 @@ type upload<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Upload>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Upload>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Upload>
     static member inline beforeUpload (x: System.Func<AntDesign.UploadFileItem, System.Boolean>) = "BeforeUpload" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline beforeAllUploadAsync (x: System.Func<System.Collections.Generic.IEnumerable<AntDesign.UploadFileItem>, System.Threading.Tasks.Task<System.Boolean>>) = "BeforeAllUploadAsync" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline beforeAllUpload (x: System.Func<System.Collections.Generic.IEnumerable<AntDesign.UploadFileItem>, System.Boolean>) = "BeforeAllUpload" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3510,6 +3602,7 @@ type breadcrumbItem<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.BreadcrumbItem>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.BreadcrumbItem>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.BreadcrumbItem>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline overlay (x: System.Object) = "Overlay" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3522,17 +3615,24 @@ type breadcrumbItem<'FunBlazorGeneric> =
 type calendarHeader<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.CalendarHeader>
-    
+
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline classes (x: string list) = attr.classes x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline styles (x: (string * string) list) = attr.styles x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline refBack (x: AntDesign.ForwardRef) = "RefBack" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
         
 
+type cardLoading<'FunBlazorGeneric> =
+    
+    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.CardLoading>
+
+
+        
+
 type cardMeta<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.CardMeta>
-    
+
     static member inline title (x: System.String) = "Title" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline titleTemplate (x: Microsoft.AspNetCore.Components.RenderFragment) = "TitleTemplate" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline description (x: System.String) = "Description" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3548,7 +3648,7 @@ type cardMeta<'FunBlazorGeneric> =
 type antContainer<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.AntContainer>
-    
+
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline classes (x: string list) = attr.classes x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline styles (x: (string * string) list) = attr.styles x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3559,6 +3659,7 @@ type template<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Template>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Template>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Template>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline if' (x: System.Func<System.Boolean>) = "If" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3571,7 +3672,7 @@ type template<'FunBlazorGeneric> =
 type emptyDefaultImg<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.EmptyDefaultImg>
-    
+
     static member inline prefixCls (x: System.String) = "PrefixCls" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline classes (x: string list) = attr.classes x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3582,7 +3683,7 @@ type emptyDefaultImg<'FunBlazorGeneric> =
 type emptySimpleImg<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.EmptySimpleImg>
-    
+
     static member inline prefixCls (x: System.String) = "PrefixCls" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline classes (x: string list) = attr.classes x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3594,6 +3695,7 @@ type content<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Content>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Content>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Content>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3606,6 +3708,7 @@ type footer<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Footer>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Footer>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Footer>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3618,6 +3721,7 @@ type header<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Header>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Header>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Header>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3630,6 +3734,7 @@ type layout<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Layout>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Layout>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Layout>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3641,7 +3746,7 @@ type layout<'FunBlazorGeneric> =
 type menuDivider<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.MenuDivider>
-    
+
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline classes (x: string list) = attr.classes x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline styles (x: (string * string) list) = attr.styles x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3651,7 +3756,7 @@ type menuDivider<'FunBlazorGeneric> =
 type paginationPager<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.PaginationPager>
-    
+
     static member inline showTitle (x: System.Boolean) = "ShowTitle" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline page (x: System.Int32) = "Page" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline rootPrefixCls (x: System.String) = "RootPrefixCls" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3671,6 +3776,7 @@ type summaryCell<'FunBlazorGeneric> =
     inherit columnBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.SummaryCell>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.SummaryCell>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.SummaryCell>
     static member inline title (x: System.String) = "Title" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline titleTemplate (x: Microsoft.AspNetCore.Components.RenderFragment) = "TitleTemplate" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline width (x: System.String) = "Width" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3692,14 +3798,22 @@ type summaryRow<'FunBlazorGeneric> =
     
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.SummaryRow>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.SummaryRow>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.SummaryRow>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+        
+
+//type statisticComponentBase<'FunBlazorGeneric, 'T> =
+    
+//    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.statistic.StatisticComponentBase<'T>>
+
+
         
 
 type labelTemplateItem<'FunBlazorGeneric, 'TItemValue, 'TItem> =
     
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Select.LabelTemplateItem<'TItemValue, 'TItem>>
-    
+
     static member inline labelTemplateItemContent (x: Microsoft.AspNetCore.Components.RenderFragment<'TItem>) = "LabelTemplateItemContent" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline styles (x: (string * string) list) = attr.styles x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline classes (x: string list) = attr.classes x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3713,7 +3827,7 @@ type labelTemplateItem<'FunBlazorGeneric, 'TItemValue, 'TItem> =
 type selectContent<'FunBlazorGeneric, 'TItemValue, 'TItem> =
     
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Select.Internal.SelectContent<'TItemValue, 'TItem>>
-    
+
     static member inline prefix (x: System.String) = "Prefix" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline placeholder (x: System.String) = "Placeholder" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline isOverlayShow (x: System.Boolean) = "IsOverlayShow" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3732,7 +3846,7 @@ type selectContent<'FunBlazorGeneric, 'TItemValue, 'TItem> =
 type selectOptionGroup<'FunBlazorGeneric, 'TItemValue, 'TItem> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Select.Internal.SelectOptionGroup<'TItemValue, 'TItem>>
-    
+
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline classes (x: string list) = attr.classes x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline styles (x: (string * string) list) = attr.styles x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3742,7 +3856,7 @@ type selectOptionGroup<'FunBlazorGeneric, 'TItemValue, 'TItem> =
 type calendarPanelChooser<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Internal.CalendarPanelChooser>
-    
+
     static member inline calendar (x: AntDesign.Calendar) = "Calendar" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline onSelect (x: System.Action<System.DateTime, System.Int32>) = "OnSelect" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline pickerIndex (x: System.Int32) = "PickerIndex" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3756,6 +3870,7 @@ type element<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Internal.Element>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Internal.Element>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Internal.Element>
     static member inline htmlTag (x: System.String) = "HtmlTag" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3771,6 +3886,7 @@ type overlay<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Internal.Overlay>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Internal.Overlay>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Internal.Overlay>
     static member inline overlayChildPrefixCls (x: System.String) = "OverlayChildPrefixCls" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3793,6 +3909,7 @@ type overlayTrigger<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Internal.OverlayTrigger>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Internal.OverlayTrigger>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Internal.OverlayTrigger>
     static member inline boundaryAdjustMode (x: AntDesign.TriggerBoundaryAdjustMode) = "BoundaryAdjustMode" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3829,7 +3946,7 @@ type overlayTrigger<'FunBlazorGeneric> =
 type datePickerDatetimePanel<'FunBlazorGeneric, 'TValue> =
     inherit datePickerPanelBase<'FunBlazorGeneric, 'TValue>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Internal.DatePickerDatetimePanel<'TValue>>
-    
+
     static member inline showToday (x: System.Boolean) = "ShowToday" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline isShowTime (x: System.Boolean) = "IsShowTime" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline showTimeFormat (x: System.String) = "ShowTimeFormat" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3868,7 +3985,7 @@ type datePickerDatetimePanel<'FunBlazorGeneric, 'TValue> =
 type datePickerPanelChooser<'FunBlazorGeneric, 'TValue> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Internal.DatePickerPanelChooser<'TValue>>
-    
+
     static member inline datePicker (x: AntDesign.DatePickerBase<'TValue>) = "DatePicker" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline onSelect (x: System.Action<System.DateTime, System.Int32>) = "OnSelect" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline pickerIndex (x: System.Int32) = "PickerIndex" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3881,7 +3998,7 @@ type datePickerPanelChooser<'FunBlazorGeneric, 'TValue> =
 type datePickerTemplate<'FunBlazorGeneric, 'TValue> =
     inherit datePickerPanelBase<'FunBlazorGeneric, 'TValue>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Internal.DatePickerTemplate<'TValue>>
-    
+
     static member inline renderPickerHeader (x: Microsoft.AspNetCore.Components.RenderFragment) = "RenderPickerHeader" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline renderTableHeader (x: Microsoft.AspNetCore.Components.RenderFragment) = "RenderTableHeader" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline renderFirstCol (x: Microsoft.AspNetCore.Components.RenderFragment<System.DateTime>) = "RenderFirstCol" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3929,7 +4046,7 @@ type datePickerTemplate<'FunBlazorGeneric, 'TValue> =
 type pickerPanelBase<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Internal.PickerPanelBase>
-    
+
     static member inline onSelect (x: System.Action<System.DateTime, System.Int32>) = "OnSelect" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline pickerIndex (x: System.Int32) = "PickerIndex" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3942,6 +4059,7 @@ type subMenuTrigger<'FunBlazorGeneric> =
     inherit overlayTrigger<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Internal.SubMenuTrigger>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Internal.SubMenuTrigger>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Internal.SubMenuTrigger>
     static member inline triggerClass (x: System.String) = "TriggerClass" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline boundaryAdjustMode (x: AntDesign.TriggerBoundaryAdjustMode) = "BoundaryAdjustMode" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3980,6 +4098,7 @@ type uploadButton<'FunBlazorGeneric> =
     inherit antComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Internal.UploadButton>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<AntDesign.Internal.UploadButton>
+    static member create (node: FunBlazorNode) = [ node ] |> html.blazor<AntDesign.Internal.UploadButton>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline listType (x: System.String) = "ListType" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3998,7 +4117,7 @@ type uploadButton<'FunBlazorGeneric> =
 type datePickerDatePanel<'FunBlazorGeneric, 'TValue> =
     inherit datePickerPanelBase<'FunBlazorGeneric, 'TValue>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Internal.DatePickerDatePanel<'TValue>>
-    
+
     static member inline isWeek (x: System.Boolean) = "IsWeek" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline showToday (x: System.Boolean) = "ShowToday" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline prefixCls (x: System.String) = "PrefixCls" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -4031,7 +4150,7 @@ type datePickerDatePanel<'FunBlazorGeneric, 'TValue> =
 type datePickerDecadePanel<'FunBlazorGeneric, 'TValue> =
     inherit datePickerPanelBase<'FunBlazorGeneric, 'TValue>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Internal.DatePickerDecadePanel<'TValue>>
-    
+
     static member inline prefixCls (x: System.String) = "PrefixCls" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline picker (x: System.String) = "Picker" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline isRange (x: System.Boolean) = "IsRange" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -4062,7 +4181,7 @@ type datePickerDecadePanel<'FunBlazorGeneric, 'TValue> =
 type datePickerFooter<'FunBlazorGeneric, 'TValue> =
     inherit datePickerPanelBase<'FunBlazorGeneric, 'TValue>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Internal.DatePickerFooter<'TValue>>
-    
+
     static member inline prefixCls (x: System.String) = "PrefixCls" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline picker (x: System.String) = "Picker" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline isRange (x: System.Boolean) = "IsRange" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -4093,7 +4212,7 @@ type datePickerFooter<'FunBlazorGeneric, 'TValue> =
 type datePickerHeader<'FunBlazorGeneric, 'TValue> =
     inherit datePickerPanelBase<'FunBlazorGeneric, 'TValue>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Internal.DatePickerHeader<'TValue>>
-    
+
     static member inline superChangeDateInterval (x: System.Int32) = "SuperChangeDateInterval" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline changeDateInterval (x: System.Int32) = "ChangeDateInterval" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline showSuperPreChange (x: System.Boolean) = "ShowSuperPreChange" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -4130,7 +4249,7 @@ type datePickerHeader<'FunBlazorGeneric, 'TValue> =
 type datePickerInput<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Internal.DatePickerInput>
-    
+
     static member inline prefixCls (x: System.String) = "PrefixCls" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline size (x: System.String) = "Size" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline value (x: System.String) = "Value" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -4160,7 +4279,7 @@ type datePickerInput<'FunBlazorGeneric> =
 type datePickerMonthPanel<'FunBlazorGeneric, 'TValue> =
     inherit datePickerPanelBase<'FunBlazorGeneric, 'TValue>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Internal.DatePickerMonthPanel<'TValue>>
-    
+
     static member inline prefixCls (x: System.String) = "PrefixCls" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline picker (x: System.String) = "Picker" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline isRange (x: System.Boolean) = "IsRange" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -4191,7 +4310,7 @@ type datePickerMonthPanel<'FunBlazorGeneric, 'TValue> =
 type datePickerQuarterPanel<'FunBlazorGeneric, 'TValue> =
     inherit datePickerPanelBase<'FunBlazorGeneric, 'TValue>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Internal.DatePickerQuarterPanel<'TValue>>
-    
+
     static member inline prefixCls (x: System.String) = "PrefixCls" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline picker (x: System.String) = "Picker" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline isRange (x: System.Boolean) = "IsRange" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -4222,7 +4341,7 @@ type datePickerQuarterPanel<'FunBlazorGeneric, 'TValue> =
 type datePickerYearPanel<'FunBlazorGeneric, 'TValue> =
     inherit datePickerPanelBase<'FunBlazorGeneric, 'TValue>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Internal.DatePickerYearPanel<'TValue>>
-    
+
     static member inline prefixCls (x: System.String) = "PrefixCls" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline picker (x: System.String) = "Picker" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline isRange (x: System.Boolean) = "IsRange" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -4253,7 +4372,7 @@ type datePickerYearPanel<'FunBlazorGeneric, 'TValue> =
 type dropdownGroupButton<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Internal.DropdownGroupButton>
-    
+
     static member inline leftButton (x: Microsoft.AspNetCore.Components.RenderFragment) = "LeftButton" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline rightButton (x: Microsoft.AspNetCore.Components.RenderFragment) = "RightButton" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -5260,6 +5379,13 @@ type treeNodeSwitcher<'TItem> =
         inherit Internal.treeNodeSwitcher<ITreeNodeSwitcherNode<'TItem>, 'TItem>
     end
 
+type ITreeNodeTitleNode<'TItem> = interface end
+
+type treeNodeTitle<'TItem> =
+    class
+        inherit Internal.treeNodeTitle<ITreeNodeTitleNode<'TItem>, 'TItem>
+    end
+
 type ILinkNode = interface end
 
 type link =
@@ -5314,6 +5440,13 @@ type ICalendarHeaderNode = interface end
 type calendarHeader =
     class
         inherit Internal.calendarHeader<ICalendarHeaderNode>
+    end
+
+type ICardLoadingNode = interface end
+
+type cardLoading =
+    class
+        inherit Internal.cardLoading<ICardLoadingNode>
     end
 
 type ICardMetaNode = interface end
@@ -5406,6 +5539,13 @@ type summaryRow =
     class
         inherit Internal.summaryRow<ISummaryRowNode>
     end
+
+//type IStatisticComponentBaseNode<'T> = interface end
+
+//type statisticComponentBase<'T> =
+//    class
+//        inherit Internal.statisticComponentBase<IStatisticComponentBaseNode<'T>, 'T>
+//    end
 
 type ILabelTemplateItemNode<'TItemValue, 'TItem> = interface end
 

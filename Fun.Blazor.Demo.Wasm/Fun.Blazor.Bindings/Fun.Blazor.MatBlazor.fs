@@ -17,6 +17,7 @@ type baseMatContainerComponent<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.BaseMatContainerComponent>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.BaseMatContainerComponent>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.BaseMatContainerComponent>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline tag (x: System.String) = "Tag" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -98,6 +99,7 @@ type matAccordion<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatAccordion>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatAccordion>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatAccordion>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline multi (x: System.Boolean) = "Multi" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -114,6 +116,7 @@ type matExpansionPanel<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatExpansionPanel>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatExpansionPanel>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatExpansionPanel>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline expanded (x: System.Boolean) = "Expanded" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -131,6 +134,7 @@ type matExpansionPanelDetails<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatExpansionPanelDetails>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatExpansionPanelDetails>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatExpansionPanelDetails>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -144,6 +148,7 @@ type matExpansionPanelHeader<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatExpansionPanelHeader>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatExpansionPanelHeader>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatExpansionPanelHeader>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -157,6 +162,7 @@ type matExpansionPanelSubHeader<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatExpansionPanelSubHeader>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatExpansionPanelSubHeader>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatExpansionPanelSubHeader>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -170,6 +176,7 @@ type matExpansionPanelSummary<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatExpansionPanelSummary>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatExpansionPanelSummary>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatExpansionPanelSummary>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -183,6 +190,7 @@ type matAnchorContainer<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatAnchorContainer>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatAnchorContainer>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatAnchorContainer>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline anchor (x: System.String) = "Anchor" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -197,6 +205,7 @@ type matAnchorLink<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatAnchorLink>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatAnchorLink>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatAnchorLink>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -210,6 +219,7 @@ type matAnchorUtils<'FunBlazorGeneric> =
     
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatAnchorUtils>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatAnchorUtils>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatAnchorUtils>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
         
@@ -218,6 +228,7 @@ type matAppBar<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatAppBar>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatAppBar>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatAppBar>
     static member inline short (x: System.Boolean) = "Short" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline fixed' (x: System.Boolean) = "Fixed" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -233,6 +244,7 @@ type matAppBarAction<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatAppBarAction>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatAppBarAction>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatAppBarAction>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline onClick fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> "OnClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -260,6 +272,7 @@ type matAppBarContainer<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatAppBarContainer>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatAppBarContainer>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatAppBarContainer>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -273,6 +286,7 @@ type matAppBarContent<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatAppBarContent>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatAppBarContent>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatAppBarContent>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -298,6 +312,7 @@ type matAppBarRow<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatAppBarRow>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatAppBarRow>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatAppBarRow>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -311,6 +326,7 @@ type matAppBarSection<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatAppBarSection>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatAppBarSection>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatAppBarSection>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline align (x: MatBlazor.MatAppBarSectionAlign) = "Align" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -325,6 +341,7 @@ type matAppBarTitle<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatAppBarTitle>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatAppBarTitle>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatAppBarTitle>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -363,6 +380,7 @@ type baseMatAutocomplete<'FunBlazorGeneric, 'TValue, 'TItem> =
     inherit matInputTextComponent<'FunBlazorGeneric, 'TValue>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.BaseMatAutocomplete<'TValue, 'TItem>>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.BaseMatAutocomplete<'TValue, 'TItem>>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.BaseMatAutocomplete<'TValue, 'TItem>>
     static member inline items (x: System.Collections.Generic.IEnumerable<'TItem>) = "Items" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline itemValueSelector (x: System.Func<'TItem, 'TValue>) = "ItemValueSelector" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline numberOfElementsInPopup (x: System.Nullable<System.Int32>) = "NumberOfElementsInPopup" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -412,6 +430,7 @@ type baseMatButtonLink<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.BaseMatButtonLink>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.BaseMatButtonLink>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.BaseMatButtonLink>
     static member inline onClick fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> "OnClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline onClickStopPropagation (x: System.Boolean) = "OnClickStopPropagation" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline command (x: System.Windows.Input.ICommand) = "Command" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -439,6 +458,7 @@ type matButton<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatButton>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatButton>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatButton>
     static member inline onClick fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> "OnClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline onClickStopPropagation (x: System.Boolean) = "OnClickStopPropagation" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline command (x: System.Windows.Input.ICommand) = "Command" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -470,6 +490,7 @@ type matCard<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatCard>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatCard>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatCard>
     static member inline stroke (x: System.Boolean) = "Stroke" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -484,6 +505,7 @@ type matCardActionButtons<'FunBlazorGeneric> =
     inherit baseMatContainerComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatCardActionButtons>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatCardActionButtons>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatCardActionButtons>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline tag (x: System.String) = "Tag" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -498,6 +520,7 @@ type matCardActionIcons<'FunBlazorGeneric> =
     inherit baseMatContainerComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatCardActionIcons>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatCardActionIcons>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatCardActionIcons>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline tag (x: System.String) = "Tag" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -512,6 +535,7 @@ type matCardActions<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatCardActions>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatCardActions>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatCardActions>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -525,6 +549,7 @@ type matCardContent<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatCardContent>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatCardContent>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatCardContent>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline unbounded (x: System.Boolean) = "Unbounded" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -539,6 +564,7 @@ type matCardMedia<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatCardMedia>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatCardMedia>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatCardMedia>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline square (x: System.Boolean) = "Square" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -556,6 +582,7 @@ type baseMatCheckboxInternal<'FunBlazorGeneric, 'TValue> =
     inherit baseMatInputElementComponent<'FunBlazorGeneric, 'TValue>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.BaseMatCheckboxInternal<'TValue>>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.BaseMatCheckboxInternal<'TValue>>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.BaseMatCheckboxInternal<'TValue>>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline label (x: System.String) = "Label" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -578,6 +605,7 @@ type matCheckbox<'FunBlazorGeneric, 'TValue> =
     inherit matCheckboxInternal<'FunBlazorGeneric, 'TValue>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatCheckbox<'TValue>>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatCheckbox<'TValue>>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatCheckbox<'TValue>>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline label (x: System.String) = "Label" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -600,6 +628,7 @@ type matChipSet<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatChipSet>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatChipSet>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatChipSet>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline choice (x: System.Boolean) = "Choice" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -669,6 +698,7 @@ type matDataTable<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatDataTable>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatDataTable>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatDataTable>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -703,6 +733,7 @@ type baseMatDatePickerInternal<'FunBlazorGeneric, 'TValue> =
     inherit matInputTextComponent<'FunBlazorGeneric, 'TValue>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.BaseMatDatePickerInternal<'TValue>>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.BaseMatDatePickerInternal<'TValue>>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.BaseMatDatePickerInternal<'TValue>>
     static member inline enableTime (x: System.Boolean) = "EnableTime" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline enableSeconds (x: System.Boolean) = "EnableSeconds" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline maximum (x: System.Nullable<System.DateTime>) = "Maximum" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -759,6 +790,7 @@ type matDatePicker<'FunBlazorGeneric, 'TValue> =
     inherit matDatePickerInternal<'FunBlazorGeneric, 'TValue>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatDatePicker<'TValue>>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatDatePicker<'TValue>>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatDatePicker<'TValue>>
     static member inline enableTime (x: System.Boolean) = "EnableTime" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline enableSeconds (x: System.Boolean) = "EnableSeconds" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline maximum (x: System.Nullable<System.DateTime>) = "Maximum" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -815,6 +847,7 @@ type baseMatDialog<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.BaseMatDialog>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.BaseMatDialog>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.BaseMatDialog>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline isOpen (x: System.Boolean) = "IsOpen" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -846,6 +879,7 @@ type baseMatDrawerContainer<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.BaseMatDrawerContainer>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.BaseMatDrawerContainer>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.BaseMatDrawerContainer>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline drawerWidth (x: System.String) = "DrawerWidth" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -860,6 +894,7 @@ type baseMatDrawerContent<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.BaseMatDrawerContent>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.BaseMatDrawerContent>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.BaseMatDrawerContent>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -873,6 +908,7 @@ type baseMatDrawer<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.BaseMatDrawer>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.BaseMatDrawer>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.BaseMatDrawer>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline mode (x: MatBlazor.MatDrawerMode) = "Mode" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -890,6 +926,7 @@ type baseMatFAB<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.BaseMatFAB>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.BaseMatFAB>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.BaseMatFAB>
     static member inline icon (x: System.String) = "Icon" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline label (x: System.String) = "Label" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline mini (x: System.Boolean) = "Mini" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -938,6 +975,7 @@ type baseMatHidden<'FunBlazorGeneric> =
     inherit baseMatComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.BaseMatHidden>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.BaseMatHidden>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.BaseMatHidden>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline elseContent (x: Microsoft.AspNetCore.Components.RenderFragment) = "ElseContent" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -952,6 +990,7 @@ type baseMatIconButton<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.BaseMatIconButton>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.BaseMatIconButton>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.BaseMatIconButton>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline icon (x: System.String) = "Icon" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -978,6 +1017,7 @@ type baseMatIcon<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.BaseMatIcon>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.BaseMatIcon>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.BaseMatIcon>
     static member inline icon (x: System.String) = "Icon" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -992,6 +1032,7 @@ type baseMatListGroup<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.BaseMatListGroup>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.BaseMatListGroup>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.BaseMatListGroup>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1005,6 +1046,7 @@ type baseMatList<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.BaseMatList>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.BaseMatList>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.BaseMatList>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline singleSelection (x: System.Boolean) = "SingleSelection" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1020,6 +1062,7 @@ type baseMatListItem<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.BaseMatListItem>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.BaseMatListItem>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.BaseMatListItem>
     static member inline onMouseDown fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> "OnMouseDown" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline onClick fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> "OnClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1037,6 +1080,7 @@ type baseMatMenu<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.BaseMatMenu>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.BaseMatMenu>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.BaseMatMenu>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline targetForwardRef (x: MatBlazor.ForwardRef) = "TargetForwardRef" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1051,6 +1095,7 @@ type baseMatNavItem<'FunBlazorGeneric> =
     inherit baseMatListItem<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.BaseMatNavItem>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.BaseMatNavItem>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.BaseMatNavItem>
     static member inline command (x: System.Windows.Input.ICommand) = "Command" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline forceLoad (x: System.Boolean) = "ForceLoad" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline commandParameter (x: System.Object) = "CommandParameter" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1077,6 +1122,7 @@ type baseMatNavMenu<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.BaseMatNavMenu>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.BaseMatNavMenu>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.BaseMatNavMenu>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline multi (x: System.Boolean) = "Multi" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1091,6 +1137,7 @@ type baseMatNavSubMenu<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.BaseMatNavSubMenu>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.BaseMatNavSubMenu>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.BaseMatNavSubMenu>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline expanded (x: System.Boolean) = "Expanded" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1108,6 +1155,7 @@ type baseMatNumericUpDownFieldInternal<'FunBlazorGeneric, 'TValue> =
     inherit matInputTextComponent<'FunBlazorGeneric, 'TValue>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.BaseMatNumericUpDownFieldInternal<'TValue>>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.BaseMatNumericUpDownFieldInternal<'TValue>>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.BaseMatNumericUpDownFieldInternal<'TValue>>
     static member inline allowInput (x: System.Boolean) = "AllowInput" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline maximum (x: 'TValue) = "Maximum" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline minimum (x: 'TValue) = "Minimum" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1159,6 +1207,7 @@ type matNumericUpDownField<'FunBlazorGeneric, 'TValue> =
     inherit matNumericUpDownFieldInternal<'FunBlazorGeneric, 'TValue>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatNumericUpDownField<'TValue>>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatNumericUpDownField<'TValue>>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatNumericUpDownField<'TValue>>
     static member inline allowInput (x: System.Boolean) = "AllowInput" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline maximum (x: 'TValue) = "Maximum" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline minimum (x: 'TValue) = "Minimum" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1228,6 +1277,7 @@ type baseMatPaper<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.BaseMatPaper>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.BaseMatPaper>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.BaseMatPaper>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline elevation (x: System.Int32) = "Elevation" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1276,6 +1326,7 @@ type baseMatRadioButtonInternal<'FunBlazorGeneric, 'TValue> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.BaseMatRadioButtonInternal<'TValue>>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.BaseMatRadioButtonInternal<'TValue>>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.BaseMatRadioButtonInternal<'TValue>>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline disabled (x: System.Boolean) = "Disabled" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1292,6 +1343,7 @@ type baseMatRadioGroupInternal<'FunBlazorGeneric, 'TValue> =
     inherit baseMatInputComponent<'FunBlazorGeneric, 'TValue>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.BaseMatRadioGroupInternal<'TValue>>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.BaseMatRadioGroupInternal<'TValue>>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.BaseMatRadioGroupInternal<'TValue>>
     static member inline itemTemplate (x: Microsoft.AspNetCore.Components.RenderFragment<'TValue>) = "ItemTemplate" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline items (x: System.Collections.Generic.IEnumerable<'TValue>) = "Items" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1311,6 +1363,7 @@ type matRadioButton<'FunBlazorGeneric, 'TValue> =
     inherit matRadioButtonInternal<'FunBlazorGeneric, 'TValue>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatRadioButton<'TValue>>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatRadioButton<'TValue>>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatRadioButton<'TValue>>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline disabled (x: System.Boolean) = "Disabled" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1327,6 +1380,7 @@ type matRadioGroup<'FunBlazorGeneric, 'TValue> =
     inherit matRadioGroupInternal<'FunBlazorGeneric, 'TValue>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatRadioGroup<'TValue>>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatRadioGroup<'TValue>>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatRadioGroup<'TValue>>
     static member inline itemTemplate (x: Microsoft.AspNetCore.Components.RenderFragment<'TValue>) = "ItemTemplate" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline items (x: System.Collections.Generic.IEnumerable<'TValue>) = "Items" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1346,6 +1400,7 @@ type baseMatRipple<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.BaseMatRipple>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.BaseMatRipple>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.BaseMatRipple>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline color (x: MatBlazor.MatRippleColor) = "Color" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1360,6 +1415,7 @@ type baseCoreMatOption<'FunBlazorGeneric, 'TValue> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.BaseCoreMatOption<'TValue>>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.BaseCoreMatOption<'TValue>>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.BaseCoreMatOption<'TValue>>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline disabled (x: System.Boolean) = "Disabled" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1401,6 +1457,7 @@ type baseCoreMatSelectValue<'FunBlazorGeneric, 'TValue, 'TItem> =
     inherit coreMatSelect<'FunBlazorGeneric, 'TValue, System.Int32>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.BaseCoreMatSelectValue<'TValue, 'TItem>>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.BaseCoreMatSelectValue<'TValue, 'TItem>>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.BaseCoreMatSelectValue<'TValue, 'TItem>>
     static member inline items (x: System.Collections.Generic.IEnumerable<'TItem>) = "Items" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline itemTemplate (x: Microsoft.AspNetCore.Components.RenderFragment<'TItem>) = "ItemTemplate" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1431,6 +1488,7 @@ type baseMatOption<'FunBlazorGeneric, 'TValue> =
     inherit coreMatOption<'FunBlazorGeneric, 'TValue>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.BaseMatOption<'TValue>>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.BaseMatOption<'TValue>>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.BaseMatOption<'TValue>>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline disabled (x: System.Boolean) = "Disabled" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1446,6 +1504,7 @@ type baseMatSelect<'FunBlazorGeneric, 'TValue> =
     inherit coreMatSelect<'FunBlazorGeneric, 'TValue, 'TValue>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.BaseMatSelect<'TValue>>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.BaseMatSelect<'TValue>>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.BaseMatSelect<'TValue>>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline enhanced (x: System.Boolean) = "Enhanced" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1474,6 +1533,7 @@ type baseMatSelectItem<'FunBlazorGeneric, 'TValue> =
     inherit coreMatSelectValue<'FunBlazorGeneric, 'TValue, 'TValue>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.BaseMatSelectItem<'TValue>>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.BaseMatSelectItem<'TValue>>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.BaseMatSelectItem<'TValue>>
     static member inline items (x: System.Collections.Generic.IEnumerable<'TValue>) = "Items" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline itemTemplate (x: Microsoft.AspNetCore.Components.RenderFragment<'TValue>) = "ItemTemplate" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1504,6 +1564,7 @@ type baseMatSelectValue<'FunBlazorGeneric, 'TValue, 'TItem> =
     inherit coreMatSelectValue<'FunBlazorGeneric, 'TValue, 'TItem>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.BaseMatSelectValue<'TValue, 'TItem>>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.BaseMatSelectValue<'TValue, 'TItem>>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.BaseMatSelectValue<'TValue, 'TItem>>
     static member inline valueSelector (x: System.Func<'TItem, 'TValue>) = "ValueSelector" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline items (x: System.Collections.Generic.IEnumerable<'TItem>) = "Items" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline itemTemplate (x: Microsoft.AspNetCore.Components.RenderFragment<'TItem>) = "ItemTemplate" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1535,6 +1596,7 @@ type matOption<'FunBlazorGeneric, 'TValue> =
     inherit baseMatOption<'FunBlazorGeneric, 'TValue>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatOption<'TValue>>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatOption<'TValue>>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatOption<'TValue>>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline disabled (x: System.Boolean) = "Disabled" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1550,6 +1612,7 @@ type matOptionString<'FunBlazorGeneric> =
     inherit matOption<'FunBlazorGeneric, System.String>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatOptionString>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatOptionString>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatOptionString>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline disabled (x: System.Boolean) = "Disabled" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1608,6 +1671,7 @@ type baseMatSnackbar<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.BaseMatSnackbar>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.BaseMatSnackbar>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.BaseMatSnackbar>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline stacked (x: System.Boolean) = "Stacked" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1626,6 +1690,7 @@ type baseMatSortHeader<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.BaseMatSortHeader>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.BaseMatSortHeader>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.BaseMatSortHeader>
     static member inline sortId (x: System.String) = "SortId" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1640,6 +1705,7 @@ type baseMatSortHeaderRow<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.BaseMatSortHeaderRow>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.BaseMatSortHeaderRow>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.BaseMatSortHeaderRow>
     static member inline sortId (x: System.String) = "SortId" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline sortIdChanged fn = (Bolero.Html.attr.callback<System.String> "SortIdChanged" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline direction (x: MatBlazor.MatSortDirection) = "Direction" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1658,6 +1724,7 @@ type baseMatTabBar<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.BaseMatTabBar>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.BaseMatTabBar>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.BaseMatTabBar>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline active (x: MatBlazor.BaseMatTabLabel) = "Active" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1675,6 +1742,7 @@ type baseMatTabLabel<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.BaseMatTabLabel>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.BaseMatTabLabel>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.BaseMatTabLabel>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1726,6 +1794,7 @@ type baseTableRow<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.BaseTableRow>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.BaseTableRow>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.BaseTableRow>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline selected (x: System.Boolean) = "Selected" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1743,6 +1812,7 @@ type baseMatTab<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.BaseMatTab>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.BaseMatTab>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.BaseMatTab>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline labelContent (x: Microsoft.AspNetCore.Components.RenderFragment) = "LabelContent" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1758,6 +1828,7 @@ type baseMatTabGroup<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.BaseMatTabGroup>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.BaseMatTabGroup>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.BaseMatTabGroup>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline activeIndex (x: System.Int32) = "ActiveIndex" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1773,6 +1844,7 @@ type baseMatInputTextComponent<'FunBlazorGeneric, 'TValue> =
     inherit baseMatInputTextElementComponent<'FunBlazorGeneric, 'TValue>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.BaseMatInputTextComponent<'TValue>>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.BaseMatInputTextComponent<'TValue>>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.BaseMatInputTextComponent<'TValue>>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline iconOnClick fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> "IconOnClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1818,6 +1890,7 @@ type matStringField<'FunBlazorGeneric> =
     inherit matTextField<'FunBlazorGeneric, System.String>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatStringField>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatStringField>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatStringField>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline iconOnClick fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> "IconOnClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1863,6 +1936,7 @@ type matTextField<'FunBlazorGeneric, 'TValue> =
     inherit matInputTextComponent<'FunBlazorGeneric, 'TValue>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatTextField<'TValue>>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatTextField<'TValue>>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatTextField<'TValue>>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline iconOnClick fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> "IconOnClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1908,6 +1982,7 @@ type baseMatThemeProvider<'FunBlazorGeneric> =
     
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.BaseMatThemeProvider>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.BaseMatThemeProvider>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.BaseMatThemeProvider>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline theme (x: MatBlazor.MatTheme) = "Theme" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1928,6 +2003,7 @@ type baseMatToastItem<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.BaseMatToastItem>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.BaseMatToastItem>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.BaseMatToastItem>
     static member inline toast (x: MatBlazor.MatToast) = "Toast" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1985,6 +2061,7 @@ type baseMatTypography<'FunBlazorGeneric> =
     inherit baseMatContainerComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.BaseMatTypography>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.BaseMatTypography>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.BaseMatTypography>
     static member inline anchor (x: System.Boolean) = "Anchor" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline anchorId (x: System.String) = "AnchorId" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2001,6 +2078,7 @@ type matHeadline1<'FunBlazorGeneric> =
     inherit baseMatTypography<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatHeadline1>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatHeadline1>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatHeadline1>
     static member inline anchor (x: System.Boolean) = "Anchor" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline anchorId (x: System.String) = "AnchorId" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2017,6 +2095,7 @@ type matHeadline2<'FunBlazorGeneric> =
     inherit baseMatTypography<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatHeadline2>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatHeadline2>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatHeadline2>
     static member inline anchor (x: System.Boolean) = "Anchor" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline anchorId (x: System.String) = "AnchorId" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2033,6 +2112,7 @@ type matHeadline3<'FunBlazorGeneric> =
     inherit baseMatTypography<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatHeadline3>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatHeadline3>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatHeadline3>
     static member inline anchor (x: System.Boolean) = "Anchor" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline anchorId (x: System.String) = "AnchorId" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2049,6 +2129,7 @@ type matHeadline4<'FunBlazorGeneric> =
     inherit baseMatTypography<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatHeadline4>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatHeadline4>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatHeadline4>
     static member inline anchor (x: System.Boolean) = "Anchor" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline anchorId (x: System.String) = "AnchorId" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2065,6 +2146,7 @@ type matHeadline5<'FunBlazorGeneric> =
     inherit baseMatTypography<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatHeadline5>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatHeadline5>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatHeadline5>
     static member inline anchor (x: System.Boolean) = "Anchor" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline anchorId (x: System.String) = "AnchorId" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2081,6 +2163,7 @@ type matHeadline6<'FunBlazorGeneric> =
     inherit baseMatTypography<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatHeadline6>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatHeadline6>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatHeadline6>
     static member inline anchor (x: System.Boolean) = "Anchor" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline anchorId (x: System.String) = "AnchorId" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2097,6 +2180,7 @@ type matH1<'FunBlazorGeneric> =
     inherit matHeadline1<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatH1>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatH1>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatH1>
     static member inline anchor (x: System.Boolean) = "Anchor" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline anchorId (x: System.String) = "AnchorId" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2113,6 +2197,7 @@ type matH2<'FunBlazorGeneric> =
     inherit matHeadline2<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatH2>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatH2>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatH2>
     static member inline anchor (x: System.Boolean) = "Anchor" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline anchorId (x: System.String) = "AnchorId" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2129,6 +2214,7 @@ type matH3<'FunBlazorGeneric> =
     inherit matHeadline3<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatH3>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatH3>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatH3>
     static member inline anchor (x: System.Boolean) = "Anchor" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline anchorId (x: System.String) = "AnchorId" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2145,6 +2231,7 @@ type matH4<'FunBlazorGeneric> =
     inherit matHeadline4<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatH4>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatH4>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatH4>
     static member inline anchor (x: System.Boolean) = "Anchor" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline anchorId (x: System.String) = "AnchorId" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2161,6 +2248,7 @@ type matH5<'FunBlazorGeneric> =
     inherit matHeadline5<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatH5>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatH5>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatH5>
     static member inline anchor (x: System.Boolean) = "Anchor" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline anchorId (x: System.String) = "AnchorId" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2177,6 +2265,7 @@ type matH6<'FunBlazorGeneric> =
     inherit matHeadline6<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatH6>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatH6>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatH6>
     static member inline anchor (x: System.Boolean) = "Anchor" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline anchorId (x: System.String) = "AnchorId" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2193,6 +2282,7 @@ type matSubtitle1<'FunBlazorGeneric> =
     inherit baseMatTypography<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatSubtitle1>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatSubtitle1>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatSubtitle1>
     static member inline anchor (x: System.Boolean) = "Anchor" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline anchorId (x: System.String) = "AnchorId" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2209,6 +2299,7 @@ type matSubtitle2<'FunBlazorGeneric> =
     inherit baseMatTypography<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatSubtitle2>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatSubtitle2>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatSubtitle2>
     static member inline anchor (x: System.Boolean) = "Anchor" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline anchorId (x: System.String) = "AnchorId" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2225,6 +2316,7 @@ type matBody1<'FunBlazorGeneric> =
     inherit baseMatTypography<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatBody1>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatBody1>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatBody1>
     static member inline anchor (x: System.Boolean) = "Anchor" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline anchorId (x: System.String) = "AnchorId" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2241,6 +2333,7 @@ type matBody2<'FunBlazorGeneric> =
     inherit baseMatTypography<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatBody2>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatBody2>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatBody2>
     static member inline anchor (x: System.Boolean) = "Anchor" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline anchorId (x: System.String) = "AnchorId" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2257,6 +2350,7 @@ type matCaption<'FunBlazorGeneric> =
     inherit baseMatTypography<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatCaption>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatCaption>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatCaption>
     static member inline anchor (x: System.Boolean) = "Anchor" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline anchorId (x: System.String) = "AnchorId" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2273,6 +2367,7 @@ type matOverline<'FunBlazorGeneric> =
     inherit baseMatTypography<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatOverline>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatOverline>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatOverline>
     static member inline anchor (x: System.Boolean) = "Anchor" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline anchorId (x: System.String) = "AnchorId" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2289,6 +2384,7 @@ type baseMatVirtualScroll<'FunBlazorGeneric, 'TItem> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.BaseMatVirtualScroll<'TItem>>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.BaseMatVirtualScroll<'TItem>>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.BaseMatVirtualScroll<'TItem>>
     static member inline itemHeight (x: System.Int32) = "ItemHeight" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline disabled (x: System.Boolean) = "Disabled" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2306,6 +2402,7 @@ type matViewChildren<'FunBlazorGeneric, 'TSelect when 'TSelect :> Microsoft.AspN
     
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatViewChildren<'TSelect>>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatViewChildren<'TSelect>>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatViewChildren<'TSelect>>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
         
@@ -2317,10 +2414,18 @@ type forwardRefContext<'FunBlazorGeneric, 'TRef> =
     static member inline childContent (x: Microsoft.AspNetCore.Components.RenderFragment<MatBlazor.ForwardRef<'TRef>>) = "ChildContent" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
         
 
+type matCombine<'FunBlazorGeneric> =
+    
+    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatCombine>
+    
+
+        
+
 type matContentWrapper<'FunBlazorGeneric> =
     
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatContentWrapper>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatContentWrapper>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatContentWrapper>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
         
@@ -2363,6 +2468,7 @@ type matAutocomplete<'FunBlazorGeneric, 'TValue, 'TItem> =
     inherit baseMatAutocomplete<'FunBlazorGeneric, 'TValue, 'TItem>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatAutocomplete<'TValue, 'TItem>>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatAutocomplete<'TValue, 'TItem>>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatAutocomplete<'TValue, 'TItem>>
     static member inline items (x: System.Collections.Generic.IEnumerable<'TItem>) = "Items" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline itemValueSelector (x: System.Func<'TItem, 'TValue>) = "ItemValueSelector" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline numberOfElementsInPopup (x: System.Nullable<System.Int32>) = "NumberOfElementsInPopup" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2412,6 +2518,7 @@ type matButtonLink<'FunBlazorGeneric> =
     inherit baseMatButtonLink<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatButtonLink>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatButtonLink>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatButtonLink>
     static member inline onClick fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> "OnClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline onClickStopPropagation (x: System.Boolean) = "OnClickStopPropagation" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline command (x: System.Windows.Input.ICommand) = "Command" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2439,6 +2546,7 @@ type matCheckboxInternal<'FunBlazorGeneric, 'TValue> =
     inherit baseMatCheckboxInternal<'FunBlazorGeneric, 'TValue>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatCheckboxInternal<'TValue>>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatCheckboxInternal<'TValue>>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatCheckboxInternal<'TValue>>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline label (x: System.String) = "Label" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2461,6 +2569,7 @@ type matDataTableCellOld<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatDataTableCellOld>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatDataTableCellOld>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatDataTableCellOld>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline numeric (x: System.Boolean) = "Numeric" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2486,6 +2595,7 @@ type matDataTableContentOld<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatDataTableContentOld>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatDataTableContentOld>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatDataTableContentOld>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2499,6 +2609,7 @@ type matDataTableHeaderCellOld<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatDataTableHeaderCellOld>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatDataTableHeaderCellOld>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatDataTableHeaderCellOld>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline numeric (x: System.Boolean) = "Numeric" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2513,6 +2624,7 @@ type matDataTableHeaderOld<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatDataTableHeaderOld>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatDataTableHeaderOld>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatDataTableHeaderOld>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2546,6 +2658,7 @@ type matDataTableRowOld<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatDataTableRowOld>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatDataTableRowOld>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatDataTableRowOld>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2559,6 +2672,7 @@ type matDatePickerInternal<'FunBlazorGeneric, 'TValue> =
     inherit baseMatDatePickerInternal<'FunBlazorGeneric, 'TValue>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatDatePickerInternal<'TValue>>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatDatePickerInternal<'TValue>>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatDatePickerInternal<'TValue>>
     static member inline enableTime (x: System.Boolean) = "EnableTime" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline enableSeconds (x: System.Boolean) = "EnableSeconds" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline maximum (x: System.Nullable<System.DateTime>) = "Maximum" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2652,6 +2766,7 @@ type matDialog<'FunBlazorGeneric> =
     inherit baseMatDialog<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatDialog>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatDialog>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatDialog>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline isOpen (x: System.Boolean) = "IsOpen" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2670,6 +2785,7 @@ type matDialogActions<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatDialogActions>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatDialogActions>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatDialogActions>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2683,6 +2799,7 @@ type matDialogContent<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatDialogContent>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatDialogContent>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatDialogContent>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2696,6 +2813,7 @@ type matDialogTitle<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatDialogTitle>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatDialogTitle>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatDialogTitle>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2709,6 +2827,7 @@ type matDrawerContainer<'FunBlazorGeneric> =
     inherit baseMatDrawerContainer<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatDrawerContainer>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatDrawerContainer>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatDrawerContainer>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline drawerWidth (x: System.String) = "DrawerWidth" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2723,6 +2842,7 @@ type matDrawerContent<'FunBlazorGeneric> =
     inherit baseMatDrawerContent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatDrawerContent>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatDrawerContent>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatDrawerContent>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2736,6 +2856,7 @@ type matDrawer<'FunBlazorGeneric> =
     inherit baseMatDrawer<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatDrawer>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatDrawer>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatDrawer>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline mode (x: MatBlazor.MatDrawerMode) = "Mode" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2753,6 +2874,7 @@ type matFAB<'FunBlazorGeneric> =
     inherit baseMatFAB<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatFAB>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatFAB>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatFAB>
     static member inline icon (x: System.String) = "Icon" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline label (x: System.String) = "Label" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline mini (x: System.Boolean) = "Mini" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2801,6 +2923,7 @@ type matHidden<'FunBlazorGeneric> =
     inherit baseMatHidden<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatHidden>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatHidden>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatHidden>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline elseContent (x: Microsoft.AspNetCore.Components.RenderFragment) = "ElseContent" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2815,6 +2938,7 @@ type matIconButton<'FunBlazorGeneric> =
     inherit baseMatIconButton<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatIconButton>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatIconButton>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatIconButton>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline icon (x: System.String) = "Icon" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2841,6 +2965,7 @@ type matIcon<'FunBlazorGeneric> =
     inherit baseMatIcon<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatIcon>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatIcon>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatIcon>
     static member inline icon (x: System.String) = "Icon" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2855,6 +2980,7 @@ type matListGroup<'FunBlazorGeneric> =
     inherit baseMatListGroup<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatListGroup>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatListGroup>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatListGroup>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2868,6 +2994,7 @@ type matListGroupSubHeader<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatListGroupSubHeader>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatListGroupSubHeader>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatListGroupSubHeader>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2881,6 +3008,7 @@ type matList<'FunBlazorGeneric> =
     inherit baseMatList<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatList>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatList>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatList>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline singleSelection (x: System.Boolean) = "SingleSelection" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2907,6 +3035,7 @@ type matListItem<'FunBlazorGeneric> =
     inherit baseMatListItem<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatListItem>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatListItem>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatListItem>
     static member inline onMouseDown fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> "OnMouseDown" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline onClick fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> "OnClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2924,6 +3053,7 @@ type matListItemPrimaryText<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatListItemPrimaryText>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatListItemPrimaryText>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatListItemPrimaryText>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2937,6 +3067,7 @@ type matListItemSecondaryText<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatListItemSecondaryText>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatListItemSecondaryText>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatListItemSecondaryText>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2950,6 +3081,7 @@ type matListItemText<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatListItemText>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatListItemText>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatListItemText>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2963,6 +3095,7 @@ type matMenu<'FunBlazorGeneric> =
     inherit baseMatMenu<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatMenu>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatMenu>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatMenu>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline targetForwardRef (x: MatBlazor.ForwardRef) = "TargetForwardRef" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2977,6 +3110,7 @@ type matNavItem<'FunBlazorGeneric> =
     inherit baseMatNavItem<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatNavItem>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatNavItem>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatNavItem>
     static member inline command (x: System.Windows.Input.ICommand) = "Command" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline forceLoad (x: System.Boolean) = "ForceLoad" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline commandParameter (x: System.Object) = "CommandParameter" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3003,6 +3137,7 @@ type matNavMenu<'FunBlazorGeneric> =
     inherit baseMatNavMenu<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatNavMenu>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatNavMenu>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatNavMenu>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline multi (x: System.Boolean) = "Multi" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3017,6 +3152,7 @@ type matNavSubMenu<'FunBlazorGeneric> =
     inherit baseMatNavSubMenu<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatNavSubMenu>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatNavSubMenu>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatNavSubMenu>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline expanded (x: System.Boolean) = "Expanded" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3034,6 +3170,7 @@ type matNavSubMenuHeader<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatNavSubMenuHeader>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatNavSubMenuHeader>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatNavSubMenuHeader>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline title (x: System.String) = "Title" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3048,6 +3185,7 @@ type matNavSubMenuList<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatNavSubMenuList>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatNavSubMenuList>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatNavSubMenuList>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3061,6 +3199,7 @@ type matNumericUpDownFieldInternal<'FunBlazorGeneric, 'TValue> =
     inherit baseMatNumericUpDownFieldInternal<'FunBlazorGeneric, 'TValue>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatNumericUpDownFieldInternal<'TValue>>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatNumericUpDownFieldInternal<'TValue>>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatNumericUpDownFieldInternal<'TValue>>
     static member inline allowInput (x: System.Boolean) = "AllowInput" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline maximum (x: 'TValue) = "Maximum" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline minimum (x: 'TValue) = "Minimum" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3130,6 +3269,7 @@ type matPaper<'FunBlazorGeneric> =
     inherit baseMatPaper<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatPaper>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatPaper>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatPaper>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline elevation (x: System.Int32) = "Elevation" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3140,6 +3280,13 @@ type matPaper<'FunBlazorGeneric> =
     static member inline classes (x: string list) = attr.classes x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline styles (x: (string * string) list) = attr.styles x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline refBack (x: MatBlazor.ForwardRef) = "RefBack" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+        
+
+type matPortalHost<'FunBlazorGeneric> =
+    
+    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatPortalHost>
+    
+
         
 
 type matProgressBar<'FunBlazorGeneric> =
@@ -3178,6 +3325,7 @@ type matRadioButtonInternal<'FunBlazorGeneric, 'TValue> =
     inherit baseMatRadioButtonInternal<'FunBlazorGeneric, 'TValue>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatRadioButtonInternal<'TValue>>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatRadioButtonInternal<'TValue>>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatRadioButtonInternal<'TValue>>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline disabled (x: System.Boolean) = "Disabled" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3194,6 +3342,7 @@ type matRadioGroupInternal<'FunBlazorGeneric, 'TValue> =
     inherit baseMatRadioGroupInternal<'FunBlazorGeneric, 'TValue>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatRadioGroupInternal<'TValue>>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatRadioGroupInternal<'TValue>>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatRadioGroupInternal<'TValue>>
     static member inline itemTemplate (x: Microsoft.AspNetCore.Components.RenderFragment<'TValue>) = "ItemTemplate" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline items (x: System.Collections.Generic.IEnumerable<'TValue>) = "Items" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3213,6 +3362,7 @@ type matRipple<'FunBlazorGeneric> =
     inherit baseMatRipple<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatRipple>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatRipple>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatRipple>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline color (x: MatBlazor.MatRippleColor) = "Color" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3227,6 +3377,7 @@ type coreMatOption<'FunBlazorGeneric, 'TValue> =
     inherit baseCoreMatOption<'FunBlazorGeneric, 'TValue>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.CoreMatOption<'TValue>>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.CoreMatOption<'TValue>>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.CoreMatOption<'TValue>>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline disabled (x: System.Boolean) = "Disabled" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3268,6 +3419,7 @@ type coreMatSelectValue<'FunBlazorGeneric, 'TValue, 'TItem> =
     inherit baseCoreMatSelectValue<'FunBlazorGeneric, 'TValue, 'TItem>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.CoreMatSelectValue<'TValue, 'TItem>>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.CoreMatSelectValue<'TValue, 'TItem>>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.CoreMatSelectValue<'TValue, 'TItem>>
     static member inline items (x: System.Collections.Generic.IEnumerable<'TItem>) = "Items" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline itemTemplate (x: Microsoft.AspNetCore.Components.RenderFragment<'TItem>) = "ItemTemplate" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3298,6 +3450,7 @@ type matSelect<'FunBlazorGeneric, 'TValue> =
     inherit baseMatSelect<'FunBlazorGeneric, 'TValue>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatSelect<'TValue>>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatSelect<'TValue>>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatSelect<'TValue>>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline enhanced (x: System.Boolean) = "Enhanced" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3326,6 +3479,7 @@ type matSelectItem<'FunBlazorGeneric, 'TValue> =
     inherit baseMatSelectItem<'FunBlazorGeneric, 'TValue>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatSelectItem<'TValue>>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatSelectItem<'TValue>>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatSelectItem<'TValue>>
     static member inline items (x: System.Collections.Generic.IEnumerable<'TValue>) = "Items" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline itemTemplate (x: Microsoft.AspNetCore.Components.RenderFragment<'TValue>) = "ItemTemplate" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3356,6 +3510,7 @@ type matSelectValue<'FunBlazorGeneric, 'TValue, 'TItem> =
     inherit baseMatSelectValue<'FunBlazorGeneric, 'TValue, 'TItem>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatSelectValue<'TValue, 'TItem>>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatSelectValue<'TValue, 'TItem>>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatSelectValue<'TValue, 'TItem>>
     static member inline valueSelector (x: System.Func<'TItem, 'TValue>) = "ValueSelector" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline items (x: System.Collections.Generic.IEnumerable<'TItem>) = "Items" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline itemTemplate (x: Microsoft.AspNetCore.Components.RenderFragment<'TItem>) = "ItemTemplate" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3430,6 +3585,7 @@ type matSnackbar<'FunBlazorGeneric> =
     inherit baseMatSnackbar<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatSnackbar>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatSnackbar>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatSnackbar>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline stacked (x: System.Boolean) = "Stacked" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3448,6 +3604,7 @@ type matSnackbarActions<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatSnackbarActions>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatSnackbarActions>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatSnackbarActions>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3461,6 +3618,7 @@ type matSnackbarContent<'FunBlazorGeneric> =
     inherit baseMatDomComponent<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatSnackbarContent>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatSnackbarContent>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatSnackbarContent>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3474,6 +3632,7 @@ type matSortHeader<'FunBlazorGeneric> =
     inherit baseMatSortHeader<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatSortHeader>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatSortHeader>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatSortHeader>
     static member inline sortId (x: System.String) = "SortId" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3488,6 +3647,7 @@ type matSortHeaderRow<'FunBlazorGeneric> =
     inherit baseMatSortHeaderRow<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatSortHeaderRow>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatSortHeaderRow>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatSortHeaderRow>
     static member inline sortId (x: System.String) = "SortId" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline sortIdChanged fn = (Bolero.Html.attr.callback<System.String> "SortIdChanged" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline direction (x: MatBlazor.MatSortDirection) = "Direction" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3506,6 +3666,7 @@ type matTabBar<'FunBlazorGeneric> =
     inherit baseMatTabBar<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatTabBar>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatTabBar>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatTabBar>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline active (x: MatBlazor.BaseMatTabLabel) = "Active" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3523,6 +3684,7 @@ type matTabLabel<'FunBlazorGeneric> =
     inherit baseMatTabLabel<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatTabLabel>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatTabLabel>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatTabLabel>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline id (x: System.String) = "Id" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3579,6 +3741,7 @@ type tableRow<'FunBlazorGeneric> =
     inherit baseTableRow<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.TableRow>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.TableRow>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.TableRow>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline selected (x: System.Boolean) = "Selected" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3596,6 +3759,7 @@ type matTab<'FunBlazorGeneric> =
     inherit baseMatTab<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatTab>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatTab>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatTab>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline labelContent (x: Microsoft.AspNetCore.Components.RenderFragment) = "LabelContent" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3611,6 +3775,7 @@ type matTabGroup<'FunBlazorGeneric> =
     inherit baseMatTabGroup<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatTabGroup>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatTabGroup>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatTabGroup>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline activeIndex (x: System.Int32) = "ActiveIndex" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3626,6 +3791,7 @@ type matInputTextComponent<'FunBlazorGeneric, 'T> =
     inherit baseMatInputTextComponent<'FunBlazorGeneric, 'T>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatInputTextComponent<'T>>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatInputTextComponent<'T>>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatInputTextComponent<'T>>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline iconOnClick fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> "IconOnClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3671,6 +3837,7 @@ type matThemeProvider<'FunBlazorGeneric> =
     inherit baseMatThemeProvider<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatThemeProvider>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatThemeProvider>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatThemeProvider>
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline theme (x: MatBlazor.MatTheme) = "Theme" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3691,6 +3858,7 @@ type matToastItem<'FunBlazorGeneric> =
     inherit baseMatToastItem<'FunBlazorGeneric>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatToastItem>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatToastItem>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatToastItem>
     static member inline toast (x: MatBlazor.MatToast) = "Toast" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (text: string) = attr.children text |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3725,6 +3893,7 @@ type matVirtualScroll<'FunBlazorGeneric, 'ItemType> =
     inherit baseMatVirtualScroll<'FunBlazorGeneric, 'ItemType>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MatBlazor.MatVirtualScroll<'ItemType>>
     static member create (nodes: FunBlazorNode list) = nodes |> html.blazor<MatBlazor.MatVirtualScroll<'ItemType>>
+static member create (node: FunBlazorNode) = [ node ] |> html.blazor<MatBlazor.MatVirtualScroll<'ItemType>>
     static member inline itemHeight (x: System.Int32) = "ItemHeight" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline disabled (x: System.Boolean) = "Disabled" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline children (nodes: FunBlazorNode list) = attr.children nodes |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -4624,6 +4793,13 @@ type forwardRefContext<'TRef> =
         inherit Internal.forwardRefContext<IForwardRefContextNode<'TRef>, 'TRef>
     end
 
+type IMatCombineNode = interface end
+
+type matCombine =
+    class
+        inherit Internal.matCombine<IMatCombineNode>
+    end
+
 type IMatContentWrapperNode = interface end
 
 type matContentWrapper =
@@ -4965,6 +5141,13 @@ type IMatPaperNode = interface end
 type matPaper =
     class
         inherit Internal.matPaper<IMatPaperNode>
+    end
+
+type IMatPortalHostNode = interface end
+
+type matPortalHost =
+    class
+        inherit Internal.matPortalHost<IMatPortalHostNode>
     end
 
 type IMatProgressBarNode = interface end

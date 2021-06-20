@@ -9,12 +9,9 @@ open Fun.Blazor.Demo.Wasm.Components
 
 let private demoDivider =
     html.div [
-        spaceV3
-        mudDivider.create [ 
-            mudDivider.dividerType DividerType.Inset
-            mudDivider.light false
-        ]
-        spaceV3
+        spaceV4
+        mudDivider.create []
+        spaceV4
     ]
 
 let private rootDir = "Demos/DemoMudBlazor"
@@ -27,31 +24,28 @@ let demoMudBlazor = html.inject (fun () ->
             style.marginTop 20
             style.marginBottom 20
         ]
-        mudThemeProvider.create []
-        mudDialogProvider.create []
-        mudSnackbarProvider.create []
         mudContainer.create [
             mudContainer.maxWidth MaxWidth.Large
             mudContainer.children [ 
                 mudLink.create [
                     mudLink.href "https://mudblazor.com/"
                     mudLink.color Color.Primary
+                    mudLink.underline Underline.Always
                     mudLink.children [
                         mudText.create [
-                            mudText.typo Typo.h2
+                            mudText.typo Typo.h4
                             mudText.align Align.Center
                             mudText.color Color.Primary
-                            mudText.children "Blazor components"
+                            mudText.children "MudBlazor"
                         ]
                         mudText.create [
-                            mudText.typo Typo.h2
+                            mudText.typo Typo.h5
                             mudText.align Align.Center
-                            mudText.color Color.Secondary
-                            mudText.children "Blazor components For faster and easier web development"
+                            mudText.children "For faster and easier web development"
                         ]
                     ]
                 ]
-                spaceV2
+                spaceV3
                 mudText.create [
                     mudText.typo Typo.body1
                     mudText.align Align.Center

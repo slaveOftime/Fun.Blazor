@@ -22,7 +22,7 @@ type StoreComponent<'T> () as this =
     member val RenderFn = Unchecked.defaultof<'T -> FunBlazorNode> with get, set
 
 
-    member internal _.StateHasChanged() = base.StateHasChanged()
+    member internal _.StateHasChanged() = try base.StateHasChanged() with _ -> ()
     member internal _.Rerender() = this.InvokeAsync(this.StateHasChanged) |> ignore
 
 

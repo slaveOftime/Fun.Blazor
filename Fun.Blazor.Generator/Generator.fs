@@ -82,10 +82,8 @@ let private getMetaInfo (tys: Type seq) =
             | (name, generics), None ->
                 name, generics, None
 
-        if props.Length = 0 then None
-        else
-            let hasChildren = props.Contains "static member inline children"
-            Some {| ns = ty.Namespace; name = name; generics = generics; inheritInfo = inheritInfo; props = props; hasChildren = hasChildren |})
+        let hasChildren = props.Contains "static member inline children"
+        Some {| ns = ty.Namespace; name = name; generics = generics; inheritInfo = inheritInfo; props = props; hasChildren = hasChildren |})
 
 
 let generateCode (tys: Type seq) =
@@ -101,7 +99,9 @@ let generateCode (tys: Type seq) =
 
             let maker2 =
                 if meta.hasChildren then
-                    $"static member create (nodes: {nameof FunBlazorNode} list) = nodes |> html.blazor<{meta.ns}.{meta.name}{meta.generics |> getTypeNames |> createGenerics |> closeGenerics}>"
+                    $"    static member create (nodes: {nameof FunBlazorNode} list) = nodes |> html.blazor<{meta.ns}.{meta.name}{meta.generics |> getTypeNames |> createGenerics |> closeGenerics}>"
+                    + "\n"+
+                    $"    static member create (node: {nameof FunBlazorNode}) = [ node ] |> html.blazor<{meta.ns}.{meta.name}{meta.generics |> getTypeNames |> createGenerics |> closeGenerics}>"
                 else
                     ""
 
@@ -109,7 +109,7 @@ let generateCode (tys: Type seq) =
 type { lowerFirstCase meta.name }{ funBlazorGeneric::(getTypeNames meta.generics) |> createGenerics |> appendStr (createConstraint meta.generics) |> closeGenerics } =
     {inheirit'}
     static member create (nodes: {nameof GenericFunBlazorNode}<{funBlazorGeneric}> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<{meta.ns}.{meta.name}{meta.generics |> getTypeNames |> createGenerics |> closeGenerics}>
-    {maker2}
+{maker2}
 {meta.props}
         """)
 

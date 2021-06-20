@@ -47,4 +47,9 @@ let demoFluentUI = html.inject (fun () ->
                 ]
             ]
         ]
+        
+        html.script [
+            attr.src "https://unpkg.com/@fluentui/web-components"
+            attr.type' "module"
+        ]
     ])

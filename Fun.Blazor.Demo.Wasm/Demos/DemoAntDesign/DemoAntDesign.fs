@@ -6,7 +6,7 @@ open Fun.Blazor
 open Fun.Blazor.AntDesign
 
 
-let DemoAntDesign = html.inject (fun (localStore: ILocalStore) ->
+let demoAntDesign = html.inject (fun (localStore: ILocalStore) ->
     let isDialogOpen = localStore.Create false
 
     html.div [
@@ -34,4 +34,7 @@ let DemoAntDesign = html.inject (fun (localStore: ILocalStore) ->
                 ]
             ]
         )
+        
+        html.script "_content/AntDesign/js/ant-design-blazor.js"
+        html.stylesheet "_content/AntDesign/css/ant-design-blazor.css"
     ])

@@ -13,6 +13,7 @@ let sourceSection fileName = html.inject (fun (store: ILocalStore, hook: ICompon
     let code = store.Create DeferredState<string, string>.Loading
 
     let client = new HttpClient()
+
     let host =
         #if DEBUG
         "https://localhost:5001"
@@ -31,16 +32,23 @@ let sourceSection fileName = html.inject (fun (store: ILocalStore, hook: ICompon
         | Choice1Of2 x -> code.Publish x
         | Choice2Of2 x -> code.Publish (DeferredState.LoadFailed x.Message))
     |> hook.AddDispose
-    
-    hook.AddDispose client
-
 
     html.watch (code, function
-        | DeferredState.Loading -> mudProgressLinear.create []
+        | DeferredState.Loading ->
+            mudProgressLinear.create [
+                mudProgressLinear.color Color.Primary
+                mudProgressLinear.indeterminate true
+            ]
         | DeferredState.Loaded code ->
-            html.article [
-                attr.classes [ "markdown-body" ]
-                html.raw code
+            html.div [
+                html.article [
+                    attr.classes [ "markdown-body" ]
+                    html.raw code
+                ]
+                html.stylesheet "css/github-markdown.css"
+                html.stylesheet "https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/themes/prism.min.css"
+                html.script "https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/components/prism-core.min.js"
+                html.script "https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/plugins/autoloader/prism-autoloader.min.js"
             ]
         | DeferredState.LoadFailed e ->
             mudAlert.create [
