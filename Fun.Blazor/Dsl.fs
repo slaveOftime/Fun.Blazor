@@ -35,6 +35,7 @@ type FunBlazorHtmlEngine (mk, ofStr, empty) =
     member html.watch (store: IObservable<'T>, render: 'T -> FunBlazorNode, ?key) = html.watch (Unchecked.defaultof<'T>, store, render, key = Option.defaultWith (fun () -> System.Random().Next() |> box) key)
     member html.watch (key, store: IObservable<'T>, render: 'T -> FunBlazorNode) = html.watch (Unchecked.defaultof<'T>, store, render, key = key)
     member html.watch (store: IStore<'T>, render: 'T -> FunBlazorNode, ?key) = html.watch (store.Current, store.Observable, render, key = Option.defaultWith (fun () -> System.Random().Next() |> box) key)
+    member html.watch (store: IStore<'T>, render: 'T -> FunBlazorNode list, ?key) = html.watch (store.Current, store.Observable, render >> Fragment, key = Option.defaultWith (fun () -> System.Random().Next() |> box) key)
     member html.watch (key, store: IStore<'T>, render: 'T -> FunBlazorNode) = html.watch (store.Current, store.Observable, render, key = key)
 
 
@@ -77,6 +78,8 @@ type FunBlazorHtmlEngine (mk, ofStr, empty) =
         html.elmish(init, update, render, Bolero.Program.withRouter router)
 
 
+    member _.fragment x = Fragment x
+
     member html.raw x = Bolero.RawHtml x |> BoleroNode
 
     member html.html (lang: string, nodes) = Bolero.Html.html [ Bolero.Html.attr.lang lang ] (nodes |> List.map FunBlazorNode.ToBolero) |> BoleroNode
@@ -97,7 +100,7 @@ type FunBlazorHtmlEngine (mk, ofStr, empty) =
     member html.scriptRaw x = html.script [ html.raw x ]
     member html.stylesheet x = html.link [ Attr ("rel", Choice1Of2 "stylesheet"); Attr ("href", Choice1Of2 x) ]
     
-    member html.route (render) = html.inject (fun (lifecycle: IComponentHook, nav: NavigationManager, interception: INavigationInterception, localStore: ILocalStore) ->
+    member html.route (render: string list -> FunBlazorNode) = html.inject (fun (lifecycle: IComponentHook, nav: NavigationManager, interception: INavigationInterception, localStore: ILocalStore) ->
         let location = localStore.Create nav.Uri
 
         lifecycle.OnAfterRender.Add (function
@@ -120,8 +123,8 @@ type FunBlazorSvgEngine (mk, ofStr, empty) =
 type FunBlazorAttrEngine (mk, mkBool) =
     inherit Feliz.AttrEngine<FunBlazorNode>(mk, mkBool)
     
-    member _.children nodes = Fragment nodes
-    member _.children x = BoleroNode (Bolero.Html.text x)
+    member _.childContent nodes = Fragment nodes
+    member _.childContent x = BoleroNode (Bolero.Html.text x)
 
     member _.events attrs = BoleroAttrs attrs
 

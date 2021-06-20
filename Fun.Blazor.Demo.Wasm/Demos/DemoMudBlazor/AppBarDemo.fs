@@ -11,7 +11,7 @@ let appBarDemo = html.inject (fun () ->
     mudAppBar.create [
         mudAppBar.color Color.Primary
         mudAppBar.fixed' false
-        mudAppBar.children [
+        mudAppBar.childContent [
             mudIconButton.create [
                 mudIconButton.icon Icons.Filled.Menu
                 mudIconButton.color Color.Inherit

@@ -22,32 +22,58 @@ let closeGenerics str =
     else sprintf "<%s>" str
 
 
+let getTypeShortName (ty: Type) =
+    if ty.Name.Contains "`" then ty.Name.Split("`").[0]
+    else ty.Name
+
+ 
 let rec getTypeName (ty: Type) =
     let interfaces = ty.GetInterfaces()
-    let enumerable = interfaces |> Seq.tryFind (fun x -> x.Name.StartsWith "IEnumerable`" && x.Namespace = "System.Collections.Generic")
+    let isIEnumerable, isList, isDictionary = 
+        interfaces 
+        |> Seq.fold
+            (fun (isIEnumerable, isList, isDictionary) x -> 
+                if x.Namespace = "System.Collections.Generic" then
+                    if x.Name.StartsWith "Dictionary`" then Some x, isList, Some x
+                    elif x.Name.StartsWith "List`" then Some x, Some x, isDictionary
+                    elif x.Name.StartsWith "IEnumerable`" then Some x, isList, isDictionary
+                    else isIEnumerable, isList, isDictionary
+                else isIEnumerable, isList, isDictionary)
+            (None, None, None)
+    
+    let getName (ty: Type)  = 
+        if ty.Name.Contains "`" then
+            let generics =
+                ty.GenericTypeArguments
+                |> Seq.map getTypeName
+                |> String.concat ", "
+                |> fun x ->
+                    if String.IsNullOrEmpty x then ""
+                    else $"<{x}>"
+            let name = ty.Name.Split('`').[0]
+            $"{ty.Namespace}.{name}{generics}"
+
+        elif String.IsNullOrEmpty ty.FullName |> not then 
+            if ty.FullName.Contains "+" then $"{ty.ReflectedType.FullName}.{ty.Name}"
+            else ty.FullName
+
+        else
+            $"'{ty.Name}"
 
     if ty = typeof<string> then "System.String"
     else
-        match enumerable with
-        | Some e -> getTypeName e
-        | None ->
-            if ty.Name.Contains "`" then
-                let generics =
-                    ty.GenericTypeArguments
-                    |> Seq.map getTypeName
-                    |> String.concat ", "
-                    |> fun x ->
-                        if String.IsNullOrEmpty x then ""
-                        else $"<{x}>"
-                let name = ty.Name.Split('`').[0]
-                $"{ty.Namespace}.{name}{generics}"
+        if ty.IsArray then
+            match isIEnumerable with
+            | Some e -> $"{getTypeName e.GenericTypeArguments.[0]}[]"
+            | None -> getName ty
+        else
+            match isList with
+            | Some e -> $"System.Collections.Generic.List<{getTypeName e.GenericTypeArguments.[0]}>"
+            | None ->
+                match isDictionary with
+                | Some e -> $"System.Collections.Generic.Dictionary<{getTypeName e.GenericTypeArguments.[0]}>"
+                | None -> getName ty
 
-            elif String.IsNullOrEmpty ty.FullName |> not then 
-                if ty.FullName.Contains "+" then $"{ty.ReflectedType.FullName}.{ty.Name}"
-                else ty.FullName
-
-            else
-                $"'{ty.Name}"
 
 let getTypeNames (tys: Type list) = List.map getTypeName tys
 
@@ -74,4 +100,10 @@ let createConstraint (tys: Type list) =
 
 let appendStr (x: string) (y: string) = y + x
 
+let appendStrIfNotEmpty (x: string) (y: string) =
+    if String.IsNullOrEmpty y then ""
+    else y + x
 
+let addStrIfNotEmpty (x: string) (y: string) =
+    if String.IsNullOrEmpty y then ""
+    else x + y

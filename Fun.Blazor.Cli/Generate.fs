@@ -22,7 +22,12 @@ let private createCodeFile (projectFile: string) codesDirName (name, dll) =
     AnsiConsole.MarkupLine $"Generating code for [purple]{name}[/]: [green]{dll}[/]"
     
     try
-        let codes = Assembly.LoadFile(dll).GetTypes() |> Generator.generateCode
+        let opens =
+            """open Bolero.Html
+open Fun.Blazor
+open Fun.Blazor.Web.DslInternals"""
+
+        let codes = Assembly.LoadFile(dll).GetTypes() |> Generator.generateCode name opens
         let codesDir = Path.GetDirectoryName projectFile </> codesDirName
 
         if Directory.Exists codesDir |> not then
@@ -30,17 +35,9 @@ let private createCodeFile (projectFile: string) codesDirName (name, dll) =
         
         let path = codesDir </> name + ".fs"
         let code = 
-            $"""namespace rec {name}.Internal
+            $"""{codes.internalCode}
 
-open Bolero
-open Bolero.Html
-open Fun.Blazor
-open Fun.Blazor.Web.Internal
-
-{codes.internalCode}
-
-
-namespace rec {name}
+// =======================================================================================================================
 
 {codes.dslCode}"""
         

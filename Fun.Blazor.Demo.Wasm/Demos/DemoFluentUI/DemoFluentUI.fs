@@ -1,53 +1,53 @@
 ﻿[<AutoOpen>]
 module Fun.Blazor.Demo.Wasm.DemoFluentUI.Demo
 
+open MudBlazor
 open Microsoft.Fast.Components.FluentUI
 open Fun.Blazor
+open Fun.Blazor.MudBlazor
 open Fun.Blazor.FluentUI
+
+open Fun.Blazor.Demo.Wasm.Components
+
+
+let private rootDir = "Demos/DemoFluentUI"
 
 
 let demoFluentUI = html.inject (fun () ->
-    fluentDesignSystemProvider.create [
-        fluentCard.create [
-            fluentProgress.create [
-                fluentProgress.children "progress"
-            ]
-            fluentMenu.create [
-                for i in 0..10 do
-                    fluentMenuItem.create [
-                        html.text $"hi {i}"
+    html.div [
+        mudContainer.create [
+            mudContainer.maxWidth MaxWidth.Medium
+            mudContainer.childContent [
+                mudLink.create [
+                    mudLink.href "https://www.fast.design/"
+                    mudLink.color Color.Primary
+                    mudLink.underline Underline.Always
+                    mudLink.childContent [
+                        mudText.create [
+                            mudText.typo Typo.h4
+                            mudText.align Align.Center
+                            mudText.color Color.Primary
+                            mudText.childContent "The adaptive interface system for modern web experiences"
+                        ]
                     ]
-            ]
-            html.div [
-                attr.styles [ style.margin 10 ]
-                fluentSkeleton.create [
-                    fluentSkeleton.shape Shape.Circle
-                    !!(attr.styles [
-                        style.width 50
-                        style.height 50
-                    ])
                 ]
-                for _ in 1..3 do
-                    fluentSkeleton.create [
-                        fluentSkeleton.shape Shape.Rect
-                        !!(attr.styles [
-                            style.borderRadius 4
-                            style.marginTop 10
-                            style.height 10
-                        ])
-                    ]
-                fluentSkeleton.create [
-                    fluentSkeleton.shape Shape.Rect
-                    !!(attr.styles [
-                        style.borderRadius 4
-                        style.marginTop 10
-                        style.height 10
-                        style.width 200
-                    ])
+                spaceV3
+                mudText.create [
+                    mudText.typo Typo.body1
+                    mudText.align Align.Center
+                    mudText.childContent "Interfaces built with FAST adapt to your design system and can be used with any modern UI Framework by leveraging industry standard Web Components."
                 ]
             ]
         ]
-        
+        spaceV4
+        mudContainer.create [
+            mudContainer.maxWidth MaxWidth.Large
+            mudContainer.childContent [
+                fluentDesignSystemProvider.create [
+                    demoContainer "Skeleton" $"{rootDir}/SkeletonDemo" skeletonDemo
+                ]
+            ]
+        ]
         html.script [
             attr.src "https://unpkg.com/@fluentui/web-components"
             attr.type' "module"

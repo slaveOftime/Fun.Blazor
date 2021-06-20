@@ -21,6 +21,8 @@ let darkTheme =
     MudTheme
         (Palette =
             Palette(
+                Primary = "#64a689",
+                Secondary = "#a664a2",
                 Black = "#27272f",
                 Background = "#32333d",
                 BackgroundGrey = "#27272f",
@@ -30,8 +32,8 @@ let darkTheme =
                 DrawerIcon = "rgba(255,255,255, 0.50)",
                 AppbarBackground = "#27272f",
                 AppbarText = "rgba(255,255,255, 0.70)",
-                TextPrimary = "rgba(255,255,255, 0.70)",
-                TextSecondary = "rgba(255,255,255, 0.50)",
+                TextPrimary = "#64a689",
+                TextSecondary = "#a664a2",
                 ActionDefault = "#adadb1",
                 ActionDisabled = "rgba(255,255,255, 0.26)",
                 ActionDisabledBackground = "rgba(255,255,255, 0.12)",
@@ -49,18 +51,18 @@ let navmenu =
             mudNavGroup.title "Demos"
             mudNavGroup.icon Icons.Material.Filled.School
             mudNavGroup.expanded true
-            mudNavGroup.children [
+            mudNavGroup.childContent [
                 mudNavLink.create [
                     mudNavLink.href "/mudblazor"
-                    mudNavLink.children "MudBlazor"
+                    mudNavLink.childContent "MudBlazor"
                 ]
                 mudNavLink.create [
                     mudNavLink.href "/antdesign"
-                    mudNavLink.children "Antdesign"
+                    mudNavLink.childContent "Antdesign"
                 ]
                 mudNavLink.create [
                     mudNavLink.href "/fluentui"
-                    mudNavLink.children "FluentUI"
+                    mudNavLink.childContent "FluentUI"
                 ]
             ]
         ]
@@ -68,7 +70,7 @@ let navmenu =
 
 
 let home = html.inject (fun (localStore: ILocalStore, shareStore: IShareStore) ->
-    let isDarkMode = shareStore.Create ("isDarkMode", false)
+    let isDarkMode = shareStore.Create ("isDarkMode", true)
     let openMenu = localStore.Create false
     
     html.div [
@@ -82,15 +84,15 @@ let home = html.inject (fun (localStore: ILocalStore, shareStore: IShareStore) -
 
         mudSwipeArea.create [
             mudSwipeArea.onSwipe (fun _ -> openMenu.Publish not)
-            mudSwipeArea.children [
+            mudSwipeArea.childContent [
                 mudLayout.create [
                     mudLayout.rightToLeft false
-                    mudLayout.children [
+                    mudLayout.childContent [
                         mudAppBar.create [
                             mudAppBar.color Color.Primary
                             mudAppBar.elevation 25
                             mudAppBar.dense true
-                            mudAppBar.children [
+                            mudAppBar.childContent [
                                 mudIconButton.create [
                                     mudIconButton.icon Icons.Material.Filled.Menu
                                     mudIconButton.color Color.Inherit
@@ -100,12 +102,12 @@ let home = html.inject (fun (localStore: ILocalStore, shareStore: IShareStore) -
                                 mudText.create [
                                     mudText.typo Typo.h6
                                     mudText.color Color.Default
-                                    mudText.children "Fun Blazor"
+                                    mudText.childContent "Fun Blazor"
                                 ]
-                                html.blazor<MudSpacer> []
+                                mudSpacer.create ()
                                 mudTooltip.create [
                                     mudTooltip.text "Toggel light/dark theme"
-                                    mudTooltip.children [
+                                    mudTooltip.childContent [
                                         mudIconButton.create [
                                             mudIconButton.icon Icons.Material.Filled.Brightness4
                                             mudIconButton.color Color.Inherit
@@ -115,7 +117,7 @@ let home = html.inject (fun (localStore: ILocalStore, shareStore: IShareStore) -
                                 ]
                                 mudTooltip.create [
                                     mudTooltip.text "Github repository"
-                                    mudTooltip.children [
+                                    mudTooltip.childContent [
                                         mudIconButton.create [
                                             mudIconButton.icon Icons.Custom.Brands.GitHub
                                             mudIconButton.color Color.Inherit
@@ -130,10 +132,10 @@ let home = html.inject (fun (localStore: ILocalStore, shareStore: IShareStore) -
                                 mudDrawer.open' isOpen
                                 mudDrawer.elevation 25
                                 mudDrawer.openChanged openMenu.Publish
-                                mudDrawer.children [
+                                mudDrawer.childContent [
                                     //mudDrawerHeader.create [
                                     //    mudDrawerHeader.linkToIndex true
-                                    //    mudDrawerHeader.children [
+                                    //    mudDrawerHeader.childContent [
                                     //        mudIconButton.create [
                                     //            mudIconButton.color Color.Primary
                                     //            mudIconButton.icon Icons.Custom.Brands.GitHub
@@ -150,16 +152,16 @@ let home = html.inject (fun (localStore: ILocalStore, shareStore: IShareStore) -
                                 style.paddingBottom 64
                                 style.paddingRight 30
                             ]
-                            mudMainContent.children [ 
+                            mudMainContent.childContent [ 
                                 html.route (function
-                                    | [ "mudblazor" ] -> demoMudBlazor
                                     | [ "antdesign" ] -> demoAntDesign
                                     | [ "fluentui" ] -> demoFluentUI
-                                    | _ -> html.none
+                                    | [ "mudblazor" ]
+                                    | _ -> demoMudBlazor
                                 )
                                 mudScrollToTop.create [
                                     mudScrollToTop.topOffset 400
-                                    mudScrollToTop.children [
+                                    mudScrollToTop.childContent [
                                     
                                     ]
                                 ]

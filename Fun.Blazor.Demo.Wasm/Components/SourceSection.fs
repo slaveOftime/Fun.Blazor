@@ -9,7 +9,8 @@ open Fun.Blazor.MudBlazor
 open Fun.Result
 
 
-let sourceSection fileName = html.inject (fun (store: ILocalStore, hook: IComponentHook) ->
+let sourceSection fileName = html.inject (fun (store: ILocalStore, shareStore: IShareStore, hook: IComponentHook) ->
+    let isDarkMode = shareStore.Create ("isDarkMode", false)
     let code = store.Create DeferredState<string, string>.Loading
 
     let client = new HttpClient()
@@ -45,14 +46,20 @@ let sourceSection fileName = html.inject (fun (store: ILocalStore, hook: ICompon
                     attr.classes [ "markdown-body" ]
                     html.raw code
                 ]
-                html.stylesheet "css/github-markdown.css"
-                html.stylesheet "https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/themes/prism.min.css"
-                html.script "https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/components/prism-core.min.js"
-                html.script "https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/plugins/autoloader/prism-autoloader.min.js"
+                html.watch (isDarkMode, fun isDark -> [
+                    html.stylesheet "css/github-markdown.css"
+                    if isDark then 
+                        html.stylesheet "css/prism-vsc-dark-plus.css"
+                    else
+                        html.stylesheet "css/prism-vs.css"
+                    //html.stylesheet "https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/themes/prism.min.css"
+                    html.script "https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/components/prism-core.min.js"
+                    html.script "https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/plugins/autoloader/prism-autoloader.min.js"
+                ])
             ]
         | DeferredState.LoadFailed e ->
             mudAlert.create [
-                mudAlert.children e
+                mudAlert.childContent e
                 mudAlert.severity Severity.Error
             ]
         | _ -> html.none

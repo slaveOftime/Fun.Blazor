@@ -11,6 +11,6 @@ let alertDemo = html.inject (fun () ->
     mudCard.create [
         mudAlert.create [
             mudAlert.icon Icons.Filled.AccessAlarm
-            mudAlert.children "This is the way"
+            mudAlert.childContent "This is the way"
         ]
     ])

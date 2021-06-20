@@ -26,30 +26,35 @@ let demoMudBlazor = html.inject (fun () ->
         ]
         mudContainer.create [
             mudContainer.maxWidth MaxWidth.Large
-            mudContainer.children [ 
-                mudLink.create [
-                    mudLink.href "https://mudblazor.com/"
-                    mudLink.color Color.Primary
-                    mudLink.underline Underline.Always
-                    mudLink.children [
-                        mudText.create [
-                            mudText.typo Typo.h4
-                            mudText.align Align.Center
-                            mudText.color Color.Primary
-                            mudText.children "MudBlazor"
+            mudContainer.childContent [
+                mudContainer.create [
+                    mudContainer.maxWidth MaxWidth.Medium
+                    mudContainer.childContent [
+                        mudLink.create [
+                            mudLink.href "https://mudblazor.com/"
+                            mudLink.color Color.Primary
+                            mudLink.underline Underline.Always
+                            mudLink.childContent [
+                                mudText.create [
+                                    mudText.typo Typo.h4
+                                    mudText.align Align.Center
+                                    mudText.color Color.Primary
+                                    mudText.childContent "MudBlazor"
+                                ]
+                                mudText.create [
+                                    mudText.typo Typo.h5
+                                    mudText.align Align.Center
+                                    mudText.childContent "For faster and easier web development"
+                                ]
+                            ]
                         ]
+                        spaceV3
                         mudText.create [
-                            mudText.typo Typo.h5
+                            mudText.typo Typo.body1
                             mudText.align Align.Center
-                            mudText.children "For faster and easier web development"
+                            mudText.childContent "MudBlazor is perfect for .NET developers who want to rapidly build amazing web applications without having to struggle with CSS and Javascript. Being written entirely in C#, it empowers you to adapt or extend the framework."
                         ]
                     ]
-                ]
-                spaceV3
-                mudText.create [
-                    mudText.typo Typo.body1
-                    mudText.align Align.Center
-                    mudText.children "MudBlazor is perfect for .NET developers who want to rapidly build amazing web applications without having to struggle with CSS and Javascript. Being written entirely in C#, it empowers you to adapt or extend the framework."
                 ]
 
                 spaceV4

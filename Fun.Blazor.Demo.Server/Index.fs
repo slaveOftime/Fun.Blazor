@@ -17,7 +17,7 @@ type Index () =
                 ]
                 html.body [
                     attr.styles [ style.margin 0 ]
-                    attr.children [
+                    attr.childContent [
                         html.bolero rootComp<Wasm.App>
                         html.bolero boleroScript
                     ]
