@@ -21,7 +21,7 @@ let matBlazorDemo = html.inject (fun (localStore: ILocalStore) ->
         matThemeProvider.children [
             matAppBarContainer.create [
                 matAppBar.create [
-                    matAppBar.``fixed`` true
+                    matAppBar.fixed' true
                     matAppBar.children [
                         matAppBarRow.create [
                             matAppBarSection.create [

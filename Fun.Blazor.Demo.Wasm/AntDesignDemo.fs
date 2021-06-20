@@ -26,7 +26,7 @@ let antDesignDemo = html.inject (fun (localStore: ILocalStore) ->
                         result.title "Successfully Purchased Cloud Server ECS"
                         result.children [
                             alert.create [
-                                alert.``type`` AlertType.Success
+                                alert.type' AlertType.Success
                                 alert.message "Success"
                             ]
                         ]

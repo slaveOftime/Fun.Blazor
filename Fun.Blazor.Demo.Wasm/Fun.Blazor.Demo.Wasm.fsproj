@@ -7,6 +7,7 @@
     <Compile Include="Fun.Blazor.Bindings\Fun.Blazor.FluentUI.fs" />
     <Compile Include="Fun.Blazor.Bindings\Fun.Blazor.AntDesign.fs" />
     <Compile Include="Fun.Blazor.Bindings\Fun.Blazor.MatBlazor.fs" />
+    <Compile Include="Fun.Blazor.Bindings\Fun.Blazor.MudBlazor.fs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AntDesignDemo.fs" />
@@ -23,6 +24,7 @@
     <PackageReference FunBlazorNamespace="Fun.Blazor.FluentUI" Include="Microsoft.Fast.Components.FluentUI" Version="0.2.0" />
     <PackageReference FunBlazorNamespace="Fun.Blazor.AntDesign" Include="AntDesign" Version="0.8.2" />
     <PackageReference FunBlazorNamespace="Fun.Blazor.MatBlazor" Include="MatBlazor" Version="2.8.0" />
+    <PackageReference FunBlazorNamespace="Fun.Blazor.MudBlazor" Include="MudBlazor" Version="5.0.13" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fun.Blazor\Fun.Blazor.fsproj" />

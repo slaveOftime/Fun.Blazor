@@ -8,10 +8,13 @@ open Fun.Blazor
 open Utils
 
 
+let private fsharpKeywords = [ "component"; "checked"; "abstract"; "and"; "as"; "assert"; "base"; "begin"; "class"; "default"; "delegate"; "do"; "done"; "downcast"; "downto"; "elif"; "else"; "end"; "exception"; "extern"; "false"; "finally"; "fixed"; "for"; "fun"; "function"; "global"; "if"; "in"; "inherit"; "inline"; "interface"; "internal"; "lazy"; "let"; "let!"; "match"; "match!"; "member"; "module"; "mutable"; "namespace"; "new"; "not"; "null"; "of"; "open"; "or"; "override"; "private"; "public"; "rec"; "return"; "return!"; "select"; "static"; "struct"; "then"; "to"; "true"; "try"; "type"; "upcast"; "use"; "use!"; "val"; "void"; "when"; "while"; "with"; "yield"; "yield!"; "const" ]
+  
+
 let private getMetaInfo (tys: Type seq) =
     tys
     |> Seq.filter (fun x -> x.IsAssignableTo typeof<ComponentBase>)
-    //|> Seq.filter (fun x -> x.Name.Contains "FluentSkeleton")
+    //|> Seq.filter (fun x -> x.Name.Contains "MudBooleanInput")
     |> Seq.choose (fun ty ->
         let props = 
             ty.GetProperties()
@@ -23,15 +26,15 @@ let private getMetaInfo (tys: Type seq) =
                 else
                     let name = lowerFirstCase prop.Name
                     let name =
-                        if ["class"; "type"; "fixed"; "open"; "match"; "if"; "checked"; "component"; "for"] |> List.contains name then $"``{name}``"
+                        if fsharpKeywords |> List.contains name then $"{name}'"
                         else name
                     if prop.PropertyType.IsGenericType then
                         if prop.PropertyType.Name.StartsWith "EventCallback" ||
                            prop.PropertyType.Name.StartsWith "Microsoft.AspNetCore.Components.EventCallback"
                         then
-                            Some [ $"    static member inline {name} fn = (Bolero.Html.attr.callback<{getTypeFullName prop.PropertyType.GenericTypeArguments.[0]}> \"{prop.Name}\" (fun e -> fn e)) |> {nameof BoleroAttr}" ]
+                            Some [ $"    static member inline {name} fn = (Bolero.Html.attr.callback<{getTypeName prop.PropertyType.GenericTypeArguments.[0]}> \"{prop.Name}\" (fun e -> fn e)) |> {nameof BoleroAttr}" ]
                         else
-                            Some [ $"    static member inline {name} (x: {getTypeFullName prop.PropertyType}) = \"{prop.Name}\" => x |> {nameof BoleroAttr}" ]
+                            Some [ $"    static member inline {name} (x: {getTypeName prop.PropertyType}) = \"{prop.Name}\" => x |> {nameof BoleroAttr}" ]
 
                     elif prop.Name = "ChildContent" then
                         Some [ 
@@ -45,7 +48,7 @@ let private getMetaInfo (tys: Type seq) =
                     elif prop.Name = "Style" && prop.PropertyType = typeof<string> then
                         Some [ $"    static member inline styles (x: (string * string) list) = attr.styles x" ]
                     else
-                        Some [ $"    static member inline {name} (x: {getTypeFullName prop.PropertyType}) = \"{prop.Name}\" => x |> {nameof BoleroAttr}" ])
+                        Some [ $"    static member inline {name} (x: {getTypeName prop.PropertyType}) = \"{prop.Name}\" => x |> {nameof BoleroAttr}" ])
 
             |> Seq.concat
             |> Seq.map (fun x -> $"{x} |> {nameof GenericFunBlazorNode}<{funBlazorGeneric}>.create")

@@ -21,9 +21,8 @@ let private createCodeFile (projectFile: string) codesDirName (name, dll) =
     AnsiConsole.WriteLine ()
     AnsiConsole.MarkupLine $"Generating code for [purple]{name}[/]: [green]{dll}[/]"
     
-    Assembly.LoadFile(dll).GetTypes()
-    |> Generator.generateCode
-    |> fun codes ->
+    try
+        let codes = Assembly.LoadFile(dll).GetTypes() |> Generator.generateCode
         let codesDir = Path.GetDirectoryName projectFile </> codesDirName
 
         if Directory.Exists codesDir |> not then
@@ -49,8 +48,11 @@ namespace rec {name}
 
         AnsiConsole.MarkupLine $"Generated code for [green]{name}[/]: {path}"
 
-        path
+        Some path
 
+    with ex ->
+        AnsiConsole.WriteException(ex)
+        None
 
 
 let startGenerate (projectFile: string) (codesDirName: string) =
@@ -127,6 +129,7 @@ let startGenerate (projectFile: string) (codesDirName: string) =
     else firstItemGroup.AddBeforeSelf codeItemGroup
 
     codeFiles
+    |> List.choose id
     |> List.iter (fun file ->
         let code = XElement(xn "Compile")
         let codePath = codesDirName </> Path.GetFileName file
