@@ -17,7 +17,7 @@ let sourceSection fileName = html.inject (fun (store: ILocalStore, hook: ICompon
         #if DEBUG
         "https://localhost:5001"
         #else
-        "https://"
+        "https://slaveoftime.github.io/Fun.Blazor"
         #endif
 
     client.GetAsync($"{host}/code-docs/{fileName}.html")
@@ -25,8 +25,11 @@ let sourceSection fileName = html.inject (fun (store: ILocalStore, hook: ICompon
         if x.IsSuccessStatusCode then x.Content.ReadAsStringAsync() |> Task.map DeferredState.Loaded
         else x.StatusCode |> string |> DeferredState.LoadFailed |> Task.retn)
     |> Async.AwaitTask
+    |> Async.Catch
     |> Observable.ofAsync
-    |> Observable.subscribe code.Publish
+    |> Observable.subscribe (function
+        | Choice1Of2 x -> code.Publish x
+        | Choice2Of2 x -> code.Publish (DeferredState.LoadFailed x.Message))
     |> hook.AddDispose
     
     hook.AddDispose client
