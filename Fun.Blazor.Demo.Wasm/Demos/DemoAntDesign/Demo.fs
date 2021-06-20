@@ -1,12 +1,12 @@
 ﻿[<AutoOpen>]
-module Fun.Blazor.Demo.Wasm.AntDesignDemo.AntDesignDemo
+module Fun.Blazor.Demo.Wasm.DemoAntDesign.Demo
 
 open AntDesign
 open Fun.Blazor
 open Fun.Blazor.AntDesign
 
 
-let antDesignDemo = html.inject (fun (localStore: ILocalStore) ->
+let DemoAntDesign = html.inject (fun (localStore: ILocalStore) ->
     let isDialogOpen = localStore.Create false
 
     html.div [

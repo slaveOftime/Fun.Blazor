@@ -8,18 +8,22 @@
     <Compile Include="Fun.Blazor.Bindings\Fun.Blazor.AntDesign.fs" />
     <Compile Include="Fun.Blazor.Bindings\Fun.Blazor.MatBlazor.fs" />
     <Compile Include="Fun.Blazor.Bindings\Fun.Blazor.MudBlazor.fs" />
-    <Compile Include="MudBlazorDemo\MudBlazorDemo.fs" />
-    <Compile Include="MatBlazorDemo\MatBlazorDemo.fs" />
-    <Compile Include="AntDesignDemo\AntDesignDemo.fs" />
-    <Compile Include="FluentUIDemo\FluentUIDemo.fs" />
-  </ItemGroup>
-  <ItemGroup>
+    <Compile Include="Components\Common.fs" />
+    <Compile Include="Components\SourceSection.fs" />
+    <Compile Include="Components\DemoContainer.fs" />
+    <Compile Include="Demos\DemoMudBlazor\AlertDemo.fs" />
+    <Compile Include="Demos\DemoMudBlazor\AppBarDemo.fs" />
+    <Compile Include="Demos\DemoMudBlazor\Demo.fs" />
+    <Compile Include="Demos\DemoMatBlazor\Demo.fs" />
+    <Compile Include="Demos\DemoAntDesign\Demo.fs" />
+    <Compile Include="Demos\DemoFluentUI\Demo.fs" />
     <Compile Include="Home.fs" />
     <Compile Include="App.fs" />
     <Compile Include="Startup.fs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Bolero.Build" Version="0.17.25" />
+    <PackageReference Include="Fun.Result" Version="1.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.7" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.7" PrivateAssets="all" />
     <PackageReference FunBlazorNamespace="Fun.Blazor.FluentUI" Include="Microsoft.Fast.Components.FluentUI" Version="0.2.0" />

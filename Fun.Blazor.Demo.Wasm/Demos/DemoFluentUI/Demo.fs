@@ -1,12 +1,12 @@
 ﻿[<AutoOpen>]
-module Fun.Blazor.Demo.Wasm.FluentUIDemo.FluentUIDemo
+module Fun.Blazor.Demo.Wasm.DemoFluentUI.Demo
 
 open Microsoft.Fast.Components.FluentUI
 open Fun.Blazor
 open Fun.Blazor.FluentUI
 
 
-let fluentUIDemo = html.inject (fun () ->
+let demoFluentUI = html.inject (fun () ->
     fluentDesignSystemProvider.create [
         fluentCard.create [
             fluentProgress.create [

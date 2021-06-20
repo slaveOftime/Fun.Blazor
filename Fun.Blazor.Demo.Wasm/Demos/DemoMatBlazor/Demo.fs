@@ -1,5 +1,5 @@
 ﻿[<AutoOpen>]
-module Fun.Blazor.Demo.Wasm.MatBlazorDemo.MatBlazorDemo
+module Fun.Blazor.Demo.Wasm.DemoMatBlazor.Demo
 
 open MatBlazor
 open Feliz
@@ -13,7 +13,7 @@ let theme =
         ,Secondary = MatThemeColors.Red._300.Value)
 
 
-let matBlazorDemo = html.inject (fun (localStore: ILocalStore) ->
+let demoMatBlazor = html.inject (fun (localStore: ILocalStore) ->
     let isMenuOpen = localStore.Create false
 
     matThemeProvider.create [

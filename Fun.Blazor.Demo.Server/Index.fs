@@ -35,6 +35,11 @@ type Index () =
                             attr.src "https://unpkg.com/@fluentui/web-components"
                             attr.type' "module"
                         ]
+
+                        html.stylesheet "css/github-markdown.css"
+                        html.stylesheet "https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/themes/prism-solarizedlight.min.css"
+                        html.script "https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/components/prism-core.min.js"
+                        html.script "https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/plugins/autoloader/prism-autoloader.min.js"
                     ]
                 ]
             ])
