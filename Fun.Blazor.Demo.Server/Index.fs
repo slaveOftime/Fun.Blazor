@@ -21,6 +21,10 @@ type Index () =
                         html.bolero rootComp<Wasm.App>
                         html.bolero boleroScript
                 
+                        html.stylesheet "https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+                        html.stylesheet "_content/MudBlazor/MudBlazor.min.css"
+                        html.script "_content/MudBlazor/MudBlazor.min.js"
+
                         html.script "_content/MatBlazor/dist/matBlazor.js"
                         html.stylesheet "_content/MatBlazor/dist/matBlazor.css"
 

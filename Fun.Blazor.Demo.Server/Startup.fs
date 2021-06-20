@@ -5,6 +5,7 @@ open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Hosting
 open Microsoft.Extensions.DependencyInjection
 open Bolero.Server
+open MudBlazor.Services
 open MatBlazor
 
 
@@ -12,11 +13,14 @@ type Startup() =
 
     member this.ConfigureServices(services: IServiceCollection) =
         services.AddControllersWithViews() |> ignore
-        services.AddServerSideBlazor() |> ignore
-        services.AddBoleroHost(true, true) |> ignore
-        services.AddMatBlazor() |> ignore
-        services.AddAntDesign() |> ignore
-        services.AddFunBlazor() |> ignore
+        services
+            .AddServerSideBlazor().Services
+            .AddBoleroHost(true, true)
+            .AddFunBlazor()
+            .AddMudServices()
+            .AddAntDesign()
+            .AddMatBlazor()
+
 
     member this.Configure(app: IApplicationBuilder, env: IWebHostEnvironment) =
         app

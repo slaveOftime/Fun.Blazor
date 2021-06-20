@@ -8,11 +8,12 @@
     <Compile Include="Fun.Blazor.Bindings\Fun.Blazor.AntDesign.fs" />
     <Compile Include="Fun.Blazor.Bindings\Fun.Blazor.MatBlazor.fs" />
     <Compile Include="Fun.Blazor.Bindings\Fun.Blazor.MudBlazor.fs" />
+    <Compile Include="MudBlazorDemo\MudBlazorDemo.fs" />
+    <Compile Include="MatBlazorDemo\MatBlazorDemo.fs" />
+    <Compile Include="AntDesignDemo\AntDesignDemo.fs" />
+    <Compile Include="FluentUIDemo\FluentUIDemo.fs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AntDesignDemo.fs" />
-    <Compile Include="MatBlazorDemo.fs" />
-    <Compile Include="FluentUIDemo.fs" />
     <Compile Include="Home.fs" />
     <Compile Include="App.fs" />
     <Compile Include="Startup.fs" />

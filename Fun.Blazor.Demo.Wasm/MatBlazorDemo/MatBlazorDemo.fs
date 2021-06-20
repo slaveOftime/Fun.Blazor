@@ -1,5 +1,5 @@
 ﻿[<AutoOpen>]
-module Fun.Blazor.Demo.Wasm.MatBlazorDemo
+module Fun.Blazor.Demo.Wasm.MatBlazorDemo.MatBlazorDemo
 
 open MatBlazor
 open Feliz

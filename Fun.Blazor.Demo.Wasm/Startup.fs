@@ -2,6 +2,7 @@ namespace Fun.Blazor.Demo.Wasm
 
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.AspNetCore.Components.WebAssembly.Hosting
+open MudBlazor.Services
 open MatBlazor
 
 
@@ -16,7 +17,8 @@ module Program =
         builder.Services
             .AddFunBlazor()
             .AddAntDesign()
-            .AddMatBlazor() |> ignore
+            .AddMudServices()
+            .AddMatBlazor()
         
         builder.Build().RunAsync() |> ignore
         0
