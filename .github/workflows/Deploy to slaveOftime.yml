@@ -27,7 +27,7 @@ jobs:
     - name: Copy via ssh
       uses: garygrossgarten/github-action-scp@v0.5.3
       with:
-        local: /home/runner/work/Fun.Blazor.Docs.Server/Fun.Blazor.Docs.Server/Fun.Blazor.Docs.Server.Release/
+        local: /home/runner/work/Fun.Blazor/Fun.Blazor/Fun.Blazor.Docs.Server.Release/
         remote: ${{ secrets.REMOTE_TARGET }}/Fun.Blazor.Docs.Server-deploy
         host: ${{ secrets.REMOTE_HOST }}
         username: ${{ secrets.REMOTE_USER }}
