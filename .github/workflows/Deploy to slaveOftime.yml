@@ -1,0 +1,52 @@
+name: Bundle and deploy
+
+on:
+  # push:
+  #   branches:
+  #     - master
+  release:
+    types: [published]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-20.04
+
+    steps:
+    - uses: actions/checkout@v2
+      
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+           
+    - name: Bundle
+      run: |
+        dotnet tool restore
+        dotnet fsi build.fsx -t GenerateDocForWasm
+        dotnet publish Fun.Blazor.Docs.Server/Fun.Blazor.Docs.Server.fsproj -c Release -o Fun.Blazor.Docs.Server.Release --nologo
+
+
+    - name: Copy via ssh
+      uses: garygrossgarten/github-action-scp@v0.5.3
+      with:
+        local: /home/runner/work/Fun.Blazor.Docs.Server/Fun.Blazor.Docs.Server/deploy/publish/
+        remote: ${{ secrets.REMOTE_TARGET }}/Fun.Blazor.Docs.Server-deploy
+        host: ${{ secrets.REMOTE_HOST }}
+        username: ${{ secrets.REMOTE_USER }}
+        password: ${{ secrets.REMOTE_PWD }}
+        
+    - name: Run SSH command
+      uses: appleboy/ssh-action@v0.1.4
+      with:
+        host: ${{ secrets.REMOTE_HOST }}
+        username: ${{ secrets.REMOTE_USER }}
+        password: ${{ secrets.REMOTE_PWD }}
+        script: |
+          echo Stop website
+          sudo systemctl stop Fun.Blazor.Docs.Server.service
+          echo Copy files
+          cp -r -f  ${{ secrets.REMOTE_TARGET }}/Fun.Blazor.Docs.Server-deploy/* ${{ secrets.REMOTE_TARGET }}/Fun.Blazor.Docs.Server
+          echo Start website
+          sudo systemctl start Fun.Blazor.Docs.Server.service
+    
