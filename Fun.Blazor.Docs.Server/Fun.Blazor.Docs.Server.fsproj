@@ -8,9 +8,6 @@
 		<Compile Include="Startup.fs" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference FunBlazorNamespace="Fun.Blazor.FluentUI" Include="Microsoft.Fast.Components.FluentUI" Version="0.2.0" />
-		<PackageReference FunBlazorNamespace="Fun.Blazor.AntDesign" Include="AntDesign" Version="0.8.2" />
-		<PackageReference FunBlazorNamespace="Fun.Blazor.MatBlazor" Include="MatBlazor" Version="2.8.0" />
 		<PackageReference Include="Bolero.Server" Version="0.17.25" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="5.0.*" />
 	</ItemGroup>

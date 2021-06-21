@@ -1,17 +1,17 @@
 namespace Fun.Blazor.Docs
 
-open Microsoft.AspNetCore
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Hosting
+open Microsoft.Extensions.Hosting
 open Microsoft.Extensions.DependencyInjection
 open Bolero.Server
 open MudBlazor.Services
-open MatBlazor
 
 
-type Startup() =
+[<AutoOpen>]
+module Configs =
 
-    member this.ConfigureServices(services: IServiceCollection) =
+    let configureService (services: IServiceCollection) =
         services.AddControllersWithViews() |> ignore
         services
             .AddServerSideBlazor().Services
@@ -19,26 +19,29 @@ type Startup() =
             .AddFunBlazor()
             .AddMudServices()
             .AddAntDesign()
-            .AddMatBlazor()
+            |> ignore
 
 
-    member this.Configure(app: IApplicationBuilder, env: IWebHostEnvironment) =
-        app
+    let configureApplication(application: IApplicationBuilder) =
+        application
             .UseStaticFiles()
             .UseRouting()
             .UseEndpoints(fun endpoints ->
                 endpoints.MapBlazorHub() |> ignore
                 endpoints.MapFallbackToBolero(Index.page) |> ignore)
-        |> ignore
+            |> ignore
 
 
 module Program =
 
     [<EntryPoint>]
     let main args =
-        WebHost
-            .CreateDefaultBuilder(args)
-            .UseStartup<Startup>()
+        Host.CreateDefaultBuilder(args)
+            .ConfigureWebHostDefaults(fun builder ->
+                builder
+                    .ConfigureServices(configureService)
+                    .Configure(configureApplication)
+                    |> ignore)
             .Build()
             .Run()
         0
