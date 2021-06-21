@@ -365,6 +365,6 @@ FodyWeavers.xsd
 deploy/
 /slaveOftime-blazor/wwwroot/css/tailwind-generated.css
 /slaveOftime-blazor/SiteData.db
-/Fun.Blazor.Demo.Wasm/wwwroot/code-docs
+/Fun.Blazor.Docs.Wasm/wwwroot/code-docs
 
 global.json

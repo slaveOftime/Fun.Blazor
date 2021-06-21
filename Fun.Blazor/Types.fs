@@ -63,6 +63,7 @@ type IComponentHook =
     abstract OnAfterRender: IEvent<bool>
     abstract OnDispose: IEvent<unit>
     abstract AddDispose: IDisposable -> unit
+    abstract AddDisposes: IDisposable seq -> unit
     abstract StateHasChanged: unit -> unit
 
 

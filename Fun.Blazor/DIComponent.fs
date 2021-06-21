@@ -52,6 +52,7 @@ type DIComponent<'T>() as this =
             member _.OnAfterRender = afterRenderEvent.Publish
             member _.OnDispose = disposeEvent.Publish
             member _.AddDispose dispose = disposes.Add dispose
+            member _.AddDisposes ds = disposes.AddRange(ds)
             member _.StateHasChanged () = this.ForceSetState() } 
 
     let handleNotFoundType ty =

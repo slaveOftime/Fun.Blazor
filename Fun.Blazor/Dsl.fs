@@ -106,15 +106,16 @@ type FunBlazorHtmlEngine (mk, ofStr, empty) =
     member html.scriptRaw x = html.script [ html.raw x ]
     member html.stylesheet x = html.link [ Attr ("rel", Choice1Of2 "stylesheet"); Attr ("href", Choice1Of2 x) ]
     
-    member html.route (render: string list -> FunBlazorNode) = html.inject (fun (lifecycle: IComponentHook, nav: NavigationManager, interception: INavigationInterception, localStore: ILocalStore) ->
+    member html.route (render: string list -> FunBlazorNode) = html.inject (fun (hook: IComponentHook, nav: NavigationManager, interception: INavigationInterception, localStore: ILocalStore) ->
         let location = localStore.Create nav.Uri
 
-        lifecycle.OnAfterRender.Add (function
+        hook.OnAfterRender.Subscribe (function
             | true ->
                 interception.EnableNavigationInterceptionAsync() |> ignore
-                nav.LocationChanged.Add (fun e -> location.Publish e.Location)
+                nav.LocationChanged.Subscribe (fun e -> try location.Publish e.Location with _ -> ()) |> hook.AddDispose
             | false ->
                 ())
+            |> hook.AddDispose
 
         html.watch (location, fun loc ->
             Router.urlSegments (Uri loc).PathAndQuery RouteMode.Path

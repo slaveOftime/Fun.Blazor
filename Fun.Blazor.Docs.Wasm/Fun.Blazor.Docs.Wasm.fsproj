@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Fun.Blazor.Bindings\Fun.Blazor.FluentUI.fs" />
+    <Compile Include="Fun.Blazor.Bindings\Fun.Blazor.AntDesign.fs" />
+    <Compile Include="Fun.Blazor.Bindings\Fun.Blazor.MudBlazor.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Components\Common.fs" />
+    <Compile Include="Components\ShareStores.fs" />
+    <Compile Include="Components\SourceSection.fs" />
+    <Compile Include="Components\DemoContainer.fs" />
+    <Compile Include="Demos\DemoMudBlazor\AlertDemo.fs" />
+    <Compile Include="Demos\DemoMudBlazor\AppBarDemo.fs" />
+    <Compile Include="Demos\DemoMudBlazor\DemoMudBlazor.fs" />
+    <Compile Include="Demos\DemoAntDesign\ModalDemo.fs" />
+    <Compile Include="Demos\DemoAntDesign\DropDownDemo.fs" />
+    <Compile Include="Demos\DemoAntDesign\CollapseDemo.fs" />
+    <Compile Include="Demos\DemoAntDesign\DemoAntDesign.fs" />
+    <Compile Include="Demos\DemoFluentUI\SkeletonDemo.fs" />
+    <Compile Include="Demos\DemoFluentUI\DemoFluentUI.fs" />
+    <Compile Include="Pages\QuickStart\BasicUsageDemo.fs" />
+    <Compile Include="Pages\QuickStart\QuickStart.fs" />
+    <Compile Include="Pages\Router\RouterDemo.fs" />
+    <Compile Include="Pages\Router\Router.fs" />
+    <Compile Include="Pages\Elmish\ElmishDemo.fs" />
+    <Compile Include="Pages\Elmish\Elmish.fs" />
+    <Compile Include="Pages\HelperFunctions\LocalStoreDemo.fs" />
+    <Compile Include="Pages\HelperFunctions\HelperFunctions.fs" />
+    <None Include="Pages\FunBlazorCliUsage\CliUsageDemo.md" />
+    <Compile Include="Pages\FunBlazorCliUsage\FunBlazorCliUsage.fs" />
+    <Compile Include="Home.fs" />
+    <Compile Include="App.fs" />
+    <Compile Include="Startup.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Bolero.Build" Version="0.17.25" />
+    <PackageReference Include="Fun.Result" Version="1.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.7" PrivateAssets="all" />
+    <PackageReference FunBlazorNamespace="Fun.Blazor.FluentUI" Include="Microsoft.Fast.Components.FluentUI" Version="0.2.0" />
+    <PackageReference FunBlazorNamespace="Fun.Blazor.AntDesign" Include="AntDesign" Version="0.8.2" />
+    <PackageReference FunBlazorNamespace="Fun.Blazor.MudBlazor" Include="MudBlazor" Version="5.0.13" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Fun.Blazor\Fun.Blazor.fsproj" />
+  </ItemGroup>
+</Project>

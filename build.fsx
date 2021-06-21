@@ -20,25 +20,36 @@ fsi.CommandLineArgs
 
 let generateDocForWasm =
     BuildTask.create "GenerateDocForWasm" [] {
-        let codeRootDir = __SOURCE_DIRECTORY__ </> "Fun.Blazor.Demo.Wasm"
+        let codeRootDir = __SOURCE_DIRECTORY__ </> "Fun.Blazor.Docs.Wasm"
         let outputDir = codeRootDir </> "wwwroot" </> "code-docs"
 
         Shell.cleanDir outputDir
 
-        !!(codeRootDir </> "**" </> "*Demo.fs")
-        |> Seq.map (fun path ->
-            let markdown = 
-                $"""```fsharp
+        let fsCodes =
+            !!(codeRootDir </> "**" </> "*Demo.fs")
+            |> Seq.map (fun path ->
+                let markdown = 
+                    $"""```fsharp
 {File.readAsString path}
-```
-"""
-            path, markdown)
+```             """
+                path, markdown)
+
+        let rawMarkdowns =
+            !!(codeRootDir </> "**" </> "*Demo.md")
+            |> Seq.map (fun path -> path, File.readAsString path)
+
+        fsCodes
+        |> Seq.append rawMarkdowns
         |> Seq.iter (fun (path, markdown) ->
             let html = Markdown.Parse markdown |> Markdown.ToHtml
             let relativePath = Path.GetRelativePath(codeRootDir, path)
             let filePath = outputDir </> Path.getDirectory relativePath </> Path.GetFileNameWithoutExtension relativePath + ".html"
             Directory.ensure (Path.getDirectory filePath)
             File.writeString false filePath html)
+
+        let readmeMd = __SOURCE_DIRECTORY__ </> "README.md"
+        let readmeHtml = File.readAsString readmeMd |> Markdown.Parse |> Markdown.ToHtml
+        File.writeString false (outputDir </> "README.html") readmeHtml
     }
 
 

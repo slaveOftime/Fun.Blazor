@@ -4,11 +4,7 @@ This is a project to make F# developer to write blazor easier.
 
 It is based on [bolero](https://github.com/fsbolero/Bolero) and  [Feliz.Engine](https://github.com/alfonsogarciacaro/Feliz.Engine)
 
-
-## Table of contents
-
-- [Getting Started](#Fun.Blazor)
-- [Use third party blazor components](Fun.Blazor.Cli)
+[WASM docs](https://github.com/slaveOftime/Fun.Blazor)
 
 
 ## Fun.Blazor
@@ -42,7 +38,7 @@ let antDesignDemo = html.inject (fun (localStore: ILocalStore) ->
                 modal.visible isOpen
                 modal.onOk (fun _ -> isDialogOpen.Publish not)
                 modal.onCancel (fun _ -> isDialogOpen.Publish not)
-                modal.children [
+                modal.childContent [
                     result.create [
                         result.status "success"
                         result.title "Successfully Purchased Cloud Server ECS"
@@ -88,60 +84,3 @@ There are couple of helper functions you may need
     ```
 
     Then you can use isDialogOpen.Publish to change its state at anytime
-
-
-## Fun.Blazor.Cli
-
-```
-dotnet tool install -g Fun.Blazor.Cli
-```
-
-Steps:
-
-1. Add any third party blazor components like AntDesign to your application and build in debug mode to pull the nuget packages
-
-   Add attribute `FunBlazorNamespace` to give a namespace
-
-   ```
-    <PackageReference FunBlazorNamespace="Fun.Blazor.AntDesign" Include="AntDesign" Version="0.8.2" />
-   ```
-
-2. Run the command
-
-    ```
-    fun-blazor generate ./YourApplication.fsproj
-    ```
-
-    By default code will generated in the `Fun.Blazor.Bindings` folder. All the binding types are in lowercase
-
-    ```fsharp
-    modal.visible isOpen
-    ```
-
-3. Enjoy it
-
-    ```fsharp
-    open Fun.Blazor.AntDesign
-    ```
-
-Tips:
-
-1. There is a `create` method for all the generated components bindings
-
-2. Generic type safe
-
-    ```fsharp
-    matCheckbox<bool>.create [
-        matCheckbox.label "Check a go"
-        matCheckbox.value isMenuOpen
-    ]
-    ```
-
-3. Use basic dom attribute with generated component
-
-    ```fsharp
-    matDrawer.create [
-        !!(evt.click (fun _ -> isMenuOpen.Publish not))
-        // Or
-        evt.click (fun _ -> isMenuOpen.Publish not) |> genericFunBlazor
-    ```    
