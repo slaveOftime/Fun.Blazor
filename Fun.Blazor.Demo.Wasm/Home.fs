@@ -53,15 +53,15 @@ let navmenu =
             mudNavGroup.expanded true
             mudNavGroup.childContent [
                 mudNavLink.create [
-                    mudNavLink.href "/mudblazor"
+                    mudNavLink.href "./mudblazor"
                     mudNavLink.childContent "MudBlazor"
                 ]
                 mudNavLink.create [
-                    mudNavLink.href "/antdesign"
+                    mudNavLink.href "./antdesign"
                     mudNavLink.childContent "Antdesign"
                 ]
                 mudNavLink.create [
-                    mudNavLink.href "/fluentui"
+                    mudNavLink.href "./fluentui"
                     mudNavLink.childContent "FluentUI"
                 ]
             ]
@@ -154,7 +154,9 @@ let home = html.inject (fun (localStore: ILocalStore, shareStore: IShareStore) -
                             ]
                             mudMainContent.childContent [ 
                                 html.route (function
+                                    | [ _; "antdesign" ]
                                     | [ "antdesign" ] -> demoAntDesign
+                                    | [ _; "fluentui" ]
                                     | [ "fluentui" ] -> demoFluentUI
                                     | [ "mudblazor" ]
                                     | _ -> demoMudBlazor
