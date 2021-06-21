@@ -1,11 +1,8 @@
-name: Bundle and deploy
+name: Deploy to slaveOftime
 
 on:
-  # push:
-  #   branches:
-  #     - master
-  release:
-    types: [published]
+  push:
+    branches: [ master ]
 
 jobs:
   build:
