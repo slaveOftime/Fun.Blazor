@@ -4,7 +4,7 @@ This is a project to make F# developer to write blazor easier.
 
 It is based on [bolero](https://github.com/fsbolero/Bolero) and  [Feliz.Engine](https://github.com/alfonsogarciacaro/Feliz.Engine)
 
-[WASM side docs](https://github.com/slaveOftime/Fun.Blazor)
+[WASM side docs](https://slaveoftime.github.io/Fun.Blazor/)
 
 [Server side docs](https://funblazor.slaveoftime.fun)
 
