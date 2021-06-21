@@ -6,6 +6,7 @@
   <ItemGroup>
     <Compile Include="Fun.Blazor.Bindings\Fun.Blazor.FluentUI.fs" />
     <Compile Include="Fun.Blazor.Bindings\Fun.Blazor.AntDesign.fs" />
+    <Compile Include="Fun.Blazor.Bindings\Fun.Blazor.AntDesign.Charts.fs" />
     <Compile Include="Fun.Blazor.Bindings\Fun.Blazor.MudBlazor.fs" />
   </ItemGroup>
   <ItemGroup>
@@ -43,6 +44,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.7" PrivateAssets="all" />
     <PackageReference FunBlazorNamespace="Fun.Blazor.FluentUI" Include="Microsoft.Fast.Components.FluentUI" Version="0.2.0" />
     <PackageReference FunBlazorNamespace="Fun.Blazor.AntDesign" Include="AntDesign" Version="0.8.2" />
+    <PackageReference FunBlazorNamespace="Fun.Blazor.AntDesign.Charts" Include="AntDesign.Charts" Version="0.2.1" />
     <PackageReference FunBlazorNamespace="Fun.Blazor.MudBlazor" Include="MudBlazor" Version="5.0.13" />
   </ItemGroup>
   <ItemGroup>
