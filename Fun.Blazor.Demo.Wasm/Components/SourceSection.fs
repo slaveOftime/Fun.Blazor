@@ -10,7 +10,7 @@ open Fun.Result
 
 
 let sourceSection fileName = html.inject (fun (store: ILocalStore, shareStore: IShareStore, hook: IComponentHook) ->
-    let isDarkMode = shareStore.Create ("isDarkMode", false)
+    let isDarkMode = ShareStores.isDarkMode shareStore
     let code = store.Create DeferredState<string, string>.Loading
 
     let client = new HttpClient()
@@ -52,7 +52,6 @@ let sourceSection fileName = html.inject (fun (store: ILocalStore, shareStore: I
                         html.stylesheet "css/prism-vsc-dark-plus.css"
                     else
                         html.stylesheet "css/prism-vs.css"
-                    //html.stylesheet "https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/themes/prism.min.css"
                     html.script "https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/components/prism-core.min.js"
                     html.script "https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/plugins/autoloader/prism-autoloader.min.js"
                 ])

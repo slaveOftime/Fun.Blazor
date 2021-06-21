@@ -10,6 +10,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Components\Common.fs" />
+    <Compile Include="Components\ShareStores.fs" />
     <Compile Include="Components\SourceSection.fs" />
     <Compile Include="Components\DemoContainer.fs" />
     <Compile Include="Demos\DemoMudBlazor\AlertDemo.fs" />

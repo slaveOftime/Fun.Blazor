@@ -7,6 +7,7 @@ open Fun.Blazor.MudBlazor
 open Fun.Blazor.Demo.Wasm.DemoMudBlazor
 open Fun.Blazor.Demo.Wasm.DemoAntDesign
 open Fun.Blazor.Demo.Wasm.DemoFluentUI
+open Fun.Blazor.Demo.Wasm.Components
 
 
 let defaultTheme =
@@ -70,7 +71,7 @@ let navmenu =
 
 
 let home = html.inject (fun (localStore: ILocalStore, shareStore: IShareStore) ->
-    let isDarkMode = shareStore.Create ("isDarkMode", true)
+    let isDarkMode = ShareStores.isDarkMode shareStore
     let openMenu = localStore.Create false
     
     html.div [
