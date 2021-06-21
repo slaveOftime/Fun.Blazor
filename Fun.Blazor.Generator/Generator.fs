@@ -89,9 +89,14 @@ let private getMetaInfo (ty: Type) =
 type private TypeTree =
     | Node of Type * TypeTree seq
 
-let rec private getTypeTree baseType (tys: Type seq): TypeTree seq =
+let rec private getTypeTree (baseType: Type) (tys: Type seq): TypeTree seq =
+    let baseTypeName = baseType.Namespace + "." + baseType.Name
     tys
-    |> Seq.filter (fun x -> x.BaseType = baseType)
+    |> Seq.filter (fun x ->
+        if baseType.IsGenericType && x.BaseType <> null then
+             baseTypeName = x.BaseType.Namespace + "." + x.BaseType.Name
+        else
+            x.BaseType = baseType)
     |> Seq.map (fun ty -> Node (ty, getTypeTree ty tys))
 
 
@@ -127,7 +132,7 @@ let private getMetaInfos (tys: Type seq) =
             ])
         |> Seq.concat
 
-    let tree = getTypeTree typeof<ComponentBase> tys
+    let tree = tys |> Seq.filter (fun x -> x.IsAssignableTo typeof<ComponentBase>) |> getTypeTree typeof<ComponentBase>
     let namespaces = getNamespaces tree |> Seq.toList
     let metaGroups = System.Collections.Generic.List<_>()
     
