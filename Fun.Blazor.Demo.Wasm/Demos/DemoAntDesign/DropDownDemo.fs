@@ -4,7 +4,6 @@ module Fun.Blazor.Demo.Wasm.DemoAntDesign.DropDownDemo
 open Fun.Blazor
 open Fun.Blazor.AntDesign
 
-
 let dropDownDemo =
     dropdown.create [
         dropdown.overlay [

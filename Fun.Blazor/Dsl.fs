@@ -77,6 +77,12 @@ type FunBlazorHtmlEngine (mk, ofStr, empty) =
     member html.elmish (init, update, render, router) =
         html.elmish(init, update, render, Bolero.Program.withRouter router)
 
+    member html.elmish (init, update, render) =
+        html.elmish
+            (fun () -> init(), Cmd.none
+            ,fun msg model -> update msg model, Cmd.none
+            ,render)
+
 
     member _.fragment x = Fragment x
 

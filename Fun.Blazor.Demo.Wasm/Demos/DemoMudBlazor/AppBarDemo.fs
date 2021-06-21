@@ -4,8 +4,6 @@ module Fun.Blazor.Demo.Wasm.DemoMudBlazor.AppBarDemo
 open MudBlazor
 open Fun.Blazor
 open Fun.Blazor.MudBlazor
-open Fun.Blazor.Demo.Wasm.Components
-
 
 let appBarDemo = html.inject (fun () ->
     mudAppBar.create [
@@ -17,6 +15,7 @@ let appBarDemo = html.inject (fun () ->
                 mudIconButton.color Color.Inherit
                 mudIconButton.edge Edge.Start
             ]
+            mudSpacer.create ()
             mudIconButton.create [
                 mudIconButton.icon Icons.Custom.Brands.GitHub
                 mudIconButton.color Color.Inherit

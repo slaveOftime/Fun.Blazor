@@ -5,7 +5,6 @@ open AntDesign
 open Fun.Blazor
 open Fun.Blazor.AntDesign
 
-
 let modalDemo = html.inject (fun (localStore: ILocalStore) ->
     let isDialogOpen = localStore.Create false
 

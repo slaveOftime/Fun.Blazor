@@ -4,7 +4,6 @@ module Fun.Blazor.Demo.Wasm.DemoAntDesign.CollapseDemo
 open Fun.Blazor
 open Fun.Blazor.AntDesign
 
-
 let collapseDemo =
     collapse.create [
         collapse.bordered false

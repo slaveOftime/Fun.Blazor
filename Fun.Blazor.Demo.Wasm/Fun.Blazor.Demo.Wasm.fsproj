@@ -22,6 +22,15 @@
     <Compile Include="Demos\DemoAntDesign\DemoAntDesign.fs" />
     <Compile Include="Demos\DemoFluentUI\SkeletonDemo.fs" />
     <Compile Include="Demos\DemoFluentUI\DemoFluentUI.fs" />
+    <Compile Include="Pages\QuickStart\BasicUsageDemo.fs" />
+    <Compile Include="Pages\QuickStart\QuickStart.fs" />
+    <Compile Include="Pages\Router\RouterDemo.fs" />
+    <Compile Include="Pages\Router\Router.fs" />
+    <Compile Include="Pages\Elmish\ElmishDemo.fs" />
+    <Compile Include="Pages\Elmish\Elmish.fs" />
+    <Compile Include="Pages\HelperFunctions\LocalStoreDemo.fs" />
+    <Compile Include="Pages\HelperFunctions\HelperFunctions.fs" />
+    <Compile Include="Pages\FunBlazorCliUsage\FunBlazorCliUsage.fs" />
     <Compile Include="Home.fs" />
     <Compile Include="App.fs" />
     <Compile Include="Startup.fs" />

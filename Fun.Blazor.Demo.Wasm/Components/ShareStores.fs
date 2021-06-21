@@ -3,4 +3,4 @@
 open Fun.Blazor
 
 
-let isDarkMode (shareStore: IShareStore) = shareStore.Create ("isDarkMode", true)
+let isDarkMode (shareStore: IShareStore) = shareStore.Create ("isDarkMode", false)

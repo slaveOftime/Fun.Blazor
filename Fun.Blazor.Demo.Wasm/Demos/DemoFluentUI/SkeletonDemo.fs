@@ -5,7 +5,6 @@ open Microsoft.Fast.Components.FluentUI
 open Fun.Blazor
 open Fun.Blazor.FluentUI
 
-
 let skeletonDemo =
     html.div [
         attr.styles [ style.margin 10 ]
