@@ -23,15 +23,25 @@ jobs:
         dotnet fsi build.fsx -t GenerateDocForWasm
         dotnet publish Fun.Blazor.Docs.Server/Fun.Blazor.Docs.Server.fsproj -c Release -o Fun.Blazor.Docs.Server.Release --nologo
 
+    # - name: Copy via ssh
+    #   uses: garygrossgarten/github-action-scp@v0.5.3
+    #   with:
+    #     local: /home/runner/work/Fun.Blazor/Fun.Blazor/Fun.Blazor.Docs.Server.Release/
+    #     remote: ${{ secrets.REMOTE_TARGET }}/Fun.Blazor.Docs.Server-deploy
+    #     host: ${{ secrets.REMOTE_HOST }}
+    #     username: ${{ secrets.REMOTE_USER }}
+    #     password: ${{ secrets.REMOTE_PWD }}
 
-    - name: Copy via ssh
-      uses: garygrossgarten/github-action-scp@v0.5.3
+    - uses: actions/checkout@v2
+    - name: Rsync deployments
+      uses: burnett01/rsync-deployments@4.1
       with:
-        local: /home/runner/work/Fun.Blazor/Fun.Blazor/Fun.Blazor.Docs.Server.Release/
-        remote: ${{ secrets.REMOTE_TARGET }}/Fun.Blazor.Docs.Server-deploy
-        host: ${{ secrets.REMOTE_HOST }}
-        username: ${{ secrets.REMOTE_USER }}
-        password: ${{ secrets.REMOTE_PWD }}
+        switches: -avzr --delete
+        path: /home/runner/work/Fun.Blazor/Fun.Blazor/Fun.Blazor.Docs.Server.Release/
+        remote_path: ${{ secrets.REMOTE_TARGET }}/Fun.Blazor.Docs.Server-deploy
+        remote_host: ${{ secrets.REMOTE_HOST }}
+        remote_user: ${{ secrets.REMOTE_USER }}
+        remote_key: ${{ secrets.REMOTE_KEY }}
         
     - name: Run SSH command
       uses: appleboy/ssh-action@v0.1.4
