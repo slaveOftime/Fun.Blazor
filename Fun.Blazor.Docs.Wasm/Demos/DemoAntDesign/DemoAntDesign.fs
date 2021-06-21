@@ -23,7 +23,12 @@ let demoAntDesign = html.inject (fun (localStore: ILocalStore, shareStore: IShar
                 demoContainer "Dropdown" $"{rootDir}/DropDownDemo" dropDownDemo
                 demoDivider
                 demoContainer "Collapse" $"{rootDir}/CollapseDemo" collapseDemo
+                demoDivider
+                demoContainer "Chart" $"{rootDir}/ChartDemo" chartDemo
             ]
+
         html.script "_content/AntDesign/js/ant-design-blazor.js"
         html.stylesheet "_content/AntDesign/css/ant-design-blazor.css"
+        html.script "https://unpkg.com/@antv/g2plot@1.1.28/dist/g2plot.js"
+        html.script "_content/AntDesign.Charts/ant-design-charts-blazor.js"
     ])

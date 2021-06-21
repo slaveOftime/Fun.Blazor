@@ -20,6 +20,7 @@
     <Compile Include="Demos\DemoAntDesign\ModalDemo.fs" />
     <Compile Include="Demos\DemoAntDesign\DropDownDemo.fs" />
     <Compile Include="Demos\DemoAntDesign\CollapseDemo.fs" />
+    <Compile Include="Demos\DemoAntDesign\ChartDemo.fs" />
     <Compile Include="Demos\DemoAntDesign\DemoAntDesign.fs" />
     <Compile Include="Demos\DemoFluentUI\SkeletonDemo.fs" />
     <Compile Include="Demos\DemoFluentUI\DemoFluentUI.fs" />

@@ -84,8 +84,10 @@ let createConstraint (tys: Type list) =
     |> List.map (fun x ->
         let tyConstraints = x.GetGenericParameterConstraints()
         [
-            if x.GenericParameterAttributes = GenericParameterAttributes.ReferenceTypeConstraint then
+            if (x.GenericParameterAttributes &&& GenericParameterAttributes.ReferenceTypeConstraint) = GenericParameterAttributes.ReferenceTypeConstraint then
                 $"'{x.Name} : not struct"
+            if (x.GenericParameterAttributes &&& GenericParameterAttributes.DefaultConstructorConstraint) = GenericParameterAttributes.DefaultConstructorConstraint then
+                $"'{x.Name} : (new : unit -> '{x.Name})"
             yield!
                 tyConstraints
                 |> Seq.filter (fun x -> String.IsNullOrEmpty x.FullName |> not)

@@ -6,7 +6,7 @@ open Fun.Blazor.Web.DslInternals
 open Fun.Blazor.AntDesign.Charts.DslInternals
 
 
-type chartComponentBase<'FunBlazorGeneric, 'TItem, 'TConfig when 'TConfig : (new : unit -> 'TConfig) and 'TConfig : not struct> =
+type chartComponentBase<'FunBlazorGeneric, 'TItem, 'TConfig when 'TConfig : not struct and 'TConfig : (new : unit -> 'TConfig)> =
     
     static member create () = [] |> html.blazor<AntDesign.Charts.ChartComponentBase<'TItem, 'TConfig>>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.ChartComponentBase<'TItem, 'TConfig>>
@@ -519,7 +519,7 @@ open Fun.Blazor.AntDesign.Charts.DslInternals
 
 
 type IChartComponentBaseNode<'TItem, 'TConfig> = interface end
-type chartComponentBase<'TItem, 'TConfig when 'TConfig : (new : unit -> 'TConfig) and 'TConfig : not struct> =
+type chartComponentBase<'TItem, 'TConfig when 'TConfig : not struct and 'TConfig : (new : unit -> 'TConfig)> =
     class
         inherit chartComponentBase<IChartComponentBaseNode<'TItem, 'TConfig>, 'TItem, 'TConfig>
     end
