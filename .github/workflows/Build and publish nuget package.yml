@@ -1,9 +1,12 @@
 name: Build and publish nuget packages
 
 on:
-  push:
-    branches:
-    - master
+  #push:
+  #  branches:
+  #  - master
+  release:
+    types: [published]
+    
 
 jobs:
   build:
@@ -25,6 +28,11 @@ jobs:
     - name: Publish Fun.Blazor
       run: |
         dotnet pack -c Release Fun.Blazor/Fun.Blazor.fsproj -o .
+        dotnet nuget push *.nupkg -s https://api.nuget.org/v3/index.json -k ${{secrets.NUGET_API_KEY}} --skip-duplicate
+    
+    - name: Publish Fun.Blazor.Server
+      run: |
+        dotnet pack -c Release Fun.Blazor.Server/Fun.Blazor.Server.fsproj -o .
         dotnet nuget push *.nupkg -s https://api.nuget.org/v3/index.json -k ${{secrets.NUGET_API_KEY}} --skip-duplicate
 
     - name: Publish Fun.Blazor.Cli
