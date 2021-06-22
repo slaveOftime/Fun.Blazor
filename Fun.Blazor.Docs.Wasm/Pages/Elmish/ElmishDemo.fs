@@ -24,20 +24,23 @@ let view model dispatch =
     html.div [
         mudText.create [
             mudText.childContent (string model.Count)
-            mudText.typo Typo.subtitle2
+            mudText.typo Typo.h6
             mudText.color Color.Primary
         ]
         mudButtonGroup.create [
-            mudButton.create [
-                mudButton.childContent "Increase"
-                mudButton.color Color.Primary
-                mudButton.onClick (fun _ -> Increase |> dispatch)
-            ]
-            mudButton.create [
-                mudButton.childContent "Descrease"
-                mudButton.color Color.Secondary
-                mudButton.variant Variant.Outlined
-                mudButton.onClick (fun _ -> Descrease |> dispatch)
+            mudButtonGroup.variant Variant.Outlined
+            mudButtonGroup.childContent [
+                mudButton.create [
+                    mudButton.childContent "Increase"
+                    mudButton.color Color.Primary
+                    mudButton.onClick (fun _ -> Increase |> dispatch)
+                ]
+                mudButton.create [
+                    mudButton.childContent "Descrease"
+                    mudButton.color Color.Secondary
+                    mudButton.variant Variant.Outlined
+                    mudButton.onClick (fun _ -> Descrease |> dispatch)
+                ]
             ]
         ]
     ]

@@ -124,16 +124,16 @@ let app = html.inject (fun (hook: IComponentHook, shareStore: IShareStore) ->
                             mudText.childContent "Fun Blazor"
                         ]
                         mudSpacer.create ()
-                        mudTooltip.create [
-                            mudTooltip.text "Toggel light/dark theme"
-                            mudTooltip.childContent [
-                                mudIconButton.create [
-                                    mudIconButton.icon Icons.Material.Filled.Brightness4
-                                    mudIconButton.color Color.Inherit
-                                    mudIconButton.onClick (fun _ -> isDarkMode.Publish not)
-                                ]
-                            ]
-                        ]
+                        //mudTooltip.create [
+                        //    mudTooltip.text "Toggel light/dark theme"
+                        //    mudTooltip.childContent [
+                        //        mudIconButton.create [
+                        //            mudIconButton.icon Icons.Material.Filled.Brightness4
+                        //            mudIconButton.color Color.Inherit
+                        //            mudIconButton.onClick (fun _ -> isDarkMode.Publish not)
+                        //        ]
+                        //    ]
+                        //]
                         mudTooltip.create [
                             mudTooltip.text "Github repository"
                             mudTooltip.childContent [
@@ -182,8 +182,8 @@ let app = html.inject (fun (hook: IComponentHook, shareStore: IShareStore) ->
                             | [ "mudblazor" ]
                             | [ _; "mudblazor" ] -> demoMudBlazor
 
-                            | [ "router" ]
-                            | [ _; "router" ] -> Router.Router.router
+                            | [ "router" ] | [ "router"; _ ]
+                            | [ _; "router" ] | [ _; "router"; _ ] -> Router.Router.router
 
                             | [ "elmish" ]
                             | [ _; "elmish" ] -> Elmish.Elmish.elmish

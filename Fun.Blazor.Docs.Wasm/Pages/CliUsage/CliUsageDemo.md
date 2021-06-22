@@ -18,36 +18,20 @@ Steps:
     fun-blazor generate ./YourApplication.fsproj
     ```
 
-    By default code will generated in the `Fun.Blazor.Bindings` folder. All the binding types are in lowercase
-
-    ```fsharp
-    modal.visible isOpen
-    ```
+    By default, code will be generated in the `Fun.Blazor.Bindings` folder. All the binding types are in lowercase
 
 3. Enjoy it
 
     ```fsharp
-    open Fun.Blazor.AntDesign
+    open MudBlazor
+    open Fun.Blazor
+    open Fun.Blazor.MudBlazor
+
+    let alertDemo =
+        mudCard.create [
+            mudAlert.create [
+                mudAlert.icon Icons.Filled.AccessAlarm
+                mudAlert.childContent "This is the way"
+            ]
+        ]
     ```
-
-Tips:
-
-1. There is a `create` method for all the generated components bindings
-
-2. Generic type safe
-
-    ```fsharp
-    matCheckbox<bool>.create [
-        matCheckbox.label "Check a go"
-        matCheckbox.value isMenuOpen
-    ]
-    ```
-
-3. Use basic dom attribute with generated component
-
-    ```fsharp
-    matDrawer.create [
-        !!(evt.click (fun _ -> isMenuOpen.Publish not))
-        // Or
-        evt.click (fun _ -> isMenuOpen.Publish not) |> genericFunBlazor
-    ```    

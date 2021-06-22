@@ -12,78 +12,92 @@ It is based on [bolero](https://github.com/fsbolero/Bolero) and  [Feliz.Engine](
 
 ## Fun.Blazor
 
+
+### Create a WASM app
+
+    * Other resources like index.html should be put under wwwroot. You can check Fun.Blazor.Docs.Wasm project for detail
+
 ```
 dotnet add package Fun.Blazor
 ```
 
-```
-services.AddFunBlazor()
+```fsharp
+open System
+open Microsoft.Extensions.DependencyInjection
+open Microsoft.AspNetCore.Components.WebAssembly.Hosting
+open MudBlazor.Services
+open Fun.Blazor
+
+let app = html.text "hello world"
+
+let builder = WebAssemblyHostBuilder.CreateDefault(Environment.GetCommandLineArgs())
+        
+builder
+    .AddFunBlazorNode("#app", app)
+    .Services
+        .AddFunBlazor()
+    |> ignore
+        
+builder.Build().RunAsync() |> ignore
 ```
 
-Then you are good to go:
+### Create a blazor server app
+
+```
+dotnet add package Fun.Blazor.Server
+```
 
 ```fsharp
-open AntDesign
+open System
+open Microsoft.AspNetCore.Builder
+open Microsoft.AspNetCore.Hosting
+open Microsoft.Extensions.Hosting
+open Microsoft.Extensions.DependencyInjection
+open MudBlazor.Services
+open Fun.Blazor.Docs.Server
 open Fun.Blazor
-open Fun.Blazor.AntDesign
+open Fun.Blazor.Server
 
-let antDesignDemo = html.inject (fun (localStore: ILocalStore) ->
-    let isDialogOpen = localStore.Create false
+// Currently the we need to define a class to render for server side blazor. In the future if I found some workaround this could be simpler
+type Index () =
+    inherit Bolero.Component()
 
-    html.div [
-        button.create [
-            button.children "Open modal"
-            button.onClick (fun _ -> isDialogOpen.Publish not)
-        ]
-        html.watch (isDialogOpen, fun isOpen ->
-            modal.create [
-                modal.title "Demo modal"
-                modal.visible isOpen
-                modal.onOk (fun _ -> isDialogOpen.Publish not)
-                modal.onCancel (fun _ -> isDialogOpen.Publish not)
-                modal.childContent [
-                    result.create [
-                        result.status "success"
-                        result.title "Successfully Purchased Cloud Server ECS"
-                        result.children [
-                            alert.create [
-                                alert.``type`` AlertType.Success
-                                alert.message "Success"
-                            ]
-                        ]
+    override this.Render() = html.text "hello world" |> html.toBolero
+
+    static member page =
+        html.doctypeHtml [
+            html.html ("en", [
+                html.head [
+                    html.title "Fun Blazor"
+                    html.baseUrl "/"
+                    html.meta [ attr.charsetUtf8 ]
+                    html.meta [ attr.name "viewport"; attr.content "width=device-width, initial-scale=1.0" ]
+                ]
+                html.body [
+                    attr.styles [ style.margin 0 ]
+                    attr.childContent [
+                        html.root<Index>()
+                        html.bolero Bolero.Server.Html.boleroScript
                     ]
                 ]
-            ]
-        )
-    ])
+            ])
+        ]
+
+Host.CreateDefaultBuilder(Environment.GetCommandLineArgs())
+    .ConfigureWebHostDefaults(fun builder ->
+        builder
+            .ConfigureServices(fun (services: IServiceCollection) ->
+                services.AddControllersWithViews() |> ignore
+                services
+                    .AddServerSideBlazor().Services
+                    .AddFunBlazorServer() |> ignore)
+            .Configure(fun (application: IApplicationBuilder) ->
+                application
+                    .UseStaticFiles()
+                    .UseRouting()
+                    .UseEndpoints(fun endpoints ->
+                        endpoints.MapBlazorHub() |> ignore
+                        endpoints.MapFallbackToFunBlazor(Index.page) |> ignore) |> ignore) |> ignore)
+    .Build()
+    .Run()
 ```
-
-There are couple of helper functions you may need
-
-1. FunBlazorNode can be easily convert to Bolero node to combine with exsiting Bolero application
-
-    ```fsharp
-    antDesignDemo.ToBoleroNode()
-    // Or
-    antDesignDemo |> html.toBoleroNode
-    ```
-
-2. You can inject any services by html.inject
-
-    ```fsharp
-    let antDesignDemo = html.inject (fun (localStore: ILocalStore) ->
-        let isDialogOpen = localStore.Create false
-    ```
-
-3. You can inject ILocalStore, IShareStore, IComponentHook to manage state and component lifecycle event
-
-4. You can watch some IObervable or IStore for some component
-
-    ```fsharp
-    html.watch (isDialogOpen, fun isOpen ->
-        modal.modal [
-            modal.title "Demo modal"
-            modal.visible isOpen
-    ```
-
-    Then you can use isDialogOpen.Publish to change its state at anytime

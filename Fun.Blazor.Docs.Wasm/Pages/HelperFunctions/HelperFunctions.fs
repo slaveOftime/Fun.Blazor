@@ -13,5 +13,7 @@ let helperFunctions =
         ""
         ""
         [
-            demoContainer "Local storage" $"{root}/LocalStoreDemo" localStoreDemo
+            demoContainer "ComponentHook" $"{root}/ComponentHookDemo" componentHookDemo
+            demoDivider
+            demoContainer "Global storage" $"{root}/GlobalStoreDemo" globalStoreDemo
         ]

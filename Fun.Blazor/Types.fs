@@ -90,7 +90,8 @@ type IShareStore =
     abstract CreateDeferred: string * (unit -> IObservable<DeferredState<'T, 'Error>>) -> IStore<DeferredState<'T, 'Error>>
 
 
-/// Will serve as a singleton service
+// Will serve as a singleton service
+// * Note this is not distributable
 type IGlobalStore = 
     inherit IShareStore
     
