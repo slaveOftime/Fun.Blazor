@@ -3,6 +3,7 @@
 open System
 open System.Collections.Generic
 open FSharp.Control.Reactive
+open Fun.Result
 
 
 type Store<'T> (defaultValue: 'T) =
@@ -27,24 +28,9 @@ type Store<'T> (defaultValue: 'T) =
                 subsribtion.Dispose()
 
 
-type LocalStore () =
-    let stores = List<IDisposable>()
-
-
-    interface ILocalStore with
-        member _.Create<'T> x =
-            let store = new Store<'T>(x)
-            stores.Add store
-            store :> IStore<'T>
-
-
-    interface IDisposable with
-        member _.Dispose() =
-            stores |> Seq.iter (fun store -> store.Dispose())
-
-
 type ShareStore () =
     let stores = Dictionary<string, IDisposable>()
+    let subscriptions = List<IDisposable>()
 
 
     interface IShareStore with
@@ -56,6 +42,16 @@ type ShareStore () =
                 stores.Add(key, store)
                 store :> IStore<'T>
 
+        member _.CreateDeferred (key: string, getData: unit -> IObservable<DeferredState<'T, 'Error>>) =
+            if stores.ContainsKey key then
+                stores.[key] :?> IStore<_>
+            else
+                let store = new Store<_>(DeferredState.NotStartYet)
+                let subscription = getData().Subscribe (fun x -> (store :> IStore<_>).Publish(x))
+                stores.Add(key, store)
+                subscriptions.Add subscription
+                store :> IStore<_>
+
         member this.Create (defaultValue: 'T) =
             let key = typeof<'T>.FullName
             (this :> IShareStore).Create(key, defaultValue)
@@ -64,3 +60,10 @@ type ShareStore () =
     interface IDisposable with
         member _.Dispose() =
             stores |> Seq.iter (fun store -> store.Value.Dispose())
+            subscriptions |> Seq.iter (fun sub -> sub.Dispose())
+
+
+type GlobalStore () =
+    inherit ShareStore()
+
+    interface IGlobalStore

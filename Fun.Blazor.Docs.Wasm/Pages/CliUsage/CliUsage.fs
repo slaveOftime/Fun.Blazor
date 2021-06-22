@@ -1,16 +1,16 @@
 ﻿[<AutoOpen>]
-module Fun.Blazor.Docs.Wasm.Pages.FunBlazorCliUsage.FunBlazorCliUsage
+module Fun.Blazor.Docs.Wasm.Pages.CliUsage.CliUsage
 
 open Fun.Blazor
 open Fun.Blazor.Docs.Wasm.Components
 
 
-let funBlazorCliUsage =
+let cliUsage =
     simplePage
         ""
         "Fun.Blazor.Cli"
         "Use this to generate third party dsl code"
         ""
         [
-            sourceSection "Pages/FunBlazorCliUsage/CliUsageDemo"
+            sourceSection "Pages/CliUsage/CliUsageDemo"
         ]

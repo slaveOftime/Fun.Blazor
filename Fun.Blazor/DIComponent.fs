@@ -43,7 +43,6 @@ type DIComponent<'T>() as this =
     let afterRenderEvent = new Event<bool>()
     let disposeEvent = new Event<unit>()
     let disposes = new List<IDisposable>()
-    let localStore = new LocalStore()
 
     let blazorLifecycle =
         { new IComponentHook with
@@ -53,11 +52,14 @@ type DIComponent<'T>() as this =
             member _.OnDispose = disposeEvent.Publish
             member _.AddDispose dispose = disposes.Add dispose
             member _.AddDisposes ds = disposes.AddRange(ds)
-            member _.StateHasChanged () = this.ForceSetState() } 
+            member _.StateHasChanged () = this.ForceSetState()
+            member _.UseStore<'T> x =
+                let store = new Store<'T>(x)
+                disposes.Add store
+                store :> IStore<'T> }
 
     let handleNotFoundType ty =
         if ty = typeof<IComponentHook> then box blazorLifecycle
-        elif ty = typeof<ILocalStore> then box localStore
         else null
 
     [<Parameter>]
@@ -96,5 +98,4 @@ type DIComponent<'T>() as this =
     interface IDisposable with
         member _.Dispose () =
             disposeEvent.Trigger()
-            (localStore :> IDisposable).Dispose()
             disposes |> Seq.iter (fun x -> x.Dispose())

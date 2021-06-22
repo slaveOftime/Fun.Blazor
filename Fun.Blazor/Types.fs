@@ -1,6 +1,7 @@
 ﻿namespace Fun.Blazor
 
 open System
+open Fun.Result
 
 
 type FunBlazorNode =
@@ -57,6 +58,13 @@ type [<Struct>] GenericFunBlazorNode<'T> =
     static member create x: GenericFunBlazorNode<'T> = { Node = x }
 
 
+type IStore<'T> =
+    abstract Publish: ('T -> 'T) -> unit
+    abstract Publish: 'T -> unit
+    abstract Observable: IObservable<'T>
+    abstract Current: 'T
+
+
 type IComponentHook =
     //abstract OnParametersSet: IEvent<unit>
     //abstract OnInitialized: IEvent<unit>
@@ -65,24 +73,24 @@ type IComponentHook =
     abstract AddDispose: IDisposable -> unit
     abstract AddDisposes: IDisposable seq -> unit
     abstract StateHasChanged: unit -> unit
-
-
-type IStore<'T> =
-    abstract Publish: ('T -> 'T) -> unit
-    abstract Publish: 'T -> unit
-    abstract Observable: IObservable<'T>
-    abstract Current: 'T
-
-
-type ILocalStore =
     /// Create an IStore and hold in component and dispose it after component disposed
-    abstract Create: 'T -> IStore<'T>
+    abstract UseStore: 'T -> IStore<'T>
 
 
+// Will serve as a scoped a service
 type IShareStore =
     /// Create an IStore and share between components and dispose it after session disposed
     abstract Create: string * 'T -> IStore<'T>
 
     /// Create an IStore and share between components and dispose it after session disposed
     abstract Create: 'T -> IStore<'T>
+
+    /// Create an IStore and share between components and dispose it after session disposed
+    /// Default state will be NotStartedYet
+    abstract CreateDeferred: string * (unit -> IObservable<DeferredState<'T, 'Error>>) -> IStore<DeferredState<'T, 'Error>>
+
+
+/// Will serve as a singleton service
+type IGlobalStore = 
+    inherit IShareStore
     

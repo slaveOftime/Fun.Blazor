@@ -5,8 +5,8 @@ open MudBlazor
 open Fun.Blazor
 open Fun.Blazor.MudBlazor
 
-let localStoreDemo = html.inject (fun (store: ILocalStore) ->
-    let toggle = store.Create false
+let localStoreDemo = html.inject (fun (hook: IComponentHook) ->
+    let toggle = hook.UseStore false
     
     mudPaper.create [
         attr.styles [ style.padding 20 ]

@@ -106,8 +106,8 @@ type FunBlazorHtmlEngine (mk, ofStr, empty) =
     member html.scriptRaw x = html.script [ html.raw x ]
     member html.stylesheet x = html.link [ Attr ("rel", Choice1Of2 "stylesheet"); Attr ("href", Choice1Of2 x) ]
     
-    member html.route (render: string list -> FunBlazorNode) = html.inject (fun (hook: IComponentHook, nav: NavigationManager, interception: INavigationInterception, localStore: ILocalStore) ->
-        let location = localStore.Create nav.Uri
+    member html.route (render: string list -> FunBlazorNode) = html.inject (fun (hook: IComponentHook, nav: NavigationManager, interception: INavigationInterception) ->
+        let location = hook.UseStore nav.Uri
 
         hook.OnAfterRender.Subscribe (function
             | true ->

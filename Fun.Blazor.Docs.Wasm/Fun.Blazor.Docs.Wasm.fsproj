@@ -32,14 +32,12 @@
     <Compile Include="Pages\Elmish\Elmish.fs" />
     <Compile Include="Pages\HelperFunctions\LocalStoreDemo.fs" />
     <Compile Include="Pages\HelperFunctions\HelperFunctions.fs" />
-    <None Include="Pages\FunBlazorCliUsage\CliUsageDemo.md" />
-    <Compile Include="Pages\FunBlazorCliUsage\FunBlazorCliUsage.fs" />
-    <Compile Include="Home.fs" />
+    <None Include="Pages\CliUsage\CliUsageDemo.md" />
+    <Compile Include="Pages\CliUsage\CliUsage.fs" />
     <Compile Include="App.fs" />
     <Compile Include="Startup.fs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Bolero.Build" Version="0.17.25" />
     <PackageReference Include="Fun.Result" Version="1.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.7" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.7" PrivateAssets="all" />

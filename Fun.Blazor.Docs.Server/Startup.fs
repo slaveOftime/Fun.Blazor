@@ -1,47 +1,29 @@
-namespace Fun.Blazor.Docs
-
+open System
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Hosting
 open Microsoft.Extensions.Hosting
 open Microsoft.Extensions.DependencyInjection
-open Bolero.Server
 open MudBlazor.Services
+open Fun.Blazor.Docs.Server
 
 
-[<AutoOpen>]
-module Configs =
+Host.CreateDefaultBuilder(Environment.GetCommandLineArgs())
+    .ConfigureWebHostDefaults(fun builder ->
+        builder
+            .ConfigureServices(fun (services: IServiceCollection) ->
+                services.AddControllersWithViews() |> ignore
+                services
+                    .AddServerSideBlazor().Services
+                    .AddFunBlazorServer()
+                    .AddMudServices()
+                    .AddAntDesign() |> ignore)
+            .Configure(fun (application: IApplicationBuilder) ->
+                application
+                    .UseStaticFiles()
+                    .UseRouting()
+                    .UseEndpoints(fun endpoints ->
+                        endpoints.MapBlazorHub() |> ignore
+                        endpoints.MapFallbackToFunBlazor(Index.page) |> ignore) |> ignore) |> ignore)
+    .Build()
+    .Run()
 
-    let configureService (services: IServiceCollection) =
-        services.AddControllersWithViews() |> ignore
-        services
-            .AddServerSideBlazor().Services
-            .AddBoleroHost(true, true)
-            .AddFunBlazor()
-            .AddMudServices()
-            .AddAntDesign()
-            |> ignore
-
-
-    let configureApplication(application: IApplicationBuilder) =
-        application
-            .UseStaticFiles()
-            .UseRouting()
-            .UseEndpoints(fun endpoints ->
-                endpoints.MapBlazorHub() |> ignore
-                endpoints.MapFallbackToBolero(Index.page) |> ignore)
-            |> ignore
-
-
-module Program =
-
-    [<EntryPoint>]
-    let main args =
-        Host.CreateDefaultBuilder(args)
-            .ConfigureWebHostDefaults(fun builder ->
-                builder
-                    .ConfigureServices(configureService)
-                    .Configure(configureApplication)
-                    |> ignore)
-            .Build()
-            .Run()
-        0

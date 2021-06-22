@@ -8,9 +8,7 @@ open Fun.Blazor.Docs.Wasm.Components
 let private rootDir = "Demos/DemoAntDesign"
 
 
-let demoAntDesign = html.inject (fun (localStore: ILocalStore, shareStore: IShareStore) ->
-    let isDarkMode = shareStore.Create ("isDarkMode", false)
-
+let demoAntDesign =
     html.div [
         simplePage
             "https://antblazor.com/"
@@ -31,4 +29,4 @@ let demoAntDesign = html.inject (fun (localStore: ILocalStore, shareStore: IShar
         html.stylesheet "_content/AntDesign/css/ant-design-blazor.css"
         html.script "https://unpkg.com/@antv/g2plot@1.1.28/dist/g2plot.js"
         html.script "_content/AntDesign.Charts/ant-design-charts-blazor.js"
-    ])
+    ]
