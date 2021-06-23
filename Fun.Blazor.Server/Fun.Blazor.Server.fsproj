@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.SDK">
 
 	<PropertyGroup>
 		<TargetFramework>net5.0</TargetFramework>
@@ -13,6 +13,7 @@
 	<ItemGroup>
 		<PackageReference Include="Bolero.Server" Version="0.17.25" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="5.0.*" />
+		<PackageReference Include="Microsoft.AspNetCore.Routing.Abstractions" Version="2.2.0" />
 	</ItemGroup>
 
 	<ItemGroup>
