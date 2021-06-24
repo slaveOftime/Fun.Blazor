@@ -1,9 +1,8 @@
 ﻿[<AutoOpen>]
 module Fun.Blazor.Docs.Wasm.DemoFluentUI.SkeletonDemo
 
-open Microsoft.Fast.Components.FluentUI
 open Fun.Blazor
-open Fun.Blazor.FluentUI
+open Microsoft.Fast.Components.FluentUI
 
 let skeletonDemo =
     html.div [

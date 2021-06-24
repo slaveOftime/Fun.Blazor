@@ -1,7 +1,11 @@
 ﻿namespace Fun.Blazor
 
 open System
+open Bolero
 open Fun.Result
+
+
+type FunBlazorRef<'T> = Ref<'T>
 
 
 type FunBlazorNode =

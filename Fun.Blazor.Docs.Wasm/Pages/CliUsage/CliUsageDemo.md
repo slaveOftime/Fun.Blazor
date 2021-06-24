@@ -8,6 +8,8 @@ Steps:
 
    Add attribute `FunBlazorNamespace` to give a namespace
 
+   If you set it to empty like FunBlazorNamespace="" then it will use the Pakage name which is set in the Include attribute.
+
    ```
     <PackageReference FunBlazorNamespace="Fun.Blazor.AntDesign" Include="AntDesign" Version="0.8.2" />
    ```

@@ -2,13 +2,29 @@
 module Fun.Blazor.Docs.Wasm.DemoMudBlazor.AlertDemo
 
 open MudBlazor
+open Bolero
 open Fun.Blazor
 open Fun.Blazor.MudBlazor
 
-let alertDemo =
+let alertDemo = html.inject (fun (hook: IComponentHook) ->
+    let ref = Ref<MudCard>()
+    let str = hook.UseStore "This is the way"
+
+    hook.OnAfterRender.Add (function
+        | false -> ()
+        | true ->
+            match ref.Value with
+            | None -> str.Publish "Did not get ref"
+            | Some _ -> str.Publish "Got ref")
+
     mudCard.create [
-        mudAlert.create [
-            mudAlert.icon Icons.Filled.AccessAlarm
-            mudAlert.childContent "This is the way"
+        //!!(attr.ref ref)
+        mudCard.ref ref
+        mudCard.childContent [
+            html.watch (str, fun str ->
+                mudAlert.create [
+                    mudAlert.icon Icons.Filled.AccessAlarm
+                    mudAlert.childContent str
+                ])
         ]
-    ]
+    ])

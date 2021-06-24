@@ -2,7 +2,7 @@
 module Fun.Blazor.Docs.Wasm.DemoAntDesign.DropDownDemo
 
 open Fun.Blazor
-open Fun.Blazor.AntDesign
+open AntDesign
 
 let dropDownDemo =
     dropdown.create [

@@ -85,12 +85,10 @@ let startGenerate (projectFile: string) (codesDirName: string) =
         project.Element(xn "Project").Elements(xn "ItemGroup")
         |> Seq.map (fun x -> x.Elements(xn "PackageReference"))
         |> Seq.concat
-        |> Seq.filter (fun x -> 
-            x.Attribute(xn FunBlazorNamespaceAttr) |> isNull |> not)
-        |> Seq.map (fun x ->
-            let name = x.Attribute(xn FunBlazorNamespaceAttr).Value
-            let package = x.Attribute(xn "Include").Value
-            let version = x.Attribute(xn "Version").Value
+        |> Seq.filter (fun x -> x.Attribute(xn FunBlazorNamespaceAttr) |> isNull |> not)
+        |> Seq.map (fun node ->
+            let package = node.Attribute(xn "Include").Value
+            let version = node.Attribute(xn "Version").Value
 
             //Use this in the future
             //let config = ConfigurationBuilder().AddJsonFile(Path.GetDirectoryName projectFile </> "obj" </> "project.assets.json").Build()
@@ -109,6 +107,11 @@ let startGenerate (projectFile: string) (codesDirName: string) =
                 |> findAnotherOneIfNotExist (fun () -> userDir </> ".nuget" </> "packages" </> package </> version </> "lib" </> "netcoreapp3.1" </> package + ".dll")
                 |> findAnotherOneIfNotExist (fun () -> userDir </> ".nuget" </> "packages" </> package </> version </> "lib" </> "net5.0" </> package + ".dll")
                 |> findAnotherOneIfNotExist (fun () -> userDir </> ".nuget" </> "packages" </> package </> version </> "lib" </> "net6.0" </> package + ".dll")
+                            
+            let name =
+                let attr = node.Attribute(xn FunBlazorNamespaceAttr)
+                if String.IsNullOrEmpty attr.Value then package
+                else attr.Value
 
             name, dll)
 

@@ -1,9 +1,9 @@
-namespace rec Fun.Blazor.FluentUI.DslInternals
+namespace rec Microsoft.Fast.Components.FluentUI.DslInternals
 
 open Bolero.Html
 open Fun.Blazor
 open Fun.Blazor.Web.DslInternals
-open Fun.Blazor.FluentUI.DslInternals
+open Microsoft.Fast.Components.FluentUI.DslInternals
 
 
 type fluentDesignSystemProvider<'FunBlazorGeneric> =
@@ -571,9 +571,9 @@ type fluentTreeView<'FunBlazorGeneric> =
 
 // =======================================================================================================================
 
-namespace Fun.Blazor.FluentUI
+namespace Microsoft.Fast.Components.FluentUI
 
-open Fun.Blazor.FluentUI.DslInternals
+open Microsoft.Fast.Components.FluentUI.DslInternals
 
 
 type IFluentDesignSystemProviderNode = interface end

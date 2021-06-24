@@ -2,7 +2,7 @@
 module rec Fun.Blazor.Docs.Wasm.DemoAntDesign.ChartDemo
 
 open AntDesign.Charts
-open Fun.Blazor.AntDesign.Charts
+open AntDesign.Charts
 
 
 type Item =

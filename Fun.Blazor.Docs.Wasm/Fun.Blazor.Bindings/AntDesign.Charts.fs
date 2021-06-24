@@ -1,9 +1,9 @@
-namespace rec Fun.Blazor.AntDesign.Charts.DslInternals
+namespace rec AntDesign.Charts.DslInternals
 
 open Bolero.Html
 open Fun.Blazor
 open Fun.Blazor.Web.DslInternals
-open Fun.Blazor.AntDesign.Charts.DslInternals
+open AntDesign.Charts.DslInternals
 
 
 type chartComponentBase<'FunBlazorGeneric, 'TItem, 'TConfig when 'TConfig : not struct and 'TConfig : (new : unit -> 'TConfig)> =
@@ -555,9 +555,9 @@ type temp<'FunBlazorGeneric, 'TItem> =
 
 // =======================================================================================================================
 
-namespace Fun.Blazor.AntDesign.Charts
+namespace AntDesign.Charts
 
-open Fun.Blazor.AntDesign.Charts.DslInternals
+open AntDesign.Charts.DslInternals
 
 
 type IChartComponentBaseNode<'TItem, 'TConfig> = interface end

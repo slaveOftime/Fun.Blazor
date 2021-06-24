@@ -1,9 +1,9 @@
-namespace rec Fun.Blazor.AntDesign.DslInternals
+namespace rec AntDesign.DslInternals
 
 open Bolero.Html
 open Fun.Blazor
 open Fun.Blazor.Web.DslInternals
-open Fun.Blazor.AntDesign.DslInternals
+open AntDesign.DslInternals
 
 
 type antComponentBase<'FunBlazorGeneric> =
@@ -4090,12 +4090,12 @@ type paginationPager<'FunBlazorGeneric> =
     static member inline refBack (x: AntDesign.ForwardRef) = "RefBack" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
                     
             
-namespace rec Fun.Blazor.AntDesign.DslInternals.Select.Internal
+namespace rec AntDesign.DslInternals.Select.Internal
 
 open Bolero.Html
 open Fun.Blazor
 open Fun.Blazor.Web.DslInternals
-open Fun.Blazor.AntDesign.DslInternals
+open AntDesign.DslInternals
 
 
 type selectOptionGroup<'FunBlazorGeneric, 'TItemValue, 'TItem> =
@@ -4110,12 +4110,12 @@ type selectOptionGroup<'FunBlazorGeneric, 'TItemValue, 'TItem> =
     static member inline refBack (x: AntDesign.ForwardRef) = "RefBack" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
                     
             
-namespace rec Fun.Blazor.AntDesign.DslInternals.Internal
+namespace rec AntDesign.DslInternals.Internal
 
 open Bolero.Html
 open Fun.Blazor
 open Fun.Blazor.Web.DslInternals
-open Fun.Blazor.AntDesign.DslInternals
+open AntDesign.DslInternals
 
 
 type calendarPanelChooser<'FunBlazorGeneric> =
@@ -4221,12 +4221,12 @@ type overlayTrigger<'FunBlazorGeneric> =
     static member inline refBack (x: AntDesign.ForwardRef) = "RefBack" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
                     
             
-namespace rec Fun.Blazor.AntDesign.DslInternals
+namespace rec AntDesign.DslInternals
 
 open Bolero.Html
 open Fun.Blazor
 open Fun.Blazor.Web.DslInternals
-open Fun.Blazor.AntDesign.DslInternals
+open AntDesign.DslInternals
 
 
 type dropdown<'FunBlazorGeneric> =
@@ -4485,12 +4485,12 @@ type tooltip<'FunBlazorGeneric> =
     static member inline refBack (x: AntDesign.ForwardRef) = "RefBack" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
                     
             
-namespace rec Fun.Blazor.AntDesign.DslInternals.Internal
+namespace rec AntDesign.DslInternals.Internal
 
 open Bolero.Html
 open Fun.Blazor
 open Fun.Blazor.Web.DslInternals
-open Fun.Blazor.AntDesign.DslInternals
+open AntDesign.DslInternals
 
 
 type subMenuTrigger<'FunBlazorGeneric> =
@@ -4566,12 +4566,12 @@ type pickerPanelBase<'FunBlazorGeneric> =
     static member inline refBack (x: AntDesign.ForwardRef) = "RefBack" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
                     
             
-namespace rec Fun.Blazor.AntDesign.DslInternals
+namespace rec AntDesign.DslInternals
 
 open Bolero.Html
 open Fun.Blazor
 open Fun.Blazor.Web.DslInternals
-open Fun.Blazor.AntDesign.DslInternals
+open AntDesign.DslInternals
 
 
 type datePickerPanelBase<'FunBlazorGeneric, 'TValue> =
@@ -4609,12 +4609,12 @@ type datePickerPanelBase<'FunBlazorGeneric, 'TValue> =
     static member inline refBack (x: AntDesign.ForwardRef) = "RefBack" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
                     
             
-namespace rec Fun.Blazor.AntDesign.DslInternals.Internal
+namespace rec AntDesign.DslInternals.Internal
 
 open Bolero.Html
 open Fun.Blazor
 open Fun.Blazor.Web.DslInternals
-open Fun.Blazor.AntDesign.DslInternals
+open AntDesign.DslInternals
 
 
 type datePickerDatetimePanel<'FunBlazorGeneric, 'TValue> =
@@ -5021,12 +5021,12 @@ type dropdownGroupButton<'FunBlazorGeneric> =
     static member inline refBack (x: AntDesign.ForwardRef) = "RefBack" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
                     
             
-namespace rec Fun.Blazor.AntDesign.DslInternals
+namespace rec AntDesign.DslInternals
 
 open Bolero.Html
 open Fun.Blazor
 open Fun.Blazor.Web.DslInternals
-open Fun.Blazor.AntDesign.DslInternals
+open AntDesign.DslInternals
 
 
 type templateComponentBase<'FunBlazorGeneric, 'TComponentOptions> =
@@ -5075,12 +5075,12 @@ type formProvider<'FunBlazorGeneric> =
     static member inline refBack (x: AntDesign.ForwardRef) = "RefBack" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
                     
             
-namespace rec Fun.Blazor.AntDesign.DslInternals.Internal
+namespace rec AntDesign.DslInternals.Internal
 
 open Bolero.Html
 open Fun.Blazor
 open Fun.Blazor.Web.DslInternals
-open Fun.Blazor.AntDesign.DslInternals
+open AntDesign.DslInternals
 
 
 type uploadButton<'FunBlazorGeneric> =
@@ -5106,12 +5106,12 @@ type uploadButton<'FunBlazorGeneric> =
     static member inline refBack (x: AntDesign.ForwardRef) = "RefBack" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
                     
             
-namespace rec Fun.Blazor.AntDesign.DslInternals
+namespace rec AntDesign.DslInternals
 
 open Bolero.Html
 open Fun.Blazor
 open Fun.Blazor.Web.DslInternals
-open Fun.Blazor.AntDesign.DslInternals
+open AntDesign.DslInternals
 
 
 type formValidationMessage<'FunBlazorGeneric, 'TValue> =
@@ -5212,12 +5212,12 @@ type summaryRow<'FunBlazorGeneric> =
     static member inline childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
                     
             
-namespace rec Fun.Blazor.AntDesign.DslInternals.statistic
+namespace rec AntDesign.DslInternals.statistic
 
 open Bolero.Html
 open Fun.Blazor
 open Fun.Blazor.Web.DslInternals
-open Fun.Blazor.AntDesign.DslInternals
+open AntDesign.DslInternals
 
 
 type statisticComponentBase<'FunBlazorGeneric, 'T> =
@@ -5229,12 +5229,12 @@ type statisticComponentBase<'FunBlazorGeneric, 'T> =
 
                     
             
-namespace rec Fun.Blazor.AntDesign.DslInternals.Select
+namespace rec AntDesign.DslInternals.Select
 
 open Bolero.Html
 open Fun.Blazor
 open Fun.Blazor.Web.DslInternals
-open Fun.Blazor.AntDesign.DslInternals
+open AntDesign.DslInternals
 
 
 type labelTemplateItem<'FunBlazorGeneric, 'TItemValue, 'TItem> =
@@ -5253,12 +5253,12 @@ type labelTemplateItem<'FunBlazorGeneric, 'TItemValue, 'TItem> =
     static member inline refBack (x: AntDesign.ForwardRef) = "RefBack" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
                     
             
-namespace rec Fun.Blazor.AntDesign.DslInternals.Select.Internal
+namespace rec AntDesign.DslInternals.Select.Internal
 
 open Bolero.Html
 open Fun.Blazor
 open Fun.Blazor.Web.DslInternals
-open Fun.Blazor.AntDesign.DslInternals
+open AntDesign.DslInternals
 
 
 type selectContent<'FunBlazorGeneric, 'TItemValue, 'TItem> =
@@ -5285,9 +5285,9 @@ type selectContent<'FunBlazorGeneric, 'TItemValue, 'TItem> =
 
 // =======================================================================================================================
 
-namespace Fun.Blazor.AntDesign
+namespace AntDesign
 
-open Fun.Blazor.AntDesign.DslInternals
+open AntDesign.DslInternals
 
 
 type IAntComponentBaseNode = interface end
@@ -6305,9 +6305,9 @@ type paginationPager =
     end
                     
             
-namespace Fun.Blazor.AntDesign.Select.Internal
+namespace AntDesign.Select.Internal
 
-open Fun.Blazor.AntDesign.DslInternals
+open AntDesign.DslInternals
 
 
 type ISelectOptionGroupNode<'TItemValue, 'TItem> = interface end
@@ -6317,9 +6317,9 @@ type selectOptionGroup<'TItemValue, 'TItem> =
     end
                     
             
-namespace Fun.Blazor.AntDesign.Internal
+namespace AntDesign.Internal
 
-open Fun.Blazor.AntDesign.DslInternals
+open AntDesign.DslInternals
 
 
 type ICalendarPanelChooserNode = interface end
@@ -6350,9 +6350,9 @@ type overlayTrigger =
     end
                     
             
-namespace Fun.Blazor.AntDesign
+namespace AntDesign
 
-open Fun.Blazor.AntDesign.DslInternals
+open AntDesign.DslInternals
 
 
 type IDropdownNode = interface end
@@ -6390,9 +6390,9 @@ type tooltip =
     end
                     
             
-namespace Fun.Blazor.AntDesign.Internal
+namespace AntDesign.Internal
 
-open Fun.Blazor.AntDesign.DslInternals
+open AntDesign.DslInternals
 
 
 type ISubMenuTriggerNode = interface end
@@ -6416,9 +6416,9 @@ type pickerPanelBase =
     end
                     
             
-namespace Fun.Blazor.AntDesign
+namespace AntDesign
 
-open Fun.Blazor.AntDesign.DslInternals
+open AntDesign.DslInternals
 
 
 type IDatePickerPanelBaseNode<'TValue> = interface end
@@ -6428,9 +6428,9 @@ type datePickerPanelBase<'TValue> =
     end
                     
             
-namespace Fun.Blazor.AntDesign.Internal
+namespace AntDesign.Internal
 
-open Fun.Blazor.AntDesign.DslInternals
+open AntDesign.DslInternals
 
 
 type IDatePickerDatetimePanelNode<'TValue> = interface end
@@ -6510,9 +6510,9 @@ type dropdownGroupButton =
     end
                     
             
-namespace Fun.Blazor.AntDesign
+namespace AntDesign
 
-open Fun.Blazor.AntDesign.DslInternals
+open AntDesign.DslInternals
 
 
 type ITemplateComponentBaseNode<'TComponentOptions> = interface end
@@ -6543,9 +6543,9 @@ type formProvider =
     end
                     
             
-namespace Fun.Blazor.AntDesign.Internal
+namespace AntDesign.Internal
 
-open Fun.Blazor.AntDesign.DslInternals
+open AntDesign.DslInternals
 
 
 type IUploadButtonNode = interface end
@@ -6555,9 +6555,9 @@ type uploadButton =
     end
                     
             
-namespace Fun.Blazor.AntDesign
+namespace AntDesign
 
-open Fun.Blazor.AntDesign.DslInternals
+open AntDesign.DslInternals
 
 
 type IFormValidationMessageNode<'TValue> = interface end
@@ -6630,9 +6630,9 @@ type summaryRow =
     end
                     
             
-namespace Fun.Blazor.AntDesign.statistic
+namespace AntDesign.statistic
 
-open Fun.Blazor.AntDesign.DslInternals
+open AntDesign.DslInternals
 
 
 type IStatisticComponentBaseNode<'T> = interface end
@@ -6642,9 +6642,9 @@ type statisticComponentBase<'T> =
     end
                     
             
-namespace Fun.Blazor.AntDesign.Select
+namespace AntDesign.Select
 
-open Fun.Blazor.AntDesign.DslInternals
+open AntDesign.DslInternals
 
 
 type ILabelTemplateItemNode<'TItemValue, 'TItem> = interface end
@@ -6654,9 +6654,9 @@ type labelTemplateItem<'TItemValue, 'TItem> =
     end
                     
             
-namespace Fun.Blazor.AntDesign.Select.Internal
+namespace AntDesign.Select.Internal
 
-open Fun.Blazor.AntDesign.DslInternals
+open AntDesign.DslInternals
 
 
 type ISelectContentNode<'TItemValue, 'TItem> = interface end

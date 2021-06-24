@@ -173,25 +173,28 @@ let generateCode (targetNamespace: string) (opens: string) (tys: Type seq) =
             let code =
                 metas
                 |> Seq.map (fun meta ->
+                    let originalTypeWithGenerics = $"{meta.ty.Namespace}.{getTypeShortName meta.ty}{meta.generics |> getTypeNames |> createGenerics |> closeGenerics}"
+
                     let inheirit' =
                         match meta.inheritInfo with
                         | None -> ""
                         | Some (ty, generics) -> $"inherit {ty.Namespace |> trimNamespace |> appendStrIfNotEmpty (string '.')}{ty |> getTypeShortName |> lowerFirstCase}{ funBlazorGeneric::(getTypeNames generics) |> createGenerics |> closeGenerics }"
 
-                    let create1 =
-                            $"    static member inline create () = [] |> html.blazor<{meta.ty.Namespace}.{getTypeShortName meta.ty}{meta.generics |> getTypeNames |> createGenerics |> closeGenerics}>"
+                    let ref = $"    static member inline ref x = attr.ref<{originalTypeWithGenerics}> x |> {nameof GenericFunBlazorNode}<{funBlazorGeneric}>.create"
+                    
+                    let create1 = $"    static member inline create () = [] |> html.blazor<{originalTypeWithGenerics}>"
                     
                     let create2 =
                         if meta.props.Length > 0 then
-                            $"    static member inline create (nodes: {nameof GenericFunBlazorNode}<{funBlazorGeneric}> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<{meta.ty.Namespace}.{getTypeShortName meta.ty}{meta.generics |> getTypeNames |> createGenerics |> closeGenerics}>"
+                            $"    static member inline create (nodes: {nameof GenericFunBlazorNode}<{funBlazorGeneric}> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<{originalTypeWithGenerics}>"
                         else
                             ""
 
                     let create3 =
                         if meta.hasChildren then
-                            $"    static member inline create (nodes: {nameof FunBlazorNode} list) = nodes |> html.blazor<{meta.ty.Namespace}.{getTypeShortName meta.ty}{meta.generics |> getTypeNames |> createGenerics |> closeGenerics}>"
+                            $"    static member inline create (nodes: {nameof FunBlazorNode} list) = nodes |> html.blazor<{originalTypeWithGenerics}>"
                             + "\n"+
-                            $"    static member inline create (node: {nameof FunBlazorNode}) = [ node ] |> html.blazor<{meta.ty.Namespace}.{getTypeShortName meta.ty}{meta.generics |> getTypeNames |> createGenerics |> closeGenerics}>"
+                            $"    static member inline create (node: {nameof FunBlazorNode}) = [ node ] |> html.blazor<{originalTypeWithGenerics}>"
                         else
                             ""
 
@@ -201,7 +204,7 @@ type {meta.ty |> getTypeShortName |> lowerFirstCase}{funBlazorGeneric::(getTypeN
 {create1}
 {create2}
 {create3}
-    static member inline ref x = attr.ref x
+{ref}
 {meta.props}
                     """)
                 |> String.concat "\n"

@@ -1,9 +1,8 @@
 ﻿[<AutoOpen>]
 module Fun.Blazor.Docs.Wasm.DemoAntDesign.ModalDemo
 
-open AntDesign
 open Fun.Blazor
-open Fun.Blazor.AntDesign
+open AntDesign
 
 let modalDemo = html.inject (fun (hook: IComponentHook) ->
     let isDialogOpen = hook.UseStore false

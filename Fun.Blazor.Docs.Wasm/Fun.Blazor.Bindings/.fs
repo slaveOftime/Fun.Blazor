@@ -1,9 +1,9 @@
-namespace rec Fun.Blazor.MudBlazor.DslInternals
+namespace rec .DslInternals
 
 open Bolero.Html
 open Fun.Blazor
 open Fun.Blazor.Web.DslInternals
-open Fun.Blazor.MudBlazor.DslInternals
+open .DslInternals
 
 
 type mudComponentBase<'FunBlazorGeneric> =
@@ -1671,12 +1671,12 @@ type mudChart<'FunBlazorGeneric> =
     static member inline userAttributes (x: System.Collections.Generic.Dictionary<System.String, System.Object>) = "UserAttributes" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
                     
             
-namespace rec Fun.Blazor.MudBlazor.DslInternals.Charts
+namespace rec .DslInternals.Charts
 
 open Bolero.Html
 open Fun.Blazor
 open Fun.Blazor.Web.DslInternals
-open Fun.Blazor.MudBlazor.DslInternals
+open .DslInternals
 
 
 type bar<'FunBlazorGeneric> =
@@ -1795,12 +1795,12 @@ type legend<'FunBlazorGeneric> =
     static member inline userAttributes (x: System.Collections.Generic.Dictionary<System.String, System.Object>) = "UserAttributes" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
                     
             
-namespace rec Fun.Blazor.MudBlazor.DslInternals
+namespace rec .DslInternals
 
 open Bolero.Html
 open Fun.Blazor
 open Fun.Blazor.Web.DslInternals
-open Fun.Blazor.MudBlazor.DslInternals
+open .DslInternals
 
 
 type mudChipSet<'FunBlazorGeneric> =
@@ -3520,12 +3520,12 @@ type mudTreeViewItemToggleButton<'FunBlazorGeneric> =
     static member inline expandedIcon (x: System.String) = "ExpandedIcon" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
                     
             
-namespace rec Fun.Blazor.MudBlazor.DslInternals.Internal
+namespace rec .DslInternals.Internal
 
 open Bolero.Html
 open Fun.Blazor
 open Fun.Blazor.Web.DslInternals
-open Fun.Blazor.MudBlazor.DslInternals
+open .DslInternals
 
 
 type mudInputAdornment<'FunBlazorGeneric> =
@@ -3543,12 +3543,12 @@ type mudInputAdornment<'FunBlazorGeneric> =
     static member inline adornmentClick fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> "AdornmentClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
                     
             
-namespace rec Fun.Blazor.MudBlazor.DslInternals.Charts
+namespace rec .DslInternals.Charts
 
 open Bolero.Html
 open Fun.Blazor
 open Fun.Blazor.Web.DslInternals
-open Fun.Blazor.MudBlazor.DslInternals
+open .DslInternals
 
 
 type filters<'FunBlazorGeneric> =
@@ -3563,9 +3563,9 @@ type filters<'FunBlazorGeneric> =
 
 // =======================================================================================================================
 
-namespace Fun.Blazor.MudBlazor
+namespace 
 
-open Fun.Blazor.MudBlazor.DslInternals
+open .DslInternals
 
 
 type IMudComponentBaseNode = interface end
@@ -3904,9 +3904,9 @@ type mudChart =
     end
                     
             
-namespace Fun.Blazor.MudBlazor.Charts
+namespace .Charts
 
-open Fun.Blazor.MudBlazor.DslInternals
+open .DslInternals
 
 
 type IBarNode = interface end
@@ -3944,9 +3944,9 @@ type legend =
     end
                     
             
-namespace Fun.Blazor.MudBlazor
+namespace 
 
-open Fun.Blazor.MudBlazor.DslInternals
+open .DslInternals
 
 
 type IMudChipSetNode = interface end
@@ -4495,9 +4495,9 @@ type mudTreeViewItemToggleButton =
     end
                     
             
-namespace Fun.Blazor.MudBlazor.Internal
+namespace .Internal
 
-open Fun.Blazor.MudBlazor.DslInternals
+open .DslInternals
 
 
 type IMudInputAdornmentNode = interface end
@@ -4507,9 +4507,9 @@ type mudInputAdornment =
     end
                     
             
-namespace Fun.Blazor.MudBlazor.Charts
+namespace .Charts
 
-open Fun.Blazor.MudBlazor.DslInternals
+open .DslInternals
 
 
 type IFiltersNode = interface end
