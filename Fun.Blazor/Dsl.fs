@@ -129,7 +129,9 @@ type FunBlazorSvgEngine (mk, ofStr, empty) =
 
 type FunBlazorAttrEngine (mk, mkBool) =
     inherit Feliz.AttrEngine<FunBlazorNode>(mk, mkBool)
-    
+        
+    member _.ref x = Bolero.Html.attr.ref x
+
     member _.childContent nodes = Fragment nodes
     member _.childContent x = BoleroNode (Bolero.Html.text x)
 

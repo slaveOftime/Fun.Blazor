@@ -5,6 +5,7 @@ open Microsoft.Extensions.Hosting
 open Microsoft.Extensions.DependencyInjection
 open MudBlazor.Services
 open Fun.Blazor.Docs.Server
+open Bolero.Server
 
 
 Host.CreateDefaultBuilder(Environment.GetCommandLineArgs())
@@ -14,7 +15,8 @@ Host.CreateDefaultBuilder(Environment.GetCommandLineArgs())
                 services.AddControllersWithViews() |> ignore
                 services
                     .AddServerSideBlazor().Services
-                    .AddFunBlazorServer()
+                    .AddBoleroHost(true, true)
+                    .AddFunBlazor()
                     .AddMudServices()
                     .AddAntDesign() |> ignore)
             .Configure(fun (application: IApplicationBuilder) ->
@@ -23,7 +25,7 @@ Host.CreateDefaultBuilder(Environment.GetCommandLineArgs())
                     .UseRouting()
                     .UseEndpoints(fun endpoints ->
                         endpoints.MapBlazorHub() |> ignore
-                        endpoints.MapFallbackToFunBlazor(Index.page) |> ignore) |> ignore) |> ignore)
+                        endpoints.MapFallbackToBolero(Index.page) |> ignore) |> ignore) |> ignore)
     .Build()
     .Run()
 

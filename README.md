@@ -44,7 +44,8 @@ builder.Build().RunAsync() |> ignore
 ### Create a blazor server app
 
 ```
-dotnet add package Fun.Blazor.Server
+dotnet add package Fun.Blazor
+dotnet add package Bolero.Server
 ```
 
 ```fsharp
@@ -54,9 +55,10 @@ open Microsoft.AspNetCore.Hosting
 open Microsoft.Extensions.Hosting
 open Microsoft.Extensions.DependencyInjection
 open MudBlazor.Services
+open Bolero.Server.Html
 open Fun.Blazor.Docs.Server
 open Fun.Blazor
-open Fun.Blazor.Server
+open Fun.Blazor
 
 // Currently the we need to define a class to render for server side blazor. In the future if I found some workaround this could be simpler
 type Index () =
@@ -65,7 +67,7 @@ type Index () =
     override this.Render() = html.text "hello world" |> html.toBolero
 
     static member page =
-        html.doctypeHtml [
+        doctypeHtml [] [
             html.html ("en", [
                 html.head [
                     html.title "Fun Blazor"
@@ -76,11 +78,12 @@ type Index () =
                 html.body [
                     attr.styles [ style.margin 0 ]
                     attr.childContent [
-                        html.root<Index>()
+                        html.bolero rootComp<Index>
                         html.bolero Bolero.Server.Html.boleroScript
                     ]
                 ]
             ])
+            |> html.toBolero
         ]
 
 Host.CreateDefaultBuilder(Environment.GetCommandLineArgs())
@@ -90,14 +93,15 @@ Host.CreateDefaultBuilder(Environment.GetCommandLineArgs())
                 services.AddControllersWithViews() |> ignore
                 services
                     .AddServerSideBlazor().Services
-                    .AddFunBlazorServer() |> ignore)
+                    .AddBoleroHost(true, true)
+                    .AddFunBlazor() |> ignore)
             .Configure(fun (application: IApplicationBuilder) ->
                 application
                     .UseStaticFiles()
                     .UseRouting()
                     .UseEndpoints(fun endpoints ->
                         endpoints.MapBlazorHub() |> ignore
-                        endpoints.MapFallbackToFunBlazor(Index.page) |> ignore) |> ignore) |> ignore)
+                        endpoints.MapFallbackToBolero(Index.page) |> ignore) |> ignore) |> ignore)
     .Build()
     .Run()
 ```

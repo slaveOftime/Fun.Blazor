@@ -8,8 +8,10 @@
 		<Compile Include="Startup.fs" />
 	</ItemGroup>
 	<ItemGroup>
+		<PackageReference Include="Bolero.Server" Version="0.17.25" />
+	</ItemGroup>
+	<ItemGroup>
 		<ProjectReference Include="..\Fun.Blazor.Docs.Wasm\Fun.Blazor.Docs.Wasm.fsproj" />
-		<ProjectReference Include="..\Fun.Blazor.Server\Fun.Blazor.Server.fsproj" />
 		<ProjectReference Include="..\Fun.Blazor\Fun.Blazor.fsproj" />
 	</ItemGroup>
 </Project>

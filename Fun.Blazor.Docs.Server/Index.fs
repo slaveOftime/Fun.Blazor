@@ -1,7 +1,7 @@
 namespace Fun.Blazor.Docs.Server
 
+open Bolero.Server.Html
 open Fun.Blazor
-open Fun.Blazor.Server
 
 
 type Index () =
@@ -11,7 +11,7 @@ type Index () =
 
 
     static member page =
-        html.doctypeHtml [
+        doctypeHtml [] [
             html.html ("en", [
                 html.head [
                     html.title "Fun Blazor"
@@ -22,9 +22,10 @@ type Index () =
                 html.body [
                     attr.styles [ style.margin 0 ]
                     attr.childContent [
-                        html.root<Index>()
+                        html.bolero rootComp<Index>
                         html.bolero Bolero.Server.Html.boleroScript
                     ]
                 ]
             ])
+            |> html.toBolero
         ]

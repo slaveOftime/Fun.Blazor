@@ -19,10 +19,10 @@ let routerDemo =
                     | [ "router" ]
                     | [ _; "router" ] -> html.text "Router"
                                 
-                    | [ "router"; Route.Query [ "name", name; "age", Route.Int age ] ] -> html.text $"name is: {name}, age is: {age}"
-                    | [ _; "router" ] -> html.text "Router"
+                    | [ "router"; Route.Query [ "name", name; "age", Route.Int age ] ]
+                    | [ _; "router"; Route.Query [ "name", name; "age", Route.Int age ] ] -> html.text $"name is: {name}, age is: {age}"
 
-                    | _ -> html.text "QuickStart.QuickStart.quickStart"
+                    | _ -> html.text "Not my concern."
                 )
             ]
         ]

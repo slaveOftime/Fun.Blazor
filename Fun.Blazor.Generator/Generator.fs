@@ -132,7 +132,7 @@ let private getMetaInfos (tys: Type seq) =
             ])
         |> Seq.concat
 
-    let tree = tys |> Seq.filter (fun x -> x.IsAssignableTo typeof<ComponentBase>) |> getTypeTree typeof<ComponentBase>
+    let tree = tys |> Seq.filter (fun x -> x.IsAssignableTo typeof<ComponentBase> && x.IsPublic) |> getTypeTree typeof<ComponentBase>
     let namespaces = getNamespaces tree |> Seq.toList
     let metaGroups = System.Collections.Generic.List<_>()
     
@@ -179,19 +179,19 @@ let generateCode (targetNamespace: string) (opens: string) (tys: Type seq) =
                         | Some (ty, generics) -> $"inherit {ty.Namespace |> trimNamespace |> appendStrIfNotEmpty (string '.')}{ty |> getTypeShortName |> lowerFirstCase}{ funBlazorGeneric::(getTypeNames generics) |> createGenerics |> closeGenerics }"
 
                     let create1 =
-                            $"    static member create () = [] |> html.blazor<{meta.ty.Namespace}.{getTypeShortName meta.ty}{meta.generics |> getTypeNames |> createGenerics |> closeGenerics}>"
+                            $"    static member inline create () = [] |> html.blazor<{meta.ty.Namespace}.{getTypeShortName meta.ty}{meta.generics |> getTypeNames |> createGenerics |> closeGenerics}>"
                     
                     let create2 =
                         if meta.props.Length > 0 then
-                            $"    static member create (nodes: {nameof GenericFunBlazorNode}<{funBlazorGeneric}> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<{meta.ty.Namespace}.{getTypeShortName meta.ty}{meta.generics |> getTypeNames |> createGenerics |> closeGenerics}>"
+                            $"    static member inline create (nodes: {nameof GenericFunBlazorNode}<{funBlazorGeneric}> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<{meta.ty.Namespace}.{getTypeShortName meta.ty}{meta.generics |> getTypeNames |> createGenerics |> closeGenerics}>"
                         else
                             ""
 
                     let create3 =
                         if meta.hasChildren then
-                            $"    static member create (nodes: {nameof FunBlazorNode} list) = nodes |> html.blazor<{meta.ty.Namespace}.{getTypeShortName meta.ty}{meta.generics |> getTypeNames |> createGenerics |> closeGenerics}>"
+                            $"    static member inline create (nodes: {nameof FunBlazorNode} list) = nodes |> html.blazor<{meta.ty.Namespace}.{getTypeShortName meta.ty}{meta.generics |> getTypeNames |> createGenerics |> closeGenerics}>"
                             + "\n"+
-                            $"    static member create (node: {nameof FunBlazorNode}) = [ node ] |> html.blazor<{meta.ty.Namespace}.{getTypeShortName meta.ty}{meta.generics |> getTypeNames |> createGenerics |> closeGenerics}>"
+                            $"    static member inline create (node: {nameof FunBlazorNode}) = [ node ] |> html.blazor<{meta.ty.Namespace}.{getTypeShortName meta.ty}{meta.generics |> getTypeNames |> createGenerics |> closeGenerics}>"
                         else
                             ""
 
@@ -201,6 +201,7 @@ type {meta.ty |> getTypeShortName |> lowerFirstCase}{funBlazorGeneric::(getTypeN
 {create1}
 {create2}
 {create3}
+    static member inline ref x = attr.ref x
 {meta.props}
                     """)
                 |> String.concat "\n"

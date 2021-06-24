@@ -8,9 +8,10 @@ open Fun.Blazor.AntDesign.Charts.DslInternals
 
 type chartComponentBase<'FunBlazorGeneric, 'TItem, 'TConfig when 'TConfig : not struct and 'TConfig : (new : unit -> 'TConfig)> =
     
-    static member create () = [] |> html.blazor<AntDesign.Charts.ChartComponentBase<'TItem, 'TConfig>>
-    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.ChartComponentBase<'TItem, 'TConfig>>
+    static member inline create () = [] |> html.blazor<AntDesign.Charts.ChartComponentBase<'TItem, 'TConfig>>
+    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.ChartComponentBase<'TItem, 'TConfig>>
 
+    static member inline ref x = attr.ref x
     static member inline data (x: 'TItem) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline config (x: 'TConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -20,9 +21,10 @@ type chartComponentBase<'FunBlazorGeneric, 'TItem, 'TConfig when 'TConfig : not 
 
 type columnLine<'FunBlazorGeneric, 'TItem> =
     inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.ColumnLineConfig>
-    static member create () = [] |> html.blazor<AntDesign.Charts.ColumnLine<'TItem>>
-    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.ColumnLine<'TItem>>
+    static member inline create () = [] |> html.blazor<AntDesign.Charts.ColumnLine<'TItem>>
+    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.ColumnLine<'TItem>>
 
+    static member inline ref x = attr.ref x
     static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline config (x: AntDesign.Charts.ColumnLineConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -32,9 +34,10 @@ type columnLine<'FunBlazorGeneric, 'TItem> =
 
 type dualLine<'FunBlazorGeneric, 'TItem> =
     inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.DualLineConfig>
-    static member create () = [] |> html.blazor<AntDesign.Charts.DualLine<'TItem>>
-    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.DualLine<'TItem>>
+    static member inline create () = [] |> html.blazor<AntDesign.Charts.DualLine<'TItem>>
+    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.DualLine<'TItem>>
 
+    static member inline ref x = attr.ref x
     static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline config (x: AntDesign.Charts.DualLineConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -44,9 +47,10 @@ type dualLine<'FunBlazorGeneric, 'TItem> =
 
 type groupedColumnLine<'FunBlazorGeneric, 'TItem> =
     inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.GroupedColumnLineConfig>
-    static member create () = [] |> html.blazor<AntDesign.Charts.GroupedColumnLine<'TItem>>
-    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.GroupedColumnLine<'TItem>>
+    static member inline create () = [] |> html.blazor<AntDesign.Charts.GroupedColumnLine<'TItem>>
+    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.GroupedColumnLine<'TItem>>
 
+    static member inline ref x = attr.ref x
     static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline config (x: AntDesign.Charts.GroupedColumnLineConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -56,9 +60,10 @@ type groupedColumnLine<'FunBlazorGeneric, 'TItem> =
 
 type stackedColumnLine<'FunBlazorGeneric, 'TItem> =
     inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.StackedColumnLineConfig>
-    static member create () = [] |> html.blazor<AntDesign.Charts.StackedColumnLine<'TItem>>
-    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.StackedColumnLine<'TItem>>
+    static member inline create () = [] |> html.blazor<AntDesign.Charts.StackedColumnLine<'TItem>>
+    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.StackedColumnLine<'TItem>>
 
+    static member inline ref x = attr.ref x
     static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline config (x: AntDesign.Charts.StackedColumnLineConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -68,9 +73,10 @@ type stackedColumnLine<'FunBlazorGeneric, 'TItem> =
 
 type area<'FunBlazorGeneric, 'TItem> =
     inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.AreaConfig>
-    static member create () = [] |> html.blazor<AntDesign.Charts.Area<'TItem>>
-    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Area<'TItem>>
+    static member inline create () = [] |> html.blazor<AntDesign.Charts.Area<'TItem>>
+    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Area<'TItem>>
 
+    static member inline ref x = attr.ref x
     static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline config (x: AntDesign.Charts.AreaConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -80,9 +86,10 @@ type area<'FunBlazorGeneric, 'TItem> =
 
 type bar<'FunBlazorGeneric, 'TItem> =
     inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.BarConfig>
-    static member create () = [] |> html.blazor<AntDesign.Charts.Bar<'TItem>>
-    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Bar<'TItem>>
+    static member inline create () = [] |> html.blazor<AntDesign.Charts.Bar<'TItem>>
+    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Bar<'TItem>>
 
+    static member inline ref x = attr.ref x
     static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline config (x: AntDesign.Charts.BarConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -92,9 +99,10 @@ type bar<'FunBlazorGeneric, 'TItem> =
 
 type bubble<'FunBlazorGeneric, 'TItem> =
     inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.BubbleConfig>
-    static member create () = [] |> html.blazor<AntDesign.Charts.Bubble<'TItem>>
-    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Bubble<'TItem>>
+    static member inline create () = [] |> html.blazor<AntDesign.Charts.Bubble<'TItem>>
+    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Bubble<'TItem>>
 
+    static member inline ref x = attr.ref x
     static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline config (x: AntDesign.Charts.BubbleConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -104,9 +112,10 @@ type bubble<'FunBlazorGeneric, 'TItem> =
 
 type bullet<'FunBlazorGeneric, 'TItem> =
     inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.BulletConfig>
-    static member create () = [] |> html.blazor<AntDesign.Charts.Bullet<'TItem>>
-    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Bullet<'TItem>>
+    static member inline create () = [] |> html.blazor<AntDesign.Charts.Bullet<'TItem>>
+    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Bullet<'TItem>>
 
+    static member inline ref x = attr.ref x
     static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline config (x: AntDesign.Charts.BulletConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -116,9 +125,10 @@ type bullet<'FunBlazorGeneric, 'TItem> =
 
 type calendar<'FunBlazorGeneric, 'TItem> =
     inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.CalendarConfig>
-    static member create () = [] |> html.blazor<AntDesign.Charts.Calendar<'TItem>>
-    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Calendar<'TItem>>
+    static member inline create () = [] |> html.blazor<AntDesign.Charts.Calendar<'TItem>>
+    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Calendar<'TItem>>
 
+    static member inline ref x = attr.ref x
     static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline config (x: AntDesign.Charts.CalendarConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -128,9 +138,10 @@ type calendar<'FunBlazorGeneric, 'TItem> =
 
 type column<'FunBlazorGeneric, 'TItem> =
     inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.ColumnConfig>
-    static member create () = [] |> html.blazor<AntDesign.Charts.Column<'TItem>>
-    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Column<'TItem>>
+    static member inline create () = [] |> html.blazor<AntDesign.Charts.Column<'TItem>>
+    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Column<'TItem>>
 
+    static member inline ref x = attr.ref x
     static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline config (x: AntDesign.Charts.ColumnConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -140,9 +151,10 @@ type column<'FunBlazorGeneric, 'TItem> =
 
 type densityHeatmap<'FunBlazorGeneric, 'TItem> =
     inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.DensityHeatmapConfig>
-    static member create () = [] |> html.blazor<AntDesign.Charts.DensityHeatmap<'TItem>>
-    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.DensityHeatmap<'TItem>>
+    static member inline create () = [] |> html.blazor<AntDesign.Charts.DensityHeatmap<'TItem>>
+    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.DensityHeatmap<'TItem>>
 
+    static member inline ref x = attr.ref x
     static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline config (x: AntDesign.Charts.DensityHeatmapConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -152,9 +164,10 @@ type densityHeatmap<'FunBlazorGeneric, 'TItem> =
 
 type donut<'FunBlazorGeneric, 'TItem> =
     inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.DonutConfig>
-    static member create () = [] |> html.blazor<AntDesign.Charts.Donut<'TItem>>
-    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Donut<'TItem>>
+    static member inline create () = [] |> html.blazor<AntDesign.Charts.Donut<'TItem>>
+    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Donut<'TItem>>
 
+    static member inline ref x = attr.ref x
     static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline config (x: AntDesign.Charts.DonutConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -164,9 +177,10 @@ type donut<'FunBlazorGeneric, 'TItem> =
 
 type funnel<'FunBlazorGeneric, 'TItem> =
     inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.FunnelConfig>
-    static member create () = [] |> html.blazor<AntDesign.Charts.Funnel<'TItem>>
-    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Funnel<'TItem>>
+    static member inline create () = [] |> html.blazor<AntDesign.Charts.Funnel<'TItem>>
+    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Funnel<'TItem>>
 
+    static member inline ref x = attr.ref x
     static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline config (x: AntDesign.Charts.FunnelConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -176,9 +190,10 @@ type funnel<'FunBlazorGeneric, 'TItem> =
 
 type gauge<'FunBlazorGeneric, 'TItem> =
     inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.GaugeConfig>
-    static member create () = [] |> html.blazor<AntDesign.Charts.Gauge<'TItem>>
-    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Gauge<'TItem>>
+    static member inline create () = [] |> html.blazor<AntDesign.Charts.Gauge<'TItem>>
+    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Gauge<'TItem>>
 
+    static member inline ref x = attr.ref x
     static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline config (x: AntDesign.Charts.GaugeConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -188,9 +203,10 @@ type gauge<'FunBlazorGeneric, 'TItem> =
 
 type groupedBar<'FunBlazorGeneric, 'TItem> =
     inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.GroupedBarConfig>
-    static member create () = [] |> html.blazor<AntDesign.Charts.GroupedBar<'TItem>>
-    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.GroupedBar<'TItem>>
+    static member inline create () = [] |> html.blazor<AntDesign.Charts.GroupedBar<'TItem>>
+    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.GroupedBar<'TItem>>
 
+    static member inline ref x = attr.ref x
     static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline config (x: AntDesign.Charts.GroupedBarConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -200,9 +216,10 @@ type groupedBar<'FunBlazorGeneric, 'TItem> =
 
 type groupedColumn<'FunBlazorGeneric, 'TItem> =
     inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.GroupedColumnConfig>
-    static member create () = [] |> html.blazor<AntDesign.Charts.GroupedColumn<'TItem>>
-    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.GroupedColumn<'TItem>>
+    static member inline create () = [] |> html.blazor<AntDesign.Charts.GroupedColumn<'TItem>>
+    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.GroupedColumn<'TItem>>
 
+    static member inline ref x = attr.ref x
     static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline config (x: AntDesign.Charts.GroupedColumnConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -212,9 +229,10 @@ type groupedColumn<'FunBlazorGeneric, 'TItem> =
 
 type heatmap<'FunBlazorGeneric, 'TItem> =
     inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.HeatmapConfig>
-    static member create () = [] |> html.blazor<AntDesign.Charts.Heatmap<'TItem>>
-    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Heatmap<'TItem>>
+    static member inline create () = [] |> html.blazor<AntDesign.Charts.Heatmap<'TItem>>
+    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Heatmap<'TItem>>
 
+    static member inline ref x = attr.ref x
     static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline config (x: AntDesign.Charts.HeatmapConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -224,9 +242,10 @@ type heatmap<'FunBlazorGeneric, 'TItem> =
 
 type histogram<'FunBlazorGeneric, 'TItem> =
     inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.HistogramConfig>
-    static member create () = [] |> html.blazor<AntDesign.Charts.Histogram<'TItem>>
-    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Histogram<'TItem>>
+    static member inline create () = [] |> html.blazor<AntDesign.Charts.Histogram<'TItem>>
+    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Histogram<'TItem>>
 
+    static member inline ref x = attr.ref x
     static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline config (x: AntDesign.Charts.HistogramConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -236,9 +255,10 @@ type histogram<'FunBlazorGeneric, 'TItem> =
 
 type line<'FunBlazorGeneric, 'TItem> =
     inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.LineConfig>
-    static member create () = [] |> html.blazor<AntDesign.Charts.Line<'TItem>>
-    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Line<'TItem>>
+    static member inline create () = [] |> html.blazor<AntDesign.Charts.Line<'TItem>>
+    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Line<'TItem>>
 
+    static member inline ref x = attr.ref x
     static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline config (x: AntDesign.Charts.LineConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -248,9 +268,10 @@ type line<'FunBlazorGeneric, 'TItem> =
 
 type liquid<'FunBlazorGeneric, 'TItem> =
     inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.LiquidConfig>
-    static member create () = [] |> html.blazor<AntDesign.Charts.Liquid<'TItem>>
-    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Liquid<'TItem>>
+    static member inline create () = [] |> html.blazor<AntDesign.Charts.Liquid<'TItem>>
+    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Liquid<'TItem>>
 
+    static member inline ref x = attr.ref x
     static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline config (x: AntDesign.Charts.LiquidConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -260,9 +281,10 @@ type liquid<'FunBlazorGeneric, 'TItem> =
 
 type percentStackedArea<'FunBlazorGeneric, 'TItem> =
     inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.PercentStackedAreaConfig>
-    static member create () = [] |> html.blazor<AntDesign.Charts.PercentStackedArea<'TItem>>
-    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.PercentStackedArea<'TItem>>
+    static member inline create () = [] |> html.blazor<AntDesign.Charts.PercentStackedArea<'TItem>>
+    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.PercentStackedArea<'TItem>>
 
+    static member inline ref x = attr.ref x
     static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline config (x: AntDesign.Charts.PercentStackedAreaConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -272,9 +294,10 @@ type percentStackedArea<'FunBlazorGeneric, 'TItem> =
 
 type percentStackedBar<'FunBlazorGeneric, 'TItem> =
     inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.PercentStackedBarConfig>
-    static member create () = [] |> html.blazor<AntDesign.Charts.PercentStackedBar<'TItem>>
-    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.PercentStackedBar<'TItem>>
+    static member inline create () = [] |> html.blazor<AntDesign.Charts.PercentStackedBar<'TItem>>
+    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.PercentStackedBar<'TItem>>
 
+    static member inline ref x = attr.ref x
     static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline config (x: AntDesign.Charts.PercentStackedBarConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -284,9 +307,10 @@ type percentStackedBar<'FunBlazorGeneric, 'TItem> =
 
 type percentStackedColumn<'FunBlazorGeneric, 'TItem> =
     inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.PercentStackedColumnConfig>
-    static member create () = [] |> html.blazor<AntDesign.Charts.PercentStackedColumn<'TItem>>
-    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.PercentStackedColumn<'TItem>>
+    static member inline create () = [] |> html.blazor<AntDesign.Charts.PercentStackedColumn<'TItem>>
+    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.PercentStackedColumn<'TItem>>
 
+    static member inline ref x = attr.ref x
     static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline config (x: AntDesign.Charts.PercentStackedColumnConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -296,9 +320,10 @@ type percentStackedColumn<'FunBlazorGeneric, 'TItem> =
 
 type pie<'FunBlazorGeneric, 'TItem> =
     inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.PieConfig>
-    static member create () = [] |> html.blazor<AntDesign.Charts.Pie<'TItem>>
-    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Pie<'TItem>>
+    static member inline create () = [] |> html.blazor<AntDesign.Charts.Pie<'TItem>>
+    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Pie<'TItem>>
 
+    static member inline ref x = attr.ref x
     static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline config (x: AntDesign.Charts.PieConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -308,9 +333,10 @@ type pie<'FunBlazorGeneric, 'TItem> =
 
 type radar<'FunBlazorGeneric, 'TItem> =
     inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.RadarConfig>
-    static member create () = [] |> html.blazor<AntDesign.Charts.Radar<'TItem>>
-    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Radar<'TItem>>
+    static member inline create () = [] |> html.blazor<AntDesign.Charts.Radar<'TItem>>
+    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Radar<'TItem>>
 
+    static member inline ref x = attr.ref x
     static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline config (x: AntDesign.Charts.RadarConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -320,9 +346,10 @@ type radar<'FunBlazorGeneric, 'TItem> =
 
 type rangeBar<'FunBlazorGeneric, 'TItem> =
     inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.RangeBarConfig>
-    static member create () = [] |> html.blazor<AntDesign.Charts.RangeBar<'TItem>>
-    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.RangeBar<'TItem>>
+    static member inline create () = [] |> html.blazor<AntDesign.Charts.RangeBar<'TItem>>
+    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.RangeBar<'TItem>>
 
+    static member inline ref x = attr.ref x
     static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline config (x: AntDesign.Charts.RangeBarConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -332,9 +359,10 @@ type rangeBar<'FunBlazorGeneric, 'TItem> =
 
 type rangeColumn<'FunBlazorGeneric, 'TItem> =
     inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.RangeColumnConfig>
-    static member create () = [] |> html.blazor<AntDesign.Charts.RangeColumn<'TItem>>
-    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.RangeColumn<'TItem>>
+    static member inline create () = [] |> html.blazor<AntDesign.Charts.RangeColumn<'TItem>>
+    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.RangeColumn<'TItem>>
 
+    static member inline ref x = attr.ref x
     static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline config (x: AntDesign.Charts.RangeColumnConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -344,9 +372,10 @@ type rangeColumn<'FunBlazorGeneric, 'TItem> =
 
 type rose<'FunBlazorGeneric, 'TItem> =
     inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.RoseConfig>
-    static member create () = [] |> html.blazor<AntDesign.Charts.Rose<'TItem>>
-    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Rose<'TItem>>
+    static member inline create () = [] |> html.blazor<AntDesign.Charts.Rose<'TItem>>
+    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Rose<'TItem>>
 
+    static member inline ref x = attr.ref x
     static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline config (x: AntDesign.Charts.RoseConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -356,9 +385,10 @@ type rose<'FunBlazorGeneric, 'TItem> =
 
 type scatter<'FunBlazorGeneric, 'TItem> =
     inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.ScatterConfig>
-    static member create () = [] |> html.blazor<AntDesign.Charts.Scatter<'TItem>>
-    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Scatter<'TItem>>
+    static member inline create () = [] |> html.blazor<AntDesign.Charts.Scatter<'TItem>>
+    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Scatter<'TItem>>
 
+    static member inline ref x = attr.ref x
     static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline config (x: AntDesign.Charts.ScatterConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -368,9 +398,10 @@ type scatter<'FunBlazorGeneric, 'TItem> =
 
 type stackedArea<'FunBlazorGeneric, 'TItem> =
     inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.StackedAreaConfig>
-    static member create () = [] |> html.blazor<AntDesign.Charts.StackedArea<'TItem>>
-    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.StackedArea<'TItem>>
+    static member inline create () = [] |> html.blazor<AntDesign.Charts.StackedArea<'TItem>>
+    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.StackedArea<'TItem>>
 
+    static member inline ref x = attr.ref x
     static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline config (x: AntDesign.Charts.StackedAreaConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -380,9 +411,10 @@ type stackedArea<'FunBlazorGeneric, 'TItem> =
 
 type stackedBar<'FunBlazorGeneric, 'TItem> =
     inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.StackedBarConfig>
-    static member create () = [] |> html.blazor<AntDesign.Charts.StackedBar<'TItem>>
-    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.StackedBar<'TItem>>
+    static member inline create () = [] |> html.blazor<AntDesign.Charts.StackedBar<'TItem>>
+    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.StackedBar<'TItem>>
 
+    static member inline ref x = attr.ref x
     static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline config (x: AntDesign.Charts.StackedBarConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -392,9 +424,10 @@ type stackedBar<'FunBlazorGeneric, 'TItem> =
 
 type stackedColumn<'FunBlazorGeneric, 'TItem> =
     inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.StackedColumnConfig>
-    static member create () = [] |> html.blazor<AntDesign.Charts.StackedColumn<'TItem>>
-    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.StackedColumn<'TItem>>
+    static member inline create () = [] |> html.blazor<AntDesign.Charts.StackedColumn<'TItem>>
+    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.StackedColumn<'TItem>>
 
+    static member inline ref x = attr.ref x
     static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline config (x: AntDesign.Charts.StackedColumnConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -404,9 +437,10 @@ type stackedColumn<'FunBlazorGeneric, 'TItem> =
 
 type stepLine<'FunBlazorGeneric, 'TItem> =
     inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.StepLineConfig>
-    static member create () = [] |> html.blazor<AntDesign.Charts.StepLine<'TItem>>
-    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.StepLine<'TItem>>
+    static member inline create () = [] |> html.blazor<AntDesign.Charts.StepLine<'TItem>>
+    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.StepLine<'TItem>>
 
+    static member inline ref x = attr.ref x
     static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline config (x: AntDesign.Charts.StepLineConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -416,9 +450,10 @@ type stepLine<'FunBlazorGeneric, 'TItem> =
 
 type treemap<'FunBlazorGeneric, 'TItem> =
     inherit chartComponentBase<'FunBlazorGeneric, AntDesign.Charts.ITreemapData<'TItem>, AntDesign.Charts.TreemapConfig>
-    static member create () = [] |> html.blazor<AntDesign.Charts.Treemap<'TItem>>
-    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Treemap<'TItem>>
+    static member inline create () = [] |> html.blazor<AntDesign.Charts.Treemap<'TItem>>
+    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Treemap<'TItem>>
 
+    static member inline ref x = attr.ref x
     static member inline data (x: AntDesign.Charts.ITreemapData<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline config (x: AntDesign.Charts.TreemapConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -428,9 +463,10 @@ type treemap<'FunBlazorGeneric, 'TItem> =
 
 type waterfall<'FunBlazorGeneric, 'TItem> =
     inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.WaterfallConfig>
-    static member create () = [] |> html.blazor<AntDesign.Charts.Waterfall<'TItem>>
-    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Waterfall<'TItem>>
+    static member inline create () = [] |> html.blazor<AntDesign.Charts.Waterfall<'TItem>>
+    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Waterfall<'TItem>>
 
+    static member inline ref x = attr.ref x
     static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline config (x: AntDesign.Charts.WaterfallConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -440,9 +476,10 @@ type waterfall<'FunBlazorGeneric, 'TItem> =
 
 type progress<'FunBlazorGeneric, 'TItem> =
     inherit chartComponentBase<'FunBlazorGeneric, System.Double, AntDesign.Charts.ProgressConfig>
-    static member create () = [] |> html.blazor<AntDesign.Charts.Progress<'TItem>>
-    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Progress<'TItem>>
+    static member inline create () = [] |> html.blazor<AntDesign.Charts.Progress<'TItem>>
+    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Progress<'TItem>>
 
+    static member inline ref x = attr.ref x
     static member inline data (x: System.Double) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline config (x: AntDesign.Charts.ProgressConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -452,9 +489,10 @@ type progress<'FunBlazorGeneric, 'TItem> =
 
 type ringProgress<'FunBlazorGeneric> =
     inherit chartComponentBase<'FunBlazorGeneric, System.Double, AntDesign.Charts.RingProgressConfig>
-    static member create () = [] |> html.blazor<AntDesign.Charts.RingProgress>
-    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.RingProgress>
+    static member inline create () = [] |> html.blazor<AntDesign.Charts.RingProgress>
+    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.RingProgress>
 
+    static member inline ref x = attr.ref x
     static member inline data (x: System.Double) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline config (x: AntDesign.Charts.RingProgressConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -464,9 +502,10 @@ type ringProgress<'FunBlazorGeneric> =
 
 type tinyArea<'FunBlazorGeneric, 'TItem> =
     inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.TinyAreaConfig>
-    static member create () = [] |> html.blazor<AntDesign.Charts.TinyArea<'TItem>>
-    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.TinyArea<'TItem>>
+    static member inline create () = [] |> html.blazor<AntDesign.Charts.TinyArea<'TItem>>
+    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.TinyArea<'TItem>>
 
+    static member inline ref x = attr.ref x
     static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline config (x: AntDesign.Charts.TinyAreaConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -476,9 +515,10 @@ type tinyArea<'FunBlazorGeneric, 'TItem> =
 
 type tinyColumn<'FunBlazorGeneric, 'TItem> =
     inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.TinyColumnConfig>
-    static member create () = [] |> html.blazor<AntDesign.Charts.TinyColumn<'TItem>>
-    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.TinyColumn<'TItem>>
+    static member inline create () = [] |> html.blazor<AntDesign.Charts.TinyColumn<'TItem>>
+    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.TinyColumn<'TItem>>
 
+    static member inline ref x = attr.ref x
     static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline config (x: AntDesign.Charts.TinyColumnConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -488,9 +528,10 @@ type tinyColumn<'FunBlazorGeneric, 'TItem> =
 
 type tinyLine<'FunBlazorGeneric, 'TItem> =
     inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.TinyLineConfig>
-    static member create () = [] |> html.blazor<AntDesign.Charts.TinyLine<'TItem>>
-    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.TinyLine<'TItem>>
+    static member inline create () = [] |> html.blazor<AntDesign.Charts.TinyLine<'TItem>>
+    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.TinyLine<'TItem>>
 
+    static member inline ref x = attr.ref x
     static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline config (x: AntDesign.Charts.TinyLineConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -500,9 +541,10 @@ type tinyLine<'FunBlazorGeneric, 'TItem> =
 
 type temp<'FunBlazorGeneric, 'TItem> =
     inherit chartComponentBase<'FunBlazorGeneric, 'TItem, AntDesign.Charts.BarConfig>
-    static member create () = [] |> html.blazor<AntDesign.Charts.Temp<'TItem>>
-    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Temp<'TItem>>
+    static member inline create () = [] |> html.blazor<AntDesign.Charts.Temp<'TItem>>
+    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Temp<'TItem>>
 
+    static member inline ref x = attr.ref x
     static member inline data (x: 'TItem) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline config (x: AntDesign.Charts.BarConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
