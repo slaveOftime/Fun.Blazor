@@ -41,6 +41,7 @@ type DIComponent<'T>() as this =
     let parametersSet = new Event<unit>()
     let initialized = new Event<unit>()
     let afterRenderEvent = new Event<bool>()
+    let firstAfterRenderEvent = new Event<unit>()
     let disposeEvent = new Event<unit>()
     let disposes = new List<IDisposable>()
 
@@ -49,6 +50,7 @@ type DIComponent<'T>() as this =
             //member _.ParametersSet = parametersSet.Publish
             //member _.Initialized = initialized.Publish
             member _.OnAfterRender = afterRenderEvent.Publish
+            member _.OnFirstAfterRender = firstAfterRenderEvent.Publish
             member _.OnDispose = disposeEvent.Publish
             member _.AddDispose dispose = disposes.Add dispose
             member _.AddDisposes ds = disposes.AddRange(ds)
@@ -94,6 +96,7 @@ type DIComponent<'T>() as this =
     override _.OnAfterRender firstRender =
         base.OnAfterRender firstRender
         afterRenderEvent.Trigger firstRender
+        if firstRender then firstAfterRenderEvent.Trigger()
 
     interface IDisposable with
         member _.Dispose () =

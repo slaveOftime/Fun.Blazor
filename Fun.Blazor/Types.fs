@@ -73,6 +73,7 @@ type IComponentHook =
     //abstract OnParametersSet: IEvent<unit>
     //abstract OnInitialized: IEvent<unit>
     abstract OnAfterRender: IEvent<bool>
+    abstract OnFirstAfterRender: IEvent<unit>
     abstract OnDispose: IEvent<unit>
     abstract AddDispose: IDisposable -> unit
     abstract AddDisposes: IDisposable seq -> unit
