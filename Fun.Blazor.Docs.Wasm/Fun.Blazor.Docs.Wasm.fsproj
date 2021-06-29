@@ -8,6 +8,7 @@
     <Compile Include="Fun.Blazor.Bindings\AntDesign.fs" />
     <Compile Include="Fun.Blazor.Bindings\AntDesign.Charts.fs" />
     <Compile Include="Fun.Blazor.Bindings\Fun.Blazor.MudBlazor.fs" />
+    <Compile Include="Fun.Blazor.Bindings\Microsoft.AspNetCore.Components.Authorization.fs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Components\Common.fs" />
@@ -47,6 +48,7 @@
     <PackageReference FunBlazorNamespace="" Include="AntDesign" Version="0.8.2" />
     <PackageReference FunBlazorNamespace="" Include="AntDesign.Charts" Version="0.2.1" />
     <PackageReference FunBlazorNamespace="Fun.Blazor.MudBlazor" Include="MudBlazor" Version="5.0.13" />
+    <PackageReference FunBlazorNamespace="" Include="Microsoft.AspNetCore.Components.Authorization" Version="5.0.7" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fun.Blazor\Fun.Blazor.fsproj" />
