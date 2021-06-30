@@ -13,20 +13,17 @@ let componentHookDemo = html.inject (fun (hook: IComponentHook) ->
     let count = hook.UseStore 0
     let threshhold = 3
 
-    hook.OnAfterRender.Subscribe (function
-        | false -> ()
-        | true ->
-            TimeSpan.FromSeconds 1.
-            |> Observable.interval
-            |> Observable.subscribe (fun _ -> count.Publish (fun x -> x + 1))
-            |> hook.AddDispose
-            
-            count.Observable
-            |> Observable.subscribe (function
-                | GreaterThan threshhold -> toggle.Publish not; count.Publish 0
-                | _ -> ())
-            |> hook.AddDispose)
+    hook.OnFirstAfterRender.Add (fun () ->
+        TimeSpan.FromSeconds 1.
+        |> Observable.interval
+        |> Observable.subscribe (fun _ -> count.Publish (fun x -> x + 1))
         |> hook.AddDispose
+            
+        count.Observable
+        |> Observable.subscribe (function
+            | GreaterThan threshhold -> toggle.Publish not; count.Publish 0
+            | _ -> ())
+        |> hook.AddDispose)
     
     mudPaper.create [
         attr.styles [ style.padding 20 ]
