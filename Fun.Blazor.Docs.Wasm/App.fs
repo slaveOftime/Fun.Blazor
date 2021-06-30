@@ -89,6 +89,12 @@ let navmenu =
                 ]
             ]
         ]
+        html.div [
+            attr.styles [ style.margin 20; style.opacity 0.5 ]
+            html.route [
+                fun (x: string) -> Some(html.text x)
+            ]
+        ]
     ]
 
 
