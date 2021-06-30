@@ -8,10 +8,12 @@ let private root = "Pages/Router"
 
 let router =
     simplePage
-        "https://github.com/Zaid-Ajaj/Feliz.Router"
+        ""
         "Router"
-        "The main functional code is copy from Feliz.Router"
+        "The main functional code is copy from Feliz.Router and Giraffe"
         "Simple and easy to use"
         [
-            demoContainer "Basic Router" $"{root}/RouterDemo" routerDemo
+            demoContainer "Giraffe style Router" $"{root}/GiraffeStyleRouterDemo" giraffeStyleRouterDemo
+            demoDivider
+            demoContainer "Feliz style Router" $"{root}/RouterDemo" routerDemo
         ]

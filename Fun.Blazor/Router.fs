@@ -13,8 +13,8 @@ type RouteMode =
     | Path = 2
 
 
-[<RequireQualifiedAccess; System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>]
-module Router =
+[<RequireQualifiedAccess>]
+module RouterUtils =
 
     [<RequireQualifiedAccess>]
     module String =

@@ -11,11 +11,20 @@ let private spaceV (x: int) =
         attr.styles [ style.height x ]
     ]
 
+let private spaceH (x: int) = 
+    html.span [ 
+        attr.styles [ style.width x ]
+    ]
+
 let spaceV1 = spaceV 2
 let spaceV2 = spaceV 6
 let spaceV3 = spaceV 10
 let spaceV4 = spaceV 16
 
+let spaceH1 = spaceH 2
+let spaceH2 = spaceH 6
+let spaceH3 = spaceH 10
+let spaceH4 = spaceH 16
 
 let simplePage (url: string) (title: string) (subTitle: string) (description: string) demos =
     html.div [

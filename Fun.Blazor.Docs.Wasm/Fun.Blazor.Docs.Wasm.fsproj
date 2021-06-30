@@ -27,6 +27,7 @@
     <Compile Include="Demos\DemoFluentUI\DemoFluentUI.fs" />
     <Compile Include="Pages\QuickStart\BasicUsageDemo.fs" />
     <Compile Include="Pages\QuickStart\QuickStart.fs" />
+    <Compile Include="Pages\Router\GiraffeStyleRouterDemo.fs" />
     <Compile Include="Pages\Router\RouterDemo.fs" />
     <Compile Include="Pages\Router\Router.fs" />
     <Compile Include="Pages\Elmish\ElmishDemo.fs" />

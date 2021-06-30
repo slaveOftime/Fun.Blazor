@@ -5,6 +5,7 @@ open Bolero.Html
 open Elmish
 open Microsoft.AspNetCore.Components
 open Microsoft.AspNetCore.Components.Routing
+open Fun.Blazor.Router
 
 
 type FunBlazorHtmlEngine (mk, ofStr, empty) =
@@ -118,9 +119,22 @@ type FunBlazorHtmlEngine (mk, ofStr, empty) =
             |> hook.AddDispose
 
         html.watch (location, fun loc ->
-            Router.urlSegments (Uri loc).PathAndQuery RouteMode.Path
+            RouterUtils.urlSegments (Uri loc).PathAndQuery RouteMode.Path
             |> render
         ))
+
+    member html.route (routes: Router<FunBlazorNode> list) = html.inject (fun (hook: IComponentHook, nav: NavigationManager, interception: INavigationInterception) ->
+        let location = hook.UseStore nav.Uri
+
+        hook.OnAfterRender.Subscribe (function
+            | true ->
+                interception.EnableNavigationInterceptionAsync() |> ignore
+                nav.LocationChanged.Subscribe (fun e -> try location.Publish (Uri e.Location).PathAndQuery with _ -> ()) |> hook.AddDispose
+            | false ->
+                ())
+            |> hook.AddDispose
+
+        html.watch (location, choose routes >> Option.defaultValue html.none))
 
 
 type FunBlazorSvgEngine (mk, ofStr, empty) =

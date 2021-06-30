@@ -3,6 +3,7 @@ module Fun.Blazor.Docs.Wasm.App
 
 open MudBlazor
 open Fun.Blazor
+open Fun.Blazor.Router
 open Fun.Blazor.MudBlazor
 open Fun.Blazor.Docs.Wasm.DemoMudBlazor
 open Fun.Blazor.Docs.Wasm.DemoAntDesign
@@ -95,6 +96,17 @@ let app = html.inject (fun (hook: IComponentHook, shareStore: IShareStore) ->
     let isDarkMode = ShareStores.isDarkMode shareStore
     let openMenu = hook.UseStore false
     
+    let routes = [
+        routeCi "/antdesign"            demoAntDesign
+        routeCi "/fluentui"             demoFluentUI
+        routeCi "/mudblazor"            demoMudBlazor
+        subRouteCi "/router"            [ routeAny Router.Router.router ]
+        routeCi "/elmish"               Elmish.Elmish.elmish
+        routeCi "/helper-functions"     HelperFunctions.HelperFunctions.helperFunctions
+        routeCi "/cli-usage"            CliUsage.CliUsage.cliUsage
+        routeAny QuickStart.QuickStart.quickStart
+    ]
+
     html.div [
         html.watch (isDarkMode, fun isDark ->
             mudThemeProvider.create [
@@ -171,31 +183,13 @@ let app = html.inject (fun (hook: IComponentHook, shareStore: IShareStore) ->
                         style.paddingTop 100
                         style.paddingBottom 64
                     ]
-                    mudMainContent.childContent [ 
-                        html.route (function
-                            | [ "antdesign" ]
-                            | [ _; "antdesign" ] -> demoAntDesign
-
-                            | [ "fluentui" ]
-                            | [ _; "fluentui" ] -> demoFluentUI
-
-                            | [ "mudblazor" ]
-                            | [ _; "mudblazor" ] -> demoMudBlazor
-
-                            | [ "router" ] | [ "router"; _ ]
-                            | [ _; "router" ] | [ _; "router"; _ ] -> Router.Router.router
-
-                            | [ "elmish" ]
-                            | [ _; "elmish" ] -> Elmish.Elmish.elmish
-
-                            | [ "helper-functions" ]
-                            | [ _; "helper-functions" ] -> HelperFunctions.HelperFunctions.helperFunctions
-
-                            | [ "cli-usage" ]
-                            | [ _; "cli-usage" ] -> CliUsage.CliUsage.cliUsage
-
-                            | _ -> QuickStart.QuickStart.quickStart
-                        )
+                    mudMainContent.childContent [
+                        html.route [
+                            // For host on slaveoftime.fun server mode
+                            yield! routes
+                            // For host on github-pages WASM mode
+                            subRouteCi "/Fun.Blazor" routes
+                        ]
                         mudScrollToTop.create [
                             mudScrollToTop.topOffset 400
                             mudScrollToTop.childContent [
