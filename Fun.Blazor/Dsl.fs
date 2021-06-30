@@ -124,7 +124,7 @@ type FunBlazorHtmlEngine (mk, ofStr, empty) =
         ))
 
     member html.route (routes: Router<FunBlazorNode> list) = html.inject (fun (hook: IComponentHook, nav: NavigationManager, interception: INavigationInterception) ->
-        let location = hook.UseStore nav.Uri
+        let location = hook.UseStore (Uri nav.Uri).PathAndQuery
 
         hook.OnAfterRender.Subscribe (function
             | true ->
