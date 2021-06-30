@@ -89,12 +89,6 @@ let navmenu =
                 ]
             ]
         ]
-        html.div [
-            attr.styles [ style.margin 20; style.opacity 0.5 ]
-            html.route [
-                fun (x: string) -> Some(html.text x)
-            ]
-        ]
     ]
 
 
@@ -110,7 +104,6 @@ let app = html.inject (fun (hook: IComponentHook, shareStore: IShareStore) ->
         routeCi "/elmish"               Elmish.Elmish.elmish
         routeCi "/helper-functions"     HelperFunctions.HelperFunctions.helperFunctions
         routeCi "/cli-usage"            CliUsage.CliUsage.cliUsage
-        routeAny QuickStart.QuickStart.quickStart
     ]
 
     html.div [
@@ -195,6 +188,7 @@ let app = html.inject (fun (hook: IComponentHook, shareStore: IShareStore) ->
                             yield! routes
                             // For host on github-pages WASM mode
                             subRouteCi "/Fun.Blazor" routes
+                            routeAny QuickStart.QuickStart.quickStart
                         ]
                         mudScrollToTop.create [
                             mudScrollToTop.topOffset 400
