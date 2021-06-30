@@ -25,6 +25,10 @@ type Index () =
                         html.bolero rootComp<Index>
                         html.bolero Bolero.Server.Html.boleroScript
                     ]
+                    
+                    html.stylesheet "css/google-font.css"
+                    html.stylesheet "_content/MudBlazor/MudBlazor.min.css"
+                    html.script "_content/MudBlazor/MudBlazor.min.js"
                 ]
             ])
             |> html.toBolero

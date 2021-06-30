@@ -209,8 +209,4 @@ let app = html.inject (fun (hook: IComponentHook, shareStore: IShareStore) ->
                 ]
             ]
         ]
-
-        html.stylesheet "css/google-font.css"
-        html.stylesheet "_content/MudBlazor/MudBlazor.min.css"
-        html.script "_content/MudBlazor/MudBlazor.min.js"
     ])
