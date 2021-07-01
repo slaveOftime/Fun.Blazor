@@ -37,6 +37,8 @@
     <Compile Include="Pages\HelperFunctions\HelperFunctions.fs" />
     <None Include="Pages\CliUsage\CliUsageDemo.md" />
     <Compile Include="Pages\CliUsage\CliUsage.fs" />
+    <None Include="Pages\Tests\TestsDemo.md" />
+    <Compile Include="Pages\Tests\Tests.fs" />
     <Compile Include="App.fs" />
     <Compile Include="Startup.fs" />
   </ItemGroup>

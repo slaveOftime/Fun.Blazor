@@ -70,6 +70,10 @@ let navmenu =
             mudNavLink.href "./cli-usage"
             mudNavLink.childContent "Cli usage"
         ]
+        mudNavLink.create [
+            mudNavLink.href "./tests"
+            mudNavLink.childContent "Tests"
+        ]
         mudNavGroup.create [
             mudNavGroup.title "Demos"
             mudNavGroup.icon Icons.Material.Filled.School
@@ -97,13 +101,14 @@ let app = html.inject (fun (hook: IComponentHook, shareStore: IShareStore) ->
     let openMenu = hook.UseStore false
     
     let routes = [
-        routeCi "/antdesign"            demoAntDesign
-        routeCi "/fluentui"             demoFluentUI
-        routeCi "/mudblazor"            demoMudBlazor
         subRouteCi "/router"            [ routeAny Router.Router.router ]
         routeCi "/elmish"               Elmish.Elmish.elmish
         routeCi "/helper-functions"     HelperFunctions.HelperFunctions.helperFunctions
         routeCi "/cli-usage"            CliUsage.CliUsage.cliUsage
+        routeCi "/tests"                Tests.Tests.tests
+        routeCi "/antdesign"            demoAntDesign
+        routeCi "/fluentui"             demoFluentUI
+        routeCi "/mudblazor"            demoMudBlazor
     ]
 
     html.div [

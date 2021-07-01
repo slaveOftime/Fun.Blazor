@@ -23,7 +23,9 @@ jobs:
 
     - name: Install dependencies
       run: dotnet tool restore
-      
+
+    - name: Run tests
+      run: dotnet test      
 
     - name: Publish nuget packages
       run: |
