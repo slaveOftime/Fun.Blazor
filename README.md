@@ -12,6 +12,31 @@ It is based on [bolero](https://github.com/fsbolero/Bolero) and  [Feliz.Engine](
 
 ## Fun.Blazor
 
+### Simple dsl
+
+```fsharp
+let app =
+    html.div [
+        attr.styles [
+            style.margin 10
+        ]
+        html.text "Hello baisc usage 2"
+    ]
+```
+
+Auto generated MudBlazor dsl
+
+```fsharp
+let app =
+    mudCard.create [
+        mudCard.childContent [
+            mudAlert.create [
+                mudAlert.icon Icons.Filled.AccessAlarm
+                mudAlert.childContent "Mud alert"
+            ]
+        ]
+    ]
+```
 
 ### Create a WASM app
 
@@ -25,7 +50,6 @@ dotnet add package Fun.Blazor
 open System
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.AspNetCore.Components.WebAssembly.Hosting
-open MudBlazor.Services
 open Fun.Blazor
 
 let app = html.text "hello world"
@@ -34,9 +58,7 @@ let builder = WebAssemblyHostBuilder.CreateDefault(Environment.GetCommandLineArg
         
 builder
     .AddFunBlazorNode("#app", app)
-    .Services
-        .AddFunBlazor()
-    |> ignore
+    .Services.AddFunBlazor() |> ignore
         
 builder.Build().RunAsync() |> ignore
 ```
@@ -54,7 +76,6 @@ open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Hosting
 open Microsoft.Extensions.Hosting
 open Microsoft.Extensions.DependencyInjection
-open MudBlazor.Services
 open Bolero.Server.Html
 open Fun.Blazor.Docs.Server
 open Fun.Blazor

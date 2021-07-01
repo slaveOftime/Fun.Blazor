@@ -10,15 +10,12 @@ let alertDemo = html.inject (fun (hook: IComponentHook) ->
     let ref = Ref<MudCard>()
     let str = hook.UseStore "This is the way"
 
-    hook.OnAfterRender.Add (function
-        | false -> ()
-        | true ->
-            match ref.Value with
-            | None -> str.Publish "Did not get ref"
-            | Some _ -> str.Publish "Got ref")
+    hook.OnFirstAfterRender.Add (fun () ->
+        match ref.Value with
+        | None -> str.Publish "Did not get ref"
+        | Some _ -> str.Publish "Got ref")
 
     mudCard.create [
-        //!!(attr.ref ref)
         mudCard.ref ref
         mudCard.childContent [
             html.watch (str, fun str ->
