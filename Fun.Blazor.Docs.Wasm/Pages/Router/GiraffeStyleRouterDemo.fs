@@ -4,7 +4,6 @@ module Fun.Blazor.Docs.Wasm.Pages.Router.GiraffeStyleRouterDemo
 open MudBlazor
 open Fun.Blazor
 open Fun.Blazor.Router
-open Fun.Blazor.MudBlazor
 
 let giraffeStyleRouterDemo =
     let formatQueries = Map.toList >> List.map (fun (k, v) -> $"key = {k}, value = {v}") >> String.concat "; "
@@ -17,30 +16,33 @@ let giraffeStyleRouterDemo =
             routeCifWithQueries "/documents/%s" (fun param queries -> html.text $"Documents(Param: {param}) with query: {formatQueries queries}")
         ]
 
-    let link (href: string) (name: string) =
-        mudLink.create [
-            mudLink.href href
-            mudLink.childContent name
-            mudLink.underline Underline.Always
-            mudLink.styles [ style.marginRight 10 ]
-        ]
+    let link (hrefStr: string) (name: string) =
+        mudLink() {
+            href hrefStr
+            childContentStr name
+            underline Underline.Always
+            styles [ style.marginRight 10 ]
+            CAST
+        }
 
     html.div [
-        mudText.create [
-            mudText.typo Typo.subtitle1
-            mudText.childContent ""
-        ]
-        mudText.create [
-            mudText.typo Typo.subtitle2
-            mudText.color Color.Secondary
-            mudText.childContent [
+        mudText() {
+            typo Typo.subtitle1
+            childContentStr ""
+            CAST
+        }
+        mudText() {
+            typo Typo.subtitle2
+            color Color.Secondary
+            childContent [
                 html.route [
                     route
                     subRouteCi "/Fun.Blazor" [ route ] // For github-pages hosting
                     routeAny (html.text "Not my concern.")
                 ]
             ]
-        ]
+            CAST
+        }
         link "./router/document" "Route to document"
         link "./router/document/12" "Route to document 12"
         link "./router/documents?filter=test&q2=2" "Route to documents with query"

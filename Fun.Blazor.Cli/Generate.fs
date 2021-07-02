@@ -10,30 +10,42 @@ open Spectre.Console
 open Fun.Blazor.Generator
 
 
+type Style =
+    | Feliz
+    | CE
+
 let private xn x = XName.Get x
 
 let private (</>) x y = Path.Combine(x, y)
 
-let private FunBlazorNamespaceAttr = "FunBlazorNamespace"
+let private FunBlazorPrefix = "FunBlazor"
+let private FunBlazorNamespaceAttr = $"{FunBlazorPrefix}Namespace"
+let private FunBlazorStyleAttr = $"{FunBlazorPrefix}Style"
 
 
-let private createCodeFile (projectFile: string) codesDirName (name, dll) =
+let private createCodeFile (projectFile: string) codesDirName (name, style, dll) =
     AnsiConsole.WriteLine ()
     AnsiConsole.MarkupLine $"Generating code for [purple]{name}[/]: [green]{dll}[/]"
     
     try
         let opens =
-            """open Bolero.Html
+            $"""open Bolero.Html
 open Fun.Blazor
-open Fun.Blazor.Web.DslInternals"""
+open Fun.Blazor.Web.DslInternals
+open {name}.DslInternals"""
 
-        let codes = Assembly.LoadFile(dll).GetTypes() |> Generator.generateCode name opens
+        let types = Assembly.LoadFile(dll).GetTypes()
         let codesDir = Path.GetDirectoryName projectFile </> codesDirName
+        let path = codesDir </> name + ".fs"
 
         if Directory.Exists codesDir |> not then
             Directory.CreateDirectory codesDir |> ignore
-        
-        let path = codesDir </> name + ".fs"
+
+        let codes =
+            match style with
+            | Style.Feliz -> types |> Generator.generateCode name opens
+            | Style.CE -> types |> CEGenerator.generateCode name opens
+
         let code = 
             $"""{codes.internalCode}
 
@@ -42,6 +54,7 @@ open Fun.Blazor.Web.DslInternals"""
 {codes.dslCode}"""
         
         File.WriteAllText(path, code)
+        
 
         AnsiConsole.MarkupLine $"Generated code for [green]{name}[/]: {path}"
 
@@ -52,7 +65,7 @@ open Fun.Blazor.Web.DslInternals"""
         None
 
 
-let startGenerate (projectFile: string) (codesDirName: string) =
+let startGenerate (projectFile: string) (codesDirName: string) (style: Style) =
     AnsiConsole.MarkupLine $"Found project: [green]{projectFile}[/]"
 
     let project = XDocument.Load projectFile
@@ -85,10 +98,19 @@ let startGenerate (projectFile: string) (codesDirName: string) =
         project.Element(xn "Project").Elements(xn "ItemGroup")
         |> Seq.map (fun x -> x.Elements(xn "PackageReference"))
         |> Seq.concat
-        |> Seq.filter (fun x -> x.Attribute(xn FunBlazorNamespaceAttr) |> isNull |> not)
+        |> Seq.filter (fun x -> x.Attributes() |> Seq.exists (fun x -> x.Name.LocalName.StartsWith FunBlazorPrefix))
         |> Seq.map (fun node ->
             let package = node.Attribute(xn "Include").Value
             let version = node.Attribute(xn "Version").Value
+            let style = 
+                match node.Attribute(xn FunBlazorStyleAttr) with
+                | null -> style
+                | attr ->
+                    match attr.Value with
+                    | nameof Style.Feliz -> Style.Feliz
+                    | nameof Style.CE -> Style.CE
+                    | _ -> style
+                
 
             //Use this in the future
             //let config = ConfigurationBuilder().AddJsonFile(Path.GetDirectoryName projectFile </> "obj" </> "project.assets.json").Build()
@@ -110,10 +132,10 @@ let startGenerate (projectFile: string) (codesDirName: string) =
                             
             let name =
                 let attr = node.Attribute(xn FunBlazorNamespaceAttr)
-                if String.IsNullOrEmpty attr.Value then package
+                if attr = null || String.IsNullOrEmpty attr.Value then package
                 else attr.Value
 
-            name, dll)
+            name, style, dll)
 
         |> Seq.toList
         |> List.map (createCodeFile projectFile codesDirName)

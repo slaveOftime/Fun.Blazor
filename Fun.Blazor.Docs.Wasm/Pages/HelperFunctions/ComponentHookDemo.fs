@@ -6,7 +6,6 @@ open FSharp.Control.Reactive
 open MudBlazor
 open Fun.Result
 open Fun.Blazor
-open Fun.Blazor.MudBlazor
 
 let componentHookDemo = html.inject (fun (hook: IComponentHook) ->
     let toggle = hook.UseStore false
@@ -25,33 +24,41 @@ let componentHookDemo = html.inject (fun (hook: IComponentHook) ->
             | _ -> ())
         |> hook.AddDispose)
     
-    mudPaper.create [
-        attr.styles [ style.padding 20 ]
-        html.watch (toggle, fun isToggled -> [
-            mudText.create [
-                mudText.childContent "We can use this hook to subscribe lifecycle event of the component which created by html.inject at the beginening. We can use create observable store to have a state management for the current component. After the component all the resource will be disposed."
-                mudText.typo Typo.subtitle1
-            ]
-            mudText.create [
-                mudText.childContent $"After every {threshhold} seconds the toggle will be switched"
-                mudText.typo Typo.subtitle1
-                mudText.color Color.Info
-            ]
-            mudSwitch<bool>.create [
-                mudSwitch.checked' isToggled
-                mudSwitch.checkedChanged toggle.Publish
-            ]
-            if isToggled then
-                mudText.create [
-                    mudText.childContent "Toggled successfuly"
-                    mudText.typo Typo.subtitle2
-                    mudText.color Color.Primary
-                ]
-            else
-                mudText.create [
-                    mudText.childContent "Toggled off now"
-                    mudText.color Color.Secondary
-                ]
-            html.watch (count, fun c -> html.text $"Interval Count: {c}")
-        ])
-    ])
+    mudPaper() {
+        styles [ style.padding 20 ]
+        childContent [
+            html.watch (toggle, fun isToggled -> [
+                mudText() {
+                    childContentStr "We can use this hook to subscribe lifecycle event of the component which created by html.inject at the beginening. We can use create observable store to have a state management for the current component. After the component all the resource will be disposed."
+                    typo Typo.subtitle1
+                    CAST
+                }
+                mudText() {
+                    childContentStr $"After every {threshhold} seconds the toggle will be switched"
+                    typo Typo.subtitle1
+                    color Color.Info
+                    CAST
+                }
+                mudSwitch<bool>() {
+                    checked' isToggled
+                    checkedChanged toggle.Publish
+                    CAST
+                }
+                if isToggled then
+                    mudText() {
+                        childContentStr "Toggled successfuly"
+                        typo Typo.subtitle2
+                        color Color.Primary
+                        CAST
+                    }
+                else
+                    mudText() {
+                        childContentStr "Toggled off now"
+                        color Color.Secondary
+                        CAST
+                    }
+                html.watch (count, fun c -> html.text $"Interval Count: {c}")
+            ])
+        ]
+        CAST
+    })

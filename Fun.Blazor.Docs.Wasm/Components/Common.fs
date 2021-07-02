@@ -3,16 +3,15 @@ module Fun.Blazor.Docs.Wasm.Components.Common
 
 open MudBlazor
 open Fun.Blazor
-open Fun.Blazor.MudBlazor
 
 
 let private spaceV (x: int) = 
-    html.div [ 
+    html.div [
         attr.styles [ style.height x ]
     ]
 
 let private spaceH (x: int) = 
-    html.span [ 
+    html.span [
         attr.styles [ style.width x ]
     ]
 
@@ -26,48 +25,49 @@ let spaceH2 = spaceH 6
 let spaceH3 = spaceH 10
 let spaceH4 = spaceH 16
 
-let simplePage (url: string) (title: string) (subTitle: string) (description: string) demos =
+let simplePage (url: string) (titleStr: string) (subTitle: string) (description: string) demos =
     html.div [
         attr.styles [
             style.marginTop 20
             style.marginBottom 20
         ]
-        mudContainer.create [
-            mudContainer.maxWidth MaxWidth.Large
-            mudContainer.childContent [
-                mudContainer.create [
-                    mudContainer.maxWidth MaxWidth.Medium
-                    mudContainer.childContent [
-                        mudLink.create [
-                            mudLink.href url
-                            mudLink.color Color.Primary
-                            mudLink.underline Underline.Always
-                            mudLink.childContent [
-                                mudText.create [
-                                    mudText.typo Typo.h4
-                                    mudText.align Align.Center
-                                    mudText.color Color.Primary
-                                    mudText.childContent title
-                                ]
-                                mudText.create [
-                                    mudText.typo Typo.h5
-                                    mudText.align Align.Center
-                                    mudText.childContent subTitle
-                                ]
+        mudContainer() {
+            maxWidth MaxWidth.Large
+            childContent [
+                mudContainer() {
+                    maxWidth MaxWidth.Medium
+                    childContent [
+                        mudLink() {
+                            href url
+                            color Color.Primary
+                            underline Underline.Always
+                            childContent [
+                                mudText() {
+                                    typo Typo.h4
+                                    align Align.Center
+                                    color Color.Primary
+                                    childContentStr titleStr
+                                }
+                                mudText() {
+                                    typo Typo.h5
+                                    align Align.Center
+                                    childContentStr subTitle
+                                }
                             ]
-                        ]
+                        }
                         spaceV3
-                        mudText.create [
-                            mudText.typo Typo.body1
-                            mudText.align Align.Center
-                            mudText.childContent description
-                        ]
+                        mudText() {
+                            typo Typo.body1
+                            align Align.Center
+                            childContentStr description
+                        }
                     ]
-                ]
+                }
 
                 spaceV4
 
                 yield! demos
             ]
-        ]
+            CAST
+        }
     ]

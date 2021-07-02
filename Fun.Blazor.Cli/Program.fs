@@ -5,6 +5,7 @@ open Spectre.Console
 open Spectre.Console.Cli
 
 open Fun.Blazor.Cli
+open Fun.Blazor.Cli.Generate
 
 
 type GenerateSettings() =
@@ -17,6 +18,10 @@ type GenerateSettings() =
     [<Description("Output directory of generated codes")>]
     [<CommandOption("-o|--outDir")>]
     member val OutDir = "Fun.Blazor.Bindings" with get, set
+    
+    [<Description("Dsl style")>]
+    [<CommandOption("-s|--style")>]
+    member val Style = Style.CE with get, set
 
 
 type GenerateCommand() =
@@ -47,7 +52,7 @@ type GenerateCommand() =
             AnsiConsole.MarkupLine "[red] project is required[/]"
             -1
         | Some path ->
-            Generate.startGenerate path settings.OutDir
+            Generate.startGenerate path settings.OutDir settings.Style
             0
 
 

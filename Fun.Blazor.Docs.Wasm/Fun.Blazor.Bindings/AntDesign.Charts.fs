@@ -6,851 +6,644 @@ open Fun.Blazor.Web.DslInternals
 open AntDesign.Charts.DslInternals
 
 
-type chartComponentBase<'FunBlazorGeneric, 'TItem, 'TConfig when 'TConfig : not struct and 'TConfig : (new : unit -> 'TConfig)> =
+type ChartComponentBaseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent> () =
+    inherit FunBlazorContext<'FunBlazorGeneric>()
+
     
-    static member inline create () = [] |> html.blazor<AntDesign.Charts.ChartComponentBase<'TItem, 'TConfig>>
-    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.ChartComponentBase<'TItem, 'TConfig>>
-
-    static member inline ref x = attr.ref<AntDesign.Charts.ChartComponentBase<'TItem, 'TConfig>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline data (x: 'TItem) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline config (x: 'TConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onCreateAfter fn = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onTitleClick fn = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-                    
-
-type columnLine<'FunBlazorGeneric, 'TItem> =
-    inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.ColumnLineConfig>
-    static member inline create () = [] |> html.blazor<AntDesign.Charts.ColumnLine<'TItem>>
-    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.ColumnLine<'TItem>>
-
-    static member inline ref x = attr.ref<AntDesign.Charts.ColumnLine<'TItem>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline config (x: AntDesign.Charts.ColumnLineConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onCreateAfter fn = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onTitleClick fn = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-                    
-
-type dualLine<'FunBlazorGeneric, 'TItem> =
-    inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.DualLineConfig>
-    static member inline create () = [] |> html.blazor<AntDesign.Charts.DualLine<'TItem>>
-    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.DualLine<'TItem>>
-
-    static member inline ref x = attr.ref<AntDesign.Charts.DualLine<'TItem>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline config (x: AntDesign.Charts.DualLineConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onCreateAfter fn = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onTitleClick fn = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-                    
-
-type groupedColumnLine<'FunBlazorGeneric, 'TItem> =
-    inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.GroupedColumnLineConfig>
-    static member inline create () = [] |> html.blazor<AntDesign.Charts.GroupedColumnLine<'TItem>>
-    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.GroupedColumnLine<'TItem>>
-
-    static member inline ref x = attr.ref<AntDesign.Charts.GroupedColumnLine<'TItem>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline config (x: AntDesign.Charts.GroupedColumnLineConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onCreateAfter fn = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onTitleClick fn = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-                    
-
-type stackedColumnLine<'FunBlazorGeneric, 'TItem> =
-    inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.StackedColumnLineConfig>
-    static member inline create () = [] |> html.blazor<AntDesign.Charts.StackedColumnLine<'TItem>>
-    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.StackedColumnLine<'TItem>>
-
-    static member inline ref x = attr.ref<AntDesign.Charts.StackedColumnLine<'TItem>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline config (x: AntDesign.Charts.StackedColumnLineConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onCreateAfter fn = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onTitleClick fn = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-                    
-
-type area<'FunBlazorGeneric, 'TItem> =
-    inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.AreaConfig>
-    static member inline create () = [] |> html.blazor<AntDesign.Charts.Area<'TItem>>
-    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Area<'TItem>>
-
-    static member inline ref x = attr.ref<AntDesign.Charts.Area<'TItem>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline config (x: AntDesign.Charts.AreaConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onCreateAfter fn = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onTitleClick fn = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-                    
-
-type bar<'FunBlazorGeneric, 'TItem> =
-    inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.BarConfig>
-    static member inline create () = [] |> html.blazor<AntDesign.Charts.Bar<'TItem>>
-    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Bar<'TItem>>
-
-    static member inline ref x = attr.ref<AntDesign.Charts.Bar<'TItem>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline config (x: AntDesign.Charts.BarConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onCreateAfter fn = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onTitleClick fn = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-                    
-
-type bubble<'FunBlazorGeneric, 'TItem> =
-    inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.BubbleConfig>
-    static member inline create () = [] |> html.blazor<AntDesign.Charts.Bubble<'TItem>>
-    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Bubble<'TItem>>
-
-    static member inline ref x = attr.ref<AntDesign.Charts.Bubble<'TItem>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline config (x: AntDesign.Charts.BubbleConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onCreateAfter fn = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onTitleClick fn = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-                    
-
-type bullet<'FunBlazorGeneric, 'TItem> =
-    inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.BulletConfig>
-    static member inline create () = [] |> html.blazor<AntDesign.Charts.Bullet<'TItem>>
-    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Bullet<'TItem>>
-
-    static member inline ref x = attr.ref<AntDesign.Charts.Bullet<'TItem>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline config (x: AntDesign.Charts.BulletConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onCreateAfter fn = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onTitleClick fn = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-                    
-
-type calendar<'FunBlazorGeneric, 'TItem> =
-    inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.CalendarConfig>
-    static member inline create () = [] |> html.blazor<AntDesign.Charts.Calendar<'TItem>>
-    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Calendar<'TItem>>
-
-    static member inline ref x = attr.ref<AntDesign.Charts.Calendar<'TItem>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline config (x: AntDesign.Charts.CalendarConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onCreateAfter fn = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onTitleClick fn = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-                    
-
-type column<'FunBlazorGeneric, 'TItem> =
-    inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.ColumnConfig>
-    static member inline create () = [] |> html.blazor<AntDesign.Charts.Column<'TItem>>
-    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Column<'TItem>>
-
-    static member inline ref x = attr.ref<AntDesign.Charts.Column<'TItem>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline config (x: AntDesign.Charts.ColumnConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onCreateAfter fn = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onTitleClick fn = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-                    
-
-type densityHeatmap<'FunBlazorGeneric, 'TItem> =
-    inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.DensityHeatmapConfig>
-    static member inline create () = [] |> html.blazor<AntDesign.Charts.DensityHeatmap<'TItem>>
-    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.DensityHeatmap<'TItem>>
-
-    static member inline ref x = attr.ref<AntDesign.Charts.DensityHeatmap<'TItem>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline config (x: AntDesign.Charts.DensityHeatmapConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onCreateAfter fn = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onTitleClick fn = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-                    
-
-type donut<'FunBlazorGeneric, 'TItem> =
-    inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.DonutConfig>
-    static member inline create () = [] |> html.blazor<AntDesign.Charts.Donut<'TItem>>
-    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Donut<'TItem>>
-
-    static member inline ref x = attr.ref<AntDesign.Charts.Donut<'TItem>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline config (x: AntDesign.Charts.DonutConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onCreateAfter fn = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onTitleClick fn = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-                    
-
-type funnel<'FunBlazorGeneric, 'TItem> =
-    inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.FunnelConfig>
-    static member inline create () = [] |> html.blazor<AntDesign.Charts.Funnel<'TItem>>
-    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Funnel<'TItem>>
-
-    static member inline ref x = attr.ref<AntDesign.Charts.Funnel<'TItem>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline config (x: AntDesign.Charts.FunnelConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onCreateAfter fn = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onTitleClick fn = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-                    
-
-type gauge<'FunBlazorGeneric, 'TItem> =
-    inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.GaugeConfig>
-    static member inline create () = [] |> html.blazor<AntDesign.Charts.Gauge<'TItem>>
-    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Gauge<'TItem>>
-
-    static member inline ref x = attr.ref<AntDesign.Charts.Gauge<'TItem>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline config (x: AntDesign.Charts.GaugeConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onCreateAfter fn = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onTitleClick fn = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-                    
-
-type groupedBar<'FunBlazorGeneric, 'TItem> =
-    inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.GroupedBarConfig>
-    static member inline create () = [] |> html.blazor<AntDesign.Charts.GroupedBar<'TItem>>
-    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.GroupedBar<'TItem>>
-
-    static member inline ref x = attr.ref<AntDesign.Charts.GroupedBar<'TItem>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline config (x: AntDesign.Charts.GroupedBarConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onCreateAfter fn = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onTitleClick fn = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-                    
-
-type groupedColumn<'FunBlazorGeneric, 'TItem> =
-    inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.GroupedColumnConfig>
-    static member inline create () = [] |> html.blazor<AntDesign.Charts.GroupedColumn<'TItem>>
-    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.GroupedColumn<'TItem>>
-
-    static member inline ref x = attr.ref<AntDesign.Charts.GroupedColumn<'TItem>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline config (x: AntDesign.Charts.GroupedColumnConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onCreateAfter fn = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onTitleClick fn = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-                    
-
-type heatmap<'FunBlazorGeneric, 'TItem> =
-    inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.HeatmapConfig>
-    static member inline create () = [] |> html.blazor<AntDesign.Charts.Heatmap<'TItem>>
-    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Heatmap<'TItem>>
-
-    static member inline ref x = attr.ref<AntDesign.Charts.Heatmap<'TItem>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline config (x: AntDesign.Charts.HeatmapConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onCreateAfter fn = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onTitleClick fn = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-                    
-
-type histogram<'FunBlazorGeneric, 'TItem> =
-    inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.HistogramConfig>
-    static member inline create () = [] |> html.blazor<AntDesign.Charts.Histogram<'TItem>>
-    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Histogram<'TItem>>
-
-    static member inline ref x = attr.ref<AntDesign.Charts.Histogram<'TItem>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline config (x: AntDesign.Charts.HistogramConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onCreateAfter fn = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onTitleClick fn = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-                    
-
-type line<'FunBlazorGeneric, 'TItem> =
-    inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.LineConfig>
-    static member inline create () = [] |> html.blazor<AntDesign.Charts.Line<'TItem>>
-    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Line<'TItem>>
-
-    static member inline ref x = attr.ref<AntDesign.Charts.Line<'TItem>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline config (x: AntDesign.Charts.LineConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onCreateAfter fn = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onTitleClick fn = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-                    
-
-type liquid<'FunBlazorGeneric, 'TItem> =
-    inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.LiquidConfig>
-    static member inline create () = [] |> html.blazor<AntDesign.Charts.Liquid<'TItem>>
-    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Liquid<'TItem>>
-
-    static member inline ref x = attr.ref<AntDesign.Charts.Liquid<'TItem>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline config (x: AntDesign.Charts.LiquidConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onCreateAfter fn = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onTitleClick fn = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-                    
-
-type percentStackedArea<'FunBlazorGeneric, 'TItem> =
-    inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.PercentStackedAreaConfig>
-    static member inline create () = [] |> html.blazor<AntDesign.Charts.PercentStackedArea<'TItem>>
-    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.PercentStackedArea<'TItem>>
-
-    static member inline ref x = attr.ref<AntDesign.Charts.PercentStackedArea<'TItem>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline config (x: AntDesign.Charts.PercentStackedAreaConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onCreateAfter fn = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onTitleClick fn = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-                    
-
-type percentStackedBar<'FunBlazorGeneric, 'TItem> =
-    inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.PercentStackedBarConfig>
-    static member inline create () = [] |> html.blazor<AntDesign.Charts.PercentStackedBar<'TItem>>
-    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.PercentStackedBar<'TItem>>
-
-    static member inline ref x = attr.ref<AntDesign.Charts.PercentStackedBar<'TItem>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline config (x: AntDesign.Charts.PercentStackedBarConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onCreateAfter fn = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onTitleClick fn = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-                    
-
-type percentStackedColumn<'FunBlazorGeneric, 'TItem> =
-    inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.PercentStackedColumnConfig>
-    static member inline create () = [] |> html.blazor<AntDesign.Charts.PercentStackedColumn<'TItem>>
-    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.PercentStackedColumn<'TItem>>
-
-    static member inline ref x = attr.ref<AntDesign.Charts.PercentStackedColumn<'TItem>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline config (x: AntDesign.Charts.PercentStackedColumnConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onCreateAfter fn = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onTitleClick fn = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-                    
-
-type pie<'FunBlazorGeneric, 'TItem> =
-    inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.PieConfig>
-    static member inline create () = [] |> html.blazor<AntDesign.Charts.Pie<'TItem>>
-    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Pie<'TItem>>
-
-    static member inline ref x = attr.ref<AntDesign.Charts.Pie<'TItem>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline config (x: AntDesign.Charts.PieConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onCreateAfter fn = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onTitleClick fn = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-                    
-
-type radar<'FunBlazorGeneric, 'TItem> =
-    inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.RadarConfig>
-    static member inline create () = [] |> html.blazor<AntDesign.Charts.Radar<'TItem>>
-    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Radar<'TItem>>
-
-    static member inline ref x = attr.ref<AntDesign.Charts.Radar<'TItem>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline config (x: AntDesign.Charts.RadarConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onCreateAfter fn = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onTitleClick fn = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-                    
-
-type rangeBar<'FunBlazorGeneric, 'TItem> =
-    inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.RangeBarConfig>
-    static member inline create () = [] |> html.blazor<AntDesign.Charts.RangeBar<'TItem>>
-    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.RangeBar<'TItem>>
-
-    static member inline ref x = attr.ref<AntDesign.Charts.RangeBar<'TItem>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline config (x: AntDesign.Charts.RangeBarConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onCreateAfter fn = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onTitleClick fn = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-                    
-
-type rangeColumn<'FunBlazorGeneric, 'TItem> =
-    inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.RangeColumnConfig>
-    static member inline create () = [] |> html.blazor<AntDesign.Charts.RangeColumn<'TItem>>
-    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.RangeColumn<'TItem>>
-
-    static member inline ref x = attr.ref<AntDesign.Charts.RangeColumn<'TItem>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline config (x: AntDesign.Charts.RangeColumnConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onCreateAfter fn = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onTitleClick fn = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-                    
-
-type rose<'FunBlazorGeneric, 'TItem> =
-    inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.RoseConfig>
-    static member inline create () = [] |> html.blazor<AntDesign.Charts.Rose<'TItem>>
-    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Rose<'TItem>>
-
-    static member inline ref x = attr.ref<AntDesign.Charts.Rose<'TItem>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline config (x: AntDesign.Charts.RoseConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onCreateAfter fn = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onTitleClick fn = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-                    
-
-type scatter<'FunBlazorGeneric, 'TItem> =
-    inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.ScatterConfig>
-    static member inline create () = [] |> html.blazor<AntDesign.Charts.Scatter<'TItem>>
-    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Scatter<'TItem>>
-
-    static member inline ref x = attr.ref<AntDesign.Charts.Scatter<'TItem>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline config (x: AntDesign.Charts.ScatterConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onCreateAfter fn = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onTitleClick fn = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-                    
-
-type stackedArea<'FunBlazorGeneric, 'TItem> =
-    inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.StackedAreaConfig>
-    static member inline create () = [] |> html.blazor<AntDesign.Charts.StackedArea<'TItem>>
-    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.StackedArea<'TItem>>
-
-    static member inline ref x = attr.ref<AntDesign.Charts.StackedArea<'TItem>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline config (x: AntDesign.Charts.StackedAreaConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onCreateAfter fn = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onTitleClick fn = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-                    
-
-type stackedBar<'FunBlazorGeneric, 'TItem> =
-    inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.StackedBarConfig>
-    static member inline create () = [] |> html.blazor<AntDesign.Charts.StackedBar<'TItem>>
-    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.StackedBar<'TItem>>
-
-    static member inline ref x = attr.ref<AntDesign.Charts.StackedBar<'TItem>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline config (x: AntDesign.Charts.StackedBarConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onCreateAfter fn = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onTitleClick fn = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-                    
-
-type stackedColumn<'FunBlazorGeneric, 'TItem> =
-    inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.StackedColumnConfig>
-    static member inline create () = [] |> html.blazor<AntDesign.Charts.StackedColumn<'TItem>>
-    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.StackedColumn<'TItem>>
-
-    static member inline ref x = attr.ref<AntDesign.Charts.StackedColumn<'TItem>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline config (x: AntDesign.Charts.StackedColumnConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onCreateAfter fn = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onTitleClick fn = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-                    
-
-type stepLine<'FunBlazorGeneric, 'TItem> =
-    inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.StepLineConfig>
-    static member inline create () = [] |> html.blazor<AntDesign.Charts.StepLine<'TItem>>
-    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.StepLine<'TItem>>
-
-    static member inline ref x = attr.ref<AntDesign.Charts.StepLine<'TItem>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline config (x: AntDesign.Charts.StepLineConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onCreateAfter fn = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onTitleClick fn = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-                    
-
-type treemap<'FunBlazorGeneric, 'TItem> =
-    inherit chartComponentBase<'FunBlazorGeneric, AntDesign.Charts.ITreemapData<'TItem>, AntDesign.Charts.TreemapConfig>
-    static member inline create () = [] |> html.blazor<AntDesign.Charts.Treemap<'TItem>>
-    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Treemap<'TItem>>
-
-    static member inline ref x = attr.ref<AntDesign.Charts.Treemap<'TItem>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline data (x: AntDesign.Charts.ITreemapData<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline config (x: AntDesign.Charts.TreemapConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onCreateAfter fn = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onTitleClick fn = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-                    
-
-type waterfall<'FunBlazorGeneric, 'TItem> =
-    inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.WaterfallConfig>
-    static member inline create () = [] |> html.blazor<AntDesign.Charts.Waterfall<'TItem>>
-    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Waterfall<'TItem>>
-
-    static member inline ref x = attr.ref<AntDesign.Charts.Waterfall<'TItem>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline config (x: AntDesign.Charts.WaterfallConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onCreateAfter fn = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onTitleClick fn = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-                    
-
-type progress<'FunBlazorGeneric, 'TItem> =
-    inherit chartComponentBase<'FunBlazorGeneric, System.Double, AntDesign.Charts.ProgressConfig>
-    static member inline create () = [] |> html.blazor<AntDesign.Charts.Progress<'TItem>>
-    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Progress<'TItem>>
-
-    static member inline ref x = attr.ref<AntDesign.Charts.Progress<'TItem>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline data (x: System.Double) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline config (x: AntDesign.Charts.ProgressConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onCreateAfter fn = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onTitleClick fn = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-                    
-
-type ringProgress<'FunBlazorGeneric> =
-    inherit chartComponentBase<'FunBlazorGeneric, System.Double, AntDesign.Charts.RingProgressConfig>
-    static member inline create () = [] |> html.blazor<AntDesign.Charts.RingProgress>
-    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.RingProgress>
-
-    static member inline ref x = attr.ref<AntDesign.Charts.RingProgress> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline data (x: System.Double) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline config (x: AntDesign.Charts.RingProgressConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onCreateAfter fn = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onTitleClick fn = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-                    
-
-type tinyArea<'FunBlazorGeneric, 'TItem> =
-    inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.TinyAreaConfig>
-    static member inline create () = [] |> html.blazor<AntDesign.Charts.TinyArea<'TItem>>
-    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.TinyArea<'TItem>>
-
-    static member inline ref x = attr.ref<AntDesign.Charts.TinyArea<'TItem>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline config (x: AntDesign.Charts.TinyAreaConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onCreateAfter fn = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onTitleClick fn = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-                    
-
-type tinyColumn<'FunBlazorGeneric, 'TItem> =
-    inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.TinyColumnConfig>
-    static member inline create () = [] |> html.blazor<AntDesign.Charts.TinyColumn<'TItem>>
-    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.TinyColumn<'TItem>>
-
-    static member inline ref x = attr.ref<AntDesign.Charts.TinyColumn<'TItem>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline config (x: AntDesign.Charts.TinyColumnConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onCreateAfter fn = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onTitleClick fn = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-                    
-
-type tinyLine<'FunBlazorGeneric, 'TItem> =
-    inherit chartComponentBase<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TItem>, AntDesign.Charts.TinyLineConfig>
-    static member inline create () = [] |> html.blazor<AntDesign.Charts.TinyLine<'TItem>>
-    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.TinyLine<'TItem>>
-
-    static member inline ref x = attr.ref<AntDesign.Charts.TinyLine<'TItem>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline data (x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline config (x: AntDesign.Charts.TinyLineConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onCreateAfter fn = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onTitleClick fn = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-                    
-
-type temp<'FunBlazorGeneric, 'TItem> =
-    inherit chartComponentBase<'FunBlazorGeneric, 'TItem, AntDesign.Charts.BarConfig>
-    static member inline create () = [] |> html.blazor<AntDesign.Charts.Temp<'TItem>>
-    static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Charts.Temp<'TItem>>
-
-    static member inline ref x = attr.ref<AntDesign.Charts.Temp<'TItem>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline data (x: 'TItem) = "Data" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline config (x: AntDesign.Charts.BarConfig) = "Config" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline otherConfig (x: System.Object) = "OtherConfig" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onCreateAfter fn = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline onTitleClick fn = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-                    
+    member this.Yield _ = ChartComponentBaseBuilder<'FunBlazorGeneric>()
+
+    [<CustomOperation("ref'")>] member this.ref' (_: FunBlazorContext<AntDesign.Charts.ChartComponentBase<'TItem, 'TConfig>>, x) = attr.ref<AntDesign.Charts.ChartComponentBase<'TItem, 'TConfig>> x |> this.AddProp
+    [<CustomOperation("data")>] member this.data (_: FunBlazorContext<AntDesign.Charts.ChartComponentBase<'TItem, 'TConfig>>, x: 'TItem) = "Data" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("config")>] member this.config (_: FunBlazorContext<AntDesign.Charts.ChartComponentBase<'TItem, 'TConfig>>, x: 'TConfig) = "Config" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("otherConfig")>] member this.otherConfig (_: FunBlazorContext<AntDesign.Charts.ChartComponentBase<'TItem, 'TConfig>>, x: System.Object) = "OtherConfig" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onCreateAfter")>] member this.onCreateAfter (_: FunBlazorContext<AntDesign.Charts.ChartComponentBase<'TItem, 'TConfig>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onTitleClick")>] member this.onTitleClick (_: FunBlazorContext<AntDesign.Charts.ChartComponentBase<'TItem, 'TConfig>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+                
+
+type ColumnLineBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent> () =
+    inherit FunBlazorContext<'FunBlazorGeneric>()
+
+    
+    member this.Yield _ = ColumnLineBuilder<'FunBlazorGeneric>()
+
+    [<CustomOperation("ref'")>] member this.ref' (_: FunBlazorContext<AntDesign.Charts.ColumnLine<'TItem>>, x) = attr.ref<AntDesign.Charts.ColumnLine<'TItem>> x |> this.AddProp
+    [<CustomOperation("data")>] member this.data (_: FunBlazorContext<AntDesign.Charts.ColumnLine<'TItem>>, x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("config")>] member this.config (_: FunBlazorContext<AntDesign.Charts.ColumnLine<'TItem>>, x: AntDesign.Charts.ColumnLineConfig) = "Config" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("otherConfig")>] member this.otherConfig (_: FunBlazorContext<AntDesign.Charts.ColumnLine<'TItem>>, x: System.Object) = "OtherConfig" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onCreateAfter")>] member this.onCreateAfter (_: FunBlazorContext<AntDesign.Charts.ColumnLine<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onTitleClick")>] member this.onTitleClick (_: FunBlazorContext<AntDesign.Charts.ColumnLine<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+                
+
+type DualLineBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent> () =
+    inherit FunBlazorContext<'FunBlazorGeneric>()
+
+    
+    member this.Yield _ = DualLineBuilder<'FunBlazorGeneric>()
+
+    [<CustomOperation("ref'")>] member this.ref' (_: FunBlazorContext<AntDesign.Charts.DualLine<'TItem>>, x) = attr.ref<AntDesign.Charts.DualLine<'TItem>> x |> this.AddProp
+    [<CustomOperation("data")>] member this.data (_: FunBlazorContext<AntDesign.Charts.DualLine<'TItem>>, x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("config")>] member this.config (_: FunBlazorContext<AntDesign.Charts.DualLine<'TItem>>, x: AntDesign.Charts.DualLineConfig) = "Config" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("otherConfig")>] member this.otherConfig (_: FunBlazorContext<AntDesign.Charts.DualLine<'TItem>>, x: System.Object) = "OtherConfig" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onCreateAfter")>] member this.onCreateAfter (_: FunBlazorContext<AntDesign.Charts.DualLine<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onTitleClick")>] member this.onTitleClick (_: FunBlazorContext<AntDesign.Charts.DualLine<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+                
+
+type GroupedColumnLineBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent> () =
+    inherit FunBlazorContext<'FunBlazorGeneric>()
+
+    
+    member this.Yield _ = GroupedColumnLineBuilder<'FunBlazorGeneric>()
+
+    [<CustomOperation("ref'")>] member this.ref' (_: FunBlazorContext<AntDesign.Charts.GroupedColumnLine<'TItem>>, x) = attr.ref<AntDesign.Charts.GroupedColumnLine<'TItem>> x |> this.AddProp
+    [<CustomOperation("data")>] member this.data (_: FunBlazorContext<AntDesign.Charts.GroupedColumnLine<'TItem>>, x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("config")>] member this.config (_: FunBlazorContext<AntDesign.Charts.GroupedColumnLine<'TItem>>, x: AntDesign.Charts.GroupedColumnLineConfig) = "Config" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("otherConfig")>] member this.otherConfig (_: FunBlazorContext<AntDesign.Charts.GroupedColumnLine<'TItem>>, x: System.Object) = "OtherConfig" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onCreateAfter")>] member this.onCreateAfter (_: FunBlazorContext<AntDesign.Charts.GroupedColumnLine<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onTitleClick")>] member this.onTitleClick (_: FunBlazorContext<AntDesign.Charts.GroupedColumnLine<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+                
+
+type StackedColumnLineBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent> () =
+    inherit FunBlazorContext<'FunBlazorGeneric>()
+
+    
+    member this.Yield _ = StackedColumnLineBuilder<'FunBlazorGeneric>()
+
+    [<CustomOperation("ref'")>] member this.ref' (_: FunBlazorContext<AntDesign.Charts.StackedColumnLine<'TItem>>, x) = attr.ref<AntDesign.Charts.StackedColumnLine<'TItem>> x |> this.AddProp
+    [<CustomOperation("data")>] member this.data (_: FunBlazorContext<AntDesign.Charts.StackedColumnLine<'TItem>>, x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("config")>] member this.config (_: FunBlazorContext<AntDesign.Charts.StackedColumnLine<'TItem>>, x: AntDesign.Charts.StackedColumnLineConfig) = "Config" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("otherConfig")>] member this.otherConfig (_: FunBlazorContext<AntDesign.Charts.StackedColumnLine<'TItem>>, x: System.Object) = "OtherConfig" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onCreateAfter")>] member this.onCreateAfter (_: FunBlazorContext<AntDesign.Charts.StackedColumnLine<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onTitleClick")>] member this.onTitleClick (_: FunBlazorContext<AntDesign.Charts.StackedColumnLine<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+                
+
+type AreaBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent> () =
+    inherit FunBlazorContext<'FunBlazorGeneric>()
+
+    
+    member this.Yield _ = AreaBuilder<'FunBlazorGeneric>()
+
+    [<CustomOperation("ref'")>] member this.ref' (_: FunBlazorContext<AntDesign.Charts.Area<'TItem>>, x) = attr.ref<AntDesign.Charts.Area<'TItem>> x |> this.AddProp
+    [<CustomOperation("data")>] member this.data (_: FunBlazorContext<AntDesign.Charts.Area<'TItem>>, x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("config")>] member this.config (_: FunBlazorContext<AntDesign.Charts.Area<'TItem>>, x: AntDesign.Charts.AreaConfig) = "Config" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("otherConfig")>] member this.otherConfig (_: FunBlazorContext<AntDesign.Charts.Area<'TItem>>, x: System.Object) = "OtherConfig" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onCreateAfter")>] member this.onCreateAfter (_: FunBlazorContext<AntDesign.Charts.Area<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onTitleClick")>] member this.onTitleClick (_: FunBlazorContext<AntDesign.Charts.Area<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+                
+
+type BarBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent> () =
+    inherit FunBlazorContext<'FunBlazorGeneric>()
+
+    
+    member this.Yield _ = BarBuilder<'FunBlazorGeneric>()
+
+    [<CustomOperation("ref'")>] member this.ref' (_: FunBlazorContext<AntDesign.Charts.Bar<'TItem>>, x) = attr.ref<AntDesign.Charts.Bar<'TItem>> x |> this.AddProp
+    [<CustomOperation("data")>] member this.data (_: FunBlazorContext<AntDesign.Charts.Bar<'TItem>>, x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("config")>] member this.config (_: FunBlazorContext<AntDesign.Charts.Bar<'TItem>>, x: AntDesign.Charts.BarConfig) = "Config" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("otherConfig")>] member this.otherConfig (_: FunBlazorContext<AntDesign.Charts.Bar<'TItem>>, x: System.Object) = "OtherConfig" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onCreateAfter")>] member this.onCreateAfter (_: FunBlazorContext<AntDesign.Charts.Bar<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onTitleClick")>] member this.onTitleClick (_: FunBlazorContext<AntDesign.Charts.Bar<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+                
+
+type BubbleBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent> () =
+    inherit FunBlazorContext<'FunBlazorGeneric>()
+
+    
+    member this.Yield _ = BubbleBuilder<'FunBlazorGeneric>()
+
+    [<CustomOperation("ref'")>] member this.ref' (_: FunBlazorContext<AntDesign.Charts.Bubble<'TItem>>, x) = attr.ref<AntDesign.Charts.Bubble<'TItem>> x |> this.AddProp
+    [<CustomOperation("data")>] member this.data (_: FunBlazorContext<AntDesign.Charts.Bubble<'TItem>>, x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("config")>] member this.config (_: FunBlazorContext<AntDesign.Charts.Bubble<'TItem>>, x: AntDesign.Charts.BubbleConfig) = "Config" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("otherConfig")>] member this.otherConfig (_: FunBlazorContext<AntDesign.Charts.Bubble<'TItem>>, x: System.Object) = "OtherConfig" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onCreateAfter")>] member this.onCreateAfter (_: FunBlazorContext<AntDesign.Charts.Bubble<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onTitleClick")>] member this.onTitleClick (_: FunBlazorContext<AntDesign.Charts.Bubble<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+                
+
+type BulletBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent> () =
+    inherit FunBlazorContext<'FunBlazorGeneric>()
+
+    
+    member this.Yield _ = BulletBuilder<'FunBlazorGeneric>()
+
+    [<CustomOperation("ref'")>] member this.ref' (_: FunBlazorContext<AntDesign.Charts.Bullet<'TItem>>, x) = attr.ref<AntDesign.Charts.Bullet<'TItem>> x |> this.AddProp
+    [<CustomOperation("data")>] member this.data (_: FunBlazorContext<AntDesign.Charts.Bullet<'TItem>>, x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("config")>] member this.config (_: FunBlazorContext<AntDesign.Charts.Bullet<'TItem>>, x: AntDesign.Charts.BulletConfig) = "Config" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("otherConfig")>] member this.otherConfig (_: FunBlazorContext<AntDesign.Charts.Bullet<'TItem>>, x: System.Object) = "OtherConfig" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onCreateAfter")>] member this.onCreateAfter (_: FunBlazorContext<AntDesign.Charts.Bullet<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onTitleClick")>] member this.onTitleClick (_: FunBlazorContext<AntDesign.Charts.Bullet<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+                
+
+type CalendarBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent> () =
+    inherit FunBlazorContext<'FunBlazorGeneric>()
+
+    
+    member this.Yield _ = CalendarBuilder<'FunBlazorGeneric>()
+
+    [<CustomOperation("ref'")>] member this.ref' (_: FunBlazorContext<AntDesign.Charts.Calendar<'TItem>>, x) = attr.ref<AntDesign.Charts.Calendar<'TItem>> x |> this.AddProp
+    [<CustomOperation("data")>] member this.data (_: FunBlazorContext<AntDesign.Charts.Calendar<'TItem>>, x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("config")>] member this.config (_: FunBlazorContext<AntDesign.Charts.Calendar<'TItem>>, x: AntDesign.Charts.CalendarConfig) = "Config" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("otherConfig")>] member this.otherConfig (_: FunBlazorContext<AntDesign.Charts.Calendar<'TItem>>, x: System.Object) = "OtherConfig" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onCreateAfter")>] member this.onCreateAfter (_: FunBlazorContext<AntDesign.Charts.Calendar<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onTitleClick")>] member this.onTitleClick (_: FunBlazorContext<AntDesign.Charts.Calendar<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+                
+
+type ColumnBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent> () =
+    inherit FunBlazorContext<'FunBlazorGeneric>()
+
+    
+    member this.Yield _ = ColumnBuilder<'FunBlazorGeneric>()
+
+    [<CustomOperation("ref'")>] member this.ref' (_: FunBlazorContext<AntDesign.Charts.Column<'TItem>>, x) = attr.ref<AntDesign.Charts.Column<'TItem>> x |> this.AddProp
+    [<CustomOperation("data")>] member this.data (_: FunBlazorContext<AntDesign.Charts.Column<'TItem>>, x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("config")>] member this.config (_: FunBlazorContext<AntDesign.Charts.Column<'TItem>>, x: AntDesign.Charts.ColumnConfig) = "Config" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("otherConfig")>] member this.otherConfig (_: FunBlazorContext<AntDesign.Charts.Column<'TItem>>, x: System.Object) = "OtherConfig" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onCreateAfter")>] member this.onCreateAfter (_: FunBlazorContext<AntDesign.Charts.Column<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onTitleClick")>] member this.onTitleClick (_: FunBlazorContext<AntDesign.Charts.Column<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+                
+
+type DensityHeatmapBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent> () =
+    inherit FunBlazorContext<'FunBlazorGeneric>()
+
+    
+    member this.Yield _ = DensityHeatmapBuilder<'FunBlazorGeneric>()
+
+    [<CustomOperation("ref'")>] member this.ref' (_: FunBlazorContext<AntDesign.Charts.DensityHeatmap<'TItem>>, x) = attr.ref<AntDesign.Charts.DensityHeatmap<'TItem>> x |> this.AddProp
+    [<CustomOperation("data")>] member this.data (_: FunBlazorContext<AntDesign.Charts.DensityHeatmap<'TItem>>, x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("config")>] member this.config (_: FunBlazorContext<AntDesign.Charts.DensityHeatmap<'TItem>>, x: AntDesign.Charts.DensityHeatmapConfig) = "Config" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("otherConfig")>] member this.otherConfig (_: FunBlazorContext<AntDesign.Charts.DensityHeatmap<'TItem>>, x: System.Object) = "OtherConfig" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onCreateAfter")>] member this.onCreateAfter (_: FunBlazorContext<AntDesign.Charts.DensityHeatmap<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onTitleClick")>] member this.onTitleClick (_: FunBlazorContext<AntDesign.Charts.DensityHeatmap<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+                
+
+type DonutBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent> () =
+    inherit FunBlazorContext<'FunBlazorGeneric>()
+
+    
+    member this.Yield _ = DonutBuilder<'FunBlazorGeneric>()
+
+    [<CustomOperation("ref'")>] member this.ref' (_: FunBlazorContext<AntDesign.Charts.Donut<'TItem>>, x) = attr.ref<AntDesign.Charts.Donut<'TItem>> x |> this.AddProp
+    [<CustomOperation("data")>] member this.data (_: FunBlazorContext<AntDesign.Charts.Donut<'TItem>>, x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("config")>] member this.config (_: FunBlazorContext<AntDesign.Charts.Donut<'TItem>>, x: AntDesign.Charts.DonutConfig) = "Config" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("otherConfig")>] member this.otherConfig (_: FunBlazorContext<AntDesign.Charts.Donut<'TItem>>, x: System.Object) = "OtherConfig" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onCreateAfter")>] member this.onCreateAfter (_: FunBlazorContext<AntDesign.Charts.Donut<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onTitleClick")>] member this.onTitleClick (_: FunBlazorContext<AntDesign.Charts.Donut<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+                
+
+type FunnelBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent> () =
+    inherit FunBlazorContext<'FunBlazorGeneric>()
+
+    
+    member this.Yield _ = FunnelBuilder<'FunBlazorGeneric>()
+
+    [<CustomOperation("ref'")>] member this.ref' (_: FunBlazorContext<AntDesign.Charts.Funnel<'TItem>>, x) = attr.ref<AntDesign.Charts.Funnel<'TItem>> x |> this.AddProp
+    [<CustomOperation("data")>] member this.data (_: FunBlazorContext<AntDesign.Charts.Funnel<'TItem>>, x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("config")>] member this.config (_: FunBlazorContext<AntDesign.Charts.Funnel<'TItem>>, x: AntDesign.Charts.FunnelConfig) = "Config" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("otherConfig")>] member this.otherConfig (_: FunBlazorContext<AntDesign.Charts.Funnel<'TItem>>, x: System.Object) = "OtherConfig" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onCreateAfter")>] member this.onCreateAfter (_: FunBlazorContext<AntDesign.Charts.Funnel<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onTitleClick")>] member this.onTitleClick (_: FunBlazorContext<AntDesign.Charts.Funnel<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+                
+
+type GaugeBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent> () =
+    inherit FunBlazorContext<'FunBlazorGeneric>()
+
+    
+    member this.Yield _ = GaugeBuilder<'FunBlazorGeneric>()
+
+    [<CustomOperation("ref'")>] member this.ref' (_: FunBlazorContext<AntDesign.Charts.Gauge<'TItem>>, x) = attr.ref<AntDesign.Charts.Gauge<'TItem>> x |> this.AddProp
+    [<CustomOperation("data")>] member this.data (_: FunBlazorContext<AntDesign.Charts.Gauge<'TItem>>, x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("config")>] member this.config (_: FunBlazorContext<AntDesign.Charts.Gauge<'TItem>>, x: AntDesign.Charts.GaugeConfig) = "Config" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("otherConfig")>] member this.otherConfig (_: FunBlazorContext<AntDesign.Charts.Gauge<'TItem>>, x: System.Object) = "OtherConfig" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onCreateAfter")>] member this.onCreateAfter (_: FunBlazorContext<AntDesign.Charts.Gauge<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onTitleClick")>] member this.onTitleClick (_: FunBlazorContext<AntDesign.Charts.Gauge<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+                
+
+type GroupedBarBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent> () =
+    inherit FunBlazorContext<'FunBlazorGeneric>()
+
+    
+    member this.Yield _ = GroupedBarBuilder<'FunBlazorGeneric>()
+
+    [<CustomOperation("ref'")>] member this.ref' (_: FunBlazorContext<AntDesign.Charts.GroupedBar<'TItem>>, x) = attr.ref<AntDesign.Charts.GroupedBar<'TItem>> x |> this.AddProp
+    [<CustomOperation("data")>] member this.data (_: FunBlazorContext<AntDesign.Charts.GroupedBar<'TItem>>, x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("config")>] member this.config (_: FunBlazorContext<AntDesign.Charts.GroupedBar<'TItem>>, x: AntDesign.Charts.GroupedBarConfig) = "Config" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("otherConfig")>] member this.otherConfig (_: FunBlazorContext<AntDesign.Charts.GroupedBar<'TItem>>, x: System.Object) = "OtherConfig" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onCreateAfter")>] member this.onCreateAfter (_: FunBlazorContext<AntDesign.Charts.GroupedBar<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onTitleClick")>] member this.onTitleClick (_: FunBlazorContext<AntDesign.Charts.GroupedBar<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+                
+
+type GroupedColumnBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent> () =
+    inherit FunBlazorContext<'FunBlazorGeneric>()
+
+    
+    member this.Yield _ = GroupedColumnBuilder<'FunBlazorGeneric>()
+
+    [<CustomOperation("ref'")>] member this.ref' (_: FunBlazorContext<AntDesign.Charts.GroupedColumn<'TItem>>, x) = attr.ref<AntDesign.Charts.GroupedColumn<'TItem>> x |> this.AddProp
+    [<CustomOperation("data")>] member this.data (_: FunBlazorContext<AntDesign.Charts.GroupedColumn<'TItem>>, x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("config")>] member this.config (_: FunBlazorContext<AntDesign.Charts.GroupedColumn<'TItem>>, x: AntDesign.Charts.GroupedColumnConfig) = "Config" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("otherConfig")>] member this.otherConfig (_: FunBlazorContext<AntDesign.Charts.GroupedColumn<'TItem>>, x: System.Object) = "OtherConfig" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onCreateAfter")>] member this.onCreateAfter (_: FunBlazorContext<AntDesign.Charts.GroupedColumn<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onTitleClick")>] member this.onTitleClick (_: FunBlazorContext<AntDesign.Charts.GroupedColumn<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+                
+
+type HeatmapBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent> () =
+    inherit FunBlazorContext<'FunBlazorGeneric>()
+
+    
+    member this.Yield _ = HeatmapBuilder<'FunBlazorGeneric>()
+
+    [<CustomOperation("ref'")>] member this.ref' (_: FunBlazorContext<AntDesign.Charts.Heatmap<'TItem>>, x) = attr.ref<AntDesign.Charts.Heatmap<'TItem>> x |> this.AddProp
+    [<CustomOperation("data")>] member this.data (_: FunBlazorContext<AntDesign.Charts.Heatmap<'TItem>>, x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("config")>] member this.config (_: FunBlazorContext<AntDesign.Charts.Heatmap<'TItem>>, x: AntDesign.Charts.HeatmapConfig) = "Config" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("otherConfig")>] member this.otherConfig (_: FunBlazorContext<AntDesign.Charts.Heatmap<'TItem>>, x: System.Object) = "OtherConfig" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onCreateAfter")>] member this.onCreateAfter (_: FunBlazorContext<AntDesign.Charts.Heatmap<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onTitleClick")>] member this.onTitleClick (_: FunBlazorContext<AntDesign.Charts.Heatmap<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+                
+
+type HistogramBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent> () =
+    inherit FunBlazorContext<'FunBlazorGeneric>()
+
+    
+    member this.Yield _ = HistogramBuilder<'FunBlazorGeneric>()
+
+    [<CustomOperation("ref'")>] member this.ref' (_: FunBlazorContext<AntDesign.Charts.Histogram<'TItem>>, x) = attr.ref<AntDesign.Charts.Histogram<'TItem>> x |> this.AddProp
+    [<CustomOperation("data")>] member this.data (_: FunBlazorContext<AntDesign.Charts.Histogram<'TItem>>, x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("config")>] member this.config (_: FunBlazorContext<AntDesign.Charts.Histogram<'TItem>>, x: AntDesign.Charts.HistogramConfig) = "Config" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("otherConfig")>] member this.otherConfig (_: FunBlazorContext<AntDesign.Charts.Histogram<'TItem>>, x: System.Object) = "OtherConfig" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onCreateAfter")>] member this.onCreateAfter (_: FunBlazorContext<AntDesign.Charts.Histogram<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onTitleClick")>] member this.onTitleClick (_: FunBlazorContext<AntDesign.Charts.Histogram<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+                
+
+type LineBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent> () =
+    inherit FunBlazorContext<'FunBlazorGeneric>()
+
+    
+    member this.Yield _ = LineBuilder<'FunBlazorGeneric>()
+
+    [<CustomOperation("ref'")>] member this.ref' (_: FunBlazorContext<AntDesign.Charts.Line<'TItem>>, x) = attr.ref<AntDesign.Charts.Line<'TItem>> x |> this.AddProp
+    [<CustomOperation("data")>] member this.data (_: FunBlazorContext<AntDesign.Charts.Line<'TItem>>, x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("config")>] member this.config (_: FunBlazorContext<AntDesign.Charts.Line<'TItem>>, x: AntDesign.Charts.LineConfig) = "Config" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("otherConfig")>] member this.otherConfig (_: FunBlazorContext<AntDesign.Charts.Line<'TItem>>, x: System.Object) = "OtherConfig" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onCreateAfter")>] member this.onCreateAfter (_: FunBlazorContext<AntDesign.Charts.Line<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onTitleClick")>] member this.onTitleClick (_: FunBlazorContext<AntDesign.Charts.Line<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+                
+
+type LiquidBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent> () =
+    inherit FunBlazorContext<'FunBlazorGeneric>()
+
+    
+    member this.Yield _ = LiquidBuilder<'FunBlazorGeneric>()
+
+    [<CustomOperation("ref'")>] member this.ref' (_: FunBlazorContext<AntDesign.Charts.Liquid<'TItem>>, x) = attr.ref<AntDesign.Charts.Liquid<'TItem>> x |> this.AddProp
+    [<CustomOperation("data")>] member this.data (_: FunBlazorContext<AntDesign.Charts.Liquid<'TItem>>, x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("config")>] member this.config (_: FunBlazorContext<AntDesign.Charts.Liquid<'TItem>>, x: AntDesign.Charts.LiquidConfig) = "Config" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("otherConfig")>] member this.otherConfig (_: FunBlazorContext<AntDesign.Charts.Liquid<'TItem>>, x: System.Object) = "OtherConfig" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onCreateAfter")>] member this.onCreateAfter (_: FunBlazorContext<AntDesign.Charts.Liquid<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onTitleClick")>] member this.onTitleClick (_: FunBlazorContext<AntDesign.Charts.Liquid<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+                
+
+type PercentStackedAreaBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent> () =
+    inherit FunBlazorContext<'FunBlazorGeneric>()
+
+    
+    member this.Yield _ = PercentStackedAreaBuilder<'FunBlazorGeneric>()
+
+    [<CustomOperation("ref'")>] member this.ref' (_: FunBlazorContext<AntDesign.Charts.PercentStackedArea<'TItem>>, x) = attr.ref<AntDesign.Charts.PercentStackedArea<'TItem>> x |> this.AddProp
+    [<CustomOperation("data")>] member this.data (_: FunBlazorContext<AntDesign.Charts.PercentStackedArea<'TItem>>, x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("config")>] member this.config (_: FunBlazorContext<AntDesign.Charts.PercentStackedArea<'TItem>>, x: AntDesign.Charts.PercentStackedAreaConfig) = "Config" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("otherConfig")>] member this.otherConfig (_: FunBlazorContext<AntDesign.Charts.PercentStackedArea<'TItem>>, x: System.Object) = "OtherConfig" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onCreateAfter")>] member this.onCreateAfter (_: FunBlazorContext<AntDesign.Charts.PercentStackedArea<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onTitleClick")>] member this.onTitleClick (_: FunBlazorContext<AntDesign.Charts.PercentStackedArea<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+                
+
+type PercentStackedBarBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent> () =
+    inherit FunBlazorContext<'FunBlazorGeneric>()
+
+    
+    member this.Yield _ = PercentStackedBarBuilder<'FunBlazorGeneric>()
+
+    [<CustomOperation("ref'")>] member this.ref' (_: FunBlazorContext<AntDesign.Charts.PercentStackedBar<'TItem>>, x) = attr.ref<AntDesign.Charts.PercentStackedBar<'TItem>> x |> this.AddProp
+    [<CustomOperation("data")>] member this.data (_: FunBlazorContext<AntDesign.Charts.PercentStackedBar<'TItem>>, x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("config")>] member this.config (_: FunBlazorContext<AntDesign.Charts.PercentStackedBar<'TItem>>, x: AntDesign.Charts.PercentStackedBarConfig) = "Config" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("otherConfig")>] member this.otherConfig (_: FunBlazorContext<AntDesign.Charts.PercentStackedBar<'TItem>>, x: System.Object) = "OtherConfig" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onCreateAfter")>] member this.onCreateAfter (_: FunBlazorContext<AntDesign.Charts.PercentStackedBar<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onTitleClick")>] member this.onTitleClick (_: FunBlazorContext<AntDesign.Charts.PercentStackedBar<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+                
+
+type PercentStackedColumnBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent> () =
+    inherit FunBlazorContext<'FunBlazorGeneric>()
+
+    
+    member this.Yield _ = PercentStackedColumnBuilder<'FunBlazorGeneric>()
+
+    [<CustomOperation("ref'")>] member this.ref' (_: FunBlazorContext<AntDesign.Charts.PercentStackedColumn<'TItem>>, x) = attr.ref<AntDesign.Charts.PercentStackedColumn<'TItem>> x |> this.AddProp
+    [<CustomOperation("data")>] member this.data (_: FunBlazorContext<AntDesign.Charts.PercentStackedColumn<'TItem>>, x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("config")>] member this.config (_: FunBlazorContext<AntDesign.Charts.PercentStackedColumn<'TItem>>, x: AntDesign.Charts.PercentStackedColumnConfig) = "Config" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("otherConfig")>] member this.otherConfig (_: FunBlazorContext<AntDesign.Charts.PercentStackedColumn<'TItem>>, x: System.Object) = "OtherConfig" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onCreateAfter")>] member this.onCreateAfter (_: FunBlazorContext<AntDesign.Charts.PercentStackedColumn<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onTitleClick")>] member this.onTitleClick (_: FunBlazorContext<AntDesign.Charts.PercentStackedColumn<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+                
+
+type PieBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent> () =
+    inherit FunBlazorContext<'FunBlazorGeneric>()
+
+    
+    member this.Yield _ = PieBuilder<'FunBlazorGeneric>()
+
+    [<CustomOperation("ref'")>] member this.ref' (_: FunBlazorContext<AntDesign.Charts.Pie<'TItem>>, x) = attr.ref<AntDesign.Charts.Pie<'TItem>> x |> this.AddProp
+    [<CustomOperation("data")>] member this.data (_: FunBlazorContext<AntDesign.Charts.Pie<'TItem>>, x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("config")>] member this.config (_: FunBlazorContext<AntDesign.Charts.Pie<'TItem>>, x: AntDesign.Charts.PieConfig) = "Config" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("otherConfig")>] member this.otherConfig (_: FunBlazorContext<AntDesign.Charts.Pie<'TItem>>, x: System.Object) = "OtherConfig" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onCreateAfter")>] member this.onCreateAfter (_: FunBlazorContext<AntDesign.Charts.Pie<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onTitleClick")>] member this.onTitleClick (_: FunBlazorContext<AntDesign.Charts.Pie<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+                
+
+type RadarBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent> () =
+    inherit FunBlazorContext<'FunBlazorGeneric>()
+
+    
+    member this.Yield _ = RadarBuilder<'FunBlazorGeneric>()
+
+    [<CustomOperation("ref'")>] member this.ref' (_: FunBlazorContext<AntDesign.Charts.Radar<'TItem>>, x) = attr.ref<AntDesign.Charts.Radar<'TItem>> x |> this.AddProp
+    [<CustomOperation("data")>] member this.data (_: FunBlazorContext<AntDesign.Charts.Radar<'TItem>>, x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("config")>] member this.config (_: FunBlazorContext<AntDesign.Charts.Radar<'TItem>>, x: AntDesign.Charts.RadarConfig) = "Config" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("otherConfig")>] member this.otherConfig (_: FunBlazorContext<AntDesign.Charts.Radar<'TItem>>, x: System.Object) = "OtherConfig" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onCreateAfter")>] member this.onCreateAfter (_: FunBlazorContext<AntDesign.Charts.Radar<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onTitleClick")>] member this.onTitleClick (_: FunBlazorContext<AntDesign.Charts.Radar<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+                
+
+type RangeBarBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent> () =
+    inherit FunBlazorContext<'FunBlazorGeneric>()
+
+    
+    member this.Yield _ = RangeBarBuilder<'FunBlazorGeneric>()
+
+    [<CustomOperation("ref'")>] member this.ref' (_: FunBlazorContext<AntDesign.Charts.RangeBar<'TItem>>, x) = attr.ref<AntDesign.Charts.RangeBar<'TItem>> x |> this.AddProp
+    [<CustomOperation("data")>] member this.data (_: FunBlazorContext<AntDesign.Charts.RangeBar<'TItem>>, x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("config")>] member this.config (_: FunBlazorContext<AntDesign.Charts.RangeBar<'TItem>>, x: AntDesign.Charts.RangeBarConfig) = "Config" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("otherConfig")>] member this.otherConfig (_: FunBlazorContext<AntDesign.Charts.RangeBar<'TItem>>, x: System.Object) = "OtherConfig" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onCreateAfter")>] member this.onCreateAfter (_: FunBlazorContext<AntDesign.Charts.RangeBar<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onTitleClick")>] member this.onTitleClick (_: FunBlazorContext<AntDesign.Charts.RangeBar<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+                
+
+type RangeColumnBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent> () =
+    inherit FunBlazorContext<'FunBlazorGeneric>()
+
+    
+    member this.Yield _ = RangeColumnBuilder<'FunBlazorGeneric>()
+
+    [<CustomOperation("ref'")>] member this.ref' (_: FunBlazorContext<AntDesign.Charts.RangeColumn<'TItem>>, x) = attr.ref<AntDesign.Charts.RangeColumn<'TItem>> x |> this.AddProp
+    [<CustomOperation("data")>] member this.data (_: FunBlazorContext<AntDesign.Charts.RangeColumn<'TItem>>, x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("config")>] member this.config (_: FunBlazorContext<AntDesign.Charts.RangeColumn<'TItem>>, x: AntDesign.Charts.RangeColumnConfig) = "Config" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("otherConfig")>] member this.otherConfig (_: FunBlazorContext<AntDesign.Charts.RangeColumn<'TItem>>, x: System.Object) = "OtherConfig" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onCreateAfter")>] member this.onCreateAfter (_: FunBlazorContext<AntDesign.Charts.RangeColumn<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onTitleClick")>] member this.onTitleClick (_: FunBlazorContext<AntDesign.Charts.RangeColumn<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+                
+
+type RoseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent> () =
+    inherit FunBlazorContext<'FunBlazorGeneric>()
+
+    
+    member this.Yield _ = RoseBuilder<'FunBlazorGeneric>()
+
+    [<CustomOperation("ref'")>] member this.ref' (_: FunBlazorContext<AntDesign.Charts.Rose<'TItem>>, x) = attr.ref<AntDesign.Charts.Rose<'TItem>> x |> this.AddProp
+    [<CustomOperation("data")>] member this.data (_: FunBlazorContext<AntDesign.Charts.Rose<'TItem>>, x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("config")>] member this.config (_: FunBlazorContext<AntDesign.Charts.Rose<'TItem>>, x: AntDesign.Charts.RoseConfig) = "Config" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("otherConfig")>] member this.otherConfig (_: FunBlazorContext<AntDesign.Charts.Rose<'TItem>>, x: System.Object) = "OtherConfig" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onCreateAfter")>] member this.onCreateAfter (_: FunBlazorContext<AntDesign.Charts.Rose<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onTitleClick")>] member this.onTitleClick (_: FunBlazorContext<AntDesign.Charts.Rose<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+                
+
+type ScatterBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent> () =
+    inherit FunBlazorContext<'FunBlazorGeneric>()
+
+    
+    member this.Yield _ = ScatterBuilder<'FunBlazorGeneric>()
+
+    [<CustomOperation("ref'")>] member this.ref' (_: FunBlazorContext<AntDesign.Charts.Scatter<'TItem>>, x) = attr.ref<AntDesign.Charts.Scatter<'TItem>> x |> this.AddProp
+    [<CustomOperation("data")>] member this.data (_: FunBlazorContext<AntDesign.Charts.Scatter<'TItem>>, x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("config")>] member this.config (_: FunBlazorContext<AntDesign.Charts.Scatter<'TItem>>, x: AntDesign.Charts.ScatterConfig) = "Config" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("otherConfig")>] member this.otherConfig (_: FunBlazorContext<AntDesign.Charts.Scatter<'TItem>>, x: System.Object) = "OtherConfig" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onCreateAfter")>] member this.onCreateAfter (_: FunBlazorContext<AntDesign.Charts.Scatter<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onTitleClick")>] member this.onTitleClick (_: FunBlazorContext<AntDesign.Charts.Scatter<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+                
+
+type StackedAreaBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent> () =
+    inherit FunBlazorContext<'FunBlazorGeneric>()
+
+    
+    member this.Yield _ = StackedAreaBuilder<'FunBlazorGeneric>()
+
+    [<CustomOperation("ref'")>] member this.ref' (_: FunBlazorContext<AntDesign.Charts.StackedArea<'TItem>>, x) = attr.ref<AntDesign.Charts.StackedArea<'TItem>> x |> this.AddProp
+    [<CustomOperation("data")>] member this.data (_: FunBlazorContext<AntDesign.Charts.StackedArea<'TItem>>, x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("config")>] member this.config (_: FunBlazorContext<AntDesign.Charts.StackedArea<'TItem>>, x: AntDesign.Charts.StackedAreaConfig) = "Config" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("otherConfig")>] member this.otherConfig (_: FunBlazorContext<AntDesign.Charts.StackedArea<'TItem>>, x: System.Object) = "OtherConfig" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onCreateAfter")>] member this.onCreateAfter (_: FunBlazorContext<AntDesign.Charts.StackedArea<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onTitleClick")>] member this.onTitleClick (_: FunBlazorContext<AntDesign.Charts.StackedArea<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+                
+
+type StackedBarBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent> () =
+    inherit FunBlazorContext<'FunBlazorGeneric>()
+
+    
+    member this.Yield _ = StackedBarBuilder<'FunBlazorGeneric>()
+
+    [<CustomOperation("ref'")>] member this.ref' (_: FunBlazorContext<AntDesign.Charts.StackedBar<'TItem>>, x) = attr.ref<AntDesign.Charts.StackedBar<'TItem>> x |> this.AddProp
+    [<CustomOperation("data")>] member this.data (_: FunBlazorContext<AntDesign.Charts.StackedBar<'TItem>>, x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("config")>] member this.config (_: FunBlazorContext<AntDesign.Charts.StackedBar<'TItem>>, x: AntDesign.Charts.StackedBarConfig) = "Config" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("otherConfig")>] member this.otherConfig (_: FunBlazorContext<AntDesign.Charts.StackedBar<'TItem>>, x: System.Object) = "OtherConfig" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onCreateAfter")>] member this.onCreateAfter (_: FunBlazorContext<AntDesign.Charts.StackedBar<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onTitleClick")>] member this.onTitleClick (_: FunBlazorContext<AntDesign.Charts.StackedBar<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+                
+
+type StackedColumnBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent> () =
+    inherit FunBlazorContext<'FunBlazorGeneric>()
+
+    
+    member this.Yield _ = StackedColumnBuilder<'FunBlazorGeneric>()
+
+    [<CustomOperation("ref'")>] member this.ref' (_: FunBlazorContext<AntDesign.Charts.StackedColumn<'TItem>>, x) = attr.ref<AntDesign.Charts.StackedColumn<'TItem>> x |> this.AddProp
+    [<CustomOperation("data")>] member this.data (_: FunBlazorContext<AntDesign.Charts.StackedColumn<'TItem>>, x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("config")>] member this.config (_: FunBlazorContext<AntDesign.Charts.StackedColumn<'TItem>>, x: AntDesign.Charts.StackedColumnConfig) = "Config" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("otherConfig")>] member this.otherConfig (_: FunBlazorContext<AntDesign.Charts.StackedColumn<'TItem>>, x: System.Object) = "OtherConfig" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onCreateAfter")>] member this.onCreateAfter (_: FunBlazorContext<AntDesign.Charts.StackedColumn<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onTitleClick")>] member this.onTitleClick (_: FunBlazorContext<AntDesign.Charts.StackedColumn<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+                
+
+type StepLineBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent> () =
+    inherit FunBlazorContext<'FunBlazorGeneric>()
+
+    
+    member this.Yield _ = StepLineBuilder<'FunBlazorGeneric>()
+
+    [<CustomOperation("ref'")>] member this.ref' (_: FunBlazorContext<AntDesign.Charts.StepLine<'TItem>>, x) = attr.ref<AntDesign.Charts.StepLine<'TItem>> x |> this.AddProp
+    [<CustomOperation("data")>] member this.data (_: FunBlazorContext<AntDesign.Charts.StepLine<'TItem>>, x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("config")>] member this.config (_: FunBlazorContext<AntDesign.Charts.StepLine<'TItem>>, x: AntDesign.Charts.StepLineConfig) = "Config" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("otherConfig")>] member this.otherConfig (_: FunBlazorContext<AntDesign.Charts.StepLine<'TItem>>, x: System.Object) = "OtherConfig" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onCreateAfter")>] member this.onCreateAfter (_: FunBlazorContext<AntDesign.Charts.StepLine<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onTitleClick")>] member this.onTitleClick (_: FunBlazorContext<AntDesign.Charts.StepLine<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+                
+
+type TreemapBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent> () =
+    inherit FunBlazorContext<'FunBlazorGeneric>()
+
+    
+    member this.Yield _ = TreemapBuilder<'FunBlazorGeneric>()
+
+    [<CustomOperation("ref'")>] member this.ref' (_: FunBlazorContext<AntDesign.Charts.Treemap<'TItem>>, x) = attr.ref<AntDesign.Charts.Treemap<'TItem>> x |> this.AddProp
+    [<CustomOperation("data")>] member this.data (_: FunBlazorContext<AntDesign.Charts.Treemap<'TItem>>, x: AntDesign.Charts.ITreemapData<'TItem>) = "Data" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("config")>] member this.config (_: FunBlazorContext<AntDesign.Charts.Treemap<'TItem>>, x: AntDesign.Charts.TreemapConfig) = "Config" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("otherConfig")>] member this.otherConfig (_: FunBlazorContext<AntDesign.Charts.Treemap<'TItem>>, x: System.Object) = "OtherConfig" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onCreateAfter")>] member this.onCreateAfter (_: FunBlazorContext<AntDesign.Charts.Treemap<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onTitleClick")>] member this.onTitleClick (_: FunBlazorContext<AntDesign.Charts.Treemap<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+                
+
+type WaterfallBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent> () =
+    inherit FunBlazorContext<'FunBlazorGeneric>()
+
+    
+    member this.Yield _ = WaterfallBuilder<'FunBlazorGeneric>()
+
+    [<CustomOperation("ref'")>] member this.ref' (_: FunBlazorContext<AntDesign.Charts.Waterfall<'TItem>>, x) = attr.ref<AntDesign.Charts.Waterfall<'TItem>> x |> this.AddProp
+    [<CustomOperation("data")>] member this.data (_: FunBlazorContext<AntDesign.Charts.Waterfall<'TItem>>, x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("config")>] member this.config (_: FunBlazorContext<AntDesign.Charts.Waterfall<'TItem>>, x: AntDesign.Charts.WaterfallConfig) = "Config" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("otherConfig")>] member this.otherConfig (_: FunBlazorContext<AntDesign.Charts.Waterfall<'TItem>>, x: System.Object) = "OtherConfig" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onCreateAfter")>] member this.onCreateAfter (_: FunBlazorContext<AntDesign.Charts.Waterfall<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onTitleClick")>] member this.onTitleClick (_: FunBlazorContext<AntDesign.Charts.Waterfall<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+                
+
+type ProgressBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent> () =
+    inherit FunBlazorContext<'FunBlazorGeneric>()
+
+    
+    member this.Yield _ = ProgressBuilder<'FunBlazorGeneric>()
+
+    [<CustomOperation("ref'")>] member this.ref' (_: FunBlazorContext<AntDesign.Charts.Progress<'TItem>>, x) = attr.ref<AntDesign.Charts.Progress<'TItem>> x |> this.AddProp
+    [<CustomOperation("data")>] member this.data (_: FunBlazorContext<AntDesign.Charts.Progress<'TItem>>, x: System.Double) = "Data" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("config")>] member this.config (_: FunBlazorContext<AntDesign.Charts.Progress<'TItem>>, x: AntDesign.Charts.ProgressConfig) = "Config" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("otherConfig")>] member this.otherConfig (_: FunBlazorContext<AntDesign.Charts.Progress<'TItem>>, x: System.Object) = "OtherConfig" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onCreateAfter")>] member this.onCreateAfter (_: FunBlazorContext<AntDesign.Charts.Progress<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onTitleClick")>] member this.onTitleClick (_: FunBlazorContext<AntDesign.Charts.Progress<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+                
+
+type RingProgressBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent> () =
+    inherit FunBlazorContext<'FunBlazorGeneric>()
+
+    
+    member this.Yield _ = RingProgressBuilder<'FunBlazorGeneric>()
+
+    [<CustomOperation("ref'")>] member this.ref' (_: FunBlazorContext<AntDesign.Charts.RingProgress>, x) = attr.ref<AntDesign.Charts.RingProgress> x |> this.AddProp
+    [<CustomOperation("data")>] member this.data (_: FunBlazorContext<AntDesign.Charts.RingProgress>, x: System.Double) = "Data" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("config")>] member this.config (_: FunBlazorContext<AntDesign.Charts.RingProgress>, x: AntDesign.Charts.RingProgressConfig) = "Config" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("otherConfig")>] member this.otherConfig (_: FunBlazorContext<AntDesign.Charts.RingProgress>, x: System.Object) = "OtherConfig" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onCreateAfter")>] member this.onCreateAfter (_: FunBlazorContext<AntDesign.Charts.RingProgress>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onTitleClick")>] member this.onTitleClick (_: FunBlazorContext<AntDesign.Charts.RingProgress>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+                
+
+type TinyAreaBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent> () =
+    inherit FunBlazorContext<'FunBlazorGeneric>()
+
+    
+    member this.Yield _ = TinyAreaBuilder<'FunBlazorGeneric>()
+
+    [<CustomOperation("ref'")>] member this.ref' (_: FunBlazorContext<AntDesign.Charts.TinyArea<'TItem>>, x) = attr.ref<AntDesign.Charts.TinyArea<'TItem>> x |> this.AddProp
+    [<CustomOperation("data")>] member this.data (_: FunBlazorContext<AntDesign.Charts.TinyArea<'TItem>>, x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("config")>] member this.config (_: FunBlazorContext<AntDesign.Charts.TinyArea<'TItem>>, x: AntDesign.Charts.TinyAreaConfig) = "Config" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("otherConfig")>] member this.otherConfig (_: FunBlazorContext<AntDesign.Charts.TinyArea<'TItem>>, x: System.Object) = "OtherConfig" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onCreateAfter")>] member this.onCreateAfter (_: FunBlazorContext<AntDesign.Charts.TinyArea<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onTitleClick")>] member this.onTitleClick (_: FunBlazorContext<AntDesign.Charts.TinyArea<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+                
+
+type TinyColumnBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent> () =
+    inherit FunBlazorContext<'FunBlazorGeneric>()
+
+    
+    member this.Yield _ = TinyColumnBuilder<'FunBlazorGeneric>()
+
+    [<CustomOperation("ref'")>] member this.ref' (_: FunBlazorContext<AntDesign.Charts.TinyColumn<'TItem>>, x) = attr.ref<AntDesign.Charts.TinyColumn<'TItem>> x |> this.AddProp
+    [<CustomOperation("data")>] member this.data (_: FunBlazorContext<AntDesign.Charts.TinyColumn<'TItem>>, x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("config")>] member this.config (_: FunBlazorContext<AntDesign.Charts.TinyColumn<'TItem>>, x: AntDesign.Charts.TinyColumnConfig) = "Config" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("otherConfig")>] member this.otherConfig (_: FunBlazorContext<AntDesign.Charts.TinyColumn<'TItem>>, x: System.Object) = "OtherConfig" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onCreateAfter")>] member this.onCreateAfter (_: FunBlazorContext<AntDesign.Charts.TinyColumn<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onTitleClick")>] member this.onTitleClick (_: FunBlazorContext<AntDesign.Charts.TinyColumn<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+                
+
+type TinyLineBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent> () =
+    inherit FunBlazorContext<'FunBlazorGeneric>()
+
+    
+    member this.Yield _ = TinyLineBuilder<'FunBlazorGeneric>()
+
+    [<CustomOperation("ref'")>] member this.ref' (_: FunBlazorContext<AntDesign.Charts.TinyLine<'TItem>>, x) = attr.ref<AntDesign.Charts.TinyLine<'TItem>> x |> this.AddProp
+    [<CustomOperation("data")>] member this.data (_: FunBlazorContext<AntDesign.Charts.TinyLine<'TItem>>, x: System.Collections.Generic.IEnumerable<'TItem>) = "Data" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("config")>] member this.config (_: FunBlazorContext<AntDesign.Charts.TinyLine<'TItem>>, x: AntDesign.Charts.TinyLineConfig) = "Config" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("otherConfig")>] member this.otherConfig (_: FunBlazorContext<AntDesign.Charts.TinyLine<'TItem>>, x: System.Object) = "OtherConfig" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onCreateAfter")>] member this.onCreateAfter (_: FunBlazorContext<AntDesign.Charts.TinyLine<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onTitleClick")>] member this.onTitleClick (_: FunBlazorContext<AntDesign.Charts.TinyLine<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+                
+
+type TempBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent> () =
+    inherit FunBlazorContext<'FunBlazorGeneric>()
+
+    
+    member this.Yield _ = TempBuilder<'FunBlazorGeneric>()
+
+    [<CustomOperation("ref'")>] member this.ref' (_: FunBlazorContext<AntDesign.Charts.Temp<'TItem>>, x) = attr.ref<AntDesign.Charts.Temp<'TItem>> x |> this.AddProp
+    [<CustomOperation("data")>] member this.data (_: FunBlazorContext<AntDesign.Charts.Temp<'TItem>>, x: 'TItem) = "Data" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("config")>] member this.config (_: FunBlazorContext<AntDesign.Charts.Temp<'TItem>>, x: AntDesign.Charts.BarConfig) = "Config" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("otherConfig")>] member this.otherConfig (_: FunBlazorContext<AntDesign.Charts.Temp<'TItem>>, x: System.Object) = "OtherConfig" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onCreateAfter")>] member this.onCreateAfter (_: FunBlazorContext<AntDesign.Charts.Temp<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.IChartComponent> "OnCreateAfter" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+    [<CustomOperation("onTitleClick")>] member this.onTitleClick (_: FunBlazorContext<AntDesign.Charts.Temp<'TItem>>, fn) = (Bolero.Html.attr.callback<AntDesign.Charts.ChartEvent> "OnTitleClick" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+                
             
 
 // =======================================================================================================================
 
 namespace AntDesign.Charts
 
-open AntDesign.Charts.DslInternals
+[<AutoOpen>]
+module DslCE =
 
+    open AntDesign.Charts.DslInternals
 
-type IChartComponentBaseNode<'TItem, 'TConfig> = interface end
-type chartComponentBase<'TItem, 'TConfig when 'TConfig : not struct and 'TConfig : (new : unit -> 'TConfig)> =
-    class
-        inherit chartComponentBase<IChartComponentBaseNode<'TItem, 'TConfig>, 'TItem, 'TConfig>
-    end
-                    
-
-type IColumnLineNode<'TItem> = interface end
-type columnLine<'TItem> =
-    class
-        inherit columnLine<IColumnLineNode<'TItem>, 'TItem>
-    end
-                    
-
-type IDualLineNode<'TItem> = interface end
-type dualLine<'TItem> =
-    class
-        inherit dualLine<IDualLineNode<'TItem>, 'TItem>
-    end
-                    
-
-type IGroupedColumnLineNode<'TItem> = interface end
-type groupedColumnLine<'TItem> =
-    class
-        inherit groupedColumnLine<IGroupedColumnLineNode<'TItem>, 'TItem>
-    end
-                    
-
-type IStackedColumnLineNode<'TItem> = interface end
-type stackedColumnLine<'TItem> =
-    class
-        inherit stackedColumnLine<IStackedColumnLineNode<'TItem>, 'TItem>
-    end
-                    
-
-type IAreaNode<'TItem> = interface end
-type area<'TItem> =
-    class
-        inherit area<IAreaNode<'TItem>, 'TItem>
-    end
-                    
-
-type IBarNode<'TItem> = interface end
-type bar<'TItem> =
-    class
-        inherit bar<IBarNode<'TItem>, 'TItem>
-    end
-                    
-
-type IBubbleNode<'TItem> = interface end
-type bubble<'TItem> =
-    class
-        inherit bubble<IBubbleNode<'TItem>, 'TItem>
-    end
-                    
-
-type IBulletNode<'TItem> = interface end
-type bullet<'TItem> =
-    class
-        inherit bullet<IBulletNode<'TItem>, 'TItem>
-    end
-                    
-
-type ICalendarNode<'TItem> = interface end
-type calendar<'TItem> =
-    class
-        inherit calendar<ICalendarNode<'TItem>, 'TItem>
-    end
-                    
-
-type IColumnNode<'TItem> = interface end
-type column<'TItem> =
-    class
-        inherit column<IColumnNode<'TItem>, 'TItem>
-    end
-                    
-
-type IDensityHeatmapNode<'TItem> = interface end
-type densityHeatmap<'TItem> =
-    class
-        inherit densityHeatmap<IDensityHeatmapNode<'TItem>, 'TItem>
-    end
-                    
-
-type IDonutNode<'TItem> = interface end
-type donut<'TItem> =
-    class
-        inherit donut<IDonutNode<'TItem>, 'TItem>
-    end
-                    
-
-type IFunnelNode<'TItem> = interface end
-type funnel<'TItem> =
-    class
-        inherit funnel<IFunnelNode<'TItem>, 'TItem>
-    end
-                    
-
-type IGaugeNode<'TItem> = interface end
-type gauge<'TItem> =
-    class
-        inherit gauge<IGaugeNode<'TItem>, 'TItem>
-    end
-                    
-
-type IGroupedBarNode<'TItem> = interface end
-type groupedBar<'TItem> =
-    class
-        inherit groupedBar<IGroupedBarNode<'TItem>, 'TItem>
-    end
-                    
-
-type IGroupedColumnNode<'TItem> = interface end
-type groupedColumn<'TItem> =
-    class
-        inherit groupedColumn<IGroupedColumnNode<'TItem>, 'TItem>
-    end
-                    
-
-type IHeatmapNode<'TItem> = interface end
-type heatmap<'TItem> =
-    class
-        inherit heatmap<IHeatmapNode<'TItem>, 'TItem>
-    end
-                    
-
-type IHistogramNode<'TItem> = interface end
-type histogram<'TItem> =
-    class
-        inherit histogram<IHistogramNode<'TItem>, 'TItem>
-    end
-                    
-
-type ILineNode<'TItem> = interface end
-type line<'TItem> =
-    class
-        inherit line<ILineNode<'TItem>, 'TItem>
-    end
-                    
-
-type ILiquidNode<'TItem> = interface end
-type liquid<'TItem> =
-    class
-        inherit liquid<ILiquidNode<'TItem>, 'TItem>
-    end
-                    
-
-type IPercentStackedAreaNode<'TItem> = interface end
-type percentStackedArea<'TItem> =
-    class
-        inherit percentStackedArea<IPercentStackedAreaNode<'TItem>, 'TItem>
-    end
-                    
-
-type IPercentStackedBarNode<'TItem> = interface end
-type percentStackedBar<'TItem> =
-    class
-        inherit percentStackedBar<IPercentStackedBarNode<'TItem>, 'TItem>
-    end
-                    
-
-type IPercentStackedColumnNode<'TItem> = interface end
-type percentStackedColumn<'TItem> =
-    class
-        inherit percentStackedColumn<IPercentStackedColumnNode<'TItem>, 'TItem>
-    end
-                    
-
-type IPieNode<'TItem> = interface end
-type pie<'TItem> =
-    class
-        inherit pie<IPieNode<'TItem>, 'TItem>
-    end
-                    
-
-type IRadarNode<'TItem> = interface end
-type radar<'TItem> =
-    class
-        inherit radar<IRadarNode<'TItem>, 'TItem>
-    end
-                    
-
-type IRangeBarNode<'TItem> = interface end
-type rangeBar<'TItem> =
-    class
-        inherit rangeBar<IRangeBarNode<'TItem>, 'TItem>
-    end
-                    
-
-type IRangeColumnNode<'TItem> = interface end
-type rangeColumn<'TItem> =
-    class
-        inherit rangeColumn<IRangeColumnNode<'TItem>, 'TItem>
-    end
-                    
-
-type IRoseNode<'TItem> = interface end
-type rose<'TItem> =
-    class
-        inherit rose<IRoseNode<'TItem>, 'TItem>
-    end
-                    
-
-type IScatterNode<'TItem> = interface end
-type scatter<'TItem> =
-    class
-        inherit scatter<IScatterNode<'TItem>, 'TItem>
-    end
-                    
-
-type IStackedAreaNode<'TItem> = interface end
-type stackedArea<'TItem> =
-    class
-        inherit stackedArea<IStackedAreaNode<'TItem>, 'TItem>
-    end
-                    
-
-type IStackedBarNode<'TItem> = interface end
-type stackedBar<'TItem> =
-    class
-        inherit stackedBar<IStackedBarNode<'TItem>, 'TItem>
-    end
-                    
-
-type IStackedColumnNode<'TItem> = interface end
-type stackedColumn<'TItem> =
-    class
-        inherit stackedColumn<IStackedColumnNode<'TItem>, 'TItem>
-    end
-                    
-
-type IStepLineNode<'TItem> = interface end
-type stepLine<'TItem> =
-    class
-        inherit stepLine<IStepLineNode<'TItem>, 'TItem>
-    end
-                    
-
-type ITreemapNode<'TItem> = interface end
-type treemap<'TItem> =
-    class
-        inherit treemap<ITreemapNode<'TItem>, 'TItem>
-    end
-                    
-
-type IWaterfallNode<'TItem> = interface end
-type waterfall<'TItem> =
-    class
-        inherit waterfall<IWaterfallNode<'TItem>, 'TItem>
-    end
-                    
-
-type IProgressNode<'TItem> = interface end
-type progress<'TItem> =
-    class
-        inherit progress<IProgressNode<'TItem>, 'TItem>
-    end
-                    
-
-type IRingProgressNode = interface end
-type ringProgress =
-    class
-        inherit ringProgress<IRingProgressNode>
-    end
-                    
-
-type ITinyAreaNode<'TItem> = interface end
-type tinyArea<'TItem> =
-    class
-        inherit tinyArea<ITinyAreaNode<'TItem>, 'TItem>
-    end
-                    
-
-type ITinyColumnNode<'TItem> = interface end
-type tinyColumn<'TItem> =
-    class
-        inherit tinyColumn<ITinyColumnNode<'TItem>, 'TItem>
-    end
-                    
-
-type ITinyLineNode<'TItem> = interface end
-type tinyLine<'TItem> =
-    class
-        inherit tinyLine<ITinyLineNode<'TItem>, 'TItem>
-    end
-                    
-
-type ITempNode<'TItem> = interface end
-type temp<'TItem> =
-    class
-        inherit temp<ITempNode<'TItem>, 'TItem>
-    end
-                    
+    type chartComponentBase<'TItem, 'TConfig when 'TConfig : not struct and 'TConfig : (new : unit -> 'TConfig)> = ChartComponentBaseBuilder<AntDesign.Charts.ChartComponentBase<'TItem, 'TConfig>>
+    type columnLine<'TItem> = ColumnLineBuilder<AntDesign.Charts.ColumnLine<'TItem>>
+    type dualLine<'TItem> = DualLineBuilder<AntDesign.Charts.DualLine<'TItem>>
+    type groupedColumnLine<'TItem> = GroupedColumnLineBuilder<AntDesign.Charts.GroupedColumnLine<'TItem>>
+    type stackedColumnLine<'TItem> = StackedColumnLineBuilder<AntDesign.Charts.StackedColumnLine<'TItem>>
+    type area<'TItem> = AreaBuilder<AntDesign.Charts.Area<'TItem>>
+    type bar<'TItem> = BarBuilder<AntDesign.Charts.Bar<'TItem>>
+    type bubble<'TItem> = BubbleBuilder<AntDesign.Charts.Bubble<'TItem>>
+    type bullet<'TItem> = BulletBuilder<AntDesign.Charts.Bullet<'TItem>>
+    type calendar<'TItem> = CalendarBuilder<AntDesign.Charts.Calendar<'TItem>>
+    type column<'TItem> = ColumnBuilder<AntDesign.Charts.Column<'TItem>>
+    type densityHeatmap<'TItem> = DensityHeatmapBuilder<AntDesign.Charts.DensityHeatmap<'TItem>>
+    type donut<'TItem> = DonutBuilder<AntDesign.Charts.Donut<'TItem>>
+    type funnel<'TItem> = FunnelBuilder<AntDesign.Charts.Funnel<'TItem>>
+    type gauge<'TItem> = GaugeBuilder<AntDesign.Charts.Gauge<'TItem>>
+    type groupedBar<'TItem> = GroupedBarBuilder<AntDesign.Charts.GroupedBar<'TItem>>
+    type groupedColumn<'TItem> = GroupedColumnBuilder<AntDesign.Charts.GroupedColumn<'TItem>>
+    type heatmap<'TItem> = HeatmapBuilder<AntDesign.Charts.Heatmap<'TItem>>
+    type histogram<'TItem> = HistogramBuilder<AntDesign.Charts.Histogram<'TItem>>
+    type line<'TItem> = LineBuilder<AntDesign.Charts.Line<'TItem>>
+    type liquid<'TItem> = LiquidBuilder<AntDesign.Charts.Liquid<'TItem>>
+    type percentStackedArea<'TItem> = PercentStackedAreaBuilder<AntDesign.Charts.PercentStackedArea<'TItem>>
+    type percentStackedBar<'TItem> = PercentStackedBarBuilder<AntDesign.Charts.PercentStackedBar<'TItem>>
+    type percentStackedColumn<'TItem> = PercentStackedColumnBuilder<AntDesign.Charts.PercentStackedColumn<'TItem>>
+    type pie<'TItem> = PieBuilder<AntDesign.Charts.Pie<'TItem>>
+    type radar<'TItem> = RadarBuilder<AntDesign.Charts.Radar<'TItem>>
+    type rangeBar<'TItem> = RangeBarBuilder<AntDesign.Charts.RangeBar<'TItem>>
+    type rangeColumn<'TItem> = RangeColumnBuilder<AntDesign.Charts.RangeColumn<'TItem>>
+    type rose<'TItem> = RoseBuilder<AntDesign.Charts.Rose<'TItem>>
+    type scatter<'TItem> = ScatterBuilder<AntDesign.Charts.Scatter<'TItem>>
+    type stackedArea<'TItem> = StackedAreaBuilder<AntDesign.Charts.StackedArea<'TItem>>
+    type stackedBar<'TItem> = StackedBarBuilder<AntDesign.Charts.StackedBar<'TItem>>
+    type stackedColumn<'TItem> = StackedColumnBuilder<AntDesign.Charts.StackedColumn<'TItem>>
+    type stepLine<'TItem> = StepLineBuilder<AntDesign.Charts.StepLine<'TItem>>
+    type treemap<'TItem> = TreemapBuilder<AntDesign.Charts.Treemap<'TItem>>
+    type waterfall<'TItem> = WaterfallBuilder<AntDesign.Charts.Waterfall<'TItem>>
+    type progress<'TItem> = ProgressBuilder<AntDesign.Charts.Progress<'TItem>>
+    type ringProgress = RingProgressBuilder<AntDesign.Charts.RingProgress>
+    type tinyArea<'TItem> = TinyAreaBuilder<AntDesign.Charts.TinyArea<'TItem>>
+    type tinyColumn<'TItem> = TinyColumnBuilder<AntDesign.Charts.TinyColumn<'TItem>>
+    type tinyLine<'TItem> = TinyLineBuilder<AntDesign.Charts.TinyLine<'TItem>>
+    type temp<'TItem> = TempBuilder<AntDesign.Charts.Temp<'TItem>>
             

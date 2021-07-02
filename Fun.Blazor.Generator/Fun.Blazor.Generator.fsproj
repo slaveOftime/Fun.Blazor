@@ -9,6 +9,7 @@
   <ItemGroup>
     <Compile Include="Utils.fs" />
     <Compile Include="Generator.fs" />
+    <Compile Include="CEGenerator.fs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,17 +1,8 @@
 ﻿[<AutoOpen>]
 module Fun.Blazor.Docs.Wasm.DemoMudBlazor.Demo
 
-open Fun.Blazor
-open Fun.Blazor.MudBlazor
 open Fun.Blazor.Docs.Wasm.Components
 
-
-let private demoDivider =
-    html.div [
-        spaceV4
-        mudDivider.create []
-        spaceV4
-    ]
 
 let private rootDir = "Demos/DemoMudBlazor"
 

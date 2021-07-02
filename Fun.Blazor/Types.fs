@@ -68,6 +68,27 @@ type [<Struct>] GenericFunBlazorNode<'T> =
     static member create x: GenericFunBlazorNode<'T> = { Node = x }
 
 
+type FunBlazorContext<'Component when 'Component :> Microsoft.AspNetCore.Components.IComponent> () =
+    let props = Collections.Generic.List<IFunBlazorNode>()
+
+    member this.AddProp x = props.Add x; this
+    member this.Props() = props
+    
+    [<CustomOperation("CAST")>]
+    member this.CAST (_: FunBlazorContext<'Component>) = this :> IFunBlazorNode
+
+    
+    [<CustomOperation("Attrs")>]
+    member this.Attrs (_: FunBlazorContext<'Component>, nodes: IFunBlazorNode list) = nodes |> Seq.iter (this.AddProp >> ignore); this :> IFunBlazorNode
+
+
+    interface IFunBlazorNode with
+        member this.Node () =
+            let nodes, attrs = props |> FunBlazorNode.GetBoleroNodesAndAttrs
+            BoleroNode (Bolero.Html.comp<'Component> attrs nodes)
+            
+    
+
 type IStore<'T> =
     abstract Publish: ('T -> 'T) -> unit
     abstract Publish: 'T -> unit

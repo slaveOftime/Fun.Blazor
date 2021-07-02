@@ -17,6 +17,7 @@
 		<Compile Include="StoreComponent.fs" />
 		<Compile Include="Events.fs" />
 		<Compile Include="Dsl.fs" />
+		<Compile Include="DslCE.fs" />
 		<Compile Include="Web.fs" />
 		<Compile Include="DI.fs" />
 	</ItemGroup>

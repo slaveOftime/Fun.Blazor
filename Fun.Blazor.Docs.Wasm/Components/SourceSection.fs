@@ -8,7 +8,6 @@ open Microsoft.Extensions.Configuration
 open Microsoft.AspNetCore.Hosting
 open MudBlazor
 open Fun.Blazor
-open Fun.Blazor.MudBlazor
 open Fun.Result
 
 
@@ -66,30 +65,30 @@ let sourceSection fileName = html.inject (fun (env: IHostingEnvironment, config:
 
     html.watch (code, function
         | DeferredState.Loading ->
-            mudProgressLinear.create [
-                mudProgressLinear.color Color.Primary
-                mudProgressLinear.indeterminate true
-            ]
-        | DeferredState.Loaded code ->
+            mudProgressLinear() {
+                color Color.Primary
+                indeterminate true
+                CAST
+            }
+        | DeferredState.Loaded codes ->
             html.div [
                 html.article [
                     attr.classes [ "markdown-body" ]
-                    html.raw code
+                    html.raw codes
                 ]
                 html.watch (isDarkMode, fun isDark -> [
                     html.stylesheet "css/github-markdown.css"
-                    if isDark then 
-                        html.stylesheet "css/prism-vsc-dark-plus.css"
-                    else
-                        html.stylesheet "css/prism-vs.css"
+                    html.stylesheet "css/prism-night-owl.css"
                     html.script "https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/components/prism-core.min.js"
                     html.script "https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/plugins/autoloader/prism-autoloader.min.js"
                 ])
             ]
         | DeferredState.LoadFailed e ->
-            mudAlert.create [
-                mudAlert.childContent e
-                mudAlert.severity Severity.Error
-            ]
-        | _ -> html.none
+            mudAlert() {
+                childContentStr e
+                severity Severity.Error
+                CAST
+            }
+        | _ ->
+            html.none
     ))

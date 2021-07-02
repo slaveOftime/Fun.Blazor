@@ -3,23 +3,23 @@ module Fun.Blazor.Docs.Wasm.DemoMudBlazor.AppBarDemo
 
 open MudBlazor
 open Fun.Blazor
-open Fun.Blazor.MudBlazor
 
 let appBarDemo = html.inject (fun () ->
-    mudAppBar.create [
-        mudAppBar.color Color.Primary
-        mudAppBar.fixed' false
-        mudAppBar.childContent [
-            mudIconButton.create [
-                mudIconButton.icon Icons.Filled.Menu
-                mudIconButton.color Color.Inherit
-                mudIconButton.edge Edge.Start
-            ]
-            mudSpacer.create ()
-            mudIconButton.create [
-                mudIconButton.icon Icons.Custom.Brands.GitHub
-                mudIconButton.color Color.Inherit
-                mudIconButton.edge Edge.End
-            ]
+    mudAppBar() {
+        fixed' false
+        color Color.Primary
+        childContent [
+            mudIconButton() {
+                icon Icons.Filled.Menu
+                color Color.Inherit
+                edge Edge.Start
+            }
+            mudSpacer ()
+            mudIconButton() {
+                icon Icons.Custom.Brands.GitHub
+                color Color.Inherit
+                edge Edge.End
+            }
         ]
-    ])
+        CAST
+    })

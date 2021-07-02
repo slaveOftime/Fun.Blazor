@@ -1,10 +1,9 @@
 ﻿[<AutoOpen>]
 module Fun.Blazor.Docs.Wasm.App
 
-open MudBlazor
 open Fun.Blazor
 open Fun.Blazor.Router
-open Fun.Blazor.MudBlazor
+open MudBlazor
 open Fun.Blazor.Docs.Wasm.DemoMudBlazor
 open Fun.Blazor.Docs.Wasm.DemoAntDesign
 open Fun.Blazor.Docs.Wasm.DemoFluentUI
@@ -50,50 +49,57 @@ let darkTheme =
 
 
 let navmenu =
-    mudNavMenu.create [
-        mudNavLink.create [
-            mudNavLink.href "./quick-start"
-            mudNavLink.childContent "Quick start"
-        ]
-        mudNavLink.create [
-            mudNavLink.href "./router"
-            mudNavLink.childContent "Router"
-        ]
-        mudNavLink.create [
-            mudNavLink.href "./elmish"
-            mudNavLink.childContent "Elmish"
-        ]
-        mudNavLink.create [
-            mudNavLink.href "./helper-functions"
-            mudNavLink.childContent "Helper functions"
-        ]
-        mudNavLink.create [
-            mudNavLink.href "./cli-usage"
-            mudNavLink.childContent "Cli usage"
-        ]
-        mudNavLink.create [
-            mudNavLink.href "./tests"
-            mudNavLink.childContent "Tests"
-        ]
-        mudNavGroup.create [
-            mudNavGroup.title "Demos"
-            mudNavGroup.icon Icons.Material.Filled.School
-            mudNavGroup.expanded true
-            mudNavGroup.childContent [
-                mudNavLink.create [
-                    mudNavLink.href "./mudblazor"
-                    mudNavLink.childContent "MudBlazor"
-                ]
-                mudNavLink.create [
-                    mudNavLink.href "./antdesign"
-                    mudNavLink.childContent "Antdesign"
-                ]
-                mudNavLink.create [
-                    mudNavLink.href "./fluentui"
-                    mudNavLink.childContent "FluentUI"
-                ]
+    mudNavMenu [
+        mudNavLink() {
+            href "./quick-start"
+            childContentStr "Quick start"
+            CAST
+        }
+        mudNavLink() {
+            href "./router"
+            childContentStr "Router"
+            CAST
+        }
+        mudNavLink() {
+            href "./elmish"
+            childContentStr "Elmish"
+            CAST
+        }
+        mudNavLink() {
+            href "./helper-functions"
+            childContentStr "Helper functions"
+            CAST
+        }
+        mudNavLink() {
+            href "./cli-usage"
+            childContentStr "Cli usage"
+            CAST
+        }
+        mudNavLink() {
+            href "./tests"
+            childContentStr "Tests"
+            CAST
+        }
+        mudNavGroup() {
+            title "Demos"
+            icon Icons.Material.Filled.School
+            expanded true
+            childContent [
+                mudNavLink() {
+                    href "./mudblazor"
+                    childContentStr "MudBlazor"
+                }
+                mudNavLink() {
+                    href "./antdesign"
+                    childContentStr "Antdesign"
+                }
+                mudNavLink() {
+                    href "./fluentui"
+                    childContentStr "FluentUI"
+                }
             ]
-        ]
+            CAST
+        }
     ]
 
 
@@ -114,81 +120,73 @@ let app = html.inject (fun (hook: IComponentHook, shareStore: IShareStore) ->
 
     html.div [
         html.watch (isDarkMode, fun isDark ->
-            mudThemeProvider.create [
-                mudThemeProvider.theme (if isDark then darkTheme else defaultTheme)
-            ]
-        )
-        mudDialogProvider.create []
-        mudSnackbarProvider.create []
+            mudThemeProvider() {
+                theme (if isDark then darkTheme else defaultTheme)
+                CAST
+            })
+
+        mudDialogProvider() :> IFunBlazorNode
+        mudSnackbarProvider() :> IFunBlazorNode
      
-        mudLayout.create [
-            mudLayout.rightToLeft false
-            mudLayout.childContent [
-                mudAppBar.create [
-                    mudAppBar.color Color.Primary
-                    mudAppBar.elevation 25
-                    mudAppBar.dense true
-                    mudAppBar.childContent [
-                        mudIconButton.create [
-                            mudIconButton.icon Icons.Material.Filled.Menu
-                            mudIconButton.color Color.Inherit
-                            mudIconButton.edge Edge.Start
-                            mudIconButton.onClick (fun _ -> openMenu.Publish not)
-                        ]
-                        mudText.create [
-                            mudText.typo Typo.h6
-                            mudText.color Color.Default
-                            mudText.childContent "Fun Blazor"
-                        ]
-                        mudSpacer.create ()
-                        //mudTooltip.create [
-                        //    mudTooltip.text "Toggel light/dark theme"
-                        //    mudTooltip.childContent [
-                        //        mudIconButton.create [
-                        //            mudIconButton.icon Icons.Material.Filled.Brightness4
-                        //            mudIconButton.color Color.Inherit
-                        //            mudIconButton.onClick (fun _ -> isDarkMode.Publish not)
-                        //        ]
-                        //    ]
-                        //]
-                        mudTooltip.create [
-                            mudTooltip.text "Github repository"
-                            mudTooltip.childContent [
-                                mudIconButton.create [
-                                    mudIconButton.icon Icons.Custom.Brands.GitHub
-                                    mudIconButton.color Color.Inherit
-                                    mudIconButton.link "https://github.com/slaveOftime/Fun.Blazor"
-                                ]
+        mudLayout() {
+            rightToLeft false
+            childContent [
+                mudAppBar() {
+                    color Color.Primary
+                    elevation 25
+                    dense true
+                    childContent [
+                        mudIconButton() {
+                            icon Icons.Material.Filled.Menu
+                            color Color.Inherit
+                            edge Edge.Start
+                            onClick (fun _ -> openMenu.Publish not)
+                        }
+                        mudText() {
+                            typo Typo.h6
+                            color Color.Default
+                            childContentStr "Fun Blazor"
+                        }
+                        mudSpacer ()
+                        mudTooltip() {
+                            text "Github repository"
+                            childContent [
+                                mudIconButton() {
+                                    icon Icons.Custom.Brands.GitHub
+                                    color Color.Inherit
+                                    link "https://github.com/slaveOftime/Fun.Blazor"
+                                }
                             ]
-                        ]
+                        }
                     ]
-                ]
+                }
                 html.watch (openMenu, fun isOpen ->
-                    mudDrawer.create [
-                        mudDrawer.open' isOpen
-                        mudDrawer.elevation 25
-                        mudDrawer.variant DrawerVariant.Persistent
-                        mudDrawer.childContent [
-                            mudDrawerHeader.create [
-                                mudDrawerHeader.linkToIndex true
-                                mudDrawerHeader.childContent [
-                                    mudText.create [
-                                        mudText.color Color.Primary
-                                        mudText.typo Typo.h5
-                                        mudText.childContent "Have fun ✌"
-                                    ]
+                    mudDrawer() {
+                        open' isOpen
+                        elevation 25
+                        variant DrawerVariant.Persistent
+                        childContent [
+                            mudDrawerHeader() {
+                                linkToIndex true
+                                childContent [
+                                    mudText() {
+                                        color Color.Primary
+                                        typo Typo.h5
+                                        childContentStr "Have fun ✌"
+                                    }
                                 ]
-                            ]
+                            }
                             navmenu
                         ]
-                    ]
+                        CAST
+                    }
                 )
-                mudMainContent.create [
-                    mudMainContent.styles [
+                mudMainContent() {
+                    styles [
                         style.paddingTop 100
                         style.paddingBottom 64
                     ]
-                    mudMainContent.childContent [
+                    childContent [
                         html.route [
                             // For host on slaveoftime.fun server mode
                             yield! routes
@@ -196,17 +194,18 @@ let app = html.inject (fun (hook: IComponentHook, shareStore: IShareStore) ->
                             subRouteCi "/Fun.Blazor" routes
                             routeAny QuickStart.QuickStart.quickStart
                         ]
-                        mudScrollToTop.create [
-                            mudScrollToTop.topOffset 400
-                            mudScrollToTop.childContent [
-                                mudFab.create [
-                                    mudFab.icon Icons.Material.Filled.KeyboardArrowUp
-                                    mudFab.color Color.Primary
-                                ]
+                        mudScrollToTop() {
+                            topOffset 400
+                            childContent [
+                                mudFab() {
+                                    icon Icons.Material.Filled.KeyboardArrowUp
+                                    color Color.Primary
+                                }
                             ]
-                        ]
+                        }
                     ]
-                ]
+                }
             ]
-        ]
+            CAST
+        }
     ])

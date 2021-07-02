@@ -3,18 +3,18 @@ module Fun.Blazor.Docs.Wasm.Pages.Router.RouterDemo
 
 open MudBlazor
 open Fun.Blazor
-open Fun.Blazor.MudBlazor
 
 let routerDemo =
     html.div [
-        mudText.create [
-            mudText.typo Typo.subtitle1
-            mudText.childContent "The reason we have something like [ \"router\" ] and [ _; \"router\" ] is because we host WASM on github and it has a sub folder url. We also host this on a blazor server side mode on another machine which all the content is under the root of domain."
-        ]
-        mudText.create [
-            mudText.typo Typo.subtitle2
-            mudText.color Color.Secondary
-            mudText.childContent [
+        mudText() {
+            typo Typo.subtitle1
+            childContentStr "The reason we have something like [ \"router\" ] and [ _; \"router\" ] is because we host WASM on github and it has a sub folder url. We also host this on a blazor server side mode on another machine which all the content is under the root of domain."
+            CAST
+        }
+        mudText() {
+            typo Typo.subtitle2
+            color Color.Secondary
+            childContent [
                 html.route (function
                     | [ "router" ]
                     | [ _; "router" ] -> html.text "Router"
@@ -25,9 +25,11 @@ let routerDemo =
                     | _ -> html.text "Not my concern."
                 )
             ]
-        ]
-        mudLink.create [
-            mudLink.href "./router?name=albert&age=123"
-            mudLink.childContent "Try to navigate"
-        ]
+            CAST
+        }
+        mudLink() {
+            href "./router?name=albert&age=123"
+            childContentStr "Try to navigate"
+            CAST
+        }
     ]

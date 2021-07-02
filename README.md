@@ -24,16 +24,33 @@ let app =
     ]
 ```
 
-Auto generated MudBlazor dsl
+CE style:
 
 ```fsharp
-let app =
+open Fun.Blazor
+open MudBlazor
+
+let alertDemo =
+    mudCard [
+        mudAlert() {
+            icon Icons.Filled.AccessAlarm
+            childContentStr "This is the way"
+            CAST // Sometimes you need this to help F# to infer types
+        }
+    ]
+```
+
+Feliz style
+
+```fsharp
+open Fun.Blazor
+open MudBlazor
+
+let alertDemo =
     mudCard.create [
-        mudCard.childContent [
-            mudAlert.create [
-                mudAlert.icon Icons.Filled.AccessAlarm
-                mudAlert.childContent "Mud alert"
-            ]
+        mudAlert.create [
+            mudAlert.icon Icons.Filled.AccessAlarm
+            mudAlert.childContent "This is the way"
         ]
     ]
 ```

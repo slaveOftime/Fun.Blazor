@@ -7,7 +7,7 @@ open Fun.Blazor
 type Index () =
     inherit Bolero.Component()
 
-    override this.Render() = Docs.Wasm.App.app.ToBolero()
+    override this.Render() = Docs.Wasm.App.app.Node().ToBolero()
 
 
     static member page =

@@ -5,39 +5,42 @@ open Fun.Blazor
 open AntDesign
 
 let dropDownDemo =
-    dropdown.create [
-        dropdown.overlay [
-            menu.create [
-                menuItemGroup.create [
-                    menuItemGroup.title "Group title"
-                    menuItemGroup.childContent [
-                        menuItem.create (html.text "1st menu item")
-                        menuItem.create (html.text "2st menu item")
+    dropdown() {
+        overlay [
+            menu [
+                menuItemGroup() {
+                    title "Group title"
+                    childContent [
+                        menuItem "1st menu item"
+                        menuItem "2st menu item"
                     ]
-                ]
-                subMenu.create [
-                    subMenu.title "Sub menu"
-                    subMenu.childContent [
-                        menuItem.create (html.text "3st menu item")
-                        menuItem.create (html.text "4st menu item")
+                    CAST
+                }
+                subMenu() {
+                    title "Sub menu"
+                    childContent [
+                        menuItem "3st menu item"
+                        menuItem "4st menu item"
                     ]
-                ]
-                subMenu.create [
-                    subMenu.title "Disabled sub menu"
-                    subMenu.disabled true
-                    subMenu.childContent [
-                        menuItem.create (html.text "5st menu item")
-                        menuItem.create (html.text "6st menu item")
+                    CAST
+                }
+                subMenu() {
+                    title "Disabled sub menu"
+                    disabled true
+                    childContent [
+                        menuItem "5st menu item"
+                        menuItem "6st menu item"
                     ]
-                ]
+                    CAST
+                }
             ]
         ]
-        dropdown.childContent [
+        childContent [
             html.a [
-                html.text "Cascading menu"
-                icon.create [
-                    icon.type' "down"
-                ]
+                html.div "Cascading menu"
+                icon() {
+                    type' "down"
+                }
             ]
         ]
-    ]
+    }

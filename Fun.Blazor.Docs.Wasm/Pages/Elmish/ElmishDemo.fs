@@ -3,8 +3,6 @@ module Fun.Blazor.Docs.Wasm.Pages.Elmish.ElmishDemo
 
 open MudBlazor
 open Fun.Blazor
-open Fun.Blazor.MudBlazor
-
 
 type Model = { Count: int }
 
@@ -22,27 +20,29 @@ let update msg model =
     
 let view model dispatch =
     html.div [
-        mudText.create [
-            mudText.childContent (string model.Count)
-            mudText.typo Typo.h6
-            mudText.color Color.Primary
-        ]
-        mudButtonGroup.create [
-            mudButtonGroup.variant Variant.Outlined
-            mudButtonGroup.childContent [
-                mudButton.create [
-                    mudButton.childContent "Increase"
-                    mudButton.color Color.Primary
-                    mudButton.onClick (fun _ -> Increase |> dispatch)
-                ]
-                mudButton.create [
-                    mudButton.childContent "Descrease"
-                    mudButton.color Color.Secondary
-                    mudButton.variant Variant.Outlined
-                    mudButton.onClick (fun _ -> Descrease |> dispatch)
-                ]
+        mudText() {
+            childContentStr (string model.Count)
+            typo Typo.h6
+            color Color.Primary
+            CAST
+        }
+        mudButtonGroup() {
+            variant Variant.Outlined
+            childContent [
+                mudButton() {
+                    childContentStr "Increase"
+                    color Color.Primary
+                    onClick (fun _ -> Increase |> dispatch)
+                }
+                mudButton() {
+                    childContentStr "Descrease"
+                    color Color.Secondary
+                    variant Variant.Outlined
+                    onClick (fun _ -> Descrease |> dispatch)
+                }
             ]
-        ]
+            CAST
+        }
     ]
 
 

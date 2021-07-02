@@ -2,7 +2,6 @@
 module rec Fun.Blazor.Docs.Wasm.DemoAntDesign.ChartDemo
 
 open AntDesign.Charts
-open AntDesign.Charts
 
 
 type Item =
@@ -12,8 +11,8 @@ type Item =
 
 
 let chartDemo =
-    percentStackedArea<Item>.create [
-        percentStackedArea.config (
+    percentStackedArea<Item>() {
+        config (
             PercentStackedAreaConfig(
                 Title = Title(Visible = true, Text = "百分比堆叠面积图"),
                 Meta = Meta(Range = [| 0; 1 |]),
@@ -22,8 +21,8 @@ let chartDemo =
                 StackField = "country",
                 //Color = OneOf.OneOf( [| "#82d1de"; "#cb302d"; "#e3ca8c" |],
                 AreaStyle = GraphicStyle(FillOpacity = 0.7M)))
-        percentStackedArea.data items
-    ]
+        data items
+    }
 
 
 
