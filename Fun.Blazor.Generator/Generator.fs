@@ -30,7 +30,7 @@ let private getMetaInfo (ty: Type) =
                     then
                         Some [ $"    static member inline {name} fn = (Bolero.Html.attr.callback<{getTypeName prop.PropertyType.GenericTypeArguments.[0]}> \"{prop.Name}\" (fun e -> fn e)) |> {nameof BoleroAttr}" ]
                     elif prop.PropertyType.Name.StartsWith "RenderFragment`" then
-                        Some [ $"    static member inline {name} (render: {getTypeName prop.PropertyType.GenericTypeArguments.[0]} -> {nameof FunBlazorNode}) = Bolero.Html.attr.fragmentWith \"{prop.Name}\" (fun x -> render x |> html.toBolero) |> {nameof BoleroAttr}" ]
+                        Some [ $"    static member inline {name} (render: {getTypeName prop.PropertyType.GenericTypeArguments.[0]} -> {nameof IFunBlazorNode}) = Bolero.Html.attr.fragmentWith \"{prop.Name}\" (fun x -> render x |> html.toBolero) |> {nameof BoleroAttr}" ]
                     else
                         Some [ $"    static member inline {name} (x: {getTypeName prop.PropertyType}) = \"{prop.Name}\" => x |> {nameof BoleroAttr}" ]
 
@@ -192,9 +192,9 @@ let generateCode (targetNamespace: string) (opens: string) (tys: Type seq) =
 
                     let create3 =
                         if meta.hasChildren then
-                            $"    static member inline create (nodes: {nameof FunBlazorNode} list) = nodes |> html.blazor<{originalTypeWithGenerics}>"
+                            $"    static member inline create (nodes: {nameof IFunBlazorNode} list) = nodes |> html.blazor<{originalTypeWithGenerics}>"
                             + "\n"+
-                            $"    static member inline create (node: {nameof FunBlazorNode}) = [ node ] |> html.blazor<{originalTypeWithGenerics}>"
+                            $"    static member inline create (node: {nameof IFunBlazorNode}) = [ node ] |> html.blazor<{originalTypeWithGenerics}>"
                         else
                             ""
 

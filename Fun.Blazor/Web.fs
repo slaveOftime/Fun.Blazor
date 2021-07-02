@@ -9,12 +9,12 @@ type virtualize<'FunBlazorGeneric, 'TItem> =
     
     static member inline create () = [] |> html.blazor<Microsoft.AspNetCore.Components.Web.Virtualization.Virtualize<'TItem>>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.AspNetCore.Components.Web.Virtualization.Virtualize<'TItem>>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.AspNetCore.Components.Web.Virtualization.Virtualize<'TItem>>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<Microsoft.AspNetCore.Components.Web.Virtualization.Virtualize<'TItem>>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<Microsoft.AspNetCore.Components.Web.Virtualization.Virtualize<'TItem>>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<Microsoft.AspNetCore.Components.Web.Virtualization.Virtualize<'TItem>>
     static member inline ref x = attr.ref<Microsoft.AspNetCore.Components.Web.Virtualization.Virtualize<'TItem>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline childContent (render: 'TItem -> FunBlazorNode) = Bolero.Html.attr.fragmentWith "ChildContent" (fun x -> render x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline itemContent (render: 'TItem -> FunBlazorNode) = Bolero.Html.attr.fragmentWith "ItemContent" (fun x -> render x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline placeholder (render: Microsoft.AspNetCore.Components.Web.Virtualization.PlaceholderContext -> FunBlazorNode) = Bolero.Html.attr.fragmentWith "Placeholder" (fun x -> render x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member inline childContent (render: 'TItem -> IFunBlazorNode) = Bolero.Html.attr.fragmentWith "ChildContent" (fun x -> render x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member inline itemContent (render: 'TItem -> IFunBlazorNode) = Bolero.Html.attr.fragmentWith "ItemContent" (fun x -> render x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member inline placeholder (render: Microsoft.AspNetCore.Components.Web.Virtualization.PlaceholderContext -> IFunBlazorNode) = Bolero.Html.attr.fragmentWith "Placeholder" (fun x -> render x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline itemSize (x: System.Single) = "ItemSize" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline itemsProvider (x: Microsoft.AspNetCore.Components.Web.Virtualization.ItemsProviderDelegate<'TItem>) = "ItemsProvider" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline items (x: System.Collections.Generic.ICollection<'TItem>) = "Items" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -32,8 +32,8 @@ type navLink<'FunBlazorGeneric> =
     
     static member inline create () = [] |> html.blazor<Microsoft.AspNetCore.Components.Routing.NavLink>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.AspNetCore.Components.Routing.NavLink>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.AspNetCore.Components.Routing.NavLink>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<Microsoft.AspNetCore.Components.Routing.NavLink>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<Microsoft.AspNetCore.Components.Routing.NavLink>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<Microsoft.AspNetCore.Components.Routing.NavLink>
     static member inline ref x = attr.ref<Microsoft.AspNetCore.Components.Routing.NavLink> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline activeClass (x: System.String) = "ActiveClass" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline additionalAttributes (x: System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>) = "AdditionalAttributes" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -54,13 +54,13 @@ type editForm<'FunBlazorGeneric> =
     
     static member inline create () = [] |> html.blazor<Microsoft.AspNetCore.Components.Forms.EditForm>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.AspNetCore.Components.Forms.EditForm>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.AspNetCore.Components.Forms.EditForm>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<Microsoft.AspNetCore.Components.Forms.EditForm>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<Microsoft.AspNetCore.Components.Forms.EditForm>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<Microsoft.AspNetCore.Components.Forms.EditForm>
     static member inline ref x = attr.ref<Microsoft.AspNetCore.Components.Forms.EditForm> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline additionalAttributes (x: System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>) = "AdditionalAttributes" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline editContext (x: Microsoft.AspNetCore.Components.Forms.EditContext) = "EditContext" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline model (x: System.Object) = "Model" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline childContent (render: Microsoft.AspNetCore.Components.Forms.EditContext -> FunBlazorNode) = Bolero.Html.attr.fragmentWith "ChildContent" (fun x -> render x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member inline childContent (render: Microsoft.AspNetCore.Components.Forms.EditContext -> IFunBlazorNode) = Bolero.Html.attr.fragmentWith "ChildContent" (fun x -> render x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline onSubmit fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Forms.EditContext> "OnSubmit" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline onValidSubmit fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Forms.EditContext> "OnValidSubmit" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline onInvalidSubmit fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Forms.EditContext> "OnInvalidSubmit" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -124,8 +124,8 @@ type inputRadioGroup<'FunBlazorGeneric, 'TValue> =
     inherit inputBase<'FunBlazorGeneric, 'TValue>
     static member inline create () = [] |> html.blazor<Microsoft.AspNetCore.Components.Forms.InputRadioGroup<'TValue>>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.AspNetCore.Components.Forms.InputRadioGroup<'TValue>>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.AspNetCore.Components.Forms.InputRadioGroup<'TValue>>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<Microsoft.AspNetCore.Components.Forms.InputRadioGroup<'TValue>>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<Microsoft.AspNetCore.Components.Forms.InputRadioGroup<'TValue>>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<Microsoft.AspNetCore.Components.Forms.InputRadioGroup<'TValue>>
     static member inline ref x = attr.ref<Microsoft.AspNetCore.Components.Forms.InputRadioGroup<'TValue>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -142,8 +142,8 @@ type inputSelect<'FunBlazorGeneric, 'TValue> =
     inherit inputBase<'FunBlazorGeneric, 'TValue>
     static member inline create () = [] |> html.blazor<Microsoft.AspNetCore.Components.Forms.InputSelect<'TValue>>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.AspNetCore.Components.Forms.InputSelect<'TValue>>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.AspNetCore.Components.Forms.InputSelect<'TValue>>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<Microsoft.AspNetCore.Components.Forms.InputSelect<'TValue>>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<Microsoft.AspNetCore.Components.Forms.InputSelect<'TValue>>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<Microsoft.AspNetCore.Components.Forms.InputSelect<'TValue>>
     static member inline ref x = attr.ref<Microsoft.AspNetCore.Components.Forms.InputSelect<'TValue>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create

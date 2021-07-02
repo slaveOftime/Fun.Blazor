@@ -10,8 +10,8 @@ type fluentDesignSystemProvider<'FunBlazorGeneric> =
     
     static member inline create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentDesignSystemProvider>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentDesignSystemProvider>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentDesignSystemProvider>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentDesignSystemProvider>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentDesignSystemProvider>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentDesignSystemProvider>
     static member inline ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentDesignSystemProvider> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -36,8 +36,8 @@ type fluentCheckbox<'FunBlazorGeneric> =
     inherit fluentInputBase<'FunBlazorGeneric, System.Boolean>
     static member inline create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentCheckbox>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentCheckbox>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentCheckbox>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentCheckbox>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentCheckbox>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentCheckbox>
     static member inline ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentCheckbox> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline href (x: System.String) = "Href" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline disabled (x: System.Nullable<System.Boolean>) = "Disabled" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -56,8 +56,8 @@ type fluentCombobox<'FunBlazorGeneric> =
     inherit fluentInputBase<'FunBlazorGeneric, System.String>
     static member inline create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentCombobox>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentCombobox>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentCombobox>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentCombobox>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentCombobox>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentCombobox>
     static member inline ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentCombobox> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline filled (x: System.Nullable<System.Boolean>) = "Filled" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline disabled (x: System.Nullable<System.Boolean>) = "Disabled" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -77,8 +77,8 @@ type fluentRadioGroup<'FunBlazorGeneric> =
     inherit fluentInputBase<'FunBlazorGeneric, System.String>
     static member inline create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentRadioGroup>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentRadioGroup>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentRadioGroup>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentRadioGroup>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentRadioGroup>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentRadioGroup>
     static member inline ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentRadioGroup> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline name (x: System.String) = "Name" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline required (x: System.Nullable<System.Boolean>) = "Required" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -97,8 +97,8 @@ type fluentSelect<'FunBlazorGeneric> =
     inherit fluentInputBase<'FunBlazorGeneric, System.String>
     static member inline create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSelect>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSelect>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSelect>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSelect>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSelect>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSelect>
     static member inline ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentSelect> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline disabled (x: System.Nullable<System.Boolean>) = "Disabled" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline filled (x: System.Nullable<System.Boolean>) = "Filled" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -118,8 +118,8 @@ type fluentSlider<'FunBlazorGeneric> =
     inherit fluentInputBase<'FunBlazorGeneric, System.Int32>
     static member inline create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSlider>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSlider>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSlider>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSlider>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSlider>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSlider>
     static member inline ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentSlider> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline orientation (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Orientation>) = "Orientation" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline min (x: System.Nullable<System.Int32>) = "Min" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -141,8 +141,8 @@ type fluentTextArea<'FunBlazorGeneric> =
     inherit fluentInputBase<'FunBlazorGeneric, System.String>
     static member inline create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTextArea>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTextArea>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTextArea>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTextArea>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTextArea>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTextArea>
     static member inline ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentTextArea> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline disabled (x: System.Nullable<System.Boolean>) = "Disabled" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline readonly (x: System.Nullable<System.Boolean>) = "Readonly" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -165,8 +165,8 @@ type fluentTextField<'FunBlazorGeneric> =
     inherit fluentInputBase<'FunBlazorGeneric, System.String>
     static member inline create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTextField>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTextField>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTextField>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTextField>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTextField>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTextField>
     static member inline ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentTextField> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline disabled (x: System.Nullable<System.Boolean>) = "Disabled" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline readonly (x: System.Nullable<System.Boolean>) = "Readonly" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -189,8 +189,8 @@ type fluentAccordion<'FunBlazorGeneric> =
     
     static member inline create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentAccordion>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentAccordion>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentAccordion>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentAccordion>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentAccordion>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentAccordion>
     static member inline ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentAccordion> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -203,8 +203,8 @@ type fluentAccordionItem<'FunBlazorGeneric> =
     
     static member inline create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentAccordionItem>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentAccordionItem>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentAccordionItem>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentAccordionItem>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentAccordionItem>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentAccordionItem>
     static member inline ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentAccordionItem> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -217,8 +217,8 @@ type fluentAnchor<'FunBlazorGeneric> =
     
     static member inline create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentAnchor>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentAnchor>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentAnchor>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentAnchor>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentAnchor>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentAnchor>
     static member inline ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentAnchor> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline href (x: System.String) = "Href" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline appearance (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Appearance>) = "Appearance" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -232,8 +232,8 @@ type fluentBadge<'FunBlazorGeneric> =
     
     static member inline create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentBadge>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentBadge>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentBadge>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentBadge>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentBadge>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentBadge>
     static member inline ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentBadge> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline color (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Color>) = "Color" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline fill (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Fill>) = "Fill" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -248,8 +248,8 @@ type fluentBreadcrumb<'FunBlazorGeneric> =
     
     static member inline create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentBreadcrumb>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentBreadcrumb>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentBreadcrumb>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentBreadcrumb>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentBreadcrumb>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentBreadcrumb>
     static member inline ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentBreadcrumb> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -261,8 +261,8 @@ type fluentBreadcrumbItem<'FunBlazorGeneric> =
     
     static member inline create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentBreadcrumbItem>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentBreadcrumbItem>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentBreadcrumbItem>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentBreadcrumbItem>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentBreadcrumbItem>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentBreadcrumbItem>
     static member inline ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentBreadcrumbItem> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline href (x: System.String) = "Href" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -275,8 +275,8 @@ type fluentButton<'FunBlazorGeneric> =
     
     static member inline create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentButton>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentButton>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentButton>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentButton>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentButton>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentButton>
     static member inline ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentButton> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline appearance (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Appearance>) = "Appearance" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline disabled (x: System.Nullable<System.Boolean>) = "Disabled" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -291,8 +291,8 @@ type fluentCard<'FunBlazorGeneric> =
     
     static member inline create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentCard>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentCard>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentCard>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentCard>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentCard>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentCard>
     static member inline ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentCard> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -304,8 +304,8 @@ type fluentDialog<'FunBlazorGeneric> =
     
     static member inline create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentDialog>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentDialog>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentDialog>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentDialog>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentDialog>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentDialog>
     static member inline ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentDialog> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline modal (x: System.Nullable<System.Boolean>) = "Modal" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -318,8 +318,8 @@ type fluentDivider<'FunBlazorGeneric> =
     
     static member inline create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentDivider>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentDivider>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentDivider>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentDivider>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentDivider>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentDivider>
     static member inline ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentDivider> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -331,8 +331,8 @@ type fluentFlipper<'FunBlazorGeneric> =
     
     static member inline create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentFlipper>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentFlipper>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentFlipper>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentFlipper>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentFlipper>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentFlipper>
     static member inline ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentFlipper> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline disabled (x: System.Nullable<System.Boolean>) = "Disabled" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline direction (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Direction>) = "Direction" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -346,8 +346,8 @@ type fluentListbox<'FunBlazorGeneric> =
     
     static member inline create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentListbox>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentListbox>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentListbox>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentListbox>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentListbox>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentListbox>
     static member inline ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentListbox> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -359,8 +359,8 @@ type fluentMenu<'FunBlazorGeneric> =
     
     static member inline create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentMenu>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentMenu>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentMenu>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentMenu>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentMenu>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentMenu>
     static member inline ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentMenu> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -372,8 +372,8 @@ type fluentMenuItem<'FunBlazorGeneric> =
     
     static member inline create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentMenuItem>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentMenuItem>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentMenuItem>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentMenuItem>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentMenuItem>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentMenuItem>
     static member inline ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentMenuItem> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline disabled (x: System.Nullable<System.Boolean>) = "Disabled" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline checked' (x: System.Nullable<System.Boolean>) = "Checked" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -387,8 +387,8 @@ type fluentOption<'FunBlazorGeneric> =
     
     static member inline create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentOption>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentOption>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentOption>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentOption>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentOption>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentOption>
     static member inline ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentOption> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline disabled (x: System.Nullable<System.Boolean>) = "Disabled" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline value (x: System.String) = "Value" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -403,8 +403,8 @@ type fluentProgress<'FunBlazorGeneric> =
     
     static member inline create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentProgress>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentProgress>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentProgress>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentProgress>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentProgress>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentProgress>
     static member inline ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentProgress> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline min (x: System.Nullable<System.Int32>) = "Min" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline max (x: System.Nullable<System.Int32>) = "Max" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -420,8 +420,8 @@ type fluentProgressRing<'FunBlazorGeneric> =
     
     static member inline create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentProgressRing>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentProgressRing>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentProgressRing>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentProgressRing>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentProgressRing>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentProgressRing>
     static member inline ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentProgressRing> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline min (x: System.Nullable<System.Int32>) = "Min" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline max (x: System.Nullable<System.Int32>) = "Max" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -437,8 +437,8 @@ type fluentRadio<'FunBlazorGeneric> =
     
     static member inline create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentRadio>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentRadio>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentRadio>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentRadio>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentRadio>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentRadio>
     static member inline ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentRadio> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline value (x: System.String) = "Value" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline required (x: System.Nullable<System.Boolean>) = "Required" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -454,8 +454,8 @@ type fluentSkeleton<'FunBlazorGeneric> =
     
     static member inline create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSkeleton>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSkeleton>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSkeleton>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSkeleton>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSkeleton>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSkeleton>
     static member inline ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentSkeleton> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline shape (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Shape>) = "Shape" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline shimmer (x: System.Nullable<System.Boolean>) = "Shimmer" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -470,8 +470,8 @@ type fluentSliderLabel<'FunBlazorGeneric> =
     
     static member inline create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSliderLabel>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSliderLabel>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSliderLabel>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSliderLabel>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSliderLabel>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSliderLabel>
     static member inline ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentSliderLabel> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -485,8 +485,8 @@ type fluentSwitch<'FunBlazorGeneric> =
     
     static member inline create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSwitch>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSwitch>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSwitch>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSwitch>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSwitch>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSwitch>
     static member inline ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentSwitch> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline disabled (x: System.Nullable<System.Boolean>) = "Disabled" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline checked' (x: System.Nullable<System.Boolean>) = "Checked" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -501,8 +501,8 @@ type fluentTab<'FunBlazorGeneric> =
     
     static member inline create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTab>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTab>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTab>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTab>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTab>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTab>
     static member inline ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentTab> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -514,8 +514,8 @@ type fluentTabPanel<'FunBlazorGeneric> =
     
     static member inline create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTabPanel>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTabPanel>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTabPanel>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTabPanel>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTabPanel>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTabPanel>
     static member inline ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentTabPanel> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -527,8 +527,8 @@ type fluentTabs<'FunBlazorGeneric> =
     
     static member inline create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTabs>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTabs>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTabs>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTabs>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTabs>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTabs>
     static member inline ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentTabs> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline activeIndicator (x: System.Nullable<System.Boolean>) = "ActiveIndicator" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline orientation (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Orientation>) = "Orientation" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -542,8 +542,8 @@ type fluentTreeItem<'FunBlazorGeneric> =
     
     static member inline create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTreeItem>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTreeItem>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTreeItem>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTreeItem>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTreeItem>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTreeItem>
     static member inline ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentTreeItem> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -558,8 +558,8 @@ type fluentTreeView<'FunBlazorGeneric> =
     
     static member inline create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTreeView>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTreeView>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTreeView>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTreeView>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTreeView>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTreeView>
     static member inline ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentTreeView> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create

@@ -12,6 +12,7 @@ open Fun.Blazor.Docs.Wasm.Components
 open Fun.Blazor.Docs.Wasm.Pages
 
 
+
 let defaultTheme =
     MudTheme
         (Palette =

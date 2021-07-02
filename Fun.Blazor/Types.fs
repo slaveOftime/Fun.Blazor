@@ -1,4 +1,4 @@
-﻿namespace Fun.Blazor
+﻿namespace rec Fun.Blazor
 
 open System
 open Bolero
@@ -8,21 +8,24 @@ open Fun.Result
 type FunBlazorRef<'T> = Ref<'T>
 
 
+type IFunBlazorNode =
+    abstract member Node: unit -> FunBlazorNode
+
 type FunBlazorNode =
-    | Elt of tag: string * FunBlazorNode list
+    | Elt of tag: string * IFunBlazorNode list
     | Attr of key: string * value: Choice<string, bool>
-    | Fragment of FunBlazorNode list
+    | Fragment of IFunBlazorNode list
     | Text of string
     | BoleroNode of Bolero.Node
     | BoleroAttr of Bolero.Attr
     | BoleroAttrs of Bolero.Attr list
 
-    static member GetBoleroNodesAndAttrs nodes =
-        let rec getBoleroNodeAndAttrs nodes =
+    static member GetBoleroNodesAndAttrs (nodes: IFunBlazorNode seq) =
+        let rec getBoleroNodeAndAttrs (nodes: IFunBlazorNode seq) =
             nodes 
             |> Seq.fold
                 (fun (nodes, attrs) x ->
-                    match x with
+                    match x.Node() with
                     | Attr (k, Choice1Of2 v) -> nodes, attrs@[ Bolero.Attr (k, v) ]
                     | Attr (k, Choice2Of2 true) -> nodes, attrs@[ Bolero.Attr (k, null) ]
                     | Attr _ -> nodes, attrs
@@ -55,9 +58,12 @@ type FunBlazorNode =
 
     member this.ToBolero () = FunBlazorNode.ToBolero this
 
+    interface IFunBlazorNode with
+        member this.Node () = this
+
 
 type [<Struct>] GenericFunBlazorNode<'T> =
-    { Node: FunBlazorNode }
+    { Node: IFunBlazorNode }
 
     static member create x: GenericFunBlazorNode<'T> = { Node = x }
 

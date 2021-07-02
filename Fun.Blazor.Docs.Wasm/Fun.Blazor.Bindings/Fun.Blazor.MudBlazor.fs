@@ -44,8 +44,8 @@ type mudButton<'FunBlazorGeneric> =
     inherit mudBaseButton<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudButton>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudButton>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudButton>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudButton>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudButton>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudButton>
     static member inline ref x = attr.ref<MudBlazor.MudButton> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline startIcon (x: System.String) = "StartIcon" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline endIcon (x: System.String) = "EndIcon" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -106,8 +106,8 @@ type mudIconButton<'FunBlazorGeneric> =
     inherit mudBaseButton<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudIconButton>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudIconButton>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudIconButton>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudIconButton>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudIconButton>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudIconButton>
     static member inline ref x = attr.ref<MudBlazor.MudIconButton> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline icon (x: System.String) = "Icon" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline title (x: System.String) = "Title" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -138,8 +138,8 @@ type mudMenu<'FunBlazorGeneric> =
     inherit mudBaseButton<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudMenu>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudMenu>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudMenu>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudMenu>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudMenu>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudMenu>
     static member inline ref x = attr.ref<MudBlazor.MudMenu> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline label (x: System.String) = "Label" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline icon (x: System.String) = "Icon" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -205,8 +205,8 @@ type mudBaseItemsControl<'FunBlazorGeneric, 'TChildComponent when 'TChildCompone
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudBaseItemsControl<'TChildComponent>>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudBaseItemsControl<'TChildComponent>>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudBaseItemsControl<'TChildComponent>>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudBaseItemsControl<'TChildComponent>>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudBaseItemsControl<'TChildComponent>>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudBaseItemsControl<'TChildComponent>>
     static member inline ref x = attr.ref<MudBlazor.MudBaseItemsControl<'TChildComponent>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -223,11 +223,11 @@ type mudBaseBindableItemsControl<'FunBlazorGeneric, 'TChildComponent, 'TData whe
     inherit mudBaseItemsControl<'FunBlazorGeneric, 'TChildComponent>
     static member inline create () = [] |> html.blazor<MudBlazor.MudBaseBindableItemsControl<'TChildComponent, 'TData>>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudBaseBindableItemsControl<'TChildComponent, 'TData>>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudBaseBindableItemsControl<'TChildComponent, 'TData>>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudBaseBindableItemsControl<'TChildComponent, 'TData>>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudBaseBindableItemsControl<'TChildComponent, 'TData>>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudBaseBindableItemsControl<'TChildComponent, 'TData>>
     static member inline ref x = attr.ref<MudBlazor.MudBaseBindableItemsControl<'TChildComponent, 'TData>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline itemsSource (x: System.Collections.Generic.IEnumerable<'TData>) = "ItemsSource" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline itemTemplate (render: 'TData -> FunBlazorNode) = Bolero.Html.attr.fragmentWith "ItemTemplate" (fun x -> render x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member inline itemTemplate (render: 'TData -> IFunBlazorNode) = Bolero.Html.attr.fragmentWith "ItemTemplate" (fun x -> render x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -243,8 +243,8 @@ type mudCarousel<'FunBlazorGeneric, 'TData> =
     inherit mudBaseBindableItemsControl<'FunBlazorGeneric, MudBlazor.MudCarouselItem, 'TData>
     static member inline create () = [] |> html.blazor<MudBlazor.MudCarousel<'TData>>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudCarousel<'TData>>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudCarousel<'TData>>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudCarousel<'TData>>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudCarousel<'TData>>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudCarousel<'TData>>
     static member inline ref x = attr.ref<MudBlazor.MudCarousel<'TData>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline showArrows (x: System.Boolean) = "ShowArrows" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline showDelimiters (x: System.Boolean) = "ShowDelimiters" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -256,9 +256,9 @@ type mudCarousel<'FunBlazorGeneric, 'TData> =
     static member inline previousButtonTemplate (x: string) = Bolero.Html.attr.fragment "PreviousButtonTemplate" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline previousButtonTemplate (node) = Bolero.Html.attr.fragment "PreviousButtonTemplate" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline previousButtonTemplate (nodes) = Bolero.Html.attr.fragment "PreviousButtonTemplate" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline delimiterTemplate (render: System.Boolean -> FunBlazorNode) = Bolero.Html.attr.fragmentWith "DelimiterTemplate" (fun x -> render x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member inline delimiterTemplate (render: System.Boolean -> IFunBlazorNode) = Bolero.Html.attr.fragmentWith "DelimiterTemplate" (fun x -> render x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline itemsSource (x: System.Collections.Generic.IEnumerable<'TData>) = "ItemsSource" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline itemTemplate (render: 'TData -> FunBlazorNode) = Bolero.Html.attr.fragmentWith "ItemTemplate" (fun x -> render x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member inline itemTemplate (render: 'TData -> IFunBlazorNode) = Bolero.Html.attr.fragmentWith "ItemTemplate" (fun x -> render x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -274,8 +274,8 @@ type mudBaseSelectItem<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudBaseSelectItem>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudBaseSelectItem>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudBaseSelectItem>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudBaseSelectItem>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudBaseSelectItem>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudBaseSelectItem>
     static member inline ref x = attr.ref<MudBlazor.MudBaseSelectItem> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline disabled (x: System.Boolean) = "Disabled" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline disableRipple (x: System.Boolean) = "DisableRipple" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -296,8 +296,8 @@ type mudNavLink<'FunBlazorGeneric> =
     inherit mudBaseSelectItem<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudNavLink>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudNavLink>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudNavLink>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudNavLink>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudNavLink>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudNavLink>
     static member inline ref x = attr.ref<MudBlazor.MudNavLink> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline icon (x: System.String) = "Icon" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline iconColor (x: MudBlazor.Color) = "IconColor" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -322,8 +322,8 @@ type mudSelectItem<'FunBlazorGeneric, 'T> =
     inherit mudBaseSelectItem<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudSelectItem<'T>>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudSelectItem<'T>>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudSelectItem<'T>>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudSelectItem<'T>>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudSelectItem<'T>>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudSelectItem<'T>>
     static member inline ref x = attr.ref<MudBlazor.MudSelectItem<'T>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline value (x: 'T) = "Value" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline disabled (x: System.Boolean) = "Disabled" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -434,8 +434,8 @@ type mudAutocomplete<'FunBlazorGeneric, 'T> =
     static member inline minCharacters (x: System.Int32) = "MinCharacters" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline resetValueOnEmptyText (x: System.Boolean) = "ResetValueOnEmptyText" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline debounceInterval (x: System.Int32) = "DebounceInterval" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline itemTemplate (render: 'T -> FunBlazorNode) = Bolero.Html.attr.fragmentWith "ItemTemplate" (fun x -> render x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline itemSelectedTemplate (render: 'T -> FunBlazorNode) = Bolero.Html.attr.fragmentWith "ItemSelectedTemplate" (fun x -> render x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member inline itemTemplate (render: 'T -> IFunBlazorNode) = Bolero.Html.attr.fragmentWith "ItemTemplate" (fun x -> render x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member inline itemSelectedTemplate (render: 'T -> IFunBlazorNode) = Bolero.Html.attr.fragmentWith "ItemSelectedTemplate" (fun x -> render x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline coerceText (x: System.Boolean) = "CoerceText" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline coerceValue (x: System.Boolean) = "CoerceValue" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline isOpenChanged fn = (Bolero.Html.attr.callback<System.Boolean> "IsOpenChanged" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -715,8 +715,8 @@ type mudInput<'FunBlazorGeneric, 'T> =
     inherit mudBaseInput<'FunBlazorGeneric, 'T>
     static member inline create () = [] |> html.blazor<MudBlazor.MudInput<'T>>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudInput<'T>>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudInput<'T>>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudInput<'T>>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudInput<'T>>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudInput<'T>>
     static member inline ref x = attr.ref<MudBlazor.MudInput<'T>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -775,8 +775,8 @@ type mudInputString<'FunBlazorGeneric> =
     inherit mudInput<'FunBlazorGeneric, System.String>
     static member inline create () = [] |> html.blazor<MudBlazor.MudInputString>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudInputString>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudInputString>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudInputString>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudInputString>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudInputString>
     static member inline ref x = attr.ref<MudBlazor.MudInputString> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -835,8 +835,8 @@ type mudRangeInput<'FunBlazorGeneric, 'T> =
     inherit mudBaseInput<'FunBlazorGeneric, MudBlazor.Range<'T>>
     static member inline create () = [] |> html.blazor<MudBlazor.MudRangeInput<'T>>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudRangeInput<'T>>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudRangeInput<'T>>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudRangeInput<'T>>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudRangeInput<'T>>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudRangeInput<'T>>
     static member inline ref x = attr.ref<MudBlazor.MudRangeInput<'T>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline placeholderStart (x: System.String) = "PlaceholderStart" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline placeholderEnd (x: System.String) = "PlaceholderEnd" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -893,8 +893,8 @@ type mudSelect<'FunBlazorGeneric, 'T> =
     inherit mudBaseInput<'FunBlazorGeneric, 'T>
     static member inline create () = [] |> html.blazor<MudBlazor.MudSelect<'T>>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudSelect<'T>>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudSelect<'T>>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudSelect<'T>>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudSelect<'T>>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudSelect<'T>>
     static member inline ref x = attr.ref<MudBlazor.MudSelect<'T>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -987,8 +987,8 @@ type mudCheckBox<'FunBlazorGeneric, 'T> =
     inherit mudBooleanInput<'FunBlazorGeneric, 'T>
     static member inline create () = [] |> html.blazor<MudBlazor.MudCheckBox<'T>>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudCheckBox<'T>>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudCheckBox<'T>>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudCheckBox<'T>>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudCheckBox<'T>>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudCheckBox<'T>>
     static member inline ref x = attr.ref<MudBlazor.MudCheckBox<'T>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline color (x: MudBlazor.Color) = "Color" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline label (x: System.String) = "Label" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1022,8 +1022,8 @@ type mudSwitch<'FunBlazorGeneric, 'T> =
     inherit mudBooleanInput<'FunBlazorGeneric, 'T>
     static member inline create () = [] |> html.blazor<MudBlazor.MudSwitch<'T>>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudSwitch<'T>>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudSwitch<'T>>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudSwitch<'T>>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudSwitch<'T>>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudSwitch<'T>>
     static member inline ref x = attr.ref<MudBlazor.MudSwitch<'T>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline color (x: MudBlazor.Color) = "Color" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline label (x: System.String) = "Label" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1333,8 +1333,8 @@ type mudRadioGroup<'FunBlazorGeneric, 'T> =
     inherit mudFormComponent<'FunBlazorGeneric, 'T, 'T>
     static member inline create () = [] |> html.blazor<MudBlazor.MudRadioGroup<'T>>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudRadioGroup<'T>>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudRadioGroup<'T>>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudRadioGroup<'T>>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudRadioGroup<'T>>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudRadioGroup<'T>>
     static member inline ref x = attr.ref<MudBlazor.MudRadioGroup<'T>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1360,8 +1360,8 @@ type mudAlert<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudAlert>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudAlert>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudAlert>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudAlert>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudAlert>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudAlert>
     static member inline ref x = attr.ref<MudBlazor.MudAlert> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline elevation (x: System.Int32) = "Elevation" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline square (x: System.Boolean) = "Square" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1384,8 +1384,8 @@ type mudAppBar<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudAppBar>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudAppBar>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudAppBar>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudAppBar>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudAppBar>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudAppBar>
     static member inline ref x = attr.ref<MudBlazor.MudAppBar> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline elevation (x: System.Int32) = "Elevation" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline dense (x: System.Boolean) = "Dense" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1404,8 +1404,8 @@ type mudAvatar<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudAvatar>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudAvatar>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudAvatar>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudAvatar>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudAvatar>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudAvatar>
     static member inline ref x = attr.ref<MudBlazor.MudAvatar> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline square (x: System.Boolean) = "Square" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline rounded (x: System.Boolean) = "Rounded" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1425,8 +1425,8 @@ type mudBadge<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudBadge>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudBadge>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudBadge>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudBadge>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudBadge>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudBadge>
     static member inline ref x = attr.ref<MudBlazor.MudBadge> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline color (x: MudBlazor.Color) = "Color" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline bottom (x: System.Boolean) = "Bottom" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1458,7 +1458,7 @@ type mudBreadcrumbs<'FunBlazorGeneric> =
     static member inline separatorTemplate (x: string) = Bolero.Html.attr.fragment "SeparatorTemplate" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline separatorTemplate (node) = Bolero.Html.attr.fragment "SeparatorTemplate" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline separatorTemplate (nodes) = Bolero.Html.attr.fragment "SeparatorTemplate" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline itemTemplate (render: MudBlazor.BreadcrumbItem -> FunBlazorNode) = Bolero.Html.attr.fragmentWith "ItemTemplate" (fun x -> render x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member inline itemTemplate (render: MudBlazor.BreadcrumbItem -> IFunBlazorNode) = Bolero.Html.attr.fragmentWith "ItemTemplate" (fun x -> render x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline maxItems (x: System.Nullable<System.Byte>) = "MaxItems" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline classes (x: string list) = attr.classes x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline styles (x: (string * string) list) = attr.styles x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1470,8 +1470,8 @@ type mudButtonGroup<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudButtonGroup>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudButtonGroup>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudButtonGroup>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudButtonGroup>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudButtonGroup>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudButtonGroup>
     static member inline ref x = attr.ref<MudBlazor.MudButtonGroup> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline overrideStyles (x: System.Boolean) = "OverrideStyles" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1518,8 +1518,8 @@ type mudCard<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudCard>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudCard>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudCard>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudCard>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudCard>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudCard>
     static member inline ref x = attr.ref<MudBlazor.MudCard> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline elevation (x: System.Int32) = "Elevation" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline square (x: System.Boolean) = "Square" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1537,8 +1537,8 @@ type mudCardActions<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudCardActions>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudCardActions>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudCardActions>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudCardActions>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudCardActions>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudCardActions>
     static member inline ref x = attr.ref<MudBlazor.MudCardActions> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1553,8 +1553,8 @@ type mudCardContent<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudCardContent>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudCardContent>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudCardContent>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudCardContent>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudCardContent>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudCardContent>
     static member inline ref x = attr.ref<MudBlazor.MudCardContent> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1569,8 +1569,8 @@ type mudCardHeader<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudCardHeader>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudCardHeader>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudCardHeader>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudCardHeader>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudCardHeader>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudCardHeader>
     static member inline ref x = attr.ref<MudBlazor.MudCardHeader> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline cardHeaderAvatar (x: string) = Bolero.Html.attr.fragment "CardHeaderAvatar" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline cardHeaderAvatar (node) = Bolero.Html.attr.fragment "CardHeaderAvatar" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1609,8 +1609,8 @@ type mudCarouselItem<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudCarouselItem>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudCarouselItem>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudCarouselItem>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudCarouselItem>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudCarouselItem>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudCarouselItem>
     static member inline ref x = attr.ref<MudBlazor.MudCarouselItem> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1807,8 +1807,8 @@ type mudChipSet<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudChipSet>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudChipSet>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudChipSet>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudChipSet>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudChipSet>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudChipSet>
     static member inline ref x = attr.ref<MudBlazor.MudChipSet> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1832,8 +1832,8 @@ type mudChip<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudChip>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudChip>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudChip>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudChip>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudChip>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudChip>
     static member inline ref x = attr.ref<MudBlazor.MudChip> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline color (x: MudBlazor.Color) = "Color" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline size (x: MudBlazor.Size) = "Size" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1868,8 +1868,8 @@ type mudCollapse<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudCollapse>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudCollapse>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudCollapse>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudCollapse>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudCollapse>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudCollapse>
     static member inline ref x = attr.ref<MudBlazor.MudCollapse> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline expanded (x: System.Boolean) = "Expanded" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline maxHeight (x: System.Nullable<System.Int32>) = "MaxHeight" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1936,8 +1936,8 @@ type mudDrawer<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudDrawer>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudDrawer>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudDrawer>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudDrawer>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudDrawer>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudDrawer>
     static member inline ref x = attr.ref<MudBlazor.MudDrawer> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline fixed' (x: System.Boolean) = "Fixed" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline elevation (x: System.Int32) = "Elevation" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1967,8 +1967,8 @@ type mudDrawerContainer<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudDrawerContainer>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudDrawerContainer>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudDrawerContainer>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudDrawerContainer>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudDrawerContainer>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudDrawerContainer>
     static member inline ref x = attr.ref<MudBlazor.MudDrawerContainer> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1983,8 +1983,8 @@ type mudLayout<'FunBlazorGeneric> =
     inherit mudDrawerContainer<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudLayout>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudLayout>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudLayout>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudLayout>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudLayout>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudLayout>
     static member inline ref x = attr.ref<MudBlazor.MudLayout> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline rightToLeft (x: System.Boolean) = "RightToLeft" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2000,8 +2000,8 @@ type mudElement<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudElement>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudElement>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudElement>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudElement>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudElement>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudElement>
     static member inline ref x = attr.ref<MudBlazor.MudElement> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2019,8 +2019,8 @@ type mudExpansionPanel<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudExpansionPanel>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudExpansionPanel>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudExpansionPanel>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudExpansionPanel>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudExpansionPanel>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudExpansionPanel>
     static member inline ref x = attr.ref<MudBlazor.MudExpansionPanel> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline maxHeight (x: System.Nullable<System.Int32>) = "MaxHeight" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline titleContent (x: string) = Bolero.Html.attr.fragment "TitleContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2046,8 +2046,8 @@ type mudExpansionPanels<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudExpansionPanels>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudExpansionPanels>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudExpansionPanels>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudExpansionPanels>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudExpansionPanels>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudExpansionPanels>
     static member inline ref x = attr.ref<MudBlazor.MudExpansionPanels> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline square (x: System.Boolean) = "Square" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline multiExpansion (x: System.Boolean) = "MultiExpansion" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2068,8 +2068,8 @@ type mudField<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudField>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudField>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudField>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudField>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudField>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudField>
     static member inline ref x = attr.ref<MudBlazor.MudField> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2099,8 +2099,8 @@ type mudFocusTrap<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudFocusTrap>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudFocusTrap>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudFocusTrap>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudFocusTrap>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudFocusTrap>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudFocusTrap>
     static member inline ref x = attr.ref<MudBlazor.MudFocusTrap> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2117,8 +2117,8 @@ type mudForm<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudForm>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudForm>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudForm>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudForm>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudForm>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudForm>
     static member inline ref x = attr.ref<MudBlazor.MudForm> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2142,8 +2142,8 @@ type mudHidden<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudHidden>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudHidden>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudHidden>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudHidden>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudHidden>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudHidden>
     static member inline ref x = attr.ref<MudBlazor.MudHidden> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline breakpoint (x: MudBlazor.Breakpoint) = "Breakpoint" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline invert (x: System.Boolean) = "Invert" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2162,8 +2162,8 @@ type mudIcon<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudIcon>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudIcon>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudIcon>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudIcon>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudIcon>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudIcon>
     static member inline ref x = attr.ref<MudBlazor.MudIcon> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline icon (x: System.String) = "Icon" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline title (x: System.String) = "Title" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2183,8 +2183,8 @@ type mudInputControl<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudInputControl>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudInputControl>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudInputControl>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudInputControl>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudInputControl>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudInputControl>
     static member inline ref x = attr.ref<MudBlazor.MudInputControl> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2211,8 +2211,8 @@ type mudInputLabel<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudInputLabel>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudInputLabel>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudInputLabel>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudInputLabel>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudInputLabel>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudInputLabel>
     static member inline ref x = attr.ref<MudBlazor.MudInputLabel> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2231,8 +2231,8 @@ type mudLink<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudLink>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudLink>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudLink>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudLink>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudLink>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudLink>
     static member inline ref x = attr.ref<MudBlazor.MudLink> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline color (x: MudBlazor.Color) = "Color" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline typo (x: MudBlazor.Typo) = "Typo" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2253,8 +2253,8 @@ type mudList<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudList>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudList>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudList>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudList>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudList>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudList>
     static member inline ref x = attr.ref<MudBlazor.MudList> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2276,8 +2276,8 @@ type mudListItem<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudListItem>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudListItem>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudListItem>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudListItem>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudListItem>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudListItem>
     static member inline ref x = attr.ref<MudBlazor.MudListItem> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline text (x: System.String) = "Text" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline avatar (x: System.String) = "Avatar" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2312,8 +2312,8 @@ type mudListSubheader<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudListSubheader>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudListSubheader>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudListSubheader>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudListSubheader>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudListSubheader>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudListSubheader>
     static member inline ref x = attr.ref<MudBlazor.MudListSubheader> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2330,8 +2330,8 @@ type mudMenuItem<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudMenuItem>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudMenuItem>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudMenuItem>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudMenuItem>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudMenuItem>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudMenuItem>
     static member inline ref x = attr.ref<MudBlazor.MudMenuItem> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2390,8 +2390,8 @@ type mudNavGroup<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudNavGroup>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudNavGroup>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudNavGroup>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudNavGroup>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudNavGroup>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudNavGroup>
     static member inline ref x = attr.ref<MudBlazor.MudNavGroup> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline title (x: System.String) = "Title" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline icon (x: System.String) = "Icon" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2416,8 +2416,8 @@ type mudNavMenu<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudNavMenu>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudNavMenu>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudNavMenu>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudNavMenu>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudNavMenu>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudNavMenu>
     static member inline ref x = attr.ref<MudBlazor.MudNavMenu> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2432,8 +2432,8 @@ type mudOverlay<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudOverlay>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudOverlay>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudOverlay>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudOverlay>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudOverlay>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudOverlay>
     static member inline ref x = attr.ref<MudBlazor.MudOverlay> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2460,8 +2460,8 @@ type mudPopover<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudPopover>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudPopover>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudPopover>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudPopover>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudPopover>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudPopover>
     static member inline ref x = attr.ref<MudBlazor.MudPopover> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline elevation (x: System.Int32) = "Elevation" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline square (x: System.Boolean) = "Square" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2528,8 +2528,8 @@ type mudRadio<'FunBlazorGeneric, 'T> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudRadio<'T>>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudRadio<'T>>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudRadio<'T>>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudRadio<'T>>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudRadio<'T>>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudRadio<'T>>
     static member inline ref x = attr.ref<MudBlazor.MudRadio<'T>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline color (x: MudBlazor.Color) = "Color" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline placement (x: MudBlazor.Placement) = "Placement" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2595,8 +2595,8 @@ type mudScrollToTop<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudScrollToTop>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudScrollToTop>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudScrollToTop>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudScrollToTop>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudScrollToTop>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudScrollToTop>
     static member inline ref x = attr.ref<MudBlazor.MudScrollToTop> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2634,8 +2634,8 @@ type mudSlider<'FunBlazorGeneric, 'T> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudSlider<'T>>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudSlider<'T>>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudSlider<'T>>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudSlider<'T>>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudSlider<'T>>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudSlider<'T>>
     static member inline ref x = attr.ref<MudBlazor.MudSlider<'T>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline min (x: 'T) = "Min" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline max (x: 'T) = "Max" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2684,8 +2684,8 @@ type mudSwipeArea<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudSwipeArea>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudSwipeArea>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudSwipeArea>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudSwipeArea>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudSwipeArea>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudSwipeArea>
     static member inline ref x = attr.ref<MudBlazor.MudSwipeArea> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2701,8 +2701,8 @@ type mudSimpleTable<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudSimpleTable>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudSimpleTable>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudSimpleTable>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudSimpleTable>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudSimpleTable>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudSimpleTable>
     static member inline ref x = attr.ref<MudBlazor.MudSimpleTable> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline elevation (x: System.Int32) = "Elevation" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline hover (x: System.Boolean) = "Hover" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2793,9 +2793,9 @@ type mudTable<'FunBlazorGeneric, 'T> =
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudTable<'T>>
 
     static member inline ref x = attr.ref<MudBlazor.MudTable<'T>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline rowTemplate (render: 'T -> FunBlazorNode) = Bolero.Html.attr.fragmentWith "RowTemplate" (fun x -> render x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline childRowContent (render: 'T -> FunBlazorNode) = Bolero.Html.attr.fragmentWith "ChildRowContent" (fun x -> render x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline rowEditingTemplate (render: 'T -> FunBlazorNode) = Bolero.Html.attr.fragmentWith "RowEditingTemplate" (fun x -> render x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member inline rowTemplate (render: 'T -> IFunBlazorNode) = Bolero.Html.attr.fragmentWith "RowTemplate" (fun x -> render x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member inline childRowContent (render: 'T -> IFunBlazorNode) = Bolero.Html.attr.fragmentWith "ChildRowContent" (fun x -> render x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member inline rowEditingTemplate (render: 'T -> IFunBlazorNode) = Bolero.Html.attr.fragmentWith "RowEditingTemplate" (fun x -> render x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline horizontalScrollbar (x: System.Boolean) = "HorizontalScrollbar" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline items (x: System.Collections.Generic.IEnumerable<'T>) = "Items" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline filter (x: System.Func<'T, System.Boolean>) = "Filter" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2887,8 +2887,8 @@ type mudTableSortLabel<'FunBlazorGeneric, 'T> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudTableSortLabel<'T>>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudTableSortLabel<'T>>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudTableSortLabel<'T>>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudTableSortLabel<'T>>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudTableSortLabel<'T>>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudTableSortLabel<'T>>
     static member inline ref x = attr.ref<MudBlazor.MudTableSortLabel<'T>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2911,8 +2911,8 @@ type mudTd<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudTd>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudTd>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudTd>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudTd>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudTd>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudTd>
     static member inline ref x = attr.ref<MudBlazor.MudTd> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2929,8 +2929,8 @@ type mudTFootRow<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudTFootRow>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudTFootRow>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudTFootRow>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudTFootRow>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudTFootRow>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudTFootRow>
     static member inline ref x = attr.ref<MudBlazor.MudTFootRow> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2949,8 +2949,8 @@ type mudTh<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudTh>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudTh>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudTh>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudTh>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudTh>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudTh>
     static member inline ref x = attr.ref<MudBlazor.MudTh> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2965,8 +2965,8 @@ type mudTHeadRow<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudTHeadRow>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudTHeadRow>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudTHeadRow>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudTHeadRow>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudTHeadRow>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudTHeadRow>
     static member inline ref x = attr.ref<MudBlazor.MudTHeadRow> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2985,8 +2985,8 @@ type mudTr<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudTr>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudTr>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudTr>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudTr>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudTr>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudTr>
     static member inline ref x = attr.ref<MudBlazor.MudTr> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3008,8 +3008,8 @@ type mudTabs<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudTabs>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudTabs>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudTabs>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudTabs>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudTabs>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudTabs>
     static member inline ref x = attr.ref<MudBlazor.MudTabs> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline keepPanelsAlive (x: System.Boolean) = "KeepPanelsAlive" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline rounded (x: System.Boolean) = "Rounded" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3046,8 +3046,8 @@ type mudTimeLine<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudTimeLine>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudTimeLine>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudTimeLine>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudTimeLine>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudTimeLine>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudTimeLine>
     static member inline ref x = attr.ref<MudBlazor.MudTimeLine> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline rounded (x: System.Boolean) = "Rounded" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline border (x: System.Boolean) = "Border" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3066,8 +3066,8 @@ type mudTimeLineItem<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudTimeLineItem>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudTimeLineItem>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudTimeLineItem>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudTimeLineItem>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudTimeLineItem>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudTimeLineItem>
     static member inline ref x = attr.ref<MudBlazor.MudTimeLineItem> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline elevation (x: System.Int32) = "Elevation" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline align (x: MudBlazor.Align) = "Align" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3086,8 +3086,8 @@ type mudTooltip<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudTooltip>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudTooltip>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudTooltip>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudTooltip>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudTooltip>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudTooltip>
     static member inline ref x = attr.ref<MudBlazor.MudTooltip> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline text (x: System.String) = "Text" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline delay (x: System.Double) = "Delay" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3110,8 +3110,8 @@ type mudTreeView<'FunBlazorGeneric, 'T> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudTreeView<'T>>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudTreeView<'T>>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudTreeView<'T>>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudTreeView<'T>>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudTreeView<'T>>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudTreeView<'T>>
     static member inline ref x = attr.ref<MudBlazor.MudTreeView<'T>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline canSelect (x: System.Boolean) = "CanSelect" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline canActivate (x: System.Boolean) = "CanActivate" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3127,7 +3127,7 @@ type mudTreeView<'FunBlazorGeneric, 'T> =
     static member inline childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member inline itemTemplate (render: 'T -> FunBlazorNode) = Bolero.Html.attr.fragmentWith "ItemTemplate" (fun x -> render x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member inline itemTemplate (render: 'T -> IFunBlazorNode) = Bolero.Html.attr.fragmentWith "ItemTemplate" (fun x -> render x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline serverData (x: System.Func<'T, System.Threading.Tasks.Task<System.Collections.Generic.HashSet<'T>>>) = "ServerData" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline classes (x: string list) = attr.classes x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline styles (x: (string * string) list) = attr.styles x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3139,8 +3139,8 @@ type mudTreeViewItem<'FunBlazorGeneric, 'T> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudTreeViewItem<'T>>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudTreeViewItem<'T>>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudTreeViewItem<'T>>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudTreeViewItem<'T>>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudTreeViewItem<'T>>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudTreeViewItem<'T>>
     static member inline ref x = attr.ref<MudBlazor.MudTreeViewItem<'T>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline text (x: System.String) = "Text" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline value (x: 'T) = "Value" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3179,8 +3179,8 @@ type mudText<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudText>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudText>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudText>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudText>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudText>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudText>
     static member inline ref x = attr.ref<MudBlazor.MudText> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline typo (x: MudBlazor.Typo) = "Typo" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline align (x: MudBlazor.Align) = "Align" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3200,8 +3200,8 @@ type mudContainer<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudContainer>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudContainer>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudContainer>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudContainer>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudContainer>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudContainer>
     static member inline ref x = attr.ref<MudBlazor.MudContainer> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline fixed' (x: System.Boolean) = "Fixed" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline maxWidth (x: MudBlazor.MaxWidth) = "MaxWidth" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3235,8 +3235,8 @@ type mudDrawerHeader<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudDrawerHeader>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudDrawerHeader>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudDrawerHeader>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudDrawerHeader>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudDrawerHeader>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudDrawerHeader>
     static member inline ref x = attr.ref<MudBlazor.MudDrawerHeader> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline dense (x: System.Boolean) = "Dense" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3253,8 +3253,8 @@ type mudGrid<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudGrid>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudGrid>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudGrid>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudGrid>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudGrid>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudGrid>
     static member inline ref x = attr.ref<MudBlazor.MudGrid> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline spacing (x: System.Int32) = "Spacing" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline justify (x: MudBlazor.Justify) = "Justify" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3271,8 +3271,8 @@ type mudItem<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudItem>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudItem>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudItem>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudItem>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudItem>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudItem>
     static member inline ref x = attr.ref<MudBlazor.MudItem> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline xs (x: System.Int32) = "xs" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline sm (x: System.Int32) = "sm" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3308,8 +3308,8 @@ type mudMainContent<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudMainContent>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudMainContent>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudMainContent>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudMainContent>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudMainContent>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudMainContent>
     static member inline ref x = attr.ref<MudBlazor.MudMainContent> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3324,8 +3324,8 @@ type mudPaper<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudPaper>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudPaper>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudPaper>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudPaper>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudPaper>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudPaper>
     static member inline ref x = attr.ref<MudBlazor.MudPaper> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline elevation (x: System.Int32) = "Elevation" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline square (x: System.Boolean) = "Square" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3362,8 +3362,8 @@ type mudTabPanel<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudTabPanel>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudTabPanel>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudTabPanel>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudTabPanel>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudTabPanel>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudTabPanel>
     static member inline ref x = attr.ref<MudBlazor.MudTabPanel> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline text (x: System.String) = "Text" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline icon (x: System.String) = "Icon" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3386,8 +3386,8 @@ type mudToolBar<'FunBlazorGeneric> =
     inherit mudComponentBase<'FunBlazorGeneric>
     static member inline create () = [] |> html.blazor<MudBlazor.MudToolBar>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudToolBar>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudToolBar>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudToolBar>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudToolBar>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudToolBar>
     static member inline ref x = attr.ref<MudBlazor.MudToolBar> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline dense (x: System.Boolean) = "Dense" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline disableGutters (x: System.Boolean) = "DisableGutters" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3463,8 +3463,8 @@ type mudPickerContent<'FunBlazorGeneric> =
     
     static member inline create () = [] |> html.blazor<MudBlazor.MudPickerContent>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudPickerContent>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudPickerContent>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudPickerContent>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudPickerContent>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudPickerContent>
     static member inline ref x = attr.ref<MudBlazor.MudPickerContent> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline classes (x: string list) = attr.classes x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3476,8 +3476,8 @@ type mudPickerToolbar<'FunBlazorGeneric> =
     
     static member inline create () = [] |> html.blazor<MudBlazor.MudPickerToolbar>
     static member inline create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<MudBlazor.MudPickerToolbar>
-    static member inline create (nodes: FunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudPickerToolbar>
-    static member inline create (node: FunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudPickerToolbar>
+    static member inline create (nodes: IFunBlazorNode list) = nodes |> html.blazor<MudBlazor.MudPickerToolbar>
+    static member inline create (node: IFunBlazorNode) = [ node ] |> html.blazor<MudBlazor.MudPickerToolbar>
     static member inline ref x = attr.ref<MudBlazor.MudPickerToolbar> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline classes (x: string list) = attr.classes x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline styles (x: (string * string) list) = attr.styles x |> GenericFunBlazorNode<'FunBlazorGeneric>.create

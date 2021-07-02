@@ -19,7 +19,7 @@ type StoreComponent<'T> () as this =
     member val Store = Unchecked.defaultof<IObservable<'T>> with get, set
 
     [<Parameter>]
-    member val RenderFn = Unchecked.defaultof<'T -> FunBlazorNode> with get, set
+    member val RenderFn = Unchecked.defaultof<'T -> IFunBlazorNode> with get, set
 
 
     member internal _.StateHasChanged() = try base.StateHasChanged() with _ -> ()

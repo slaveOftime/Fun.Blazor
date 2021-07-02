@@ -20,10 +20,11 @@ type FunBlazorNodeComponent() =
     [<Parameter>]
     member val Node = html.none with get, set
 
-    override this.Render() = this.Node.ToBolero()
+    override this.Render() = this.Node.Node().ToBolero()
+
 
 type WebAssemblyHostBuilder with
-    member this.AddFunBlazorNode(selector: string, node: FunBlazorNode) =
+    member this.AddFunBlazorNode(selector: string, node: IFunBlazorNode) =
         let parameters = ParameterView.FromDictionary(dict ["Node", box node ])
         this.RootComponents.Add(typeof<FunBlazorNodeComponent>, selector, parameters)
         this

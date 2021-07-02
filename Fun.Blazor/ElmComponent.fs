@@ -16,7 +16,7 @@ type ElmComponent<'Model, 'Msg> () =
     member val Update = Unchecked.defaultof<'Msg -> 'Model -> 'Model * Cmd<'Msg>> with get, set
 
     [<Parameter>]
-    member val Render = Unchecked.defaultof<'Model -> Dispatch<'Msg> -> FunBlazorNode> with get, set
+    member val Render = Unchecked.defaultof<'Model -> Dispatch<'Msg> -> IFunBlazorNode> with get, set
     
     [<Parameter>]
     member val MapProgram = Unchecked.defaultof<Program<'Model, 'Msg> -> Program<'Model, 'Msg>> with get, set
