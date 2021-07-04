@@ -27,7 +27,7 @@ type FunBlazorNode =
                 (fun (nodes, attrs) x ->
                     match x.Node() with
                     | Attr (k, Choice1Of2 v) -> nodes, attrs@[ Bolero.Attr (k, v) ]
-                    | Attr (k, Choice2Of2 true) -> nodes, attrs@[ Bolero.Attr (k, null) ]
+                    | Attr (k, Choice2Of2 true) -> nodes, attrs@[ Bolero.Attr (k, "") ]
                     | Attr _ -> nodes, attrs
                     | BoleroAttr x -> nodes, attrs@[x]
                     | BoleroAttrs x -> nodes, attrs@x
