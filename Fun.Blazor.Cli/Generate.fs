@@ -11,8 +11,8 @@ open Fun.Blazor.Generator
 
 
 type Style =
-    | Feliz
-    | CE
+    | Feliz = 0
+    | CE = 1
 
 let private xn x = XName.Get x
 

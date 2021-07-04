@@ -19,7 +19,7 @@ type GenerateSettings() =
     [<CommandOption("-o|--outDir")>]
     member val OutDir = "Fun.Blazor.Bindings" with get, set
     
-    [<Description("Dsl style")>]
+    [<Description("Dsl style Feliz|CE")>]
     [<CommandOption("-s|--style")>]
     member val Style = Style.CE with get, set
 
