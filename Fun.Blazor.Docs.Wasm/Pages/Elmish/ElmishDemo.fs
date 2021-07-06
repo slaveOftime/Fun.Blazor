@@ -21,27 +21,25 @@ let update msg model =
 let view model dispatch =
     html.div [
         mudText() {
-            childContentStr (string model.Count)
+            childContent (string model.Count)
             typo Typo.h6
             color Color.Primary
-            CAST
         }
         mudButtonGroup() {
             variant Variant.Outlined
             childContent [
                 mudButton() {
-                    childContentStr "Increase"
+                    childContent "Increase"
                     color Color.Primary
                     onClick (fun _ -> Increase |> dispatch)
                 }
                 mudButton() {
-                    childContentStr "Descrease"
+                    childContent "Descrease"
                     color Color.Secondary
                     variant Variant.Outlined
                     onClick (fun _ -> Descrease |> dispatch)
                 }
             ]
-            CAST
         }
     ]
 

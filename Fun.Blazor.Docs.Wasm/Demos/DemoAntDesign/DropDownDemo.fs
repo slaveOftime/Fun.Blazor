@@ -7,31 +7,28 @@ open AntDesign
 let dropDownDemo =
     dropdown() {
         overlay [
-            menu [
+            menu.create [
                 menuItemGroup() {
                     title "Group title"
                     childContent [
-                        menuItem "1st menu item"
-                        menuItem "2st menu item"
+                        menuItem.create "1st menu item"
+                        menuItem.create "2st menu item"
                     ]
-                    CAST
                 }
                 subMenu() {
                     title "Sub menu"
                     childContent [
-                        menuItem "3st menu item"
-                        menuItem "4st menu item"
+                        menuItem.create "3st menu item"
+                        menuItem.create "4st menu item"
                     ]
-                    CAST
                 }
                 subMenu() {
                     title "Disabled sub menu"
                     disabled true
                     childContent [
-                        menuItem "5st menu item"
-                        menuItem "6st menu item"
+                        menuItem.create "5st menu item"
+                        menuItem.create "6st menu item"
                     ]
-                    CAST
                 }
             ]
         ]

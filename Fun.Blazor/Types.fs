@@ -2,6 +2,7 @@
 
 open System
 open Bolero
+open Bolero.Html
 open Fun.Result
 
 
@@ -73,14 +74,17 @@ type FunBlazorContext<'Component when 'Component :> Microsoft.AspNetCore.Compone
 
     member this.AddProp x = props.Add x; this
     member this.Props() = props
-    
-    [<CustomOperation("CAST")>]
-    member this.CAST (_: FunBlazorContext<'Component>) = this :> IFunBlazorNode
 
-    
-    [<CustomOperation("Attrs")>]
-    member this.Attrs (_: FunBlazorContext<'Component>, nodes: IFunBlazorNode list) = nodes |> Seq.iter (this.AddProp >> ignore); this :> IFunBlazorNode
+    // Executes a computation expression
+    member this.Run _ = this :> IFunBlazorNode
 
+    member this.Zero _ = Html.empty |> BoleroNode :> IFunBlazorNode
+    
+    [<CustomOperation("attrs")>]
+    member this.attrs (_: FunBlazorContext<'Component>, nodes: IFunBlazorNode list) = nodes |> Seq.iter (this.AddProp >> ignore); this
+    
+    [<CustomOperation("ref")>] member this.ref (_: FunBlazorContext<'Component>, v: obj) = "ref" => v |> BoleroAttr |> this.AddProp
+    
 
     interface IFunBlazorNode with
         member this.Node () =

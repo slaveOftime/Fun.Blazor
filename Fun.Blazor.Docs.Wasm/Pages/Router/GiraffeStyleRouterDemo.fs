@@ -16,20 +16,18 @@ let giraffeStyleRouterDemo =
             routeCifWithQueries "/documents/%s" (fun param queries -> html.text $"Documents(Param: {param}) with query: {formatQueries queries}")
         ]
 
-    let link (hrefStr: string) (name: string) =
+    let link (hrefStr: string) (name': string) =
         mudLink() {
             href hrefStr
-            childContentStr name
+            childContent name'
             underline Underline.Always
             styles [ style.marginRight 10 ]
-            CAST
         }
 
     html.div [
         mudText() {
             typo Typo.subtitle1
-            childContentStr ""
-            CAST
+            childContent ""
         }
         mudText() {
             typo Typo.subtitle2
@@ -41,7 +39,6 @@ let giraffeStyleRouterDemo =
                     routeAny (html.text "Not my concern.")
                 ]
             ]
-            CAST
         }
         link "./router/document" "Route to document"
         link "./router/document/12" "Route to document 12"

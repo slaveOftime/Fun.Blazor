@@ -10,9 +10,8 @@ let modalDemo = html.inject (fun (hook: IComponentHook) ->
 
     html.div [
         button() {
-            childContentStr "Try to click 😊"
+            childContent "Try to click 😊"
             onClick (fun _ -> isDialogOpen.Publish not)
-            CAST
         }
         watch {
             Store isDialogOpen.Observable
@@ -31,20 +30,17 @@ let modalDemo = html.inject (fun (hook: IComponentHook) ->
                                     type' AlertType.Success
                                     message "Success"
                                 }
-                                inputGroup [
+                                inputGroup.create [
                                     inputNumber<int>() {
-                                        min' 100
-                                        max' 150
-                                        label "Number"
-                                        CAST
+                                        min 100
+                                        max 150
+                                        attrs [ attr.custom ("label", "Number") ]
                                     }
                                 ]
                             ]
                         }
                     ]
-                    CAST
                 }
             )
-            CAST
         }
     ])

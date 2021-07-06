@@ -13,7 +13,9 @@ type FunBlazorContextWithAttrs<'Component when 'Component :> Microsoft.AspNetCor
     inherit FunBlazorContext<'Component>()
 
     [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'Component>, v: IFunBlazorNode list) = Fragment v :> IFunBlazorNode |> this.AddProp
-    [<CustomOperation("childContentStr")>] member this.childContentStr (_: FunBlazorContext<'Component>, v: string) = Fragment [ html.text v ] :> IFunBlazorNode |> this.AddProp
+    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'Component>, v: string) = Fragment [ html.text v ] :> IFunBlazorNode |> this.AddProp
+    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'Component>, v: int) = Fragment [ html.text v ] :> IFunBlazorNode |> this.AddProp
+    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'Component>, v: float) = Fragment [ html.text v ] :> IFunBlazorNode |> this.AddProp
     [<CustomOperation("childContentRaw")>] member this.childContentRaw (_: FunBlazorContext<'Component>, v: string) = Fragment [ html.raw v ] :> IFunBlazorNode |> this.AddProp
     
     [<CustomOperation("classes")>] member this.classes (_: FunBlazorContext<'Component>, v: string seq) = "classes" => (v |> String.concat " ") |> BoleroAttr |> this.AddProp
@@ -21,7 +23,6 @@ type FunBlazorContextWithAttrs<'Component when 'Component :> Microsoft.AspNetCor
     [<CustomOperation("styles")>] member this.styles (_: FunBlazorContext<'Component>, v: (string * string) list) = attr.styles v |> this.AddProp
     
     [<CustomOperation("class'")>] member this.class' (_: FunBlazorContext<'Component>, v: string) = "classes" => v |> BoleroAttr |> this.AddProp
-    [<CustomOperation("ref")>] member this.ref (_: FunBlazorContext<'Component>, v: obj) = "ref" => v |> BoleroAttr |> this.AddProp
     [<CustomOperation("bindRef")>] member this.bindRef (_: FunBlazorContext<'Component>, v: obj) = "bindRef" => v |> BoleroAttr |> this.AddProp
     [<CustomOperation("key")>] member this.key (_: FunBlazorContext<'Component>, v: obj) = "key" => v |> BoleroAttr |> this.AddProp
     [<CustomOperation("accept")>] member this.accept (_: FunBlazorContext<'Component>, v: obj) = "accept" => v |> BoleroAttr |> this.AddProp
@@ -41,9 +42,9 @@ type FunBlazorContextWithAttrs<'Component when 'Component :> Microsoft.AspNetCor
     [<CustomOperation("buffered")>] member this.buffered (_: FunBlazorContext<'Component>, v: obj) = "buffered" => v |> BoleroAttr |> this.AddProp
     [<CustomOperation("challenge")>] member this.challenge (_: FunBlazorContext<'Component>, v: obj) = "challenge" => v |> BoleroAttr |> this.AddProp
     [<CustomOperation("charset")>] member this.charset (_: FunBlazorContext<'Component>, v: obj) = "charset" => v |> BoleroAttr |> this.AddProp
-    [<CustomOperation("``checked``")>] member this.``checked`` (_: FunBlazorContext<'Component>, v: obj) = "``checked``" => v |> BoleroAttr |> this.AddProp
+    [<CustomOperation("checked'")>] member this.``checked`` (_: FunBlazorContext<'Component>, v: obj) = "``checked``" => v |> BoleroAttr |> this.AddProp
     [<CustomOperation("cite")>] member this.cite (_: FunBlazorContext<'Component>, v: obj) = "cite" => v |> BoleroAttr |> this.AddProp
-    [<CustomOperation("``class``")>] member this.``class`` (_: FunBlazorContext<'Component>, v: obj) = "``class``" => v |> BoleroAttr |> this.AddProp
+    [<CustomOperation("class'")>] member this.``class`` (_: FunBlazorContext<'Component>, v: obj) = "``class``" => v |> BoleroAttr |> this.AddProp
     [<CustomOperation("code")>] member this.code (_: FunBlazorContext<'Component>, v: obj) = "code" => v |> BoleroAttr |> this.AddProp
     [<CustomOperation("codebase")>] member this.codebase (_: FunBlazorContext<'Component>, v: obj) = "codebase" => v |> BoleroAttr |> this.AddProp
     [<CustomOperation("color")>] member this.color (_: FunBlazorContext<'Component>, v: obj) = "color" => v |> BoleroAttr |> this.AddProp
@@ -59,7 +60,7 @@ type FunBlazorContextWithAttrs<'Component when 'Component :> Microsoft.AspNetCor
     [<CustomOperation("data")>] member this.data (_: FunBlazorContext<'Component>, v: obj) = "data" => v |> BoleroAttr |> this.AddProp
     [<CustomOperation("datetime")>] member this.datetime (_: FunBlazorContext<'Component>, v: obj) = "datetime" => v |> BoleroAttr |> this.AddProp
     [<CustomOperation("decoding")>] member this.decoding (_: FunBlazorContext<'Component>, v: obj) = "decoding" => v |> BoleroAttr |> this.AddProp
-    [<CustomOperation("``default``")>] member this.``default`` (_: FunBlazorContext<'Component>, v: obj) = "``default``" => v |> BoleroAttr |> this.AddProp
+    [<CustomOperation("default'")>] member this.``default`` (_: FunBlazorContext<'Component>, v: obj) = "``default``" => v |> BoleroAttr |> this.AddProp
     [<CustomOperation("defer")>] member this.defer (_: FunBlazorContext<'Component>, v: obj) = "defer" => v |> BoleroAttr |> this.AddProp
     [<CustomOperation("dir")>] member this.dir (_: FunBlazorContext<'Component>, v: obj) = "dir" => v |> BoleroAttr |> this.AddProp
     [<CustomOperation("dirname")>] member this.dirname (_: FunBlazorContext<'Component>, v: obj) = "dirname" => v |> BoleroAttr |> this.AddProp
@@ -68,7 +69,7 @@ type FunBlazorContextWithAttrs<'Component when 'Component :> Microsoft.AspNetCor
     [<CustomOperation("draggable")>] member this.draggable (_: FunBlazorContext<'Component>, v: obj) = "draggable" => v |> BoleroAttr |> this.AddProp
     [<CustomOperation("dropzone")>] member this.dropzone (_: FunBlazorContext<'Component>, v: obj) = "dropzone" => v |> BoleroAttr |> this.AddProp
     [<CustomOperation("enctype")>] member this.enctype (_: FunBlazorContext<'Component>, v: obj) = "enctype" => v |> BoleroAttr |> this.AddProp
-    [<CustomOperation("``for``")>] member this.``for`` (_: FunBlazorContext<'Component>, v: obj) = "``for``" => v |> BoleroAttr |> this.AddProp
+    [<CustomOperation("for'")>] member this.``for`` (_: FunBlazorContext<'Component>, v: obj) = "``for``" => v |> BoleroAttr |> this.AddProp
     [<CustomOperation("form")>] member this.form (_: FunBlazorContext<'Component>, v: obj) = "form" => v |> BoleroAttr |> this.AddProp
     [<CustomOperation("formaction")>] member this.formaction (_: FunBlazorContext<'Component>, v: obj) = "formaction" => v |> BoleroAttr |> this.AddProp
     [<CustomOperation("headers")>] member this.headers (_: FunBlazorContext<'Component>, v: obj) = "headers" => v |> BoleroAttr |> this.AddProp
@@ -104,7 +105,7 @@ type FunBlazorContextWithAttrs<'Component when 'Component :> Microsoft.AspNetCor
     [<CustomOperation("muted")>] member this.muted (_: FunBlazorContext<'Component>, v: obj) = "muted" => v |> BoleroAttr |> this.AddProp
     [<CustomOperation("name")>] member this.name (_: FunBlazorContext<'Component>, v: obj) = "name" => v |> BoleroAttr |> this.AddProp
     [<CustomOperation("novalidate")>] member this.novalidate (_: FunBlazorContext<'Component>, v: obj) = "novalidate" => v |> BoleroAttr |> this.AddProp
-    [<CustomOperation("``open``")>] member this.``open`` (_: FunBlazorContext<'Component>, v: obj) = "``open``" => v |> BoleroAttr |> this.AddProp
+    [<CustomOperation("open'")>] member this.``open`` (_: FunBlazorContext<'Component>, v: obj) = "``open``" => v |> BoleroAttr |> this.AddProp
     [<CustomOperation("optimum")>] member this.optimum (_: FunBlazorContext<'Component>, v: obj) = "optimum" => v |> BoleroAttr |> this.AddProp
     [<CustomOperation("pattern")>] member this.pattern (_: FunBlazorContext<'Component>, v: obj) = "pattern" => v |> BoleroAttr |> this.AddProp
     [<CustomOperation("ping")>] member this.ping (_: FunBlazorContext<'Component>, v: obj) = "ping" => v |> BoleroAttr |> this.AddProp
@@ -138,7 +139,7 @@ type FunBlazorContextWithAttrs<'Component when 'Component :> Microsoft.AspNetCor
     [<CustomOperation("target")>] member this.target (_: FunBlazorContext<'Component>, v: obj) = "target" => v |> BoleroAttr |> this.AddProp
     [<CustomOperation("title")>] member this.title (_: FunBlazorContext<'Component>, v: obj) = "title" => v |> BoleroAttr |> this.AddProp
     [<CustomOperation("translate")>] member this.translate (_: FunBlazorContext<'Component>, v: obj) = "translate" => v |> BoleroAttr |> this.AddProp
-    [<CustomOperation("``type``")>] member this.``type`` (_: FunBlazorContext<'Component>, v: obj) = "``type``" => v |> BoleroAttr |> this.AddProp
+    [<CustomOperation("type'")>] member this.``type`` (_: FunBlazorContext<'Component>, v: obj) = "``type``" => v |> BoleroAttr |> this.AddProp
     [<CustomOperation("usemap")>] member this.usemap (_: FunBlazorContext<'Component>, v: obj) = "usemap" => v |> BoleroAttr |> this.AddProp
     [<CustomOperation("value")>] member this.value (_: FunBlazorContext<'Component>, v: obj) = "value" => v |> BoleroAttr |> this.AddProp
     [<CustomOperation("width")>] member this.width (_: FunBlazorContext<'Component>, v: obj) = "width" => v |> BoleroAttr |> this.AddProp

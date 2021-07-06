@@ -35,7 +35,7 @@ Steps:
 
 3. Enjoy it
 
-    CE style:
+    CE style (You need <LangVersion>preview</LangVersion> for your project, because CustomOperation override is in preview):
 
     ```fsharp
     open Fun.Blazor
@@ -45,8 +45,7 @@ Steps:
         mudCard [
             mudAlert() {
                 icon Icons.Filled.AccessAlarm
-                childContentStr "This is the way"
-                CAST
+                childContent "This is the way"
             }
         ]
     ```
@@ -65,38 +64,3 @@ Steps:
             ]
         ]
     ```
-
-
-### Limitations
-
-1. For CE (computation expression) style, F# do not support override CustomOperation, so I have to flat inherited properties which may make the binding files a little bigger.
-
-2. F# cannot infer some interface automatic casting, so sometimes you may need to add CAST at the end of you usage like:
-
-    ```fsharp
-    html.watch (openMenu, fun isOpen ->
-        mudDrawer() {
-            open' isOpen
-            elevation 25
-            variant DrawerVariant.Persistent
-            childContent [
-                mudDrawerHeader() {
-                    linkToIndex true
-                    childContent [
-                        mudText() {
-                            color Color.Primary
-                            typo Typo.h5
-                            childContentStr "Have fun ✌"
-                        }
-                    ]
-                }
-                navmenu
-            ]
-            CAST
-        }
-    )
-    ```
-
-    html.watch has multiple overrides, one is aking for return a IFunBlazorNode, even mudDrawer implemented interface IFunBlazorNode, the compiler still give error only if you cast it maunally.
-
-    childContent only asks for `IFunBlazorNode list`, F# can infer that so you do not need add `CAST`

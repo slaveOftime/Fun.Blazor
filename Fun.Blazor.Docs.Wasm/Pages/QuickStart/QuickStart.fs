@@ -23,8 +23,7 @@ let quickStart =
                         link "./cli-usage"
                         variant Variant.Filled
                         color Color.Secondary
-                        childContentStr "Check thrid party dsl generating cli"
-                        CAST
+                        childContent "Check thrid party dsl generating cli"
                     }
                 ]
             ]

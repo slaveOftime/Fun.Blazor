@@ -14,12 +14,11 @@ let appBarDemo = html.inject (fun () ->
                 color Color.Inherit
                 edge Edge.Start
             }
-            mudSpacer ()
+            mudSpacer.create()
             mudIconButton() {
                 icon Icons.Custom.Brands.GitHub
                 color Color.Inherit
                 edge Edge.End
             }
         ]
-        CAST
     })

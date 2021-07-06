@@ -12,26 +12,24 @@ let globalStoreDemo = html.inject (fun (store: IGlobalStore) ->
         childContent [
             html.watch (toggle, fun isToggled -> [
                 mudText() {
-                    childContentStr "Open two browsers for this page and try to click the toggle button"
+                    childContent "Open two browsers for this page and try to click the toggle button"
                     typo Typo.subtitle1
-                    CAST
                 }
                 mudSwitch<bool>() {
                     checked' isToggled
-                    checkedChanged toggle.Publish
+                    checkedChanged (fun x -> toggle.Publish x)
                 }
                 if isToggled then
                     mudText() {
-                        childContentStr "Toggled successfuly"
+                        childContent "Toggled successfuly"
                         typo Typo.subtitle2
                         color Color.Primary
                     }
                 else
                     mudText() {
-                        childContentStr "Toggled off now"
+                        childContent "Toggled off now"
                         color Color.Secondary
                     }
             ])
         ]
-        CAST
     })

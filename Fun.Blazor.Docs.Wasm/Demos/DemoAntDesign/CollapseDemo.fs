@@ -11,14 +11,13 @@ let collapseDemo =
             icon() {
                 type' "caret-right"
                 rotate (if expanded then 90 else 0)
-                CAST
             })
         childContent [
             for i in [1..3] do
                 panel() {
                     header $"Panel {i}"
                     key (string i)
-                    childContentStr $"Panel {i} content"
+                    childContent $"Panel {i} content"
                 }
         ]
     }

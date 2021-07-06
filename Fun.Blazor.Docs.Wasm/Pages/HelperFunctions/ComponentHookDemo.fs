@@ -29,36 +29,30 @@ let componentHookDemo = html.inject (fun (hook: IComponentHook) ->
         childContent [
             html.watch (toggle, fun isToggled -> [
                 mudText() {
-                    childContentStr "We can use this hook to subscribe lifecycle event of the component which created by html.inject at the beginening. We can use create observable store to have a state management for the current component. After the component all the resource will be disposed."
+                    childContent "We can use this hook to subscribe lifecycle event of the component which created by html.inject at the beginening. We can use create observable store to have a state management for the current component. After the component all the resource will be disposed."
                     typo Typo.subtitle1
-                    CAST
                 }
                 mudText() {
-                    childContentStr $"After every {threshhold} seconds the toggle will be switched"
+                    childContent $"After every {threshhold} seconds the toggle will be switched"
                     typo Typo.subtitle1
                     color Color.Info
-                    CAST
                 }
                 mudSwitch<bool>() {
                     checked' isToggled
-                    checkedChanged toggle.Publish
-                    CAST
+                    checkedChanged (fun x -> toggle.Publish x)
                 }
                 if isToggled then
                     mudText() {
-                        childContentStr "Toggled successfuly"
+                        childContent "Toggled successfuly"
                         typo Typo.subtitle2
                         color Color.Primary
-                        CAST
                     }
                 else
                     mudText() {
-                        childContentStr "Toggled off now"
+                        childContent "Toggled off now"
                         color Color.Secondary
-                        CAST
                     }
                 html.watch (count, fun c -> html.text $"Interval Count: {c}")
             ])
         ]
-        CAST
     })

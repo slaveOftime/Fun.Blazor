@@ -46,12 +46,12 @@ let simplePage (url: string) (titleStr: string) (subTitle: string) (description:
                                     typo Typo.h4
                                     align Align.Center
                                     color Color.Primary
-                                    childContentStr titleStr
+                                    childContent titleStr
                                 }
                                 mudText() {
                                     typo Typo.h5
                                     align Align.Center
-                                    childContentStr subTitle
+                                    childContent subTitle
                                 }
                             ]
                         }
@@ -59,7 +59,7 @@ let simplePage (url: string) (titleStr: string) (subTitle: string) (description:
                         mudText() {
                             typo Typo.body1
                             align Align.Center
-                            childContentStr description
+                            childContent description
                         }
                     ]
                 }
@@ -68,6 +68,5 @@ let simplePage (url: string) (titleStr: string) (subTitle: string) (description:
 
                 yield! demos
             ]
-            CAST
         }
     ]

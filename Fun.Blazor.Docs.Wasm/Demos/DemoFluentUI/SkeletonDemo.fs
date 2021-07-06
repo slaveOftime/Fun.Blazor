@@ -8,7 +8,7 @@ let skeletonDemo =
     html.div [
         attr.styles [ style.margin 10 ]
         fluentSkeleton() {
-            shape' Shape.Circle
+            shape Shape.Circle
             styles [
                 style.width 50
                 style.height 50
@@ -16,7 +16,7 @@ let skeletonDemo =
         }
         for _ in 1..3 do
             fluentSkeleton() {
-                shape' Shape.Rect
+                shape Shape.Rect
                 styles [
                     style.borderRadius 4
                     style.marginTop 10
@@ -24,7 +24,7 @@ let skeletonDemo =
                 ]
             }
         fluentSkeleton() {
-            shape' Shape.Rect
+            shape Shape.Rect
             styles [
                 style.borderRadius 4
                 style.marginTop 10

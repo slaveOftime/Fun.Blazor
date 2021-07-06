@@ -8,7 +8,7 @@ open Fun.Blazor
 let demoDivider =
     html.div [
         spaceV4
-        mudDivider() :> IFunBlazorNode
+        mudDivider.create()
         spaceV4
     ]
 
@@ -18,14 +18,12 @@ let demoContainer (titleStr: string) fileName contentStr =
         attr.styles [ style.margin 10 ]
         mudText() {
             typo Typo.h6
-            childContentStr titleStr
-            CAST
+            childContent titleStr
         }
         spaceV2
         mudPaper() {
             elevation 40
             childContent [ contentStr ]
-            CAST
         }
         spaceV2
         sourceSection fileName

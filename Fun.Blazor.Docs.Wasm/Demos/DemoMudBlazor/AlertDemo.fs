@@ -15,14 +15,12 @@ let alertDemo = html.inject (fun (hook: IComponentHook) ->
         | Some _ -> str.Publish "Got ref")
 
     mudCard() {
-        ref' cardRef
+        ref cardRef
         childContent [
             html.watch (str, fun str ->
                 mudAlert() {
                     icon Icons.Filled.AccessAlarm
-                    childContentStr str
-                    CAST
+                    childContent str
                 })
         ]
-        CAST
     })

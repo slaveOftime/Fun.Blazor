@@ -49,36 +49,30 @@ let darkTheme =
 
 
 let navmenu =
-    mudNavMenu [
+    mudNavMenu.create [
         mudNavLink() {
             href "./quick-start"
-            childContentStr "Quick start"
-            CAST
+            childContent "Quick start"
         }
         mudNavLink() {
             href "./router"
-            childContentStr "Router"
-            CAST
+            childContent "Router"
         }
         mudNavLink() {
             href "./elmish"
-            childContentStr "Elmish"
-            CAST
+            childContent "Elmish"
         }
         mudNavLink() {
             href "./helper-functions"
-            childContentStr "Helper functions"
-            CAST
+            childContent "Helper functions"
         }
         mudNavLink() {
             href "./cli-usage"
-            childContentStr "Cli usage"
-            CAST
+            childContent "Cli usage"
         }
         mudNavLink() {
             href "./tests"
-            childContentStr "Tests"
-            CAST
+            childContent "Tests"
         }
         mudNavGroup() {
             title "Demos"
@@ -87,18 +81,17 @@ let navmenu =
             childContent [
                 mudNavLink() {
                     href "./mudblazor"
-                    childContentStr "MudBlazor"
+                    childContent "MudBlazor"
                 }
                 mudNavLink() {
                     href "./antdesign"
-                    childContentStr "Antdesign"
+                    childContent "Antdesign"
                 }
                 mudNavLink() {
                     href "./fluentui"
-                    childContentStr "FluentUI"
+                    childContent "FluentUI"
                 }
             ]
-            CAST
         }
     ]
 
@@ -122,11 +115,10 @@ let app = html.inject (fun (hook: IComponentHook, shareStore: IShareStore) ->
         html.watch (isDarkMode, fun isDark ->
             mudThemeProvider() {
                 theme (if isDark then darkTheme else defaultTheme)
-                CAST
             })
 
-        mudDialogProvider() :> IFunBlazorNode
-        mudSnackbarProvider() :> IFunBlazorNode
+        mudDialogProvider.create()
+        mudSnackbarProvider.create()
      
         mudLayout() {
             rightToLeft false
@@ -145,9 +137,9 @@ let app = html.inject (fun (hook: IComponentHook, shareStore: IShareStore) ->
                         mudText() {
                             typo Typo.h6
                             color Color.Default
-                            childContentStr "Fun Blazor"
+                            childContent "Fun Blazor"
                         }
-                        mudSpacer ()
+                        mudSpacer.create()
                         mudTooltip() {
                             text "Github repository"
                             childContent [
@@ -172,13 +164,12 @@ let app = html.inject (fun (hook: IComponentHook, shareStore: IShareStore) ->
                                     mudText() {
                                         color Color.Primary
                                         typo Typo.h5
-                                        childContentStr "Have fun ✌"
+                                        childContent "Have fun ✌"
                                     }
                                 ]
                             }
                             navmenu
                         ]
-                        CAST
                     }
                 )
                 mudMainContent() {
@@ -206,6 +197,5 @@ let app = html.inject (fun (hook: IComponentHook, shareStore: IShareStore) ->
                     ]
                 }
             ]
-            CAST
         }
     ])

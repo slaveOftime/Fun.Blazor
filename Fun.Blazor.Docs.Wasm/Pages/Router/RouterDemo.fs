@@ -8,8 +8,7 @@ let routerDemo =
     html.div [
         mudText() {
             typo Typo.subtitle1
-            childContentStr "The reason we have something like [ \"router\" ] and [ _; \"router\" ] is because we host WASM on github and it has a sub folder url. We also host this on a blazor server side mode on another machine which all the content is under the root of domain."
-            CAST
+            childContent "The reason we have something like [ \"router\" ] and [ _; \"router\" ] is because we host WASM on github and it has a sub folder url. We also host this on a blazor server side mode on another machine which all the content is under the root of domain."
         }
         mudText() {
             typo Typo.subtitle2
@@ -25,11 +24,9 @@ let routerDemo =
                     | _ -> html.text "Not my concern."
                 )
             ]
-            CAST
         }
         mudLink() {
             href "./router?name=albert&age=123"
-            childContentStr "Try to navigate"
-            CAST
+            childContent "Try to navigate"
         }
     ]
