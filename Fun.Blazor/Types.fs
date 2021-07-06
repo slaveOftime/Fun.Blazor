@@ -83,7 +83,7 @@ type FunBlazorContext<'Component when 'Component :> Microsoft.AspNetCore.Compone
     [<CustomOperation("attrs")>]
     member this.attrs (_: FunBlazorContext<'Component>, nodes: IFunBlazorNode list) = nodes |> Seq.iter (this.AddProp >> ignore); this
     
-    [<CustomOperation("ref")>] member this.ref (_: FunBlazorContext<'Component>, v: obj) = "ref" => v |> BoleroAttr |> this.AddProp
+    [<CustomOperation("ref")>] member this.ref (_: FunBlazorContext<'Component>, v) = Bolero.Html.attr.ref v |> BoleroAttr |> this.AddProp
     
 
     interface IFunBlazorNode with
