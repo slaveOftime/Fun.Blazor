@@ -2,7 +2,8 @@ namespace rec AntDesign.DslInternals
 
 open Bolero.Html
 open Fun.Blazor
-open Fun.Blazor.Web.DslInternals
+open Microsoft.AspNetCore.Components.DslCE.DslInternals
+open Microsoft.AspNetCore.Components.Web.DslCE.DslInternals
 open AntDesign.DslInternals
 
 
@@ -4451,7 +4452,8 @@ namespace rec AntDesign.DslInternals.Select.Internal
 
 open Bolero.Html
 open Fun.Blazor
-open Fun.Blazor.Web.DslInternals
+open Microsoft.AspNetCore.Components.DslCE.DslInternals
+open Microsoft.AspNetCore.Components.Web.DslCE.DslInternals
 open AntDesign.DslInternals
 
 
@@ -4471,7 +4473,8 @@ namespace rec AntDesign.DslInternals.Internal
 
 open Bolero.Html
 open Fun.Blazor
-open Fun.Blazor.Web.DslInternals
+open Microsoft.AspNetCore.Components.DslCE.DslInternals
+open Microsoft.AspNetCore.Components.Web.DslCE.DslInternals
 open AntDesign.DslInternals
 
 
@@ -4592,7 +4595,8 @@ namespace rec AntDesign.DslInternals
 
 open Bolero.Html
 open Fun.Blazor
-open Fun.Blazor.Web.DslInternals
+open Microsoft.AspNetCore.Components.DslCE.DslInternals
+open Microsoft.AspNetCore.Components.Web.DslCE.DslInternals
 open AntDesign.DslInternals
 
 
@@ -4880,7 +4884,8 @@ namespace rec AntDesign.DslInternals.Internal
 
 open Bolero.Html
 open Fun.Blazor
-open Fun.Blazor.Web.DslInternals
+open Microsoft.AspNetCore.Components.DslCE.DslInternals
+open Microsoft.AspNetCore.Components.Web.DslCE.DslInternals
 open AntDesign.DslInternals
 
 
@@ -4965,7 +4970,8 @@ namespace rec AntDesign.DslInternals
 
 open Bolero.Html
 open Fun.Blazor
-open Fun.Blazor.Web.DslInternals
+open Microsoft.AspNetCore.Components.DslCE.DslInternals
+open Microsoft.AspNetCore.Components.Web.DslCE.DslInternals
 open AntDesign.DslInternals
 
 
@@ -5009,7 +5015,8 @@ namespace rec AntDesign.DslInternals.Internal
 
 open Bolero.Html
 open Fun.Blazor
-open Fun.Blazor.Web.DslInternals
+open Microsoft.AspNetCore.Components.DslCE.DslInternals
+open Microsoft.AspNetCore.Components.Web.DslCE.DslInternals
 open AntDesign.DslInternals
 
 
@@ -5435,7 +5442,8 @@ namespace rec AntDesign.DslInternals
 
 open Bolero.Html
 open Fun.Blazor
-open Fun.Blazor.Web.DslInternals
+open Microsoft.AspNetCore.Components.DslCE.DslInternals
+open Microsoft.AspNetCore.Components.Web.DslCE.DslInternals
 open AntDesign.DslInternals
 
 
@@ -5492,7 +5500,8 @@ namespace rec AntDesign.DslInternals.Internal
 
 open Bolero.Html
 open Fun.Blazor
-open Fun.Blazor.Web.DslInternals
+open Microsoft.AspNetCore.Components.DslCE.DslInternals
+open Microsoft.AspNetCore.Components.Web.DslCE.DslInternals
 open AntDesign.DslInternals
 
 
@@ -5526,7 +5535,8 @@ namespace rec AntDesign.DslInternals
 
 open Bolero.Html
 open Fun.Blazor
-open Fun.Blazor.Web.DslInternals
+open Microsoft.AspNetCore.Components.DslCE.DslInternals
+open Microsoft.AspNetCore.Components.Web.DslCE.DslInternals
 open AntDesign.DslInternals
 
 
@@ -5636,7 +5646,8 @@ namespace rec AntDesign.DslInternals.statistic
 
 open Bolero.Html
 open Fun.Blazor
-open Fun.Blazor.Web.DslInternals
+open Microsoft.AspNetCore.Components.DslCE.DslInternals
+open Microsoft.AspNetCore.Components.Web.DslCE.DslInternals
 open AntDesign.DslInternals
 
 
@@ -5653,7 +5664,8 @@ namespace rec AntDesign.DslInternals.Select
 
 open Bolero.Html
 open Fun.Blazor
-open Fun.Blazor.Web.DslInternals
+open Microsoft.AspNetCore.Components.DslCE.DslInternals
+open Microsoft.AspNetCore.Components.Web.DslCE.DslInternals
 open AntDesign.DslInternals
 
 
@@ -5677,7 +5689,8 @@ namespace rec AntDesign.DslInternals.Select.Internal
 
 open Bolero.Html
 open Fun.Blazor
-open Fun.Blazor.Web.DslInternals
+open Microsoft.AspNetCore.Components.DslCE.DslInternals
+open Microsoft.AspNetCore.Components.Web.DslCE.DslInternals
 open AntDesign.DslInternals
 
 

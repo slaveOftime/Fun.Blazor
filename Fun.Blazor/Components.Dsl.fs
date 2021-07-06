@@ -1,8 +1,18 @@
-namespace rec Fun.Blazor.Web.DslInternals
+namespace Microsoft.AspNetCore.Components.Dsl.DslInternals
+
+
+// ===========================================================================================
+
+
+
+// ===========================================================================================
+// ===========================================================================================
+
+namespace rec Microsoft.AspNetCore.Components.Web.Dsl.DslInternals
 
 open Bolero.Html
 open Fun.Blazor
-open Fun.Blazor.Web.DslInternals
+open Microsoft.AspNetCore.Components.Web.Dsl.DslInternals
 
 
 type virtualize<'FunBlazorGeneric, 'TItem> =
@@ -20,14 +30,7 @@ type virtualize<'FunBlazorGeneric, 'TItem> =
     static member inline items (x: System.Collections.Generic.ICollection<'TItem>) = "Items" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline overscanCount (x: System.Int32) = "OverscanCount" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
                     
-            
-namespace rec Fun.Blazor.Web.DslInternals
-
-open Bolero.Html
-open Fun.Blazor
-open Fun.Blazor.Web.DslInternals
-
-
+           
 type navLink<'FunBlazorGeneric> =
     
     static member inline create () = [] |> html.blazor<Microsoft.AspNetCore.Components.Routing.NavLink>
@@ -42,13 +45,6 @@ type navLink<'FunBlazorGeneric> =
     static member inline childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inline match' (x: Microsoft.AspNetCore.Components.Routing.NavLinkMatch) = "Match" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
                     
-            
-namespace rec Fun.Blazor.Web.DslInternals
-
-open Bolero.Html
-open Fun.Blazor
-open Fun.Blazor.Web.DslInternals
-
 
 type editForm<'FunBlazorGeneric> =
     
@@ -225,9 +221,9 @@ type validationSummary<'FunBlazorGeneric> =
 
 // ===========================================================================================
 
-namespace Fun.Blazor.Web
+namespace Microsoft.AspNetCore.Components.Web.Dsl
 
-open Fun.Blazor.Web.DslInternals
+open Microsoft.AspNetCore.Components.Web.Dsl.DslInternals
 
 
 type IVirtualizeNode<'TItem> = interface end
@@ -236,11 +232,6 @@ type virtualize<'TItem> =
         inherit virtualize<IVirtualizeNode<'TItem>, 'TItem>
     end
                     
-            
-namespace Fun.Blazor.Web
-
-open Fun.Blazor.Web.DslInternals
-
 
 type INavLinkNode = interface end
 type navLink =
@@ -248,11 +239,6 @@ type navLink =
         inherit navLink<INavLinkNode>
     end
                     
-            
-namespace Fun.Blazor.Web
-
-open Fun.Blazor.Web.DslInternals
-
 
 type IEditFormNode = interface end
 type editForm =
@@ -345,3 +331,4 @@ type validationSummary =
     end
                     
             
+    

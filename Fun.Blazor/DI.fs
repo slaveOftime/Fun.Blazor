@@ -3,6 +3,7 @@ module Microsoft.Extensions.DependencyInjection.Extensions
 
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.AspNetCore.Components
+open Microsoft.AspNetCore.Components.Web
 open Microsoft.AspNetCore.Components.WebAssembly.Hosting
 open Fun.Blazor
 

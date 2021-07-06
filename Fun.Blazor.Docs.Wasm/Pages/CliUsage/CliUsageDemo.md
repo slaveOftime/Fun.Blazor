@@ -35,7 +35,7 @@ Steps:
 
 3. Enjoy it
 
-    CE style (You need <LangVersion>preview</LangVersion> for your project, because CustomOperation override is in preview):
+    CE style (You need set LangVersion to preview for your project, because CustomOperation override is in preview):
 
     ```fsharp
     open Fun.Blazor

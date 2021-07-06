@@ -5,11 +5,11 @@
     <LangVersion>preview</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Fun.Blazor.Bindings\Microsoft.Fast.Components.FluentUI.fs" />
     <Compile Include="Fun.Blazor.Bindings\AntDesign.fs" />
     <Compile Include="Fun.Blazor.Bindings\AntDesign.Charts.fs" />
     <Compile Include="Fun.Blazor.Bindings\MudBlazor.fs" />
     <Compile Include="Fun.Blazor.Bindings\Microsoft.AspNetCore.Components.Authorization.fs" />
+    <Compile Include="Fun.Blazor.Bindings\Microsoft.Fast.Components.FluentUI.fs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Components\Common.fs" />
@@ -48,11 +48,11 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.7" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.7" PrivateAssets="all" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
-    <PackageReference FunBlazor="" Include="Microsoft.Fast.Components.FluentUI" Version="0.2.0" />
     <PackageReference FunBlazor="" Include="AntDesign" Version="0.8.2" />
     <PackageReference FunBlazor="" Include="AntDesign.Charts" Version="0.2.1" />
     <PackageReference FunBlazor="" Include="MudBlazor" Version="5.0.13" />
     <PackageReference FunBlazor="" Include="Microsoft.AspNetCore.Components.Authorization" Version="5.0.7" />
+    <PackageReference FunBlazorStyle="Feliz" Include="Microsoft.Fast.Components.FluentUI" Version="0.2.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fun.Blazor\Fun.Blazor.fsproj" />

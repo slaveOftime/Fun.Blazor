@@ -6,17 +6,53 @@ open Fun.Blazor.Generator
 let opens = """open Bolero.Html
 open Fun.Blazor"""
 
-(Assembly.LoadFile(__SOURCE_DIRECTORY__ + "/bin/Debug/net5.0/Microsoft.AspNetCore.Components.dll").GetTypes())
-|> Seq.append (Assembly.LoadFile(__SOURCE_DIRECTORY__ + "/bin/Debug/net5.0/Microsoft.AspNetCore.Components.Web.dll").GetTypes())
-|> Generator.generateCode "Fun.Blazor.Web" opens
-|> fun codes ->
 
-    let path = __SOURCE_DIRECTORY__ + "\..\Fun.Blazor\Web.fs"
-    let code = 
-        $"""{codes.internalCode}
+let componentTypes = Assembly.LoadFile(__SOURCE_DIRECTORY__ + "/bin/Debug/net5.0/Microsoft.AspNetCore.Components.dll").GetTypes()
+let webTypes = Assembly.LoadFile(__SOURCE_DIRECTORY__ + "/bin/Debug/net5.0/Microsoft.AspNetCore.Components.Web.dll").GetTypes()
+
+
+let componentsDsl = Generator.generateCode "Microsoft.AspNetCore.Components.Dsl" opens componentTypes
+let webDsl = Generator.generateCode "Microsoft.AspNetCore.Components.Web.Dsl" opens webTypes
+
+let dslPath = __SOURCE_DIRECTORY__ + "\..\Fun.Blazor\Components.Dsl.fs"
+let dslCode = 
+    $"""{componentsDsl.internalCode}
 
 // ===========================================================================================
 
-{codes.dslCode}"""
+{componentsDsl.dslCode}
+
+// ===========================================================================================
+// ===========================================================================================
+
+{webDsl.internalCode}
+
+// ===========================================================================================
+
+{webDsl.dslCode}
+    """
     
-    File.WriteAllText(path, code)
+File.WriteAllText(dslPath, dslCode)
+
+
+let componentsDslCE = CEGenerator.generateCode "Microsoft.AspNetCore.Components.DslCE" opens componentTypes
+let webDslCE = CEGenerator.generateCode "Microsoft.AspNetCore.Components.Web.DslCE" opens webTypes
+
+let dslCEPath = __SOURCE_DIRECTORY__ + "\..\Fun.Blazor\Components.DslCE.fs"
+let dslCECode = 
+    $"""{componentsDslCE.internalCode}
+
+// ===========================================================================================
+
+{componentsDslCE.dslCode}
+
+// ===========================================================================================
+// ===========================================================================================
+    
+{webDslCE.internalCode}
+// ===========================================================================================
+    
+{webDslCE.dslCode}
+    """
+    
+File.WriteAllText(dslCEPath, dslCECode)
