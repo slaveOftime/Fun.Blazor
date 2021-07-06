@@ -14,13 +14,23 @@ let alertDemo = html.inject (fun (hook: IComponentHook) ->
         | None -> str.Publish "Did not get ref"
         | Some _ -> str.Publish "Got ref")
 
-    mudCard() {
+    MudCard'() {
         ref cardRef
-        childContent [
-            html.watch (str, fun str ->
-                mudAlert() {
-                    icon Icons.Filled.AccessAlarm
-                    childContent str
-                })
+        ChildContent [
+            MudNumericField'<int64>() {
+                Label "Good number"
+                Value 123L
+            }
+            html.watch (str, fun s -> [
+                MudTextField'<string>() {
+                    Label "Message"
+                    Value s
+                    ValueChanged str.Publish
+                }
+                MudAlert'() {
+                    Icon Icons.Filled.AccessAlarm
+                    ChildContent s
+                }
+            ])
         ]
     })

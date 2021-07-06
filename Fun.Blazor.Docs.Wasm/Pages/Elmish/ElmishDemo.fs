@@ -20,24 +20,24 @@ let update msg model =
     
 let view model dispatch =
     html.div [
-        mudText() {
-            childContent (string model.Count)
-            typo Typo.h6
-            color Color.Primary
+        MudText'() {
+            ChildContent (string model.Count)
+            Typo Typo.h6
+            Color Color.Primary
         }
-        mudButtonGroup() {
-            variant Variant.Outlined
-            childContent [
-                mudButton() {
-                    childContent "Increase"
-                    color Color.Primary
-                    onClick (fun _ -> Increase |> dispatch)
+        MudButtonGroup'() {
+            Variant Variant.Outlined
+            ChildContent [
+                MudButton'() {
+                    ChildContent "Increase"
+                    Color Color.Primary
+                    OnClick (fun _ -> Increase |> dispatch)
                 }
-                mudButton() {
-                    childContent "Descrease"
-                    color Color.Secondary
-                    variant Variant.Outlined
-                    onClick (fun _ -> Descrease |> dispatch)
+                MudButton'() {
+                    ChildContent "Descrease"
+                    Color Color.Secondary
+                    Variant Variant.Outlined
+                    OnClick (fun _ -> Descrease |> dispatch)
                 }
             ]
         }

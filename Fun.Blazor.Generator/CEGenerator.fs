@@ -39,25 +39,23 @@ let private getMetaInfo (ty: Type) =
 
     let originalGenerics = generics |> getTypeNames |> createGenerics |> closeGenerics
     let originalTypeWithGenerics = $"{ty.Namespace}.{getTypeShortName ty}{originalGenerics}"
+    let customOperation name = $"[<CustomOperation(\"{name}\")>]"
+    let memberStart = "member this."
     let contextArg = $"_: FunBlazorContext<{originalTypeWithGenerics}>"
 
-    let rec getNestedProps (ty: Type) =
-        [
-            yield! ty.GetProperties()
-            if ty.BaseType <> null && ty.BaseType <> typeof<ComponentBase> then
-                yield! getNestedProps ty.BaseType
-        ]
+    let allProps = ty.GetProperties()
 
     let props = 
-        getNestedProps ty
-        |> Seq.distinctBy (fun x -> x.Name)
+        allProps
+        //|> Seq.filter (fun p -> p.DeclaringType = ty)
+        //|> Seq.distinctBy (fun x -> x.Name)
         |> Seq.choose (fun prop ->
             if prop.CustomAttributes
                 |> Seq.exists (fun x -> x.AttributeType = typeof<ParameterAttribute>)
                 |> not
             then None
             else
-                let name = lowerFirstCase prop.Name
+                let name = prop.Name
                 let name =
                     if fsharpKeywords |> List.contains name then $"{name}'"
                     else name
@@ -65,44 +63,48 @@ let private getMetaInfo (ty: Type) =
                     if prop.PropertyType.Name.StartsWith "EventCallback" ||
                        prop.PropertyType.Name.StartsWith "Microsoft.AspNetCore.Components.EventCallback"
                     then
-                        Some [ $"    [<CustomOperation(\"{name}\")>] member this.{name} ({contextArg}, fn) = (Bolero.Html.attr.callback<{getTypeName prop.PropertyType.GenericTypeArguments.[0]}> \"{prop.Name}\" (fun e -> fn e)) |> {nameof BoleroAttr}" ]
+                        Some [ $"    {customOperation name} {memberStart}{name} ({contextArg}, fn) = (Bolero.Html.attr.callback<{getTypeName prop.PropertyType.GenericTypeArguments.[0]}> \"{prop.Name}\" (fun e -> fn e)) |> {nameof BoleroAttr}" ]
                     elif prop.PropertyType.Name.StartsWith "RenderFragment`" then
-                        Some [ $"    [<CustomOperation(\"{name}\")>] member this.{name} ({contextArg}, render: {getTypeName prop.PropertyType.GenericTypeArguments.[0]} -> {nameof IFunBlazorNode}) = Bolero.Html.attr.fragmentWith \"{prop.Name}\" (fun x -> render x |> html.toBolero) |> {nameof BoleroAttr}" ]
+                        Some [ $"    {customOperation name} {memberStart}{name} ({contextArg}, render: {getTypeName prop.PropertyType.GenericTypeArguments.[0]} -> {nameof IFunBlazorNode}) = Bolero.Html.attr.fragmentWith \"{prop.Name}\" (fun x -> render x |> html.toBolero) |> {nameof BoleroAttr}" ]
                     else
-                        Some [ $"    [<CustomOperation(\"{name}\")>] member this.{name} ({contextArg}, x: {getTypeName prop.PropertyType}) = \"{prop.Name}\" => x |> {nameof BoleroAttr}" ]
+                        Some [ $"    {customOperation name} {memberStart}{name} ({contextArg}, x: {getTypeName prop.PropertyType}) = \"{prop.Name}\" => x |> {nameof BoleroAttr}" ]
 
                 elif prop.PropertyType = typeof<RenderFragment> then
                     Some [
-                        $"    [<CustomOperation(\"{name}\")>] member this.{name} ({contextArg}, nodes) = Bolero.Html.attr.fragment \"{prop.Name}\" (nodes |> html.fragment |> html.toBolero) |> {nameof BoleroAttr}"
-                        $"    [<CustomOperation(\"{name}\")>] member this.{name} ({contextArg}, x: string) = Bolero.Html.attr.fragment \"{prop.Name}\" (html.text x |> html.toBolero) |> {nameof BoleroAttr}"
-                        $"    [<CustomOperation(\"{name}\")>] member this.{name} ({contextArg}, x: int) = Bolero.Html.attr.fragment \"{prop.Name}\" (html.text x |> html.toBolero) |> {nameof BoleroAttr}"
-                        $"    [<CustomOperation(\"{name}\")>] member this.{name} ({contextArg}, x: float) = Bolero.Html.attr.fragment \"{prop.Name}\" (html.text x |> html.toBolero) |> {nameof BoleroAttr}"
+                        $"    {customOperation name} {memberStart}{name} ({contextArg}, nodes) = Bolero.Html.attr.fragment \"{prop.Name}\" (nodes |> html.fragment |> html.toBolero) |> {nameof BoleroAttr}"
+                        $"    {customOperation name} {memberStart}{name} ({contextArg}, x: string) = Bolero.Html.attr.fragment \"{prop.Name}\" (html.text x |> html.toBolero) |> {nameof BoleroAttr}"
+                        $"    {customOperation name} {memberStart}{name} ({contextArg}, x: int) = Bolero.Html.attr.fragment \"{prop.Name}\" (html.text x |> html.toBolero) |> {nameof BoleroAttr}"
+                        $"    {customOperation name} {memberStart}{name} ({contextArg}, x: float) = Bolero.Html.attr.fragment \"{prop.Name}\" (html.text x |> html.toBolero) |> {nameof BoleroAttr}"
                     ]
 
                 elif prop.Name = "Class" && prop.PropertyType = typeof<string> then
-                    Some [ $"    [<CustomOperation(\"classes\")>] member this.classes ({contextArg}, x: string list) = attr.classes x" ]
+                    Some [ $"    [<CustomOperation(\"Classes\")>] {memberStart}Classes ({contextArg}, x: string list) = attr.classes x" ]
 
                 elif prop.Name = "Style" && prop.PropertyType = typeof<string> then
-                    Some [ $"    [<CustomOperation(\"styles\")>] member this.styles ({contextArg}, x: (string * string) list) = attr.styles x" ]
+                    Some [ $"    [<CustomOperation(\"Styles\")>] {memberStart}Styles ({contextArg}, x: (string * string) list) = attr.styles x" ]
                 else
-                    Some [ $"    [<CustomOperation(\"{name}\")>] member this.{name} ({contextArg}, x: {getTypeName prop.PropertyType}) = \"{prop.Name}\" => x |> {nameof BoleroAttr}" ])
+                    Some [ $"    {customOperation name} {memberStart}{name} ({contextArg}, x: {getTypeName prop.PropertyType}) = \"{prop.Name}\" => x |> {nameof BoleroAttr}" ])
 
         |> Seq.concat
         |> Seq.map (fun x -> $"{x} |> this.AddProp")
         
 
 
-    let hasChildren = props |> Seq.exists (fun x -> x.Contains "member this.childContent")
+    let hasChildren = props |> Seq.exists (fun x -> x.Contains $"{memberStart}ChildContent")
+
     let addBasicDomAttrs = 
         props
         |> Seq.exists (fun x ->
-            x.Contains "member this.additionalAttributes" ||
-            x.Contains "member this.userAttributes")
+            x.Contains $"{memberStart}AdditionalAttributes" ||
+            x.Contains $"{memberStart}UserAttributes")
 
     let props =
         if addBasicDomAttrs then 
             props 
-            |> Seq.filter (fun x -> x.Contains "member this.childContent" |> not && x.Contains "member this.additionalAttributes" |> not)
+            |> Seq.filter (fun x -> 
+                //x.Contains $"{memberStart}ChildContent" |> not &&
+                x.Contains $"{memberStart}AdditionalAttributes" |> not &&
+                x.Contains $"{memberStart}UserAttributes" |> not)
         else 
             props
         |> String.concat "\n" 
@@ -226,9 +228,10 @@ let generateCode (targetNamespace: string) (opens: string) (tys: Type seq) =
                     let builderName = makeBuilderName meta.ty
 
                     let inheirit' = 
-                        match meta.inheritInfo with
-                        | None -> $"inherit {if meta.addBasicDomAttrs then nameof FunBlazorContextWithAttrs else nameof FunBlazorContext}<{funBlazorGeneric}>()"
-                        | Some (baseTy, _) -> $"inherit {baseTy.Namespace |> trimNamespace |> appendStrIfNotEmpty (string '.')}{makeBuilderName meta.ty.BaseType}<{funBlazorGeneric}>()"
+                        $"inherit {if meta.addBasicDomAttrs then nameof FunBlazorContextWithAttrs else nameof FunBlazorContext}<{funBlazorGeneric}>()"
+                        //match meta.inheritInfo with
+                        //| None -> $"inherit {if meta.addBasicDomAttrs then nameof FunBlazorContextWithAttrs else nameof FunBlazorContext}<{funBlazorGeneric}>()"
+                        //| Some (baseTy, _) -> $"inherit {baseTy.Namespace |> trimNamespace |> appendStrIfNotEmpty (string '.')}{makeBuilderName meta.ty.BaseType}<{funBlazorGeneric}>()"
 
                     let news =
                         if meta.hasChildren then
@@ -276,7 +279,7 @@ type {builderName}<{funBlazorGeneric} when {funBlazorGeneric} :> Microsoft.AspNe
                     let originalTypeWithGenerics = $"{meta.ty.Namespace}.{getTypeShortName meta.ty}{originalGenerics}"
                     let builderName = makeBuilderName meta.ty
 
-                    $"""    type {meta.ty |> getTypeShortName |> lowerFirstCase}{meta.generics |> getTypeNames |> createGenerics |> appendStr (createConstraint meta.generics) |> closeGenerics} = {builderName}<{originalTypeWithGenerics}>""")
+                    $"""    type {meta.ty |> getTypeShortName}'{meta.generics |> getTypeNames |> createGenerics |> appendStr (createConstraint meta.generics) |> closeGenerics} = {builderName}<{originalTypeWithGenerics}>""")
                 |> String.concat "\n"
 
             $"""namespace {targetNamespace}{ns |> trimNamespace |> addStrIfNotEmpty "."}

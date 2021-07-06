@@ -11,8 +11,8 @@ type Item =
 
 
 let chartDemo =
-    percentStackedArea<Item>() {
-        config (
+    PercentStackedArea'<Item>() {
+        Config (
             PercentStackedAreaConfig(
                 Title = Title(Visible = true, Text = "百分比堆叠面积图"),
                 Meta = Meta(Range = [| 0; 1 |]),
@@ -21,7 +21,7 @@ let chartDemo =
                 StackField = "country",
                 //Color = OneOf.OneOf( [| "#82d1de"; "#cb302d"; "#e3ca8c" |],
                 AreaStyle = GraphicStyle(FillOpacity = 0.7M)))
-        data items
+        Data items
     }
 
 

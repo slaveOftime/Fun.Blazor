@@ -17,22 +17,22 @@ let giraffeStyleRouterDemo =
         ]
 
     let link (hrefStr: string) (name': string) =
-        mudLink() {
-            href hrefStr
-            childContent name'
-            underline Underline.Always
-            styles [ style.marginRight 10 ]
+        MudLink'() {
+            Href hrefStr
+            ChildContent name'
+            Underline Underline.Always
+            Styles [ style.marginRight 10 ]
         }
 
     html.div [
-        mudText() {
-            typo Typo.subtitle1
-            childContent ""
+        MudText'() {
+            Typo Typo.subtitle1
+            ChildContent ""
         }
-        mudText() {
-            typo Typo.subtitle2
-            color Color.Secondary
-            childContent [
+        MudText'() {
+            Typo Typo.subtitle2
+            Color Color.Secondary
+            ChildContent [
                 html.route [
                     route
                     subRouteCi "/Fun.Blazor" [ route ] // For github-pages hosting

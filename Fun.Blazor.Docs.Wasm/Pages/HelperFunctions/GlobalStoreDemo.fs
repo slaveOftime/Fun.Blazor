@@ -7,28 +7,28 @@ open Fun.Blazor
 let globalStoreDemo = html.inject (fun (store: IGlobalStore) ->
     let toggle = store.Create ("global-store-toggle", false)
     
-    mudPaper() {
-        styles [ style.padding 20 ]
-        childContent [
+    MudPaper'() {
+        Styles [ style.padding 20 ]
+        ChildContent [
             html.watch (toggle, fun isToggled -> [
-                mudText() {
-                    childContent "Open two browsers for this page and try to click the toggle button"
-                    typo Typo.subtitle1
+                MudText'() {
+                    ChildContent "Open two browsers for this page and try to click the toggle button"
+                    Typo Typo.subtitle1
                 }
-                mudSwitch<bool>() {
-                    checked' isToggled
-                    checkedChanged (fun x -> toggle.Publish x)
+                MudSwitch'<bool>() {
+                    Checked isToggled
+                    CheckedChanged (fun (x: bool) -> toggle.Publish x)
                 }
                 if isToggled then
-                    mudText() {
-                        childContent "Toggled successfuly"
-                        typo Typo.subtitle2
-                        color Color.Primary
+                    MudText'() {
+                        ChildContent "Toggled successfuly"
+                        Typo Typo.subtitle2
+                        Color Color.Primary
                     }
                 else
-                    mudText() {
-                        childContent "Toggled off now"
-                        color Color.Secondary
+                    MudText'() {
+                        ChildContent "Toggled off now"
+                        Color Color.Secondary
                     }
             ])
         ]

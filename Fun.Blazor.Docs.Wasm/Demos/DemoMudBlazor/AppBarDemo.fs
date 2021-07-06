@@ -5,20 +5,20 @@ open MudBlazor
 open Fun.Blazor
 
 let appBarDemo = html.inject (fun () ->
-    mudAppBar() {
-        fixed' false
-        color Color.Primary
-        childContent [
-            mudIconButton() {
-                icon Icons.Filled.Menu
-                color Color.Inherit
-                edge Edge.Start
+    MudAppBar'() {
+        Fixed false
+        Color Color.Primary
+        ChildContent [
+            MudIconButton'() {
+                Icon Icons.Filled.Menu
+                Color Color.Inherit
+                Edge Edge.Start
             }
-            mudSpacer.create()
-            mudIconButton() {
-                icon Icons.Custom.Brands.GitHub
-                color Color.Inherit
-                edge Edge.End
+            MudSpacer'.create()
+            MudIconButton'() {
+                Icon Icons.Custom.Brands.GitHub
+                Color Color.Inherit
+                Edge Edge.End
             }
         ]
     })

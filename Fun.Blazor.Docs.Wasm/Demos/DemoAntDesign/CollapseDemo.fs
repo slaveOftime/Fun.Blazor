@@ -4,20 +4,20 @@ module Fun.Blazor.Docs.Wasm.DemoAntDesign.CollapseDemo
 open AntDesign
 
 let collapseDemo =
-    collapse() {
-        bordered false
-        defaultActiveKey [| "1" |]
-        expandIconTemplate (fun expanded ->
-            icon() {
-                type' "caret-right"
-                rotate (if expanded then 90 else 0)
+    Collapse'() {
+        Bordered false
+        DefaultActiveKey [| "1" |]
+        ExpandIconTemplate (fun expanded ->
+            Icon'() {
+                Type "caret-right"
+                Rotate (if expanded then 90 else 0)
             })
-        childContent [
+        ChildContent [
             for i in [1..3] do
-                panel() {
-                    header $"Panel {i}"
-                    key (string i)
-                    childContent $"Panel {i} content"
+                Panel'() {
+                    Header $"Panel {i}"
+                    Key (string i)
+                    ChildContent $"Panel {i} content"
                 }
         ]
     }

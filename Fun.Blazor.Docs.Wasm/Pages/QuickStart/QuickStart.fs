@@ -19,11 +19,11 @@ let quickStart =
                 attr.styles [ style.margin 20 ]
                 attr.className "d-flex justify-center"
                 attr.childContent [
-                    mudButton() {
-                        link "./cli-usage"
-                        variant Variant.Filled
-                        color Color.Secondary
-                        childContent "Check thrid party dsl generating cli"
+                    MudButton'() {
+                        Link "./cli-usage"
+                        Variant Variant.Filled
+                        Color Color.Secondary
+                        ChildContent "Check thrid party dsl generating cli"
                     }
                 ]
             ]

@@ -5,38 +5,38 @@ open Fun.Blazor
 open AntDesign
 
 let dropDownDemo =
-    dropdown() {
-        overlay [
-            menu.create [
-                menuItemGroup() {
-                    title "Group title"
-                    childContent [
-                        menuItem.create "1st menu item"
-                        menuItem.create "2st menu item"
+    Dropdown'() {
+        Overlay [
+            Menu'.create [
+                MenuItemGroup'() {
+                    Title "Group title"
+                    ChildContent [
+                        MenuItem'.create "1st menu item"
+                        MenuItem'.create "2st menu item"
                     ]
                 }
-                subMenu() {
-                    title "Sub menu"
-                    childContent [
-                        menuItem.create "3st menu item"
-                        menuItem.create "4st menu item"
+                SubMenu'() {
+                    Title "Sub menu"
+                    ChildContent [
+                        MenuItem'.create "3st menu item"
+                        MenuItem'.create "4st menu item"
                     ]
                 }
-                subMenu() {
-                    title "Disabled sub menu"
-                    disabled true
-                    childContent [
-                        menuItem.create "5st menu item"
-                        menuItem.create "6st menu item"
+                SubMenu'() {
+                    Title "Disabled sub menu"
+                    Disabled true
+                    ChildContent [
+                        MenuItem'.create "5st menu item"
+                        MenuItem'.create "6st menu item"
                     ]
                 }
             ]
         ]
-        childContent [
+        ChildContent [
             html.a [
                 html.div "Cascading menu"
-                icon() {
-                    type' "down"
+                Icon'() {
+                    Type "down"
                 }
             ]
         ]

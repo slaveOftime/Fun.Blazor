@@ -49,47 +49,47 @@ let darkTheme =
 
 
 let navmenu =
-    mudNavMenu.create [
-        mudNavLink() {
-            href "./quick-start"
-            childContent "Quick start"
+    MudNavMenu'.create [
+        MudNavLink'() {
+            Href "./quick-start"
+            ChildContent "Quick start"
         }
-        mudNavLink() {
-            href "./router"
-            childContent "Router"
+        MudNavLink'() {
+            Href "./router"
+            ChildContent "Router"
         }
-        mudNavLink() {
-            href "./elmish"
-            childContent "Elmish"
+        MudNavLink'() {
+            Href "./elmish"
+            ChildContent "Elmish"
         }
-        mudNavLink() {
-            href "./helper-functions"
-            childContent "Helper functions"
+        MudNavLink'() {
+            Href "./helper-functions"
+            ChildContent "Helper functions"
         }
-        mudNavLink() {
-            href "./cli-usage"
-            childContent "Cli usage"
+        MudNavLink'() {
+            Href "./cli-usage"
+            ChildContent "Cli usage"
         }
-        mudNavLink() {
-            href "./tests"
-            childContent "Tests"
+        MudNavLink'() {
+            Href "./tests"
+            ChildContent "Tests"
         }
-        mudNavGroup() {
-            title "Demos"
-            icon Icons.Material.Filled.School
-            expanded true
-            childContent [
-                mudNavLink() {
-                    href "./mudblazor"
-                    childContent "MudBlazor"
+        MudNavGroup'() {
+            Title "Demos"
+            Icon Icons.Material.Filled.School
+            Expanded true
+            ChildContent [
+                MudNavLink'() {
+                    Href "./mudblazor"
+                    ChildContent "MudBlazor"
                 }
-                mudNavLink() {
-                    href "./antdesign"
-                    childContent "Antdesign"
+                MudNavLink'() {
+                    Href "./antdesign"
+                    ChildContent "Antdesign"
                 }
-                mudNavLink() {
-                    href "./fluentui"
-                    childContent "FluentUI"
+                MudNavLink'() {
+                    Href "./fluentui"
+                    ChildContent "FluentUI"
                 }
             ]
         }
@@ -113,58 +113,53 @@ let app = html.inject (fun (hook: IComponentHook, shareStore: IShareStore) ->
 
     html.div [
         html.watch (isDarkMode, fun isDark ->
-            mudThemeProvider() {
-                theme (if isDark then darkTheme else defaultTheme)
+            MudThemeProvider'() {
+                Theme (if isDark then darkTheme else defaultTheme)
             })
 
-        mudDialogProvider.create()
-        mudSnackbarProvider.create()
+        MudDialogProvider'.create()
+        MudSnackbarProvider'.create()
      
-        mudLayout() {
-            rightToLeft false
-            childContent [
-                mudAppBar() {
-                    color Color.Primary
-                    elevation 25
-                    dense true
-                    childContent [
-                        mudIconButton() {
-                            icon Icons.Material.Filled.Menu
-                            color Color.Inherit
-                            edge Edge.Start
-                            onClick (fun _ -> openMenu.Publish not)
+        MudLayout'() {
+            RightToLeft false
+            ChildContent [
+                MudAppBar'() {
+                    Color Color.Primary
+                    Elevation 25
+                    Dense true
+                    ChildContent [
+                        MudIconButton'() {
+                            Icon Icons.Material.Filled.Menu
+                            Color Color.Inherit
+                            Edge Edge.Start
+                            OnClick (fun _ -> openMenu.Publish not)
                         }
-                        mudText() {
-                            typo Typo.h6
-                            color Color.Default
-                            childContent "Fun Blazor"
+                        MudText'() {
+                            Typo Typo.h6
+                            Color Color.Default
+                            ChildContent "Fun Blazor"
                         }
-                        mudSpacer.create()
-                        mudTooltip() {
-                            text "Github repository"
-                            childContent [
-                                mudIconButton() {
-                                    icon Icons.Custom.Brands.GitHub
-                                    color Color.Inherit
-                                    link "https://github.com/slaveOftime/Fun.Blazor"
-                                }
-                            ]
+                        MudSpacer'.create()
+                        MudIconButton'() {
+                            Icon Icons.Custom.Brands.GitHub
+                            Color Color.Inherit
+                            Link "https://github.com/slaveOftime/Fun.Blazor"
                         }
                     ]
                 }
                 html.watch (openMenu, fun isOpen ->
-                    mudDrawer() {
-                        open' isOpen
-                        elevation 25
-                        variant DrawerVariant.Persistent
-                        childContent [
-                            mudDrawerHeader() {
-                                linkToIndex true
-                                childContent [
-                                    mudText() {
-                                        color Color.Primary
-                                        typo Typo.h5
-                                        childContent "Have fun ✌"
+                    MudDrawer'() {
+                        Open isOpen
+                        Elevation 25
+                        Variant DrawerVariant.Persistent
+                        ChildContent [
+                            MudDrawerHeader'() {
+                                LinkToIndex true
+                                ChildContent [
+                                    MudText'() {
+                                        Color Color.Primary
+                                        Typo Typo.h5
+                                        ChildContent "Have fun ✌"
                                     }
                                 ]
                             }
@@ -172,12 +167,12 @@ let app = html.inject (fun (hook: IComponentHook, shareStore: IShareStore) ->
                         ]
                     }
                 )
-                mudMainContent() {
-                    styles [
+                MudMainContent'() {
+                    Styles [
                         style.paddingTop 100
                         style.paddingBottom 64
                     ]
-                    childContent [
+                    ChildContent [
                         html.route [
                             // For host on slaveoftime.fun server mode
                             yield! routes
@@ -185,12 +180,12 @@ let app = html.inject (fun (hook: IComponentHook, shareStore: IShareStore) ->
                             subRouteCi "/Fun.Blazor" routes
                             routeAny QuickStart.QuickStart.quickStart
                         ]
-                        mudScrollToTop() {
-                            topOffset 400
-                            childContent [
-                                mudFab() {
-                                    icon Icons.Material.Filled.KeyboardArrowUp
-                                    color Color.Primary
+                        MudScrollToTop'() {
+                            TopOffset 400
+                            ChildContent [
+                                MudFab'() {
+                                    Icon Icons.Material.Filled.KeyboardArrowUp
+                                    Color Color.Primary
                                 }
                             ]
                         }

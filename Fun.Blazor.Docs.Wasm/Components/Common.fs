@@ -31,35 +31,35 @@ let simplePage (url: string) (titleStr: string) (subTitle: string) (description:
             style.marginTop 20
             style.marginBottom 20
         ]
-        mudContainer() {
-            maxWidth MaxWidth.Large
-            childContent [
-                mudContainer() {
-                    maxWidth MaxWidth.Medium
-                    childContent [
-                        mudLink() {
-                            href url
-                            color Color.Primary
-                            underline Underline.Always
-                            childContent [
-                                mudText() {
-                                    typo Typo.h4
-                                    align Align.Center
-                                    color Color.Primary
-                                    childContent titleStr
+        MudContainer'() {
+            MaxWidth MaxWidth.Large
+            ChildContent [
+                MudContainer'() {
+                    MaxWidth MaxWidth.Medium
+                    ChildContent [
+                        MudLink'() {
+                            Href url
+                            Color Color.Primary
+                            Underline Underline.Always
+                            ChildContent [
+                                MudText'() {
+                                    Typo Typo.h4
+                                    Align Align.Center
+                                    Color Color.Primary
+                                    ChildContent titleStr
                                 }
-                                mudText() {
-                                    typo Typo.h5
-                                    align Align.Center
-                                    childContent subTitle
+                                MudText'() {
+                                    Typo Typo.h5
+                                    Align Align.Center
+                                    ChildContent subTitle
                                 }
                             ]
                         }
                         spaceV3
-                        mudText() {
-                            typo Typo.body1
-                            align Align.Center
-                            childContent description
+                        MudText'() {
+                            Typo Typo.body1
+                            Align Align.Center
+                            ChildContent description
                         }
                     ]
                 }

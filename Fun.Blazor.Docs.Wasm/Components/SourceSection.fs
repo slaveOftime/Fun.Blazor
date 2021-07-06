@@ -65,9 +65,9 @@ let sourceSection fileName = html.inject (fun (env: IHostingEnvironment, config:
 
     html.watch (code, function
         | DeferredState.Loading ->
-            mudProgressLinear() {
-                color Color.Primary
-                indeterminate true
+            MudProgressLinear'() {
+                Color Color.Primary
+                Indeterminate true
             }
         | DeferredState.Loaded codes ->
             html.div [
@@ -79,9 +79,9 @@ let sourceSection fileName = html.inject (fun (env: IHostingEnvironment, config:
                 html.script "https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/plugins/autoloader/prism-autoloader.min.js"
             ]
         | DeferredState.LoadFailed e ->
-            mudAlert() {
-                childContent e
-                severity Severity.Error
+            MudAlert'() {
+                ChildContent e
+                Severity Severity.Error
             }
         | _ ->
             html.none

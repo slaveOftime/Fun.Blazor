@@ -31,11 +31,10 @@ open Fun.Blazor
 open MudBlazor
 
 let alertDemo =
-    mudCard [
-        mudAlert() {
-            icon Icons.Filled.AccessAlarm
-            childContentStr "This is the way"
-            CAST // Sometimes you need this to help F# to infer types
+    MudCard' [
+        MudAlert'() {
+            Icon Icons.Filled.AccessAlarm
+            ChildContent "This is the way"
         }
     ]
 ```

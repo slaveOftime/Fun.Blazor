@@ -42,10 +42,10 @@ Steps:
     open MudBlazor
 
     let alertDemo =
-        mudCard [
-            mudAlert() {
-                icon Icons.Filled.AccessAlarm
-                childContent "This is the way"
+        MudCard' [
+            MudAlert'() {
+                Icon Icons.Filled.AccessAlarm
+                ChildContent "This is the way"
             }
         ]
     ```
