@@ -18,11 +18,11 @@ type FunBlazorContextWithAttrs<'Component when 'Component :> Microsoft.AspNetCor
     [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'Component>, v: float) = Fragment [ html.text v ] :> IFunBlazorNode |> this.AddProp
     [<CustomOperation("childContentRaw")>] member this.childContentRaw (_: FunBlazorContext<'Component>, v: string) = Fragment [ html.raw v ] :> IFunBlazorNode |> this.AddProp
     
-    [<CustomOperation("classes")>] member this.classes (_: FunBlazorContext<'Component>, v: string seq) = "classes" => (v |> String.concat " ") |> BoleroAttr |> this.AddProp
+    [<CustomOperation("classes")>] member this.classes (_: FunBlazorContext<'Component>, v: string seq) = attr.classes v |> this.AddProp
     
     [<CustomOperation("styles")>] member this.styles (_: FunBlazorContext<'Component>, v: (string * string) list) = attr.styles v |> this.AddProp
     
-    [<CustomOperation("class'")>] member this.class' (_: FunBlazorContext<'Component>, v: string) = "classes" => v |> BoleroAttr |> this.AddProp
+    [<CustomOperation("class'")>] member this.class' (_: FunBlazorContext<'Component>, v: string) = attr.className v |> this.AddProp
     [<CustomOperation("bindRef")>] member this.bindRef (_: FunBlazorContext<'Component>, v: obj) = "bindRef" => v |> BoleroAttr |> this.AddProp
     [<CustomOperation("key")>] member this.key (_: FunBlazorContext<'Component>, v: obj) = "key" => v |> BoleroAttr |> this.AddProp
     [<CustomOperation("accept")>] member this.accept (_: FunBlazorContext<'Component>, v: obj) = "accept" => v |> BoleroAttr |> this.AddProp
@@ -357,7 +357,7 @@ open Fun.Blazor
 
 
 [<AutoOpen>]
-module EltDslCE =
+module elt =
     
     type ABuilder () =
         inherit FunBlazorNodeBuilder()
@@ -1656,7 +1656,7 @@ module EltDslCE =
 
 
 [<AutoOpen>]
-module DslCE =
+module dsl =
     type WatchBuilder<'T>() =
         inherit FunBlazorContext<StoreComponent<'T>>()
         
