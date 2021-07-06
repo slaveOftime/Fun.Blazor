@@ -2,8 +2,8 @@ namespace rec AntDesign.Charts.DslInternals
 
 open Bolero.Html
 open Fun.Blazor
-open Microsoft.AspNetCore.Components.DslCE.DslInternals
-open Microsoft.AspNetCore.Components.Web.DslCE.DslInternals
+open Microsoft.AspNetCore.Components.DslInternals
+open Microsoft.AspNetCore.Components.Web.DslInternals
 open AntDesign.Charts.DslInternals
 
 

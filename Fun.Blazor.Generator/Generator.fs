@@ -163,8 +163,6 @@ let generateCode (targetNamespace: string) (opens: string) (tys: Type seq) =
             else
                 None)
 
-    let internalSegment = "DslInternals"
-
     let internalCode =
         metaInfos.metas
         |> Seq.map (fun (ns, metas) ->

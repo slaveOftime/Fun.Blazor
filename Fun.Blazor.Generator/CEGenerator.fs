@@ -192,8 +192,6 @@ let generateCode (targetNamespace: string) (opens: string) (tys: Type seq) =
             else
                 None)
     
-    let internalSegment = "DslInternals"
-
     let builderNames = Dictionary<string, Dictionary<string, int>>()
 
     let makeBuilderName (ty: Type) =

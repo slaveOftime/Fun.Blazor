@@ -28,19 +28,12 @@ let private createCodeFile (projectFile: string) codesDirName (name, style, dll)
     AnsiConsole.MarkupLine $"Generating code for [purple]{name}[/]: [green]{dll}[/]"
     
     try
-        let dslOpens =
+        let opens =
             $"""open Bolero.Html
 open Fun.Blazor
-open Microsoft.AspNetCore.Components.Dsl.DslInternals
-open Microsoft.AspNetCore.Components.Web.Dsl.DslInternals
-open {name}.DslInternals"""
-        
-        let dslCEOpens =
-            $"""open Bolero.Html
-open Fun.Blazor
-open Microsoft.AspNetCore.Components.DslCE.DslInternals
-open Microsoft.AspNetCore.Components.Web.DslCE.DslInternals
-open {name}.DslInternals"""
+open Microsoft.AspNetCore.Components.{Utils.internalSegment}
+open Microsoft.AspNetCore.Components.Web.{Utils.internalSegment}
+open {name}.{Utils.internalSegment}"""
 
         let types = Assembly.LoadFile(dll).GetTypes()
         let codesDir = Path.GetDirectoryName projectFile </> codesDirName
@@ -51,8 +44,8 @@ open {name}.DslInternals"""
 
         let codes =
             match style with
-            | Style.Feliz -> Generator.generateCode name dslOpens types
-            | Style.CE -> CEGenerator.generateCode name dslCEOpens types
+            | Style.Feliz -> Generator.generateCode name opens types
+            | Style.CE -> CEGenerator.generateCode name opens types
             | x -> failwith $"Not supportted style: {x}"
 
         let code = 
