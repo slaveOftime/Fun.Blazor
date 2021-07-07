@@ -8,7 +8,7 @@ let appBarDemo = html.inject (fun () ->
     MudAppBar'() {
         Fixed false
         Color Color.Primary
-        ChildContent [
+        childContent [
             MudIconButton'() {
                 Icon Icons.Filled.Menu
                 Color Color.Inherit

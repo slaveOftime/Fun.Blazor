@@ -26,14 +26,14 @@ let componentHookDemo = html.inject (fun (hook: IComponentHook) ->
     
     MudPaper'() {
         Styles [ style.padding 20 ]
-        ChildContent [
+        childContent [
             html.watch (toggle, fun isToggled -> [
                 MudText'() {
-                    ChildContent "We can use this hook to subscribe lifecycle event of the component which created by html.inject at the beginening. We can use create observable store to have a state management for the current component. After the component all the resource will be disposed."
+                    childContent "We can use this hook to subscribe lifecycle event of the component which created by html.inject at the beginening. We can use create observable store to have a state management for the current component. After the component all the resource will be disposed."
                     Typo Typo.subtitle1
                 }
                 MudText'() {
-                    ChildContent $"After every {threshhold} seconds the toggle will be switched"
+                    childContent $"After every {threshhold} seconds the toggle will be switched"
                     Typo Typo.subtitle1
                     Color Color.Info
                 }
@@ -43,13 +43,13 @@ let componentHookDemo = html.inject (fun (hook: IComponentHook) ->
                 }
                 if isToggled then
                     MudText'() {
-                        ChildContent "Toggled successfuly"
+                        childContent "Toggled successfuly"
                         Typo Typo.subtitle2
                         Color Color.Primary
                     }
                 else
                     MudText'() {
-                        ChildContent "Toggled off now"
+                        childContent "Toggled off now"
                         Color Color.Secondary
                     }
                 html.watch (count, fun c -> html.text $"Interval Count: {c}")

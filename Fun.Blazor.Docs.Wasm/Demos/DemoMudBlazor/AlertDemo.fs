@@ -16,10 +16,11 @@ let alertDemo = html.inject (fun (hook: IComponentHook) ->
 
     MudCard'() {
         ref cardRef
-        ChildContent [
+        childContent [
             MudNumericField'<int64>() {
                 Label "Good number"
                 Value 123L
+                Format ""
             }
             html.watch (str, fun s -> [
                 MudTextField'<string>() {
@@ -29,7 +30,7 @@ let alertDemo = html.inject (fun (hook: IComponentHook) ->
                 }
                 MudAlert'() {
                     Icon Icons.Filled.AccessAlarm
-                    ChildContent s
+                    childContent s
                 }
             ])
         ]

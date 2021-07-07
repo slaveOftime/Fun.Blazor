@@ -102,6 +102,8 @@ let createConstraint (tys: Type list) =
         else $" when {x}"
 
 
+let appendConstraint (constraint': string) (x: string) = if x.Contains "when " then x + $" and {constraint'}" else $" when {constraint'}"
+
 let appendStr (x: string) (y: string) = y + x
 
 let appendStrIfNotEmpty (x: string) (y: string) =

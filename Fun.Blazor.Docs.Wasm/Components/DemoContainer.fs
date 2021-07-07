@@ -18,12 +18,12 @@ let demoContainer (titleStr: string) fileName contentStr =
         attr.styles [ style.margin 10 ]
         MudText'() {
             Typo Typo.h6
-            ChildContent titleStr
+            childContent titleStr
         }
         spaceV2
         MudPaper'() {
             Elevation 40
-            ChildContent [ contentStr ]
+            childContent [ contentStr ]
         }
         spaceV2
         sourceSection fileName

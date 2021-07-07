@@ -72,13 +72,12 @@ type [<Struct>] GenericFunBlazorNode<'T> =
 type FunBlazorContext<'Component when 'Component :> Microsoft.AspNetCore.Components.IComponent> () =
     let props = Collections.Generic.List<IFunBlazorNode>()
 
-    member this.AddProp x =
-        printfn $"{x}"
-        props.Add x; this
+    member this.AddProp x = props.Add x; this
     member this.Props() = props
 
     // Executes a computation expression
     member this.Run _ = this :> IFunBlazorNode
+    member this.Yield _ = this
 
     member this.Zero _ = Html.empty |> BoleroNode :> IFunBlazorNode
     

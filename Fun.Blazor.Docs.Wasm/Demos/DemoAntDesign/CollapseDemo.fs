@@ -12,12 +12,12 @@ let collapseDemo =
                 Type "caret-right"
                 Rotate (if expanded then 90 else 0)
             })
-        ChildContent [
+        childContent [
             for i in [1..3] do
                 Panel'() {
                     Header $"Panel {i}"
                     Key (string i)
-                    ChildContent $"Panel {i} content"
+                    childContent $"Panel {i} content"
                 }
         ]
     }

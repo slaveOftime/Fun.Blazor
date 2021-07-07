@@ -41,14 +41,12 @@ let private getMetaInfo (ty: Type) =
     let originalTypeWithGenerics = $"{ty.Namespace}.{getTypeShortName ty}{originalGenerics}"
     let customOperation name = $"[<CustomOperation(\"{name}\")>]"
     let memberStart = "member this."
-    let contextArg = $"_: FunBlazorContext<{originalTypeWithGenerics}>"
-
+    let contextArg = $"_: FunBlazorContext<{funBlazorGeneric}>"
     let allProps = ty.GetProperties()
 
     let props = 
         allProps
-        //|> Seq.filter (fun p -> p.DeclaringType = ty)
-        //|> Seq.distinctBy (fun x -> x.Name)
+        |> Seq.filter (fun p -> p.DeclaringType = ty)
         |> Seq.choose (fun prop ->
             if prop.CustomAttributes
                 |> Seq.exists (fun x -> x.AttributeType = typeof<ParameterAttribute>)
@@ -70,6 +68,7 @@ let private getMetaInfo (ty: Type) =
                         Some [ $"    {customOperation name} {memberStart}{name} ({contextArg}, x: {getTypeName prop.PropertyType}) = \"{prop.Name}\" => x |> {nameof BoleroAttr}" ]
 
                 elif prop.PropertyType = typeof<RenderFragment> then
+                    let name = if name = "ChildContent" then lowerFirstCase name else name
                     Some [
                         $"    {customOperation name} {memberStart}{name} ({contextArg}, nodes) = Bolero.Html.attr.fragment \"{prop.Name}\" (nodes |> html.fragment |> html.toBolero) |> {nameof BoleroAttr}"
                         $"    {customOperation name} {memberStart}{name} ({contextArg}, x: string) = Bolero.Html.attr.fragment \"{prop.Name}\" (html.text x |> html.toBolero) |> {nameof BoleroAttr}"
@@ -89,8 +88,7 @@ let private getMetaInfo (ty: Type) =
         |> Seq.map (fun x -> $"{x} |> this.AddProp")
         
 
-
-    let hasChildren = props |> Seq.exists (fun x -> x.Contains $"{memberStart}ChildContent")
+    let hasChildren = props |> Seq.exists (fun x -> x.Contains $"{memberStart}childContent")
 
     let addBasicDomAttrs = 
         props
@@ -102,14 +100,14 @@ let private getMetaInfo (ty: Type) =
         if addBasicDomAttrs then 
             props 
             |> Seq.filter (fun x -> 
-                //x.Contains $"{memberStart}ChildContent" |> not &&
+                x.Contains $"{memberStart}childContent" |> not &&
                 x.Contains $"{memberStart}AdditionalAttributes" |> not &&
                 x.Contains $"{memberStart}UserAttributes" |> not)
         else 
             props
         |> String.concat "\n" 
 
-    {| ty = ty; generics = generics; inheritInfo = inheritInfo; props = props; hasChildren = hasChildren; addBasicDomAttrs = addBasicDomAttrs; contextArg = contextArg |}
+    {| ty = ty; generics = generics; inheritInfo = inheritInfo; props = props; hasChildren = hasChildren; addBasicDomAttrs = addBasicDomAttrs |}
 
 
 
@@ -195,13 +193,12 @@ let generateCode (targetNamespace: string) (opens: string) (tys: Type seq) =
     let builderNames = Dictionary<string, Dictionary<string, int>>()
 
     let makeBuilderName (ty: Type) =
-        let meta = getMetaInfo ty
         let info = ty.GetTypeInfo()
 
         let shortName = getTypeShortName ty
         let uniqueName = $"{shortName}-{info.GenericTypeArguments.Length + info.GenericTypeParameters.Length}"
         let builderName = $"{shortName}Builder"
-        let key = $"{meta.ty.Namespace}-{shortName}"
+        let key = $"{ty.Namespace}-{shortName}"
 
         if builderNames.ContainsKey key then
             if builderNames.[key].ContainsKey uniqueName then ()
@@ -224,35 +221,37 @@ let generateCode (targetNamespace: string) (opens: string) (tys: Type seq) =
                     let originalGenerics = meta.generics |> getTypeNames |> createGenerics |> closeGenerics
                     let originalTypeWithGenerics = $"{meta.ty.Namespace}.{getTypeShortName meta.ty}{originalGenerics}"
                     let builderName = makeBuilderName meta.ty
+                    let funBlazorGenericConstraint = $"{funBlazorGeneric} :> Microsoft.AspNetCore.Components.IComponent"
+                    let builderGenerics = funBlazorGeneric::(getTypeNames meta.generics) |> createGenerics |> closeGenerics
+                    let builderGenericsWithContraints = funBlazorGeneric::(getTypeNames meta.generics) |> createGenerics |> appendStr (createConstraint meta.generics |> appendConstraint funBlazorGenericConstraint) |> closeGenerics
 
                     let inheirit' = 
-                        $"inherit {if meta.addBasicDomAttrs then nameof FunBlazorContextWithAttrs else nameof FunBlazorContext}<{funBlazorGeneric}>()"
-                        //match meta.inheritInfo with
-                        //| None -> $"inherit {if meta.addBasicDomAttrs then nameof FunBlazorContextWithAttrs else nameof FunBlazorContext}<{funBlazorGeneric}>()"
-                        //| Some (baseTy, _) -> $"inherit {baseTy.Namespace |> trimNamespace |> appendStrIfNotEmpty (string '.')}{makeBuilderName meta.ty.BaseType}<{funBlazorGeneric}>()"
+                        //$"inherit {if meta.addBasicDomAttrs then nameof FunBlazorContextWithAttrs else nameof FunBlazorContext}<{funBlazorGeneric}>()"
+                        match meta.inheritInfo with
+                        | None -> 
+                            $"inherit {if meta.addBasicDomAttrs then nameof FunBlazorContextWithAttrs else nameof FunBlazorContext}<{funBlazorGeneric}>()"
+                        | Some (baseTy, generics) ->
+                            $"inherit {baseTy.Namespace |> trimNamespace |> appendStrIfNotEmpty (string '.')}{makeBuilderName meta.ty.BaseType}{funBlazorGeneric::(getTypeNames generics) |> createGenerics |> closeGenerics}()"
 
                     let news =
                         if meta.hasChildren then
                             let makeChild x = $"Bolero.Html.attr.fragment \"ChildContent\" ({x} |> html.toBolero) |> BoleroAttr |> this.AddProp"
                             let makeChildWithText = makeChild "x |> html.text"
                             let makeChildWithNodes = makeChild "x |> html.fragment"
-                            $"    new (x: string) as this = {meta.ty |> getTypeShortName}Builder<{funBlazorGeneric}>() then {makeChildWithText} |> ignore"
+                            $"    new (x: string) as this = {meta.ty |> getTypeShortName}Builder{builderGenerics}() then {makeChildWithText} |> ignore"
                             + "\n"+
-                            $"    new (x: {nameof IFunBlazorNode} list) as this = {meta.ty |> getTypeShortName}Builder<{funBlazorGeneric}>() then {makeChildWithNodes} |> ignore"
+                            $"    new (x: {nameof IFunBlazorNode} list) as this = {meta.ty |> getTypeShortName}Builder{builderGenerics}() then {makeChildWithNodes} |> ignore"
                             + "\n"+
-                            $"    static member create (x: string) = {builderName}<{funBlazorGeneric}>(x) :> {nameof IFunBlazorNode}"
+                            $"    static member create (x: string) = {builderName}{builderGenerics}(x) :> {nameof IFunBlazorNode}"
                             + "\n"+
-                            $"    static member create (x: {nameof IFunBlazorNode} list) = {builderName}<{funBlazorGeneric}>(x) :> {nameof IFunBlazorNode}"
+                            $"    static member create (x: {nameof IFunBlazorNode} list) = {builderName}{builderGenerics}(x) :> {nameof IFunBlazorNode}"
                         else
-                            $"    static member create () = {builderName}<{funBlazorGeneric}>() :> {nameof IFunBlazorNode}"
+                            $"    static member create () = {builderName}{builderGenerics}() :> {nameof IFunBlazorNode}"
 
                     $"""
-type {builderName}<{funBlazorGeneric} when {funBlazorGeneric} :> Microsoft.AspNetCore.Components.IComponent> () =
+type {builderName}{builderGenericsWithContraints}() =
     {inheirit'}
 {news}
-    
-    member this.Yield _ = {builderName}<{funBlazorGeneric}>()
-
 {meta.props}
                 """)
                 |> String.concat "\n"
@@ -276,8 +275,10 @@ type {builderName}<{funBlazorGeneric} when {funBlazorGeneric} :> Microsoft.AspNe
                     let originalGenerics = meta.generics |> getTypeNames |> createGenerics |> closeGenerics
                     let originalTypeWithGenerics = $"{meta.ty.Namespace}.{getTypeShortName meta.ty}{originalGenerics}"
                     let builderName = makeBuilderName meta.ty
+                    let builderGenerics = originalTypeWithGenerics::(getTypeNames meta.generics) |> createGenerics |> closeGenerics
+                    
 
-                    $"""    type {meta.ty |> getTypeShortName}'{meta.generics |> getTypeNames |> createGenerics |> appendStr (createConstraint meta.generics) |> closeGenerics} = {builderName}<{originalTypeWithGenerics}>""")
+                    $"""    type {meta.ty |> getTypeShortName}'{meta.generics |> getTypeNames |> createGenerics |> appendStr (createConstraint meta.generics) |> closeGenerics} = {builderName}{builderGenerics}""")
                 |> String.concat "\n"
 
             $"""namespace {targetNamespace}{ns |> trimNamespace |> addStrIfNotEmpty "."}

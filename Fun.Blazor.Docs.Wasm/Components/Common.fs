@@ -33,25 +33,25 @@ let simplePage (url: string) (titleStr: string) (subTitle: string) (description:
         ]
         MudContainer'() {
             MaxWidth MaxWidth.Large
-            ChildContent [
+            childContent [
                 MudContainer'() {
                     MaxWidth MaxWidth.Medium
-                    ChildContent [
+                    childContent [
                         MudLink'() {
                             Href url
                             Color Color.Primary
                             Underline Underline.Always
-                            ChildContent [
+                            childContent [
                                 MudText'() {
                                     Typo Typo.h4
                                     Align Align.Center
                                     Color Color.Primary
-                                    ChildContent titleStr
+                                    childContent titleStr
                                 }
                                 MudText'() {
                                     Typo Typo.h5
                                     Align Align.Center
-                                    ChildContent subTitle
+                                    childContent subTitle
                                 }
                             ]
                         }
@@ -59,7 +59,7 @@ let simplePage (url: string) (titleStr: string) (subTitle: string) (description:
                         MudText'() {
                             Typo Typo.body1
                             Align Align.Center
-                            ChildContent description
+                            childContent description
                         }
                     ]
                 }

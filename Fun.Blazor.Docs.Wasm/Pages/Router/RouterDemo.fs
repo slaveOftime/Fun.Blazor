@@ -8,12 +8,12 @@ let routerDemo =
     html.div [
         MudText'() {
             Typo Typo.subtitle1
-            ChildContent "The reason we have something like [ \"router\" ] and [ _; \"router\" ] is because we host WASM on github and it has a sub folder url. We also host this on a blazor server side mode on another machine which all the content is under the root of domain."
+            childContent "The reason we have something like [ \"router\" ] and [ _; \"router\" ] is because we host WASM on github and it has a sub folder url. We also host this on a blazor server side mode on another machine which all the content is under the root of domain."
         }
         MudText'() {
             Typo Typo.subtitle2
             Color Color.Secondary
-            ChildContent [
+            childContent [
                 html.route (function
                     | [ "router" ]
                     | [ _; "router" ] -> html.text "Router"
@@ -27,6 +27,6 @@ let routerDemo =
         }
         MudLink'() {
             Href "./router?name=albert&age=123"
-            ChildContent "Try to navigate"
+            childContent "Try to navigate"
         }
     ]

@@ -9,10 +9,10 @@ let globalStoreDemo = html.inject (fun (store: IGlobalStore) ->
     
     MudPaper'() {
         Styles [ style.padding 20 ]
-        ChildContent [
+        childContent [
             html.watch (toggle, fun isToggled -> [
                 MudText'() {
-                    ChildContent "Open two browsers for this page and try to click the toggle button"
+                    childContent "Open two browsers for this page and try to click the toggle button"
                     Typo Typo.subtitle1
                 }
                 MudSwitch'<bool>() {
@@ -21,13 +21,13 @@ let globalStoreDemo = html.inject (fun (store: IGlobalStore) ->
                 }
                 if isToggled then
                     MudText'() {
-                        ChildContent "Toggled successfuly"
+                        childContent "Toggled successfuly"
                         Typo Typo.subtitle2
                         Color Color.Primary
                     }
                 else
                     MudText'() {
-                        ChildContent "Toggled off now"
+                        childContent "Toggled off now"
                         Color Color.Secondary
                     }
             ])

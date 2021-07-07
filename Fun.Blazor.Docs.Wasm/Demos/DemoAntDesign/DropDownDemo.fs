@@ -10,14 +10,14 @@ let dropDownDemo =
             Menu'.create [
                 MenuItemGroup'() {
                     Title "Group title"
-                    ChildContent [
+                    childContent [
                         MenuItem'.create "1st menu item"
                         MenuItem'.create "2st menu item"
                     ]
                 }
                 SubMenu'() {
                     Title "Sub menu"
-                    ChildContent [
+                    childContent [
                         MenuItem'.create "3st menu item"
                         MenuItem'.create "4st menu item"
                     ]
@@ -25,14 +25,14 @@ let dropDownDemo =
                 SubMenu'() {
                     Title "Disabled sub menu"
                     Disabled true
-                    ChildContent [
+                    childContent [
                         MenuItem'.create "5st menu item"
                         MenuItem'.create "6st menu item"
                     ]
                 }
             ]
         ]
-        ChildContent [
+        childContent [
             html.a [
                 html.div "Cascading menu"
                 Icon'() {

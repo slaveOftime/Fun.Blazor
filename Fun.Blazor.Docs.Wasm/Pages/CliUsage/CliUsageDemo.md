@@ -45,7 +45,7 @@ Steps:
         MudCard' [
             MudAlert'() {
                 Icon Icons.Filled.AccessAlarm
-                ChildContent "This is the way"
+                childContent "This is the way"
             }
         ]
     ```

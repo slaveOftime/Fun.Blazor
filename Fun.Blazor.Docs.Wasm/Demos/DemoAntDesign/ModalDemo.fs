@@ -10,7 +10,7 @@ let modalDemo = html.inject (fun (hook: IComponentHook) ->
 
     html.div [
         Button'() {
-            ChildContent "Try to click 😊"
+            childContent "Try to click 😊"
             OnClick (fun _ -> isDialogOpen.Publish not)
         }
         watch {
@@ -21,11 +21,11 @@ let modalDemo = html.inject (fun (hook: IComponentHook) ->
                     Visible isOpen
                     OnOk (fun _ -> isDialogOpen.Publish not)
                     OnCancel (fun _ -> isDialogOpen.Publish not)
-                    ChildContent [
+                    childContent [
                         Result'() {
                             Status "success"
                             Title "Successfully Purchased Cloud Server ECS"
-                            ChildContent [
+                            childContent [
                                 Alert'() {
                                     Type AlertType.Success
                                     Message "Success"

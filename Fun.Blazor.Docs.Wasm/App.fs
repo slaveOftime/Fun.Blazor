@@ -52,44 +52,44 @@ let navmenu =
     MudNavMenu'.create [
         MudNavLink'() {
             Href "./quick-start"
-            ChildContent "Quick start"
+            childContent "Quick start"
         }
         MudNavLink'() {
             Href "./router"
-            ChildContent "Router"
+            childContent "Router"
         }
         MudNavLink'() {
             Href "./elmish"
-            ChildContent "Elmish"
+            childContent "Elmish"
         }
         MudNavLink'() {
             Href "./helper-functions"
-            ChildContent "Helper functions"
+            childContent "Helper functions"
         }
         MudNavLink'() {
             Href "./cli-usage"
-            ChildContent "Cli usage"
+            childContent "Cli usage"
         }
         MudNavLink'() {
             Href "./tests"
-            ChildContent "Tests"
+            childContent "Tests"
         }
         MudNavGroup'() {
             Title "Demos"
             Icon Icons.Material.Filled.School
             Expanded true
-            ChildContent [
+            childContent [
                 MudNavLink'() {
                     Href "./mudblazor"
-                    ChildContent "MudBlazor"
+                    childContent "MudBlazor"
                 }
                 MudNavLink'() {
                     Href "./antdesign"
-                    ChildContent "Antdesign"
+                    childContent "Antdesign"
                 }
                 MudNavLink'() {
                     Href "./fluentui"
-                    ChildContent "FluentUI"
+                    childContent "FluentUI"
                 }
             ]
         }
@@ -122,12 +122,12 @@ let app = html.inject (fun (hook: IComponentHook, shareStore: IShareStore) ->
      
         MudLayout'() {
             RightToLeft false
-            ChildContent [
+            childContent [
                 MudAppBar'() {
                     Color Color.Primary
                     Elevation 25
                     Dense true
-                    ChildContent [
+                    childContent [
                         MudIconButton'() {
                             Icon Icons.Material.Filled.Menu
                             Color Color.Inherit
@@ -137,7 +137,7 @@ let app = html.inject (fun (hook: IComponentHook, shareStore: IShareStore) ->
                         MudText'() {
                             Typo Typo.h6
                             Color Color.Default
-                            ChildContent "Fun Blazor"
+                            childContent "Fun Blazor"
                         }
                         MudSpacer'.create()
                         MudIconButton'() {
@@ -152,14 +152,14 @@ let app = html.inject (fun (hook: IComponentHook, shareStore: IShareStore) ->
                         Open isOpen
                         Elevation 25
                         Variant DrawerVariant.Persistent
-                        ChildContent [
+                        childContent [
                             MudDrawerHeader'() {
                                 LinkToIndex true
-                                ChildContent [
+                                childContent [
                                     MudText'() {
                                         Color Color.Primary
                                         Typo Typo.h5
-                                        ChildContent "Have fun ✌"
+                                        childContent "Have fun ✌"
                                     }
                                 ]
                             }
@@ -172,7 +172,7 @@ let app = html.inject (fun (hook: IComponentHook, shareStore: IShareStore) ->
                         style.paddingTop 100
                         style.paddingBottom 64
                     ]
-                    ChildContent [
+                    childContent [
                         html.route [
                             // For host on slaveoftime.fun server mode
                             yield! routes
@@ -182,7 +182,7 @@ let app = html.inject (fun (hook: IComponentHook, shareStore: IShareStore) ->
                         ]
                         MudScrollToTop'() {
                             TopOffset 400
-                            ChildContent [
+                            childContent [
                                 MudFab'() {
                                     Icon Icons.Material.Filled.KeyboardArrowUp
                                     Color Color.Primary

@@ -80,7 +80,7 @@ let sourceSection fileName = html.inject (fun (env: IHostingEnvironment, config:
             ]
         | DeferredState.LoadFailed e ->
             MudAlert'() {
-                ChildContent e
+                childContent e
                 Severity Severity.Error
             }
         | _ ->
