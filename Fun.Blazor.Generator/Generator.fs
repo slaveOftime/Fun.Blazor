@@ -11,7 +11,8 @@ open Utils
 
 let private getMetaInfo (ty: Type) =
     let props = 
-        ty.GetProperties()
+        ty.GetProperties()        
+        |> Seq.filter (fun p -> p.DeclaringType = ty)
         |> Seq.choose (fun prop ->
             if prop.CustomAttributes
                 |> Seq.exists (fun x -> x.AttributeType = typeof<ParameterAttribute>)
@@ -191,6 +192,8 @@ let generateCode (targetNamespace: string) (opens: string) (tys: Type seq) =
                             $"    static member inline create (nodes: {nameof IFunBlazorNode} list) = nodes |> html.blazor<{originalTypeWithGenerics}>"
                             + "\n"+
                             $"    static member inline create (node: {nameof IFunBlazorNode}) = [ node ] |> html.blazor<{originalTypeWithGenerics}>"
+                            + "\n"+
+                            $"    static member inline create (x: string) = [ html.text x ] |> html.blazor<{originalTypeWithGenerics}>"
                         else
                             ""
 

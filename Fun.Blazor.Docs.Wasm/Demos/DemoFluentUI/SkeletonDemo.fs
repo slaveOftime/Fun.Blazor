@@ -32,4 +32,9 @@ let skeletonDemo =
                 style.width 200
             ])
         ]
+        fluentCheckbox.create [
+            fluentCheckbox.value true
+            fluentCheckbox.displayName "Check me"
+            fluentCheckbox.required true
+        ]
     ]

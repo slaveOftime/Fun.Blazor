@@ -5,39 +5,39 @@ open Fun.Blazor
 open AntDesign
 
 let dropDownDemo =
-    Dropdown'() {
-        Overlay [
-            Menu'.create [
-                MenuItemGroup'() {
-                    Title "Group title"
-                    childContent [
-                        MenuItem'.create "1st menu item"
-                        MenuItem'.create "2st menu item"
+    dropdown.create [
+        dropdown.overlay [
+            menu.create [
+                menuItemGroup.create [
+                    menuItemGroup.title "Group title"
+                    menuItemGroup.childContent [
+                        menuItem.create "1st menu item"
+                        menuItem.create "2st menu item"
                     ]
-                }
-                SubMenu'() {
-                    Title "Sub menu"
-                    childContent [
-                        MenuItem'.create "3st menu item"
-                        MenuItem'.create "4st menu item"
+                ]
+                subMenu.create [
+                    subMenu.title "Sub menu"
+                    subMenu.childContent [
+                        menuItem.create "3st menu item"
+                        menuItem.create "4st menu item"
                     ]
-                }
-                SubMenu'() {
-                    Title "Disabled sub menu"
-                    Disabled true
-                    childContent [
-                        MenuItem'.create "5st menu item"
-                        MenuItem'.create "6st menu item"
+                ]
+                subMenu.create [
+                    subMenu.title "Disabled sub menu"
+                    subMenu.disabled true
+                    subMenu.childContent [
+                        menuItem.create "5st menu item"
+                        menuItem.create "6st menu item"
                     ]
-                }
+                 ]
             ]
         ]
-        childContent [
+        dropdown.childContent [
             html.a [
                 html.div "Cascading menu"
-                Icon'() {
-                    Type "down"
-                }
+                icon.create [
+                    icon.type' "down"
+                ]
             ]
         ]
-    }
+    ]

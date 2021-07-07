@@ -9,38 +9,38 @@ let modalDemo = html.inject (fun (hook: IComponentHook) ->
     let isDialogOpen = hook.UseStore false
 
     html.div [
-        Button'() {
-            childContent "Try to click 😊"
-            OnClick (fun _ -> isDialogOpen.Publish not)
-        }
+        button.create [
+            button.childContent "Try to click 😊"
+            button.onClick (fun _ -> isDialogOpen.Publish not)
+        ]
         watch {
             Store isDialogOpen.Observable
             RenderFn (fun isOpen ->
-                Modal'() {
-                    Title "Demo modal"
-                    Visible isOpen
-                    OnOk (fun _ -> isDialogOpen.Publish not)
-                    OnCancel (fun _ -> isDialogOpen.Publish not)
-                    childContent [
-                        Result'() {
-                            Status "success"
-                            Title "Successfully Purchased Cloud Server ECS"
-                            childContent [
-                                Alert'() {
-                                    Type AlertType.Success
-                                    Message "Success"
-                                }
-                                InputGroup'.create [
-                                    InputNumber'<int>() {
-                                        Min 100
-                                        Max 150
-                                        attrs [ attr.custom ("label", "Number") ]
-                                    }
+                modal.create [
+                    modal.title "Demo modal"
+                    modal.visible isOpen
+                    modal.onOk (fun _ -> isDialogOpen.Publish not)
+                    modal.onCancel (fun _ -> isDialogOpen.Publish not)
+                    modal.childContent [
+                        result.create [
+                            result.status "success"
+                            result.title "Successfully Purchased Cloud Server ECS"
+                            result.childContent [
+                                alert.create [
+                                    alert.type' AlertType.Success
+                                    alert.message "Success"
+                                ]
+                                inputGroup.create [
+                                    inputNumber<int>.create [
+                                        inputNumber.min 100
+                                        inputNumber.max 150
+                                        inputNumber.value 123
+                                    ]
                                 ]
                             ]
-                        }
+                        ]
                     ]
-                }
+                 ]
             )
         }
     ])
