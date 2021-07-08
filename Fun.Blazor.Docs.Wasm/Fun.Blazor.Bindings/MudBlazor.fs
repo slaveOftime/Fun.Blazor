@@ -45,10 +45,6 @@ type MudButtonBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspN
     [<CustomOperation("Size")>] member this.Size (_: FunBlazorContext<'FunBlazorGeneric>, x: MudBlazor.Size) = "Size" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Variant")>] member this.Variant (_: FunBlazorContext<'FunBlazorGeneric>, x: MudBlazor.Variant) = "Variant" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("FullWidth")>] member this.FullWidth (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "FullWidth" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
                 
 
 type MudFabBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -73,10 +69,6 @@ type MudIconButtonBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     [<CustomOperation("Color")>] member this.Color (_: FunBlazorContext<'FunBlazorGeneric>, x: MudBlazor.Color) = "Color" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Size")>] member this.Size (_: FunBlazorContext<'FunBlazorGeneric>, x: MudBlazor.Size) = "Size" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Edge")>] member this.Edge (_: FunBlazorContext<'FunBlazorGeneric>, x: MudBlazor.Edge) = "Edge" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
     [<CustomOperation("Variant")>] member this.Variant (_: FunBlazorContext<'FunBlazorGeneric>, x: MudBlazor.Variant) = "Variant" => x |> BoleroAttr |> this.AddProp
                 
 
@@ -106,10 +98,6 @@ type MudMenuBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNet
     [<CustomOperation("Direction")>] member this.Direction (_: FunBlazorContext<'FunBlazorGeneric>, x: MudBlazor.Direction) = "Direction" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("OffsetY")>] member this.OffsetY (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "OffsetY" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("OffsetX")>] member this.OffsetX (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "OffsetX" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
                 
 
 type MudFileUploaderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -124,10 +112,6 @@ type MudBaseItemsControlBuilder<'FunBlazorGeneric, 'TChildComponent when 'TChild
     new (x: IFunBlazorNode list) as this = MudBaseItemsControlBuilder<'FunBlazorGeneric, 'TChildComponent>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp |> ignore
     static member create (x: string) = MudBaseItemsControlBuilder<'FunBlazorGeneric, 'TChildComponent>(x) :> IFunBlazorNode
     static member create (x: IFunBlazorNode list) = MudBaseItemsControlBuilder<'FunBlazorGeneric, 'TChildComponent>(x) :> IFunBlazorNode
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
     [<CustomOperation("SelectedIndex")>] member this.SelectedIndex (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Int32) = "SelectedIndex" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("SelectedIndexChanged")>] member this.SelectedIndexChanged (_: FunBlazorContext<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<System.Int32> "SelectedIndexChanged" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
                 
@@ -166,10 +150,6 @@ type MudBaseSelectItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micros
     [<CustomOperation("Disabled")>] member this.Disabled (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "Disabled" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("DisableRipple")>] member this.DisableRipple (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "DisableRipple" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Href")>] member this.Href (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "Href" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
     [<CustomOperation("CommandParameter")>] member this.CommandParameter (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Object) = "CommandParameter" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Command")>] member this.Command (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Windows.Input.ICommand) = "Command" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("OnClick")>] member this.OnClick (_: FunBlazorContext<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> "OnClick" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
@@ -302,10 +282,6 @@ type MudInputBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.A
     new (x: IFunBlazorNode list) as this = MudInputBuilder<'FunBlazorGeneric, 'T>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp |> ignore
     static member create (x: string) = MudInputBuilder<'FunBlazorGeneric, 'T>(x) :> IFunBlazorNode
     static member create (x: IFunBlazorNode list) = MudInputBuilder<'FunBlazorGeneric, 'T>(x) :> IFunBlazorNode
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
     [<CustomOperation("Placeholder")>] member this.Placeholder (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "Placeholder" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("OnIncrement")>] member this.OnIncrement (_: FunBlazorContext<'FunBlazorGeneric>, x: Microsoft.AspNetCore.Components.EventCallback) = "OnIncrement" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("OnDecrement")>] member this.OnDecrement (_: FunBlazorContext<'FunBlazorGeneric>, x: Microsoft.AspNetCore.Components.EventCallback) = "OnDecrement" => x |> BoleroAttr |> this.AddProp
@@ -326,10 +302,6 @@ type MudRangeInputBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Micros
     static member create (x: IFunBlazorNode list) = MudRangeInputBuilder<'FunBlazorGeneric, 'T>(x) :> IFunBlazorNode
     [<CustomOperation("PlaceholderStart")>] member this.PlaceholderStart (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "PlaceholderStart" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("PlaceholderEnd")>] member this.PlaceholderEnd (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "PlaceholderEnd" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
                 
 
 type MudSelectBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -338,10 +310,6 @@ type MudSelectBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.
     new (x: IFunBlazorNode list) as this = MudSelectBuilder<'FunBlazorGeneric, 'T>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp |> ignore
     static member create (x: string) = MudSelectBuilder<'FunBlazorGeneric, 'T>(x) :> IFunBlazorNode
     static member create (x: IFunBlazorNode list) = MudSelectBuilder<'FunBlazorGeneric, 'T>(x) :> IFunBlazorNode
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
     [<CustomOperation("Label")>] member this.Label (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "Label" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Dense")>] member this.Dense (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "Dense" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("OpenIcon")>] member this.OpenIcon (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "OpenIcon" => x |> BoleroAttr |> this.AddProp
@@ -376,10 +344,6 @@ type MudCheckBoxBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsof
     [<CustomOperation("Color")>] member this.Color (_: FunBlazorContext<'FunBlazorGeneric>, x: MudBlazor.Color) = "Color" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Label")>] member this.Label (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "Label" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("DisableRipple")>] member this.DisableRipple (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "DisableRipple" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
     [<CustomOperation("CheckedIcon")>] member this.CheckedIcon (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "CheckedIcon" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("UncheckedIcon")>] member this.UncheckedIcon (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "UncheckedIcon" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("IndeterminateIcon")>] member this.IndeterminateIcon (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "IndeterminateIcon" => x |> BoleroAttr |> this.AddProp
@@ -395,10 +359,6 @@ type MudSwitchBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.
     [<CustomOperation("Color")>] member this.Color (_: FunBlazorContext<'FunBlazorGeneric>, x: MudBlazor.Color) = "Color" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Label")>] member this.Label (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "Label" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("DisableRipple")>] member this.DisableRipple (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "DisableRipple" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
                 
 
 type MudPickerBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -483,10 +443,6 @@ type MudRadioGroupBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Micros
     new (x: IFunBlazorNode list) as this = MudRadioGroupBuilder<'FunBlazorGeneric, 'T>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp |> ignore
     static member create (x: string) = MudRadioGroupBuilder<'FunBlazorGeneric, 'T>(x) :> IFunBlazorNode
     static member create (x: IFunBlazorNode list) = MudRadioGroupBuilder<'FunBlazorGeneric, 'T>(x) :> IFunBlazorNode
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
     [<CustomOperation("Name")>] member this.Name (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "Name" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("SelectedOption")>] member this.SelectedOption (_: FunBlazorContext<'FunBlazorGeneric>, x: 'T) = "SelectedOption" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("SelectedOptionChanged")>] member this.SelectedOptionChanged (_: FunBlazorContext<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<'T> "SelectedOptionChanged" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
@@ -504,10 +460,6 @@ type MudAlertBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNe
     [<CustomOperation("NoIcon")>] member this.NoIcon (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "NoIcon" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Severity")>] member this.Severity (_: FunBlazorContext<'FunBlazorGeneric>, x: MudBlazor.Severity) = "Severity" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Variant")>] member this.Variant (_: FunBlazorContext<'FunBlazorGeneric>, x: MudBlazor.Variant) = "Variant" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
     [<CustomOperation("Icon")>] member this.Icon (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "Icon" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("OnClick")>] member this.OnClick (_: FunBlazorContext<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> "OnClick" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
                 
@@ -522,10 +474,6 @@ type MudAppBarBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspN
     [<CustomOperation("Dense")>] member this.Dense (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "Dense" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Color")>] member this.Color (_: FunBlazorContext<'FunBlazorGeneric>, x: MudBlazor.Color) = "Color" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Fixed")>] member this.Fixed (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "Fixed" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
                 
 
 type MudAvatarBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -539,10 +487,6 @@ type MudAvatarBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspN
     [<CustomOperation("Image")>] member this.Image (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "Image" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Color")>] member this.Color (_: FunBlazorContext<'FunBlazorGeneric>, x: MudBlazor.Color) = "Color" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Size")>] member this.Size (_: FunBlazorContext<'FunBlazorGeneric>, x: MudBlazor.Size) = "Size" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
                 
 
 type MudBadgeBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -561,10 +505,6 @@ type MudBadgeBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNe
     [<CustomOperation("Icon")>] member this.Icon (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "Icon" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Max")>] member this.Max (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Int32) = "Max" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Content")>] member this.Content (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Object) = "Content" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
                 
 
 type MudBreadcrumbsBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -587,10 +527,6 @@ type MudButtonGroupBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     static member create (x: string) = MudButtonGroupBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
     static member create (x: IFunBlazorNode list) = MudButtonGroupBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
     [<CustomOperation("OverrideStyles")>] member this.OverrideStyles (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "OverrideStyles" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
     [<CustomOperation("VerticalAlign")>] member this.VerticalAlign (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "VerticalAlign" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("DisableElevation")>] member this.DisableElevation (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "DisableElevation" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Color")>] member this.Color (_: FunBlazorContext<'FunBlazorGeneric>, x: MudBlazor.Color) = "Color" => x |> BoleroAttr |> this.AddProp
@@ -626,10 +562,6 @@ type MudCardBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNet
     [<CustomOperation("Elevation")>] member this.Elevation (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Int32) = "Elevation" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Square")>] member this.Square (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "Square" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Outlined")>] member this.Outlined (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "Outlined" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
                 
 
 type MudCardActionsBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -638,10 +570,7 @@ type MudCardActionsBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     new (x: IFunBlazorNode list) as this = MudCardActionsBuilder<'FunBlazorGeneric>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp |> ignore
     static member create (x: string) = MudCardActionsBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
     static member create (x: IFunBlazorNode list) = MudCardActionsBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
+
                 
 
 type MudCardContentBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -650,10 +579,7 @@ type MudCardContentBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     new (x: IFunBlazorNode list) as this = MudCardContentBuilder<'FunBlazorGeneric>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp |> ignore
     static member create (x: string) = MudCardContentBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
     static member create (x: IFunBlazorNode list) = MudCardContentBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
+
                 
 
 type MudCardHeaderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -674,10 +600,6 @@ type MudCardHeaderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     [<CustomOperation("CardHeaderActions")>] member this.CardHeaderActions (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "CardHeaderActions" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
     [<CustomOperation("CardHeaderActions")>] member this.CardHeaderActions (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "CardHeaderActions" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
     [<CustomOperation("CardHeaderActions")>] member this.CardHeaderActions (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "CardHeaderActions" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
                 
 
 type MudCardMediaBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -694,10 +616,6 @@ type MudCarouselItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsof
     new (x: IFunBlazorNode list) as this = MudCarouselItemBuilder<'FunBlazorGeneric>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp |> ignore
     static member create (x: string) = MudCarouselItemBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
     static member create (x: IFunBlazorNode list) = MudCarouselItemBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
     [<CustomOperation("Color")>] member this.Color (_: FunBlazorContext<'FunBlazorGeneric>, x: MudBlazor.Color) = "Color" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Transition")>] member this.Transition (_: FunBlazorContext<'FunBlazorGeneric>, x: MudBlazor.Transition) = "Transition" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("CustomTransitionEnter")>] member this.CustomTransitionEnter (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "CustomTransitionEnter" => x |> BoleroAttr |> this.AddProp
@@ -780,10 +698,6 @@ type MudChipSetBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.Asp
     new (x: IFunBlazorNode list) as this = MudChipSetBuilder<'FunBlazorGeneric>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp |> ignore
     static member create (x: string) = MudChipSetBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
     static member create (x: IFunBlazorNode list) = MudChipSetBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
     [<CustomOperation("MultiSelection")>] member this.MultiSelection (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "MultiSelection" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Mandatory")>] member this.Mandatory (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "Mandatory" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("AllClosable")>] member this.AllClosable (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "AllClosable" => x |> BoleroAttr |> this.AddProp
@@ -812,10 +726,6 @@ type MudChipBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNet
     [<CustomOperation("IconColor")>] member this.IconColor (_: FunBlazorContext<'FunBlazorGeneric>, x: MudBlazor.Color) = "IconColor" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("CloseIcon")>] member this.CloseIcon (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "CloseIcon" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("DisableRipple")>] member this.DisableRipple (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "DisableRipple" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
     [<CustomOperation("Link")>] member this.Link (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "Link" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Target")>] member this.Target (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "Target" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Text")>] member this.Text (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "Text" => x |> BoleroAttr |> this.AddProp
@@ -835,10 +745,6 @@ type MudCollapseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.As
     static member create (x: IFunBlazorNode list) = MudCollapseBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
     [<CustomOperation("Expanded")>] member this.Expanded (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "Expanded" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("MaxHeight")>] member this.MaxHeight (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Nullable<System.Int32>) = "MaxHeight" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
     [<CustomOperation("OnAnimationEnd")>] member this.OnAnimationEnd (_: FunBlazorContext<'FunBlazorGeneric>, x: Microsoft.AspNetCore.Components.EventCallback) = "OnAnimationEnd" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("ExpandedChanged")>] member this.ExpandedChanged (_: FunBlazorContext<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<System.Boolean> "ExpandedChanged" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
                 
@@ -893,10 +799,6 @@ type MudDrawerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspN
     [<CustomOperation("Anchor")>] member this.Anchor (_: FunBlazorContext<'FunBlazorGeneric>, x: MudBlazor.Anchor) = "Anchor" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Color")>] member this.Color (_: FunBlazorContext<'FunBlazorGeneric>, x: MudBlazor.Color) = "Color" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Variant")>] member this.Variant (_: FunBlazorContext<'FunBlazorGeneric>, x: MudBlazor.DrawerVariant) = "Variant" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
     [<CustomOperation("DisableOverlay")>] member this.DisableOverlay (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "DisableOverlay" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("PreserveOpenState")>] member this.PreserveOpenState (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "PreserveOpenState" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("OpenMiniOnHover")>] member this.OpenMiniOnHover (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "OpenMiniOnHover" => x |> BoleroAttr |> this.AddProp
@@ -915,10 +817,7 @@ type MudDrawerContainerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micro
     new (x: IFunBlazorNode list) as this = MudDrawerContainerBuilder<'FunBlazorGeneric>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp |> ignore
     static member create (x: string) = MudDrawerContainerBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
     static member create (x: IFunBlazorNode list) = MudDrawerContainerBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
+
                 
 
 type MudLayoutBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -933,10 +832,6 @@ type MudElementBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.Asp
     new (x: IFunBlazorNode list) as this = MudElementBuilder<'FunBlazorGeneric>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp |> ignore
     static member create (x: string) = MudElementBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
     static member create (x: IFunBlazorNode list) = MudElementBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
     [<CustomOperation("HtmlTag")>] member this.HtmlTag (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "HtmlTag" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Ref")>] member this.Ref (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Nullable<Microsoft.AspNetCore.Components.ElementReference>) = "Ref" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("RefChanged")>] member this.RefChanged (_: FunBlazorContext<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.ElementReference> "RefChanged" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
@@ -960,10 +855,6 @@ type MudExpansionPanelBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micros
     [<CustomOperation("IsExpandedChanged")>] member this.IsExpandedChanged (_: FunBlazorContext<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<System.Boolean> "IsExpandedChanged" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
     [<CustomOperation("IsExpanded")>] member this.IsExpanded (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "IsExpanded" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Disabled")>] member this.Disabled (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "Disabled" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
                 
 
 type MudExpansionPanelsBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -978,10 +869,6 @@ type MudExpansionPanelsBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micro
     [<CustomOperation("Dense")>] member this.Dense (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "Dense" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("DisableGutters")>] member this.DisableGutters (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "DisableGutters" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("DisableBorders")>] member this.DisableBorders (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "DisableBorders" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
                 
 
 type MudFieldBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -990,10 +877,6 @@ type MudFieldBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNe
     new (x: IFunBlazorNode list) as this = MudFieldBuilder<'FunBlazorGeneric>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp |> ignore
     static member create (x: string) = MudFieldBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
     static member create (x: IFunBlazorNode list) = MudFieldBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
     [<CustomOperation("Margin")>] member this.Margin (_: FunBlazorContext<'FunBlazorGeneric>, x: MudBlazor.Margin) = "Margin" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Error")>] member this.Error (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "Error" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("ErrorText")>] member this.ErrorText (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "ErrorText" => x |> BoleroAttr |> this.AddProp
@@ -1017,10 +900,6 @@ type MudFocusTrapBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.A
     new (x: IFunBlazorNode list) as this = MudFocusTrapBuilder<'FunBlazorGeneric>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp |> ignore
     static member create (x: string) = MudFocusTrapBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
     static member create (x: IFunBlazorNode list) = MudFocusTrapBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
     [<CustomOperation("Disabled")>] member this.Disabled (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "Disabled" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("DefaultFocus")>] member this.DefaultFocus (_: FunBlazorContext<'FunBlazorGeneric>, x: MudBlazor.DefaultFocus) = "DefaultFocus" => x |> BoleroAttr |> this.AddProp
                 
@@ -1031,10 +910,6 @@ type MudFormBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNet
     new (x: IFunBlazorNode list) as this = MudFormBuilder<'FunBlazorGeneric>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp |> ignore
     static member create (x: string) = MudFormBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
     static member create (x: IFunBlazorNode list) = MudFormBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
     [<CustomOperation("IsValid")>] member this.IsValid (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "IsValid" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("IsTouched")>] member this.IsTouched (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "IsTouched" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("ValidationDelay")>] member this.ValidationDelay (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Int32) = "ValidationDelay" => x |> BoleroAttr |> this.AddProp
@@ -1056,10 +931,6 @@ type MudHiddenBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspN
     [<CustomOperation("Invert")>] member this.Invert (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "Invert" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("IsHidden")>] member this.IsHidden (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "IsHidden" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("IsHiddenChanged")>] member this.IsHiddenChanged (_: FunBlazorContext<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<System.Boolean> "IsHiddenChanged" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
                 
 
 type MudIconBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -1073,10 +944,6 @@ type MudIconBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNet
     [<CustomOperation("Size")>] member this.Size (_: FunBlazorContext<'FunBlazorGeneric>, x: MudBlazor.Size) = "Size" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Color")>] member this.Color (_: FunBlazorContext<'FunBlazorGeneric>, x: MudBlazor.Color) = "Color" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("ViewBox")>] member this.ViewBox (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "ViewBox" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
                 
 
 type MudInputControlBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -1085,10 +952,6 @@ type MudInputControlBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsof
     new (x: IFunBlazorNode list) as this = MudInputControlBuilder<'FunBlazorGeneric>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp |> ignore
     static member create (x: string) = MudInputControlBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
     static member create (x: IFunBlazorNode list) = MudInputControlBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
     [<CustomOperation("InputContent")>] member this.InputContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "InputContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
     [<CustomOperation("InputContent")>] member this.InputContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "InputContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
     [<CustomOperation("InputContent")>] member this.InputContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "InputContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
@@ -1110,10 +973,6 @@ type MudInputLabelBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     new (x: IFunBlazorNode list) as this = MudInputLabelBuilder<'FunBlazorGeneric>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp |> ignore
     static member create (x: string) = MudInputLabelBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
     static member create (x: IFunBlazorNode list) = MudInputLabelBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
     [<CustomOperation("Disabled")>] member this.Disabled (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "Disabled" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Error")>] member this.Error (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "Error" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Variant")>] member this.Variant (_: FunBlazorContext<'FunBlazorGeneric>, x: MudBlazor.Variant) = "Variant" => x |> BoleroAttr |> this.AddProp
@@ -1131,10 +990,6 @@ type MudLinkBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNet
     [<CustomOperation("Underline")>] member this.Underline (_: FunBlazorContext<'FunBlazorGeneric>, x: MudBlazor.Underline) = "Underline" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Href")>] member this.Href (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "Href" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Target")>] member this.Target (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "Target" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
     [<CustomOperation("Disabled")>] member this.Disabled (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "Disabled" => x |> BoleroAttr |> this.AddProp
                 
 
@@ -1144,10 +999,6 @@ type MudListBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNet
     new (x: IFunBlazorNode list) as this = MudListBuilder<'FunBlazorGeneric>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp |> ignore
     static member create (x: string) = MudListBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
     static member create (x: IFunBlazorNode list) = MudListBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
     [<CustomOperation("Clickable")>] member this.Clickable (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "Clickable" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("DisablePadding")>] member this.DisablePadding (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "DisablePadding" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Dense")>] member this.Dense (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "Dense" => x |> BoleroAttr |> this.AddProp
@@ -1179,10 +1030,6 @@ type MudListItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.As
     [<CustomOperation("InitiallyExpanded")>] member this.InitiallyExpanded (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "InitiallyExpanded" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("CommandParameter")>] member this.CommandParameter (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Object) = "CommandParameter" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Command")>] member this.Command (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Windows.Input.ICommand) = "Command" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
     [<CustomOperation("NestedList")>] member this.NestedList (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "NestedList" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
     [<CustomOperation("NestedList")>] member this.NestedList (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "NestedList" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
     [<CustomOperation("NestedList")>] member this.NestedList (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "NestedList" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
@@ -1196,10 +1043,6 @@ type MudListSubheaderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microso
     new (x: IFunBlazorNode list) as this = MudListSubheaderBuilder<'FunBlazorGeneric>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp |> ignore
     static member create (x: string) = MudListSubheaderBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
     static member create (x: IFunBlazorNode list) = MudListSubheaderBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
     [<CustomOperation("DisableGutters")>] member this.DisableGutters (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "DisableGutters" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Inset")>] member this.Inset (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "Inset" => x |> BoleroAttr |> this.AddProp
                 
@@ -1210,10 +1053,6 @@ type MudMenuItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.As
     new (x: IFunBlazorNode list) as this = MudMenuItemBuilder<'FunBlazorGeneric>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp |> ignore
     static member create (x: string) = MudMenuItemBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
     static member create (x: IFunBlazorNode list) = MudMenuItemBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
     [<CustomOperation("Disabled")>] member this.Disabled (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "Disabled" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Link")>] member this.Link (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "Link" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Target")>] member this.Target (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "Target" => x |> BoleroAttr |> this.AddProp
@@ -1274,10 +1113,6 @@ type MudNavGroupBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.As
     [<CustomOperation("HideExpandIcon")>] member this.HideExpandIcon (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "HideExpandIcon" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("MaxHeight")>] member this.MaxHeight (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Nullable<System.Int32>) = "MaxHeight" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("ExpandIcon")>] member this.ExpandIcon (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "ExpandIcon" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
                 
 
 type MudNavMenuBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -1286,10 +1121,7 @@ type MudNavMenuBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.Asp
     new (x: IFunBlazorNode list) as this = MudNavMenuBuilder<'FunBlazorGeneric>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp |> ignore
     static member create (x: string) = MudNavMenuBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
     static member create (x: IFunBlazorNode list) = MudNavMenuBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
+
                 
 
 type MudOverlayBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -1298,10 +1130,6 @@ type MudOverlayBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.Asp
     new (x: IFunBlazorNode list) as this = MudOverlayBuilder<'FunBlazorGeneric>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp |> ignore
     static member create (x: string) = MudOverlayBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
     static member create (x: IFunBlazorNode list) = MudOverlayBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
     [<CustomOperation("VisibleChanged")>] member this.VisibleChanged (_: FunBlazorContext<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<System.Boolean> "VisibleChanged" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
     [<CustomOperation("Visible")>] member this.Visible (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "Visible" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("AutoClose")>] member this.AutoClose (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "AutoClose" => x |> BoleroAttr |> this.AddProp
@@ -1329,10 +1157,6 @@ type MudPopoverBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.Asp
     [<CustomOperation("Direction")>] member this.Direction (_: FunBlazorContext<'FunBlazorGeneric>, x: MudBlazor.Direction) = "Direction" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("OffsetX")>] member this.OffsetX (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "OffsetX" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("OffsetY")>] member this.OffsetY (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "OffsetY" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
                 
 
 type MudProgressCircularBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -1377,10 +1201,6 @@ type MudRadioBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.A
     [<CustomOperation("Option")>] member this.Option (_: FunBlazorContext<'FunBlazorGeneric>, x: 'T) = "Option" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("DisableRipple")>] member this.DisableRipple (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "DisableRipple" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Disabled")>] member this.Disabled (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "Disabled" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
                 
 
 type MudRatingBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -1421,10 +1241,6 @@ type MudScrollToTopBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     new (x: IFunBlazorNode list) as this = MudScrollToTopBuilder<'FunBlazorGeneric>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp |> ignore
     static member create (x: string) = MudScrollToTopBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
     static member create (x: IFunBlazorNode list) = MudScrollToTopBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
     [<CustomOperation("Selector")>] member this.Selector (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "Selector" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Visible")>] member this.Visible (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "Visible" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("VisibleCssClass")>] member this.VisibleCssClass (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "VisibleCssClass" => x |> BoleroAttr |> this.AddProp
@@ -1453,10 +1269,6 @@ type MudSliderBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.
     [<CustomOperation("Max")>] member this.Max (_: FunBlazorContext<'FunBlazorGeneric>, x: 'T) = "Max" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Step")>] member this.Step (_: FunBlazorContext<'FunBlazorGeneric>, x: 'T) = "Step" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Disabled")>] member this.Disabled (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "Disabled" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
     [<CustomOperation("Converter")>] member this.Converter (_: FunBlazorContext<'FunBlazorGeneric>, x: MudBlazor.Converter<'T>) = "Converter" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("ValueChanged")>] member this.ValueChanged (_: FunBlazorContext<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<'T> "ValueChanged" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
     [<CustomOperation("Value")>] member this.Value (_: FunBlazorContext<'FunBlazorGeneric>, x: 'T) = "Value" => x |> BoleroAttr |> this.AddProp
@@ -1482,10 +1294,6 @@ type MudSwipeAreaBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.A
     new (x: IFunBlazorNode list) as this = MudSwipeAreaBuilder<'FunBlazorGeneric>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp |> ignore
     static member create (x: string) = MudSwipeAreaBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
     static member create (x: IFunBlazorNode list) = MudSwipeAreaBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
     [<CustomOperation("OnSwipe")>] member this.OnSwipe (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Action<MudBlazor.SwipeDirection>) = "OnSwipe" => x |> BoleroAttr |> this.AddProp
                 
 
@@ -1503,10 +1311,6 @@ type MudSimpleTableBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     [<CustomOperation("Bordered")>] member this.Bordered (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "Bordered" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Striped")>] member this.Striped (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "Striped" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("FixedHeader")>] member this.FixedHeader (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "FixedHeader" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
                 
 
 type MudTableBaseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -1607,10 +1411,6 @@ type MudTableSortLabelBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Mi
     new (x: IFunBlazorNode list) as this = MudTableSortLabelBuilder<'FunBlazorGeneric, 'T>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp |> ignore
     static member create (x: string) = MudTableSortLabelBuilder<'FunBlazorGeneric, 'T>(x) :> IFunBlazorNode
     static member create (x: IFunBlazorNode list) = MudTableSortLabelBuilder<'FunBlazorGeneric, 'T>(x) :> IFunBlazorNode
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
     [<CustomOperation("InitialDirection")>] member this.InitialDirection (_: FunBlazorContext<'FunBlazorGeneric>, x: MudBlazor.SortDirection) = "InitialDirection" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Enabled")>] member this.Enabled (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "Enabled" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("SortIcon")>] member this.SortIcon (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "SortIcon" => x |> BoleroAttr |> this.AddProp
@@ -1627,10 +1427,6 @@ type MudTdBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCo
     new (x: IFunBlazorNode list) as this = MudTdBuilder<'FunBlazorGeneric>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp |> ignore
     static member create (x: string) = MudTdBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
     static member create (x: IFunBlazorNode list) = MudTdBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
     [<CustomOperation("DataLabel")>] member this.DataLabel (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "DataLabel" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("HideSmall")>] member this.HideSmall (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "HideSmall" => x |> BoleroAttr |> this.AddProp
                 
@@ -1641,10 +1437,6 @@ type MudTFootRowBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.As
     new (x: IFunBlazorNode list) as this = MudTFootRowBuilder<'FunBlazorGeneric>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp |> ignore
     static member create (x: string) = MudTFootRowBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
     static member create (x: IFunBlazorNode list) = MudTFootRowBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
     [<CustomOperation("IsCheckable")>] member this.IsCheckable (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "IsCheckable" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("IgnoreCheckbox")>] member this.IgnoreCheckbox (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "IgnoreCheckbox" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("IgnoreEditable")>] member this.IgnoreEditable (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "IgnoreEditable" => x |> BoleroAttr |> this.AddProp
@@ -1657,10 +1449,7 @@ type MudThBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCo
     new (x: IFunBlazorNode list) as this = MudThBuilder<'FunBlazorGeneric>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp |> ignore
     static member create (x: string) = MudThBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
     static member create (x: IFunBlazorNode list) = MudThBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
+
                 
 
 type MudTHeadRowBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -1669,10 +1458,6 @@ type MudTHeadRowBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.As
     new (x: IFunBlazorNode list) as this = MudTHeadRowBuilder<'FunBlazorGeneric>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp |> ignore
     static member create (x: string) = MudTHeadRowBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
     static member create (x: IFunBlazorNode list) = MudTHeadRowBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
     [<CustomOperation("IsCheckable")>] member this.IsCheckable (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "IsCheckable" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("IgnoreCheckbox")>] member this.IgnoreCheckbox (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "IgnoreCheckbox" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("IgnoreEditable")>] member this.IgnoreEditable (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "IgnoreEditable" => x |> BoleroAttr |> this.AddProp
@@ -1685,10 +1470,6 @@ type MudTrBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCo
     new (x: IFunBlazorNode list) as this = MudTrBuilder<'FunBlazorGeneric>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp |> ignore
     static member create (x: string) = MudTrBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
     static member create (x: IFunBlazorNode list) = MudTrBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
     [<CustomOperation("Item")>] member this.Item (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Object) = "Item" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("IsCheckable")>] member this.IsCheckable (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "IsCheckable" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("IsEditable")>] member this.IsEditable (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "IsEditable" => x |> BoleroAttr |> this.AddProp
@@ -1722,10 +1503,6 @@ type MudTabsBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNet
     [<CustomOperation("Elevation")>] member this.Elevation (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Int32) = "Elevation" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("ApplyEffectsToContainer")>] member this.ApplyEffectsToContainer (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "ApplyEffectsToContainer" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("DisableRipple")>] member this.DisableRipple (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "DisableRipple" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
     [<CustomOperation("TabPanelClass")>] member this.TabPanelClass (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "TabPanelClass" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("PanelClass")>] member this.PanelClass (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "PanelClass" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("ActivePanelIndex")>] member this.ActivePanelIndex (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Int32) = "ActivePanelIndex" => x |> BoleroAttr |> this.AddProp
@@ -1742,10 +1519,6 @@ type MudTimeLineBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.As
     [<CustomOperation("Border")>] member this.Border (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "Border" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Outlined")>] member this.Outlined (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "Outlined" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Elevation")>] member this.Elevation (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Int32) = "Elevation" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
                 
 
 type MudTimeLineItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -1758,10 +1531,6 @@ type MudTimeLineItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsof
     [<CustomOperation("Align")>] member this.Align (_: FunBlazorContext<'FunBlazorGeneric>, x: MudBlazor.Align) = "Align" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Icon")>] member this.Icon (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "Icon" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Color")>] member this.Color (_: FunBlazorContext<'FunBlazorGeneric>, x: MudBlazor.Color) = "Color" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
                 
 
 type MudTooltipBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -1774,10 +1543,6 @@ type MudTooltipBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.Asp
     [<CustomOperation("Delay'")>] member this.Delay' (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Double) = "Delay" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Delayed")>] member this.Delayed (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Double) = "Delayed" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Placement")>] member this.Placement (_: FunBlazorContext<'FunBlazorGeneric>, x: MudBlazor.Placement) = "Placement" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
     [<CustomOperation("TooltipContent")>] member this.TooltipContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "TooltipContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
     [<CustomOperation("TooltipContent")>] member this.TooltipContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "TooltipContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
     [<CustomOperation("TooltipContent")>] member this.TooltipContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "TooltipContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
@@ -1802,10 +1567,6 @@ type MudTreeViewBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsof
     [<CustomOperation("Items")>] member this.Items (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Collections.Generic.HashSet<'T>) = "Items" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("ActivatedValueChanged")>] member this.ActivatedValueChanged (_: FunBlazorContext<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<'T> "ActivatedValueChanged" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
     [<CustomOperation("SelectedValuesChanged")>] member this.SelectedValuesChanged (_: FunBlazorContext<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<System.Collections.Generic.HashSet<'T>> "SelectedValuesChanged" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
     [<CustomOperation("ItemTemplate")>] member this.ItemTemplate (_: FunBlazorContext<'FunBlazorGeneric>, render: 'T -> IFunBlazorNode) = Bolero.Html.attr.fragmentWith "ItemTemplate" (fun x -> render x |> html.toBolero) |> BoleroAttr |> this.AddProp
     [<CustomOperation("ServerData")>] member this.ServerData (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Func<'T, System.Threading.Tasks.Task<System.Collections.Generic.HashSet<'T>>>) = "ServerData" => x |> BoleroAttr |> this.AddProp
                 
@@ -1824,10 +1585,6 @@ type MudTreeViewItemBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Micr
     [<CustomOperation("EndText")>] member this.EndText (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "EndText" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("EndTextTypo")>] member this.EndTextTypo (_: FunBlazorContext<'FunBlazorGeneric>, x: MudBlazor.Typo) = "EndTextTypo" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("EndTextClass")>] member this.EndTextClass (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "EndTextClass" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
     [<CustomOperation("Content")>] member this.Content (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "Content" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
     [<CustomOperation("Content")>] member this.Content (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "Content" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
     [<CustomOperation("Content")>] member this.Content (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "Content" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
@@ -1857,10 +1614,6 @@ type MudTextBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNet
     [<CustomOperation("Align")>] member this.Align (_: FunBlazorContext<'FunBlazorGeneric>, x: MudBlazor.Align) = "Align" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Color")>] member this.Color (_: FunBlazorContext<'FunBlazorGeneric>, x: MudBlazor.Color) = "Color" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("GutterBottom")>] member this.GutterBottom (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "GutterBottom" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
     [<CustomOperation("Inline")>] member this.Inline (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "Inline" => x |> BoleroAttr |> this.AddProp
                 
 
@@ -1872,10 +1625,6 @@ type MudContainerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.A
     static member create (x: IFunBlazorNode list) = MudContainerBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
     [<CustomOperation("Fixed")>] member this.Fixed (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "Fixed" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("MaxWidth")>] member this.MaxWidth (_: FunBlazorContext<'FunBlazorGeneric>, x: MudBlazor.MaxWidth) = "MaxWidth" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
                 
 
 type MudDividerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -1895,10 +1644,6 @@ type MudDrawerHeaderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsof
     static member create (x: string) = MudDrawerHeaderBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
     static member create (x: IFunBlazorNode list) = MudDrawerHeaderBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
     [<CustomOperation("Dense")>] member this.Dense (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "Dense" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
     [<CustomOperation("LinkToIndex")>] member this.LinkToIndex (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "LinkToIndex" => x |> BoleroAttr |> this.AddProp
                 
 
@@ -1910,10 +1655,6 @@ type MudGridBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNet
     static member create (x: IFunBlazorNode list) = MudGridBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
     [<CustomOperation("Spacing")>] member this.Spacing (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Int32) = "Spacing" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Justify")>] member this.Justify (_: FunBlazorContext<'FunBlazorGeneric>, x: MudBlazor.Justify) = "Justify" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
                 
 
 type MudItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -1927,10 +1668,6 @@ type MudItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNet
     [<CustomOperation("md")>] member this.md (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Int32) = "md" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("lg")>] member this.lg (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Int32) = "lg" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("xl")>] member this.xl (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Int32) = "xl" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
                 
 
 type MudHighlighterBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -1948,10 +1685,7 @@ type MudMainContentBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     new (x: IFunBlazorNode list) as this = MudMainContentBuilder<'FunBlazorGeneric>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp |> ignore
     static member create (x: string) = MudMainContentBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
     static member create (x: IFunBlazorNode list) = MudMainContentBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
+
                 
 
 type MudPaperBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -1969,10 +1703,6 @@ type MudPaperBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNe
     [<CustomOperation("MaxWidth")>] member this.MaxWidth (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "MaxWidth" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("MinHeight")>] member this.MinHeight (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "MinHeight" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("MinWidth")>] member this.MinWidth (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "MinWidth" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
                 
 
 type MudSparkLineBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -1994,10 +1724,6 @@ type MudTabPanelBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.As
     [<CustomOperation("BadgeColor")>] member this.BadgeColor (_: FunBlazorContext<'FunBlazorGeneric>, x: MudBlazor.Color) = "BadgeColor" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("ID")>] member this.ID (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Object) = "ID" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("OnClick")>] member this.OnClick (_: FunBlazorContext<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> "OnClick" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
     [<CustomOperation("ToolTip")>] member this.ToolTip (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "ToolTip" => x |> BoleroAttr |> this.AddProp
                 
 
@@ -2009,10 +1735,6 @@ type MudToolBarBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.Asp
     static member create (x: IFunBlazorNode list) = MudToolBarBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
     [<CustomOperation("Dense")>] member this.Dense (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "Dense" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("DisableGutters")>] member this.DisableGutters (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "DisableGutters" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
                 
 
 type MudDialogProviderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =

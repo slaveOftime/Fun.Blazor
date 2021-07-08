@@ -44,14 +44,16 @@ let private getMetaInfo (ty: Type) =
     let memberStart = "member this."
     let contextArg = $"_: FunBlazorContext<{funBlazorGeneric}>"
 
-    let rawProps =
-        ty.GetProperties()
+    let rawProps = ty.GetProperties()
+
+    let filteredProps =
+        rawProps
         |> Seq.filter (fun p -> 
             p.DeclaringType = ty && 
             p.CustomAttributes |> Seq.exists (fun x -> x.AttributeType = typeof<ParameterAttribute>))
 
     let props = 
-        rawProps
+        filteredProps
         |> Seq.map (fun prop ->
             let name = prop.Name
             let name =
