@@ -5,6 +5,7 @@ open System.Reflection
 open System.Collections.Generic
 open Microsoft.AspNetCore.Components
 open Fun.Blazor
+open Fun.Result
 
 open Utils
 
@@ -42,49 +43,48 @@ let private getMetaInfo (ty: Type) =
     let customOperation name = $"[<CustomOperation(\"{name}\")>]"
     let memberStart = "member this."
     let contextArg = $"_: FunBlazorContext<{funBlazorGeneric}>"
-    let allProps = ty.GetProperties()
+
+    let rawProps =
+        ty.GetProperties()
+        |> Seq.filter (fun p -> 
+            p.DeclaringType = ty && 
+            p.CustomAttributes |> Seq.exists (fun x -> x.AttributeType = typeof<ParameterAttribute>))
 
     let props = 
-        allProps
-        |> Seq.filter (fun p -> p.DeclaringType = ty)
-        |> Seq.choose (fun prop ->
-            if prop.CustomAttributes
-                |> Seq.exists (fun x -> x.AttributeType = typeof<ParameterAttribute>)
-                |> not
-            then None
-            else
-                let name = prop.Name
-                let name =
-                    if fsharpKeywords@["Bind"; "Delay"; "Return"; "ReturnFrom"; "Run"; "Combine"; "For"; "TryFinally"; "TryWith"; "Using"; "While"; "Yield"; "YieldFrom"; "Zero"; "Quote"]
-                       |> List.contains name 
-                    then $"{name}'"
-                    else name
-                if prop.PropertyType.IsGenericType then
-                    if prop.PropertyType.Name.StartsWith "EventCallback" ||
-                       prop.PropertyType.Name.StartsWith "Microsoft.AspNetCore.Components.EventCallback"
-                    then
-                        Some [ $"    {customOperation name} {memberStart}{name} ({contextArg}, fn) = (Bolero.Html.attr.callback<{getTypeName prop.PropertyType.GenericTypeArguments.[0]}> \"{prop.Name}\" (fun e -> fn e)) |> {nameof BoleroAttr}" ]
-                    elif prop.PropertyType.Name.StartsWith "RenderFragment`" then
-                        Some [ $"    {customOperation name} {memberStart}{name} ({contextArg}, render: {getTypeName prop.PropertyType.GenericTypeArguments.[0]} -> {nameof IFunBlazorNode}) = Bolero.Html.attr.fragmentWith \"{prop.Name}\" (fun x -> render x |> html.toBolero) |> {nameof BoleroAttr}" ]
-                    else
-                        Some [ $"    {customOperation name} {memberStart}{name} ({contextArg}, x: {getTypeName prop.PropertyType}) = \"{prop.Name}\" => x |> {nameof BoleroAttr}" ]
-
-                elif prop.PropertyType = typeof<RenderFragment> then
-                    let name = if name = "ChildContent" then lowerFirstCase name else name
-                    Some [
-                        $"    {customOperation name} {memberStart}{name} ({contextArg}, nodes) = Bolero.Html.attr.fragment \"{prop.Name}\" (nodes |> html.fragment |> html.toBolero) |> {nameof BoleroAttr}"
-                        $"    {customOperation name} {memberStart}{name} ({contextArg}, x: string) = Bolero.Html.attr.fragment \"{prop.Name}\" (html.text x |> html.toBolero) |> {nameof BoleroAttr}"
-                        $"    {customOperation name} {memberStart}{name} ({contextArg}, x: int) = Bolero.Html.attr.fragment \"{prop.Name}\" (html.text x |> html.toBolero) |> {nameof BoleroAttr}"
-                        $"    {customOperation name} {memberStart}{name} ({contextArg}, x: float) = Bolero.Html.attr.fragment \"{prop.Name}\" (html.text x |> html.toBolero) |> {nameof BoleroAttr}"
-                    ]
-
-                elif prop.Name = "Class" && prop.PropertyType = typeof<string> then
-                    Some [ $"    [<CustomOperation(\"Classes\")>] {memberStart}Classes ({contextArg}, x: string list) = attr.classes x" ]
-
-                elif prop.Name = "Style" && prop.PropertyType = typeof<string> then
-                    Some [ $"    [<CustomOperation(\"Styles\")>] {memberStart}Styles ({contextArg}, x: (string * string) list) = attr.styles x" ]
+        rawProps
+        |> Seq.map (fun prop ->
+            let name = prop.Name
+            let name =
+                if fsharpKeywords@["Bind"; "Delay"; "Return"; "ReturnFrom"; "Run"; "Combine"; "For"; "TryFinally"; "TryWith"; "Using"; "While"; "Yield"; "YieldFrom"; "Zero"; "Quote"]
+                   |> List.contains name 
+                then $"{name}'"
+                else name
+            if prop.PropertyType.IsGenericType then
+                if prop.PropertyType.Name.StartsWith "EventCallback" ||
+                    prop.PropertyType.Name.StartsWith "Microsoft.AspNetCore.Components.EventCallback"
+                then
+                    [ $"    {customOperation name} {memberStart}{name} ({contextArg}, fn) = (Bolero.Html.attr.callback<{getTypeName prop.PropertyType.GenericTypeArguments.[0]}> \"{prop.Name}\" (fun e -> fn e)) |> {nameof BoleroAttr}" ]
+                elif prop.PropertyType.Name.StartsWith "RenderFragment`" then
+                    [ $"    {customOperation name} {memberStart}{name} ({contextArg}, render: {getTypeName prop.PropertyType.GenericTypeArguments.[0]} -> {nameof IFunBlazorNode}) = Bolero.Html.attr.fragmentWith \"{prop.Name}\" (fun x -> render x |> html.toBolero) |> {nameof BoleroAttr}" ]
                 else
-                    Some [ $"    {customOperation name} {memberStart}{name} ({contextArg}, x: {getTypeName prop.PropertyType}) = \"{prop.Name}\" => x |> {nameof BoleroAttr}" ])
+                    [ $"    {customOperation name} {memberStart}{name} ({contextArg}, x: {getTypeName prop.PropertyType}) = \"{prop.Name}\" => x |> {nameof BoleroAttr}" ]
+
+            elif prop.PropertyType = typeof<RenderFragment> then
+                let name = if name = "ChildContent" then lowerFirstCase name else name
+                [
+                    $"    {customOperation name} {memberStart}{name} ({contextArg}, nodes) = Bolero.Html.attr.fragment \"{prop.Name}\" (nodes |> html.fragment |> html.toBolero) |> {nameof BoleroAttr}"
+                    $"    {customOperation name} {memberStart}{name} ({contextArg}, x: string) = Bolero.Html.attr.fragment \"{prop.Name}\" (html.text x |> html.toBolero) |> {nameof BoleroAttr}"
+                    $"    {customOperation name} {memberStart}{name} ({contextArg}, x: int) = Bolero.Html.attr.fragment \"{prop.Name}\" (html.text x |> html.toBolero) |> {nameof BoleroAttr}"
+                    $"    {customOperation name} {memberStart}{name} ({contextArg}, x: float) = Bolero.Html.attr.fragment \"{prop.Name}\" (html.text x |> html.toBolero) |> {nameof BoleroAttr}"
+                ]
+
+            elif prop.Name = "Class" && prop.PropertyType = typeof<string> then
+                [ $"    [<CustomOperation(\"Classes\")>] {memberStart}Classes ({contextArg}, x: string list) = attr.classes x" ]
+
+            elif prop.Name = "Style" && prop.PropertyType = typeof<string> then
+                [ $"    [<CustomOperation(\"Styles\")>] {memberStart}Styles ({contextArg}, x: (string * string) list) = attr.styles x" ]
+            else
+                [ $"    {customOperation name} {memberStart}{name} ({contextArg}, x: {getTypeName prop.PropertyType}) = \"{prop.Name}\" => x |> {nameof BoleroAttr}" ])
 
         |> Seq.concat
         |> Seq.map (fun x -> $"{x} |> this.AddProp")
@@ -92,21 +92,19 @@ let private getMetaInfo (ty: Type) =
 
     let hasChildren = props |> Seq.exists (fun x -> x.Contains $"{memberStart}childContent")
 
-    let addBasicDomAttrs = 
-        props
-        |> Seq.exists (fun x ->
-            x.Contains $"{memberStart}AdditionalAttributes" ||
-            x.Contains $"{memberStart}UserAttributes")
+    let isSplatAttributesProp (p: PropertyInfo) =
+        option {
+            let! attr = p.CustomAttributes |> Seq.tryFind (fun x -> x.AttributeType = typeof<ParameterAttribute>)
+            let! arg = attr.NamedArguments |> Seq.tryFind (fun x -> x.MemberName = "CaptureUnmatchedValues")
+            return arg.TypedValue.Value = box true
+        }
+        |> Option.defaultValue false
+
+    let addBasicDomAttrs = rawProps |> Seq.exists isSplatAttributesProp
 
     let props =
-        if addBasicDomAttrs then 
-            props 
-            |> Seq.filter (fun x -> 
-                x.Contains $"{memberStart}childContent" |> not &&
-                x.Contains $"{memberStart}AdditionalAttributes" |> not &&
-                x.Contains $"{memberStart}UserAttributes" |> not)
-        else 
-            props
+        props 
+        |> Seq.filter (fun x -> not addBasicDomAttrs || x.Contains $"{memberStart}childContent" |> not)
         |> String.concat "\n" 
 
     {| ty = ty; generics = generics; inheritInfo = inheritInfo; props = props; hasChildren = hasChildren; addBasicDomAttrs = addBasicDomAttrs |}

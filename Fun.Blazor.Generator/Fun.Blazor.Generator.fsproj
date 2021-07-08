@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Fun.Result" Version="1.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components" Version="5.0.7" />
   </ItemGroup>
 

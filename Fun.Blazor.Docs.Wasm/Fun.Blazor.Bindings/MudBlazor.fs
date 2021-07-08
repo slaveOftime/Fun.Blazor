@@ -13,6 +13,7 @@ type MudComponentBaseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microso
     [<CustomOperation("Classes")>] member this.Classes (_: FunBlazorContext<'FunBlazorGeneric>, x: string list) = attr.classes x |> this.AddProp
     [<CustomOperation("Styles")>] member this.Styles (_: FunBlazorContext<'FunBlazorGeneric>, x: (string * string) list) = attr.styles x |> this.AddProp
     [<CustomOperation("Tag")>] member this.Tag (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Object) = "Tag" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("UserAttributes")>] member this.UserAttributes (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Collections.Generic.Dictionary<System.String, System.Object>) = "UserAttributes" => x |> BoleroAttr |> this.AddProp
                 
 
 type MudBaseButtonBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
