@@ -199,7 +199,7 @@ type MudFormComponentBuilder<'FunBlazorGeneric, 'T, 'U when 'FunBlazorGeneric :>
     [<CustomOperation("Converter")>] member this.Converter (_: FunBlazorContext<'FunBlazorGeneric>, x: MudBlazor.Converter<'T, 'U>) = "Converter" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Culture")>] member this.Culture (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Globalization.CultureInfo) = "Culture" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Validation")>] member this.Validation (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Object) = "Validation" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("For")>] member this.For (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Linq.Expressions.Expression<System.Func<'T>>) = "For" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("For'")>] member this.For' (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Linq.Expressions.Expression<System.Func<'T>>) = "For" => x |> BoleroAttr |> this.AddProp
                 
 
 type MudBaseInputBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -1770,7 +1770,7 @@ type MudTooltipBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.Asp
     static member create (x: string) = MudTooltipBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
     static member create (x: IFunBlazorNode list) = MudTooltipBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
     [<CustomOperation("Text")>] member this.Text (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "Text" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("Delay")>] member this.Delay (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Double) = "Delay" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("Delay'")>] member this.Delay' (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Double) = "Delay" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Delayed")>] member this.Delayed (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Double) = "Delayed" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Placement")>] member this.Placement (_: FunBlazorContext<'FunBlazorGeneric>, x: MudBlazor.Placement) = "Placement" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp

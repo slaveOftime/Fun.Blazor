@@ -55,7 +55,9 @@ let private getMetaInfo (ty: Type) =
             else
                 let name = prop.Name
                 let name =
-                    if fsharpKeywords |> List.contains name then $"{name}'"
+                    if fsharpKeywords@["Bind"; "Delay"; "Return"; "ReturnFrom"; "Run"; "Combine"; "For"; "TryFinally"; "TryWith"; "Using"; "While"; "Yield"; "YieldFrom"; "Zero"; "Quote"]
+                       |> List.contains name 
+                    then $"{name}'"
                     else name
                 if prop.PropertyType.IsGenericType then
                     if prop.PropertyType.Name.StartsWith "EventCallback" ||

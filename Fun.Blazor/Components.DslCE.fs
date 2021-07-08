@@ -138,7 +138,7 @@ type InputRadioBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Micr
 type ValidationMessageBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FunBlazorContextWithAttrs<'FunBlazorGeneric>()
     static member create () = ValidationMessageBuilder<'FunBlazorGeneric, 'TValue>() :> IFunBlazorNode
-    [<CustomOperation("For")>] member this.For (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Linq.Expressions.Expression<System.Func<'TValue>>) = "For" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("For'")>] member this.For' (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Linq.Expressions.Expression<System.Func<'TValue>>) = "For" => x |> BoleroAttr |> this.AddProp
                 
 
 type ValidationSummaryBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
