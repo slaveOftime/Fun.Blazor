@@ -56,7 +56,10 @@ let ``Giraffe style routes normal cases`` () =
 
         routeCi "/citest" (html.text "/CiTest")
 
-        fun _ -> failwith "No route matched"
+        routeCi "/application/greate test1" (html.text "/application/greate%20test1")
+        routeCif "/application/%s" (fun x -> if x = "greate test2" then html.text "/application/greate%20test2" else html.text "failed")
+
+        fun x -> failwith $"No route matched for {x}"
     ]
 
     use testContext = createTestContext()
@@ -75,6 +78,8 @@ let ``Giraffe style routes normal cases`` () =
     testRoute "/r3?a=a1&b=123"
     testRoute "/r3/3?a=a1&b=123"
     testRoute "/CiTest"
+    testRoute "/application/greate%20test1"
+    testRoute "/application/greate%20test2"
 
 
 [<Fact>]
@@ -85,6 +90,8 @@ let ``Feliz style rooutes normal cases`` () =
         | [ "r1"; "r2"; x ] -> html.text $"/r1/r2/{x}"
         | [ "r3"; Route.Query [ "a", a; "b", b ] ] -> html.text $"/r3?a={a}&b={b}"
         | [ "r3"; Route.Int x; Route.Query [ "a", a; "b", b ] ] -> html.text $"/r3/{x}?a={a}&b={b}"
+        | [ "application"; "greate test1" ] -> html.text "/application/greate%20test1"
+        | [ "application"; x ] -> if x = "greate test2" then html.text "/application/greate%20test2" else html.text "error"
         | _ -> failwith "No route matched"
     )
 
@@ -100,4 +107,6 @@ let ``Feliz style rooutes normal cases`` () =
     testRoute "/r1/r2/hi"
     testRoute "/r3?a=a1&b=123"
     testRoute "/r3/3?a=a1&b=123"
+    testRoute "/application/greate%20test1"
+    testRoute "/application/greate%20test2"
 

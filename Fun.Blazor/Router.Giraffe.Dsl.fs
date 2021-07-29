@@ -3,6 +3,7 @@ module Fun.Blazor.Router.GiraffeDsl
 
 open Giraffe.FormatExpressions
 open Microsoft.AspNetCore.WebUtilities
+open type System.Net.WebUtility
 
 
 type RouteUrl = string
@@ -31,7 +32,7 @@ let choose<'View> (routes: Router<'View> list): Router<'View> =
 /// Check the start of the url for the parttern and ignore case sensitive
 let subRouteCi (pattern: string) routes: Router<'View> =
     fun url ->
-        if url.ToLower().StartsWith (pattern.ToLower()) then
+        if UrlDecode(url.ToLower()).StartsWith(pattern.ToLower()) then
             choose routes (url.Substring(pattern.Length))
         else
             None
@@ -40,7 +41,7 @@ let subRouteCi (pattern: string) routes: Router<'View> =
 /// Exact match the url and ignore case sensitive
 let routeCi (pattern: string) view: Router<'View> =
     fun url ->
-        if (getUrlMainPath url).ToLower() = pattern.ToLower() then
+        if UrlDecode((getUrlMainPath url)).ToLower() = pattern.ToLower() then
             Some view
         elif (url = "" || url = "/") && pattern = "" then
             Some view
@@ -57,7 +58,7 @@ let routeCif (path: PrintfFormat<_,_,_,_, 'T>) viewFn: Router<'View> =
 /// Match the url, extract parameters and query strings and ignore case sensitive
 let routeCiWithQuery (pattern: string) view: Router<'View> =
     fun url ->
-        if (getUrlMainPath url).ToLower() = pattern.ToLower() ||
+        if UrlDecode((getUrlMainPath url)).ToLower() = pattern.ToLower() ||
            (url = "" || url = "/") && pattern = ""
         then
             let query = getQuery url

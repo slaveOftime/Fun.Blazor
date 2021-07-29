@@ -6,6 +6,9 @@ open System.Text.RegularExpressions
 open Microsoft.FSharp.Reflection
 open FSharp.Core
 
+open type System.Net.WebUtility
+
+
 // ---------------------------
 // String matching functions
 // ---------------------------
@@ -21,7 +24,7 @@ let private formatStringMap =
         //
         // For more information please check:
         // https://github.com/aspnet/Mvc/issues/4599
-        str.Replace("%2F", "/").Replace("%2f", "/")
+        str.Replace("%2F", "/").Replace("%2f", "/") |> UrlDecode
 
     let parseGuid (str : string) = Guid str
 
