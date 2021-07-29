@@ -1,34 +1,16 @@
 module Fun.Blazor.Tests.RouterTests
 
-open System.Runtime.CompilerServices
 open Microsoft.AspNetCore.Components
 open Microsoft.AspNetCore.Components.Routing
 open Microsoft.Extensions.DependencyInjection
 open Moq
 open Xunit
 open Bunit
-open Bolero
 open Fun.Blazor
 open Fun.Blazor.Router
 
 
-[<Extension>]
-type FunBlazorTestComponent() =
-    inherit Component()
-
-    [<Parameter>]
-    member val Node = Unchecked.defaultof<IFunBlazorNode> with get, set
-
-    override this.Render () = this.Node.Node().ToBolero()
-
-    [<Extension>]
-    static member RenderNode(ctx: TestContext, node: IFunBlazorNode) =
-        ctx.RenderComponent(fun (parameters: ComponentParameterCollectionBuilder<FunBlazorTestComponent>) -> 
-            parameters.Add((fun p -> p.Node), node) |> ignore)
-
-
-
-let createTestContext () =
+let private createTestContext () =
     let textContext = new TestContext()
     
     textContext.Services
