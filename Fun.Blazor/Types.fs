@@ -99,6 +99,7 @@ type IStore<'T> =
     abstract Publish: 'T -> unit
     abstract Observable: IObservable<'T>
     abstract Current: 'T
+    abstract Key: string
 
 
 type IComponentHook =

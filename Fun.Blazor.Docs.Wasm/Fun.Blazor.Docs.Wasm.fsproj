@@ -35,6 +35,7 @@
     <Compile Include="Pages\Elmish\Elmish.fs" />
     <Compile Include="Pages\HelperFunctions\ComponentHookDemo.fs" />
     <Compile Include="Pages\HelperFunctions\GlobalStoreDemo.fs" />
+    <Compile Include="Pages\HelperFunctions\ReactiveDemo.fs" />
     <Compile Include="Pages\HelperFunctions\HelperFunctions.fs" />
     <None Include="Pages\CliUsage\CliUsageDemo.md" />
     <Compile Include="Pages\CliUsage\CliUsage.fs" />

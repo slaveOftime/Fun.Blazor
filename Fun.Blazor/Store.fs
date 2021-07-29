@@ -8,6 +8,7 @@ open Fun.Result
 
 type Store<'T> (defaultValue: 'T) =
     let subject = Subject<'T>.broadcast
+    let key = Guid.NewGuid().ToString()
     let mutable value = defaultValue
     let mutable subsribtion = null
 
@@ -20,6 +21,7 @@ type Store<'T> (defaultValue: 'T) =
         member _.Publish (x: 'T) = subject.OnNext x
         member _.Observable = subject :> IObservable<'T>
         member _.Current = value
+        member _.Key = key
 
     interface IDisposable with
         member _.Dispose() =

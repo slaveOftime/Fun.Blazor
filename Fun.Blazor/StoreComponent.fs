@@ -26,8 +26,11 @@ type StoreComponent<'T> () as this =
     member internal _.Rerender() = this.InvokeAsync(this.StateHasChanged) |> ignore
 
 
-    override _.Render() = this.RenderFn value |> FunBlazorNode.ToBolero
+    override _.Render() =
+        if box value = null then Html.empty
+        else this.RenderFn value |> FunBlazorNode.ToBolero
 
+        
     override _.OnInitialized() =
         base.OnInitialized()
 

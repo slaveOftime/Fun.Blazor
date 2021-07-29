@@ -16,4 +16,6 @@ let helperFunctions =
             demoContainer "ComponentHook" $"{root}/ComponentHookDemo" componentHookDemo
             demoDivider
             demoContainer "Global storage" $"{root}/GlobalStoreDemo" globalStoreDemo
+            demoDivider
+            demoContainer "Reactive" $"{root}/ReactiveDemo" reactiveDemo
         ]
