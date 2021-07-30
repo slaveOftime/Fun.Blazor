@@ -6,7 +6,7 @@ open Bolero.Html
 
 
 type FunBlazorHtmlEngine with
-    member html.watch (defaultValue: 'T, store: IObservable<'T>, render: 'T -> IFunBlazorNode, ?key) =
+    member html.watch (store: IObservable<'T>, render: 'T -> IFunBlazorNode, defaultValue: 'T, ?key) =
         html.bolero 
             (Bolero.Node.BlazorComponent<StoreComponent<'T>>
                 ([
@@ -19,8 +19,10 @@ type FunBlazorHtmlEngine with
                 ]
                 ,[]))
 
-    member html.watch (observe: IObservable<'T>, render: 'T -> IFunBlazorNode) = html.watch (Unchecked.defaultof<'T>, observe, render, key = box observe)
+    member html.watch (observe: IObservable<'T>, render: 'T -> IFunBlazorNode) = html.watch (observe, render, Unchecked.defaultof<'T>)
     member html.watch (observe: IObservable<'T>, render: 'T -> IFunBlazorNode list) = html.watch (observe, render >> Fragment >> (fun x -> x :> IFunBlazorNode))
+    member html.watch (key: obj, observe: IObservable<'T>, render: 'T -> IFunBlazorNode) = html.watch (observe, render, Unchecked.defaultof<'T>, key = key)
+    member html.watch (key: obj, observe: IObservable<'T>, render: 'T -> IFunBlazorNode list) = html.watch (key, observe, render >> Fragment >> (fun x -> x :> IFunBlazorNode))
     
     member html.watch2 (observe1: IObservable<'T1>, observe2: IObservable<'T2>, render: 'T1 -> 'T2 -> IFunBlazorNode) =
         html.watch (observe1, fun o1 ->
@@ -39,8 +41,10 @@ type FunBlazorHtmlEngine with
     member html.watch3 (observe1: IObservable<'T1>, observe2: IObservable<'T2>, observe3: IObservable<'T3>, render: 'T1 -> 'T2 -> 'T3 -> IFunBlazorNode) =
         html.watch3 (observe1, observe2, observe3, fun o1 o2 o3 -> [ render o1 o2 o3 ])
 
-    member html.watch (store: IStore<'T>, render: 'T -> IFunBlazorNode) = html.watch (store.Current, store.Observable, render, key = store)
-    member html.watch (store: IStore<'T>, render: 'T -> IFunBlazorNode list) = html.watch (store.Current, store.Observable, render >> Fragment >> (fun x -> x :> IFunBlazorNode), key = store)
+    member html.watch (store: IStore<'T>, render: 'T -> IFunBlazorNode) = html.watch (store.Observable, render, store.Current)
+    member html.watch (store: IStore<'T>, render: 'T -> IFunBlazorNode list) = html.watch (store.Observable, render >> Fragment >> (fun x -> x :> IFunBlazorNode), store.Current)
+    member html.watch (key, store: IStore<'T>, render: 'T -> IFunBlazorNode) = html.watch (store.Observable, render, store.Current, key = key)
+    member html.watch (key, store: IStore<'T>, render: 'T -> IFunBlazorNode list) = html.watch (store.Observable, render >> Fragment >> (fun x -> x :> IFunBlazorNode), store.Current, key = key)
     
     member html.watch2 (store1: IStore<'T1>, store2: IStore<'T2>, render: 'T1 -> 'T2 -> IFunBlazorNode) =
         html.watch (store1, fun s1 ->

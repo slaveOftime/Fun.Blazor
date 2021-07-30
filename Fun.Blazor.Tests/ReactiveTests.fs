@@ -24,7 +24,33 @@ let ``html watch tests`` () =
     
     use store = new Store<_>(1)
 
-    let comp1 = html.watch(store, sprintf "data=%d" >> html.text)
+    let comp = html.watch(store, sprintf "data=%d" >> html.text)
+    let result = context.RenderNode comp
+    
+    result.MarkupMatches("data=1")
 
-    let result1 = context.RenderNode comp1
-    result1.MarkupMatches("data=1")
+    (store :> IStore<_>).Publish 2
+    result.MarkupMatches("data=2")
+
+
+[<Fact>]
+let ``html watch2 tests`` () =
+    let context = createTestContext()
+    
+    use store1 = new Store<_>(1)
+    use store2 = new Store<_>(1)
+
+    let comp = html.watch2(store1, store2, fun s1 s2 -> html.text $"s1={s1};s2={s2}")
+    let result = context.RenderNode comp
+    
+    result.MarkupMatches("s1=1;s2=1")
+
+    (store1 :> IStore<_>).Publish 2
+    result.MarkupMatches("s1=2;s2=1")
+
+    (store2 :> IStore<_>).Publish 4
+    result.MarkupMatches("s1=2;s2=4")
+
+    (store1 :> IStore<_>).Publish 8
+    (store2 :> IStore<_>).Publish 9
+    result.MarkupMatches("s1=8;s2=9")
