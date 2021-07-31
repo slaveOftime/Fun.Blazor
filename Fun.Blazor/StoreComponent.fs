@@ -10,6 +10,7 @@ type StoreComponent<'T> () as this =
     
     let mutable subscription = null
     let mutable value = Unchecked.defaultof<'T>
+    let mutable isValueSet = false
 
     
     [<Parameter>]
@@ -27,7 +28,7 @@ type StoreComponent<'T> () as this =
 
 
     override _.Render() =
-        if box value = null then Html.empty
+        if not isValueSet && box value = null then Html.empty
         else this.RenderFn value |> FunBlazorNode.ToBolero
 
         
@@ -35,6 +36,7 @@ type StoreComponent<'T> () as this =
         base.OnInitialized()
 
         value <- this.DefaultValue
+        isValueSet <- true
         subscription <- this.Store.Subscribe(fun x ->
             value <- x
             this.Rerender())

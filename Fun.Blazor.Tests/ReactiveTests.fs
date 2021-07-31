@@ -54,3 +54,20 @@ let ``html watch2 tests`` () =
     (store1 :> IStore<_>).Publish 8
     (store2 :> IStore<_>).Publish 9
     result.MarkupMatches("s1=8;s2=9")
+
+
+
+[<Fact>]
+let ``html watch Option tests`` () =
+    let context = createTestContext()
+    
+    use store = new Store<_>(None)
+
+    let comp = html.watch(store, function Some s -> html.text $"s={s}" | None -> html.text "None")
+    let result = context.RenderNode comp
+
+    result.MarkupMatches "None"
+
+    (store :> IStore<_>).Publish(Some 2)
+    result.MarkupMatches "s=2"
+
