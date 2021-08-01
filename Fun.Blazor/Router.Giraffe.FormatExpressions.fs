@@ -88,10 +88,10 @@ let private convertToRegexPatternAndFormatChars (mode : MatchMode) (formatString
 /// <param name="options">The options record with specifications on how the matching should behave.</param>
 /// <param name="input">The input string from which the parsed arguments shall be extracted.</param>
 /// <returns>Matched value as an option of 'T</returns>
-let tryMatchInput (format : PrintfFormat<_,_,_,_, 'T>) (options : MatchOptions) (input : string) =
+let tryMatchInput<'T> (format : string) (options : MatchOptions) (input : string) =
     try
         let pattern, formatChars =
-            format.Value
+            format
             |> Regex.Escape
             |> convertToRegexPatternAndFormatChars options.MatchMode
 
@@ -143,11 +143,11 @@ let tryMatchInput (format : PrintfFormat<_,_,_,_, 'T>) (options : MatchOptions) 
 /// <param name="ignoreCase">The flag to make matching case insensitive.</param>
 /// <param name="input">The input string from which the parsed arguments shall be extracted.</param>
 /// <returns>Matched value as an option of 'T</returns>
-let tryMatchInputExact (format : PrintfFormat<_,_,_,_, 'T>) (ignoreCase : bool) (input : string) =
+let tryMatchInputExact<'T> (format : string) (ignoreCase : bool) (input : string) =
     let options = match ignoreCase with
                   | true -> MatchOptions.IgnoreCaseExact
                   | false -> MatchOptions.Exact
-    tryMatchInput format options input
+    tryMatchInput<'T> format options input
 
 
 // ---------------------------

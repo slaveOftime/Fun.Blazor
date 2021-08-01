@@ -41,6 +41,9 @@ let ``Giraffe style routes normal cases`` () =
         routeCi "/application/greate test1" (html.text "/application/greate%20test1")
         routeCif "/application/%s" (fun x -> if x = "greate test2" then html.text "/application/greate%20test2" else html.text "failed")
 
+        routeCif "/tail/%s{*}" (fun _ -> html.text $"/tail/1/tail")
+        routeCi "/tail2{*}" (html.text $"/tail2/2/tail2")
+
         fun x -> failwith $"No route matched for {x}"
     ]
 
@@ -62,6 +65,8 @@ let ``Giraffe style routes normal cases`` () =
     testRoute "/CiTest"
     testRoute "/application/greate%20test1"
     testRoute "/application/greate%20test2"
+    testRoute "/tail/1/tail"
+    testRoute "/tail2/2/tail2"
 
 
 [<Fact>]

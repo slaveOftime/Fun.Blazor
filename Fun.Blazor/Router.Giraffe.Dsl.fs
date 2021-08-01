@@ -1,6 +1,7 @@
 ﻿[<AutoOpen>]
 module Fun.Blazor.Router.GiraffeDsl
 
+open System
 open Giraffe.FormatExpressions
 open Microsoft.AspNetCore.WebUtilities
 open type System.Net.WebUtility
@@ -10,6 +11,8 @@ type RouteUrl = string
 
 type Router<'View> = RouteUrl -> 'View Option
 
+
+let tailIndicator = "{*}"
 
 let private getUrlMainPath (url: string) =
     let index = url.IndexOf '?'
@@ -41,19 +44,34 @@ let subRouteCi (pattern: string) routes: Router<'View> =
 /// Exact match the url and ignore case sensitive
 let routeCi (pattern: string) view: Router<'View> =
     fun url ->
-        if UrlDecode((getUrlMainPath url)).ToLower() = pattern.ToLower() then
+        let url = UrlDecode((getUrlMainPath url))
+
+        let isMatch =
+            if pattern.Contains tailIndicator then
+                let pattern = pattern.Substring(0, pattern.IndexOf tailIndicator)
+                url.StartsWith(pattern, StringComparison.OrdinalIgnoreCase)
+            else
+                url.Equals(pattern, StringComparison.OrdinalIgnoreCase)
+
+        if isMatch then
             Some view
         elif (url = "" || url = "/") && pattern = "" then
             Some view
         else
             None
 
+
 /// Match the url, extract parameters and ignore case sensitive
 let routeCif (path: PrintfFormat<_,_,_,_, 'T>) viewFn: Router<'View> =
     fun url ->
+        let url = UrlDecode((getUrlMainPath url))
+        let path =
+            if path.Value.Contains tailIndicator then path.Value.Substring(0, path.Value.IndexOf tailIndicator)
+            else path.Value
         let option = { IgnoreCase = true; MatchMode = MatchMode.StartsWith }
-        tryMatchInput path option (getUrlMainPath url)
+        tryMatchInput<'T> path option url
         |> Option.map viewFn
+
 
 /// Match the url, extract parameters and query strings and ignore case sensitive
 let routeCiWithQuery (pattern: string) view: Router<'View> =
@@ -77,7 +95,7 @@ let routeCifWithQuery (path: PrintfFormat<_,_,_,_, 'T>) view: Router<'View> =
         let query =
             if spliterIndex > -1 then url.Substring(spliterIndex + 1)
             else ""
-        tryMatchInput path option newUrl
+        tryMatchInput<'T> path.Value option newUrl
         |> Option.map (fun v -> view v query)
 
 let routeCifWithQueries path view: Router<'View> =
