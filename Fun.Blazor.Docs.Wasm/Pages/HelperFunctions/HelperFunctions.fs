@@ -18,4 +18,6 @@ let helperFunctions =
             demoContainer "Global storage" $"{root}/GlobalStoreDemo" globalStoreDemo
             demoDivider
             demoContainer "Reactive" $"{root}/ReactiveDemo" reactiveDemo
+            demoDivider
+            demoContainer "Adaptive" $"{root}/AdaptiveDemo" adaptiveDemo
         ]

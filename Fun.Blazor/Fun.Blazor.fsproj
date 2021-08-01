@@ -15,10 +15,12 @@
 		<Compile Include="DIComponent.fs" />
 		<Compile Include="ElmComponent.fs" />
 		<Compile Include="StoreComponent.fs" />
+		<Compile Include="AdaptiveComponent.fs" />
 		<Compile Include="Events.fs" />
 		<Compile Include="Dsl.fs" />
 		<Compile Include="DslElmish.fs" />
 		<Compile Include="DslReactive.fs" />
+		<Compile Include="DslAdaptive.fs" />
 		<Compile Include="DslRouting.fs" />
 		<Compile Include="DslCE.fs" />
 		<Compile Include="Components.Dsl.fs" />
@@ -30,6 +32,7 @@
 		<PackageReference Include="Bolero" Version="0.17.25" />
 		<PackageReference Include="Feliz.Engine" Version="1.0.0-beta-004" />
 		<PackageReference Include="FSharp.Control.Reactive" Version="5.0.2" />
+		<PackageReference Include="FSharp.Data.Adaptive" Version="1.2.6" />
 		<PackageReference Include="Fun.Result" Version="1.1.1" />
 		<PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />

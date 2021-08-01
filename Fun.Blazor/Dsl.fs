@@ -54,7 +54,7 @@ type FunBlazorHtmlEngine (mk, ofStr, empty) =
     member html.script x = html.script [ Attr ("src", Choice1Of2 x) :> IFunBlazorNode ]
     member html.scriptRaw x = html.script [ html.raw x ]
     member html.stylesheet x = html.link [ Attr ("rel", Choice1Of2 "stylesheet"); Attr ("href", Choice1Of2 x) ]
-      
+
 
 type FunBlazorSvgEngine (mk, ofStr, empty) =
     inherit Feliz.SvgEngine<IFunBlazorNode>(mk, ofStr, empty)
