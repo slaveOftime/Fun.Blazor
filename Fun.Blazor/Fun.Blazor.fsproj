@@ -19,8 +19,8 @@
 		<Compile Include="Events.fs" />
 		<Compile Include="Dsl.fs" />
 		<Compile Include="DslElmish.fs" />
-		<Compile Include="DslReactive.fs" />
 		<Compile Include="DslAdaptive.fs" />
+		<Compile Include="DslReactive.fs" />
 		<Compile Include="DslRouting.fs" />
 		<Compile Include="DslCE.fs" />
 		<Compile Include="Components.Dsl.fs" />

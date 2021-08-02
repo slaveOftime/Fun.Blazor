@@ -31,6 +31,10 @@ let adaptiveDemo = html.inject (fun (hook: IComponentHook) ->
     MudPaper'(){
         Styles [ style.padding 20 ]
         childContent [
+            MudAlert'(){
+                Severity Severity.Info
+                childContent "Actually the reactive CE is same with the adaptiveComp CE. Under the hook it is powered by FSharp.Data.Adaptive"
+            }
             adaptiveComp {
                 let! s1 = store1
                 let! s2 = store2

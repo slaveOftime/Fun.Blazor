@@ -62,3 +62,6 @@ type FunBlazorHtmlEngine with
 
     member html.watch3 (store1: IStore<'T1>, store2: IStore<'T2>, store3: IStore<'T3>, render: 'T1 -> 'T2 -> 'T3 -> IFunBlazorNode) =
         html.watch3 (store1, store2, store3, fun s1 s2 s3 -> [ render s1 s2 s3 ])
+
+
+let reactive = AaptiveBuilder()
