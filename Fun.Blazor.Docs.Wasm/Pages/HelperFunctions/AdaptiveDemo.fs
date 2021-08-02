@@ -32,57 +32,56 @@ let adaptiveDemo = html.inject (fun (hook: IComponentHook) ->
         Styles [ style.padding 20 ]
         childContent [
             adaptiveComp {
-                let! s4 = store4
                 let! s1 = store1
                 let! s2 = store2
                 let! s3 = store3
-                return html.fragment [
+                let! s4 = store4
+                if s1 > 11 then
                     MudText'(){
                         Typo Typo.subtitle1
                         childContent $"Store1 {s1}"
                     }
-                    MudText'(){
-                        Typo Typo.subtitle1
-                        childContent $"Store2 {s2}"
+                MudText'(){
+                    Typo Typo.subtitle1
+                    childContent $"Store2 {s2}"
+                }
+                MudText'(){
+                    Typo Typo.subtitle1
+                    childContent $"Store3 {s3}"
+                }
+                MudText'(){
+                    Typo Typo.subtitle1
+                    childContent $"Store4 {s4}"
+                }
+                MudButton'(){
+                    OnClick (fun _ -> transact (fun _ -> isVisible.Value <- true))
+                    childContent "Open Dialog"
+                }
+                adaptiveComp {
+                    let! store1 = store1
+                    let! isVisible' = isVisible
+                    MudOverlay'(){
+                        Visible isVisible'
+                        childContent [
+                            MudPaper'(){
+                                Styles [ style.padding 10 ]
+                                childContent [
+                                    MudText'(){
+                                        Typo Typo.h5
+                                        childContent "Cool right?"
+                                    }
+                                    MudText'.create $"Store1: {s1} when open dialog"
+                                    MudText'.create $"Store1: {store1}"
+                                    MudButton'(){
+                                        OnClick (fun _ -> transact (fun _ -> isVisible.Value <- false))
+                                        Variant Variant.Filled
+                                        childContent "Close"
+                                    }
+                                ]
+                            }
+                        ]
                     }
-                    MudText'(){
-                        Typo Typo.subtitle1
-                        childContent $"Store3 {s3}"
-                    }
-                    MudText'(){
-                        Typo Typo.subtitle1
-                        childContent $"Store4 {s4}"
-                    }
-                    MudButton'(){
-                        OnClick (fun _ -> transact (fun _ -> isVisible.Value <- true))
-                        childContent "Open Dialog"
-                    }
-                    adaptiveComp {
-                        let! store1 = store1
-                        let! isVisible' = isVisible
-                        return MudOverlay'(){
-                            Visible isVisible'
-                            childContent [
-                                MudPaper'(){
-                                    Styles [ style.padding 10 ]
-                                    childContent [
-                                        MudText'(){
-                                            Typo Typo.h5
-                                            childContent "Cool right?"
-                                        }
-                                        MudText'.create $"Store1: {s1} when open dialog"
-                                        MudText'.create $"Store1: {store1}"
-                                        MudButton'(){
-                                            OnClick (fun _ -> transact (fun _ -> isVisible.Value <- false))
-                                            Variant Variant.Filled
-                                            childContent "Close"
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    }
-                ]
+                }
             }
         ]
     })

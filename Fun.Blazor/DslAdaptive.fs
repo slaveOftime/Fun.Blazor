@@ -33,6 +33,14 @@ type AaptiveBuilder() =
         
         data |> AVal.bind fn
 
+    member _.Delay (fn: unit -> aval<_>) = fn()
+
+    member _.Combine (c1, c2) = AVal.map2 (fun x y -> html.fragment [x; y]) c1 c2
+
+    member _.Yield x = AVal.constant x
+
+    member _.Zero () = AVal.constant html.none
+
 
 [<Extension>]
 type Extensions =

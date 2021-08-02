@@ -51,3 +51,37 @@ let ``html adaptive tests`` () =
 
     (store3 :> IStore<_>).Publish 10
     result.MarkupMatches("s1=8;s2=9;s3=10")
+
+
+[<Fact>]
+let ``html adaptive complex condition tests`` () =
+    let context = createTestContext()
+    
+    let store1 = cval 1
+    use store2 = new Store<_>(1)
+
+    let comp = adaptiveComp {
+        let! s1 = store1
+        let! s2 = store2
+        if s1 >= 2 then
+            html.div $"s1={s1}"
+        if s2 >= 2 then
+            html.div $"s2={s2}"
+    }
+
+    let result = context.RenderNode comp
+    
+    Assert.Equal("", result.Markup)
+
+    store1.Publish 2
+    result.MarkupMatches("<div>s1=2</div>")
+
+    (store2 :> IStore<_>).Publish 2
+    result.MarkupMatches
+        ("""
+            <div>s1=2</div>
+            <div>s2=2</div>
+        """)
+
+    (store2 :> IStore<_>).Publish 1
+    result.MarkupMatches("<div>s1=2</div>")
