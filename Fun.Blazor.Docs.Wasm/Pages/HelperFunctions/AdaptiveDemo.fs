@@ -17,13 +17,13 @@ let adaptiveDemo = html.inject (fun (hook: IComponentHook) ->
     hook.OnFirstAfterRender.Add (fun () ->
         TimeSpan.FromSeconds 3.
         |> Observable.interval
-        |> Observable.subscribe (fun _ -> transact (fun _ -> store1.Value <- store1.Value + 1))
+        |> Observable.subscribe (fun _ -> store1.Publish ((+) 1))
         |> hook.AddDispose
 
         TimeSpan.FromSeconds 1.
         |> Observable.interval
         |> Observable.subscribe (fun _ ->
-            transact (fun _ -> store2.Value <- store2.Value + 1)
+            store2.Publish ((+) 1)
             store4.Publish ((+) 1))
         |> hook.AddDispose
     )

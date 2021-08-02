@@ -3,6 +3,7 @@ module Fun.Blazor.DslAdaptive
 
 open System
 open System.Collections.Generic
+open System.Runtime.CompilerServices
 open FSharp.Data.Adaptive
 open Bolero.Html
 open Fun.Blazor
@@ -31,6 +32,15 @@ type AaptiveBuilder() =
         |> subscriptions.Add
         
         data |> AVal.bind fn
+
+
+[<Extension>]
+type Extensions =
+    [<Extension>]
+    static member Publish (this: cval<'T>, x: 'T) = transact(fun () -> this.Value <- x)
+    
+    [<Extension>]
+    static member Publish (this: cval<'T>, fn: 'T -> 'T) = transact(fun () -> this.Value <- fn this.Value)
 
 
 let adaptiveComp = AaptiveBuilder()

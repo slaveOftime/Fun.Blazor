@@ -38,10 +38,10 @@ let ``html adaptive tests`` () =
     
     result.MarkupMatches("s1=1;s2=1;s3=1")
 
-    transact (fun _ -> store1.Value <- 2)
+    store1.Publish 2
     result.MarkupMatches("s1=2;s2=1;s3=1")
 
-    transact (fun _ -> store2.Value <- 4)
+    store2.Publish 4
     result.MarkupMatches("s1=2;s2=4;s3=1")
 
     transact (fun _ ->
