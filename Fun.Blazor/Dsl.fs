@@ -15,24 +15,6 @@ type FunBlazorHtmlEngine (mk, ofStr, empty) =
 
     member _.bolero x = BoleroNode x :> IFunBlazorNode
 
-    member html.inject (render: 'T -> IFunBlazorNode) =
-        html.bolero 
-            (Bolero.Node.BlazorComponent<DIComponent<'T>>
-                ([
-                    "RenderFn" => render
-                    Bolero.Key (Guid.NewGuid().ToString())
-                ]
-                ,[]))
-
-    member html.inject (key: obj, render: 'T -> IFunBlazorNode) =
-        html.bolero 
-            (Bolero.Node.BlazorComponent<DIComponent<'T>>
-                ([
-                    "RenderFn" => render
-                    Bolero.Key key
-                ]
-                ,[]))
-
     member _.fragment x = Fragment x :> IFunBlazorNode
 
     member html.raw x = Bolero.RawHtml x |> BoleroNode :> IFunBlazorNode

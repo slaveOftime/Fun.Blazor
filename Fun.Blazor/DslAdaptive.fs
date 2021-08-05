@@ -1,45 +1,31 @@
 ﻿[<AutoOpen>]
 module Fun.Blazor.DslAdaptive
 
-open System
-open System.Collections.Generic
 open System.Runtime.CompilerServices
 open FSharp.Data.Adaptive
 open Bolero.Html
 open Fun.Blazor
 
 
-type AaptiveBuilder() =
-    inherit AValBuilder()
+type AdaptiveBuilder() =
+    inherit AListBuilder()
 
-    let subscriptions = List<IDisposable>()
-
-
-    member _.Run (x: aval<IFunBlazorNode>) =
+    member _.Run (x: alist<IFunBlazorNode>) =
         html.bolero 
             (Bolero.Node.BlazorComponent<AdaptiveComponent>
                 ([
-                    "RenderFn" => x
-                    "OnDisposeFn" => fun () -> subscriptions |> Seq.iter (fun d -> d.Dispose())
+                    "Node" => x
                 ]
                 ,[]))
 
+    member _.Delay (fn: unit -> alist<_>) = fn()
 
-    member _.Bind (store: IStore<'T1>, fn: 'T1 -> aval<'T2>) =
-        let data = AVal.init store.Current
+    member _.Combine (c1, c2) = AList.append c1 c2
 
-        store.Observable.Subscribe(fun x -> transact(fun () -> data.Value <- x))
-        |> subscriptions.Add
-        
-        data |> AVal.bind fn
+    member _.Yield x = AList.single x
 
-    member _.Delay (fn: unit -> aval<_>) = fn()
+    member _.Zero () = AList.empty
 
-    member _.Combine (c1, c2) = AVal.map2 (fun x y -> html.fragment [x; y]) c1 c2
-
-    member _.Yield x = AVal.constant x
-
-    member _.Zero () = AVal.constant html.none
 
 
 [<Extension>]
@@ -51,5 +37,4 @@ type Extensions =
     static member Publish (this: cval<'T>, fn: 'T -> 'T) = transact(fun () -> this.Value <- fn this.Value)
 
 
-let adaptiveComp = AaptiveBuilder()
-
+let adapt = AdaptiveBuilder()

@@ -29,7 +29,7 @@ let componentHookDemo = html.inject (fun (hook: IComponentHook) ->
         childContent [
             html.watch (toggle, fun isToggled -> [
                 MudText'() {
-                    childContent "We can use this hook to subscribe lifecycle event of the component which created by html.inject at the beginening. We can use create observable store to have a state management for the current component. After the component all the resource will be disposed."
+                    childContent "We can use this hook to subscribe lifecycle event of the component which created by html.inject at the beginening. We can create observable store to have a state management for the current component. After the component disposed all the store will also be disposed."
                     Typo Typo.subtitle1
                 }
                 MudText'() {

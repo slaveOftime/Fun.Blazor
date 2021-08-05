@@ -25,6 +25,14 @@ let spaceH2 = spaceH 6
 let spaceH3 = spaceH 10
 let spaceH4 = spaceH 16
 
+
+let linearProgress =
+    MudProgressLinear'(){
+        Indeterminate true
+        Color Color.Primary
+    }
+
+
 let simplePage (url: string) (titleStr: string) (subTitle: string) (description: string) demos =
     html.div [
         attr.styles [

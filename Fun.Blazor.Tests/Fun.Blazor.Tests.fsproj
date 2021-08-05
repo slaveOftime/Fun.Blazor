@@ -9,7 +9,6 @@
 
 	<ItemGroup>
 		<Compile Include="Utils.fs" />
-		<Compile Include="ReactiveTests.fs" />
 		<Compile Include="AdaptiveTests.fs" />
 		<Compile Include="RouterTests.fs" />
 		<Compile Include="Program.fs" />

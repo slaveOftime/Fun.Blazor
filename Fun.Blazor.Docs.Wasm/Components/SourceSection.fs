@@ -50,7 +50,7 @@ let private getFromGithub (fileName: string) =
     |> deferredObserve
 
 
-let sourceSection fileName = html.inject (fun (env: IHostingEnvironment, config: IConfiguration, shareStore: IShareStore, globalStore: IGlobalStore, hook: IComponentHook) ->
+let sourceSection fileName = html.inject (fileName, fun (env: IHostingEnvironment, config: IConfiguration, shareStore: IShareStore, globalStore: IGlobalStore, hook: IComponentHook) ->
     let isDarkMode = ShareStores.isDarkMode shareStore
     
     let code =
@@ -62,8 +62,7 @@ let sourceSection fileName = html.inject (fun (env: IHostingEnvironment, config:
                 else
                     getFromGithub fileName)
 
-
-    html.watch (code, function
+    html.watch (code ,function
         | DeferredState.Loading ->
             MudProgressLinear'() {
                 Color Color.Primary

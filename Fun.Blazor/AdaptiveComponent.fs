@@ -9,39 +9,31 @@ open Bolero
 type AdaptiveComponent () as this =
     inherit Component()
     
-    let mutable subscription = null
-    let mutable node = None
+    let mutable nodeSubscription = null
 
     [<Parameter>]
-    member val RenderFn = Unchecked.defaultof<aval<IFunBlazorNode>> with get, set
+    member val Node = Unchecked.defaultof<alist<IFunBlazorNode>> with get, set
         
-    [<Parameter>]
-    member val OnDisposeFn = Unchecked.defaultof<unit -> unit> with get, set
-
 
     member internal _.StateHasChanged() = try base.StateHasChanged() with _ -> ()
     member internal _.Rerender() = this.InvokeAsync(this.StateHasChanged) |> ignore
 
 
-    override _.Render() =
-        match node with
-        | None -> Html.empty
-        | Some node -> FunBlazorNode.ToBolero node
+    override _.Render() = 
+        this.Node 
+        |> AList.force
+        |> IndexList.toList 
+        |> FunBlazorNode.Fragment
+        |> FunBlazorNode.ToBolero
 
-        
     override _.OnInitialized() =
-        base.OnInitialized()
-
-        node <- this.RenderFn |> AVal.force |> Some
-        subscription <- this.RenderFn.AddCallback (fun x ->
-            node <- Some x
+        nodeSubscription <- this.Node.AddCallback (fun _ _ ->
             this.Rerender())
+
+    override _.OnParametersSet() = this.Rerender()
 
 
     interface IDisposable with
         member _.Dispose() =
-            if subscription <> null then
-                subscription.Dispose()
-
-            if box this.OnDisposeFn <> null then
-                this.OnDisposeFn()
+            if nodeSubscription <> null then
+                nodeSubscription.Dispose()

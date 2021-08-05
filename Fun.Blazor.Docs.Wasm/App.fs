@@ -63,16 +63,39 @@ let navmenu =
             childContent "Elmish"
         }
         MudNavLink'() {
-            Href "./helper-functions"
-            childContent "Helper functions"
-        }
-        MudNavLink'() {
             Href "./cli-usage"
             childContent "Cli usage"
         }
         MudNavLink'() {
             Href "./tests"
             childContent "Tests"
+        }
+        MudNavGroup'() {
+            Title "Helper functions"
+            Icon Icons.Material.Filled.LiveHelp
+            Expanded true
+            childContent [
+                MudNavLink'() {
+                    Href "./helper-functions/html-inject"
+                    childContent "html.inject"
+                }
+                MudNavLink'() {
+                    Href "./helper-functions/html-watch"
+                    childContent "html.watch"
+                }
+                MudNavLink'() {
+                    Href "./helper-functions/adaptive"
+                    childContent "adapt"
+                }
+                MudNavLink'() {
+                    Href "./helper-functions/component-hook"
+                    childContent "IComponentHook"
+                }
+                MudNavLink'() {
+                    Href "./helper-functions/global-store"
+                    childContent "Global store"
+                }
+            ]
         }
         MudNavGroup'() {
             Title "Demos"
@@ -103,7 +126,13 @@ let app = html.inject (fun (hook: IComponentHook, shareStore: IShareStore) ->
     let routes = [
         subRouteCi "/router"            [ routeAny Router.Router.router ]
         routeCi "/elmish"               Elmish.Elmish.elmish
-        routeCi "/helper-functions"     HelperFunctions.HelperFunctions.helperFunctions
+        subRouteCi "/helper-functions" [
+            routeCi "/html-inject"          (demoContainer "html.inject" "Pages/HelperFunctions/InjectDemo" HelperFunctions.InjectDemo.injectDemo)
+            routeCi "/html-watch"           (demoContainer "html.watch" $"Pages/HelperFunctions/HtmlWatchDemo" HelperFunctions.HtmlWatchDemo.htmlWatchDemo)
+            routeCi "/adaptive"             (demoContainer "adapt" $"Pages/HelperFunctions/AdaptiveDemo" HelperFunctions.AdaptiveDemo.adaptiveDemo)
+            routeCi "/component-hook"       (demoContainer "IComponentHook" $"Pages/HelperFunctions/ComponentHookDemo" HelperFunctions.ComponentHookDemo.componentHookDemo)
+            routeCi "/global-store"         (demoContainer "Global storage" $"Pages/HelperFunctions/GlobalStoreDemo" HelperFunctions.GlobalStoreDemo.globalStoreDemo)
+        ]
         routeCi "/cli-usage"            CliUsage.CliUsage.cliUsage
         routeCi "/tests"                Tests.Tests.tests
         routeCi "/antdesign"            demoAntDesign

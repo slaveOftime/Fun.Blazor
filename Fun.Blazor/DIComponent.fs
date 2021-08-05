@@ -2,6 +2,7 @@
 
 open System
 open System.Collections.Generic
+open FSharp.Data.Adaptive
 open Microsoft.AspNetCore.Components
 open Bolero
 
@@ -38,31 +39,33 @@ type DIComponent<'T>() as this =
     
     let mutable node = None
 
-    let parametersSet = new Event<unit>()
     let initialized = new Event<unit>()
     let afterRenderEvent = new Event<bool>()
     let firstAfterRenderEvent = new Event<unit>()
     let disposeEvent = new Event<unit>()
     let disposes = new List<IDisposable>()
 
+
     let blazorLifecycle =
         { new IComponentHook with
-            //member _.ParametersSet = parametersSet.Publish
-            //member _.Initialized = initialized.Publish
             member _.OnAfterRender = afterRenderEvent.Publish
             member _.OnFirstAfterRender = firstAfterRenderEvent.Publish
             member _.OnDispose = disposeEvent.Publish
             member _.AddDispose dispose = disposes.Add dispose
             member _.AddDisposes ds = disposes.AddRange(ds)
             member _.StateHasChanged () = this.ForceSetState()
+
             member _.UseStore<'T> x =
-                let store = new Store<'T>(x)
-                disposes.Add store
-                store :> IStore<'T> }
+                let newStore = new Store<'T>(x)
+                disposes.Add newStore
+                newStore :> IStore<'T>
+        }
+
 
     let handleNotFoundType ty =
         if ty = typeof<IComponentHook> then box blazorLifecycle
         else null
+
 
     [<Parameter>]
     member val RenderFn = Unchecked.defaultof<'T -> IFunBlazorNode> with get, set
@@ -73,30 +76,28 @@ type DIComponent<'T>() as this =
     member internal _.StateHasChanged() = base.StateHasChanged()
     member internal _.ForceSetState() = this.InvokeAsync(this.StateHasChanged) |> ignore
 
+
     override _.Render() =
         match node with
         | None ->
-            let depsType, tailFunc = Reflection.FSharpType.GetFunctionElements(this.RenderFn.GetType())
+            let depsType, _ = Reflection.FSharpType.GetFunctionElements(this.RenderFn.GetType())
             let services = this.Services.GetMultipleServices(depsType, handleNotFoundType) :?> 'T
-            let newNode = this.RenderFn services |> FunBlazorNode.ToBolero
-            node <- Some newNode
-            newNode
+            let newNode =  this.RenderFn services |> FunBlazorNode.ToBolero
+            node <- newNode |> Some
+            newNode 
 
         | Some node ->
             node
         
-    override _.OnParametersSet () =
-        base.OnParametersSet()
-        parametersSet.Trigger()
 
     override _.OnInitialized () =
-        base.OnInitialized()
         initialized.Trigger()
 
+
     override _.OnAfterRender firstRender =
-        base.OnAfterRender firstRender
         afterRenderEvent.Trigger firstRender
         if firstRender then firstAfterRenderEvent.Trigger()
+
 
     interface IDisposable with
         member _.Dispose () =

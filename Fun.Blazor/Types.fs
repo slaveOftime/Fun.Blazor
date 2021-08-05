@@ -1,6 +1,7 @@
 ﻿namespace rec Fun.Blazor
 
 open System
+open FSharp.Data.Adaptive
 open Bolero
 open Bolero.Html
 open Fun.Result
@@ -100,6 +101,10 @@ type IStore<'T> =
     abstract Observable: IObservable<'T>
     abstract Current: 'T
     abstract Key: string
+
+
+type IObserveValue<'T> =
+    abstract member Current: 'T
 
 
 type IComponentHook =
