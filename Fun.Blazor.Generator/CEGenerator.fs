@@ -68,6 +68,11 @@ let private getMetaInfo (ty: Type) =
                     [ $"    {customOperation name} {memberStart}{name} ({contextArg}, fn) = (Bolero.Html.attr.callback<{getTypeName prop.PropertyType.GenericTypeArguments.[0]}> \"{prop.Name}\" (fun e -> fn e)) |> {nameof BoleroAttr}" ]
                 elif prop.PropertyType.Name.StartsWith "RenderFragment`" then
                     [ $"    {customOperation name} {memberStart}{name} ({contextArg}, render: {getTypeName prop.PropertyType.GenericTypeArguments.[0]} -> {nameof IFunBlazorNode}) = Bolero.Html.attr.fragmentWith \"{prop.Name}\" (fun x -> render x |> html.toBolero) |> {nameof BoleroAttr}" ]
+                elif prop.PropertyType.Namespace = "System"
+                     && (prop.PropertyType.Name.StartsWith "Func`" 
+                        || prop.PropertyType.Name.StartsWith "Action`") 
+                then
+                    [ $"    {customOperation name} {memberStart}{name} ({contextArg}, fn) = \"{prop.Name}\" => ({getTypeName prop.PropertyType}fn) |> {nameof BoleroAttr}" ]
                 else
                     [ $"    {customOperation name} {memberStart}{name} ({contextArg}, x: {getTypeName prop.PropertyType}) = \"{prop.Name}\" => x |> {nameof BoleroAttr}" ]
 
@@ -85,6 +90,7 @@ let private getMetaInfo (ty: Type) =
 
             elif prop.Name = "Style" && prop.PropertyType = typeof<string> then
                 [ $"    [<CustomOperation(\"Styles\")>] {memberStart}Styles ({contextArg}, x: (string * string) list) = attr.styles x" ]
+            
             else
                 [ $"    {customOperation name} {memberStart}{name} ({contextArg}, x: {getTypeName prop.PropertyType}) = \"{prop.Name}\" => x |> {nameof BoleroAttr}" ])
 

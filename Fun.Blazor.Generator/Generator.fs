@@ -30,6 +30,11 @@ let private getMetaInfo (ty: Type) =
                         Some [ $"    static member inline {name} fn = (Bolero.Html.attr.callback<{getTypeName prop.PropertyType.GenericTypeArguments.[0]}> \"{prop.Name}\" (fun e -> fn e)) |> {nameof BoleroAttr}" ]
                     elif prop.PropertyType.Name.StartsWith "RenderFragment`" then
                         Some [ $"    static member inline {name} (render: {getTypeName prop.PropertyType.GenericTypeArguments.[0]} -> {nameof IFunBlazorNode}) = Bolero.Html.attr.fragmentWith \"{prop.Name}\" (fun x -> render x |> html.toBolero) |> {nameof BoleroAttr}" ]
+                    elif prop.PropertyType.Namespace = "System"
+                         && (prop.PropertyType.Name.StartsWith "Func`" 
+                            || prop.PropertyType.Name.StartsWith "Action`") 
+                    then
+                        Some [ $"    static member inline {name} (fn) = \"{prop.Name}\" => ({getTypeName prop.PropertyType}fn) |> {nameof BoleroAttr}" ]
                     else
                         Some [ $"    static member inline {name} (x: {getTypeName prop.PropertyType}) = \"{prop.Name}\" => x |> {nameof BoleroAttr}" ]
 

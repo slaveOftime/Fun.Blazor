@@ -1,6 +1,7 @@
 ﻿[<AutoOpen>]
 module Fun.Blazor.Docs.Wasm.DemoMudBlazor.AlertDemo
 
+open FSharp.Control.Tasks
 open MudBlazor
 open Bolero
 open Fun.Blazor
@@ -33,5 +34,10 @@ let alertDemo = html.inject (fun (hook: IComponentHook) ->
                     childContent s
                 }
             ])
+            MudAutocomplete'(){
+                SearchFunc (fun str -> task {
+                    return seq { for i in 1..5 do $"item {str} {i}" }
+                })
+            }
         ]
     })
