@@ -85,8 +85,18 @@ type FunBlazorContext<'Component when 'Component :> Microsoft.AspNetCore.Compone
     [<CustomOperation("attrs")>]
     member this.attrs (_: FunBlazorContext<'Component>, nodes: IFunBlazorNode list) = nodes |> Seq.iter (this.AddProp >> ignore); this
     
-    [<CustomOperation("ref")>] member this.ref (_: FunBlazorContext<'Component>, v) = Bolero.Html.attr.ref v |> BoleroAttr |> this.AddProp
+    [<CustomOperation("attrs")>]
+    member this.attrs (_: FunBlazorContext<'Component>, nodes: Attr list) = nodes |> Seq.iter (BoleroAttr >> this.AddProp >> ignore); this
+
+    [<CustomOperation("ref")>]
+    member this.ref (_: FunBlazorContext<'Component>, v) = Bolero.Html.attr.ref v |> BoleroAttr |> this.AddProp
     
+    /// Create a handler for a HTML event of type EventArgs.
+    [<CustomOperation("onevent")>] member this.event (_: FunBlazorContext<'Component>, eventName, callback) = Bolero.Html.on.event eventName callback |> BoleroAttr |> this.AddProp
+
+    /// Prevent the default event behavior for a given HTML event.
+    [<CustomOperation("preventDefault")>] member this.preventDefault (_: FunBlazorContext<'Component>, eventName, value) = Bolero.Html.on.preventDefault eventName value |> BoleroAttr |> this.AddProp
+
 
     interface IFunBlazorNode with
         member this.Node () =
