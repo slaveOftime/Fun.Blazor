@@ -39,6 +39,9 @@ let modalDemo = html.inject (fun (hook: IComponentHook) ->
                                 ]
                             ]
                         ]
+                        calendar.create [
+                            calendar.monthCellRender (fun d -> html.text $"My {d.Month}")
+                        ]
                     ]
                  ]
             )
