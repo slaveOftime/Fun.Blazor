@@ -150,7 +150,6 @@ let app = html.inject (fun (hook: IComponentHook, shareStore: IShareStore) ->
         MudSnackbarProvider'.create()
      
         MudLayout'() {
-            RightToLeft false
             childContent [
                 MudAppBar'() {
                     Color Color.Primary

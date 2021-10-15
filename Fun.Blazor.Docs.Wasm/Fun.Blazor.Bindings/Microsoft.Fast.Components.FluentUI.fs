@@ -8,20 +8,6 @@ open Microsoft.Fast.Components.FluentUI.DslInternals
 open Microsoft.Fast.Components.FluentUI.DslInternals
 
 
-type fluentDesignSystemProvider<'FunBlazorGeneric> =
-    
-    static member create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentDesignSystemProvider>
-    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentDesignSystemProvider>
-    static member create (nodes: IFunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentDesignSystemProvider>
-    static member create (node: IFunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentDesignSystemProvider>
-    static member create (x: string) = [ html.text x ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentDesignSystemProvider>
-    static member ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentDesignSystemProvider> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member additionalAttributes (x: System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>) = "AdditionalAttributes" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-                    
-
 type fluentInputBase<'FunBlazorGeneric, 'TValue> =
     
     static member create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentInputBase<'TValue>>
@@ -66,6 +52,32 @@ type fluentCombobox<'FunBlazorGeneric> =
     static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+                    
+
+type fluentNumberField<'FunBlazorGeneric, 'TValue> =
+    inherit fluentInputBase<'FunBlazorGeneric, 'TValue>
+    static member create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentNumberField<'TValue>>
+    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentNumberField<'TValue>>
+    static member create (nodes: IFunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentNumberField<'TValue>>
+    static member create (node: IFunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentNumberField<'TValue>>
+    static member create (x: string) = [ html.text x ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentNumberField<'TValue>>
+    static member ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentNumberField<'TValue>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member disabled (x: System.Nullable<System.Boolean>) = "Disabled" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member readonly (x: System.Nullable<System.Boolean>) = "Readonly" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member required (x: System.Nullable<System.Boolean>) = "Required" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member autofocus (x: System.Nullable<System.Boolean>) = "Autofocus" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member size (x: System.Int32) = "Size" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member appearance (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Appearance>) = "Appearance" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member placeholder (x: System.String) = "Placeholder" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member parsingErrorMessage (x: System.String) = "ParsingErrorMessage" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member min (x: System.String) = "Min" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member max (x: System.String) = "Max" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member minLength (x: System.Int32) = "MinLength" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member maxLength (x: System.Int32) = "MaxLength" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member step (x: System.Int32) = "Step" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
                     
 
 type fluentRadioGroup<'FunBlazorGeneric> =
@@ -152,9 +164,13 @@ type fluentTextField<'FunBlazorGeneric> =
     static member readonly (x: System.Nullable<System.Boolean>) = "Readonly" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member required (x: System.Nullable<System.Boolean>) = "Required" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member autofocus (x: System.Nullable<System.Boolean>) = "Autofocus" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member resize (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Resize>) = "Resize" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member size (x: System.Nullable<System.Int32>) = "Size" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member appearance (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Appearance>) = "Appearance" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member textFieldType (x: System.Nullable<Microsoft.Fast.Components.FluentUI.TextFieldType>) = "TextFieldType" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member placeholder (x: System.String) = "Placeholder" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member minLength (x: System.Nullable<System.Int32>) = "MinLength" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member maxLength (x: System.Nullable<System.Int32>) = "MaxLength" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member spellcheck (x: System.Nullable<System.Boolean>) = "Spellcheck" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -200,6 +216,33 @@ type fluentAnchor<'FunBlazorGeneric> =
     static member ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentAnchor> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member href (x: System.String) = "Href" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member appearance (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Appearance>) = "Appearance" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member additionalAttributes (x: System.Collections.Generic.IDictionary<System.String, System.Object>) = "AdditionalAttributes" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+                    
+
+type fluentAnchoredRegion<'FunBlazorGeneric> =
+    
+    static member create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentAnchoredRegion>
+    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentAnchoredRegion>
+    static member create (nodes: IFunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentAnchoredRegion>
+    static member create (node: IFunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentAnchoredRegion>
+    static member create (x: string) = [ html.text x ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentAnchoredRegion>
+    static member ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentAnchoredRegion> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member anchor (x: System.String) = "Anchor" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member viewport (x: System.String) = "Viewport" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member horizontalPositioningMode (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Positioning>) = "HorizontalPositioningMode" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member horizontalDefaultPosition (x: System.Nullable<Microsoft.Fast.Components.FluentUI.HorizontalPosition>) = "HorizontalDefaultPosition" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member horizontalInset (x: System.Boolean) = "HorizontalInset" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member horizontalThreshold (x: System.Int32) = "HorizontalThreshold" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member horizontalScaling (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Scaling>) = "HorizontalScaling" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member verticalPositioningMode (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Positioning>) = "VerticalPositioningMode" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member verticalDefaultPosition (x: System.Nullable<Microsoft.Fast.Components.FluentUI.VerticalPosition>) = "VerticalDefaultPosition" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member verticalInset (x: System.Boolean) = "VerticalInset" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member verticalThreshold (x: System.Int32) = "VerticalThreshold" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member verticalScaling (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Scaling>) = "VerticalScaling" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member autoUpdateMode (x: System.Nullable<Microsoft.Fast.Components.FluentUI.UpdateMode>) = "AutoUpdateMode" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -283,6 +326,136 @@ type fluentCard<'FunBlazorGeneric> =
     static member additionalAttributes (x: System.Collections.Generic.IDictionary<System.String, System.Object>) = "AdditionalAttributes" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
                     
 
+type fluentDataGrid<'FunBlazorGeneric, 'TItem> =
+    
+    static member create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentDataGrid<'TItem>>
+    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentDataGrid<'TItem>>
+    static member create (nodes: IFunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentDataGrid<'TItem>>
+    static member create (node: IFunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentDataGrid<'TItem>>
+    static member create (x: string) = [ html.text x ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentDataGrid<'TItem>>
+    static member ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentDataGrid<'TItem>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member generateHeader (x: System.Nullable<Microsoft.Fast.Components.FluentUI.GenerateHeaderOptions>) = "GenerateHeader" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member gridTemplateColumns (x: System.String) = "GridTemplateColumns" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member rowsData (x: System.Collections.Generic.List<'TItem>) = "RowsData" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member columnDefinitions (x: System.Collections.Generic.IEnumerable<Microsoft.Fast.Components.FluentUI.ColumnDefinition<'TItem>>) = "ColumnDefinitions" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member headerCellTemplate (render: Microsoft.Fast.Components.FluentUI.ColumnDefinition<'TItem> -> IFunBlazorNode) = Bolero.Html.attr.fragmentWith "HeaderCellTemplate" (fun x -> render x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member rowItemTemplate (render: 'TItem -> IFunBlazorNode) = Bolero.Html.attr.fragmentWith "RowItemTemplate" (fun x -> render x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member additionalAttributes (x: System.Collections.Generic.IDictionary<System.String, System.Object>) = "AdditionalAttributes" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+                    
+
+type fluentDataGridCell<'FunBlazorGeneric> =
+    
+    static member create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentDataGridCell>
+    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentDataGridCell>
+    static member create (nodes: IFunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentDataGridCell>
+    static member create (node: IFunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentDataGridCell>
+    static member create (x: string) = [ html.text x ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentDataGridCell>
+    static member ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentDataGridCell> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member cellType (x: System.Nullable<Microsoft.Fast.Components.FluentUI.DataGridCellType>) = "CellType" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member gridColumn (x: System.Int32) = "GridColumn" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member additionalAttributes (x: System.Collections.Generic.IDictionary<System.String, System.Object>) = "AdditionalAttributes" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+                    
+
+type fluentDataGridRow<'FunBlazorGeneric, 'TItem> =
+    
+    static member create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentDataGridRow<'TItem>>
+    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentDataGridRow<'TItem>>
+    static member create (nodes: IFunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentDataGridRow<'TItem>>
+    static member create (node: IFunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentDataGridRow<'TItem>>
+    static member create (x: string) = [ html.text x ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentDataGridRow<'TItem>>
+    static member ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentDataGridRow<'TItem>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member rowIndex (x: System.Nullable<System.Int32>) = "RowIndex" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member gridTemplateColumns (x: System.String) = "GridTemplateColumns" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member rowType (x: System.Nullable<Microsoft.Fast.Components.FluentUI.DataGridRowType>) = "RowType" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member rowData (x: 'TItem) = "RowData" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member columnDefinitions (x: System.Collections.Generic.IEnumerable<Microsoft.Fast.Components.FluentUI.ColumnDefinition<'TItem>>) = "ColumnDefinitions" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member additionalAttributes (x: System.Collections.Generic.IDictionary<System.String, System.Object>) = "AdditionalAttributes" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+                    
+
+type fluentDesignSystemProvider<'FunBlazorGeneric> =
+    
+    static member create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentDesignSystemProvider>
+    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentDesignSystemProvider>
+    static member create (nodes: IFunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentDesignSystemProvider>
+    static member create (node: IFunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentDesignSystemProvider>
+    static member create (x: string) = [ html.text x ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentDesignSystemProvider>
+    static member ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentDesignSystemProvider> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member noPaint (x: System.Nullable<System.Boolean>) = "NoPaint" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member fillColor (x: System.String) = "FillColor" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member accentBaseColor (x: System.String) = "AccentBaseColor" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member neutralBaseColor (x: System.String) = "NeutralBaseColor" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member density (x: System.Nullable<System.Int32>) = "Density" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member designUnit (x: System.Nullable<System.Int32>) = "DesignUnit" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member direction (x: System.Nullable<Microsoft.Fast.Components.FluentUI.LocalizationDirection>) = "Direction" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member baseHeightMultiplier (x: System.Nullable<System.Int32>) = "BaseHeightMultiplier" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member baseHorizontalSpacingMultiplier (x: System.Nullable<System.Int32>) = "BaseHorizontalSpacingMultiplier" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member controlCornerRadius (x: System.Nullable<System.Int32>) = "ControlCornerRadius" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member strokeWidth (x: System.Nullable<System.Int32>) = "StrokeWidth" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member focusStrokeWidth (x: System.Nullable<System.Int32>) = "FocusStrokeWidth" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member disabledOpacity (x: System.Nullable<System.Single>) = "DisabledOpacity" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member typeRampMinus2FontSize (x: System.Nullable<System.Single>) = "TypeRampMinus2FontSize" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member typeRampMinus2LineHeight (x: System.Nullable<System.Single>) = "TypeRampMinus2LineHeight" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member typeRampMinus1FontSize (x: System.Nullable<System.Single>) = "TypeRampMinus1FontSize" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member typeRampMinus1LineHeight (x: System.Nullable<System.Single>) = "TypeRampMinus1LineHeight" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member typeRampBaseFontSize (x: System.Nullable<System.Single>) = "TypeRampBaseFontSize" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member typeRampBaseLineHeight (x: System.Nullable<System.Single>) = "TypeRampBaseLineHeight" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member typeRampPlus1FontSize (x: System.Nullable<System.Single>) = "TypeRampPlus1FontSize" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member typeRampPlus1LineHeight (x: System.Nullable<System.Single>) = "TypeRampPlus1LineHeight" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member typeRampPlus2FontSize (x: System.Nullable<System.Single>) = "TypeRampPlus2FontSize" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member typeRampPlus2LineHeight (x: System.Nullable<System.Single>) = "TypeRampPlus2LineHeight" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member typeRampPlus3FontSize (x: System.Nullable<System.Single>) = "TypeRampPlus3FontSize" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member typeRampPlus3LineHeight (x: System.Nullable<System.Single>) = "TypeRampPlus3LineHeight" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member typeRampPlus4FontSize (x: System.Nullable<System.Single>) = "TypeRampPlus4FontSize" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member typeRampPlus4LineHeight (x: System.Nullable<System.Single>) = "TypeRampPlus4LineHeight" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member typeRampPlus5FontSize (x: System.Nullable<System.Single>) = "TypeRampPlus5FontSize" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member typeRampPlus5LineHeight (x: System.Nullable<System.Single>) = "TypeRampPlus5LineHeight" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member typeRampPlus6FontSize (x: System.Nullable<System.Single>) = "TypeRampPlus6FontSize" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member typeRampPlus6LineHeight (x: System.Nullable<System.Single>) = "TypeRampPlus6LineHeight" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member accentFillRestDelta (x: System.Nullable<System.Int32>) = "AccentFillRestDelta" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member accentFillHoverDelta (x: System.Nullable<System.Int32>) = "AccentFillHoverDelta" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member accentFillActiveDelta (x: System.Nullable<System.Int32>) = "AccentFillActiveDelta" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member accentFillFocusDelta (x: System.Nullable<System.Int32>) = "AccentFillFocusDelta" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member accentForegroundRestDelta (x: System.Nullable<System.Int32>) = "AccentForegroundRestDelta" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member accentForegroundHoverDelta (x: System.Nullable<System.Int32>) = "AccentForegroundHoverDelta" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member accentForegroundActiveDelta (x: System.Nullable<System.Int32>) = "AccentForegroundActiveDelta" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member accentForegroundFocusDelta (x: System.Nullable<System.Int32>) = "AccentForegroundFocusDelta" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member neutralFillRestDelta (x: System.Nullable<System.Int32>) = "NeutralFillRestDelta" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member neutralFillHoverDelta (x: System.Nullable<System.Int32>) = "NeutralFillHoverDelta" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member neutralFillActiveDelta (x: System.Nullable<System.Int32>) = "NeutralFillActiveDelta" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member neutralFillFocusDelta (x: System.Nullable<System.Int32>) = "NeutralFillFocusDelta" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member neutralFillInputRestDelta (x: System.Nullable<System.Int32>) = "NeutralFillInputRestDelta" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member neutralFillInputHoverDelta (x: System.Nullable<System.Int32>) = "NeutralFillInputHoverDelta" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member neutralFillInputActiveDelta (x: System.Nullable<System.Int32>) = "NeutralFillInputActiveDelta" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member neutralFillInputFocusDelta (x: System.Nullable<System.Int32>) = "NeutralFillInputFocusDelta" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member neutralFillLayerRestDelta (x: System.Nullable<System.Int32>) = "NeutralFillLayerRestDelta" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member neutralFillStealthRestDelta (x: System.Nullable<System.Int32>) = "NeutralFillStealthRestDelta" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member neutralFillStealthHoverDelta (x: System.Nullable<System.Int32>) = "NeutralFillStealthHoverDelta" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member neutralFillStealthActiveDelta (x: System.Nullable<System.Int32>) = "NeutralFillStealthActiveDelta" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member neutralFillStealthFocusDelta (x: System.Nullable<System.Int32>) = "NeutralFillStealthFocusDelta" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member neutralFillStrongHoverDelta (x: System.Nullable<System.Int32>) = "NeutralFillStrongHoverDelta" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member neutralFillStrongActiveDelta (x: System.Nullable<System.Int32>) = "NeutralFillStrongActiveDelta" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member neutralFillStrongFocusDelta (x: System.Nullable<System.Int32>) = "NeutralFillStrongFocusDelta" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member neutralStrokeDividerRestDelta (x: System.Nullable<System.Int32>) = "NeutralStrokeDividerRestDelta" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member neutralStrokeRestDelta (x: System.Nullable<System.Int32>) = "NeutralStrokeRestDelta" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member neutralStrokeHoverDelta (x: System.Nullable<System.Int32>) = "NeutralStrokeHoverDelta" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member neutralStrokeActiveDelta (x: System.Nullable<System.Int32>) = "NeutralStrokeActiveDelta" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member neutralStrokeFocusDelta (x: System.Nullable<System.Int32>) = "NeutralStrokeFocusDelta" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member baseLayerLuminance (x: System.Nullable<System.Single>) = "BaseLayerLuminance" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member additionalAttributes (x: System.Collections.Generic.IDictionary<System.String, System.Object>) = "AdditionalAttributes" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+                    
+
 type fluentDialog<'FunBlazorGeneric> =
     
     static member create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentDialog>
@@ -296,6 +469,7 @@ type fluentDialog<'FunBlazorGeneric> =
     static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member additionalAttributes (x: System.Collections.Generic.IDictionary<System.String, System.Object>) = "AdditionalAttributes" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member hidden (x: System.Boolean) = "Hidden" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
                     
 
 type fluentDivider<'FunBlazorGeneric> =
@@ -322,6 +496,22 @@ type fluentFlipper<'FunBlazorGeneric> =
     static member ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentFlipper> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member disabled (x: System.Nullable<System.Boolean>) = "Disabled" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member direction (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Direction>) = "Direction" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member additionalAttributes (x: System.Collections.Generic.IDictionary<System.String, System.Object>) = "AdditionalAttributes" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+                    
+
+type fluentHorizontalScroll<'FunBlazorGeneric> =
+    
+    static member create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentHorizontalScroll>
+    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentHorizontalScroll>
+    static member create (nodes: IFunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentHorizontalScroll>
+    static member create (node: IFunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentHorizontalScroll>
+    static member create (x: string) = [ html.text x ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentHorizontalScroll>
+    static member ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentHorizontalScroll> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member speed (x: System.Int32) = "Speed" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member easing (x: System.String) = "Easing" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -537,6 +727,41 @@ type fluentTabs<'FunBlazorGeneric> =
     static member additionalAttributes (x: System.Collections.Generic.IDictionary<System.String, System.Object>) = "AdditionalAttributes" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
                     
 
+type fluentToolbar<'FunBlazorGeneric> =
+    
+    static member create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentToolbar>
+    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentToolbar>
+    static member create (nodes: IFunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentToolbar>
+    static member create (node: IFunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentToolbar>
+    static member create (x: string) = [ html.text x ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentToolbar>
+    static member ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentToolbar> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member orientation (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Orientation>) = "Orientation" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member additionalAttributes (x: System.Collections.Generic.IDictionary<System.String, System.Object>) = "AdditionalAttributes" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+                    
+
+type fluentTooltip<'FunBlazorGeneric> =
+    
+    static member create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTooltip>
+    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTooltip>
+    static member create (nodes: IFunBlazorNode list) = nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTooltip>
+    static member create (node: IFunBlazorNode) = [ node ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTooltip>
+    static member create (x: string) = [ html.text x ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTooltip>
+    static member ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentTooltip> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member anchor (x: System.String) = "Anchor" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member position (x: System.Nullable<Microsoft.Fast.Components.FluentUI.TooltipPosition>) = "Position" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member delay (x: System.Nullable<System.Int32>) = "Delay" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member visible (x: System.Nullable<System.Boolean>) = "Visible" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member horizontalViewportLock (x: System.Nullable<System.Boolean>) = "HorizontalViewportLock" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member verticalViewportLock (x: System.Nullable<System.Boolean>) = "VerticalViewportLock" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member additionalAttributes (x: System.Collections.Generic.IDictionary<System.String, System.Object>) = "AdditionalAttributes" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+                    
+
 type fluentTreeItem<'FunBlazorGeneric> =
     
     static member create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTreeItem>
@@ -577,13 +802,6 @@ namespace Microsoft.Fast.Components.FluentUI
 open Microsoft.Fast.Components.FluentUI.DslInternals
 
 
-type IFluentDesignSystemProviderNode = interface end
-type fluentDesignSystemProvider =
-    class
-        inherit fluentDesignSystemProvider<IFluentDesignSystemProviderNode>
-    end
-                    
-
 type IFluentInputBaseNode<'TValue> = interface end
 type fluentInputBase<'TValue> =
     class
@@ -602,6 +820,13 @@ type IFluentComboboxNode = interface end
 type fluentCombobox =
     class
         inherit fluentCombobox<IFluentComboboxNode>
+    end
+                    
+
+type IFluentNumberFieldNode<'TValue> = interface end
+type fluentNumberField<'TValue> =
+    class
+        inherit fluentNumberField<IFluentNumberFieldNode<'TValue>, 'TValue>
     end
                     
 
@@ -661,6 +886,13 @@ type fluentAnchor =
     end
                     
 
+type IFluentAnchoredRegionNode = interface end
+type fluentAnchoredRegion =
+    class
+        inherit fluentAnchoredRegion<IFluentAnchoredRegionNode>
+    end
+                    
+
 type IFluentBadgeNode = interface end
 type fluentBadge =
     class
@@ -696,6 +928,34 @@ type fluentCard =
     end
                     
 
+type IFluentDataGridNode<'TItem> = interface end
+type fluentDataGrid<'TItem> =
+    class
+        inherit fluentDataGrid<IFluentDataGridNode<'TItem>, 'TItem>
+    end
+                    
+
+type IFluentDataGridCellNode = interface end
+type fluentDataGridCell =
+    class
+        inherit fluentDataGridCell<IFluentDataGridCellNode>
+    end
+                    
+
+type IFluentDataGridRowNode<'TItem> = interface end
+type fluentDataGridRow<'TItem> =
+    class
+        inherit fluentDataGridRow<IFluentDataGridRowNode<'TItem>, 'TItem>
+    end
+                    
+
+type IFluentDesignSystemProviderNode = interface end
+type fluentDesignSystemProvider =
+    class
+        inherit fluentDesignSystemProvider<IFluentDesignSystemProviderNode>
+    end
+                    
+
 type IFluentDialogNode = interface end
 type fluentDialog =
     class
@@ -714,6 +974,13 @@ type IFluentFlipperNode = interface end
 type fluentFlipper =
     class
         inherit fluentFlipper<IFluentFlipperNode>
+    end
+                    
+
+type IFluentHorizontalScrollNode = interface end
+type fluentHorizontalScroll =
+    class
+        inherit fluentHorizontalScroll<IFluentHorizontalScrollNode>
     end
                     
 
@@ -805,6 +1072,20 @@ type IFluentTabsNode = interface end
 type fluentTabs =
     class
         inherit fluentTabs<IFluentTabsNode>
+    end
+                    
+
+type IFluentToolbarNode = interface end
+type fluentToolbar =
+    class
+        inherit fluentToolbar<IFluentToolbarNode>
+    end
+                    
+
+type IFluentTooltipNode = interface end
+type fluentTooltip =
+    class
+        inherit fluentTooltip<IFluentTooltipNode>
     end
                     
 

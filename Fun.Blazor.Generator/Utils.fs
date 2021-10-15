@@ -46,7 +46,10 @@ let rec getTypeName (ty: Type) =
     let getName (ty: Type)  = 
         if ty.Name.Contains "`" then
             let generics =
-                ty.GenericTypeArguments
+                if ty.GenericTypeArguments.Length > 0 then
+                    ty.GenericTypeArguments
+                else
+                    ty.GetTypeInfo().GenericTypeParameters
                 |> Seq.map getTypeName
                 |> String.concat ", "
                 |> fun x ->
