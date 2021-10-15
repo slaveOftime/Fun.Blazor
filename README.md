@@ -9,10 +9,17 @@ It is based on [bolero](https://github.com/fsbolero/Bolero) and  [Feliz.Engine](
 [Server side docs](https://funblazor.slaveoftime.fun)
 
 
+## What you can get with this project?
 
-## Fun.Blazor
+1. Use F# ❤️😊 for blazor
+2. Feliz and computation style DSL for internal and thrid party blazor libraries
+4. Dependency injection (html.inject)
+3. Elmish model (html.elmish), obervable model (html.watch), adaptive model(adapt)
 
-### By default we expose Feliz style DSL
+
+## Domain specific language (DSL)
+
+### By default we expose Feliz style DSL for internal components
 
 ```fsharp
 open Fun.Blazor
@@ -24,6 +31,7 @@ let app =
 ```
 
 ```fsharp
+// Open this to allow CE style
 open Fun.Blazor.DslCE
 let app =
     div(){
@@ -62,7 +70,7 @@ let alertDemo =
     ]
 ```
 
-### Create a WASM app
+## Create a WASM app
 
 Other resources like index.html should be put under wwwroot. You can check Fun.Blazor.Docs.Wasm project for detail
 
@@ -88,7 +96,7 @@ builder
 builder.Build().RunAsync() |> ignore
 ```
 
-### Create a blazor server app
+## Create a blazor server app
 
 You can check project Fun.Blazor.Docs.Server for the actual code
 
