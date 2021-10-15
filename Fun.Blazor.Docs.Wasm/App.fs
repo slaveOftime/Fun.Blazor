@@ -4,6 +4,7 @@ module Fun.Blazor.Docs.Wasm.App
 open Fun.Blazor
 open Fun.Blazor.Router
 open MudBlazor
+open MudBlazor.Utilities
 open Fun.Blazor.Docs.Wasm.DemoMudBlazor
 open Fun.Blazor.Docs.Wasm.DemoAntDesign
 open Fun.Blazor.Docs.Wasm.DemoFluentUI
@@ -16,36 +17,36 @@ let defaultTheme =
     MudTheme
         (Palette =
             Palette(
-                Primary = "#289c8e",
-                Secondary = "#47cacf",
-                Black = "#202120"))
+                Primary = MudColor "#289c8e",
+                Secondary = MudColor "#47cacf",
+                Black = MudColor "#202120"))
 
 let darkTheme =
     MudTheme
         (Palette =
             Palette(
-                Primary = "#289c8e",
-                Secondary = "#47cacf",
-                Black = "#27272f",
-                Background = "#32333d",
-                BackgroundGrey = "#27272f",
-                Surface = "#373740",
-                DrawerBackground = "#27272f",
-                DrawerText = "rgba(255,255,255, 0.50)",
-                DrawerIcon = "rgba(255,255,255, 0.50)",
-                AppbarBackground = "#27272f",
-                AppbarText = "rgba(255,255,255, 0.70)",
-                TextPrimary = "#289c8e",
-                TextSecondary = "#33d0e8",
-                ActionDefault = "#adadb1",
-                ActionDisabled = "rgba(255,255,255, 0.26)",
-                ActionDisabledBackground = "rgba(255,255,255, 0.12)",
-                Divider = "rgba(255,255,255, 0.12)",
-                DividerLight = "rgba(255,255,255, 0.06)",
-                TableLines = "rgba(255,255,255, 0.12)",
-                LinesDefault = "rgba(255,255,255, 0.12)",
-                LinesInputs = "rgba(255,255,255, 0.3)",
-                TextDisabled = "rgba(255,255,255, 0.2)"))
+                Primary = MudColor "#289c8e",
+                Secondary = MudColor "#47cacf",
+                Black = MudColor "#27272f",
+                Background = MudColor "#32333d",
+                BackgroundGrey = MudColor "#27272f",
+                Surface = MudColor "#373740",
+                DrawerBackground = MudColor "#27272f",
+                DrawerText = MudColor "rgba(255,255,255, 0.50)",
+                DrawerIcon = MudColor "rgba(255,255,255, 0.50)",
+                AppbarBackground = MudColor "#27272f",
+                AppbarText = MudColor "rgba(255,255,255, 0.70)",
+                TextPrimary = MudColor "#289c8e",
+                TextSecondary = MudColor "#33d0e8",
+                ActionDefault = MudColor "#adadb1",
+                ActionDisabled = MudColor "rgba(255,255,255, 0.26)",
+                ActionDisabledBackground = MudColor "rgba(255,255,255, 0.12)",
+                Divider = MudColor "rgba(255,255,255, 0.12)",
+                DividerLight = MudColor "rgba(255,255,255, 0.06)",
+                TableLines = MudColor "rgba(255,255,255, 0.12)",
+                LinesDefault = MudColor "rgba(255,255,255, 0.12)",
+                LinesInputs = MudColor "rgba(255,255,255, 0.3)",
+                TextDisabled = MudColor "rgba(255,255,255, 0.2)"))
 
 
 let navmenu =
