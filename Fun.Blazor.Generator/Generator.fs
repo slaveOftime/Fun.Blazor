@@ -27,31 +27,36 @@ let private getMetaInfo (ty: Type) =
                     if prop.PropertyType.Name.StartsWith "EventCallback" ||
                        prop.PropertyType.Name.StartsWith "Microsoft.AspNetCore.Components.EventCallback"
                     then
-                        Some [ $"    static member inline {name} fn = (Bolero.Html.attr.callback<{getTypeName prop.PropertyType.GenericTypeArguments.[0]}> \"{prop.Name}\" (fun e -> fn e)) |> {nameof BoleroAttr}" ]
+                        Some [ $"    static member {name} fn = (Bolero.Html.attr.callback<{getTypeName prop.PropertyType.GenericTypeArguments.[0]}> \"{prop.Name}\" (fun e -> fn e)) |> {nameof BoleroAttr}" ]
                     elif prop.PropertyType.Name.StartsWith "RenderFragment`" then
-                        Some [ $"    static member inline {name} (render: {getTypeName prop.PropertyType.GenericTypeArguments.[0]} -> {nameof IFunBlazorNode}) = Bolero.Html.attr.fragmentWith \"{prop.Name}\" (fun x -> render x |> html.toBolero) |> {nameof BoleroAttr}" ]
-                    elif prop.PropertyType.Namespace = "System"
-                         && (prop.PropertyType.Name.StartsWith "Func`" 
-                            || prop.PropertyType.Name.StartsWith "Action`") 
-                    then
-                        Some [ $"    static member inline {name} (fn) = \"{prop.Name}\" => ({getTypeName prop.PropertyType}fn) |> {nameof BoleroAttr}" ]
+                        Some [ $"    static member {name} (render: {getTypeName prop.PropertyType.GenericTypeArguments.[0]} -> {nameof IFunBlazorNode}) = Bolero.Html.attr.fragmentWith \"{prop.Name}\" (fun x -> render x |> html.toBolero) |> {nameof BoleroAttr}" ]
+                    elif prop.PropertyType.Namespace = "System" && prop.PropertyType.Name.StartsWith "Func`" then
+                        let returnType = prop.PropertyType.GenericTypeArguments |> Seq.last
+                        if returnType = typeof<Microsoft.AspNetCore.Components.RenderFragment> then
+                            let paramCount = prop.PropertyType.Name.Substring("Func`".Length) |> int
+                            let parameters = [for i in 1..paramCount-1 do $"x{i}"] |> String.concat " "
+                            Some [ $"    static member {name} (fn) = Bolero.FragmentAttr (\"{prop.Name}\", fun render -> box ({getTypeName prop.PropertyType}(fun {parameters} -> Microsoft.AspNetCore.Components.RenderFragment(fun rt -> render rt (html.toBolero(fn {parameters})))))) |> {nameof BoleroAttr}"  ]
+                        else
+                            Some [ $"    static member {name} (fn) = \"{prop.Name}\" => ({getTypeName prop.PropertyType}fn) |> {nameof BoleroAttr}" ]
+                    elif prop.PropertyType.Namespace = "System" && prop.PropertyType.Name.StartsWith "Action`" then
+                        Some [ $"    static member {name} (fn) = \"{prop.Name}\" => ({getTypeName prop.PropertyType}fn) |> {nameof BoleroAttr}" ]
                     else
-                        Some [ $"    static member inline {name} (x: {getTypeName prop.PropertyType}) = \"{prop.Name}\" => x |> {nameof BoleroAttr}" ]
+                        Some [ $"    static member {name} (x: {getTypeName prop.PropertyType}) = \"{prop.Name}\" => x |> {nameof BoleroAttr}" ]
 
                 elif prop.PropertyType = typeof<RenderFragment> then
                     Some [
-                        $"    static member inline {name} (x: string) = Bolero.Html.attr.fragment \"{prop.Name}\" (html.text x |> html.toBolero) |> {nameof BoleroAttr}"
-                        $"    static member inline {name} (node) = Bolero.Html.attr.fragment \"{prop.Name}\" (html.toBolero node) |> {nameof BoleroAttr}"
-                        $"    static member inline {name} (nodes) = Bolero.Html.attr.fragment \"{prop.Name}\" (nodes |> html.fragment |> html.toBolero) |> {nameof BoleroAttr}"
+                        $"    static member {name} (x: string) = Bolero.Html.attr.fragment \"{prop.Name}\" (html.text x |> html.toBolero) |> {nameof BoleroAttr}"
+                        $"    static member {name} (node) = Bolero.Html.attr.fragment \"{prop.Name}\" (html.toBolero node) |> {nameof BoleroAttr}"
+                        $"    static member {name} (nodes) = Bolero.Html.attr.fragment \"{prop.Name}\" (nodes |> html.fragment |> html.toBolero) |> {nameof BoleroAttr}"
                     ]
 
                 elif prop.Name = "Class" && prop.PropertyType = typeof<string> then
-                    Some [ $"    static member inline classes (x: string list) = attr.classes x" ]
+                    Some [ $"    static member classes (x: string list) = attr.classes x" ]
 
                 elif prop.Name = "Style" && prop.PropertyType = typeof<string> then
-                    Some [ $"    static member inline styles (x: (string * string) list) = attr.styles x" ]
+                    Some [ $"    static member styles (x: (string * string) list) = attr.styles x" ]
                 else
-                    Some [ $"    static member inline {name} (x: {getTypeName prop.PropertyType}) = \"{prop.Name}\" => x |> {nameof BoleroAttr}" ])
+                    Some [ $"    static member {name} (x: {getTypeName prop.PropertyType}) = \"{prop.Name}\" => x |> {nameof BoleroAttr}" ])
 
         |> Seq.concat
         |> Seq.map (fun x -> $"{x} |> {nameof GenericFunBlazorNode}<{funBlazorGeneric}>.create")
@@ -85,7 +90,7 @@ let private getMetaInfo (ty: Type) =
         | (name, generics), None ->
             name, generics, None
 
-    let hasChildren = props.Contains "static member inline childContent"
+    let hasChildren = props.Contains "static member childContent"
     {| ty = ty; generics = generics; inheritInfo = inheritInfo; props = props; hasChildren = hasChildren |}
 
 
@@ -182,23 +187,23 @@ let generateCode (targetNamespace: string) (opens: string) (tys: Type seq) =
                         | None -> ""
                         | Some (ty, generics) -> $"inherit {ty.Namespace |> trimNamespace |> appendStrIfNotEmpty (string '.')}{ty |> getTypeShortName |> lowerFirstCase}{ funBlazorGeneric::(getTypeNames generics) |> createGenerics |> closeGenerics }"
 
-                    let ref = $"    static member inline ref x = attr.ref<{originalTypeWithGenerics}> x |> {nameof GenericFunBlazorNode}<{funBlazorGeneric}>.create"
+                    let ref = $"    static member ref x = attr.ref<{originalTypeWithGenerics}> x |> {nameof GenericFunBlazorNode}<{funBlazorGeneric}>.create"
                     
-                    let create1 = $"    static member inline create () = [] |> html.blazor<{originalTypeWithGenerics}>"
+                    let create1 = $"    static member create () = [] |> html.blazor<{originalTypeWithGenerics}>"
                     
                     let create2 =
                         if meta.props.Length > 0 then
-                            $"    static member inline create (nodes: {nameof GenericFunBlazorNode}<{funBlazorGeneric}> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<{originalTypeWithGenerics}>"
+                            $"    static member create (nodes: {nameof GenericFunBlazorNode}<{funBlazorGeneric}> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<{originalTypeWithGenerics}>"
                         else
                             ""
 
                     let create3 =
                         if meta.hasChildren then
-                            $"    static member inline create (nodes: {nameof IFunBlazorNode} list) = nodes |> html.blazor<{originalTypeWithGenerics}>"
+                            $"    static member create (nodes: {nameof IFunBlazorNode} list) = nodes |> html.blazor<{originalTypeWithGenerics}>"
                             + "\n"+
-                            $"    static member inline create (node: {nameof IFunBlazorNode}) = [ node ] |> html.blazor<{originalTypeWithGenerics}>"
+                            $"    static member create (node: {nameof IFunBlazorNode}) = [ node ] |> html.blazor<{originalTypeWithGenerics}>"
                             + "\n"+
-                            $"    static member inline create (x: string) = [ html.text x ] |> html.blazor<{originalTypeWithGenerics}>"
+                            $"    static member create (x: string) = [ html.text x ] |> html.blazor<{originalTypeWithGenerics}>"
                         else
                             ""
 

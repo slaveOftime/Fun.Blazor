@@ -72,8 +72,13 @@ let startGenerate (projectFile: string) (codesDirName: string) (style: Style) =
 
     let project = XDocument.Load projectFile
 
-    let target = project.Element(xn "Project").Element(xn "PropertyGroup").Element(xn "TargetFramework").Value
-        
+    let target = 
+        let single = project.Element(xn "Project").Element(xn "PropertyGroup").Element(xn "TargetFramework")
+        if single <> null then single.Value
+        else
+            let multiple = project.Element(xn "Project").Element(xn "PropertyGroup").Element(xn "TargetFrameworks")
+            if multiple = null then failwith "No TargetFramework or TargetFrameworks defined"
+            multiple.Value.Split(",") |> Seq.head
             
     AnsiConsole.WriteLine ()
     AnsiConsole.MarkupLine "Clean old generated code files"

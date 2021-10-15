@@ -73,6 +73,16 @@ let private getMetaInfo (ty: Type) =
                         || prop.PropertyType.Name.StartsWith "Action`") 
                 then
                     [ $"    {customOperation name} {memberStart}{name} ({contextArg}, fn) = \"{prop.Name}\" => ({getTypeName prop.PropertyType}fn) |> {nameof BoleroAttr}" ]
+                elif prop.PropertyType.Namespace = "System" && prop.PropertyType.Name.StartsWith "Func`" then
+                    let returnType = prop.PropertyType.GenericTypeArguments |> Seq.last
+                    if returnType = typeof<Microsoft.AspNetCore.Components.RenderFragment> then
+                        let paramCount = prop.PropertyType.Name.Substring("Func`".Length) |> int
+                        let parameters = [for i in 1..paramCount-1 do $"x{i}"] |> String.concat " "
+                        [ $"    {customOperation name} {memberStart}{name} ({contextArg}, fn) = Bolero.FragmentAttr (\"{prop.Name}\", fun render -> box ({getTypeName prop.PropertyType}(fun {parameters} -> Microsoft.AspNetCore.Components.RenderFragment(fun rt -> render rt (html.toBolero(fn {parameters})))))) |> {nameof BoleroAttr}"  ]
+                    else
+                        [ $"    {customOperation name} {memberStart}{name} ({contextArg}, fn) = \"{prop.Name}\" => ({getTypeName prop.PropertyType}fn) |> {nameof BoleroAttr}" ]
+                elif prop.PropertyType.Namespace = "System" && prop.PropertyType.Name.StartsWith "Action`" then
+                    [ $"    {customOperation name} {memberStart}{name} ({contextArg}, fn) = \"{prop.Name}\" => ({getTypeName prop.PropertyType}fn) |> {nameof BoleroAttr}" ]
                 else
                     [ $"    {customOperation name} {memberStart}{name} ({contextArg}, x: {getTypeName prop.PropertyType}) = \"{prop.Name}\" => x |> {nameof BoleroAttr}" ]
 
