@@ -4,7 +4,6 @@ open System
 open System.Collections.Generic
 open FSharp.Data.Adaptive
 open Microsoft.AspNetCore.Components
-open Bolero
 
 
 [<AutoOpen>]
@@ -35,7 +34,7 @@ module ServiceProviderExtensions =
 
 
 type DIComponent<'T>() as this =
-    inherit Component()
+    inherit FunBlazorComponent()
     
     let mutable node = None
 
@@ -82,7 +81,7 @@ type DIComponent<'T>() as this =
         | None ->
             let depsType, _ = Reflection.FSharpType.GetFunctionElements(this.RenderFn.GetType())
             let services = this.Services.GetMultipleServices(depsType, handleNotFoundType) :?> 'T
-            let newNode =  this.RenderFn services |> FunBlazorNode.ToBolero
+            let newNode =  this.RenderFn services
             node <- newNode |> Some
             newNode 
 

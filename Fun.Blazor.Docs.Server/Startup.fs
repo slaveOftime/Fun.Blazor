@@ -4,8 +4,8 @@ open Microsoft.AspNetCore.Hosting
 open Microsoft.Extensions.Hosting
 open Microsoft.Extensions.DependencyInjection
 open MudBlazor.Services
-open Fun.Blazor.Docs.Server
 open Bolero.Server
+open Fun.Blazor.Docs.Server
 
 
 Host.CreateDefaultBuilder(Environment.GetCommandLineArgs())
@@ -28,4 +28,3 @@ Host.CreateDefaultBuilder(Environment.GetCommandLineArgs())
                         endpoints.MapFallbackToBolero(Index.page) |> ignore) |> ignore) |> ignore)
     .Build()
     .Run()
-

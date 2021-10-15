@@ -21,6 +21,17 @@ type FunBlazorHtmlEngine (mk, ofStr, empty) =
 
     member html.html (lang: string, nodes) = Bolero.Html.html [ Bolero.Html.attr.lang lang ] (nodes |> List.map FunBlazorNode.ToBolero) |> BoleroNode
 
+    member html.doctype decl = html.raw $"<!DOCTYPE {decl}>\n"
+
+    member html.doctypeHtml (nodes, ?lang) =
+        let lang = defaultArg lang "en"
+        Bolero.Concat [
+            html.doctype "html" |> html.toBolero
+            html.html (lang, nodes) |> html.toBolero
+        ]
+
+    member html.doctypeHtml (lang: string, nodes: IFunBlazorNode list) = html.doctypeHtml (nodes, lang)
+
     member html.title (x: string) = html.custom ("title", [ html.text x ])
     member html.link x = html.custom ("link", x)
     member html.baseUrl x = html.custom ("base", [ Attr ("href", Choice1Of2 x) ])

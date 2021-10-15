@@ -12,6 +12,7 @@
 		<Compile Include="Router.fs" />
 		<Compile Include="Router.Giraffe.FormatExpressions.fs" />
 		<Compile Include="Router.Giraffe.Dsl.fs" />
+		<Compile Include="FunBlazorComponent.fs" />
 		<Compile Include="DIComponent.fs" />
 		<Compile Include="ElmComponent.fs" />
 		<Compile Include="StoreComponent.fs" />
