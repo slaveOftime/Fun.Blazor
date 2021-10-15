@@ -165,6 +165,8 @@ let private getMetaInfos (tys: Type seq) =
 let generateCode (targetNamespace: string) (opens: string) (tys: Type seq) =
     let metaInfos = getMetaInfos tys
 
+    let getFinalTypeName = getTypeShortName >> lowerFirstCase >> avoidFsharpKeywords
+
     let trimNamespace (ns: string) =
         metaInfos.rootNamespaces
         |> Seq.pick (fun x ->
@@ -185,7 +187,7 @@ let generateCode (targetNamespace: string) (opens: string) (tys: Type seq) =
                     let inheirit' =
                         match meta.inheritInfo with
                         | None -> ""
-                        | Some (ty, generics) -> $"inherit {ty.Namespace |> trimNamespace |> appendStrIfNotEmpty (string '.')}{ty |> getTypeShortName |> lowerFirstCase}{ funBlazorGeneric::(getTypeNames generics) |> createGenerics |> closeGenerics }"
+                        | Some (ty, generics) -> $"inherit {ty.Namespace |> trimNamespace |> appendStrIfNotEmpty (string '.')}{getFinalTypeName ty}{ funBlazorGeneric::(getTypeNames generics) |> createGenerics |> closeGenerics }"
 
                     let ref = $"    static member ref x = attr.ref<{originalTypeWithGenerics}> x |> {nameof GenericFunBlazorNode}<{funBlazorGeneric}>.create"
                     
@@ -208,7 +210,7 @@ let generateCode (targetNamespace: string) (opens: string) (tys: Type seq) =
                             ""
 
                     $"""
-type {meta.ty |> getTypeShortName |> lowerFirstCase}{funBlazorGeneric::(getTypeNames meta.generics) |> createGenerics |> appendStr (createConstraint meta.generics) |> closeGenerics} =
+type {getFinalTypeName meta.ty}{funBlazorGeneric::(getTypeNames meta.generics) |> createGenerics |> appendStr (createConstraint meta.generics) |> closeGenerics} =
     {inheirit'}
 {create1}
 {create2}
@@ -238,9 +240,9 @@ open {targetNamespace}.{internalSegment}
 
                     $"""
 type { interfaceTy } = interface end
-type { meta.ty |> getTypeShortName |> lowerFirstCase }{ meta.generics |> getTypeNames |> createGenerics |> appendStr (createConstraint meta.generics) |> closeGenerics } =
+type { getFinalTypeName meta.ty }{ meta.generics |> getTypeNames |> createGenerics |> appendStr (createConstraint meta.generics) |> closeGenerics } =
     class
-        inherit {ns |> trimNamespace |> appendStrIfNotEmpty "."}{meta.ty |> getTypeShortName |> lowerFirstCase}{interfaceTy::(getTypeNames meta.generics) |> createGenerics |> closeGenerics }
+        inherit {ns |> trimNamespace |> appendStrIfNotEmpty "."}{getFinalTypeName meta.ty}{interfaceTy::(getTypeNames meta.generics) |> createGenerics |> closeGenerics }
     end
                     """)
                 |> String.concat "\n"

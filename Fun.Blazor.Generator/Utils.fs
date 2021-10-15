@@ -14,6 +14,9 @@ let lowerFirstCase (str: string) =
     elif str.Length = 1 then str.ToLower()
     else str.Substring(0, 1).ToLower() + str.Substring(1, str.Length - 1)
 
+let avoidFsharpKeywords str =
+    if fsharpKeywords |> List.contains str then str + "'"
+    else str
 
 let createGenerics (strs: string seq) =
     if Seq.length strs = 0 then ""

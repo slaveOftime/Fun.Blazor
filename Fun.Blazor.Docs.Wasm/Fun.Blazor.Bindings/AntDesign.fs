@@ -961,7 +961,7 @@ type selectBase<'FunBlazorGeneric, 'TItemValue, 'TItem> =
     static member maxTagCount (x: OneOf.OneOf<System.Int32, AntDesign.Select.ResponsiveTag>) = "MaxTagCount" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
                     
 
-type select<'FunBlazorGeneric, 'TItemValue, 'TItem> =
+type select'<'FunBlazorGeneric, 'TItemValue, 'TItem> =
     inherit selectBase<'FunBlazorGeneric, 'TItemValue, 'TItem>
     static member create () = [] |> html.blazor<AntDesign.Select<'TItemValue, 'TItem>>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Select<'TItemValue, 'TItem>>
@@ -1004,7 +1004,7 @@ type select<'FunBlazorGeneric, 'TItemValue, 'TItem> =
                     
 
 type enumSelect<'FunBlazorGeneric, 'TEnum> =
-    inherit select<'FunBlazorGeneric, 'TEnum, 'TEnum>
+    inherit select'<'FunBlazorGeneric, 'TEnum, 'TEnum>
     static member create () = [] |> html.blazor<AntDesign.EnumSelect<'TEnum>>
 
 
@@ -1013,7 +1013,7 @@ type enumSelect<'FunBlazorGeneric, 'TEnum> =
                     
 
 type simpleSelect<'FunBlazorGeneric> =
-    inherit select<'FunBlazorGeneric, System.String, System.String>
+    inherit select'<'FunBlazorGeneric, System.String, System.String>
     static member create () = [] |> html.blazor<AntDesign.SimpleSelect>
 
 
@@ -3486,7 +3486,7 @@ type formProvider<'FunBlazorGeneric> =
     static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
                     
 
-type component<'FunBlazorGeneric> =
+type component'<'FunBlazorGeneric> =
     
     static member create () = [] |> html.blazor<AntDesign.Component>
     static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Component>
@@ -4048,9 +4048,9 @@ type selectBase<'TItemValue, 'TItem> =
                     
 
 type ISelectNode<'TItemValue, 'TItem> = interface end
-type select<'TItemValue, 'TItem> =
+type select'<'TItemValue, 'TItem> =
     class
-        inherit select<ISelectNode<'TItemValue, 'TItem>, 'TItemValue, 'TItem>
+        inherit select'<ISelectNode<'TItemValue, 'TItem>, 'TItemValue, 'TItem>
     end
                     
 
@@ -4993,9 +4993,9 @@ type formProvider =
                     
 
 type IComponentNode = interface end
-type component =
+type component' =
     class
-        inherit component<IComponentNode>
+        inherit component'<IComponentNode>
     end
                     
 
