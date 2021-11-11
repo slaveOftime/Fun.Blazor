@@ -2,6 +2,7 @@
 
 open System
 open System.Reflection
+open Microsoft.AspNetCore.Components
 
 
 let fsharpKeywords = [ "component"; "checked"; "abstract"; "and"; "as"; "assert"; "base"; "begin"; "class"; "default"; "delegate"; "do"; "done"; "downcast"; "downto"; "elif"; "else"; "end"; "exception"; "extern"; "false"; "finally"; "fixed"; "for"; "fun"; "function"; "global"; "if"; "in"; "inherit"; "inline"; "interface"; "internal"; "lazy"; "let"; "let!"; "match"; "match!"; "member"; "module"; "mutable"; "namespace"; "new"; "not"; "null"; "of"; "open"; "or"; "override"; "private"; "public"; "rec"; "return"; "return!"; "select"; "static"; "struct"; "then"; "to"; "true"; "try"; "type"; "upcast"; "use"; "use!"; "val"; "void"; "when"; "while"; "with"; "yield"; "yield!"; "const" ]
@@ -119,3 +120,12 @@ let appendStrIfNotEmpty (x: string) (y: string) =
 let addStrIfNotEmpty (x: string) (y: string) =
     if String.IsNullOrEmpty y then ""
     else x + y
+
+
+let getValidBlazorProps ty =
+    Seq.filter (fun (prop: PropertyInfo) ->
+        prop.DeclaringType = ty &&
+        prop.CustomAttributes |> Seq.exists (fun x -> x.AttributeType = typeof<ParameterAttribute>))
+
+
+let isBindable (prop: PropertyInfo) = Seq.exists (fun (x: PropertyInfo) -> x.Name = prop.Name + "Changed")

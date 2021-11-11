@@ -45,12 +45,7 @@ let private getMetaInfo (ty: Type) =
     let contextArg = $"_: FunBlazorContext<{funBlazorGeneric}>"
 
     let rawProps = ty.GetProperties()
-
-    let filteredProps =
-        rawProps
-        |> Seq.filter (fun p -> 
-            p.DeclaringType = ty && 
-            p.CustomAttributes |> Seq.exists (fun x -> x.AttributeType = typeof<ParameterAttribute>))
+    let filteredProps = getValidBlazorProps ty rawProps
 
     let props = 
         filteredProps
@@ -61,51 +56,72 @@ let private getMetaInfo (ty: Type) =
                    |> List.contains name 
                 then $"{name}'"
                 else name
+
+            let _addProp = "|> this.AddProp"
+            let _boleroAddProp = $"|> {nameof BoleroAttr} {_addProp}"
+
+            let createBindableProps (propTypeName: string) =
+                if isBindable prop filteredProps then
+                    let bindName = name + "'"
+                    [
+                        $"    {customOperation bindName} {memberStart}{bindName} ({contextArg}, value: IStore<{propTypeName}>) = this.AddProp(\"{prop.Name}\", value)"
+                        $"    {customOperation bindName} {memberStart}{bindName} ({contextArg}, value: cval<{propTypeName}>) = this.AddProp(\"{prop.Name}\", value)"
+                    ]
+                else
+                    []
+            
             if prop.PropertyType.IsGenericType then
                 if prop.PropertyType.Name.StartsWith "EventCallback" ||
                     prop.PropertyType.Name.StartsWith "Microsoft.AspNetCore.Components.EventCallback"
                 then
-                    [ $"    {customOperation name} {memberStart}{name} ({contextArg}, fn) = (Bolero.Html.attr.callback<{getTypeName prop.PropertyType.GenericTypeArguments.[0]}> \"{prop.Name}\" (fun e -> fn e)) |> {nameof BoleroAttr}" ]
+                    [ $"    {customOperation name} {memberStart}{name} ({contextArg}, fn) = (Bolero.Html.attr.callback<{getTypeName prop.PropertyType.GenericTypeArguments.[0]}> \"{prop.Name}\" (fun e -> fn e)) {_boleroAddProp}" ]
                 elif prop.PropertyType.Name.StartsWith "RenderFragment`" then
-                    [ $"    {customOperation name} {memberStart}{name} ({contextArg}, render: {getTypeName prop.PropertyType.GenericTypeArguments.[0]} -> {nameof IFunBlazorNode}) = Bolero.Html.attr.fragmentWith \"{prop.Name}\" (fun x -> render x |> html.toBolero) |> {nameof BoleroAttr}" ]
+                    [ $"    {customOperation name} {memberStart}{name} ({contextArg}, render: {getTypeName prop.PropertyType.GenericTypeArguments.[0]} -> {nameof IFunBlazorNode}) = Bolero.Html.attr.fragmentWith \"{prop.Name}\" (fun x -> render x |> html.toBolero) {_boleroAddProp}" ]
                 elif prop.PropertyType.Namespace = "System"
                      && (prop.PropertyType.Name.StartsWith "Func`" 
                         || prop.PropertyType.Name.StartsWith "Action`") 
                 then
-                    [ $"    {customOperation name} {memberStart}{name} ({contextArg}, fn) = \"{prop.Name}\" => ({getTypeName prop.PropertyType}fn) |> {nameof BoleroAttr}" ]
+                    [ $"    {customOperation name} {memberStart}{name} ({contextArg}, fn) = \"{prop.Name}\" => ({getTypeName prop.PropertyType}fn) {_boleroAddProp}" ]
                 elif prop.PropertyType.Namespace = "System" && prop.PropertyType.Name.StartsWith "Func`" then
                     let returnType = prop.PropertyType.GenericTypeArguments |> Seq.last
                     if returnType = typeof<Microsoft.AspNetCore.Components.RenderFragment> then
                         let paramCount = prop.PropertyType.Name.Substring("Func`".Length) |> int
                         let parameters = [for i in 1..paramCount-1 do $"x{i}"] |> String.concat " "
-                        [ $"    {customOperation name} {memberStart}{name} ({contextArg}, fn) = Bolero.FragmentAttr (\"{prop.Name}\", fun render -> box ({getTypeName prop.PropertyType}(fun {parameters} -> Microsoft.AspNetCore.Components.RenderFragment(fun rt -> render rt (html.toBolero(fn {parameters})))))) |> {nameof BoleroAttr}"  ]
+                        [ $"    {customOperation name} {memberStart}{name} ({contextArg}, fn) = Bolero.FragmentAttr (\"{prop.Name}\", fun render -> box ({getTypeName prop.PropertyType}(fun {parameters} -> Microsoft.AspNetCore.Components.RenderFragment(fun rt -> render rt (html.toBolero(fn {parameters})))))) {_boleroAddProp}"  ]
                     else
-                        [ $"    {customOperation name} {memberStart}{name} ({contextArg}, fn) = \"{prop.Name}\" => ({getTypeName prop.PropertyType}fn) |> {nameof BoleroAttr}" ]
+                        [ $"    {customOperation name} {memberStart}{name} ({contextArg}, fn) = \"{prop.Name}\" => ({getTypeName prop.PropertyType}fn) {_boleroAddProp}" ]
                 elif prop.PropertyType.Namespace = "System" && prop.PropertyType.Name.StartsWith "Action`" then
-                    [ $"    {customOperation name} {memberStart}{name} ({contextArg}, fn) = \"{prop.Name}\" => ({getTypeName prop.PropertyType}fn) |> {nameof BoleroAttr}" ]
+                    [ $"    {customOperation name} {memberStart}{name} ({contextArg}, fn) = \"{prop.Name}\" => ({getTypeName prop.PropertyType}fn) {_boleroAddProp}" ]
                 else
-                    [ $"    {customOperation name} {memberStart}{name} ({contextArg}, x: {getTypeName prop.PropertyType}) = \"{prop.Name}\" => x |> {nameof BoleroAttr}" ]
+                    let propTypeName = getTypeName prop.PropertyType
+                    [
+                        $"    {customOperation name} {memberStart}{name} ({contextArg}, x: {propTypeName}) = \"{prop.Name}\" => x {_boleroAddProp}"
+                        yield! createBindableProps propTypeName
+                    ]
 
             elif prop.PropertyType = typeof<RenderFragment> then
                 let name = if name = "ChildContent" then lowerFirstCase name else name
                 [
-                    $"    {customOperation name} {memberStart}{name} ({contextArg}, nodes) = Bolero.Html.attr.fragment \"{prop.Name}\" (nodes |> html.fragment |> html.toBolero) |> {nameof BoleroAttr}"
-                    $"    {customOperation name} {memberStart}{name} ({contextArg}, x: string) = Bolero.Html.attr.fragment \"{prop.Name}\" (html.text x |> html.toBolero) |> {nameof BoleroAttr}"
-                    $"    {customOperation name} {memberStart}{name} ({contextArg}, x: int) = Bolero.Html.attr.fragment \"{prop.Name}\" (html.text x |> html.toBolero) |> {nameof BoleroAttr}"
-                    $"    {customOperation name} {memberStart}{name} ({contextArg}, x: float) = Bolero.Html.attr.fragment \"{prop.Name}\" (html.text x |> html.toBolero) |> {nameof BoleroAttr}"
+                    $"    {customOperation name} {memberStart}{name} ({contextArg}, nodes) = Bolero.Html.attr.fragment \"{prop.Name}\" (nodes |> html.fragment |> html.toBolero) {_boleroAddProp}"
+                    $"    {customOperation name} {memberStart}{name} ({contextArg}, x: string) = Bolero.Html.attr.fragment \"{prop.Name}\" (html.text x |> html.toBolero) {_boleroAddProp}"
+                    $"    {customOperation name} {memberStart}{name} ({contextArg}, x: int) = Bolero.Html.attr.fragment \"{prop.Name}\" (html.text x |> html.toBolero) {_boleroAddProp}"
+                    $"    {customOperation name} {memberStart}{name} ({contextArg}, x: float) = Bolero.Html.attr.fragment \"{prop.Name}\" (html.text x |> html.toBolero) {_boleroAddProp}"
                 ]
 
             elif prop.Name = "Class" && prop.PropertyType = typeof<string> then
-                [ $"    [<CustomOperation(\"Classes\")>] {memberStart}Classes ({contextArg}, x: string list) = attr.classes x" ]
+                [ $"    [<CustomOperation(\"Classes\")>] {memberStart}Classes ({contextArg}, x: string list) = attr.classes x {_addProp}" ]
 
             elif prop.Name = "Style" && prop.PropertyType = typeof<string> then
-                [ $"    [<CustomOperation(\"Styles\")>] {memberStart}Styles ({contextArg}, x: (string * string) list) = attr.styles x" ]
+                [ $"    [<CustomOperation(\"Styles\")>] {memberStart}Styles ({contextArg}, x: (string * string) list) = attr.styles x {_addProp}" ]
             
             else
-                [ $"    {customOperation name} {memberStart}{name} ({contextArg}, x: {getTypeName prop.PropertyType}) = \"{prop.Name}\" => x |> {nameof BoleroAttr}" ])
+                let propTypeName = getTypeName prop.PropertyType
+                [
+                    $"    {customOperation name} {memberStart}{name} ({contextArg}, x: {propTypeName}) = \"{prop.Name}\" => x {_boleroAddProp}"
+                    yield! createBindableProps propTypeName
+                ])
 
         |> Seq.concat
-        |> Seq.map (fun x -> $"{x} |> this.AddProp")
         
 
     let hasChildren = props |> Seq.exists (fun x -> x.Contains $"{memberStart}childContent")

@@ -69,11 +69,34 @@ type [<Struct>] GenericFunBlazorNode<'T> =
 
     static member create x: GenericFunBlazorNode<'T> = { Node = x }
 
+    static member create (name, value: IStore<'V>) =
+        BoleroAttrs [
+            name => value.Current
+            Bolero.Html.attr.callback<'V> $"{name}Changed" (fun (x: 'V) -> value.Publish x)
+        ]
+        |> GenericFunBlazorNode<'T>.create
+
+    static member create (name, value: cval<'V>) =
+        BoleroAttrs [
+            name => AVal.force value
+            Bolero.Html.attr.callback<'V> $"{name}Changed" (fun x-> transact(fun _ -> value.Value <- x))
+        ]
+        |> GenericFunBlazorNode<'T>.create
+
 
 type FunBlazorContext<'Component when 'Component :> Microsoft.AspNetCore.Components.IComponent> () =
     let props = Collections.Generic.List<IFunBlazorNode>()
 
     member this.AddProp x = props.Add x; this
+
+    member this.AddProp (name, value: IStore<'T>) =
+        name => value.Current |> BoleroAttr |> this.AddProp |> ignore
+        Bolero.Html.attr.callback<'T> $"{name}Changed" value.Publish |> BoleroAttr |> this.AddProp
+    
+    member this.AddProp (name, value: cval<'T>) =
+        name => AVal.force value |> BoleroAttr |> this.AddProp |> ignore
+        Bolero.Html.attr.callback<'T> $"{name}Changed" (fun x -> transact(fun _ -> value.Value <- x)) |> BoleroAttr |> this.AddProp
+
     member this.Props() = props
 
     // Executes a computation expression

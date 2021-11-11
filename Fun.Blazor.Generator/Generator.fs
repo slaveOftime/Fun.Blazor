@@ -10,56 +10,73 @@ open Utils
 
 
 let private getMetaInfo (ty: Type) =
-    let props = 
-        ty.GetProperties()        
-        |> Seq.filter (fun p -> p.DeclaringType = ty)
-        |> Seq.choose (fun prop ->
-            if prop.CustomAttributes
-                |> Seq.exists (fun x -> x.AttributeType = typeof<ParameterAttribute>)
-                |> not
-            then None
-            else
-                let name = lowerFirstCase prop.Name
-                let name =
-                    if fsharpKeywords |> List.contains name then $"{name}'"
-                    else name
-                if prop.PropertyType.IsGenericType then
-                    if prop.PropertyType.Name.StartsWith "EventCallback" ||
-                       prop.PropertyType.Name.StartsWith "Microsoft.AspNetCore.Components.EventCallback"
-                    then
-                        Some [ $"    static member {name} fn = (Bolero.Html.attr.callback<{getTypeName prop.PropertyType.GenericTypeArguments.[0]}> \"{prop.Name}\" (fun e -> fn e)) |> {nameof BoleroAttr}" ]
-                    elif prop.PropertyType.Name.StartsWith "RenderFragment`" then
-                        Some [ $"    static member {name} (render: {getTypeName prop.PropertyType.GenericTypeArguments.[0]} -> {nameof IFunBlazorNode}) = Bolero.Html.attr.fragmentWith \"{prop.Name}\" (fun x -> render x |> html.toBolero) |> {nameof BoleroAttr}" ]
-                    elif prop.PropertyType.Namespace = "System" && prop.PropertyType.Name.StartsWith "Func`" then
-                        let returnType = prop.PropertyType.GenericTypeArguments |> Seq.last
-                        if returnType = typeof<Microsoft.AspNetCore.Components.RenderFragment> then
-                            let paramCount = prop.PropertyType.Name.Substring("Func`".Length) |> int
-                            let parameters = [for i in 1..paramCount-1 do $"x{i}"] |> String.concat " "
-                            Some [ $"    static member {name} (fn) = Bolero.FragmentAttr (\"{prop.Name}\", fun render -> box ({getTypeName prop.PropertyType}(fun {parameters} -> Microsoft.AspNetCore.Components.RenderFragment(fun rt -> render rt (html.toBolero(fn {parameters})))))) |> {nameof BoleroAttr}"  ]
-                        else
-                            Some [ $"    static member {name} (fn) = \"{prop.Name}\" => ({getTypeName prop.PropertyType}fn) |> {nameof BoleroAttr}" ]
-                    elif prop.PropertyType.Namespace = "System" && prop.PropertyType.Name.StartsWith "Action`" then
-                        Some [ $"    static member {name} (fn) = \"{prop.Name}\" => ({getTypeName prop.PropertyType}fn) |> {nameof BoleroAttr}" ]
-                    else
-                        Some [ $"    static member {name} (x: {getTypeName prop.PropertyType}) = \"{prop.Name}\" => x |> {nameof BoleroAttr}" ]
+    let rawProps = ty.GetProperties()
+    let validProps = getValidBlazorProps ty rawProps
 
-                elif prop.PropertyType = typeof<RenderFragment> then
-                    Some [
-                        $"    static member {name} (x: string) = Bolero.Html.attr.fragment \"{prop.Name}\" (html.text x |> html.toBolero) |> {nameof BoleroAttr}"
-                        $"    static member {name} (node) = Bolero.Html.attr.fragment \"{prop.Name}\" (html.toBolero node) |> {nameof BoleroAttr}"
-                        $"    static member {name} (nodes) = Bolero.Html.attr.fragment \"{prop.Name}\" (nodes |> html.fragment |> html.toBolero) |> {nameof BoleroAttr}"
+    let props =
+        validProps
+        |> Seq.map (fun prop ->
+            let name = lowerFirstCase prop.Name
+            let name =
+                if fsharpKeywords |> List.contains name then $"{name}'"
+                else name
+
+            let _createNode = $"|> {nameof GenericFunBlazorNode}<{funBlazorGeneric}>.create"
+            let _boleroCreateNode = $"|> {nameof BoleroAttr} {_createNode}"
+
+            let createBindableProps (propTypeName: string) =
+                if isBindable prop validProps then
+                    [
+                        $"    static member {name}' (value: IStore<{propTypeName}>) = {nameof GenericFunBlazorNode}<{funBlazorGeneric}>.create(\"{prop.Name}\", value)"
+                        $"    static member {name}' (value: cval<{propTypeName}>) = {nameof GenericFunBlazorNode}<{funBlazorGeneric}>.create(\"{prop.Name}\", value)"
+                    ]
+                else
+                    []
+
+            if prop.PropertyType.IsGenericType then
+                if prop.PropertyType.Name.StartsWith "EventCallback" ||
+                    prop.PropertyType.Name.StartsWith "Microsoft.AspNetCore.Components.EventCallback"
+                then
+                    [ $"    static member {name} fn = (Bolero.Html.attr.callback<{getTypeName prop.PropertyType.GenericTypeArguments.[0]}> \"{prop.Name}\" (fun e -> fn e)) {_boleroCreateNode}" ]
+                elif prop.PropertyType.Name.StartsWith "RenderFragment`" then
+                    [ $"    static member {name} (render: {getTypeName prop.PropertyType.GenericTypeArguments.[0]} -> {nameof IFunBlazorNode}) = Bolero.Html.attr.fragmentWith \"{prop.Name}\" (fun x -> render x |> html.toBolero) {_boleroCreateNode}" ]
+                elif prop.PropertyType.Namespace = "System" && prop.PropertyType.Name.StartsWith "Func`" then
+                    let returnType = prop.PropertyType.GenericTypeArguments |> Seq.last
+                    if returnType = typeof<Microsoft.AspNetCore.Components.RenderFragment> then
+                        let paramCount = prop.PropertyType.Name.Substring("Func`".Length) |> int
+                        let parameters = [for i in 1..paramCount-1 do $"x{i}"] |> String.concat " "
+                        [ $"    static member {name} (fn) = Bolero.FragmentAttr (\"{prop.Name}\", fun render -> box ({getTypeName prop.PropertyType}(fun {parameters} -> Microsoft.AspNetCore.Components.RenderFragment(fun rt -> render rt (html.toBolero(fn {parameters})))))) {_boleroCreateNode}"  ]
+                    else
+                        [ $"    static member {name} (fn) = \"{prop.Name}\" => ({getTypeName prop.PropertyType}fn) {_boleroCreateNode}" ]
+                elif prop.PropertyType.Namespace = "System" && prop.PropertyType.Name.StartsWith "Action`" then
+                    [ $"    static member {name} (fn) = \"{prop.Name}\" => ({getTypeName prop.PropertyType}fn) {_boleroCreateNode}" ]
+                else
+                    let propTypeName = getTypeName prop.PropertyType
+                    [
+                        $"    static member {name} (x: {propTypeName}) = \"{prop.Name}\" => x {_boleroCreateNode}"
+                        yield! createBindableProps propTypeName
                     ]
 
-                elif prop.Name = "Class" && prop.PropertyType = typeof<string> then
-                    Some [ $"    static member classes (x: string list) = attr.classes x" ]
+            elif prop.PropertyType = typeof<RenderFragment> then
+                [
+                    $"    static member {name} (x: string) = Bolero.Html.attr.fragment \"{prop.Name}\" (html.text x |> html.toBolero) {_boleroCreateNode}"
+                    $"    static member {name} (node) = Bolero.Html.attr.fragment \"{prop.Name}\" (html.toBolero node) {_boleroCreateNode}"
+                    $"    static member {name} (nodes) = Bolero.Html.attr.fragment \"{prop.Name}\" (nodes |> html.fragment |> html.toBolero) {_boleroCreateNode}"
+                ]
 
-                elif prop.Name = "Style" && prop.PropertyType = typeof<string> then
-                    Some [ $"    static member styles (x: (string * string) list) = attr.styles x" ]
-                else
-                    Some [ $"    static member {name} (x: {getTypeName prop.PropertyType}) = \"{prop.Name}\" => x |> {nameof BoleroAttr}" ])
+            elif prop.Name = "Class" && prop.PropertyType = typeof<string> then
+                [ $"    static member classes (x: string list) = attr.classes x {_createNode}" ]
+
+            elif prop.Name = "Style" && prop.PropertyType = typeof<string> then
+                [ $"    static member styles (x: (string * string) list) = attr.styles x {_createNode}" ]
+            else
+                let propTypeName = getTypeName prop.PropertyType
+                [
+                    $"    static member {name} (x: {propTypeName}) = \"{prop.Name}\" => x {_boleroCreateNode}"
+                    yield! createBindableProps propTypeName
+                ])
 
         |> Seq.concat
-        |> Seq.map (fun x -> $"{x} |> {nameof GenericFunBlazorNode}<{funBlazorGeneric}>.create")
         |> String.concat "\n"
 
 

@@ -1,6 +1,7 @@
 namespace rec Microsoft.AspNetCore.Components.Authorization.DslInternals
 
 open Bolero.Html
+open FSharp.Data.Adaptive
 open Fun.Blazor
 open Microsoft.AspNetCore.Components.DslInternals
 open Microsoft.AspNetCore.Components.Web.DslInternals

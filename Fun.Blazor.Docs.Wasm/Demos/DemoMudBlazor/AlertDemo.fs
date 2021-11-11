@@ -1,6 +1,7 @@
 ﻿[<AutoOpen>]
 module Fun.Blazor.Docs.Wasm.DemoMudBlazor.AlertDemo
 
+open FSharp.Data.Adaptive
 open MudBlazor
 open Bolero
 open Fun.Blazor
@@ -8,6 +9,9 @@ open Fun.Blazor
 let alertDemo = html.inject (fun (hook: IComponentHook) ->
     let cardRef = Ref<MudCard>()
     let str = hook.UseStore "This is the way"
+    
+    let number1 = hook.UseStore 100
+    let number2 = cval 100
 
     hook.OnFirstAfterRender.Add (fun () ->
         match cardRef.Value with
@@ -33,6 +37,27 @@ let alertDemo = html.inject (fun (hook: IComponentHook) ->
                     childContent s
                 }
             ])
+
+            html.watch (number1, fun _ ->
+                MudTextField'(){
+                    Label "Number 1"
+                    Value' number1
+                }
+            )
+            adapt {
+                let! _ = number2
+                MudTextField'(){
+                    Label "Number 2"
+                    Value' number2
+                }
+            }
+            MudButton'(){
+                OnClick (fun _ ->
+                    number1.Publish ((+) 1)
+                    number2.Publish ((+) 2))
+                childContent "Increase"
+            }
+
             MudAutocomplete'(){
                 SearchFunc (fun str -> task {
                     return seq { for i in 1..5 do $"item {str} {i}" }

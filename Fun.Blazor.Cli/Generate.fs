@@ -30,6 +30,7 @@ let private createCodeFile (projectFile: string) codesDirName (name, style, dll)
     try
         let opens =
             $"""open Bolero.Html
+open FSharp.Data.Adaptive
 open Fun.Blazor
 open Microsoft.AspNetCore.Components.{Utils.internalSegment}
 open Microsoft.AspNetCore.Components.Web.{Utils.internalSegment}
