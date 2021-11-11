@@ -64,7 +64,7 @@ type FunBlazorContextWithAttrs<'Component when 'Component :> Microsoft.AspNetCor
     [<CustomOperation("dirname")>] member this.dirname (_: FunBlazorContext<'Component>, v: obj) = "dirname" => v |> BoleroAttr |> this.AddProp
     [<CustomOperation("disabled")>] member this.disabled (_: FunBlazorContext<'Component>, v: obj) = "disabled" => v |> BoleroAttr |> this.AddProp
     [<CustomOperation("download")>] member this.download (_: FunBlazorContext<'Component>, v: obj) = "download" => v |> BoleroAttr |> this.AddProp
-    [<CustomOperation("draggable")>] member this.draggable (_: FunBlazorContext<'Component>, v: obj) = "draggable" => v |> BoleroAttr |> this.AddProp
+    [<CustomOperation("draggable")>] member this.draggable (_: FunBlazorContext<'Component>, v: bool) = attr.custom ("draggable", if v then "true" else "false") |> this.AddProp
     [<CustomOperation("dropzone")>] member this.dropzone (_: FunBlazorContext<'Component>, v: obj) = "dropzone" => v |> BoleroAttr |> this.AddProp
     [<CustomOperation("enctype")>] member this.enctype (_: FunBlazorContext<'Component>, v: obj) = "enctype" => v |> BoleroAttr |> this.AddProp
     [<CustomOperation("for'")>] member this.for' (_: FunBlazorContext<'Component>, v: obj) = "for" => v |> BoleroAttr |> this.AddProp
