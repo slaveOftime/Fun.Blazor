@@ -891,6 +891,7 @@ type textArea<'FunBlazorGeneric> =
     static member rows (x: System.UInt32) = "Rows" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member onResize fn = (Bolero.Html.attr.callback<AntDesign.OnResizeEventArgs> "OnResize" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member showCount (x: System.Boolean) = "ShowCount" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member value (x: System.String) = "Value" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
                     
 
 type radioGroup<'FunBlazorGeneric, 'TValue> =
@@ -959,6 +960,7 @@ type selectBase<'FunBlazorGeneric, 'TItemValue, 'TItem> =
     static member maxTagTextLength (x: System.Int32) = "MaxTagTextLength" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member labelInValue (x: System.Boolean) = "LabelInValue" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member maxTagCount (x: OneOf.OneOf<System.Int32, AntDesign.Select.ResponsiveTag>) = "MaxTagCount" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member valueOnClear (x: 'TItemValue) = "ValueOnClear" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
                     
 
 type select'<'FunBlazorGeneric, 'TItemValue, 'TItem> =
@@ -2276,6 +2278,7 @@ type columnBase<'FunBlazorGeneric> =
     static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member ellipsis (x: System.Boolean) = "Ellipsis" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member hidden (x: System.Boolean) = "Hidden" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member align (x: AntDesign.ColumnAlign) = "Align" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member cellRender (render: AntDesign.TableModels.CellData -> IFunBlazorNode) = Bolero.Html.attr.fragmentWith "CellRender" (fun x -> render x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
                     
 
@@ -2402,7 +2405,10 @@ type reuseTabs<'FunBlazorGeneric> =
 
     static member ref x = attr.ref<AntDesign.ReuseTabs> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member tabPaneClass (x: System.String) = "TabPaneClass" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member draggable (x: System.Boolean) = "Draggable" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member size (x: AntDesign.TabSize) = "Size" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member body (render: AntDesign.ReuseTabsPageItem -> IFunBlazorNode) = Bolero.Html.attr.fragmentWith "Body" (fun x -> render x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member locale (x: AntDesign.ReuseTabsLocale) = "Locale" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
                     
 
 type tabPane<'FunBlazorGeneric> =
@@ -2422,6 +2428,9 @@ type tabPane<'FunBlazorGeneric> =
     static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member tabContextMenu (x: string) = Bolero.Html.attr.fragment "TabContextMenu" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member tabContextMenu (node) = Bolero.Html.attr.fragment "TabContextMenu" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member tabContextMenu (nodes) = Bolero.Html.attr.fragment "TabContextMenu" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member disabled (x: System.Boolean) = "Disabled" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member closable (x: System.Boolean) = "Closable" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
                     
@@ -2440,27 +2449,32 @@ type tabs<'FunBlazorGeneric> =
     static member activeKey (x: System.String) = "ActiveKey" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member activeKeyChanged fn = (Bolero.Html.attr.callback<System.String> "ActiveKeyChanged" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member animated (x: System.Boolean) = "Animated" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member inkBarAnimated (x: System.Boolean) = "InkBarAnimated" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member renderTabBar (x: System.Object) = "RenderTabBar" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member defaultActiveKey (x: System.String) = "DefaultActiveKey" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member hideAdd (x: System.Boolean) = "HideAdd" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member size (x: System.String) = "Size" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member size (x: AntDesign.TabSize) = "Size" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member tabBarExtraContent (x: string) = Bolero.Html.attr.fragment "TabBarExtraContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member tabBarExtraContent (node) = Bolero.Html.attr.fragment "TabBarExtraContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member tabBarExtraContent (nodes) = Bolero.Html.attr.fragment "TabBarExtraContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member tabBarExtraContentLeft (x: string) = Bolero.Html.attr.fragment "TabBarExtraContentLeft" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member tabBarExtraContentLeft (node) = Bolero.Html.attr.fragment "TabBarExtraContentLeft" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member tabBarExtraContentLeft (nodes) = Bolero.Html.attr.fragment "TabBarExtraContentLeft" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member tabBarExtraContentRight (x: string) = Bolero.Html.attr.fragment "TabBarExtraContentRight" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member tabBarExtraContentRight (node) = Bolero.Html.attr.fragment "TabBarExtraContentRight" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member tabBarExtraContentRight (nodes) = Bolero.Html.attr.fragment "TabBarExtraContentRight" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member tabBarGutter (x: System.Int32) = "TabBarGutter" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member tabBarStyle (x: System.String) = "TabBarStyle" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member tabPosition (x: System.String) = "TabPosition" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member type' (x: System.String) = "Type" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member tabPosition (x: AntDesign.TabPosition) = "TabPosition" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member type' (x: AntDesign.TabType) = "Type" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member onChange fn = (Bolero.Html.attr.callback<System.String> "OnChange" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member onEdit (fn) = "OnEdit" => (System.Func<System.String, System.String, System.Threading.Tasks.Task<System.Boolean>>fn) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member onClose fn = (Bolero.Html.attr.callback<System.String> "OnClose" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member onAddClick (x: Microsoft.AspNetCore.Components.EventCallback) = "OnAddClick" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member afterTabCreated fn = (Bolero.Html.attr.callback<System.String> "AfterTabCreated" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member onNextClick (x: Microsoft.AspNetCore.Components.EventCallback) = "OnNextClick" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member onPrevClick (x: Microsoft.AspNetCore.Components.EventCallback) = "OnPrevClick" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member onTabClick fn = (Bolero.Html.attr.callback<System.String> "OnTabClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member keyboard (x: System.Boolean) = "Keyboard" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member draggable (x: System.Boolean) = "Draggable" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member centered (x: System.Boolean) = "Centered" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
                     
 
 type tag<'FunBlazorGeneric> =
@@ -3433,6 +3447,19 @@ type dropdownGroupButton<'FunBlazorGeneric> =
     static member rightButton (x: string) = Bolero.Html.attr.fragment "RightButton" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member rightButton (node) = Bolero.Html.attr.fragment "RightButton" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member rightButton (nodes) = Bolero.Html.attr.fragment "RightButton" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+                    
+
+type tableRow<'FunBlazorGeneric, 'TItem> =
+    inherit antDomComponentBase<'FunBlazorGeneric>
+    static member create () = [] |> html.blazor<AntDesign.Internal.TableRow<'TItem>>
+    static member create (nodes: GenericFunBlazorNode<'FunBlazorGeneric> list) = nodes |> List.map (fun x -> x.Node) |> html.blazor<AntDesign.Internal.TableRow<'TItem>>
+    static member create (nodes: IFunBlazorNode list) = nodes |> html.blazor<AntDesign.Internal.TableRow<'TItem>>
+    static member create (node: IFunBlazorNode) = [ node ] |> html.blazor<AntDesign.Internal.TableRow<'TItem>>
+    static member create (x: string) = [ html.text x ] |> html.blazor<AntDesign.Internal.TableRow<'TItem>>
+    static member ref x = attr.ref<AntDesign.Internal.TableRow<'TItem>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
                     
             
 namespace rec AntDesign.DslInternals
@@ -4956,6 +4983,13 @@ type IDropdownGroupButtonNode = interface end
 type dropdownGroupButton =
     class
         inherit Internal.dropdownGroupButton<IDropdownGroupButtonNode>
+    end
+                    
+
+type ITableRowNode<'TItem> = interface end
+type tableRow<'TItem> =
+    class
+        inherit Internal.tableRow<ITableRowNode<'TItem>, 'TItem>
     end
                     
             

@@ -34,10 +34,14 @@
 		<PackageReference Include="Bolero" Version="0.17.25" />
 		<PackageReference Include="Feliz.Engine" Version="1.0.0-beta-004" />
 		<PackageReference Include="FSharp.Control.Reactive" Version="5.0.2" />
-		<PackageReference Include="FSharp.Data.Adaptive" Version="1.2.6" />
-		<PackageReference Include="Fun.Result" Version="1.1.1" />
+		<PackageReference Include="FSharp.Data.Adaptive" Version="1.2.7" />
+		<PackageReference Include="Fun.Result" Version="2.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Update="FSharp.Core" Version="6.0.1" />
 	</ItemGroup>
 
 </Project>

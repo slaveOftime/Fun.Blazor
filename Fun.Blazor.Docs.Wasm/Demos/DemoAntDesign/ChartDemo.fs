@@ -11,17 +11,16 @@ type Item =
 
 
 let chartDemo =
-    PercentStackedArea'<Item>() {
-        Config (
-            PercentStackedAreaConfig(
-                Title = Title(Visible = true, Text = "百分比堆叠面积图"),
-                Meta = Meta(Range = [| 0; 1 |]),
-                XField = "year",
-                YField = "value",
-                StackField = "country",
-                //Color = OneOf.OneOf( [| "#82d1de"; "#cb302d"; "#e3ca8c" |],
-                AreaStyle = GraphicStyle(FillOpacity = 0.7M)))
+    Area'(){
         Data items
+        Config (AreaConfig(
+            Title = Title(Visible = true, Text = "百分比堆叠面积图"),
+            Meta = Meta(Range = [| 0; 1 |]),
+            XField = "year",
+            YField = "value",
+            //Color = OneOf.OneOf( [| "#82d1de"; "#cb302d"; "#e3ca8c" |],
+            AreaStyle = GraphicStyle(FillOpacity = 0.7M))
+        )
     }
 
 

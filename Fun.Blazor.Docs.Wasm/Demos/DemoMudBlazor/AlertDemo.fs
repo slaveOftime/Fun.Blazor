@@ -1,7 +1,6 @@
 ﻿[<AutoOpen>]
 module Fun.Blazor.Docs.Wasm.DemoMudBlazor.AlertDemo
 
-open FSharp.Control.Tasks
 open MudBlazor
 open Bolero
 open Fun.Blazor

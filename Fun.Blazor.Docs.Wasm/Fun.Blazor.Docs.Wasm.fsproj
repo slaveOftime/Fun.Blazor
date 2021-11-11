@@ -46,15 +46,18 @@
     <Compile Include="Startup.fs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Fun.Result" Version="1.1.1" />
+    <PackageReference Include="Fun.Result" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.11" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.11" PrivateAssets="all" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
-    <PackageReference FunBlazorStyle="Feliz" Include="AntDesign" Version="0.10.0" />
-    <PackageReference FunBlazorStyle="CE" Include="AntDesign.Charts" Version="0.2.1" />
-    <PackageReference FunBlazorStyle="CE" Include="MudBlazor" Version="5.1.5" />
+    <PackageReference FunBlazorStyle="Feliz" Include="AntDesign" Version="0.10.2" />
+    <PackageReference FunBlazorStyle="CE" Include="AntDesign.Charts" Version="0.2.2" />
+    <PackageReference FunBlazorStyle="CE" Include="MudBlazor" Version="5.2.0" />
     <PackageReference FunBlazorStyle="CE" Include="Microsoft.AspNetCore.Components.Authorization" Version="5.0.11" />
     <PackageReference FunBlazorStyle="Feliz" Include="Microsoft.Fast.Components.FluentUI" Version="0.4.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Update="FSharp.Core" Version="6.0.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fun.Blazor\Fun.Blazor.fsproj" />
