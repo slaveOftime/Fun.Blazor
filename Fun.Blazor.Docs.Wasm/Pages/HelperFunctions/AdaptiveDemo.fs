@@ -7,7 +7,7 @@ open FSharp.Control.Reactive
 open Fun.Blazor
 open MudBlazor
 
-let adaptiveDemo = html.inject (fun (hook: IComponentHook) ->
+let adaptiveDemo1 = html.inject (fun (hook: IComponentHook) ->
     let store1 = cval 0
     let store2 = cval 0
     let store3 = cval 0
@@ -83,3 +83,47 @@ let adaptiveDemo = html.inject (fun (hook: IComponentHook) ->
             }
         ]
     })
+
+
+/// With this we can have nicer code than html.watch when you got a lot of changing data and their pripority is same
+let adaptiveDemo2 = html.inject <| fun (hook: IComponentHook, store: IShareStore) ->
+    let number1 = cval 1
+    let number2, setNumber2 = hook.UseAVal (store.Create("number-share-1", 1))
+    let number3 = hook.UseAVal (0L, Observable.interval (TimeSpan.FromSeconds 2))
+    let number4 = hook.UseAVal (0L, Observable.interval (TimeSpan.FromSeconds 3))
+    let number5 = hook.UseAVal (0L, Observable.interval (TimeSpan.FromSeconds 4))
+    let number6 = hook.UseAVal (0L, Observable.interval (TimeSpan.FromSeconds 5))
+
+    adapt{
+        let! n1 = number1
+        let! n2 = number2
+
+        html.div $"Number1 = {n1}"
+        html.div $"Number2 = {n2}"
+        adapt{
+            let! n3 = number3
+            let! n4 = number4
+            let! n5 = number5
+            let! n6 = number6
+            html.div $"Number3 = {n3}; Number4 = {n4}; Number5 = {n5}; Number6 = {n6}"
+        }
+        MudButtonGroup'(){
+            Variant Variant.Filled
+            childContent [
+                MudButton'(){
+                    OnClick (fun _ -> number1.Publish ((+) 1))
+                    childContent "Increase Number1"
+                }
+                MudButton'(){
+                    OnClick (fun _ -> setNumber2 (n2 + 1))
+                    childContent "Increase Number2"
+                }
+            ]
+        }
+    }
+
+let adaptiveDemo =
+    html.div [
+        adaptiveDemo2
+        adaptiveDemo1
+    ]

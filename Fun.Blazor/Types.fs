@@ -154,7 +154,8 @@ type IComponentHook =
     abstract StateHasChanged: unit -> unit
     /// Create an IStore and hold in component and dispose it after component disposed
     abstract UseStore: 'T -> IStore<'T>
-
+    abstract UseAVal: IStore<'T> -> aval<'T> * ('T -> unit)
+    abstract UseAVal: defaultValue: 'T * IObservable<'T> -> aval<'T>
 
 // Will serve as a scoped a service
 type IShareStore =

@@ -54,10 +54,21 @@ type DIComponent<'T>() as this =
             member _.AddDisposes ds = disposes.AddRange(ds)
             member _.StateHasChanged () = this.ForceSetState()
 
-            member _.UseStore<'T> x =
+            member _.UseStore<'T> (x: 'T): IStore<'T> =
                 let newStore = new Store<'T>(x)
                 disposes.Add newStore
                 newStore :> IStore<'T>
+
+            member _.UseAVal<'T> (value: IStore<'T>): aval<'T> * ('T -> unit) =
+                let value' = cval value.Current
+                let setValue x = transact (fun _ -> value'.Value <- x)
+                value.Observable.Subscribe setValue |> disposes.Add
+                value', setValue
+
+            member _.UseAVal<'T> (defaultValue: 'T, obser: IObservable<'T>): aval<'T> =
+                let value' = cval defaultValue
+                obser.Subscribe(fun x -> transact (fun _ -> value'.Value <- x)) |> disposes.Add
+                value'
         }
 
 
