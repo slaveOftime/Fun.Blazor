@@ -63,12 +63,12 @@ type DIComponent<'T>() as this =
                 let value' = cval value.Current
                 let setValue x = transact (fun _ -> value'.Value <- x)
                 value.Observable.Subscribe setValue |> disposes.Add
-                value', setValue
+                value' :> aval<'T>, setValue
 
             member _.UseAVal<'T> (defaultValue: 'T, obser: IObservable<'T>): aval<'T> =
                 let value' = cval defaultValue
                 obser.Subscribe(fun x -> transact (fun _ -> value'.Value <- x)) |> disposes.Add
-                value'
+                value' :> aval<'T>
         }
 
 
