@@ -59,11 +59,10 @@ type DIComponent<'T>() as this =
                 disposes.Add newStore
                 newStore :> IStore<'T>
 
-            member _.UseAVal<'T> (value: IStore<'T>): aval<'T> * ('T -> unit) =
-                let value' = cval value.Current
-                let setValue x = transact (fun _ -> value'.Value <- x)
-                value.Observable.Subscribe setValue |> disposes.Add
-                value' :> aval<'T>, setValue
+            member _.UseAVal<'T> (store: IStore<'T>): aval<'T> * ('T -> unit) =
+                let value' = cval store.Current
+                store.Observable.Subscribe (fun x -> transact (fun _ -> value'.Value <- x)) |> disposes.Add
+                value' :> aval<'T>, (fun x -> store.Publish x)
 
             member _.UseAVal<'T> (defaultValue: 'T, obser: IObservable<'T>): aval<'T> =
                 let value' = cval defaultValue
