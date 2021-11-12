@@ -89,10 +89,10 @@ let adaptiveDemo1 = html.inject (fun (hook: IComponentHook) ->
 let adaptiveDemo2 = html.inject <| fun (hook: IComponentHook, store: IShareStore) ->
     let number1 = cval 1
     let number2, setNumber2 = hook.UseAVal (store.Create("number-share-1", 1))
-    let number3 = hook.UseAVal (0L, Observable.interval (TimeSpan.FromSeconds 2))
-    let number4 = hook.UseAVal (0L, Observable.interval (TimeSpan.FromSeconds 3))
-    let number5 = hook.UseAVal (0L, Observable.interval (TimeSpan.FromSeconds 4))
-    let number6 = hook.UseAVal (0L, Observable.interval (TimeSpan.FromSeconds 5))
+    let number3 = hook.UseAVal (0L, Observable.interval (TimeSpan.FromSeconds 2.))
+    let number4 = hook.UseAVal (0L, Observable.interval (TimeSpan.FromSeconds 3.))
+    let number5 = hook.UseAVal (0L, Observable.interval (TimeSpan.FromSeconds 4.))
+    let number6 = hook.UseAVal (0L, Observable.interval (TimeSpan.FromSeconds 5.))
 
     adapt{
         let! n1 = number1
