@@ -88,7 +88,7 @@ let adaptiveDemo1 = html.inject (fun (hook: IComponentHook) ->
 /// With this we can have nicer code than html.watch when you got a lot of changing data and their pripority is same
 let adaptiveDemo2 = html.inject <| fun (hook: IComponentHook, store: IShareStore) ->
     let number1 = cval 1
-    let number2, setNumber2 = hook.UseAVal (store.Create("number-share-1", 1))
+    let number2 = hook.UseCVal (store.Create("number-share-1", 1))
     let number3 = hook.UseAVal (0L, Observable.interval (TimeSpan.FromSeconds 2.))
     let number4 = hook.UseAVal (0L, Observable.interval (TimeSpan.FromSeconds 3.))
     let number5 = hook.UseAVal (0L, Observable.interval (TimeSpan.FromSeconds 4.))
@@ -115,15 +115,42 @@ let adaptiveDemo2 = html.inject <| fun (hook: IComponentHook, store: IShareStore
                     childContent "Increase Number1"
                 }
                 MudButton'(){
-                    OnClick (fun _ -> setNumber2 (n2 + 1))
+                    OnClick (fun _ -> number2.Publish ((+) 1))
                     childContent "Increase Number2"
                 }
             ]
         }
     }
 
+
+
+let adaptiveDemo3 = html.inject <| fun (store: IShareStore) ->
+    let number1 = store.CreateCVal("share-number-adapt-demo3", 0)
+    adapt{
+        let! n1 = number1
+        html.div $"Number form demo3: {n1}"
+        MudButton'(){
+            OnClick (fun _ -> number1.Publish ((+) 1))
+            childContent "Increase Number1"
+        }
+    }
+
+let adaptiveDemo4 = html.inject <| fun (store: IShareStore) ->
+    let number1 = store.CreateCVal("share-number-adapt-demo3", 0)
+    adapt{
+        let! n1 = number1
+        html.div $"Number form demo4: {n1}"
+        MudButton'(){
+            OnClick (fun _ -> number1.Publish ((+) 1))
+            childContent "Increase Number1"
+        }
+    }
+
+
 let adaptiveDemo =
     html.div [
+        adaptiveDemo4
+        adaptiveDemo3
         adaptiveDemo2
         adaptiveDemo1
     ]

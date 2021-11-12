@@ -2,6 +2,8 @@
 
 open System
 open System.Collections.Generic
+open System.Collections.Concurrent
+open FSharp.Data.Adaptive
 open FSharp.Control.Reactive
 open Fun.Result
 
@@ -31,32 +33,32 @@ type Store<'T> (defaultValue: 'T) =
 
 
 type ShareStore () =
-    let stores = Dictionary<string, IDisposable>()
+    let stores = ConcurrentDictionary<string, IDisposable>()
+    let avals = ConcurrentDictionary<string, IAdaptiveValue>()
     let subscriptions = List<IDisposable>()
 
 
     interface IShareStore with
         member _.Create (key: string, defaultValue: 'T) =
-            if stores.ContainsKey key then
-                stores.[key] :?> IStore<'T>
-            else
-                let store = new Store<'T>(defaultValue)
-                stores.Add(key, store)
-                store :> IStore<'T>
+            stores.GetOrAdd(key, fun _ -> new Store<'T>(defaultValue) :> IDisposable)
+            :?> IStore<'T>
 
         member _.CreateDeferred (key: string, getData: unit -> IObservable<DeferredState<'T, 'Error>>) =
-            if stores.ContainsKey key then
-                stores.[key] :?> IStore<_>
-            else
+            stores.GetOrAdd(key, fun _ ->
                 let store = new Store<_>(DeferredState.NotStartYet)
                 let subscription = getData().Subscribe (fun x -> (store :> IStore<_>).Publish(x))
-                stores.Add(key, store)
                 subscriptions.Add subscription
-                store :> IStore<_>
+                store :> IDisposable
+            )
+            :?> IStore<_>
 
         member this.Create (defaultValue: 'T) =
             let key = typeof<'T>.FullName
             (this :> IShareStore).Create(key, defaultValue)
+
+        member _.CreateCVal (key: string, defaultValue: 'T) =
+            avals.GetOrAdd(key, fun _ -> cval defaultValue :> IAdaptiveValue)
+            :?> cval<'T>
 
 
     interface IDisposable with
