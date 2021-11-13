@@ -35,6 +35,18 @@ type Extensions =
     
     [<Extension>]
     static member Publish (this: cval<'T>, fn: 'T -> 'T) = transact(fun () -> this.Value <- fn this.Value)
+    
+    [<Extension>]
+    static member AsAVal (this: cval<'T>) =
+        let setValue x = transact(fun () -> this.Value <- x)
+        this |> AVal.map (fun x -> x, setValue)
+
+
+[<RequireQualifiedAccess>]
+module Adapt =
+    let withSetter (this: cval<'T>) =
+        let setValue x = transact(fun () -> this.Value <- x)
+        this |> AVal.map (fun x -> x, setValue)
 
 
 let adapt = AdaptiveBuilder()
