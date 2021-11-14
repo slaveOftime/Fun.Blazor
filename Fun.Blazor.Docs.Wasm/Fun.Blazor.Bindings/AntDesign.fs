@@ -214,7 +214,7 @@ type backTop<'FunBlazorGeneric> =
     static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member visibilityHeight (x: System.Double) = "VisibilityHeight" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member targetSelector (x: System.String) = "TargetSelector" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member onClick (x: Microsoft.AspNetCore.Components.EventCallback) = "OnClick" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member onClick fn = evt.callbackOfUnit "OnClick" fn |> GenericFunBlazorNode<'FunBlazorGeneric>.create
                     
 
 type badge<'FunBlazorGeneric> =
@@ -665,7 +665,7 @@ type switch<'FunBlazorGeneric> =
     static member checkedChildrenTemplate (node) = Bolero.Html.attr.fragment "CheckedChildrenTemplate" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member checkedChildrenTemplate (nodes) = Bolero.Html.attr.fragment "CheckedChildrenTemplate" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member control (x: System.Boolean) = "Control" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member onClick (x: Microsoft.AspNetCore.Components.EventCallback) = "OnClick" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member onClick fn = evt.callbackOfUnit "OnClick" fn |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member unCheckedChildren (x: System.String) = "UnCheckedChildren" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member unCheckedChildrenTemplate (x: string) = Bolero.Html.attr.fragment "UnCheckedChildrenTemplate" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member unCheckedChildrenTemplate (node) = Bolero.Html.attr.fragment "UnCheckedChildrenTemplate" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -705,7 +705,7 @@ type datePickerBase<'FunBlazorGeneric, 'TValue> =
     static member renderExtraFooter (x: string) = Bolero.Html.attr.fragment "RenderExtraFooter" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member renderExtraFooter (node) = Bolero.Html.attr.fragment "RenderExtraFooter" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member renderExtraFooter (nodes) = Bolero.Html.attr.fragment "RenderExtraFooter" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member onClearClick (x: Microsoft.AspNetCore.Components.EventCallback) = "OnClearClick" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member onClearClick fn = evt.callbackOfUnit "OnClearClick" fn |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member onOpenChange fn = (Bolero.Html.attr.callback<System.Boolean> "OnOpenChange" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member onPanelChange fn = (Bolero.Html.attr.callback<AntDesign.DateTimeChangedEventArgs> "OnPanelChange" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member disabledDate (fn) = "DisabledDate" => (System.Func<System.DateTime, System.Boolean>fn) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1189,7 +1189,7 @@ type drawer<'FunBlazorGeneric> =
     static member offsetX (x: System.Int32) = "OffsetX" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member offsetY (x: System.Int32) = "OffsetY" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member visible (x: System.Boolean) = "Visible" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member onClose (x: Microsoft.AspNetCore.Components.EventCallback) = "OnClose" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member onClose fn = evt.callbackOfUnit "OnClose" fn |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member handler (x: string) = Bolero.Html.attr.fragment "Handler" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member handler (node) = Bolero.Html.attr.fragment "Handler" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member handler (nodes) = Bolero.Html.attr.fragment "Handler" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1497,7 +1497,7 @@ type listItem<'FunBlazorGeneric> =
     static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member colStyle (x: System.String) = "ColStyle" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member itemCount (x: System.Int32) = "ItemCount" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member onClick (x: Microsoft.AspNetCore.Components.EventCallback) = "OnClick" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member onClick fn = evt.callbackOfUnit "OnClick" fn |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member noFlex (x: System.Boolean) = "NoFlex" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
                     
 
@@ -1750,8 +1750,8 @@ type dialogWrapper<'FunBlazorGeneric> =
     static member destroyOnClose (x: System.Boolean) = "DestroyOnClose" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member visible (x: System.Boolean) = "Visible" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member onBeforeDestroy fn = (Bolero.Html.attr.callback<System.ComponentModel.CancelEventArgs> "OnBeforeDestroy" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member onAfterShow (x: Microsoft.AspNetCore.Components.EventCallback) = "OnAfterShow" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member onAfterHide (x: Microsoft.AspNetCore.Components.EventCallback) = "OnAfterHide" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member onAfterShow fn = evt.callbackOfUnit "OnAfterShow" fn |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member onAfterHide fn = evt.callbackOfUnit "OnAfterHide" fn |> GenericFunBlazorNode<'FunBlazorGeneric>.create
                     
 
 type modal<'FunBlazorGeneric> =
@@ -1866,7 +1866,7 @@ type pageHeader<'FunBlazorGeneric> =
     static member subtitleTemplate (x: string) = Bolero.Html.attr.fragment "SubtitleTemplate" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member subtitleTemplate (node) = Bolero.Html.attr.fragment "SubtitleTemplate" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member subtitleTemplate (nodes) = Bolero.Html.attr.fragment "SubtitleTemplate" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member onBack (x: Microsoft.AspNetCore.Components.EventCallback) = "OnBack" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member onBack fn = evt.callbackOfUnit "OnBack" fn |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member pageHeaderContent (x: string) = Bolero.Html.attr.fragment "PageHeaderContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member pageHeaderContent (node) = Bolero.Html.attr.fragment "PageHeaderContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member pageHeaderContent (nodes) = Bolero.Html.attr.fragment "PageHeaderContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2208,7 +2208,7 @@ type countDown<'FunBlazorGeneric> =
 
     static member ref x = attr.ref<AntDesign.CountDown> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member format (x: System.String) = "Format" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member onFinish (x: Microsoft.AspNetCore.Components.EventCallback) = "OnFinish" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member onFinish fn = evt.callbackOfUnit "OnFinish" fn |> GenericFunBlazorNode<'FunBlazorGeneric>.create
                     
 
 type statistic<'FunBlazorGeneric, 'TValue> =
@@ -2499,7 +2499,7 @@ type tabs<'FunBlazorGeneric> =
     static member onChange fn = (Bolero.Html.attr.callback<System.String> "OnChange" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member onEdit (fn) = "OnEdit" => (System.Func<System.String, System.String, System.Threading.Tasks.Task<System.Boolean>>fn) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member onClose fn = (Bolero.Html.attr.callback<System.String> "OnClose" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member onAddClick (x: Microsoft.AspNetCore.Components.EventCallback) = "OnAddClick" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member onAddClick fn = evt.callbackOfUnit "OnAddClick" fn |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member afterTabCreated fn = (Bolero.Html.attr.callback<System.String> "AfterTabCreated" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member onTabClick fn = (Bolero.Html.attr.callback<System.String> "OnTabClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member draggable (x: System.Boolean) = "Draggable" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2529,7 +2529,7 @@ type tag<'FunBlazorGeneric> =
     static member noAnimation (x: System.Boolean) = "NoAnimation" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member onClose fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> "OnClose" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member onClosing fn = (Bolero.Html.attr.callback<AntDesign.CloseEventArgs<Microsoft.AspNetCore.Components.Web.MouseEventArgs>> "OnClosing" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member onClick (x: Microsoft.AspNetCore.Components.EventCallback) = "OnClick" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member onClick fn = evt.callbackOfUnit "OnClick" fn |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member visible (x: System.Boolean) = "Visible" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
                     
 
@@ -3074,11 +3074,11 @@ type overlay<'FunBlazorGeneric> =
     static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member onOverlayMouseEnter (x: Microsoft.AspNetCore.Components.EventCallback) = "OnOverlayMouseEnter" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member onOverlayMouseLeave (x: Microsoft.AspNetCore.Components.EventCallback) = "OnOverlayMouseLeave" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member onOverlayMouseUp (x: Microsoft.AspNetCore.Components.EventCallback) = "OnOverlayMouseUp" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member onShow (x: Microsoft.AspNetCore.Components.EventCallback) = "OnShow" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member onHide (x: Microsoft.AspNetCore.Components.EventCallback) = "OnHide" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member onOverlayMouseEnter fn = evt.callbackOfUnit "OnOverlayMouseEnter" fn |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member onOverlayMouseLeave fn = evt.callbackOfUnit "OnOverlayMouseLeave" fn |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member onOverlayMouseUp fn = evt.callbackOfUnit "OnOverlayMouseUp" fn |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member onShow fn = evt.callbackOfUnit "OnShow" fn |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member onHide fn = evt.callbackOfUnit "OnHide" fn |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member overlayChildPrefixCls (x: System.String) = "OverlayChildPrefixCls" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member hideMillisecondsDelay (x: System.Int32) = "HideMillisecondsDelay" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member waitForHideAnimMilliseconds (x: System.Int32) = "WaitForHideAnimMilliseconds" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3105,9 +3105,9 @@ type overlayTrigger<'FunBlazorGeneric> =
     static member inlineFlexMode (x: System.Boolean) = "InlineFlexMode" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member isButton (x: System.Boolean) = "IsButton" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member onClick fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> "OnClick" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member onMaskClick (x: Microsoft.AspNetCore.Components.EventCallback) = "OnMaskClick" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member onMouseEnter (x: Microsoft.AspNetCore.Components.EventCallback) = "OnMouseEnter" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member onMouseLeave (x: Microsoft.AspNetCore.Components.EventCallback) = "OnMouseLeave" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member onMaskClick fn = evt.callbackOfUnit "OnMaskClick" fn |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member onMouseEnter fn = evt.callbackOfUnit "OnMouseEnter" fn |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member onMouseLeave fn = evt.callbackOfUnit "OnMouseLeave" fn |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member onOverlayHiding fn = (Bolero.Html.attr.callback<System.Boolean> "OnOverlayHiding" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member onVisibleChange fn = (Bolero.Html.attr.callback<System.Boolean> "OnVisibleChange" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member overlay (x: string) = Bolero.Html.attr.fragment "Overlay" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3329,7 +3329,7 @@ type datePickerDatetimePanel<'FunBlazorGeneric, 'TValue> =
     static member disabledMinutes (fn) = "DisabledMinutes" => (System.Func<System.DateTime, System.Int32[]>fn) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member disabledSeconds (fn) = "DisabledSeconds" => (System.Func<System.DateTime, System.Int32[]>fn) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member disabledTime (fn) = "DisabledTime" => (System.Func<System.DateTime, AntDesign.DatePickerDisabledTime>fn) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member onOkClick (x: Microsoft.AspNetCore.Components.EventCallback) = "OnOkClick" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member onOkClick fn = evt.callbackOfUnit "OnOkClick" fn |> GenericFunBlazorNode<'FunBlazorGeneric>.create
                     
 
 type datePickerTemplate<'FunBlazorGeneric, 'TValue> =
@@ -3475,15 +3475,15 @@ type datePickerInput<'FunBlazorGeneric> =
     static member suffixIcon (x: string) = Bolero.Html.attr.fragment "SuffixIcon" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member suffixIcon (node) = Bolero.Html.attr.fragment "SuffixIcon" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member suffixIcon (nodes) = Bolero.Html.attr.fragment "SuffixIcon" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member onClick (x: Microsoft.AspNetCore.Components.EventCallback) = "OnClick" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member onfocus (x: Microsoft.AspNetCore.Components.EventCallback) = "Onfocus" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member onBlur (x: Microsoft.AspNetCore.Components.EventCallback) = "OnBlur" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member onfocusout (x: Microsoft.AspNetCore.Components.EventCallback) = "Onfocusout" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member onClick fn = evt.callbackOfUnit "OnClick" fn |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member onfocus fn = evt.callbackOfUnit "Onfocus" fn |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member onBlur fn = evt.callbackOfUnit "OnBlur" fn |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member onfocusout fn = evt.callbackOfUnit "Onfocusout" fn |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member onKeyUp fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.KeyboardEventArgs> "OnKeyUp" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member onKeyDown fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.KeyboardEventArgs> "OnKeyDown" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member onInput fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.ChangeEventArgs> "OnInput" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member allowClear (x: System.Boolean) = "AllowClear" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
-    static member onClickClear (x: Microsoft.AspNetCore.Components.EventCallback) = "OnClickClear" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member onClickClear fn = evt.callbackOfUnit "OnClickClear" fn |> GenericFunBlazorNode<'FunBlazorGeneric>.create
                     
 
 type dropdownGroupButton<'FunBlazorGeneric> =

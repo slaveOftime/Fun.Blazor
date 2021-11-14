@@ -10,6 +10,8 @@ open Fun.Blazor.Docs.Wasm.Components
 //                                        Here we provide a key
 //                                        If we do not provide a key, then every time we call externalDemo1 we will create a new component
 //                                        And its internal state will be erased
+//                                        Be careful when you provided a key: because the changes of externalX will not be used in the component, only the first one will be used
+//                                        so if you have lambda like onChanged, then you may get unexpected result.
 let externalDemo1 extenalX = html.inject ("externalDemo1", fun (hook: IComponentHook) ->
     // Below code will only be executed once
     // No matter how extenalX is changed it will not trigger rerender

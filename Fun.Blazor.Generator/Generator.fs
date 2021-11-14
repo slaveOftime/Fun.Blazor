@@ -35,7 +35,7 @@ let private getMetaInfo (ty: Type) =
 
             if prop.PropertyType.IsGenericType then
                 if prop.PropertyType.Name.StartsWith "EventCallback" ||
-                    prop.PropertyType.Name.StartsWith "Microsoft.AspNetCore.Components.EventCallback"
+                   prop.PropertyType.Name.StartsWith "Microsoft.AspNetCore.Components.EventCallback"
                 then
                     [ $"    static member {name} fn = (Bolero.Html.attr.callback<{getTypeName prop.PropertyType.GenericTypeArguments.[0]}> \"{prop.Name}\" (fun e -> fn e)) {_boleroCreateNode}" ]
                 elif prop.PropertyType.Name.StartsWith "RenderFragment`" then
@@ -56,6 +56,11 @@ let private getMetaInfo (ty: Type) =
                         $"    static member {name} (x: {propTypeName}) = \"{prop.Name}\" => x {_boleroCreateNode}"
                         yield! createBindableProps propTypeName
                     ]
+
+            elif prop.PropertyType.Name.StartsWith "EventCallback" ||
+                 prop.PropertyType.Name.StartsWith "Microsoft.AspNetCore.Components.EventCallback"
+            then
+                [ $"    static member {name} fn = evt.{nameof evt.callbackOfUnit} \"{prop.Name}\" fn {_createNode}" ]
 
             elif prop.PropertyType = typeof<RenderFragment> then
                 [

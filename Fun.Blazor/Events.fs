@@ -17,6 +17,12 @@ module evt =
         attr.callback<'T> name callback
         |> FunBlazorNode.BoleroAttr
 
+    let inline callbackOfUnit name fn =
+        ExplicitAttr (Func<_,_,_,_>(fun builder sequence receiver ->
+            builder.AddAttribute(sequence, name, EventCallback.Factory.Create(receiver, Action(fn)))
+            sequence + 1))
+        |> FunBlazorNode.BoleroAttr
+
     /// Create a handler for a HTML event of type EventArgs.
     let inline event<'T when 'T :> EventArgs> eventName (callback: ^T -> unit) =
         boleroCallback<'T> ("on" + eventName) callback
