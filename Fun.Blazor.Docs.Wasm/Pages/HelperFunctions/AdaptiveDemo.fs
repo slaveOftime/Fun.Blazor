@@ -96,10 +96,16 @@ let adaptiveDemo2 = html.inject <| fun (hook: IComponentHook, store: IShareStore
 
     adapt{
         let! n1 = number1
-        let! n2 = number2
 
         html.div $"Number1 = {n1}"
-        html.div $"Number2 = {n2}"
+        adapt{
+            let! n2 = number2
+            html.div $"Number2 = {n2}"
+            MudButton'(){
+                OnClick (fun _ -> number2.Publish ((+) 1))
+                childContent "Increase Number2"
+            }
+        }
         adapt{
             let! n3 = number3
             let! n4 = number4

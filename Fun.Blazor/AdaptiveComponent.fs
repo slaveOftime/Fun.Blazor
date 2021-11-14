@@ -8,7 +8,7 @@ open Microsoft.AspNetCore.Components
 type AdaptiveComponent () as this =
     inherit FunBlazorComponent()
     
-    let mutable nodeSubscription = null
+    let mutable nodeSubscription: IDisposable option = None
 
     [<Parameter>]
     member val Node = Unchecked.defaultof<alist<IFunBlazorNode>> with get, set
@@ -25,14 +25,13 @@ type AdaptiveComponent () as this =
         |> FunBlazorNode.Fragment
         :> IFunBlazorNode
 
-    override _.OnInitialized() =
-        nodeSubscription <- this.Node.AddCallback (fun _ _ ->
-            this.Rerender())
 
-    override _.OnParametersSet() = this.Rerender()
+    override _.OnParametersSet() =
+        nodeSubscription |> Option.iter (fun x -> x.Dispose())
+        nodeSubscription <- Some (this.Node.AddCallback (fun _ _ ->
+            this.Rerender()))
 
 
     interface IDisposable with
         member _.Dispose() =
-            if nodeSubscription <> null then
-                nodeSubscription.Dispose()
+            nodeSubscription |> Option.iter (fun x -> x.Dispose())

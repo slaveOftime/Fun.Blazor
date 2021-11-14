@@ -27,7 +27,6 @@ type AdaptiveBuilder() =
     member _.Zero () = AList.empty
 
 
-
 [<Extension>]
 type Extensions =
     [<Extension>]
