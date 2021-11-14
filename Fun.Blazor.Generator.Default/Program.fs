@@ -4,6 +4,7 @@ open Fun.Blazor.Generator
 
 
 let opens = """open Bolero.Html
+open FSharp.Data.Adaptive
 open Fun.Blazor"""
 
 

@@ -10,6 +10,7 @@ namespace rec Microsoft.AspNetCore.Components.DslInternals
 namespace rec Microsoft.AspNetCore.Components.Web.DslInternals
 
 open Bolero.Html
+open FSharp.Data.Adaptive
 open Fun.Blazor
 
 
@@ -28,6 +29,7 @@ type VirtualizeBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> Micro
 namespace rec Microsoft.AspNetCore.Components.Web.DslInternals
 
 open Bolero.Html
+open FSharp.Data.Adaptive
 open Fun.Blazor
 
 
@@ -45,6 +47,7 @@ type NavLinkBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNet
 namespace rec Microsoft.AspNetCore.Components.Web.DslInternals
 
 open Bolero.Html
+open FSharp.Data.Adaptive
 open Fun.Blazor
 
 
@@ -65,6 +68,8 @@ type InputBaseBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Micro
     static member create () = InputBaseBuilder<'FunBlazorGeneric, 'TValue>() :> IFunBlazorNode
     [<CustomOperation("AdditionalAttributes")>] member this.AdditionalAttributes (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>) = "AdditionalAttributes" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Value")>] member this.Value (_: FunBlazorContext<'FunBlazorGeneric>, x: 'TValue) = "Value" => x |> BoleroAttr |> this.AddProp
+    [<CustomOperation("Value'")>] member this.Value' (_: FunBlazorContext<'FunBlazorGeneric>, value: IStore<'TValue>) = this.AddProp("Value", value)
+    [<CustomOperation("Value'")>] member this.Value' (_: FunBlazorContext<'FunBlazorGeneric>, value: cval<'TValue>) = this.AddProp("Value", value)
     [<CustomOperation("ValueChanged")>] member this.ValueChanged (_: FunBlazorContext<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<'TValue> "ValueChanged" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
     [<CustomOperation("ValueExpression")>] member this.ValueExpression (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Linq.Expressions.Expression<System.Func<'TValue>>) = "ValueExpression" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("DisplayName")>] member this.DisplayName (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "DisplayName" => x |> BoleroAttr |> this.AddProp

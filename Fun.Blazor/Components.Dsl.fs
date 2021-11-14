@@ -1,3 +1,5 @@
+
+
 // ===========================================================================================
 
 
@@ -8,6 +10,7 @@
 namespace rec Microsoft.AspNetCore.Components.Web.DslInternals
 
 open Bolero.Html
+open FSharp.Data.Adaptive
 open Fun.Blazor
 open Microsoft.AspNetCore.Components.Web.DslInternals
 
@@ -32,6 +35,7 @@ type virtualize<'FunBlazorGeneric, 'TItem> =
 namespace rec Microsoft.AspNetCore.Components.Web.DslInternals
 
 open Bolero.Html
+open FSharp.Data.Adaptive
 open Fun.Blazor
 open Microsoft.AspNetCore.Components.Web.DslInternals
 
@@ -55,6 +59,7 @@ type navLink<'FunBlazorGeneric> =
 namespace rec Microsoft.AspNetCore.Components.Web.DslInternals
 
 open Bolero.Html
+open FSharp.Data.Adaptive
 open Fun.Blazor
 open Microsoft.AspNetCore.Components.Web.DslInternals
 
@@ -84,6 +89,8 @@ type inputBase<'FunBlazorGeneric, 'TValue> =
     static member ref x = attr.ref<Microsoft.AspNetCore.Components.Forms.InputBase<'TValue>> x |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member additionalAttributes (x: System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>) = "AdditionalAttributes" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member value (x: 'TValue) = "Value" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
+    static member value' (value: IStore<'TValue>) = GenericFunBlazorNode<'FunBlazorGeneric>.create("Value", value)
+    static member value' (value: cval<'TValue>) = GenericFunBlazorNode<'FunBlazorGeneric>.create("Value", value)
     static member valueChanged fn = (Bolero.Html.attr.callback<'TValue> "ValueChanged" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member valueExpression (x: System.Linq.Expressions.Expression<System.Func<'TValue>>) = "ValueExpression" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member displayName (x: System.String) = "DisplayName" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
