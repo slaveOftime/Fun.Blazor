@@ -9,6 +9,7 @@ type FunBlazorHtmlEngine with
     
     /// This function will create a blazor component with a random key.
     /// In other words, every time you recall this it will create a brand new component.
+    /// So it is not performed well, but it is simple and bug lesser
     ///
     /// 'Services should be something you defined in the asp.net core DI or unit
     /// 'Services must be a tuple like (hook: IComponentHook, sp: IServiceProvider)
@@ -39,5 +40,19 @@ type FunBlazorHtmlEngine with
                 ([
                     "RenderFn" => render
                     Bolero.Key key
+                ]
+                ,[]))
+
+
+    /// This function will create a blazor component with no key.
+    /// It is recommend to add key in if else or looping code block to tell blazor when to rerender.
+    ///
+    /// 'Services should be something you defined in the asp.net core DI or unit
+    /// 'Services must be a tuple like (hook: IComponentHook, sp: IServiceProvider)
+    member html.injectWithNoKey (render: 'Services -> IFunBlazorNode) =
+        html.bolero 
+            (Bolero.Node.BlazorComponent<DIComponent<'Services>>
+                ([
+                    "RenderFn" => render
                 ]
                 ,[]))
