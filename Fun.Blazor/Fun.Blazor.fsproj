@@ -22,7 +22,7 @@
 		<Compile Include="DslDI.fs" />
 		<Compile Include="DslElmish.fs" />
 		<Compile Include="DslWatch.fs" />
-		<Compile Include="DslAdaptive.fs" />
+		<Compile Include="DslAdaptiview.fs" />
 		<Compile Include="DslRouting.fs" />
 		<Compile Include="DslCE.fs" />
 		<Compile Include="Components.Dsl.fs" />

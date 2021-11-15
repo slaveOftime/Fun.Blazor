@@ -1,5 +1,5 @@
 ﻿[<AutoOpen>]
-module Fun.Blazor.Docs.Wasm.Pages.HelperFunctions.AdaptiveDemo
+module Fun.Blazor.Docs.Wasm.Pages.HelperFunctions.AdaptiviewDemo
 
 open System
 open FSharp.Data.Adaptive
@@ -7,7 +7,7 @@ open FSharp.Control.Reactive
 open Fun.Blazor
 open MudBlazor
 
-let adaptiveDemo1 = html.inject (fun (hook: IComponentHook) ->
+let adaptiviewDemo1 = html.inject (fun (hook: IComponentHook) ->
     let store1 = cval 0
     let store2 = cval 0
     let store3 = cval 0
@@ -37,7 +37,7 @@ let adaptiveDemo1 = html.inject (fun (hook: IComponentHook) ->
     MudPaper'(){
         Styles [ style.padding 20 ]
         childContent [
-            adapt{
+            adaptiview(){
                 // let! will let the reactive to listen to related source(IStore<_>, aval<_>) changes, and trigger render accordingly
                 let! s1 = store1
                 let! s2 = store2
@@ -45,14 +45,14 @@ let adaptiveDemo1 = html.inject (fun (hook: IComponentHook) ->
                 MudText'.create $"Store1 {s1}"
                 MudText'.create $"Store4 {s4}"
                 if (s1 > 5  && s1 < 10) || s2 > 15  then
-                    adapt{
+                    adaptiview(){
                         let! s3 = store3
                         MudText'.create $"Store2 {s2}"
                         MudText'.create $"Store3 {s3}"
                     }
                 for i in 0..s1 do
                     if i % 2 = 0 then
-                        adapt {
+                        adaptiview i {
                             let! s3 = store3
                             MudText'.create $"Seq {i} {s3}"
                         }
@@ -60,7 +60,7 @@ let adaptiveDemo1 = html.inject (fun (hook: IComponentHook) ->
                     OnClick (fun _ -> isVisible.Publish true)
                     childContent "Open Dialog"
                 }
-                adapt{
+                adaptiview(){
                     let! isVisible' = isVisible
                     MudOverlay'(){
                         Visible isVisible'
@@ -86,7 +86,7 @@ let adaptiveDemo1 = html.inject (fun (hook: IComponentHook) ->
 
 
 /// With this we can have nicer code than html.watch when you got a lot of changing data and their pripority is same
-let adaptiveDemo2 = html.inject <| fun (hook: IComponentHook, store: IShareStore) ->
+let adaptiviewDemo2 = html.inject <| fun (hook: IComponentHook, store: IShareStore) ->
     let number1 = cval 1
     let number2 = hook.UseCVal (store.Create("number-share-1", 1))
     let number3 = hook.UseAVal (0L, Observable.interval (TimeSpan.FromSeconds 2.))
@@ -94,11 +94,11 @@ let adaptiveDemo2 = html.inject <| fun (hook: IComponentHook, store: IShareStore
     let number5 = hook.UseAVal (0L, Observable.interval (TimeSpan.FromSeconds 4.))
     let number6 = hook.UseAVal (0L, Observable.interval (TimeSpan.FromSeconds 5.))
 
-    adapt{
+    adaptiview(){
         let! n1 = number1
 
         html.div $"Number1 = {n1}"
-        adapt{
+        adaptiview(){
             let! n2 = number2
             html.div $"Number2 = {n2}"
             MudButton'(){
@@ -106,7 +106,7 @@ let adaptiveDemo2 = html.inject <| fun (hook: IComponentHook, store: IShareStore
                 childContent "Increase Number2"
             }
         }
-        adapt{
+        adaptiview(){
             let! n3 = number3
             let! n4 = number4
             let! n5 = number5
@@ -130,9 +130,9 @@ let adaptiveDemo2 = html.inject <| fun (hook: IComponentHook, store: IShareStore
 
 
 
-let adaptiveDemo3 = html.inject <| fun (store: IShareStore) ->
+let adaptiviewDemo3 = html.inject <| fun (store: IShareStore) ->
     let number1 = store.CreateCVal("share-number-adapt-demo3", 0)
-    adapt{
+    adaptiview(){
         let! n1 = number1
         html.div $"Number form demo3: {n1}"
         MudButton'(){
@@ -141,9 +141,9 @@ let adaptiveDemo3 = html.inject <| fun (store: IShareStore) ->
         }
     }
 
-let adaptiveDemo4 = html.inject <| fun (store: IShareStore) ->
+let adaptiviewDemo4 = html.inject <| fun (store: IShareStore) ->
     let number1 = store.CreateCVal("share-number-adapt-demo3", 0)
-    adapt{
+    adaptiview(){
         let! n1 = number1
         html.div $"Number form demo4: {n1}"
         MudButton'(){
@@ -153,10 +153,51 @@ let adaptiveDemo4 = html.inject <| fun (store: IShareStore) ->
     }
 
 
-let adaptiveDemo =
+let adaptiviewDemo5 = html.inject <| fun (hook: IComponentHook) ->
+    let display = hook.UseStore true
+    let number1 = hook.UseStore 1
+
+    html.watch2 (display, number1, fun display' number1' -> [
+        if display' then
+            adaptiview(){
+                /// Every time when number1 is changed, n2 will start over from 2
+                let! n2, setN2 = cval(2).AsAVal()
+                html.div $"Number1: {number1'}" // should change
+                html.div $"Number2: {n2}"
+                MudButton'(){
+                    OnClick (fun _ -> setN2 (n2 + 1))
+                    childContent "Increase Number2"
+                }
+            }
+            adaptiview(isStatic = true){
+                /// number1`s change will not impact this
+                /// When display' is toggled, the state will be erased because the whole component is recreated by blazor
+                let! n3, setN3 = cval(3).AsAVal()
+                html.div $"Number1: {number1'}" // should not change
+                html.div $"Number1: {number1.Current}" // should change when n3 changed
+                html.div $"Number2: {n3}"
+                MudButton'(){
+                    OnClick (fun _ -> setN3 (n3 + 1))
+                    childContent "Increase Number2"
+                }
+            }
+        html.div $"Number1 = {number1'}"
+        MudButton'(){
+            OnClick (fun _ -> number1.Publish ((+) 1))
+            childContent "Increase Number1"
+        }
+        MudSwitch'(){
+            Checked' display
+            childContent "Toggle"
+        }
+    ])
+
+
+let adaptiviewDemo =
     html.div [
-        adaptiveDemo4
-        adaptiveDemo3
-        adaptiveDemo2
-        adaptiveDemo1
+        adaptiviewDemo5
+        adaptiviewDemo4
+        adaptiviewDemo3
+        adaptiviewDemo2
+        adaptiviewDemo1
     ]

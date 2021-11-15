@@ -85,8 +85,8 @@ let navmenu =
                     childContent "html.watch"
                 }
                 MudNavLink'() {
-                    Href "./helper-functions/adaptive"
-                    childContent "adapt"
+                    Href "./helper-functions/adaptiview"
+                    childContent "adaptiview"
                 }
                 MudNavLink'() {
                     Href "./helper-functions/component-hook"
@@ -130,7 +130,7 @@ let app = html.inject (fun (hook: IComponentHook, shareStore: IShareStore) ->
         subRouteCi "/helper-functions" [
             routeCi "/html-inject"          (demoContainer "html.inject" "Pages/HelperFunctions/InjectDemo" HelperFunctions.InjectDemo.injectDemo)
             routeCi "/html-watch"           (demoContainer "html.watch" $"Pages/HelperFunctions/HtmlWatchDemo" HelperFunctions.HtmlWatchDemo.htmlWatchDemo)
-            routeCi "/adaptive"             (demoContainer "adapt" $"Pages/HelperFunctions/AdaptiveDemo" HelperFunctions.AdaptiveDemo.adaptiveDemo)
+            routeCi "/adaptiview"           (demoContainer "adapt" $"Pages/HelperFunctions/AdaptiveDemo" HelperFunctions.AdaptiviewDemo.adaptiviewDemo)
             routeCi "/component-hook"       (demoContainer "IComponentHook" $"Pages/HelperFunctions/ComponentHookDemo" HelperFunctions.ComponentHookDemo.componentHookDemo)
             routeCi "/global-store"         (demoContainer "Global storage" $"Pages/HelperFunctions/GlobalStoreDemo" HelperFunctions.GlobalStoreDemo.globalStoreDemo)
         ]

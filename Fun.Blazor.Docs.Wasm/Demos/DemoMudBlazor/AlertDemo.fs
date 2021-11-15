@@ -44,7 +44,7 @@ let alertDemo = html.inject (fun (hook: IComponentHook) ->
                     Value' number1
                 }
             )
-            adapt {
+            adaptiview(){
                 let! _ = number2
                 MudTextField'(){
                     Label "Number 2"

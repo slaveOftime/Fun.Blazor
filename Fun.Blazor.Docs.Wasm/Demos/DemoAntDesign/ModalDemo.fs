@@ -36,7 +36,7 @@ let modalDemo = html.inject (fun (hook: IComponentHook) ->
                                     inputNumber.max 150
                                     inputNumber.value' number1
                                 ]
-                                adapt {
+                                adaptiview(){
                                     let! _ = number2
                                     inputNumber<int>.create [
                                         inputNumber.min 100

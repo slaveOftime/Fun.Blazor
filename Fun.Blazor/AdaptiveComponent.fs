@@ -9,9 +9,15 @@ type AdaptiveComponent () as this =
     inherit FunBlazorComponent()
     
     let mutable nodeSubscription: IDisposable option = None
+    let mutable node = AList.empty<IFunBlazorNode>
+    let mutable shouldRerender = true
+
 
     [<Parameter>]
-    member val Node = Unchecked.defaultof<alist<IFunBlazorNode>> with get, set
+    member val Node = AList.empty with get, set
+    
+    [<Parameter>]
+    member val IsStatic = false with get, set
         
 
     member internal _.StateHasChanged() = try base.StateHasChanged() with _ -> ()
@@ -19,7 +25,7 @@ type AdaptiveComponent () as this =
 
 
     override _.Render() = 
-        this.Node 
+        node 
         |> AList.force
         |> IndexList.toList 
         |> FunBlazorNode.Fragment
@@ -27,9 +33,19 @@ type AdaptiveComponent () as this =
 
 
     override _.OnParametersSet() =
-        nodeSubscription |> Option.iter (fun x -> x.Dispose())
-        nodeSubscription <- Some (this.Node.AddCallback (fun _ _ ->
-            this.Rerender()))
+        if this.IsStatic && nodeSubscription.IsSome then
+            // Avoid rerender for static mode
+            shouldRerender <- false
+        else
+            shouldRerender <- true
+            nodeSubscription |> Option.iter (fun x -> x.Dispose())
+            node <- this.Node
+            nodeSubscription <- Some (node.AddCallback (fun _ _ -> this.Rerender()))
+
+    override _.ShouldRender() =
+        let result = shouldRerender
+        if not shouldRerender then shouldRerender <- true
+        result
 
 
     interface IDisposable with
