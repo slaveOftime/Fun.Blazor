@@ -83,6 +83,13 @@ type [<Struct>] GenericFunBlazorNode<'T> =
         ]
         |> GenericFunBlazorNode<'T>.create
 
+    static member create (name, (value: 'V, fn)) =
+        BoleroAttrs [
+            name => value
+            Bolero.Html.attr.callback<'V> $"{name}Changed" fn
+        ]
+        |> GenericFunBlazorNode<'T>.create
+
 
 type FunBlazorContext<'Component when 'Component :> Microsoft.AspNetCore.Components.IComponent> () =
     let props = Collections.Generic.List<IFunBlazorNode>()
@@ -96,6 +103,11 @@ type FunBlazorContext<'Component when 'Component :> Microsoft.AspNetCore.Compone
     member this.AddProp (name, value: cval<'T>) =
         name => AVal.force value |> BoleroAttr |> this.AddProp |> ignore
         Bolero.Html.attr.callback<'T> $"{name}Changed" (fun x -> transact(fun _ -> value.Value <- x)) |> BoleroAttr |> this.AddProp
+
+    member this.AddProp (name, (value: 'T, fn)) =
+        name => value |> BoleroAttr |> this.AddProp |> ignore
+        Bolero.Html.attr.callback<'T> $"{name}Changed" fn |> BoleroAttr |> this.AddProp
+
 
     member this.Props() = props
 

@@ -29,6 +29,7 @@ let private getMetaInfo (ty: Type) =
                     [
                         $"    static member {name}' (value: IStore<{propTypeName}>) = {nameof GenericFunBlazorNode}<{funBlazorGeneric}>.create(\"{prop.Name}\", value)"
                         $"    static member {name}' (value: cval<{propTypeName}>) = {nameof GenericFunBlazorNode}<{funBlazorGeneric}>.create(\"{prop.Name}\", value)"
+                        $"    static member {name}' (valueFn: {propTypeName} * ({propTypeName} -> unit)) = {nameof GenericFunBlazorNode}<{funBlazorGeneric}>.create(\"{prop.Name}\", valueFn)"
                     ]
                 else
                     []

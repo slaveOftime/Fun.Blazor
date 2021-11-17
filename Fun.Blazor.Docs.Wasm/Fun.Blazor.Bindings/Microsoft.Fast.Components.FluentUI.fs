@@ -19,6 +19,7 @@ type fluentInputBase<'FunBlazorGeneric, 'TValue> =
     static member value (x: 'TValue) = "Value" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member value' (value: IStore<'TValue>) = GenericFunBlazorNode<'FunBlazorGeneric>.create("Value", value)
     static member value' (value: cval<'TValue>) = GenericFunBlazorNode<'FunBlazorGeneric>.create("Value", value)
+    static member value' (valueFn: 'TValue * ('TValue -> unit)) = GenericFunBlazorNode<'FunBlazorGeneric>.create("Value", valueFn)
     static member valueChanged fn = (Bolero.Html.attr.callback<'TValue> "ValueChanged" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member valueExpression (x: System.Linq.Expressions.Expression<System.Func<'TValue>>) = "ValueExpression" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member displayName (x: System.String) = "DisplayName" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create

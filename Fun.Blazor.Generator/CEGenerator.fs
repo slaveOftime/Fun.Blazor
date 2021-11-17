@@ -66,6 +66,7 @@ let private getMetaInfo (ty: Type) =
                     [
                         $"    {customOperation bindName} {memberStart}{bindName} ({contextArg}, value: IStore<{propTypeName}>) = this.AddProp(\"{prop.Name}\", value)"
                         $"    {customOperation bindName} {memberStart}{bindName} ({contextArg}, value: cval<{propTypeName}>) = this.AddProp(\"{prop.Name}\", value)"
+                        $"    {customOperation bindName} {memberStart}{bindName} ({contextArg}, valueFn: {propTypeName} * ({propTypeName} -> unit)) = this.AddProp(\"{prop.Name}\", valueFn)"
                     ]
                 else
                     []

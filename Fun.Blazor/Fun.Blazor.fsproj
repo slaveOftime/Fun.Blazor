@@ -28,6 +28,7 @@
 		<Compile Include="Components.Dsl.fs" />
 		<Compile Include="Components.DslCE.fs" />
 		<Compile Include="DI.fs" />
+		<Compile Include="AdaptiveForm.fs" />
 	</ItemGroup>
 
 	<ItemGroup>

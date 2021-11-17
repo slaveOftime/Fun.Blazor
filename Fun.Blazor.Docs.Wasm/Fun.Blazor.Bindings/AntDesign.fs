@@ -539,6 +539,7 @@ type antInputComponentBase<'FunBlazorGeneric, 'TValue> =
     static member value (x: 'TValue) = "Value" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member value' (value: IStore<'TValue>) = GenericFunBlazorNode<'FunBlazorGeneric>.create("Value", value)
     static member value' (value: cval<'TValue>) = GenericFunBlazorNode<'FunBlazorGeneric>.create("Value", value)
+    static member value' (valueFn: 'TValue * ('TValue -> unit)) = GenericFunBlazorNode<'FunBlazorGeneric>.create("Value", valueFn)
     static member valueChanged fn = (Bolero.Html.attr.callback<'TValue> "ValueChanged" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member valueExpression (x: System.Linq.Expressions.Expression<System.Func<'TValue>>) = "ValueExpression" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member valuesExpression (x: System.Linq.Expressions.Expression<System.Func<System.Collections.Generic.IEnumerable<'TValue>>>) = "ValuesExpression" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -631,6 +632,7 @@ type antInputBoolComponentBase<'FunBlazorGeneric> =
     static member checked' (x: System.Boolean) = "Checked" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member checked'' (value: IStore<System.Boolean>) = GenericFunBlazorNode<'FunBlazorGeneric>.create("Checked", value)
     static member checked'' (value: cval<System.Boolean>) = GenericFunBlazorNode<'FunBlazorGeneric>.create("Checked", value)
+    static member checked'' (valueFn: System.Boolean * (System.Boolean -> unit)) = GenericFunBlazorNode<'FunBlazorGeneric>.create("Checked", valueFn)
     static member onChange fn = (Bolero.Html.attr.callback<System.Boolean> "OnChange" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member checkedChanged fn = (Bolero.Html.attr.callback<System.Boolean> "CheckedChanged" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member disabled (x: System.Boolean) = "Disabled" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -960,6 +962,7 @@ type selectBase<'FunBlazorGeneric, 'TItemValue, 'TItem> =
     static member values (x: System.Collections.Generic.IEnumerable<'TItemValue>) = "Values" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member values' (value: IStore<System.Collections.Generic.IEnumerable<'TItemValue>>) = GenericFunBlazorNode<'FunBlazorGeneric>.create("Values", value)
     static member values' (value: cval<System.Collections.Generic.IEnumerable<'TItemValue>>) = GenericFunBlazorNode<'FunBlazorGeneric>.create("Values", value)
+    static member values' (valueFn: System.Collections.Generic.IEnumerable<'TItemValue> * (System.Collections.Generic.IEnumerable<'TItemValue> -> unit)) = GenericFunBlazorNode<'FunBlazorGeneric>.create("Values", valueFn)
     static member customTagLabelToValue (fn) = "CustomTagLabelToValue" => (System.Func<System.String, 'TItemValue>fn) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member selectOptions (x: string) = Bolero.Html.attr.fragment "SelectOptions" (html.text x |> html.toBolero) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member selectOptions (node) = Bolero.Html.attr.fragment "SelectOptions" (html.toBolero node) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -1011,6 +1014,7 @@ type select'<'FunBlazorGeneric, 'TItemValue, 'TItem> =
     static member value (x: 'TItemValue) = "Value" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member value' (value: IStore<'TItemValue>) = GenericFunBlazorNode<'FunBlazorGeneric>.create("Value", value)
     static member value' (value: cval<'TItemValue>) = GenericFunBlazorNode<'FunBlazorGeneric>.create("Value", value)
+    static member value' (valueFn: 'TItemValue * ('TItemValue -> unit)) = GenericFunBlazorNode<'FunBlazorGeneric>.create("Value", valueFn)
     static member defaultValue (x: 'TItemValue) = "DefaultValue" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
                     
 
@@ -1593,11 +1597,13 @@ type menu<'FunBlazorGeneric> =
     static member openKeys (x: System.String[]) = "OpenKeys" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member openKeys' (value: IStore<System.String[]>) = GenericFunBlazorNode<'FunBlazorGeneric>.create("OpenKeys", value)
     static member openKeys' (value: cval<System.String[]>) = GenericFunBlazorNode<'FunBlazorGeneric>.create("OpenKeys", value)
+    static member openKeys' (valueFn: System.String[] * (System.String[] -> unit)) = GenericFunBlazorNode<'FunBlazorGeneric>.create("OpenKeys", valueFn)
     static member openKeysChanged fn = (Bolero.Html.attr.callback<System.String[]> "OpenKeysChanged" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member onOpenChange fn = (Bolero.Html.attr.callback<System.String[]> "OnOpenChange" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member selectedKeys (x: System.String[]) = "SelectedKeys" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member selectedKeys' (value: IStore<System.String[]>) = GenericFunBlazorNode<'FunBlazorGeneric>.create("SelectedKeys", value)
     static member selectedKeys' (value: cval<System.String[]>) = GenericFunBlazorNode<'FunBlazorGeneric>.create("SelectedKeys", value)
+    static member selectedKeys' (valueFn: System.String[] * (System.String[] -> unit)) = GenericFunBlazorNode<'FunBlazorGeneric>.create("SelectedKeys", valueFn)
     static member selectedKeysChanged fn = (Bolero.Html.attr.callback<System.String[]> "SelectedKeysChanged" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member triggerSubMenuAction (x: AntDesign.Trigger) = "TriggerSubMenuAction" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
                     
@@ -1989,6 +1995,7 @@ type radio<'FunBlazorGeneric, 'TValue> =
     static member checked' (x: System.Boolean) = "Checked" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member checked'' (value: IStore<System.Boolean>) = GenericFunBlazorNode<'FunBlazorGeneric>.create("Checked", value)
     static member checked'' (value: cval<System.Boolean>) = GenericFunBlazorNode<'FunBlazorGeneric>.create("Checked", value)
+    static member checked'' (valueFn: System.Boolean * (System.Boolean -> unit)) = GenericFunBlazorNode<'FunBlazorGeneric>.create("Checked", valueFn)
     static member defaultChecked (x: System.Boolean) = "DefaultChecked" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member checkedChanged fn = (Bolero.Html.attr.callback<System.Boolean> "CheckedChanged" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member disabled (x: System.Boolean) = "Disabled" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2015,6 +2022,7 @@ type rate<'FunBlazorGeneric> =
     static member value (x: System.Decimal) = "Value" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member value' (value: IStore<System.Decimal>) = GenericFunBlazorNode<'FunBlazorGeneric>.create("Value", value)
     static member value' (value: cval<System.Decimal>) = GenericFunBlazorNode<'FunBlazorGeneric>.create("Value", value)
+    static member value' (valueFn: System.Decimal * (System.Decimal -> unit)) = GenericFunBlazorNode<'FunBlazorGeneric>.create("Value", valueFn)
     static member valueChanged fn = (Bolero.Html.attr.callback<System.Decimal> "ValueChanged" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member defaultValue (x: System.Decimal) = "DefaultValue" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member tooltips (x: System.String[]) = "Tooltips" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2319,6 +2327,7 @@ type column<'FunBlazorGeneric, 'TData> =
     static member field (x: 'TData) = "Field" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member field' (value: IStore<'TData>) = GenericFunBlazorNode<'FunBlazorGeneric>.create("Field", value)
     static member field' (value: cval<'TData>) = GenericFunBlazorNode<'FunBlazorGeneric>.create("Field", value)
+    static member field' (valueFn: 'TData * ('TData -> unit)) = GenericFunBlazorNode<'FunBlazorGeneric>.create("Field", valueFn)
     static member dataIndex (x: System.String) = "DataIndex" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member format (x: System.String) = "Format" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member sortable (x: System.Boolean) = "Sortable" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2408,20 +2417,24 @@ type table<'FunBlazorGeneric, 'TItem> =
     static member total (x: System.Int32) = "Total" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member total' (value: IStore<System.Int32>) = GenericFunBlazorNode<'FunBlazorGeneric>.create("Total", value)
     static member total' (value: cval<System.Int32>) = GenericFunBlazorNode<'FunBlazorGeneric>.create("Total", value)
+    static member total' (valueFn: System.Int32 * (System.Int32 -> unit)) = GenericFunBlazorNode<'FunBlazorGeneric>.create("Total", valueFn)
     static member totalChanged fn = (Bolero.Html.attr.callback<System.Int32> "TotalChanged" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member pageIndex (x: System.Int32) = "PageIndex" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member pageIndex' (value: IStore<System.Int32>) = GenericFunBlazorNode<'FunBlazorGeneric>.create("PageIndex", value)
     static member pageIndex' (value: cval<System.Int32>) = GenericFunBlazorNode<'FunBlazorGeneric>.create("PageIndex", value)
+    static member pageIndex' (valueFn: System.Int32 * (System.Int32 -> unit)) = GenericFunBlazorNode<'FunBlazorGeneric>.create("PageIndex", valueFn)
     static member pageIndexChanged fn = (Bolero.Html.attr.callback<System.Int32> "PageIndexChanged" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member pageSize (x: System.Int32) = "PageSize" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member pageSize' (value: IStore<System.Int32>) = GenericFunBlazorNode<'FunBlazorGeneric>.create("PageSize", value)
     static member pageSize' (value: cval<System.Int32>) = GenericFunBlazorNode<'FunBlazorGeneric>.create("PageSize", value)
+    static member pageSize' (valueFn: System.Int32 * (System.Int32 -> unit)) = GenericFunBlazorNode<'FunBlazorGeneric>.create("PageSize", valueFn)
     static member pageSizeChanged fn = (Bolero.Html.attr.callback<System.Int32> "PageSizeChanged" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member onPageIndexChange fn = (Bolero.Html.attr.callback<AntDesign.PaginationEventArgs> "OnPageIndexChange" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member onPageSizeChange fn = (Bolero.Html.attr.callback<AntDesign.PaginationEventArgs> "OnPageSizeChange" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member selectedRows (x: System.Collections.Generic.IEnumerable<'TItem>) = "SelectedRows" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member selectedRows' (value: IStore<System.Collections.Generic.IEnumerable<'TItem>>) = GenericFunBlazorNode<'FunBlazorGeneric>.create("SelectedRows", value)
     static member selectedRows' (value: cval<System.Collections.Generic.IEnumerable<'TItem>>) = GenericFunBlazorNode<'FunBlazorGeneric>.create("SelectedRows", value)
+    static member selectedRows' (valueFn: System.Collections.Generic.IEnumerable<'TItem> * (System.Collections.Generic.IEnumerable<'TItem> -> unit)) = GenericFunBlazorNode<'FunBlazorGeneric>.create("SelectedRows", valueFn)
     static member selectedRowsChanged fn = (Bolero.Html.attr.callback<System.Collections.Generic.IEnumerable<'TItem>> "SelectedRowsChanged" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
                     
 
@@ -2476,6 +2489,7 @@ type tabs<'FunBlazorGeneric> =
     static member activeKey (x: System.String) = "ActiveKey" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member activeKey' (value: IStore<System.String>) = GenericFunBlazorNode<'FunBlazorGeneric>.create("ActiveKey", value)
     static member activeKey' (value: cval<System.String>) = GenericFunBlazorNode<'FunBlazorGeneric>.create("ActiveKey", value)
+    static member activeKey' (valueFn: System.String * (System.String -> unit)) = GenericFunBlazorNode<'FunBlazorGeneric>.create("ActiveKey", valueFn)
     static member activeKeyChanged fn = (Bolero.Html.attr.callback<System.String> "ActiveKeyChanged" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member animated (x: System.Boolean) = "Animated" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member inkBarAnimated (x: System.Boolean) = "InkBarAnimated" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2522,6 +2536,7 @@ type tag<'FunBlazorGeneric> =
     static member checked' (x: System.Boolean) = "Checked" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member checked'' (value: IStore<System.Boolean>) = GenericFunBlazorNode<'FunBlazorGeneric>.create("Checked", value)
     static member checked'' (value: cval<System.Boolean>) = GenericFunBlazorNode<'FunBlazorGeneric>.create("Checked", value)
+    static member checked'' (valueFn: System.Boolean * (System.Boolean -> unit)) = GenericFunBlazorNode<'FunBlazorGeneric>.create("Checked", valueFn)
     static member checkedChanged fn = (Bolero.Html.attr.callback<System.Boolean> "CheckedChanged" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member color (x: System.String) = "Color" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member presetColor (x: System.Nullable<AntDesign.PresetColor>) = "PresetColor" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2629,18 +2644,22 @@ type tree<'FunBlazorGeneric, 'TItem> =
     static member selectedKey (x: System.String) = "SelectedKey" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member selectedKey' (value: IStore<System.String>) = GenericFunBlazorNode<'FunBlazorGeneric>.create("SelectedKey", value)
     static member selectedKey' (value: cval<System.String>) = GenericFunBlazorNode<'FunBlazorGeneric>.create("SelectedKey", value)
+    static member selectedKey' (valueFn: System.String * (System.String -> unit)) = GenericFunBlazorNode<'FunBlazorGeneric>.create("SelectedKey", valueFn)
     static member selectedKeyChanged fn = (Bolero.Html.attr.callback<System.String> "SelectedKeyChanged" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member selectedNode (x: AntDesign.TreeNode<'TItem>) = "SelectedNode" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member selectedNode' (value: IStore<AntDesign.TreeNode<'TItem>>) = GenericFunBlazorNode<'FunBlazorGeneric>.create("SelectedNode", value)
     static member selectedNode' (value: cval<AntDesign.TreeNode<'TItem>>) = GenericFunBlazorNode<'FunBlazorGeneric>.create("SelectedNode", value)
+    static member selectedNode' (valueFn: AntDesign.TreeNode<'TItem> * (AntDesign.TreeNode<'TItem> -> unit)) = GenericFunBlazorNode<'FunBlazorGeneric>.create("SelectedNode", valueFn)
     static member selectedNodeChanged fn = (Bolero.Html.attr.callback<AntDesign.TreeNode<'TItem>> "SelectedNodeChanged" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member selectedData (x: 'TItem) = "SelectedData" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member selectedData' (value: IStore<'TItem>) = GenericFunBlazorNode<'FunBlazorGeneric>.create("SelectedData", value)
     static member selectedData' (value: cval<'TItem>) = GenericFunBlazorNode<'FunBlazorGeneric>.create("SelectedData", value)
+    static member selectedData' (valueFn: 'TItem * ('TItem -> unit)) = GenericFunBlazorNode<'FunBlazorGeneric>.create("SelectedData", valueFn)
     static member selectedDataChanged fn = (Bolero.Html.attr.callback<'TItem> "SelectedDataChanged" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member selectedKeys (x: System.String[]) = "SelectedKeys" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member selectedKeys' (value: IStore<System.String[]>) = GenericFunBlazorNode<'FunBlazorGeneric>.create("SelectedKeys", value)
     static member selectedKeys' (value: cval<System.String[]>) = GenericFunBlazorNode<'FunBlazorGeneric>.create("SelectedKeys", value)
+    static member selectedKeys' (valueFn: System.String[] * (System.String[] -> unit)) = GenericFunBlazorNode<'FunBlazorGeneric>.create("SelectedKeys", valueFn)
     static member selectedKeysChanged fn = (Bolero.Html.attr.callback<System.String[]> "SelectedKeysChanged" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member selectedNodes (x: AntDesign.TreeNode<'TItem>[]) = "SelectedNodes" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member selectedDatas (x: 'TItem[]) = "SelectedDatas" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2649,6 +2668,7 @@ type tree<'FunBlazorGeneric, 'TItem> =
     static member checkedKeys (x: System.String[]) = "CheckedKeys" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member checkedKeys' (value: IStore<System.String[]>) = GenericFunBlazorNode<'FunBlazorGeneric>.create("CheckedKeys", value)
     static member checkedKeys' (value: cval<System.String[]>) = GenericFunBlazorNode<'FunBlazorGeneric>.create("CheckedKeys", value)
+    static member checkedKeys' (valueFn: System.String[] * (System.String[] -> unit)) = GenericFunBlazorNode<'FunBlazorGeneric>.create("CheckedKeys", valueFn)
     static member checkedKeysChanged fn = (Bolero.Html.attr.callback<System.String[]> "CheckedKeysChanged" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member defaultCheckedKeys (x: System.String[]) = "DefaultCheckedKeys" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member searchValue (x: System.String) = "SearchValue" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2685,6 +2705,7 @@ type tree<'FunBlazorGeneric, 'TItem> =
     static member expandedKeys (x: System.String[]) = "ExpandedKeys" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member expandedKeys' (value: IStore<System.String[]>) = GenericFunBlazorNode<'FunBlazorGeneric>.create("ExpandedKeys", value)
     static member expandedKeys' (value: cval<System.String[]>) = GenericFunBlazorNode<'FunBlazorGeneric>.create("ExpandedKeys", value)
+    static member expandedKeys' (valueFn: System.String[] * (System.String[] -> unit)) = GenericFunBlazorNode<'FunBlazorGeneric>.create("ExpandedKeys", valueFn)
     static member expandedKeysChanged fn = (Bolero.Html.attr.callback<System.String[]> "ExpandedKeysChanged" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member onExpand fn = (Bolero.Html.attr.callback<System.ValueTuple<System.String[], AntDesign.TreeNode<'TItem>, System.Boolean>> "OnExpand" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member autoExpandParent (x: System.Boolean) = "AutoExpandParent" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -2822,6 +2843,7 @@ type upload<'FunBlazorGeneric> =
     static member fileList (x: System.Collections.Generic.List<AntDesign.UploadFileItem>) = "FileList" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member fileList' (value: IStore<System.Collections.Generic.List<AntDesign.UploadFileItem>>) = GenericFunBlazorNode<'FunBlazorGeneric>.create("FileList", value)
     static member fileList' (value: cval<System.Collections.Generic.List<AntDesign.UploadFileItem>>) = GenericFunBlazorNode<'FunBlazorGeneric>.create("FileList", value)
+    static member fileList' (valueFn: System.Collections.Generic.List<AntDesign.UploadFileItem> * (System.Collections.Generic.List<AntDesign.UploadFileItem> -> unit)) = GenericFunBlazorNode<'FunBlazorGeneric>.create("FileList", valueFn)
     static member locale (x: AntDesign.UploadLocale) = "Locale" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member fileListChanged fn = (Bolero.Html.attr.callback<System.Collections.Generic.List<AntDesign.UploadFileItem>> "FileListChanged" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member defaultFileList (x: System.Collections.Generic.List<AntDesign.UploadFileItem>) = "DefaultFileList" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
@@ -3599,6 +3621,7 @@ type imagePreviewGroup<'FunBlazorGeneric> =
     static member previewVisible (x: System.Boolean) = "PreviewVisible" => x |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
     static member previewVisible' (value: IStore<System.Boolean>) = GenericFunBlazorNode<'FunBlazorGeneric>.create("PreviewVisible", value)
     static member previewVisible' (value: cval<System.Boolean>) = GenericFunBlazorNode<'FunBlazorGeneric>.create("PreviewVisible", value)
+    static member previewVisible' (valueFn: System.Boolean * (System.Boolean -> unit)) = GenericFunBlazorNode<'FunBlazorGeneric>.create("PreviewVisible", valueFn)
     static member previewVisibleChanged fn = (Bolero.Html.attr.callback<System.Boolean> "PreviewVisibleChanged" (fun e -> fn e)) |> BoleroAttr |> GenericFunBlazorNode<'FunBlazorGeneric>.create
                     
 

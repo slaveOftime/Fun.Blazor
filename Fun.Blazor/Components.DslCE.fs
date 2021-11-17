@@ -70,6 +70,7 @@ type InputBaseBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Micro
     [<CustomOperation("Value")>] member this.Value (_: FunBlazorContext<'FunBlazorGeneric>, x: 'TValue) = "Value" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Value'")>] member this.Value' (_: FunBlazorContext<'FunBlazorGeneric>, value: IStore<'TValue>) = this.AddProp("Value", value)
     [<CustomOperation("Value'")>] member this.Value' (_: FunBlazorContext<'FunBlazorGeneric>, value: cval<'TValue>) = this.AddProp("Value", value)
+    [<CustomOperation("Value'")>] member this.Value' (_: FunBlazorContext<'FunBlazorGeneric>, valueFn: 'TValue * ('TValue -> unit)) = this.AddProp("Value", valueFn)
     [<CustomOperation("ValueChanged")>] member this.ValueChanged (_: FunBlazorContext<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<'TValue> "ValueChanged" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
     [<CustomOperation("ValueExpression")>] member this.ValueExpression (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Linq.Expressions.Expression<System.Func<'TValue>>) = "ValueExpression" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("DisplayName")>] member this.DisplayName (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "DisplayName" => x |> BoleroAttr |> this.AddProp

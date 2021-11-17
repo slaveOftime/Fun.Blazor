@@ -21,6 +21,7 @@ type MudColumnBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.
     [<CustomOperation("Value")>] member this.Value (_: FunBlazorContext<'FunBlazorGeneric>, x: 'T) = "Value" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Value'")>] member this.Value' (_: FunBlazorContext<'FunBlazorGeneric>, value: IStore<'T>) = this.AddProp("Value", value)
     [<CustomOperation("Value'")>] member this.Value' (_: FunBlazorContext<'FunBlazorGeneric>, value: cval<'T>) = this.AddProp("Value", value)
+    [<CustomOperation("Value'")>] member this.Value' (_: FunBlazorContext<'FunBlazorGeneric>, valueFn: 'T * ('T -> unit)) = this.AddProp("Value", valueFn)
     [<CustomOperation("ValueChanged")>] member this.ValueChanged (_: FunBlazorContext<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<'T> "ValueChanged" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
     [<CustomOperation("FooterValue")>] member this.FooterValue (_: FunBlazorContext<'FunBlazorGeneric>, x: 'T) = "FooterValue" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("FooterText")>] member this.FooterText (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "FooterText" => x |> BoleroAttr |> this.AddProp
@@ -34,6 +35,7 @@ type MudSortableColumnBuilder<'FunBlazorGeneric, 'T, 'ModelType when 'FunBlazorG
     [<CustomOperation("Value")>] member this.Value (_: FunBlazorContext<'FunBlazorGeneric>, x: 'T) = "Value" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Value'")>] member this.Value' (_: FunBlazorContext<'FunBlazorGeneric>, value: IStore<'T>) = this.AddProp("Value", value)
     [<CustomOperation("Value'")>] member this.Value' (_: FunBlazorContext<'FunBlazorGeneric>, value: cval<'T>) = this.AddProp("Value", value)
+    [<CustomOperation("Value'")>] member this.Value' (_: FunBlazorContext<'FunBlazorGeneric>, valueFn: 'T * ('T -> unit)) = this.AddProp("Value", valueFn)
     [<CustomOperation("ValueChanged")>] member this.ValueChanged (_: FunBlazorContext<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<'T> "ValueChanged" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
     [<CustomOperation("FooterValue")>] member this.FooterValue (_: FunBlazorContext<'FunBlazorGeneric>, x: 'T) = "FooterValue" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("FooterText")>] member this.FooterText (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "FooterText" => x |> BoleroAttr |> this.AddProp
@@ -139,6 +141,7 @@ type MudBaseItemsControlBuilder<'FunBlazorGeneric, 'TChildComponent when 'TChild
     [<CustomOperation("SelectedIndex")>] member this.SelectedIndex (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Int32) = "SelectedIndex" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("SelectedIndex'")>] member this.SelectedIndex' (_: FunBlazorContext<'FunBlazorGeneric>, value: IStore<System.Int32>) = this.AddProp("SelectedIndex", value)
     [<CustomOperation("SelectedIndex'")>] member this.SelectedIndex' (_: FunBlazorContext<'FunBlazorGeneric>, value: cval<System.Int32>) = this.AddProp("SelectedIndex", value)
+    [<CustomOperation("SelectedIndex'")>] member this.SelectedIndex' (_: FunBlazorContext<'FunBlazorGeneric>, valueFn: System.Int32 * (System.Int32 -> unit)) = this.AddProp("SelectedIndex", valueFn)
     [<CustomOperation("SelectedIndexChanged")>] member this.SelectedIndexChanged (_: FunBlazorContext<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<System.Int32> "SelectedIndexChanged" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
                 
 
@@ -254,6 +257,7 @@ type MudBaseInputBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microso
     [<CustomOperation("Text")>] member this.Text (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "Text" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Text'")>] member this.Text' (_: FunBlazorContext<'FunBlazorGeneric>, value: IStore<System.String>) = this.AddProp("Text", value)
     [<CustomOperation("Text'")>] member this.Text' (_: FunBlazorContext<'FunBlazorGeneric>, value: cval<System.String>) = this.AddProp("Text", value)
+    [<CustomOperation("Text'")>] member this.Text' (_: FunBlazorContext<'FunBlazorGeneric>, valueFn: System.String * (System.String -> unit)) = this.AddProp("Text", valueFn)
     [<CustomOperation("TextUpdateSuppression")>] member this.TextUpdateSuppression (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "TextUpdateSuppression" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("InputMode")>] member this.InputMode (_: FunBlazorContext<'FunBlazorGeneric>, x: MudBlazor.InputMode) = "InputMode" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Pattern")>] member this.Pattern (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "Pattern" => x |> BoleroAttr |> this.AddProp
@@ -270,6 +274,7 @@ type MudBaseInputBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microso
     [<CustomOperation("Value")>] member this.Value (_: FunBlazorContext<'FunBlazorGeneric>, x: 'T) = "Value" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Value'")>] member this.Value' (_: FunBlazorContext<'FunBlazorGeneric>, value: IStore<'T>) = this.AddProp("Value", value)
     [<CustomOperation("Value'")>] member this.Value' (_: FunBlazorContext<'FunBlazorGeneric>, value: cval<'T>) = this.AddProp("Value", value)
+    [<CustomOperation("Value'")>] member this.Value' (_: FunBlazorContext<'FunBlazorGeneric>, valueFn: 'T * ('T -> unit)) = this.AddProp("Value", valueFn)
     [<CustomOperation("Format")>] member this.Format (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "Format" => x |> BoleroAttr |> this.AddProp
                 
 
@@ -391,6 +396,7 @@ type MudSelectBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.
     [<CustomOperation("SelectedValues")>] member this.SelectedValues (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Collections.Generic.IEnumerable<'T>) = "SelectedValues" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("SelectedValues'")>] member this.SelectedValues' (_: FunBlazorContext<'FunBlazorGeneric>, value: IStore<System.Collections.Generic.IEnumerable<'T>>) = this.AddProp("SelectedValues", value)
     [<CustomOperation("SelectedValues'")>] member this.SelectedValues' (_: FunBlazorContext<'FunBlazorGeneric>, value: cval<System.Collections.Generic.IEnumerable<'T>>) = this.AddProp("SelectedValues", value)
+    [<CustomOperation("SelectedValues'")>] member this.SelectedValues' (_: FunBlazorContext<'FunBlazorGeneric>, valueFn: System.Collections.Generic.IEnumerable<'T> * (System.Collections.Generic.IEnumerable<'T> -> unit)) = this.AddProp("SelectedValues", valueFn)
     [<CustomOperation("Comparer")>] member this.Comparer (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Collections.Generic.IEqualityComparer<'T>) = "Comparer" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("ToStringFunc")>] member this.ToStringFunc (_: FunBlazorContext<'FunBlazorGeneric>, fn) = "ToStringFunc" => (System.Func<'T, System.String>fn) |> BoleroAttr |> this.AddProp
     [<CustomOperation("MultiSelection")>] member this.MultiSelection (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "MultiSelection" => x |> BoleroAttr |> this.AddProp
@@ -417,6 +423,7 @@ type MudBooleanInputBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Micr
     [<CustomOperation("Checked")>] member this.Checked (_: FunBlazorContext<'FunBlazorGeneric>, x: 'T) = "Checked" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Checked'")>] member this.Checked' (_: FunBlazorContext<'FunBlazorGeneric>, value: IStore<'T>) = this.AddProp("Checked", value)
     [<CustomOperation("Checked'")>] member this.Checked' (_: FunBlazorContext<'FunBlazorGeneric>, value: cval<'T>) = this.AddProp("Checked", value)
+    [<CustomOperation("Checked'")>] member this.Checked' (_: FunBlazorContext<'FunBlazorGeneric>, valueFn: 'T * ('T -> unit)) = this.AddProp("Checked", valueFn)
     [<CustomOperation("StopClickPropagation")>] member this.StopClickPropagation (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "StopClickPropagation" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("CheckedChanged")>] member this.CheckedChanged (_: FunBlazorContext<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<'T> "CheckedChanged" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
                 
@@ -483,6 +490,7 @@ type MudPickerBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.
     [<CustomOperation("Text")>] member this.Text (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "Text" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Text'")>] member this.Text' (_: FunBlazorContext<'FunBlazorGeneric>, value: IStore<System.String>) = this.AddProp("Text", value)
     [<CustomOperation("Text'")>] member this.Text' (_: FunBlazorContext<'FunBlazorGeneric>, value: cval<System.String>) = this.AddProp("Text", value)
+    [<CustomOperation("Text'")>] member this.Text' (_: FunBlazorContext<'FunBlazorGeneric>, valueFn: System.String * (System.String -> unit)) = this.AddProp("Text", valueFn)
     [<CustomOperation("ClassActions")>] member this.ClassActions (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "ClassActions" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("PickerActions")>] member this.PickerActions (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "PickerActions" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
     [<CustomOperation("PickerActions")>] member this.PickerActions (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "PickerActions" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
@@ -506,6 +514,7 @@ type MudColorPickerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     [<CustomOperation("Value")>] member this.Value (_: FunBlazorContext<'FunBlazorGeneric>, x: MudBlazor.Utilities.MudColor) = "Value" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Value'")>] member this.Value' (_: FunBlazorContext<'FunBlazorGeneric>, value: IStore<MudBlazor.Utilities.MudColor>) = this.AddProp("Value", value)
     [<CustomOperation("Value'")>] member this.Value' (_: FunBlazorContext<'FunBlazorGeneric>, value: cval<MudBlazor.Utilities.MudColor>) = this.AddProp("Value", value)
+    [<CustomOperation("Value'")>] member this.Value' (_: FunBlazorContext<'FunBlazorGeneric>, valueFn: MudBlazor.Utilities.MudColor * (MudBlazor.Utilities.MudColor -> unit)) = this.AddProp("Value", valueFn)
     [<CustomOperation("ValueChanged")>] member this.ValueChanged (_: FunBlazorContext<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<MudBlazor.Utilities.MudColor> "ValueChanged" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
     [<CustomOperation("Palette")>] member this.Palette (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Collections.Generic.IEnumerable<MudBlazor.Utilities.MudColor>) = "Palette" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("DisableDragEffect")>] member this.DisableDragEffect (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "DisableDragEffect" => x |> BoleroAttr |> this.AddProp
@@ -527,6 +536,7 @@ type MudBaseDatePickerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micros
     [<CustomOperation("PickerMonth")>] member this.PickerMonth (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Nullable<System.DateTime>) = "PickerMonth" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("PickerMonth'")>] member this.PickerMonth' (_: FunBlazorContext<'FunBlazorGeneric>, value: IStore<System.Nullable<System.DateTime>>) = this.AddProp("PickerMonth", value)
     [<CustomOperation("PickerMonth'")>] member this.PickerMonth' (_: FunBlazorContext<'FunBlazorGeneric>, value: cval<System.Nullable<System.DateTime>>) = this.AddProp("PickerMonth", value)
+    [<CustomOperation("PickerMonth'")>] member this.PickerMonth' (_: FunBlazorContext<'FunBlazorGeneric>, valueFn: System.Nullable<System.DateTime> * (System.Nullable<System.DateTime> -> unit)) = this.AddProp("PickerMonth", valueFn)
     [<CustomOperation("PickerMonthChanged")>] member this.PickerMonthChanged (_: FunBlazorContext<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<System.Nullable<System.DateTime>> "PickerMonthChanged" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
     [<CustomOperation("ClosingDelay")>] member this.ClosingDelay (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Int32) = "ClosingDelay" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("DisplayMonths")>] member this.DisplayMonths (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Int32) = "DisplayMonths" => x |> BoleroAttr |> this.AddProp
@@ -546,6 +556,7 @@ type MudDatePickerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     [<CustomOperation("Date")>] member this.Date (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Nullable<System.DateTime>) = "Date" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Date'")>] member this.Date' (_: FunBlazorContext<'FunBlazorGeneric>, value: IStore<System.Nullable<System.DateTime>>) = this.AddProp("Date", value)
     [<CustomOperation("Date'")>] member this.Date' (_: FunBlazorContext<'FunBlazorGeneric>, value: cval<System.Nullable<System.DateTime>>) = this.AddProp("Date", value)
+    [<CustomOperation("Date'")>] member this.Date' (_: FunBlazorContext<'FunBlazorGeneric>, valueFn: System.Nullable<System.DateTime> * (System.Nullable<System.DateTime> -> unit)) = this.AddProp("Date", valueFn)
     [<CustomOperation("AutoClose")>] member this.AutoClose (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "AutoClose" => x |> BoleroAttr |> this.AddProp
                 
 
@@ -556,6 +567,7 @@ type MudDateRangePickerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micro
     [<CustomOperation("DateRange")>] member this.DateRange (_: FunBlazorContext<'FunBlazorGeneric>, x: MudBlazor.DateRange) = "DateRange" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("DateRange'")>] member this.DateRange' (_: FunBlazorContext<'FunBlazorGeneric>, value: IStore<MudBlazor.DateRange>) = this.AddProp("DateRange", value)
     [<CustomOperation("DateRange'")>] member this.DateRange' (_: FunBlazorContext<'FunBlazorGeneric>, value: cval<MudBlazor.DateRange>) = this.AddProp("DateRange", value)
+    [<CustomOperation("DateRange'")>] member this.DateRange' (_: FunBlazorContext<'FunBlazorGeneric>, valueFn: MudBlazor.DateRange * (MudBlazor.DateRange -> unit)) = this.AddProp("DateRange", valueFn)
                 
 
 type MudTimePickerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -570,6 +582,7 @@ type MudTimePickerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     [<CustomOperation("Time")>] member this.Time (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Nullable<System.TimeSpan>) = "Time" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Time'")>] member this.Time' (_: FunBlazorContext<'FunBlazorGeneric>, value: IStore<System.Nullable<System.TimeSpan>>) = this.AddProp("Time", value)
     [<CustomOperation("Time'")>] member this.Time' (_: FunBlazorContext<'FunBlazorGeneric>, value: cval<System.Nullable<System.TimeSpan>>) = this.AddProp("Time", value)
+    [<CustomOperation("Time'")>] member this.Time' (_: FunBlazorContext<'FunBlazorGeneric>, valueFn: System.Nullable<System.TimeSpan> * (System.Nullable<System.TimeSpan> -> unit)) = this.AddProp("Time", valueFn)
     [<CustomOperation("TimeChanged")>] member this.TimeChanged (_: FunBlazorContext<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<System.Nullable<System.TimeSpan>> "TimeChanged" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
                 
 
@@ -583,6 +596,7 @@ type MudRadioGroupBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Micros
     [<CustomOperation("SelectedOption")>] member this.SelectedOption (_: FunBlazorContext<'FunBlazorGeneric>, x: 'T) = "SelectedOption" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("SelectedOption'")>] member this.SelectedOption' (_: FunBlazorContext<'FunBlazorGeneric>, value: IStore<'T>) = this.AddProp("SelectedOption", value)
     [<CustomOperation("SelectedOption'")>] member this.SelectedOption' (_: FunBlazorContext<'FunBlazorGeneric>, value: cval<'T>) = this.AddProp("SelectedOption", value)
+    [<CustomOperation("SelectedOption'")>] member this.SelectedOption' (_: FunBlazorContext<'FunBlazorGeneric>, valueFn: 'T * ('T -> unit)) = this.AddProp("SelectedOption", valueFn)
     [<CustomOperation("SelectedOptionChanged")>] member this.SelectedOptionChanged (_: FunBlazorContext<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<'T> "SelectedOptionChanged" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
                 
 
@@ -723,6 +737,7 @@ type MudToggleIconButtonBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micr
     [<CustomOperation("Toggled")>] member this.Toggled (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "Toggled" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Toggled'")>] member this.Toggled' (_: FunBlazorContext<'FunBlazorGeneric>, value: IStore<System.Boolean>) = this.AddProp("Toggled", value)
     [<CustomOperation("Toggled'")>] member this.Toggled' (_: FunBlazorContext<'FunBlazorGeneric>, value: cval<System.Boolean>) = this.AddProp("Toggled", value)
+    [<CustomOperation("Toggled'")>] member this.Toggled' (_: FunBlazorContext<'FunBlazorGeneric>, valueFn: System.Boolean * (System.Boolean -> unit)) = this.AddProp("Toggled", valueFn)
     [<CustomOperation("ToggledChanged")>] member this.ToggledChanged (_: FunBlazorContext<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<System.Boolean> "ToggledChanged" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
     [<CustomOperation("Icon")>] member this.Icon (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "Icon" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("ToggledIcon")>] member this.ToggledIcon (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "ToggledIcon" => x |> BoleroAttr |> this.AddProp
@@ -822,6 +837,7 @@ type MudChartBaseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.A
     [<CustomOperation("SelectedIndex")>] member this.SelectedIndex (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Int32) = "SelectedIndex" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("SelectedIndex'")>] member this.SelectedIndex' (_: FunBlazorContext<'FunBlazorGeneric>, value: IStore<System.Int32>) = this.AddProp("SelectedIndex", value)
     [<CustomOperation("SelectedIndex'")>] member this.SelectedIndex' (_: FunBlazorContext<'FunBlazorGeneric>, value: cval<System.Int32>) = this.AddProp("SelectedIndex", value)
+    [<CustomOperation("SelectedIndex'")>] member this.SelectedIndex' (_: FunBlazorContext<'FunBlazorGeneric>, valueFn: System.Int32 * (System.Int32 -> unit)) = this.AddProp("SelectedIndex", valueFn)
     [<CustomOperation("SelectedIndexChanged")>] member this.SelectedIndexChanged (_: FunBlazorContext<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<System.Int32> "SelectedIndexChanged" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
                 
 
@@ -895,15 +911,18 @@ type MudChipSetBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.Asp
     [<CustomOperation("SelectedChip")>] member this.SelectedChip (_: FunBlazorContext<'FunBlazorGeneric>, x: MudBlazor.MudChip) = "SelectedChip" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("SelectedChip'")>] member this.SelectedChip' (_: FunBlazorContext<'FunBlazorGeneric>, value: IStore<MudBlazor.MudChip>) = this.AddProp("SelectedChip", value)
     [<CustomOperation("SelectedChip'")>] member this.SelectedChip' (_: FunBlazorContext<'FunBlazorGeneric>, value: cval<MudBlazor.MudChip>) = this.AddProp("SelectedChip", value)
+    [<CustomOperation("SelectedChip'")>] member this.SelectedChip' (_: FunBlazorContext<'FunBlazorGeneric>, valueFn: MudBlazor.MudChip * (MudBlazor.MudChip -> unit)) = this.AddProp("SelectedChip", valueFn)
     [<CustomOperation("SelectedChipChanged")>] member this.SelectedChipChanged (_: FunBlazorContext<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<MudBlazor.MudChip> "SelectedChipChanged" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
     [<CustomOperation("SelectedChips")>] member this.SelectedChips (_: FunBlazorContext<'FunBlazorGeneric>, x: MudBlazor.MudChip[]) = "SelectedChips" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("SelectedChips'")>] member this.SelectedChips' (_: FunBlazorContext<'FunBlazorGeneric>, value: IStore<MudBlazor.MudChip[]>) = this.AddProp("SelectedChips", value)
     [<CustomOperation("SelectedChips'")>] member this.SelectedChips' (_: FunBlazorContext<'FunBlazorGeneric>, value: cval<MudBlazor.MudChip[]>) = this.AddProp("SelectedChips", value)
+    [<CustomOperation("SelectedChips'")>] member this.SelectedChips' (_: FunBlazorContext<'FunBlazorGeneric>, valueFn: MudBlazor.MudChip[] * (MudBlazor.MudChip[] -> unit)) = this.AddProp("SelectedChips", valueFn)
     [<CustomOperation("Comparer")>] member this.Comparer (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Collections.Generic.IEqualityComparer<System.Object>) = "Comparer" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("SelectedChipsChanged")>] member this.SelectedChipsChanged (_: FunBlazorContext<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<MudBlazor.MudChip[]> "SelectedChipsChanged" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
     [<CustomOperation("SelectedValues")>] member this.SelectedValues (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Collections.Generic.ICollection<System.Object>) = "SelectedValues" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("SelectedValues'")>] member this.SelectedValues' (_: FunBlazorContext<'FunBlazorGeneric>, value: IStore<System.Collections.Generic.ICollection<System.Object>>) = this.AddProp("SelectedValues", value)
     [<CustomOperation("SelectedValues'")>] member this.SelectedValues' (_: FunBlazorContext<'FunBlazorGeneric>, value: cval<System.Collections.Generic.ICollection<System.Object>>) = this.AddProp("SelectedValues", value)
+    [<CustomOperation("SelectedValues'")>] member this.SelectedValues' (_: FunBlazorContext<'FunBlazorGeneric>, valueFn: System.Collections.Generic.ICollection<System.Object> * (System.Collections.Generic.ICollection<System.Object> -> unit)) = this.AddProp("SelectedValues", valueFn)
     [<CustomOperation("SelectedValuesChanged")>] member this.SelectedValuesChanged (_: FunBlazorContext<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<System.Collections.Generic.ICollection<System.Object>> "SelectedValuesChanged" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
     [<CustomOperation("OnClose")>] member this.OnClose (_: FunBlazorContext<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<MudBlazor.MudChip> "OnClose" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
                 
@@ -948,6 +967,7 @@ type MudCollapseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.As
     [<CustomOperation("Expanded")>] member this.Expanded (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "Expanded" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Expanded'")>] member this.Expanded' (_: FunBlazorContext<'FunBlazorGeneric>, value: IStore<System.Boolean>) = this.AddProp("Expanded", value)
     [<CustomOperation("Expanded'")>] member this.Expanded' (_: FunBlazorContext<'FunBlazorGeneric>, value: cval<System.Boolean>) = this.AddProp("Expanded", value)
+    [<CustomOperation("Expanded'")>] member this.Expanded' (_: FunBlazorContext<'FunBlazorGeneric>, valueFn: System.Boolean * (System.Boolean -> unit)) = this.AddProp("Expanded", valueFn)
     [<CustomOperation("MaxHeight")>] member this.MaxHeight (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Nullable<System.Int32>) = "MaxHeight" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("OnAnimationEnd")>] member this.OnAnimationEnd (_: FunBlazorContext<'FunBlazorGeneric>, fn) = evt.callbackOfUnit "OnAnimationEnd" fn |> this.AddProp
     [<CustomOperation("ExpandedChanged")>] member this.ExpandedChanged (_: FunBlazorContext<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<System.Boolean> "ExpandedChanged" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
@@ -976,6 +996,7 @@ type MudDialogBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspN
     [<CustomOperation("IsVisible")>] member this.IsVisible (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "IsVisible" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("IsVisible'")>] member this.IsVisible' (_: FunBlazorContext<'FunBlazorGeneric>, value: IStore<System.Boolean>) = this.AddProp("IsVisible", value)
     [<CustomOperation("IsVisible'")>] member this.IsVisible' (_: FunBlazorContext<'FunBlazorGeneric>, value: cval<System.Boolean>) = this.AddProp("IsVisible", value)
+    [<CustomOperation("IsVisible'")>] member this.IsVisible' (_: FunBlazorContext<'FunBlazorGeneric>, valueFn: System.Boolean * (System.Boolean -> unit)) = this.AddProp("IsVisible", valueFn)
     [<CustomOperation("IsVisibleChanged")>] member this.IsVisibleChanged (_: FunBlazorContext<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<System.Boolean> "IsVisibleChanged" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
                 
 
@@ -1014,6 +1035,7 @@ type MudDrawerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspN
     [<CustomOperation("Open")>] member this.Open (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "Open" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Open'")>] member this.Open' (_: FunBlazorContext<'FunBlazorGeneric>, value: IStore<System.Boolean>) = this.AddProp("Open", value)
     [<CustomOperation("Open'")>] member this.Open' (_: FunBlazorContext<'FunBlazorGeneric>, value: cval<System.Boolean>) = this.AddProp("Open", value)
+    [<CustomOperation("Open'")>] member this.Open' (_: FunBlazorContext<'FunBlazorGeneric>, valueFn: System.Boolean * (System.Boolean -> unit)) = this.AddProp("Open", valueFn)
     [<CustomOperation("OpenChanged")>] member this.OpenChanged (_: FunBlazorContext<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<System.Boolean> "OpenChanged" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
     [<CustomOperation("Width")>] member this.Width (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "Width" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("MiniWidth")>] member this.MiniWidth (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "MiniWidth" => x |> BoleroAttr |> this.AddProp
@@ -1046,6 +1068,7 @@ type MudElementBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.Asp
     [<CustomOperation("Ref")>] member this.Ref (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Nullable<Microsoft.AspNetCore.Components.ElementReference>) = "Ref" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Ref'")>] member this.Ref' (_: FunBlazorContext<'FunBlazorGeneric>, value: IStore<System.Nullable<Microsoft.AspNetCore.Components.ElementReference>>) = this.AddProp("Ref", value)
     [<CustomOperation("Ref'")>] member this.Ref' (_: FunBlazorContext<'FunBlazorGeneric>, value: cval<System.Nullable<Microsoft.AspNetCore.Components.ElementReference>>) = this.AddProp("Ref", value)
+    [<CustomOperation("Ref'")>] member this.Ref' (_: FunBlazorContext<'FunBlazorGeneric>, valueFn: System.Nullable<Microsoft.AspNetCore.Components.ElementReference> * (System.Nullable<Microsoft.AspNetCore.Components.ElementReference> -> unit)) = this.AddProp("Ref", valueFn)
     [<CustomOperation("RefChanged")>] member this.RefChanged (_: FunBlazorContext<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.ElementReference> "RefChanged" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
                 
 
@@ -1069,6 +1092,7 @@ type MudExpansionPanelBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micros
     [<CustomOperation("IsExpanded")>] member this.IsExpanded (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "IsExpanded" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("IsExpanded'")>] member this.IsExpanded' (_: FunBlazorContext<'FunBlazorGeneric>, value: IStore<System.Boolean>) = this.AddProp("IsExpanded", value)
     [<CustomOperation("IsExpanded'")>] member this.IsExpanded' (_: FunBlazorContext<'FunBlazorGeneric>, value: cval<System.Boolean>) = this.AddProp("IsExpanded", value)
+    [<CustomOperation("IsExpanded'")>] member this.IsExpanded' (_: FunBlazorContext<'FunBlazorGeneric>, valueFn: System.Boolean * (System.Boolean -> unit)) = this.AddProp("IsExpanded", valueFn)
     [<CustomOperation("IsInitiallyExpanded")>] member this.IsInitiallyExpanded (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "IsInitiallyExpanded" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Disabled")>] member this.Disabled (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "Disabled" => x |> BoleroAttr |> this.AddProp
                 
@@ -1129,9 +1153,11 @@ type MudFormBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNet
     [<CustomOperation("IsValid")>] member this.IsValid (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "IsValid" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("IsValid'")>] member this.IsValid' (_: FunBlazorContext<'FunBlazorGeneric>, value: IStore<System.Boolean>) = this.AddProp("IsValid", value)
     [<CustomOperation("IsValid'")>] member this.IsValid' (_: FunBlazorContext<'FunBlazorGeneric>, value: cval<System.Boolean>) = this.AddProp("IsValid", value)
+    [<CustomOperation("IsValid'")>] member this.IsValid' (_: FunBlazorContext<'FunBlazorGeneric>, valueFn: System.Boolean * (System.Boolean -> unit)) = this.AddProp("IsValid", valueFn)
     [<CustomOperation("IsTouched")>] member this.IsTouched (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "IsTouched" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("IsTouched'")>] member this.IsTouched' (_: FunBlazorContext<'FunBlazorGeneric>, value: IStore<System.Boolean>) = this.AddProp("IsTouched", value)
     [<CustomOperation("IsTouched'")>] member this.IsTouched' (_: FunBlazorContext<'FunBlazorGeneric>, value: cval<System.Boolean>) = this.AddProp("IsTouched", value)
+    [<CustomOperation("IsTouched'")>] member this.IsTouched' (_: FunBlazorContext<'FunBlazorGeneric>, valueFn: System.Boolean * (System.Boolean -> unit)) = this.AddProp("IsTouched", valueFn)
     [<CustomOperation("ValidationDelay")>] member this.ValidationDelay (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Int32) = "ValidationDelay" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("SuppressRenderingOnValidation")>] member this.SuppressRenderingOnValidation (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "SuppressRenderingOnValidation" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("SuppressImplicitSubmission")>] member this.SuppressImplicitSubmission (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "SuppressImplicitSubmission" => x |> BoleroAttr |> this.AddProp
@@ -1140,6 +1166,7 @@ type MudFormBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNet
     [<CustomOperation("Errors")>] member this.Errors (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String[]) = "Errors" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Errors'")>] member this.Errors' (_: FunBlazorContext<'FunBlazorGeneric>, value: IStore<System.String[]>) = this.AddProp("Errors", value)
     [<CustomOperation("Errors'")>] member this.Errors' (_: FunBlazorContext<'FunBlazorGeneric>, value: cval<System.String[]>) = this.AddProp("Errors", value)
+    [<CustomOperation("Errors'")>] member this.Errors' (_: FunBlazorContext<'FunBlazorGeneric>, valueFn: System.String[] * (System.String[] -> unit)) = this.AddProp("Errors", valueFn)
     [<CustomOperation("ErrorsChanged")>] member this.ErrorsChanged (_: FunBlazorContext<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<System.String[]> "ErrorsChanged" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
     [<CustomOperation("Model")>] member this.Model (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Object) = "Model" => x |> BoleroAttr |> this.AddProp
                 
@@ -1155,6 +1182,7 @@ type MudHiddenBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspN
     [<CustomOperation("IsHidden")>] member this.IsHidden (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "IsHidden" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("IsHidden'")>] member this.IsHidden' (_: FunBlazorContext<'FunBlazorGeneric>, value: IStore<System.Boolean>) = this.AddProp("IsHidden", value)
     [<CustomOperation("IsHidden'")>] member this.IsHidden' (_: FunBlazorContext<'FunBlazorGeneric>, value: cval<System.Boolean>) = this.AddProp("IsHidden", value)
+    [<CustomOperation("IsHidden'")>] member this.IsHidden' (_: FunBlazorContext<'FunBlazorGeneric>, valueFn: System.Boolean * (System.Boolean -> unit)) = this.AddProp("IsHidden", valueFn)
     [<CustomOperation("IsHiddenChanged")>] member this.IsHiddenChanged (_: FunBlazorContext<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<System.Boolean> "IsHiddenChanged" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
                 
 
@@ -1234,10 +1262,12 @@ type MudListBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNet
     [<CustomOperation("SelectedItem")>] member this.SelectedItem (_: FunBlazorContext<'FunBlazorGeneric>, x: MudBlazor.MudListItem) = "SelectedItem" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("SelectedItem'")>] member this.SelectedItem' (_: FunBlazorContext<'FunBlazorGeneric>, value: IStore<MudBlazor.MudListItem>) = this.AddProp("SelectedItem", value)
     [<CustomOperation("SelectedItem'")>] member this.SelectedItem' (_: FunBlazorContext<'FunBlazorGeneric>, value: cval<MudBlazor.MudListItem>) = this.AddProp("SelectedItem", value)
+    [<CustomOperation("SelectedItem'")>] member this.SelectedItem' (_: FunBlazorContext<'FunBlazorGeneric>, valueFn: MudBlazor.MudListItem * (MudBlazor.MudListItem -> unit)) = this.AddProp("SelectedItem", valueFn)
     [<CustomOperation("SelectedItemChanged")>] member this.SelectedItemChanged (_: FunBlazorContext<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<MudBlazor.MudListItem> "SelectedItemChanged" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
     [<CustomOperation("SelectedValue")>] member this.SelectedValue (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Object) = "SelectedValue" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("SelectedValue'")>] member this.SelectedValue' (_: FunBlazorContext<'FunBlazorGeneric>, value: IStore<System.Object>) = this.AddProp("SelectedValue", value)
     [<CustomOperation("SelectedValue'")>] member this.SelectedValue' (_: FunBlazorContext<'FunBlazorGeneric>, value: cval<System.Object>) = this.AddProp("SelectedValue", value)
+    [<CustomOperation("SelectedValue'")>] member this.SelectedValue' (_: FunBlazorContext<'FunBlazorGeneric>, valueFn: System.Object * (System.Object -> unit)) = this.AddProp("SelectedValue", valueFn)
     [<CustomOperation("SelectedValueChanged")>] member this.SelectedValueChanged (_: FunBlazorContext<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<System.Object> "SelectedValueChanged" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
                 
 
@@ -1267,6 +1297,7 @@ type MudListItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.As
     [<CustomOperation("Expanded")>] member this.Expanded (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "Expanded" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Expanded'")>] member this.Expanded' (_: FunBlazorContext<'FunBlazorGeneric>, value: IStore<System.Boolean>) = this.AddProp("Expanded", value)
     [<CustomOperation("Expanded'")>] member this.Expanded' (_: FunBlazorContext<'FunBlazorGeneric>, value: cval<System.Boolean>) = this.AddProp("Expanded", value)
+    [<CustomOperation("Expanded'")>] member this.Expanded' (_: FunBlazorContext<'FunBlazorGeneric>, valueFn: System.Boolean * (System.Boolean -> unit)) = this.AddProp("Expanded", valueFn)
     [<CustomOperation("ExpandedChanged")>] member this.ExpandedChanged (_: FunBlazorContext<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<System.Boolean> "ExpandedChanged" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
     [<CustomOperation("InitiallyExpanded")>] member this.InitiallyExpanded (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "InitiallyExpanded" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("CommandParameter")>] member this.CommandParameter (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Object) = "CommandParameter" => x |> BoleroAttr |> this.AddProp
@@ -1380,6 +1411,7 @@ type MudMessageBoxBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     [<CustomOperation("IsVisible")>] member this.IsVisible (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "IsVisible" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("IsVisible'")>] member this.IsVisible' (_: FunBlazorContext<'FunBlazorGeneric>, value: IStore<System.Boolean>) = this.AddProp("IsVisible", value)
     [<CustomOperation("IsVisible'")>] member this.IsVisible' (_: FunBlazorContext<'FunBlazorGeneric>, value: cval<System.Boolean>) = this.AddProp("IsVisible", value)
+    [<CustomOperation("IsVisible'")>] member this.IsVisible' (_: FunBlazorContext<'FunBlazorGeneric>, valueFn: System.Boolean * (System.Boolean -> unit)) = this.AddProp("IsVisible", valueFn)
     [<CustomOperation("IsVisibleChanged")>] member this.IsVisibleChanged (_: FunBlazorContext<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<System.Boolean> "IsVisibleChanged" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
                 
 
@@ -1397,6 +1429,7 @@ type MudNavGroupBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.As
     [<CustomOperation("Expanded")>] member this.Expanded (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "Expanded" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Expanded'")>] member this.Expanded' (_: FunBlazorContext<'FunBlazorGeneric>, value: IStore<System.Boolean>) = this.AddProp("Expanded", value)
     [<CustomOperation("Expanded'")>] member this.Expanded' (_: FunBlazorContext<'FunBlazorGeneric>, value: cval<System.Boolean>) = this.AddProp("Expanded", value)
+    [<CustomOperation("Expanded'")>] member this.Expanded' (_: FunBlazorContext<'FunBlazorGeneric>, valueFn: System.Boolean * (System.Boolean -> unit)) = this.AddProp("Expanded", valueFn)
     [<CustomOperation("ExpandedChanged")>] member this.ExpandedChanged (_: FunBlazorContext<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<System.Boolean> "ExpandedChanged" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
     [<CustomOperation("HideExpandIcon")>] member this.HideExpandIcon (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "HideExpandIcon" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("MaxHeight")>] member this.MaxHeight (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Nullable<System.Int32>) = "MaxHeight" => x |> BoleroAttr |> this.AddProp
@@ -1422,6 +1455,7 @@ type MudOverlayBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.Asp
     [<CustomOperation("Visible")>] member this.Visible (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "Visible" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Visible'")>] member this.Visible' (_: FunBlazorContext<'FunBlazorGeneric>, value: IStore<System.Boolean>) = this.AddProp("Visible", value)
     [<CustomOperation("Visible'")>] member this.Visible' (_: FunBlazorContext<'FunBlazorGeneric>, value: cval<System.Boolean>) = this.AddProp("Visible", value)
+    [<CustomOperation("Visible'")>] member this.Visible' (_: FunBlazorContext<'FunBlazorGeneric>, valueFn: System.Boolean * (System.Boolean -> unit)) = this.AddProp("Visible", valueFn)
     [<CustomOperation("AutoClose")>] member this.AutoClose (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "AutoClose" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("LockScroll")>] member this.LockScroll (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "LockScroll" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("LockScrollClass")>] member this.LockScrollClass (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "LockScrollClass" => x |> BoleroAttr |> this.AddProp
@@ -1451,6 +1485,7 @@ type MudPaginationBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     [<CustomOperation("Selected")>] member this.Selected (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Int32) = "Selected" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Selected'")>] member this.Selected' (_: FunBlazorContext<'FunBlazorGeneric>, value: IStore<System.Int32>) = this.AddProp("Selected", value)
     [<CustomOperation("Selected'")>] member this.Selected' (_: FunBlazorContext<'FunBlazorGeneric>, value: cval<System.Int32>) = this.AddProp("Selected", value)
+    [<CustomOperation("Selected'")>] member this.Selected' (_: FunBlazorContext<'FunBlazorGeneric>, valueFn: System.Int32 * (System.Int32 -> unit)) = this.AddProp("Selected", valueFn)
     [<CustomOperation("Variant")>] member this.Variant (_: FunBlazorContext<'FunBlazorGeneric>, x: MudBlazor.Variant) = "Variant" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Color")>] member this.Color (_: FunBlazorContext<'FunBlazorGeneric>, x: MudBlazor.Color) = "Color" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Rectangular")>] member this.Rectangular (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "Rectangular" => x |> BoleroAttr |> this.AddProp
@@ -1556,6 +1591,7 @@ type MudRatingBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspN
     [<CustomOperation("SelectedValue")>] member this.SelectedValue (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Int32) = "SelectedValue" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("SelectedValue'")>] member this.SelectedValue' (_: FunBlazorContext<'FunBlazorGeneric>, value: IStore<System.Int32>) = this.AddProp("SelectedValue", value)
     [<CustomOperation("SelectedValue'")>] member this.SelectedValue' (_: FunBlazorContext<'FunBlazorGeneric>, value: cval<System.Int32>) = this.AddProp("SelectedValue", value)
+    [<CustomOperation("SelectedValue'")>] member this.SelectedValue' (_: FunBlazorContext<'FunBlazorGeneric>, valueFn: System.Int32 * (System.Int32 -> unit)) = this.AddProp("SelectedValue", valueFn)
     [<CustomOperation("HoveredValueChanged")>] member this.HoveredValueChanged (_: FunBlazorContext<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<System.Nullable<System.Int32>> "HoveredValueChanged" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
                 
 
@@ -1620,6 +1656,7 @@ type MudSliderBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.
     [<CustomOperation("Value")>] member this.Value (_: FunBlazorContext<'FunBlazorGeneric>, x: 'T) = "Value" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Value'")>] member this.Value' (_: FunBlazorContext<'FunBlazorGeneric>, value: IStore<'T>) = this.AddProp("Value", value)
     [<CustomOperation("Value'")>] member this.Value' (_: FunBlazorContext<'FunBlazorGeneric>, value: cval<'T>) = this.AddProp("Value", value)
+    [<CustomOperation("Value'")>] member this.Value' (_: FunBlazorContext<'FunBlazorGeneric>, valueFn: 'T * ('T -> unit)) = this.AddProp("Value", valueFn)
     [<CustomOperation("Color")>] member this.Color (_: FunBlazorContext<'FunBlazorGeneric>, x: MudBlazor.Color) = "Color" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Immediate")>] member this.Immediate (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "Immediate" => x |> BoleroAttr |> this.AddProp
                 
@@ -1681,6 +1718,7 @@ type MudTableBaseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.A
     [<CustomOperation("RowsPerPage")>] member this.RowsPerPage (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Int32) = "RowsPerPage" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("RowsPerPage'")>] member this.RowsPerPage' (_: FunBlazorContext<'FunBlazorGeneric>, value: IStore<System.Int32>) = this.AddProp("RowsPerPage", value)
     [<CustomOperation("RowsPerPage'")>] member this.RowsPerPage' (_: FunBlazorContext<'FunBlazorGeneric>, value: cval<System.Int32>) = this.AddProp("RowsPerPage", value)
+    [<CustomOperation("RowsPerPage'")>] member this.RowsPerPage' (_: FunBlazorContext<'FunBlazorGeneric>, valueFn: System.Int32 * (System.Int32 -> unit)) = this.AddProp("RowsPerPage", valueFn)
     [<CustomOperation("RowsPerPageChanged")>] member this.RowsPerPageChanged (_: FunBlazorContext<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<System.Int32> "RowsPerPageChanged" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
     [<CustomOperation("CurrentPage")>] member this.CurrentPage (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Int32) = "CurrentPage" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("MultiSelection")>] member this.MultiSelection (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "MultiSelection" => x |> BoleroAttr |> this.AddProp
@@ -1756,10 +1794,12 @@ type MudTableBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.A
     [<CustomOperation("SelectedItem")>] member this.SelectedItem (_: FunBlazorContext<'FunBlazorGeneric>, x: 'T) = "SelectedItem" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("SelectedItem'")>] member this.SelectedItem' (_: FunBlazorContext<'FunBlazorGeneric>, value: IStore<'T>) = this.AddProp("SelectedItem", value)
     [<CustomOperation("SelectedItem'")>] member this.SelectedItem' (_: FunBlazorContext<'FunBlazorGeneric>, value: cval<'T>) = this.AddProp("SelectedItem", value)
+    [<CustomOperation("SelectedItem'")>] member this.SelectedItem' (_: FunBlazorContext<'FunBlazorGeneric>, valueFn: 'T * ('T -> unit)) = this.AddProp("SelectedItem", valueFn)
     [<CustomOperation("SelectedItemChanged")>] member this.SelectedItemChanged (_: FunBlazorContext<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<'T> "SelectedItemChanged" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
     [<CustomOperation("SelectedItems")>] member this.SelectedItems (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Collections.Generic.HashSet<'T>) = "SelectedItems" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("SelectedItems'")>] member this.SelectedItems' (_: FunBlazorContext<'FunBlazorGeneric>, value: IStore<System.Collections.Generic.HashSet<'T>>) = this.AddProp("SelectedItems", value)
     [<CustomOperation("SelectedItems'")>] member this.SelectedItems' (_: FunBlazorContext<'FunBlazorGeneric>, value: cval<System.Collections.Generic.HashSet<'T>>) = this.AddProp("SelectedItems", value)
+    [<CustomOperation("SelectedItems'")>] member this.SelectedItems' (_: FunBlazorContext<'FunBlazorGeneric>, valueFn: System.Collections.Generic.HashSet<'T> * (System.Collections.Generic.HashSet<'T> -> unit)) = this.AddProp("SelectedItems", valueFn)
     [<CustomOperation("SelectedItemsChanged")>] member this.SelectedItemsChanged (_: FunBlazorContext<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<System.Collections.Generic.HashSet<'T>> "SelectedItemsChanged" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
     [<CustomOperation("GroupBy")>] member this.GroupBy (_: FunBlazorContext<'FunBlazorGeneric>, x: MudBlazor.TableGroupDefinition<'T>) = "GroupBy" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("GroupHeaderTemplate")>] member this.GroupHeaderTemplate (_: FunBlazorContext<'FunBlazorGeneric>, render: MudBlazor.TableGroupData<System.Object, 'T> -> IFunBlazorNode) = Bolero.Html.attr.fragmentWith "GroupHeaderTemplate" (fun x -> render x |> html.toBolero) |> BoleroAttr |> this.AddProp
@@ -1818,6 +1858,7 @@ type MudTableSortLabelBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Mi
     [<CustomOperation("SortDirection")>] member this.SortDirection (_: FunBlazorContext<'FunBlazorGeneric>, x: MudBlazor.SortDirection) = "SortDirection" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("SortDirection'")>] member this.SortDirection' (_: FunBlazorContext<'FunBlazorGeneric>, value: IStore<MudBlazor.SortDirection>) = this.AddProp("SortDirection", value)
     [<CustomOperation("SortDirection'")>] member this.SortDirection' (_: FunBlazorContext<'FunBlazorGeneric>, value: cval<MudBlazor.SortDirection>) = this.AddProp("SortDirection", value)
+    [<CustomOperation("SortDirection'")>] member this.SortDirection' (_: FunBlazorContext<'FunBlazorGeneric>, valueFn: MudBlazor.SortDirection * (MudBlazor.SortDirection -> unit)) = this.AddProp("SortDirection", valueFn)
     [<CustomOperation("SortDirectionChanged")>] member this.SortDirectionChanged (_: FunBlazorContext<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<MudBlazor.SortDirection> "SortDirectionChanged" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
     [<CustomOperation("SortBy")>] member this.SortBy (_: FunBlazorContext<'FunBlazorGeneric>, fn) = "SortBy" => (System.Func<'T, System.Object>fn) |> BoleroAttr |> this.AddProp
     [<CustomOperation("SortLabel")>] member this.SortLabel (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "SortLabel" => x |> BoleroAttr |> this.AddProp
@@ -1884,6 +1925,7 @@ type MudTrBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCo
     [<CustomOperation("IsChecked")>] member this.IsChecked (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "IsChecked" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("IsChecked'")>] member this.IsChecked' (_: FunBlazorContext<'FunBlazorGeneric>, value: IStore<System.Boolean>) = this.AddProp("IsChecked", value)
     [<CustomOperation("IsChecked'")>] member this.IsChecked' (_: FunBlazorContext<'FunBlazorGeneric>, value: cval<System.Boolean>) = this.AddProp("IsChecked", value)
+    [<CustomOperation("IsChecked'")>] member this.IsChecked' (_: FunBlazorContext<'FunBlazorGeneric>, valueFn: System.Boolean * (System.Boolean -> unit)) = this.AddProp("IsChecked", valueFn)
                 
 
 type MudTabsBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -1916,6 +1958,7 @@ type MudTabsBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNet
     [<CustomOperation("ActivePanelIndex")>] member this.ActivePanelIndex (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Int32) = "ActivePanelIndex" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("ActivePanelIndex'")>] member this.ActivePanelIndex' (_: FunBlazorContext<'FunBlazorGeneric>, value: IStore<System.Int32>) = this.AddProp("ActivePanelIndex", value)
     [<CustomOperation("ActivePanelIndex'")>] member this.ActivePanelIndex' (_: FunBlazorContext<'FunBlazorGeneric>, value: cval<System.Int32>) = this.AddProp("ActivePanelIndex", value)
+    [<CustomOperation("ActivePanelIndex'")>] member this.ActivePanelIndex' (_: FunBlazorContext<'FunBlazorGeneric>, valueFn: System.Int32 * (System.Int32 -> unit)) = this.AddProp("ActivePanelIndex", valueFn)
     [<CustomOperation("ActivePanelIndexChanged")>] member this.ActivePanelIndexChanged (_: FunBlazorContext<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<System.Int32> "ActivePanelIndexChanged" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
     [<CustomOperation("Header")>] member this.Header (_: FunBlazorContext<'FunBlazorGeneric>, render: MudBlazor.MudTabs -> IFunBlazorNode) = Bolero.Html.attr.fragmentWith "Header" (fun x -> render x |> html.toBolero) |> BoleroAttr |> this.AddProp
     [<CustomOperation("HeaderPosition")>] member this.HeaderPosition (_: FunBlazorContext<'FunBlazorGeneric>, x: MudBlazor.TabHeaderPosition) = "HeaderPosition" => x |> BoleroAttr |> this.AddProp
@@ -2038,13 +2081,16 @@ type MudTreeViewItemBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Micr
     [<CustomOperation("Expanded")>] member this.Expanded (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "Expanded" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Expanded'")>] member this.Expanded' (_: FunBlazorContext<'FunBlazorGeneric>, value: IStore<System.Boolean>) = this.AddProp("Expanded", value)
     [<CustomOperation("Expanded'")>] member this.Expanded' (_: FunBlazorContext<'FunBlazorGeneric>, value: cval<System.Boolean>) = this.AddProp("Expanded", value)
+    [<CustomOperation("Expanded'")>] member this.Expanded' (_: FunBlazorContext<'FunBlazorGeneric>, valueFn: System.Boolean * (System.Boolean -> unit)) = this.AddProp("Expanded", valueFn)
     [<CustomOperation("ExpandedChanged")>] member this.ExpandedChanged (_: FunBlazorContext<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<System.Boolean> "ExpandedChanged" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
     [<CustomOperation("Activated")>] member this.Activated (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "Activated" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Activated'")>] member this.Activated' (_: FunBlazorContext<'FunBlazorGeneric>, value: IStore<System.Boolean>) = this.AddProp("Activated", value)
     [<CustomOperation("Activated'")>] member this.Activated' (_: FunBlazorContext<'FunBlazorGeneric>, value: cval<System.Boolean>) = this.AddProp("Activated", value)
+    [<CustomOperation("Activated'")>] member this.Activated' (_: FunBlazorContext<'FunBlazorGeneric>, valueFn: System.Boolean * (System.Boolean -> unit)) = this.AddProp("Activated", valueFn)
     [<CustomOperation("Selected")>] member this.Selected (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "Selected" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Selected'")>] member this.Selected' (_: FunBlazorContext<'FunBlazorGeneric>, value: IStore<System.Boolean>) = this.AddProp("Selected", value)
     [<CustomOperation("Selected'")>] member this.Selected' (_: FunBlazorContext<'FunBlazorGeneric>, value: cval<System.Boolean>) = this.AddProp("Selected", value)
+    [<CustomOperation("Selected'")>] member this.Selected' (_: FunBlazorContext<'FunBlazorGeneric>, valueFn: System.Boolean * (System.Boolean -> unit)) = this.AddProp("Selected", valueFn)
     [<CustomOperation("Icon")>] member this.Icon (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "Icon" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("IconColor")>] member this.IconColor (_: FunBlazorContext<'FunBlazorGeneric>, x: MudBlazor.Color) = "IconColor" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("EndIcon")>] member this.EndIcon (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "EndIcon" => x |> BoleroAttr |> this.AddProp
@@ -2298,6 +2344,7 @@ type MudTreeViewItemToggleButtonBuilder<'FunBlazorGeneric when 'FunBlazorGeneric
     [<CustomOperation("Expanded")>] member this.Expanded (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "Expanded" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("Expanded'")>] member this.Expanded' (_: FunBlazorContext<'FunBlazorGeneric>, value: IStore<System.Boolean>) = this.AddProp("Expanded", value)
     [<CustomOperation("Expanded'")>] member this.Expanded' (_: FunBlazorContext<'FunBlazorGeneric>, value: cval<System.Boolean>) = this.AddProp("Expanded", value)
+    [<CustomOperation("Expanded'")>] member this.Expanded' (_: FunBlazorContext<'FunBlazorGeneric>, valueFn: System.Boolean * (System.Boolean -> unit)) = this.AddProp("Expanded", valueFn)
     [<CustomOperation("Loading")>] member this.Loading (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Boolean) = "Loading" => x |> BoleroAttr |> this.AddProp
     [<CustomOperation("ExpandedChanged")>] member this.ExpandedChanged (_: FunBlazorContext<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<System.Boolean> "ExpandedChanged" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
     [<CustomOperation("LoadingIcon")>] member this.LoadingIcon (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "LoadingIcon" => x |> BoleroAttr |> this.AddProp
