@@ -33,7 +33,7 @@ type AdaptiveForm<'T> (defaultValue: 'T) =
             | ExpressionType.Convert -> getName (exp :?> UnaryExpression).Operand
             | _ -> failwith "Unsupported expression"
 
-        fields[getName exp] |> unbox<cval<obj>>
+        fields.[getName exp] |> unbox<cval<obj>>
 
 
     do setFields defaultValue
