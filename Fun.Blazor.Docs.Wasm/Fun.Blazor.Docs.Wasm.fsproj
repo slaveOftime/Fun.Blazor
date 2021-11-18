@@ -38,6 +38,7 @@
     <Compile Include="Pages\HelperFunctions\AdaptiviewDemo.fs" />
     <Compile Include="Pages\HelperFunctions\ComponentHookDemo.fs" />
     <Compile Include="Pages\HelperFunctions\GlobalStoreDemo.fs" />
+    <Compile Include="Pages\HelperFunctions\AdaptiveFromDemo.fs" />
     <None Include="Pages\CliUsage\CliUsageDemo.md" />
     <Compile Include="Pages\CliUsage\CliUsage.fs" />
     <None Include="Pages\Tests\TestsDemo.md" />
