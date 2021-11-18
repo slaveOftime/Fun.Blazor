@@ -114,7 +114,7 @@ type AdaptiveForm<'T, 'Error> (defaultValue: 'T) as this =
                     let! errors = errors
                     return statedErrors@errors
                 })
-            (AVal.init [])
+            (AVal.constant [])
 
     
     member _.GetFieldValue propSelector =
