@@ -2,12 +2,11 @@
 module Fun.Blazor.DslElmish
 
 open Bolero
-open Bolero.Html
 open Elmish
 
 
-type FunBlazorHtmlEngine with
-    member html.elmish 
+type html with
+    static member elmish 
         (initState: unit -> 'Model * Cmd<'Msg>
         ,updateState: 'Msg -> 'Model -> 'Model * Cmd<'Msg>
         ,render: 'Model -> Dispatch<'Msg> -> Node
@@ -22,10 +21,10 @@ type FunBlazorHtmlEngine with
             ]
             ,[])
 
-    member html.elmish (init, update, render, router) =
+    static member elmish (init, update, render, router) =
         html.elmish(init, update, render, Bolero.Program.withRouter router)
 
-    member html.elmish (init, update, render) =
+    static member elmish (init, update, render) =
         html.elmish
             (fun () -> init(), Cmd.none
             ,fun msg model -> update msg model, Cmd.none

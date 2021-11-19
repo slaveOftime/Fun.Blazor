@@ -319,7 +319,7 @@ type {builderName}{builderGenericsWithContraints}() =
                     let builderGenerics = originalTypeWithGenerics::(getTypeNames meta.generics) |> createGenerics |> closeGenerics
                     
 
-                    $"""    type {meta.ty |> getTypeShortName}'{meta.generics |> getTypeNames |> createGenerics |> appendStr (createConstraint meta.generics) |> closeGenerics} = {builderName}{builderGenerics}""")
+                    $"""    type {meta.ty |> getTypeShortName}'{meta.generics |> getTypeNames |> createGenerics |> appendStr (createConstraint meta.generics) |> closeGenerics}() = inherit {builderName}{builderGenerics}()""")
                 |> String.concat "\n"
 
             $"""namespace {targetNamespace}{ns |> trimNamespace |> addStrIfNotEmpty "."}

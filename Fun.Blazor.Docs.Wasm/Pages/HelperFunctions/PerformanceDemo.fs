@@ -2,9 +2,12 @@
 module Fun.Blazor.Docs.Wasm.Pages.HelperFunctions.PerformanceDemo
 
 open FSharp.Data.Adaptive
+open Bolero.Html
 open MudBlazor
 open Fun.Blazor
 open Fun.Blazor.Docs.Wasm.Components
+open MudBlazor.DslInternals
+open Microsoft.AspNetCore.Components
 
 
 let bigListDemo = html.inject <| fun () ->

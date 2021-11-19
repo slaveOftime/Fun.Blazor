@@ -2,30 +2,20 @@
 module Fun.Blazor.Uitls
 
 open System
+open System.Text
 open System.Reactive.Linq
 open System.Threading.Tasks
 open Bolero
 
 
-let inline (!!) (node: Attr) = FelizNode.create node
+let inline (=>) key value = Attr(key, value)
 
 
-let internal _childContentKey = "_childContent"
-
-
-let getAttrsAndChildren (attrs: Attr seq) =
-    attrs
-    |> Seq.indexed
-    |> Seq.tryPick (fun (i, attr) ->
-        match attr with
-        | Attr.Attr (name, child) when name = _childContentKey -> Some (i, child)
-        | _ -> None)
-    |> function
-        | None -> Seq.toList attrs, []
-        | Some (index, child) ->
-            let childContent = child |> unbox<Node seq> |> Seq.toList
-            let attrs = attrs |> Seq.removeAt index |> Seq.toList
-            attrs, childContent
+let makeStyles (rules: (string * string) seq) =
+    rules
+    |> Seq.fold
+        (fun (sb: StringBuilder) (k, v) -> sb.Append(k).Append(": ").Append(v).Append(";"))
+        (new StringBuilder())
 
 
 module Observable =

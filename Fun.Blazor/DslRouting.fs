@@ -8,8 +8,9 @@ open Fun.Blazor.Router
 open Bolero
 
 
-type FunBlazorHtmlEngine with
-    member html.route (render: string list -> Node) = html.inject (fun (hook: IComponentHook, nav: NavigationManager, interception: INavigationInterception) ->
+type html with
+
+    static member route (render: string list -> Node) = html.inject (fun (hook: IComponentHook, nav: NavigationManager, interception: INavigationInterception) ->
         let location = hook.UseStore nav.Uri
 
         hook.OnFirstAfterRender.Subscribe (fun () ->
@@ -23,7 +24,7 @@ type FunBlazorHtmlEngine with
             |> render
         ))
 
-    member html.route (routes: Router<Node> list) = html.inject (fun (hook: IComponentHook, nav: NavigationManager, interception: INavigationInterception) ->
+    static member route (routes: Router<Node> list) = html.inject (fun (hook: IComponentHook, nav: NavigationManager, interception: INavigationInterception) ->
         let location = hook.UseStore (Uri nav.Uri).PathAndQuery
 
         hook.OnFirstAfterRender.Subscribe (fun () ->

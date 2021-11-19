@@ -162,20 +162,20 @@ module DslCE =
 
     open Microsoft.AspNetCore.Components.Web.DslInternals
 
-    type Virtualize'<'TItem> = VirtualizeBuilder<Microsoft.AspNetCore.Components.Web.Virtualization.Virtualize<'TItem>, 'TItem>
-    type NavLink' = NavLinkBuilder<Microsoft.AspNetCore.Components.Routing.NavLink>
-    type EditForm' = EditFormBuilder<Microsoft.AspNetCore.Components.Forms.EditForm>
-    type InputBase'<'TValue> = InputBaseBuilder<Microsoft.AspNetCore.Components.Forms.InputBase<'TValue>, 'TValue>
-    type InputCheckbox' = InputCheckboxBuilder<Microsoft.AspNetCore.Components.Forms.InputCheckbox>
-    type InputDate'<'TValue> = InputDateBuilder<Microsoft.AspNetCore.Components.Forms.InputDate<'TValue>, 'TValue>
-    type InputNumber'<'TValue> = InputNumberBuilder<Microsoft.AspNetCore.Components.Forms.InputNumber<'TValue>, 'TValue>
-    type InputRadioGroup'<'TValue> = InputRadioGroupBuilder<Microsoft.AspNetCore.Components.Forms.InputRadioGroup<'TValue>, 'TValue>
-    type InputSelect'<'TValue> = InputSelectBuilder<Microsoft.AspNetCore.Components.Forms.InputSelect<'TValue>, 'TValue>
-    type InputText' = InputTextBuilder<Microsoft.AspNetCore.Components.Forms.InputText>
-    type InputTextArea' = InputTextAreaBuilder<Microsoft.AspNetCore.Components.Forms.InputTextArea>
-    type InputFile' = InputFileBuilder<Microsoft.AspNetCore.Components.Forms.InputFile>
-    type InputRadio'<'TValue> = InputRadioBuilder<Microsoft.AspNetCore.Components.Forms.InputRadio<'TValue>, 'TValue>
-    type ValidationMessage'<'TValue> = ValidationMessageBuilder<Microsoft.AspNetCore.Components.Forms.ValidationMessage<'TValue>, 'TValue>
-    type ValidationSummary' = ValidationSummaryBuilder<Microsoft.AspNetCore.Components.Forms.ValidationSummary>
+    type Virtualize'<'TItem>() = inherit VirtualizeBuilder<Microsoft.AspNetCore.Components.Web.Virtualization.Virtualize<'TItem>, 'TItem>()
+    type NavLink'() = inherit NavLinkBuilder<Microsoft.AspNetCore.Components.Routing.NavLink>()
+    type EditForm'() = inherit EditFormBuilder<Microsoft.AspNetCore.Components.Forms.EditForm>()
+    type InputBase'<'TValue>() = inherit InputBaseBuilder<Microsoft.AspNetCore.Components.Forms.InputBase<'TValue>, 'TValue>()
+    type InputCheckbox'() = inherit InputCheckboxBuilder<Microsoft.AspNetCore.Components.Forms.InputCheckbox>()
+    type InputDate'<'TValue>() = inherit InputDateBuilder<Microsoft.AspNetCore.Components.Forms.InputDate<'TValue>, 'TValue>()
+    type InputNumber'<'TValue>() = inherit InputNumberBuilder<Microsoft.AspNetCore.Components.Forms.InputNumber<'TValue>, 'TValue>()
+    type InputRadioGroup'<'TValue>() = inherit InputRadioGroupBuilder<Microsoft.AspNetCore.Components.Forms.InputRadioGroup<'TValue>, 'TValue>()
+    type InputSelect'<'TValue>() = inherit InputSelectBuilder<Microsoft.AspNetCore.Components.Forms.InputSelect<'TValue>, 'TValue>()
+    type InputText'() = inherit InputTextBuilder<Microsoft.AspNetCore.Components.Forms.InputText>()
+    type InputTextArea'() = inherit InputTextAreaBuilder<Microsoft.AspNetCore.Components.Forms.InputTextArea>()
+    type InputFile'() = inherit InputFileBuilder<Microsoft.AspNetCore.Components.Forms.InputFile>()
+    type InputRadio'<'TValue>() = inherit InputRadioBuilder<Microsoft.AspNetCore.Components.Forms.InputRadio<'TValue>, 'TValue>()
+    type ValidationMessage'<'TValue>() = inherit ValidationMessageBuilder<Microsoft.AspNetCore.Components.Forms.ValidationMessage<'TValue>, 'TValue>()
+    type ValidationSummary'() = inherit ValidationSummaryBuilder<Microsoft.AspNetCore.Components.Forms.ValidationSummary>()
             
     

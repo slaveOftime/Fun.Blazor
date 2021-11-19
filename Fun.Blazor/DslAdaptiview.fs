@@ -4,7 +4,6 @@ module Fun.Blazor.DslAdaptive
 open System.Runtime.CompilerServices
 open FSharp.Data.Adaptive
 open Bolero
-open Bolero.Html
 open Fun.Blazor
 
 

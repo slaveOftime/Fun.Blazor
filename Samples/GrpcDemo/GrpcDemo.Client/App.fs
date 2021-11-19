@@ -32,12 +32,12 @@ let app = html.inject <| fun (chanel: GrpcChannel, hook: IComponentHook) ->
         let! msg = message
 
         div(){
-            styles [ ]
+            styles []
             childContent [
                 match msg with
-                | DeferredState.Loading -> html.div "Loading from grpc service"
-                | DeferredState.Loaded x -> html.div $"Responsed from grpc service: {x}"
-                | DeferredState.LoadFailed e -> html.div $"Error: {e}"
+                | DeferredState.Loading -> div.create "Loading from grpc service"
+                | DeferredState.Loaded x -> div.create $"Responsed from grpc service: {x}"
+                | DeferredState.LoadFailed e -> div.create $"Error: {e}"
                 | _ -> html.none
                 button(){
                     onclick (ignore >> sayHello)

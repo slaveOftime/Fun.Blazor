@@ -3,10 +3,9 @@ module Fun.Blazor.DslDI
 
 open System
 open Bolero
-open Bolero.Html
 
 
-type FunBlazorHtmlEngine with
+type html with
     
     /// This function will create a blazor component with a random key.
     /// In other words, every time you recall this it will create a brand new component.
@@ -14,7 +13,7 @@ type FunBlazorHtmlEngine with
     ///
     /// 'Services should be something you defined in the asp.net core DI or unit
     /// 'Services must be a tuple like (hook: IComponentHook, sp: IServiceProvider)
-    member html.inject (render: 'Services -> Node) =
+    static member inject (render: 'Services -> Node) =
         Bolero.Node.BlazorComponent<DIComponent<'Services>>
             ([
                 "RenderFn" => render
@@ -34,7 +33,7 @@ type FunBlazorHtmlEngine with
     /// Below string will never change no matter how you change externalX
     /// 
     /// let demo (externalX: int) = html.inject ("demo-key", fun () -> html.text $"externalX = {externalX}")
-    member html.inject (key, render: 'Services -> Node) =
+    static member inject (key, render: 'Services -> Node) =
         Bolero.Node.BlazorComponent<DIComponent<'Services>>
             ([
                 "RenderFn" => render
@@ -48,7 +47,7 @@ type FunBlazorHtmlEngine with
     ///
     /// 'Services should be something you defined in the asp.net core DI or unit
     /// 'Services must be a tuple like (hook: IComponentHook, sp: IServiceProvider)
-    member html.injectWithNoKey (render: 'Services -> Node) =
+    static member injectWithNoKey (render: 'Services -> Node) =
         Bolero.Node.BlazorComponent<DIComponent<'Services>>
             ([
                 "RenderFn" => render

@@ -18,11 +18,12 @@ type FunBlazorBuilderWithDomAttrs<'Component when 'Component :> Microsoft.AspNet
     [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorBuilder<'Component>, v: float) = Text (string v) |> this.AddNode
     [<CustomOperation("childContentRaw")>] member this.childContentRaw (_: FunBlazorBuilder<'Component>, v: string) = RawHtml v |> this.AddNode
     
-    [<CustomOperation("classes")>] member this.classes (_: FunBlazorBuilder<'Component>, v: string seq) = attr.classes v |> this.AddAttr
+    [<CustomOperation("classes")>] member this.classes (_: FunBlazorBuilder<'Component>, v: string list) = attr.classes v |> this.AddAttr
     
-    [<CustomOperation("styles")>] member this.styles (_: FunBlazorBuilder<'Component>, v: (string * string) list) = attr.styles v |> this.AddAttr
+    [<CustomOperation("style'")>] member this.style' (_: FunBlazorBuilder<'Component>, v: string) = attr.style v |> this.AddAttr
+    [<CustomOperation("styles")>] member this.styles (_: FunBlazorBuilder<'Component>, v: (string * string) list) = makeStyles v |> attr.style |> this.AddAttr
     
-    [<CustomOperation("class'")>] member this.class' (_: FunBlazorBuilder<'Component>, v: string) = attr.className v |> this.AddAttr
+    [<CustomOperation("class'")>] member this.class' (_: FunBlazorBuilder<'Component>, v: string) = attr.``class`` v |> this.AddAttr
     [<CustomOperation("bindRef")>] member this.bindRef (_: FunBlazorBuilder<'Component>, v: obj) = "bindRef" => v |> this.AddAttr
     [<CustomOperation("key")>] member this.key (_: FunBlazorBuilder<'Component>, v: obj) = "key" => v |> this.AddAttr
     [<CustomOperation("accept")>] member this.accept (_: FunBlazorBuilder<'Component>, v: obj) = "accept" => v |> this.AddAttr
@@ -65,7 +66,7 @@ type FunBlazorBuilderWithDomAttrs<'Component when 'Component :> Microsoft.AspNet
     [<CustomOperation("dirname")>] member this.dirname (_: FunBlazorBuilder<'Component>, v: obj) = "dirname" => v |> this.AddAttr
     [<CustomOperation("disabled")>] member this.disabled (_: FunBlazorBuilder<'Component>, v: obj) = "disabled" => v |> this.AddAttr
     [<CustomOperation("download")>] member this.download (_: FunBlazorBuilder<'Component>, v: obj) = "download" => v |> this.AddAttr
-    [<CustomOperation("draggable")>] member this.draggable (_: FunBlazorBuilder<'Component>, v: bool) = attr.custom ("draggable", if v then "true" else "false") |> this.AddAttr
+    [<CustomOperation("draggable")>] member this.draggable (_: FunBlazorBuilder<'Component>, v: bool) = Attr ("draggable", if v then "true" else "false") |> this.AddAttr
     [<CustomOperation("dropzone")>] member this.dropzone (_: FunBlazorBuilder<'Component>, v: obj) = "dropzone" => v |> this.AddAttr
     [<CustomOperation("enctype")>] member this.enctype (_: FunBlazorBuilder<'Component>, v: obj) = "enctype" => v |> this.AddAttr
     [<CustomOperation("for'")>] member this.for' (_: FunBlazorBuilder<'Component>, v: obj) = "for" => v |> this.AddAttr
@@ -352,7 +353,11 @@ module elt =
     type ABuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = ABuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = ABuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.a [] [ html.text x ]
+        static member create (x: int) = Html.a [] [ html.text x ]
+        static member create (x: float) = Html.a [] [ html.text x ]
+        static member create (x: Node) = Html.a [] [ x ]
+        static member create (x: Node list) = Html.a [] x
         member this.Yield _ = ABuilder()
         override this.MakeNode (x, y) = Html.a x y
 
@@ -362,7 +367,11 @@ module elt =
     type AbbrBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = AbbrBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = AbbrBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.abbr [] [ html.text x ]
+        static member create (x: int) = Html.abbr [] [ html.text x ]
+        static member create (x: float) = Html.abbr [] [ html.text x ]
+        static member create (x: Node) = Html.abbr [] [ x ]
+        static member create (x: Node list) = Html.abbr [] x
         member this.Yield _ = AbbrBuilder()
         override this.MakeNode (x, y) = Html.abbr x y
 
@@ -372,7 +381,11 @@ module elt =
     type AcronymBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = AcronymBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = AcronymBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.acronym [] [ html.text x ]
+        static member create (x: int) = Html.acronym [] [ html.text x ]
+        static member create (x: float) = Html.acronym [] [ html.text x ]
+        static member create (x: Node) = Html.acronym [] [ x ]
+        static member create (x: Node list) = Html.acronym [] x
         member this.Yield _ = AcronymBuilder()
         override this.MakeNode (x, y) = Html.acronym x y
 
@@ -382,7 +395,11 @@ module elt =
     type AddressBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = AddressBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = AddressBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.address [] [ html.text x ]
+        static member create (x: int) = Html.address [] [ html.text x ]
+        static member create (x: float) = Html.address [] [ html.text x ]
+        static member create (x: Node) = Html.address [] [ x ]
+        static member create (x: Node list) = Html.address [] x
         member this.Yield _ = AddressBuilder()
         override this.MakeNode (x, y) = Html.address x y
 
@@ -392,7 +409,11 @@ module elt =
     type AppletBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = AppletBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = AppletBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.applet [] [ html.text x ]
+        static member create (x: int) = Html.applet [] [ html.text x ]
+        static member create (x: float) = Html.applet [] [ html.text x ]
+        static member create (x: Node) = Html.applet [] [ x ]
+        static member create (x: Node list) = Html.applet [] x
         member this.Yield _ = AppletBuilder()
         override this.MakeNode (x, y) = Html.applet x y
 
@@ -411,7 +432,11 @@ module elt =
     type ArticleBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = ArticleBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = ArticleBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.article [] [ html.text x ]
+        static member create (x: int) = Html.article [] [ html.text x ]
+        static member create (x: float) = Html.article [] [ html.text x ]
+        static member create (x: Node) = Html.article [] [ x ]
+        static member create (x: Node list) = Html.article [] x
         member this.Yield _ = ArticleBuilder()
         override this.MakeNode (x, y) = Html.article x y
 
@@ -421,7 +446,11 @@ module elt =
     type AsideBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = AsideBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = AsideBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.aside [] [ html.text x ]
+        static member create (x: int) = Html.aside [] [ html.text x ]
+        static member create (x: float) = Html.aside [] [ html.text x ]
+        static member create (x: Node) = Html.aside [] [ x ]
+        static member create (x: Node list) = Html.aside [] x
         member this.Yield _ = AsideBuilder()
         override this.MakeNode (x, y) = Html.aside x y
 
@@ -431,7 +460,11 @@ module elt =
     type AudioBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = AudioBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = AudioBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.audio [] [ html.text x ]
+        static member create (x: int) = Html.audio [] [ html.text x ]
+        static member create (x: float) = Html.audio [] [ html.text x ]
+        static member create (x: Node) = Html.audio [] [ x ]
+        static member create (x: Node list) = Html.audio [] x
         member this.Yield _ = AudioBuilder()
         override this.MakeNode (x, y) = Html.audio x y
 
@@ -441,7 +474,11 @@ module elt =
     type BBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = BBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = BBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.b [] [ html.text x ]
+        static member create (x: int) = Html.b [] [ html.text x ]
+        static member create (x: float) = Html.b [] [ html.text x ]
+        static member create (x: Node) = Html.b [] [ x ]
+        static member create (x: Node list) = Html.b [] x
         member this.Yield _ = BBuilder()
         override this.MakeNode (x, y) = Html.b x y
 
@@ -460,7 +497,11 @@ module elt =
     type BasefontBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = BasefontBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = BasefontBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.basefont [] [ html.text x ]
+        static member create (x: int) = Html.basefont [] [ html.text x ]
+        static member create (x: float) = Html.basefont [] [ html.text x ]
+        static member create (x: Node) = Html.basefont [] [ x ]
+        static member create (x: Node list) = Html.basefont [] x
         member this.Yield _ = BasefontBuilder()
         override this.MakeNode (x, y) = Html.basefont x y
 
@@ -470,7 +511,11 @@ module elt =
     type BdiBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = BdiBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = BdiBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.bdi [] [ html.text x ]
+        static member create (x: int) = Html.bdi [] [ html.text x ]
+        static member create (x: float) = Html.bdi [] [ html.text x ]
+        static member create (x: Node) = Html.bdi [] [ x ]
+        static member create (x: Node list) = Html.bdi [] x
         member this.Yield _ = BdiBuilder()
         override this.MakeNode (x, y) = Html.bdi x y
 
@@ -480,7 +525,11 @@ module elt =
     type BdoBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = BdoBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = BdoBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.bdo [] [ html.text x ]
+        static member create (x: int) = Html.bdo [] [ html.text x ]
+        static member create (x: float) = Html.bdo [] [ html.text x ]
+        static member create (x: Node) = Html.bdo [] [ x ]
+        static member create (x: Node list) = Html.bdo [] x
         member this.Yield _ = BdoBuilder()
         override this.MakeNode (x, y) = Html.bdo x y
 
@@ -490,7 +539,11 @@ module elt =
     type BigBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = BigBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = BigBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.big [] [ html.text x ]
+        static member create (x: int) = Html.big [] [ html.text x ]
+        static member create (x: float) = Html.big [] [ html.text x ]
+        static member create (x: Node) = Html.big [] [ x ]
+        static member create (x: Node list) = Html.big [] x
         member this.Yield _ = BigBuilder()
         override this.MakeNode (x, y) = Html.big x y
 
@@ -500,7 +553,11 @@ module elt =
     type BlockquoteBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = BlockquoteBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = BlockquoteBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.blockquote [] [ html.text x ]
+        static member create (x: int) = Html.blockquote [] [ html.text x ]
+        static member create (x: float) = Html.blockquote [] [ html.text x ]
+        static member create (x: Node) = Html.blockquote [] [ x ]
+        static member create (x: Node list) = Html.blockquote [] x
         member this.Yield _ = BlockquoteBuilder()
         override this.MakeNode (x, y) = Html.blockquote x y
 
@@ -510,7 +567,11 @@ module elt =
     type BodyBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = BodyBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = BodyBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.body [] [ html.text x ]
+        static member create (x: int) = Html.body [] [ html.text x ]
+        static member create (x: float) = Html.body [] [ html.text x ]
+        static member create (x: Node) = Html.body [] [ x ]
+        static member create (x: Node list) = Html.body [] x
         member this.Yield _ = BodyBuilder()
         override this.MakeNode (x, y) = Html.body x y
 
@@ -529,7 +590,11 @@ module elt =
     type ButtonBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = ButtonBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = ButtonBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.button [] [ html.text x ]
+        static member create (x: int) = Html.button [] [ html.text x ]
+        static member create (x: float) = Html.button [] [ html.text x ]
+        static member create (x: Node) = Html.button [] [ x ]
+        static member create (x: Node list) = Html.button [] x
         member this.Yield _ = ButtonBuilder()
         override this.MakeNode (x, y) = Html.button x y
 
@@ -539,7 +604,11 @@ module elt =
     type CanvasBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = CanvasBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = CanvasBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.canvas [] [ html.text x ]
+        static member create (x: int) = Html.canvas [] [ html.text x ]
+        static member create (x: float) = Html.canvas [] [ html.text x ]
+        static member create (x: Node) = Html.canvas [] [ x ]
+        static member create (x: Node list) = Html.canvas [] x
         member this.Yield _ = CanvasBuilder()
         override this.MakeNode (x, y) = Html.canvas x y
 
@@ -549,7 +618,11 @@ module elt =
     type CaptionBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = CaptionBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = CaptionBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.caption [] [ html.text x ]
+        static member create (x: int) = Html.caption [] [ html.text x ]
+        static member create (x: float) = Html.caption [] [ html.text x ]
+        static member create (x: Node) = Html.caption [] [ x ]
+        static member create (x: Node list) = Html.caption [] x
         member this.Yield _ = CaptionBuilder()
         override this.MakeNode (x, y) = Html.caption x y
 
@@ -559,7 +632,11 @@ module elt =
     type CenterBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = CenterBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = CenterBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.center [] [ html.text x ]
+        static member create (x: int) = Html.center [] [ html.text x ]
+        static member create (x: float) = Html.center [] [ html.text x ]
+        static member create (x: Node) = Html.center [] [ x ]
+        static member create (x: Node list) = Html.center [] x
         member this.Yield _ = CenterBuilder()
         override this.MakeNode (x, y) = Html.center x y
 
@@ -569,7 +646,11 @@ module elt =
     type CiteBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = CiteBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = CiteBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.cite [] [ html.text x ]
+        static member create (x: int) = Html.cite [] [ html.text x ]
+        static member create (x: float) = Html.cite [] [ html.text x ]
+        static member create (x: Node) = Html.cite [] [ x ]
+        static member create (x: Node list) = Html.cite [] x
         member this.Yield _ = CiteBuilder()
         override this.MakeNode (x, y) = Html.cite x y
 
@@ -579,7 +660,11 @@ module elt =
     type CodeBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = CodeBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = CodeBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.code [] [ html.text x ]
+        static member create (x: int) = Html.code [] [ html.text x ]
+        static member create (x: float) = Html.code [] [ html.text x ]
+        static member create (x: Node) = Html.code [] [ x ]
+        static member create (x: Node list) = Html.code [] x
         member this.Yield _ = CodeBuilder()
         override this.MakeNode (x, y) = Html.code x y
 
@@ -598,7 +683,11 @@ module elt =
     type ColgroupBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = ColgroupBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = ColgroupBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.colgroup [] [ html.text x ]
+        static member create (x: int) = Html.colgroup [] [ html.text x ]
+        static member create (x: float) = Html.colgroup [] [ html.text x ]
+        static member create (x: Node) = Html.colgroup [] [ x ]
+        static member create (x: Node list) = Html.colgroup [] x
         member this.Yield _ = ColgroupBuilder()
         override this.MakeNode (x, y) = Html.colgroup x y
 
@@ -608,7 +697,11 @@ module elt =
     type ContentBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = ContentBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = ContentBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.content [] [ html.text x ]
+        static member create (x: int) = Html.content [] [ html.text x ]
+        static member create (x: float) = Html.content [] [ html.text x ]
+        static member create (x: Node) = Html.content [] [ x ]
+        static member create (x: Node list) = Html.content [] x
         member this.Yield _ = ContentBuilder()
         override this.MakeNode (x, y) = Html.content x y
 
@@ -618,7 +711,11 @@ module elt =
     type DataBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = DataBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = DataBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.data [] [ html.text x ]
+        static member create (x: int) = Html.data [] [ html.text x ]
+        static member create (x: float) = Html.data [] [ html.text x ]
+        static member create (x: Node) = Html.data [] [ x ]
+        static member create (x: Node list) = Html.data [] x
         member this.Yield _ = DataBuilder()
         override this.MakeNode (x, y) = Html.data x y
 
@@ -628,7 +725,11 @@ module elt =
     type DatalistBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = DatalistBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = DatalistBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.datalist [] [ html.text x ]
+        static member create (x: int) = Html.datalist [] [ html.text x ]
+        static member create (x: float) = Html.datalist [] [ html.text x ]
+        static member create (x: Node) = Html.datalist [] [ x ]
+        static member create (x: Node list) = Html.datalist [] x
         member this.Yield _ = DatalistBuilder()
         override this.MakeNode (x, y) = Html.datalist x y
 
@@ -638,7 +739,11 @@ module elt =
     type DdBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = DdBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = DdBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.dd [] [ html.text x ]
+        static member create (x: int) = Html.dd [] [ html.text x ]
+        static member create (x: float) = Html.dd [] [ html.text x ]
+        static member create (x: Node) = Html.dd [] [ x ]
+        static member create (x: Node list) = Html.dd [] x
         member this.Yield _ = DdBuilder()
         override this.MakeNode (x, y) = Html.dd x y
 
@@ -648,7 +753,11 @@ module elt =
     type DelBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = DelBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = DelBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.del [] [ html.text x ]
+        static member create (x: int) = Html.del [] [ html.text x ]
+        static member create (x: float) = Html.del [] [ html.text x ]
+        static member create (x: Node) = Html.del [] [ x ]
+        static member create (x: Node list) = Html.del [] x
         member this.Yield _ = DelBuilder()
         override this.MakeNode (x, y) = Html.del x y
 
@@ -658,7 +767,11 @@ module elt =
     type DetailsBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = DetailsBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = DetailsBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.details [] [ html.text x ]
+        static member create (x: int) = Html.details [] [ html.text x ]
+        static member create (x: float) = Html.details [] [ html.text x ]
+        static member create (x: Node) = Html.details [] [ x ]
+        static member create (x: Node list) = Html.details [] x
         member this.Yield _ = DetailsBuilder()
         override this.MakeNode (x, y) = Html.details x y
 
@@ -668,7 +781,11 @@ module elt =
     type DfnBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = DfnBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = DfnBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.dfn [] [ html.text x ]
+        static member create (x: int) = Html.dfn [] [ html.text x ]
+        static member create (x: float) = Html.dfn [] [ html.text x ]
+        static member create (x: Node) = Html.dfn [] [ x ]
+        static member create (x: Node list) = Html.dfn [] x
         member this.Yield _ = DfnBuilder()
         override this.MakeNode (x, y) = Html.dfn x y
 
@@ -678,7 +795,11 @@ module elt =
     type DialogBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = DialogBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = DialogBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.dialog [] [ html.text x ]
+        static member create (x: int) = Html.dialog [] [ html.text x ]
+        static member create (x: float) = Html.dialog [] [ html.text x ]
+        static member create (x: Node) = Html.dialog [] [ x ]
+        static member create (x: Node list) = Html.dialog [] x
         member this.Yield _ = DialogBuilder()
         override this.MakeNode (x, y) = Html.dialog x y
 
@@ -688,7 +809,11 @@ module elt =
     type DirBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = DirBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = DirBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.dir [] [ html.text x ]
+        static member create (x: int) = Html.dir [] [ html.text x ]
+        static member create (x: float) = Html.dir [] [ html.text x ]
+        static member create (x: Node) = Html.dir [] [ x ]
+        static member create (x: Node list) = Html.dir [] x
         member this.Yield _ = DirBuilder()
         override this.MakeNode (x, y) = Html.dir x y
 
@@ -698,7 +823,11 @@ module elt =
     type DivBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = DivBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = DivBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.div [] [ html.text x ]
+        static member create (x: int) = Html.div [] [ html.text x ]
+        static member create (x: float) = Html.div [] [ html.text x ]
+        static member create (x: Node) = Html.div [] [ x ]
+        static member create (x: Node list) = Html.div [] x
         member this.Yield _ = DivBuilder()
         override this.MakeNode (x, y) = Html.div x y
 
@@ -708,7 +837,11 @@ module elt =
     type DlBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = DlBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = DlBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.dl [] [ html.text x ]
+        static member create (x: int) = Html.dl [] [ html.text x ]
+        static member create (x: float) = Html.dl [] [ html.text x ]
+        static member create (x: Node) = Html.dl [] [ x ]
+        static member create (x: Node list) = Html.dl [] x
         member this.Yield _ = DlBuilder()
         override this.MakeNode (x, y) = Html.dl x y
 
@@ -718,7 +851,11 @@ module elt =
     type DtBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = DtBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = DtBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.dt [] [ html.text x ]
+        static member create (x: int) = Html.dt [] [ html.text x ]
+        static member create (x: float) = Html.dt [] [ html.text x ]
+        static member create (x: Node) = Html.dt [] [ x ]
+        static member create (x: Node list) = Html.dt [] x
         member this.Yield _ = DtBuilder()
         override this.MakeNode (x, y) = Html.dt x y
 
@@ -728,7 +865,11 @@ module elt =
     type ElementBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = ElementBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = ElementBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.element [] [ html.text x ]
+        static member create (x: int) = Html.element [] [ html.text x ]
+        static member create (x: float) = Html.element [] [ html.text x ]
+        static member create (x: Node) = Html.element [] [ x ]
+        static member create (x: Node list) = Html.element [] x
         member this.Yield _ = ElementBuilder()
         override this.MakeNode (x, y) = Html.element x y
 
@@ -738,7 +879,11 @@ module elt =
     type EmBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = EmBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = EmBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.em [] [ html.text x ]
+        static member create (x: int) = Html.em [] [ html.text x ]
+        static member create (x: float) = Html.em [] [ html.text x ]
+        static member create (x: Node) = Html.em [] [ x ]
+        static member create (x: Node list) = Html.em [] x
         member this.Yield _ = EmBuilder()
         override this.MakeNode (x, y) = Html.em x y
 
@@ -757,7 +902,11 @@ module elt =
     type FieldsetBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = FieldsetBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = FieldsetBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.fieldset [] [ html.text x ]
+        static member create (x: int) = Html.fieldset [] [ html.text x ]
+        static member create (x: float) = Html.fieldset [] [ html.text x ]
+        static member create (x: Node) = Html.fieldset [] [ x ]
+        static member create (x: Node list) = Html.fieldset [] x
         member this.Yield _ = FieldsetBuilder()
         override this.MakeNode (x, y) = Html.fieldset x y
 
@@ -767,7 +916,11 @@ module elt =
     type FigcaptionBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = FigcaptionBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = FigcaptionBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.figcaption [] [ html.text x ]
+        static member create (x: int) = Html.figcaption [] [ html.text x ]
+        static member create (x: float) = Html.figcaption [] [ html.text x ]
+        static member create (x: Node) = Html.figcaption [] [ x ]
+        static member create (x: Node list) = Html.figcaption [] x
         member this.Yield _ = FigcaptionBuilder()
         override this.MakeNode (x, y) = Html.figcaption x y
 
@@ -777,7 +930,11 @@ module elt =
     type FigureBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = FigureBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = FigureBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.figure [] [ html.text x ]
+        static member create (x: int) = Html.figure [] [ html.text x ]
+        static member create (x: float) = Html.figure [] [ html.text x ]
+        static member create (x: Node) = Html.figure [] [ x ]
+        static member create (x: Node list) = Html.figure [] x
         member this.Yield _ = FigureBuilder()
         override this.MakeNode (x, y) = Html.figure x y
 
@@ -787,7 +944,11 @@ module elt =
     type FontBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = FontBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = FontBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.font [] [ html.text x ]
+        static member create (x: int) = Html.font [] [ html.text x ]
+        static member create (x: float) = Html.font [] [ html.text x ]
+        static member create (x: Node) = Html.font [] [ x ]
+        static member create (x: Node list) = Html.font [] x
         member this.Yield _ = FontBuilder()
         override this.MakeNode (x, y) = Html.font x y
 
@@ -797,7 +958,11 @@ module elt =
     type FooterBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = FooterBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = FooterBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.footer [] [ html.text x ]
+        static member create (x: int) = Html.footer [] [ html.text x ]
+        static member create (x: float) = Html.footer [] [ html.text x ]
+        static member create (x: Node) = Html.footer [] [ x ]
+        static member create (x: Node list) = Html.footer [] x
         member this.Yield _ = FooterBuilder()
         override this.MakeNode (x, y) = Html.footer x y
 
@@ -807,7 +972,11 @@ module elt =
     type FormBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = FormBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = FormBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.form [] [ html.text x ]
+        static member create (x: int) = Html.form [] [ html.text x ]
+        static member create (x: float) = Html.form [] [ html.text x ]
+        static member create (x: Node) = Html.form [] [ x ]
+        static member create (x: Node list) = Html.form [] x
         member this.Yield _ = FormBuilder()
         override this.MakeNode (x, y) = Html.form x y
 
@@ -817,7 +986,11 @@ module elt =
     type FrameBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = FrameBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = FrameBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.frame [] [ html.text x ]
+        static member create (x: int) = Html.frame [] [ html.text x ]
+        static member create (x: float) = Html.frame [] [ html.text x ]
+        static member create (x: Node) = Html.frame [] [ x ]
+        static member create (x: Node list) = Html.frame [] x
         member this.Yield _ = FrameBuilder()
         override this.MakeNode (x, y) = Html.frame x y
 
@@ -827,7 +1000,11 @@ module elt =
     type FramesetBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = FramesetBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = FramesetBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.frameset [] [ html.text x ]
+        static member create (x: int) = Html.frameset [] [ html.text x ]
+        static member create (x: float) = Html.frameset [] [ html.text x ]
+        static member create (x: Node) = Html.frameset [] [ x ]
+        static member create (x: Node list) = Html.frameset [] x
         member this.Yield _ = FramesetBuilder()
         override this.MakeNode (x, y) = Html.frameset x y
 
@@ -837,7 +1014,11 @@ module elt =
     type H1Builder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = H1Builder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = H1Builder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.h1 [] [ html.text x ]
+        static member create (x: int) = Html.h1 [] [ html.text x ]
+        static member create (x: float) = Html.h1 [] [ html.text x ]
+        static member create (x: Node) = Html.h1 [] [ x ]
+        static member create (x: Node list) = Html.h1 [] x
         member this.Yield _ = H1Builder()
         override this.MakeNode (x, y) = Html.h1 x y
 
@@ -847,7 +1028,11 @@ module elt =
     type H2Builder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = H2Builder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = H2Builder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.h2 [] [ html.text x ]
+        static member create (x: int) = Html.h2 [] [ html.text x ]
+        static member create (x: float) = Html.h2 [] [ html.text x ]
+        static member create (x: Node) = Html.h2 [] [ x ]
+        static member create (x: Node list) = Html.h2 [] x
         member this.Yield _ = H2Builder()
         override this.MakeNode (x, y) = Html.h2 x y
 
@@ -857,7 +1042,11 @@ module elt =
     type H3Builder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = H3Builder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = H3Builder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.h3 [] [ html.text x ]
+        static member create (x: int) = Html.h3 [] [ html.text x ]
+        static member create (x: float) = Html.h3 [] [ html.text x ]
+        static member create (x: Node) = Html.h3 [] [ x ]
+        static member create (x: Node list) = Html.h3 [] x
         member this.Yield _ = H3Builder()
         override this.MakeNode (x, y) = Html.h3 x y
 
@@ -867,7 +1056,11 @@ module elt =
     type H4Builder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = H4Builder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = H4Builder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.h4 [] [ html.text x ]
+        static member create (x: int) = Html.h4 [] [ html.text x ]
+        static member create (x: float) = Html.h4 [] [ html.text x ]
+        static member create (x: Node) = Html.h4 [] [ x ]
+        static member create (x: Node list) = Html.h4 [] x
         member this.Yield _ = H4Builder()
         override this.MakeNode (x, y) = Html.h4 x y
 
@@ -877,7 +1070,11 @@ module elt =
     type H5Builder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = H5Builder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = H5Builder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.h5 [] [ html.text x ]
+        static member create (x: int) = Html.h5 [] [ html.text x ]
+        static member create (x: float) = Html.h5 [] [ html.text x ]
+        static member create (x: Node) = Html.h5 [] [ x ]
+        static member create (x: Node list) = Html.h5 [] x
         member this.Yield _ = H5Builder()
         override this.MakeNode (x, y) = Html.h5 x y
 
@@ -887,7 +1084,11 @@ module elt =
     type H6Builder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = H6Builder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = H6Builder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.h6 [] [ html.text x ]
+        static member create (x: int) = Html.h6 [] [ html.text x ]
+        static member create (x: float) = Html.h6 [] [ html.text x ]
+        static member create (x: Node) = Html.h6 [] [ x ]
+        static member create (x: Node list) = Html.h6 [] x
         member this.Yield _ = H6Builder()
         override this.MakeNode (x, y) = Html.h6 x y
 
@@ -897,7 +1098,11 @@ module elt =
     type HeadBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = HeadBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = HeadBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.head [] [ html.text x ]
+        static member create (x: int) = Html.head [] [ html.text x ]
+        static member create (x: float) = Html.head [] [ html.text x ]
+        static member create (x: Node) = Html.head [] [ x ]
+        static member create (x: Node list) = Html.head [] x
         member this.Yield _ = HeadBuilder()
         override this.MakeNode (x, y) = Html.head x y
 
@@ -907,7 +1112,11 @@ module elt =
     type HeaderBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = HeaderBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = HeaderBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.header [] [ html.text x ]
+        static member create (x: int) = Html.header [] [ html.text x ]
+        static member create (x: float) = Html.header [] [ html.text x ]
+        static member create (x: Node) = Html.header [] [ x ]
+        static member create (x: Node list) = Html.header [] x
         member this.Yield _ = HeaderBuilder()
         override this.MakeNode (x, y) = Html.header x y
 
@@ -926,7 +1135,11 @@ module elt =
     type HtmlBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = HtmlBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = HtmlBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.html [] [ html.text x ]
+        static member create (x: int) = Html.html [] [ html.text x ]
+        static member create (x: float) = Html.html [] [ html.text x ]
+        static member create (x: Node) = Html.html [] [ x ]
+        static member create (x: Node list) = Html.html [] x
         member this.Yield _ = HtmlBuilder()
         override this.MakeNode (x, y) = Html.html x y
 
@@ -936,7 +1149,11 @@ module elt =
     type IBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = IBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = IBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.i [] [ html.text x ]
+        static member create (x: int) = Html.i [] [ html.text x ]
+        static member create (x: float) = Html.i [] [ html.text x ]
+        static member create (x: Node) = Html.i [] [ x ]
+        static member create (x: Node list) = Html.i [] x
         member this.Yield _ = IBuilder()
         override this.MakeNode (x, y) = Html.i x y
 
@@ -946,7 +1163,11 @@ module elt =
     type IframeBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = IframeBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = IframeBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.iframe [] [ html.text x ]
+        static member create (x: int) = Html.iframe [] [ html.text x ]
+        static member create (x: float) = Html.iframe [] [ html.text x ]
+        static member create (x: Node) = Html.iframe [] [ x ]
+        static member create (x: Node list) = Html.iframe [] x
         member this.Yield _ = IframeBuilder()
         override this.MakeNode (x, y) = Html.iframe x y
 
@@ -974,7 +1195,11 @@ module elt =
     type InsBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = InsBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = InsBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.ins [] [ html.text x ]
+        static member create (x: int) = Html.ins [] [ html.text x ]
+        static member create (x: float) = Html.ins [] [ html.text x ]
+        static member create (x: Node) = Html.ins [] [ x ]
+        static member create (x: Node list) = Html.ins [] x
         member this.Yield _ = InsBuilder()
         override this.MakeNode (x, y) = Html.ins x y
 
@@ -984,7 +1209,11 @@ module elt =
     type KbdBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = KbdBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = KbdBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.kbd [] [ html.text x ]
+        static member create (x: int) = Html.kbd [] [ html.text x ]
+        static member create (x: float) = Html.kbd [] [ html.text x ]
+        static member create (x: Node) = Html.kbd [] [ x ]
+        static member create (x: Node list) = Html.kbd [] x
         member this.Yield _ = KbdBuilder()
         override this.MakeNode (x, y) = Html.kbd x y
 
@@ -994,7 +1223,11 @@ module elt =
     type LabelBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = LabelBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = LabelBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.label [] [ html.text x ]
+        static member create (x: int) = Html.label [] [ html.text x ]
+        static member create (x: float) = Html.label [] [ html.text x ]
+        static member create (x: Node) = Html.label [] [ x ]
+        static member create (x: Node list) = Html.label [] x
         member this.Yield _ = LabelBuilder()
         override this.MakeNode (x, y) = Html.label x y
 
@@ -1004,7 +1237,11 @@ module elt =
     type LegendBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = LegendBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = LegendBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.legend [] [ html.text x ]
+        static member create (x: int) = Html.legend [] [ html.text x ]
+        static member create (x: float) = Html.legend [] [ html.text x ]
+        static member create (x: Node) = Html.legend [] [ x ]
+        static member create (x: Node list) = Html.legend [] x
         member this.Yield _ = LegendBuilder()
         override this.MakeNode (x, y) = Html.legend x y
 
@@ -1014,7 +1251,11 @@ module elt =
     type LiBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = LiBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = LiBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.li [] [ html.text x ]
+        static member create (x: int) = Html.li [] [ html.text x ]
+        static member create (x: float) = Html.li [] [ html.text x ]
+        static member create (x: Node) = Html.li [] [ x ]
+        static member create (x: Node list) = Html.li [] x
         member this.Yield _ = LiBuilder()
         override this.MakeNode (x, y) = Html.li x y
 
@@ -1033,7 +1274,11 @@ module elt =
     type MainBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = MainBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = MainBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.main [] [ html.text x ]
+        static member create (x: int) = Html.main [] [ html.text x ]
+        static member create (x: float) = Html.main [] [ html.text x ]
+        static member create (x: Node) = Html.main [] [ x ]
+        static member create (x: Node list) = Html.main [] x
         member this.Yield _ = MainBuilder()
         override this.MakeNode (x, y) = Html.main x y
 
@@ -1043,7 +1288,11 @@ module elt =
     type MapBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = MapBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = MapBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.map [] [ html.text x ]
+        static member create (x: int) = Html.map [] [ html.text x ]
+        static member create (x: float) = Html.map [] [ html.text x ]
+        static member create (x: Node) = Html.map [] [ x ]
+        static member create (x: Node list) = Html.map [] x
         member this.Yield _ = MapBuilder()
         override this.MakeNode (x, y) = Html.map x y
 
@@ -1053,7 +1302,11 @@ module elt =
     type MarkBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = MarkBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = MarkBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.mark [] [ html.text x ]
+        static member create (x: int) = Html.mark [] [ html.text x ]
+        static member create (x: float) = Html.mark [] [ html.text x ]
+        static member create (x: Node) = Html.mark [] [ x ]
+        static member create (x: Node list) = Html.mark [] x
         member this.Yield _ = MarkBuilder()
         override this.MakeNode (x, y) = Html.mark x y
 
@@ -1063,7 +1316,11 @@ module elt =
     type MenuBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = MenuBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = MenuBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.menu [] [ html.text x ]
+        static member create (x: int) = Html.menu [] [ html.text x ]
+        static member create (x: float) = Html.menu [] [ html.text x ]
+        static member create (x: Node) = Html.menu [] [ x ]
+        static member create (x: Node list) = Html.menu [] x
         member this.Yield _ = MenuBuilder()
         override this.MakeNode (x, y) = Html.menu x y
 
@@ -1073,7 +1330,11 @@ module elt =
     type MenuitemBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = MenuitemBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = MenuitemBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.menuitem [] [ html.text x ]
+        static member create (x: int) = Html.menuitem [] [ html.text x ]
+        static member create (x: float) = Html.menuitem [] [ html.text x ]
+        static member create (x: Node) = Html.menuitem [] [ x ]
+        static member create (x: Node list) = Html.menuitem [] x
         member this.Yield _ = MenuitemBuilder()
         override this.MakeNode (x, y) = Html.menuitem x y
 
@@ -1092,7 +1353,11 @@ module elt =
     type MeterBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = MeterBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = MeterBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.meter [] [ html.text x ]
+        static member create (x: int) = Html.meter [] [ html.text x ]
+        static member create (x: float) = Html.meter [] [ html.text x ]
+        static member create (x: Node) = Html.meter [] [ x ]
+        static member create (x: Node list) = Html.meter [] x
         member this.Yield _ = MeterBuilder()
         override this.MakeNode (x, y) = Html.meter x y
 
@@ -1102,7 +1367,11 @@ module elt =
     type NavBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = NavBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = NavBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.nav [] [ html.text x ]
+        static member create (x: int) = Html.nav [] [ html.text x ]
+        static member create (x: float) = Html.nav [] [ html.text x ]
+        static member create (x: Node) = Html.nav [] [ x ]
+        static member create (x: Node list) = Html.nav [] x
         member this.Yield _ = NavBuilder()
         override this.MakeNode (x, y) = Html.nav x y
 
@@ -1112,7 +1381,11 @@ module elt =
     type NoembedBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = NoembedBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = NoembedBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.noembed [] [ html.text x ]
+        static member create (x: int) = Html.noembed [] [ html.text x ]
+        static member create (x: float) = Html.noembed [] [ html.text x ]
+        static member create (x: Node) = Html.noembed [] [ x ]
+        static member create (x: Node list) = Html.noembed [] x
         member this.Yield _ = NoembedBuilder()
         override this.MakeNode (x, y) = Html.noembed x y
 
@@ -1122,7 +1395,11 @@ module elt =
     type NoframesBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = NoframesBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = NoframesBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.noframes [] [ html.text x ]
+        static member create (x: int) = Html.noframes [] [ html.text x ]
+        static member create (x: float) = Html.noframes [] [ html.text x ]
+        static member create (x: Node) = Html.noframes [] [ x ]
+        static member create (x: Node list) = Html.noframes [] x
         member this.Yield _ = NoframesBuilder()
         override this.MakeNode (x, y) = Html.noframes x y
 
@@ -1132,7 +1409,11 @@ module elt =
     type NoscriptBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = NoscriptBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = NoscriptBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.noscript [] [ html.text x ]
+        static member create (x: int) = Html.noscript [] [ html.text x ]
+        static member create (x: float) = Html.noscript [] [ html.text x ]
+        static member create (x: Node) = Html.noscript [] [ x ]
+        static member create (x: Node list) = Html.noscript [] x
         member this.Yield _ = NoscriptBuilder()
         override this.MakeNode (x, y) = Html.noscript x y
 
@@ -1142,7 +1423,11 @@ module elt =
     type ObjectBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = ObjectBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = ObjectBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.object [] [ html.text x ]
+        static member create (x: int) = Html.object [] [ html.text x ]
+        static member create (x: float) = Html.object [] [ html.text x ]
+        static member create (x: Node) = Html.object [] [ x ]
+        static member create (x: Node list) = Html.object [] x
         member this.Yield _ = ObjectBuilder()
         override this.MakeNode (x, y) = Html.object x y
 
@@ -1152,7 +1437,11 @@ module elt =
     type OlBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = OlBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = OlBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.ol [] [ html.text x ]
+        static member create (x: int) = Html.ol [] [ html.text x ]
+        static member create (x: float) = Html.ol [] [ html.text x ]
+        static member create (x: Node) = Html.ol [] [ x ]
+        static member create (x: Node list) = Html.ol [] x
         member this.Yield _ = OlBuilder()
         override this.MakeNode (x, y) = Html.ol x y
 
@@ -1162,7 +1451,11 @@ module elt =
     type OptgroupBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = OptgroupBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = OptgroupBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.optgroup [] [ html.text x ]
+        static member create (x: int) = Html.optgroup [] [ html.text x ]
+        static member create (x: float) = Html.optgroup [] [ html.text x ]
+        static member create (x: Node) = Html.optgroup [] [ x ]
+        static member create (x: Node list) = Html.optgroup [] x
         member this.Yield _ = OptgroupBuilder()
         override this.MakeNode (x, y) = Html.optgroup x y
 
@@ -1172,7 +1465,11 @@ module elt =
     type OptionBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = OptionBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = OptionBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.option [] [ html.text x ]
+        static member create (x: int) = Html.option [] [ html.text x ]
+        static member create (x: float) = Html.option [] [ html.text x ]
+        static member create (x: Node) = Html.option [] [ x ]
+        static member create (x: Node list) = Html.option [] x
         member this.Yield _ = OptionBuilder()
         override this.MakeNode (x, y) = Html.option x y
 
@@ -1182,7 +1479,11 @@ module elt =
     type OutputBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = OutputBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = OutputBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.output [] [ html.text x ]
+        static member create (x: int) = Html.output [] [ html.text x ]
+        static member create (x: float) = Html.output [] [ html.text x ]
+        static member create (x: Node) = Html.output [] [ x ]
+        static member create (x: Node list) = Html.output [] x
         member this.Yield _ = OutputBuilder()
         override this.MakeNode (x, y) = Html.output x y
 
@@ -1192,7 +1493,11 @@ module elt =
     type PBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = PBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = PBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.p [] [ html.text x ]
+        static member create (x: int) = Html.p [] [ html.text x ]
+        static member create (x: float) = Html.p [] [ html.text x ]
+        static member create (x: Node) = Html.p [] [ x ]
+        static member create (x: Node list) = Html.p [] x
         member this.Yield _ = PBuilder()
         override this.MakeNode (x, y) = Html.p x y
 
@@ -1211,7 +1516,11 @@ module elt =
     type PictureBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = PictureBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = PictureBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.picture [] [ html.text x ]
+        static member create (x: int) = Html.picture [] [ html.text x ]
+        static member create (x: float) = Html.picture [] [ html.text x ]
+        static member create (x: Node) = Html.picture [] [ x ]
+        static member create (x: Node list) = Html.picture [] x
         member this.Yield _ = PictureBuilder()
         override this.MakeNode (x, y) = Html.picture x y
 
@@ -1221,7 +1530,11 @@ module elt =
     type PreBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = PreBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = PreBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.pre [] [ html.text x ]
+        static member create (x: int) = Html.pre [] [ html.text x ]
+        static member create (x: float) = Html.pre [] [ html.text x ]
+        static member create (x: Node) = Html.pre [] [ x ]
+        static member create (x: Node list) = Html.pre [] x
         member this.Yield _ = PreBuilder()
         override this.MakeNode (x, y) = Html.pre x y
 
@@ -1231,7 +1544,11 @@ module elt =
     type ProgressBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = ProgressBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = ProgressBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.progress [] [ html.text x ]
+        static member create (x: int) = Html.progress [] [ html.text x ]
+        static member create (x: float) = Html.progress [] [ html.text x ]
+        static member create (x: Node) = Html.progress [] [ x ]
+        static member create (x: Node list) = Html.progress [] x
         member this.Yield _ = ProgressBuilder()
         override this.MakeNode (x, y) = Html.progress x y
 
@@ -1241,7 +1558,11 @@ module elt =
     type QBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = QBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = QBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.q [] [ html.text x ]
+        static member create (x: int) = Html.q [] [ html.text x ]
+        static member create (x: float) = Html.q [] [ html.text x ]
+        static member create (x: Node) = Html.q [] [ x ]
+        static member create (x: Node list) = Html.q [] x
         member this.Yield _ = QBuilder()
         override this.MakeNode (x, y) = Html.q x y
 
@@ -1251,7 +1572,11 @@ module elt =
     type RbBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = RbBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = RbBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.rb [] [ html.text x ]
+        static member create (x: int) = Html.rb [] [ html.text x ]
+        static member create (x: float) = Html.rb [] [ html.text x ]
+        static member create (x: Node) = Html.rb [] [ x ]
+        static member create (x: Node list) = Html.rb [] x
         member this.Yield _ = RbBuilder()
         override this.MakeNode (x, y) = Html.rb x y
 
@@ -1261,7 +1586,11 @@ module elt =
     type RpBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = RpBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = RpBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.rp [] [ html.text x ]
+        static member create (x: int) = Html.rp [] [ html.text x ]
+        static member create (x: float) = Html.rp [] [ html.text x ]
+        static member create (x: Node) = Html.rp [] [ x ]
+        static member create (x: Node list) = Html.rp [] x
         member this.Yield _ = RpBuilder()
         override this.MakeNode (x, y) = Html.rp x y
 
@@ -1271,7 +1600,11 @@ module elt =
     type RtBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = RtBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = RtBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.rt [] [ html.text x ]
+        static member create (x: int) = Html.rt [] [ html.text x ]
+        static member create (x: float) = Html.rt [] [ html.text x ]
+        static member create (x: Node) = Html.rt [] [ x ]
+        static member create (x: Node list) = Html.rt [] x
         member this.Yield _ = RtBuilder()
         override this.MakeNode (x, y) = Html.rt x y
 
@@ -1290,7 +1623,11 @@ module elt =
     type RubyBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = RubyBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = RubyBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.ruby [] [ html.text x ]
+        static member create (x: int) = Html.ruby [] [ html.text x ]
+        static member create (x: float) = Html.ruby [] [ html.text x ]
+        static member create (x: Node) = Html.ruby [] [ x ]
+        static member create (x: Node list) = Html.ruby [] x
         member this.Yield _ = RubyBuilder()
         override this.MakeNode (x, y) = Html.ruby x y
 
@@ -1300,7 +1637,11 @@ module elt =
     type SBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = SBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = SBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.s [] [ html.text x ]
+        static member create (x: int) = Html.s [] [ html.text x ]
+        static member create (x: float) = Html.s [] [ html.text x ]
+        static member create (x: Node) = Html.s [] [ x ]
+        static member create (x: Node list) = Html.s [] x
         member this.Yield _ = SBuilder()
         override this.MakeNode (x, y) = Html.s x y
 
@@ -1310,7 +1651,11 @@ module elt =
     type SampBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = SampBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = SampBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.samp [] [ html.text x ]
+        static member create (x: int) = Html.samp [] [ html.text x ]
+        static member create (x: float) = Html.samp [] [ html.text x ]
+        static member create (x: Node) = Html.samp [] [ x ]
+        static member create (x: Node list) = Html.samp [] x
         member this.Yield _ = SampBuilder()
         override this.MakeNode (x, y) = Html.samp x y
 
@@ -1320,7 +1665,11 @@ module elt =
     type ScriptBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = ScriptBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = ScriptBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.script [] [ html.text x ]
+        static member create (x: int) = Html.script [] [ html.text x ]
+        static member create (x: float) = Html.script [] [ html.text x ]
+        static member create (x: Node) = Html.script [] [ x ]
+        static member create (x: Node list) = Html.script [] x
         member this.Yield _ = ScriptBuilder()
         override this.MakeNode (x, y) = Html.script x y
 
@@ -1330,7 +1679,11 @@ module elt =
     type SectionBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = SectionBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = SectionBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.section [] [ html.text x ]
+        static member create (x: int) = Html.section [] [ html.text x ]
+        static member create (x: float) = Html.section [] [ html.text x ]
+        static member create (x: Node) = Html.section [] [ x ]
+        static member create (x: Node list) = Html.section [] x
         member this.Yield _ = SectionBuilder()
         override this.MakeNode (x, y) = Html.section x y
 
@@ -1340,7 +1693,11 @@ module elt =
     type SelectBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = SelectBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = SelectBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.select [] [ html.text x ]
+        static member create (x: int) = Html.select [] [ html.text x ]
+        static member create (x: float) = Html.select [] [ html.text x ]
+        static member create (x: Node) = Html.select [] [ x ]
+        static member create (x: Node list) = Html.select [] x
         member this.Yield _ = SelectBuilder()
         override this.MakeNode (x, y) = Html.select x y
 
@@ -1350,7 +1707,11 @@ module elt =
     type ShadowBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = ShadowBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = ShadowBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.shadow [] [ html.text x ]
+        static member create (x: int) = Html.shadow [] [ html.text x ]
+        static member create (x: float) = Html.shadow [] [ html.text x ]
+        static member create (x: Node) = Html.shadow [] [ x ]
+        static member create (x: Node list) = Html.shadow [] x
         member this.Yield _ = ShadowBuilder()
         override this.MakeNode (x, y) = Html.shadow x y
 
@@ -1360,7 +1721,11 @@ module elt =
     type SlotBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = SlotBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = SlotBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.slot [] [ html.text x ]
+        static member create (x: int) = Html.slot [] [ html.text x ]
+        static member create (x: float) = Html.slot [] [ html.text x ]
+        static member create (x: Node) = Html.slot [] [ x ]
+        static member create (x: Node list) = Html.slot [] x
         member this.Yield _ = SlotBuilder()
         override this.MakeNode (x, y) = Html.slot x y
 
@@ -1370,7 +1735,11 @@ module elt =
     type SmallBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = SmallBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = SmallBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.small [] [ html.text x ]
+        static member create (x: int) = Html.small [] [ html.text x ]
+        static member create (x: float) = Html.small [] [ html.text x ]
+        static member create (x: Node) = Html.small [] [ x ]
+        static member create (x: Node list) = Html.small [] x
         member this.Yield _ = SmallBuilder()
         override this.MakeNode (x, y) = Html.small x y
 
@@ -1389,7 +1758,11 @@ module elt =
     type SpanBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = SpanBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = SpanBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.span [] [ html.text x ]
+        static member create (x: int) = Html.span [] [ html.text x ]
+        static member create (x: float) = Html.span [] [ html.text x ]
+        static member create (x: Node) = Html.span [] [ x ]
+        static member create (x: Node list) = Html.span [] x
         member this.Yield _ = SpanBuilder()
         override this.MakeNode (x, y) = Html.span x y
 
@@ -1399,7 +1772,11 @@ module elt =
     type StrikeBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = StrikeBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = StrikeBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.strike [] [ html.text x ]
+        static member create (x: int) = Html.strike [] [ html.text x ]
+        static member create (x: float) = Html.strike [] [ html.text x ]
+        static member create (x: Node) = Html.strike [] [ x ]
+        static member create (x: Node list) = Html.strike [] x
         member this.Yield _ = StrikeBuilder()
         override this.MakeNode (x, y) = Html.strike x y
 
@@ -1409,7 +1786,11 @@ module elt =
     type StrongBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = StrongBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = StrongBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.strong [] [ html.text x ]
+        static member create (x: int) = Html.strong [] [ html.text x ]
+        static member create (x: float) = Html.strong [] [ html.text x ]
+        static member create (x: Node) = Html.strong [] [ x ]
+        static member create (x: Node list) = Html.strong [] x
         member this.Yield _ = StrongBuilder()
         override this.MakeNode (x, y) = Html.strong x y
 
@@ -1419,7 +1800,11 @@ module elt =
     type StyleBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = StyleBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = StyleBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.style [] [ html.text x ]
+        static member create (x: int) = Html.style [] [ html.text x ]
+        static member create (x: float) = Html.style [] [ html.text x ]
+        static member create (x: Node) = Html.style [] [ x ]
+        static member create (x: Node list) = Html.style [] x
         member this.Yield _ = StyleBuilder()
         override this.MakeNode (x, y) = Html.style x y
 
@@ -1429,7 +1814,11 @@ module elt =
     type SubBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = SubBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = SubBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.sub [] [ html.text x ]
+        static member create (x: int) = Html.sub [] [ html.text x ]
+        static member create (x: float) = Html.sub [] [ html.text x ]
+        static member create (x: Node) = Html.sub [] [ x ]
+        static member create (x: Node list) = Html.sub [] x
         member this.Yield _ = SubBuilder()
         override this.MakeNode (x, y) = Html.sub x y
 
@@ -1439,7 +1828,11 @@ module elt =
     type SummaryBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = SummaryBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = SummaryBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.summary [] [ html.text x ]
+        static member create (x: int) = Html.summary [] [ html.text x ]
+        static member create (x: float) = Html.summary [] [ html.text x ]
+        static member create (x: Node) = Html.summary [] [ x ]
+        static member create (x: Node list) = Html.summary [] x
         member this.Yield _ = SummaryBuilder()
         override this.MakeNode (x, y) = Html.summary x y
 
@@ -1449,7 +1842,11 @@ module elt =
     type SupBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = SupBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = SupBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.sup [] [ html.text x ]
+        static member create (x: int) = Html.sup [] [ html.text x ]
+        static member create (x: float) = Html.sup [] [ html.text x ]
+        static member create (x: Node) = Html.sup [] [ x ]
+        static member create (x: Node list) = Html.sup [] x
         member this.Yield _ = SupBuilder()
         override this.MakeNode (x, y) = Html.sup x y
 
@@ -1459,7 +1856,11 @@ module elt =
     type SvgBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = SvgBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = SvgBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.svg [] [ html.text x ]
+        static member create (x: int) = Html.svg [] [ html.text x ]
+        static member create (x: float) = Html.svg [] [ html.text x ]
+        static member create (x: Node) = Html.svg [] [ x ]
+        static member create (x: Node list) = Html.svg [] x
         member this.Yield _ = SvgBuilder()
         override this.MakeNode (x, y) = Html.svg x y
 
@@ -1469,7 +1870,11 @@ module elt =
     type TableBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = TableBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = TableBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.table [] [ html.text x ]
+        static member create (x: int) = Html.table [] [ html.text x ]
+        static member create (x: float) = Html.table [] [ html.text x ]
+        static member create (x: Node) = Html.table [] [ x ]
+        static member create (x: Node list) = Html.table [] x
         member this.Yield _ = TableBuilder()
         override this.MakeNode (x, y) = Html.table x y
 
@@ -1479,7 +1884,11 @@ module elt =
     type TbodyBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = TbodyBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = TbodyBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.tbody [] [ html.text x ]
+        static member create (x: int) = Html.tbody [] [ html.text x ]
+        static member create (x: float) = Html.tbody [] [ html.text x ]
+        static member create (x: Node) = Html.tbody [] [ x ]
+        static member create (x: Node list) = Html.tbody [] x
         member this.Yield _ = TbodyBuilder()
         override this.MakeNode (x, y) = Html.tbody x y
 
@@ -1489,7 +1898,11 @@ module elt =
     type TdBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = TdBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = TdBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.td [] [ html.text x ]
+        static member create (x: int) = Html.td [] [ html.text x ]
+        static member create (x: float) = Html.td [] [ html.text x ]
+        static member create (x: Node) = Html.td [] [ x ]
+        static member create (x: Node list) = Html.td [] x
         member this.Yield _ = TdBuilder()
         override this.MakeNode (x, y) = Html.td x y
 
@@ -1499,7 +1912,11 @@ module elt =
     type TemplateBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = TemplateBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = TemplateBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.template [] [ html.text x ]
+        static member create (x: int) = Html.template [] [ html.text x ]
+        static member create (x: float) = Html.template [] [ html.text x ]
+        static member create (x: Node) = Html.template [] [ x ]
+        static member create (x: Node list) = Html.template [] x
         member this.Yield _ = TemplateBuilder()
         override this.MakeNode (x, y) = Html.template x y
 
@@ -1509,7 +1926,11 @@ module elt =
     type TextareaBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = TextareaBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = TextareaBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.textarea [] [ html.text x ]
+        static member create (x: int) = Html.textarea [] [ html.text x ]
+        static member create (x: float) = Html.textarea [] [ html.text x ]
+        static member create (x: Node) = Html.textarea [] [ x ]
+        static member create (x: Node list) = Html.textarea [] x
         member this.Yield _ = TextareaBuilder()
         override this.MakeNode (x, y) = Html.textarea x y
 
@@ -1519,7 +1940,11 @@ module elt =
     type TfootBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = TfootBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = TfootBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.tfoot [] [ html.text x ]
+        static member create (x: int) = Html.tfoot [] [ html.text x ]
+        static member create (x: float) = Html.tfoot [] [ html.text x ]
+        static member create (x: Node) = Html.tfoot [] [ x ]
+        static member create (x: Node list) = Html.tfoot [] x
         member this.Yield _ = TfootBuilder()
         override this.MakeNode (x, y) = Html.tfoot x y
 
@@ -1529,7 +1954,11 @@ module elt =
     type ThBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = ThBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = ThBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.th [] [ html.text x ]
+        static member create (x: int) = Html.th [] [ html.text x ]
+        static member create (x: float) = Html.th [] [ html.text x ]
+        static member create (x: Node) = Html.th [] [ x ]
+        static member create (x: Node list) = Html.th [] x
         member this.Yield _ = ThBuilder()
         override this.MakeNode (x, y) = Html.th x y
 
@@ -1539,7 +1968,11 @@ module elt =
     type TheadBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = TheadBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = TheadBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.thead [] [ html.text x ]
+        static member create (x: int) = Html.thead [] [ html.text x ]
+        static member create (x: float) = Html.thead [] [ html.text x ]
+        static member create (x: Node) = Html.thead [] [ x ]
+        static member create (x: Node list) = Html.thead [] x
         member this.Yield _ = TheadBuilder()
         override this.MakeNode (x, y) = Html.thead x y
 
@@ -1549,7 +1982,11 @@ module elt =
     type TimeBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = TimeBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = TimeBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.time [] [ html.text x ]
+        static member create (x: int) = Html.time [] [ html.text x ]
+        static member create (x: float) = Html.time [] [ html.text x ]
+        static member create (x: Node) = Html.time [] [ x ]
+        static member create (x: Node list) = Html.time [] x
         member this.Yield _ = TimeBuilder()
         override this.MakeNode (x, y) = Html.time x y
 
@@ -1559,7 +1996,11 @@ module elt =
     type TitleBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = TitleBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = TitleBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.title [] [ html.text x ]
+        static member create (x: int) = Html.title [] [ html.text x ]
+        static member create (x: float) = Html.title [] [ html.text x ]
+        static member create (x: Node) = Html.title [] [ x ]
+        static member create (x: Node list) = Html.title [] x
         member this.Yield _ = TitleBuilder()
         override this.MakeNode (x, y) = Html.title x y
 
@@ -1569,7 +2010,11 @@ module elt =
     type TrBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = TrBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = TrBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.tr [] [ html.text x ]
+        static member create (x: int) = Html.tr [] [ html.text x ]
+        static member create (x: float) = Html.tr [] [ html.text x ]
+        static member create (x: Node) = Html.tr [] [ x ]
+        static member create (x: Node list) = Html.tr [] x
         member this.Yield _ = TrBuilder()
         override this.MakeNode (x, y) = Html.tr x y
 
@@ -1588,7 +2033,11 @@ module elt =
     type TtBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = TtBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = TtBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.tt [] [ html.text x ]
+        static member create (x: int) = Html.tt [] [ html.text x ]
+        static member create (x: float) = Html.tt [] [ html.text x ]
+        static member create (x: Node) = Html.tt [] [ x ]
+        static member create (x: Node list) = Html.tt [] x
         member this.Yield _ = TtBuilder()
         override this.MakeNode (x, y) = Html.tt x y
 
@@ -1598,7 +2047,11 @@ module elt =
     type UBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = UBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = UBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.u [] [ html.text x ]
+        static member create (x: int) = Html.u [] [ html.text x ]
+        static member create (x: float) = Html.u [] [ html.text x ]
+        static member create (x: Node) = Html.u [] [ x ]
+        static member create (x: Node list) = Html.u [] x
         member this.Yield _ = UBuilder()
         override this.MakeNode (x, y) = Html.u x y
 
@@ -1608,7 +2061,11 @@ module elt =
     type UlBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = UlBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = UlBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.ul [] [ html.text x ]
+        static member create (x: int) = Html.ul [] [ html.text x ]
+        static member create (x: float) = Html.ul [] [ html.text x ]
+        static member create (x: Node) = Html.ul [] [ x ]
+        static member create (x: Node list) = Html.ul [] x
         member this.Yield _ = UlBuilder()
         override this.MakeNode (x, y) = Html.ul x y
 
@@ -1618,7 +2075,11 @@ module elt =
     type VarBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = VarBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = VarBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.var [] [ html.text x ]
+        static member create (x: int) = Html.var [] [ html.text x ]
+        static member create (x: float) = Html.var [] [ html.text x ]
+        static member create (x: Node) = Html.var [] [ x ]
+        static member create (x: Node list) = Html.var [] x
         member this.Yield _ = VarBuilder()
         override this.MakeNode (x, y) = Html.var x y
 
@@ -1628,7 +2089,11 @@ module elt =
     type VideoBuilder () =
         inherit FunBlazorEltBuilder()
         new (x: string) as this = VideoBuilder() then Text x |> this.AddNode |> ignore
-        new (x: Node list) as this = VideoBuilder() then ForEach x |> this.AddNode |> ignore       
+        static member create (x: string) = Html.video [] [ html.text x ]
+        static member create (x: int) = Html.video [] [ html.text x ]
+        static member create (x: float) = Html.video [] [ html.text x ]
+        static member create (x: Node) = Html.video [] [ x ]
+        static member create (x: Node list) = Html.video [] x
         member this.Yield _ = VideoBuilder()
         override this.MakeNode (x, y) = Html.video x y
 

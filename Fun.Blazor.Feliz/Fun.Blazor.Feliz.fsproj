@@ -7,22 +7,23 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<Compile Include="Core.fs" />
 		<Compile Include="Utils.fs" />
-		<Compile Include="Generator.fs" />
-		<Compile Include="CEGenerator.fs" />
+		<Compile Include="HtmlEngine.fs" />
+		<Compile Include="Dsl.fs" />
+		<Compile Include="Components.Dsl.fs" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.AspNetCore.Components" Version="5.0.11" />
+	  <ProjectReference Include="..\Fun.Blazor\Fun.Blazor.fsproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<PackageReference Include="Feliz.Engine" Version="1.0.0-beta-004" />
+	</ItemGroup>
+	
 	<ItemGroup>
 		<PackageReference Update="FSharp.Core" Version="6.0.1" />
 	</ItemGroup>
-
-	<ItemGroup>
-		<ProjectReference Include="..\Fun.Blazor.Feliz\Fun.Blazor.Feliz.fsproj" />
-		<ProjectReference Include="..\Fun.Blazor\Fun.Blazor.fsproj" />
-	</ItemGroup>
-
+	
 </Project>

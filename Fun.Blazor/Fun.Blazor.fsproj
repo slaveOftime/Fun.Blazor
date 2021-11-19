@@ -2,6 +2,7 @@
 
 	<PropertyGroup>
 		<TargetFramework>net5.0</TargetFramework>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<Version>1.1.0-beta102</Version>
 	</PropertyGroup>
 
@@ -16,7 +17,6 @@
 		<Compile Include="ElmComponent.fs" />
 		<Compile Include="StoreComponent.fs" />
 		<Compile Include="AdaptiveComponent.fs" />
-		<Compile Include="HtmlEngine.fs" />
 		<Compile Include="Dsl.fs" />
 		<Compile Include="DslDI.fs" />
 		<Compile Include="DslElmish.fs" />
@@ -24,7 +24,6 @@
 		<Compile Include="DslAdaptiview.fs" />
 		<Compile Include="DslRouting.fs" />
 		<Compile Include="DslCE.fs" />
-		<Compile Include="Components.Dsl.fs" />
 		<Compile Include="Components.DslCE.fs" />
 		<Compile Include="AdaptiveForm.fs" />
 		<Compile Include="DI.fs" />
@@ -32,7 +31,6 @@
 
 	<ItemGroup>
 		<PackageReference Include="Bolero" Version="0.17.25" />
-		<PackageReference Include="Feliz.Engine" Version="1.0.0-beta-004" />
 		<PackageReference Include="FSharp.Control.Reactive" Version="5.0.2" />
 		<PackageReference Include="FSharp.Data.Adaptive" Version="1.2.8" />
 		<PackageReference Include="Fun.Result" Version="2.0.1" />
