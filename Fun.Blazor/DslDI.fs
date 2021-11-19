@@ -2,6 +2,7 @@
 module Fun.Blazor.DslDI
 
 open System
+open Bolero
 open Bolero.Html
 
 
@@ -13,14 +14,13 @@ type FunBlazorHtmlEngine with
     ///
     /// 'Services should be something you defined in the asp.net core DI or unit
     /// 'Services must be a tuple like (hook: IComponentHook, sp: IServiceProvider)
-    member html.inject (render: 'Services -> IFunBlazorNode) =
-        html.bolero 
-            (Bolero.Node.BlazorComponent<DIComponent<'Services>>
-                ([
-                    "RenderFn" => render
-                    Bolero.Key (Guid.NewGuid())
-                ]
-                ,[]))
+    member html.inject (render: 'Services -> Node) =
+        Bolero.Node.BlazorComponent<DIComponent<'Services>>
+            ([
+                "RenderFn" => render
+                Bolero.Key (Guid.NewGuid())
+            ]
+            ,[])
 
 
     /// This function will create a blazor component with a specific key.
@@ -34,14 +34,13 @@ type FunBlazorHtmlEngine with
     /// Below string will never change no matter how you change externalX
     /// 
     /// let demo (externalX: int) = html.inject ("demo-key", fun () -> html.text $"externalX = {externalX}")
-    member html.inject (key, render: 'Services -> IFunBlazorNode) =
-        html.bolero 
-            (Bolero.Node.BlazorComponent<DIComponent<'Services>>
-                ([
-                    "RenderFn" => render
-                    Bolero.Key key
-                ]
-                ,[]))
+    member html.inject (key, render: 'Services -> Node) =
+        Bolero.Node.BlazorComponent<DIComponent<'Services>>
+            ([
+                "RenderFn" => render
+                Bolero.Key key
+            ]
+            ,[])
 
 
     /// This function will create a blazor component with no key.
@@ -49,10 +48,9 @@ type FunBlazorHtmlEngine with
     ///
     /// 'Services should be something you defined in the asp.net core DI or unit
     /// 'Services must be a tuple like (hook: IComponentHook, sp: IServiceProvider)
-    member html.injectWithNoKey (render: 'Services -> IFunBlazorNode) =
-        html.bolero 
-            (Bolero.Node.BlazorComponent<DIComponent<'Services>>
-                ([
-                    "RenderFn" => render
-                ]
-                ,[]))
+    member html.injectWithNoKey (render: 'Services -> Node) =
+        Bolero.Node.BlazorComponent<DIComponent<'Services>>
+            ([
+                "RenderFn" => render
+            ]
+            ,[])

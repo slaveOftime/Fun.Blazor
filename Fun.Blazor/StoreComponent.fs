@@ -20,7 +20,7 @@ type StoreComponent<'T> () as this =
     member val Store = Unchecked.defaultof<IObservable<'T>> with get, set
 
     [<Parameter>]
-    member val RenderFn = Unchecked.defaultof<'T -> IFunBlazorNode> with get, set
+    member val RenderFn = Unchecked.defaultof<'T -> Node> with get, set
 
 
     member internal _.StateHasChanged() = try base.StateHasChanged() with _ -> ()
@@ -29,7 +29,7 @@ type StoreComponent<'T> () as this =
 
     override _.Render() =
         if not isValueSet && box value = null then Html.empty
-        else this.RenderFn value |> FunBlazorNode.ToBolero
+        else this.RenderFn value
 
         
     override _.OnInitialized() =

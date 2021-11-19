@@ -19,7 +19,9 @@ let private demo2 =
         attr.styles [
             style.margin 10
         ]
-        html.text "Hello baisc usage 2"
+        attr.childContent [
+            html.text "Hello baisc usage 2"
+        ]
     ]
 
 let basicUsageDemo =

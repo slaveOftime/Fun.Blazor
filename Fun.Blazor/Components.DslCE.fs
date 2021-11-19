@@ -15,15 +15,15 @@ open Fun.Blazor
 
 
 type VirtualizeBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit FunBlazorContext<'FunBlazorGeneric>()
-    static member create () = VirtualizeBuilder<'FunBlazorGeneric, 'TItem>() :> IFunBlazorNode
-    [<CustomOperation("ChildContent")>] member this.ChildContent (_: FunBlazorContext<'FunBlazorGeneric>, render: 'TItem -> IFunBlazorNode) = Bolero.Html.attr.fragmentWith "ChildContent" (fun x -> render x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("ItemContent")>] member this.ItemContent (_: FunBlazorContext<'FunBlazorGeneric>, render: 'TItem -> IFunBlazorNode) = Bolero.Html.attr.fragmentWith "ItemContent" (fun x -> render x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("Placeholder")>] member this.Placeholder (_: FunBlazorContext<'FunBlazorGeneric>, render: Microsoft.AspNetCore.Components.Web.Virtualization.PlaceholderContext -> IFunBlazorNode) = Bolero.Html.attr.fragmentWith "Placeholder" (fun x -> render x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("ItemSize")>] member this.ItemSize (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Single) = "ItemSize" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("ItemsProvider")>] member this.ItemsProvider (_: FunBlazorContext<'FunBlazorGeneric>, x: Microsoft.AspNetCore.Components.Web.Virtualization.ItemsProviderDelegate<'TItem>) = "ItemsProvider" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("Items")>] member this.Items (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Collections.Generic.ICollection<'TItem>) = "Items" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("OverscanCount")>] member this.OverscanCount (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Int32) = "OverscanCount" => x |> BoleroAttr |> this.AddProp
+    inherit FunBlazorBuilder<'FunBlazorGeneric>()
+    static member create () = VirtualizeBuilder<'FunBlazorGeneric, 'TItem>().CreateNode()
+    [<CustomOperation("ChildContent")>] member this.ChildContent (_: FunBlazorBuilder<'FunBlazorGeneric>, render: 'TItem -> Bolero.Node) = Bolero.Html.attr.fragmentWith "ChildContent" (fun x -> render x) |> this.AddAttr
+    [<CustomOperation("ItemContent")>] member this.ItemContent (_: FunBlazorBuilder<'FunBlazorGeneric>, render: 'TItem -> Bolero.Node) = Bolero.Html.attr.fragmentWith "ItemContent" (fun x -> render x) |> this.AddAttr
+    [<CustomOperation("Placeholder")>] member this.Placeholder (_: FunBlazorBuilder<'FunBlazorGeneric>, render: Microsoft.AspNetCore.Components.Web.Virtualization.PlaceholderContext -> Bolero.Node) = Bolero.Html.attr.fragmentWith "Placeholder" (fun x -> render x) |> this.AddAttr
+    [<CustomOperation("ItemSize")>] member this.ItemSize (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Single) = "ItemSize" => x |> this.AddAttr
+    [<CustomOperation("ItemsProvider")>] member this.ItemsProvider (_: FunBlazorBuilder<'FunBlazorGeneric>, x: Microsoft.AspNetCore.Components.Web.Virtualization.ItemsProviderDelegate<'TItem>) = "ItemsProvider" => x |> this.AddAttr
+    [<CustomOperation("Items")>] member this.Items (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Collections.Generic.ICollection<'TItem>) = "Items" => x |> this.AddAttr
+    [<CustomOperation("OverscanCount")>] member this.OverscanCount (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Int32) = "OverscanCount" => x |> this.AddAttr
                 
             
 namespace rec Microsoft.AspNetCore.Components.Web.DslInternals
@@ -34,14 +34,14 @@ open Fun.Blazor
 
 
 type NavLinkBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit FunBlazorContextWithAttrs<'FunBlazorGeneric>()
-    new (x: string) as this = NavLinkBuilder<'FunBlazorGeneric>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.text |> html.toBolero) |> BoleroAttr |> this.AddProp |> ignore
-    new (x: IFunBlazorNode list) as this = NavLinkBuilder<'FunBlazorGeneric>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp |> ignore
-    static member create (x: string) = NavLinkBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
-    static member create (x: IFunBlazorNode list) = NavLinkBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
-    [<CustomOperation("ActiveClass")>] member this.ActiveClass (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "ActiveClass" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("AdditionalAttributes")>] member this.AdditionalAttributes (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>) = "AdditionalAttributes" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("Match")>] member this.Match (_: FunBlazorContext<'FunBlazorGeneric>, x: Microsoft.AspNetCore.Components.Routing.NavLinkMatch) = "Match" => x |> BoleroAttr |> this.AddProp
+    inherit FunBlazorBuilderWithDomAttrs<'FunBlazorGeneric>()
+    new (x: string) as this = NavLinkBuilder<'FunBlazorGeneric>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.text) |> this.AddAttr |> ignore
+    new (x: Bolero.Node list) as this = NavLinkBuilder<'FunBlazorGeneric>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.fragment) |> this.AddAttr |> ignore
+    static member create (x: string) = NavLinkBuilder<'FunBlazorGeneric>(x).CreateNode()
+    static member create (x: Bolero.Node list) = NavLinkBuilder<'FunBlazorGeneric>(x).CreateNode()
+    [<CustomOperation("ActiveClass")>] member this.ActiveClass (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "ActiveClass" => x |> this.AddAttr
+    [<CustomOperation("AdditionalAttributes")>] member this.AdditionalAttributes (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>) = "AdditionalAttributes" => x |> this.AddAttr
+    [<CustomOperation("Match")>] member this.Match (_: FunBlazorBuilder<'FunBlazorGeneric>, x: Microsoft.AspNetCore.Components.Routing.NavLinkMatch) = "Match" => x |> this.AddAttr
                 
             
 namespace rec Microsoft.AspNetCore.Components.Web.DslInternals
@@ -52,105 +52,105 @@ open Fun.Blazor
 
 
 type EditFormBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit FunBlazorContextWithAttrs<'FunBlazorGeneric>()
-    static member create () = EditFormBuilder<'FunBlazorGeneric>() :> IFunBlazorNode
-    [<CustomOperation("AdditionalAttributes")>] member this.AdditionalAttributes (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>) = "AdditionalAttributes" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("EditContext")>] member this.EditContext (_: FunBlazorContext<'FunBlazorGeneric>, x: Microsoft.AspNetCore.Components.Forms.EditContext) = "EditContext" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("Model")>] member this.Model (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Object) = "Model" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("ChildContent")>] member this.ChildContent (_: FunBlazorContext<'FunBlazorGeneric>, render: Microsoft.AspNetCore.Components.Forms.EditContext -> IFunBlazorNode) = Bolero.Html.attr.fragmentWith "ChildContent" (fun x -> render x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("OnSubmit")>] member this.OnSubmit (_: FunBlazorContext<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Forms.EditContext> "OnSubmit" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("OnValidSubmit")>] member this.OnValidSubmit (_: FunBlazorContext<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Forms.EditContext> "OnValidSubmit" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("OnInvalidSubmit")>] member this.OnInvalidSubmit (_: FunBlazorContext<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Forms.EditContext> "OnInvalidSubmit" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
+    inherit FunBlazorBuilderWithDomAttrs<'FunBlazorGeneric>()
+    static member create () = EditFormBuilder<'FunBlazorGeneric>().CreateNode()
+    [<CustomOperation("AdditionalAttributes")>] member this.AdditionalAttributes (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>) = "AdditionalAttributes" => x |> this.AddAttr
+    [<CustomOperation("EditContext")>] member this.EditContext (_: FunBlazorBuilder<'FunBlazorGeneric>, x: Microsoft.AspNetCore.Components.Forms.EditContext) = "EditContext" => x |> this.AddAttr
+    [<CustomOperation("Model")>] member this.Model (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Object) = "Model" => x |> this.AddAttr
+    [<CustomOperation("ChildContent")>] member this.ChildContent (_: FunBlazorBuilder<'FunBlazorGeneric>, render: Microsoft.AspNetCore.Components.Forms.EditContext -> Bolero.Node) = Bolero.Html.attr.fragmentWith "ChildContent" (fun x -> render x) |> this.AddAttr
+    [<CustomOperation("OnSubmit")>] member this.OnSubmit (_: FunBlazorBuilder<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Forms.EditContext> "OnSubmit" (fun e -> fn e)) |> this.AddAttr
+    [<CustomOperation("OnValidSubmit")>] member this.OnValidSubmit (_: FunBlazorBuilder<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Forms.EditContext> "OnValidSubmit" (fun e -> fn e)) |> this.AddAttr
+    [<CustomOperation("OnInvalidSubmit")>] member this.OnInvalidSubmit (_: FunBlazorBuilder<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Forms.EditContext> "OnInvalidSubmit" (fun e -> fn e)) |> this.AddAttr
                 
 
 type InputBaseBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit FunBlazorContextWithAttrs<'FunBlazorGeneric>()
-    static member create () = InputBaseBuilder<'FunBlazorGeneric, 'TValue>() :> IFunBlazorNode
-    [<CustomOperation("AdditionalAttributes")>] member this.AdditionalAttributes (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>) = "AdditionalAttributes" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("Value")>] member this.Value (_: FunBlazorContext<'FunBlazorGeneric>, x: 'TValue) = "Value" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("Value'")>] member this.Value' (_: FunBlazorContext<'FunBlazorGeneric>, value: IStore<'TValue>) = this.AddProp("Value", value)
-    [<CustomOperation("Value'")>] member this.Value' (_: FunBlazorContext<'FunBlazorGeneric>, value: cval<'TValue>) = this.AddProp("Value", value)
-    [<CustomOperation("Value'")>] member this.Value' (_: FunBlazorContext<'FunBlazorGeneric>, valueFn: 'TValue * ('TValue -> unit)) = this.AddProp("Value", valueFn)
-    [<CustomOperation("ValueChanged")>] member this.ValueChanged (_: FunBlazorContext<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<'TValue> "ValueChanged" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("ValueExpression")>] member this.ValueExpression (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Linq.Expressions.Expression<System.Func<'TValue>>) = "ValueExpression" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("DisplayName")>] member this.DisplayName (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "DisplayName" => x |> BoleroAttr |> this.AddProp
+    inherit FunBlazorBuilderWithDomAttrs<'FunBlazorGeneric>()
+    static member create () = InputBaseBuilder<'FunBlazorGeneric, 'TValue>().CreateNode()
+    [<CustomOperation("AdditionalAttributes")>] member this.AdditionalAttributes (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>) = "AdditionalAttributes" => x |> this.AddAttr
+    [<CustomOperation("Value")>] member this.Value (_: FunBlazorBuilder<'FunBlazorGeneric>, x: 'TValue) = "Value" => x |> this.AddAttr
+    [<CustomOperation("Value'")>] member this.Value' (_: FunBlazorBuilder<'FunBlazorGeneric>, value: IStore<'TValue>) = this.AddBinding("Value", value)
+    [<CustomOperation("Value'")>] member this.Value' (_: FunBlazorBuilder<'FunBlazorGeneric>, value: cval<'TValue>) = this.AddBinding("Value", value)
+    [<CustomOperation("Value'")>] member this.Value' (_: FunBlazorBuilder<'FunBlazorGeneric>, valueFn: 'TValue * ('TValue -> unit)) = this.AddBinding("Value", valueFn)
+    [<CustomOperation("ValueChanged")>] member this.ValueChanged (_: FunBlazorBuilder<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<'TValue> "ValueChanged" (fun e -> fn e)) |> this.AddAttr
+    [<CustomOperation("ValueExpression")>] member this.ValueExpression (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Linq.Expressions.Expression<System.Func<'TValue>>) = "ValueExpression" => x |> this.AddAttr
+    [<CustomOperation("DisplayName")>] member this.DisplayName (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "DisplayName" => x |> this.AddAttr
                 
 
 type InputCheckboxBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit InputBaseBuilder<'FunBlazorGeneric, System.Boolean>()
-    static member create () = InputCheckboxBuilder<'FunBlazorGeneric>() :> IFunBlazorNode
+    static member create () = InputCheckboxBuilder<'FunBlazorGeneric>().CreateNode()
 
                 
 
 type InputDateBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit InputBaseBuilder<'FunBlazorGeneric, 'TValue>()
-    static member create () = InputDateBuilder<'FunBlazorGeneric, 'TValue>() :> IFunBlazorNode
-    [<CustomOperation("ParsingErrorMessage")>] member this.ParsingErrorMessage (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "ParsingErrorMessage" => x |> BoleroAttr |> this.AddProp
+    static member create () = InputDateBuilder<'FunBlazorGeneric, 'TValue>().CreateNode()
+    [<CustomOperation("ParsingErrorMessage")>] member this.ParsingErrorMessage (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "ParsingErrorMessage" => x |> this.AddAttr
                 
 
 type InputNumberBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit InputBaseBuilder<'FunBlazorGeneric, 'TValue>()
-    static member create () = InputNumberBuilder<'FunBlazorGeneric, 'TValue>() :> IFunBlazorNode
-    [<CustomOperation("ParsingErrorMessage")>] member this.ParsingErrorMessage (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "ParsingErrorMessage" => x |> BoleroAttr |> this.AddProp
+    static member create () = InputNumberBuilder<'FunBlazorGeneric, 'TValue>().CreateNode()
+    [<CustomOperation("ParsingErrorMessage")>] member this.ParsingErrorMessage (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "ParsingErrorMessage" => x |> this.AddAttr
                 
 
 type InputRadioGroupBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit InputBaseBuilder<'FunBlazorGeneric, 'TValue>()
-    new (x: string) as this = InputRadioGroupBuilder<'FunBlazorGeneric, 'TValue>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.text |> html.toBolero) |> BoleroAttr |> this.AddProp |> ignore
-    new (x: IFunBlazorNode list) as this = InputRadioGroupBuilder<'FunBlazorGeneric, 'TValue>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp |> ignore
-    static member create (x: string) = InputRadioGroupBuilder<'FunBlazorGeneric, 'TValue>(x) :> IFunBlazorNode
-    static member create (x: IFunBlazorNode list) = InputRadioGroupBuilder<'FunBlazorGeneric, 'TValue>(x) :> IFunBlazorNode
-    [<CustomOperation("Name")>] member this.Name (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "Name" => x |> BoleroAttr |> this.AddProp
+    new (x: string) as this = InputRadioGroupBuilder<'FunBlazorGeneric, 'TValue>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.text) |> this.AddAttr |> ignore
+    new (x: Bolero.Node list) as this = InputRadioGroupBuilder<'FunBlazorGeneric, 'TValue>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.fragment) |> this.AddAttr |> ignore
+    static member create (x: string) = InputRadioGroupBuilder<'FunBlazorGeneric, 'TValue>(x).CreateNode()
+    static member create (x: Bolero.Node list) = InputRadioGroupBuilder<'FunBlazorGeneric, 'TValue>(x).CreateNode()
+    [<CustomOperation("Name")>] member this.Name (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "Name" => x |> this.AddAttr
                 
 
 type InputSelectBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit InputBaseBuilder<'FunBlazorGeneric, 'TValue>()
-    new (x: string) as this = InputSelectBuilder<'FunBlazorGeneric, 'TValue>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.text |> html.toBolero) |> BoleroAttr |> this.AddProp |> ignore
-    new (x: IFunBlazorNode list) as this = InputSelectBuilder<'FunBlazorGeneric, 'TValue>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp |> ignore
-    static member create (x: string) = InputSelectBuilder<'FunBlazorGeneric, 'TValue>(x) :> IFunBlazorNode
-    static member create (x: IFunBlazorNode list) = InputSelectBuilder<'FunBlazorGeneric, 'TValue>(x) :> IFunBlazorNode
+    new (x: string) as this = InputSelectBuilder<'FunBlazorGeneric, 'TValue>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.text) |> this.AddAttr |> ignore
+    new (x: Bolero.Node list) as this = InputSelectBuilder<'FunBlazorGeneric, 'TValue>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.fragment) |> this.AddAttr |> ignore
+    static member create (x: string) = InputSelectBuilder<'FunBlazorGeneric, 'TValue>(x).CreateNode()
+    static member create (x: Bolero.Node list) = InputSelectBuilder<'FunBlazorGeneric, 'TValue>(x).CreateNode()
 
                 
 
 type InputTextBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit InputBaseBuilder<'FunBlazorGeneric, System.String>()
-    static member create () = InputTextBuilder<'FunBlazorGeneric>() :> IFunBlazorNode
+    static member create () = InputTextBuilder<'FunBlazorGeneric>().CreateNode()
 
                 
 
 type InputTextAreaBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit InputBaseBuilder<'FunBlazorGeneric, System.String>()
-    static member create () = InputTextAreaBuilder<'FunBlazorGeneric>() :> IFunBlazorNode
+    static member create () = InputTextAreaBuilder<'FunBlazorGeneric>().CreateNode()
 
                 
 
 type InputFileBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit FunBlazorContextWithAttrs<'FunBlazorGeneric>()
-    static member create () = InputFileBuilder<'FunBlazorGeneric>() :> IFunBlazorNode
-    [<CustomOperation("OnChange")>] member this.OnChange (_: FunBlazorContext<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Forms.InputFileChangeEventArgs> "OnChange" (fun e -> fn e)) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("AdditionalAttributes")>] member this.AdditionalAttributes (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Collections.Generic.IDictionary<System.String, System.Object>) = "AdditionalAttributes" => x |> BoleroAttr |> this.AddProp
+    inherit FunBlazorBuilderWithDomAttrs<'FunBlazorGeneric>()
+    static member create () = InputFileBuilder<'FunBlazorGeneric>().CreateNode()
+    [<CustomOperation("OnChange")>] member this.OnChange (_: FunBlazorBuilder<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Forms.InputFileChangeEventArgs> "OnChange" (fun e -> fn e)) |> this.AddAttr
+    [<CustomOperation("AdditionalAttributes")>] member this.AdditionalAttributes (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Collections.Generic.IDictionary<System.String, System.Object>) = "AdditionalAttributes" => x |> this.AddAttr
                 
 
 type InputRadioBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit FunBlazorContextWithAttrs<'FunBlazorGeneric>()
-    static member create () = InputRadioBuilder<'FunBlazorGeneric, 'TValue>() :> IFunBlazorNode
-    [<CustomOperation("AdditionalAttributes")>] member this.AdditionalAttributes (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>) = "AdditionalAttributes" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("Value")>] member this.Value (_: FunBlazorContext<'FunBlazorGeneric>, x: 'TValue) = "Value" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("Name")>] member this.Name (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "Name" => x |> BoleroAttr |> this.AddProp
+    inherit FunBlazorBuilderWithDomAttrs<'FunBlazorGeneric>()
+    static member create () = InputRadioBuilder<'FunBlazorGeneric, 'TValue>().CreateNode()
+    [<CustomOperation("AdditionalAttributes")>] member this.AdditionalAttributes (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>) = "AdditionalAttributes" => x |> this.AddAttr
+    [<CustomOperation("Value")>] member this.Value (_: FunBlazorBuilder<'FunBlazorGeneric>, x: 'TValue) = "Value" => x |> this.AddAttr
+    [<CustomOperation("Name")>] member this.Name (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "Name" => x |> this.AddAttr
                 
 
 type ValidationMessageBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit FunBlazorContextWithAttrs<'FunBlazorGeneric>()
-    static member create () = ValidationMessageBuilder<'FunBlazorGeneric, 'TValue>() :> IFunBlazorNode
-    [<CustomOperation("AdditionalAttributes")>] member this.AdditionalAttributes (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>) = "AdditionalAttributes" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("For'")>] member this.For' (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Linq.Expressions.Expression<System.Func<'TValue>>) = "For" => x |> BoleroAttr |> this.AddProp
+    inherit FunBlazorBuilderWithDomAttrs<'FunBlazorGeneric>()
+    static member create () = ValidationMessageBuilder<'FunBlazorGeneric, 'TValue>().CreateNode()
+    [<CustomOperation("AdditionalAttributes")>] member this.AdditionalAttributes (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>) = "AdditionalAttributes" => x |> this.AddAttr
+    [<CustomOperation("For'")>] member this.For' (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Linq.Expressions.Expression<System.Func<'TValue>>) = "For" => x |> this.AddAttr
                 
 
 type ValidationSummaryBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit FunBlazorContextWithAttrs<'FunBlazorGeneric>()
-    static member create () = ValidationSummaryBuilder<'FunBlazorGeneric>() :> IFunBlazorNode
-    [<CustomOperation("Model")>] member this.Model (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Object) = "Model" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("AdditionalAttributes")>] member this.AdditionalAttributes (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>) = "AdditionalAttributes" => x |> BoleroAttr |> this.AddProp
+    inherit FunBlazorBuilderWithDomAttrs<'FunBlazorGeneric>()
+    static member create () = ValidationSummaryBuilder<'FunBlazorGeneric>().CreateNode()
+    [<CustomOperation("Model")>] member this.Model (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Object) = "Model" => x |> this.AddAttr
+    [<CustomOperation("AdditionalAttributes")>] member this.AdditionalAttributes (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>) = "AdditionalAttributes" => x |> this.AddAttr
                 
             
 // ===========================================================================================

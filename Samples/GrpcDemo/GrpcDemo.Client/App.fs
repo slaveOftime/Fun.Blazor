@@ -4,7 +4,6 @@ module App
 open FSharp.Data.Adaptive
 open Fun.Result
 open Fun.Blazor
-open Fun.Blazor.DslCE
 open Grpc.Net.Client
 open GrpcDemo.Protos.Greeter
 

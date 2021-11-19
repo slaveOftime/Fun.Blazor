@@ -3,13 +3,14 @@
 open System
 open FSharp.Data.Adaptive
 open Microsoft.AspNetCore.Components
+open Bolero
 
 
 type AdaptiveComponent () as this =
     inherit FunBlazorComponent()
     
     let mutable nodeSubscription: IDisposable option = None
-    let mutable node = AList.empty<IFunBlazorNode>
+    let mutable node = AList.empty<Node>
     let mutable shouldRerender = true
 
 
@@ -28,8 +29,7 @@ type AdaptiveComponent () as this =
         node 
         |> AList.force
         |> IndexList.toList 
-        |> FunBlazorNode.Fragment
-        :> IFunBlazorNode
+        |> ForEach
 
 
     override _.OnParametersSet() =

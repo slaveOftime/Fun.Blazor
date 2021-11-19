@@ -3,12 +3,13 @@ module Fun.Blazor.DslAdaptive
 
 open System.Runtime.CompilerServices
 open FSharp.Data.Adaptive
+open Bolero
 open Bolero.Html
 open Fun.Blazor
 
 
 
-/// This will generate an alist<IFunBlazorNode> as a Node parameter.
+/// This will generate an alist<Node> as a Node parameter.
 /// When the isStatic is not set to true, every time when you call this it will trigger OnParametersSet,
 /// so when you write code like below:
 /// ```fsharp
@@ -23,19 +24,18 @@ open Fun.Blazor
 type AdaptiviewBuilder(?key: obj, ?isStatic: bool) =
     inherit AListBuilder()
 
-    member _.Run (x: alist<IFunBlazorNode>) =
-        html.bolero 
-            (Bolero.Node.BlazorComponent<AdaptiveComponent>
-                ([
-                    "Node" => x
-                    match isStatic with
-                    | Some true -> "IsStatic" => true
-                    | _ -> ()
-                    match key with
-                    | Some key -> Bolero.Key key
-                    | None -> ()
-                ]
-                ,[]))
+    member _.Run (x: alist<Node>) =
+        Bolero.Node.BlazorComponent<AdaptiveComponent>
+            ([
+                "Node" => x
+                match isStatic with
+                | Some true -> "IsStatic" => true
+                | _ -> ()
+                match key with
+                | Some key -> Bolero.Key key
+                | None -> ()
+            ]
+            ,[])
 
     member _.Delay (fn: unit -> alist<_>) = fn()
 

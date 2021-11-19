@@ -39,6 +39,7 @@
     <Compile Include="Pages\HelperFunctions\ComponentHookDemo.fs" />
     <Compile Include="Pages\HelperFunctions\GlobalStoreDemo.fs" />
     <Compile Include="Pages\HelperFunctions\AdaptiveFromDemo.fs" />
+    <Compile Include="Pages\HelperFunctions\PerformanceDemo.fs" />
     <None Include="Pages\CliUsage\CliUsageDemo.md" />
     <Compile Include="Pages\CliUsage\CliUsage.fs" />
     <None Include="Pages\Tests\TestsDemo.md" />

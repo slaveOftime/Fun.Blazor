@@ -100,6 +100,10 @@ let navmenu =
                     Href "./helper-functions/adaptive-form"
                     childContent "Adaptive Form"
                 }
+                MudNavLink'() {
+                    Href "./helper-functions/performance"
+                    childContent "Performance"
+                }
             ]
         }
         MudNavGroup'() {
@@ -138,6 +142,7 @@ let app = html.inject (fun (hook: IComponentHook, shareStore: IShareStore) ->
             routeCi "/component-hook"       (demoContainer "IComponentHook" $"Pages/HelperFunctions/ComponentHookDemo" HelperFunctions.ComponentHookDemo.componentHookDemo)
             routeCi "/global-store"         (demoContainer "Global storage" $"Pages/HelperFunctions/GlobalStoreDemo" HelperFunctions.GlobalStoreDemo.globalStoreDemo)
             routeCi "/adaptive-form"        (demoContainer "Adaptive Form" $"Pages/HelperFunctions/AdaptiveFromDemo" HelperFunctions.AdaptiveFromDemo.adaptiveFromDemo)
+            routeCi "/performance"          (demoContainer "Performance" $"Pages/HelperFunctions/PerformanceDemo" HelperFunctions.PerformanceDemo.performanceDemo)
         ]
         routeCi "/cli-usage"            CliUsage.CliUsage.cliUsage
         routeCi "/tests"                Tests.Tests.tests

@@ -35,6 +35,11 @@ let dropDownDemo =
         dropdown.childContent [
             html.a [
                 html.div "Cascading menu"
+                html.div [
+                    attr.styles []
+                    attr.childContent [
+                    ]
+                ]
                 icon.create [
                     icon.type' "down"
                 ]

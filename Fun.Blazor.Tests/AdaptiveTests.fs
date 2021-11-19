@@ -26,7 +26,7 @@ let ``html adaptive tests`` () =
     let store1 = cval 1
     let store2 = cval 1
 
-    let comp = adapt {
+    let comp = adaptiview(){
         let! s1 = store1
         let! s2 = store2
         html.text $"s1={s1};s2={s2}"
@@ -55,7 +55,7 @@ let ``html adaptive complex condition tests`` () =
     let store1 = cval 1
     let store2 = cval 1
 
-    let comp = adapt {
+    let comp = adaptiview(){
         let! s1 = store1
         let! s2 = store2
         if s1 >= 2 then

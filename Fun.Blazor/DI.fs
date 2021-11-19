@@ -7,7 +7,6 @@ open Microsoft.AspNetCore.Components.WebAssembly.Hosting
 open Fun.Blazor
 
 
-
 /// This cannot be marked as internal because blazor need it
 type FunBlazorNodeComponent() =
     inherit Bolero.Component()
@@ -15,7 +14,7 @@ type FunBlazorNodeComponent() =
     [<Parameter>]
     member val Node = html.none with get, set
 
-    override this.Render() = this.Node.Node().ToBolero()
+    override this.Render() = this.Node
 
 
 [<Extension>]
@@ -27,7 +26,7 @@ type Extensions =
             .AddSingleton<IGlobalStore, GlobalStore>()
 
     [<Extension>]
-    static member AddFunBlazorNode(this: WebAssemblyHostBuilder, selector: string, node: IFunBlazorNode) =
+    static member AddFunBlazorNode(this: WebAssemblyHostBuilder, selector: string, node: Bolero.Node) =
         let parameters = ParameterView.FromDictionary(dict ["Node", box node ])
         this.RootComponents.Add(typeof<FunBlazorNodeComponent>, selector, parameters)
         this

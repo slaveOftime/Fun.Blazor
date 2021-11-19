@@ -16,15 +16,17 @@ let demoDivider =
 let demoContainer (titleStr: string) fileName contentStr =
     html.div [
         attr.styles [ style.margin 10 ]
-        MudText'() {
-            Typo Typo.h6
-            childContent titleStr
-        }
-        spaceV2
-        MudPaper'() {
-            Elevation 40
-            childContent [ contentStr ]
-        }
-        spaceV2
-        sourceSection fileName
+        attr.childContent [
+            MudText'() {
+                Typo Typo.h6
+                childContent titleStr
+            }
+            spaceV2
+            MudPaper'() {
+                Elevation 40
+                childContent [ contentStr ]
+            }
+            spaceV2
+            sourceSection fileName
+        ]
     ]

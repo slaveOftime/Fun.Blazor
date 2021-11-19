@@ -6,18 +6,17 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Compile Include="Types.fs" />
+		<Compile Include="Core.fs" />
 		<Compile Include="Uitls.fs" />
 		<Compile Include="Store.fs" />
 		<Compile Include="Router.fs" />
 		<Compile Include="Router.Giraffe.FormatExpressions.fs" />
 		<Compile Include="Router.Giraffe.Dsl.fs" />
-		<Compile Include="FunBlazorComponent.fs" />
 		<Compile Include="DIComponent.fs" />
 		<Compile Include="ElmComponent.fs" />
 		<Compile Include="StoreComponent.fs" />
 		<Compile Include="AdaptiveComponent.fs" />
-		<Compile Include="Events.fs" />
+		<Compile Include="HtmlEngine.fs" />
 		<Compile Include="Dsl.fs" />
 		<Compile Include="DslDI.fs" />
 		<Compile Include="DslElmish.fs" />

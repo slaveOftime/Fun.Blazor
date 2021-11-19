@@ -83,7 +83,7 @@ type DIComponent<'T>() as this =
 
 
     [<Parameter>]
-    member val RenderFn = Unchecked.defaultof<'T -> IFunBlazorNode> with get, set
+    member val RenderFn = Unchecked.defaultof<'T -> Bolero.Node> with get, set
 
     [<Inject>]
     member val Services = Unchecked.defaultof<IServiceProvider> with get, set

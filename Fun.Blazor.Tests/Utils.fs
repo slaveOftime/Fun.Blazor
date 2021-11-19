@@ -13,11 +13,12 @@ type FunBlazorTestComponent() =
     inherit Component()
 
     [<Parameter>]
-    member val Node = Unchecked.defaultof<IFunBlazorNode> with get, set
+    member val Node = Unchecked.defaultof<Node> with get, set
 
-    override this.Render () = this.Node.Node().ToBolero()
+    override this.Render () = this.Node
+
 
     [<Extension>]
-    static member RenderNode(ctx: TestContext, node: IFunBlazorNode) =
+    static member RenderNode(ctx: TestContext, node: Node) =
         ctx.RenderComponent(fun (parameters: ComponentParameterCollectionBuilder<FunBlazorTestComponent>) -> 
             parameters.Add((fun p -> p.Node), node) |> ignore)

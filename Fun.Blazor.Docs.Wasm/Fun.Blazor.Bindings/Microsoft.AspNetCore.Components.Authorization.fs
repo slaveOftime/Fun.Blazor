@@ -9,35 +9,35 @@ open Microsoft.AspNetCore.Components.Authorization.DslInternals
 
 
 type AuthorizeViewCoreBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit FunBlazorContext<'FunBlazorGeneric>()
-    static member create () = AuthorizeViewCoreBuilder<'FunBlazorGeneric>() :> IFunBlazorNode
-    [<CustomOperation("ChildContent")>] member this.ChildContent (_: FunBlazorContext<'FunBlazorGeneric>, render: Microsoft.AspNetCore.Components.Authorization.AuthenticationState -> IFunBlazorNode) = Bolero.Html.attr.fragmentWith "ChildContent" (fun x -> render x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("NotAuthorized")>] member this.NotAuthorized (_: FunBlazorContext<'FunBlazorGeneric>, render: Microsoft.AspNetCore.Components.Authorization.AuthenticationState -> IFunBlazorNode) = Bolero.Html.attr.fragmentWith "NotAuthorized" (fun x -> render x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("Authorized")>] member this.Authorized (_: FunBlazorContext<'FunBlazorGeneric>, render: Microsoft.AspNetCore.Components.Authorization.AuthenticationState -> IFunBlazorNode) = Bolero.Html.attr.fragmentWith "Authorized" (fun x -> render x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("Authorizing")>] member this.Authorizing (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "Authorizing" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("Authorizing")>] member this.Authorizing (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "Authorizing" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("Authorizing")>] member this.Authorizing (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "Authorizing" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("Authorizing")>] member this.Authorizing (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "Authorizing" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("Resource")>] member this.Resource (_: FunBlazorContext<'FunBlazorGeneric>, x: System.Object) = "Resource" => x |> BoleroAttr |> this.AddProp
+    inherit FunBlazorBuilder<'FunBlazorGeneric>()
+    static member create () = AuthorizeViewCoreBuilder<'FunBlazorGeneric>().CreateNode()
+    [<CustomOperation("ChildContent")>] member this.ChildContent (_: FunBlazorBuilder<'FunBlazorGeneric>, render: Microsoft.AspNetCore.Components.Authorization.AuthenticationState -> Bolero.Node) = Bolero.Html.attr.fragmentWith "ChildContent" (fun x -> render x) |> this.AddAttr
+    [<CustomOperation("NotAuthorized")>] member this.NotAuthorized (_: FunBlazorBuilder<'FunBlazorGeneric>, render: Microsoft.AspNetCore.Components.Authorization.AuthenticationState -> Bolero.Node) = Bolero.Html.attr.fragmentWith "NotAuthorized" (fun x -> render x) |> this.AddAttr
+    [<CustomOperation("Authorized")>] member this.Authorized (_: FunBlazorBuilder<'FunBlazorGeneric>, render: Microsoft.AspNetCore.Components.Authorization.AuthenticationState -> Bolero.Node) = Bolero.Html.attr.fragmentWith "Authorized" (fun x -> render x) |> this.AddAttr
+    [<CustomOperation("Authorizing")>] member this.Authorizing (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "Authorizing" nodes |> this.AddAttr
+    [<CustomOperation("Authorizing")>] member this.Authorizing (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "Authorizing" (html.text x) |> this.AddAttr
+    [<CustomOperation("Authorizing")>] member this.Authorizing (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "Authorizing" (html.text x) |> this.AddAttr
+    [<CustomOperation("Authorizing")>] member this.Authorizing (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "Authorizing" (html.text x) |> this.AddAttr
+    [<CustomOperation("Resource")>] member this.Resource (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Object) = "Resource" => x |> this.AddAttr
                 
 
 type AuthorizeViewBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit AuthorizeViewCoreBuilder<'FunBlazorGeneric>()
-    static member create () = AuthorizeViewBuilder<'FunBlazorGeneric>() :> IFunBlazorNode
-    [<CustomOperation("Policy")>] member this.Policy (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "Policy" => x |> BoleroAttr |> this.AddProp
-    [<CustomOperation("Roles")>] member this.Roles (_: FunBlazorContext<'FunBlazorGeneric>, x: System.String) = "Roles" => x |> BoleroAttr |> this.AddProp
+    static member create () = AuthorizeViewBuilder<'FunBlazorGeneric>().CreateNode()
+    [<CustomOperation("Policy")>] member this.Policy (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "Policy" => x |> this.AddAttr
+    [<CustomOperation("Roles")>] member this.Roles (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "Roles" => x |> this.AddAttr
                 
 
 type CascadingAuthenticationStateBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit FunBlazorContext<'FunBlazorGeneric>()
-    new (x: string) as this = CascadingAuthenticationStateBuilder<'FunBlazorGeneric>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.text |> html.toBolero) |> BoleroAttr |> this.AddProp |> ignore
-    new (x: IFunBlazorNode list) as this = CascadingAuthenticationStateBuilder<'FunBlazorGeneric>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp |> ignore
-    static member create (x: string) = CascadingAuthenticationStateBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
-    static member create (x: IFunBlazorNode list) = CascadingAuthenticationStateBuilder<'FunBlazorGeneric>(x) :> IFunBlazorNode
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorContext<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x |> html.toBolero) |> BoleroAttr |> this.AddProp
+    inherit FunBlazorBuilder<'FunBlazorGeneric>()
+    new (x: string) as this = CascadingAuthenticationStateBuilder<'FunBlazorGeneric>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.text) |> this.AddAttr |> ignore
+    new (x: Bolero.Node list) as this = CascadingAuthenticationStateBuilder<'FunBlazorGeneric>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.fragment) |> this.AddAttr |> ignore
+    static member create (x: string) = CascadingAuthenticationStateBuilder<'FunBlazorGeneric>(x).CreateNode()
+    static member create (x: Bolero.Node list) = CascadingAuthenticationStateBuilder<'FunBlazorGeneric>(x).CreateNode()
+    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" nodes |> this.AddAttr
+    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> this.AddAttr
+    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> this.AddAttr
+    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> this.AddAttr
                 
             
 
