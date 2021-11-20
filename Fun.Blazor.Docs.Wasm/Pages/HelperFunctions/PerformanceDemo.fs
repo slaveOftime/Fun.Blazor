@@ -29,6 +29,9 @@ let bigListDemo = html.inject <| fun () ->
                     childContent [
                         for i in lists' do
                             div(){
+                                css """_{
+                                    color: red;
+                                }"""
                                 childContent $"item {i}"
                             }
                     ]
@@ -46,7 +49,12 @@ let bigListDemo = html.inject <| fun () ->
                     attr.styles [ style.marginTop 10; style.maxHeight 100; style.overflowYAuto ]
                     attr.childContent [
                         for i in lists' do
-                            html.div $"item {i}"
+                            html.div [
+                                attr.styles [ style.color "green" ]
+                                attr.childContent [
+                                    html.text $"item {i}"
+                                ]
+                            ]
                     ]
                 ]
             }

@@ -27,12 +27,13 @@ let app = html.inject <| fun (chanel: GrpcChannel, hook: IComponentHook) ->
 
     sayHello()
 
-
     adaptiview(){
         let! msg = message
 
         div(){
-            styles []
+            css """_{
+                color: red;
+            }"""
             childContent [
                 match msg with
                 | DeferredState.Loading -> div.create "Loading from grpc service"
