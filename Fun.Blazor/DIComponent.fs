@@ -38,6 +38,7 @@ type DIComponent<'T>() as this =
     inherit FunBlazorComponent()
     
     let mutable node = None
+    let mutable shouldRerender = true
 
     let initialized = new Event<unit>()
     let afterRenderEvent = new Event<bool>()
@@ -86,6 +87,11 @@ type DIComponent<'T>() as this =
     [<Parameter>]
     member val RenderFn = Unchecked.defaultof<'T -> Bolero.Node> with get, set
 
+    /// With this we can avoid rerender when parameter reset
+    /// If component is not recreated then all the rerender will use the closure state created by the first RenderFn
+    [<Parameter>]
+    member val IsStatic = false with get, set
+
     [<Inject>]
     member val Services = Unchecked.defaultof<IServiceProvider> with get, set
     
@@ -113,6 +119,18 @@ type DIComponent<'T>() as this =
 
     override _.OnInitialized () =
         initialized.Trigger()
+
+
+    override _.OnParametersSet() =
+        if this.IsStatic && node.IsSome then
+            // Avoid rerender for static mode
+            shouldRerender <- false
+
+
+    override _.ShouldRender() =
+        let result = shouldRerender
+        if not shouldRerender then shouldRerender <- true
+        result
 
 
     override _.OnAfterRender firstRender =

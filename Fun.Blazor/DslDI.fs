@@ -17,6 +17,7 @@ type html with
         Bolero.Node.BlazorComponent<DIComponent<'Services>>
             ([
                 "RenderFn" => render
+                "IsStatic" => false
                 Bolero.Key (Guid.NewGuid())
             ]
             ,[])
@@ -37,13 +38,14 @@ type html with
         Bolero.Node.BlazorComponent<DIComponent<'Services>>
             ([
                 "RenderFn" => render
+                "IsStatic" => true
                 Bolero.Key key
             ]
             ,[])
 
 
     /// This function will create a blazor component with no key.
-    /// It is recommend to add key in if else or looping code block to tell blazor when to rerender.
+    /// It is recommend to add key in `if else` or `looping` code block to tell blazor when to recreate component.
     ///
     /// 'Services should be something you defined in the asp.net core DI or unit
     /// 'Services must be a tuple like (hook: IComponentHook, sp: IServiceProvider)
@@ -51,5 +53,6 @@ type html with
         Bolero.Node.BlazorComponent<DIComponent<'Services>>
             ([
                 "RenderFn" => render
+                "IsStatic" => true
             ]
             ,[])
