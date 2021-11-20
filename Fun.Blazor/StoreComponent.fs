@@ -1,6 +1,7 @@
 ﻿namespace Fun.Blazor
 
 open System
+open Microsoft.Extensions.Logging
 open Microsoft.AspNetCore.Components
 open Bolero
 
@@ -22,14 +23,18 @@ type StoreComponent<'T> () as this =
     [<Parameter>]
     member val RenderFn = Unchecked.defaultof<'T -> Node> with get, set
 
+    [<Inject>]
+    member val Logger = Unchecked.defaultof<ILogger<StoreComponent<'T>>> with get, set
+
 
     member internal _.StateHasChanged() = try base.StateHasChanged() with _ -> ()
     member internal _.Rerender() = this.InvokeAsync(this.StateHasChanged) |> ignore
 
 
     override _.Render() =
-        if not isValueSet && box value = null then Html.empty
-        else this.RenderFn value
+        this.Logger.LogDebugForPerf <| fun _ ->
+            if not isValueSet && box value = null then Html.empty
+            else this.RenderFn value
 
         
     override _.OnInitialized() =

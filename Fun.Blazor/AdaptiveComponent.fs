@@ -2,6 +2,7 @@
 
 open System
 open FSharp.Data.Adaptive
+open Microsoft.Extensions.Logging
 open Microsoft.AspNetCore.Components
 open Bolero
 
@@ -20,16 +21,20 @@ type AdaptiveComponent () as this =
     [<Parameter>]
     member val IsStatic = false with get, set
         
+    [<Inject>]
+    member val Logger = Unchecked.defaultof<ILogger<AdaptiveComponent>> with get, set
+
 
     member internal _.StateHasChanged() = try base.StateHasChanged() with _ -> ()
     member internal _.Rerender() = this.InvokeAsync(this.StateHasChanged) |> ignore
 
 
-    override _.Render() = 
-        node 
-        |> AList.force
-        |> IndexList.toList 
-        |> ForEach
+    override _.Render() =
+        this.Logger.LogDebugForPerf <| fun _ ->
+            node 
+            |> AList.force
+            |> IndexList.toList 
+            |> ForEach
 
 
     override _.OnParametersSet() =

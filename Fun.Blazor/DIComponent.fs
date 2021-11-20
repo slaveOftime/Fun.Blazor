@@ -3,6 +3,7 @@
 open System
 open System.Collections.Generic
 open FSharp.Data.Adaptive
+open Microsoft.Extensions.Logging
 open Microsoft.AspNetCore.Components
 
 
@@ -87,22 +88,27 @@ type DIComponent<'T>() as this =
 
     [<Inject>]
     member val Services = Unchecked.defaultof<IServiceProvider> with get, set
+    
+    [<Inject>]
+    member val Logger = Unchecked.defaultof<ILogger<DIComponent<'T>>> with get, set
+
 
     member internal _.StateHasChanged() = base.StateHasChanged()
     member internal _.ForceSetState() = this.InvokeAsync(this.StateHasChanged) |> ignore
 
 
     override _.Render() =
-        match node with
-        | None ->
-            let depsType, _ = Reflection.FSharpType.GetFunctionElements(this.RenderFn.GetType())
-            let services = this.Services.GetMultipleServices(depsType, handleNotFoundType) :?> 'T
-            let newNode =  this.RenderFn services
-            node <- newNode |> Some
-            newNode 
+        this.Logger.LogDebugForPerf <| fun _ ->
+            match node with
+            | None ->
+                let depsType, _ = Reflection.FSharpType.GetFunctionElements(this.RenderFn.GetType())
+                let services = this.Services.GetMultipleServices(depsType, handleNotFoundType) :?> 'T
+                let newNode =  this.RenderFn services
+                node <- newNode |> Some
+                newNode 
 
-        | Some node ->
-            node
+            | Some node ->
+                node
         
 
     override _.OnInitialized () =

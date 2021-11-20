@@ -2,13 +2,10 @@
 module Fun.Blazor.Docs.Wasm.Pages.HelperFunctions.PerformanceDemo
 
 open FSharp.Data.Adaptive
-open Bolero.Html
+open Fun.Css
 open MudBlazor
 open Fun.Blazor
 open Fun.Blazor.Docs.Wasm.Components
-open MudBlazor.DslInternals
-open Microsoft.AspNetCore.Components
-
 
 let bigListDemo = html.inject <| fun () ->
     let lists1 = cval [1]
@@ -62,7 +59,59 @@ let bigListDemo = html.inject <| fun () ->
     }
 
 
+let multipleChanges = html.inject <| fun () ->
+    let v1 = cval 1
+    let v2 = cval 2
+    let v3 = cval 3
+
+    adaptiview(){
+        let! n1 = v1
+        let! n2 = v2
+        let! n3 = v3
+
+        MudButtonGroup'(){
+            Variant Variant.Outlined
+            childContent [
+                MudButton'(){
+                    OnClick (fun _ -> v1.Publish ((+) 1))
+                    childContent "Change n1"
+                }
+                MudButton'(){
+                    OnClick (fun _ -> v2.Publish ((+) 1))
+                    childContent "Change n2"
+                }
+                MudButton'(){
+                    OnClick (fun _ ->
+                        // By this we can avoid multiple time calculation
+                        transact <| fun _ ->
+                            v1.Value <- n1 + 1
+                            v2.Value <- n2 + 1
+                            v3.Value <- n3 + 1)
+                    childContent "Change all"
+                }
+                MudButton'(){
+                    OnClick (fun _ ->
+                        v1.Publish ((+) 1)
+                        v2.Publish ((+) 1)
+                        v3.Publish ((+) 1))
+                    childContent "Change all without transact"
+                }
+            ]
+        }
+        div(){
+            css (CssBuilder(){
+                marginTop 10
+                fontWeightBold
+                color "blue"
+            })
+            childContent $"v1 = {n1}; v2 = {n2}; v3 = {n3}"
+        }
+    }
+
+
 let performanceDemo =
     html.div [
         bigListDemo
+        spaceV4
+        multipleChanges
     ]
