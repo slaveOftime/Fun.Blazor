@@ -40,6 +40,7 @@
     <Compile Include="Pages\HelperFunctions\GlobalStoreDemo.fs" />
     <Compile Include="Pages\HelperFunctions\AdaptiveFromDemo.fs" />
     <Compile Include="Pages\HelperFunctions\PerformanceDemo.fs" />
+    <Compile Include="Pages\HelperFunctions\CECssDemo.fs" />
     <None Include="Pages\CliUsage\CliUsageDemo.md" />
     <Compile Include="Pages\CliUsage\CliUsage.fs" />
     <None Include="Pages\Tests\TestsDemo.md" />
@@ -63,5 +64,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Fun.Blazor.Feliz\Fun.Blazor.Feliz.fsproj" />
     <ProjectReference Include="..\Fun.Blazor\Fun.Blazor.fsproj" />
+    <ProjectReference Include="..\Fun.Css\Fun.Css.fsproj" />
   </ItemGroup>
 </Project>

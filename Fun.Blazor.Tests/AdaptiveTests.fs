@@ -59,9 +59,9 @@ let ``html adaptive complex condition tests`` () =
         let! s1 = store1
         let! s2 = store2
         if s1 >= 2 then
-            html.div $"s1={s1}"
+            div.create $"s1={s1}"
         if s2 >= 2 then
-            html.div $"s2={s2}"
+            div.create $"s2={s2}"
     }
 
     let result = context.RenderNode comp

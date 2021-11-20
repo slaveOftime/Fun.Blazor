@@ -104,6 +104,10 @@ let navmenu =
                     Href "./helper-functions/performance"
                     childContent "Performance"
                 }
+                MudNavLink'() {
+                    Href "./helper-functions/ce-css-builder"
+                    childContent "CE style css builder"
+                }
             ]
         }
         MudNavGroup'() {
@@ -143,6 +147,7 @@ let app = html.inject (fun (hook: IComponentHook, shareStore: IShareStore) ->
             routeCi "/global-store"         (demoContainer "Global storage" $"Pages/HelperFunctions/GlobalStoreDemo" HelperFunctions.GlobalStoreDemo.globalStoreDemo)
             routeCi "/adaptive-form"        (demoContainer "Adaptive Form" $"Pages/HelperFunctions/AdaptiveFromDemo" HelperFunctions.AdaptiveFromDemo.adaptiveFromDemo)
             routeCi "/performance"          (demoContainer "Performance" $"Pages/HelperFunctions/PerformanceDemo" HelperFunctions.PerformanceDemo.performanceDemo)
+            routeCi "/ce-css-builder"       (demoContainer "CE style css builde" $"Pages/HelperFunctions/CECssDemo" HelperFunctions.CECssDemo.ceCssDemo)
         ]
         routeCi "/cli-usage"            CliUsage.CliUsage.cliUsage
         routeCi "/tests"                Tests.Tests.tests
