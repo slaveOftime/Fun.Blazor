@@ -10,8 +10,13 @@ type CssBuilder() as this =
 
     let mk (key: string) (value: string) = sb.Append(key).Append(": ").Append(value).Append(";") |> ignore; this
 
+
     member this.Yield _ = this
     member _.Run _ = sb.ToString()
+
+    
+    member _.AddCss (key, value) = mk key value
+
 
     /// Define a custom property
     [<CustomOperation("custom")>] member _.custom(_, key: string, value: string) = mk key value

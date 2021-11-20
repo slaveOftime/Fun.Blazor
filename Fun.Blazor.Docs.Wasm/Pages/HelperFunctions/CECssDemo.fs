@@ -4,6 +4,11 @@ module Fun.Blazor.Docs.Wasm.Pages.HelperFunctions.CECssDemo
 open Fun.Blazor
 open Fun.Css
 
+type CssBuilder with
+    [<CustomOperation("myStyles")>]
+    member this.myStyles (_) =
+        this.AddCss("border-top", "4px dashed blue")
+            .AddCss("border-bottom", "8px solid blue")
 
 let ceCssDemo =
     div(){
@@ -15,6 +20,7 @@ let ceCssDemo =
             displayFlex
             flexDirectionRow
             flexWrapWrap
+            myStyles
         })
         childContent [
             for _ in 1..10 do
