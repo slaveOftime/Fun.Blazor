@@ -161,7 +161,7 @@ let adaptiviewDemo5 = html.inject <| fun (hook: IComponentHook) ->
         if display' then
             adaptiview(){
                 /// Every time when number1 is changed, n2 will start over from 2
-                let! n2, setN2 = cval(2).AsAVal()
+                let! n2, setN2 = cval(2).WithSetter()
                 html.div $"Number1: {number1'}" // should change
                 html.div $"Number2: {n2}"
                 MudButton'(){
@@ -172,7 +172,7 @@ let adaptiviewDemo5 = html.inject <| fun (hook: IComponentHook) ->
             adaptiview(isStatic = true){
                 /// number1`s change will not impact this
                 /// When display' is toggled, the state will be erased because the whole component is recreated by blazor
-                let! n3, setN3 = cval(3).AsAVal()
+                let! n3, setN3 = cval(3).WithSetter()
                 html.div $"Number1: {number1'}" // should not change
                 html.div $"Number1: {number1.Current}" // should change when n3 changed
                 html.div $"Number2: {n3}"

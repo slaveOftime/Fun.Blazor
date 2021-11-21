@@ -54,7 +54,7 @@ type Extensions =
     static member Publish (this: cval<'T>, fn: 'T -> 'T) = transact(fun () -> this.Value <- fn this.Value)
     
     [<Extension>]
-    static member AsAVal (this: cval<'T>) =
+    static member WithSetter (this: cval<'T>) =
         let setValue x = transact(fun () -> this.Value <- x)
         this |> AVal.map (fun x -> x, setValue)
 
