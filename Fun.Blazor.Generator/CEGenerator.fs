@@ -109,7 +109,7 @@ let private getMetaInfo (ty: Type) =
             elif prop.PropertyType = typeof<RenderFragment> then
                 let name = if name = "ChildContent" then lowerFirstCase name else name
                 [
-                    $"    {customOperation name} {memberStart}{name} ({contextArg}, nodes) = Bolero.Html.attr.fragment \"{prop.Name}\" nodes {_addAttr}"
+                    $"    {customOperation name} {memberStart}{name} ({contextArg}, nodes) = Bolero.Html.attr.fragment \"{prop.Name}\" (html.fragment nodes) {_addAttr}"
                     $"    {customOperation name} {memberStart}{name} ({contextArg}, x: string) = Bolero.Html.attr.fragment \"{prop.Name}\" (html.text x) {_addAttr}"
                     $"    {customOperation name} {memberStart}{name} ({contextArg}, x: int) = Bolero.Html.attr.fragment \"{prop.Name}\" (html.text x) {_addAttr}"
                     $"    {customOperation name} {memberStart}{name} ({contextArg}, x: float) = Bolero.Html.attr.fragment \"{prop.Name}\" (html.text x) {_addAttr}"

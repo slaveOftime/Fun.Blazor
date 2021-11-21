@@ -63,5 +63,10 @@ let alertDemo = html.inject (fun (hook: IComponentHook) ->
                     return seq { for i in 1..5 do $"item {str} {i}" }
                 })
             }
+            MudDialog'(){
+                TitleContent [
+                    MudText'.create "123123"
+                ]
+            }
         ]
     })

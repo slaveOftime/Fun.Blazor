@@ -166,11 +166,11 @@ type MudCarouselBuilder<'FunBlazorGeneric, 'TData when 'FunBlazorGeneric :> Micr
     [<CustomOperation("CheckedIcon")>] member this.CheckedIcon (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "CheckedIcon" => x |> this.AddAttr
     [<CustomOperation("UncheckedIcon")>] member this.UncheckedIcon (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "UncheckedIcon" => x |> this.AddAttr
     [<CustomOperation("NextIcon")>] member this.NextIcon (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "NextIcon" => x |> this.AddAttr
-    [<CustomOperation("NextButtonTemplate")>] member this.NextButtonTemplate (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "NextButtonTemplate" nodes |> this.AddAttr
+    [<CustomOperation("NextButtonTemplate")>] member this.NextButtonTemplate (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "NextButtonTemplate" (html.fragment nodes) |> this.AddAttr
     [<CustomOperation("NextButtonTemplate")>] member this.NextButtonTemplate (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "NextButtonTemplate" (html.text x) |> this.AddAttr
     [<CustomOperation("NextButtonTemplate")>] member this.NextButtonTemplate (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "NextButtonTemplate" (html.text x) |> this.AddAttr
     [<CustomOperation("NextButtonTemplate")>] member this.NextButtonTemplate (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "NextButtonTemplate" (html.text x) |> this.AddAttr
-    [<CustomOperation("PreviousButtonTemplate")>] member this.PreviousButtonTemplate (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "PreviousButtonTemplate" nodes |> this.AddAttr
+    [<CustomOperation("PreviousButtonTemplate")>] member this.PreviousButtonTemplate (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "PreviousButtonTemplate" (html.fragment nodes) |> this.AddAttr
     [<CustomOperation("PreviousButtonTemplate")>] member this.PreviousButtonTemplate (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "PreviousButtonTemplate" (html.text x) |> this.AddAttr
     [<CustomOperation("PreviousButtonTemplate")>] member this.PreviousButtonTemplate (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "PreviousButtonTemplate" (html.text x) |> this.AddAttr
     [<CustomOperation("PreviousButtonTemplate")>] member this.PreviousButtonTemplate (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "PreviousButtonTemplate" (html.text x) |> this.AddAttr
@@ -492,7 +492,7 @@ type MudPickerBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.
     [<CustomOperation("Text'")>] member this.Text' (_: FunBlazorBuilder<'FunBlazorGeneric>, value: cval<System.String>) = this.AddBinding("Text", value)
     [<CustomOperation("Text'")>] member this.Text' (_: FunBlazorBuilder<'FunBlazorGeneric>, valueFn: System.String * (System.String -> unit)) = this.AddBinding("Text", valueFn)
     [<CustomOperation("ClassActions")>] member this.ClassActions (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "ClassActions" => x |> this.AddAttr
-    [<CustomOperation("PickerActions")>] member this.PickerActions (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "PickerActions" nodes |> this.AddAttr
+    [<CustomOperation("PickerActions")>] member this.PickerActions (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "PickerActions" (html.fragment nodes) |> this.AddAttr
     [<CustomOperation("PickerActions")>] member this.PickerActions (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "PickerActions" (html.text x) |> this.AddAttr
     [<CustomOperation("PickerActions")>] member this.PickerActions (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "PickerActions" (html.text x) |> this.AddAttr
     [<CustomOperation("PickerActions")>] member this.PickerActions (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "PickerActions" (html.text x) |> this.AddAttr
@@ -699,7 +699,7 @@ type MudBreadcrumbsBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     static member create () = MudBreadcrumbsBuilder<'FunBlazorGeneric>().CreateNode()
     [<CustomOperation("Items")>] member this.Items (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Collections.Generic.List<MudBlazor.BreadcrumbItem>) = "Items" => x |> this.AddAttr
     [<CustomOperation("Separator")>] member this.Separator (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "Separator" => x |> this.AddAttr
-    [<CustomOperation("SeparatorTemplate")>] member this.SeparatorTemplate (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "SeparatorTemplate" nodes |> this.AddAttr
+    [<CustomOperation("SeparatorTemplate")>] member this.SeparatorTemplate (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "SeparatorTemplate" (html.fragment nodes) |> this.AddAttr
     [<CustomOperation("SeparatorTemplate")>] member this.SeparatorTemplate (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "SeparatorTemplate" (html.text x) |> this.AddAttr
     [<CustomOperation("SeparatorTemplate")>] member this.SeparatorTemplate (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "SeparatorTemplate" (html.text x) |> this.AddAttr
     [<CustomOperation("SeparatorTemplate")>] member this.SeparatorTemplate (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "SeparatorTemplate" (html.text x) |> this.AddAttr
@@ -788,15 +788,15 @@ type MudCardHeaderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     new (x: Bolero.Node list) as this = MudCardHeaderBuilder<'FunBlazorGeneric>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.fragment) |> this.AddAttr |> ignore
     static member create (x: string) = MudCardHeaderBuilder<'FunBlazorGeneric>(x).CreateNode()
     static member create (x: Bolero.Node list) = MudCardHeaderBuilder<'FunBlazorGeneric>(x).CreateNode()
-    [<CustomOperation("CardHeaderAvatar")>] member this.CardHeaderAvatar (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "CardHeaderAvatar" nodes |> this.AddAttr
+    [<CustomOperation("CardHeaderAvatar")>] member this.CardHeaderAvatar (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "CardHeaderAvatar" (html.fragment nodes) |> this.AddAttr
     [<CustomOperation("CardHeaderAvatar")>] member this.CardHeaderAvatar (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "CardHeaderAvatar" (html.text x) |> this.AddAttr
     [<CustomOperation("CardHeaderAvatar")>] member this.CardHeaderAvatar (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "CardHeaderAvatar" (html.text x) |> this.AddAttr
     [<CustomOperation("CardHeaderAvatar")>] member this.CardHeaderAvatar (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "CardHeaderAvatar" (html.text x) |> this.AddAttr
-    [<CustomOperation("CardHeaderContent")>] member this.CardHeaderContent (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "CardHeaderContent" nodes |> this.AddAttr
+    [<CustomOperation("CardHeaderContent")>] member this.CardHeaderContent (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "CardHeaderContent" (html.fragment nodes) |> this.AddAttr
     [<CustomOperation("CardHeaderContent")>] member this.CardHeaderContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "CardHeaderContent" (html.text x) |> this.AddAttr
     [<CustomOperation("CardHeaderContent")>] member this.CardHeaderContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "CardHeaderContent" (html.text x) |> this.AddAttr
     [<CustomOperation("CardHeaderContent")>] member this.CardHeaderContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "CardHeaderContent" (html.text x) |> this.AddAttr
-    [<CustomOperation("CardHeaderActions")>] member this.CardHeaderActions (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "CardHeaderActions" nodes |> this.AddAttr
+    [<CustomOperation("CardHeaderActions")>] member this.CardHeaderActions (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "CardHeaderActions" (html.fragment nodes) |> this.AddAttr
     [<CustomOperation("CardHeaderActions")>] member this.CardHeaderActions (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "CardHeaderActions" (html.text x) |> this.AddAttr
     [<CustomOperation("CardHeaderActions")>] member this.CardHeaderActions (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "CardHeaderActions" (html.text x) |> this.AddAttr
     [<CustomOperation("CardHeaderActions")>] member this.CardHeaderActions (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "CardHeaderActions" (html.text x) |> this.AddAttr
@@ -976,15 +976,15 @@ type MudCollapseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.As
 type MudDialogBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit MudComponentBaseBuilder<'FunBlazorGeneric>()
     static member create () = MudDialogBuilder<'FunBlazorGeneric>().CreateNode()
-    [<CustomOperation("TitleContent")>] member this.TitleContent (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "TitleContent" nodes |> this.AddAttr
+    [<CustomOperation("TitleContent")>] member this.TitleContent (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "TitleContent" (html.fragment nodes) |> this.AddAttr
     [<CustomOperation("TitleContent")>] member this.TitleContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "TitleContent" (html.text x) |> this.AddAttr
     [<CustomOperation("TitleContent")>] member this.TitleContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "TitleContent" (html.text x) |> this.AddAttr
     [<CustomOperation("TitleContent")>] member this.TitleContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "TitleContent" (html.text x) |> this.AddAttr
-    [<CustomOperation("DialogContent")>] member this.DialogContent (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "DialogContent" nodes |> this.AddAttr
+    [<CustomOperation("DialogContent")>] member this.DialogContent (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "DialogContent" (html.fragment nodes) |> this.AddAttr
     [<CustomOperation("DialogContent")>] member this.DialogContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "DialogContent" (html.text x) |> this.AddAttr
     [<CustomOperation("DialogContent")>] member this.DialogContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "DialogContent" (html.text x) |> this.AddAttr
     [<CustomOperation("DialogContent")>] member this.DialogContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "DialogContent" (html.text x) |> this.AddAttr
-    [<CustomOperation("DialogActions")>] member this.DialogActions (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "DialogActions" nodes |> this.AddAttr
+    [<CustomOperation("DialogActions")>] member this.DialogActions (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "DialogActions" (html.fragment nodes) |> this.AddAttr
     [<CustomOperation("DialogActions")>] member this.DialogActions (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "DialogActions" (html.text x) |> this.AddAttr
     [<CustomOperation("DialogActions")>] member this.DialogActions (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "DialogActions" (html.text x) |> this.AddAttr
     [<CustomOperation("DialogActions")>] member this.DialogActions (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "DialogActions" (html.text x) |> this.AddAttr
@@ -1005,11 +1005,11 @@ type MudDialogInstanceBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micros
     static member create () = MudDialogInstanceBuilder<'FunBlazorGeneric>().CreateNode()
     [<CustomOperation("Options")>] member this.Options (_: FunBlazorBuilder<'FunBlazorGeneric>, x: MudBlazor.DialogOptions) = "Options" => x |> this.AddAttr
     [<CustomOperation("Title")>] member this.Title (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "Title" => x |> this.AddAttr
-    [<CustomOperation("TitleContent")>] member this.TitleContent (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "TitleContent" nodes |> this.AddAttr
+    [<CustomOperation("TitleContent")>] member this.TitleContent (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "TitleContent" (html.fragment nodes) |> this.AddAttr
     [<CustomOperation("TitleContent")>] member this.TitleContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "TitleContent" (html.text x) |> this.AddAttr
     [<CustomOperation("TitleContent")>] member this.TitleContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "TitleContent" (html.text x) |> this.AddAttr
     [<CustomOperation("TitleContent")>] member this.TitleContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "TitleContent" (html.text x) |> this.AddAttr
-    [<CustomOperation("Content")>] member this.Content (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "Content" nodes |> this.AddAttr
+    [<CustomOperation("Content")>] member this.Content (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "Content" (html.fragment nodes) |> this.AddAttr
     [<CustomOperation("Content")>] member this.Content (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "Content" (html.text x) |> this.AddAttr
     [<CustomOperation("Content")>] member this.Content (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "Content" (html.text x) |> this.AddAttr
     [<CustomOperation("Content")>] member this.Content (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "Content" (html.text x) |> this.AddAttr
@@ -1079,7 +1079,7 @@ type MudExpansionPanelBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micros
     static member create (x: string) = MudExpansionPanelBuilder<'FunBlazorGeneric>(x).CreateNode()
     static member create (x: Bolero.Node list) = MudExpansionPanelBuilder<'FunBlazorGeneric>(x).CreateNode()
     [<CustomOperation("MaxHeight")>] member this.MaxHeight (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Nullable<System.Int32>) = "MaxHeight" => x |> this.AddAttr
-    [<CustomOperation("TitleContent")>] member this.TitleContent (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "TitleContent" nodes |> this.AddAttr
+    [<CustomOperation("TitleContent")>] member this.TitleContent (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "TitleContent" (html.fragment nodes) |> this.AddAttr
     [<CustomOperation("TitleContent")>] member this.TitleContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "TitleContent" (html.text x) |> this.AddAttr
     [<CustomOperation("TitleContent")>] member this.TitleContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "TitleContent" (html.text x) |> this.AddAttr
     [<CustomOperation("TitleContent")>] member this.TitleContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "TitleContent" (html.text x) |> this.AddAttr
@@ -1205,7 +1205,7 @@ type MudInputControlBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsof
     new (x: Bolero.Node list) as this = MudInputControlBuilder<'FunBlazorGeneric>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.fragment) |> this.AddAttr |> ignore
     static member create (x: string) = MudInputControlBuilder<'FunBlazorGeneric>(x).CreateNode()
     static member create (x: Bolero.Node list) = MudInputControlBuilder<'FunBlazorGeneric>(x).CreateNode()
-    [<CustomOperation("InputContent")>] member this.InputContent (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "InputContent" nodes |> this.AddAttr
+    [<CustomOperation("InputContent")>] member this.InputContent (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "InputContent" (html.fragment nodes) |> this.AddAttr
     [<CustomOperation("InputContent")>] member this.InputContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "InputContent" (html.text x) |> this.AddAttr
     [<CustomOperation("InputContent")>] member this.InputContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "InputContent" (html.text x) |> this.AddAttr
     [<CustomOperation("InputContent")>] member this.InputContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "InputContent" (html.text x) |> this.AddAttr
@@ -1302,7 +1302,7 @@ type MudListItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.As
     [<CustomOperation("InitiallyExpanded")>] member this.InitiallyExpanded (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Boolean) = "InitiallyExpanded" => x |> this.AddAttr
     [<CustomOperation("CommandParameter")>] member this.CommandParameter (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Object) = "CommandParameter" => x |> this.AddAttr
     [<CustomOperation("Command")>] member this.Command (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Windows.Input.ICommand) = "Command" => x |> this.AddAttr
-    [<CustomOperation("NestedList")>] member this.NestedList (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "NestedList" nodes |> this.AddAttr
+    [<CustomOperation("NestedList")>] member this.NestedList (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "NestedList" (html.fragment nodes) |> this.AddAttr
     [<CustomOperation("NestedList")>] member this.NestedList (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "NestedList" (html.text x) |> this.AddAttr
     [<CustomOperation("NestedList")>] member this.NestedList (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "NestedList" (html.text x) |> this.AddAttr
     [<CustomOperation("NestedList")>] member this.NestedList (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "NestedList" (html.text x) |> this.AddAttr
@@ -1340,7 +1340,7 @@ type MudMenuBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNet
     [<CustomOperation("MaxHeight")>] member this.MaxHeight (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Nullable<System.Int32>) = "MaxHeight" => x |> this.AddAttr
     [<CustomOperation("PositionAtCursor")>] member this.PositionAtCursor (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Boolean) = "PositionAtCursor" => x |> this.AddAttr
     [<CustomOperation("PositionAtCurser")>] member this.PositionAtCurser (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Boolean) = "PositionAtCurser" => x |> this.AddAttr
-    [<CustomOperation("ActivatorContent")>] member this.ActivatorContent (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ActivatorContent" nodes |> this.AddAttr
+    [<CustomOperation("ActivatorContent")>] member this.ActivatorContent (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ActivatorContent" (html.fragment nodes) |> this.AddAttr
     [<CustomOperation("ActivatorContent")>] member this.ActivatorContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ActivatorContent" (html.text x) |> this.AddAttr
     [<CustomOperation("ActivatorContent")>] member this.ActivatorContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ActivatorContent" (html.text x) |> this.AddAttr
     [<CustomOperation("ActivatorContent")>] member this.ActivatorContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ActivatorContent" (html.text x) |> this.AddAttr
@@ -1381,27 +1381,27 @@ type MudMessageBoxBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     inherit MudComponentBaseBuilder<'FunBlazorGeneric>()
     static member create () = MudMessageBoxBuilder<'FunBlazorGeneric>().CreateNode()
     [<CustomOperation("Title")>] member this.Title (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "Title" => x |> this.AddAttr
-    [<CustomOperation("TitleContent")>] member this.TitleContent (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "TitleContent" nodes |> this.AddAttr
+    [<CustomOperation("TitleContent")>] member this.TitleContent (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "TitleContent" (html.fragment nodes) |> this.AddAttr
     [<CustomOperation("TitleContent")>] member this.TitleContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "TitleContent" (html.text x) |> this.AddAttr
     [<CustomOperation("TitleContent")>] member this.TitleContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "TitleContent" (html.text x) |> this.AddAttr
     [<CustomOperation("TitleContent")>] member this.TitleContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "TitleContent" (html.text x) |> this.AddAttr
     [<CustomOperation("Message")>] member this.Message (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "Message" => x |> this.AddAttr
-    [<CustomOperation("MessageContent")>] member this.MessageContent (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "MessageContent" nodes |> this.AddAttr
+    [<CustomOperation("MessageContent")>] member this.MessageContent (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "MessageContent" (html.fragment nodes) |> this.AddAttr
     [<CustomOperation("MessageContent")>] member this.MessageContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "MessageContent" (html.text x) |> this.AddAttr
     [<CustomOperation("MessageContent")>] member this.MessageContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "MessageContent" (html.text x) |> this.AddAttr
     [<CustomOperation("MessageContent")>] member this.MessageContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "MessageContent" (html.text x) |> this.AddAttr
     [<CustomOperation("CancelText")>] member this.CancelText (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "CancelText" => x |> this.AddAttr
-    [<CustomOperation("CancelButton")>] member this.CancelButton (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "CancelButton" nodes |> this.AddAttr
+    [<CustomOperation("CancelButton")>] member this.CancelButton (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "CancelButton" (html.fragment nodes) |> this.AddAttr
     [<CustomOperation("CancelButton")>] member this.CancelButton (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "CancelButton" (html.text x) |> this.AddAttr
     [<CustomOperation("CancelButton")>] member this.CancelButton (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "CancelButton" (html.text x) |> this.AddAttr
     [<CustomOperation("CancelButton")>] member this.CancelButton (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "CancelButton" (html.text x) |> this.AddAttr
     [<CustomOperation("NoText")>] member this.NoText (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "NoText" => x |> this.AddAttr
-    [<CustomOperation("NoButton")>] member this.NoButton (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "NoButton" nodes |> this.AddAttr
+    [<CustomOperation("NoButton")>] member this.NoButton (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "NoButton" (html.fragment nodes) |> this.AddAttr
     [<CustomOperation("NoButton")>] member this.NoButton (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "NoButton" (html.text x) |> this.AddAttr
     [<CustomOperation("NoButton")>] member this.NoButton (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "NoButton" (html.text x) |> this.AddAttr
     [<CustomOperation("NoButton")>] member this.NoButton (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "NoButton" (html.text x) |> this.AddAttr
     [<CustomOperation("YesText")>] member this.YesText (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "YesText" => x |> this.AddAttr
-    [<CustomOperation("YesButton")>] member this.YesButton (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "YesButton" nodes |> this.AddAttr
+    [<CustomOperation("YesButton")>] member this.YesButton (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "YesButton" (html.fragment nodes) |> this.AddAttr
     [<CustomOperation("YesButton")>] member this.YesButton (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "YesButton" (html.text x) |> this.AddAttr
     [<CustomOperation("YesButton")>] member this.YesButton (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "YesButton" (html.text x) |> this.AddAttr
     [<CustomOperation("YesButton")>] member this.YesButton (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "YesButton" (html.text x) |> this.AddAttr
@@ -1722,29 +1722,29 @@ type MudTableBaseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.A
     [<CustomOperation("RowsPerPageChanged")>] member this.RowsPerPageChanged (_: FunBlazorBuilder<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<System.Int32> "RowsPerPageChanged" (fun e -> fn e)) |> this.AddAttr
     [<CustomOperation("CurrentPage")>] member this.CurrentPage (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Int32) = "CurrentPage" => x |> this.AddAttr
     [<CustomOperation("MultiSelection")>] member this.MultiSelection (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Boolean) = "MultiSelection" => x |> this.AddAttr
-    [<CustomOperation("ToolBarContent")>] member this.ToolBarContent (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ToolBarContent" nodes |> this.AddAttr
+    [<CustomOperation("ToolBarContent")>] member this.ToolBarContent (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ToolBarContent" (html.fragment nodes) |> this.AddAttr
     [<CustomOperation("ToolBarContent")>] member this.ToolBarContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ToolBarContent" (html.text x) |> this.AddAttr
     [<CustomOperation("ToolBarContent")>] member this.ToolBarContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ToolBarContent" (html.text x) |> this.AddAttr
     [<CustomOperation("ToolBarContent")>] member this.ToolBarContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ToolBarContent" (html.text x) |> this.AddAttr
     [<CustomOperation("Loading")>] member this.Loading (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Boolean) = "Loading" => x |> this.AddAttr
     [<CustomOperation("LoadingProgressColor")>] member this.LoadingProgressColor (_: FunBlazorBuilder<'FunBlazorGeneric>, x: MudBlazor.Color) = "LoadingProgressColor" => x |> this.AddAttr
-    [<CustomOperation("HeaderContent")>] member this.HeaderContent (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "HeaderContent" nodes |> this.AddAttr
+    [<CustomOperation("HeaderContent")>] member this.HeaderContent (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "HeaderContent" (html.fragment nodes) |> this.AddAttr
     [<CustomOperation("HeaderContent")>] member this.HeaderContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "HeaderContent" (html.text x) |> this.AddAttr
     [<CustomOperation("HeaderContent")>] member this.HeaderContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "HeaderContent" (html.text x) |> this.AddAttr
     [<CustomOperation("HeaderContent")>] member this.HeaderContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "HeaderContent" (html.text x) |> this.AddAttr
     [<CustomOperation("CustomHeader")>] member this.CustomHeader (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Boolean) = "CustomHeader" => x |> this.AddAttr
     [<CustomOperation("HeaderClass")>] member this.HeaderClass (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "HeaderClass" => x |> this.AddAttr
-    [<CustomOperation("FooterContent")>] member this.FooterContent (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "FooterContent" nodes |> this.AddAttr
+    [<CustomOperation("FooterContent")>] member this.FooterContent (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "FooterContent" (html.fragment nodes) |> this.AddAttr
     [<CustomOperation("FooterContent")>] member this.FooterContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "FooterContent" (html.text x) |> this.AddAttr
     [<CustomOperation("FooterContent")>] member this.FooterContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "FooterContent" (html.text x) |> this.AddAttr
     [<CustomOperation("FooterContent")>] member this.FooterContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "FooterContent" (html.text x) |> this.AddAttr
     [<CustomOperation("CustomFooter")>] member this.CustomFooter (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Boolean) = "CustomFooter" => x |> this.AddAttr
     [<CustomOperation("FooterClass")>] member this.FooterClass (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "FooterClass" => x |> this.AddAttr
-    [<CustomOperation("ColGroup")>] member this.ColGroup (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ColGroup" nodes |> this.AddAttr
+    [<CustomOperation("ColGroup")>] member this.ColGroup (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ColGroup" (html.fragment nodes) |> this.AddAttr
     [<CustomOperation("ColGroup")>] member this.ColGroup (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ColGroup" (html.text x) |> this.AddAttr
     [<CustomOperation("ColGroup")>] member this.ColGroup (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ColGroup" (html.text x) |> this.AddAttr
     [<CustomOperation("ColGroup")>] member this.ColGroup (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ColGroup" (html.text x) |> this.AddAttr
-    [<CustomOperation("PagerContent")>] member this.PagerContent (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "PagerContent" nodes |> this.AddAttr
+    [<CustomOperation("PagerContent")>] member this.PagerContent (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "PagerContent" (html.fragment nodes) |> this.AddAttr
     [<CustomOperation("PagerContent")>] member this.PagerContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "PagerContent" (html.text x) |> this.AddAttr
     [<CustomOperation("PagerContent")>] member this.PagerContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "PagerContent" (html.text x) |> this.AddAttr
     [<CustomOperation("PagerContent")>] member this.PagerContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "PagerContent" (html.text x) |> this.AddAttr
@@ -1777,11 +1777,11 @@ type MudTableBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.A
     [<CustomOperation("RowEditingTemplate")>] member this.RowEditingTemplate (_: FunBlazorBuilder<'FunBlazorGeneric>, render: 'T -> Bolero.Node) = Bolero.Html.attr.fragmentWith "RowEditingTemplate" (fun x -> render x) |> this.AddAttr
     [<CustomOperation("Columns")>] member this.Columns (_: FunBlazorBuilder<'FunBlazorGeneric>, render: 'T -> Bolero.Node) = Bolero.Html.attr.fragmentWith "Columns" (fun x -> render x) |> this.AddAttr
     [<CustomOperation("QuickColumns")>] member this.QuickColumns (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "QuickColumns" => x |> this.AddAttr
-    [<CustomOperation("NoRecordsContent")>] member this.NoRecordsContent (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "NoRecordsContent" nodes |> this.AddAttr
+    [<CustomOperation("NoRecordsContent")>] member this.NoRecordsContent (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "NoRecordsContent" (html.fragment nodes) |> this.AddAttr
     [<CustomOperation("NoRecordsContent")>] member this.NoRecordsContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "NoRecordsContent" (html.text x) |> this.AddAttr
     [<CustomOperation("NoRecordsContent")>] member this.NoRecordsContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "NoRecordsContent" (html.text x) |> this.AddAttr
     [<CustomOperation("NoRecordsContent")>] member this.NoRecordsContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "NoRecordsContent" (html.text x) |> this.AddAttr
-    [<CustomOperation("LoadingContent")>] member this.LoadingContent (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "LoadingContent" nodes |> this.AddAttr
+    [<CustomOperation("LoadingContent")>] member this.LoadingContent (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "LoadingContent" (html.fragment nodes) |> this.AddAttr
     [<CustomOperation("LoadingContent")>] member this.LoadingContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "LoadingContent" (html.text x) |> this.AddAttr
     [<CustomOperation("LoadingContent")>] member this.LoadingContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "LoadingContent" (html.text x) |> this.AddAttr
     [<CustomOperation("LoadingContent")>] member this.LoadingContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "LoadingContent" (html.text x) |> this.AddAttr
@@ -1994,15 +1994,15 @@ type MudTimelineItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsof
     [<CustomOperation("Elevation")>] member this.Elevation (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Int32) = "Elevation" => x |> this.AddAttr
     [<CustomOperation("TimelineAlign")>] member this.TimelineAlign (_: FunBlazorBuilder<'FunBlazorGeneric>, x: MudBlazor.TimelineAlign) = "TimelineAlign" => x |> this.AddAttr
     [<CustomOperation("HideDot")>] member this.HideDot (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Boolean) = "HideDot" => x |> this.AddAttr
-    [<CustomOperation("ItemOpposite")>] member this.ItemOpposite (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ItemOpposite" nodes |> this.AddAttr
+    [<CustomOperation("ItemOpposite")>] member this.ItemOpposite (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ItemOpposite" (html.fragment nodes) |> this.AddAttr
     [<CustomOperation("ItemOpposite")>] member this.ItemOpposite (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ItemOpposite" (html.text x) |> this.AddAttr
     [<CustomOperation("ItemOpposite")>] member this.ItemOpposite (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ItemOpposite" (html.text x) |> this.AddAttr
     [<CustomOperation("ItemOpposite")>] member this.ItemOpposite (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ItemOpposite" (html.text x) |> this.AddAttr
-    [<CustomOperation("ItemContent")>] member this.ItemContent (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ItemContent" nodes |> this.AddAttr
+    [<CustomOperation("ItemContent")>] member this.ItemContent (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ItemContent" (html.fragment nodes) |> this.AddAttr
     [<CustomOperation("ItemContent")>] member this.ItemContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ItemContent" (html.text x) |> this.AddAttr
     [<CustomOperation("ItemContent")>] member this.ItemContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ItemContent" (html.text x) |> this.AddAttr
     [<CustomOperation("ItemContent")>] member this.ItemContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ItemContent" (html.text x) |> this.AddAttr
-    [<CustomOperation("ItemDot")>] member this.ItemDot (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ItemDot" nodes |> this.AddAttr
+    [<CustomOperation("ItemDot")>] member this.ItemDot (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ItemDot" (html.fragment nodes) |> this.AddAttr
     [<CustomOperation("ItemDot")>] member this.ItemDot (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ItemDot" (html.text x) |> this.AddAttr
     [<CustomOperation("ItemDot")>] member this.ItemDot (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ItemDot" (html.text x) |> this.AddAttr
     [<CustomOperation("ItemDot")>] member this.ItemDot (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ItemDot" (html.text x) |> this.AddAttr
@@ -2021,7 +2021,7 @@ type MudTooltipBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.Asp
     [<CustomOperation("Delay'")>] member this.Delay' (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Double) = "Delay" => x |> this.AddAttr
     [<CustomOperation("Delayed")>] member this.Delayed (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Double) = "Delayed" => x |> this.AddAttr
     [<CustomOperation("Placement")>] member this.Placement (_: FunBlazorBuilder<'FunBlazorGeneric>, x: MudBlazor.Placement) = "Placement" => x |> this.AddAttr
-    [<CustomOperation("TooltipContent")>] member this.TooltipContent (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "TooltipContent" nodes |> this.AddAttr
+    [<CustomOperation("TooltipContent")>] member this.TooltipContent (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "TooltipContent" (html.fragment nodes) |> this.AddAttr
     [<CustomOperation("TooltipContent")>] member this.TooltipContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "TooltipContent" (html.text x) |> this.AddAttr
     [<CustomOperation("TooltipContent")>] member this.TooltipContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "TooltipContent" (html.text x) |> this.AddAttr
     [<CustomOperation("TooltipContent")>] member this.TooltipContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "TooltipContent" (html.text x) |> this.AddAttr
@@ -2072,7 +2072,7 @@ type MudTreeViewItemBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Micr
     [<CustomOperation("EndTextTypo")>] member this.EndTextTypo (_: FunBlazorBuilder<'FunBlazorGeneric>, x: MudBlazor.Typo) = "EndTextTypo" => x |> this.AddAttr
     [<CustomOperation("EndTextClass")>] member this.EndTextClass (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "EndTextClass" => x |> this.AddAttr
     [<CustomOperation("Disabled")>] member this.Disabled (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Boolean) = "Disabled" => x |> this.AddAttr
-    [<CustomOperation("Content")>] member this.Content (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "Content" nodes |> this.AddAttr
+    [<CustomOperation("Content")>] member this.Content (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "Content" (html.fragment nodes) |> this.AddAttr
     [<CustomOperation("Content")>] member this.Content (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "Content" (html.text x) |> this.AddAttr
     [<CustomOperation("Content")>] member this.Content (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "Content" (html.text x) |> this.AddAttr
     [<CustomOperation("Content")>] member this.Content (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "Content" (html.text x) |> this.AddAttr
@@ -2302,7 +2302,7 @@ type MudPickerContentBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microso
     static member create (x: string) = MudPickerContentBuilder<'FunBlazorGeneric>(x).CreateNode()
     static member create (x: Bolero.Node list) = MudPickerContentBuilder<'FunBlazorGeneric>(x).CreateNode()
     [<CustomOperation("Classes")>] member this.Classes (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string list) = attr.classes x |> this.AddAttr
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" nodes |> this.AddAttr
+    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (html.fragment nodes) |> this.AddAttr
     [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> this.AddAttr
     [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> this.AddAttr
     [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> this.AddAttr
@@ -2319,7 +2319,7 @@ type MudPickerToolbarBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microso
     [<CustomOperation("DisableToolbar")>] member this.DisableToolbar (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Boolean) = "DisableToolbar" => x |> this.AddAttr
     [<CustomOperation("Orientation")>] member this.Orientation (_: FunBlazorBuilder<'FunBlazorGeneric>, x: MudBlazor.Orientation) = "Orientation" => x |> this.AddAttr
     [<CustomOperation("Color")>] member this.Color (_: FunBlazorBuilder<'FunBlazorGeneric>, x: MudBlazor.Color) = "Color" => x |> this.AddAttr
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" nodes |> this.AddAttr
+    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (html.fragment nodes) |> this.AddAttr
     [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> this.AddAttr
     [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> this.AddAttr
     [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> this.AddAttr
