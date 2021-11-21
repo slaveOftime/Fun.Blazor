@@ -15,7 +15,7 @@ let webTypes = Assembly.LoadFile(__SOURCE_DIRECTORY__ + "/bin/Debug/net5.0/Micro
 let componentsDsl = Generator.generateCode "Microsoft.AspNetCore.Components" opens componentTypes
 let webDsl = Generator.generateCode "Microsoft.AspNetCore.Components.Web" opens webTypes
 
-let dslPath = __SOURCE_DIRECTORY__ + "\..\Fun.Blazor.Feliz\Components.Dsl.fs"
+let dslPath = __SOURCE_DIRECTORY__ + "\..\Fun.Blazor.Feliz\Dsl.AspNetCore.fs"
 let dslCode = 
     $"""{componentsDsl.internalCode}
 
@@ -39,7 +39,7 @@ File.WriteAllText(dslPath, dslCode)
 let componentsDslCE = CEGenerator.generateCode "Microsoft.AspNetCore.Components" opens componentTypes
 let webDslCE = CEGenerator.generateCode "Microsoft.AspNetCore.Components.Web" opens webTypes
 
-let dslCEPath = __SOURCE_DIRECTORY__ + "\..\Fun.Blazor\Components.DslCE.fs"
+let dslCEPath = __SOURCE_DIRECTORY__ + "\..\Fun.Blazor\DslCE.AspNetCore.fs"
 let dslCECode = 
     $"""{componentsDslCE.internalCode}
 
