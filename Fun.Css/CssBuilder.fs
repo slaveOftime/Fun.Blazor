@@ -13,7 +13,8 @@ type CssBuilder() as this =
 
     member this.Yield _ = this
     member _.Run _ = sb.ToString()
-
+    member _.For (_, _) = this
+    member _.Zero () = this
     
     member _.AddCss (key, value) = mk key value
 
@@ -473,14 +474,19 @@ type CssBuilder() as this =
     [<CustomOperation("textDecorationLineInheritFromParent")>] member _.textDecorationLineInheritFromParent _ = mk "text-decoration-line" "inherit"
 
     [<CustomOperation("textDecoration")>] member _.textDecoration(_, line: ITextDecorationLine) = mk "text-decoration" (asString line)
-    member _.textDecoration(bottom: ITextDecorationLine, top: ITextDecorationLine) =
+
+    [<CustomOperation("textDecoration")>]
+    member _.textDecoration(_, bottom: ITextDecorationLine, top: ITextDecorationLine) =
         mk "text-decoration" (asString bottom + " " + asString top)
+
     [<CustomOperation("textDecoration")>] 
-    member _.textDecoration(bottom: ITextDecorationLine, top: ITextDecorationLine, style: ITextDecoration) =
+    member _.textDecoration(_, bottom: ITextDecorationLine, top: ITextDecorationLine, style: ITextDecoration) =
         mk "text-decoration" ((asString bottom) + " " + (asString top) + " " + (asString style))
+
     [<CustomOperation("textDecoration")>] 
-    member _.textDecoration(bottom: ITextDecorationLine, top: ITextDecorationLine, style: ITextDecoration, color: string) =
+    member _.textDecoration(_, bottom: ITextDecorationLine, top: ITextDecorationLine, style: ITextDecoration, color: string) =
         mk "text-decoration" ((asString bottom) + " " + (asString top) + " " + (asString style) + " " + color)
+
     [<CustomOperation("textDecorationNone")>] member _.textDecorationNone _ = mk "text-decoration" "none"
     [<CustomOperation("textDecorationUnderline")>] member _.textDecorationUnderline _ = mk "text-decoration" "underline"
     [<CustomOperation("textDecorationOverline")>] member _.textDecorationOverline _ = mk "text-decoration" "overline"
@@ -618,8 +624,9 @@ type CssBuilder() as this =
 
     /// Sets the distance between the borders of adjacent <table> cells. Applies only when border-collapse is separate.
     [<CustomOperation("borderSpacing")>] 
-    member _.borderSpacing(horizontal: ICssUnit, ?vertical: ICssUnit) =
+    member _.borderSpacing(_, horizontal: ICssUnit, ?vertical: ICssUnit) =
         mk "border-spacing" (asString horizontal + " " + asString vertical)
+
     /// Sets this property to its default value
     [<CustomOperation("borderSpacingInitial")>] member _.borderSpacingInitial _ = mk "border-spacing" "initial"
     /// Inherits this property from its parent element.
@@ -637,7 +644,7 @@ type CssBuilder() as this =
     ///
     /// The image can be left to its natural size, stretched, or constrained to fit the available space.
     [<CustomOperation("backgroundSize")>] 
-    member _.backgroundSize(width: ICssUnit, height: ICssUnit) =
+    member _.backgroundSize(_, width: ICssUnit, height: ICssUnit) =
         mk "background-size" (
             asString width
             + " " +
@@ -804,14 +811,17 @@ type CssBuilder() as this =
 
     /// Sets the line style for all four sides of an element's border.
     [<CustomOperation("borderStyle")>] member _.borderStyle(_, style: IBorderStyle) = mk "border-style" (asString style)
+
     /// Sets the line style for all four sides of an element's border.
     [<CustomOperation("borderStyle")>] 
-    member _.borderStyle(vertical: IBorderStyle, horizontal: IBorderStyle)  =
+    member _.borderStyle(_, vertical: IBorderStyle, horizontal: IBorderStyle)  =
         mk "border-style" (asString vertical + " " + asString horizontal)
     /// Sets the line style for all four sides of an element's border.
+
     [<CustomOperation("borderStyle")>] 
-    member _.borderStyle(top: IBorderStyle, right: IBorderStyle, bottom: IBorderStyle, left: IBorderStyle) =
+    member _.borderStyle(_, top: IBorderStyle, right: IBorderStyle, bottom: IBorderStyle, left: IBorderStyle) =
         mk "border-style" ((asString top) + " " + (asString right) + " " + (asString bottom) + " " +  (asString left))
+
     /// Specifies a dotted border.
     ///
     /// See example https://www.w3schools.com/cssref/playit.asp?filename=playcss_border-style&preval=dotted
@@ -1024,12 +1034,8 @@ type CssBuilder() as this =
     /// Inherits this property from its parent element.
     [<CustomOperation("backgroundClipInheritFromParent")>] member _.backgroundClipInheritFromParent _ = mk "background-clip" "inherit"
 
-    [<CustomOperation("transform")>] 
-    member _.transform(transformation: ITransformProperty) =
-        mk "transform" (asString transformation)
-    [<CustomOperation("transform")>] 
-    member _.transform(transformations: ITransformProperty list) =
-        mk "transform" (String.concat " " (transformations |> List.map asString))
+    [<CustomOperation("transform")>] member _.transform(_, transformation: ITransformProperty) = mk "transform" (asString transformation)
+    [<CustomOperation("transform")>] member _.transform(_, transformations: ITransformProperty list) = mk "transform" (String.concat " " (transformations |> List.map asString))
 
     /// Defines that there should be no transformation.
     [<CustomOperation("transformNone")>] member _.transformNone _ = mk "transform" "none"
@@ -1314,33 +1320,38 @@ type CssBuilder() as this =
     /// Sets the margin area on all four sides of an element. It is a shorthand for margin-top, margin-right,
     /// margin-bottom, and margin-left.
     [<CustomOperation("margin")>] member _.margin(_, value: ICssUnit) = mk "margin" (asString value)
+
     /// Sets the margin area on the vertical and horizontal axis.
-    member _.margin(vertical: int, horizonal: int) =
+    [<CustomOperation("margin")>]
+    member _.margin(_, vertical: int, horizonal: int) =
         mk "margin" (
             (asString vertical) + "px " +
             (asString horizonal) + "px"
         )
+
     /// Sets the margin area on the vertical and horizontal axis.
     [<CustomOperation("margin")>] 
-    member _.margin(vertical: ICssUnit, horizonal: ICssUnit) =
+    member _.margin(_, vertical: ICssUnit, horizonal: ICssUnit) =
         mk "margin" (
             (asString vertical) + " " +
             (asString horizonal)
         )
+
     /// Sets the margin area on all four sides of an element. It is a shorthand for margin-top, margin-right,
     /// margin-bottom, and margin-left.
     [<CustomOperation("margin")>] 
-    member _.margin(top: int, right: int, bottom: int, left: int) =
+    member _.margin(_, top: int, right: int, bottom: int, left: int) =
         mk "margin" (
             (asString top) + "px " +
             (asString right) + "px " +
             (asString bottom) + "px " +
             (asString left) + "px"
         )
+
     /// Sets the margin area on all four sides of an element. It is a shorthand for margin-top, margin-right,
     /// margin-bottom, and margin-left.
     [<CustomOperation("margin")>] 
-    member _.margin(top: ICssUnit, right: ICssUnit, bottom: ICssUnit, left: ICssUnit) =
+    member _.margin(_, top: ICssUnit, right: ICssUnit, bottom: ICssUnit, left: ICssUnit) =
         mk "margin" (
             (asString top) + " " +
             (asString right) + " " +
@@ -1379,9 +1390,10 @@ type CssBuilder() as this =
     /// Sets the padding area on all four sides of an element. It is a shorthand for padding-top,
     /// padding-right, padding-bottom, and padding-left.
     [<CustomOperation("padding")>] member _.padding(_, value: ICssUnit) = mk "padding" (asString value)
+
     /// Sets the padding area for vertical and horizontal axis.
     [<CustomOperation("padding")>] 
-    member _.padding(vertical: ICssUnit, horizontal: ICssUnit) =
+    member _.padding(_, vertical: ICssUnit, horizontal: ICssUnit) =
         mk "padding" (
             (asString vertical) + " " +
             (asString horizontal)
@@ -1389,13 +1401,14 @@ type CssBuilder() as this =
     /// Sets the padding area on all four sides of an element. It is a shorthand for padding-top,
     /// padding-right, padding-bottom, and padding-left.
     [<CustomOperation("padding")>] 
-    member _.padding(top: ICssUnit, right: ICssUnit, bottom: ICssUnit, left: ICssUnit) =
+    member _.padding(_, top: ICssUnit, right: ICssUnit, bottom: ICssUnit, left: ICssUnit) =
         mk "padding" (
             (asString top) + " " +
             (asString right) + " " +
             (asString bottom) + " " +
             (asString left)
         )
+
     /// Sets the height of the padding area on the bottom of an element.
     [<CustomOperation("paddingBottom")>] member _.paddingBottom(_, value: int) = mk "padding-bottom" (asString value + "px")
     /// Sets the height of the padding area on the bottom of an element.
@@ -1441,9 +1454,10 @@ type CssBuilder() as this =
     /// gridTemplateColumns: [100; 200; 100]
     /// ```
     [<CustomOperation("gridTemplateColumns")>] 
-    member _.gridTemplateColumns(value: int seq) =
+    member _.gridTemplateColumns(_, value: int seq) =
         let addPixels = fun x -> x + "px"
         mk "grid-template-columns" (value |> Seq.map (asString >> addPixels) |> String.concat " ")
+
     /// Sets the width of each individual grid column.
     ///
     /// **CSS**
@@ -1455,7 +1469,7 @@ type CssBuilder() as this =
     /// gridTemplateColumns: [length.fr 1; length.fr 1; length.fr 2]
     /// ```
     [<CustomOperation("gridTemplateColumns")>] 
-    member _.gridTemplateColumns(value: ICssUnit seq) =
+    member _.gridTemplateColumns(_, value: ICssUnit seq) =
         mk "grid-template-columns" (value |> Seq.map asString |> String.concat " ")
     /// Sets the width of each individual grid column. It can also name the lines between them
     /// There can be multiple names for the same line
@@ -1475,7 +1489,7 @@ type CssBuilder() as this =
     /// ]
     /// ```
     [<CustomOperation("gridTemplateColumns")>] 
-    member _.gridTemplateColumns(value: IGridTemplateItem seq) =
+    member _.gridTemplateColumns(_, value: IGridTemplateItem seq) =
         mk "grid-template-columns" (value |> Seq.map asString |> String.concat " ")
     /// Sets the width of a number of grid columns to the defined width, as well as naming the lines between them
     ///
@@ -1488,7 +1502,7 @@ type CssBuilder() as this =
     /// style.gridTemplateColumns (3, length.fr 1, "col-start")
     /// ```
     [<CustomOperation("gridTemplateColumns")>] 
-    member _.gridTemplateColumns(count: int, size: ICssUnit, ?areaName: string) =
+    member _.gridTemplateColumns(_, count: int, size: ICssUnit, ?areaName: string) =
         let areaName = match areaName with Some n -> " [" + n + "]" | None -> ""
         mk "grid-template-columns" (
             "repeat("+
@@ -1506,7 +1520,7 @@ type CssBuilder() as this =
     /// style.gridTemplateRows [100, 200, 100]
     /// ```
     [<CustomOperation("gridTemplateRows")>] 
-    member _.gridTemplateRows(value: int seq) =
+    member _.gridTemplateRows(_, value: int seq) =
         let addPixels = (fun x -> x + "px")
         mk "grid-template-rows" (value |> Seq.map (asString >> addPixels) |> String.concat " ")
     /// Sets the width of a number of grid rows to the defined width
@@ -1520,7 +1534,7 @@ type CssBuilder() as this =
     /// style.gridTemplateRows [length.fr 1; length.percent 10; length.px 250; length.auto]
     /// ```
     [<CustomOperation("gridTemplateRows")>] 
-    member _.gridTemplateRows(value: ICssUnit seq) =
+    member _.gridTemplateRows(_, value: ICssUnit seq) =
         mk "grid-template-rows" (value |> Seq.map asString |> String.concat " ")
     /// Sets the width of a number of grid rows to the defined width as well as naming the spaces between
     ///
@@ -1539,7 +1553,7 @@ type CssBuilder() as this =
     /// ]
     /// ```
     [<CustomOperation("gridTemplateRows")>] 
-    member _.gridTemplateRows(value: IGridTemplateItem seq) =
+    member _.gridTemplateRows(_, value: IGridTemplateItem seq) =
         mk "grid-template-rows" (value |> Seq.map asString |> String.concat " ")
     /// Sets the width of a number of grid rows to the defined width
     ///
@@ -1552,7 +1566,7 @@ type CssBuilder() as this =
     /// style.gridTemplateRows (3, length.percent 10)
     /// ```
     [<CustomOperation("gridTemplateRows")>] 
-    member _.gridTemplateRows(count: int, size: ICssUnit, ?areaName: string) =
+    member _.gridTemplateRows(_, count: int, size: ICssUnit, ?areaName: string) =
         let areaName = match areaName with Some n -> " [" + n + "]" | None -> ""
         mk "grid-template-rows" (
             "repeat("+
@@ -1577,7 +1591,7 @@ type CssBuilder() as this =
     /// ]
     /// ```
     [<CustomOperation("gridTemplateAreas")>] 
-    member _.gridTemplateAreas(value: string list list) =
+    member _.gridTemplateAreas(_, value: string list list) =
         let wrapLine = (fun x -> "'" + x + "'")
         let lines = List.map (String.concat " " >> wrapLine) value
         let block = String.concat "\n" lines
@@ -1600,7 +1614,7 @@ type CssBuilder() as this =
     /// |]
     /// ```
     [<CustomOperation("gridTemplateAreas")>] 
-    member _.gridTemplateAreas(value: string[][]) =
+    member _.gridTemplateAreas(_, value: string[][]) =
         let wrapLine = (fun x -> "'" + x + "'")
         let lines = Array.map (String.concat " " >> wrapLine) value
         let block = String.concat "\n" lines
@@ -1616,7 +1630,7 @@ type CssBuilder() as this =
     /// style.gridTemplateAreas ["first"; "second"; "third"; "fourth"]
     /// ```
     [<CustomOperation("gridTemplateAreas")>] 
-    member _.gridTemplateAreas(value: string seq) =
+    member _.gridTemplateAreas(_, value: string seq) =
         let block = String.concat " " value
         mk "grid-template-areas" ("'" + block + "'")
     /// Specifies the size of the grid lines. You can think of it like
@@ -1630,9 +1644,7 @@ type CssBuilder() as this =
     /// ```f#
     /// style.columnGap 10
     /// ```
-    [<CustomOperation("columnGap")>] 
-    member _.columnGap(value: int) =
-        mk "column-gap" (asString value + "px")
+    [<CustomOperation("columnGap")>] member _.columnGap(_, value: int) = mk "column-gap" (asString value + "px")
     /// Specifies the size of the grid lines. You can think of it like
     /// setting the width of the gutters between the columns.
     ///
@@ -1644,9 +1656,7 @@ type CssBuilder() as this =
     /// ```f#
     /// style.columnGap (length.em 1)
     /// ```
-    [<CustomOperation("columnGap")>] 
-    member _.columnGap(value: ICssUnit) =
-        mk "column-gap" (asString value)
+    [<CustomOperation("columnGap")>] member _.columnGap(_, value: ICssUnit) = mk "column-gap" (asString value)
     /// Specifies the size of the grid lines. You can think of it like
     /// setting the width of the gutters between the rows.
     ///
@@ -1658,9 +1668,7 @@ type CssBuilder() as this =
     /// ```f#
     /// style.rowGap 10
     /// ```
-    [<CustomOperation("rowGap")>] 
-    member _.rowGap(value: int) =
-        mk "row-gap" (asString value + "px")
+    [<CustomOperation("rowGap")>] member _.rowGap(_, value: int) = mk "row-gap" (asString value + "px")
     /// Specifies the size of the grid lines. You can think of it like
     /// setting the width of the gutters between the rows.
     ///
@@ -1672,9 +1680,7 @@ type CssBuilder() as this =
     /// ```f#
     /// style.rowGap (length.em 1)
     /// ```
-    [<CustomOperation("rowGap")>] 
-    member _.rowGap(value: ICssUnit) =
-        mk "row-gap" (asString value)
+    [<CustomOperation("rowGap")>] member _.rowGap(_, value: ICssUnit) = mk "row-gap" (asString value)
     /// Specifies the size of the grid lines. You can think of it like
     /// setting the width of the gutters between the rows/columns.
     ///
@@ -1689,13 +1695,13 @@ type CssBuilder() as this =
     /// style.gap (length.em 1, length.em 2)
     /// ```
     [<CustomOperation("gap")>] 
-    member _.gap(rowGap: ICssUnit, columnGap: ICssUnit) =
+    member _.gap(_, rowGap: ICssUnit, columnGap: ICssUnit) =
         mk "gap" (
             (asString rowGap) + " " +
             (asString columnGap)
         )
     [<CustomOperation("gap")>] 
-    member _.gap(rowColumnGap: ICssUnit) =
+    member _.gap(_, rowColumnGap: ICssUnit) =
         mk "gap" (
             (asString rowColumnGap) + " " +
             (asString rowColumnGap)
@@ -1719,7 +1725,7 @@ type CssBuilder() as this =
     /// style.gridColumnStart ("col", 2)
     /// ```
     [<CustomOperation("gridColumnStart")>] 
-    member _.gridColumnStart(value: string, ?count: int) =
+    member _.gridColumnStart(_, value: string, ?count: int) =
         mk "grid-column-start" (asString value + " " + (asString count))
     /// Sets where an item in the grid starts
     /// The value can be one of the following options:
@@ -1774,7 +1780,7 @@ type CssBuilder() as this =
     /// style.gridColumnEnd ("odd-col", 2)
     /// ```
     [<CustomOperation("gridColumnEnd")>]
-    member _.gridColumnEnd(value: string, ?count: int) =
+    member _.gridColumnEnd(_, value: string, ?count: int) =
         mk "grid-column-end" (asString value + " " + (asString count))
     /// Sets where an item in the grid ends
     /// The value can be one of the following options:
@@ -1826,9 +1832,7 @@ type CssBuilder() as this =
     /// ```f#
     /// style.gridRowStart ("col", 2)
     /// ```
-    [<CustomOperation("gridRowStart")>]
-    member _.gridRowStart(value: string, ?count: int) =
-        mk "grid-row-start" (asString value + " " + (asString count))
+    [<CustomOperation("gridRowStart")>] member _.gridRowStart(_, value: string, ?count: int) = mk "grid-row-start" (asString value + " " + (asString count))
     /// Sets where an item in the grid starts
     /// The value can be one of the following options:
     /// - a named line
@@ -1882,7 +1886,7 @@ type CssBuilder() as this =
     /// style.gridRowEnd ("odd-col", 2)
     /// ```
     [<CustomOperation("gridRowEnd")>]
-    member _.gridRowEnd(value: string, ?count: int) =
+    member _.gridRowEnd(_, value: string, ?count: int) =
         mk "grid-row-end" (asString value + " " + (asString count))
     /// Sets where an item in the grid ends
     /// The value can be one of the following options:
@@ -1937,9 +1941,7 @@ type CssBuilder() as this =
     /// ```f#
     /// style.gridColumn ("col-2", "col-4")
     /// ```
-    [<CustomOperation("gridColumn")>]
-    member _.gridColumn(start: string, end': string) =
-        mk "grid-column" (start + " / " + end')
+    [<CustomOperation("gridColumn")>] member _.gridColumn(_, start: string, end': string) = mk "grid-column" (start + " / " + end')
     /// Determines a grid item��s location within the grid by referring to specific grid lines.
     /// start is the line where the item begins, end' is the line where it ends.
     /// They can be one of the following options:
@@ -1959,9 +1961,7 @@ type CssBuilder() as this =
     /// ```f#
     /// style.gridColumn (1, 3)
     /// ```
-    [<CustomOperation("gridColumn")>]
-    member _.gridColumn(start: int, end': int) =
-        mk "grid-column" (asString start + " / " + asString end')
+    [<CustomOperation("gridColumn")>] member _.gridColumn(_, start: int, end': int) = mk "grid-column" (asString start + " / " + asString end')
     /// Determines a grid item��s location within the grid by referring to specific grid lines.
     /// start is the line where the item begins, end' is the line where it ends.
     /// They can be one of the following options:
@@ -1981,9 +1981,7 @@ type CssBuilder() as this =
     /// ```f#
     /// style.gridColumn (gridColumn.span 2, gridColumn.span 3)
     /// ```
-    [<CustomOperation("gridColumn")>]
-    member _.gridColumn(start: IGridSpan, end': IGridSpan) =
-        mk "grid-column" (asString start + " / " + asString end')
+    [<CustomOperation("gridColumn")>] member _.gridColumn(_, start: IGridSpan, end': IGridSpan) = mk "grid-column" (asString start + " / " + asString end')
     /// Determines a grid item��s location within the grid by referring to specific grid lines.
     /// start is the line where the item begins, end' is the line where it ends.
     /// They can be one of the following options:
@@ -2003,9 +2001,7 @@ type CssBuilder() as this =
     /// ```f#
     /// style.gridRow ("row-2", "row-4")
     /// ```
-    [<CustomOperation("gridRow")>]
-    member _.gridRow(start: string, end': string) =
-        mk "grid-row" (start + " / " + end')
+    [<CustomOperation("gridRow")>] member _.gridRow(_, start: string, end': string) = mk "grid-row" (start + " / " + end')
     /// Determines a grid item��s location within the grid by referring to specific grid lines.
     /// start is the line where the item begins, end' is the line where it ends.
     /// They can be one of the following options:
@@ -2025,9 +2021,7 @@ type CssBuilder() as this =
     /// ```f#
     /// style.gridRow (2, 4)
     /// ```
-    [<CustomOperation("gridRow")>]
-    member _.gridRow(start: int, end': int) =
-        mk "grid-row" (asString start + " / " + asString end')
+    [<CustomOperation("gridRow")>] member _.gridRow(_, start: int, end': int) = mk "grid-row" (asString start + " / " + asString end')
     /// Determines a grid item��s location within the grid by referring to specific grid lines.
     /// start is the line where the item begins, end' is the line where it ends.
     /// They can be one of the following options:
@@ -2047,9 +2041,7 @@ type CssBuilder() as this =
     /// ```f#
     /// style.gridRow (gridRow.span 2, gridRow.span 3)
     /// ```
-    [<CustomOperation("gridRow")>]
-    member _.gridRow(start: IGridSpan, end': IGridSpan) =
-        mk "grid-row" (asString start + " / " + asString end')
+    [<CustomOperation("gridRow")>] member _.gridRow(_, start: IGridSpan, end': IGridSpan) = mk "grid-row" (asString start + " / " + asString end')
     /// Sets the named grid area the item is placed in
     ///
     /// **CSS**
@@ -2060,9 +2052,7 @@ type CssBuilder() as this =
     /// ```f#
     /// style.gridArea "header"
     /// ```
-    [<CustomOperation("gridArea")>]
-    member _.gridArea(value: string) =
-        mk "grid-area" (asString value)
+    [<CustomOperation("gridArea")>] member _.gridArea(_, value: string) =  mk "grid-area" (asString value)
     /// Shorthand for `grid-template-areas`, `grid-template-columns` and `grid-template-rows`.
     ///
     /// Documentation: https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template
@@ -2079,57 +2069,55 @@ type CssBuilder() as this =
     ///                      "[main-top] 'b b b' 1fr  [main-bottom] " +
     ///                                "/ auto 1fr auto"
     /// ```
-    [<CustomOperation("gridTemplate")>]
-    member _.gridTemplate(value: string) = mk "grid-template" (asString value)
-    [<CustomOperation("transition")>]
-    member _.transition(value: string) = mk "transition" value
+    [<CustomOperation("gridTemplate")>] member _.gridTemplate(_, value: string) = mk "grid-template" (asString value)
+    [<CustomOperation("transition")>] member _.transition(_, value: string) = mk "transition" value
     /// Sets the length of time a transition animation should take to complete. By default, the
     /// value is 0s, meaning that no animation will occur.
     [<CustomOperation("transitionDuration")>]
-    member _.transitionDuration(timespan: TimeSpan) = mk "transition-duration" (asString timespan.TotalMilliseconds + "ms")
+    member _.transitionDuration(_, timespan: TimeSpan) = mk "transition-duration" (asString timespan.TotalMilliseconds + "ms")
     /// Sets the length of time a transition animation should take to complete. By default, the
     /// value is 0s, meaning that no animation will occur.
     [<CustomOperation("transitionDurationSeconds")>]
-    member _.transitionDurationSeconds(n: float) = mk "transition-duration" (asString n + "s")
+    member _.transitionDurationSeconds(_, n: float) = mk "transition-duration" (asString n + "s")
     /// Sets the length of time a transition animation should take to complete. By default, the
     /// value is 0s, meaning that no animation will occur.
     [<CustomOperation("transitionDurationMilliseconds")>]
-    member _.transitionDurationMilliseconds(n: float) = mk "transition-duration" (asString n + "ms")
+    member _.transitionDurationMilliseconds(_, n: float) = mk "transition-duration" (asString n + "ms")
     /// Sets the length of time a transition animation should take to complete. By default, the
     /// value is 0s, meaning that no animation will occur.
     [<CustomOperation("transitionDurationSeconds")>]
-    member _.transitionDurationSeconds(n: int) =  mk "transition-duration" (asString n + "s")
+    member _.transitionDurationSeconds(_, n: int) =  mk "transition-duration" (asString n + "s")
     /// Sets the length of time a transition animation should take to complete. By default, the
     /// value is 0s, meaning that no animation will occur.
     [<CustomOperation("transitionDurationMilliseconds")>]
-    member _.transitionDurationMilliseconds(n: int) = mk "transition-duration" (asString n + "ms")
+    member _.transitionDurationMilliseconds(_, n: int) = mk "transition-duration" (asString n + "ms")
     /// Specifies the duration to wait before starting a property's transition effect when its value changes.
     [<CustomOperation("transitionDelay")>]
-    member _.transitionDelay(timespan: TimeSpan) = mk "transition-delay" (asString timespan.TotalMilliseconds + "ms")
+    member _.transitionDelay(_, timespan: TimeSpan) = mk "transition-delay" (asString timespan.TotalMilliseconds + "ms")
     /// Specifies the duration to wait before starting a property's transition effect when its value changes.
     [<CustomOperation("transitionDelaySeconds")>]
-    member _.transitionDelaySeconds(n: float) = mk "transition-delay" (asString n + "s")
+    member _.transitionDelaySeconds(_, n: float) = mk "transition-delay" (asString n + "s")
     /// Specifies the duration to wait before starting a property's transition effect when its value changes.
     [<CustomOperation("transitionDelayMilliseconds")>]
-    member _.transitionDelayMilliseconds(n: float) = mk "transition-delay" (asString n + "ms")
+    member _.transitionDelayMilliseconds(_, n: float) = mk "transition-delay" (asString n + "ms")
     /// Specifies the duration to wait before starting a property's transition effect when its value changes.
     [<CustomOperation("transitionDelaySeconds")>]
-    member _.transitionDelaySeconds(n: int) = mk "transition-delay" (asString n + "s")
+    member _.transitionDelaySeconds(_, n: int) = mk "transition-delay" (asString n + "s")
     /// Specifies the duration to wait before starting a property's transition effect when its value changes.
     [<CustomOperation("transitionDelayMilliseconds")>]
-    member _.transitionDelayMilliseconds(n: int) =  mk "transition-delay" (asString n + "ms")
+    member _.transitionDelayMilliseconds(_, n: int) =  mk "transition-delay" (asString n + "ms")
     /// Sets the CSS properties to which a transition effect should be applied.
     [<CustomOperation("transitionProperty")>]
-    member _.transitionProperty ([<ParamArray>] properties: ITransitionProperty[]) = mk "transition-property" (String.concat "," (properties |> Array.map asString))
+    member _.transitionProperty (_, [<ParamArray>] properties: ITransitionProperty[]) = mk "transition-property" (String.concat "," (properties |> Array.map asString))
     /// Sets the CSS properties to which a transition effect should be applied.
     [<CustomOperation("transitionProperty")>]
-    member _.transitionProperty (properties: ITransitionProperty list) = mk "transition-property" (String.concat "," (properties |> List.map asString))
+    member _.transitionProperty (_, properties: ITransitionProperty list) = mk "transition-property" (String.concat "," (properties |> List.map asString))
     /// Sets the CSS properties to which a transition effect should be applied.
     [<CustomOperation("transitionProperty")>]
-    member _.transitionProperty (property: ITransitionProperty) = mk "transition-property" (asString property)
+    member _.transitionProperty (_, property: ITransitionProperty) = mk "transition-property" (asString property)
     /// Sets the CSS properties to which a transition effect should be applied.
     [<CustomOperation("transitionProperty")>]
-    member _.transitionProperty (property: string) = mk "transition-property" property
+    member _.transitionProperty (_, property: string) = mk "transition-property" property
 
     /// Sets the size of the font.
     ///
@@ -2183,7 +2171,7 @@ type CssBuilder() as this =
     /// Sets an element's bottom border. It sets the values of border-bottom-width,
     /// border-bottom-style and border-bottom-color.
     [<CustomOperation("borderBottom")>]
-    member _.borderBottom(width: ICssUnit, style: IBorderStyle, color: string) =
+    member _.borderBottom(_, width: ICssUnit, style: IBorderStyle, color: string) =
         mk "border-bottom" (
             (asString width) + " " +
             (asString style) + " " +
@@ -2200,9 +2188,7 @@ type CssBuilder() as this =
     ///  - An outline does not take up space
     ///  - An outline may be non-rectangular
     ///
-    [<CustomOperation("outlineOffset")>]
-    member _.outlineOffset (offset:int) =
-        mk "outline-width" (asString offset + "px")
+    [<CustomOperation("outlineOffset")>] member _.outlineOffset (_, offset:int) = mk "outline-width" (asString offset + "px")
 
     /// The outline-offset property adds space between an outline and the edge or border of an element.
     ///
@@ -2214,9 +2200,7 @@ type CssBuilder() as this =
     ///  - An outline does not take up space
     ///  - An outline may be non-rectangular
     ///
-    [<CustomOperation("outlineOffset")>]
-    member _.outlineOffset (offset: ICssUnit) =
-        mk "outline-width" (asString offset)
+    [<CustomOperation("outlineOffset")>] member _.outlineOffset (_, offset: ICssUnit) = mk "outline-width" (asString offset)
 
     /// An outline is a line that is drawn around elements (outside the borders) to make the element "stand out".
     ///
@@ -2224,12 +2208,11 @@ type CssBuilder() as this =
 
     /// **Note**: Always declare the outline-style property before the outline-color property. An element must have an outline before you change the color of it.
     [<CustomOperation("outlineColor")>]
-    member _.outlineColor (color: string) =
-        mk "outline-color" color
+    member _.outlineColor (_, color: string) = mk "outline-color" color
 
     /// Set an element's left border.
     [<CustomOperation("borderLeft")>]
-    member _.borderLeft(width: ICssUnit, style: IBorderStyle, color: string) =
+    member _.borderLeft(_, width: ICssUnit, style: IBorderStyle, color: string) =
         mk "border-left" (
             (asString width) + " " +
             (asString style) + " " +
@@ -2237,7 +2220,7 @@ type CssBuilder() as this =
         )
     /// Set an element's right border.
     [<CustomOperation("borderRight")>]
-    member _.borderRight(width: ICssUnit, style: IBorderStyle, color: string) =
+    member _.borderRight(_, width: ICssUnit, style: IBorderStyle, color: string) =
         mk "border-right" (
             (asString width) + " " +
             (asString style) + " " +
@@ -2245,7 +2228,7 @@ type CssBuilder() as this =
         )
     /// Set an element's top border.
     [<CustomOperation("borderTop")>]
-    member _.borderTop(width: ICssUnit, style: IBorderStyle, color: string) =
+    member _.borderTop(_, width: ICssUnit, style: IBorderStyle, color: string) =
         mk "border-top" (
             (asString width) + " " +
             (asString style) + " " +
@@ -2294,7 +2277,8 @@ type CssBuilder() as this =
     /// Sets an element's border.
     ///
     /// It sets the values of border-width, border-style, and border-color.
-    member _.border(width: ICssUnit, style: IBorderStyle, color: string) =
+    [<CustomOperation("border")>]
+    member _.border(_, width: ICssUnit, style: IBorderStyle, color: string) =
         mk "border" (
             (asString width) + " " +
             (asString style) + " " +
@@ -2303,7 +2287,8 @@ type CssBuilder() as this =
     /// Sets an element's border.
     ///
     /// It sets the values of border-width, border-style, and border-color.
-    member _.border(width: string, style: IBorderStyle, color: string) =
+    [<CustomOperation("border")>]
+    member _.border(_, width: string, style: IBorderStyle, color: string) =
         mk "border" (
             width + " " +
             (asString style) + " " +
@@ -2321,12 +2306,12 @@ type CssBuilder() as this =
     [<CustomOperation("borderWidth")>] member _.borderWidth (_, width: int) = mk "border-width" (asString width + "px")
     /// Sets the width of an element's border.
     [<CustomOperation("borderWidth")>]
-    member _.borderWidth (top: ICssUnit, ?right: ICssUnit) =
+    member _.borderWidth (_, top: ICssUnit, ?right: ICssUnit) =
         mk "border-width" (
             asString top + (match right with Some x -> " " + asString x | None -> ""))
     /// Sets the width of an element's border.
     [<CustomOperation("borderWidth")>]
-    member _.borderWidth (top: ICssUnit, right: ICssUnit, bottom: ICssUnit, ?left: ICssUnit) =
+    member _.borderWidth (_, top: ICssUnit, right: ICssUnit, bottom: ICssUnit, ?left: ICssUnit) =
         mk "border-width" (
             (asString top) + " " +
             (asString right) + " " +
