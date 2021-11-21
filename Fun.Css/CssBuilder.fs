@@ -115,20 +115,20 @@ type CssBuilder() as this =
     [<CustomOperation("textJustifyInheritFromParent")>] member _.textJustifyInheritFromParent _ = mk "text-justify" "inherit"
 
     /// Sequences of whitespace will collapse into a single whitespace. Text will wrap when necessary. This is default.
-    [<CustomOperation(" whiteSpaceNormal")>] member _. whiteSpaceNormal _ = mk "white-space" "normal"
+    [<CustomOperation("whiteSpaceNormal")>] member _.whiteSpaceNormal _ = mk "white-space" "normal"
     /// Sequences of whitespace will collapse into a single whitespace. Text will never wrap to the next line.
     /// The text continues on the same line until a `<br> ` tag is encountered.
-    [<CustomOperation(" whiteSpaceNowrap")>] member _. whiteSpaceNowrap _ = mk "white-space" "nowrap"
+    [<CustomOperation("whiteSpaceNowrap")>] member _.whiteSpaceNowrap _ = mk "white-space" "nowrap"
     /// Whitespace is preserved by the browser. Text will only wrap on line breaks. Acts like the <pre> tag in HTML.
-    [<CustomOperation(" whiteSpacePre")>] member _. whiteSpacePre _ = mk "white-space" "pre"
+    [<CustomOperation("whiteSpacePre")>] member _.whiteSpacePre _ = mk "white-space" "pre"
     /// Sequences of whitespace will collapse into a single whitespace. Text will wrap when necessary, and on line breaks
-    [<CustomOperation(" whiteSpacePreLine")>] member _. whiteSpacePreLine _ = mk "white-space" "pre-line"
+    [<CustomOperation("whiteSpacePreLine")>] member _.whiteSpacePreLine _ = mk "white-space" "pre-line"
     /// Whitespace is preserved by the browser. Text will wrap when necessary, and on line breaks
-    [<CustomOperation(" whiteSpacePreWrap")>] member _. whiteSpacePreWrap _ = mk "white-space" "pre-wrap"
+    [<CustomOperation("whiteSpacePreWrap")>] member _.whiteSpacePreWrap _ = mk "white-space" "pre-wrap"
     /// Sets this property to its default value.
-    [<CustomOperation(" whiteSpaceInitial")>] member _. whiteSpaceInitial _ = mk "white-space" "initial"
+    [<CustomOperation("whiteSpaceInitial")>] member _.whiteSpaceInitial _ = mk "white-space" "initial"
     /// Inherits this property from its parent element.
-    [<CustomOperation(" whiteSpaceInheritFromParent")>] member _. whiteSpaceInheritFromParent _ = mk "white-space" "inherit"
+    [<CustomOperation("whiteSpaceInheritFromParent")>] member _.whiteSpaceInheritFromParent _ = mk "white-space" "inherit"
 
     /// Default value. Uses default line break rules.
     [<CustomOperation("wordbreakNormal")>] member _.wordbreakNormal _ = mk "word-break" "normal"
@@ -523,84 +523,84 @@ type CssBuilder() as this =
     /// Applies a blur effect to the elemeen. A larger value will create more blur.
     ///
     /// This overload takes an integer that represents a percentage from 0 to 100.
-    [<CustomOperation("filterBlur")>] member _.filterBlur(_, value: int) = mk "filter" ("blur(" + ((asString value) + "%)"))
+    [<CustomOperation("filterBlur")>] member _.filterBlur(_, value: int) = mk "filter" ("blur("+ ((asString value) + "%)"))
     /// Applies a blur effect to the elemeen. A larger value will create more blur.
     ///
     /// This overload takes a floating number that goes from 0 to 1,
-    [<CustomOperation("filterBlur")>] member _.filterBlur(_, value: double) = mk "filter" ("blur(" + ((asString value) + ")"))
+    [<CustomOperation("filterBlur")>] member _.filterBlur(_, value: double) = mk "filter" ("blur("+ ((asString value) + ")"))
     /// Adjusts the brightness of the elemeen
     ///
     /// This overload takes an integer that represents a percentage from 0 to 100.
     ///
     /// Values over 100% will provide brighter results.
-    [<CustomOperation("filterBrightness")>] member _.filterBrightness(_, value: int) = mk "filter" ("brightness(" + ((asString value) + "%)"))
+    [<CustomOperation("filterBrightness")>] member _.filterBrightness(_, value: int) = mk "filter" ("brightness("+ ((asString value) + "%)"))
     /// Adjusts the brightness of the elemeen. A larger value will create more blur.
     ///
     /// This overload takes a floating number that goes from 0 to 1,
-    [<CustomOperation("filterBrightness")>] member _.filterBrightness(_, value: double) = mk "filter" ("brightness(" + ((asString value) + ")"))
+    [<CustomOperation("filterBrightness")>] member _.filterBrightness(_, value: double) = mk "filter" ("brightness("+ ((asString value) + ")"))
     /// Adjusts the contrast of the element.
     ///
     /// This overload takes an integer that represents a percentage from 0 to 100.
-    [<CustomOperation("filterContrast")>] member _.filterContrast(_, value: int) = mk "filter" ("contrast(" + ((asString value) + "%)"))
+    [<CustomOperation("filterContrast")>] member _.filterContrast(_, value: int) = mk "filter" ("contrast("+ ((asString value) + "%)"))
     /// Adjusts the contrast of the element. A larger value will create more contrast.
     ///
     /// This overload takes a floating number that goes from 0 to 1
-    [<CustomOperation("filterContrast")>] member _.filterContrast(_, value: double) = mk "filter" ("contrast(" + ((asString value) + ")"))
+    [<CustomOperation("filterContrast")>] member _.filterContrast(_, value: double) = mk "filter" ("contrast("+ ((asString value) + ")"))
     /// Applies a drop shadow effect.
-    [<CustomOperation("filterDropShadow")>] member _.filterDropShadow(_, horizontalOffset: int, verticalOffset: int, blur: int, spread: int,  color: string) = mk "filter" ("drop-shadow(" + (asString horizontalOffset) + "px " + (asString verticalOffset) + "px " + (asString blur) + "px " + (asString spread) + "px " + color + ")")
+    [<CustomOperation("filterDropShadow")>] member _.filterDropShadow(_, horizontalOffset: int, verticalOffset: int, blur: int, spread: int,  color: string) = mk "filter" ("drop-shadow("+ (asString horizontalOffset) + "px " + (asString verticalOffset) + "px " + (asString blur) + "px " + (asString spread) + "px " + color + ")")
     /// Applies a drop shadow effect.
-    [<CustomOperation("filterDropShadow")>] member _.filterDropShadow(_, horizontalOffset: int, verticalOffset: int, blur: int, color: string) = mk "filter" ("drop-shadow(" + (asString horizontalOffset) + "px " + (asString verticalOffset) + "px " + (asString blur) + "px " + color + ")")
+    [<CustomOperation("filterDropShadow")>] member _.filterDropShadow(_, horizontalOffset: int, verticalOffset: int, blur: int, color: string) = mk "filter" ("drop-shadow("+ (asString horizontalOffset) + "px " + (asString verticalOffset) + "px " + (asString blur) + "px " + color + ")")
     /// Applies a drop shadow effect.
-    [<CustomOperation("filterDropShadow")>] member _.filterDropShadow(_, horizontalOffset: int, verticalOffset: int, color: string) = mk "filter" ("drop-shadow(" + (asString horizontalOffset) + "px " + (asString verticalOffset) + "px " + color + ")")
+    [<CustomOperation("filterDropShadow")>] member _.filterDropShadow(_, horizontalOffset: int, verticalOffset: int, color: string) = mk "filter" ("drop-shadow("+ (asString horizontalOffset) + "px " + (asString verticalOffset) + "px " + color + ")")
     /// Converts the image to grayscale
     ///
     /// This overload takes an integer that represents a percentage from 0 to 100.
-    [<CustomOperation("filterGrayscale")>] member _.filterGrayscale(_, value: int) = mk "filter" ("grayscale(" + ((asString value) + "%)"))
+    [<CustomOperation("filterGrayscale")>] member _.filterGrayscale(_, value: int) = mk "filter" ("grayscale("+ ((asString value) + "%)"))
     /// Converts the image to grayscale
     ///
     /// This overload takes a floating number that goes from 0 to 1
-    [<CustomOperation("filterGrayscale")>] member _.filterGrayscale(_, value: double) = mk "filter" ("grayscale(" + ((asString value) + ")"))
+    [<CustomOperation("filterGrayscale")>] member _.filterGrayscale(_, value: double) = mk "filter" ("grayscale("+ ((asString value) + ")"))
     /// Applies a hue rotation on the image. The value defines the number of degrees around the color circle the image
     /// samples will be adjusted. 0deg is default, and represents the original image.
     ///
     /// **Note**: Maximum value is 360
-    [<CustomOperation("filterHueRotate")>] member _.filterHueRotate(_, degrees: int) = mk "filter" ("hue-rotate(" + (asString degrees) + "deg)")
+    [<CustomOperation("filterHueRotate")>] member _.filterHueRotate(_, degrees: int) = mk "filter" ("hue-rotate("+ (asString degrees) + "deg)")
     /// Inverts the element.
     ///
     /// This overload takes an integer that represents a percentage from 0 to 100.
-    [<CustomOperation("filterInvert")>] member _.filterInvert(_, value: int) = mk "filter" ("invert(" + ((asString value) + "%)"))
+    [<CustomOperation("filterInvert")>] member _.filterInvert(_, value: int) = mk "filter" ("invert("+ ((asString value) + "%)"))
     /// Inverts the element.
     ///
     /// This overload takes a floating number that goes from 0 to 1
-    [<CustomOperation("filterInvert")>] member _.filterInvert(_, value: double) = mk "filter" ("invert(" + ((asString value) + ")"))
+    [<CustomOperation("filterInvert")>] member _.filterInvert(_, value: double) = mk "filter" ("invert("+ ((asString value) + ")"))
     /// Sets the opacity of the element.
     ///
     /// This overload takes an integer that represents a percentage from 0 to 100.
-    [<CustomOperation("filterOpacity")>] member _.filterOpacity(_, value: int) = mk "filter" ("opacity(" + ((asString value) + "%)"))
+    [<CustomOperation("filterOpacity")>] member _.filterOpacity(_, value: int) = mk "filter" ("opacity("+ ((asString value) + "%)"))
     /// Sets the opacity of the element.
     ///
     /// This overload takes a floating number that goes from 0 to 1
-    [<CustomOperation("filterOpacity")>] member _.filterOpacity(_, value: double) = mk "filter" ("opacity(" + ((asString value) + ")"))
+    [<CustomOperation("filterOpacity")>] member _.filterOpacity(_, value: double) = mk "filter" ("opacity("+ ((asString value) + ")"))
     /// Sets the saturation of the element.
     ///
     /// This overload takes an integer that represents a percentage from 0 to 100.
-    [<CustomOperation("filterSaturate")>] member _.filterSaturate(_, value: int) = mk "filter" ("saturate(" + ((asString value) + "%)"))
+    [<CustomOperation("filterSaturate")>] member _.filterSaturate(_, value: int) = mk "filter" ("saturate("+ ((asString value) + "%)"))
     /// Sets the saturation of the element.
     ///
     /// This overload takes a floating number that goes from 0 to 1
-    [<CustomOperation("filterSaturate")>] member _.filterSaturate(_, value: double) = mk "filter" ("saturate(" + ((asString value) + ")"))
+    [<CustomOperation("filterSaturate")>] member _.filterSaturate(_, value: double) = mk "filter" ("saturate("+ ((asString value) + ")"))
     /// Applies Sepia filter to the element.
     ///
     /// This overload takes an integer that represents a percentage from 0 to 100.
-    [<CustomOperation("filterSepia")>] member _.filterSepia(_, value: int) = mk "filter" ("sepia(" + ((asString value) + "%)"))
+    [<CustomOperation("filterSepia")>] member _.filterSepia(_, value: int) = mk "filter" ("sepia("+ ((asString value) + "%)"))
     /// Applies Sepia filter to the element.
     ///
     /// This overload takes a floating number that goes from 0 to 1
-    [<CustomOperation("filterSepia")>] member _.filterSepia(_, value: double) = mk "filter" ("sepia(" + ((asString value) + ")"))
+    [<CustomOperation("filterSepia")>] member _.filterSepia(_, value: double) = mk "filter" ("sepia("+ ((asString value) + ")"))
     /// The url() function takes the location of an XML file that specifies an SVG filter, and may include an anchor to a specific filter element.
     ///
     /// Example: `filter: url(svg-url#element-id)`
-    [<CustomOperation("filterUrl")>] member _.filterUrl(_, value: string) = mk "filter" ("url(" + value + ")")
+    [<CustomOperation("filterUrl")>] member _.filterUrl(_, value: string) = mk "filter" ("url("+ value + ")")
     /// Sets this property to its default value.
     [<CustomOperation("filterInitial")>] member _.filterInitial _ = mk "filter" "initial"
     /// Inherits this property from its parent element.
@@ -762,7 +762,7 @@ type CssBuilder() as this =
     /// Specifies a animation effect with a slow start and end (equivalent to cubic-bezier(0.42,0,0.58,1))
     [<CustomOperation("animationTimingFunctionEaseInOut")>] member _.animationTimingFunctionEaseInOut _ = mk "animation-timing-function" "ease-in-out"
     /// Define your own values in the cubic-bezier function. Possible values are numeric values from 0 to 1
-    [<CustomOperation("animationTimingFunctionCubicBezier")>] member _.animationTimingFunctionCubicBezier(_, n1: float, n2: float, n3: float, n4: float) = mk "animation-timing-function" ("cubic-bezier(" + (asString n1) + "," + (asString n2) + "," + (asString n3) + ", " + (asString n4) + ")")
+    [<CustomOperation("animationTimingFunctionCubicBezier")>] member _.animationTimingFunctionCubicBezier(_, n1: float, n2: float, n3: float, n4: float) = mk "animation-timing-function" ("cubic-bezier("+ (asString n1) + "," + (asString n2) + "," + (asString n3) + ", " + (asString n4) + ")")
     /// Sets this property to its default value
     [<CustomOperation("animationTimingFunctionInitial")>] member _.animationTimingFunctionInitial _ = mk "animation-timing-function" "initial"
     /// Inherits this property from its parent element.
@@ -783,7 +783,7 @@ type CssBuilder() as this =
     /// Equivalent to steps(1, end)
     [<CustomOperation("transitionTimingFunctionStepEnd")>] member _.transitionTimingFunctionStepEnd _ = mk "transition-timing-function" "step-end"
     /// Define your own values in the cubic-bezier function. Possible values are numeric values from 0 to 1
-    [<CustomOperation("transitionTimingFunctionCubicBezier")>] member _.transitionTimingFunctionCubicBezier(_, n1: float, n2: float, n3: float, n4: float) = mk "transition-timing-function" ("cubic-bezier(" + (asString n1) + "," + (asString n2) + "," + (asString n3) + ", " + (asString n4) + ")")
+    [<CustomOperation("transitionTimingFunctionCubicBezier")>] member _.transitionTimingFunctionCubicBezier(_, n1: float, n2: float, n3: float, n4: float) = mk "transition-timing-function" ("cubic-bezier("+ (asString n1) + "," + (asString n2) + "," + (asString n3) + ", " + (asString n4) + ")")
     /// Sets this property to its default value
     [<CustomOperation("transitionTimingFunctionInitial")>] member _.transitionTimingFunctionInitial _ = mk "transition-timing-function" "initial"
     /// Inherits this property from its parent element.
@@ -1034,69 +1034,69 @@ type CssBuilder() as this =
     /// Defines that there should be no transformation.
     [<CustomOperation("transformNone")>] member _.transformNone _ = mk "transform" "none"
     /// Defines a 2D transformation, using a matrix of six values.
-    [<CustomOperation("transformMatrix")>] member _.transformMatrix(_, x1: int, y1: int, z1: int, x2: int, y2: int, z2: int) = mk "transform" ("matrix(" + (asString x1) + "," + (asString y1) + "," + (asString z1) + "," + (asString x2) + "," + (asString y2) + ", " + (asString z2) + ")")
+    [<CustomOperation("transformMatrix")>] member _.transformMatrix(_, x1: int, y1: int, z1: int, x2: int, y2: int, z2: int) = mk "transform" ("matrix("+ (asString x1) + "," + (asString y1) + "," + (asString z1) + "," + (asString x2) + "," + (asString y2) + ", " + (asString z2) + ")")
     /// Defines a 2D translation.
-    [<CustomOperation("transformTranslate")>] member _.transformTranslate(_, x: int, y: int) = mk "transform" ("translate(" + (asString x) + "px," + (asString y) + "px)")
+    [<CustomOperation("transformTranslate")>] member _.transformTranslate(_, x: int, y: int) = mk "transform" ("translate("+ (asString x) + "px," + (asString y) + "px)")
     /// Defines a 2D translation.
-    [<CustomOperation("transformTranslate")>] member _.transformTranslate(_, x: ICssUnit, y: ICssUnit) = mk "transform" ("translate(" + (asString x) + ", " + (asString y) + ")")
+    [<CustomOperation("transformTranslate")>] member _.transformTranslate(_, x: ICssUnit, y: ICssUnit) = mk "transform" ("translate("+ (asString x) + ", " + (asString y) + ")")
     /// Defines a 3D translation.
-    [<CustomOperation("transformTranslate3D")>] member _.transformTranslate3D(_, x: int, y: int, z: int) = mk "transform" ("translate3d(" + (asString x) + "px," + (asString y) + "px," + (asString z) + "px)")
+    [<CustomOperation("transformTranslate3D")>] member _.transformTranslate3D(_, x: int, y: int, z: int) = mk "transform" ("translate3d("+ (asString x) + "px," + (asString y) + "px," + (asString z) + "px)")
     /// Defines a 3D translation.
-    [<CustomOperation("transformTranslate3D")>] member _.transformTranslate3D(_, x: ICssUnit, y: ICssUnit, z: ICssUnit) = mk "transform" ("translate3d(" + (asString x) + "," + (asString y) + ", " + (asString z) + ")")
+    [<CustomOperation("transformTranslate3D")>] member _.transformTranslate3D(_, x: ICssUnit, y: ICssUnit, z: ICssUnit) = mk "transform" ("translate3d("+ (asString x) + "," + (asString y) + ", " + (asString z) + ")")
     /// Defines a translation, using only the value for the X-axis.
-    [<CustomOperation("transformTranslateX")>] member _.transformTranslateX(_, x: int) = mk "transform" ("translateX(" + (asString x) + "px)")
+    [<CustomOperation("transformTranslateX")>] member _.transformTranslateX(_, x: int) = mk "transform" ("translateX("+ (asString x) + "px)")
     /// Defines a translation, using only the value for the X-axis.
-    [<CustomOperation("transformTranslateX")>] member _.transformTranslateX(_, x: ICssUnit) = mk "transform" ("translateX(" + (asString x) + ")")
+    [<CustomOperation("transformTranslateX")>] member _.transformTranslateX(_, x: ICssUnit) = mk "transform" ("translateX("+ (asString x) + ")")
     /// Defines a translation, using only the value for the Y-axis
-    [<CustomOperation("transformTranslateY")>] member _.transformTranslateY(_, y: int) = mk "transform" ("translateY(" + (asString y) + "px)")
+    [<CustomOperation("transformTranslateY")>] member _.transformTranslateY(_, y: int) = mk "transform" ("translateY("+ (asString y) + "px)")
     /// Defines a translation, using only the value for the Y-axis
-    [<CustomOperation("transformTranslateY")>] member _.transformTranslateY(_, y: ICssUnit) = mk "transform" ("translateY(" + (asString y) + ")")
+    [<CustomOperation("transformTranslateY")>] member _.transformTranslateY(_, y: ICssUnit) = mk "transform" ("translateY("+ (asString y) + ")")
     /// Defines a 3D translation, using only the value for the Z-axis
     /// Defines a 3D translation, using only the value for the Z-axis
-    [<CustomOperation("transformTranslateZ")>] member _.transformTranslateZ(_, z: ICssUnit) = mk "transform" ("translateZ(" + (asString z) + ")")
+    [<CustomOperation("transformTranslateZ")>] member _.transformTranslateZ(_, z: ICssUnit) = mk "transform" ("translateZ("+ (asString z) + ")")
     /// Defines a 2D scale transformation.
-    [<CustomOperation("transformScale")>] member _.transformScale(_, x: int, y: int) = mk "transform" ("scale(" + (asString x) + ", " + (asString y) + ")")
+    [<CustomOperation("transformScale")>] member _.transformScale(_, x: int, y: int) = mk "transform" ("scale("+ (asString x) + ", " + (asString y) + ")")
     /// Defines a scale transformation.
     /// Defines a scale transformation.
-    [<CustomOperation("transformScale")>] member _.transformScale(_, n: float) = mk "transform" ("scale(" + (asString n) + ")")
+    [<CustomOperation("transformScale")>] member _.transformScale(_, n: float) = mk "transform" ("scale("+ (asString n) + ")")
     /// Defines a 3D scale transformation
-    [<CustomOperation("transformScale3D")>] member _.transformScale3D(_, x: int, y: int, z: int) = mk "transform" ("scale3d(" + (asString x) + "," + (asString y) + ", " + (asString z) + ")")
+    [<CustomOperation("transformScale3D")>] member _.transformScale3D(_, x: int, y: int, z: int) = mk "transform" ("scale3d("+ (asString x) + "," + (asString y) + ", " + (asString z) + ")")
     /// Defines a scale transformation by giving a value for the X-axis.
-    [<CustomOperation("transformScaleX")>] member _.transformScaleX(_, x: int) = mk "transform" ("scaleX(" + (asString x) + ")")
+    [<CustomOperation("transformScaleX")>] member _.transformScaleX(_, x: int) = mk "transform" ("scaleX("+ (asString x) + ")")
     /// Defines a scale transformation by giving a value for the Y-axis.
-    [<CustomOperation("transformScaleY")>] member _.transformScaleY(_, y: int) = mk "transform" ("scaleY(" + (asString y) + ")")
+    [<CustomOperation("transformScaleY")>] member _.transformScaleY(_, y: int) = mk "transform" ("scaleY("+ (asString y) + ")")
     /// Defines a 3D translation, using only the value for the Z-axis
-    [<CustomOperation("transformScaleZ")>] member _.transformScaleZ(_, z: int) = mk "transform" ("scaleZ(" + (asString z) + ")")
+    [<CustomOperation("transformScaleZ")>] member _.transformScaleZ(_, z: int) = mk "transform" ("scaleZ("+ (asString z) + ")")
     /// Defines a 2D rotation, the angle is specified in the parameter.
-    [<CustomOperation("transformRotate")>] member _.transformRotate(_, deg: int) = mk "transform" ("rotate(" + (asString deg) + "deg)")
+    [<CustomOperation("transformRotate")>] member _.transformRotate(_, deg: int) = mk "transform" ("rotate("+ (asString deg) + "deg)")
     /// Defines a 2D rotation, the angle is specified in the parameter.
-    [<CustomOperation("transformRotate")>] member _.transformRotate(_, deg: float) = mk "transform" ("rotate(" + (asString deg) + "deg)")
+    [<CustomOperation("transformRotate")>] member _.transformRotate(_, deg: float) = mk "transform" ("rotate("+ (asString deg) + "deg)")
     /// Defines a 3D rotation along the X-axis.
-    [<CustomOperation("transformRotateX")>] member _.transformRotateX(_, deg: float) = mk "transform" ("rotateX(" + (asString deg) + "deg)")
+    [<CustomOperation("transformRotateX")>] member _.transformRotateX(_, deg: float) = mk "transform" ("rotateX("+ (asString deg) + "deg)")
     /// Defines a 3D rotation along the X-axis.
-    [<CustomOperation("transformRotateX")>] member _.transformRotateX(_, deg: int) = mk "transform" ("rotateX(" + (asString deg) + "deg)")
+    [<CustomOperation("transformRotateX")>] member _.transformRotateX(_, deg: int) = mk "transform" ("rotateX("+ (asString deg) + "deg)")
     /// Defines a 3D rotation along the Y-axis
-    [<CustomOperation("transformRotateY")>] member _.transformRotateY(_, deg: float) = mk "transform" ("rotateY(" + (asString deg) + "deg)")
+    [<CustomOperation("transformRotateY")>] member _.transformRotateY(_, deg: float) = mk "transform" ("rotateY("+ (asString deg) + "deg)")
     /// Defines a 3D rotation along the Y-axis
-    [<CustomOperation("transformRotateY")>] member _.transformRotateY(_, deg: int) = mk "transform" ("rotateY(" + (asString deg) + "deg)")
+    [<CustomOperation("transformRotateY")>] member _.transformRotateY(_, deg: int) = mk "transform" ("rotateY("+ (asString deg) + "deg)")
     /// Defines a 3D rotation along the Z-axis
-    [<CustomOperation("transformRotateZ")>] member _.transformRotateZ(_, deg: float) = mk "transform" ("rotateZ(" + (asString deg) + "deg)")
+    [<CustomOperation("transformRotateZ")>] member _.transformRotateZ(_, deg: float) = mk "transform" ("rotateZ("+ (asString deg) + "deg)")
     /// Defines a 3D rotation along the Z-axis
-    [<CustomOperation("transformRotateZ")>] member _.transformRotateZ(_, deg: int) = mk "transform" ("rotateZ(" + (asString deg) + "deg)")
+    [<CustomOperation("transformRotateZ")>] member _.transformRotateZ(_, deg: int) = mk "transform" ("rotateZ("+ (asString deg) + "deg)")
     /// Defines a 2D skew transformation along the X- and the Y-axis.
-    [<CustomOperation("transformSkew")>] member _.transformSkew(_, xAngle: int, yAngle: int) = mk "transform" ("skew(" + (asString xAngle) + "deg," + (asString yAngle) + "deg)")
+    [<CustomOperation("transformSkew")>] member _.transformSkew(_, xAngle: int, yAngle: int) = mk "transform" ("skew("+ (asString xAngle) + "deg," + (asString yAngle) + "deg)")
     /// Defines a 2D skew transformation along the X- and the Y-axis.
-    [<CustomOperation("transformSkew")>] member _.transformSkew(_, xAngle: float, yAngle: float) = mk "transform" ("skew(" + (asString xAngle) + "deg," + (asString yAngle) + "deg)")
+    [<CustomOperation("transformSkew")>] member _.transformSkew(_, xAngle: float, yAngle: float) = mk "transform" ("skew("+ (asString xAngle) + "deg," + (asString yAngle) + "deg)")
     /// Defines a 2D skew transformation along the X-axis
-    [<CustomOperation("transformSkewX")>] member _.transformSkewX(_, xAngle: int) = mk "transform" ("skewX(" + (asString xAngle) + "deg)")
+    [<CustomOperation("transformSkewX")>] member _.transformSkewX(_, xAngle: int) = mk "transform" ("skewX("+ (asString xAngle) + "deg)")
     /// Defines a 2D skew transformation along the X-axis
-    [<CustomOperation("transformSkewX")>] member _.transformSkewX(_, xAngle: float) = mk "transform" ("skewX(" + (asString xAngle) + "deg)")
+    [<CustomOperation("transformSkewX")>] member _.transformSkewX(_, xAngle: float) = mk "transform" ("skewX("+ (asString xAngle) + "deg)")
     /// Defines a 2D skew transformation along the Y-axis
-    [<CustomOperation("transformSkewY")>] member _.transformSkewY(_, xAngle: int) = mk "transform" ("skewY(" + (asString xAngle) + "deg)")
+    [<CustomOperation("transformSkewY")>] member _.transformSkewY(_, xAngle: int) = mk "transform" ("skewY("+ (asString xAngle) + "deg)")
     /// Defines a 2D skew transformation along the Y-axis
-    [<CustomOperation("transformSkewY")>] member _.transformSkewY(_, xAngle: float) = mk "transform" ("skewY(" + (asString xAngle) + "deg)")
+    [<CustomOperation("transformSkewY")>] member _.transformSkewY(_, xAngle: float) = mk "transform" ("skewY("+ (asString xAngle) + "deg)")
     /// Defines a perspective view for a 3D transformed element
-    [<CustomOperation("transformPerspective")>] member _.transformPerspective(_, n: int) = mk "transform" ("perspective(" + (asString n) + ")")
+    [<CustomOperation("transformPerspective")>] member _.transformPerspective(_, n: int) = mk "transform" ("perspective("+ (asString n) + ")")
     /// Sets this property to its default value.
     [<CustomOperation("transformInitial")>] member _.transformInitial _ = mk "transform" "initial"
     /// Inherits this property from its parent element.
@@ -1491,7 +1491,7 @@ type CssBuilder() as this =
     member _.gridTemplateColumns(count: int, size: ICssUnit, ?areaName: string) =
         let areaName = match areaName with Some n -> " [" + n + "]" | None -> ""
         mk "grid-template-columns" (
-            "repeat(" +
+            "repeat("+
             (asString count) + ", " +
             (asString size) + areaName + ")"
         )
@@ -2403,11 +2403,11 @@ module color =
     /// Creates a color from components [hue](https://en.wikipedia.org/wiki/Hue), [saturation](https://en.wikipedia.org/wiki/Colorfulness) and [lightness](https://en.wikipedia.org/wiki/Lightness) where hue is a number that goes from 0 to 360 and both
     /// the `saturation` and `lightness` go from 0 to 100 as they are percentages.
     let hsl (hue: float, saturation: float, lightness: float) =
-        "hsl(" + (string hue) + "," + (string saturation) + "%," + (string lightness) + "%)"
+        "hsl("+ (string hue) + "," + (string saturation) + "%," + (string lightness) + "%)"
     let rgb (r: int, g: int, b: int) =
-        "rgb(" + (string r) + "," + (string g) + "," + (string b) + ")"
+        "rgb("+ (string r) + "," + (string g) + "," + (string b) + ")"
     let rgba (r: int, g: int, b: int, a: float) =
-        "rgba(" + (string r) + "," + (string g) + "," + (string b) + "," + (string a) + ")"
+        "rgba("+ (string r) + "," + (string g) + "," + (string b) + "," + (string a) + ")"
     let [<Literal>] indianRed = "#CD5C5C"
     let [<Literal>] lightCoral = "#F08080"
     let [<Literal>] salmon = "#FA8072"
@@ -2870,7 +2870,7 @@ type length =
     /// The browser calculates the length.
     static member auto : ICssUnit = newCssUnit "auto"
     /// calculated length, frequency, angle, time, percentage, number or integer
-    static member calc(value: string) : ICssUnit = newCssUnit ("calc(" + value + ")")
+    static member calc(value: string) : ICssUnit = newCssUnit ("calc("+ value + ")")
     /// Relative to width of the grid layout in correlation with the other fr's in the grid
     static member fr(value: int) : ICssUnit = newCssUnit (string value + "fr")
 
@@ -2990,7 +2990,7 @@ type transform =
     /// Defines a 2D transformation, using a matrix of six values.
     static member matrix(x1: int, y1: int, z1: int, x2: int, y2: int, z2: int) =
         newTransformProperty (
-            "matrix(" +
+            "matrix("+
             (asString x1) + "," +
             (asString y1) + "," +
             (asString z1) + "," +
@@ -3002,142 +3002,142 @@ type transform =
     /// Defines a 2D translation.
     static member translate(x: int, y: int) =
         newTransformProperty (
-            "translate(" + (asString x) + "px," + (asString y) + "px)"
+            "translate("+ (asString x) + "px," + (asString y) + "px)"
         )
     /// Defines a 2D translation.
     static member translate(x: ICssUnit, y: ICssUnit) =
         newTransformProperty (
-            "translate(" + (asString x) + "," + (asString y) + ")"
+            "translate("+ (asString x) + "," + (asString y) + ")"
         )
 
     /// Defines a 3D translation.
     static member translate3D(x: int, y: int, z: int) =
         newTransformProperty (
-            "translate3d(" + (asString x) + "px," + (asString y) + "px," + (asString z) + "px)"
+            "translate3d("+ (asString x) + "px," + (asString y) + "px," + (asString z) + "px)"
         )
     /// Defines a 3D translation.
     static member translate3D(x: ICssUnit, y: ICssUnit, z: ICssUnit) =
         newTransformProperty (
-            "translate3d(" + (asString x) + "," + (asString y) + "," + (asString z) + ")"
+            "translate3d("+ (asString x) + "," + (asString y) + "," + (asString z) + ")"
         )
 
     /// Defines a translation, using only the value for the X-axis.
     static member translateX(x: int) =
-        newTransformProperty ("translateX(" + (asString x) + "px)")
+        newTransformProperty ("translateX("+ (asString x) + "px)")
     /// Defines a translation, using only the value for the X-axis.
     static member translateX(x: ICssUnit) =
-        newTransformProperty ("translateX(" + (asString x) + ")")
+        newTransformProperty ("translateX("+ (asString x) + ")")
     /// Defines a translation, using only the value for the Y-axis
     static member translateY(y: int) =
-        newTransformProperty ("translateY(" + (asString y) + "px)")
+        newTransformProperty ("translateY("+ (asString y) + "px)")
     /// Defines a translation, using only the value for the Y-axis
     static member translateY(y: ICssUnit) =
-        newTransformProperty ("translateY(" + (asString y) + ")")
+        newTransformProperty ("translateY("+ (asString y) + ")")
     /// Defines a 3D translation, using only the value for the Z-axis
     static member translateZ(z: int) =
-        newTransformProperty ("translateZ(" + (asString z) + "px)")
+        newTransformProperty ("translateZ("+ (asString z) + "px)")
     /// Defines a 3D translation, using only the value for the Z-axis
     static member translateZ(z: ICssUnit) =
-        newTransformProperty ("translateZ(" + (asString z) + ")")
+        newTransformProperty ("translateZ("+ (asString z) + ")")
 
     /// Defines a 2D scale transformation.
     static member scale(x: int, y: int) =
         newTransformProperty (
-            "scale(" + (asString x) + "," + (asString y) + ")"
+            "scale("+ (asString x) + "," + (asString y) + ")"
         )
     /// Defines a 2D scale transformation.
     static member scale(x: float, y: float) =
         newTransformProperty (
-            "scale(" + (asString x) + "," + (asString y) + ")"
+            "scale("+ (asString x) + "," + (asString y) + ")"
         )
 
     /// Defines a scale transformation.
     static member scale(n: int) =
         newTransformProperty (
-            "scale(" + (asString n) + ")"
+            "scale("+ (asString n) + ")"
         )
 
     /// Defines a scale transformation.
     static member scale(n: float) =
         newTransformProperty (
-            "scale(" + (asString n) + ")"
+            "scale("+ (asString n) + ")"
         )
 
     /// Defines a 3D scale transformation
     static member scale3D(x: int, y: int, z: int) =
         newTransformProperty (
-            "scale3d(" + (asString x) + "," + (asString y) + "," + (asString z) + ")"
+            "scale3d("+ (asString x) + "," + (asString y) + "," + (asString z) + ")"
         )
     /// Defines a 3D scale transformation
     static member scale3D(x: float, y: float, z: float) =
         newTransformProperty (
-            "scale3d(" + (asString x) + "," + (asString y) + "," + (asString z) + ")"
+            "scale3d("+ (asString x) + "," + (asString y) + "," + (asString z) + ")"
         )
 
     /// Defines a scale transformation by giving a value for the X-axis.
     static member scaleX(x: int) =
-        newTransformProperty ("scaleX(" + (asString x) + ")")
+        newTransformProperty ("scaleX("+ (asString x) + ")")
 
     /// Defines a scale transformation by giving a value for the X-axis.
     static member scaleX(x: float) =
-        newTransformProperty ("scaleX(" + (asString x) + ")")
+        newTransformProperty ("scaleX("+ (asString x) + ")")
     /// Defines a scale transformation by giving a value for the Y-axis.
     static member scaleY(y: int) =
-        newTransformProperty ("scaleY(" + (asString y) + ")")
+        newTransformProperty ("scaleY("+ (asString y) + ")")
     /// Defines a scale transformation by giving a value for the Y-axis.
     static member scaleY(y: float) =
-        newTransformProperty ("scaleY(" + (asString y) + ")")
+        newTransformProperty ("scaleY("+ (asString y) + ")")
     /// Defines a 3D translation, using only the value for the Z-axis
     static member scaleZ(z: int) =
-        newTransformProperty ("scaleZ(" + (asString z) + ")")
+        newTransformProperty ("scaleZ("+ (asString z) + ")")
     /// Defines a 3D translation, using only the value for the Z-axis
     static member scaleZ(z: float) =
-        newTransformProperty ("scaleZ(" + (asString z) + ")")
+        newTransformProperty ("scaleZ("+ (asString z) + ")")
     /// Defines a 2D rotation, the angle is specified in the parameter.
     static member rotate(deg: int) =
-        newTransformProperty ("rotate(" + (asString deg) + "deg)")
+        newTransformProperty ("rotate("+ (asString deg) + "deg)")
     /// Defines a 2D rotation, the angle is specified in the parameter.
     static member rotate(deg: float) =
-        newTransformProperty ("rotate(" + (asString deg) + "deg)")
+        newTransformProperty ("rotate("+ (asString deg) + "deg)")
     /// Defines a 3D rotation along the X-axis.
     static member rotateX(deg: float) =
-        newTransformProperty ("rotateX(" + (asString deg) + "deg)")
+        newTransformProperty ("rotateX("+ (asString deg) + "deg)")
     /// Defines a 3D rotation along the X-axis.
     static member rotateX(deg: int) =
-        newTransformProperty ("rotateX(" + (asString deg) + "deg)")
+        newTransformProperty ("rotateX("+ (asString deg) + "deg)")
     /// Defines a 3D rotation along the Y-axis
     static member rotateY(deg: float) =
-        newTransformProperty ("rotateY(" + (asString deg) + "deg)")
+        newTransformProperty ("rotateY("+ (asString deg) + "deg)")
     /// Defines a 3D rotation along the Y-axis
     static member rotateY(deg: int) =
-        newTransformProperty ("rotateY(" + (asString deg) + "deg)")
+        newTransformProperty ("rotateY("+ (asString deg) + "deg)")
     /// Defines a 3D rotation along the Z-axis
     static member rotateZ(deg: float) =
-        newTransformProperty ("rotateZ(" + (asString deg) + "deg)")
+        newTransformProperty ("rotateZ("+ (asString deg) + "deg)")
     /// Defines a 3D rotation along the Z-axis
     static member rotateZ(deg: int) =
-        newTransformProperty ("rotateZ(" + (asString deg) + "deg)")
+        newTransformProperty ("rotateZ("+ (asString deg) + "deg)")
     /// Defines a 2D skew transformation along the X- and the Y-axis.
     static member skew(xAngle: int, yAngle: int) =
-        newTransformProperty ("skew(" + (asString xAngle) + "deg," + (asString yAngle) + "deg)")
+        newTransformProperty ("skew("+ (asString xAngle) + "deg," + (asString yAngle) + "deg)")
     /// Defines a 2D skew transformation along the X- and the Y-axis.
     static member skew(xAngle: float, yAngle: float) =
-        newTransformProperty ("skew(" + (asString xAngle) + "deg," + (asString yAngle) + "deg)")
+        newTransformProperty ("skew("+ (asString xAngle) + "deg," + (asString yAngle) + "deg)")
     /// Defines a 2D skew transformation along the X-axis
     static member skewX(xAngle: int) =
-        newTransformProperty ("skewX(" + (asString xAngle) + "deg)")
+        newTransformProperty ("skewX("+ (asString xAngle) + "deg)")
     /// Defines a 2D skew transformation along the X-axis
     static member skewX(xAngle: float) =
-        newTransformProperty ("skewX(" + (asString xAngle) + "deg)")
+        newTransformProperty ("skewX("+ (asString xAngle) + "deg)")
     /// Defines a 2D skew transformation along the Y-axis
     static member skewY(xAngle: int) =
-        newTransformProperty ("skewY(" + (asString xAngle) + "deg)")
+        newTransformProperty ("skewY("+ (asString xAngle) + "deg)")
     /// Defines a 2D skew transformation along the Y-axis
     static member skewY(xAngle: float) =
-        newTransformProperty ("skewY(" + (asString xAngle) + "deg)")
+        newTransformProperty ("skewY("+ (asString xAngle) + "deg)")
     /// Defines a perspective view for a 3D transformed element
     static member perspective(n: int) =
-        newTransformProperty ("perspective(" + (asString n) + ")")
+        newTransformProperty ("perspective("+ (asString n) + ")")
 
 type transitionProperty =
     static member all = newTransitionProperty "all"
