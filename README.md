@@ -12,65 +12,102 @@ It is based on [bolero](https://github.com/fsbolero/Bolero) and  [Feliz.Engine](
 ## What you can get with this project?
 
 1. Use F# ❤️😊 for blazor
-2. Feliz and computation style DSL for internal and thrid party blazor libraries
+2. Feliz and computation expression style DSL for internal and thrid party blazor libraries
 4. Dependency injection (html.inject)
-3. Elmish model (html.elmish), obervable model (html.watch), adaptive model(adapt)
+3. Elmish model (html.elmish), obervable model (html.watch), adaptive model(adaptiview)
 
 
-## Domain specific language (DSL)
+## Some tips
 
-### By default we expose Feliz style DSL for internal components
+1. Package Fun.Blazor: with basic stuff and CE style by default because it has better performance than Feliz style
 
 ```fsharp
-open Fun.Blazor
-let app =
-    html.div [
-        attr.styles [ style.margin 10 ]
-        html.text "Fun Blazor"
-    ]
+    let demo =
+        adaptiview(){
+            let! v, setValue = FSharp.Data.Adaptive.cval(1).WithSetter()
+            button(){
+                onclick (fun _ -> setValue (v + 1))
+                childContent "Increase"
+            }
+            div(){
+                // In this way we can get intellicense in VSCode + Highlight HTML/SQL templates in F#
+                css """_{
+                    color: red;
+                }"""
+                // Or with plain string
+                css "color: red;"
+                childContent $"value = {v}"
+            }
+        }
 ```
 
+2. Package Fun.Blazor.Feliz: will add feliz style DSL for basic dom/css
+
 ```fsharp
-// Open this to allow CE style
-open Fun.Blazor.DslCE
-let app =
+    open Fun.Blazor
+    module evts = Bolero.Html.on
+
+    let demo =
+        adaptiview(){
+            let! value, setValue = FSharp.Data.Adaptive.cval(1).WithSetter()
+            html.button [
+                attr.childContent "Increase"
+                evts.click (fun _ -> setValue (value + 1))
+            ]
+            html.div [
+                attr.styles [
+                    style.color color.red
+                ]
+                attr.childContent $"value = {value}"
+            ]
+        }
+```
+
+3. Package Fun.Css: will enable CE style for css
+
+```fsharp
+    open Fun.Css
+    open Fun.Blazor
+
     div(){
-        styles [ style.margin 10 ]
-        childContent "Fun Blazor"
+        css (CssBuilder(){
+            color color.red
+        })
+        childContent "hello"
     }
 ```
 
-### With Fun.Blazor.Cli you can generate Feliz or CE style automatically for any blazor third party libraries
+4. Fun.Blazor.Cli: you can generate Feliz or CE style automatically for any blazor third party libraries
 
 ```fsharp
-open Fun.Blazor
-open MudBlazor
+    open Fun.Blazor
+    open MudBlazor
 
-let alertDemo =
-    MudCard'.create [
-        MudAlert'() {
-            Icon Icons.Filled.AccessAlarm
-            childContent "This is the way"
-        }
-    ]
-```
-
-Feliz style
-
-```fsharp
-open Fun.Blazor
-open MudBlazor
-
-let alertDemo =
-    mudCard.create [
-        mudAlert.create [
-            mudAlert.icon Icons.Filled.AccessAlarm
-            mudAlert.childContent "This is the way"
+    let alertDemo =
+        MudCard'.create [
+            MudAlert'(){
+                Icon Icons.Filled.AccessAlarm
+                childContent "This is the way"
+            }
         ]
-    ]
 ```
 
-## Create a WASM app
+        Feliz style (should reference Fun.Blazor.Feliz)
+
+```fsharp
+    open Fun.Blazor
+    open MudBlazor
+
+    let alertDemo =
+        mudCard.create [
+            mudAlert.create [
+                mudAlert.icon Icons.Filled.AccessAlarm
+                mudAlert.childContent "This is the way"
+            ]
+        ]
+```
+
+## Create a WASM app (no debug support right now)
 
 Other resources like index.html should be put under wwwroot. You can check Fun.Blazor.Docs.Wasm project for detail
 

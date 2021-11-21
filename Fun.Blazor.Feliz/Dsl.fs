@@ -42,6 +42,3 @@ let svg = FunBlazorSvgEngine((fun tag nodes -> Elt(tag, [], List.ofSeq nodes)), 
 let attr = FunBlazorAttrEngine((fun k v -> Attr(k, v)), (fun k v -> if v then Attr(k, "") else Attrs []))
 
 let style = Feliz.CssEngine(fun k v -> k, v)
-
-
-module evts = Html.on
