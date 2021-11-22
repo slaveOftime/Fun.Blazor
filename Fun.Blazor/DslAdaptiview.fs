@@ -58,6 +58,28 @@ type Extensions =
         this |> AVal.map (fun x -> x, setValue)
 
 
+    [<Extension>]
+    static member AddLazyCallback (value: aval<'T>, action: 'T -> unit) =
+        let last = ref ValueNone
+
+        let sub = value.AddMarkingCallback(fun () ->
+            Transaction.Running.Value.AddFinalizer(fun () ->
+                let v = AVal.force value
+                match last.Value with
+                | ValueSome o when DefaultEquality.equals o v -> ()
+                | _ ->
+                    last.Value <- ValueSome v
+                    action v
+            )
+        )
+
+        match Transaction.Running with
+        | ValueSome t -> t.AddFinalizer (fun () -> value |> AVal.force |> ignore)
+        | ValueNone -> value |> AVal.force |> ignore
+
+        sub
+
+
 [<RequireQualifiedAccess>]
 module Adapt =
     let withSetter (this: cval<'T>) =
