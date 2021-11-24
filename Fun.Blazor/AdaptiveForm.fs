@@ -87,6 +87,10 @@ type AdaptiveForm<'T, 'Error> (defaultValue: 'T) as this =
     member _.UseFieldValue (propSelector: Expression<Func<'T, 'Prop>>) =
         fields.[getExpressionName propSelector] |> AVal.map unbox<'Prop>
 
+    member _.UseFieldSetter (propSelector: Expression<Func<'T, 'Prop>>) =
+        fun (v: 'T) ->
+            fields.[getExpressionName propSelector].Publish(v)
+
     member _.UseField (propSelector: Expression<Func<'T, 'Prop>>) =
         let field = fields.[getExpressionName propSelector]
         let setter (x: 'Prop) = field.Publish x
