@@ -1,5 +1,7 @@
 namespace rec Microsoft.AspNetCore.Components.DslInternals
 
+
+
 // ===========================================================================================
 
 
@@ -155,7 +157,7 @@ type ValidationSummaryBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micros
             
 // ===========================================================================================
     
-namespace Microsoft.AspNetCore.Components.Web
+namespace Fun.Blazor
 
 [<AutoOpen>]
 module DslCE =

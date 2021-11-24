@@ -6,7 +6,6 @@ open Fun.Blazor
 open Microsoft.AspNetCore.Components.DslInternals
 open Microsoft.AspNetCore.Components.Web.DslInternals
 open Microsoft.Fast.Components.FluentUI.DslInternals
-open Microsoft.Fast.Components.FluentUI.DslInternals
 
 
 type fluentInputBase<'FunBlazorGeneric, 'TValue> =

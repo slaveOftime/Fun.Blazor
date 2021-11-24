@@ -8,6 +8,7 @@ open MudBlazor.Utilities
 open Fun.Blazor.Docs.Wasm.DemoMudBlazor
 open Fun.Blazor.Docs.Wasm.DemoAntDesign
 open Fun.Blazor.Docs.Wasm.DemoFluentUI
+open Fun.Blazor.Docs.Wasm.DemoDragDrop
 open Fun.Blazor.Docs.Wasm.Components
 open Fun.Blazor.Docs.Wasm.Pages
 
@@ -127,6 +128,10 @@ let navmenu =
                     Href "./fluentui"
                     childContent "FluentUI"
                 }
+                MudNavLink'() {
+                    Href "./drag-drop"
+                    childContent "Drag Drop"
+                }
             ]
         }
     ]
@@ -153,6 +158,7 @@ let app = html.inject (fun (hook: IComponentHook, shareStore: IShareStore) ->
         routeCi "/tests"                Tests.Tests.tests
         routeCi "/antdesign"            demoAntDesign
         routeCi "/fluentui"             demoFluentUI
+        routeCi "/drag-drop"            demoDragDrop
         routeCi "/mudblazor"            demoMudBlazor
     ]
 

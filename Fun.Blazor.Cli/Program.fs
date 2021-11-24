@@ -21,7 +21,7 @@ type GenerateSettings() =
     
     [<Description("Dsl style Feliz|CE")>]
     [<CommandOption("-s|--style")>]
-    member val Style = Style.Feliz with get, set
+    member val Style = Style.CE with get, set
 
 
 type GenerateCommand() =

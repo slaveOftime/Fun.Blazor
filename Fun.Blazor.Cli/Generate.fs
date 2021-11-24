@@ -21,11 +21,14 @@ let private (</>) x y = Path.Combine(x, y)
 let private FunBlazorPrefix = "FunBlazor"
 let private FunBlazorNamespaceAttr = $"{FunBlazorPrefix}Namespace"
 let private FunBlazorStyleAttr = $"{FunBlazorPrefix}Style"
+let private FunBlazorDllNameAttr = $"{FunBlazorPrefix}DllName"
 
 
-let private createCodeFile (projectFile: string) codesDirName (name, style, dll) =
+let private createCodeFile (projectFile: string) codesDirName (name: string, style, dll) =
     AnsiConsole.WriteLine ()
     AnsiConsole.MarkupLine $"Generating code for [purple]{name}[/]: [green]{dll}[/]"
+
+    let formatedName = name.Replace("-", "_")
     
     try
         let opens =
@@ -38,15 +41,15 @@ open {name}.{Utils.internalSegment}"""
 
         let types = Assembly.LoadFile(dll).GetTypes()
         let codesDir = Path.GetDirectoryName projectFile </> codesDirName
-        let path = codesDir </> name + ".fs"
+        let path = codesDir </> formatedName + ".fs"
 
         if Directory.Exists codesDir |> not then
             Directory.CreateDirectory codesDir |> ignore
 
         let codes =
             match style with
-            | Style.Feliz -> Generator.generateCode name opens types
-            | Style.CE -> CEGenerator.generateCode name opens types
+            | Style.Feliz -> Generator.generateCode formatedName opens types
+            | Style.CE -> CEGenerator.generateCode formatedName opens types
             | x -> failwith $"Not supportted style: {x}"
 
         let code = 
@@ -59,7 +62,7 @@ open {name}.{Utils.internalSegment}"""
         File.WriteAllText(path, code)
         
 
-        AnsiConsole.MarkupLine $"Generated code for [green]{name}[/]: {path}"
+        AnsiConsole.MarkupLine $"Generated code for [green]{formatedName}[/]: {path}"
 
         Some path
 
@@ -109,6 +112,10 @@ let startGenerate (projectFile: string) (codesDirName: string) (style: Style) =
         |> Seq.filter (fun x -> x.Attributes() |> Seq.exists (fun x -> x.Name.LocalName.StartsWith FunBlazorPrefix))
         |> Seq.map (fun node ->
             let package = node.Attribute(xn "Include").Value
+            let dllName =
+                match node.Attributes() |> Seq.tryFind (fun x -> x.Name.LocalName = FunBlazorDllNameAttr) with
+                | Some x -> x.Value
+                | None -> package
             let version = node.Attribute(xn "Version").Value
             let style = 
                 match node.Attribute(xn FunBlazorStyleAttr) with
@@ -128,15 +135,15 @@ let startGenerate (projectFile: string) (codesDirName: string) (style: Style) =
             let dll =
                 let userDir = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)
                 Path.GetDirectoryName projectFile </> "bin" </> "Debug" </> target </> package + ".dll"
-                |> findAnotherOneIfNotExist (fun () -> userDir </> ".nuget" </> "packages" </> package </> version </> "lib" </> target </> package + ".dll")
-                |> findAnotherOneIfNotExist (fun () -> userDir </> ".nuget" </> "packages" </> package </> version </> "lib" </> "netstandard2.0" </> package + ".dll")
-                |> findAnotherOneIfNotExist (fun () -> userDir </> ".nuget" </> "packages" </> package </> version </> "lib" </> "netstandard2.1" </> package + ".dll")
-                |> findAnotherOneIfNotExist (fun () -> userDir </> ".nuget" </> "packages" </> package </> version </> "lib" </> "netcoreapp2.0" </> package + ".dll")
-                |> findAnotherOneIfNotExist (fun () -> userDir </> ".nuget" </> "packages" </> package </> version </> "lib" </> "netcoreapp2.2" </> package + ".dll")
-                |> findAnotherOneIfNotExist (fun () -> userDir </> ".nuget" </> "packages" </> package </> version </> "lib" </> "netcoreapp3.0" </> package + ".dll")
-                |> findAnotherOneIfNotExist (fun () -> userDir </> ".nuget" </> "packages" </> package </> version </> "lib" </> "netcoreapp3.1" </> package + ".dll")
-                |> findAnotherOneIfNotExist (fun () -> userDir </> ".nuget" </> "packages" </> package </> version </> "lib" </> "net5.0" </> package + ".dll")
-                |> findAnotherOneIfNotExist (fun () -> userDir </> ".nuget" </> "packages" </> package </> version </> "lib" </> "net6.0" </> package + ".dll")
+                |> findAnotherOneIfNotExist (fun () -> userDir </> ".nuget" </> "packages" </> package </> version </> "lib" </> target </> dllName + ".dll")
+                |> findAnotherOneIfNotExist (fun () -> userDir </> ".nuget" </> "packages" </> package </> version </> "lib" </> "netstandard2.0" </> dllName + ".dll")
+                |> findAnotherOneIfNotExist (fun () -> userDir </> ".nuget" </> "packages" </> package </> version </> "lib" </> "netstandard2.1" </> dllName + ".dll")
+                |> findAnotherOneIfNotExist (fun () -> userDir </> ".nuget" </> "packages" </> package </> version </> "lib" </> "netcoreapp2.0" </> dllName + ".dll")
+                |> findAnotherOneIfNotExist (fun () -> userDir </> ".nuget" </> "packages" </> package </> version </> "lib" </> "netcoreapp2.2" </> dllName + ".dll")
+                |> findAnotherOneIfNotExist (fun () -> userDir </> ".nuget" </> "packages" </> package </> version </> "lib" </> "netcoreapp3.0" </> dllName + ".dll")
+                |> findAnotherOneIfNotExist (fun () -> userDir </> ".nuget" </> "packages" </> package </> version </> "lib" </> "netcoreapp3.1" </> dllName + ".dll")
+                |> findAnotherOneIfNotExist (fun () -> userDir </> ".nuget" </> "packages" </> package </> version </> "lib" </> "net5.0" </> dllName + ".dll")
+                |> findAnotherOneIfNotExist (fun () -> userDir </> ".nuget" </> "packages" </> package </> version </> "lib" </> "net6.0" </> dllName + ".dll")
                             
             let name =
                 let attr = node.Attribute(xn FunBlazorNamespaceAttr)

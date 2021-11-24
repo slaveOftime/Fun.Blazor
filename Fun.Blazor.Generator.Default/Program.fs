@@ -41,7 +41,8 @@ let webDslCE = CEGenerator.generateCode "Microsoft.AspNetCore.Components.Web" op
 
 let dslCEPath = __SOURCE_DIRECTORY__ + "\..\Fun.Blazor\DslCE.AspNetCore.fs"
 let dslCECode = 
-    $"""{componentsDslCE.internalCode}
+    $"""namespace rec Microsoft.AspNetCore.Components.DslInternals
+{componentsDslCE.internalCode}
 
 // ===========================================================================================
 

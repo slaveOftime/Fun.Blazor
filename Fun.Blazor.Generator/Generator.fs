@@ -242,7 +242,6 @@ type {getFinalTypeName meta.ty}{funBlazorGeneric::(getTypeNames meta.generics) |
             $"""namespace rec {targetNamespace}.{internalSegment}{ns |> trimNamespace |> addStrIfNotEmpty "."}
 
 {opens}
-open {targetNamespace}.{internalSegment}
 
 {code}
             """)

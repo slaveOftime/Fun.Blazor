@@ -23,6 +23,7 @@ type Index () =
                     Bolero.Server.Html.boleroScript
 
                     html.stylesheet "css/google-font.css"
+                    html.stylesheet "css/drag-drop.css"
                     html.stylesheet "_content/MudBlazor/MudBlazor.min.css"
                     html.script "_content/MudBlazor/MudBlazor.min.js"
 
@@ -30,6 +31,16 @@ type Index () =
                     html.stylesheet "css/prism-night-owl.css"
                     html.script "https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/components/prism-core.min.js"
                     html.script "https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/plugins/autoloader/prism-autoloader.min.js"
+
+                    html.stylesheet "https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/default.css"
+                    html.script "https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/index.min.js"
+                    html.scriptRaw """
+                        // options are optional ;)
+                        MobileDragDrop.polyfill({
+                            // use this to make use of the scroll behaviour
+                            dragImageTranslateOverride: MobileDragDrop.scrollBehaviourDragImageTranslateOverride
+                        });
+                    """
                 ]
             ]
         ]

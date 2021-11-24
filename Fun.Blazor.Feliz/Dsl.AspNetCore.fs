@@ -12,7 +12,6 @@ namespace rec Microsoft.AspNetCore.Components.Web.DslInternals
 open Bolero.Html
 open FSharp.Data.Adaptive
 open Fun.Blazor
-open Microsoft.AspNetCore.Components.Web.DslInternals
 
 
 type virtualize<'FunBlazorGeneric, 'TItem> =
@@ -37,7 +36,6 @@ namespace rec Microsoft.AspNetCore.Components.Web.DslInternals
 open Bolero.Html
 open FSharp.Data.Adaptive
 open Fun.Blazor
-open Microsoft.AspNetCore.Components.Web.DslInternals
 
 
 type navLink<'FunBlazorGeneric> =
@@ -61,7 +59,6 @@ namespace rec Microsoft.AspNetCore.Components.Web.DslInternals
 open Bolero.Html
 open FSharp.Data.Adaptive
 open Fun.Blazor
-open Microsoft.AspNetCore.Components.Web.DslInternals
 
 
 type editForm<'FunBlazorGeneric> =

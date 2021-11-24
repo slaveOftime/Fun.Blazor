@@ -4,6 +4,7 @@ open Microsoft.Extensions.DependencyInjection
 open Microsoft.AspNetCore.Components.WebAssembly.Hosting
 open Majorsoft.Blazor.WebAssembly.Logging.Console
 open MudBlazor.Services
+open Plk.Blazor.DragDrop
 open Fun.Blazor.Docs.Wasm
 
 let builder = WebAssemblyHostBuilder.CreateDefault(Environment.GetCommandLineArgs())
@@ -15,6 +16,7 @@ builder
         .AddFunBlazor()
         .AddAntDesign()
         .AddMudServices()
+        .AddBlazorDragDrop()
     |> ignore
         
 builder.Build().RunAsync() |> ignore
