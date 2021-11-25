@@ -41,7 +41,7 @@
     <Compile Include="Pages\HelperFunctions\AdaptiviewDemo.fs" />
     <Compile Include="Pages\HelperFunctions\ComponentHookDemo.fs" />
     <Compile Include="Pages\HelperFunctions\GlobalStoreDemo.fs" />
-    <Compile Include="Pages\HelperFunctions\AdaptiveFromDemo.fs" />
+    <Compile Include="Pages\HelperFunctions\AdaptiveFormDemo.fs" />
     <Compile Include="Pages\HelperFunctions\PerformanceDemo.fs" />
     <Compile Include="Pages\HelperFunctions\CECssDemo.fs" />
     <None Include="Pages\CliUsage\CliUsageDemo.md" />

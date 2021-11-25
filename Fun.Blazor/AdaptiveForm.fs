@@ -19,22 +19,10 @@ type AdaptiveForm<'T, 'Error> (defaultValue: 'T) as this =
             ty.GetProperties()
 
 
+    let hasChanges = cval false
     let mutable disposes = List<IDisposable>()
     let mutable fields = Dictionary<string, cval<obj>>()
     let mutable errors = Dictionary<string, cval<'Error list>>()
-
-
-    let setFieldsAndErrors (value: 'T) =
-        fields <-
-            props
-            |> Seq.map (fun p -> KeyValuePair(p.Name, cval(p.GetValue value)))
-            |> Dictionary
-
-        errors <-
-            props
-            |> Seq.map (fun x -> KeyValuePair(x.Name, cval []))
-            |> Dictionary
-
 
     let rec getExpressionName (exp: Expression) =
         match exp.NodeType with
@@ -43,10 +31,30 @@ type AdaptiveForm<'T, 'Error> (defaultValue: 'T) as this =
         | ExpressionType.Convert -> getExpressionName (exp :?> UnaryExpression).Operand
         | _ -> failwith "Unsupported expression"
 
-    do setFieldsAndErrors defaultValue
+    do
+        fields <-
+            props
+            |> Seq.map (fun p ->
+                let v = cval(p.GetValue defaultValue)
+                v.AddLazyCallback (fun _ -> hasChanges.Publish true) |> disposes.Add
+                KeyValuePair(p.Name, v))
+            |> Dictionary
+
+        errors <-
+            props
+            |> Seq.map (fun x -> KeyValuePair(x.Name, cval []))
+            |> Dictionary
 
 
-    member _.SetValue value = setFieldsAndErrors value
+    member _.SetValue (value: 'T) =
+        transact <| fun _ ->
+            for KeyValue(_, error) in errors do
+                error.Value <- []
+
+            for prop in props do
+                fields.[prop.Name].Value <- prop.GetValue value
+
+        hasChanges.Publish false
 
     
     member _.GetValue () =
@@ -78,17 +86,18 @@ type AdaptiveForm<'T, 'Error> (defaultValue: 'T) as this =
                 |> Option.defaultValue []
                 |> errors.[name].Publish
 
-        validate (unbox<'Prop> field.Value)
         field.AddCallback (unbox<'Prop> >> validate) |> disposes.Add
 
         this
 
 
+    member _.UseHasChanges() = hasChanges :> aval<bool>
+
     member _.UseFieldValue (propSelector: Expression<Func<'T, 'Prop>>) =
         fields.[getExpressionName propSelector] |> AVal.map unbox<'Prop>
 
     member _.UseFieldSetter (propSelector: Expression<Func<'T, 'Prop>>) =
-        fun (v: 'T) ->
+        fun (v: 'Prop) ->
             fields.[getExpressionName propSelector].Publish(v)
 
     member _.UseField (propSelector: Expression<Func<'T, 'Prop>>) =

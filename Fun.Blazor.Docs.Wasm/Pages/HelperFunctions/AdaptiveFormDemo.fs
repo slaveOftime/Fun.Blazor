@@ -1,5 +1,5 @@
 ﻿[<AutoOpen>]
-module Fun.Blazor.Docs.Wasm.Pages.HelperFunctions.AdaptiveFromDemo
+module Fun.Blazor.Docs.Wasm.Pages.HelperFunctions.AdaptiveFormDemo
 
 open System
 open FSharp.Data.Adaptive
@@ -34,7 +34,7 @@ type ModelErrors =
     | BirthdayIsTooOld of DateTime
 
 
-let adaptiveFromDemo = html.inject <| fun (hook: IComponentHook) ->
+let adaptiveFormDemo = html.inject <| fun (hook: IComponentHook) ->
     let modelForm = new AdaptiveForm<Model, ModelErrors>(Model.DefaultValue())
     
     modelForm
@@ -133,6 +133,23 @@ let adaptiveFromDemo = html.inject <| fun (hook: IComponentHook) ->
                 MudAlert'(){
                     Severity Severity.Info
                     childContent $"Total errors is {errors.Length}"
+                }
+            }
+            spaceV4
+            adaptiview(){
+                let! hasChanges = modelForm.UseHasChanges()
+                if hasChanges then
+                    MudAlert'(){
+                        Severity Severity.Info
+                        childContent "There are some changes"
+                    }
+                MudButton'(){
+                    OnClick (fun _ -> modelForm.SetValue(Model.DefaultValue()))
+                    childContent "Reset"
+                }
+                MudButton'(){
+                    OnClick (fun _ -> modelForm.UseFieldSetter(fun x -> x.Age)(24))
+                    childContent "Set age to 24"
                 }
             }
         ]

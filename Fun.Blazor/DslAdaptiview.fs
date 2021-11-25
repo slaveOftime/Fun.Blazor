@@ -58,6 +58,8 @@ type Extensions =
         this |> AVal.map (fun x -> x, setValue)
 
 
+    /// This is a helper method to avoid trigger action when you first call this function
+    /// Because the default AddCallback will trigger the action immediately
     [<Extension>]
     static member AddLazyCallback (value: aval<'T>, action: 'T -> unit) =
         let last = ref ValueNone
