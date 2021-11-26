@@ -182,10 +182,10 @@ let anonymousRecordDemo =
                     errorView errors
                 }
                 adaptiview(){ // by this, one field's change will not trigger any calculation or rerender for other fields
-                    let! binding, errors = demoForm.UseFieldWithErrors(fun x -> x.Age)
+                    let! (currentValue, setValue), errors = demoForm.UseFieldWithErrors(fun x -> x.Age)
                     MudTextField'(){
                         Label "Age"
-                        Value' binding
+                        Value' (currentValue, setValue) // the above binding is just a tuple
                         InputType InputType.Number
                     }
                     errorView errors
