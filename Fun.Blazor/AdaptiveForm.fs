@@ -1,9 +1,11 @@
 ﻿namespace rec Fun.Blazor
 
 open System
+open System.Linq
 open System.Collections.Generic
 open System.Linq.Expressions
 open FSharp.Data.Adaptive
+open System.Runtime.CompilerServices
 
 
 type Validator<'T, 'Prop, 'Error> = AdaptiveForm<'T, 'Error> -> 'Prop -> 'Error list
@@ -14,9 +16,9 @@ type AdaptiveForm<'T, 'Error> (defaultValue: 'T) as this =
 
     let props =
         if FSharp.Reflection.FSharpType.IsRecord ty then
-            FSharp.Reflection.FSharpType.GetRecordFields ty
+            FSharp.Reflection.FSharpType.GetRecordFields(ty) |> Seq.ofArray
         else
-            ty.GetProperties()
+            ty.GetProperties().Where(fun x -> not(x.GetAccessors(true).Any(fun x -> x.IsStatic)))
 
 
     let hasChanges = cval false
@@ -137,6 +139,15 @@ type AdaptiveForm<'T, 'Error> (defaultValue: 'T) as this =
     interface IDisposable with
         member _.Dispose() =
             disposes |> Seq.iter (fun d -> d.Dispose())
+
+
+[<Extension>]
+type AdaptiveFormExtensions =
+    [<Extension>]
+    static member UseAdaptiveForm<'T, 'Error>(this: IComponentHook, defaultValue) =
+        let form = new AdaptiveForm<'T, 'Error>(defaultValue)
+        this.AddDisposes [ form ]
+        form
 
 
 module Validators =

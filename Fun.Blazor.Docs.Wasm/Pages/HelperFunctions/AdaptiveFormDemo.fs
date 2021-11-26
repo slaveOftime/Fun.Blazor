@@ -9,13 +9,24 @@ open Fun.Blazor.Validators
 open Fun.Blazor.Docs.Wasm.Components
 
 
+let private simplifyErrors es = es |> Seq.map string |> String.concat ", "
+
+let private errorView es =
+    if Seq.isEmpty es  then html.none
+    else
+        MudAlert'(){
+            Severity Severity.Error
+            childContent (simplifyErrors es)
+        }
+
+
 type Model = {
     Name: string
     Password: string
     Age: int
     Birthday: DateTime
 } with
-    static member DefaultValue() = {
+    static member DefaultValue = {
         Name = ""
         Password = ""
         Age = 0
@@ -30,12 +41,13 @@ type ModelErrors =
     | PasswordIsTooLong of int
     | PasswordCannotBe of string
     | AgeIsTooSmall of int
+    | AgeCannotEqual of int
     | BirthdayIsTooEarly of DateTime
     | BirthdayIsTooOld of DateTime
 
 
-let adaptiveFormDemo = html.inject <| fun (hook: IComponentHook) ->
-    let modelForm = new AdaptiveForm<Model, ModelErrors>(Model.DefaultValue())
+let demo1 = html.inject <| fun (hook: IComponentHook) ->
+    let modelForm = new AdaptiveForm<Model, ModelErrors>(Model.DefaultValue)
     
     modelForm
         .AddAalidators((fun x -> x.Name), false, [
@@ -64,16 +76,6 @@ let adaptiveFormDemo = html.inject <| fun (hook: IComponentHook) ->
 
 
 
-    let simplifyErrors = List.map string >> String.concat ", "
-
-    let errorView es =
-        match es with
-        | [] -> html.none
-        | _ ->
-            MudAlert'(){
-                Severity Severity.Error
-                childContent (simplifyErrors es)
-            }
 
 
     MudPaper'(){
@@ -144,7 +146,7 @@ let adaptiveFormDemo = html.inject <| fun (hook: IComponentHook) ->
                         childContent "There are some changes"
                     }
                 MudButton'(){
-                    OnClick (fun _ -> modelForm.SetValue(Model.DefaultValue()))
+                    OnClick (fun _ -> modelForm.SetValue(Model.DefaultValue))
                     childContent "Reset"
                 }
                 MudButton'(){
@@ -154,3 +156,97 @@ let adaptiveFormDemo = html.inject <| fun (hook: IComponentHook) ->
             }
         ]
     }
+
+
+let anonymousRecordDemo = 
+    html.inject (fun (hook: IComponentHook) ->
+        let demoForm =
+            hook
+                .UseAdaptiveForm<_, _>({|
+                    Name = ""
+                    Age = 20
+                |})
+                .AddAalidators((fun x -> x.Name), true, [
+                    minLength 2 NameIsTooShort
+                ])
+                .AddAalidators((fun x -> x.Age), true, [
+                    minValue 18 AgeIsTooSmall
+                    notEqual 20 AgeCannotEqual
+                ])
+
+        div(){
+            childContent [
+                adaptiview(){ // by this, one field's change will not trigger any calculation or rerender for other fields
+                    let! binding, errors = demoForm.UseFieldWithErrors(fun x -> x.Name)
+                    MudTextField'(){
+                        Label "Name"
+                        Value' binding
+                    }
+                    errorView errors
+                }
+                adaptiview(){ // by this, one field's change will not trigger any calculation or rerender for other fields
+                    let! binding, errors = demoForm.UseFieldWithErrors(fun x -> x.Age)
+                    MudTextField'(){
+                        Label "Age"
+                        Value' binding
+                        InputType InputType.Number
+                    }
+                    errorView errors
+                }
+            ]
+        }
+    )
+
+
+type ClassModel() =
+    member val Name = "" with get, set
+    member val Age = 0 with get, set
+
+    static member DefaultValue =
+        ClassModel(Name = "fun", Age = 20)
+
+
+let demo3 = html.inject (fun (hook: IComponentHook) ->
+    let demoForm =
+        hook
+            .UseAdaptiveForm<_, _>(ClassModel.DefaultValue)
+            .AddAalidators((fun x -> x.Name), true, [
+                minLength 2 NameIsTooShort
+            ])
+            .AddAalidators((fun x -> x.Age), true, [
+                minValue 18 AgeIsTooSmall
+                notEqual 20 AgeCannotEqual
+            ])
+
+    div(){
+        childContent [
+            adaptiview(){
+                let! binding, errors = demoForm.UseFieldWithErrors(fun x -> x.Name)
+                MudTextField'(){
+                    Label "Name"
+                    Value' binding
+                }
+                errorView errors
+            }
+            adaptiview(){
+                let! binding, errors = demoForm.UseFieldWithErrors(fun x -> x.Age)
+                MudTextField'(){
+                    Label "Age"
+                    Value' binding
+                    InputType InputType.Number
+                }
+                errorView errors
+            }
+        ]
+    }
+)
+
+
+let adaptiveFormDemo =
+    div.create [
+        demo1
+        spaceV4
+        anonymousRecordDemo
+        spaceV4
+        demo3
+    ]
