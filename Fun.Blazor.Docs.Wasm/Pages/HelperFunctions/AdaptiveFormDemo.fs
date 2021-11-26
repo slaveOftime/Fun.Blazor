@@ -171,6 +171,7 @@ let anonymousRecordDemo =
                 ])
 
         div(){
+            styles [ style.padding 10 ]
             childContent [
                 adaptiview(){ // by this, one field's change will not trigger any calculation or rerender for other fields
                     let! binding, errors = demoForm.UseFieldWithErrors(fun x -> x.Name)
@@ -215,6 +216,7 @@ let demo3 = html.inject (fun (hook: IComponentHook) ->
             ])
 
     div(){
+        styles [ style.padding 10 ]
         childContent [
             adaptiview(){
                 let! binding, errors = demoForm.UseFieldWithErrors(fun x -> x.Name)
