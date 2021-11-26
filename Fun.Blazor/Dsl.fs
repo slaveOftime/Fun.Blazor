@@ -34,7 +34,13 @@ type html() =
     static member meta (name: string, content: string) = Elt ("meta", [ Attr ("name", name); Attr ("content", content) ], [])
 
     static member script (x: string) = Elt ("script", [ Attr ("src", x) ], [])
-    static member scriptRaw (x: string) = html.raw x
+
+    static member scriptRaw (x: string) = html.raw $"""
+    <script>
+        {x}
+    </script>
+    """
+
     static member stylesheet (x: string) = html.link [ Attr ("rel", "stylesheet"); Attr ("href", x) ]
 
     static member none = Html.empty
