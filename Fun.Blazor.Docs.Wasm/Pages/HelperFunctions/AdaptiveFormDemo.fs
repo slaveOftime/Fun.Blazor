@@ -74,10 +74,6 @@ let demo1 = html.inject <| fun (hook: IComponentHook) ->
 
     hook.AddDisposes [ modelForm ]
 
-
-
-
-
     MudPaper'(){
         Elevation 10
         Styles [ style.padding 10 ]
