@@ -50,11 +50,11 @@ let demo1 = html.inject <| fun (hook: IComponentHook) ->
     let modelForm = new AdaptiveForm<Model, ModelErrors>(Model.DefaultValue)
     
     modelForm
-        .AddAalidators((fun x -> x.Name), false, [
+        .AddValidators((fun x -> x.Name), false, [
             minLength 2 NameIsTooShort
             maxLength 10 NameIsTooLong
         ])
-        .AddAalidators((fun x -> x.Password), true, [
+        .AddValidators((fun x -> x.Password), true, [
             required PasswordIsRequired
             maxLength 15 PasswordIsTooLong
             notEqual "123456" PasswordCannotBe
@@ -63,10 +63,10 @@ let demo1 = html.inject <| fun (hook: IComponentHook) ->
                 if name = value then [ PasswordCannotEqualName ]
                 else []
         ])
-        .AddAalidators((fun x -> x.Age), false, [
+        .AddValidators((fun x -> x.Age), false, [
             minValue 18 AgeIsTooSmall
         ])
-        .AddAalidators((fun x -> x.Birthday), true, [
+        .AddValidators((fun x -> x.Birthday), true, [
             minValue (DateTime.Parse("2000/1/1")) BirthdayIsTooOld
             maxValue (DateTime.Now.AddDays(1.)) BirthdayIsTooEarly
         ])
@@ -162,10 +162,10 @@ let anonymousRecordDemo =
                     Name = ""
                     Age = 20
                 |})
-                .AddAalidators((fun x -> x.Name), true, [
+                .AddValidators((fun x -> x.Name), true, [
                     minLength 2 NameIsTooShort
                 ])
-                .AddAalidators((fun x -> x.Age), true, [
+                .AddValidators((fun x -> x.Age), true, [
                     minValue 18 AgeIsTooSmall
                     notEqual 20 AgeCannotEqual
                 ])
@@ -207,10 +207,10 @@ let demo3 = html.inject (fun (hook: IComponentHook) ->
     let demoForm =
         hook
             .UseAdaptiveForm<_, _>(ClassModel.DefaultValue)
-            .AddAalidators((fun x -> x.Name), true, [
+            .AddValidators((fun x -> x.Name), true, [
                 minLength 2 NameIsTooShort
             ])
-            .AddAalidators((fun x -> x.Age), true, [
+            .AddValidators((fun x -> x.Age), true, [
                 minValue 18 AgeIsTooSmall
                 notEqual 20 AgeCannotEqual
             ])

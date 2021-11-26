@@ -69,7 +69,7 @@ type AdaptiveForm<'T, 'Error> (defaultValue: 'T) as this =
         |> unbox<'T>
 
 
-    member _.AddAalidators (prop: Expression<Func<'T, 'Prop>>, checkAll, validators': Validator<'T, 'Prop, 'Error> list) =
+    member _.AddValidators (prop: Expression<Func<'T, 'Prop>>, checkAll, validators': Validator<'T, 'Prop, 'Error> list) =
         let name = getExpressionName prop
         let field = fields.[name]
 
