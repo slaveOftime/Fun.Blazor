@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<Version>0.1.0</Version>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Include="HtmlTemplate.fs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Bolero" Version="0.17.25" />
+		<PackageReference Include="FSharp.Data" Version="4.2.6" />
+		<PackageReference Include="FSharp.Quotations.Evaluator" Version="2.1.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Update="FSharp.Core" Version="6.0.1" />
+	</ItemGroup>
+	
+</Project>

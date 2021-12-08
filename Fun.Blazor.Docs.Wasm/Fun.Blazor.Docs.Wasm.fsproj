@@ -44,6 +44,7 @@
     <Compile Include="Pages\HelperFunctions\AdaptiveFormDemo.fs" />
     <Compile Include="Pages\HelperFunctions\PerformanceDemo.fs" />
     <Compile Include="Pages\HelperFunctions\CECssDemo.fs" />
+    <Compile Include="Pages\HelperFunctions\HtmlTemplateDemo.fs" />
     <None Include="Pages\CliUsage\CliUsageDemo.md" />
     <Compile Include="Pages\CliUsage\CliUsage.fs" />
     <None Include="Pages\Tests\TestsDemo.md" />
@@ -70,5 +71,6 @@
     <ProjectReference Include="..\Fun.Blazor.Feliz\Fun.Blazor.Feliz.fsproj" />
     <ProjectReference Include="..\Fun.Blazor\Fun.Blazor.fsproj" />
     <ProjectReference Include="..\Fun.Css\Fun.Css.fsproj" />
+    <ProjectReference Include="..\Fun.Blazor.HtmlTemplate\Fun.Blazor.HtmlTemplate.fsproj" />
   </ItemGroup>
 </Project>
