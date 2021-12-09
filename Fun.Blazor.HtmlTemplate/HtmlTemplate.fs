@@ -10,32 +10,38 @@ open Microsoft.FSharp.Quotations.Patterns
 open FSharp.Quotations.Evaluator
 
 
-type Template =
-    static member html(_: string) = Bolero.Empty
+let private makeNode (ty: Type) v =
+    if ty = typeof<Bolero.Node> then
+        v |> unbox<Bolero.Node>
+    else
+        v.ToString() |> Bolero.Text
 
 
 let private parseStringTemplate (str: string) (holes: Expr list) =
-    let getLambda index =
+    let getFunc index =
         match holes.[index] with
         | Call (_, _, [ exp ]) ->
             match exp with
-            | Lambda (_, _) -> exp.EvaluateUntyped()
-            | _ -> raise (exn "Should be a lambda")
-        | _ -> raise (exn "Should be a lambda")
-
-    let makeNode (ty: Type) v =
-        if ty = typeof<Bolero.Node> then v |> unbox<Bolero.Node>
-        elif ty = typeof<string> then v |> unbox<string> |> Bolero.Text
-        elif ty = typeof<int> then v |> unbox<int> |> string |> Bolero.Text
-        elif ty = typeof<float> then v |> unbox<float> |> string |> Bolero.Text
-        else raise (exn "Unsupportted")
+            | Lambda (_, _)
+            | Call (_, _, _) -> exp.EvaluateUntyped()
+            | _ -> failwith "Expecting a function or lambda"
+        | _ -> failwith "Expecting a function or lambda"
 
     let getNode index =
         match holes.[index] with
         | Call (_, _, [ PropertyGet (_, prop, _) ]) -> makeNode prop.PropertyType (holes.[index].EvaluateUntyped())
         | Call (_, _, [ Value (v, ty) ]) -> makeNode ty v
-        | _ -> raise (exn "Unsupportted")
+        | Call _ ->
+            match tryUnbox<Bolero.Node> (holes.[index].EvaluateUntyped()) with
+            | Some v -> v
+            | None -> failwith "Expecting a node"
+        | _ -> failwith "Expecting a node"
 
+    let inline invokeFunction (fn: obj) (x: obj) =
+        fn.GetType().InvokeMember("Invoke", Reflection.BindingFlags.InvokeMethod, null, fn, [| x |])
+
+
+    // TODO: implement cache
 
     use stream = new MemoryStream(Encoding.UTF8.GetBytes str)
     let doc = HtmlDocument.Load stream
@@ -44,37 +50,31 @@ let private parseStringTemplate (str: string) (holes: Expr list) =
 
     let rec loop (nodes: HtmlNode seq) =
         [
-            for e in nodes do
-                let name = e.Name()
+            for node in nodes do
+                let name = node.Name()
                 if String.IsNullOrEmpty name then
-                    Bolero.Text(e.ToString())
+                    for i, txt in node.ToString().Split("%P()") |> Seq.indexed do
+                        if i > 0 then
+                            index <- index + 1
+                            getNode index
+                        let trimedTxt = txt.Trim()
+                        if String.IsNullOrEmpty trimedTxt |> not then Bolero.Text trimedTxt
                 else
                     Bolero.Elt(
                         name,
                         [
-                            for attr in e.Attributes() do
+                            for attr in node.Attributes() do
                                 let name = attr.Name()
                                 let value = attr.Value()
                                 if name.StartsWith "on" && value = "%P()" then
                                     index <- index + 1
-                                    Bolero.Html.on.event name (getLambda index |> unbox)
+                                    let lambda = getFunc index
+                                    Bolero.Html.attr.callback name (fun x -> invokeFunction lambda x :?> unit)
                                 else
                                     Bolero.Attr(name, value)
                         ],
-                        [
-                            for child in e.Descendants() do
-                                if String.IsNullOrEmpty(child.Name()) |> not then
-                                    yield! loop [ child ]
-                                else
-                                    for i, txt in child.ToString().Split("%P()") |> Seq.indexed do
-                                        if i > 0 then
-                                            index <- index + 1
-                                            getNode index
-                                        let trimedTxt = txt.Trim()
-                                        if String.IsNullOrEmpty trimedTxt |> not then Bolero.Text trimedTxt
-                        ]
+                        loop (node.Elements())
                     )
-
         ]
 
     doc.Elements() |> loop |> Bolero.ForEach
@@ -90,10 +90,10 @@ let private parseFormatStringExpr (exps: Expr list) =
             | _ -> []
         parseStringTemplate (string stringTemplate) holes
     | [ Value (v, _) ] -> parseStringTemplate (string v) []
-    | _ -> raise (exn "Not supported")
+    | _ -> failwith "Not supported"
 
 
-let HtmlTemplate (exp: Expr) =
+let private htmlTemplate (exp: Expr) =
     match exp with
     | Call (_, methodInfo, exps) ->
         if methodInfo.ReturnType = typeof<Bolero.Node> then
@@ -101,5 +101,11 @@ let HtmlTemplate (exp: Expr) =
         elif methodInfo.Name.StartsWith "PrintFormatToString" then
             parseFormatStringExpr exps
         else
-            raise (exn "Not supported")
-    | _ -> raise (exn "Not supported")
+            failwith "Expression is not supported"
+    | Value (v, ty) when ty = typeof<String> -> parseStringTemplate (unbox v) []
+    | _ -> failwith "Expression is not supported"
+
+
+type Template =
+    static member html(_: string) = Bolero.Empty
+    static member html exp = htmlTemplate exp
