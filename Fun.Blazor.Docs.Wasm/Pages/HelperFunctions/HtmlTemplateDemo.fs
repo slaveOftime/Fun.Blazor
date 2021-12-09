@@ -44,6 +44,10 @@ let htmlTemplateDemo =
                  | _ -> html.div "Match _"}
                 <div style="color: {if count = 3 then "red" else "green"};">Cool!!</div>
                 <div style="{if count = 4 then "color: red;" else "color: green;"}">Cool!!</div>
+
+                <sl-button onclick="{ignore >> increaseBy2}">Increase by 2</sl-button>
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.0.0-beta.62/dist/themes/light.css">
+                <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.0.0-beta.62/dist/shoelace.js"></script>
             </div>
         """
     }
