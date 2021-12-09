@@ -7,13 +7,13 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Compile Include="HtmlTemplate.fs" />
+		<Compile Include="Internals.fs" />
+		<Compile Include="Template.fs" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Bolero" Version="0.17.25" />
 		<PackageReference Include="FSharp.Data" Version="4.2.6" />
-		<PackageReference Include="FSharp.Quotations.Evaluator" Version="2.1.0" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -20,26 +20,30 @@ let htmlTemplateDemo =
                 childContent "Mud Increase Btn"
             }
 
-        let congratulations = Template.html <@ """<div>Congratulations! You made it ❤️""" @>
+        let congratulations = Template.html $"<div>Congratulations! You made it ❤️</div>"
 
         Template.html
-            <@ Template.html
-                $"""
+            $"""
+            <div>
+                {congratulations}
+                <p>
+                    You need to bring <span style="font-weight: bold; color: green; padding: 5px;">Fun.Blazor.HtmlTemplate</span> package to make this work!!!
+                </p>
+                <p style="background-color: hotpink; padding: 10px; color: white;">
+                    The whole fsharp quotation will be evaluated to a bolero node dom tree and rendered by blazor
+                </p>
+                <br/>
+                Here is the count: {count}
                 <div>
-                    {congratulations}
-                    <p style="background-color: hotpink; padding: 10px; color: white;">
-                        The whole fsharp quotation will be evaluated to a bolero node dom tree and rendered by blazor
-                    </p>
-                    <br/>
-                    Here is the count: {count}
-                    <div>
-                        <button onclick="{fun _ -> setCount (count + 1)}">Increase</button>
-                        <button onclick="{ignore >> increaseBy2}">Increase by 2</button>
-                        {increaseBtn}
-                    </div>
-                    {match count with
-                     | 1 -> html.div "Match 1"
-                     | _ -> html.div "Match _"}
+                    <button onclick="{fun _ -> setCount (count + 1)}">Increase</button>
+                    <button onclick="{ignore >> increaseBy2}">Increase by 2</button>
+                    {increaseBtn}
                 </div>
-            """ @>
+                {match count with
+                 | 1 -> html.div "Match 1"
+                 | _ -> html.div "Match _"}
+                <div style="color: {if count = 3 then "red" else "green"};">Cool!!</div>
+                <div style="{if count = 4 then "color: red;" else "color: green;"}">Cool!!</div>
+            </div>
+        """
     }
