@@ -96,7 +96,13 @@ let buildAttrs (name: string, value: string) =
             if String.IsNullOrEmpty name then
                 List.empty
             else
-                [ Bolero.Attr(name, args.[argIndex]) ]
+                let isFunc = FSharp.Reflection.FSharpType.IsFunction(args.[argIndex].GetType())
+                if isFunc && name.StartsWith "@" then
+                    [
+                        Bolero.Html.attr.callback $"on{name.Substring(1)}" (fun x -> invokeFunction args.[argIndex] x :?> unit)
+                    ]
+                else
+                    [ Bolero.Attr(name, args.[argIndex]) ]
         )
     elif valueMatches.Count > 0 then
         placeholderAttr (fun args ->
@@ -128,22 +134,25 @@ let buildAttrs (name: string, value: string) =
 
 
 let rec buildNodeTree (args: obj []) (nodes: Bolero.Node list) =
-    [
-        for node in nodes do
-            match node with
-            | Bolero.Elt (n, attrs, childs) ->
-                let newAttrs =
-                    [
-                        for attr in attrs do
-                            match attr with
-                            | Bolero.Attr (key, mk) when key = placeholderAttrKey -> yield! (unbox<MkAttr> mk) args
-                            | _ -> attr
-                    ]
-                let newNodes = buildNodeTree args childs
-                Bolero.Elt(n, newAttrs, newNodes)
-            | Bolero.Match (ty, mk, _) when ty = placeholderNodeType -> (unbox<MkNode> mk) args
-            | _ -> node
-    ]
+    if args.Length = 0 then
+        nodes
+    else
+        [
+            for node in nodes do
+                match node with
+                | Bolero.Elt (n, attrs, childs) ->
+                    let newAttrs =
+                        [
+                            for attr in attrs do
+                                match attr with
+                                | Bolero.Attr (key, mk) when key = placeholderAttrKey -> yield! (unbox<MkAttr> mk) args
+                                | _ -> attr
+                        ]
+                    let newNodes = buildNodeTree args childs
+                    Bolero.Elt(n, newAttrs, newNodes)
+                | Bolero.Match (ty, mk, _) when ty = placeholderNodeType -> (unbox<MkNode> mk) args
+                | _ -> node
+        ]
 
 
 let parseNodes (str: string) =

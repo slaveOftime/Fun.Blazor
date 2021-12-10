@@ -50,6 +50,8 @@ let htmlTemplateDemo =
                 <input type="number" value="{count}" onchange="{fun (e: ChangeEventArgs) -> e.Value |> string |> int |> setCount}">
 
                 <sl-button onclick="{ignore >> increaseBy2}">Increase by 2</sl-button>
+                <sl-input type="number" @sl-change="{fun _ -> setCount 100}"></sl-input>
+
                 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.0.0-beta.62/dist/themes/light.css">
                 <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.0.0-beta.62/dist/shoelace.js"></script>
             </div>
