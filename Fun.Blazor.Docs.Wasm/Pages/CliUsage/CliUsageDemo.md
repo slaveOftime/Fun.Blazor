@@ -1,15 +1,16 @@
 ﻿```
 dotnet tool install -g Fun.Blazor.Cli
+dotnet add package Fun.Blazor.Feliz --version 1.1.2
 ```
 
 Steps:
 
-1. Add any third party blazor components like AntDesign to your application and build in debug mode to pull the nuget packages
+1. Add any third party blazor components like AntDesign to your application and build in debug mode or restore it to pull the nuget packages
 
     `FunBlazor`
         
-        Add this empty attribute to below you will get the default generating settings
-        Will generate code in namespace of the package name (AntDesign), with computation style
+        Add this empty attribute to below line in your project file you will get the default generating settings
+        Will generate code in namespace of the package name (AntDesign), with computation expression style
 
    ```
     <PackageReference FunBlazor="" Include="AntDesign" Version="0.8.2" />

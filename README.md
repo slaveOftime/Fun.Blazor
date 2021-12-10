@@ -17,9 +17,13 @@ It is based on [bolero](https://github.com/fsbolero/Bolero) and  [Feliz.Engine](
 3. Elmish model (html.elmish), obervable model (html.watch), adaptive model(adaptiview)
 
 
+## Please check the samples for quick start
+
+https://github.com/slaveOftime/Fun.Blazor.Samples
+
 ## Some tips
 
-1. Package Fun.Blazor: with basic stuff and CE style by default because it has better performance than Feliz style
+1. Fun.Blazor: with basic stuff and CE style by default because it has better performance than Feliz style
 
 ```fsharp
     let demo =
@@ -41,7 +45,7 @@ It is based on [bolero](https://github.com/fsbolero/Bolero) and  [Feliz.Engine](
         }
 ```
 
-2. Package Fun.Blazor.Feliz: will add feliz style DSL for basic dom/css
+2. Fun.Blazor.Feliz: will add feliz style DSL for basic dom/css
 
 ```fsharp
     open Fun.Blazor
@@ -63,7 +67,7 @@ It is based on [bolero](https://github.com/fsbolero/Bolero) and  [Feliz.Engine](
         }
 ```
 
-3. Package Fun.Css: will enable CE style for css
+3. Fun.Css: will enable CE style for css
 
 ```fsharp
     open Fun.Css
@@ -79,6 +83,10 @@ It is based on [bolero](https://github.com/fsbolero/Bolero) and  [Feliz.Engine](
 
 4. Fun.Blazor.Cli: you can generate Feliz or CE style automatically for any blazor third party libraries
 
+    [Docs for how to use it](https://funblazor.slaveoftime.fun/cli-usage)
+    
+    Fun.Blazor.Feliz package is required
+
 ```fsharp
     open Fun.Blazor
     open MudBlazor
@@ -92,7 +100,7 @@ It is based on [bolero](https://github.com/fsbolero/Bolero) and  [Feliz.Engine](
         ]
 ```
 
-        Feliz style (should reference Fun.Blazor.Feliz)
+        
 
 ```fsharp
     open Fun.Blazor
@@ -107,87 +115,11 @@ It is based on [bolero](https://github.com/fsbolero/Bolero) and  [Feliz.Engine](
         ]
 ```
 
-## Create a WASM app (no debug support right now)
-
-Other resources like index.html should be put under wwwroot. You can check Fun.Blazor.Docs.Wasm project for detail
-
-```
-dotnet add package Fun.Blazor
-```
+5. Fun.Blazor.HtmlTemplate: is help you to convert plain string to dom tree. And with VSCode + Ionide-fsharp + Highlight HTML/SQL templates you can get embeded intellicense.
 
 ```fsharp
-open System
-open Microsoft.Extensions.DependencyInjection
-open Microsoft.AspNetCore.Components.WebAssembly.Hosting
-open Fun.Blazor
-
-let app = html.text "hello world"
-
-let builder = WebAssemblyHostBuilder.CreateDefault(Environment.GetCommandLineArgs())
-        
-builder
-    .AddFunBlazorNode("#app", app)
-    .Services
-    .AddFunBlazor() |> ignore
-        
-builder.Build().RunAsync() |> ignore
-```
-
-## Create a blazor server app
-
-You can check project Fun.Blazor.Docs.Server for the actual code
-
-```
-dotnet add package Fun.Blazor
-dotnet add package Bolero.Server
-```
-
-```fsharp
-// Startup.fx
-open System
-open Microsoft.AspNetCore.Builder
-open Microsoft.AspNetCore.Hosting
-open Microsoft.Extensions.Hosting
-open Microsoft.Extensions.DependencyInjection
-open Bolero.Server
-open Fun.Blazor
-
-type Index () =
-    inherit FunBlazorComponent()
-
-    override this.Render() = html.text "Fun Blazor"
-
-    static member page =
-        html.doctypeHtml [
-            html.head [
-                html.title "Fun Blazor"
-                html.baseUrl "/"
-                html.meta [ attr.charsetUtf8 ]
-                html.meta [ attr.name "viewport"; attr.content "width=device-width, initial-scale=1.0" ]
-            ]
-            html.body [
-                attr.childContent [ html.bolero Bolero.Server.Html.rootComp<Index> ]
-                html.bolero Bolero.Server.Html.boleroScript
-            ]
-        ]
-
-
-Host.CreateDefaultBuilder(Environment.GetCommandLineArgs())
-    .ConfigureWebHostDefaults(fun builder ->
-        builder
-            .ConfigureServices(fun (services: IServiceCollection) ->
-                services.AddControllersWithViews() |> ignore
-                services
-                    .AddServerSideBlazor().Services
-                    .AddBoleroHost(true, true)
-                    .AddFunBlazor() |> ignore)
-            .Configure(fun (application: IApplicationBuilder) ->
-                application
-                    .UseStaticFiles()
-                    .UseRouting()
-                    .UseEndpoints(fun endpoints ->
-                        endpoints.MapBlazorHub() |> ignore
-                        endpoints.MapFallbackToBolero(Index.page) |> ignore) |> ignore) |> ignore)
-    .Build()
-    .Run()
+    let congratulations =
+        Template.html $"""
+            <div style="color: hotpink;">Congratulations! You made it ❤️</div>
+        """
 ```
