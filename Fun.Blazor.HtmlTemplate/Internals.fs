@@ -12,13 +12,12 @@ let formatHoleRegex = Regex("\{([\d]*)\}")
 
 let internal caches = ConcurrentDictionary<int, Bolero.Node list>()
 
-type MkAttr = obj [] -> Bolero.Attr
+type MkAttr = obj [] -> Bolero.Attr list
 type MkNode = obj [] -> Bolero.Node
 
 type PlacerHolderNode =
     interface
     end
-
 
 let placeholderAttrKey = "__placeholder__"
 let placeholderAttr (mk: MkAttr) = Bolero.Attr(placeholderAttrKey, mk)
@@ -54,29 +53,19 @@ let buildNodes (str: string) =
     ]
 
 
-let buildAttr (name: string, value: string) =
+let buildAttrs (name: string, value: string) =
     let inline invokeFunction (fn: obj) (x: obj) =
         fn.GetType().InvokeMember("Invoke", Reflection.BindingFlags.InvokeMethod, null, fn, [| x |])
 
-    let matches = formatHoleRegex.Matches value
+    let nameMatches = formatHoleRegex.Matches name
+    let valueMatches = formatHoleRegex.Matches value
 
-    if name.StartsWith "on" && matches.Count = 1 then
-        let argIndex = int matches.[0].Groups.[1].Value
-        placeholderAttr (fun args ->
-            let arg = args.[argIndex]
-            Bolero.Html.attr.callback name (fun x -> invokeFunction arg x :?> unit)
-        )
-
-    elif matches.Count > 0 then
-        if matches.Count = 1 && matches.[0].Index = 0 && matches.[0].Length = value.Length then
-            let argIndex = int matches.[0].Groups.[1].Value
-            placeholderAttr (fun args -> Bolero.Attr(name, args.[argIndex]))
-
-        else
-            placeholderAttr (fun args ->
+    let makeName =
+        if nameMatches.Count > 0 then
+            fun (args: obj []) ->
                 let sb = StringBuilder()
                 let mutable strIndex = 0
-                for m in matches do
+                for m in nameMatches do
                     let txt = value.Substring(strIndex, m.Index - strIndex)
                     if String.IsNullOrEmpty txt |> not then sb.Append txt |> ignore
 
@@ -85,9 +74,55 @@ let buildAttr (name: string, value: string) =
                     let argIndex = int m.Groups.[1].Value
                     let arg = args.[argIndex]
                     sb.Append(string arg) |> ignore
+                sb.ToString()
 
-                Bolero.Attr(name, sb.ToString())
-            )
+        else
+            fun _ -> name
+
+    if name.StartsWith "on" && valueMatches.Count = 1 then
+        let argIndex = int valueMatches.[0].Groups.[1].Value
+        placeholderAttr (fun args ->
+            let arg = args.[argIndex]
+            let name = makeName args
+            if String.IsNullOrEmpty name then
+                List.empty
+            else
+                [ Bolero.Html.attr.callback name (fun x -> invokeFunction arg x :?> unit) ]
+        )
+    elif valueMatches.Count = 1 && valueMatches.[0].Index = 0 && valueMatches.[0].Length = value.Length then
+        let argIndex = int valueMatches.[0].Groups.[1].Value
+        placeholderAttr (fun args ->
+            let name = makeName args
+            if String.IsNullOrEmpty name then
+                List.empty
+            else
+                [ Bolero.Attr(name, args.[argIndex]) ]
+        )
+    elif valueMatches.Count > 0 then
+        placeholderAttr (fun args ->
+            let sb = StringBuilder()
+            let mutable strIndex = 0
+            for m in valueMatches do
+                let txt = value.Substring(strIndex, m.Index - strIndex)
+                if String.IsNullOrEmpty txt |> not then sb.Append txt |> ignore
+
+                strIndex <- m.Index + m.Length
+
+                let argIndex = int m.Groups.[1].Value
+                let arg = args.[argIndex]
+                sb.Append(string arg) |> ignore
+
+            let name = makeName args
+            if String.IsNullOrEmpty name then
+                List.empty
+            else
+                [ Bolero.Attr(name, sb.ToString()) ]
+        )
+    else if nameMatches.Count > 0 then
+        placeholderAttr (fun args ->
+            let name = makeName args
+            if String.IsNullOrEmpty name then List.empty else [ Bolero.Attr(name, value) ]
+        )
     else
         Bolero.Attr(name, value)
 
@@ -101,7 +136,7 @@ let rec buildNodeTree (args: obj []) (nodes: Bolero.Node list) =
                     [
                         for attr in attrs do
                             match attr with
-                            | Bolero.Attr (key, mk) when key = placeholderAttrKey -> (unbox<MkAttr> mk) args
+                            | Bolero.Attr (key, mk) when key = placeholderAttrKey -> yield! (unbox<MkAttr> mk) args
                             | _ -> attr
                     ]
                 let newNodes = buildNodeTree args childs
@@ -126,7 +161,7 @@ let parseNodes (str: string) =
                         name,
                         [
                             for attr in node.Attributes() do
-                                buildAttr (attr.Name(), attr.Value())
+                                buildAttrs (attr.Name(), attr.Value())
                         ],
                         loop (node.Elements())
                     )

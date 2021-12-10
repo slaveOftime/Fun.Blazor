@@ -2,6 +2,7 @@
 module Fun.Blazor.Docs.Wasm.Pages.HelperFunctions.HtmlTemplateDemo
 
 open FSharp.Data.Adaptive
+open Microsoft.AspNetCore.Components
 open MudBlazor
 open Fun.Blazor
 
@@ -44,6 +45,9 @@ let htmlTemplateDemo =
                  | _ -> html.div "Match _"}
                 <div style="color: {if count = 3 then "red" else "green"};">Cool!!</div>
                 <div style="{if count = 4 then "color: red;" else "color: green;"}">Cool!!</div>
+
+                <input type="checkbox" {if count > 4 then "checked" else ""} >
+                <input type="number" value="{count}" onchange="{fun (e: ChangeEventArgs) -> e.Value |> string |> int |> setCount}">
 
                 <sl-button onclick="{ignore >> increaseBy2}">Increase by 2</sl-button>
                 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.0.0-beta.62/dist/themes/light.css">
