@@ -72,8 +72,8 @@ type IObserveValue<'T> =
 
 type IComponentHook =
     //abstract OnParametersSet: IEvent<unit>
-    //abstract OnInitialized: IEvent<unit>
     abstract OnAfterRender: IEvent<bool>
+    abstract OnInitialized: IEvent<unit>
     abstract OnFirstAfterRender: IEvent<unit>
     abstract OnDispose: IEvent<unit>
     abstract AddDispose: IDisposable -> unit
@@ -104,4 +104,3 @@ type IShareStore =
 // * Note this is not distributable
 type IGlobalStore = 
     inherit IShareStore
-    

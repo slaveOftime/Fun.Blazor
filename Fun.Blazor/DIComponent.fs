@@ -50,6 +50,7 @@ type DIComponent<'T>() as this =
     let blazorLifecycle =
         { new IComponentHook with
             member _.OnAfterRender = afterRenderEvent.Publish
+            member _.OnInitialized = initialized.Publish
             member _.OnFirstAfterRender = firstAfterRenderEvent.Publish
             member _.OnDispose = disposeEvent.Publish
             member _.AddDispose dispose = disposes.Add dispose
