@@ -43,17 +43,30 @@ let htmlTemplateDemo =
                 {match count with
                  | 1 -> html.div "Match 1"
                  | _ -> html.div "Match _"}
-                <div style="color: {if count = 3 then "red" else "green"};">Cool!!</div>
+                <div style="color: {if count = 3 then "red" else "green"};" class="test-class">Cool!!</div>
                 <div style="{if count = 4 then "color: red;" else "color: green;"}">Cool!!</div>
 
                 <input type="checkbox" {if count > 4 then "checked" else ""} >
                 <input type="number" value="{count}" onchange="{fun (e: ChangeEventArgs) -> e.Value |> string |> int |> setCount}">
 
                 <sl-button onclick="{ignore >> increaseBy2}">Increase by 2</sl-button>
+                <p>Use @sl-change for none standard event</p>
                 <sl-input type="number" @sl-change="{fun _ -> setCount 100}"></sl-input>
 
                 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.0.0-beta.62/dist/themes/light.css">
                 <script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.0.0-beta.62/dist/shoelace.js"></script>
+
+                <p>style or script tag will be rendered as raw 'html'</p>
+                <style>
+                    .test-class {{
+                        background-color: red;
+                    }}
+                </style>
+                <script>
+                    function test() {{
+                        return false;
+                    }}
+                </script>
             </div>
-        """
+            """
     }
