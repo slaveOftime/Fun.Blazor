@@ -53,6 +53,32 @@ let buildNodes (str: string) =
     ]
 
 
+let buildRawNodes (str: string) =
+    [
+        let matches = formatHoleRegex.Matches str
+        if matches.Count = 0 then
+            let trimedTxt = str.Trim()
+            if String.IsNullOrEmpty trimedTxt |> not then Bolero.RawHtml trimedTxt
+        else
+            placeholderNode (fun args ->
+                let sb = StringBuilder()
+                let mutable strIndex = 0
+                for m in matches do
+                    let txt = str.Substring(strIndex, m.Index - strIndex)
+                    let trimedTxt = txt.Trim()
+                    if String.IsNullOrEmpty trimedTxt |> not then
+                        sb.Append trimedTxt |> ignore
+
+                    let argIndex = int m.Groups.[1].Value
+                    sb.Append (string args.[argIndex]) |> ignore
+
+                    strIndex <- m.Index + m.Length
+
+                Bolero.RawHtml (sb.ToString())
+            )
+    ]
+
+
 let buildAttrs (name: string, value: string) =
     let inline invokeFunction (fn: obj) (x: obj) =
         fn.GetType().InvokeMember("Invoke", Reflection.BindingFlags.InvokeMethod, null, fn, [| x |])
@@ -156,8 +182,7 @@ let rec buildNodeTree (args: obj []) (nodes: Bolero.Node list) =
 
 
 let parseNodes (str: string) =
-    use stream = new MemoryStream(Encoding.UTF8.GetBytes str)
-    let doc = HtmlDocument.Load stream
+    let doc = HtmlDocument.Parse str
 
     let rec loop (nodes: HtmlNode seq) =
         [
@@ -172,7 +197,13 @@ let parseNodes (str: string) =
                             for attr in node.Attributes() do
                                 buildAttrs (attr.Name(), attr.Value())
                         ],
-                        loop (node.Elements())
+                        if name = "script" || name = "style" then
+                            [
+                                for n in node.Elements() do
+                                    yield! buildRawNodes (n.ToString())
+                            ]
+                        else
+                            loop (node.Elements())
                     )
         ]
 
