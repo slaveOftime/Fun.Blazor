@@ -58,6 +58,10 @@ let navmenu =
             childContent "Router"
         }
         MudNavLink'() {
+            Href "./adaptive-form"
+            childContent "Adaptive Form"
+        }
+        MudNavLink'() {
             Href "./elmish"
             childContent "Elmish"
         }
@@ -79,24 +83,24 @@ let navmenu =
                     childContent "html.inject"
                 }
                 MudNavLink'() {
-                    Href "./helper-functions/html-watch"
-                    childContent "html.watch"
+                    Href "./helper-functions/component-hook"
+                    childContent "IComponentHook"
                 }
                 MudNavLink'() {
                     Href "./helper-functions/adaptiview"
                     childContent "adaptiview"
                 }
                 MudNavLink'() {
-                    Href "./helper-functions/component-hook"
-                    childContent "IComponentHook"
+                    Href "./helper-functions/html-watch"
+                    childContent "html.watch"
+                }
+                MudNavLink'() {
+                    Href "./helper-functions/html-template-demo"
+                    childContent "Html Template Demo"
                 }
                 MudNavLink'() {
                     Href "./helper-functions/global-store"
                     childContent "Global store"
-                }
-                MudNavLink'() {
-                    Href "./helper-functions/adaptive-form"
-                    childContent "Adaptive Form"
                 }
                 MudNavLink'() {
                     Href "./helper-functions/performance"
@@ -105,10 +109,6 @@ let navmenu =
                 MudNavLink'() {
                     Href "./helper-functions/ce-css-builder"
                     childContent "CE style css builder"
-                }
-                MudNavLink'() {
-                    Href "./helper-functions/html-template-demo"
-                    childContent "Html Template Demo"
                 }
             ]
         }
@@ -146,6 +146,9 @@ let app =
         let routes =
             [
                 subRouteCi "/router" [ routeAny Router.Router.router ]
+                routeCi
+                    "/adaptive-form"
+                    (demoContainer "Adaptive Form" $"Pages/HelperFunctions/AdaptiveFromDemo" HelperFunctions.AdaptiveFormDemo.adaptiveFormDemo)
                 routeCi "/elmish" Elmish.Elmish.elmish
                 subRouteCi
                     "/helper-functions"
@@ -166,9 +169,6 @@ let app =
                         routeCi
                             "/global-store"
                             (demoContainer "Global storage" $"Pages/HelperFunctions/GlobalStoreDemo" HelperFunctions.GlobalStoreDemo.globalStoreDemo)
-                        routeCi
-                            "/adaptive-form"
-                            (demoContainer "Adaptive Form" $"Pages/HelperFunctions/AdaptiveFromDemo" HelperFunctions.AdaptiveFormDemo.adaptiveFormDemo)
                         routeCi
                             "/performance"
                             (demoContainer "Performance" $"Pages/HelperFunctions/PerformanceDemo" HelperFunctions.PerformanceDemo.performanceDemo)
