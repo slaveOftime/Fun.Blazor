@@ -56,13 +56,37 @@ type FunBlazorBuilder<'Component when 'Component :> Microsoft.AspNetCore.Compone
     [<CustomOperation("stopPropagation")>]
     member this.stopPropagation (_: FunBlazorBuilder<'Component>, eventName, value) = Bolero.Html.on.stopPropagation eventName value |> this.AddAttr
 
-    
-
 type IStore<'T> =
+    /// <summary>
+    /// Takes an identity function, useful for updating or computing new values from previous ones 
+    /// </summary>
+    /// <example>
+    /// <code lang="fsharp">
+    /// users.Publish(fun user -> { user with name = newName })
+    /// </code>
+    /// </example>
     abstract Publish: ('T -> 'T) -> unit
+    /// <summary>
+    /// Takes a new value and replaces the content of the store completely
+    /// </summary>
+    /// <example>
+    /// <code lang="fsharp">
+    /// users.Publish(newUser)
+    /// </code>
+    /// </example>
     abstract Publish: 'T -> unit
+    
+    /// <summary>
+    /// An observable that contains the changes made to the store over the time
+    /// </summary>
     abstract Observable: IObservable<'T>
+    /// <summary>
+    /// The current value in the store, defaults to the initial value supplied when creating the store
+    /// </summary>
     abstract Current: 'T
+    /// <summary>
+    /// A unique identifier for the current store, this can help to track the origin in shared or global stores
+    /// </summary>
     abstract Key: string
 
 
@@ -72,17 +96,104 @@ type IObserveValue<'T> =
 
 type IComponentHook =
     //abstract OnParametersSet: IEvent<unit>
-    //abstract OnInitialized: IEvent<unit>
+    /// <summary>
+    /// Invoked after each time the component has been rendered.
+    /// The parameter will be true if the event corresponds to the first render otherwise it will be false.
+    /// </summary>
     abstract OnAfterRender: IEvent<bool>
+    /// <summary>
+    /// Method invoked when the component is ready to start, having received its initial parameters from its parent in the render tree.
+    /// </summary>
+    abstract OnInitialized: IEvent<unit>
+    ///<summary>
+    /// Invoked the first time the component has been rendered.
+    /// This is a convenience event from OnAfterRender
+    /// </summary>
     abstract OnFirstAfterRender: IEvent<unit>
+    
+    /// <summary>
+    /// The component is being disposed, you can cleanup manually managed resources or log any information here.
+    /// </summary>
     abstract OnDispose: IEvent<unit>
+    
+    /// <summary>
+    /// Adds a disposable object to the disposables list, these will be disposed together with the current component
+    /// </summary>
+    /// <example>
+    /// <code lang="fsharp">
+    /// let view (hook: IComponentHook) =
+    ///     let store = hook.UseStore 10
+    ///     hook.AddDispose store
+    /// html.inject("my-component", view)
+    /// </code>
+    /// </example>
     abstract AddDispose: IDisposable -> unit
+    /// <summary>
+    /// Adds multiple objects to the disposables list, these will be disposed together with the current component
+    /// </summary>
+    /// <example>
+    /// <code lang="fsharp">
+    /// let view (hook: IComponentHook) =
+    ///     let ageStore = hook.UseStore 10
+    ///     let usernameStore = hook.UseStore ""
+    ///     hook.AddDisposes [ageStore, usernameStore]
+    /// html.inject("my-component", view)
+    /// </code>
+    /// </example>
     abstract AddDisposes: IDisposable seq -> unit
+    /// <summary>
+    /// Notifies the component that its state has changed. When applicable, this will cause the component to be re-rendered.
+    /// </summary>
     abstract StateHasChanged: unit -> unit
-    /// Create an IStore and hold in component and dispose it after component disposed
+    /// <summary>
+    /// Creates a new Store, you should hold a reference to this store and use it on your components
+    /// </summary>
+    /// <remarks>
+    /// To prevent performance issues you should always dispose the store when you are done with it.
+    /// </remarks>
+    /// <example>
+    /// <code lang="fsharp">
+    /// 
+    /// let view (hook: IComponentHook) =
+    ///     let state = hook.UseStore 0
+    ///     // ... use the store or subscribe to it ...
+    ///     // ensure disposal
+    ///     hook.AddDispose state
+    ///    adaptiview() { (* ...content ... *) }
+    /// 
+    /// html.inject("my-view", view)
+    /// </code>
+    /// </example>
     abstract UseStore: 'T -> IStore<'T>
+    
+    /// <summary>
+    /// Convert a store into a changeable value which you can modify easily
+    /// </summary>
+    /// <example>
+    /// <code lang="fsharp">
+    /// let view (hook: IComponentHook) =
+    ///     let state = hook.UseStore 0
+    ///     // ... use the store or subscribe to it ...
+    ///     // ensure disposal
+    ///     hook.AddDispose state
+    ///    adaptiview() {
+    ///      let! value, setValue = hook.UseCVal state 
+    ///    }
+    /// 
+    /// html.inject("my-view", view)
+    /// </code>
+    /// </example>
     abstract UseCVal: IStore<'T> -> cval<'T>
+    
+    /// <summary>
+    /// Convert a store into an adaptive value which should be updated with other adaptive values
+    /// which should enable performant and incremental computations
+    /// </summary>
     abstract UseAVal: IStore<'T> -> aval<'T>
+    /// <summary>
+    /// Create an adaptive value from a default value and an observable which should be updated with other adaptive values
+    /// which should enable performant and incremental computations
+    /// </summary>
     abstract UseAVal: defaultValue: 'T * IObservable<'T> -> aval<'T>
 
 // Will serve as a scoped a service
@@ -104,4 +215,3 @@ type IShareStore =
 // * Note this is not distributable
 type IGlobalStore = 
     inherit IShareStore
-    
