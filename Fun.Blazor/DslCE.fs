@@ -12,13 +12,118 @@ open Microsoft.AspNetCore.Components.Web
 type FunBlazorBuilderWithDomAttrs<'Component when 'Component :> Microsoft.AspNetCore.Components.IComponent> () =
     inherit FunBlazorBuilder<'Component>()
 
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorBuilder<'Component>, v: Node list) = this.AddNodes v
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorBuilder<'Component>, v: string) = Text v |> this.AddNode
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorBuilder<'Component>, v: int) = Text (string v) |> this.AddNode
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorBuilder<'Component>, v: float) = Text (string v) |> this.AddNode
-    [<CustomOperation("childContentRaw")>] member this.childContentRaw (_: FunBlazorBuilder<'Component>, v: string) = RawHtml v |> this.AddNode
+    /// <summary>
+    /// Multiple Nodes that are going to be added to the element's children
+    /// </summary>
+    /// <example>
+    /// <code lang="fsharp">
+    /// // &lt;div>
+    /// //   &lt;p>&lt;/p>
+    /// //   &lt;p>&lt;p/>
+    /// // &lt;/div>
+    /// div() {
+    ///   childContent [ p() {}; p() {} }
+    /// }
+    /// </code>
+    /// </example>
+    [<CustomOperation("childContent")>]
+    member this.childContent (_: FunBlazorBuilder<'Component>, v: Node list) = this.AddNodes v
+    /// <summary>
+    /// Single child node to be added into the element's children
+    /// </summary>
+    /// <example>
+    /// <code lang="fsharp">
+    /// // &lt;div>
+    /// //   &lt;p>This is my content&lt;/p>
+    /// // &lt;/div>
+    /// let myText content =
+    ///   p() {
+    ///    class' "my-class"
+    ///    childContent content
+    ///   }
+    /// div() {
+    ///   childContent (myText "This is my content")
+    /// }
+    /// </code>
+    /// </example>
+    [<CustomOperation("childContent")>]
+    member this.childContent (_: FunBlazorBuilder<'Component>, v: Node) = this.AddNode v
     
-    [<CustomOperation("classes")>] member this.classes (_: FunBlazorBuilder<'Component>, v: string list) = attr.classes v |> this.AddAttr
+    /// <summary>
+    /// Single child node to be added into the element's children
+    /// </summary>
+    /// <example>
+    /// <code lang="fsharp">
+    /// // &lt;div>
+    /// // This is my content
+    /// // &lt;/div>
+    /// div() {
+    ///   childContent "This is my content"
+    /// }
+    /// </code>
+    /// </example>
+    [<CustomOperation("childContent")>]
+    member this.childContent (_: FunBlazorBuilder<'Component>, v: string) = Text v |> this.AddNode
+    /// <summary>
+    /// Single child node to be added into the element's children
+    /// </summary>
+    /// <example>
+    /// <code lang="fsharp">
+    /// // &lt;div>
+    /// // 10
+    /// // &lt;/div>
+    /// div() {
+    ///   childContent 10
+    /// }
+    /// </code>
+    /// </example>
+    [<CustomOperation("childContent")>]
+    member this.childContent (_: FunBlazorBuilder<'Component>, v: int) = Text (string v) |> this.AddNode
+    /// <summary>
+    /// Single child node to be added into the element's children
+    /// </summary>
+    /// <example>
+    /// <code lang="fsharp">
+    /// // &lt;div>
+    /// // 100.25
+    /// // &lt;/div>
+    /// div() {
+    ///   childContent 100.25
+    /// }
+    /// </code>
+    /// </example>
+    [<CustomOperation("childContent")>]
+    member this.childContent (_: FunBlazorBuilder<'Component>, v: float) = Text (string v) |> this.AddNode
+    /// <summary>
+    /// Single child node to be added into the element's children
+    /// </summary>
+    /// <example>
+    /// <code lang="fsharp">
+    /// div() {
+    ///   childContentRaw ("""
+    ///     &lt;section>
+    ///       Watch out for XSS attacks if you use this,
+    ///       remember to sanitize your html!
+    ///     &lt;/section>
+    ///   """
+    /// }
+    /// </code>
+    /// </example>
+    [<CustomOperation("childContentRaw")>]
+    member this.childContentRaw (_: FunBlazorBuilder<'Component>, v: string) = RawHtml v |> this.AddNode
+    
+    /// <summary>
+    /// A list of strings to be applied as classes
+    /// </summary>
+    /// <example>
+    /// <code lang="fsharp">
+    /// div() {
+    ///   classes [ "flex"; "flex-row"; "space-betwen" ]
+    /// }
+    /// </code>
+    /// </example>
+    [<CustomOperation("classes")>]
+    member this.classes (_: FunBlazorBuilder<'Component>, v: string list) = attr.classes v |> this.AddAttr
     
     /// This is a helper function which can be used together with VSCode extension "Highlight HTML/SQL templates in F#"
     /// You must follow below format
@@ -355,7 +460,6 @@ type FunBlazorBuilderWithDomAttrs<'Component when 'Component :> Microsoft.AspNet
     [<CustomOperation("onreadystatechangeAsync")>] member this.onreadystatechangeAsync (_: FunBlazorBuilder<'Component>, callback: EventArgs -> Async<unit>) = on.async.readystatechange callback |> this.AddAttr
     [<CustomOperation("onscroll")>] member this.onscroll (_: FunBlazorBuilder<'Component>, callback: EventArgs -> unit) = on.scroll callback |> this.AddAttr
     [<CustomOperation("onscrollAsync")>] member this.onscrollAsync (_: FunBlazorBuilder<'Component>, callback: EventArgs -> Async<unit>) = on.async.scroll callback |> this.AddAttr
-    
 
 type EltEmptyComponent() =
     interface IComponent with

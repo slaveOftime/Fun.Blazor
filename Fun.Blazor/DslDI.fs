@@ -7,12 +7,22 @@ open Bolero
 
 type html with
     
+    /// <summary>
     /// This function will create a blazor component with a random key.
     /// In other words, every time you recall this it will create a brand new component.
     /// So it is not performed well, but it is simple and bug lesser
     ///
     /// 'Services should be something you defined in the asp.net core DI or unit
     /// 'Services must be a tuple like (hook: IComponentHook, sp: IServiceProvider)
+    /// </summary>
+    /// <example>
+    /// <code lang="fsharp">
+    /// let View() =
+    ///   let _view (hook: IComponentHook, jsRuntime: IJsRuntime) =
+    ///     button() { (* ... code ... *)
+    ///   html.inject _view
+    /// </code>
+    /// </example>
     static member inject (render: 'Services -> Node) =
         Bolero.Node.BlazorComponent<DIComponent<'Services>>
             ([
@@ -28,12 +38,14 @@ type html with
     ///
     /// 'Services should be something you defined in the asp.net core DI.
     /// 'Services must be a tuple like (hook: IComponentHook, sp: IServiceProvider) or unit
-    ///
-    /// For example:
-    ///
-    /// Below string will never change no matter how you change externalX
-    /// 
-    /// let demo (externalX: int) = html.inject ("demo-key", fun () -> html.text $"externalX = {externalX}")
+    /// <example>
+    /// <code lang="fsharp">
+    /// // Below string will never change no matter how you change externalX
+    /// let demo (externalX: int) =
+    ///   html.inject ("demo-key", fun () -> html.text $"externalX = {externalX}")
+    /// </code>
+    /// </example>
+
     static member inject (key, render: 'Services -> Node) =
         Bolero.Node.BlazorComponent<DIComponent<'Services>>
             ([
