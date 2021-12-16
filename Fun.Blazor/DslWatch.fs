@@ -44,6 +44,7 @@ type html with
     ///   Observable.interval (TimeSpan.FromSeconds(2.))
     ///   // update the store every two seconds
     ///   |> Observable.subscribe store.Publish
+    ///   |> hook.AddDispose
     /// 
     ///   let _view num =
     ///     p() { childContent $"Number: {num}" }
@@ -63,7 +64,7 @@ type html with
     ///   Observable.interval (TimeSpan.FromSeconds(2.))
     ///   // update the store every two seconds
     ///   |> Observable.subscribe store.Publish
-    /// 
+    ///   |> hook.AddDispose
     ///   let _view num =
     ///     [ p() { class' "red"; childContent $"Number: {num}" }
     ///       p() { class' "blue"; childContent $"Number: {num}" } ]
@@ -83,6 +84,7 @@ type html with
     ///   Observable.interval (TimeSpan.FromSeconds(2.))
     ///   // update the store every two seconds
     ///   |> Observable.subscribe store.Publish
+    ///   |> hook.AddDispose
     /// 
     ///   let _view num =
     ///     p() { childContent $"Number: {num}" }
@@ -102,6 +104,7 @@ type html with
     ///   Observable.interval (TimeSpan.FromSeconds(2.))
     ///   // update the store every two seconds
     ///   |> Observable.subscribe store.Publish
+    ///   |> hook.AddDispose
     /// 
     ///   let _view num =
     ///     [ p() { class' "red"; childContent $"Number: {num}" }
