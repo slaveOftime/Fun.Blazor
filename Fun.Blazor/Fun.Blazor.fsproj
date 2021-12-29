@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net5.0</TargetFramework>
+		<TargetFramework>net6.0</TargetFramework>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
-		<Version>1.1.4</Version>
+		<Version>2.0.0-beta001</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -30,7 +30,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Bolero" Version="0.17.25" />
+		<PackageReference Include="Bolero" Version="0.18.16" />
 		<PackageReference Include="FSharp.Control.Reactive" Version="5.0.2" />
 		<PackageReference Include="FSharp.Data.Adaptive" Version="1.2.8" />
 		<PackageReference Include="Fun.Result" Version="2.0.1" />

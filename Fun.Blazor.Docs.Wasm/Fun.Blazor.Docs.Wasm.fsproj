@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <LangVersion>preview</LangVersion>
   </PropertyGroup>
   <ItemGroup>
@@ -54,14 +54,14 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Majorsoft.Blazor.WebAssembly.Logging.Console" Version="1.5.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.11" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.11" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.1" PrivateAssets="all" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
-    <PackageReference FunBlazorStyle="Feliz" Include="AntDesign" Version="0.10.2" />
+    <PackageReference FunBlazorStyle="Feliz" Include="AntDesign" Version="0.10.3.1" />
     <PackageReference FunBlazorStyle="CE" Include="AntDesign.Charts" Version="0.2.2" />
-    <PackageReference FunBlazorStyle="CE" Include="MudBlazor" Version="5.2.0" />
-    <PackageReference FunBlazorStyle="CE" Include="Microsoft.AspNetCore.Components.Authorization" Version="5.0.11" />
-    <PackageReference FunBlazorStyle="Feliz" Include="Microsoft.Fast.Components.FluentUI" Version="0.4.0" />
+    <PackageReference FunBlazorStyle="CE" Include="MudBlazor" Version="6.0.2" />
+    <PackageReference FunBlazorStyle="CE" Include="Microsoft.AspNetCore.Components.Authorization" Version="6.0.1" />
+    <PackageReference FunBlazorStyle="Feliz" Include="Microsoft.Fast.Components.FluentUI" Version="1.1.0" />
     <PackageReference FunBlazorNamespace="Blazor.DragDrop" FunBlazorDllName="Plk.Blazor.DragDrop" Include="blazor-dragdrop" Version="2.3.0" />
   </ItemGroup>
   <ItemGroup>

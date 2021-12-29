@@ -2352,6 +2352,12 @@ type MudTreeViewItemToggleButtonBuilder<'FunBlazorGeneric when 'FunBlazorGeneric
     [<CustomOperation("ExpandedIcon")>] member this.ExpandedIcon (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "ExpandedIcon" => x |> this.AddAttr
     [<CustomOperation("ExpandedIconColor")>] member this.ExpandedIconColor (_: FunBlazorBuilder<'FunBlazorGeneric>, x: MudBlazor.Color) = "ExpandedIconColor" => x |> this.AddAttr
                 
+
+type _ImportsBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit FunBlazorBuilder<'FunBlazorGeneric>()
+    static member create () = _ImportsBuilder<'FunBlazorGeneric>().CreateNode()
+
+                
             
 namespace rec MudBlazor.DslInternals.Internal
 
@@ -2425,7 +2431,6 @@ module DslCE =
     type MudDebouncedInput'<'T>() = inherit MudDebouncedInputBuilder<MudBlazor.MudDebouncedInput<'T>, 'T>()
     type MudNumericField'<'T>() = inherit MudNumericFieldBuilder<MudBlazor.MudNumericField<'T>, 'T>()
     type MudTextField'<'T>() = inherit MudTextFieldBuilder<MudBlazor.MudTextField<'T>, 'T>()
-    type MudTextFieldString'() = inherit MudTextFieldStringBuilder<MudBlazor.MudTextFieldString>()
     type MudInput'<'T>() = inherit MudInputBuilder<MudBlazor.MudInput<'T>, 'T>()
     type MudInputString'() = inherit MudInputStringBuilder<MudBlazor.MudInputString>()
     type MudRangeInput'<'T>() = inherit MudRangeInputBuilder<MudBlazor.MudRangeInput<'T>, 'T>()
@@ -2534,14 +2539,13 @@ module DslCE =
     type BaseMudThemeProvider'() = inherit BaseMudThemeProviderBuilder<MudBlazor.BaseMudThemeProvider>()
     type MudThemeProvider'() = inherit MudThemeProviderBuilder<MudBlazor.MudThemeProvider>()
     type MudVirtualize'<'T>() = inherit MudVirtualizeBuilder<MudBlazor.MudVirtualize<'T>, 'T>()
-    type MudAppBarSpacer'() = inherit MudAppBarSpacerBuilder<MudBlazor.MudAppBarSpacer>()
     type BreadcrumbLink'() = inherit BreadcrumbLinkBuilder<MudBlazor.BreadcrumbLink>()
     type BreadcrumbSeparator'() = inherit BreadcrumbSeparatorBuilder<MudBlazor.BreadcrumbSeparator>()
     type MudPickerContent'() = inherit MudPickerContentBuilder<MudBlazor.MudPickerContent>()
     type MudPickerToolbar'() = inherit MudPickerToolbarBuilder<MudBlazor.MudPickerToolbar>()
     type MudSpacer'() = inherit MudSpacerBuilder<MudBlazor.MudSpacer>()
-    type MudToolBarSpacer'() = inherit MudToolBarSpacerBuilder<MudBlazor.MudToolBarSpacer>()
     type MudTreeViewItemToggleButton'() = inherit MudTreeViewItemToggleButtonBuilder<MudBlazor.MudTreeViewItemToggleButton>()
+    type _Imports'() = inherit _ImportsBuilder<MudBlazor._Imports>()
             
 namespace MudBlazor.Charts
 
