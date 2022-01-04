@@ -33,7 +33,7 @@ let private clean (project: XDocument) (projectFile: string) (codesDirName: stri
         try
             x.Parent.Remove()
         with
-            | ex -> AnsiConsole.MarkupLine $"[red]Remove node failed: {ex.Message}[/]"
+            | _ -> ()
     )
 
 
