@@ -8,177 +8,6 @@ open Microsoft.AspNetCore.Components.Web.DslInternals
 open Microsoft.Fast.Components.FluentUI.DslInternals
 
 
-type fluentInputBase<'FunBlazorGeneric, 'TValue> =
-    
-    static member create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentInputBase<'TValue>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentInputBase<'TValue>>
-
-    static member ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentInputBase<'TValue>> x
-    static member additionalAttributes (x: System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>) = "AdditionalAttributes" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member value (x: 'TValue) = "Value" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member value' (value: IStore<'TValue>) = FelizNode<'FunBlazorGeneric>.create("Value", value)
-    static member value' (value: cval<'TValue>) = FelizNode<'FunBlazorGeneric>.create("Value", value)
-    static member value' (valueFn: 'TValue * ('TValue -> unit)) = FelizNode<'FunBlazorGeneric>.create("Value", valueFn)
-    static member valueChanged fn = (Bolero.Html.attr.callback<'TValue> "ValueChanged" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member valueExpression (x: System.Linq.Expressions.Expression<System.Func<'TValue>>) = "ValueExpression" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member displayName (x: System.String) = "DisplayName" => x |> FelizNode<'FunBlazorGeneric>.create
-                    
-
-type fluentCheckbox<'FunBlazorGeneric> =
-    inherit fluentInputBase<'FunBlazorGeneric, System.Boolean>
-    static member create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentCheckbox>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentCheckbox>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentCheckbox>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentCheckbox>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentCheckbox>
-    static member ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentCheckbox> x
-    static member href (x: System.String) = "Href" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member disabled (x: System.Nullable<System.Boolean>) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member required (x: System.Nullable<System.Boolean>) = "Required" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-                    
-
-type fluentCombobox<'FunBlazorGeneric> =
-    inherit fluentInputBase<'FunBlazorGeneric, System.String>
-    static member create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentCombobox>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentCombobox>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentCombobox>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentCombobox>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentCombobox>
-    static member ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentCombobox> x
-    static member filled (x: System.Nullable<System.Boolean>) = "Filled" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member disabled (x: System.Nullable<System.Boolean>) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member autocomplete (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Autocomplete>) = "Autocomplete" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member position (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Position>) = "Position" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-                    
-
-type fluentNumberField<'FunBlazorGeneric, 'TValue> =
-    inherit fluentInputBase<'FunBlazorGeneric, 'TValue>
-    static member create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentNumberField<'TValue>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentNumberField<'TValue>>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentNumberField<'TValue>>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentNumberField<'TValue>>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentNumberField<'TValue>>
-    static member ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentNumberField<'TValue>> x
-    static member disabled (x: System.Nullable<System.Boolean>) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member readonly (x: System.Nullable<System.Boolean>) = "Readonly" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member required (x: System.Nullable<System.Boolean>) = "Required" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member autofocus (x: System.Nullable<System.Boolean>) = "Autofocus" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member size (x: System.Int32) = "Size" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member appearance (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Appearance>) = "Appearance" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member placeholder (x: System.String) = "Placeholder" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member parsingErrorMessage (x: System.String) = "ParsingErrorMessage" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member min (x: System.String) = "Min" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member max (x: System.String) = "Max" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member minLength (x: System.Int32) = "MinLength" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member maxLength (x: System.Int32) = "MaxLength" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member step (x: System.Int32) = "Step" => x |> FelizNode<'FunBlazorGeneric>.create
-                    
-
-type fluentRadioGroup<'FunBlazorGeneric> =
-    inherit fluentInputBase<'FunBlazorGeneric, System.String>
-    static member create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentRadioGroup>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentRadioGroup>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentRadioGroup>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentRadioGroup>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentRadioGroup>
-    static member ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentRadioGroup> x
-    static member name (x: System.String) = "Name" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member required (x: System.Nullable<System.Boolean>) = "Required" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member orientation (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Orientation>) = "Orientation" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-                    
-
-type fluentSelect<'FunBlazorGeneric> =
-    inherit fluentInputBase<'FunBlazorGeneric, System.String>
-    static member create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSelect>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSelect>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSelect>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSelect>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSelect>
-    static member ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentSelect> x
-    static member disabled (x: System.Nullable<System.Boolean>) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member filled (x: System.Nullable<System.Boolean>) = "Filled" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member name (x: System.String) = "Name" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member position (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Position>) = "Position" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-                    
-
-type fluentSlider<'FunBlazorGeneric> =
-    inherit fluentInputBase<'FunBlazorGeneric, System.Int32>
-    static member create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSlider>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSlider>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSlider>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSlider>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSlider>
-    static member ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentSlider> x
-    static member orientation (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Orientation>) = "Orientation" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member min (x: System.Nullable<System.Int32>) = "Min" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member max (x: System.Nullable<System.Int32>) = "Max" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member step (x: System.Nullable<System.Int32>) = "Step" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member disabled (x: System.Nullable<System.Boolean>) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member readonly (x: System.Nullable<System.Boolean>) = "Readonly" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-                    
-
-type fluentTextArea<'FunBlazorGeneric> =
-    inherit fluentInputBase<'FunBlazorGeneric, System.String>
-    static member create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTextArea>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTextArea>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTextArea>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTextArea>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTextArea>
-    static member ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentTextArea> x
-    static member disabled (x: System.Nullable<System.Boolean>) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member readonly (x: System.Nullable<System.Boolean>) = "Readonly" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member required (x: System.Nullable<System.Boolean>) = "Required" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member autofocus (x: System.Nullable<System.Boolean>) = "Autofocus" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member resize (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Resize>) = "Resize" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member appearance (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Appearance>) = "Appearance" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member placeholder (x: System.String) = "Placeholder" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-                    
-
-type fluentTextField<'FunBlazorGeneric> =
-    inherit fluentInputBase<'FunBlazorGeneric, System.String>
-    static member create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTextField>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTextField>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTextField>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTextField>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTextField>
-    static member ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentTextField> x
-    static member disabled (x: System.Nullable<System.Boolean>) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member readonly (x: System.Nullable<System.Boolean>) = "Readonly" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member required (x: System.Nullable<System.Boolean>) = "Required" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member autofocus (x: System.Nullable<System.Boolean>) = "Autofocus" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member size (x: System.Nullable<System.Int32>) = "Size" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member appearance (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Appearance>) = "Appearance" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member textFieldType (x: System.Nullable<Microsoft.Fast.Components.FluentUI.TextFieldType>) = "TextFieldType" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member placeholder (x: System.String) = "Placeholder" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member minLength (x: System.Nullable<System.Int32>) = "MinLength" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member maxLength (x: System.Nullable<System.Int32>) = "MaxLength" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member spellcheck (x: System.Nullable<System.Boolean>) = "Spellcheck" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-                    
-
 type fluentAccordion<'FunBlazorGeneric> =
     
     static member create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentAccordion>
@@ -521,20 +350,6 @@ type fluentHorizontalScroll<'FunBlazorGeneric> =
     static member additionalAttributes (x: System.Collections.Generic.IDictionary<System.String, System.Object>) = "AdditionalAttributes" => x |> FelizNode<'FunBlazorGeneric>.create
                     
 
-type fluentListbox<'FunBlazorGeneric> =
-    
-    static member create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentListbox>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentListbox>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentListbox>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentListbox>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentListbox>
-    static member ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentListbox> x
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member additionalAttributes (x: System.Collections.Generic.IDictionary<System.String, System.Object>) = "AdditionalAttributes" => x |> FelizNode<'FunBlazorGeneric>.create
-                    
-
 type fluentMenu<'FunBlazorGeneric> =
     
     static member create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentMenu>
@@ -575,6 +390,7 @@ type fluentOption<'FunBlazorGeneric> =
     static member ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentOption> x
     static member disabled (x: System.Nullable<System.Boolean>) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
     static member value (x: System.String) = "Value" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member name (x: System.String) = "Name" => x |> FelizNode<'FunBlazorGeneric>.create
     static member selected (x: System.Nullable<System.Boolean>) = "Selected" => x |> FelizNode<'FunBlazorGeneric>.create
     static member additionalAttributes (x: System.Collections.Generic.IDictionary<System.String, System.Object>) = "AdditionalAttributes" => x |> FelizNode<'FunBlazorGeneric>.create
     static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
@@ -629,6 +445,7 @@ type fluentRadio<'FunBlazorGeneric> =
     static member value (x: System.String) = "Value" => x |> FelizNode<'FunBlazorGeneric>.create
     static member required (x: System.Nullable<System.Boolean>) = "Required" => x |> FelizNode<'FunBlazorGeneric>.create
     static member disabled (x: System.Nullable<System.Boolean>) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member readonly (x: System.Nullable<System.Boolean>) = "Readonly" => x |> FelizNode<'FunBlazorGeneric>.create
     static member checked' (x: System.Nullable<System.Boolean>) = "Checked" => x |> FelizNode<'FunBlazorGeneric>.create
     static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
     static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
@@ -666,23 +483,6 @@ type fluentSliderLabel<'FunBlazorGeneric> =
     static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
     static member position (x: System.Nullable<System.Int32>) = "Position" => x |> FelizNode<'FunBlazorGeneric>.create
     static member hideMark (x: System.Nullable<System.Boolean>) = "HideMark" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member additionalAttributes (x: System.Collections.Generic.IDictionary<System.String, System.Object>) = "AdditionalAttributes" => x |> FelizNode<'FunBlazorGeneric>.create
-                    
-
-type fluentSwitch<'FunBlazorGeneric> =
-    
-    static member create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSwitch>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSwitch>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSwitch>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSwitch>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSwitch>
-    static member ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentSwitch> x
-    static member disabled (x: System.Nullable<System.Boolean>) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member checked' (x: System.Nullable<System.Boolean>) = "Checked" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member required (x: System.Nullable<System.Boolean>) = "Required" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
     static member additionalAttributes (x: System.Collections.Generic.IDictionary<System.String, System.Object>) = "AdditionalAttributes" => x |> FelizNode<'FunBlazorGeneric>.create
                     
 
@@ -796,6 +596,218 @@ type fluentTreeView<'FunBlazorGeneric> =
     static member renderCollapsedNodes (x: System.Nullable<System.Boolean>) = "RenderCollapsedNodes" => x |> FelizNode<'FunBlazorGeneric>.create
     static member additionalAttributes (x: System.Collections.Generic.IDictionary<System.String, System.Object>) = "AdditionalAttributes" => x |> FelizNode<'FunBlazorGeneric>.create
                     
+
+type fluentInputBase<'FunBlazorGeneric, 'TValue> =
+    
+    static member create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentInputBase<'TValue>>
+    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentInputBase<'TValue>>
+
+    static member ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentInputBase<'TValue>> x
+    static member additionalAttributes (x: System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>) = "AdditionalAttributes" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member value (x: 'TValue) = "Value" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member value' (value: IStore<'TValue>) = FelizNode<'FunBlazorGeneric>.create("Value", value)
+    static member value' (value: cval<'TValue>) = FelizNode<'FunBlazorGeneric>.create("Value", value)
+    static member value' (valueFn: 'TValue * ('TValue -> unit)) = FelizNode<'FunBlazorGeneric>.create("Value", valueFn)
+    static member valueChanged fn = (Bolero.Html.attr.callback<'TValue> "ValueChanged" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
+    static member valueExpression (x: System.Linq.Expressions.Expression<System.Func<'TValue>>) = "ValueExpression" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member displayName (x: System.String) = "DisplayName" => x |> FelizNode<'FunBlazorGeneric>.create
+                    
+
+type fluentCheckbox<'FunBlazorGeneric> =
+    inherit fluentInputBase<'FunBlazorGeneric, System.Boolean>
+    static member create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentCheckbox>
+    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentCheckbox>
+    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentCheckbox>
+    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentCheckbox>
+    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentCheckbox>
+    static member ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentCheckbox> x
+    static member disabled (x: System.Nullable<System.Boolean>) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member required (x: System.Nullable<System.Boolean>) = "Required" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member readonly (x: System.Nullable<System.Boolean>) = "Readonly" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
+    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
+    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+                    
+
+type fluentCombobox<'FunBlazorGeneric> =
+    inherit fluentInputBase<'FunBlazorGeneric, System.String>
+    static member create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentCombobox>
+    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentCombobox>
+    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentCombobox>
+    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentCombobox>
+    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentCombobox>
+    static member ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentCombobox> x
+    static member name (x: System.String) = "Name" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member appearance (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Appearance>) = "Appearance" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member disabled (x: System.Nullable<System.Boolean>) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member required (x: System.Nullable<System.Boolean>) = "Required" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member autocomplete (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Autocomplete>) = "Autocomplete" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member position (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Position>) = "Position" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
+    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
+    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+                    
+
+type fluentListbox<'FunBlazorGeneric> =
+    inherit fluentInputBase<'FunBlazorGeneric, System.String>
+    static member create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentListbox>
+    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentListbox>
+    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentListbox>
+    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentListbox>
+    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentListbox>
+    static member ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentListbox> x
+    static member name (x: System.String) = "Name" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
+    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
+    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+                    
+
+type fluentNumberField<'FunBlazorGeneric, 'TValue> =
+    inherit fluentInputBase<'FunBlazorGeneric, 'TValue>
+    static member create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentNumberField<'TValue>>
+    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentNumberField<'TValue>>
+    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentNumberField<'TValue>>
+    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentNumberField<'TValue>>
+    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentNumberField<'TValue>>
+    static member ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentNumberField<'TValue>> x
+    static member disabled (x: System.Nullable<System.Boolean>) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member readonly (x: System.Nullable<System.Boolean>) = "Readonly" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member required (x: System.Nullable<System.Boolean>) = "Required" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member autofocus (x: System.Nullable<System.Boolean>) = "Autofocus" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member size (x: System.Int32) = "Size" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member appearance (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Appearance>) = "Appearance" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member placeholder (x: System.String) = "Placeholder" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member parsingErrorMessage (x: System.String) = "ParsingErrorMessage" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
+    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
+    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+    static member min (x: System.String) = "Min" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member max (x: System.String) = "Max" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member minLength (x: System.Int32) = "MinLength" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member maxLength (x: System.Int32) = "MaxLength" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member step (x: System.Int32) = "Step" => x |> FelizNode<'FunBlazorGeneric>.create
+                    
+
+type fluentRadioGroup<'FunBlazorGeneric> =
+    inherit fluentInputBase<'FunBlazorGeneric, System.String>
+    static member create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentRadioGroup>
+    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentRadioGroup>
+    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentRadioGroup>
+    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentRadioGroup>
+    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentRadioGroup>
+    static member ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentRadioGroup> x
+    static member name (x: System.String) = "Name" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member required (x: System.Nullable<System.Boolean>) = "Required" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member orientation (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Orientation>) = "Orientation" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
+    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
+    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+                    
+
+type fluentSelect<'FunBlazorGeneric> =
+    inherit fluentInputBase<'FunBlazorGeneric, System.String>
+    static member create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSelect>
+    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSelect>
+    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSelect>
+    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSelect>
+    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSelect>
+    static member ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentSelect> x
+    static member name (x: System.String) = "Name" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member disabled (x: System.Nullable<System.Boolean>) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member appearance (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Appearance>) = "Appearance" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member position (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Position>) = "Position" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
+    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
+    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+                    
+
+type fluentSlider<'FunBlazorGeneric> =
+    inherit fluentInputBase<'FunBlazorGeneric, System.Int32>
+    static member create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSlider>
+    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSlider>
+    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSlider>
+    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSlider>
+    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSlider>
+    static member ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentSlider> x
+    static member orientation (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Orientation>) = "Orientation" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member min (x: System.Nullable<System.Int32>) = "Min" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member max (x: System.Nullable<System.Int32>) = "Max" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member step (x: System.Nullable<System.Int32>) = "Step" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member disabled (x: System.Nullable<System.Boolean>) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member readonly (x: System.Nullable<System.Boolean>) = "Readonly" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
+    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
+    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+                    
+
+type fluentSwitch<'FunBlazorGeneric> =
+    inherit fluentInputBase<'FunBlazorGeneric, System.Boolean>
+    static member create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSwitch>
+    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSwitch>
+    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSwitch>
+    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSwitch>
+    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentSwitch>
+    static member ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentSwitch> x
+    static member disabled (x: System.Nullable<System.Boolean>) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member checked' (x: System.Nullable<System.Boolean>) = "Checked" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member required (x: System.Nullable<System.Boolean>) = "Required" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
+    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
+    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+                    
+
+type fluentTextArea<'FunBlazorGeneric> =
+    inherit fluentInputBase<'FunBlazorGeneric, System.String>
+    static member create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTextArea>
+    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTextArea>
+    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTextArea>
+    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTextArea>
+    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTextArea>
+    static member ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentTextArea> x
+    static member disabled (x: System.Nullable<System.Boolean>) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member readonly (x: System.Nullable<System.Boolean>) = "Readonly" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member required (x: System.Nullable<System.Boolean>) = "Required" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member autofocus (x: System.Nullable<System.Boolean>) = "Autofocus" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member resize (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Resize>) = "Resize" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member appearance (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Appearance>) = "Appearance" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member placeholder (x: System.String) = "Placeholder" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
+    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
+    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+                    
+
+type fluentTextField<'FunBlazorGeneric> =
+    inherit fluentInputBase<'FunBlazorGeneric, System.String>
+    static member create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTextField>
+    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTextField>
+    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTextField>
+    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTextField>
+    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<Microsoft.Fast.Components.FluentUI.FluentTextField>
+    static member ref x = attr.ref<Microsoft.Fast.Components.FluentUI.FluentTextField> x
+    static member disabled (x: System.Nullable<System.Boolean>) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member readonly (x: System.Nullable<System.Boolean>) = "Readonly" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member required (x: System.Nullable<System.Boolean>) = "Required" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member autofocus (x: System.Nullable<System.Boolean>) = "Autofocus" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member size (x: System.Nullable<System.Int32>) = "Size" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member appearance (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Appearance>) = "Appearance" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member textFieldType (x: System.Nullable<Microsoft.Fast.Components.FluentUI.TextFieldType>) = "TextFieldType" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member placeholder (x: System.String) = "Placeholder" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member minLength (x: System.Nullable<System.Int32>) = "MinLength" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member maxLength (x: System.Nullable<System.Int32>) = "MaxLength" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member spellcheck (x: System.Nullable<System.Boolean>) = "Spellcheck" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
+    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
+    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+                    
+
+type _Imports<'FunBlazorGeneric> =
+    
+    static member create () = [] |> html.blazor<Microsoft.Fast.Components.FluentUI._Imports>
+    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<Microsoft.Fast.Components.FluentUI._Imports>
+
+    static member ref x = attr.ref<Microsoft.Fast.Components.FluentUI._Imports> x
+
+                    
             
 
 // =======================================================================================================================
@@ -804,69 +816,6 @@ namespace Microsoft.Fast.Components.FluentUI
 
 open Microsoft.Fast.Components.FluentUI.DslInternals
 
-
-type IFluentInputBaseNode<'TValue> = interface end
-type fluentInputBase<'TValue> =
-    class
-        inherit fluentInputBase<IFluentInputBaseNode<'TValue>, 'TValue>
-    end
-                    
-
-type IFluentCheckboxNode = interface end
-type fluentCheckbox =
-    class
-        inherit fluentCheckbox<IFluentCheckboxNode>
-    end
-                    
-
-type IFluentComboboxNode = interface end
-type fluentCombobox =
-    class
-        inherit fluentCombobox<IFluentComboboxNode>
-    end
-                    
-
-type IFluentNumberFieldNode<'TValue> = interface end
-type fluentNumberField<'TValue> =
-    class
-        inherit fluentNumberField<IFluentNumberFieldNode<'TValue>, 'TValue>
-    end
-                    
-
-type IFluentRadioGroupNode = interface end
-type fluentRadioGroup =
-    class
-        inherit fluentRadioGroup<IFluentRadioGroupNode>
-    end
-                    
-
-type IFluentSelectNode = interface end
-type fluentSelect =
-    class
-        inherit fluentSelect<IFluentSelectNode>
-    end
-                    
-
-type IFluentSliderNode = interface end
-type fluentSlider =
-    class
-        inherit fluentSlider<IFluentSliderNode>
-    end
-                    
-
-type IFluentTextAreaNode = interface end
-type fluentTextArea =
-    class
-        inherit fluentTextArea<IFluentTextAreaNode>
-    end
-                    
-
-type IFluentTextFieldNode = interface end
-type fluentTextField =
-    class
-        inherit fluentTextField<IFluentTextFieldNode>
-    end
-                    
 
 type IFluentAccordionNode = interface end
 type fluentAccordion =
@@ -987,13 +936,6 @@ type fluentHorizontalScroll =
     end
                     
 
-type IFluentListboxNode = interface end
-type fluentListbox =
-    class
-        inherit fluentListbox<IFluentListboxNode>
-    end
-                    
-
 type IFluentMenuNode = interface end
 type fluentMenu =
     class
@@ -1050,13 +992,6 @@ type fluentSliderLabel =
     end
                     
 
-type IFluentSwitchNode = interface end
-type fluentSwitch =
-    class
-        inherit fluentSwitch<IFluentSwitchNode>
-    end
-                    
-
 type IFluentTabNode = interface end
 type fluentTab =
     class
@@ -1103,6 +1038,90 @@ type IFluentTreeViewNode = interface end
 type fluentTreeView =
     class
         inherit fluentTreeView<IFluentTreeViewNode>
+    end
+                    
+
+type IFluentInputBaseNode<'TValue> = interface end
+type fluentInputBase<'TValue> =
+    class
+        inherit fluentInputBase<IFluentInputBaseNode<'TValue>, 'TValue>
+    end
+                    
+
+type IFluentCheckboxNode = interface end
+type fluentCheckbox =
+    class
+        inherit fluentCheckbox<IFluentCheckboxNode>
+    end
+                    
+
+type IFluentComboboxNode = interface end
+type fluentCombobox =
+    class
+        inherit fluentCombobox<IFluentComboboxNode>
+    end
+                    
+
+type IFluentListboxNode = interface end
+type fluentListbox =
+    class
+        inherit fluentListbox<IFluentListboxNode>
+    end
+                    
+
+type IFluentNumberFieldNode<'TValue> = interface end
+type fluentNumberField<'TValue> =
+    class
+        inherit fluentNumberField<IFluentNumberFieldNode<'TValue>, 'TValue>
+    end
+                    
+
+type IFluentRadioGroupNode = interface end
+type fluentRadioGroup =
+    class
+        inherit fluentRadioGroup<IFluentRadioGroupNode>
+    end
+                    
+
+type IFluentSelectNode = interface end
+type fluentSelect =
+    class
+        inherit fluentSelect<IFluentSelectNode>
+    end
+                    
+
+type IFluentSliderNode = interface end
+type fluentSlider =
+    class
+        inherit fluentSlider<IFluentSliderNode>
+    end
+                    
+
+type IFluentSwitchNode = interface end
+type fluentSwitch =
+    class
+        inherit fluentSwitch<IFluentSwitchNode>
+    end
+                    
+
+type IFluentTextAreaNode = interface end
+type fluentTextArea =
+    class
+        inherit fluentTextArea<IFluentTextAreaNode>
+    end
+                    
+
+type IFluentTextFieldNode = interface end
+type fluentTextField =
+    class
+        inherit fluentTextField<IFluentTextFieldNode>
+    end
+                    
+
+type I_ImportsNode = interface end
+type _Imports =
+    class
+        inherit _Imports<I_ImportsNode>
     end
                     
             

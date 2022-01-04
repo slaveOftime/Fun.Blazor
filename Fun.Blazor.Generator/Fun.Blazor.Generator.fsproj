@@ -4,16 +4,14 @@
 		<TargetFramework>net5.0</TargetFramework>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<WarnOn>3390;$(WarnOn)</WarnOn>
+		<Version>1.1.4-beta01</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<Compile Include="Utils.fs" />
 		<Compile Include="Generator.fs" />
 		<Compile Include="CEGenerator.fs" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<PackageReference Include="Microsoft.AspNetCore.Components" Version="5.0.11" />
+		<Compile Include="CodeGen.fs" />
 	</ItemGroup>
 
 	<ItemGroup>

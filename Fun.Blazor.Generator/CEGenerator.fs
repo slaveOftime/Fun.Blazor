@@ -25,18 +25,20 @@ let private getMetaInfo (ty: Type) =
 
     let inherits =
         if ty.BaseType <> typeof<Microsoft.AspNetCore.Components.ComponentBase> then
-            Some (getTypeMeta ty.BaseType)
+            Some(getTypeMeta ty.BaseType)
         else
             None
 
     let name, generics, inheritInfo =
         match getTypeMeta ty, inherits with
-        | (ty, generics), Some (baseTy, baseGenerics) -> 
-            let generics = List.append baseGenerics generics |> List.distinctBy (fun x -> x.Name) |> List.filter (fun x -> (getTypeName x).StartsWith "'")
-            ty, generics, Some (baseTy, baseGenerics)
+        | (ty, generics), Some (baseTy, baseGenerics) ->
+            let generics =
+                List.append baseGenerics generics
+                |> List.distinctBy (fun x -> x.Name)
+                |> List.filter (fun x -> (getTypeName x).StartsWith "'")
+            ty, generics, Some(baseTy, baseGenerics)
 
-        | (name, generics), None ->
-            name, generics, None
+        | (name, generics), None -> name, generics, None
 
     let originalGenerics = generics |> getTypeNames |> createGenerics |> closeGenerics
     let originalTypeWithGenerics = $"{ty.Namespace}.{getTypeShortName ty}{originalGenerics}"
@@ -47,15 +49,33 @@ let private getMetaInfo (ty: Type) =
     let rawProps = ty.GetProperties()
     let filteredProps = getValidBlazorProps ty rawProps
 
-    let props = 
+    let props =
         filteredProps
         |> Seq.map (fun prop ->
             let name = prop.Name
             let name =
-                if fsharpKeywords@["Bind"; "Delay"; "Return"; "ReturnFrom"; "Run"; "Combine"; "For"; "TryFinally"; "TryWith"; "Using"; "While"; "Yield"; "YieldFrom"; "Zero"; "Quote"]
-                   |> List.contains name 
-                then $"{name}'"
-                else name
+                if fsharpKeywords
+                   @ [
+                       "Bind"
+                       "Delay"
+                       "Return"
+                       "ReturnFrom"
+                       "Run"
+                       "Combine"
+                       "For"
+                       "TryFinally"
+                       "TryWith"
+                       "Using"
+                       "While"
+                       "Yield"
+                       "YieldFrom"
+                       "Zero"
+                       "Quote"
+                   ]
+                   |> List.contains name then
+                    $"{name}'"
+                else
+                    name
 
             let _addAttr = "|> this.AddAttr"
             let _addNode = "|> this.AddNode"
@@ -71,29 +91,43 @@ let private getMetaInfo (ty: Type) =
                     ]
                 else
                     []
-            
+
             if prop.PropertyType.IsGenericType then
-                if prop.PropertyType.Name.StartsWith "EventCallback" ||
-                   prop.PropertyType.Name.StartsWith "Microsoft.AspNetCore.Components.EventCallback"
-                then
-                    [ $"    {customOperation name} {memberStart}{name} ({contextArg}, fn) = (Bolero.Html.attr.callback<{getTypeName prop.PropertyType.GenericTypeArguments.[0]}> \"{prop.Name}\" (fun e -> fn e)) {_addAttr}" ]
+                if prop.PropertyType.Name.StartsWith "EventCallback"
+                   || prop.PropertyType.Name.StartsWith "Microsoft.AspNetCore.Components.EventCallback" then
+                    [
+                        $"    {customOperation name} {memberStart}{name} ({contextArg}, fn) = (Bolero.Html.attr.callback<{getTypeName prop.PropertyType.GenericTypeArguments.[0]}> \"{prop.Name}\" (fun e -> fn e)) {_addAttr}"
+                    ]
                 elif prop.PropertyType.Name.StartsWith "RenderFragment`" then
-                    [ $"    {customOperation name} {memberStart}{name} ({contextArg}, render: {getTypeName prop.PropertyType.GenericTypeArguments.[0]} -> {boleroNode}) = Bolero.Html.attr.fragmentWith \"{prop.Name}\" (fun x -> render x) {_addAttr}" ]
+                    [
+                        $"    {customOperation name} {memberStart}{name} ({contextArg}, render: {getTypeName prop.PropertyType.GenericTypeArguments.[0]} -> {boleroNode}) = Bolero.Html.attr.fragmentWith \"{prop.Name}\" (fun x -> render x) {_addAttr}"
+                    ]
                 elif prop.PropertyType.Namespace = "System"
-                     && (prop.PropertyType.Name.StartsWith "Func`" 
-                        || prop.PropertyType.Name.StartsWith "Action`") 
-                then
-                    [ $"    {customOperation name} {memberStart}{name} ({contextArg}, fn) = \"{prop.Name}\" => ({getTypeName prop.PropertyType}fn) {_addAttr}" ]
+                     && (prop.PropertyType.Name.StartsWith "Func`" || prop.PropertyType.Name.StartsWith "Action`") then
+                    [
+                        $"    {customOperation name} {memberStart}{name} ({contextArg}, fn) = \"{prop.Name}\" => ({getTypeName prop.PropertyType}fn) {_addAttr}"
+                    ]
                 elif prop.PropertyType.Namespace = "System" && prop.PropertyType.Name.StartsWith "Func`" then
                     let returnType = prop.PropertyType.GenericTypeArguments |> Seq.last
                     if returnType = typeof<Microsoft.AspNetCore.Components.RenderFragment> then
                         let paramCount = prop.PropertyType.Name.Substring("Func`".Length) |> int
-                        let parameters = [for i in 1..paramCount-1 do $"x{i}"] |> String.concat " "
-                        [ $"    {customOperation name} {memberStart}{name} ({contextArg}, fn) = Bolero.FragmentAttr (\"{prop.Name}\", fun render -> box ({getTypeName prop.PropertyType}(fun {parameters} -> Microsoft.AspNetCore.Components.RenderFragment(fun rt -> render rt (fn {parameters}))))) {_addAttr}"  ]
+                        let parameters =
+                            [
+                                for i in 1 .. paramCount - 1 do
+                                    $"x{i}"
+                            ]
+                            |> String.concat " "
+                        [
+                            $"    {customOperation name} {memberStart}{name} ({contextArg}, fn) = Bolero.FragmentAttr (\"{prop.Name}\", fun render -> box ({getTypeName prop.PropertyType}(fun {parameters} -> Microsoft.AspNetCore.Components.RenderFragment(fun rt -> render rt (fn {parameters}))))) {_addAttr}"
+                        ]
                     else
-                        [ $"    {customOperation name} {memberStart}{name} ({contextArg}, fn) = \"{prop.Name}\" => ({getTypeName prop.PropertyType}fn) {_addAttr}" ]
+                        [
+                            $"    {customOperation name} {memberStart}{name} ({contextArg}, fn) = \"{prop.Name}\" => ({getTypeName prop.PropertyType}fn) {_addAttr}"
+                        ]
                 elif prop.PropertyType.Namespace = "System" && prop.PropertyType.Name.StartsWith "Action`" then
-                    [ $"    {customOperation name} {memberStart}{name} ({contextArg}, fn) = \"{prop.Name}\" => ({getTypeName prop.PropertyType}fn) {_addAttr}" ]
+                    [
+                        $"    {customOperation name} {memberStart}{name} ({contextArg}, fn) = \"{prop.Name}\" => ({getTypeName prop.PropertyType}fn) {_addAttr}"
+                    ]
                 else
                     let propTypeName = getTypeName prop.PropertyType
                     [
@@ -101,10 +135,11 @@ let private getMetaInfo (ty: Type) =
                         yield! createBindableProps propTypeName
                     ]
 
-            elif prop.PropertyType.Name.StartsWith "EventCallback" ||
-                 prop.PropertyType.Name.StartsWith "Microsoft.AspNetCore.Components.EventCallback"
-                then
-                [ $"    {customOperation name} {memberStart}{name} ({contextArg}, fn) = attr.callbackOfUnit(\"{prop.Name}\", fn) {_addAttr}" ]
+            elif prop.PropertyType.Name.StartsWith "EventCallback"
+                 || prop.PropertyType.Name.StartsWith "Microsoft.AspNetCore.Components.EventCallback" then
+                [
+                    $"    {customOperation name} {memberStart}{name} ({contextArg}, fn) = attr.callbackOfUnit(\"{prop.Name}\", fn) {_addAttr}"
+                ]
 
             elif prop.PropertyType = typeof<RenderFragment> then
                 let name = if name = "ChildContent" then lowerFirstCase name else name
@@ -116,20 +151,25 @@ let private getMetaInfo (ty: Type) =
                 ]
 
             elif prop.Name = "Class" && prop.PropertyType = typeof<string> then
-                [ $"    [<CustomOperation(\"Classes\")>] {memberStart}Classes ({contextArg}, x: string list) = attr.classes x {_addAttr}" ]
+                [
+                    $"    [<CustomOperation(\"Classes\")>] {memberStart}Classes ({contextArg}, x: string list) = attr.classes x {_addAttr}"
+                ]
 
             elif prop.Name = "Style" && prop.PropertyType = typeof<string> then
-                [ $"    [<CustomOperation(\"Styles\")>] {memberStart}Styles ({contextArg}, x: (string * string) list) = attr.styles x {_addAttr}" ]
-            
+                [
+                    $"    [<CustomOperation(\"Styles\")>] {memberStart}Styles ({contextArg}, x: (string * string) list) = attr.styles x {_addAttr}"
+                ]
+
             else
                 let propTypeName = getTypeName prop.PropertyType
                 [
                     $"    {customOperation name} {memberStart}{name} ({contextArg}, x: {propTypeName}) = \"{prop.Name}\" => x {_addAttr}"
                     yield! createBindableProps propTypeName
-                ])
+                ]
+        )
 
         |> Seq.concat
-        
+
 
     let hasChildren = props |> Seq.exists (fun x -> x.Contains $"{memberStart}childContent")
 
@@ -144,76 +184,82 @@ let private getMetaInfo (ty: Type) =
     let addBasicDomAttrs = rawProps |> Seq.exists isSplatAttributesProp
 
     let props =
-        props 
+        props
         |> Seq.filter (fun x -> not addBasicDomAttrs || x.Contains $"{memberStart}childContent" |> not)
-        |> String.concat "\n" 
+        |> String.concat "\n"
 
-    {| ty = ty; generics = generics; inheritInfo = inheritInfo; props = props; hasChildren = hasChildren; addBasicDomAttrs = addBasicDomAttrs |}
+    {|
+        ty = ty
+        generics = generics
+        inheritInfo = inheritInfo
+        props = props
+        hasChildren = hasChildren
+        addBasicDomAttrs = addBasicDomAttrs
+    |}
 
 
+type private TypeTree = | Node of Type * TypeTree seq
 
-type private TypeTree =
-    | Node of Type * TypeTree seq
-
-let rec private getTypeTree (baseType: Type) (tys: Type seq): TypeTree seq =
+let rec private getTypeTree (baseType: Type) (tys: Type seq) : TypeTree seq =
     let baseTypeName = baseType.Namespace + "." + baseType.Name
     tys
     |> Seq.filter (fun x ->
         if baseType.IsGenericType && x.BaseType <> null then
-             baseTypeName = x.BaseType.Namespace + "." + x.BaseType.Name
+            baseTypeName = x.BaseType.Namespace + "." + x.BaseType.Name
         else
-            x.BaseType = baseType)
-    |> Seq.map (fun ty -> Node (ty, getTypeTree ty tys))
+            x.BaseType = baseType
+    )
+    |> Seq.map (fun ty -> Node(ty, getTypeTree ty tys))
 
 
 let private getMetaInfos (tys: Type seq) =
     let rec getNamespaces tree =
-        tree 
-        |> Seq.map (fun (Node (ty, childTys)) -> ty.Namespace::(getNamespaces childTys |> Seq.toList))
+        tree
+        |> Seq.map (fun (Node (ty, childTys)) -> ty.Namespace :: (getNamespaces childTys |> Seq.toList))
         |> Seq.concat
 
     let rec getTypesInNamespace tree ns =
         tree
-        |> Seq.map (fun (Node (ty, childTys)) ->
-            [
-                if ty.Namespace = ns then ty
-                yield! getTypesInNamespace childTys ns
-            ])
+        |> Seq.map (fun (Node (ty, childTys)) -> [ if ty.Namespace = ns then ty; yield! getTypesInNamespace childTys ns ])
         |> Seq.concat
 
     let rec getRootNamespaces (nss: string list) =
         match nss with
         | [] -> []
-        | [ns] -> [ns]
-        | ns::rest ->
+        | [ ns ] -> [ ns ]
+        | ns :: rest ->
             let _, p2 = rest |> List.partition (fun x -> x.StartsWith ns)
-            ns::getRootNamespaces p2
+            ns :: getRootNamespaces p2
 
     let rec getOrderedTypes tree =
-        tree
-        |> Seq.map (fun (Node (ty, childTys)) ->
-            [
-                ty
-                yield! getOrderedTypes childTys
-            ])
-        |> Seq.concat
+        tree |> Seq.map (fun (Node (ty, childTys)) -> [ ty; yield! getOrderedTypes childTys ]) |> Seq.concat
 
-    let tree = tys |> Seq.filter (fun x -> x.IsAssignableTo typeof<ComponentBase> && x.IsPublic) |> getTypeTree typeof<ComponentBase>
+    let tree =
+        tys
+        |> Seq.filter (fun x ->
+            x.IsAssignableTo typeof<ComponentBase>
+            && x.IsPublic
+            && not (isObsoleted (x.GetCustomAttributes(false)))
+        )
+        |> getTypeTree typeof<ComponentBase>
     let namespaces = getNamespaces tree |> Seq.toList
     let metaGroups = System.Collections.Generic.List<_>()
-    
+
     tree
     |> getOrderedTypes
     |> Seq.map getMetaInfo
     |> Seq.iter (fun meta ->
         if metaGroups.Count = 0 then
-            metaGroups.Add(meta.ty.Namespace, [meta])
+            metaGroups.Add(meta.ty.Namespace, [ meta ])
         else
             let ns, metas = metaGroups |> Seq.last
-            if ns = meta.ty.Namespace then metaGroups.[metaGroups.Count-1] <- (ns, metas@[meta])
-            else metaGroups.Add(meta.ty.Namespace, [meta]))
+            if ns = meta.ty.Namespace then
+                metaGroups.[metaGroups.Count - 1] <- (ns, metas @ [ meta ])
+            else
+                metaGroups.Add(meta.ty.Namespace, [ meta ])
+    )
 
-    {| 
+    {|
         rootNamespaces = getRootNamespaces namespaces
         metas = metaGroups
     |}
@@ -226,32 +272,36 @@ let generateCode (targetNamespace: string) (opens: string) (tys: Type seq) =
         metaInfos.rootNamespaces
         |> Seq.pick (fun x ->
             if ns.StartsWith x then
-                if ns.Length = x.Length then Some ""
-                else ns.Substring(x.Length + 1) |> Some
+                if ns.Length = x.Length then Some "" else ns.Substring(x.Length + 1) |> Some
             else
-                None)
-    
+                None
+        )
+
     let builderNames = Dictionary<string, Dictionary<string, int>>()
 
     let makeBuilderName (ty: Type) =
         let info = ty.GetTypeInfo()
 
         let shortName = getTypeShortName ty
-        let uniqueName = $"{shortName}-{info.GenericTypeArguments.Length + info.GenericTypeParameters.Length}"
+        let uniqueName =
+            $"{shortName}-{info.GenericTypeArguments.Length + info.GenericTypeParameters.Length}"
         let builderName = $"{shortName}Builder"
         let key = $"{ty.Namespace}-{shortName}"
 
         if builderNames.ContainsKey key then
-            if builderNames.[key].ContainsKey uniqueName then ()
+            if builderNames.[key].ContainsKey uniqueName then
+                ()
             else
                 let count = builderNames.[key].Count
                 builderNames.[key].Add(uniqueName, count + 1)
-            if builderNames.[key].[uniqueName] = 1 then builderName
-            else $"{builderName}{builderNames.[key].[uniqueName]}"
+            if builderNames.[key].[uniqueName] = 1 then
+                builderName
+            else
+                $"{builderName}{builderNames.[key].[uniqueName]}"
         else
-            builderNames.Add(key, Dictionary([ KeyValuePair (uniqueName, 1) ]))
+            builderNames.Add(key, Dictionary([ KeyValuePair(uniqueName, 1) ]))
             builderName
-            
+
 
     let internalCode =
         metaInfos.metas
@@ -263,29 +313,38 @@ let generateCode (targetNamespace: string) (opens: string) (tys: Type seq) =
                     let originalTypeWithGenerics = $"{meta.ty.Namespace}.{getTypeShortName meta.ty}{originalGenerics}"
                     let builderName = makeBuilderName meta.ty
                     let funBlazorGenericConstraint = $"{funBlazorGeneric} :> Microsoft.AspNetCore.Components.IComponent"
-                    let builderGenerics = funBlazorGeneric::(getTypeNames meta.generics) |> createGenerics |> closeGenerics
-                    let builderGenericsWithContraints = funBlazorGeneric::(getTypeNames meta.generics) |> createGenerics |> appendStr (createConstraint meta.generics |> appendConstraint funBlazorGenericConstraint) |> closeGenerics
+                    let builderGenerics =
+                        funBlazorGeneric :: (getTypeNames meta.generics) |> createGenerics |> closeGenerics
+                    let builderGenericsWithContraints =
+                        funBlazorGeneric :: (getTypeNames meta.generics)
+                        |> createGenerics
+                        |> appendStr (createConstraint meta.generics |> appendConstraint funBlazorGenericConstraint)
+                        |> closeGenerics
 
-                    let inheirit' = 
+                    let inheirit' =
                         //$"inherit {if meta.addBasicDomAttrs then nameof FunBlazorContextWithAttrs else nameof FunBlazorContext}<{funBlazorGeneric}>()"
                         match meta.inheritInfo with
-                        | None -> 
-                            $"inherit {if meta.addBasicDomAttrs then nameof FunBlazorBuilderWithDomAttrs else nameof FunBlazorBuilder}<{funBlazorGeneric}>()"
+                        | None ->
+                            $"inherit {if meta.addBasicDomAttrs then
+                                           nameof FunBlazorBuilderWithDomAttrs
+                                       else
+                                           nameof FunBlazorBuilder}<{funBlazorGeneric}>()"
                         | Some (baseTy, generics) ->
-                            $"inherit {baseTy.Namespace |> trimNamespace |> appendStrIfNotEmpty (string '.')}{makeBuilderName meta.ty.BaseType}{funBlazorGeneric::(getTypeNames generics) |> createGenerics |> closeGenerics}()"
+                            $"inherit {baseTy.Namespace |> trimNamespace |> appendStrIfNotEmpty (string '.')}{makeBuilderName meta.ty.BaseType}{funBlazorGeneric :: (getTypeNames generics) |> createGenerics |> closeGenerics}()"
 
                     let news =
                         if meta.hasChildren then
-                            let makeChild x = $"Bolero.Html.attr.fragment \"ChildContent\" ({x}) |> this.AddAttr"
+                            let makeChild x =
+                                $"Bolero.Html.attr.fragment \"ChildContent\" ({x}) |> this.AddAttr"
                             let makeChildWithText = makeChild "x |> html.text"
                             let makeChildWithNodes = makeChild "x |> html.fragment"
                             $"    new (x: string) as this = {meta.ty |> getTypeShortName}Builder{builderGenerics}() then {makeChildWithText} |> ignore"
-                            + "\n"+
-                            $"    new (x: {boleroNode} list) as this = {meta.ty |> getTypeShortName}Builder{builderGenerics}() then {makeChildWithNodes} |> ignore"
-                            + "\n"+
-                            $"    static member create (x: string) = {builderName}{builderGenerics}(x).CreateNode()"
-                            + "\n"+
-                            $"    static member create (x: {boleroNode} list) = {builderName}{builderGenerics}(x).CreateNode()"
+                            + "\n"
+                            + $"    new (x: {boleroNode} list) as this = {meta.ty |> getTypeShortName}Builder{builderGenerics}() then {makeChildWithNodes} |> ignore"
+                            + "\n"
+                            + $"    static member create (x: string) = {builderName}{builderGenerics}(x).CreateNode()"
+                            + "\n"
+                            + $"    static member create (x: {boleroNode} list) = {builderName}{builderGenerics}(x).CreateNode()"
                         else
                             $"    static member create () = {builderName}{builderGenerics}().CreateNode()"
 
@@ -294,15 +353,17 @@ type {builderName}{builderGenericsWithContraints}() =
     {inheirit'}
 {news}
 {meta.props}
-                """)
+                """
+                )
                 |> String.concat "\n"
-            
+
             $"""namespace rec {targetNamespace}.{internalSegment}{ns |> trimNamespace |> addStrIfNotEmpty "."}
 
 {opens}
 
 {code}
-            """)
+            """
+        )
         |> String.concat "\n"
 
     let dslCode =
@@ -316,10 +377,16 @@ type {builderName}{builderGenericsWithContraints}() =
                     let originalGenerics = meta.generics |> getTypeNames |> createGenerics |> closeGenerics
                     let originalTypeWithGenerics = $"{meta.ty.Namespace}.{getTypeShortName meta.ty}{originalGenerics}"
                     let builderName = makeBuilderName meta.ty
-                    let builderGenerics = originalTypeWithGenerics::(getTypeNames meta.generics) |> createGenerics |> closeGenerics
-                    
+                    let builderGenerics =
+                        originalTypeWithGenerics :: (getTypeNames meta.generics) |> createGenerics |> closeGenerics
 
-                    $"""    type {meta.ty |> getTypeShortName}'{meta.generics |> getTypeNames |> createGenerics |> appendStr (createConstraint meta.generics) |> closeGenerics}() = inherit {builderName}{builderGenerics}()""")
+
+                    $"""    type {meta.ty |> getTypeShortName}'{meta.generics
+                                                                |> getTypeNames
+                                                                |> createGenerics
+                                                                |> appendStr (createConstraint meta.generics)
+                                                                |> closeGenerics}() = inherit {builderName}{builderGenerics}()"""
+                )
                 |> String.concat "\n"
 
             $"""namespace {targetNamespace}{ns |> trimNamespace |> addStrIfNotEmpty "."}
@@ -329,8 +396,9 @@ module DslCE =
 
     open {targetNamespace}.{internalSegment}{ns |> trimNamespace |> addStrIfNotEmpty "."}
 
-{ code }
-            """)
+{code}
+            """
+        )
         |> String.concat "\n"
 
-    {| internalCode= internalCode; dslCode = dslCode |}
+    {| internalCode = internalCode; dslCode = dslCode |}
