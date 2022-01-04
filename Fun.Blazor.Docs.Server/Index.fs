@@ -34,13 +34,6 @@ type Index () =
 
                     html.stylesheet "https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/default.css"
                     html.script "https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/index.min.js"
-                    html.scriptRaw """
-                        // options are optional ;)
-                        MobileDragDrop.polyfill({
-                            // use this to make use of the scroll behaviour
-                            dragImageTranslateOverride: MobileDragDrop.scrollBehaviourDragImageTranslateOverride
-                        });
-                    """
                 ]
             ]
         ]

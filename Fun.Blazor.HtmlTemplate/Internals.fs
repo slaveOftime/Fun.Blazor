@@ -1,7 +1,6 @@
 module Fun.Blazor.HtmlTemplate.Internals
 
 open System
-open System.IO
 open System.Text
 open System.Text.RegularExpressions
 open System.Collections.Concurrent
@@ -15,9 +14,10 @@ let internal caches = ConcurrentDictionary<int, Bolero.Node list>()
 type MkAttr = obj [] -> Bolero.Attr list
 type MkNode = obj [] -> Bolero.Node
 
-type PlacerHolderNode =
-    interface
-    end
+type MkAttrWithName = string -> Bolero.Attr list
+
+type PlacerHolderNode = interface end
+
 
 let placeholderAttrKey = "__placeholder__"
 let placeholderAttr (mk: MkAttr) = Bolero.Attr(placeholderAttrKey, mk)
@@ -66,15 +66,14 @@ let buildRawNodes (str: string) =
                 for m in matches do
                     let txt = str.Substring(strIndex, m.Index - strIndex)
                     let trimedTxt = txt.Trim()
-                    if String.IsNullOrEmpty trimedTxt |> not then
-                        sb.Append trimedTxt |> ignore
+                    if String.IsNullOrEmpty trimedTxt |> not then sb.Append trimedTxt |> ignore
 
                     let argIndex = int m.Groups.[1].Value
-                    sb.Append (string args.[argIndex]) |> ignore
+                    sb.Append(string args.[argIndex]) |> ignore
 
                     strIndex <- m.Index + m.Length
 
-                Bolero.RawHtml (sb.ToString())
+                Bolero.RawHtml(sb.ToString())
             )
     ]
 
@@ -105,30 +104,21 @@ let buildAttrs (name: string, value: string) =
         else
             fun _ -> name
 
-    if name.StartsWith "on" && valueMatches.Count = 1 then
+    if valueMatches.Count = 1 && valueMatches.[0].Index = 0 && valueMatches.[0].Length = value.Length then
         let argIndex = int valueMatches.[0].Groups.[1].Value
         placeholderAttr (fun args ->
+            let name = makeName args
             let arg = args.[argIndex]
-            let name = makeName args
             if String.IsNullOrEmpty name then
                 List.empty
             else
-                [ Bolero.Html.attr.callback name (fun x -> invokeFunction arg x :?> unit) ]
-        )
-    elif valueMatches.Count = 1 && valueMatches.[0].Index = 0 && valueMatches.[0].Length = value.Length then
-        let argIndex = int valueMatches.[0].Groups.[1].Value
-        placeholderAttr (fun args ->
-            let name = makeName args
-            if String.IsNullOrEmpty name then
-                List.empty
-            else
-                let isFunc = FSharp.Reflection.FSharpType.IsFunction(args.[argIndex].GetType())
-                if isFunc && name.StartsWith "@" then
-                    [
-                        Bolero.Html.attr.callback $"on{name.Substring(1)}" (fun x -> invokeFunction args.[argIndex] x :?> unit)
-                    ]
-                else
-                    [ Bolero.Attr(name, args.[argIndex]) ]
+                match arg with
+                | :? MkAttrWithName as fn -> fn name
+                | _ ->
+                    if name.StartsWith "on" then
+                        [ Bolero.Html.attr.callback name (fun x -> invokeFunction arg x :?> unit) ]
+                    else
+                        [ Bolero.Attr(name, arg) ]
         )
     elif valueMatches.Count > 0 then
         placeholderAttr (fun args ->
@@ -150,7 +140,7 @@ let buildAttrs (name: string, value: string) =
             else
                 [ Bolero.Attr(name, sb.ToString()) ]
         )
-    else if nameMatches.Count > 0 then
+    elif nameMatches.Count > 0 then
         placeholderAttr (fun args ->
             let name = makeName args
             if String.IsNullOrEmpty name then List.empty else [ Bolero.Attr(name, value) ]

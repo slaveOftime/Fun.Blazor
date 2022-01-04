@@ -67,7 +67,7 @@ module CodeGenProject =
             __SOURCE_DIRECTORY__ </> ".." </> "Fun.Blazor.Generator" </> "Fun.Blazor.Generator.fsproj"
         Cli.Wrap("dotnet").WithArguments($"add reference {generatorProject}").WithWorkingDirectory(codeGenFolder).Run()
 #else
-        Cli.Wrap("dotnet").WithArguments($"add package Fun.Blazor.Generator").WithWorkingDirectory(tempFolder).Run()
+        Cli.Wrap("dotnet").WithArguments($"add package Fun.Blazor.Generator").WithWorkingDirectory(codeGenFolder).Run()
 #endif
 
 
