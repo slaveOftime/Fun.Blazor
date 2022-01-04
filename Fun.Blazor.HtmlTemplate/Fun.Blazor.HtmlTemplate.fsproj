@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<TargetFramework>net5.0</TargetFramework>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
-		<Version>0.2.0</Version>
+		<Version>0.2.1</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -13,7 +13,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Bolero" Version="0.18.16" />
-		<PackageReference Include="FSharp.Data" Version="4.2.6" />
+		<PackageReference Include="FSharp.Data" Version="4.2.7" />
 	</ItemGroup>
 
 	<ItemGroup>

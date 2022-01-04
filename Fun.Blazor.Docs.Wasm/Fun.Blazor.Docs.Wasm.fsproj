@@ -59,7 +59,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
     <PackageReference FunBlazorStyle="Feliz" Include="AntDesign" Version="0.10.3.1" />
     <PackageReference FunBlazorStyle="CE" Include="AntDesign.Charts" Version="0.2.2" />
-    <PackageReference FunBlazorStyle="CE" Include="MudBlazor" Version="6.0.2" />
+    <PackageReference FunBlazorStyle="CE" Include="MudBlazor" Version="6.0.4" />
     <PackageReference FunBlazorStyle="CE" Include="Microsoft.AspNetCore.Components.Authorization" Version="6.0.1" />
     <PackageReference FunBlazorStyle="Feliz" Include="Microsoft.Fast.Components.FluentUI" Version="1.1.0" />
     <PackageReference FunBlazorNamespace="Blazor.DragDrop" FunBlazorAssemblyName="Plk.Blazor.DragDrop" Include="blazor-dragdrop" Version="2.3.0" />
