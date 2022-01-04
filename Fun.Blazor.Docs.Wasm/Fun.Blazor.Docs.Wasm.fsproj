@@ -5,12 +5,12 @@
     <LangVersion>preview</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Fun.Blazor.Bindings\AntDesign.fs" />
     <Compile Include="Fun.Blazor.Bindings\AntDesign.Charts.fs" />
-    <Compile Include="Fun.Blazor.Bindings\MudBlazor.fs" />
+    <Compile Include="Fun.Blazor.Bindings\AntDesign.fs" />
+    <Compile Include="Fun.Blazor.Bindings\Blazor.DragDrop.fs" />
     <Compile Include="Fun.Blazor.Bindings\Microsoft.AspNetCore.Components.Authorization.fs" />
     <Compile Include="Fun.Blazor.Bindings\Microsoft.Fast.Components.FluentUI.fs" />
-    <Compile Include="Fun.Blazor.Bindings\Blazor.DragDrop.fs" />
+    <Compile Include="Fun.Blazor.Bindings\MudBlazor.fs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Components\Common.fs" />
@@ -62,7 +62,7 @@
     <PackageReference FunBlazorStyle="CE" Include="MudBlazor" Version="6.0.2" />
     <PackageReference FunBlazorStyle="CE" Include="Microsoft.AspNetCore.Components.Authorization" Version="6.0.1" />
     <PackageReference FunBlazorStyle="Feliz" Include="Microsoft.Fast.Components.FluentUI" Version="1.1.0" />
-    <PackageReference FunBlazorNamespace="Blazor.DragDrop" FunBlazorDllName="Plk.Blazor.DragDrop" Include="blazor-dragdrop" Version="2.3.0" />
+    <PackageReference FunBlazorNamespace="Blazor.DragDrop" FunBlazorAssemblyName="Plk.Blazor.DragDrop" Include="blazor-dragdrop" Version="2.3.0" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Update="FSharp.Core" Version="6.0.1" />

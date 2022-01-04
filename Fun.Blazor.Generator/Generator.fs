@@ -17,9 +17,7 @@ let private getMetaInfo (ty: Type) =
         validProps
         |> Seq.map (fun prop ->
             let name = lowerFirstCase prop.Name
-            let name =
-                if fsharpKeywords |> List.contains name then $"{name}'"
-                else name
+            let name = if fsharpKeywords |> List.contains name then $"{name}'" else name
 
             let _createNode = $"{nameof FelizNode}<{funBlazorGeneric}>.create"
 
@@ -35,22 +33,36 @@ let private getMetaInfo (ty: Type) =
                     []
 
             if prop.PropertyType.IsGenericType then
-                if prop.PropertyType.Name.StartsWith "EventCallback" ||
-                   prop.PropertyType.Name.StartsWith "Microsoft.AspNetCore.Components.EventCallback"
-                then
-                    [ $"    static member {name} fn = (Bolero.Html.attr.callback<{getTypeName prop.PropertyType.GenericTypeArguments.[0]}> \"{prop.Name}\" (fun e -> fn e)) |> {_createNode}" ]
+                if prop.PropertyType.Name.StartsWith "EventCallback"
+                   || prop.PropertyType.Name.StartsWith "Microsoft.AspNetCore.Components.EventCallback" then
+                    [
+                        $"    static member {name} fn = (Bolero.Html.attr.callback<{getTypeName prop.PropertyType.GenericTypeArguments.[0]}> \"{prop.Name}\" (fun e -> fn e)) |> {_createNode}"
+                    ]
                 elif prop.PropertyType.Name.StartsWith "RenderFragment`" then
-                    [ $"    static member {name} (render: {getTypeName prop.PropertyType.GenericTypeArguments.[0]} -> {boleroNode}) = Bolero.Html.attr.fragmentWith \"{prop.Name}\" (fun x -> render x) |> {_createNode}" ]
+                    [
+                        $"    static member {name} (render: {getTypeName prop.PropertyType.GenericTypeArguments.[0]} -> {boleroNode}) = Bolero.Html.attr.fragmentWith \"{prop.Name}\" (fun x -> render x) |> {_createNode}"
+                    ]
                 elif prop.PropertyType.Namespace = "System" && prop.PropertyType.Name.StartsWith "Func`" then
                     let returnType = prop.PropertyType.GenericTypeArguments |> Seq.last
                     if returnType = typeof<Microsoft.AspNetCore.Components.RenderFragment> then
                         let paramCount = prop.PropertyType.Name.Substring("Func`".Length) |> int
-                        let parameters = [for i in 1..paramCount-1 do $"x{i}"] |> String.concat " "
-                        [ $"    static member {name} (fn) = Bolero.FragmentAttr (\"{prop.Name}\", fun render -> box ({getTypeName prop.PropertyType}(fun {parameters} -> Microsoft.AspNetCore.Components.RenderFragment(fun rt -> render rt (fn {parameters}))))) |> {_createNode}"  ]
+                        let parameters =
+                            [
+                                for i in 1 .. paramCount - 1 do
+                                    $"x{i}"
+                            ]
+                            |> String.concat " "
+                        [
+                            $"    static member {name} (fn) = Bolero.FragmentAttr (\"{prop.Name}\", fun render -> box ({getTypeName prop.PropertyType}(fun {parameters} -> Microsoft.AspNetCore.Components.RenderFragment(fun rt -> render rt (fn {parameters}))))) |> {_createNode}"
+                        ]
                     else
-                        [ $"    static member {name} (fn) = \"{prop.Name}\" => ({getTypeName prop.PropertyType}fn) |> {_createNode}" ]
+                        [
+                            $"    static member {name} (fn) = \"{prop.Name}\" => ({getTypeName prop.PropertyType}fn) |> {_createNode}"
+                        ]
                 elif prop.PropertyType.Namespace = "System" && prop.PropertyType.Name.StartsWith "Action`" then
-                    [ $"    static member {name} (fn) = \"{prop.Name}\" => ({getTypeName prop.PropertyType}fn) |> {_createNode}" ]
+                    [
+                        $"    static member {name} (fn) = \"{prop.Name}\" => ({getTypeName prop.PropertyType}fn) |> {_createNode}"
+                    ]
                 else
                     let propTypeName = getTypeName prop.PropertyType
                     [
@@ -58,10 +70,11 @@ let private getMetaInfo (ty: Type) =
                         yield! createBindableProps propTypeName
                     ]
 
-            elif prop.PropertyType.Name.StartsWith "EventCallback" ||
-                 prop.PropertyType.Name.StartsWith "Microsoft.AspNetCore.Components.EventCallback"
-            then
-                [ $"    static member {name} fn = attr.callbackOfUnit(\"{prop.Name}\", fn) |> {_createNode}" ]
+            elif prop.PropertyType.Name.StartsWith "EventCallback"
+                 || prop.PropertyType.Name.StartsWith "Microsoft.AspNetCore.Components.EventCallback" then
+                [
+                    $"    static member {name} fn = attr.callbackOfUnit(\"{prop.Name}\", fn) |> {_createNode}"
+                ]
 
             elif prop.PropertyType = typeof<RenderFragment> then
                 [
@@ -71,16 +84,21 @@ let private getMetaInfo (ty: Type) =
                 ]
 
             elif prop.Name = "Class" && prop.PropertyType = typeof<string> then
-                [ $"    static member classes (x: string list) = attr.classes x |> {_createNode}" ]
+                [
+                    $"    static member classes (x: string list) = attr.classes x |> {_createNode}"
+                ]
 
             elif prop.Name = "Style" && prop.PropertyType = typeof<string> then
-                [ $"    static member styles (x: (string * string) list) = attr.styles x |> {_createNode}" ]
+                [
+                    $"    static member styles (x: (string * string) list) = attr.styles x |> {_createNode}"
+                ]
             else
                 let propTypeName = getTypeName prop.PropertyType
                 [
                     $"    static member {name} (x: {propTypeName}) = \"{prop.Name}\" => x |> {_createNode}"
                     yield! createBindableProps propTypeName
-                ])
+                ]
+        )
 
         |> Seq.concat
         |> String.concat "\n"
@@ -100,86 +118,94 @@ let private getMetaInfo (ty: Type) =
 
     let inherits =
         if ty.BaseType <> typeof<Microsoft.AspNetCore.Components.ComponentBase> then
-            Some (getTypeMeta ty.BaseType)
+            Some(getTypeMeta ty.BaseType)
         else
             None
 
     let name, generics, inheritInfo =
         match getTypeMeta ty, inherits with
-        | (name, generics), Some (baseName, generics') -> 
-            let generics = List.append generics' generics |> List.distinctBy (fun x -> x.Name) |> List.filter (fun x -> (getTypeName x).StartsWith "'")
-            name, generics, Some (baseName, generics')
+        | (name, generics), Some (baseName, generics') ->
+            let generics =
+                List.append generics' generics
+                |> List.distinctBy (fun x -> x.Name)
+                |> List.filter (fun x -> (getTypeName x).StartsWith "'")
+            name, generics, Some(baseName, generics')
 
-        | (name, generics), None ->
-            name, generics, None
+        | (name, generics), None -> name, generics, None
 
     let hasChildren = props.Contains "static member childContent"
-    {| ty = ty; generics = generics; inheritInfo = inheritInfo; props = props; hasChildren = hasChildren |}
+    {|
+        ty = ty
+        generics = generics
+        inheritInfo = inheritInfo
+        props = props
+        hasChildren = hasChildren
+    |}
 
 
 
-type private TypeTree =
-    | Node of Type * TypeTree seq
+type private TypeTree = | Node of Type * TypeTree seq
 
-let rec private getTypeTree (baseType: Type) (tys: Type seq): TypeTree seq =
+let rec private getTypeTree (baseType: Type) (tys: Type seq) : TypeTree seq =
     let baseTypeName = baseType.Namespace + "." + baseType.Name
     tys
     |> Seq.filter (fun x ->
         if baseType.IsGenericType && x.BaseType <> null then
-             baseTypeName = x.BaseType.Namespace + "." + x.BaseType.Name
+            baseTypeName = x.BaseType.Namespace + "." + x.BaseType.Name
         else
-            x.BaseType = baseType)
-    |> Seq.map (fun ty -> Node (ty, getTypeTree ty tys))
+            x.BaseType = baseType
+    )
+    |> Seq.map (fun ty -> Node(ty, getTypeTree ty tys))
 
 
 let private getMetaInfos (tys: Type seq) =
     let rec getNamespaces tree =
-        tree 
-        |> Seq.map (fun (Node (ty, childTys)) -> ty.Namespace::(getNamespaces childTys |> Seq.toList))
+        tree
+        |> Seq.map (fun (Node (ty, childTys)) -> ty.Namespace :: (getNamespaces childTys |> Seq.toList))
         |> Seq.concat
 
     let rec getTypesInNamespace tree ns =
         tree
-        |> Seq.map (fun (Node (ty, childTys)) ->
-            [
-                if ty.Namespace = ns then ty
-                yield! getTypesInNamespace childTys ns
-            ])
+        |> Seq.map (fun (Node (ty, childTys)) -> [ if ty.Namespace = ns then ty; yield! getTypesInNamespace childTys ns ])
         |> Seq.concat
 
     let rec getRootNamespaces (nss: string list) =
         match nss with
         | [] -> []
-        | [ns] -> [ns]
-        | ns::rest ->
+        | [ ns ] -> [ ns ]
+        | ns :: rest ->
             let _, p2 = rest |> List.partition (fun x -> x.StartsWith ns)
-            ns::getRootNamespaces p2
+            ns :: getRootNamespaces p2
 
     let rec getOrderedTypes tree =
-        tree
-        |> Seq.map (fun (Node (ty, childTys)) ->
-            [
-                ty
-                yield! getOrderedTypes childTys
-            ])
-        |> Seq.concat
+        tree |> Seq.map (fun (Node (ty, childTys)) -> [ ty; yield! getOrderedTypes childTys ]) |> Seq.concat
 
-    let tree = tys |> Seq.filter (fun x -> x.IsAssignableTo typeof<ComponentBase> && x.IsPublic) |> getTypeTree typeof<ComponentBase>
+    let tree =
+        tys
+        |> Seq.filter (fun x ->
+            x.IsAssignableTo typeof<ComponentBase>
+            && x.IsPublic
+            && not (isObsoleted (x.GetCustomAttributes false))
+        )
+        |> getTypeTree typeof<ComponentBase>
     let namespaces = getNamespaces tree |> Seq.toList
     let metaGroups = System.Collections.Generic.List<_>()
-    
+
     tree
     |> getOrderedTypes
     |> Seq.map getMetaInfo
     |> Seq.iter (fun meta ->
         if metaGroups.Count = 0 then
-            metaGroups.Add(meta.ty.Namespace, [meta])
+            metaGroups.Add(meta.ty.Namespace, [ meta ])
         else
             let ns, metas = metaGroups |> Seq.last
-            if ns = meta.ty.Namespace then metaGroups.[metaGroups.Count-1] <- (ns, metas@[meta])
-            else metaGroups.Add(meta.ty.Namespace, [meta]))
+            if ns = meta.ty.Namespace then
+                metaGroups.[metaGroups.Count - 1] <- (ns, metas @ [ meta ])
+            else
+                metaGroups.Add(meta.ty.Namespace, [ meta ])
+    )
 
-    {| 
+    {|
         rootNamespaces = getRootNamespaces namespaces
         metas = metaGroups
     |}
@@ -194,10 +220,10 @@ let generateCode (targetNamespace: string) (opens: string) (tys: Type seq) =
         metaInfos.rootNamespaces
         |> Seq.pick (fun x ->
             if ns.StartsWith x then
-                if ns.Length = x.Length then Some ""
-                else ns.Substring(x.Length + 1) |> Some
+                if ns.Length = x.Length then Some "" else ns.Substring(x.Length + 1) |> Some
             else
-                None)
+                None
+        )
 
     let internalCode =
         metaInfos.metas
@@ -205,46 +231,54 @@ let generateCode (targetNamespace: string) (opens: string) (tys: Type seq) =
             let code =
                 metas
                 |> Seq.map (fun meta ->
-                    let originalTypeWithGenerics = $"{meta.ty.Namespace}.{getTypeShortName meta.ty}{meta.generics |> getTypeNames |> createGenerics |> closeGenerics}"
+                    let originalTypeWithGenerics =
+                        $"{meta.ty.Namespace}.{getTypeShortName meta.ty}{meta.generics |> getTypeNames |> createGenerics |> closeGenerics}"
 
                     let inheirit' =
                         match meta.inheritInfo with
                         | None -> ""
-                        | Some (ty, generics) -> $"inherit {ty.Namespace |> trimNamespace |> appendStrIfNotEmpty (string '.')}{getFinalTypeName ty}{ funBlazorGeneric::(getTypeNames generics) |> createGenerics |> closeGenerics }"
+                        | Some (ty, generics) ->
+                            $"inherit {ty.Namespace |> trimNamespace |> appendStrIfNotEmpty (string '.')}{getFinalTypeName ty}{funBlazorGeneric :: (getTypeNames generics) |> createGenerics |> closeGenerics}"
 
                     let ref = $"    static member ref x = attr.ref<{originalTypeWithGenerics}> x"
-                    
+
                     let create1 = $"    static member create () = [] |> html.blazor<{originalTypeWithGenerics}>"
-                    
-                    let create2 = $"    static member create (nodes) = {nameof FelizNode}<{funBlazorGeneric}>.concat nodes |> html.blazor<{originalTypeWithGenerics}>"
+
+                    let create2 =
+                        $"    static member create (nodes) = {nameof FelizNode}<{funBlazorGeneric}>.concat nodes |> html.blazor<{originalTypeWithGenerics}>"
 
                     let create3 =
                         if meta.hasChildren then
                             $"    static member create (nodes: {boleroNode} list) = [ attr.childContent nodes ] |> html.blazor<{originalTypeWithGenerics}>"
-                            + "\n"+
-                            $"    static member create (node: {boleroNode}) = [ attr.childContent [ node ] ] |> html.blazor<{originalTypeWithGenerics}>"
-                            + "\n"+
-                            $"    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<{originalTypeWithGenerics}>"
+                            + "\n"
+                            + $"    static member create (node: {boleroNode}) = [ attr.childContent [ node ] ] |> html.blazor<{originalTypeWithGenerics}>"
+                            + "\n"
+                            + $"    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<{originalTypeWithGenerics}>"
                         else
                             ""
 
                     $"""
-type {getFinalTypeName meta.ty}{funBlazorGeneric::(getTypeNames meta.generics) |> createGenerics |> appendStr (createConstraint meta.generics) |> closeGenerics} =
+type {getFinalTypeName meta.ty}{funBlazorGeneric :: (getTypeNames meta.generics)
+                                |> createGenerics
+                                |> appendStr (createConstraint meta.generics)
+                                |> closeGenerics} =
     {inheirit'}
 {create1}
 {create2}
 {create3}
 {ref}
 {meta.props}
-                    """)
+                    """
+                )
                 |> String.concat "\n"
-            
+
             $"""namespace rec {targetNamespace}.{internalSegment}{ns |> trimNamespace |> addStrIfNotEmpty "."}
 
 {opens}
 
 {code}
-            """)
+            """
+        )
         |> String.concat "\n"
 
 
@@ -254,23 +288,30 @@ type {getFinalTypeName meta.ty}{funBlazorGeneric::(getTypeNames meta.generics) |
             let code =
                 metas
                 |> Seq.map (fun meta ->
-                    let interfaceTy = $"I{meta.ty |> getTypeShortName}Node{meta.generics |> getTypeNames |> createGenerics |> closeGenerics}"
+                    let interfaceTy =
+                        $"I{meta.ty |> getTypeShortName}Node{meta.generics |> getTypeNames |> createGenerics |> closeGenerics}"
 
                     $"""
-type { interfaceTy } = interface end
-type { getFinalTypeName meta.ty }{ meta.generics |> getTypeNames |> createGenerics |> appendStr (createConstraint meta.generics) |> closeGenerics } =
+type {interfaceTy} = interface end
+type {getFinalTypeName meta.ty}{meta.generics
+                                |> getTypeNames
+                                |> createGenerics
+                                |> appendStr (createConstraint meta.generics)
+                                |> closeGenerics} =
     class
-        inherit {ns |> trimNamespace |> appendStrIfNotEmpty "."}{getFinalTypeName meta.ty}{interfaceTy::(getTypeNames meta.generics) |> createGenerics |> closeGenerics }
+        inherit {ns |> trimNamespace |> appendStrIfNotEmpty "."}{getFinalTypeName meta.ty}{interfaceTy :: (getTypeNames meta.generics) |> createGenerics |> closeGenerics}
     end
-                    """)
+                    """
+                )
                 |> String.concat "\n"
 
             $"""namespace {targetNamespace}{ns |> trimNamespace |> addStrIfNotEmpty "."}
 
 open {targetNamespace}.{internalSegment}
 
-{ code }
-            """)
+{code}
+            """
+        )
         |> String.concat "\n"
 
-    {| internalCode= internalCode; dslCode = dslCode |}
+    {| internalCode = internalCode; dslCode = dslCode |}
