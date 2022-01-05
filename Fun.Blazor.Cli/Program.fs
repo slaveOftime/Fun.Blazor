@@ -24,6 +24,10 @@ type GenerateSettings() =
     [<Description(".NET SDK version")>]
     [<CommandOption("--sdk")>]
     member val Sdk = "" with get, set
+    
+    [<Description("Fun.Blazor.Generator version")>]
+    [<CommandOption("--generator-version")>]
+    member val GeneratorVersion = "" with get, set
 
 
 type GenerateCommand() =
@@ -59,7 +63,7 @@ type GenerateCommand() =
             AnsiConsole.MarkupLine "[red] project is required[/]"
             -1
         | Some path ->
-            Generate.startGenerate path settings.OutDir settings.Style settings.Sdk
+            Generate.startGenerate path settings.OutDir settings.Style settings.Sdk settings.GeneratorVersion
             0
 
 
