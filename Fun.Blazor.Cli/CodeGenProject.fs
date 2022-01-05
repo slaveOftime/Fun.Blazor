@@ -68,7 +68,7 @@ module CodeGenProject =
             __SOURCE_DIRECTORY__ </> ".." </> "Fun.Blazor.Generator" </> "Fun.Blazor.Generator.fsproj"
         Cli.Wrap("dotnet").WithArguments($"add reference {generatorProject}").WithWorkingDirectory(codeGenFolder).Run()
 #else
-        let version = Assembly.GetExecutingAssembly().GetName().Version.ToString()
+        let version = Assembly.Load("Fun.Blazor.Generator").GetName().Version.ToString()
         Cli.Wrap("dotnet").WithArguments($"add package Fun.Blazor.Generator --version {version}").WithWorkingDirectory(codeGenFolder).Run()
 #endif
 
