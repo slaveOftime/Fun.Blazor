@@ -4,15 +4,15 @@ This is a project to make F# developer to write blazor easier.
 
 It is based on [bolero](https://github.com/fsbolero/Bolero) and  [Feliz.Engine](https://github.com/alfonsogarciacaro/Feliz.Engine)
 
-[WASM side docs](https://slaveoftime.github.io/Fun.Blazor/)
-
 [Server side docs](https://funblazor.slaveoftime.fun)
+
+[WASM side docs](https://slaveoftime.github.io/Fun.Blazor/)
 
 
 ## What you can get with this project?
 
 1. Use F# ❤️😊 for blazor
-2. Feliz and computation expression style DSL for internal and thrid party blazor libraries
+2. Template, Feliz and computation expression style DSL for internal and third party blazor libraries
 4. Dependency injection (html.inject)
 3. Elmish model (html.elmish), obervable model (html.watch), adaptive model(adaptiview)
 
@@ -20,6 +20,7 @@ It is based on [bolero](https://github.com/fsbolero/Bolero) and  [Feliz.Engine](
 ## Please check the samples for quick start
 
 https://github.com/slaveOftime/Fun.Blazor.Samples
+
 
 ## Some tips
 
@@ -45,7 +46,50 @@ https://github.com/slaveOftime/Fun.Blazor.Samples
         }
 ```
 
-2. Fun.Blazor.Feliz: will add feliz style DSL for basic dom/css
+2. Fun.Blazor.HtmlTemplate: is help you to convert plain string to dom tree. And with VSCode + Ionide-fsharp + Highlight HTML/SQL templates you can get embeded intellicense. You can check more detail in [shoelacejs + tailwind demo](https://github.com/slaveOftime/Fun.Blazor.Samples/tree/main/MinimalBlazorWASMAppWithShoelaceAndTailwind)
+
+```fsharp
+    let congratulations =
+        Template.html $"""
+            <div style="color: hotpink;">Congratulations! You made it ❤️</div>
+        """
+```
+
+
+3. Fun.Blazor.Cli: you can generate Feliz or CE style automatically for any blazor third party libraries
+
+    [Docs for how to use it](https://funblazor.slaveoftime.fun/cli-usage)
+    
+    [Samples for using MudBlazor](https://github.com/slaveOftime/Fun.Blazor.Samples/tree/main/MinimalBlazorWASMAppWithMudBlazor)
+    
+
+```fsharp
+    open Fun.Blazor
+    open MudBlazor
+
+    let alertDemo =
+        MudCard'.create [
+            MudAlert'(){
+                Icon Icons.Filled.AccessAlarm
+                childContent "This is the way"
+            }
+        ]
+```   
+
+```fsharp
+    open Fun.Blazor
+    open MudBlazor
+
+    let alertDemo =
+        mudCard.create [
+            mudAlert.create [
+                mudAlert.icon Icons.Filled.AccessAlarm
+                mudAlert.childContent "This is the way"
+            ]
+        ]
+```
+
+4. Fun.Blazor.Feliz: will add feliz style DSL for basic dom/css
 
 ```fsharp
     open Fun.Blazor
@@ -67,7 +111,9 @@ https://github.com/slaveOftime/Fun.Blazor.Samples
         }
 ```
 
-3. Fun.Css: will enable CE style for css
+
+
+5. Fun.Css: will enable CE style for css
 
 ```fsharp
     open Fun.Css
@@ -79,47 +125,4 @@ https://github.com/slaveOftime/Fun.Blazor.Samples
         })
         childContent "hello"
     }
-```
-
-4. Fun.Blazor.Cli: you can generate Feliz or CE style automatically for any blazor third party libraries
-
-    [Docs for how to use it](https://funblazor.slaveoftime.fun/cli-usage)
-    
-    Fun.Blazor.Feliz package is required
-
-```fsharp
-    open Fun.Blazor
-    open MudBlazor
-
-    let alertDemo =
-        MudCard'.create [
-            MudAlert'(){
-                Icon Icons.Filled.AccessAlarm
-                childContent "This is the way"
-            }
-        ]
-```
-
-        
-
-```fsharp
-    open Fun.Blazor
-    open MudBlazor
-
-    let alertDemo =
-        mudCard.create [
-            mudAlert.create [
-                mudAlert.icon Icons.Filled.AccessAlarm
-                mudAlert.childContent "This is the way"
-            ]
-        ]
-```
-
-5. Fun.Blazor.HtmlTemplate: is help you to convert plain string to dom tree. And with VSCode + Ionide-fsharp + Highlight HTML/SQL templates you can get embeded intellicense.
-
-```fsharp
-    let congratulations =
-        Template.html $"""
-            <div style="color: hotpink;">Congratulations! You made it ❤️</div>
-        """
 ```
