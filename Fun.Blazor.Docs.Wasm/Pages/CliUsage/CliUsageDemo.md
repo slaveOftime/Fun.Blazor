@@ -1,6 +1,6 @@
 ﻿```
 dotnet tool install -g Fun.Blazor.Cli
-dotnet add package Fun.Blazor.Feliz --version 1.1.2
+dotnet add package Fun.Blazor.Feliz
 ```
 
 Steps:
