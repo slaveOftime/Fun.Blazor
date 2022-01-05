@@ -3,6 +3,7 @@
 open System
 open System.IO
 open System.Text
+open System.Reflection
 open System.Threading.Tasks
 open Spectre.Console
 open CliWrap
@@ -67,7 +68,8 @@ module CodeGenProject =
             __SOURCE_DIRECTORY__ </> ".." </> "Fun.Blazor.Generator" </> "Fun.Blazor.Generator.fsproj"
         Cli.Wrap("dotnet").WithArguments($"add reference {generatorProject}").WithWorkingDirectory(codeGenFolder).Run()
 #else
-        Cli.Wrap("dotnet").WithArguments($"add package Fun.Blazor.Generator").WithWorkingDirectory(codeGenFolder).Run()
+        let version = Assembly.Load("Fun.Blazor.Generator").GetName().Version.ToString()
+        Cli.Wrap("dotnet").WithArguments($"add package Fun.Blazor.Generator --version {version}").WithWorkingDirectory(codeGenFolder).Run()
 #endif
 
 

@@ -18,8 +18,4 @@ let demoFluentUI =
             [
                 demoContainer "Skeleton" $"{rootDir}/SkeletonDemo" skeletonDemo
             ]
-        html.script [
-            attr.src "https://unpkg.com/@fluentui/web-components"
-            attr.type' "module"
-        ]
     ]
