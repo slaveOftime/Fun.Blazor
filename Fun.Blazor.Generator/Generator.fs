@@ -4,10 +4,7 @@ open System
 open System.Reflection
 open Microsoft.AspNetCore.Components
 open Fun.Blazor
-
 open Utils
-
-
 
 let private getMetaInfo (ty: Type) =
     let rawProps = ty.GetProperties()
@@ -143,76 +140,8 @@ let private getMetaInfo (ty: Type) =
     |}
 
 
-
-type private TypeTree = | Node of Type * TypeTree seq
-
-let rec private getTypeTree (baseType: Type) (tys: Type seq) : TypeTree seq =
-    let baseTypeName = baseType.Namespace + "." + baseType.Name
-    tys
-    |> Seq.filter (fun x ->
-        if baseType.IsGenericType && x.BaseType <> null then
-            baseTypeName = x.BaseType.Namespace + "." + x.BaseType.Name
-        else
-            x.BaseType = baseType
-    )
-    |> Seq.map (fun ty -> Node(ty, getTypeTree ty tys))
-
-
-let private getMetaInfos (tys: Type seq) =
-    let rec getNamespaces tree =
-        tree
-        |> Seq.map (fun (Node (ty, childTys)) -> ty.Namespace :: (getNamespaces childTys |> Seq.toList))
-        |> Seq.concat
-
-    let rec getTypesInNamespace tree ns =
-        tree
-        |> Seq.map (fun (Node (ty, childTys)) -> [ if ty.Namespace = ns then ty; yield! getTypesInNamespace childTys ns ])
-        |> Seq.concat
-
-    let rec getRootNamespaces (nss: string list) =
-        match nss with
-        | [] -> []
-        | [ ns ] -> [ ns ]
-        | ns :: rest ->
-            let _, p2 = rest |> List.partition (fun x -> x.StartsWith ns)
-            ns :: getRootNamespaces p2
-
-    let rec getOrderedTypes tree =
-        tree |> Seq.map (fun (Node (ty, childTys)) -> [ ty; yield! getOrderedTypes childTys ]) |> Seq.concat
-
-    let tree =
-        tys
-        |> Seq.filter (fun x ->
-            x.IsAssignableTo typeof<ComponentBase>
-            && x.IsPublic
-            && not (isObsoleted (x.GetCustomAttributes false))
-        )
-        |> getTypeTree typeof<ComponentBase>
-    let namespaces = getNamespaces tree |> Seq.toList
-    let metaGroups = System.Collections.Generic.List<_>()
-
-    tree
-    |> getOrderedTypes
-    |> Seq.map getMetaInfo
-    |> Seq.iter (fun meta ->
-        if metaGroups.Count = 0 then
-            metaGroups.Add(meta.ty.Namespace, [ meta ])
-        else
-            let ns, metas = metaGroups |> Seq.last
-            if ns = meta.ty.Namespace then
-                metaGroups.[metaGroups.Count - 1] <- (ns, metas @ [ meta ])
-            else
-                metaGroups.Add(meta.ty.Namespace, [ meta ])
-    )
-
-    {|
-        rootNamespaces = getRootNamespaces namespaces
-        metas = metaGroups
-    |}
-
-
 let generateCode (targetNamespace: string) (opens: string) (tys: Type seq) =
-    let metaInfos = getMetaInfos tys
+    let metaInfos = tys |> MetaInfo.create (getMetaInfo >> fun x -> Namespace x.ty.Namespace, x)
 
     let getFinalTypeName = getTypeShortName >> lowerFirstCase >> avoidFsharpKeywords
 
@@ -227,7 +156,7 @@ let generateCode (targetNamespace: string) (opens: string) (tys: Type seq) =
 
     let internalCode =
         metaInfos.metas
-        |> Seq.map (fun (ns, metas) ->
+        |> Seq.map (fun (Namespace ns, metas) ->
             let code =
                 metas
                 |> Seq.map (fun meta ->
@@ -284,7 +213,7 @@ type {getFinalTypeName meta.ty}{funBlazorGeneric :: (getTypeNames meta.generics)
 
     let dslCode =
         metaInfos.metas
-        |> Seq.map (fun (ns, metas) ->
+        |> Seq.map (fun (Namespace ns, metas) ->
             let code =
                 metas
                 |> Seq.map (fun meta ->

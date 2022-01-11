@@ -5,6 +5,9 @@ open System.Reflection
 open Microsoft.AspNetCore.Components
 
 
+type Namespace = Namespace of string
+
+
 let fsharpKeywords =
     [
         "component"
