@@ -17,21 +17,6 @@ type antComponentBase<'FunBlazorGeneric> =
     static member refBack (x: AntDesign.ForwardRef) = "RefBack" => x |> FelizNode<'FunBlazorGeneric>.create
                     
 
-type configProvider<'FunBlazorGeneric> =
-    inherit antComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.ConfigProvider>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.ConfigProvider>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.ConfigProvider>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.ConfigProvider>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.ConfigProvider>
-    static member ref x = attr.ref<AntDesign.ConfigProvider> x
-    static member direction (x: System.String) = "Direction" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member form (x: AntDesign.FormConfig) = "Form" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-                    
-
 type antDomComponentBase<'FunBlazorGeneric> =
     inherit antComponentBase<'FunBlazorGeneric>
     static member create () = [] |> html.blazor<AntDesign.AntDomComponentBase>
@@ -41,6 +26,599 @@ type antDomComponentBase<'FunBlazorGeneric> =
     static member id (x: System.String) = "Id" => x |> FelizNode<'FunBlazorGeneric>.create
     static member classes (x: string list) = attr.classes x |> FelizNode<'FunBlazorGeneric>.create
     static member styles (x: (string * string) list) = attr.styles x |> FelizNode<'FunBlazorGeneric>.create
+                    
+            
+namespace rec AntDesign.DslInternals.Internal
+
+open Bolero.Html
+open FSharp.Data.Adaptive
+open Fun.Blazor
+open Microsoft.AspNetCore.Components.DslInternals
+open Microsoft.AspNetCore.Components.Web.DslInternals
+open AntDesign.DslInternals
+
+
+type overlayTrigger<'FunBlazorGeneric> =
+    inherit antDomComponentBase<'FunBlazorGeneric>
+    static member create () = [] |> html.blazor<AntDesign.Internal.OverlayTrigger>
+    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Internal.OverlayTrigger>
+    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.Internal.OverlayTrigger>
+    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.Internal.OverlayTrigger>
+    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.Internal.OverlayTrigger>
+    static member ref x = attr.ref<AntDesign.Internal.OverlayTrigger> x
+    static member boundaryAdjustMode (x: AntDesign.TriggerBoundaryAdjustMode) = "BoundaryAdjustMode" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
+    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
+    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+    static member complexAutoCloseAndVisible (x: System.Boolean) = "ComplexAutoCloseAndVisible" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member disabled (x: System.Boolean) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member hiddenMode (x: System.Boolean) = "HiddenMode" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member inlineFlexMode (x: System.Boolean) = "InlineFlexMode" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member isButton (x: System.Boolean) = "IsButton" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member onClick fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> "OnClick" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
+    static member onMaskClick fn = attr.callbackOfUnit("OnMaskClick", fn) |> FelizNode<'FunBlazorGeneric>.create
+    static member onMouseEnter fn = attr.callbackOfUnit("OnMouseEnter", fn) |> FelizNode<'FunBlazorGeneric>.create
+    static member onMouseLeave fn = attr.callbackOfUnit("OnMouseLeave", fn) |> FelizNode<'FunBlazorGeneric>.create
+    static member onOverlayHiding fn = (Bolero.Html.attr.callback<System.Boolean> "OnOverlayHiding" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
+    static member onVisibleChange fn = (Bolero.Html.attr.callback<System.Boolean> "OnVisibleChange" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
+    static member overlay (x: string) = Bolero.Html.attr.fragment "Overlay" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
+    static member overlay (node) = Bolero.Html.attr.fragment "Overlay" (node) |> FelizNode<'FunBlazorGeneric>.create
+    static member overlay (nodes) = Bolero.Html.attr.fragment "Overlay" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+    static member overlayClassName (x: System.String) = "OverlayClassName" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member overlayEnterCls (x: System.String) = "OverlayEnterCls" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member overlayHiddenCls (x: System.String) = "OverlayHiddenCls" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member overlayLeaveCls (x: System.String) = "OverlayLeaveCls" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member overlayStyle (x: System.String) = "OverlayStyle" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member placement (x: AntDesign.Placement) = "Placement" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member placementCls (x: System.String) = "PlacementCls" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member popupContainerSelector (x: System.String) = "PopupContainerSelector" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member trigger (x: AntDesign.Trigger[]) = "Trigger" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member triggerCls (x: System.String) = "TriggerCls" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member triggerReference (x: Microsoft.AspNetCore.Components.ElementReference) = "TriggerReference" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member unbound (render: AntDesign.ForwardRef -> Bolero.Node) = Bolero.Html.attr.fragmentWith "Unbound" (fun x -> render x) |> FelizNode<'FunBlazorGeneric>.create
+    static member visible (x: System.Boolean) = "Visible" => x |> FelizNode<'FunBlazorGeneric>.create
+                    
+            
+namespace rec AntDesign.DslInternals
+
+open Bolero.Html
+open FSharp.Data.Adaptive
+open Fun.Blazor
+open Microsoft.AspNetCore.Components.DslInternals
+open Microsoft.AspNetCore.Components.Web.DslInternals
+open AntDesign.DslInternals
+
+
+type dropdown<'FunBlazorGeneric> =
+    inherit Internal.overlayTrigger<'FunBlazorGeneric>
+    static member create () = [] |> html.blazor<AntDesign.Dropdown>
+    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Dropdown>
+
+    static member ref x = attr.ref<AntDesign.Dropdown> x
+
+                    
+
+type dropdownButton<'FunBlazorGeneric> =
+    inherit dropdown<'FunBlazorGeneric>
+    static member create () = [] |> html.blazor<AntDesign.DropdownButton>
+    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.DropdownButton>
+
+    static member ref x = attr.ref<AntDesign.DropdownButton> x
+    static member block (x: System.Boolean) = "Block" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member buttonsRender (fn) = Bolero.FragmentAttr ("ButtonsRender", fun render -> box (System.Func<Microsoft.AspNetCore.Components.RenderFragment, Microsoft.AspNetCore.Components.RenderFragment, Microsoft.AspNetCore.Components.RenderFragment>(fun x1 x2 -> Microsoft.AspNetCore.Components.RenderFragment(fun rt -> render rt (fn x1 x2))))) |> FelizNode<'FunBlazorGeneric>.create
+    static member buttonsClass (x: OneOf.OneOf<System.String, System.ValueTuple<System.String, System.String>>) = "ButtonsClass" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member buttonsStyle (x: OneOf.OneOf<System.String, System.ValueTuple<System.String, System.String>>) = "ButtonsStyle" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member danger (x: System.Boolean) = "Danger" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member ghost (x: System.Boolean) = "Ghost" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member icon (x: System.String) = "Icon" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member loading (x: System.Boolean) = "Loading" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member size (x: System.String) = "Size" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member type' (x: OneOf.OneOf<System.String, System.ValueTuple<System.String, System.String>>) = "Type" => x |> FelizNode<'FunBlazorGeneric>.create
+                    
+
+type popconfirm<'FunBlazorGeneric> =
+    inherit Internal.overlayTrigger<'FunBlazorGeneric>
+    static member create () = [] |> html.blazor<AntDesign.Popconfirm>
+    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Popconfirm>
+
+    static member ref x = attr.ref<AntDesign.Popconfirm> x
+    static member title (x: System.String) = "Title" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member titleTemplate (x: string) = Bolero.Html.attr.fragment "TitleTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
+    static member titleTemplate (node) = Bolero.Html.attr.fragment "TitleTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
+    static member titleTemplate (nodes) = Bolero.Html.attr.fragment "TitleTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+    static member cancelText (x: System.String) = "CancelText" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member okText (x: System.String) = "OkText" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member okType (x: System.String) = "OkType" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member okButtonProps (x: AntDesign.ButtonProps) = "OkButtonProps" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member cancelButtonProps (x: AntDesign.ButtonProps) = "CancelButtonProps" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member icon (x: System.String) = "Icon" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member iconTemplate (x: string) = Bolero.Html.attr.fragment "IconTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
+    static member iconTemplate (node) = Bolero.Html.attr.fragment "IconTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
+    static member iconTemplate (nodes) = Bolero.Html.attr.fragment "IconTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+    static member onCancel fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> "OnCancel" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
+    static member onConfirm fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> "OnConfirm" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
+    static member arrowPointAtCenter (x: System.Boolean) = "ArrowPointAtCenter" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member mouseEnterDelay (x: System.Double) = "MouseEnterDelay" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member mouseLeaveDelay (x: System.Double) = "MouseLeaveDelay" => x |> FelizNode<'FunBlazorGeneric>.create
+                    
+
+type popover<'FunBlazorGeneric> =
+    inherit Internal.overlayTrigger<'FunBlazorGeneric>
+    static member create () = [] |> html.blazor<AntDesign.Popover>
+    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Popover>
+
+    static member ref x = attr.ref<AntDesign.Popover> x
+    static member title (x: System.String) = "Title" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member titleTemplate (x: string) = Bolero.Html.attr.fragment "TitleTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
+    static member titleTemplate (node) = Bolero.Html.attr.fragment "TitleTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
+    static member titleTemplate (nodes) = Bolero.Html.attr.fragment "TitleTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+    static member content (x: System.String) = "Content" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member contentTemplate (x: string) = Bolero.Html.attr.fragment "ContentTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
+    static member contentTemplate (node) = Bolero.Html.attr.fragment "ContentTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
+    static member contentTemplate (nodes) = Bolero.Html.attr.fragment "ContentTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+    static member arrowPointAtCenter (x: System.Boolean) = "ArrowPointAtCenter" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member mouseEnterDelay (x: System.Double) = "MouseEnterDelay" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member mouseLeaveDelay (x: System.Double) = "MouseLeaveDelay" => x |> FelizNode<'FunBlazorGeneric>.create
+                    
+
+type tooltip<'FunBlazorGeneric> =
+    inherit Internal.overlayTrigger<'FunBlazorGeneric>
+    static member create () = [] |> html.blazor<AntDesign.Tooltip>
+    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Tooltip>
+
+    static member ref x = attr.ref<AntDesign.Tooltip> x
+    static member title (x: OneOf.OneOf<System.String, Microsoft.AspNetCore.Components.RenderFragment, Microsoft.AspNetCore.Components.MarkupString>) = "Title" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member arrowPointAtCenter (x: System.Boolean) = "ArrowPointAtCenter" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member mouseEnterDelay (x: System.Double) = "MouseEnterDelay" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member mouseLeaveDelay (x: System.Double) = "MouseLeaveDelay" => x |> FelizNode<'FunBlazorGeneric>.create
+                    
+            
+namespace rec AntDesign.DslInternals.Internal
+
+open Bolero.Html
+open FSharp.Data.Adaptive
+open Fun.Blazor
+open Microsoft.AspNetCore.Components.DslInternals
+open Microsoft.AspNetCore.Components.Web.DslInternals
+open AntDesign.DslInternals
+
+
+type subMenuTrigger<'FunBlazorGeneric> =
+    inherit Internal.overlayTrigger<'FunBlazorGeneric>
+    static member create () = [] |> html.blazor<AntDesign.Internal.SubMenuTrigger>
+    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Internal.SubMenuTrigger>
+
+    static member ref x = attr.ref<AntDesign.Internal.SubMenuTrigger> x
+    static member triggerClass (x: System.String) = "TriggerClass" => x |> FelizNode<'FunBlazorGeneric>.create
+                    
+
+type pickerPanelBase<'FunBlazorGeneric> =
+    inherit antDomComponentBase<'FunBlazorGeneric>
+    static member create () = [] |> html.blazor<AntDesign.Internal.PickerPanelBase>
+    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Internal.PickerPanelBase>
+
+    static member ref x = attr.ref<AntDesign.Internal.PickerPanelBase> x
+    static member onSelect (fn) = "OnSelect" => (System.Action<System.DateTime, System.Int32>fn) |> FelizNode<'FunBlazorGeneric>.create
+    static member pickerIndex (x: System.Int32) = "PickerIndex" => x |> FelizNode<'FunBlazorGeneric>.create
+                    
+            
+namespace rec AntDesign.DslInternals
+
+open Bolero.Html
+open FSharp.Data.Adaptive
+open Fun.Blazor
+open Microsoft.AspNetCore.Components.DslInternals
+open Microsoft.AspNetCore.Components.Web.DslInternals
+open AntDesign.DslInternals
+
+
+type datePickerPanelBase<'FunBlazorGeneric, 'TValue> =
+    inherit Internal.pickerPanelBase<'FunBlazorGeneric>
+    static member create () = [] |> html.blazor<AntDesign.DatePickerPanelBase<'TValue>>
+    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.DatePickerPanelBase<'TValue>>
+
+    static member ref x = attr.ref<AntDesign.DatePickerPanelBase<'TValue>> x
+    static member prefixCls (x: System.String) = "PrefixCls" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member picker (x: System.String) = "Picker" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member isRange (x: System.Boolean) = "IsRange" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member isCalendar (x: System.Boolean) = "IsCalendar" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member isShowHeader (x: System.Boolean) = "IsShowHeader" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member isShowTime (x: System.Boolean) = "IsShowTime" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member locale (x: AntDesign.DatePickerLocale) = "Locale" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member cultureInfo (x: System.Globalization.CultureInfo) = "CultureInfo" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member closePanel (x: System.Action) = "ClosePanel" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member changePickerValue (fn) = "ChangePickerValue" => (System.Action<System.DateTime, System.Nullable<System.Int32>>fn) |> FelizNode<'FunBlazorGeneric>.create
+    static member changeValue (fn) = "ChangeValue" => (System.Action<System.DateTime, System.Int32>fn) |> FelizNode<'FunBlazorGeneric>.create
+    static member changePickerType (fn) = "ChangePickerType" => (System.Action<System.String, System.Int32>fn) |> FelizNode<'FunBlazorGeneric>.create
+    static member getIndexPickerValue (fn) = "GetIndexPickerValue" => (System.Func<System.Int32, System.DateTime>fn) |> FelizNode<'FunBlazorGeneric>.create
+    static member getIndexValue (fn) = "GetIndexValue" => (System.Func<System.Int32, System.Nullable<System.DateTime>>fn) |> FelizNode<'FunBlazorGeneric>.create
+    static member disabledDate (fn) = "DisabledDate" => (System.Func<System.DateTime, System.Boolean>fn) |> FelizNode<'FunBlazorGeneric>.create
+    static member dateRender (fn) = Bolero.FragmentAttr ("DateRender", fun render -> box (System.Func<System.DateTime, System.DateTime, Microsoft.AspNetCore.Components.RenderFragment>(fun x1 x2 -> Microsoft.AspNetCore.Components.RenderFragment(fun rt -> render rt (fn x1 x2))))) |> FelizNode<'FunBlazorGeneric>.create
+    static member monthCellRender (fn) = Bolero.FragmentAttr ("MonthCellRender", fun render -> box (System.Func<System.DateTime, Microsoft.AspNetCore.Components.RenderFragment>(fun x1 -> Microsoft.AspNetCore.Components.RenderFragment(fun rt -> render rt (fn x1))))) |> FelizNode<'FunBlazorGeneric>.create
+    static member calendarDateRender (fn) = Bolero.FragmentAttr ("CalendarDateRender", fun render -> box (System.Func<System.DateTime, Microsoft.AspNetCore.Components.RenderFragment>(fun x1 -> Microsoft.AspNetCore.Components.RenderFragment(fun rt -> render rt (fn x1))))) |> FelizNode<'FunBlazorGeneric>.create
+    static member calendarMonthCellRender (fn) = Bolero.FragmentAttr ("CalendarMonthCellRender", fun render -> box (System.Func<System.DateTime, Microsoft.AspNetCore.Components.RenderFragment>(fun x1 -> Microsoft.AspNetCore.Components.RenderFragment(fun rt -> render rt (fn x1))))) |> FelizNode<'FunBlazorGeneric>.create
+    static member renderExtraFooter (x: string) = Bolero.Html.attr.fragment "RenderExtraFooter" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
+    static member renderExtraFooter (node) = Bolero.Html.attr.fragment "RenderExtraFooter" (node) |> FelizNode<'FunBlazorGeneric>.create
+    static member renderExtraFooter (nodes) = Bolero.Html.attr.fragment "RenderExtraFooter" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+                    
+            
+namespace rec AntDesign.DslInternals.Internal
+
+open Bolero.Html
+open FSharp.Data.Adaptive
+open Fun.Blazor
+open Microsoft.AspNetCore.Components.DslInternals
+open Microsoft.AspNetCore.Components.Web.DslInternals
+open AntDesign.DslInternals
+
+
+type datePickerDatetimePanel<'FunBlazorGeneric, 'TValue> =
+    inherit datePickerPanelBase<'FunBlazorGeneric, 'TValue>
+    static member create () = [] |> html.blazor<AntDesign.Internal.DatePickerDatetimePanel<'TValue>>
+    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Internal.DatePickerDatetimePanel<'TValue>>
+
+    static member ref x = attr.ref<AntDesign.Internal.DatePickerDatetimePanel<'TValue>> x
+    static member showToday (x: System.Boolean) = "ShowToday" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member showTimeFormat (x: System.String) = "ShowTimeFormat" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member format (x: System.String) = "Format" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member disabledHours (fn) = "DisabledHours" => (System.Func<System.DateTime, System.Int32[]>fn) |> FelizNode<'FunBlazorGeneric>.create
+    static member disabledMinutes (fn) = "DisabledMinutes" => (System.Func<System.DateTime, System.Int32[]>fn) |> FelizNode<'FunBlazorGeneric>.create
+    static member disabledSeconds (fn) = "DisabledSeconds" => (System.Func<System.DateTime, System.Int32[]>fn) |> FelizNode<'FunBlazorGeneric>.create
+    static member disabledTime (fn) = "DisabledTime" => (System.Func<System.DateTime, AntDesign.DatePickerDisabledTime>fn) |> FelizNode<'FunBlazorGeneric>.create
+    static member onOkClick fn = attr.callbackOfUnit("OnOkClick", fn) |> FelizNode<'FunBlazorGeneric>.create
+                    
+
+type datePickerTemplate<'FunBlazorGeneric, 'TValue> =
+    inherit datePickerPanelBase<'FunBlazorGeneric, 'TValue>
+    static member create () = [] |> html.blazor<AntDesign.Internal.DatePickerTemplate<'TValue>>
+    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Internal.DatePickerTemplate<'TValue>>
+
+    static member ref x = attr.ref<AntDesign.Internal.DatePickerTemplate<'TValue>> x
+    static member renderPickerHeader (x: string) = Bolero.Html.attr.fragment "RenderPickerHeader" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
+    static member renderPickerHeader (node) = Bolero.Html.attr.fragment "RenderPickerHeader" (node) |> FelizNode<'FunBlazorGeneric>.create
+    static member renderPickerHeader (nodes) = Bolero.Html.attr.fragment "RenderPickerHeader" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+    static member renderTableHeader (x: string) = Bolero.Html.attr.fragment "RenderTableHeader" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
+    static member renderTableHeader (node) = Bolero.Html.attr.fragment "RenderTableHeader" (node) |> FelizNode<'FunBlazorGeneric>.create
+    static member renderTableHeader (nodes) = Bolero.Html.attr.fragment "RenderTableHeader" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+    static member renderFirstCol (render: System.DateTime -> Bolero.Node) = Bolero.Html.attr.fragmentWith "RenderFirstCol" (fun x -> render x) |> FelizNode<'FunBlazorGeneric>.create
+    static member renderColValue (render: System.DateTime -> Bolero.Node) = Bolero.Html.attr.fragmentWith "RenderColValue" (fun x -> render x) |> FelizNode<'FunBlazorGeneric>.create
+    static member renderLastCol (render: System.DateTime -> Bolero.Node) = Bolero.Html.attr.fragmentWith "RenderLastCol" (fun x -> render x) |> FelizNode<'FunBlazorGeneric>.create
+    static member viewStartDate (x: System.DateTime) = "ViewStartDate" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member getColTitle (fn) = "GetColTitle" => (System.Func<System.DateTime, System.String>fn) |> FelizNode<'FunBlazorGeneric>.create
+    static member getRowClass (fn) = "GetRowClass" => (System.Func<System.DateTime, System.String>fn) |> FelizNode<'FunBlazorGeneric>.create
+    static member getNextColValue (fn) = "GetNextColValue" => (System.Func<System.DateTime, System.DateTime>fn) |> FelizNode<'FunBlazorGeneric>.create
+    static member isInView (fn) = "IsInView" => (System.Func<System.DateTime, System.Boolean>fn) |> FelizNode<'FunBlazorGeneric>.create
+    static member isToday (fn) = "IsToday" => (System.Func<System.DateTime, System.Boolean>fn) |> FelizNode<'FunBlazorGeneric>.create
+    static member isSelected (fn) = "IsSelected" => (System.Func<System.DateTime, System.Boolean>fn) |> FelizNode<'FunBlazorGeneric>.create
+    static member onRowSelect (fn) = "OnRowSelect" => (System.Action<System.DateTime>fn) |> FelizNode<'FunBlazorGeneric>.create
+    static member onValueSelect (fn) = "OnValueSelect" => (System.Action<System.DateTime>fn) |> FelizNode<'FunBlazorGeneric>.create
+    static member showFooter (x: System.Boolean) = "ShowFooter" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member maxRow (x: System.Int32) = "MaxRow" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member maxCol (x: System.Int32) = "MaxCol" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member skipDays (x: System.Int32) = "SkipDays" => x |> FelizNode<'FunBlazorGeneric>.create
+                    
+
+type datePickerDatePanel<'FunBlazorGeneric, 'TValue> =
+    inherit datePickerPanelBase<'FunBlazorGeneric, 'TValue>
+    static member create () = [] |> html.blazor<AntDesign.Internal.DatePickerDatePanel<'TValue>>
+    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Internal.DatePickerDatePanel<'TValue>>
+
+    static member ref x = attr.ref<AntDesign.Internal.DatePickerDatePanel<'TValue>> x
+    static member isWeek (x: System.Boolean) = "IsWeek" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member showToday (x: System.Boolean) = "ShowToday" => x |> FelizNode<'FunBlazorGeneric>.create
+                    
+
+type datePickerDecadePanel<'FunBlazorGeneric, 'TValue> =
+    inherit datePickerPanelBase<'FunBlazorGeneric, 'TValue>
+    static member create () = [] |> html.blazor<AntDesign.Internal.DatePickerDecadePanel<'TValue>>
+    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Internal.DatePickerDecadePanel<'TValue>>
+
+    static member ref x = attr.ref<AntDesign.Internal.DatePickerDecadePanel<'TValue>> x
+
+                    
+
+type datePickerFooter<'FunBlazorGeneric, 'TValue> =
+    inherit datePickerPanelBase<'FunBlazorGeneric, 'TValue>
+    static member create () = [] |> html.blazor<AntDesign.Internal.DatePickerFooter<'TValue>>
+    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Internal.DatePickerFooter<'TValue>>
+
+    static member ref x = attr.ref<AntDesign.Internal.DatePickerFooter<'TValue>> x
+
+                    
+
+type datePickerHeader<'FunBlazorGeneric, 'TValue> =
+    inherit datePickerPanelBase<'FunBlazorGeneric, 'TValue>
+    static member create () = [] |> html.blazor<AntDesign.Internal.DatePickerHeader<'TValue>>
+    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Internal.DatePickerHeader<'TValue>>
+
+    static member ref x = attr.ref<AntDesign.Internal.DatePickerHeader<'TValue>> x
+    static member superChangeDateInterval (x: System.Int32) = "SuperChangeDateInterval" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member changeDateInterval (x: System.Int32) = "ChangeDateInterval" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member showSuperPreChange (x: System.Boolean) = "ShowSuperPreChange" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member showPreChange (x: System.Boolean) = "ShowPreChange" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member showNextChange (x: System.Boolean) = "ShowNextChange" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member showSuperNextChange (x: System.Boolean) = "ShowSuperNextChange" => x |> FelizNode<'FunBlazorGeneric>.create
+                    
+
+type datePickerMonthPanel<'FunBlazorGeneric, 'TValue> =
+    inherit datePickerPanelBase<'FunBlazorGeneric, 'TValue>
+    static member create () = [] |> html.blazor<AntDesign.Internal.DatePickerMonthPanel<'TValue>>
+    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Internal.DatePickerMonthPanel<'TValue>>
+
+    static member ref x = attr.ref<AntDesign.Internal.DatePickerMonthPanel<'TValue>> x
+
+                    
+
+type datePickerQuarterPanel<'FunBlazorGeneric, 'TValue> =
+    inherit datePickerPanelBase<'FunBlazorGeneric, 'TValue>
+    static member create () = [] |> html.blazor<AntDesign.Internal.DatePickerQuarterPanel<'TValue>>
+    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Internal.DatePickerQuarterPanel<'TValue>>
+
+    static member ref x = attr.ref<AntDesign.Internal.DatePickerQuarterPanel<'TValue>> x
+
+                    
+
+type datePickerYearPanel<'FunBlazorGeneric, 'TValue> =
+    inherit datePickerPanelBase<'FunBlazorGeneric, 'TValue>
+    static member create () = [] |> html.blazor<AntDesign.Internal.DatePickerYearPanel<'TValue>>
+    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Internal.DatePickerYearPanel<'TValue>>
+
+    static member ref x = attr.ref<AntDesign.Internal.DatePickerYearPanel<'TValue>> x
+
+                    
+            
+namespace rec AntDesign.DslInternals
+
+open Bolero.Html
+open FSharp.Data.Adaptive
+open Fun.Blazor
+open Microsoft.AspNetCore.Components.DslInternals
+open Microsoft.AspNetCore.Components.Web.DslInternals
+open AntDesign.DslInternals
+
+
+type col<'FunBlazorGeneric> =
+    inherit antDomComponentBase<'FunBlazorGeneric>
+    static member create () = [] |> html.blazor<AntDesign.Col>
+    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Col>
+    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.Col>
+    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.Col>
+    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.Col>
+    static member ref x = attr.ref<AntDesign.Col> x
+    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
+    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
+    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+    static member flex (x: OneOf.OneOf<System.String, System.Int32>) = "Flex" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member span (x: OneOf.OneOf<System.String, System.Int32>) = "Span" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member order (x: OneOf.OneOf<System.String, System.Int32>) = "Order" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member offset (x: OneOf.OneOf<System.String, System.Int32>) = "Offset" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member push (x: OneOf.OneOf<System.String, System.Int32>) = "Push" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member pull (x: OneOf.OneOf<System.String, System.Int32>) = "Pull" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member xs (x: OneOf.OneOf<System.Int32, AntDesign.EmbeddedProperty>) = "Xs" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member sm (x: OneOf.OneOf<System.Int32, AntDesign.EmbeddedProperty>) = "Sm" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member md (x: OneOf.OneOf<System.Int32, AntDesign.EmbeddedProperty>) = "Md" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member lg (x: OneOf.OneOf<System.Int32, AntDesign.EmbeddedProperty>) = "Lg" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member xl (x: OneOf.OneOf<System.Int32, AntDesign.EmbeddedProperty>) = "Xl" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member xxl (x: OneOf.OneOf<System.Int32, AntDesign.EmbeddedProperty>) = "Xxl" => x |> FelizNode<'FunBlazorGeneric>.create
+                    
+
+type gridCol<'FunBlazorGeneric> =
+    inherit col<'FunBlazorGeneric>
+    static member create () = [] |> html.blazor<AntDesign.GridCol>
+    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.GridCol>
+
+    static member ref x = attr.ref<AntDesign.GridCol> x
+
+                    
+
+type icon<'FunBlazorGeneric> =
+    inherit antDomComponentBase<'FunBlazorGeneric>
+    static member create () = [] |> html.blazor<AntDesign.Icon>
+    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Icon>
+
+    static member ref x = attr.ref<AntDesign.Icon> x
+    static member spin (x: System.Boolean) = "Spin" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member rotate (x: System.Int32) = "Rotate" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member type' (x: System.String) = "Type" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member theme (x: System.String) = "Theme" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member twotoneColor (x: System.String) = "TwotoneColor" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member iconFont (x: System.String) = "IconFont" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member width (x: System.String) = "Width" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member height (x: System.String) = "Height" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member fill (x: System.String) = "Fill" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member tabIndex (x: System.String) = "TabIndex" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member stopPropagation (x: System.Boolean) = "StopPropagation" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member onClick fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> "OnClick" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
+    static member component' (x: string) = Bolero.Html.attr.fragment "Component" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
+    static member component' (node) = Bolero.Html.attr.fragment "Component" (node) |> FelizNode<'FunBlazorGeneric>.create
+    static member component' (nodes) = Bolero.Html.attr.fragment "Component" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+                    
+
+type iconFont<'FunBlazorGeneric> =
+    inherit icon<'FunBlazorGeneric>
+    static member create () = [] |> html.blazor<AntDesign.IconFont>
+    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.IconFont>
+
+    static member ref x = attr.ref<AntDesign.IconFont> x
+
+                    
+
+type notificationBase<'FunBlazorGeneric> =
+    inherit antDomComponentBase<'FunBlazorGeneric>
+    static member create () = [] |> html.blazor<AntDesign.NotificationBase>
+    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.NotificationBase>
+
+    static member ref x = attr.ref<AntDesign.NotificationBase> x
+
+                    
+
+type notification<'FunBlazorGeneric> =
+    inherit notificationBase<'FunBlazorGeneric>
+    static member create () = [] |> html.blazor<AntDesign.Notification>
+    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Notification>
+
+    static member ref x = attr.ref<AntDesign.Notification> x
+
+                    
+
+type notificationItem<'FunBlazorGeneric> =
+    inherit notificationBase<'FunBlazorGeneric>
+    static member create () = [] |> html.blazor<AntDesign.NotificationItem>
+    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.NotificationItem>
+
+    static member ref x = attr.ref<AntDesign.NotificationItem> x
+    static member config (x: AntDesign.NotificationConfig) = "Config" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member onClose (fn) = "OnClose" => (System.Func<AntDesign.NotificationConfig, System.Threading.Tasks.Task>fn) |> FelizNode<'FunBlazorGeneric>.create
+                    
+
+type columnBase<'FunBlazorGeneric> =
+    inherit antDomComponentBase<'FunBlazorGeneric>
+    static member create () = [] |> html.blazor<AntDesign.ColumnBase>
+    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.ColumnBase>
+    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.ColumnBase>
+    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.ColumnBase>
+    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.ColumnBase>
+    static member ref x = attr.ref<AntDesign.ColumnBase> x
+    static member title (x: System.String) = "Title" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member titleTemplate (x: string) = Bolero.Html.attr.fragment "TitleTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
+    static member titleTemplate (node) = Bolero.Html.attr.fragment "TitleTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
+    static member titleTemplate (nodes) = Bolero.Html.attr.fragment "TitleTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+    static member width (x: System.String) = "Width" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member headerStyle (x: System.String) = "HeaderStyle" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member rowSpan (x: System.Int32) = "RowSpan" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member colSpan (x: System.Int32) = "ColSpan" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member headerColSpan (x: System.Int32) = "HeaderColSpan" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member fixed' (x: System.String) = "Fixed" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
+    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
+    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+    static member ellipsis (x: System.Boolean) = "Ellipsis" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member hidden (x: System.Boolean) = "Hidden" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member align (x: AntDesign.ColumnAlign) = "Align" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member cellRender (render: AntDesign.TableModels.CellData -> Bolero.Node) = Bolero.Html.attr.fragmentWith "CellRender" (fun x -> render x) |> FelizNode<'FunBlazorGeneric>.create
+                    
+
+type actionColumn<'FunBlazorGeneric> =
+    inherit columnBase<'FunBlazorGeneric>
+    static member create () = [] |> html.blazor<AntDesign.ActionColumn>
+    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.ActionColumn>
+
+    static member ref x = attr.ref<AntDesign.ActionColumn> x
+
+                    
+
+type column<'FunBlazorGeneric, 'TData> =
+    inherit columnBase<'FunBlazorGeneric>
+    static member create () = [] |> html.blazor<AntDesign.Column<'TData>>
+    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Column<'TData>>
+
+    static member ref x = attr.ref<AntDesign.Column<'TData>> x
+    static member fieldChanged fn = (Bolero.Html.attr.callback<'TData> "FieldChanged" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
+    static member fieldExpression (x: System.Linq.Expressions.Expression<System.Func<'TData>>) = "FieldExpression" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member field (x: 'TData) = "Field" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member field' (value: IStore<'TData>) = FelizNode<'FunBlazorGeneric>.create("Field", value)
+    static member field' (value: cval<'TData>) = FelizNode<'FunBlazorGeneric>.create("Field", value)
+    static member field' (valueFn: 'TData * ('TData -> unit)) = FelizNode<'FunBlazorGeneric>.create("Field", valueFn)
+    static member dataIndex (x: System.String) = "DataIndex" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member format (x: System.String) = "Format" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member sortable (x: System.Boolean) = "Sortable" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member sorterCompare (fn) = "SorterCompare" => (System.Func<'TData, 'TData, System.Int32>fn) |> FelizNode<'FunBlazorGeneric>.create
+    static member sorterMultiple (x: System.Int32) = "SorterMultiple" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member showSorterTooltip (x: System.Boolean) = "ShowSorterTooltip" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member sortDirections (x: AntDesign.SortDirection[]) = "SortDirections" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member defaultSortOrder (x: AntDesign.SortDirection) = "DefaultSortOrder" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member onCell (fn) = "OnCell" => (System.Func<AntDesign.TableModels.CellData, System.Collections.Generic.Dictionary<System.String, System.Object>>fn) |> FelizNode<'FunBlazorGeneric>.create
+    static member onHeaderCell (fn) = "OnHeaderCell" => (System.Func<System.Collections.Generic.Dictionary<System.String, System.Object>>fn) |> FelizNode<'FunBlazorGeneric>.create
+    static member filterable (x: System.Boolean) = "Filterable" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member filters (x: System.Collections.Generic.IEnumerable<AntDesign.TableFilter<'TData>>) = "Filters" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member filterMultiple (x: System.Boolean) = "FilterMultiple" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member onFilter (x: System.Linq.Expressions.Expression<System.Func<'TData, 'TData, System.Boolean>>) = "OnFilter" => x |> FelizNode<'FunBlazorGeneric>.create
+                    
+
+type selection<'FunBlazorGeneric> =
+    inherit columnBase<'FunBlazorGeneric>
+    static member create () = [] |> html.blazor<AntDesign.Selection>
+    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Selection>
+
+    static member ref x = attr.ref<AntDesign.Selection> x
+    static member type' (x: System.String) = "Type" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member disabled (x: System.Boolean) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member key (x: System.String) = "Key" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member checkStrictly (x: System.Boolean) = "CheckStrictly" => x |> FelizNode<'FunBlazorGeneric>.create
+                    
+
+type summaryCell<'FunBlazorGeneric> =
+    inherit columnBase<'FunBlazorGeneric>
+    static member create () = [] |> html.blazor<AntDesign.SummaryCell>
+    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.SummaryCell>
+
+    static member ref x = attr.ref<AntDesign.SummaryCell> x
+
+                    
+
+type typographyBase<'FunBlazorGeneric> =
+    inherit antDomComponentBase<'FunBlazorGeneric>
+    static member create () = [] |> html.blazor<AntDesign.TypographyBase>
+    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.TypographyBase>
+    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.TypographyBase>
+    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.TypographyBase>
+    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.TypographyBase>
+    static member ref x = attr.ref<AntDesign.TypographyBase> x
+    static member copyable (x: System.Boolean) = "Copyable" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member copyConfig (x: AntDesign.TypographyCopyableConfig) = "CopyConfig" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member delete (x: System.Boolean) = "Delete" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member disabled (x: System.Boolean) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member editable (x: System.Boolean) = "Editable" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member editConfig (x: AntDesign.TypographyEditableConfig) = "EditConfig" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member ellipsis (x: System.Boolean) = "Ellipsis" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member ellipsisConfig (x: AntDesign.TypographyEllipsisConfig) = "EllipsisConfig" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member mark (x: System.Boolean) = "Mark" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member underline (x: System.Boolean) = "Underline" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member strong (x: System.Boolean) = "Strong" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member onChange (x: System.Action) = "OnChange" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member type' (x: System.String) = "Type" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
+    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
+    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+                    
+
+type link<'FunBlazorGeneric> =
+    inherit typographyBase<'FunBlazorGeneric>
+    static member create () = [] |> html.blazor<AntDesign.Link>
+    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Link>
+
+    static member ref x = attr.ref<AntDesign.Link> x
+    static member code (x: System.Boolean) = "Code" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member keyboard (x: System.Boolean) = "Keyboard" => x |> FelizNode<'FunBlazorGeneric>.create
+                    
+
+type paragraph<'FunBlazorGeneric> =
+    inherit typographyBase<'FunBlazorGeneric>
+    static member create () = [] |> html.blazor<AntDesign.Paragraph>
+    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Paragraph>
+
+    static member ref x = attr.ref<AntDesign.Paragraph> x
+    static member code (x: System.Boolean) = "Code" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member keyboard (x: System.Boolean) = "Keyboard" => x |> FelizNode<'FunBlazorGeneric>.create
+                    
+
+type text<'FunBlazorGeneric> =
+    inherit typographyBase<'FunBlazorGeneric>
+    static member create () = [] |> html.blazor<AntDesign.Text>
+    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Text>
+
+    static member ref x = attr.ref<AntDesign.Text> x
+    static member code (x: System.Boolean) = "Code" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member keyboard (x: System.Boolean) = "Keyboard" => x |> FelizNode<'FunBlazorGeneric>.create
+                    
+
+type title<'FunBlazorGeneric> =
+    inherit typographyBase<'FunBlazorGeneric>
+    static member create () = [] |> html.blazor<AntDesign.Title>
+    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Title>
+
+    static member ref x = attr.ref<AntDesign.Title> x
+    static member level (x: System.Int32) = "Level" => x |> FelizNode<'FunBlazorGeneric>.create
                     
 
 type affix<'FunBlazorGeneric> =
@@ -546,6 +1124,58 @@ type antInputComponentBase<'FunBlazorGeneric, 'TValue> =
     static member cultureInfo (x: System.Globalization.CultureInfo) = "CultureInfo" => x |> FelizNode<'FunBlazorGeneric>.create
                     
 
+type antInputBoolComponentBase<'FunBlazorGeneric> =
+    inherit antInputComponentBase<'FunBlazorGeneric, System.Boolean>
+    static member create () = [] |> html.blazor<AntDesign.AntInputBoolComponentBase>
+    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.AntInputBoolComponentBase>
+
+    static member ref x = attr.ref<AntDesign.AntInputBoolComponentBase> x
+    static member autoFocus (x: System.Boolean) = "AutoFocus" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member checked' (x: System.Boolean) = "Checked" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member checked'' (value: IStore<System.Boolean>) = FelizNode<'FunBlazorGeneric>.create("Checked", value)
+    static member checked'' (value: cval<System.Boolean>) = FelizNode<'FunBlazorGeneric>.create("Checked", value)
+    static member checked'' (valueFn: System.Boolean * (System.Boolean -> unit)) = FelizNode<'FunBlazorGeneric>.create("Checked", valueFn)
+    static member onChange fn = (Bolero.Html.attr.callback<System.Boolean> "OnChange" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
+    static member checkedChanged fn = (Bolero.Html.attr.callback<System.Boolean> "CheckedChanged" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
+    static member disabled (x: System.Boolean) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
+                    
+
+type checkbox<'FunBlazorGeneric> =
+    inherit antInputBoolComponentBase<'FunBlazorGeneric>
+    static member create () = [] |> html.blazor<AntDesign.Checkbox>
+    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Checkbox>
+    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.Checkbox>
+    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.Checkbox>
+    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.Checkbox>
+    static member ref x = attr.ref<AntDesign.Checkbox> x
+    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
+    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
+    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+    static member checkedChange fn = (Bolero.Html.attr.callback<System.Boolean> "CheckedChange" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
+    static member checkedExpression (x: System.Linq.Expressions.Expression<System.Func<System.Boolean>>) = "CheckedExpression" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member indeterminate (x: System.Boolean) = "Indeterminate" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member label (x: System.String) = "Label" => x |> FelizNode<'FunBlazorGeneric>.create
+                    
+
+type switch<'FunBlazorGeneric> =
+    inherit antInputBoolComponentBase<'FunBlazorGeneric>
+    static member create () = [] |> html.blazor<AntDesign.Switch>
+    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Switch>
+
+    static member ref x = attr.ref<AntDesign.Switch> x
+    static member loading (x: System.Boolean) = "Loading" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member checkedChildren (x: System.String) = "CheckedChildren" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member checkedChildrenTemplate (x: string) = Bolero.Html.attr.fragment "CheckedChildrenTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
+    static member checkedChildrenTemplate (node) = Bolero.Html.attr.fragment "CheckedChildrenTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
+    static member checkedChildrenTemplate (nodes) = Bolero.Html.attr.fragment "CheckedChildrenTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+    static member control (x: System.Boolean) = "Control" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member onClick fn = attr.callbackOfUnit("OnClick", fn) |> FelizNode<'FunBlazorGeneric>.create
+    static member unCheckedChildren (x: System.String) = "UnCheckedChildren" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member unCheckedChildrenTemplate (x: string) = Bolero.Html.attr.fragment "UnCheckedChildrenTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
+    static member unCheckedChildrenTemplate (node) = Bolero.Html.attr.fragment "UnCheckedChildrenTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
+    static member unCheckedChildrenTemplate (nodes) = Bolero.Html.attr.fragment "UnCheckedChildrenTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+                    
+
 type autoComplete<'FunBlazorGeneric, 'TOption> =
     inherit antInputComponentBase<'FunBlazorGeneric, System.String>
     static member create () = [] |> html.blazor<AntDesign.AutoComplete<'TOption>>
@@ -619,58 +1249,6 @@ type checkboxGroup<'FunBlazorGeneric> =
     static member mixedMode (x: AntDesign.CheckboxGroupMixedMode) = "MixedMode" => x |> FelizNode<'FunBlazorGeneric>.create
     static member onChange fn = (Bolero.Html.attr.callback<System.String[]> "OnChange" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
     static member disabled (x: System.Boolean) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
-                    
-
-type antInputBoolComponentBase<'FunBlazorGeneric> =
-    inherit antInputComponentBase<'FunBlazorGeneric, System.Boolean>
-    static member create () = [] |> html.blazor<AntDesign.AntInputBoolComponentBase>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.AntInputBoolComponentBase>
-
-    static member ref x = attr.ref<AntDesign.AntInputBoolComponentBase> x
-    static member autoFocus (x: System.Boolean) = "AutoFocus" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member checked' (x: System.Boolean) = "Checked" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member checked'' (value: IStore<System.Boolean>) = FelizNode<'FunBlazorGeneric>.create("Checked", value)
-    static member checked'' (value: cval<System.Boolean>) = FelizNode<'FunBlazorGeneric>.create("Checked", value)
-    static member checked'' (valueFn: System.Boolean * (System.Boolean -> unit)) = FelizNode<'FunBlazorGeneric>.create("Checked", valueFn)
-    static member onChange fn = (Bolero.Html.attr.callback<System.Boolean> "OnChange" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member checkedChanged fn = (Bolero.Html.attr.callback<System.Boolean> "CheckedChanged" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member disabled (x: System.Boolean) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
-                    
-
-type checkbox<'FunBlazorGeneric> =
-    inherit antInputBoolComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Checkbox>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Checkbox>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.Checkbox>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.Checkbox>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.Checkbox>
-    static member ref x = attr.ref<AntDesign.Checkbox> x
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member checkedChange fn = (Bolero.Html.attr.callback<System.Boolean> "CheckedChange" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member checkedExpression (x: System.Linq.Expressions.Expression<System.Func<System.Boolean>>) = "CheckedExpression" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member indeterminate (x: System.Boolean) = "Indeterminate" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member label (x: System.String) = "Label" => x |> FelizNode<'FunBlazorGeneric>.create
-                    
-
-type switch<'FunBlazorGeneric> =
-    inherit antInputBoolComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Switch>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Switch>
-
-    static member ref x = attr.ref<AntDesign.Switch> x
-    static member loading (x: System.Boolean) = "Loading" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member checkedChildren (x: System.String) = "CheckedChildren" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member checkedChildrenTemplate (x: string) = Bolero.Html.attr.fragment "CheckedChildrenTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member checkedChildrenTemplate (node) = Bolero.Html.attr.fragment "CheckedChildrenTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member checkedChildrenTemplate (nodes) = Bolero.Html.attr.fragment "CheckedChildrenTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member control (x: System.Boolean) = "Control" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onClick fn = attr.callbackOfUnit("OnClick", fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member unCheckedChildren (x: System.String) = "UnCheckedChildren" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member unCheckedChildrenTemplate (x: string) = Bolero.Html.attr.fragment "UnCheckedChildrenTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member unCheckedChildrenTemplate (node) = Bolero.Html.attr.fragment "UnCheckedChildrenTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member unCheckedChildrenTemplate (nodes) = Bolero.Html.attr.fragment "UnCheckedChildrenTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
                     
 
 type datePickerBase<'FunBlazorGeneric, 'TValue> =
@@ -841,6 +1419,27 @@ type input<'FunBlazorGeneric, 'TValue> =
     static member wrapperStyle (x: System.String) = "WrapperStyle" => x |> FelizNode<'FunBlazorGeneric>.create
                     
 
+type search<'FunBlazorGeneric> =
+    inherit input<'FunBlazorGeneric, System.String>
+    static member create () = [] |> html.blazor<AntDesign.Search>
+    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Search>
+
+    static member ref x = attr.ref<AntDesign.Search> x
+    static member classicSearchIcon (x: System.Boolean) = "ClassicSearchIcon" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member enterButton (x: OneOf.OneOf<System.Boolean, System.String>) = "EnterButton" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member loading (x: System.Boolean) = "Loading" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member onSearch fn = (Bolero.Html.attr.callback<System.String> "OnSearch" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
+                    
+
+type autoCompleteSearch<'FunBlazorGeneric> =
+    inherit search<'FunBlazorGeneric>
+    static member create () = [] |> html.blazor<AntDesign.AutoCompleteSearch>
+    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.AutoCompleteSearch>
+
+    static member ref x = attr.ref<AntDesign.AutoCompleteSearch> x
+
+                    
+
 type autoCompleteInput<'FunBlazorGeneric, 'TValue> =
     inherit input<'FunBlazorGeneric, 'TValue>
     static member create () = [] |> html.blazor<AntDesign.AutoCompleteInput<'TValue>>
@@ -861,27 +1460,6 @@ type inputPassword<'FunBlazorGeneric> =
     static member iconRender (nodes) = Bolero.Html.attr.fragment "IconRender" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
     static member showPassword (x: System.Boolean) = "ShowPassword" => x |> FelizNode<'FunBlazorGeneric>.create
     static member visibilityToggle (x: System.Boolean) = "VisibilityToggle" => x |> FelizNode<'FunBlazorGeneric>.create
-                    
-
-type search<'FunBlazorGeneric> =
-    inherit input<'FunBlazorGeneric, System.String>
-    static member create () = [] |> html.blazor<AntDesign.Search>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Search>
-
-    static member ref x = attr.ref<AntDesign.Search> x
-    static member classicSearchIcon (x: System.Boolean) = "ClassicSearchIcon" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member enterButton (x: OneOf.OneOf<System.Boolean, System.String>) = "EnterButton" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member loading (x: System.Boolean) = "Loading" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onSearch fn = (Bolero.Html.attr.callback<System.String> "OnSearch" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-                    
-
-type autoCompleteSearch<'FunBlazorGeneric> =
-    inherit search<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.AutoCompleteSearch>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.AutoCompleteSearch>
-
-    static member ref x = attr.ref<AntDesign.AutoCompleteSearch> x
-
                     
 
 type textArea<'FunBlazorGeneric> =
@@ -1297,40 +1875,6 @@ type formItem<'FunBlazorGeneric> =
     static member help (x: System.String) = "Help" => x |> FelizNode<'FunBlazorGeneric>.create
                     
 
-type col<'FunBlazorGeneric> =
-    inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Col>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Col>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.Col>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.Col>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.Col>
-    static member ref x = attr.ref<AntDesign.Col> x
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member flex (x: OneOf.OneOf<System.String, System.Int32>) = "Flex" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member span (x: OneOf.OneOf<System.String, System.Int32>) = "Span" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member order (x: OneOf.OneOf<System.String, System.Int32>) = "Order" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member offset (x: OneOf.OneOf<System.String, System.Int32>) = "Offset" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member push (x: OneOf.OneOf<System.String, System.Int32>) = "Push" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member pull (x: OneOf.OneOf<System.String, System.Int32>) = "Pull" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member xs (x: OneOf.OneOf<System.Int32, AntDesign.EmbeddedProperty>) = "Xs" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member sm (x: OneOf.OneOf<System.Int32, AntDesign.EmbeddedProperty>) = "Sm" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member md (x: OneOf.OneOf<System.Int32, AntDesign.EmbeddedProperty>) = "Md" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member lg (x: OneOf.OneOf<System.Int32, AntDesign.EmbeddedProperty>) = "Lg" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member xl (x: OneOf.OneOf<System.Int32, AntDesign.EmbeddedProperty>) = "Xl" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member xxl (x: OneOf.OneOf<System.Int32, AntDesign.EmbeddedProperty>) = "Xxl" => x |> FelizNode<'FunBlazorGeneric>.create
-                    
-
-type gridCol<'FunBlazorGeneric> =
-    inherit col<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.GridCol>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.GridCol>
-
-    static member ref x = attr.ref<AntDesign.GridCol> x
-
-                    
-
 type row<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create () = [] |> html.blazor<AntDesign.Row>
@@ -1349,38 +1893,6 @@ type row<'FunBlazorGeneric> =
     static member gutter (x: OneOf.OneOf<System.Int32, System.Collections.Generic.Dictionary<System.String, System.Int32>, System.ValueTuple<System.Int32, System.Int32>, System.ValueTuple<System.Collections.Generic.Dictionary<System.String, System.Int32>, System.Int32>, System.ValueTuple<System.Int32, System.Collections.Generic.Dictionary<System.String, System.Int32>>, System.ValueTuple<System.Collections.Generic.Dictionary<System.String, System.Int32>, System.Collections.Generic.Dictionary<System.String, System.Int32>>>) = "Gutter" => x |> FelizNode<'FunBlazorGeneric>.create
     static member onBreakpoint fn = (Bolero.Html.attr.callback<AntDesign.BreakpointType> "OnBreakpoint" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
     static member defaultBreakpoint (x: System.Nullable<AntDesign.BreakpointType>) = "DefaultBreakpoint" => x |> FelizNode<'FunBlazorGeneric>.create
-                    
-
-type icon<'FunBlazorGeneric> =
-    inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Icon>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Icon>
-
-    static member ref x = attr.ref<AntDesign.Icon> x
-    static member spin (x: System.Boolean) = "Spin" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member rotate (x: System.Int32) = "Rotate" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member type' (x: System.String) = "Type" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member theme (x: System.String) = "Theme" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member twotoneColor (x: System.String) = "TwotoneColor" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member iconFont (x: System.String) = "IconFont" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member width (x: System.String) = "Width" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member height (x: System.String) = "Height" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member fill (x: System.String) = "Fill" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member tabIndex (x: System.String) = "TabIndex" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member stopPropagation (x: System.Boolean) = "StopPropagation" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onClick fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> "OnClick" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member component' (x: string) = Bolero.Html.attr.fragment "Component" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member component' (node) = Bolero.Html.attr.fragment "Component" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member component' (nodes) = Bolero.Html.attr.fragment "Component" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-                    
-
-type iconFont<'FunBlazorGeneric> =
-    inherit icon<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.IconFont>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.IconFont>
-
-    static member ref x = attr.ref<AntDesign.IconFont> x
-
                     
 
 type image<'FunBlazorGeneric> =
@@ -1824,34 +2336,6 @@ type modalFooter<'FunBlazorGeneric> =
 
                     
 
-type notificationBase<'FunBlazorGeneric> =
-    inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.NotificationBase>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.NotificationBase>
-
-    static member ref x = attr.ref<AntDesign.NotificationBase> x
-
-                    
-
-type notification<'FunBlazorGeneric> =
-    inherit notificationBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Notification>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Notification>
-
-    static member ref x = attr.ref<AntDesign.Notification> x
-
-                    
-
-type notificationItem<'FunBlazorGeneric> =
-    inherit notificationBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.NotificationItem>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.NotificationItem>
-
-    static member ref x = attr.ref<AntDesign.NotificationItem> x
-    static member config (x: AntDesign.NotificationConfig) = "Config" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onClose (fn) = "OnClose" => (System.Func<AntDesign.NotificationConfig, System.Threading.Tasks.Task>fn) |> FelizNode<'FunBlazorGeneric>.create
-                    
-
 type pageHeader<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create () = [] |> html.blazor<AntDesign.PageHeader>
@@ -2279,91 +2763,6 @@ type steps<'FunBlazorGeneric> =
     static member onChange fn = (Bolero.Html.attr.callback<System.Int32> "OnChange" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
                     
 
-type columnBase<'FunBlazorGeneric> =
-    inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.ColumnBase>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.ColumnBase>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.ColumnBase>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.ColumnBase>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.ColumnBase>
-    static member ref x = attr.ref<AntDesign.ColumnBase> x
-    static member title (x: System.String) = "Title" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (x: string) = Bolero.Html.attr.fragment "TitleTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (node) = Bolero.Html.attr.fragment "TitleTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (nodes) = Bolero.Html.attr.fragment "TitleTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member width (x: System.String) = "Width" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member headerStyle (x: System.String) = "HeaderStyle" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member rowSpan (x: System.Int32) = "RowSpan" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member colSpan (x: System.Int32) = "ColSpan" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member headerColSpan (x: System.Int32) = "HeaderColSpan" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member fixed' (x: System.String) = "Fixed" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member ellipsis (x: System.Boolean) = "Ellipsis" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member hidden (x: System.Boolean) = "Hidden" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member align (x: AntDesign.ColumnAlign) = "Align" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member cellRender (render: AntDesign.TableModels.CellData -> Bolero.Node) = Bolero.Html.attr.fragmentWith "CellRender" (fun x -> render x) |> FelizNode<'FunBlazorGeneric>.create
-                    
-
-type actionColumn<'FunBlazorGeneric> =
-    inherit columnBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.ActionColumn>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.ActionColumn>
-
-    static member ref x = attr.ref<AntDesign.ActionColumn> x
-
-                    
-
-type column<'FunBlazorGeneric, 'TData> =
-    inherit columnBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Column<'TData>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Column<'TData>>
-
-    static member ref x = attr.ref<AntDesign.Column<'TData>> x
-    static member fieldChanged fn = (Bolero.Html.attr.callback<'TData> "FieldChanged" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member fieldExpression (x: System.Linq.Expressions.Expression<System.Func<'TData>>) = "FieldExpression" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member field (x: 'TData) = "Field" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member field' (value: IStore<'TData>) = FelizNode<'FunBlazorGeneric>.create("Field", value)
-    static member field' (value: cval<'TData>) = FelizNode<'FunBlazorGeneric>.create("Field", value)
-    static member field' (valueFn: 'TData * ('TData -> unit)) = FelizNode<'FunBlazorGeneric>.create("Field", valueFn)
-    static member dataIndex (x: System.String) = "DataIndex" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member format (x: System.String) = "Format" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member sortable (x: System.Boolean) = "Sortable" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member sorterCompare (fn) = "SorterCompare" => (System.Func<'TData, 'TData, System.Int32>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member sorterMultiple (x: System.Int32) = "SorterMultiple" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member showSorterTooltip (x: System.Boolean) = "ShowSorterTooltip" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member sortDirections (x: AntDesign.SortDirection[]) = "SortDirections" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member defaultSortOrder (x: AntDesign.SortDirection) = "DefaultSortOrder" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onCell (fn) = "OnCell" => (System.Func<AntDesign.TableModels.CellData, System.Collections.Generic.Dictionary<System.String, System.Object>>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member onHeaderCell (fn) = "OnHeaderCell" => (System.Func<System.Collections.Generic.Dictionary<System.String, System.Object>>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member filterable (x: System.Boolean) = "Filterable" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member filters (x: System.Collections.Generic.IEnumerable<AntDesign.TableFilter<'TData>>) = "Filters" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member filterMultiple (x: System.Boolean) = "FilterMultiple" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onFilter (x: System.Linq.Expressions.Expression<System.Func<'TData, 'TData, System.Boolean>>) = "OnFilter" => x |> FelizNode<'FunBlazorGeneric>.create
-                    
-
-type selection<'FunBlazorGeneric> =
-    inherit columnBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Selection>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Selection>
-
-    static member ref x = attr.ref<AntDesign.Selection> x
-    static member type' (x: System.String) = "Type" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member disabled (x: System.Boolean) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member key (x: System.String) = "Key" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member checkStrictly (x: System.Boolean) = "CheckStrictly" => x |> FelizNode<'FunBlazorGeneric>.create
-                    
-
-type summaryCell<'FunBlazorGeneric> =
-    inherit columnBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.SummaryCell>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.SummaryCell>
-
-    static member ref x = attr.ref<AntDesign.SummaryCell> x
-
-                    
-
 type table<'FunBlazorGeneric, 'TItem> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create () = [] |> html.blazor<AntDesign.Table<'TItem>>
@@ -2754,71 +3153,6 @@ type treeNode<'FunBlazorGeneric, 'TItem> =
     static member dataItem (x: 'TItem) = "DataItem" => x |> FelizNode<'FunBlazorGeneric>.create
                     
 
-type typographyBase<'FunBlazorGeneric> =
-    inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.TypographyBase>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.TypographyBase>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.TypographyBase>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.TypographyBase>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.TypographyBase>
-    static member ref x = attr.ref<AntDesign.TypographyBase> x
-    static member copyable (x: System.Boolean) = "Copyable" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member copyConfig (x: AntDesign.TypographyCopyableConfig) = "CopyConfig" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member delete (x: System.Boolean) = "Delete" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member disabled (x: System.Boolean) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member editable (x: System.Boolean) = "Editable" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member editConfig (x: AntDesign.TypographyEditableConfig) = "EditConfig" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member ellipsis (x: System.Boolean) = "Ellipsis" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member ellipsisConfig (x: AntDesign.TypographyEllipsisConfig) = "EllipsisConfig" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member mark (x: System.Boolean) = "Mark" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member underline (x: System.Boolean) = "Underline" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member strong (x: System.Boolean) = "Strong" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onChange (x: System.Action) = "OnChange" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member type' (x: System.String) = "Type" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-                    
-
-type link<'FunBlazorGeneric> =
-    inherit typographyBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Link>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Link>
-
-    static member ref x = attr.ref<AntDesign.Link> x
-    static member code (x: System.Boolean) = "Code" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member keyboard (x: System.Boolean) = "Keyboard" => x |> FelizNode<'FunBlazorGeneric>.create
-                    
-
-type paragraph<'FunBlazorGeneric> =
-    inherit typographyBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Paragraph>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Paragraph>
-
-    static member ref x = attr.ref<AntDesign.Paragraph> x
-    static member code (x: System.Boolean) = "Code" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member keyboard (x: System.Boolean) = "Keyboard" => x |> FelizNode<'FunBlazorGeneric>.create
-                    
-
-type text<'FunBlazorGeneric> =
-    inherit typographyBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Text>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Text>
-
-    static member ref x = attr.ref<AntDesign.Text> x
-    static member code (x: System.Boolean) = "Code" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member keyboard (x: System.Boolean) = "Keyboard" => x |> FelizNode<'FunBlazorGeneric>.create
-                    
-
-type title<'FunBlazorGeneric> =
-    inherit typographyBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Title>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Title>
-
-    static member ref x = attr.ref<AntDesign.Title> x
-    static member level (x: System.Int32) = "Level" => x |> FelizNode<'FunBlazorGeneric>.create
-                    
-
 type upload<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create () = [] |> html.blazor<AntDesign.Upload>
@@ -3106,160 +3440,6 @@ type overlay<'FunBlazorGeneric> =
     static member hiddenMode (x: System.Boolean) = "HiddenMode" => x |> FelizNode<'FunBlazorGeneric>.create
                     
 
-type overlayTrigger<'FunBlazorGeneric> =
-    inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Internal.OverlayTrigger>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Internal.OverlayTrigger>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.Internal.OverlayTrigger>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.Internal.OverlayTrigger>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.Internal.OverlayTrigger>
-    static member ref x = attr.ref<AntDesign.Internal.OverlayTrigger> x
-    static member boundaryAdjustMode (x: AntDesign.TriggerBoundaryAdjustMode) = "BoundaryAdjustMode" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member complexAutoCloseAndVisible (x: System.Boolean) = "ComplexAutoCloseAndVisible" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member disabled (x: System.Boolean) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member hiddenMode (x: System.Boolean) = "HiddenMode" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member inlineFlexMode (x: System.Boolean) = "InlineFlexMode" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member isButton (x: System.Boolean) = "IsButton" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onClick fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> "OnClick" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onMaskClick fn = attr.callbackOfUnit("OnMaskClick", fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member onMouseEnter fn = attr.callbackOfUnit("OnMouseEnter", fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member onMouseLeave fn = attr.callbackOfUnit("OnMouseLeave", fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member onOverlayHiding fn = (Bolero.Html.attr.callback<System.Boolean> "OnOverlayHiding" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onVisibleChange fn = (Bolero.Html.attr.callback<System.Boolean> "OnVisibleChange" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member overlay (x: string) = Bolero.Html.attr.fragment "Overlay" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member overlay (node) = Bolero.Html.attr.fragment "Overlay" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member overlay (nodes) = Bolero.Html.attr.fragment "Overlay" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member overlayClassName (x: System.String) = "OverlayClassName" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member overlayEnterCls (x: System.String) = "OverlayEnterCls" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member overlayHiddenCls (x: System.String) = "OverlayHiddenCls" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member overlayLeaveCls (x: System.String) = "OverlayLeaveCls" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member overlayStyle (x: System.String) = "OverlayStyle" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member placement (x: AntDesign.Placement) = "Placement" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member placementCls (x: System.String) = "PlacementCls" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member popupContainerSelector (x: System.String) = "PopupContainerSelector" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member trigger (x: AntDesign.Trigger[]) = "Trigger" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member triggerCls (x: System.String) = "TriggerCls" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member triggerReference (x: Microsoft.AspNetCore.Components.ElementReference) = "TriggerReference" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member unbound (render: AntDesign.ForwardRef -> Bolero.Node) = Bolero.Html.attr.fragmentWith "Unbound" (fun x -> render x) |> FelizNode<'FunBlazorGeneric>.create
-    static member visible (x: System.Boolean) = "Visible" => x |> FelizNode<'FunBlazorGeneric>.create
-                    
-            
-namespace rec AntDesign.DslInternals
-
-open Bolero.Html
-open FSharp.Data.Adaptive
-open Fun.Blazor
-open Microsoft.AspNetCore.Components.DslInternals
-open Microsoft.AspNetCore.Components.Web.DslInternals
-open AntDesign.DslInternals
-
-
-type dropdown<'FunBlazorGeneric> =
-    inherit Internal.overlayTrigger<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Dropdown>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Dropdown>
-
-    static member ref x = attr.ref<AntDesign.Dropdown> x
-
-                    
-
-type dropdownButton<'FunBlazorGeneric> =
-    inherit dropdown<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.DropdownButton>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.DropdownButton>
-
-    static member ref x = attr.ref<AntDesign.DropdownButton> x
-    static member block (x: System.Boolean) = "Block" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member buttonsRender (fn) = Bolero.FragmentAttr ("ButtonsRender", fun render -> box (System.Func<Microsoft.AspNetCore.Components.RenderFragment, Microsoft.AspNetCore.Components.RenderFragment, Microsoft.AspNetCore.Components.RenderFragment>(fun x1 x2 -> Microsoft.AspNetCore.Components.RenderFragment(fun rt -> render rt (fn x1 x2))))) |> FelizNode<'FunBlazorGeneric>.create
-    static member buttonsClass (x: OneOf.OneOf<System.String, System.ValueTuple<System.String, System.String>>) = "ButtonsClass" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member buttonsStyle (x: OneOf.OneOf<System.String, System.ValueTuple<System.String, System.String>>) = "ButtonsStyle" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member danger (x: System.Boolean) = "Danger" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member ghost (x: System.Boolean) = "Ghost" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member icon (x: System.String) = "Icon" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member loading (x: System.Boolean) = "Loading" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member size (x: System.String) = "Size" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member type' (x: OneOf.OneOf<System.String, System.ValueTuple<System.String, System.String>>) = "Type" => x |> FelizNode<'FunBlazorGeneric>.create
-                    
-
-type popconfirm<'FunBlazorGeneric> =
-    inherit Internal.overlayTrigger<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Popconfirm>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Popconfirm>
-
-    static member ref x = attr.ref<AntDesign.Popconfirm> x
-    static member title (x: System.String) = "Title" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (x: string) = Bolero.Html.attr.fragment "TitleTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (node) = Bolero.Html.attr.fragment "TitleTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (nodes) = Bolero.Html.attr.fragment "TitleTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member cancelText (x: System.String) = "CancelText" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member okText (x: System.String) = "OkText" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member okType (x: System.String) = "OkType" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member okButtonProps (x: AntDesign.ButtonProps) = "OkButtonProps" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member cancelButtonProps (x: AntDesign.ButtonProps) = "CancelButtonProps" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member icon (x: System.String) = "Icon" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member iconTemplate (x: string) = Bolero.Html.attr.fragment "IconTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member iconTemplate (node) = Bolero.Html.attr.fragment "IconTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member iconTemplate (nodes) = Bolero.Html.attr.fragment "IconTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member onCancel fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> "OnCancel" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onConfirm fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> "OnConfirm" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member arrowPointAtCenter (x: System.Boolean) = "ArrowPointAtCenter" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member mouseEnterDelay (x: System.Double) = "MouseEnterDelay" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member mouseLeaveDelay (x: System.Double) = "MouseLeaveDelay" => x |> FelizNode<'FunBlazorGeneric>.create
-                    
-
-type popover<'FunBlazorGeneric> =
-    inherit Internal.overlayTrigger<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Popover>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Popover>
-
-    static member ref x = attr.ref<AntDesign.Popover> x
-    static member title (x: System.String) = "Title" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (x: string) = Bolero.Html.attr.fragment "TitleTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (node) = Bolero.Html.attr.fragment "TitleTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (nodes) = Bolero.Html.attr.fragment "TitleTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member content (x: System.String) = "Content" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member contentTemplate (x: string) = Bolero.Html.attr.fragment "ContentTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member contentTemplate (node) = Bolero.Html.attr.fragment "ContentTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member contentTemplate (nodes) = Bolero.Html.attr.fragment "ContentTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member arrowPointAtCenter (x: System.Boolean) = "ArrowPointAtCenter" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member mouseEnterDelay (x: System.Double) = "MouseEnterDelay" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member mouseLeaveDelay (x: System.Double) = "MouseLeaveDelay" => x |> FelizNode<'FunBlazorGeneric>.create
-                    
-
-type tooltip<'FunBlazorGeneric> =
-    inherit Internal.overlayTrigger<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Tooltip>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Tooltip>
-
-    static member ref x = attr.ref<AntDesign.Tooltip> x
-    static member title (x: OneOf.OneOf<System.String, Microsoft.AspNetCore.Components.RenderFragment, Microsoft.AspNetCore.Components.MarkupString>) = "Title" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member arrowPointAtCenter (x: System.Boolean) = "ArrowPointAtCenter" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member mouseEnterDelay (x: System.Double) = "MouseEnterDelay" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member mouseLeaveDelay (x: System.Double) = "MouseLeaveDelay" => x |> FelizNode<'FunBlazorGeneric>.create
-                    
-            
-namespace rec AntDesign.DslInternals.Internal
-
-open Bolero.Html
-open FSharp.Data.Adaptive
-open Fun.Blazor
-open Microsoft.AspNetCore.Components.DslInternals
-open Microsoft.AspNetCore.Components.Web.DslInternals
-open AntDesign.DslInternals
-
-
-type subMenuTrigger<'FunBlazorGeneric> =
-    inherit Internal.overlayTrigger<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Internal.SubMenuTrigger>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Internal.SubMenuTrigger>
-
-    static member ref x = attr.ref<AntDesign.Internal.SubMenuTrigger> x
-    static member triggerClass (x: System.String) = "TriggerClass" => x |> FelizNode<'FunBlazorGeneric>.create
-                    
-
 type datePickerPanelChooser<'FunBlazorGeneric, 'TValue> =
     inherit antDomComponentBase<'FunBlazorGeneric>
     static member create () = [] |> html.blazor<AntDesign.Internal.DatePickerPanelChooser<'TValue>>
@@ -3269,181 +3449,6 @@ type datePickerPanelChooser<'FunBlazorGeneric, 'TValue> =
     static member datePicker (x: AntDesign.DatePickerBase<'TValue>) = "DatePicker" => x |> FelizNode<'FunBlazorGeneric>.create
     static member onSelect (fn) = "OnSelect" => (System.Action<System.DateTime, System.Int32>fn) |> FelizNode<'FunBlazorGeneric>.create
     static member pickerIndex (x: System.Int32) = "PickerIndex" => x |> FelizNode<'FunBlazorGeneric>.create
-                    
-
-type pickerPanelBase<'FunBlazorGeneric> =
-    inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Internal.PickerPanelBase>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Internal.PickerPanelBase>
-
-    static member ref x = attr.ref<AntDesign.Internal.PickerPanelBase> x
-    static member onSelect (fn) = "OnSelect" => (System.Action<System.DateTime, System.Int32>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member pickerIndex (x: System.Int32) = "PickerIndex" => x |> FelizNode<'FunBlazorGeneric>.create
-                    
-            
-namespace rec AntDesign.DslInternals
-
-open Bolero.Html
-open FSharp.Data.Adaptive
-open Fun.Blazor
-open Microsoft.AspNetCore.Components.DslInternals
-open Microsoft.AspNetCore.Components.Web.DslInternals
-open AntDesign.DslInternals
-
-
-type datePickerPanelBase<'FunBlazorGeneric, 'TValue> =
-    inherit Internal.pickerPanelBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.DatePickerPanelBase<'TValue>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.DatePickerPanelBase<'TValue>>
-
-    static member ref x = attr.ref<AntDesign.DatePickerPanelBase<'TValue>> x
-    static member prefixCls (x: System.String) = "PrefixCls" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member picker (x: System.String) = "Picker" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member isRange (x: System.Boolean) = "IsRange" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member isCalendar (x: System.Boolean) = "IsCalendar" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member isShowHeader (x: System.Boolean) = "IsShowHeader" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member isShowTime (x: System.Boolean) = "IsShowTime" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member locale (x: AntDesign.DatePickerLocale) = "Locale" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member cultureInfo (x: System.Globalization.CultureInfo) = "CultureInfo" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member closePanel (x: System.Action) = "ClosePanel" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member changePickerValue (fn) = "ChangePickerValue" => (System.Action<System.DateTime, System.Nullable<System.Int32>>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member changeValue (fn) = "ChangeValue" => (System.Action<System.DateTime, System.Int32>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member changePickerType (fn) = "ChangePickerType" => (System.Action<System.String, System.Int32>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member getIndexPickerValue (fn) = "GetIndexPickerValue" => (System.Func<System.Int32, System.DateTime>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member getIndexValue (fn) = "GetIndexValue" => (System.Func<System.Int32, System.Nullable<System.DateTime>>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member disabledDate (fn) = "DisabledDate" => (System.Func<System.DateTime, System.Boolean>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member dateRender (fn) = Bolero.FragmentAttr ("DateRender", fun render -> box (System.Func<System.DateTime, System.DateTime, Microsoft.AspNetCore.Components.RenderFragment>(fun x1 x2 -> Microsoft.AspNetCore.Components.RenderFragment(fun rt -> render rt (fn x1 x2))))) |> FelizNode<'FunBlazorGeneric>.create
-    static member monthCellRender (fn) = Bolero.FragmentAttr ("MonthCellRender", fun render -> box (System.Func<System.DateTime, Microsoft.AspNetCore.Components.RenderFragment>(fun x1 -> Microsoft.AspNetCore.Components.RenderFragment(fun rt -> render rt (fn x1))))) |> FelizNode<'FunBlazorGeneric>.create
-    static member calendarDateRender (fn) = Bolero.FragmentAttr ("CalendarDateRender", fun render -> box (System.Func<System.DateTime, Microsoft.AspNetCore.Components.RenderFragment>(fun x1 -> Microsoft.AspNetCore.Components.RenderFragment(fun rt -> render rt (fn x1))))) |> FelizNode<'FunBlazorGeneric>.create
-    static member calendarMonthCellRender (fn) = Bolero.FragmentAttr ("CalendarMonthCellRender", fun render -> box (System.Func<System.DateTime, Microsoft.AspNetCore.Components.RenderFragment>(fun x1 -> Microsoft.AspNetCore.Components.RenderFragment(fun rt -> render rt (fn x1))))) |> FelizNode<'FunBlazorGeneric>.create
-    static member renderExtraFooter (x: string) = Bolero.Html.attr.fragment "RenderExtraFooter" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member renderExtraFooter (node) = Bolero.Html.attr.fragment "RenderExtraFooter" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member renderExtraFooter (nodes) = Bolero.Html.attr.fragment "RenderExtraFooter" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-                    
-            
-namespace rec AntDesign.DslInternals.Internal
-
-open Bolero.Html
-open FSharp.Data.Adaptive
-open Fun.Blazor
-open Microsoft.AspNetCore.Components.DslInternals
-open Microsoft.AspNetCore.Components.Web.DslInternals
-open AntDesign.DslInternals
-
-
-type datePickerDatetimePanel<'FunBlazorGeneric, 'TValue> =
-    inherit datePickerPanelBase<'FunBlazorGeneric, 'TValue>
-    static member create () = [] |> html.blazor<AntDesign.Internal.DatePickerDatetimePanel<'TValue>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Internal.DatePickerDatetimePanel<'TValue>>
-
-    static member ref x = attr.ref<AntDesign.Internal.DatePickerDatetimePanel<'TValue>> x
-    static member showToday (x: System.Boolean) = "ShowToday" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member showTimeFormat (x: System.String) = "ShowTimeFormat" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member format (x: System.String) = "Format" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member disabledHours (fn) = "DisabledHours" => (System.Func<System.DateTime, System.Int32[]>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member disabledMinutes (fn) = "DisabledMinutes" => (System.Func<System.DateTime, System.Int32[]>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member disabledSeconds (fn) = "DisabledSeconds" => (System.Func<System.DateTime, System.Int32[]>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member disabledTime (fn) = "DisabledTime" => (System.Func<System.DateTime, AntDesign.DatePickerDisabledTime>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member onOkClick fn = attr.callbackOfUnit("OnOkClick", fn) |> FelizNode<'FunBlazorGeneric>.create
-                    
-
-type datePickerTemplate<'FunBlazorGeneric, 'TValue> =
-    inherit datePickerPanelBase<'FunBlazorGeneric, 'TValue>
-    static member create () = [] |> html.blazor<AntDesign.Internal.DatePickerTemplate<'TValue>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Internal.DatePickerTemplate<'TValue>>
-
-    static member ref x = attr.ref<AntDesign.Internal.DatePickerTemplate<'TValue>> x
-    static member renderPickerHeader (x: string) = Bolero.Html.attr.fragment "RenderPickerHeader" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member renderPickerHeader (node) = Bolero.Html.attr.fragment "RenderPickerHeader" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member renderPickerHeader (nodes) = Bolero.Html.attr.fragment "RenderPickerHeader" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member renderTableHeader (x: string) = Bolero.Html.attr.fragment "RenderTableHeader" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member renderTableHeader (node) = Bolero.Html.attr.fragment "RenderTableHeader" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member renderTableHeader (nodes) = Bolero.Html.attr.fragment "RenderTableHeader" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member renderFirstCol (render: System.DateTime -> Bolero.Node) = Bolero.Html.attr.fragmentWith "RenderFirstCol" (fun x -> render x) |> FelizNode<'FunBlazorGeneric>.create
-    static member renderColValue (render: System.DateTime -> Bolero.Node) = Bolero.Html.attr.fragmentWith "RenderColValue" (fun x -> render x) |> FelizNode<'FunBlazorGeneric>.create
-    static member renderLastCol (render: System.DateTime -> Bolero.Node) = Bolero.Html.attr.fragmentWith "RenderLastCol" (fun x -> render x) |> FelizNode<'FunBlazorGeneric>.create
-    static member viewStartDate (x: System.DateTime) = "ViewStartDate" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member getColTitle (fn) = "GetColTitle" => (System.Func<System.DateTime, System.String>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member getRowClass (fn) = "GetRowClass" => (System.Func<System.DateTime, System.String>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member getNextColValue (fn) = "GetNextColValue" => (System.Func<System.DateTime, System.DateTime>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member isInView (fn) = "IsInView" => (System.Func<System.DateTime, System.Boolean>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member isToday (fn) = "IsToday" => (System.Func<System.DateTime, System.Boolean>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member isSelected (fn) = "IsSelected" => (System.Func<System.DateTime, System.Boolean>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member onRowSelect (fn) = "OnRowSelect" => (System.Action<System.DateTime>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member onValueSelect (fn) = "OnValueSelect" => (System.Action<System.DateTime>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member showFooter (x: System.Boolean) = "ShowFooter" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member maxRow (x: System.Int32) = "MaxRow" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member maxCol (x: System.Int32) = "MaxCol" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member skipDays (x: System.Int32) = "SkipDays" => x |> FelizNode<'FunBlazorGeneric>.create
-                    
-
-type datePickerDatePanel<'FunBlazorGeneric, 'TValue> =
-    inherit datePickerPanelBase<'FunBlazorGeneric, 'TValue>
-    static member create () = [] |> html.blazor<AntDesign.Internal.DatePickerDatePanel<'TValue>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Internal.DatePickerDatePanel<'TValue>>
-
-    static member ref x = attr.ref<AntDesign.Internal.DatePickerDatePanel<'TValue>> x
-    static member isWeek (x: System.Boolean) = "IsWeek" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member showToday (x: System.Boolean) = "ShowToday" => x |> FelizNode<'FunBlazorGeneric>.create
-                    
-
-type datePickerDecadePanel<'FunBlazorGeneric, 'TValue> =
-    inherit datePickerPanelBase<'FunBlazorGeneric, 'TValue>
-    static member create () = [] |> html.blazor<AntDesign.Internal.DatePickerDecadePanel<'TValue>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Internal.DatePickerDecadePanel<'TValue>>
-
-    static member ref x = attr.ref<AntDesign.Internal.DatePickerDecadePanel<'TValue>> x
-
-                    
-
-type datePickerFooter<'FunBlazorGeneric, 'TValue> =
-    inherit datePickerPanelBase<'FunBlazorGeneric, 'TValue>
-    static member create () = [] |> html.blazor<AntDesign.Internal.DatePickerFooter<'TValue>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Internal.DatePickerFooter<'TValue>>
-
-    static member ref x = attr.ref<AntDesign.Internal.DatePickerFooter<'TValue>> x
-
-                    
-
-type datePickerHeader<'FunBlazorGeneric, 'TValue> =
-    inherit datePickerPanelBase<'FunBlazorGeneric, 'TValue>
-    static member create () = [] |> html.blazor<AntDesign.Internal.DatePickerHeader<'TValue>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Internal.DatePickerHeader<'TValue>>
-
-    static member ref x = attr.ref<AntDesign.Internal.DatePickerHeader<'TValue>> x
-    static member superChangeDateInterval (x: System.Int32) = "SuperChangeDateInterval" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member changeDateInterval (x: System.Int32) = "ChangeDateInterval" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member showSuperPreChange (x: System.Boolean) = "ShowSuperPreChange" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member showPreChange (x: System.Boolean) = "ShowPreChange" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member showNextChange (x: System.Boolean) = "ShowNextChange" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member showSuperNextChange (x: System.Boolean) = "ShowSuperNextChange" => x |> FelizNode<'FunBlazorGeneric>.create
-                    
-
-type datePickerMonthPanel<'FunBlazorGeneric, 'TValue> =
-    inherit datePickerPanelBase<'FunBlazorGeneric, 'TValue>
-    static member create () = [] |> html.blazor<AntDesign.Internal.DatePickerMonthPanel<'TValue>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Internal.DatePickerMonthPanel<'TValue>>
-
-    static member ref x = attr.ref<AntDesign.Internal.DatePickerMonthPanel<'TValue>> x
-
-                    
-
-type datePickerQuarterPanel<'FunBlazorGeneric, 'TValue> =
-    inherit datePickerPanelBase<'FunBlazorGeneric, 'TValue>
-    static member create () = [] |> html.blazor<AntDesign.Internal.DatePickerQuarterPanel<'TValue>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Internal.DatePickerQuarterPanel<'TValue>>
-
-    static member ref x = attr.ref<AntDesign.Internal.DatePickerQuarterPanel<'TValue>> x
-
-                    
-
-type datePickerYearPanel<'FunBlazorGeneric, 'TValue> =
-    inherit datePickerPanelBase<'FunBlazorGeneric, 'TValue>
-    static member create () = [] |> html.blazor<AntDesign.Internal.DatePickerYearPanel<'TValue>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Internal.DatePickerYearPanel<'TValue>>
-
-    static member ref x = attr.ref<AntDesign.Internal.DatePickerYearPanel<'TValue>> x
-
                     
 
 type uploadButton<'FunBlazorGeneric> =
@@ -3537,6 +3542,21 @@ open Microsoft.AspNetCore.Components.DslInternals
 open Microsoft.AspNetCore.Components.Web.DslInternals
 open AntDesign.DslInternals
 
+
+type configProvider<'FunBlazorGeneric> =
+    inherit antComponentBase<'FunBlazorGeneric>
+    static member create () = [] |> html.blazor<AntDesign.ConfigProvider>
+    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.ConfigProvider>
+    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.ConfigProvider>
+    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.ConfigProvider>
+    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.ConfigProvider>
+    static member ref x = attr.ref<AntDesign.ConfigProvider> x
+    static member direction (x: System.String) = "Direction" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member form (x: AntDesign.FormConfig) = "Form" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
+    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
+    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+                    
 
 type templateComponentBase<'FunBlazorGeneric, 'TComponentOptions> =
     inherit antComponentBase<'FunBlazorGeneric>
@@ -3786,17 +3806,285 @@ type antComponentBase =
     end
                     
 
-type IConfigProviderNode = interface end
-type configProvider =
-    class
-        inherit configProvider<IConfigProviderNode>
-    end
-                    
-
 type IAntDomComponentBaseNode = interface end
 type antDomComponentBase =
     class
         inherit antDomComponentBase<IAntDomComponentBaseNode>
+    end
+                    
+            
+namespace AntDesign.Internal
+
+open AntDesign.DslInternals
+
+
+type IOverlayTriggerNode = interface end
+type overlayTrigger =
+    class
+        inherit Internal.overlayTrigger<IOverlayTriggerNode>
+    end
+                    
+            
+namespace AntDesign
+
+open AntDesign.DslInternals
+
+
+type IDropdownNode = interface end
+type dropdown =
+    class
+        inherit dropdown<IDropdownNode>
+    end
+                    
+
+type IDropdownButtonNode = interface end
+type dropdownButton =
+    class
+        inherit dropdownButton<IDropdownButtonNode>
+    end
+                    
+
+type IPopconfirmNode = interface end
+type popconfirm =
+    class
+        inherit popconfirm<IPopconfirmNode>
+    end
+                    
+
+type IPopoverNode = interface end
+type popover =
+    class
+        inherit popover<IPopoverNode>
+    end
+                    
+
+type ITooltipNode = interface end
+type tooltip =
+    class
+        inherit tooltip<ITooltipNode>
+    end
+                    
+            
+namespace AntDesign.Internal
+
+open AntDesign.DslInternals
+
+
+type ISubMenuTriggerNode = interface end
+type subMenuTrigger =
+    class
+        inherit Internal.subMenuTrigger<ISubMenuTriggerNode>
+    end
+                    
+
+type IPickerPanelBaseNode = interface end
+type pickerPanelBase =
+    class
+        inherit Internal.pickerPanelBase<IPickerPanelBaseNode>
+    end
+                    
+            
+namespace AntDesign
+
+open AntDesign.DslInternals
+
+
+type IDatePickerPanelBaseNode<'TValue> = interface end
+type datePickerPanelBase<'TValue> =
+    class
+        inherit datePickerPanelBase<IDatePickerPanelBaseNode<'TValue>, 'TValue>
+    end
+                    
+            
+namespace AntDesign.Internal
+
+open AntDesign.DslInternals
+
+
+type IDatePickerDatetimePanelNode<'TValue> = interface end
+type datePickerDatetimePanel<'TValue> =
+    class
+        inherit Internal.datePickerDatetimePanel<IDatePickerDatetimePanelNode<'TValue>, 'TValue>
+    end
+                    
+
+type IDatePickerTemplateNode<'TValue> = interface end
+type datePickerTemplate<'TValue> =
+    class
+        inherit Internal.datePickerTemplate<IDatePickerTemplateNode<'TValue>, 'TValue>
+    end
+                    
+
+type IDatePickerDatePanelNode<'TValue> = interface end
+type datePickerDatePanel<'TValue> =
+    class
+        inherit Internal.datePickerDatePanel<IDatePickerDatePanelNode<'TValue>, 'TValue>
+    end
+                    
+
+type IDatePickerDecadePanelNode<'TValue> = interface end
+type datePickerDecadePanel<'TValue> =
+    class
+        inherit Internal.datePickerDecadePanel<IDatePickerDecadePanelNode<'TValue>, 'TValue>
+    end
+                    
+
+type IDatePickerFooterNode<'TValue> = interface end
+type datePickerFooter<'TValue> =
+    class
+        inherit Internal.datePickerFooter<IDatePickerFooterNode<'TValue>, 'TValue>
+    end
+                    
+
+type IDatePickerHeaderNode<'TValue> = interface end
+type datePickerHeader<'TValue> =
+    class
+        inherit Internal.datePickerHeader<IDatePickerHeaderNode<'TValue>, 'TValue>
+    end
+                    
+
+type IDatePickerMonthPanelNode<'TValue> = interface end
+type datePickerMonthPanel<'TValue> =
+    class
+        inherit Internal.datePickerMonthPanel<IDatePickerMonthPanelNode<'TValue>, 'TValue>
+    end
+                    
+
+type IDatePickerQuarterPanelNode<'TValue> = interface end
+type datePickerQuarterPanel<'TValue> =
+    class
+        inherit Internal.datePickerQuarterPanel<IDatePickerQuarterPanelNode<'TValue>, 'TValue>
+    end
+                    
+
+type IDatePickerYearPanelNode<'TValue> = interface end
+type datePickerYearPanel<'TValue> =
+    class
+        inherit Internal.datePickerYearPanel<IDatePickerYearPanelNode<'TValue>, 'TValue>
+    end
+                    
+            
+namespace AntDesign
+
+open AntDesign.DslInternals
+
+
+type IColNode = interface end
+type col =
+    class
+        inherit col<IColNode>
+    end
+                    
+
+type IGridColNode = interface end
+type gridCol =
+    class
+        inherit gridCol<IGridColNode>
+    end
+                    
+
+type IIconNode = interface end
+type icon =
+    class
+        inherit icon<IIconNode>
+    end
+                    
+
+type IIconFontNode = interface end
+type iconFont =
+    class
+        inherit iconFont<IIconFontNode>
+    end
+                    
+
+type INotificationBaseNode = interface end
+type notificationBase =
+    class
+        inherit notificationBase<INotificationBaseNode>
+    end
+                    
+
+type INotificationNode = interface end
+type notification =
+    class
+        inherit notification<INotificationNode>
+    end
+                    
+
+type INotificationItemNode = interface end
+type notificationItem =
+    class
+        inherit notificationItem<INotificationItemNode>
+    end
+                    
+
+type IColumnBaseNode = interface end
+type columnBase =
+    class
+        inherit columnBase<IColumnBaseNode>
+    end
+                    
+
+type IActionColumnNode = interface end
+type actionColumn =
+    class
+        inherit actionColumn<IActionColumnNode>
+    end
+                    
+
+type IColumnNode<'TData> = interface end
+type column<'TData> =
+    class
+        inherit column<IColumnNode<'TData>, 'TData>
+    end
+                    
+
+type ISelectionNode = interface end
+type selection =
+    class
+        inherit selection<ISelectionNode>
+    end
+                    
+
+type ISummaryCellNode = interface end
+type summaryCell =
+    class
+        inherit summaryCell<ISummaryCellNode>
+    end
+                    
+
+type ITypographyBaseNode = interface end
+type typographyBase =
+    class
+        inherit typographyBase<ITypographyBaseNode>
+    end
+                    
+
+type ILinkNode = interface end
+type link =
+    class
+        inherit link<ILinkNode>
+    end
+                    
+
+type IParagraphNode = interface end
+type paragraph =
+    class
+        inherit paragraph<IParagraphNode>
+    end
+                    
+
+type ITextNode = interface end
+type text =
+    class
+        inherit text<ITextNode>
+    end
+                    
+
+type ITitleNode = interface end
+type title =
+    class
+        inherit title<ITitleNode>
     end
                     
 
@@ -3975,27 +4263,6 @@ type antInputComponentBase<'TValue> =
     end
                     
 
-type IAutoCompleteNode<'TOption> = interface end
-type autoComplete<'TOption> =
-    class
-        inherit autoComplete<IAutoCompleteNode<'TOption>, 'TOption>
-    end
-                    
-
-type ICascaderNode = interface end
-type cascader =
-    class
-        inherit cascader<ICascaderNode>
-    end
-                    
-
-type ICheckboxGroupNode = interface end
-type checkboxGroup =
-    class
-        inherit checkboxGroup<ICheckboxGroupNode>
-    end
-                    
-
 type IAntInputBoolComponentBaseNode = interface end
 type antInputBoolComponentBase =
     class
@@ -4014,6 +4281,27 @@ type ISwitchNode = interface end
 type switch =
     class
         inherit switch<ISwitchNode>
+    end
+                    
+
+type IAutoCompleteNode<'TOption> = interface end
+type autoComplete<'TOption> =
+    class
+        inherit autoComplete<IAutoCompleteNode<'TOption>, 'TOption>
+    end
+                    
+
+type ICascaderNode = interface end
+type cascader =
+    class
+        inherit cascader<ICascaderNode>
+    end
+                    
+
+type ICheckboxGroupNode = interface end
+type checkboxGroup =
+    class
+        inherit checkboxGroup<ICheckboxGroupNode>
     end
                     
 
@@ -4087,20 +4375,6 @@ type input<'TValue> =
     end
                     
 
-type IAutoCompleteInputNode<'TValue> = interface end
-type autoCompleteInput<'TValue> =
-    class
-        inherit autoCompleteInput<IAutoCompleteInputNode<'TValue>, 'TValue>
-    end
-                    
-
-type IInputPasswordNode = interface end
-type inputPassword =
-    class
-        inherit inputPassword<IInputPasswordNode>
-    end
-                    
-
 type ISearchNode = interface end
 type search =
     class
@@ -4112,6 +4386,20 @@ type IAutoCompleteSearchNode = interface end
 type autoCompleteSearch =
     class
         inherit autoCompleteSearch<IAutoCompleteSearchNode>
+    end
+                    
+
+type IAutoCompleteInputNode<'TValue> = interface end
+type autoCompleteInput<'TValue> =
+    class
+        inherit autoCompleteInput<IAutoCompleteInputNode<'TValue>, 'TValue>
+    end
+                    
+
+type IInputPasswordNode = interface end
+type inputPassword =
+    class
+        inherit inputPassword<IInputPasswordNode>
     end
                     
 
@@ -4241,38 +4529,10 @@ type formItem =
     end
                     
 
-type IColNode = interface end
-type col =
-    class
-        inherit col<IColNode>
-    end
-                    
-
-type IGridColNode = interface end
-type gridCol =
-    class
-        inherit gridCol<IGridColNode>
-    end
-                    
-
 type IRowNode = interface end
 type row =
     class
         inherit row<IRowNode>
-    end
-                    
-
-type IIconNode = interface end
-type icon =
-    class
-        inherit icon<IIconNode>
-    end
-                    
-
-type IIconFontNode = interface end
-type iconFont =
-    class
-        inherit iconFont<IIconFontNode>
     end
                     
 
@@ -4437,27 +4697,6 @@ type modalFooter =
     end
                     
 
-type INotificationBaseNode = interface end
-type notificationBase =
-    class
-        inherit notificationBase<INotificationBaseNode>
-    end
-                    
-
-type INotificationNode = interface end
-type notification =
-    class
-        inherit notification<INotificationNode>
-    end
-                    
-
-type INotificationItemNode = interface end
-type notificationItem =
-    class
-        inherit notificationItem<INotificationItemNode>
-    end
-                    
-
 type IPageHeaderNode = interface end
 type pageHeader =
     class
@@ -4598,41 +4837,6 @@ type steps =
     end
                     
 
-type IColumnBaseNode = interface end
-type columnBase =
-    class
-        inherit columnBase<IColumnBaseNode>
-    end
-                    
-
-type IActionColumnNode = interface end
-type actionColumn =
-    class
-        inherit actionColumn<IActionColumnNode>
-    end
-                    
-
-type IColumnNode<'TData> = interface end
-type column<'TData> =
-    class
-        inherit column<IColumnNode<'TData>, 'TData>
-    end
-                    
-
-type ISelectionNode = interface end
-type selection =
-    class
-        inherit selection<ISelectionNode>
-    end
-                    
-
-type ISummaryCellNode = interface end
-type summaryCell =
-    class
-        inherit summaryCell<ISummaryCellNode>
-    end
-                    
-
 type ITableNode<'TItem> = interface end
 type table<'TItem> =
     class
@@ -4707,41 +4911,6 @@ type ITreeNodeNode<'TItem> = interface end
 type treeNode<'TItem> =
     class
         inherit treeNode<ITreeNodeNode<'TItem>, 'TItem>
-    end
-                    
-
-type ITypographyBaseNode = interface end
-type typographyBase =
-    class
-        inherit typographyBase<ITypographyBaseNode>
-    end
-                    
-
-type ILinkNode = interface end
-type link =
-    class
-        inherit link<ILinkNode>
-    end
-                    
-
-type IParagraphNode = interface end
-type paragraph =
-    class
-        inherit paragraph<IParagraphNode>
-    end
-                    
-
-type ITextNode = interface end
-type text =
-    class
-        inherit text<ITextNode>
-    end
-                    
-
-type ITitleNode = interface end
-type title =
-    class
-        inherit title<ITitleNode>
     end
                     
 
@@ -4881,156 +5050,10 @@ type overlay =
     end
                     
 
-type IOverlayTriggerNode = interface end
-type overlayTrigger =
-    class
-        inherit Internal.overlayTrigger<IOverlayTriggerNode>
-    end
-                    
-            
-namespace AntDesign
-
-open AntDesign.DslInternals
-
-
-type IDropdownNode = interface end
-type dropdown =
-    class
-        inherit dropdown<IDropdownNode>
-    end
-                    
-
-type IDropdownButtonNode = interface end
-type dropdownButton =
-    class
-        inherit dropdownButton<IDropdownButtonNode>
-    end
-                    
-
-type IPopconfirmNode = interface end
-type popconfirm =
-    class
-        inherit popconfirm<IPopconfirmNode>
-    end
-                    
-
-type IPopoverNode = interface end
-type popover =
-    class
-        inherit popover<IPopoverNode>
-    end
-                    
-
-type ITooltipNode = interface end
-type tooltip =
-    class
-        inherit tooltip<ITooltipNode>
-    end
-                    
-            
-namespace AntDesign.Internal
-
-open AntDesign.DslInternals
-
-
-type ISubMenuTriggerNode = interface end
-type subMenuTrigger =
-    class
-        inherit Internal.subMenuTrigger<ISubMenuTriggerNode>
-    end
-                    
-
 type IDatePickerPanelChooserNode<'TValue> = interface end
 type datePickerPanelChooser<'TValue> =
     class
         inherit Internal.datePickerPanelChooser<IDatePickerPanelChooserNode<'TValue>, 'TValue>
-    end
-                    
-
-type IPickerPanelBaseNode = interface end
-type pickerPanelBase =
-    class
-        inherit Internal.pickerPanelBase<IPickerPanelBaseNode>
-    end
-                    
-            
-namespace AntDesign
-
-open AntDesign.DslInternals
-
-
-type IDatePickerPanelBaseNode<'TValue> = interface end
-type datePickerPanelBase<'TValue> =
-    class
-        inherit datePickerPanelBase<IDatePickerPanelBaseNode<'TValue>, 'TValue>
-    end
-                    
-            
-namespace AntDesign.Internal
-
-open AntDesign.DslInternals
-
-
-type IDatePickerDatetimePanelNode<'TValue> = interface end
-type datePickerDatetimePanel<'TValue> =
-    class
-        inherit Internal.datePickerDatetimePanel<IDatePickerDatetimePanelNode<'TValue>, 'TValue>
-    end
-                    
-
-type IDatePickerTemplateNode<'TValue> = interface end
-type datePickerTemplate<'TValue> =
-    class
-        inherit Internal.datePickerTemplate<IDatePickerTemplateNode<'TValue>, 'TValue>
-    end
-                    
-
-type IDatePickerDatePanelNode<'TValue> = interface end
-type datePickerDatePanel<'TValue> =
-    class
-        inherit Internal.datePickerDatePanel<IDatePickerDatePanelNode<'TValue>, 'TValue>
-    end
-                    
-
-type IDatePickerDecadePanelNode<'TValue> = interface end
-type datePickerDecadePanel<'TValue> =
-    class
-        inherit Internal.datePickerDecadePanel<IDatePickerDecadePanelNode<'TValue>, 'TValue>
-    end
-                    
-
-type IDatePickerFooterNode<'TValue> = interface end
-type datePickerFooter<'TValue> =
-    class
-        inherit Internal.datePickerFooter<IDatePickerFooterNode<'TValue>, 'TValue>
-    end
-                    
-
-type IDatePickerHeaderNode<'TValue> = interface end
-type datePickerHeader<'TValue> =
-    class
-        inherit Internal.datePickerHeader<IDatePickerHeaderNode<'TValue>, 'TValue>
-    end
-                    
-
-type IDatePickerMonthPanelNode<'TValue> = interface end
-type datePickerMonthPanel<'TValue> =
-    class
-        inherit Internal.datePickerMonthPanel<IDatePickerMonthPanelNode<'TValue>, 'TValue>
-    end
-                    
-
-type IDatePickerQuarterPanelNode<'TValue> = interface end
-type datePickerQuarterPanel<'TValue> =
-    class
-        inherit Internal.datePickerQuarterPanel<IDatePickerQuarterPanelNode<'TValue>, 'TValue>
-    end
-                    
-
-type IDatePickerYearPanelNode<'TValue> = interface end
-type datePickerYearPanel<'TValue> =
-    class
-        inherit Internal.datePickerYearPanel<IDatePickerYearPanelNode<'TValue>, 'TValue>
     end
                     
 
@@ -5066,6 +5089,13 @@ namespace AntDesign
 
 open AntDesign.DslInternals
 
+
+type IConfigProviderNode = interface end
+type configProvider =
+    class
+        inherit configProvider<IConfigProviderNode>
+    end
+                    
 
 type ITemplateComponentBaseNode<'TComponentOptions> = interface end
 type templateComponentBase<'TComponentOptions> =
