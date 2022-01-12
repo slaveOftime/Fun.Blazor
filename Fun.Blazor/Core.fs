@@ -2,6 +2,7 @@
 
 open System
 open FSharp.Data.Adaptive
+open Microsoft.AspNetCore.Components
 open Bolero
 open Bolero.Html
 open Fun.Result
@@ -11,6 +12,15 @@ type FunBlazorRef<'T> = Ref<'T>
 
 
 type FunBlazorComponent = Bolero.Component
+
+
+type SingleNodeComponent() as this =
+    inherit FunBlazorComponent()
+
+    override _.Render() = this.Node
+
+    [<Parameter>]
+    member val Node = Unchecked.defaultof<Bolero.Node> with get, set
 
 
 /// Base class for Computation Expression style DSL
@@ -222,7 +232,8 @@ type IShareStore =
 
     /// Create an IStore and share between components and dispose it after session disposed
     /// Default state will be NotStartedYet
-    abstract CreateDeferred : string * (unit -> IObservable<DeferredState<'T, 'Error>>) -> IStore<DeferredState<'T, 'Error>>
+    abstract CreateDeferred :
+        string * (unit -> IObservable<DeferredState<'T, 'Error>>) -> IStore<DeferredState<'T, 'Error>>
 
     /// Create an adaptive value and share between components and dispose it after session disposed
     /// This is recommend way because you can use it with adaptiview easier
