@@ -21,6 +21,10 @@ It is based on [bolero](https://github.com/fsbolero/Bolero) and  [Feliz.Engine](
 
 https://github.com/slaveOftime/Fun.Blazor.Samples
 
+Template is also available (thanks: @AngelMunoz):
+```shell
+dotnet new --install Fun.Blazor.Templates::1.0.0-beta-001
+```
 
 ## Some tips
 
