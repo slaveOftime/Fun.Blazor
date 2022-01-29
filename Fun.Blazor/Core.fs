@@ -26,9 +26,13 @@ module Operators =
 open Operators
 
 
-type FragmentsBuilder() =
+type FragmentBuilder() =
+
+    member inline _.Yield(_: unit) = FunRenderFragment(fun _ i -> i)
 
     member inline _.Yield([<InlineIfLambda>] x: FunRenderFragment) = x
+
+    member inline _.Delay([<InlineIfLambda>] fn: unit -> FunRenderFragment) = fn ()
 
     member inline _.Combine
         (
@@ -38,16 +42,15 @@ type FragmentsBuilder() =
         =
         render1 &&& render2
 
-    member inline _.Delay([<InlineIfLambda>] fn: unit -> FunRenderFragment) = fn ()
+    member inline _.For
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] fn: unit -> FunRenderFragment
+        )
+        =
+        render &&& fn ()
 
     member inline _.Zero _ = FunRenderFragment(fun _ i -> i)
-
-
-type FragmentBuilder() =
-
-    member inline _.Yield(_: unit) = FunRenderFragment(fun _ i -> i)
-
-    member inline _.Delay([<InlineIfLambda>] fn: unit -> FunRenderFragment) = fn ()
 
 
     [<CustomOperation("attrs")>]
@@ -105,6 +108,20 @@ type EltBuilder(name) =
 
     member _.Name: string = name
 
+    member inline _.Yield(x: EltBuilder) =
+        FunRenderFragment(fun builder index ->
+            builder.OpenElement(index, x.Name)
+            builder.CloseElement()
+            index + 1
+        )
+
+    member inline _.Yield(_: ComponentBuilder<'T>) =
+        FunRenderFragment(fun builder index ->
+            builder.OpenComponent<'T>(index)
+            builder.CloseComponent()
+            index + 1
+        )
+
     member inline this.Run([<InlineIfLambda>] render: FunRenderFragment) =
         FunRenderFragment(fun builder index ->
             builder.OpenElement(index, this.Name)
@@ -114,8 +131,22 @@ type EltBuilder(name) =
         )
 
 
-type ComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent>() =
+and ComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FragmentBuilder()
+
+    member inline _.Yield(x: EltBuilder) =
+        FunRenderFragment(fun builder index ->
+            builder.OpenElement(index, x.Name)
+            builder.CloseElement()
+            index + 1
+        )
+
+    member inline _.Yield(_: ComponentBuilder<'T>) =
+        FunRenderFragment(fun builder index ->
+            builder.OpenComponent<'T>(index)
+            builder.CloseComponent()
+            index + 1
+        )
 
     member inline _.Run([<InlineIfLambda>] render: FunRenderFragment) =
         FunRenderFragment(fun builder index ->

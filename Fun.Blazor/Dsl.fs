@@ -9,7 +9,7 @@ type html() =
 
     static member inline none = emptyRender
 
-    static member inline fragment = FragmentsBuilder()
+    static member inline fragment = FragmentBuilder()
 
     static member inline elt name = EltBuilder name
 
@@ -34,9 +34,6 @@ type html() =
             index + 1
         )
 
-    static member inline html = html.elt "html"
-
-    static member inline doctype decl = html.raw $"<!DOCTYPE {decl}>\n"
 
     //static member doctypeHtml(nodes, ?lang) =
     //    html.fragment {
@@ -84,16 +81,11 @@ type html() =
 
     static member meta(name: string, content: string) =
         html.elt "meta" {
-            attrs (
-                html.fragment {
-                    "name" => name
-                    "content" => name
-                }
-            )
+            "name" => name
+            "content" => content
         }
 
-    static member script(x: string) =
-        html.elt "script" { attrs (html.fragment { "src" => x }) }
+    static member script(x: string) = html.elt "script" { "src" => x }
 
     static member scriptRaw(x: string) =
         html.raw

@@ -297,8 +297,8 @@ type EltWithDomAttrs(name) =
     member inline _.tabindex([<InlineIfLambda>] render: FunRenderFragment, v: obj) = render &&& ("tabindex" => v)
     [<CustomOperation("target")>]
     member inline _.target([<InlineIfLambda>] render: FunRenderFragment, v: obj) = render &&& ("target" => v)
-    [<CustomOperation("title")>]
-    member inline _.title([<InlineIfLambda>] render: FunRenderFragment, v: obj) = render &&& ("title" => v)
+    [<CustomOperation("title'")>]
+    member inline _.title'([<InlineIfLambda>] render: FunRenderFragment, v: obj) = render &&& ("title" => v)
     [<CustomOperation("translate")>]
     member inline _.translate([<InlineIfLambda>] render: FunRenderFragment, v: obj) = render &&& ("translate" => v)
     [<CustomOperation("type'")>]
@@ -1201,1567 +1201,1257 @@ type EltWithChild(name) =
 [<AutoOpen>]
 module Elts =
 
-    type ABuilder() =
-        inherit EltWithChild "a"
+    type abbr' =
+        static member inline create(x: string) = EltWithChild "abbr" { html.text x }
+        static member inline create(x: int) = EltWithChild "abbr" { html.text x }
+        static member inline create(x: float) = EltWithChild "abbr" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "abbr" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "abbr" { childContent x }
 
-        static member inline create(x: string) = ABuilder() { childContent (html.text x) }
-        static member inline create(x: int) = ABuilder() { childContent (html.text x) }
-        static member inline create(x: float) = ABuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = ABuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = ABuilder() { childContent x }
+    let abbr = EltWithChild "abbr"
 
-    let a = ABuilder
 
+    type acronym' =
+        static member inline create(x: string) = EltWithChild "acronym" { html.text x }
+        static member inline create(x: int) = EltWithChild "acronym" { html.text x }
+        static member inline create(x: float) = EltWithChild "acronym" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "acronym" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "acronym" { childContent x }
 
-    type AbbrBuilder() =
-        inherit EltWithChild "abbr"
+    let acronym = EltWithChild "acronym"
 
-        static member inline create(x: string) = AbbrBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = AbbrBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = AbbrBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = AbbrBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = AbbrBuilder() { childContent x }
 
-    let abbr = AbbrBuilder()
+    type address' =
+        static member inline create(x: string) = EltWithChild "address" { html.text x }
+        static member inline create(x: int) = EltWithChild "address" { html.text x }
+        static member inline create(x: float) = EltWithChild "address" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "address" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "address" { childContent x }
 
+    let address = EltWithChild "address"
 
-    type AcronymBuilder() =
-        inherit EltWithChild "acronym"
 
-        static member inline create(x: string) = AcronymBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = AcronymBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = AcronymBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = AcronymBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = AcronymBuilder() { childContent x }
+    type applet' =
+        static member inline create(x: string) = EltWithChild "applet" { html.text x }
+        static member inline create(x: int) = EltWithChild "applet" { html.text x }
+        static member inline create(x: float) = EltWithChild "applet" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "applet" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "applet" { childContent x }
 
-    let acronym = AcronymBuilder()
+    let applet = EltWithChild "applet"
 
 
-    type AddressBuilder() =
-        inherit EltWithChild "address"
+    type area' =
+        static member inline create(x: string) = EltWithChild "area" { html.text x }
+        static member inline create(x: int) = EltWithChild "area" { html.text x }
+        static member inline create(x: float) = EltWithChild "area" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "area" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "area" { childContent x }
 
-        static member inline create(x: string) = AddressBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = AddressBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = AddressBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = AddressBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = AddressBuilder() { childContent x }
+    let area = EltWithChild "area"
 
-    let address = AddressBuilder()
 
+    type article' =
+        static member inline create(x: string) = EltWithChild "article" { html.text x }
+        static member inline create(x: int) = EltWithChild "article" { html.text x }
+        static member inline create(x: float) = EltWithChild "article" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "article" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "article" { childContent x }
 
-    type AppletBuilder() =
-        inherit EltWithChild "applet"
+    let article = EltWithChild "article"
 
-        static member inline create(x: string) = AppletBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = AppletBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = AppletBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = AppletBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = AppletBuilder() { childContent x }
 
-    let applet = AppletBuilder()
+    type aside' =
+        static member inline create(x: string) = EltWithChild "aside" { html.text x }
+        static member inline create(x: int) = EltWithChild "aside" { html.text x }
+        static member inline create(x: float) = EltWithChild "aside" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "aside" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "aside" { childContent x }
 
+    let aside = EltWithChild "aside"
 
-    type AreaBuilder() =
-        inherit EltWithChild "area"
 
-        static member inline create(x: string) = AreaBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = AreaBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = AreaBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = AreaBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = AreaBuilder() { childContent x }
+    type audio' =
+        static member inline create(x: string) = EltWithChild "audio" { html.text x }
+        static member inline create(x: int) = EltWithChild "audio" { html.text x }
+        static member inline create(x: float) = EltWithChild "audio" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "audio" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "audio" { childContent x }
 
-    let area = AreaBuilder()
+    let audio = EltWithChild "audio"
 
 
-    type ArticleBuilder() =
-        inherit EltWithChild "article"
+    type b' =
+        static member inline create(x: string) = EltWithChild "b" { html.text x }
+        static member inline create(x: int) = EltWithChild "b" { html.text x }
+        static member inline create(x: float) = EltWithChild "b" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "b" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "b" { childContent x }
 
-        static member inline create(x: string) = ArticleBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = ArticleBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = ArticleBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = ArticleBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = ArticleBuilder() { childContent x }
+    let b = EltWithChild "b"
 
-    let article = ArticleBuilder()
 
+    type base'' =
+        static member inline create(x: string) = EltWithChild "base'" { html.text x }
+        static member inline create(x: int) = EltWithChild "base'" { html.text x }
+        static member inline create(x: float) = EltWithChild "base'" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "base'" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "base'" { childContent x }
 
-    type AsideBuilder() =
-        inherit EltWithChild "aside"
+    let base' = EltWithChild "base'"
 
-        static member inline create(x: string) = AsideBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = AsideBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = AsideBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = AsideBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = AsideBuilder() { childContent x }
 
-    let aside = AsideBuilder()
+    type basefont' =
+        static member inline create(x: string) = EltWithChild "basefont" { html.text x }
+        static member inline create(x: int) = EltWithChild "basefont" { html.text x }
+        static member inline create(x: float) = EltWithChild "basefont" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "basefont" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "basefont" { childContent x }
 
+    let basefont = EltWithChild "basefont"
 
-    type AudioBuilder() =
-        inherit EltWithChild "audio"
 
-        static member inline create(x: string) = AudioBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = AudioBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = AudioBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = AudioBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = AudioBuilder() { childContent x }
+    type bdi' =
+        static member inline create(x: string) = EltWithChild "bdi" { html.text x }
+        static member inline create(x: int) = EltWithChild "bdi" { html.text x }
+        static member inline create(x: float) = EltWithChild "bdi" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "bdi" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "bdi" { childContent x }
 
-    let audio = AudioBuilder()
+    let bdi = EltWithChild "bdi"
 
 
-    type BBuilder() =
-        inherit EltWithChild "b"
+    type bdo' =
+        static member inline create(x: string) = EltWithChild "bdo" { html.text x }
+        static member inline create(x: int) = EltWithChild "bdo" { html.text x }
+        static member inline create(x: float) = EltWithChild "bdo" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "bdo" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "bdo" { childContent x }
 
-        static member inline create(x: string) = BBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = BBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = BBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = BBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = BBuilder() { childContent x }
+    let bdo = EltWithChild "bdo"
 
-    let b = BBuilder()
 
+    type big' =
+        static member inline create(x: string) = EltWithChild "big" { html.text x }
+        static member inline create(x: int) = EltWithChild "big" { html.text x }
+        static member inline create(x: float) = EltWithChild "big" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "big" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "big" { childContent x }
 
-    type BaseBuilder() =
-        inherit EltWithChild "base'"
+    let big = EltWithChild "big"
 
-        static member inline create(x: string) = BaseBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = BaseBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = BaseBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = BaseBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = BaseBuilder() { childContent x }
 
-    let base' = BaseBuilder()
+    type blockquote' =
+        static member inline create(x: string) = EltWithChild "blockquote" { html.text x }
+        static member inline create(x: int) = EltWithChild "blockquote" { html.text x }
+        static member inline create(x: float) = EltWithChild "blockquote" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "blockquote" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "blockquote" { childContent x }
 
+    let blockquote = EltWithChild "blockquote"
 
-    type BasefontBuilder() =
-        inherit EltWithChild "basefont"
 
-        static member inline create(x: string) = BasefontBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = BasefontBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = BasefontBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = BasefontBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = BasefontBuilder() { childContent x }
+    type br' =
+        static member inline create(x: string) = EltWithChild "br" { html.text x }
+        static member inline create(x: int) = EltWithChild "br" { html.text x }
+        static member inline create(x: float) = EltWithChild "br" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "br" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "br" { childContent x }
 
-    let basefont = BasefontBuilder()
+    let br = EltWithChild "br"
 
 
-    type BdiBuilder() =
-        inherit EltWithChild "bdi"
+    type button' =
+        static member inline create(x: string) = EltWithChild "button" { html.text x }
+        static member inline create(x: int) = EltWithChild "button" { html.text x }
+        static member inline create(x: float) = EltWithChild "button" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "button" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "button" { childContent x }
 
-        static member inline create(x: string) = BdiBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = BdiBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = BdiBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = BdiBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = BdiBuilder() { childContent x }
+    let button = EltWithChild "button"
 
-    let bdi = BdiBuilder()
 
+    type canvas' =
+        static member inline create(x: string) = EltWithChild "canvas" { html.text x }
+        static member inline create(x: int) = EltWithChild "canvas" { html.text x }
+        static member inline create(x: float) = EltWithChild "canvas" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "canvas" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "canvas" { childContent x }
 
-    type BdoBuilder() =
-        inherit EltWithChild "bdo"
+    let canvas = EltWithChild "canvas"
 
-        static member inline create(x: string) = BdoBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = BdoBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = BdoBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = BdoBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = BdoBuilder() { childContent x }
 
-    let bdo = BdoBuilder()
+    type caption' =
+        static member inline create(x: string) = EltWithChild "caption" { html.text x }
+        static member inline create(x: int) = EltWithChild "caption" { html.text x }
+        static member inline create(x: float) = EltWithChild "caption" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "caption" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "caption" { childContent x }
 
+    let caption = EltWithChild "caption"
 
-    type BigBuilder() =
-        inherit EltWithChild "big"
 
-        static member inline create(x: string) = BigBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = BigBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = BigBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = BigBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = BigBuilder() { childContent x }
+    type center' =
+        static member inline create(x: string) = EltWithChild "center" { html.text x }
+        static member inline create(x: int) = EltWithChild "center" { html.text x }
+        static member inline create(x: float) = EltWithChild "center" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "center" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "center" { childContent x }
 
-    let big = BigBuilder()
+    let center = EltWithChild "center"
 
 
-    type BlockquoteBuilder() =
-        inherit EltWithChild "blockquote"
+    type cite' =
+        static member inline create(x: string) = EltWithChild "cite" { html.text x }
+        static member inline create(x: int) = EltWithChild "cite" { html.text x }
+        static member inline create(x: float) = EltWithChild "cite" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "cite" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "cite" { childContent x }
 
-        static member inline create(x: string) =
-            BlockquoteBuilder() { childContent (html.text x) }
-        static member inline create(x: int) =
-            BlockquoteBuilder() { childContent (html.text x) }
-        static member inline create(x: float) =
-            BlockquoteBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = BlockquoteBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = BlockquoteBuilder() { childContent x }
+    let cite = EltWithChild "cite"
 
-    let blockquote = BlockquoteBuilder()
 
+    type code' =
+        static member inline create(x: string) = EltWithChild "code" { html.text x }
+        static member inline create(x: int) = EltWithChild "code" { html.text x }
+        static member inline create(x: float) = EltWithChild "code" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "code" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "code" { childContent x }
 
-    type BodyBuilder() =
-        inherit EltWithChild "body"
+    let code = EltWithChild "code"
 
-        static member inline create(x: string) = BodyBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = BodyBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = BodyBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = BodyBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = BodyBuilder() { childContent x }
 
-    let body = BodyBuilder()
+    type col' =
+        static member inline create(x: string) = EltWithChild "col" { html.text x }
+        static member inline create(x: int) = EltWithChild "col" { html.text x }
+        static member inline create(x: float) = EltWithChild "col" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "col" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "col" { childContent x }
 
+    let col = EltWithChild "col"
 
-    type BrBuilder() =
-        inherit EltWithChild "br"
 
-        static member inline create(x: string) = BrBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = BrBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = BrBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = BrBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = BrBuilder() { childContent x }
+    type colgroup' =
+        static member inline create(x: string) = EltWithChild "colgroup" { html.text x }
+        static member inline create(x: int) = EltWithChild "colgroup" { html.text x }
+        static member inline create(x: float) = EltWithChild "colgroup" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "colgroup" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "colgroup" { childContent x }
 
-    let br = BrBuilder()
+    let colgroup = EltWithChild "colgroup"
 
 
-    type ButtonBuilder() =
-        inherit EltWithChild "button"
+    type content' =
+        static member inline create(x: string) = EltWithChild "content" { html.text x }
+        static member inline create(x: int) = EltWithChild "content" { html.text x }
+        static member inline create(x: float) = EltWithChild "content" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "content" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "content" { childContent x }
 
-        static member inline create(x: string) = ButtonBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = ButtonBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = ButtonBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = ButtonBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = ButtonBuilder() { childContent x }
+    let content = EltWithChild "content"
 
-    let button = ButtonBuilder()
 
+    type data' =
+        static member inline create(x: string) = EltWithChild "data" { html.text x }
+        static member inline create(x: int) = EltWithChild "data" { html.text x }
+        static member inline create(x: float) = EltWithChild "data" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "data" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "data" { childContent x }
 
-    type CanvasBuilder() =
-        inherit EltWithChild "canvas"
+    let data = EltWithChild "data"
 
-        static member inline create(x: string) = CanvasBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = CanvasBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = CanvasBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = CanvasBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = CanvasBuilder() { childContent x }
 
-    let canvas = CanvasBuilder()
+    type datalist' =
+        static member inline create(x: string) = EltWithChild "datalist" { html.text x }
+        static member inline create(x: int) = EltWithChild "datalist" { html.text x }
+        static member inline create(x: float) = EltWithChild "datalist" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "datalist" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "datalist" { childContent x }
 
+    let datalist = EltWithChild "datalist"
 
-    type CaptionBuilder() =
-        inherit EltWithChild "caption"
 
-        static member inline create(x: string) = CaptionBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = CaptionBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = CaptionBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = CaptionBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = CaptionBuilder() { childContent x }
+    type dd' =
+        static member inline create(x: string) = EltWithChild "dd" { html.text x }
+        static member inline create(x: int) = EltWithChild "dd" { html.text x }
+        static member inline create(x: float) = EltWithChild "dd" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "dd" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "dd" { childContent x }
 
-    let caption = CaptionBuilder()
+    let dd = EltWithChild "dd"
 
 
-    type CenterBuilder() =
-        inherit EltWithChild "center"
+    type del' =
+        static member inline create(x: string) = EltWithChild "del" { html.text x }
+        static member inline create(x: int) = EltWithChild "del" { html.text x }
+        static member inline create(x: float) = EltWithChild "del" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "del" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "del" { childContent x }
 
-        static member inline create(x: string) = CenterBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = CenterBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = CenterBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = CenterBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = CenterBuilder() { childContent x }
+    let del = EltWithChild "del"
 
-    let center = CenterBuilder()
 
+    type details' =
+        static member inline create(x: string) = EltWithChild "details" { html.text x }
+        static member inline create(x: int) = EltWithChild "details" { html.text x }
+        static member inline create(x: float) = EltWithChild "details" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "details" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "details" { childContent x }
 
-    type CiteBuilder() =
-        inherit EltWithChild "cite"
+    let details = EltWithChild "details"
 
-        static member inline create(x: string) = CiteBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = CiteBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = CiteBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = CiteBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = CiteBuilder() { childContent x }
 
-    let cite = CiteBuilder()
+    type dfn' =
+        static member inline create(x: string) = EltWithChild "dfn" { html.text x }
+        static member inline create(x: int) = EltWithChild "dfn" { html.text x }
+        static member inline create(x: float) = EltWithChild "dfn" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "dfn" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "dfn" { childContent x }
 
+    let dfn = EltWithChild "dfn"
 
-    type CodeBuilder() =
-        inherit EltWithChild "code"
 
-        static member inline create(x: string) = CodeBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = CodeBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = CodeBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = CodeBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = CodeBuilder() { childContent x }
+    type dialog' =
+        static member inline create(x: string) = EltWithChild "dialog" { html.text x }
+        static member inline create(x: int) = EltWithChild "dialog" { html.text x }
+        static member inline create(x: float) = EltWithChild "dialog" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "dialog" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "dialog" { childContent x }
 
-    let code = CodeBuilder()
+    let dialog = EltWithChild "dialog"
 
 
-    type ColBuilder() =
-        inherit EltWithChild "col"
+    type dir' =
+        static member inline create(x: string) = EltWithChild "dir" { html.text x }
+        static member inline create(x: int) = EltWithChild "dir" { html.text x }
+        static member inline create(x: float) = EltWithChild "dir" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "dir" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "dir" { childContent x }
 
-        static member inline create(x: string) = ColBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = ColBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = ColBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = ColBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = ColBuilder() { childContent x }
+    let dir = EltWithChild "dir"
 
-    let col = ColBuilder()
 
+    type div' =
+        static member inline create(x: string) = EltWithChild "div" { html.text x }
+        static member inline create(x: int) = EltWithChild "div" { html.text x }
+        static member inline create(x: float) = EltWithChild "div" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "div" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "div" { childContent x }
 
-    type ColgroupBuilder() =
-        inherit EltWithChild "colgroup"
+    let div = EltWithChild "div"
 
-        static member inline create(x: string) = ColgroupBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = ColgroupBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = ColgroupBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = ColgroupBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = ColgroupBuilder() { childContent x }
 
-    let colgroup = ColgroupBuilder()
+    type dl' =
+        static member inline create(x: string) = EltWithChild "dl" { html.text x }
+        static member inline create(x: int) = EltWithChild "dl" { html.text x }
+        static member inline create(x: float) = EltWithChild "dl" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "dl" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "dl" { childContent x }
 
+    let dl = EltWithChild "dl"
 
-    type ContentBuilder() =
-        inherit EltWithChild "content"
 
-        static member inline create(x: string) = ContentBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = ContentBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = ContentBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = ContentBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = ContentBuilder() { childContent x }
+    type dt' =
+        static member inline create(x: string) = EltWithChild "dt" { html.text x }
+        static member inline create(x: int) = EltWithChild "dt" { html.text x }
+        static member inline create(x: float) = EltWithChild "dt" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "dt" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "dt" { childContent x }
 
-    let content = ContentBuilder()
+    let dt = EltWithChild "dt"
 
 
-    type DataBuilder() =
-        inherit EltWithChild "data"
+    type element' =
+        static member inline create(x: string) = EltWithChild "element" { html.text x }
+        static member inline create(x: int) = EltWithChild "element" { html.text x }
+        static member inline create(x: float) = EltWithChild "element" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "element" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "element" { childContent x }
 
-        static member inline create(x: string) = DataBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = DataBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = DataBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = DataBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = DataBuilder() { childContent x }
+    let element = EltWithChild "element"
 
-    let data = DataBuilder()
 
+    type em' =
+        static member inline create(x: string) = EltWithChild "em" { html.text x }
+        static member inline create(x: int) = EltWithChild "em" { html.text x }
+        static member inline create(x: float) = EltWithChild "em" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "em" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "em" { childContent x }
 
-    type DatalistBuilder() =
-        inherit EltWithChild "datalist"
+    let em = EltWithChild "em"
 
-        static member inline create(x: string) = DatalistBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = DatalistBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = DatalistBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = DatalistBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = DatalistBuilder() { childContent x }
 
-    let datalist = DatalistBuilder()
+    type embed' =
+        static member inline create(x: string) = EltWithChild "embed" { html.text x }
+        static member inline create(x: int) = EltWithChild "embed" { html.text x }
+        static member inline create(x: float) = EltWithChild "embed" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "embed" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "embed" { childContent x }
 
+    let embed = EltWithChild "embed"
 
-    type DdBuilder() =
-        inherit EltWithChild "dd"
 
-        static member inline create(x: string) = DdBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = DdBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = DdBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = DdBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = DdBuilder() { childContent x }
+    type fieldset' =
+        static member inline create(x: string) = EltWithChild "fieldset" { html.text x }
+        static member inline create(x: int) = EltWithChild "fieldset" { html.text x }
+        static member inline create(x: float) = EltWithChild "fieldset" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "fieldset" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "fieldset" { childContent x }
 
-    let dd = DdBuilder()
+    let fieldset = EltWithChild "fieldset"
 
 
-    type DelBuilder() =
-        inherit EltWithChild "del"
+    type figcaption' =
+        static member inline create(x: string) = EltWithChild "figcaption" { html.text x }
+        static member inline create(x: int) = EltWithChild "figcaption" { html.text x }
+        static member inline create(x: float) = EltWithChild "figcaption" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "figcaption" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "figcaption" { childContent x }
 
-        static member inline create(x: string) = DelBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = DelBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = DelBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = DelBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = DelBuilder() { childContent x }
+    let figcaption = EltWithChild "figcaption"
 
-    let del = DelBuilder()
 
+    type figure' =
+        static member inline create(x: string) = EltWithChild "figure" { html.text x }
+        static member inline create(x: int) = EltWithChild "figure" { html.text x }
+        static member inline create(x: float) = EltWithChild "figure" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "figure" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "figure" { childContent x }
 
-    type DetailsBuilder() =
-        inherit EltWithChild "details"
+    let figure = EltWithChild "figure"
 
-        static member inline create(x: string) = DetailsBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = DetailsBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = DetailsBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = DetailsBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = DetailsBuilder() { childContent x }
 
-    let details = DetailsBuilder()
+    type font' =
+        static member inline create(x: string) = EltWithChild "font" { html.text x }
+        static member inline create(x: int) = EltWithChild "font" { html.text x }
+        static member inline create(x: float) = EltWithChild "font" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "font" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "font" { childContent x }
 
+    let font = EltWithChild "font"
 
-    type DfnBuilder() =
-        inherit EltWithChild "dfn"
 
-        static member inline create(x: string) = DfnBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = DfnBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = DfnBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = DfnBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = DfnBuilder() { childContent x }
+    type footer' =
+        static member inline create(x: string) = EltWithChild "footer" { html.text x }
+        static member inline create(x: int) = EltWithChild "footer" { html.text x }
+        static member inline create(x: float) = EltWithChild "footer" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "footer" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "footer" { childContent x }
 
-    let dfn = DfnBuilder()
+    let footer = EltWithChild "footer"
 
 
-    type DialogBuilder() =
-        inherit EltWithChild "dialog"
+    type form' =
+        static member inline create(x: string) = EltWithChild "form" { html.text x }
+        static member inline create(x: int) = EltWithChild "form" { html.text x }
+        static member inline create(x: float) = EltWithChild "form" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "form" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "form" { childContent x }
 
-        static member inline create(x: string) = DialogBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = DialogBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = DialogBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = DialogBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = DialogBuilder() { childContent x }
+    let form = EltWithChild "form"
 
-    let dialog = DialogBuilder()
 
+    type frame' =
+        static member inline create(x: string) = EltWithChild "frame" { html.text x }
+        static member inline create(x: int) = EltWithChild "frame" { html.text x }
+        static member inline create(x: float) = EltWithChild "frame" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "frame" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "frame" { childContent x }
 
-    type DirBuilder() =
-        inherit EltWithChild "dir"
+    let frame = EltWithChild "frame"
 
-        static member inline create(x: string) = DirBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = DirBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = DirBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = DirBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = DirBuilder() { childContent x }
 
-    let dir = DirBuilder()
+    type frameset' =
+        static member inline create(x: string) = EltWithChild "frameset" { html.text x }
+        static member inline create(x: int) = EltWithChild "frameset" { html.text x }
+        static member inline create(x: float) = EltWithChild "frameset" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "frameset" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "frameset" { childContent x }
 
+    let frameset = EltWithChild "frameset"
 
-    type DivBuilder() =
-        inherit EltWithChild "div"
 
-        static member inline create(x: string) = DivBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = DivBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = DivBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = DivBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = DivBuilder() { childContent x }
+    type h1' =
+        static member inline create(x: string) = EltWithChild "h1" { html.text x }
+        static member inline create(x: int) = EltWithChild "h1" { html.text x }
+        static member inline create(x: float) = EltWithChild "h1" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "h1" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "h1" { childContent x }
 
-    let div = DivBuilder()
+    let h1 = EltWithChild "h1"
 
 
-    type DlBuilder() =
-        inherit EltWithChild "dl"
+    type h2' =
+        static member inline create(x: string) = EltWithChild "h2" { html.text x }
+        static member inline create(x: int) = EltWithChild "h2" { html.text x }
+        static member inline create(x: float) = EltWithChild "h2" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "h2" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "h2" { childContent x }
 
-        static member inline create(x: string) = DlBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = DlBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = DlBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = DlBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = DlBuilder() { childContent x }
+    let h2 = EltWithChild "h2"
 
-    let dl = DlBuilder()
 
+    type h3' =
+        static member inline create(x: string) = EltWithChild "h3" { html.text x }
+        static member inline create(x: int) = EltWithChild "h3" { html.text x }
+        static member inline create(x: float) = EltWithChild "h3" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "h3" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "h3" { childContent x }
 
-    type DtBuilder() =
-        inherit EltWithChild "dt"
+    let h3 = EltWithChild "h3"
 
-        static member inline create(x: string) = DtBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = DtBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = DtBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = DtBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = DtBuilder() { childContent x }
 
-    let dt = DtBuilder()
+    type h4' =
+        static member inline create(x: string) = EltWithChild "h4" { html.text x }
+        static member inline create(x: int) = EltWithChild "h4" { html.text x }
+        static member inline create(x: float) = EltWithChild "h4" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "h4" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "h4" { childContent x }
 
+    let h4 = EltWithChild "h4"
 
-    type ElementBuilder() =
-        inherit EltWithChild "element"
 
-        static member inline create(x: string) = ElementBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = ElementBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = ElementBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = ElementBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = ElementBuilder() { childContent x }
+    type h5' =
+        static member inline create(x: string) = EltWithChild "h5" { html.text x }
+        static member inline create(x: int) = EltWithChild "h5" { html.text x }
+        static member inline create(x: float) = EltWithChild "h5" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "h5" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "h5" { childContent x }
 
-    let element = ElementBuilder()
+    let h5 = EltWithChild "h5"
 
 
-    type EmBuilder() =
-        inherit EltWithChild "em"
+    type h6' =
+        static member inline create(x: string) = EltWithChild "h6" { html.text x }
+        static member inline create(x: int) = EltWithChild "h6" { html.text x }
+        static member inline create(x: float) = EltWithChild "h6" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "h6" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "h6" { childContent x }
 
-        static member inline create(x: string) = EmBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = EmBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = EmBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = EmBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = EmBuilder() { childContent x }
+    let h6 = EltWithChild "h6"
 
-    let em = EmBuilder()
 
+    type header' =
+        static member inline create(x: string) = EltWithChild "header" { html.text x }
+        static member inline create(x: int) = EltWithChild "header" { html.text x }
+        static member inline create(x: float) = EltWithChild "header" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "header" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "header" { childContent x }
 
-    type EmbedBuilder() =
-        inherit EltWithChild "embed"
+    let header = EltWithChild "header"
 
-        static member inline create(x: string) = EmbedBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = EmbedBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = EmbedBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = EmbedBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = EmbedBuilder() { childContent x }
 
-    let embed = EmbedBuilder()
+    type hr' =
+        static member inline create(x: string) = EltWithChild "hr" { html.text x }
+        static member inline create(x: int) = EltWithChild "hr" { html.text x }
+        static member inline create(x: float) = EltWithChild "hr" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "hr" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "hr" { childContent x }
 
+    let hr = EltWithChild "hr"
 
-    type FieldsetBuilder() =
-        inherit EltWithChild "fieldset"
 
-        static member inline create(x: string) = FieldsetBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = FieldsetBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = FieldsetBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = FieldsetBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = FieldsetBuilder() { childContent x }
+    type i' =
+        static member inline create(x: string) = EltWithChild "i" { html.text x }
+        static member inline create(x: int) = EltWithChild "i" { html.text x }
+        static member inline create(x: float) = EltWithChild "i" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "i" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "i" { childContent x }
 
-    let fieldset = FieldsetBuilder()
+    let i = EltWithChild "i"
 
 
-    type FigcaptionBuilder() =
-        inherit EltWithChild "figcaption"
+    type iframe' =
+        static member inline create(x: string) = EltWithChild "iframe" { html.text x }
+        static member inline create(x: int) = EltWithChild "iframe" { html.text x }
+        static member inline create(x: float) = EltWithChild "iframe" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "iframe" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "iframe" { childContent x }
 
-        static member inline create(x: string) =
-            FigcaptionBuilder() { childContent (html.text x) }
-        static member inline create(x: int) =
-            FigcaptionBuilder() { childContent (html.text x) }
-        static member inline create(x: float) =
-            FigcaptionBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = FigcaptionBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = FigcaptionBuilder() { childContent x }
+    let iframe = EltWithChild "iframe"
 
-    let figcaption = FigcaptionBuilder()
 
+    type input' =
+        static member inline create(x: string) = EltWithChild "input" { html.text x }
+        static member inline create(x: int) = EltWithChild "input" { html.text x }
+        static member inline create(x: float) = EltWithChild "input" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "input" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "input" { childContent x }
 
-    type FigureBuilder() =
-        inherit EltWithChild "figure"
+    let input = EltWithChild "input"
 
-        static member inline create(x: string) = FigureBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = FigureBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = FigureBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = FigureBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = FigureBuilder() { childContent x }
 
-    let figure = FigureBuilder()
+    type ins' =
+        static member inline create(x: string) = EltWithChild "ins" { html.text x }
+        static member inline create(x: int) = EltWithChild "ins" { html.text x }
+        static member inline create(x: float) = EltWithChild "ins" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "ins" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "ins" { childContent x }
 
+    let ins = EltWithChild "ins"
 
-    type FontBuilder() =
-        inherit EltWithChild "font"
 
-        static member inline create(x: string) = FontBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = FontBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = FontBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = FontBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = FontBuilder() { childContent x }
+    type kbd' =
+        static member inline create(x: string) = EltWithChild "kbd" { html.text x }
+        static member inline create(x: int) = EltWithChild "kbd" { html.text x }
+        static member inline create(x: float) = EltWithChild "kbd" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "kbd" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "kbd" { childContent x }
 
-    let font = FontBuilder()
+    let kbd = EltWithChild "kbd"
 
 
-    type FooterBuilder() =
-        inherit EltWithChild "footer"
+    type label' =
+        static member inline create(x: string) = EltWithChild "label" { html.text x }
+        static member inline create(x: int) = EltWithChild "label" { html.text x }
+        static member inline create(x: float) = EltWithChild "label" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "label" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "label" { childContent x }
 
-        static member inline create(x: string) = FooterBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = FooterBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = FooterBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = FooterBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = FooterBuilder() { childContent x }
+    let label = EltWithChild "label"
 
-    let footer = FooterBuilder()
 
+    type legend' =
+        static member inline create(x: string) = EltWithChild "legend" { html.text x }
+        static member inline create(x: int) = EltWithChild "legend" { html.text x }
+        static member inline create(x: float) = EltWithChild "legend" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "legend" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "legend" { childContent x }
 
-    type FormBuilder() =
-        inherit EltWithChild "form"
+    let legend = EltWithChild "legend"
 
-        static member inline create(x: string) = FormBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = FormBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = FormBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = FormBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = FormBuilder() { childContent x }
 
-    let form = FormBuilder()
+    type li' =
+        static member inline create(x: string) = EltWithChild "li" { html.text x }
+        static member inline create(x: int) = EltWithChild "li" { html.text x }
+        static member inline create(x: float) = EltWithChild "li" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "li" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "li" { childContent x }
 
+    let li = EltWithChild "li"
 
-    type FrameBuilder() =
-        inherit EltWithChild "frame"
 
-        static member inline create(x: string) = FrameBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = FrameBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = FrameBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = FrameBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = FrameBuilder() { childContent x }
+    type link' =
+        static member inline create(x: string) = EltWithChild "link" { html.text x }
+        static member inline create(x: int) = EltWithChild "link" { html.text x }
+        static member inline create(x: float) = EltWithChild "link" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "link" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "link" { childContent x }
 
-    let frame = FrameBuilder()
+    let link = EltWithChild "link"
 
 
-    type FramesetBuilder() =
-        inherit EltWithChild "frameset"
+    type main' =
+        static member inline create(x: string) = EltWithChild "main" { html.text x }
+        static member inline create(x: int) = EltWithChild "main" { html.text x }
+        static member inline create(x: float) = EltWithChild "main" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "main" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "main" { childContent x }
 
-        static member inline create(x: string) = FramesetBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = FramesetBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = FramesetBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = FramesetBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = FramesetBuilder() { childContent x }
+    let main = EltWithChild "main"
 
-    let frameset = FramesetBuilder()
 
+    type map' =
+        static member inline create(x: string) = EltWithChild "map" { html.text x }
+        static member inline create(x: int) = EltWithChild "map" { html.text x }
+        static member inline create(x: float) = EltWithChild "map" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "map" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "map" { childContent x }
 
-    type H1Builder() =
-        inherit EltWithChild "h1"
+    let map = EltWithChild "map"
 
-        static member inline create(x: string) = H1Builder() { childContent (html.text x) }
-        static member inline create(x: int) = H1Builder() { childContent (html.text x) }
-        static member inline create(x: float) = H1Builder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = H1Builder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = H1Builder() { childContent x }
 
-    let h1 = H1Builder()
+    type mark' =
+        static member inline create(x: string) = EltWithChild "mark" { html.text x }
+        static member inline create(x: int) = EltWithChild "mark" { html.text x }
+        static member inline create(x: float) = EltWithChild "mark" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "mark" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "mark" { childContent x }
 
+    let mark = EltWithChild "mark"
 
-    type H2Builder() =
-        inherit EltWithChild "h2"
 
-        static member inline create(x: string) = H2Builder() { childContent (html.text x) }
-        static member inline create(x: int) = H2Builder() { childContent (html.text x) }
-        static member inline create(x: float) = H2Builder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = H2Builder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = H2Builder() { childContent x }
+    type menu' =
+        static member inline create(x: string) = EltWithChild "menu" { html.text x }
+        static member inline create(x: int) = EltWithChild "menu" { html.text x }
+        static member inline create(x: float) = EltWithChild "menu" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "menu" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "menu" { childContent x }
 
-    let h2 = H2Builder()
+    let menu = EltWithChild "menu"
 
 
-    type H3Builder() =
-        inherit EltWithChild "h3"
+    type menuitem' =
+        static member inline create(x: string) = EltWithChild "menuitem" { html.text x }
+        static member inline create(x: int) = EltWithChild "menuitem" { html.text x }
+        static member inline create(x: float) = EltWithChild "menuitem" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "menuitem" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "menuitem" { childContent x }
 
-        static member inline create(x: string) = H3Builder() { childContent (html.text x) }
-        static member inline create(x: int) = H3Builder() { childContent (html.text x) }
-        static member inline create(x: float) = H3Builder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = H3Builder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = H3Builder() { childContent x }
+    let menuitem = EltWithChild "menuitem"
 
-    let h3 = H3Builder()
 
+    type meter' =
+        static member inline create(x: string) = EltWithChild "meter" { html.text x }
+        static member inline create(x: int) = EltWithChild "meter" { html.text x }
+        static member inline create(x: float) = EltWithChild "meter" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "meter" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "meter" { childContent x }
 
-    type H4Builder() =
-        inherit EltWithChild "h4"
+    let meter = EltWithChild "meter"
 
-        static member inline create(x: string) = H4Builder() { childContent (html.text x) }
-        static member inline create(x: int) = H4Builder() { childContent (html.text x) }
-        static member inline create(x: float) = H4Builder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = H4Builder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = H4Builder() { childContent x }
 
-    let h4 = H4Builder()
+    type nav' =
+        static member inline create(x: string) = EltWithChild "nav" { html.text x }
+        static member inline create(x: int) = EltWithChild "nav" { html.text x }
+        static member inline create(x: float) = EltWithChild "nav" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "nav" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "nav" { childContent x }
 
+    let nav = EltWithChild "nav"
 
-    type H5Builder() =
-        inherit EltWithChild "h5"
 
-        static member inline create(x: string) = H5Builder() { childContent (html.text x) }
-        static member inline create(x: int) = H5Builder() { childContent (html.text x) }
-        static member inline create(x: float) = H5Builder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = H5Builder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = H5Builder() { childContent x }
+    type noembed' =
+        static member inline create(x: string) = EltWithChild "noembed" { html.text x }
+        static member inline create(x: int) = EltWithChild "noembed" { html.text x }
+        static member inline create(x: float) = EltWithChild "noembed" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "noembed" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "noembed" { childContent x }
 
-    let h5 = H5Builder()
+    let noembed = EltWithChild "noembed"
 
 
-    type H6Builder() =
-        inherit EltWithChild "h6"
+    type noframes' =
+        static member inline create(x: string) = EltWithChild "noframes" { html.text x }
+        static member inline create(x: int) = EltWithChild "noframes" { html.text x }
+        static member inline create(x: float) = EltWithChild "noframes" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "noframes" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "noframes" { childContent x }
 
-        static member inline create(x: string) = H6Builder() { childContent (html.text x) }
-        static member inline create(x: int) = H6Builder() { childContent (html.text x) }
-        static member inline create(x: float) = H6Builder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = H6Builder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = H6Builder() { childContent x }
+    let noframes = EltWithChild "noframes"
 
-    let h6 = H6Builder()
 
+    type noscript' =
+        static member inline create(x: string) = EltWithChild "noscript" { html.text x }
+        static member inline create(x: int) = EltWithChild "noscript" { html.text x }
+        static member inline create(x: float) = EltWithChild "noscript" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "noscript" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "noscript" { childContent x }
 
-    type HeadBuilder() =
-        inherit EltWithChild "head"
+    let noscript = EltWithChild "noscript"
 
-        static member inline create(x: string) = HeadBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = HeadBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = HeadBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = HeadBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = HeadBuilder() { childContent x }
 
-    let head = HeadBuilder()
+    type object' =
+        static member inline create(x: string) = EltWithChild "object" { html.text x }
+        static member inline create(x: int) = EltWithChild "object" { html.text x }
+        static member inline create(x: float) = EltWithChild "object" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "object" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "object" { childContent x }
 
+    let object = EltWithChild "object"
 
-    type HeaderBuilder() =
-        inherit EltWithChild "header"
 
-        static member inline create(x: string) = HeaderBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = HeaderBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = HeaderBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = HeaderBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = HeaderBuilder() { childContent x }
+    type ol' =
+        static member inline create(x: string) = EltWithChild "ol" { html.text x }
+        static member inline create(x: int) = EltWithChild "ol" { html.text x }
+        static member inline create(x: float) = EltWithChild "ol" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "ol" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "ol" { childContent x }
 
-    let header = HeaderBuilder()
+    let ol = EltWithChild "ol"
 
 
-    type HrBuilder() =
-        inherit EltWithChild "hr"
+    type optgroup' =
+        static member inline create(x: string) = EltWithChild "optgroup" { html.text x }
+        static member inline create(x: int) = EltWithChild "optgroup" { html.text x }
+        static member inline create(x: float) = EltWithChild "optgroup" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "optgroup" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "optgroup" { childContent x }
 
-        static member inline create(x: string) = HrBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = HrBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = HrBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = HrBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = HrBuilder() { childContent x }
+    let optgroup = EltWithChild "optgroup"
 
-    let hr = HrBuilder()
 
+    type option' =
+        static member inline create(x: string) = EltWithChild "option" { html.text x }
+        static member inline create(x: int) = EltWithChild "option" { html.text x }
+        static member inline create(x: float) = EltWithChild "option" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "option" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "option" { childContent x }
 
-    type HtmlBuilder() =
-        inherit EltWithChild "html'"
+    let option = EltWithChild "option"
 
-        static member inline create(x: string) = HtmlBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = HtmlBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = HtmlBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = HtmlBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = HtmlBuilder() { childContent x }
 
-    let html' = HtmlBuilder()
+    type output' =
+        static member inline create(x: string) = EltWithChild "output" { html.text x }
+        static member inline create(x: int) = EltWithChild "output" { html.text x }
+        static member inline create(x: float) = EltWithChild "output" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "output" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "output" { childContent x }
 
+    let output = EltWithChild "output"
 
-    type IBuilder() =
-        inherit EltWithChild "i"
 
-        static member inline create(x: string) = IBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = IBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = IBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = IBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = IBuilder() { childContent x }
+    type p' =
+        static member inline create(x: string) = EltWithChild "p" { html.text x }
+        static member inline create(x: int) = EltWithChild "p" { html.text x }
+        static member inline create(x: float) = EltWithChild "p" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "p" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "p" { childContent x }
 
-    let i = IBuilder()
+    let p = EltWithChild "p"
 
 
-    type IframeBuilder() =
-        inherit EltWithChild "iframe"
+    type param' =
+        static member inline create(x: string) = EltWithChild "param" { html.text x }
+        static member inline create(x: int) = EltWithChild "param" { html.text x }
+        static member inline create(x: float) = EltWithChild "param" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "param" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "param" { childContent x }
 
-        static member inline create(x: string) = IframeBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = IframeBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = IframeBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = IframeBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = IframeBuilder() { childContent x }
+    let param = EltWithChild "param"
 
-    let iframe = IframeBuilder()
 
+    type picture' =
+        static member inline create(x: string) = EltWithChild "picture" { html.text x }
+        static member inline create(x: int) = EltWithChild "picture" { html.text x }
+        static member inline create(x: float) = EltWithChild "picture" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "picture" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "picture" { childContent x }
 
-    type InputBuilder() =
-        inherit EltWithChild "input"
+    let picture = EltWithChild "picture"
 
-        static member inline create(x: string) = InputBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = InputBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = InputBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = InputBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = InputBuilder() { childContent x }
 
-    let input = InputBuilder()
+    type pre' =
+        static member inline create(x: string) = EltWithChild "pre" { html.text x }
+        static member inline create(x: int) = EltWithChild "pre" { html.text x }
+        static member inline create(x: float) = EltWithChild "pre" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "pre" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "pre" { childContent x }
 
+    let pre = EltWithChild "pre"
 
-    type InsBuilder() =
-        inherit EltWithChild "ins"
 
-        static member inline create(x: string) = InsBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = InsBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = InsBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = InsBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = InsBuilder() { childContent x }
+    type progress' =
+        static member inline create(x: string) = EltWithChild "progress" { html.text x }
+        static member inline create(x: int) = EltWithChild "progress" { html.text x }
+        static member inline create(x: float) = EltWithChild "progress" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "progress" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "progress" { childContent x }
 
-    let ins = InsBuilder()
+    let progress = EltWithChild "progress"
 
 
-    type KbdBuilder() =
-        inherit EltWithChild "kbd"
+    type q' =
+        static member inline create(x: string) = EltWithChild "q" { html.text x }
+        static member inline create(x: int) = EltWithChild "q" { html.text x }
+        static member inline create(x: float) = EltWithChild "q" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "q" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "q" { childContent x }
 
-        static member inline create(x: string) = KbdBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = KbdBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = KbdBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = KbdBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = KbdBuilder() { childContent x }
+    let q = EltWithChild "q"
 
-    let kbd = KbdBuilder()
 
+    type rb' =
+        static member inline create(x: string) = EltWithChild "rb" { html.text x }
+        static member inline create(x: int) = EltWithChild "rb" { html.text x }
+        static member inline create(x: float) = EltWithChild "rb" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "rb" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "rb" { childContent x }
 
-    type LabelBuilder() =
-        inherit EltWithChild "label"
+    let rb = EltWithChild "rb"
 
-        static member inline create(x: string) = LabelBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = LabelBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = LabelBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = LabelBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = LabelBuilder() { childContent x }
 
-    let label = LabelBuilder()
+    type rp' =
+        static member inline create(x: string) = EltWithChild "rp" { html.text x }
+        static member inline create(x: int) = EltWithChild "rp" { html.text x }
+        static member inline create(x: float) = EltWithChild "rp" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "rp" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "rp" { childContent x }
 
+    let rp = EltWithChild "rp"
 
-    type LegendBuilder() =
-        inherit EltWithChild "legend"
 
-        static member inline create(x: string) = LegendBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = LegendBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = LegendBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = LegendBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = LegendBuilder() { childContent x }
+    type rt' =
+        static member inline create(x: string) = EltWithChild "rt" { html.text x }
+        static member inline create(x: int) = EltWithChild "rt" { html.text x }
+        static member inline create(x: float) = EltWithChild "rt" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "rt" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "rt" { childContent x }
 
-    let legend = LegendBuilder()
+    let rt = EltWithChild "rt"
 
 
-    type LiBuilder() =
-        inherit EltWithChild "li"
+    type rtc' =
+        static member inline create(x: string) = EltWithChild "rtc" { html.text x }
+        static member inline create(x: int) = EltWithChild "rtc" { html.text x }
+        static member inline create(x: float) = EltWithChild "rtc" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "rtc" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "rtc" { childContent x }
 
-        static member inline create(x: string) = LiBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = LiBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = LiBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = LiBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = LiBuilder() { childContent x }
+    let rtc = EltWithChild "rtc"
 
-    let li = LiBuilder()
 
+    type ruby' =
+        static member inline create(x: string) = EltWithChild "ruby" { html.text x }
+        static member inline create(x: int) = EltWithChild "ruby" { html.text x }
+        static member inline create(x: float) = EltWithChild "ruby" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "ruby" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "ruby" { childContent x }
 
-    type LinkBuilder() =
-        inherit EltWithChild "link"
+    let ruby = EltWithChild "ruby"
 
-        static member inline create(x: string) = LinkBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = LinkBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = LinkBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = LinkBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = LinkBuilder() { childContent x }
 
-    let link = LinkBuilder()
+    type s' =
+        static member inline create(x: string) = EltWithChild "s" { html.text x }
+        static member inline create(x: int) = EltWithChild "s" { html.text x }
+        static member inline create(x: float) = EltWithChild "s" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "s" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "s" { childContent x }
 
+    let s = EltWithChild "s"
 
-    type MainBuilder() =
-        inherit EltWithChild "main"
 
-        static member inline create(x: string) = MainBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = MainBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = MainBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = MainBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = MainBuilder() { childContent x }
+    type samp' =
+        static member inline create(x: string) = EltWithChild "samp" { html.text x }
+        static member inline create(x: int) = EltWithChild "samp" { html.text x }
+        static member inline create(x: float) = EltWithChild "samp" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "samp" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "samp" { childContent x }
 
-    let main = MainBuilder()
+    let samp = EltWithChild "samp"
 
 
-    type MapBuilder() =
-        inherit EltWithChild "map"
+    type script' =
+        static member inline create(x: string) = EltWithChild "script" { html.text x }
+        static member inline create(x: int) = EltWithChild "script" { html.text x }
+        static member inline create(x: float) = EltWithChild "script" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "script" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "script" { childContent x }
 
-        static member inline create(x: string) = MapBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = MapBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = MapBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = MapBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = MapBuilder() { childContent x }
+    let script = EltWithChild "script"
 
-    let map = MapBuilder()
 
+    type section' =
+        static member inline create(x: string) = EltWithChild "section" { html.text x }
+        static member inline create(x: int) = EltWithChild "section" { html.text x }
+        static member inline create(x: float) = EltWithChild "section" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "section" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "section" { childContent x }
 
-    type MarkBuilder() =
-        inherit EltWithChild "mark"
+    let section = EltWithChild "section"
 
-        static member inline create(x: string) = MarkBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = MarkBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = MarkBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = MarkBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = MarkBuilder() { childContent x }
 
-    let mark = MarkBuilder()
+    type select' =
+        static member inline create(x: string) = EltWithChild "select" { html.text x }
+        static member inline create(x: int) = EltWithChild "select" { html.text x }
+        static member inline create(x: float) = EltWithChild "select" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "select" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "select" { childContent x }
 
+    let select = EltWithChild "select"
 
-    type MenuBuilder() =
-        inherit EltWithChild "menu"
 
-        static member inline create(x: string) = MenuBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = MenuBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = MenuBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = MenuBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = MenuBuilder() { childContent x }
+    type shadow' =
+        static member inline create(x: string) = EltWithChild "shadow" { html.text x }
+        static member inline create(x: int) = EltWithChild "shadow" { html.text x }
+        static member inline create(x: float) = EltWithChild "shadow" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "shadow" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "shadow" { childContent x }
 
-    let menu = MenuBuilder()
+    let shadow = EltWithChild "shadow"
 
 
-    type MenuitemBuilder() =
-        inherit EltWithChild "menuitem"
+    type slot' =
+        static member inline create(x: string) = EltWithChild "slot" { html.text x }
+        static member inline create(x: int) = EltWithChild "slot" { html.text x }
+        static member inline create(x: float) = EltWithChild "slot" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "slot" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "slot" { childContent x }
 
-        static member inline create(x: string) = MenuitemBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = MenuitemBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = MenuitemBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = MenuitemBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = MenuitemBuilder() { childContent x }
+    let slot = EltWithChild "slot"
 
-    let menuitem = MenuitemBuilder()
 
+    type small' =
+        static member inline create(x: string) = EltWithChild "small" { html.text x }
+        static member inline create(x: int) = EltWithChild "small" { html.text x }
+        static member inline create(x: float) = EltWithChild "small" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "small" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "small" { childContent x }
 
-    type MetaBuilder() =
-        inherit EltWithChild "meta"
+    let small = EltWithChild "small"
 
-        static member inline create(x: string) = MetaBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = MetaBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = MetaBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = MetaBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = MetaBuilder() { childContent x }
 
-    let meta = MetaBuilder()
+    type source' =
+        static member inline create(x: string) = EltWithChild "source" { html.text x }
+        static member inline create(x: int) = EltWithChild "source" { html.text x }
+        static member inline create(x: float) = EltWithChild "source" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "source" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "source" { childContent x }
 
+    let source = EltWithChild "source"
 
-    type MeterBuilder() =
-        inherit EltWithChild "meter"
 
-        static member inline create(x: string) = MeterBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = MeterBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = MeterBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = MeterBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = MeterBuilder() { childContent x }
+    type span' =
+        static member inline create(x: string) = EltWithChild "span" { html.text x }
+        static member inline create(x: int) = EltWithChild "span" { html.text x }
+        static member inline create(x: float) = EltWithChild "span" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "span" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "span" { childContent x }
 
-    let meter = MeterBuilder()
+    let span = EltWithChild "span"
 
 
-    type NavBuilder() =
-        inherit EltWithChild "nav"
+    type strike' =
+        static member inline create(x: string) = EltWithChild "strike" { html.text x }
+        static member inline create(x: int) = EltWithChild "strike" { html.text x }
+        static member inline create(x: float) = EltWithChild "strike" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "strike" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "strike" { childContent x }
 
-        static member inline create(x: string) = NavBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = NavBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = NavBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = NavBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = NavBuilder() { childContent x }
+    let strike = EltWithChild "strike"
 
-    let nav = NavBuilder()
 
+    type strong' =
+        static member inline create(x: string) = EltWithChild "strong" { html.text x }
+        static member inline create(x: int) = EltWithChild "strong" { html.text x }
+        static member inline create(x: float) = EltWithChild "strong" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "strong" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "strong" { childContent x }
 
-    type NoembedBuilder() =
-        inherit EltWithChild "noembed"
+    let strong = EltWithChild "strong"
 
-        static member inline create(x: string) = NoembedBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = NoembedBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = NoembedBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = NoembedBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = NoembedBuilder() { childContent x }
 
-    let noembed = NoembedBuilder()
+    type style'' =
+        static member inline create(x: string) = EltWithChild "style'" { html.text x }
+        static member inline create(x: int) = EltWithChild "style'" { html.text x }
+        static member inline create(x: float) = EltWithChild "style'" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "style'" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "style'" { childContent x }
 
+    let style' = EltWithChild "style'"
 
-    type NoframesBuilder() =
-        inherit EltWithChild "noframes"
 
-        static member inline create(x: string) = NoframesBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = NoframesBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = NoframesBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = NoframesBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = NoframesBuilder() { childContent x }
+    type sub' =
+        static member inline create(x: string) = EltWithChild "sub" { html.text x }
+        static member inline create(x: int) = EltWithChild "sub" { html.text x }
+        static member inline create(x: float) = EltWithChild "sub" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "sub" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "sub" { childContent x }
 
-    let noframes = NoframesBuilder()
+    let sub = EltWithChild "sub"
 
 
-    type NoscriptBuilder() =
-        inherit EltWithChild "noscript"
+    type summary' =
+        static member inline create(x: string) = EltWithChild "summary" { html.text x }
+        static member inline create(x: int) = EltWithChild "summary" { html.text x }
+        static member inline create(x: float) = EltWithChild "summary" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "summary" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "summary" { childContent x }
 
-        static member inline create(x: string) = NoscriptBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = NoscriptBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = NoscriptBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = NoscriptBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = NoscriptBuilder() { childContent x }
+    let summary = EltWithChild "summary"
 
-    let noscript = NoscriptBuilder()
 
+    type sup' =
+        static member inline create(x: string) = EltWithChild "sup" { html.text x }
+        static member inline create(x: int) = EltWithChild "sup" { html.text x }
+        static member inline create(x: float) = EltWithChild "sup" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "sup" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "sup" { childContent x }
 
-    type ObjectBuilder() =
-        inherit EltWithChild "object"
+    let sup = EltWithChild "sup"
 
-        static member inline create(x: string) = ObjectBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = ObjectBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = ObjectBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = ObjectBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = ObjectBuilder() { childContent x }
 
-    let object = ObjectBuilder()
+    type svg' =
+        static member inline create(x: string) = EltWithChild "svg" { html.text x }
+        static member inline create(x: int) = EltWithChild "svg" { html.text x }
+        static member inline create(x: float) = EltWithChild "svg" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "svg" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "svg" { childContent x }
 
+    let svg = EltWithChild "svg"
 
-    type OlBuilder() =
-        inherit EltWithChild "ol"
 
-        static member inline create(x: string) = OlBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = OlBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = OlBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = OlBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = OlBuilder() { childContent x }
+    type table' =
+        static member inline create(x: string) = EltWithChild "table" { html.text x }
+        static member inline create(x: int) = EltWithChild "table" { html.text x }
+        static member inline create(x: float) = EltWithChild "table" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "table" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "table" { childContent x }
 
-    let ol = OlBuilder()
+    let table = EltWithChild "table"
 
 
-    type OptgroupBuilder() =
-        inherit EltWithChild "optgroup"
+    type tbody' =
+        static member inline create(x: string) = EltWithChild "tbody" { html.text x }
+        static member inline create(x: int) = EltWithChild "tbody" { html.text x }
+        static member inline create(x: float) = EltWithChild "tbody" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "tbody" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "tbody" { childContent x }
 
-        static member inline create(x: string) = OptgroupBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = OptgroupBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = OptgroupBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = OptgroupBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = OptgroupBuilder() { childContent x }
+    let tbody = EltWithChild "tbody"
 
-    let optgroup = OptgroupBuilder()
 
+    type td' =
+        static member inline create(x: string) = EltWithChild "td" { html.text x }
+        static member inline create(x: int) = EltWithChild "td" { html.text x }
+        static member inline create(x: float) = EltWithChild "td" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "td" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "td" { childContent x }
 
-    type OptionBuilder() =
-        inherit EltWithChild "option"
+    let td = EltWithChild "td"
 
-        static member inline create(x: string) = OptionBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = OptionBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = OptionBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = OptionBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = OptionBuilder() { childContent x }
 
-    let option = OptionBuilder()
+    type template' =
+        static member inline create(x: string) = EltWithChild "template" { html.text x }
+        static member inline create(x: int) = EltWithChild "template" { html.text x }
+        static member inline create(x: float) = EltWithChild "template" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "template" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "template" { childContent x }
 
+    let template = EltWithChild "template"
 
-    type OutputBuilder() =
-        inherit EltWithChild "output"
 
-        static member inline create(x: string) = OutputBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = OutputBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = OutputBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = OutputBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = OutputBuilder() { childContent x }
+    type textarea' =
+        static member inline create(x: string) = EltWithChild "textarea" { html.text x }
+        static member inline create(x: int) = EltWithChild "textarea" { html.text x }
+        static member inline create(x: float) = EltWithChild "textarea" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "textarea" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "textarea" { childContent x }
 
-    let output = OutputBuilder()
+    let textarea = EltWithChild "textarea"
 
 
-    type PBuilder() =
-        inherit EltWithChild "p"
+    type tfoot' =
+        static member inline create(x: string) = EltWithChild "tfoot" { html.text x }
+        static member inline create(x: int) = EltWithChild "tfoot" { html.text x }
+        static member inline create(x: float) = EltWithChild "tfoot" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "tfoot" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "tfoot" { childContent x }
 
-        static member inline create(x: string) = PBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = PBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = PBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = PBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = PBuilder() { childContent x }
+    let tfoot = EltWithChild "tfoot"
 
-    let p = PBuilder()
 
+    type th' =
+        static member inline create(x: string) = EltWithChild "th" { html.text x }
+        static member inline create(x: int) = EltWithChild "th" { html.text x }
+        static member inline create(x: float) = EltWithChild "th" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "th" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "th" { childContent x }
 
-    type ParamBuilder() =
-        inherit EltWithChild "param"
+    let th = EltWithChild "th"
 
-        static member inline create(x: string) = ParamBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = ParamBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = ParamBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = ParamBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = ParamBuilder() { childContent x }
 
-    let param = ParamBuilder()
+    type thead' =
+        static member inline create(x: string) = EltWithChild "thead" { html.text x }
+        static member inline create(x: int) = EltWithChild "thead" { html.text x }
+        static member inline create(x: float) = EltWithChild "thead" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "thead" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "thead" { childContent x }
 
+    let thead = EltWithChild "thead"
 
-    type PictureBuilder() =
-        inherit EltWithChild "picture"
 
-        static member inline create(x: string) = PictureBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = PictureBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = PictureBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = PictureBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = PictureBuilder() { childContent x }
+    type time' =
+        static member inline create(x: string) = EltWithChild "time" { html.text x }
+        static member inline create(x: int) = EltWithChild "time" { html.text x }
+        static member inline create(x: float) = EltWithChild "time" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "time" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "time" { childContent x }
 
-    let picture = PictureBuilder()
+    let time = EltWithChild "time"
 
 
-    type PreBuilder() =
-        inherit EltWithChild "pre"
+    type title' =
+        static member inline create(x: string) = EltWithChild "title" { html.text x }
+        static member inline create(x: int) = EltWithChild "title" { html.text x }
+        static member inline create(x: float) = EltWithChild "title" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "title" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "title" { childContent x }
 
-        static member inline create(x: string) = PreBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = PreBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = PreBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = PreBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = PreBuilder() { childContent x }
+    let title = EltWithChild "title"
 
-    let pre = PreBuilder()
 
+    type tr' =
+        static member inline create(x: string) = EltWithChild "tr" { html.text x }
+        static member inline create(x: int) = EltWithChild "tr" { html.text x }
+        static member inline create(x: float) = EltWithChild "tr" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "tr" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "tr" { childContent x }
 
-    type ProgressBuilder() =
-        inherit EltWithChild "progress"
+    let tr = EltWithChild "tr"
 
-        static member inline create(x: string) = ProgressBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = ProgressBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = ProgressBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = ProgressBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = ProgressBuilder() { childContent x }
 
-    let progress = ProgressBuilder()
+    type track' =
+        static member inline create(x: string) = EltWithChild "track" { html.text x }
+        static member inline create(x: int) = EltWithChild "track" { html.text x }
+        static member inline create(x: float) = EltWithChild "track" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "track" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "track" { childContent x }
 
+    let track = EltWithChild "track"
 
-    type QBuilder() =
-        inherit EltWithChild "q"
 
-        static member inline create(x: string) = QBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = QBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = QBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = QBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = QBuilder() { childContent x }
+    type tt' =
+        static member inline create(x: string) = EltWithChild "tt" { html.text x }
+        static member inline create(x: int) = EltWithChild "tt" { html.text x }
+        static member inline create(x: float) = EltWithChild "tt" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "tt" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "tt" { childContent x }
 
-    let q = QBuilder()
+    let tt = EltWithChild "tt"
 
 
-    type RbBuilder() =
-        inherit EltWithChild "rb"
+    type u' =
+        static member inline create(x: string) = EltWithChild "u" { html.text x }
+        static member inline create(x: int) = EltWithChild "u" { html.text x }
+        static member inline create(x: float) = EltWithChild "u" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "u" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "u" { childContent x }
 
-        static member inline create(x: string) = RbBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = RbBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = RbBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = RbBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = RbBuilder() { childContent x }
+    let u = EltWithChild "u"
 
-    let rb = RbBuilder()
 
+    type ul' =
+        static member inline create(x: string) = EltWithChild "ul" { html.text x }
+        static member inline create(x: int) = EltWithChild "ul" { html.text x }
+        static member inline create(x: float) = EltWithChild "ul" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "ul" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "ul" { childContent x }
 
-    type RpBuilder() =
-        inherit EltWithChild "rp"
+    let ul = EltWithChild "ul"
 
-        static member inline create(x: string) = RpBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = RpBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = RpBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = RpBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = RpBuilder() { childContent x }
 
-    let rp = RpBuilder()
+    type var' =
+        static member inline create(x: string) = EltWithChild "var" { html.text x }
+        static member inline create(x: int) = EltWithChild "var" { html.text x }
+        static member inline create(x: float) = EltWithChild "var" { html.text x }
+        static member inline create(x: FunRenderFragment) = EltWithChild "var" { childContent x }
+        static member inline create(x: FunRenderFragment seq) = EltWithChild "var" { childContent x }
 
+    let var = EltWithChild "var"
 
-    type RtBuilder() =
-        inherit EltWithChild "rt"
 
-        static member inline create(x: string) = RtBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = RtBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = RtBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = RtBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = RtBuilder() { childContent x }
+    let video = EltWithChild "video"
 
-    let rt = RtBuilder()
+    let wbr = EltWithDomAttrs "wbr"
 
+    let img = EltWithDomAttrs "img"
 
-    type RtcBuilder() =
-        inherit EltWithChild "rtc"
+    let html' = EltWithChild "html"
 
-        static member inline create(x: string) = RtcBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = RtcBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = RtcBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = RtcBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = RtcBuilder() { childContent x }
+    let body = EltWithChild "body"
 
-    let rtc = RtcBuilder()
+    let head = EltWithChild "head"
 
 
-    type RubyBuilder() =
-        inherit EltWithChild "ruby"
+    type meta' =
+        static member inline create(n, v) =
+            EltWithChild "meta" {
+                name n
+                value v
+            }
 
-        static member inline create(x: string) = RubyBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = RubyBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = RubyBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = RubyBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = RubyBuilder() { childContent x }
+    let meta = EltWithChild "meta"
 
-    let ruby = RubyBuilder()
 
-
-    type SBuilder() =
-        inherit EltWithChild "s"
-
-        static member inline create(x: string) = SBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = SBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = SBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = SBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = SBuilder() { childContent x }
-
-    let s = SBuilder()
-
-
-    type SampBuilder() =
-        inherit EltWithChild "samp"
-
-        static member inline create(x: string) = SampBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = SampBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = SampBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = SampBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = SampBuilder() { childContent x }
-
-    let samp = SampBuilder()
-
-
-    type ScriptBuilder() =
-        inherit EltWithChild "script"
-
-        static member inline create(x: string) = ScriptBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = ScriptBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = ScriptBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = ScriptBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = ScriptBuilder() { childContent x }
-
-    let script = ScriptBuilder()
-
-
-    type SectionBuilder() =
-        inherit EltWithChild "section"
-
-        static member inline create(x: string) = SectionBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = SectionBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = SectionBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = SectionBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = SectionBuilder() { childContent x }
-
-    let section = SectionBuilder()
-
-
-    type SelectBuilder() =
-        inherit EltWithChild "select"
-
-        static member inline create(x: string) = SelectBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = SelectBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = SelectBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = SelectBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = SelectBuilder() { childContent x }
-
-    let select = SelectBuilder()
-
-
-    type ShadowBuilder() =
-        inherit EltWithChild "shadow"
-
-        static member inline create(x: string) = ShadowBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = ShadowBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = ShadowBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = ShadowBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = ShadowBuilder() { childContent x }
-
-    let shadow = ShadowBuilder()
-
-
-    type SlotBuilder() =
-        inherit EltWithChild "slot"
-
-        static member inline create(x: string) = SlotBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = SlotBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = SlotBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = SlotBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = SlotBuilder() { childContent x }
-
-    let slot = SlotBuilder()
-
-
-    type SmallBuilder() =
-        inherit EltWithChild "small"
-
-        static member inline create(x: string) = SmallBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = SmallBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = SmallBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = SmallBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = SmallBuilder() { childContent x }
-
-    let small = SmallBuilder()
-
-
-    type SourceBuilder() =
-        inherit EltWithChild "source"
-
-        static member inline create(x: string) = SourceBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = SourceBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = SourceBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = SourceBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = SourceBuilder() { childContent x }
-
-    let source = SourceBuilder()
-
-
-    type SpanBuilder() =
-        inherit EltWithChild "span"
-
-        static member inline create(x: string) = SpanBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = SpanBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = SpanBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = SpanBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = SpanBuilder() { childContent x }
-
-    let span = SpanBuilder()
-
-
-    type StrikeBuilder() =
-        inherit EltWithChild "strike"
-
-        static member inline create(x: string) = StrikeBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = StrikeBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = StrikeBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = StrikeBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = StrikeBuilder() { childContent x }
-
-    let strike = StrikeBuilder()
-
-
-    type StrongBuilder() =
-        inherit EltWithChild "strong"
-
-        static member inline create(x: string) = StrongBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = StrongBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = StrongBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = StrongBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = StrongBuilder() { childContent x }
-
-    let strong = StrongBuilder()
-
-
-    type StyleBuilder() =
-        inherit EltWithChild "style'"
-
-        static member inline create(x: string) = StyleBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = StyleBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = StyleBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = StyleBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = StyleBuilder() { childContent x }
-
-    let style' = StyleBuilder()
-
-
-    type SubBuilder() =
-        inherit EltWithChild "sub"
-
-        static member inline create(x: string) = SubBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = SubBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = SubBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = SubBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = SubBuilder() { childContent x }
-
-    let sub = SubBuilder()
-
-
-    type SummaryBuilder() =
-        inherit EltWithChild "summary"
-
-        static member inline create(x: string) = SummaryBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = SummaryBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = SummaryBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = SummaryBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = SummaryBuilder() { childContent x }
-
-    let summary = SummaryBuilder()
-
-
-    type SupBuilder() =
-        inherit EltWithChild "sup"
-
-        static member inline create(x: string) = SupBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = SupBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = SupBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = SupBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = SupBuilder() { childContent x }
-
-    let sup = SupBuilder()
-
-
-    type SvgBuilder() =
-        inherit EltWithChild "svg"
-
-        static member inline create(x: string) = SvgBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = SvgBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = SvgBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = SvgBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = SvgBuilder() { childContent x }
-
-    let svg = SvgBuilder()
-
-
-    type TableBuilder() =
-        inherit EltWithChild "table"
-
-        static member inline create(x: string) = TableBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = TableBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = TableBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = TableBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = TableBuilder() { childContent x }
-
-    let table = TableBuilder()
-
-
-    type TbodyBuilder() =
-        inherit EltWithChild "tbody"
-
-        static member inline create(x: string) = TbodyBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = TbodyBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = TbodyBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = TbodyBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = TbodyBuilder() { childContent x }
-
-    let tbody = TbodyBuilder()
-
-
-    type TdBuilder() =
-        inherit EltWithChild "td"
-
-        static member inline create(x: string) = TdBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = TdBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = TdBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = TdBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = TdBuilder() { childContent x }
-
-    let td = TdBuilder()
-
-
-    type TemplateBuilder() =
-        inherit EltWithChild "template"
-
-        static member inline create(x: string) = TemplateBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = TemplateBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = TemplateBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = TemplateBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = TemplateBuilder() { childContent x }
-
-    let template = TemplateBuilder()
-
-
-    type TextareaBuilder() =
-        inherit EltWithChild "textarea"
-
-        static member inline create(x: string) = TextareaBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = TextareaBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = TextareaBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = TextareaBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = TextareaBuilder() { childContent x }
-
-    let textarea = TextareaBuilder()
-
-
-    type TfootBuilder() =
-        inherit EltWithChild "tfoot"
-
-        static member inline create(x: string) = TfootBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = TfootBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = TfootBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = TfootBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = TfootBuilder() { childContent x }
-
-    let tfoot = TfootBuilder()
-
-
-    type ThBuilder() =
-        inherit EltWithChild "th"
-
-        static member inline create(x: string) = ThBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = ThBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = ThBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = ThBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = ThBuilder() { childContent x }
-
-    let th = ThBuilder()
-
-
-    type TheadBuilder() =
-        inherit EltWithChild "thead"
-
-        static member inline create(x: string) = TheadBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = TheadBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = TheadBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = TheadBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = TheadBuilder() { childContent x }
-
-    let thead = TheadBuilder()
-
-
-    type TimeBuilder() =
-        inherit EltWithChild "time"
-
-        static member inline create(x: string) = TimeBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = TimeBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = TimeBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = TimeBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = TimeBuilder() { childContent x }
-
-    let time = TimeBuilder()
-
-
-    type TitleBuilder() =
-        inherit EltWithChild "title"
-
-        static member inline create(x: string) = TitleBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = TitleBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = TitleBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = TitleBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = TitleBuilder() { childContent x }
-
-    let title = TitleBuilder()
-
-
-    type TrBuilder() =
-        inherit EltWithChild "tr"
-
-        static member inline create(x: string) = TrBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = TrBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = TrBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = TrBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = TrBuilder() { childContent x }
-
-    let tr = TrBuilder()
-
-
-    type TrackBuilder() =
-        inherit EltWithChild "track"
-
-        static member inline create(x: string) = TrackBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = TrackBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = TrackBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = TrackBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = TrackBuilder() { childContent x }
-
-    let track = TrackBuilder()
-
-
-    type TtBuilder() =
-        inherit EltWithChild "tt"
-
-        static member inline create(x: string) = TtBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = TtBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = TtBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = TtBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = TtBuilder() { childContent x }
-
-    let tt = TtBuilder()
-
-
-    type UBuilder() =
-        inherit EltWithChild "u"
-
-        static member inline create(x: string) = UBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = UBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = UBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = UBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = UBuilder() { childContent x }
-
-    let u = UBuilder()
-
-
-    type UlBuilder() =
-        inherit EltWithChild "ul"
-
-        static member inline create(x: string) = UlBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = UlBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = UlBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = UlBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = UlBuilder() { childContent x }
-
-    let ul = UlBuilder()
-
-
-    type VarBuilder() =
-        inherit EltWithChild "var"
-
-        static member inline create(x: string) = VarBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = VarBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = VarBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = VarBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = VarBuilder() { childContent x }
-
-    let var = VarBuilder()
-
-
-    type VideoBuilder() =
-        inherit EltWithChild "video"
-
-        static member inline create(x: string) = VideoBuilder() { childContent (html.text x) }
-        static member inline create(x: int) = VideoBuilder() { childContent (html.text x) }
-        static member inline create(x: float) = VideoBuilder() { childContent (html.text x) }
-        static member inline create(x: FunRenderFragment) = VideoBuilder() { childContent x }
-        static member inline create(x: FunRenderFragment seq) = VideoBuilder() { childContent x }
-
-    let video = VideoBuilder()
-
-
-    type WbrBuilder() =
-        inherit EltWithDomAttrs "wbr"
-
-    type wbr = WbrBuilder
-
-
-    type ImgBuilder() =
-        inherit EltWithDomAttrs "img"
-
-    let img = ImgBuilder()
+    let doctype decl = html.raw $"<!DOCTYPE {decl}>\n"
