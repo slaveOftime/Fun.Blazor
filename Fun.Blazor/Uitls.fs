@@ -9,7 +9,11 @@ open System.Threading.Tasks
 open Microsoft.Extensions.Logging
 
 
-let emptyRender = FunRenderFragment(fun _ i -> i)
+let emptyRender = FunRenderFragment(fun _ _ i -> i)
+
+let fragment = FragmentBuilder()
+
+let comp<'T when 'T :> Microsoft.AspNetCore.Components.IComponent> = ComponentBuilder<'T>()
 
 
 let makeStyles (rules: (string * string) seq) =
