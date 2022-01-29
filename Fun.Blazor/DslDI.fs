@@ -2,11 +2,11 @@
 module Fun.Blazor.DslDI
 
 open System
-open Bolero
+open Operators
 
 
 type html with
-    
+
     /// <summary>
     /// This function will create a blazor component with a random key.
     /// In other words, every time you recall this it will create a brand new component.
@@ -23,14 +23,16 @@ type html with
     ///   html.inject _view
     /// </code>
     /// </example>
-    static member inject (render: 'Services -> Node) =
-        Bolero.Node.BlazorComponent<DIComponent<'Services>>
-            ([
-                "RenderFn" => render
-                "IsStatic" => false
-                Bolero.Key (Guid.NewGuid())
-            ]
-            ,[])
+    static member inject(render: 'Services -> FunRenderFragment) =
+        html.comp<DIComponent<'Services>> () {
+            attrs (
+                html.fragment {
+                    "RenderFn" => render
+                    "IsStatic" => false
+                    html.key (Guid.NewGuid())
+                }
+            )
+        }
 
 
     /// This function will create a blazor component with a specific key.
@@ -45,15 +47,16 @@ type html with
     ///   html.inject ("demo-key", fun () -> html.text $"externalX = {externalX}")
     /// </code>
     /// </example>
-
-    static member inject (key, render: 'Services -> Node) =
-        Bolero.Node.BlazorComponent<DIComponent<'Services>>
-            ([
-                "RenderFn" => render
-                "IsStatic" => true
-                Bolero.Key key
-            ]
-            ,[])
+    static member inject(key, render: 'Services -> FunRenderFragment) =
+        html.comp<DIComponent<'Services>> () {
+            attrs (
+                html.fragment {
+                    "RenderFn" => render
+                    "IsStatic" => true
+                    html.key key
+                }
+            )
+        }
 
 
     /// This function will create a blazor component with no key.
@@ -61,10 +64,12 @@ type html with
     ///
     /// 'Services should be something you defined in the asp.net core DI or unit
     /// 'Services must be a tuple like (hook: IComponentHook, sp: IServiceProvider)
-    static member injectWithNoKey (render: 'Services -> Node) =
-        Bolero.Node.BlazorComponent<DIComponent<'Services>>
-            ([
-                "RenderFn" => render
-                "IsStatic" => true
-            ]
-            ,[])
+    static member injectWithNoKey(render: 'Services -> FunRenderFragment) =
+        html.comp<DIComponent<'Services>> () {
+            attrs (
+                html.fragment {
+                    "RenderFn" => render
+                    "IsStatic" => true
+                }
+            )
+        }

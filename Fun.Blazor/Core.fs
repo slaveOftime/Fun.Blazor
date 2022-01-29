@@ -1,17 +1,138 @@
-﻿namespace rec Fun.Blazor
+﻿namespace Fun.Blazor
 
 open System
+open System.Threading.Tasks
 open FSharp.Data.Adaptive
 open Microsoft.AspNetCore.Components
-open Bolero
-open Bolero.Html
+open Microsoft.AspNetCore.Components.Web
+open Microsoft.AspNetCore.Components.Rendering
 open Fun.Result
 
 
-type FunBlazorRef<'T> = Ref<'T>
+type FunRenderFragment = delegate of RenderTreeBuilder * int -> int
 
 
-type FunBlazorComponent = Bolero.Component
+module Operators =
+    let inline (=>) (name: string) (value: 'a) =
+        FunRenderFragment(fun builder index ->
+            builder.AddAttribute(index, name, box value)
+            index + 1
+        )
+
+    let inline (&&&) ([<InlineIfLambda>] render1: FunRenderFragment) ([<InlineIfLambda>] render2: FunRenderFragment) =
+        FunRenderFragment(fun builder index -> render2.Invoke(builder, render1.Invoke(builder, index)))
+
+
+open Operators
+
+
+type FragmentsBuilder() =
+
+    member inline _.Yield([<InlineIfLambda>] x: FunRenderFragment) = x
+
+    member inline _.Combine
+        (
+            [<InlineIfLambda>] render1: FunRenderFragment,
+            [<InlineIfLambda>] render2: FunRenderFragment
+        )
+        =
+        render1 &&& render2
+
+    member inline _.Delay([<InlineIfLambda>] fn: unit -> FunRenderFragment) = fn ()
+
+    member inline _.Zero _ = FunRenderFragment(fun _ i -> i)
+
+
+type FragmentBuilder() =
+
+    member inline _.Yield(_: unit) = FunRenderFragment(fun _ i -> i)
+
+    member inline _.Delay([<InlineIfLambda>] fn: unit -> FunRenderFragment) = fn ()
+
+
+    [<CustomOperation("attrs")>]
+    member inline _.Attrs
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] renderChild: FunRenderFragment
+        )
+        =
+        render &&& renderChild
+
+    [<CustomOperation("ref")>]
+    member inline _.ref(render: FunRenderFragment, fn) =
+        render
+        &&& FunRenderFragment(fun builder index ->
+            builder.AddElementReferenceCapture(index, fn)
+            index + 1
+        )
+
+    [<CustomOperation("on")>]
+    member inline _.on(render: FunRenderFragment, eventName, callback: 'T -> unit) =
+        render
+        &&& FunRenderFragment(fun builder index ->
+            builder.AddAttribute(index, "on" + eventName, EventCallback.Factory.Create(null, Action<'T> callback))
+            index + 1
+        )
+
+    [<CustomOperation("onTask")>]
+    member inline _.onTask(render: FunRenderFragment, eventName, callback: 'T -> Task) =
+        render
+        &&& FunRenderFragment(fun builder index ->
+            builder.AddAttribute(index, "on" + eventName, EventCallback.Factory.Create(null, Func<'T, Task> callback))
+            index + 1
+        )
+
+    [<CustomOperation("preventDefault")>]
+    member inline _.preventDefault(render: FunRenderFragment, eventName, value) =
+        render
+        &&& FunRenderFragment(fun builder index ->
+            builder.AddEventPreventDefaultAttribute(index, "on" + eventName, value)
+            index + 1
+        )
+
+    [<CustomOperation("stopPropagation")>]
+    member inline _.stopPropagation(render: FunRenderFragment, eventName, value) =
+        render
+        &&& FunRenderFragment(fun builder index ->
+            builder.AddEventPreventDefaultAttribute(index, "on" + eventName, value)
+            index + 1
+        )
+
+
+type EltBuilder(name) =
+    inherit FragmentBuilder()
+
+    member _.Name: string = name
+
+    member inline this.Run([<InlineIfLambda>] render: FunRenderFragment) =
+        FunRenderFragment(fun builder index ->
+            builder.OpenElement(index, this.Name)
+            let nextIndex = render.Invoke(builder, index + 1)
+            builder.CloseElement()
+            nextIndex
+        )
+
+
+type ComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit FragmentBuilder()
+
+    member inline _.Run([<InlineIfLambda>] render: FunRenderFragment) =
+        FunRenderFragment(fun builder index ->
+            builder.OpenComponent<'T>(index)
+            let nextIndex = render.Invoke(builder, index + 1)
+            builder.CloseElement()
+            nextIndex
+        )
+
+
+[<AbstractClass>]
+type FunBlazorComponent() as this =
+    inherit ComponentBase()
+
+    override _.BuildRenderTree(builder: RenderTreeBuilder) = this.Render().Invoke(builder, 0) |> ignore
+
+    abstract Render : unit -> FunRenderFragment
 
 
 type SingleNodeComponent() as this =
@@ -20,65 +141,7 @@ type SingleNodeComponent() as this =
     override _.Render() = this.Node
 
     [<Parameter>]
-    member val Node = Unchecked.defaultof<Bolero.Node> with get, set
-
-
-/// Base class for Computation Expression style DSL
-type FunBlazorBuilder<'Component when 'Component :> Microsoft.AspNetCore.Components.IComponent>() =
-    let attrs = Collections.Generic.List<Attr>()
-    let nodes = Collections.Generic.List<Node>()
-
-    member this.AddAttr x =
-        attrs.Add x
-        this
-    member this.AddNode x =
-        nodes.Add x
-        this
-    member this.AddNodes x =
-        nodes.AddRange x
-        this
-
-    member this.AddBinding(name, value: IStore<'T>) =
-        name => value.Current |> this.AddAttr |> ignore
-        Bolero.Html.attr.callback<'T> $"{name}Changed" value.Publish |> this.AddAttr
-
-    member this.AddBinding(name, value: cval<'T>) =
-        name => AVal.force value |> this.AddAttr |> ignore
-        Bolero.Html.attr.callback<'T> $"{name}Changed" (fun x -> transact (fun _ -> value.Value <- x))
-        |> this.AddAttr
-
-    member this.AddBinding(name, (value: 'T, fn)) =
-        name => value |> this.AddAttr |> ignore
-        Bolero.Html.attr.callback<'T> $"{name}Changed" fn |> this.AddAttr
-
-
-    member this.Props() = attrs, nodes
-
-    member this.CreateNode() =
-        Bolero.Html.comp<'Component> (Seq.toList attrs) (Seq.toList nodes)
-
-    // Executes a computation expression
-    member this.Run _ =
-        Bolero.Html.comp<'Component> (Seq.toList attrs) (Seq.toList nodes)
-
-    member this.Yield _ = this
-
-    member this.Zero _ = Html.empty
-
-    [<CustomOperation("ref")>]
-    member this.ref(_: FunBlazorBuilder<'Component>, v) = Bolero.Html.attr.ref v |> this.AddAttr
-
-    [<CustomOperation("onevent")>]
-    member this.event(_: FunBlazorBuilder<'Component>, eventName, callback) =
-        Bolero.Html.on.event eventName callback |> this.AddAttr
-
-    [<CustomOperation("preventDefault")>]
-    member this.preventDefault(_: FunBlazorBuilder<'Component>, eventName, value) =
-        Bolero.Html.on.preventDefault eventName value |> this.AddAttr
-
-    [<CustomOperation("stopPropagation")>]
-    member this.stopPropagation(_: FunBlazorBuilder<'Component>, eventName, value) =
-        Bolero.Html.on.stopPropagation eventName value |> this.AddAttr
+    member val Node = FunRenderFragment(fun _ i -> i) with get, set
 
 
 type IStore<'T> =

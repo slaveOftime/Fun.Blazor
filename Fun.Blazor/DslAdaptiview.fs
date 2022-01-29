@@ -3,8 +3,8 @@ module Fun.Blazor.DslAdaptive
 
 open System.Runtime.CompilerServices
 open FSharp.Data.Adaptive
-open Bolero
 open Fun.Blazor
+open Operators
 
 
 /// This will generate an alist<Node> as a Node parameter.
@@ -24,27 +24,28 @@ open Fun.Blazor
 type AdaptiviewBuilder(?key: obj, ?isStatic: bool) =
     inherit AListBuilder()
 
-    member _.Run(x: alist<Node>) =
-        Bolero.Node.BlazorComponent<AdaptiveComponent>(
-            [
-                "Node" => x
-                match isStatic with
-                | Some true -> "IsStatic" => true
-                | _ -> ()
-                match key with
-                | Some key -> Bolero.Key key
-                | None -> ()
-            ],
-            []
-        )
+    member _.Run(x: alist<FunRenderFragment>) =
+        html.comp<AdaptiveComponent> () {
+            attrs (
+                html.fragment {
+                    "Node" => x
+                    match isStatic with
+                    | Some true -> "IsStatic" => true
+                    | _ -> ()
+                    match key with
+                    | Some key -> html.key key
+                    | None -> ()
+                }
+            )
+        }
 
-    member _.Delay(fn: unit -> alist<_>) = fn ()
+    member inline _.Delay(fn: unit -> alist<_>) = fn ()
 
-    member _.Combine(c1, c2) = AList.append c1 c2
+    member inline _.Combine(c1, c2) = AList.append c1 c2
 
-    member _.Yield x = AList.single x
+    member inline _.Yield x = AList.single x
 
-    member _.Zero() = AList.empty
+    member inline _.Zero() = AList.empty
 
 
 [<Extension>]
@@ -100,7 +101,3 @@ module Adapt =
 
 
 type adaptiview = AdaptiviewBuilder
-
-
-[<System.Obsolete "Use adaptiview for explicity instead">]
-let adapt = AdaptiviewBuilder()
