@@ -25,13 +25,9 @@ type html with
     /// </example>
     static member inject(render: 'Services -> FunRenderFragment) =
         html.comp<DIComponent<'Services>> () {
-            attrs (
-                html.fragment {
-                    "RenderFn" => render
-                    "IsStatic" => false
-                    html.key (Guid.NewGuid())
-                }
-            )
+            key (Guid.NewGuid())
+            "RenderFn" => render
+            "IsStatic" => false
         }
 
 
@@ -47,15 +43,11 @@ type html with
     ///   html.inject ("demo-key", fun () -> html.text $"externalX = {externalX}")
     /// </code>
     /// </example>
-    static member inject(key, render: 'Services -> FunRenderFragment) =
+    static member inject(k, render: 'Services -> FunRenderFragment) =
         html.comp<DIComponent<'Services>> () {
-            attrs (
-                html.fragment {
-                    "RenderFn" => render
-                    "IsStatic" => true
-                    html.key key
-                }
-            )
+            key k
+            "RenderFn" => render
+            "IsStatic" => true
         }
 
 
@@ -66,10 +58,6 @@ type html with
     /// 'Services must be a tuple like (hook: IComponentHook, sp: IServiceProvider)
     static member injectWithNoKey(render: 'Services -> FunRenderFragment) =
         html.comp<DIComponent<'Services>> () {
-            attrs (
-                html.fragment {
-                    "RenderFn" => render
-                    "IsStatic" => true
-                }
-            )
+            "RenderFn" => render
+            "IsStatic" => true
         }

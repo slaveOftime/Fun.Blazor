@@ -35,7 +35,7 @@ type AdaptiveComponent() as this =
 
 
     override _.Render() =
-        this.Logger.LogDebugForPerf(fun _ -> node |> AList.force |> IndexList.toList |> List.fold (&&&) emptyRender)
+        this.Logger.LogDebugForPerf(fun _ -> node |> AList.force |> IndexList.toList |> List.fold (==>) emptyRender)
 
 
     override _.OnParametersSet() =

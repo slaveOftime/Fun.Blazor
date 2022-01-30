@@ -13,7 +13,7 @@ type EltWithDomAttrs(name) =
 
 
     [<CustomOperation("style")>]
-    member inline _.Style([<InlineIfLambda>] render: FunRenderFragment, x: string) = render &&& ("style" => x)
+    member inline _.Style([<InlineIfLambda>] render: FunRenderFragment, x: string) = render ==> ("style" => x)
 
     /// <summary>
     /// A list of strings to be applied as classes
@@ -27,7 +27,7 @@ type EltWithDomAttrs(name) =
     /// </example>
     [<CustomOperation("classes")>]
     member inline _.classes([<InlineIfLambda>] render: FunRenderFragment, v: string list) =
-        render &&& (html.class' (String.concat " " v))
+        render ==> (html.class' (String.concat " " v))
 
     /// This is a helper function which can be used together with VSCode extension "Highlight HTML/SQL templates in F#"
     /// You must follow below format
@@ -57,257 +57,257 @@ type EltWithDomAttrs(name) =
             else
                 css
 
-        render &&& (html.style result)
+        render ==> (html.style result)
 
 
     [<CustomOperation("styles")>]
     member inline _.styles([<InlineIfLambda>] render: FunRenderFragment, v: (string * string) seq) =
-        render &&& (html.style ((makeStyles v).ToString()))
+        render ==> (html.style ((makeStyles v).ToString()))
 
     [<CustomOperation("class")>]
-    member inline _.class'([<InlineIfLambda>] render: FunRenderFragment, v: string) = render &&& (html.class' v)
+    member inline _.class'([<InlineIfLambda>] render: FunRenderFragment, v: string) = render ==> (html.class' v)
     [<CustomOperation("bindRef")>]
-    member inline _.bindRef([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("bindRef" => v)
+    member inline _.bindRef([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("bindRef" => v)
     [<CustomOperation("key")>]
-    member inline _.key([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("key" => v)
+    member inline _.key([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("key" => v)
     [<CustomOperation("accept")>]
-    member inline _.accept([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("accept" => v)
+    member inline _.accept([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("accept" => v)
     [<CustomOperation("acceptCharset")>]
-    member inline _.acceptCharset([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("acceptCharset" => v)
+    member inline _.acceptCharset([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("acceptCharset" => v)
     [<CustomOperation("accesskey")>]
-    member inline _.accesskey([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("accesskey" => v)
+    member inline _.accesskey([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("accesskey" => v)
     [<CustomOperation("action")>]
-    member inline _.action([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("action" => v)
+    member inline _.action([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("action" => v)
     [<CustomOperation("align")>]
-    member inline _.align([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("align" => v)
+    member inline _.align([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("align" => v)
     [<CustomOperation("allow")>]
-    member inline _.allow([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("allow" => v)
+    member inline _.allow([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("allow" => v)
     [<CustomOperation("alt")>]
-    member inline _.alt([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("alt" => v)
+    member inline _.alt([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("alt" => v)
     [<CustomOperation("async")>]
-    member inline _.async'([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("async" => v)
+    member inline _.async'([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("async" => v)
     [<CustomOperation("autocapitalize")>]
-    member inline _.autocapitalize([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("autocapitalize" => v)
+    member inline _.autocapitalize([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("autocapitalize" => v)
     [<CustomOperation("autocomplete")>]
-    member inline _.autocomplete([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("autocomplete" => v)
+    member inline _.autocomplete([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("autocomplete" => v)
     [<CustomOperation("autofocus")>]
-    member inline _.autofocus([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("autofocus" => v)
+    member inline _.autofocus([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("autofocus" => v)
     [<CustomOperation("autoplay")>]
-    member inline _.autoplay([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("autoplay" => v)
+    member inline _.autoplay([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("autoplay" => v)
     [<CustomOperation("bgcolor")>]
-    member inline _.bgcolor([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("bgcolor" => v)
+    member inline _.bgcolor([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("bgcolor" => v)
     [<CustomOperation("border")>]
-    member inline _.border([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("border" => v)
+    member inline _.border([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("border" => v)
     [<CustomOperation("buffered")>]
-    member inline _.buffered([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("buffered" => v)
+    member inline _.buffered([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("buffered" => v)
     [<CustomOperation("challenge")>]
-    member inline _.challenge([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("challenge" => v)
+    member inline _.challenge([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("challenge" => v)
     [<CustomOperation("charset")>]
-    member inline _.charset([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("charset" => v)
+    member inline _.charset([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("charset" => v)
     [<CustomOperation("checked")>]
-    member inline _.checked'([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("checked" => v)
+    member inline _.checked'([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("checked" => v)
     [<CustomOperation("cite")>]
-    member inline _.cite([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("cite" => v)
+    member inline _.cite([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("cite" => v)
     [<CustomOperation("code")>]
-    member inline _.code([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("code" => v)
+    member inline _.code([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("code" => v)
     [<CustomOperation("codebase")>]
-    member inline _.codebase([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("codebase" => v)
+    member inline _.codebase([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("codebase" => v)
     [<CustomOperation("color")>]
-    member inline _.color([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("color" => v)
+    member inline _.color([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("color" => v)
     [<CustomOperation("cols")>]
-    member inline _.cols([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("cols" => v)
+    member inline _.cols([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("cols" => v)
     [<CustomOperation("colspan")>]
-    member inline _.colspan([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("colspan" => v)
+    member inline _.colspan([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("colspan" => v)
     [<CustomOperation("content")>]
-    member inline _.content([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("content" => v)
+    member inline _.content([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("content" => v)
     [<CustomOperation("contenteditable")>]
     member inline _.contenteditable([<InlineIfLambda>] render: FunRenderFragment, v) =
-        render &&& ("contenteditable" => v)
+        render ==> ("contenteditable" => v)
     [<CustomOperation("contextmenu")>]
-    member inline _.contextmenu([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("contextmenu" => v)
+    member inline _.contextmenu([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("contextmenu" => v)
     [<CustomOperation("controls")>]
-    member inline _.controls([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("controls" => v)
+    member inline _.controls([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("controls" => v)
     [<CustomOperation("coords")>]
-    member inline _.coords([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("coords" => v)
+    member inline _.coords([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("coords" => v)
     [<CustomOperation("crossorigin")>]
-    member inline _.crossorigin([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("crossorigin" => v)
+    member inline _.crossorigin([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("crossorigin" => v)
     [<CustomOperation("csp")>]
-    member inline _.csp([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("csp" => v)
+    member inline _.csp([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("csp" => v)
     [<CustomOperation("data")>]
-    member inline _.data([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("data" => v)
+    member inline _.data([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("data" => v)
     [<CustomOperation("datetime")>]
-    member inline _.datetime([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("datetime" => v)
+    member inline _.datetime([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("datetime" => v)
     [<CustomOperation("decoding")>]
-    member inline _.decoding([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("decoding" => v)
+    member inline _.decoding([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("decoding" => v)
     [<CustomOperation("default")>]
-    member inline _.default'([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("default" => v)
+    member inline _.default'([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("default" => v)
     [<CustomOperation("defer")>]
-    member inline _.defer([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("defer" => v)
+    member inline _.defer([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("defer" => v)
     [<CustomOperation("dir")>]
-    member inline _.dir([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("dir" => v)
+    member inline _.dir([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("dir" => v)
     [<CustomOperation("dirname")>]
-    member inline _.dirname([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("dirname" => v)
+    member inline _.dirname([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("dirname" => v)
     [<CustomOperation("disabled")>]
-    member inline _.disabled([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("disabled" => v)
+    member inline _.disabled([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("disabled" => v)
     [<CustomOperation("download")>]
-    member inline _.download([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("download" => v)
+    member inline _.download([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("download" => v)
     [<CustomOperation("draggable")>]
     member inline _.draggable([<InlineIfLambda>] render: FunRenderFragment, v: bool) =
-        render &&& ("draggable" => (if v then "true" else "false"))
+        render ==> ("draggable" => (if v then "true" else "false"))
     [<CustomOperation("dropzone")>]
-    member inline _.dropzone([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("dropzone" => v)
+    member inline _.dropzone([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("dropzone" => v)
     [<CustomOperation("enctype")>]
-    member inline _.enctype([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("enctype" => v)
+    member inline _.enctype([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("enctype" => v)
     [<CustomOperation("for")>]
-    member inline _.for'([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("for" => v)
+    member inline _.for'([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("for" => v)
     [<CustomOperation("form")>]
-    member inline _.form([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("form" => v)
+    member inline _.form([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("form" => v)
     [<CustomOperation("formaction")>]
-    member inline _.formaction([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("formaction" => v)
+    member inline _.formaction([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("formaction" => v)
     [<CustomOperation("headers")>]
-    member inline _.headers([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("headers" => v)
+    member inline _.headers([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("headers" => v)
     [<CustomOperation("height")>]
-    member inline _.height([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("height" => v)
+    member inline _.height([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("height" => v)
     [<CustomOperation("hidden")>]
-    member inline _.hidden([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("hidden" => v)
+    member inline _.hidden([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("hidden" => v)
     [<CustomOperation("high")>]
-    member inline _.high([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("high" => v)
+    member inline _.high([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("high" => v)
     [<CustomOperation("href")>]
-    member inline _.href([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("href" => v)
+    member inline _.href([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("href" => v)
     [<CustomOperation("hreflang")>]
-    member inline _.hreflang([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("hreflang" => v)
+    member inline _.hreflang([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("hreflang" => v)
     [<CustomOperation("httpEquiv")>]
-    member inline _.httpEquiv([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("httpEquiv" => v)
+    member inline _.httpEquiv([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("httpEquiv" => v)
     [<CustomOperation("icon")>]
-    member inline _.icon([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("icon" => v)
+    member inline _.icon([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("icon" => v)
     [<CustomOperation("id")>]
-    member inline _.id([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("id" => v)
+    member inline _.id([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("id" => v)
     [<CustomOperation("importance")>]
-    member inline _.importance([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("importance" => v)
+    member inline _.importance([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("importance" => v)
     [<CustomOperation("integrity")>]
-    member inline _.integrity([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("integrity" => v)
+    member inline _.integrity([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("integrity" => v)
     [<CustomOperation("ismap")>]
-    member inline _.ismap([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("ismap" => v)
+    member inline _.ismap([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("ismap" => v)
     [<CustomOperation("itemprop")>]
-    member inline _.itemprop([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("itemprop" => v)
+    member inline _.itemprop([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("itemprop" => v)
     [<CustomOperation("keytype")>]
-    member inline _.keytype([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("keytype" => v)
+    member inline _.keytype([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("keytype" => v)
     [<CustomOperation("kind")>]
-    member inline _.kind([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("kind" => v)
+    member inline _.kind([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("kind" => v)
     [<CustomOperation("label")>]
-    member inline _.label([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("label" => v)
+    member inline _.label([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("label" => v)
     [<CustomOperation("lang")>]
-    member inline _.lang([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("lang" => v)
+    member inline _.lang([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("lang" => v)
     [<CustomOperation("language")>]
-    member inline _.language([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("language" => v)
+    member inline _.language([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("language" => v)
     [<CustomOperation("lazyload")>]
-    member inline _.lazyload([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("lazyload" => v)
+    member inline _.lazyload([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("lazyload" => v)
     [<CustomOperation("list")>]
-    member inline _.list([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("list" => v)
+    member inline _.list([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("list" => v)
     [<CustomOperation("loop")>]
-    member inline _.loop([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("loop" => v)
+    member inline _.loop([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("loop" => v)
     [<CustomOperation("low")>]
-    member inline _.low([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("low" => v)
+    member inline _.low([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("low" => v)
     [<CustomOperation("manifest")>]
-    member inline _.manifest([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("manifest" => v)
+    member inline _.manifest([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("manifest" => v)
     [<CustomOperation("max")>]
-    member inline _.max([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("max" => v)
+    member inline _.max([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("max" => v)
     [<CustomOperation("maxlength")>]
-    member inline _.maxlength([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("maxlength" => v)
+    member inline _.maxlength([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("maxlength" => v)
     [<CustomOperation("media")>]
-    member inline _.media([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("media" => v)
+    member inline _.media([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("media" => v)
     [<CustomOperation("method")>]
-    member inline _.method([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("method" => v)
+    member inline _.method([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("method" => v)
     [<CustomOperation("min")>]
-    member inline _.min([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("min" => v)
+    member inline _.min([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("min" => v)
     [<CustomOperation("minlength")>]
-    member inline _.minlength([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("minlength" => v)
+    member inline _.minlength([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("minlength" => v)
     [<CustomOperation("multiple")>]
-    member inline _.multiple([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("multiple" => v)
+    member inline _.multiple([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("multiple" => v)
     [<CustomOperation("muted")>]
-    member inline _.muted([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("muted" => v)
+    member inline _.muted([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("muted" => v)
     [<CustomOperation("name")>]
-    member inline _.name([<InlineIfLambda>] render: FunRenderFragment, v: string) = render &&& ("name" => v)
+    member inline _.name([<InlineIfLambda>] render: FunRenderFragment, v: string) = render ==> ("name" => v)
     [<CustomOperation("novalidate")>]
-    member inline _.novalidate([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("novalidate" => v)
+    member inline _.novalidate([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("novalidate" => v)
     [<CustomOperation("open")>]
-    member inline _.open'([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("open" => v)
+    member inline _.open'([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("open" => v)
     [<CustomOperation("optimum")>]
-    member inline _.optimum([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("optimum" => v)
+    member inline _.optimum([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("optimum" => v)
     [<CustomOperation("pattern")>]
-    member inline _.pattern([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("pattern" => v)
+    member inline _.pattern([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("pattern" => v)
     [<CustomOperation("ping")>]
-    member inline _.ping([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("ping" => v)
+    member inline _.ping([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("ping" => v)
     [<CustomOperation("placeholder")>]
-    member inline _.placeholder([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("placeholder" => v)
+    member inline _.placeholder([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("placeholder" => v)
     [<CustomOperation("poster")>]
-    member inline _.poster([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("poster" => v)
+    member inline _.poster([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("poster" => v)
     [<CustomOperation("preload")>]
-    member inline _.preload([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("preload" => v)
+    member inline _.preload([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("preload" => v)
     [<CustomOperation("readonly")>]
-    member inline _.readonly([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("readonly" => v)
+    member inline _.readonly([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("readonly" => v)
     [<CustomOperation("rel")>]
-    member inline _.rel([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("rel" => v)
+    member inline _.rel([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("rel" => v)
     [<CustomOperation("required")>]
-    member inline _.required([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("required" => v)
+    member inline _.required([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("required" => v)
     [<CustomOperation("reversed")>]
-    member inline _.reversed([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("reversed" => v)
+    member inline _.reversed([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("reversed" => v)
     [<CustomOperation("rows")>]
-    member inline _.rows([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("rows" => v)
+    member inline _.rows([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("rows" => v)
     [<CustomOperation("rowspan")>]
-    member inline _.rowspan([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("rowspan" => v)
+    member inline _.rowspan([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("rowspan" => v)
     [<CustomOperation("sandbox")>]
-    member inline _.sandbox([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("sandbox" => v)
+    member inline _.sandbox([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("sandbox" => v)
     [<CustomOperation("scope")>]
-    member inline _.scope([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("scope" => v)
+    member inline _.scope([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("scope" => v)
     [<CustomOperation("selected")>]
-    member inline _.selected([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("selected" => v)
+    member inline _.selected([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("selected" => v)
     [<CustomOperation("shape")>]
-    member inline _.shape([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("shape" => v)
+    member inline _.shape([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("shape" => v)
     [<CustomOperation("size")>]
-    member inline _.size([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("size" => v)
+    member inline _.size([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("size" => v)
     [<CustomOperation("sizes")>]
-    member inline _.sizes([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("sizes" => v)
+    member inline _.sizes([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("sizes" => v)
     [<CustomOperation("slot")>]
-    member inline _.slot([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("slot" => v)
+    member inline _.slot([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("slot" => v)
     [<CustomOperation("span'")>]
-    member inline _.span'([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("span" => v)
+    member inline _.span'([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("span" => v)
     [<CustomOperation("spellcheck")>]
-    member inline _.spellcheck([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("spellcheck" => v)
+    member inline _.spellcheck([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("spellcheck" => v)
     [<CustomOperation("src")>]
-    member inline _.src([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("src" => v)
+    member inline _.src([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("src" => v)
     [<CustomOperation("srcdoc")>]
-    member inline _.srcdoc([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("srcdoc" => v)
+    member inline _.srcdoc([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("srcdoc" => v)
     [<CustomOperation("srclang")>]
-    member inline _.srclang([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("srclang" => v)
+    member inline _.srclang([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("srclang" => v)
     [<CustomOperation("srcset")>]
-    member inline _.srcset([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("srcset" => v)
+    member inline _.srcset([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("srcset" => v)
     [<CustomOperation("start")>]
-    member inline _.start([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("start" => v)
+    member inline _.start([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("start" => v)
     [<CustomOperation("step")>]
-    member inline _.step([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("step" => v)
+    member inline _.step([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("step" => v)
     [<CustomOperation("style")>]
-    member inline _.style'([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("style" => v)
+    member inline _.style'([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("style" => v)
     [<CustomOperation("summary")>]
-    member inline _.summary([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("summary" => v)
+    member inline _.summary([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("summary" => v)
     [<CustomOperation("tabindex")>]
-    member inline _.tabindex([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("tabindex" => v)
+    member inline _.tabindex([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("tabindex" => v)
     [<CustomOperation("target")>]
-    member inline _.target([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("target" => v)
+    member inline _.target([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("target" => v)
     [<CustomOperation("title'")>]
-    member inline _.title'([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("title" => v)
+    member inline _.title'([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("title" => v)
     [<CustomOperation("translate")>]
-    member inline _.translate([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("translate" => v)
+    member inline _.translate([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("translate" => v)
     [<CustomOperation("type")>]
-    member inline _.type'([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("type" => v)
+    member inline _.type'([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("type" => v)
     [<CustomOperation("usemap")>]
-    member inline _.usemap([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("usemap" => v)
+    member inline _.usemap([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("usemap" => v)
     [<CustomOperation("value")>]
-    member inline _.value([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("value" => v)
+    member inline _.value([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("value" => v)
     [<CustomOperation("width")>]
-    member inline _.width([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("width" => v)
+    member inline _.width([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("width" => v)
     [<CustomOperation("wrap")>]
-    member inline _.wrap([<InlineIfLambda>] render: FunRenderFragment, v) = render &&& ("wrap" => v)
+    member inline _.wrap([<InlineIfLambda>] render: FunRenderFragment, v) = render ==> ("wrap" => v)
 
 
     [<CustomOperation("onfocus")>]
@@ -1103,7 +1103,7 @@ type EltWithChild(name) =
             [<InlineIfLambda>] renderChild: FunRenderFragment
         )
         =
-        render &&& renderChild
+        render ==> renderChild
 
     /// <summary>
     /// It is recommend to use fragment for better performance
@@ -1144,7 +1144,7 @@ type EltWithChild(name) =
     /// </code>
     /// </example>
     [<CustomOperation("childContent")>]
-    member inline _.childContent([<InlineIfLambda>] render: FunRenderFragment, v: string) = render &&& (html.text v)
+    member inline _.childContent([<InlineIfLambda>] render: FunRenderFragment, v: string) = render ==> (html.text v)
 
     /// <summary>
     /// Single child node to be added into the element's children
@@ -1160,7 +1160,7 @@ type EltWithChild(name) =
     /// </code>
     /// </example>
     [<CustomOperation("childContent")>]
-    member inline _.childContent([<InlineIfLambda>] render: FunRenderFragment, v: int) = render &&& (html.text v)
+    member inline _.childContent([<InlineIfLambda>] render: FunRenderFragment, v: int) = render ==> (html.text v)
     /// <summary>
     /// Single child node to be added into the element's children
     /// </summary>
@@ -1175,7 +1175,7 @@ type EltWithChild(name) =
     /// </code>
     /// </example>
     [<CustomOperation("childContent")>]
-    member inline _.childContent([<InlineIfLambda>] render: FunRenderFragment, v: float) = render &&& (html.text v)
+    member inline _.childContent([<InlineIfLambda>] render: FunRenderFragment, v: float) = render ==> (html.text v)
     /// <summary>
     /// Single child node to be added into the element's children
     /// </summary>
@@ -1192,7 +1192,7 @@ type EltWithChild(name) =
     /// </code>
     /// </example>
     [<CustomOperation("childContentRaw")>]
-    member inline _.childContentRaw([<InlineIfLambda>] render: FunRenderFragment, v: string) = render &&& (html.raw v)
+    member inline _.childContentRaw([<InlineIfLambda>] render: FunRenderFragment, v: string) = render ==> (html.raw v)
 
 
 [<AutoOpen>]

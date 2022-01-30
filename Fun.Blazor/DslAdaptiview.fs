@@ -21,22 +21,18 @@ open Operators
 ///     }
 /// </code>
 /// </example>
-type AdaptiviewBuilder(?key: obj, ?isStatic: bool) =
+type AdaptiviewBuilder(?k: obj, ?isStatic: bool) =
     inherit AListBuilder()
 
     member _.Run(x: alist<FunRenderFragment>) =
         html.comp<AdaptiveComponent> () {
-            attrs (
-                html.fragment {
-                    "Node" => x
-                    match isStatic with
-                    | Some true -> "IsStatic" => true
-                    | _ -> ()
-                    match key with
-                    | Some key -> html.key key
-                    | None -> ()
-                }
-            )
+            "Node" => x
+            match isStatic with
+            | Some true -> "IsStatic" => true
+            | _ -> ()
+            match k with
+            | Some k -> html.key k
+            | None -> ()
         }
 
     member inline _.Delay(fn: unit -> alist<_>) = fn ()

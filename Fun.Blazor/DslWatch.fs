@@ -21,18 +21,14 @@ type html with
     ///   html.watch(obs, _view)
     /// </code>
     /// </example>
-    static member watch(store: IObservable<'T>, render: 'T -> FunRenderFragment, defaultValue: 'T, ?key) =
+    static member watch(store: IObservable<'T>, render: 'T -> FunRenderFragment, defaultValue: 'T, ?k) =
         html.comp<StoreComponent<'T>> () {
-            attrs (
-                html.fragment {
-                    "DefaultValue" => defaultValue
-                    "Store" => store
-                    "RenderFn" => render
-                    match key with
-                    | Some key -> html.key key
-                    | None -> ()
-                }
-            )
+            "DefaultValue" => defaultValue
+            "Store" => store
+            "RenderFn" => render
+            match k with
+            | Some k -> html.key k
+            | None -> ()
         }
 
     /// <summary>
@@ -76,7 +72,7 @@ type html with
     /// </code>
     /// </example>
     static member watch(store: IStore<'T>, render: 'T -> FunRenderFragment list) =
-        html.watch (store.Observable, render >> List.fold (&&&) emptyRender, store.Current)
+        html.watch (store.Observable, render >> List.fold (==>) emptyRender, store.Current)
     /// <summary>
     /// Renders Nodes dynamically based on what is emitted by the store
     /// </summary>
@@ -97,7 +93,7 @@ type html with
     /// </code>
     /// </example>
     static member watch(key, store: IStore<'T>, render: 'T -> FunRenderFragment) =
-        html.watch (store.Observable, render, store.Current, key = key)
+        html.watch (store.Observable, render, store.Current, k = key)
     /// <summary>
     /// Renders Nodes dynamically based on what is emitted by the store
     /// </summary>
@@ -119,7 +115,7 @@ type html with
     /// </code>
     /// </example>
     static member watch(key, store: IStore<'T>, render: 'T -> FunRenderFragment list) =
-        html.watch (store.Observable, render >> List.fold (&&&) emptyRender, store.Current, key = key)
+        html.watch (store.Observable, render >> List.fold (==>) emptyRender, store.Current, k = key)
 
     /// <summary>
     /// Renders Nodes dynamically based on what is emitted by the stores
