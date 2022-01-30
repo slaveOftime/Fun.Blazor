@@ -1,43 +1,31 @@
 namespace rec Microsoft.AspNetCore.Components.Authorization.DslInternals
 
-open Bolero.Html
 open FSharp.Data.Adaptive
 open Fun.Blazor
+open Fun.Blazor.Operators
 open Microsoft.AspNetCore.Components.DslInternals
 open Microsoft.AspNetCore.Components.Web.DslInternals
 open Microsoft.AspNetCore.Components.Authorization.DslInternals
 
 
 type AuthorizeViewCoreBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit FunBlazorBuilder<'FunBlazorGeneric>()
-    static member create () = AuthorizeViewCoreBuilder<'FunBlazorGeneric>().CreateNode()
-    [<CustomOperation("ChildContent")>] member this.ChildContent (_: FunBlazorBuilder<'FunBlazorGeneric>, render: Microsoft.AspNetCore.Components.Authorization.AuthenticationState -> Bolero.Node) = Bolero.Html.attr.fragmentWith "ChildContent" (fun x -> render x) |> this.AddAttr
-    [<CustomOperation("NotAuthorized")>] member this.NotAuthorized (_: FunBlazorBuilder<'FunBlazorGeneric>, render: Microsoft.AspNetCore.Components.Authorization.AuthenticationState -> Bolero.Node) = Bolero.Html.attr.fragmentWith "NotAuthorized" (fun x -> render x) |> this.AddAttr
-    [<CustomOperation("Authorized")>] member this.Authorized (_: FunBlazorBuilder<'FunBlazorGeneric>, render: Microsoft.AspNetCore.Components.Authorization.AuthenticationState -> Bolero.Node) = Bolero.Html.attr.fragmentWith "Authorized" (fun x -> render x) |> this.AddAttr
-    [<CustomOperation("Authorizing")>] member this.Authorizing (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "Authorizing" (html.fragment nodes) |> this.AddAttr
-    [<CustomOperation("Authorizing")>] member this.Authorizing (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "Authorizing" (html.text x) |> this.AddAttr
-    [<CustomOperation("Authorizing")>] member this.Authorizing (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "Authorizing" (html.text x) |> this.AddAttr
-    [<CustomOperation("Authorizing")>] member this.Authorizing (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "Authorizing" (html.text x) |> this.AddAttr
-    [<CustomOperation("Resource")>] member this.Resource (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Object) = "Resource" => x |> this.AddAttr
+    inherit ComponentBuilder<'FunBlazorGeneric>()
+    [<CustomOperation("ChildContent")>] member inline _.ChildContent (render: AttrRenderFragment, fn: Microsoft.AspNetCore.Components.Authorization.AuthenticationState -> NodeRenderFragment) = render ==> html.renderFragment("ChildContent", fn)
+    [<CustomOperation("NotAuthorized")>] member inline _.NotAuthorized (render: AttrRenderFragment, fn: Microsoft.AspNetCore.Components.Authorization.AuthenticationState -> NodeRenderFragment) = render ==> html.renderFragment("NotAuthorized", fn)
+    [<CustomOperation("Authorized")>] member inline _.Authorized (render: AttrRenderFragment, fn: Microsoft.AspNetCore.Components.Authorization.AuthenticationState -> NodeRenderFragment) = render ==> html.renderFragment("Authorized", fn)
+    [<CustomOperation("Authorizing")>] member inline _.Authorizing (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("Authorizing", fragment)
+    [<CustomOperation("Resource")>] member inline _.Resource (render: AttrRenderFragment, x: System.Object) = render ==> ("Resource" => x)
                 
 
 type AuthorizeViewBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit AuthorizeViewCoreBuilder<'FunBlazorGeneric>()
-    static member create () = AuthorizeViewBuilder<'FunBlazorGeneric>().CreateNode()
-    [<CustomOperation("Policy")>] member this.Policy (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "Policy" => x |> this.AddAttr
-    [<CustomOperation("Roles")>] member this.Roles (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "Roles" => x |> this.AddAttr
+    [<CustomOperation("Policy")>] member inline _.Policy (render: AttrRenderFragment, x: System.String) = render ==> ("Policy" => x)
+    [<CustomOperation("Roles")>] member inline _.Roles (render: AttrRenderFragment, x: System.String) = render ==> ("Roles" => x)
                 
 
 type CascadingAuthenticationStateBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit FunBlazorBuilder<'FunBlazorGeneric>()
-    new (x: string) as this = CascadingAuthenticationStateBuilder<'FunBlazorGeneric>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.text) |> this.AddAttr |> ignore
-    new (x: Bolero.Node list) as this = CascadingAuthenticationStateBuilder<'FunBlazorGeneric>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.fragment) |> this.AddAttr |> ignore
-    static member create (x: string) = CascadingAuthenticationStateBuilder<'FunBlazorGeneric>(x).CreateNode()
-    static member create (x: Bolero.Node list) = CascadingAuthenticationStateBuilder<'FunBlazorGeneric>(x).CreateNode()
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (html.fragment nodes) |> this.AddAttr
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> this.AddAttr
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> this.AddAttr
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> this.AddAttr
+    inherit ComponentBuilder<'FunBlazorGeneric>()
+    [<CustomOperation("childContent")>] member inline _.childContent (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("ChildContent", fragment)
                 
             
 
@@ -50,7 +38,7 @@ module DslCE =
 
     open Microsoft.AspNetCore.Components.Authorization.DslInternals
 
-    type AuthorizeViewCore'() = inherit AuthorizeViewCoreBuilder<Microsoft.AspNetCore.Components.Authorization.AuthorizeViewCore>()
-    type AuthorizeView'() = inherit AuthorizeViewBuilder<Microsoft.AspNetCore.Components.Authorization.AuthorizeView>()
-    type CascadingAuthenticationState'() = inherit CascadingAuthenticationStateBuilder<Microsoft.AspNetCore.Components.Authorization.CascadingAuthenticationState>()
+    let AuthorizeViewCore' = AuthorizeViewCoreBuilder<Microsoft.AspNetCore.Components.Authorization.AuthorizeViewCore>()
+    let AuthorizeView' = AuthorizeViewBuilder<Microsoft.AspNetCore.Components.Authorization.AuthorizeView>()
+    let CascadingAuthenticationState' = CascadingAuthenticationStateBuilder<Microsoft.AspNetCore.Components.Authorization.CascadingAuthenticationState>()
             

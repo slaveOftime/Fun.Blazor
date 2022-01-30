@@ -11,7 +11,7 @@ type CssBuilder with
             .AddCss("border-bottom", "8px solid blue") // use own rule
 
 let ceCssDemo =
-    div(){
+    div {
         css (CssBuilder(){
             color color.darkRed
             backgroundColor color.green
@@ -24,7 +24,7 @@ let ceCssDemo =
         })
         childContent [
             for _ in 1..10 do
-                div(){
+                div {
                     css (CssBuilder(){
                         width 100
                         height 30
@@ -35,7 +35,7 @@ let ceCssDemo =
                             margin 10
                             borderBottom (length.px 4) borderStyle.solid color.hotPink
                         //else
-                        //    borderBottom (length.px 4) borderStyle.solid color.hotPink
+                        //    borderBottom (length.px 4) borderstyl.solid color.hotPink
                         // FS3086	A custom operation may not be used in conjunction with 'use', 'try/with', 'try/finally', 'if/then/else' or 'match' operators within this computation expression	Fun.Blazor.Docs.Wasm	C:\Users\woo\Documents\Code\Slaveoftime\Fun.Blazor\Fun.Blazor.Docs.Wasm\Pages\HelperFunctions\CECssDemo.fs	32	Active
                     })
                 }

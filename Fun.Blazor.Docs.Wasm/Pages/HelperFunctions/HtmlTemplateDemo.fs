@@ -28,11 +28,11 @@ module HtmlTemplateDemo =
             let increaseBy2 () = setCount (count + 2)
 
             let increaseBtn =
-                MudButton'() {
+                MudButton' {
                     OnClick(fun _ -> setCount (count + 1))
                     Variant Variant.Filled
                     Color Color.Primary
-                    childContent "Mud Increase Btn"
+                    "Mud Increase Btn"
                 }
 
             let congratulations = Template.html $"<div>Congratulations! You made it ❤️</div>"
@@ -54,8 +54,8 @@ module HtmlTemplateDemo =
                         {increaseBtn}
                     </div>
                     {match count with
-                     | 1 -> html.div "Match 1"
-                     | _ -> html.div "Match _"}
+                     | 1 -> div { "Match 1" }
+                     | _ -> div { "Match _"}}
                     <div style="color: {if count = 3 then "red" else "green"};" class="test-class">Cool!!</div>
                     <div style="{if count = 4 then "color: red;" else "color: green;"}">Cool!!</div>
 
@@ -76,7 +76,7 @@ module HtmlTemplateDemo =
                             <li>Use it together with callback util</li>
                         </ul>
                     </p>
-                    <sl-input type="number" onsl-change="{callback (fun (e: SlChangeEventArgs) -> e.Value |> string |> int |> setCount)}" value="{count}"></sl-input>
+                    <sl-input type="number" onsl-change="{(fun (e: SlChangeEventArgs) -> e.Value |> string |> int |> setCount)}" value="{count}"></sl-input>
                     <script>
                         Blazor.registerCustomEventType('sl-change', {{
                             browserEventName: 'sl-change',

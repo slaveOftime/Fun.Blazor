@@ -1,31 +1,30 @@
 namespace rec Blazor.DragDrop.DslInternals
 
-open Bolero.Html
 open FSharp.Data.Adaptive
 open Fun.Blazor
+open Fun.Blazor.Operators
 open Microsoft.AspNetCore.Components.DslInternals
 open Microsoft.AspNetCore.Components.Web.DslInternals
 open Blazor.DragDrop.DslInternals
 
 
 type DropzoneBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit FunBlazorBuilder<'FunBlazorGeneric>()
-    static member create () = DropzoneBuilder<'FunBlazorGeneric, 'TItem>().CreateNode()
-    [<CustomOperation("Accepts")>] member this.Accepts (_: FunBlazorBuilder<'FunBlazorGeneric>, fn) = "Accepts" => (System.Func<'TItem, 'TItem, System.Boolean>fn) |> this.AddAttr
-    [<CustomOperation("AllowsDrag")>] member this.AllowsDrag (_: FunBlazorBuilder<'FunBlazorGeneric>, fn) = "AllowsDrag" => (System.Func<'TItem, System.Boolean>fn) |> this.AddAttr
-    [<CustomOperation("DragEnd")>] member this.DragEnd (_: FunBlazorBuilder<'FunBlazorGeneric>, fn) = "DragEnd" => (System.Action<'TItem>fn) |> this.AddAttr
-    [<CustomOperation("OnItemDropRejected")>] member this.OnItemDropRejected (_: FunBlazorBuilder<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<'TItem> "OnItemDropRejected" (fun e -> fn e)) |> this.AddAttr
-    [<CustomOperation("OnItemDrop")>] member this.OnItemDrop (_: FunBlazorBuilder<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<'TItem> "OnItemDrop" (fun e -> fn e)) |> this.AddAttr
-    [<CustomOperation("OnReplacedItemDrop")>] member this.OnReplacedItemDrop (_: FunBlazorBuilder<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<'TItem> "OnReplacedItemDrop" (fun e -> fn e)) |> this.AddAttr
-    [<CustomOperation("InstantReplace")>] member this.InstantReplace (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Boolean) = "InstantReplace" => x |> this.AddAttr
-    [<CustomOperation("Items")>] member this.Items (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Collections.Generic.IList<'TItem>) = "Items" => x |> this.AddAttr
-    [<CustomOperation("MaxItems")>] member this.MaxItems (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Nullable<System.Int32>) = "MaxItems" => x |> this.AddAttr
-    [<CustomOperation("OnItemDropRejectedByMaxItemLimit")>] member this.OnItemDropRejectedByMaxItemLimit (_: FunBlazorBuilder<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<'TItem> "OnItemDropRejectedByMaxItemLimit" (fun e -> fn e)) |> this.AddAttr
-    [<CustomOperation("ChildContent")>] member this.ChildContent (_: FunBlazorBuilder<'FunBlazorGeneric>, render: 'TItem -> Bolero.Node) = Bolero.Html.attr.fragmentWith "ChildContent" (fun x -> render x) |> this.AddAttr
-    [<CustomOperation("Classes")>] member this.Classes (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string list) = attr.classes x |> this.AddAttr
-    [<CustomOperation("Id")>] member this.Id (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "Id" => x |> this.AddAttr
-    [<CustomOperation("ItemWrapperClass")>] member this.ItemWrapperClass (_: FunBlazorBuilder<'FunBlazorGeneric>, fn) = "ItemWrapperClass" => (System.Func<'TItem, System.String>fn) |> this.AddAttr
-    [<CustomOperation("CopyItem")>] member this.CopyItem (_: FunBlazorBuilder<'FunBlazorGeneric>, fn) = "CopyItem" => (System.Func<'TItem, 'TItem>fn) |> this.AddAttr
+    inherit ComponentBuilder<'FunBlazorGeneric>()
+    [<CustomOperation("Accepts")>] member inline _.Accepts (render: AttrRenderFragment, fn) = render ==> ("Accepts" => (System.Func<'TItem, 'TItem, System.Boolean>fn))
+    [<CustomOperation("AllowsDrag")>] member inline _.AllowsDrag (render: AttrRenderFragment, fn) = render ==> ("AllowsDrag" => (System.Func<'TItem, System.Boolean>fn))
+    [<CustomOperation("DragEnd")>] member inline _.DragEnd (render: AttrRenderFragment, fn) = render ==> ("DragEnd" => (System.Action<'TItem>fn))
+    [<CustomOperation("OnItemDropRejected")>] member inline _.OnItemDropRejected (render: AttrRenderFragment, fn) = render ==> html.callback<'TItem>("OnItemDropRejected", fn)
+    [<CustomOperation("OnItemDrop")>] member inline _.OnItemDrop (render: AttrRenderFragment, fn) = render ==> html.callback<'TItem>("OnItemDrop", fn)
+    [<CustomOperation("OnReplacedItemDrop")>] member inline _.OnReplacedItemDrop (render: AttrRenderFragment, fn) = render ==> html.callback<'TItem>("OnReplacedItemDrop", fn)
+    [<CustomOperation("InstantReplace")>] member inline _.InstantReplace (render: AttrRenderFragment, x: System.Boolean) = render ==> ("InstantReplace" => x)
+    [<CustomOperation("Items")>] member inline _.Items (render: AttrRenderFragment, x: System.Collections.Generic.IList<'TItem>) = render ==> ("Items" => x)
+    [<CustomOperation("MaxItems")>] member inline _.MaxItems (render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("MaxItems" => x)
+    [<CustomOperation("OnItemDropRejectedByMaxItemLimit")>] member inline _.OnItemDropRejectedByMaxItemLimit (render: AttrRenderFragment, fn) = render ==> html.callback<'TItem>("OnItemDropRejectedByMaxItemLimit", fn)
+    [<CustomOperation("ChildContent")>] member inline _.ChildContent (render: AttrRenderFragment, fn: 'TItem -> NodeRenderFragment) = render ==> html.renderFragment("ChildContent", fn)
+    [<CustomOperation("Classes")>] member inline _.Classes (render: AttrRenderFragment, x: string list) = render ==> html.classes x
+    [<CustomOperation("Id")>] member inline _.Id (render: AttrRenderFragment, x: System.String) = render ==> ("Id" => x)
+    [<CustomOperation("ItemWrapperClass")>] member inline _.ItemWrapperClass (render: AttrRenderFragment, fn) = render ==> ("ItemWrapperClass" => (System.Func<'TItem, System.String>fn))
+    [<CustomOperation("CopyItem")>] member inline _.CopyItem (render: AttrRenderFragment, fn) = render ==> ("CopyItem" => (System.Func<'TItem, 'TItem>fn))
                 
             
 
@@ -38,5 +37,5 @@ module DslCE =
 
     open Blazor.DragDrop.DslInternals
 
-    type Dropzone'<'TItem>() = inherit DropzoneBuilder<Plk.Blazor.DragDrop.Dropzone<'TItem>, 'TItem>()
+    let Dropzone'<'TItem> = DropzoneBuilder<Plk.Blazor.DragDrop.Dropzone<'TItem>, 'TItem>()
             

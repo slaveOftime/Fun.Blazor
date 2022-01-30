@@ -51,6 +51,9 @@ type AdaptiviewBuilder(?key: obj, ?isStatic: bool) =
 
     member inline _.Zero() = AVal.init emptyNode
 
+    member inline _.For(ls: 'T seq, [<InlineIfLambda>] fn: 'T -> aval<NodeRenderFragment>) =
+        ls |> Seq.map fn |> Seq.fold (AVal.map2 (>=>)) (AVal.init emptyNode)
+
 
 [<Extension>]
 type Extensions =

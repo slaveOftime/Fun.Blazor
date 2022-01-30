@@ -35,41 +35,38 @@ let componentHookDemo =
             |> hook.AddDispose
         )
 
-        MudPaper'() {
-            Styles [ style.padding 20 ]
-            childContent [
-                html.watch (
-                    toggle,
-                    fun isToggled ->
-                        [
-                            MudText'() {
-                                childContent
-                                    "We can use this hook to subscribe lifecycle event of the component which created by html.inject at the beginening. We can create observable store to have a state management for the current component. After the component disposed all the store will also be disposed."
-                                Typo Typo.subtitle1
+        MudPaper' {
+            Styles [ styl.padding 20 ]
+            html.watch (
+                toggle,
+                fun isToggled ->
+                    [
+                        MudText' {
+                            Typo Typo.subtitle1
+                            "We can use this hook to subscribe lifecycle event of the component which created by html.inject at the beginening. We can create observable store to have a state management for the current component. After the component disposed all the store will also be disposed."
+                        }
+                        MudText' {
+                            Typo Typo.subtitle1
+                            Color Color.Info
+                            $"After every {threshhold} seconds the toggle will be switched"
+                        }
+                        MudSwitch'<bool> {
+                            Checked isToggled
+                            CheckedChanged(fun (x: bool) -> toggle.Publish x)
+                        }
+                        if isToggled then
+                            MudText' {
+                                Typo Typo.subtitle2
+                                Color Color.Primary
+                                "Toggled successfuly"
                             }
-                            MudText'() {
-                                childContent $"After every {threshhold} seconds the toggle will be switched"
-                                Typo Typo.subtitle1
-                                Color Color.Info
+                        else
+                            MudText' {
+                                Color Color.Secondary
+                                "Toggled off now"
                             }
-                            MudSwitch'<bool>() {
-                                Checked isToggled
-                                CheckedChanged(fun (x: bool) -> toggle.Publish x)
-                            }
-                            if isToggled then
-                                MudText'() {
-                                    childContent "Toggled successfuly"
-                                    Typo Typo.subtitle2
-                                    Color Color.Primary
-                                }
-                            else
-                                MudText'() {
-                                    childContent "Toggled off now"
-                                    Color Color.Secondary
-                                }
-                            html.watch (count, (fun c -> html.text $"Interval Count: {c}"))
-                        ]
-                )
-            ]
+                        html.watch (count, (fun c -> html.text $"Interval Count: {c}"))
+                    ]
+            )
         }
     )

@@ -15,18 +15,18 @@ let quickStart =
         "This is a project to make F# developer to write blazor easier."
         "It is based on Bolero and Feliz.Engine"
         [
-            html.div [
-                attr.styles [ style.margin 20 ]
+            div {
+                attr.styles [ styl.margin 20 ]
                 attr.className "d-flex justify-center"
                 attr.childContent [
-                    MudButton'() {
+                    MudButton' {
                         Link "./cli-usage"
                         Variant Variant.Filled
                         Color Color.Secondary
-                        childContent "Check thrid party dsl generating cli"
+                        "Check thrid party dsl generating cli"
                     }
                 ]
-            ]
+            }
             sourceSection "README"
             //demoDivider
             //demoContainer "Basic usage" $"{root}/BasicUsageDemo" basicUsageDemo

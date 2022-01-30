@@ -6,27 +6,25 @@ open Fun.Blazor
 
 
 let demoDivider =
-    html.div [
+    div {
         spaceV4
-        MudDivider'.create()
+        MudDivider'
         spaceV4
-    ]
+    }
 
 
 let demoContainer (titleStr: string) fileName contentStr =
-    html.div [
-        attr.styles [ style.margin 10 ]
-        attr.childContent [
-            MudText'() {
-                Typo Typo.h6
-                childContent titleStr
-            }
-            spaceV2
-            MudPaper'() {
-                Elevation 40
-                childContent [ contentStr ]
-            }
-            spaceV2
-            sourceSection fileName
-        ]
-    ]
+    div {
+        styles [ styl.margin 10 ]
+        MudText' {
+            Typo Typo.h6
+            titleStr
+        }
+        spaceV2
+        MudPaper' {
+            Elevation 40
+            contentStr
+        }
+        spaceV2
+        sourceSection fileName
+    }

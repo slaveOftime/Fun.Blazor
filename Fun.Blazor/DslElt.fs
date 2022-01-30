@@ -287,8 +287,6 @@ type DomBuilder() =
     member inline _.start([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("start" => v)
     [<CustomOperation("step")>]
     member inline _.step([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("step" => v)
-    [<CustomOperation("style")>]
-    member inline _.style'([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("style" => v)
     [<CustomOperation("summary")>]
     member inline _.summary([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("summary" => v)
     [<CustomOperation("tabindex")>]
@@ -1794,14 +1792,14 @@ type EltBuilder(name) =
 
         
     member inline _.Yield(x: EltBuilder) =
-        AttrRenderFragment(fun _ builder index ->
+        NodeRenderFragment(fun _ builder index ->
             builder.OpenElement(index, x.Name)
             builder.CloseElement()
             index + 1
         )
 
     member inline _.Yield(_: ComponentBuilder<'T>) =
-        AttrRenderFragment(fun _ builder index ->
+        NodeRenderFragment(fun _ builder index ->
             builder.OpenComponent<'T>(index)
             builder.CloseComponent()
             index + 1
@@ -1842,6 +1840,13 @@ and ComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent>()
             index + 1
         )
 
+    member inline _.Yield(_: ComponentWithDomAttrBuilder<'T>) =
+        NodeRenderFragment(fun _ builder index ->
+            builder.OpenComponent<'T>(index)
+            builder.CloseComponent()
+            index + 1
+        )
+
 
     [<CustomOperation("key")>] 
     member inline _.key([<InlineIfLambda>] render: AttrRenderFragment, k) =
@@ -1852,7 +1857,7 @@ and ComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent>()
         )
 
 
-type ComponentWithDomAttrBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent>() =
+and ComponentWithDomAttrBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit DomBuilder()
 
     member inline _.Run([<InlineIfLambda>] render: AttrRenderFragment) =

@@ -6,11 +6,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Fun.Blazor.Bindings\AntDesign.Charts.fs" />
-    <Compile Include="Fun.Blazor.Bindings\AntDesign.fs" />
     <Compile Include="Fun.Blazor.Bindings\AntDesign.ProLayout.fs" />
     <Compile Include="Fun.Blazor.Bindings\Blazor.DragDrop.fs" />
     <Compile Include="Fun.Blazor.Bindings\Microsoft.AspNetCore.Components.Authorization.fs" />
-    <Compile Include="Fun.Blazor.Bindings\Microsoft.Fast.Components.FluentUI.fs" />
     <Compile Include="Fun.Blazor.Bindings\MudBlazor.fs" />
   </ItemGroup>
   <ItemGroup>
@@ -21,13 +19,6 @@
     <Compile Include="Demos\DemoMudBlazor\AlertDemo.fs" />
     <Compile Include="Demos\DemoMudBlazor\AppBarDemo.fs" />
     <Compile Include="Demos\DemoMudBlazor\DemoMudBlazor.fs" />
-    <Compile Include="Demos\DemoAntDesign\ModalDemo.fs" />
-    <Compile Include="Demos\DemoAntDesign\DropDownDemo.fs" />
-    <Compile Include="Demos\DemoAntDesign\CollapseDemo.fs" />
-    <Compile Include="Demos\DemoAntDesign\ChartDemo.fs" />
-    <Compile Include="Demos\DemoAntDesign\DemoAntDesign.fs" />
-    <Compile Include="Demos\DemoFluentUI\SkeletonDemo.fs" />
-    <Compile Include="Demos\DemoFluentUI\DemoFluentUI.fs" />
     <Compile Include="Demos\DemoDragDrop\ListDragDropDemo.fs" />
     <Compile Include="Demos\DemoDragDrop\DemoDragDrop.fs" />
     <Compile Include="Pages\QuickStart\BasicUsageDemo.fs" />

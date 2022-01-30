@@ -16,25 +16,25 @@ let virtualizeDemo =
     adaptiview(){
         let! items, setItems = cval([||]).WithSetter()
 
-        MudButton'(){
+        MudButton'{
             Variant Variant.Filled
             OnClick (fun _ -> setItems [|1..testLength|])
-            childContent $"Create {testLength} items for virtualize test"
+            $"Create {testLength} items for virtualize test"
         }
-        div(){
+        div {
             css (CssBuilder(){
                 maxHeight 100
                 overflowYAuto
             })
             childContent [
-                Virtualize'(){
+                Virtualize'{
                     Items items
                     ChildContent (fun i ->
-                        div(){
+                        div {
                             css (CssBuilder(){
                                 color "blue"
                             })
-                            childContent $"item {i}"
+                            $"item {i}"
                         })
                 }
             ]
@@ -43,51 +43,49 @@ let virtualizeDemo =
 
 
 let bigListDemo =
-    MudPaper'(){
-        Styles [ style.padding 10 ]
-        childContent [
-            adaptiview(){
-                let! items, setItems = cval([||]).WithSetter()
-                MudButton'(){
-                    Variant Variant.Filled
-                    OnClick (fun _ -> setItems [|1..testLength|])
-                    childContent $"Create {testLength} items for CE style"
-                }
-                div(){
-                    styles [ style.marginTop 10; style.maxHeight 100; style.overflowYAuto ]
-                    childContent [
-                        for i in items do
-                            div(){
-                                css (CssBuilder(){
-                                    color "blue"
-                                })
-                                childContent $"item {i}"
-                            }
-                    ]
-                }
+    MudPaper'{
+        Styles [ styl.padding 10 ]
+        adaptiview(){
+            let! items, setItems = cval([||]).WithSetter()
+            MudButton'{
+                Variant Variant.Filled
+                OnClick (fun _ -> setItems [|1..testLength|])
+                $"Create {testLength} items for CE style"
             }
-            spaceV4
-            adaptiview(){
-                let! items, setItems = cval([||]).WithSetter()
-                MudButton'(){
-                    Variant Variant.Filled
-                    OnClick (fun _ -> setItems [|1..10_000|])
-                    childContent $"Create {testLength} items feliz style"
-                }
-                html.div [
-                    attr.styles [ style.marginTop 10; style.maxHeight 100; style.overflowYAuto ]
-                    attr.childContent [
-                        for i in items do
-                            html.div [
-                                attr.styles [ style.color "green" ]
-                                attr.childContent [
-                                    html.text $"item {i}"
-                                ]
-                            ]
-                    ]
+            div {
+                styles [ styl.marginTop 10; styl.maxHeight 100; styl.overflowYAuto ]
+                childContent [
+                    for i in items do
+                        div {
+                            css (CssBuilder(){
+                                color "blue"
+                            })
+                            $"item {i}"
+                        }
                 ]
             }
-        ]
+        }
+        spaceV4
+        adaptiview(){
+            let! items, setItems = cval([||]).WithSetter()
+            MudButton'{
+                Variant Variant.Filled
+                OnClick (fun _ -> setItems [|1..10_000|])
+                $"Create {testLength} items feliz style"
+            }
+            div {
+                attr.styles [ styl.marginTop 10; styl.maxHeight 100; styl.overflowYAuto ]
+                attr.childContent [
+                    for i in items do
+                        div {
+                            attr.styles [ styl.color "green" ]
+                            attr.childContent [
+                                html.text $"item {i}"
+                            ]
+                        }
+                ]
+            }
+        }
     }
 
 
@@ -101,61 +99,59 @@ let multipleChanges =
         let! n2 = v2
         let! n3 = v3
 
-        MudButtonGroup'(){
+        MudButtonGroup'{
             Variant Variant.Outlined
-            childContent [
-                MudButton'(){
-                    OnClick (fun _ -> v1.Publish ((+) 1))
-                    childContent "Change n1"
-                }
-                MudButton'(){
-                    OnClick (fun _ -> v2.Publish ((+) 1))
-                    childContent "Change n2"
-                }
-                MudButton'(){
-                    OnClick (fun _ ->
-                        // By this we can avoid multiple time calculation
-                        transact <| fun _ ->
-                            v1.Value <- n1 + 1
-                            v2.Value <- n2 + 1
-                            v3.Value <- n3 + 1)
-                    childContent "Change all"
-                }
-                MudButton'(){
-                    OnClick (fun _ ->
-                        // By this we cannot avoid multiple time calculation
-                        // Because Publish method already called transact
-                        transact <| fun _ ->
-                            v1.Publish ((+) 1)
-                            v2.Publish ((+) 1)
-                            v3.Publish ((+) 1))
-                    childContent "Change all with nested transact"
-                }
-                MudButton'(){
-                    OnClick (fun _ ->
+            MudButton'{
+                OnClick (fun _ -> v1.Publish ((+) 1))
+                "Change n1"
+            }
+            MudButton'{
+                OnClick (fun _ -> v2.Publish ((+) 1))
+                "Change n2"
+            }
+            MudButton'{
+                OnClick (fun _ ->
+                    // By this we can avoid multiple time calculation
+                    transact <| fun _ ->
+                        v1.Value <- n1 + 1
+                        v2.Value <- n2 + 1
+                        v3.Value <- n3 + 1)
+                "Change all"
+            }
+            MudButton'{
+                OnClick (fun _ ->
+                    // By this we cannot avoid multiple time calculation
+                    // Because Publish method already called transact
+                    transact <| fun _ ->
                         v1.Publish ((+) 1)
                         v2.Publish ((+) 1)
                         v3.Publish ((+) 1))
-                    childContent "Change all without transact"
-                }
-            ]
+                "Change all with nested transact"
+            }
+            MudButton'{
+                OnClick (fun _ ->
+                    v1.Publish ((+) 1)
+                    v2.Publish ((+) 1)
+                    v3.Publish ((+) 1))
+                "Change all without transact"
+            }
         }
-        div(){
+        div {
             css (CssBuilder(){
                 marginTop 10
                 fontWeightBold
                 color "blue"
             })
-            childContent $"v1 = {n1}; v2 = {n2}; v3 = {n3}"
+            $"v1 = {n1}; v2 = {n2}; v3 = {n3}"
         }
     }
 
 
 let performanceDemo =
-    html.div [
+    div {
         virtualizeDemo
         spaceV4
         bigListDemo
         spaceV4
         multipleChanges
-    ]
+    }

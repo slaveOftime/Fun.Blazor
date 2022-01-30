@@ -1,44 +1,38 @@
 ﻿[<AutoOpen>]
 module Fun.Blazor.FelizDsl
 
-open System
-open Bolero
+open Fun.Blazor
+open Fun.Blazor.Operators
 open Microsoft.AspNetCore.Components
 
 
-type FunBlazorSvgEngine (mk, ofStr, empty) =
-    inherit Feliz.SvgEngine<Node>(mk, ofStr, empty)
+type FunBlazorSvgEngine(mk, ofStr, empty) =
+    inherit Feliz.SvgEngine<NodeRenderFragment>(mk, ofStr, empty)
 
 
-type FunBlazorAttrEngine (mk, mkBool) as this =
-    inherit Feliz.AttrEngine<Attr>(mk, mkBool)
-        
-    member _.ref x = Bolero.Html.attr.ref x
+type FunBlazorAttrEngine(mk, mkBool) =
+    inherit Feliz.AttrEngine<AttrRenderFragment>(mk, mkBool)
 
-    member _.childContent (nodes: Node list) = Attr (_childContentKey, nodes)
-    member _.childContent x = this.childContent [ Bolero.Html.text x ]
+    member inline _.ref([<InlineIfLambda>] fn: ElementReference -> unit) =
+        AttrRenderFragment(fun _ builder index ->
+            builder.AddElementReferenceCapture(index, fn)
+            index + 1
+        )
 
-    member _.styles (styles: (string * string) list) = 
-        Bolero.Html.attr.style (styles |> List.map (fun (k, v) -> $"{k}: {v}") |> String.concat "; ")
+    member inline _.childContent(nodes: NodeRenderFragment seq) = nodes |> Seq.fold (>=>) emptyNode
+    member inline _.childContent(x: string) = html.text x
+    member inline _.childContent(x: int) = html.text x
+    member inline _.childContent(x: float) = html.text x
 
-    member _.value (x: obj) = Bolero.Html.attr.value x
+    member inline _.styles x = html.styles x
 
-    member _.callbackOfUnit (name, fn) =
-        ExplicitAttr (Func<_,_,_,_>(fun builder sequence receiver ->
-            builder.AddAttribute(sequence, name, EventCallback.Factory.Create(receiver, Action(fn)))
-            sequence + 1))
+    member inline _.value x = "value" => x
 
 
-type html with    
-    static member blazor<'Component when 'Component :> Microsoft.AspNetCore.Components.IComponent> (nodes: Attr list) =
-        let attrs, childContent = getAttrsAndChildren nodes
-        Bolero.Html.comp<'Component> attrs childContent
+let svg =
+    FunBlazorSvgEngine((fun tag nodes -> EltBuilder tag { yield! nodes }), html.text, (fun () -> emptyNode))
 
-    static member meta x = Elt ("meta", x, [])
-    
+let attr =
+    FunBlazorAttrEngine((fun k v -> k => v), (fun k v -> if v then k => null else emptyAttr))
 
-let svg = FunBlazorSvgEngine((fun tag nodes -> Elt(tag, [], List.ofSeq nodes)), Text >> (fun x -> x), (fun () -> Html.empty))
-
-let attr = FunBlazorAttrEngine((fun k v -> Attr(k, v)), (fun k v -> if v then Attr(k, "") else Attrs []))
-
-let style = Feliz.CssEngine(fun k v -> k, v)
+let styl = Feliz.CssEngine(fun k v -> k, v)

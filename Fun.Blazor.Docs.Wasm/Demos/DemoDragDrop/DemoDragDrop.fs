@@ -9,7 +9,7 @@ let private rootDir = "Demos/DemoDragDrop"
 
 
 let demoDragDrop =
-    html.div [
+    div {
         simplePage
             "https://github.com/Postlagerkarte/blazor-dragdrop"
             "blazor-dragdrop"
@@ -18,8 +18,8 @@ let demoDragDrop =
             [
                 demoContainer "Skeleton" $"{rootDir}/ListDragDropDemo" listDragDropDemo
             ]
-        html.script [
+        script {
             attr.src "https://unpkg.com/@fluentui/web-components"
             attr.type' "module"
-        ]
-    ]
+        }
+    }

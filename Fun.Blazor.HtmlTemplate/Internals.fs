@@ -150,7 +150,7 @@ let parseNodes (str: string) =
                 if String.IsNullOrEmpty nodeName then
                     buildNodes args (node.ToString())
                 else
-                    EltWithChild nodeName {
+                    EltBuilder nodeName {
                         for k in 0 .. node.Attributes.Count - 1 do
                             let attr = node.Attributes.Item k
                             buildAttrs args (attr.Name, attr.Value)

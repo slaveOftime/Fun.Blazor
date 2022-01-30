@@ -4,28 +4,27 @@ module Fun.Blazor.Docs.Wasm.Pages.QuickStart.BasicUsageDemo
 open Fun.Blazor
 
 let private demo1 =
-    html.div [
+    div {
         attr.styles [
-            style.margin 10
+            styl.margin 10
         ]
         attr.childContent [
             html.text "Hello baisc usage1"
-
         ]
-    ]
+    }
 
 let private demo2 =
-    html.div [
+    div {
         attr.styles [
-            style.margin 10
+            styl.margin 10
         ]
         attr.childContent [
             html.text "Hello baisc usage 2"
         ]
-    ]
+    }
 
 let basicUsageDemo =
-    html.div [
+    div {
         demo1
         demo2
-    ]
+    }

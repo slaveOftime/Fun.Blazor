@@ -7,11 +7,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Compile Include="Core.fs" />
-		<Compile Include="Utils.fs" />
-		<Compile Include="HtmlEngine.fs" />
 		<Compile Include="Dsl.fs" />
-		<Compile Include="Dsl.AspNetCore.fs" />
 	</ItemGroup>
 
 	<ItemGroup>
