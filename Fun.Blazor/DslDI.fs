@@ -25,9 +25,9 @@ type html with
     /// </example>
     static member inject(render: 'Services -> NodeRenderFragment) =
         html.comp<DIComponent<'Services>> () {
+            key (Guid.NewGuid())
             "RenderFn" => render
             "IsStatic" => false
-            key (Guid.NewGuid())
         }
 
 
@@ -45,9 +45,9 @@ type html with
     /// </example>
     static member inject(k, render: 'Services -> NodeRenderFragment) =
         html.comp<DIComponent<'Services>> () {
+            key k
             "RenderFn" => render
             "IsStatic" => true
-            key k
         }
 
 

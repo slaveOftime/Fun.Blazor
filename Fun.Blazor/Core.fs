@@ -85,6 +85,15 @@ type FragmentBuilder() =
         =
         render1 >=> render2
 
+    
+    member inline _.For
+        (
+            [<InlineIfLambda>] render: AttrRenderFragment,
+            [<InlineIfLambda>] fn: unit -> AttrRenderFragment
+        )
+        =
+        render ==> (fn ())
+
     member inline _.For
         (
             [<InlineIfLambda>] render: AttrRenderFragment,

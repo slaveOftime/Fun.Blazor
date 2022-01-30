@@ -1796,10 +1796,10 @@ type EltWithChild(name) =
     member inline _.childContent
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] renderChild: AttrRenderFragment
+            [<InlineIfLambda>] renderChild: NodeRenderFragment
         )
         =
-        render ==> renderChild
+        render >>> renderChild
 
     /// <summary>
     /// It is recommend to use fragment for better performance
@@ -1817,8 +1817,8 @@ type EltWithChild(name) =
     /// </code>
     /// </example>
     [<CustomOperation("childContent")>]
-    member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, renders: AttrRenderFragment seq) =
-        AttrRenderFragment(fun comp builder index ->
+    member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, renders: NodeRenderFragment seq) =
+        NodeRenderFragment(fun comp builder index ->
             let mutable index = render.Invoke(comp, builder, index)
             for item in renders do
                 index <- item.Invoke(comp, builder, index)
