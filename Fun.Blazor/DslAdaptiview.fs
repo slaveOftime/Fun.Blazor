@@ -27,26 +27,26 @@ type AdaptiviewBuilder(?key: obj, ?isStatic: bool) =
     member _.Key = key
     member _.IsStatic = isStatic
 
-    member inline this.Run(x: aval<FunRenderFragment>) =
+    member inline this.Run(x: aval<NodeRenderFragment>) =
         html.comp<AdaptiveComponent> () {
             "Fragment" => x
             match this.IsStatic with
             | Some true -> "IsStatic" => true
-            | _ -> ()
+            | _ -> emptyAttr
             match this.Key with
             | Some k -> html.key k
-            | None -> ()
+            | None -> emptyAttr
         }
 
-    member inline _.Yield([<InlineIfLambda>] x: FunRenderFragment) = AVal.init x
+    member inline _.Yield([<InlineIfLambda>] x: NodeRenderFragment) = AVal.init x
 
-    member inline _.Delay(fn: unit -> aval<FunRenderFragment>) = fn ()
+    member inline _.Delay(fn: unit -> aval<NodeRenderFragment>) = fn ()
 
-    member inline _.Combine(val1: aval<FunRenderFragment>, val2: aval<FunRenderFragment>) =
+    member inline _.Combine(val1: aval<NodeRenderFragment>, val2: aval<NodeRenderFragment>) =
         adaptive {
             let! render1 = val1
             let! render2 = val2
-            return render1 ==> render2
+            return render1 >=> render2
         }
 
 

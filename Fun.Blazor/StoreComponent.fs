@@ -20,7 +20,7 @@ type StoreComponent<'T>() as this =
     member val Store = Unchecked.defaultof<IObservable<'T>> with get, set
 
     [<Parameter>]
-    member val RenderFn: 'T -> FunRenderFragment = fun _ -> emptyRender with get, set
+    member val RenderFn: 'T -> NodeRenderFragment = fun _ -> emptyRender with get, set
 
     [<Inject>]
     member val Logger = Unchecked.defaultof<ILogger<StoreComponent<'T>>> with get, set

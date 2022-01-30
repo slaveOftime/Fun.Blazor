@@ -9,7 +9,7 @@ open Fun.Blazor.Router
 
 type html with
 
-    static member route(render: string list -> FunRenderFragment) =
+    static member route(render: string list -> NodeRenderFragment) =
         html.inject (fun (hook: IComponentHook, nav: NavigationManager, interception: INavigationInterception) ->
             let location = hook.UseStore nav.Uri
 
@@ -28,7 +28,7 @@ type html with
         )
 
 
-    static member route(routes: Router<FunRenderFragment> list) =
+    static member route(routes: Router<NodeRenderFragment> list) =
         html.inject (fun (hook: IComponentHook, nav: NavigationManager, interception: INavigationInterception) ->
             let location = hook.UseStore (Uri nav.Uri).PathAndQuery
 

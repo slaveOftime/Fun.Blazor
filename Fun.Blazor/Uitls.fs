@@ -9,7 +9,8 @@ open System.Threading.Tasks
 open Microsoft.Extensions.Logging
 
 
-let emptyRender = FunRenderFragment(fun _ _ i -> i)
+let emptyAttr = AttrRenderFragment(fun _ _ i -> i)
+let emptyRender = NodeRenderFragment(fun _ _ i -> i)
 
 let fragment = FragmentBuilder()
 

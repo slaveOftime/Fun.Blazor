@@ -23,11 +23,11 @@ type html with
     ///   html.inject _view
     /// </code>
     /// </example>
-    static member inject(render: 'Services -> FunRenderFragment) =
+    static member inject(render: 'Services -> NodeRenderFragment) =
         html.comp<DIComponent<'Services>> () {
-            key (Guid.NewGuid())
             "RenderFn" => render
             "IsStatic" => false
+            key (Guid.NewGuid())
         }
 
 
@@ -43,11 +43,11 @@ type html with
     ///   html.inject ("demo-key", fun () -> html.text $"externalX = {externalX}")
     /// </code>
     /// </example>
-    static member inject(k, render: 'Services -> FunRenderFragment) =
+    static member inject(k, render: 'Services -> NodeRenderFragment) =
         html.comp<DIComponent<'Services>> () {
-            key k
             "RenderFn" => render
             "IsStatic" => true
+            key k
         }
 
 
@@ -56,7 +56,7 @@ type html with
     ///
     /// 'Services should be something you defined in the asp.net core DI or unit
     /// 'Services must be a tuple like (hook: IComponentHook, sp: IServiceProvider)
-    static member injectWithNoKey(render: 'Services -> FunRenderFragment) =
+    static member injectWithNoKey(render: 'Services -> AttrRenderFragment) =
         html.comp<DIComponent<'Services>> () {
             "RenderFn" => render
             "IsStatic" => true

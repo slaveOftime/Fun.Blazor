@@ -14,7 +14,7 @@ type html() =
     static member inline comp<'T when 'T :> IComponent>() = ComponentBuilder<'T>()
 
     static member inline key k =
-        FunRenderFragment(fun _ builder index ->
+        AttrRenderFragment(fun _ builder index ->
             builder.SetKey k
             index
         )
@@ -23,11 +23,11 @@ type html() =
     /// With this, we can add any FunBlazor fragment to the attribute which expect RenderFragment.
     /// Sometimes third party libray will have complex attributes which will be used to inject other components in.
     /// Those complex atrribute types cannot be generated automatically by the cli.
-    static member inline renderFragment(render: FunRenderFragment) =
+    static member inline renderFragment(render: NodeRenderFragment) =
         Microsoft.AspNetCore.Components.RenderFragment(fun builder -> render.Invoke(null, builder, 0) |> ignore)
 
     static member inline raw x =
-        FunRenderFragment(fun _ builder index ->
+        NodeRenderFragment(fun _ builder index ->
             builder.AddMarkupContent(index, x)
             index + 1
         )
@@ -46,25 +46,25 @@ type html() =
     //static member doctypeHtml(lang: string, nodes: Node list) = html.doctypeHtml (nodes, lang)
 
     static member inline text(x: int) =
-        FunRenderFragment(fun _ builder index ->
+        NodeRenderFragment(fun _ builder index ->
             builder.AddContent(index, box x)
             index + 1
         )
 
     static member text(x: float) =
-        FunRenderFragment(fun _ builder index ->
+        NodeRenderFragment(fun _ builder index ->
             builder.AddContent(index, box x)
             index + 1
         )
 
     static member text(x: Guid) =
-        FunRenderFragment(fun _ builder index ->
+        NodeRenderFragment(fun _ builder index ->
             builder.AddContent(index, string x)
             index + 1
         )
 
     static member inline text(x: string) =
-        FunRenderFragment(fun _ builder index ->
+        NodeRenderFragment(fun _ builder index ->
             builder.AddContent(index, x)
             index + 1
         )

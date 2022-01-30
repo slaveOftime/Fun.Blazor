@@ -10,12 +10,12 @@ type AdaptiveComponent() as this =
     inherit FunBlazorComponent()
 
     let mutable fragmentSubscription: IDisposable option = None
-    let mutable fragment: aval<FunRenderFragment> = AVal.init emptyRender
+    let mutable fragment: aval<NodeRenderFragment> = AVal.init emptyRender
     let mutable shouldRerender = true
 
 
     [<Parameter>]
-    member val Fragment: aval<FunRenderFragment> = AVal.init emptyRender with get, set
+    member val Fragment: aval<NodeRenderFragment> = AVal.init emptyRender with get, set
 
     [<Parameter>]
     member val IsStatic = false with get, set

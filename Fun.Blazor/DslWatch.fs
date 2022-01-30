@@ -21,14 +21,14 @@ type html with
     ///   html.watch(obs, _view)
     /// </code>
     /// </example>
-    static member watch(store: IObservable<'T>, render: 'T -> FunRenderFragment, defaultValue: 'T, ?k) =
+    static member inline watch(store: IObservable<'T>, render: 'T -> NodeRenderFragment, defaultValue: 'T, ?k) =
         html.comp<StoreComponent<'T>> () {
             "DefaultValue" => defaultValue
             "Store" => store
             "RenderFn" => render
             match k with
             | Some k -> html.key k
-            | None -> ()
+            | None -> emptyAttr
         }
 
     /// <summary>
@@ -50,7 +50,7 @@ type html with
     ///   html.watch(store, _view)
     /// </code>
     /// </example>
-    static member watch(store: IStore<'T>, render: 'T -> FunRenderFragment) =
+    static member watch(store: IStore<'T>, render: 'T -> NodeRenderFragment) =
         html.watch (store.Observable, render, store.Current)
     /// <summary>
     /// Renders Nodes dynamically based on what is emitted by the store
@@ -71,8 +71,8 @@ type html with
     ///   html.watch(store, _view)
     /// </code>
     /// </example>
-    static member watch(store: IStore<'T>, render: 'T -> FunRenderFragment list) =
-        html.watch (store.Observable, render >> List.fold (==>) emptyRender, store.Current)
+    static member watch(store: IStore<'T>, render: 'T -> NodeRenderFragment list) =
+        html.watch (store.Observable, render >> List.fold (>=>) emptyRender, store.Current)
     /// <summary>
     /// Renders Nodes dynamically based on what is emitted by the store
     /// </summary>
@@ -92,7 +92,7 @@ type html with
     ///   html.watch("my-element", store, _view)
     /// </code>
     /// </example>
-    static member watch(key, store: IStore<'T>, render: 'T -> FunRenderFragment) =
+    static member watch(key, store: IStore<'T>, render: 'T -> NodeRenderFragment) =
         html.watch (store.Observable, render, store.Current, k = key)
     /// <summary>
     /// Renders Nodes dynamically based on what is emitted by the store
@@ -114,8 +114,8 @@ type html with
     ///   html.watch("my-element", store, _view)
     /// </code>
     /// </example>
-    static member watch(key, store: IStore<'T>, render: 'T -> FunRenderFragment list) =
-        html.watch (store.Observable, render >> List.fold (==>) emptyRender, store.Current, k = key)
+    static member watch(key, store: IStore<'T>, render: 'T -> NodeRenderFragment list) =
+        html.watch (store.Observable, render >> List.fold (>=>) emptyRender, store.Current, k = key)
 
     /// <summary>
     /// Renders Nodes dynamically based on what is emitted by the stores
@@ -132,7 +132,7 @@ type html with
     ///   html.watch(age, name, _view)
     /// </code>
     /// </example>
-    static member watch2(store1: IStore<'T1>, store2: IStore<'T2>, render: 'T1 -> 'T2 -> FunRenderFragment) =
+    static member watch2(store1: IStore<'T1>, store2: IStore<'T2>, render: 'T1 -> 'T2 -> NodeRenderFragment) =
         html.watch (store1, (fun s1 -> html.watch (store2, (fun s2 -> render s1 s2))))
     /// <summary>
     /// Renders Nodes dynamically based on what is emitted by the stores
@@ -150,7 +150,7 @@ type html with
     ///   html.watch(age, name, _view)
     /// </code>
     /// </example>
-    static member watch2(store1: IStore<'T1>, store2: IStore<'T2>, render: 'T1 -> 'T2 -> FunRenderFragment list) =
+    static member watch2(store1: IStore<'T1>, store2: IStore<'T2>, render: 'T1 -> 'T2 -> NodeRenderFragment list) =
         html.watch2 (store1, store2, (fun s1 s2 -> render s1 s2))
 
     /// <summary>
@@ -176,7 +176,7 @@ type html with
             store1: IStore<'T1>,
             store2: IStore<'T2>,
             store3: IStore<'T3>,
-            render: 'T1 -> 'T2 -> 'T3 -> FunRenderFragment list
+            render: 'T1 -> 'T2 -> 'T3 -> NodeRenderFragment list
         )
         =
         html.watch (
@@ -206,7 +206,7 @@ type html with
             store1: IStore<'T1>,
             store2: IStore<'T2>,
             store3: IStore<'T3>,
-            render: 'T1 -> 'T2 -> 'T3 -> FunRenderFragment
+            render: 'T1 -> 'T2 -> 'T3 -> NodeRenderFragment
         )
         =
         html.watch3 (store1, store2, store3, (fun s1 s2 s3 -> [ render s1 s2 s3 ]))
