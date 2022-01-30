@@ -166,13 +166,13 @@ type FunBlazorComponent() as this =
     abstract Render : unit -> FunRenderFragment
 
 
-type SingleNodeComponent() as this =
+type FunFragmentComponent() as this =
     inherit FunBlazorComponent()
 
-    override _.Render() = this.Node
+    override _.Render() = this.Fragment
 
     [<Parameter>]
-    member val Node = FunRenderFragment(fun _ _ i -> i) with get, set
+    member val Fragment = FunRenderFragment(fun _ _ i -> i) with get, set
 
 
 type IStore<'T> =
