@@ -21,39 +21,45 @@ open Operators
 ///     }
 /// </code>
 /// </example>
-type AdaptiviewBuilder(?k: obj, ?isStatic: bool) =
-    inherit AListBuilder()
+type AdaptiviewBuilder(?key: obj, ?isStatic: bool) =
+    inherit AValBuilder()
 
-    member _.Run(x: alist<FunRenderFragment>) =
+    member _.Key = key
+    member _.IsStatic = isStatic
+
+    member inline this.Run(x: aval<FunRenderFragment>) =
         html.comp<AdaptiveComponent> () {
-            "Node" => x
-            match isStatic with
+            "Fragment" => x
+            match this.IsStatic with
             | Some true -> "IsStatic" => true
             | _ -> ()
-            match k with
+            match this.Key with
             | Some k -> html.key k
             | None -> ()
         }
 
-    member inline _.Delay(fn: unit -> alist<_>) = fn ()
+    member inline _.Yield([<InlineIfLambda>] x: FunRenderFragment) = AVal.init x
 
-    member inline _.Combine(c1, c2) = AList.append c1 c2
+    member inline _.Delay(fn: unit -> aval<FunRenderFragment>) = fn ()
 
-    member inline _.Yield x = AList.single x
-
-    member inline _.Zero() = AList.empty
+    member inline _.Combine(val1: aval<FunRenderFragment>, val2: aval<FunRenderFragment>) =
+        adaptive {
+            let! render1 = val1
+            let! render2 = val2
+            return render1 ==> render2
+        }
 
 
 [<Extension>]
 type Extensions =
     [<Extension>]
-    static member Publish(this: cval<'T>, x: 'T) = transact (fun () -> this.Value <- x)
+    static member inline Publish(this: cval<'T>, x: 'T) = transact (fun () -> this.Value <- x)
 
     [<Extension>]
-    static member Publish(this: cval<'T>, fn: 'T -> 'T) = transact (fun () -> this.Value <- fn this.Value)
+    static member inline Publish(this: cval<'T>, fn: 'T -> 'T) = transact (fun () -> this.Value <- fn this.Value)
 
     [<Extension>]
-    static member WithSetter(this: cval<'T>) =
+    static member inline WithSetter(this: cval<'T>) =
         let setValue x = transact (fun () -> this.Value <- x)
         this |> AVal.map (fun x -> x, setValue)
 
@@ -87,13 +93,6 @@ type Extensions =
         | ValueNone -> value |> AVal.force |> ignore
 
         sub
-
-
-[<RequireQualifiedAccess>]
-module Adapt =
-    let withSetter (this: cval<'T>) =
-        let setValue x = transact (fun () -> this.Value <- x)
-        this |> AVal.map (fun x -> x, setValue)
 
 
 type adaptiview = AdaptiviewBuilder

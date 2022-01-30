@@ -311,338 +311,708 @@ type EltWithDomAttrs(name) =
 
 
     [<CustomOperation("onfocus")>]
-    member inline this.onfocus([<InlineIfLambda>] render: FunRenderFragment, callback: FocusEventArgs -> unit) =
+    member inline this.onfocus
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: FocusEventArgs -> unit
+        )
+        =
         this.on (render, "focus", callback)
 
     [<CustomOperation("onfocusAsync")>]
-    member inline this.onfocusAsync([<InlineIfLambda>] render: FunRenderFragment, callback: FocusEventArgs -> Task) =
+    member inline this.onfocusAsync
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: FocusEventArgs -> Task
+        )
+        =
         this.onTask (render, "focus", callback)
 
     [<CustomOperation("onblur")>]
-    member inline this.onblur([<InlineIfLambda>] render: FunRenderFragment, callback: FocusEventArgs -> unit) =
+    member inline this.onblur
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: FocusEventArgs -> unit
+        )
+        =
         this.on (render, "blur", callback)
     [<CustomOperation("onblurAsync")>]
-    member inline this.onblurAsync([<InlineIfLambda>] render: FunRenderFragment, callback: FocusEventArgs -> Task) =
+    member inline this.onblurAsync
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: FocusEventArgs -> Task
+        )
+        =
         this.onTask (render, "blur", callback)
     [<CustomOperation("onfocusin")>]
-    member inline this.onfocusin([<InlineIfLambda>] render: FunRenderFragment, callback: FocusEventArgs -> unit) =
+    member inline this.onfocusin
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: FocusEventArgs -> unit
+        )
+        =
         this.on (render, "focusin", callback)
     [<CustomOperation("onfocusinAsync")>]
-    member inline this.onfocusinAsync([<InlineIfLambda>] render: FunRenderFragment, callback: FocusEventArgs -> Task) =
+    member inline this.onfocusinAsync
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: FocusEventArgs -> Task
+        )
+        =
         this.onTask (render, "focusin", callback)
     [<CustomOperation("onfocusout")>]
-    member inline this.onfocusout([<InlineIfLambda>] render: FunRenderFragment, callback: FocusEventArgs -> unit) =
+    member inline this.onfocusout
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: FocusEventArgs -> unit
+        )
+        =
         this.on (render, "focusout", callback)
     [<CustomOperation("onfocusoutAsync")>]
-    member inline this.onfocusoutAsync([<InlineIfLambda>] render: FunRenderFragment, callback: FocusEventArgs -> Task) =
+    member inline this.onfocusoutAsync
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: FocusEventArgs -> Task
+        )
+        =
         this.onTask (render, "focusout", callback)
     [<CustomOperation("onmouseover")>]
-    member inline this.onmouseover([<InlineIfLambda>] render: FunRenderFragment, callback: MouseEventArgs -> unit) =
+    member inline this.onmouseover
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: MouseEventArgs -> unit
+        )
+        =
         this.on (render, "mouseover", callback)
     [<CustomOperation("onmouseoverAsync")>]
     member inline this.onmouseoverAsync
         (
             [<InlineIfLambda>] render: FunRenderFragment,
-            callback: MouseEventArgs -> Task
+            [<InlineIfLambda>] callback: MouseEventArgs -> Task
         )
         =
         this.onTask (render, "mouseover", callback)
     [<CustomOperation("onmouseout")>]
-    member inline this.onmouseout([<InlineIfLambda>] render: FunRenderFragment, callback: MouseEventArgs -> unit) =
+    member inline this.onmouseout
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: MouseEventArgs -> unit
+        )
+        =
         this.on (render, "mouseout", callback)
     [<CustomOperation("onmouseoutAsync")>]
-    member inline this.onmouseoutAsync([<InlineIfLambda>] render: FunRenderFragment, callback: MouseEventArgs -> Task) =
+    member inline this.onmouseoutAsync
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: MouseEventArgs -> Task
+        )
+        =
         this.onTask (render, "mouseout", callback)
     [<CustomOperation("onmousemove")>]
-    member inline this.onmousemove([<InlineIfLambda>] render: FunRenderFragment, callback: MouseEventArgs -> unit) =
+    member inline this.onmousemove
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: MouseEventArgs -> unit
+        )
+        =
         this.on (render, "mousemove", callback)
     [<CustomOperation("onmousemoveAsync")>]
     member inline this.onmousemoveAsync
         (
             [<InlineIfLambda>] render: FunRenderFragment,
-            callback: MouseEventArgs -> Task
+            [<InlineIfLambda>] callback: MouseEventArgs -> Task
         )
         =
         this.onTask (render, "mousemove", callback)
     [<CustomOperation("onmousedown")>]
-    member inline this.onmousedown([<InlineIfLambda>] render: FunRenderFragment, callback: MouseEventArgs -> unit) =
+    member inline this.onmousedown
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: MouseEventArgs -> unit
+        )
+        =
         this.on (render, "mousedown", callback)
     [<CustomOperation("onmousedownAsync")>]
     member inline this.onmousedownAsync
         (
             [<InlineIfLambda>] render: FunRenderFragment,
-            callback: MouseEventArgs -> Task
+            [<InlineIfLambda>] callback: MouseEventArgs -> Task
         )
         =
         this.onTask (render, "mousedown", callback)
     [<CustomOperation("onmouseup")>]
-    member inline this.onmouseup([<InlineIfLambda>] render: FunRenderFragment, callback: MouseEventArgs -> unit) =
+    member inline this.onmouseup
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: MouseEventArgs -> unit
+        )
+        =
         this.on (render, "mouseup", callback)
     [<CustomOperation("onmouseupAsync")>]
-    member inline this.onmouseupAsync([<InlineIfLambda>] render: FunRenderFragment, callback: MouseEventArgs -> Task) =
+    member inline this.onmouseupAsync
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: MouseEventArgs -> Task
+        )
+        =
         this.onTask (render, "mouseup", callback)
     [<CustomOperation("onclick")>]
-    member inline this.onclick([<InlineIfLambda>] render: FunRenderFragment, callback: MouseEventArgs -> unit) =
+    member inline this.onclick
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: MouseEventArgs -> unit
+        )
+        =
         this.on (render, "click", callback)
     [<CustomOperation("onclickAsync")>]
-    member inline this.onclickAsync([<InlineIfLambda>] render: FunRenderFragment, callback: MouseEventArgs -> Task) =
+    member inline this.onclickAsync
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: MouseEventArgs -> Task
+        )
+        =
         this.onTask (render, "click", callback)
     [<CustomOperation("ondblclick")>]
-    member inline this.ondblclick([<InlineIfLambda>] render: FunRenderFragment, callback: MouseEventArgs -> unit) =
+    member inline this.ondblclick
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: MouseEventArgs -> unit
+        )
+        =
         this.on (render, "dblclick", callback)
     [<CustomOperation("ondblclickAsync")>]
-    member inline this.ondblclickAsync([<InlineIfLambda>] render: FunRenderFragment, callback: MouseEventArgs -> Task) =
+    member inline this.ondblclickAsync
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: MouseEventArgs -> Task
+        )
+        =
         this.onTask (render, "dblclick", callback)
     [<CustomOperation("onwheel")>]
-    member inline this.onwheel([<InlineIfLambda>] render: FunRenderFragment, callback: MouseEventArgs -> unit) =
+    member inline this.onwheel
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: MouseEventArgs -> unit
+        )
+        =
         this.on (render, "wheel", callback)
     [<CustomOperation("onwheelAsync")>]
-    member inline this.onwheelAsync([<InlineIfLambda>] render: FunRenderFragment, callback: MouseEventArgs -> Task) =
+    member inline this.onwheelAsync
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: MouseEventArgs -> Task
+        )
+        =
         this.onTask (render, "wheel", callback)
     [<CustomOperation("onmousewheel")>]
-    member inline this.onmousewheel([<InlineIfLambda>] render: FunRenderFragment, callback: MouseEventArgs -> unit) =
+    member inline this.onmousewheel
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: MouseEventArgs -> unit
+        )
+        =
         this.on (render, "mousewheel", callback)
     [<CustomOperation("onmousewheelAsync")>]
     member inline this.onmousewheelAsync
         (
             [<InlineIfLambda>] render: FunRenderFragment,
-            callback: MouseEventArgs -> Task
+            [<InlineIfLambda>] callback: MouseEventArgs -> Task
         )
         =
         this.onTask (render, "mousewheel", callback)
     [<CustomOperation("oncontextmenu")>]
-    member inline this.oncontextmenu([<InlineIfLambda>] render: FunRenderFragment, callback: MouseEventArgs -> unit) =
+    member inline this.oncontextmenu
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: MouseEventArgs -> unit
+        )
+        =
         this.on (render, "contextmenu", callback)
     [<CustomOperation("oncontextmenuAsync")>]
     member inline this.oncontextmenuAsync
         (
             [<InlineIfLambda>] render: FunRenderFragment,
-            callback: MouseEventArgs -> Task
+            [<InlineIfLambda>] callback: MouseEventArgs -> Task
         )
         =
         this.onTask (render, "contextmenu", callback)
     [<CustomOperation("ondrag")>]
-    member inline this.ondrag([<InlineIfLambda>] render: FunRenderFragment, callback: DragEventArgs -> unit) =
+    member inline this.ondrag
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: DragEventArgs -> unit
+        )
+        =
         this.on (render, "drag", callback)
     [<CustomOperation("ondragAsync")>]
-    member inline this.ondragAsync([<InlineIfLambda>] render: FunRenderFragment, callback: DragEventArgs -> Task) =
+    member inline this.ondragAsync
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: DragEventArgs -> Task
+        )
+        =
         this.onTask (render, "drag", callback)
     [<CustomOperation("ondragend")>]
-    member inline this.ondragend([<InlineIfLambda>] render: FunRenderFragment, callback: DragEventArgs -> unit) =
+    member inline this.ondragend
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: DragEventArgs -> unit
+        )
+        =
         this.on (render, "dragend", callback)
     [<CustomOperation("ondragendAsync")>]
-    member inline this.ondragendAsync([<InlineIfLambda>] render: FunRenderFragment, callback: DragEventArgs -> Task) =
+    member inline this.ondragendAsync
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: DragEventArgs -> Task
+        )
+        =
         this.onTask (render, "dragend", callback)
     [<CustomOperation("ondragenter")>]
-    member inline this.ondragenter([<InlineIfLambda>] render: FunRenderFragment, callback: DragEventArgs -> unit) =
+    member inline this.ondragenter
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: DragEventArgs -> unit
+        )
+        =
         this.on (render, "dragenter", callback)
     [<CustomOperation("ondragenterAsync")>]
-    member inline this.ondragenterAsync([<InlineIfLambda>] render: FunRenderFragment, callback: DragEventArgs -> Task) =
+    member inline this.ondragenterAsync
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: DragEventArgs -> Task
+        )
+        =
         this.onTask (render, "dragenter", callback)
     [<CustomOperation("ondragleave")>]
-    member inline this.ondragleave([<InlineIfLambda>] render: FunRenderFragment, callback: DragEventArgs -> unit) =
+    member inline this.ondragleave
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: DragEventArgs -> unit
+        )
+        =
         this.on (render, "dragleave", callback)
     [<CustomOperation("ondragleaveAsync")>]
-    member inline this.ondragleaveAsync([<InlineIfLambda>] render: FunRenderFragment, callback: DragEventArgs -> Task) =
+    member inline this.ondragleaveAsync
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: DragEventArgs -> Task
+        )
+        =
         this.onTask (render, "dragleave", callback)
     [<CustomOperation("ondragover")>]
-    member inline this.ondragover([<InlineIfLambda>] render: FunRenderFragment, callback: DragEventArgs -> unit) =
+    member inline this.ondragover
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: DragEventArgs -> unit
+        )
+        =
         this.on (render, "dragover", callback)
     [<CustomOperation("ondragoverAsync")>]
-    member inline this.ondragoverAsync([<InlineIfLambda>] render: FunRenderFragment, callback: DragEventArgs -> Task) =
+    member inline this.ondragoverAsync
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: DragEventArgs -> Task
+        )
+        =
         this.onTask (render, "dragover", callback)
     [<CustomOperation("ondragstart")>]
-    member inline this.ondragstart([<InlineIfLambda>] render: FunRenderFragment, callback: DragEventArgs -> unit) =
+    member inline this.ondragstart
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: DragEventArgs -> unit
+        )
+        =
         this.on (render, "dragstart", callback)
     [<CustomOperation("ondragstartAsync")>]
-    member inline this.ondragstartAsync([<InlineIfLambda>] render: FunRenderFragment, callback: DragEventArgs -> Task) =
+    member inline this.ondragstartAsync
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: DragEventArgs -> Task
+        )
+        =
         this.onTask (render, "dragstart", callback)
     [<CustomOperation("ondrop")>]
-    member inline this.ondrop([<InlineIfLambda>] render: FunRenderFragment, callback: DragEventArgs -> unit) =
+    member inline this.ondrop
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: DragEventArgs -> unit
+        )
+        =
         this.on (render, "drop", callback)
     [<CustomOperation("ondropAsync")>]
-    member inline this.ondropAsync([<InlineIfLambda>] render: FunRenderFragment, callback: DragEventArgs -> Task) =
+    member inline this.ondropAsync
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: DragEventArgs -> Task
+        )
+        =
         this.onTask (render, "drop", callback)
     [<CustomOperation("onkeydown")>]
-    member inline this.onkeydown([<InlineIfLambda>] render: FunRenderFragment, callback: KeyboardEventArgs -> unit) =
+    member inline this.onkeydown
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: KeyboardEventArgs -> unit
+        )
+        =
         this.on (render, "keydown", callback)
     [<CustomOperation("onkeydownAsync")>]
     member inline this.onkeydownAsync
         (
             [<InlineIfLambda>] render: FunRenderFragment,
-            callback: KeyboardEventArgs -> Task
+            [<InlineIfLambda>] callback: KeyboardEventArgs -> Task
         )
         =
         this.onTask (render, "keydown", callback)
     [<CustomOperation("onkeyup")>]
-    member inline this.onkeyup([<InlineIfLambda>] render: FunRenderFragment, callback: KeyboardEventArgs -> unit) =
+    member inline this.onkeyup
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: KeyboardEventArgs -> unit
+        )
+        =
         this.on (render, "keyup", callback)
     [<CustomOperation("onkeyupAsync")>]
-    member inline this.onkeyupAsync([<InlineIfLambda>] render: FunRenderFragment, callback: KeyboardEventArgs -> Task) =
+    member inline this.onkeyupAsync
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: KeyboardEventArgs -> Task
+        )
+        =
         this.onTask (render, "keyup", callback)
     [<CustomOperation("onkeypress")>]
-    member inline this.onkeypress([<InlineIfLambda>] render: FunRenderFragment, callback: KeyboardEventArgs -> unit) =
+    member inline this.onkeypress
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: KeyboardEventArgs -> unit
+        )
+        =
         this.on (render, "keypress", callback)
     [<CustomOperation("onkeypressAsync")>]
     member inline this.onkeypressAsync
         (
             [<InlineIfLambda>] render: FunRenderFragment,
-            callback: KeyboardEventArgs -> Task
+            [<InlineIfLambda>] callback: KeyboardEventArgs -> Task
         )
         =
         this.onTask (render, "keypress", callback)
     [<CustomOperation("onchange")>]
-    member inline this.onchange([<InlineIfLambda>] render: FunRenderFragment, callback: ChangeEventArgs -> unit) =
+    member inline this.onchange
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: ChangeEventArgs -> unit
+        )
+        =
         this.on (render, "change", callback)
     [<CustomOperation("onchangeAsync")>]
-    member inline this.onchangeAsync([<InlineIfLambda>] render: FunRenderFragment, callback: ChangeEventArgs -> Task) =
+    member inline this.onchangeAsync
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: ChangeEventArgs -> Task
+        )
+        =
         this.onTask (render, "change", callback)
     [<CustomOperation("oninput")>]
-    member inline this.oninput([<InlineIfLambda>] render: FunRenderFragment, callback: ChangeEventArgs -> unit) =
+    member inline this.oninput
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: ChangeEventArgs -> unit
+        )
+        =
         this.on (render, "input", callback)
     [<CustomOperation("oninputAsync")>]
-    member inline this.oninputAsync([<InlineIfLambda>] render: FunRenderFragment, callback: ChangeEventArgs -> Task) =
+    member inline this.oninputAsync
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: ChangeEventArgs -> Task
+        )
+        =
         this.onTask (render, "input", callback)
     [<CustomOperation("oninvalid")>]
-    member inline this.oninvalid([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> unit) =
+    member inline this.oninvalid
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> unit
+        )
+        =
         this.on (render, "invalid", callback)
     [<CustomOperation("oninvalidAsync")>]
-    member inline this.oninvalidAsync([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> Task) =
+    member inline this.oninvalidAsync
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> Task
+        )
+        =
         this.onTask (render, "invalid", callback)
     [<CustomOperation("onreset")>]
-    member inline this.onreset([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> unit) =
+    member inline this.onreset
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> unit
+        )
+        =
         this.on (render, "reset", callback)
     [<CustomOperation("onresetAsync")>]
-    member inline this.onresetAsync([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> Task) =
+    member inline this.onresetAsync
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> Task
+        )
+        =
         this.onTask (render, "reset", callback)
     [<CustomOperation("onselect")>]
-    member inline this.onselect([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> unit) =
+    member inline this.onselect
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> unit
+        )
+        =
         this.on (render, "select", callback)
     [<CustomOperation("onselectAsync")>]
-    member inline this.onselectAsync([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> Task) =
+    member inline this.onselectAsync
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> Task
+        )
+        =
         this.onTask (render, "select", callback)
     [<CustomOperation("onselectstart")>]
-    member inline this.onselectstart([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> unit) =
+    member inline this.onselectstart
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> unit
+        )
+        =
         this.on (render, "selectstart", callback)
     [<CustomOperation("onselectstartAsync")>]
-    member inline this.onselectstartAsync([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> Task) =
+    member inline this.onselectstartAsync
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> Task
+        )
+        =
         this.onTask (render, "selectstart", callback)
     [<CustomOperation("onselectionchange")>]
-    member inline this.onselectionchange([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> unit) =
+    member inline this.onselectionchange
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> unit
+        )
+        =
         this.on (render, "selectionchange", callback)
     [<CustomOperation("onselectionchangeAsync")>]
     member inline this.onselectionchangeAsync
         (
             [<InlineIfLambda>] render: FunRenderFragment,
-            callback: EventArgs -> Task
+            [<InlineIfLambda>] callback: EventArgs -> Task
         )
         =
         this.onTask (render, "selectionchange", callback)
     [<CustomOperation("onsubmit")>]
-    member inline this.onsubmit([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> unit) =
+    member inline this.onsubmit
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> unit
+        )
+        =
         this.on (render, "submit", callback)
     [<CustomOperation("onsubmitAsync")>]
-    member inline this.onsubmitAsync([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> Task) =
+    member inline this.onsubmitAsync
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> Task
+        )
+        =
         this.onTask (render, "submit", callback)
     [<CustomOperation("onbeforecopy")>]
-    member inline this.onbeforecopy([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> unit) =
+    member inline this.onbeforecopy
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> unit
+        )
+        =
         this.on (render, "beforecopy", callback)
     [<CustomOperation("onbeforecopyAsync")>]
-    member inline this.onbeforecopyAsync([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> Task) =
+    member inline this.onbeforecopyAsync
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> Task
+        )
+        =
         this.onTask (render, "beforecopy", callback)
     [<CustomOperation("onbeforecut")>]
-    member inline this.onbeforecut([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> unit) =
+    member inline this.onbeforecut
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> unit
+        )
+        =
         this.on (render, "beforecut", callback)
     [<CustomOperation("onbeforecutAsync")>]
-    member inline this.onbeforecutAsync([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> Task) =
+    member inline this.onbeforecutAsync
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> Task
+        )
+        =
         this.onTask (render, "beforecut", callback)
     [<CustomOperation("onbeforepaste")>]
-    member inline this.onbeforepaste([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> unit) =
+    member inline this.onbeforepaste
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> unit
+        )
+        =
         this.on (render, "beforepaste", callback)
     [<CustomOperation("onbeforepasteAsync")>]
-    member inline this.onbeforepasteAsync([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> Task) =
+    member inline this.onbeforepasteAsync
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> Task
+        )
+        =
         this.onTask (render, "beforepaste", callback)
     [<CustomOperation("oncopy")>]
-    member inline this.oncopy([<InlineIfLambda>] render: FunRenderFragment, callback: ClipboardEventArgs -> unit) =
+    member inline this.oncopy
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: ClipboardEventArgs -> unit
+        )
+        =
         this.on (render, "copy", callback)
     [<CustomOperation("oncopyAsync")>]
-    member inline this.oncopyAsync([<InlineIfLambda>] render: FunRenderFragment, callback: ClipboardEventArgs -> Task) =
+    member inline this.oncopyAsync
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: ClipboardEventArgs -> Task
+        )
+        =
         this.onTask (render, "copy", callback)
     [<CustomOperation("oncut")>]
-    member inline this.oncut([<InlineIfLambda>] render: FunRenderFragment, callback: ClipboardEventArgs -> unit) =
+    member inline this.oncut
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: ClipboardEventArgs -> unit
+        )
+        =
         this.on (render, "cut", callback)
     [<CustomOperation("oncutAsync")>]
-    member inline this.oncutAsync([<InlineIfLambda>] render: FunRenderFragment, callback: ClipboardEventArgs -> Task) =
+    member inline this.oncutAsync
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: ClipboardEventArgs -> Task
+        )
+        =
         this.onTask (render, "cut", callback)
     [<CustomOperation("onpaste")>]
-    member inline this.onpaste([<InlineIfLambda>] render: FunRenderFragment, callback: ClipboardEventArgs -> unit) =
+    member inline this.onpaste
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: ClipboardEventArgs -> unit
+        )
+        =
         this.on (render, "paste", callback)
     [<CustomOperation("onpasteAsync")>]
     member inline this.onpasteAsync
         (
             [<InlineIfLambda>] render: FunRenderFragment,
-            callback: ClipboardEventArgs -> Task
+            [<InlineIfLambda>] callback: ClipboardEventArgs -> Task
         )
         =
         this.onTask (render, "paste", callback)
     [<CustomOperation("ontouchcancel")>]
-    member inline this.ontouchcancel([<InlineIfLambda>] render: FunRenderFragment, callback: TouchEventArgs -> unit) =
+    member inline this.ontouchcancel
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: TouchEventArgs -> unit
+        )
+        =
         this.on (render, "touchcancel", callback)
     [<CustomOperation("ontouchcancelAsync")>]
     member inline this.ontouchcancelAsync
         (
             [<InlineIfLambda>] render: FunRenderFragment,
-            callback: TouchEventArgs -> Task
+            [<InlineIfLambda>] callback: TouchEventArgs -> Task
         )
         =
         this.onTask (render, "touchcancel", callback)
     [<CustomOperation("ontouchend")>]
-    member inline this.ontouchend([<InlineIfLambda>] render: FunRenderFragment, callback: TouchEventArgs -> unit) =
+    member inline this.ontouchend
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: TouchEventArgs -> unit
+        )
+        =
         this.on (render, "touchend", callback)
     [<CustomOperation("ontouchendAsync")>]
-    member inline this.ontouchendAsync([<InlineIfLambda>] render: FunRenderFragment, callback: TouchEventArgs -> Task) =
+    member inline this.ontouchendAsync
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: TouchEventArgs -> Task
+        )
+        =
         this.onTask (render, "touchend", callback)
     [<CustomOperation("ontouchmove")>]
-    member inline this.ontouchmove([<InlineIfLambda>] render: FunRenderFragment, callback: TouchEventArgs -> unit) =
+    member inline this.ontouchmove
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: TouchEventArgs -> unit
+        )
+        =
         this.on (render, "touchmove", callback)
     [<CustomOperation("ontouchmoveAsync")>]
     member inline this.ontouchmoveAsync
         (
             [<InlineIfLambda>] render: FunRenderFragment,
-            callback: TouchEventArgs -> Task
+            [<InlineIfLambda>] callback: TouchEventArgs -> Task
         )
         =
         this.onTask (render, "touchmove", callback)
     [<CustomOperation("ontouchstart")>]
-    member inline this.ontouchstart([<InlineIfLambda>] render: FunRenderFragment, callback: TouchEventArgs -> unit) =
+    member inline this.ontouchstart
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: TouchEventArgs -> unit
+        )
+        =
         this.on (render, "touchstart", callback)
     [<CustomOperation("ontouchstartAsync")>]
     member inline this.ontouchstartAsync
         (
             [<InlineIfLambda>] render: FunRenderFragment,
-            callback: TouchEventArgs -> Task
+            [<InlineIfLambda>] callback: TouchEventArgs -> Task
         )
         =
         this.onTask (render, "touchstart", callback)
     [<CustomOperation("ontouchenter")>]
-    member inline this.ontouchenter([<InlineIfLambda>] render: FunRenderFragment, callback: TouchEventArgs -> unit) =
+    member inline this.ontouchenter
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: TouchEventArgs -> unit
+        )
+        =
         this.on (render, "touchenter", callback)
     [<CustomOperation("ontouchenterAsync")>]
     member inline this.ontouchenterAsync
         (
             [<InlineIfLambda>] render: FunRenderFragment,
-            callback: TouchEventArgs -> Task
+            [<InlineIfLambda>] callback: TouchEventArgs -> Task
         )
         =
         this.onTask (render, "touchenter", callback)
     [<CustomOperation("ontouchleave")>]
-    member inline this.ontouchleave([<InlineIfLambda>] render: FunRenderFragment, callback: TouchEventArgs -> unit) =
+    member inline this.ontouchleave
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: TouchEventArgs -> unit
+        )
+        =
         this.on (render, "touchleave", callback)
     [<CustomOperation("ontouchleaveAsync")>]
     member inline this.ontouchleaveAsync
         (
             [<InlineIfLambda>] render: FunRenderFragment,
-            callback: TouchEventArgs -> Task
+            [<InlineIfLambda>] callback: TouchEventArgs -> Task
         )
         =
         this.onTask (render, "touchleave", callback)
@@ -650,7 +1020,7 @@ type EltWithDomAttrs(name) =
     member inline this.onpointercapture
         (
             [<InlineIfLambda>] render: FunRenderFragment,
-            callback: PointerEventArgs -> unit
+            [<InlineIfLambda>] callback: PointerEventArgs -> unit
         )
         =
         this.on (render, "pointercapture", callback)
@@ -658,7 +1028,7 @@ type EltWithDomAttrs(name) =
     member inline this.onpointercaptureAsync
         (
             [<InlineIfLambda>] render: FunRenderFragment,
-            callback: PointerEventArgs -> Task
+            [<InlineIfLambda>] callback: PointerEventArgs -> Task
         )
         =
         this.onTask (render, "pointercapture", callback)
@@ -666,7 +1036,7 @@ type EltWithDomAttrs(name) =
     member inline this.onlostpointercapture
         (
             [<InlineIfLambda>] render: FunRenderFragment,
-            callback: PointerEventArgs -> unit
+            [<InlineIfLambda>] callback: PointerEventArgs -> unit
         )
         =
         this.on (render, "lostpointercapture", callback)
@@ -674,7 +1044,7 @@ type EltWithDomAttrs(name) =
     member inline this.onlostpointercaptureAsync
         (
             [<InlineIfLambda>] render: FunRenderFragment,
-            callback: PointerEventArgs -> Task
+            [<InlineIfLambda>] callback: PointerEventArgs -> Task
         )
         =
         this.onTask (render, "lostpointercapture", callback)
@@ -682,7 +1052,7 @@ type EltWithDomAttrs(name) =
     member inline this.onpointercancel
         (
             [<InlineIfLambda>] render: FunRenderFragment,
-            callback: PointerEventArgs -> unit
+            [<InlineIfLambda>] callback: PointerEventArgs -> unit
         )
         =
         this.on (render, "pointercancel", callback)
@@ -690,18 +1060,23 @@ type EltWithDomAttrs(name) =
     member inline this.onpointercancelAsync
         (
             [<InlineIfLambda>] render: FunRenderFragment,
-            callback: PointerEventArgs -> Task
+            [<InlineIfLambda>] callback: PointerEventArgs -> Task
         )
         =
         this.onTask (render, "pointercancel", callback)
     [<CustomOperation("onpointerdown")>]
-    member inline this.onpointerdown([<InlineIfLambda>] render: FunRenderFragment, callback: PointerEventArgs -> unit) =
+    member inline this.onpointerdown
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: PointerEventArgs -> unit
+        )
+        =
         this.on (render, "pointerdown", callback)
     [<CustomOperation("onpointerdownAsync")>]
     member inline this.onpointerdownAsync
         (
             [<InlineIfLambda>] render: FunRenderFragment,
-            callback: PointerEventArgs -> Task
+            [<InlineIfLambda>] callback: PointerEventArgs -> Task
         )
         =
         this.onTask (render, "pointerdown", callback)
@@ -709,7 +1084,7 @@ type EltWithDomAttrs(name) =
     member inline this.onpointerenter
         (
             [<InlineIfLambda>] render: FunRenderFragment,
-            callback: PointerEventArgs -> unit
+            [<InlineIfLambda>] callback: PointerEventArgs -> unit
         )
         =
         this.on (render, "pointerenter", callback)
@@ -717,7 +1092,7 @@ type EltWithDomAttrs(name) =
     member inline this.onpointerenterAsync
         (
             [<InlineIfLambda>] render: FunRenderFragment,
-            callback: PointerEventArgs -> Task
+            [<InlineIfLambda>] callback: PointerEventArgs -> Task
         )
         =
         this.onTask (render, "pointerenter", callback)
@@ -725,7 +1100,7 @@ type EltWithDomAttrs(name) =
     member inline this.onpointerleave
         (
             [<InlineIfLambda>] render: FunRenderFragment,
-            callback: PointerEventArgs -> unit
+            [<InlineIfLambda>] callback: PointerEventArgs -> unit
         )
         =
         this.on (render, "pointerleave", callback)
@@ -733,345 +1108,665 @@ type EltWithDomAttrs(name) =
     member inline this.onpointerleaveAsync
         (
             [<InlineIfLambda>] render: FunRenderFragment,
-            callback: PointerEventArgs -> Task
+            [<InlineIfLambda>] callback: PointerEventArgs -> Task
         )
         =
         this.onTask (render, "pointerleave", callback)
     [<CustomOperation("onpointermove")>]
-    member inline this.onpointermove([<InlineIfLambda>] render: FunRenderFragment, callback: PointerEventArgs -> unit) =
+    member inline this.onpointermove
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: PointerEventArgs -> unit
+        )
+        =
         this.on (render, "pointermove", callback)
     [<CustomOperation("onpointermoveAsync")>]
     member inline this.onpointermoveAsync
         (
             [<InlineIfLambda>] render: FunRenderFragment,
-            callback: PointerEventArgs -> Task
+            [<InlineIfLambda>] callback: PointerEventArgs -> Task
         )
         =
         this.onTask (render, "pointermove", callback)
     [<CustomOperation("onpointerout")>]
-    member inline this.onpointerout([<InlineIfLambda>] render: FunRenderFragment, callback: PointerEventArgs -> unit) =
+    member inline this.onpointerout
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: PointerEventArgs -> unit
+        )
+        =
         this.on (render, "pointerout", callback)
     [<CustomOperation("onpointeroutAsync")>]
     member inline this.onpointeroutAsync
         (
             [<InlineIfLambda>] render: FunRenderFragment,
-            callback: PointerEventArgs -> Task
+            [<InlineIfLambda>] callback: PointerEventArgs -> Task
         )
         =
         this.onTask (render, "pointerout", callback)
     [<CustomOperation("onpointerover")>]
-    member inline this.onpointerover([<InlineIfLambda>] render: FunRenderFragment, callback: PointerEventArgs -> unit) =
+    member inline this.onpointerover
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: PointerEventArgs -> unit
+        )
+        =
         this.on (render, "pointerover", callback)
     [<CustomOperation("onpointeroverAsync")>]
     member inline this.onpointeroverAsync
         (
             [<InlineIfLambda>] render: FunRenderFragment,
-            callback: PointerEventArgs -> Task
+            [<InlineIfLambda>] callback: PointerEventArgs -> Task
         )
         =
         this.onTask (render, "pointerover", callback)
     [<CustomOperation("onpointerup")>]
-    member inline this.onpointerup([<InlineIfLambda>] render: FunRenderFragment, callback: PointerEventArgs -> unit) =
+    member inline this.onpointerup
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: PointerEventArgs -> unit
+        )
+        =
         this.on (render, "pointerup", callback)
     [<CustomOperation("onpointerupAsync")>]
     member inline this.onpointerupAsync
         (
             [<InlineIfLambda>] render: FunRenderFragment,
-            callback: PointerEventArgs -> Task
+            [<InlineIfLambda>] callback: PointerEventArgs -> Task
         )
         =
         this.onTask (render, "pointerup", callback)
     [<CustomOperation("oncanplay")>]
-    member inline this.oncanplay([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> unit) =
+    member inline this.oncanplay
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> unit
+        )
+        =
         this.on (render, "canplay", callback)
     [<CustomOperation("oncanplayAsync")>]
-    member inline this.oncanplayAsync([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> Task) =
+    member inline this.oncanplayAsync
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> Task
+        )
+        =
         this.onTask (render, "canplay", callback)
     [<CustomOperation("oncanplaythrough")>]
-    member inline this.oncanplaythrough([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> unit) =
+    member inline this.oncanplaythrough
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> unit
+        )
+        =
         this.on (render, "canplaythrough", callback)
     [<CustomOperation("oncanplaythroughAsync")>]
     member inline this.oncanplaythroughAsync
         (
             [<InlineIfLambda>] render: FunRenderFragment,
-            callback: EventArgs -> Task
+            [<InlineIfLambda>] callback: EventArgs -> Task
         )
         =
         this.onTask (render, "canplaythrough", callback)
     [<CustomOperation("oncuechange")>]
-    member inline this.oncuechange([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> unit) =
+    member inline this.oncuechange
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> unit
+        )
+        =
         this.on (render, "cuechange", callback)
     [<CustomOperation("oncuechangeAsync")>]
-    member inline this.oncuechangeAsync([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> Task) =
+    member inline this.oncuechangeAsync
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> Task
+        )
+        =
         this.onTask (render, "cuechange", callback)
     [<CustomOperation("ondurationchange")>]
-    member inline this.ondurationchange([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> unit) =
+    member inline this.ondurationchange
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> unit
+        )
+        =
         this.on (render, "durationchange", callback)
     [<CustomOperation("ondurationchangeAsync")>]
     member inline this.ondurationchangeAsync
         (
             [<InlineIfLambda>] render: FunRenderFragment,
-            callback: EventArgs -> Task
+            [<InlineIfLambda>] callback: EventArgs -> Task
         )
         =
         this.onTask (render, "durationchange", callback)
     [<CustomOperation("onemptied")>]
-    member inline this.onemptied([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> unit) =
+    member inline this.onemptied
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> unit
+        )
+        =
         this.on (render, "emptied", callback)
     [<CustomOperation("onemptiedAsync")>]
-    member inline this.onemptiedAsync([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> Task) =
+    member inline this.onemptiedAsync
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> Task
+        )
+        =
         this.onTask (render, "emptied", callback)
     [<CustomOperation("onpause")>]
-    member inline this.onpause([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> unit) =
+    member inline this.onpause
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> unit
+        )
+        =
         this.on (render, "pause", callback)
     [<CustomOperation("onpauseAsync")>]
-    member inline this.onpauseAsync([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> Task) =
+    member inline this.onpauseAsync
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> Task
+        )
+        =
         this.onTask (render, "pause", callback)
     [<CustomOperation("onplay")>]
-    member inline this.onplay([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> unit) =
+    member inline this.onplay
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> unit
+        )
+        =
         this.on (render, "play", callback)
     [<CustomOperation("onplayAsync")>]
-    member inline this.onplayAsync([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> Task) =
+    member inline this.onplayAsync
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> Task
+        )
+        =
         this.onTask (render, "play", callback)
     [<CustomOperation("onplaying")>]
-    member inline this.onplaying([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> unit) =
+    member inline this.onplaying
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> unit
+        )
+        =
         this.on (render, "playing", callback)
     [<CustomOperation("onplayingAsync")>]
-    member inline this.onplayingAsync([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> Task) =
+    member inline this.onplayingAsync
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> Task
+        )
+        =
         this.onTask (render, "playing", callback)
     [<CustomOperation("onratechange")>]
-    member inline this.onratechange([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> unit) =
+    member inline this.onratechange
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> unit
+        )
+        =
         this.on (render, "ratechange", callback)
     [<CustomOperation("onratechangeAsync")>]
-    member inline this.onratechangeAsync([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> Task) =
+    member inline this.onratechangeAsync
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> Task
+        )
+        =
         this.onTask (render, "ratechange", callback)
     [<CustomOperation("onseeked")>]
-    member inline this.onseeked([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> unit) =
+    member inline this.onseeked
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> unit
+        )
+        =
         this.on (render, "seeked", callback)
     [<CustomOperation("onseekedAsync")>]
-    member inline this.onseekedAsync([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> Task) =
+    member inline this.onseekedAsync
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> Task
+        )
+        =
         this.onTask (render, "seeked", callback)
     [<CustomOperation("onseeking")>]
-    member inline this.onseeking([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> unit) =
+    member inline this.onseeking
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> unit
+        )
+        =
         this.on (render, "seeking", callback)
     [<CustomOperation("onseekingAsync")>]
-    member inline this.onseekingAsync([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> Task) =
+    member inline this.onseekingAsync
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> Task
+        )
+        =
         this.onTask (render, "seeking", callback)
     [<CustomOperation("onstalled")>]
-    member inline this.onstalled([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> unit) =
+    member inline this.onstalled
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> unit
+        )
+        =
         this.on (render, "stalled", callback)
     [<CustomOperation("onstalledAsync")>]
-    member inline this.onstalledAsync([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> Task) =
+    member inline this.onstalledAsync
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> Task
+        )
+        =
         this.onTask (render, "stalled", callback)
     [<CustomOperation("onstop")>]
-    member inline this.onstop([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> unit) =
+    member inline this.onstop
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> unit
+        )
+        =
         this.on (render, "stop", callback)
     [<CustomOperation("onstopAsync")>]
-    member inline this.onstopAsync([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> Task) =
+    member inline this.onstopAsync
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> Task
+        )
+        =
         this.onTask (render, "stop", callback)
     [<CustomOperation("onsuspend")>]
-    member inline this.onsuspend([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> unit) =
+    member inline this.onsuspend
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> unit
+        )
+        =
         this.on (render, "suspend", callback)
     [<CustomOperation("onsuspendAsync")>]
-    member inline this.onsuspendAsync([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> Task) =
+    member inline this.onsuspendAsync
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> Task
+        )
+        =
         this.onTask (render, "suspend", callback)
     [<CustomOperation("ontimeupdate")>]
-    member inline this.ontimeupdate([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> unit) =
+    member inline this.ontimeupdate
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> unit
+        )
+        =
         this.on (render, "timeupdate", callback)
     [<CustomOperation("ontimeupdateAsync")>]
-    member inline this.ontimeupdateAsync([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> Task) =
+    member inline this.ontimeupdateAsync
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> Task
+        )
+        =
         this.onTask (render, "timeupdate", callback)
     [<CustomOperation("onvolumechange")>]
-    member inline this.onvolumechange([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> unit) =
+    member inline this.onvolumechange
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> unit
+        )
+        =
         this.on (render, "volumechange", callback)
     [<CustomOperation("onvolumechangeAsync")>]
-    member inline this.onvolumechangeAsync([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> Task) =
+    member inline this.onvolumechangeAsync
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> Task
+        )
+        =
         this.onTask (render, "volumechange", callback)
     [<CustomOperation("onwaiting")>]
-    member inline this.onwaiting([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> unit) =
+    member inline this.onwaiting
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> unit
+        )
+        =
         this.on (render, "waiting", callback)
     [<CustomOperation("onwaitingAsync")>]
-    member inline this.onwaitingAsync([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> Task) =
+    member inline this.onwaitingAsync
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> Task
+        )
+        =
         this.onTask (render, "waiting", callback)
     [<CustomOperation("onloadstart")>]
-    member inline this.onloadstart([<InlineIfLambda>] render: FunRenderFragment, callback: ProgressEventArgs -> unit) =
+    member inline this.onloadstart
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: ProgressEventArgs -> unit
+        )
+        =
         this.on (render, "loadstart", callback)
     [<CustomOperation("onloadstartAsync")>]
     member inline this.onloadstartAsync
         (
             [<InlineIfLambda>] render: FunRenderFragment,
-            callback: ProgressEventArgs -> Task
+            [<InlineIfLambda>] callback: ProgressEventArgs -> Task
         )
         =
         this.onTask (render, "loadstart", callback)
     [<CustomOperation("ontimeout")>]
-    member inline this.ontimeout([<InlineIfLambda>] render: FunRenderFragment, callback: ProgressEventArgs -> unit) =
+    member inline this.ontimeout
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: ProgressEventArgs -> unit
+        )
+        =
         this.on (render, "timeout", callback)
     [<CustomOperation("ontimeoutAsync")>]
     member inline this.ontimeoutAsync
         (
             [<InlineIfLambda>] render: FunRenderFragment,
-            callback: ProgressEventArgs -> Task
+            [<InlineIfLambda>] callback: ProgressEventArgs -> Task
         )
         =
         this.onTask (render, "timeout", callback)
     [<CustomOperation("onabort")>]
-    member inline this.onabort([<InlineIfLambda>] render: FunRenderFragment, callback: ProgressEventArgs -> unit) =
+    member inline this.onabort
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: ProgressEventArgs -> unit
+        )
+        =
         this.on (render, "abort", callback)
     [<CustomOperation("onabortAsync")>]
-    member inline this.onabortAsync([<InlineIfLambda>] render: FunRenderFragment, callback: ProgressEventArgs -> Task) =
+    member inline this.onabortAsync
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: ProgressEventArgs -> Task
+        )
+        =
         this.onTask (render, "abort", callback)
     [<CustomOperation("onload")>]
-    member inline this.onload([<InlineIfLambda>] render: FunRenderFragment, callback: ProgressEventArgs -> unit) =
+    member inline this.onload
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: ProgressEventArgs -> unit
+        )
+        =
         this.on (render, "load", callback)
     [<CustomOperation("onloadAsync")>]
-    member inline this.onloadAsync([<InlineIfLambda>] render: FunRenderFragment, callback: ProgressEventArgs -> Task) =
+    member inline this.onloadAsync
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: ProgressEventArgs -> Task
+        )
+        =
         this.onTask (render, "load", callback)
     [<CustomOperation("onloadend")>]
-    member inline this.onloadend([<InlineIfLambda>] render: FunRenderFragment, callback: ProgressEventArgs -> unit) =
+    member inline this.onloadend
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: ProgressEventArgs -> unit
+        )
+        =
         this.on (render, "loadend", callback)
     [<CustomOperation("onloadendAsync")>]
     member inline this.onloadendAsync
         (
             [<InlineIfLambda>] render: FunRenderFragment,
-            callback: ProgressEventArgs -> Task
+            [<InlineIfLambda>] callback: ProgressEventArgs -> Task
         )
         =
         this.onTask (render, "loadend", callback)
     [<CustomOperation("onprogress")>]
-    member inline this.onprogress([<InlineIfLambda>] render: FunRenderFragment, callback: ProgressEventArgs -> unit) =
+    member inline this.onprogress
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: ProgressEventArgs -> unit
+        )
+        =
         this.on (render, "progress", callback)
     [<CustomOperation("onprogressAsync")>]
     member inline this.onprogressAsync
         (
             [<InlineIfLambda>] render: FunRenderFragment,
-            callback: ProgressEventArgs -> Task
+            [<InlineIfLambda>] callback: ProgressEventArgs -> Task
         )
         =
         this.onTask (render, "progress", callback)
     [<CustomOperation("onerror")>]
-    member inline this.onerror([<InlineIfLambda>] render: FunRenderFragment, callback: ProgressEventArgs -> unit) =
+    member inline this.onerror
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: ProgressEventArgs -> unit
+        )
+        =
         this.on (render, "error", callback)
     [<CustomOperation("onerrorAsync")>]
-    member inline this.onerrorAsync([<InlineIfLambda>] render: FunRenderFragment, callback: ProgressEventArgs -> Task) =
+    member inline this.onerrorAsync
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: ProgressEventArgs -> Task
+        )
+        =
         this.onTask (render, "error", callback)
     [<CustomOperation("onactivate")>]
-    member inline this.onactivate([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> unit) =
+    member inline this.onactivate
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> unit
+        )
+        =
         this.on (render, "activate", callback)
     [<CustomOperation("onactivateAsync")>]
-    member inline this.onactivateAsync([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> Task) =
+    member inline this.onactivateAsync
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> Task
+        )
+        =
         this.onTask (render, "activate", callback)
     [<CustomOperation("onbeforeactivate")>]
-    member inline this.onbeforeactivate([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> unit) =
+    member inline this.onbeforeactivate
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> unit
+        )
+        =
         this.on (render, "beforeactivate", callback)
     [<CustomOperation("onbeforeactivateAsync")>]
     member inline this.onbeforeactivateAsync
         (
             [<InlineIfLambda>] render: FunRenderFragment,
-            callback: EventArgs -> Task
+            [<InlineIfLambda>] callback: EventArgs -> Task
         )
         =
         this.onTask (render, "beforeactivate", callback)
     [<CustomOperation("onbeforedeactivate")>]
-    member inline this.onbeforedeactivate([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> unit) =
+    member inline this.onbeforedeactivate
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> unit
+        )
+        =
         this.on (render, "beforedeactivate", callback)
     [<CustomOperation("onbeforedeactivateAsync")>]
     member inline this.onbeforedeactivateAsync
         (
             [<InlineIfLambda>] render: FunRenderFragment,
-            callback: EventArgs -> Task
+            [<InlineIfLambda>] callback: EventArgs -> Task
         )
         =
         this.onTask (render, "beforedeactivate", callback)
     [<CustomOperation("ondeactivate")>]
-    member inline this.ondeactivate([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> unit) =
+    member inline this.ondeactivate
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> unit
+        )
+        =
         this.on (render, "deactivate", callback)
     [<CustomOperation("ondeactivateAsync")>]
-    member inline this.ondeactivateAsync([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> Task) =
+    member inline this.ondeactivateAsync
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> Task
+        )
+        =
         this.onTask (render, "deactivate", callback)
     [<CustomOperation("onended")>]
-    member inline this.onended([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> unit) =
+    member inline this.onended
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> unit
+        )
+        =
         this.on (render, "ended", callback)
     [<CustomOperation("onendedAsync")>]
-    member inline this.onendedAsync([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> Task) =
+    member inline this.onendedAsync
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> Task
+        )
+        =
         this.onTask (render, "ended", callback)
     [<CustomOperation("onfullscreenchange")>]
-    member inline this.onfullscreenchange([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> unit) =
+    member inline this.onfullscreenchange
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> unit
+        )
+        =
         this.on (render, "fullscreenchange", callback)
     [<CustomOperation("onfullscreenchangeAsync")>]
     member inline this.onfullscreenchangeAsync
         (
             [<InlineIfLambda>] render: FunRenderFragment,
-            callback: EventArgs -> Task
+            [<InlineIfLambda>] callback: EventArgs -> Task
         )
         =
         this.onTask (render, "fullscreenchange", callback)
     [<CustomOperation("onfullscreenerror")>]
-    member inline this.onfullscreenerror([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> unit) =
+    member inline this.onfullscreenerror
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> unit
+        )
+        =
         this.on (render, "fullscreenerror", callback)
     [<CustomOperation("onfullscreenerrorAsync")>]
     member inline this.onfullscreenerrorAsync
         (
             [<InlineIfLambda>] render: FunRenderFragment,
-            callback: EventArgs -> Task
+            [<InlineIfLambda>] callback: EventArgs -> Task
         )
         =
         this.onTask (render, "fullscreenerror", callback)
     [<CustomOperation("onloadeddata")>]
-    member inline this.onloadeddata([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> unit) =
+    member inline this.onloadeddata
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> unit
+        )
+        =
         this.on (render, "loadeddata", callback)
     [<CustomOperation("onloadeddataAsync")>]
-    member inline this.onloadeddataAsync([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> Task) =
+    member inline this.onloadeddataAsync
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> Task
+        )
+        =
         this.onTask (render, "loadeddata", callback)
     [<CustomOperation("onloadedmetadata")>]
-    member inline this.onloadedmetadata([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> unit) =
+    member inline this.onloadedmetadata
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> unit
+        )
+        =
         this.on (render, "loadedmetadata", callback)
     [<CustomOperation("onloadedmetadataAsync")>]
     member inline this.onloadedmetadataAsync
         (
             [<InlineIfLambda>] render: FunRenderFragment,
-            callback: EventArgs -> Task
+            [<InlineIfLambda>] callback: EventArgs -> Task
         )
         =
         this.onTask (render, "loadedmetadata", callback)
     [<CustomOperation("onpointerlockchange")>]
-    member inline this.onpointerlockchange([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> unit) =
+    member inline this.onpointerlockchange
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> unit
+        )
+        =
         this.on (render, "pointerlockchange", callback)
     [<CustomOperation("onpointerlockchangeAsync")>]
     member inline this.onpointerlockchangeAsync
         (
             [<InlineIfLambda>] render: FunRenderFragment,
-            callback: EventArgs -> Task
+            [<InlineIfLambda>] callback: EventArgs -> Task
         )
         =
         this.onTask (render, "pointerlockchange", callback)
     [<CustomOperation("onpointerlockerror")>]
-    member inline this.onpointerlockerror([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> unit) =
+    member inline this.onpointerlockerror
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> unit
+        )
+        =
         this.on (render, "pointerlockerror", callback)
     [<CustomOperation("onpointerlockerrorAsync")>]
     member inline this.onpointerlockerrorAsync
         (
             [<InlineIfLambda>] render: FunRenderFragment,
-            callback: EventArgs -> Task
+            [<InlineIfLambda>] callback: EventArgs -> Task
         )
         =
         this.onTask (render, "pointerlockerror", callback)
     [<CustomOperation("onreadystatechange")>]
-    member inline this.onreadystatechange([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> unit) =
+    member inline this.onreadystatechange
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> unit
+        )
+        =
         this.on (render, "readystatechange", callback)
     [<CustomOperation("onreadystatechangeAsync")>]
     member inline this.onreadystatechangeAsync
         (
             [<InlineIfLambda>] render: FunRenderFragment,
-            callback: EventArgs -> Task
+            [<InlineIfLambda>] callback: EventArgs -> Task
         )
         =
         this.onTask (render, "readystatechange", callback)
     [<CustomOperation("onscroll")>]
-    member inline this.onscroll([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> unit) =
+    member inline this.onscroll
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> unit
+        )
+        =
         this.on (render, "scroll", callback)
     [<CustomOperation("onscrollAsync")>]
-    member inline this.onscrollAsync([<InlineIfLambda>] render: FunRenderFragment, callback: EventArgs -> Task) =
+    member inline this.onscrollAsync
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            [<InlineIfLambda>] callback: EventArgs -> Task
+        )
+        =
         this.onTask (render, "scroll", callback)
 
 
@@ -2443,35 +3138,26 @@ module Elts =
     let meta = EltWithChild "meta"
 
 
+    /// Put raw js into the script tag
+    let inline js (x: string) =
+        FunRenderFragment(fun _ builder index ->
+            builder.OpenElement(index, "script")
+            builder.AddContent(index + 1, x)
+            builder.CloseElement()
+            index + 2
+        )
+
+
     let inline doctype decl =
         FunRenderFragment(fun _ builder index ->
             builder.AddMarkupContent(index, $"<!DOCTYPE {decl}>\n")
             index + 1
         )
 
+    let inline stylesheet (x: string) =
+        link {
+            rel "stylesheet"
+            href x
+        }
 
-    type html with
-
-        static member inline meta(n, v) =
-            meta {
-                name n
-                value v
-            }
-
-        static member inline title(x: string) = title { html.text x }
-
-        static member inline baseUrl(x: string) = base' { href x }
-
-        static member inline scriptRaw(x: string) =
-            FunRenderFragment(fun _ builder index ->
-                builder.OpenElement(index, "script")
-                builder.AddContent(index + 1, x)
-                builder.CloseElement()
-                index + 2
-            )
-
-        static member inline stylesheet(x: string) =
-            link {
-                rel "stylesheet"
-                href x
-            }
+    let inline baseUrl (x: string) = base' { href x }

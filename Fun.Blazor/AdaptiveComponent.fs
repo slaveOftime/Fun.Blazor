@@ -4,19 +4,18 @@ open System
 open FSharp.Data.Adaptive
 open Microsoft.Extensions.Logging
 open Microsoft.AspNetCore.Components
-open Operators
 
 
 type AdaptiveComponent() as this =
     inherit FunBlazorComponent()
 
-    let mutable nodeSubscription: IDisposable option = None
-    let mutable node = AList.empty<FunRenderFragment>
+    let mutable fragmentSubscription: IDisposable option = None
+    let mutable fragment: aval<FunRenderFragment> = AVal.init emptyRender
     let mutable shouldRerender = true
 
 
     [<Parameter>]
-    member val Node = AList.empty with get, set
+    member val Fragment: aval<FunRenderFragment> = AVal.init emptyRender with get, set
 
     [<Parameter>]
     member val IsStatic = false with get, set
@@ -35,18 +34,18 @@ type AdaptiveComponent() as this =
 
 
     override _.Render() =
-        this.Logger.LogDebugForPerf(fun _ -> node |> AList.force |> IndexList.toList |> List.fold (==>) emptyRender)
+        this.Logger.LogDebugForPerf(fun _ -> fragment |> AVal.force)
 
 
     override _.OnParametersSet() =
-        if this.IsStatic && nodeSubscription.IsSome then
+        if this.IsStatic && fragmentSubscription.IsSome then
             // Avoid rerender for static mode
             shouldRerender <- false
         else
             shouldRerender <- true
-            nodeSubscription |> Option.iter (fun x -> x.Dispose())
-            node <- this.Node
-            nodeSubscription <- Some(node.AddCallback(fun _ _ -> this.Rerender()))
+            fragmentSubscription |> Option.iter (fun x -> x.Dispose())
+            fragment <- this.Fragment
+            fragmentSubscription <- Some(fragment.AddCallback(fun _ -> this.Rerender()))
 
     override _.ShouldRender() =
         let result = shouldRerender
@@ -56,4 +55,4 @@ type AdaptiveComponent() as this =
 
     interface IDisposable with
         member _.Dispose() =
-            nodeSubscription |> Option.iter (fun x -> x.Dispose())
+            fragmentSubscription |> Option.iter (fun x -> x.Dispose())

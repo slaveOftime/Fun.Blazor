@@ -68,11 +68,11 @@ type FragmentBuilder() =
         =
         render ==> fn ()
 
-    member inline _.Zero _ = FunRenderFragment(fun _ _ i -> i)
+    member inline _.Zero () = FunRenderFragment(fun _ _ i -> i)
 
 
     [<CustomOperation("ref")>]
-    member inline _.ref(render: FunRenderFragment, fn) =
+    member inline _.ref([<InlineIfLambda>] render: FunRenderFragment, [<InlineIfLambda>] fn: ElementReference -> unit) =
         render
         ==> FunRenderFragment(fun _ builder index ->
             builder.AddElementReferenceCapture(index, fn)
@@ -80,7 +80,13 @@ type FragmentBuilder() =
         )
 
     [<CustomOperation("on")>]
-    member inline _.on(render: FunRenderFragment, eventName, callback: 'T -> unit) =
+    member inline _.on
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            eventName,
+            [<InlineIfLambda>] callback: 'T -> unit
+        )
+        =
         render
         ==> FunRenderFragment(fun comp builder index ->
             builder.AddAttribute(index, "on" + eventName, EventCallback.Factory.Create(comp, Action<'T> callback))
@@ -88,7 +94,13 @@ type FragmentBuilder() =
         )
 
     [<CustomOperation("onTask")>]
-    member inline _.onTask(render: FunRenderFragment, eventName, callback: 'T -> Task) =
+    member inline _.onTask
+        (
+            [<InlineIfLambda>] render: FunRenderFragment,
+            eventName,
+            [<InlineIfLambda>] callback: 'T -> Task
+        )
+        =
         render
         ==> FunRenderFragment(fun comp builder index ->
             builder.AddAttribute(index, "on" + eventName, EventCallback.Factory.Create(comp, Func<'T, Task> callback))
@@ -96,7 +108,7 @@ type FragmentBuilder() =
         )
 
     [<CustomOperation("preventDefault")>]
-    member inline _.preventDefault(render: FunRenderFragment, eventName, value) =
+    member inline _.preventDefault([<InlineIfLambda>] render: FunRenderFragment, eventName, value) =
         render
         ==> FunRenderFragment(fun _ builder index ->
             builder.AddEventPreventDefaultAttribute(index, "on" + eventName, value)
@@ -104,7 +116,7 @@ type FragmentBuilder() =
         )
 
     [<CustomOperation("stopPropagation")>]
-    member inline _.stopPropagation(render: FunRenderFragment, eventName, value) =
+    member inline _.stopPropagation([<InlineIfLambda>] render: FunRenderFragment, eventName, value) =
         render
         ==> FunRenderFragment(fun _ builder index ->
             builder.AddEventPreventDefaultAttribute(index, "on" + eventName, value)
@@ -139,6 +151,7 @@ type EltBuilder(name) =
             nextIndex
         )
 
+
 and ComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FragmentBuilder()
 
@@ -164,7 +177,7 @@ and ComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent>()
             nextIndex
         )
 
-    [<CustomOperation("key")>] 
+    [<CustomOperation("key")>]
     member inline _.key([<InlineIfLambda>] render: FunRenderFragment, k) =
         render
         ==> FunRenderFragment(fun _ builder index ->
