@@ -7,7 +7,7 @@ open Operators
 
 type html() =
 
-    static member inline none = emptyRender
+    static member inline none = emptyNode
 
     static member inline fragment = fragment
 

@@ -72,7 +72,7 @@ type html with
     /// </code>
     /// </example>
     static member watch(store: IStore<'T>, render: 'T -> NodeRenderFragment list) =
-        html.watch (store.Observable, render >> List.fold (>=>) emptyRender, store.Current)
+        html.watch (store.Observable, render >> List.fold (>=>) emptyNode, store.Current)
     /// <summary>
     /// Renders Nodes dynamically based on what is emitted by the store
     /// </summary>
@@ -115,7 +115,7 @@ type html with
     /// </code>
     /// </example>
     static member watch(key, store: IStore<'T>, render: 'T -> NodeRenderFragment list) =
-        html.watch (store.Observable, render >> List.fold (>=>) emptyRender, store.Current, k = key)
+        html.watch (store.Observable, render >> List.fold (>=>) emptyNode, store.Current, k = key)
 
     /// <summary>
     /// Renders Nodes dynamically based on what is emitted by the stores

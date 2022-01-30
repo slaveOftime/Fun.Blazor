@@ -87,7 +87,8 @@ type EltWithDomAttrs(name) =
     [<CustomOperation("async")>]
     member inline _.async'([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("async" => v)
     [<CustomOperation("autocapitalize")>]
-    member inline _.autocapitalize([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("autocapitalize" => v)
+    member inline _.autocapitalize([<InlineIfLambda>] render: AttrRenderFragment, v) =
+        render ==> ("autocapitalize" => v)
     [<CustomOperation("autocomplete")>]
     member inline _.autocomplete([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("autocomplete" => v)
     [<CustomOperation("autofocus")>]

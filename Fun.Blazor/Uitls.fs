@@ -10,11 +10,8 @@ open Microsoft.Extensions.Logging
 
 
 let emptyAttr = AttrRenderFragment(fun _ _ i -> i)
-let emptyRender = NodeRenderFragment(fun _ _ i -> i)
-
+let emptyNode = NodeRenderFragment(fun _ _ i -> i)
 let fragment = FragmentBuilder()
-
-let comp<'T when 'T :> Microsoft.AspNetCore.Components.IComponent> = ComponentBuilder<'T>()
 
 
 let makeStyles (rules: (string * string) seq) =
