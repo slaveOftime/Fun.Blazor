@@ -10,10 +10,9 @@
 		<Compile Include="Internals.fs" />
 		<Compile Include="Template.fs" />
 	</ItemGroup>
-
+	
 	<ItemGroup>
-		<PackageReference Include="Bolero" Version="0.18.16" />
-		<PackageReference Include="FSharp.Data" Version="4.2.7" />
+	  <ProjectReference Include="..\Fun.Blazor\Fun.Blazor.fsproj" />
 	</ItemGroup>
 
 	<ItemGroup>

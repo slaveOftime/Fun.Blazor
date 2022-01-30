@@ -2,65 +2,64 @@ module Fun.Blazor.HtmlTemplate.Internals
 
 open System
 open System.Text
+open System.Threading.Tasks
 open System.Text.RegularExpressions
 open System.Collections.Concurrent
-open FSharp.Data
+open Microsoft.AspNetCore.Components
+open Microsoft.AspNetCore.Components.Web
+open Microsoft.AspNetCore.Components.Rendering
+open System.Xml
+open Fun.Blazor
+open Fun.Blazor.Operators
 
 
 let formatHoleRegex = Regex("\{([\d]*)\}")
 
-let internal caches = ConcurrentDictionary<int, Bolero.Node list>()
-
-type MkAttr = obj [] -> Bolero.Attr list
-type MkNode = obj [] -> Bolero.Node
-
-type MkAttrWithName = string -> Bolero.Attr list
-
-type PlacerHolderNode = interface end
+let internal caches = ConcurrentDictionary<int, obj [] -> NodeRenderFragment>()
 
 
-let placeholderAttrKey = "__placeholder__"
-let placeholderAttr (mk: MkAttr) = Bolero.Attr(placeholderAttrKey, mk)
+//[<Struct>]
+//type Hole =
+//    | Attr of attr: AttrRenderFragment
+//    | Node of node: NodeRenderFragment
+//    | AttrHole of attrHole: (obj [] -> AttrRenderFragment)
+//    | NodeHole of nodeHole: (obj [] -> NodeRenderFragment)
 
-let placeholderNodeType = typeof<PlacerHolderNode>
 
-let placeholderNode (mk: MkNode) =
-    Bolero.Match(placeholderNodeType, mk, Bolero.Empty)
-
-
-let buildNodes (str: string) =
-    [
-        let matches = formatHoleRegex.Matches str
+let buildNodes (args: obj []) (str: string) =
+    let matches = formatHoleRegex.Matches str
+    fragment {
         if matches.Count = 0 then
             let trimedTxt = str.Trim()
-            if String.IsNullOrEmpty trimedTxt |> not then Bolero.Text trimedTxt
+            if String.IsNullOrEmpty trimedTxt |> not then html.text trimedTxt
         else
             let mutable strIndex = 0
             for m in matches do
                 let txt = str.Substring(strIndex, m.Index - strIndex)
                 let trimedTxt = txt.Trim()
-                if String.IsNullOrEmpty trimedTxt |> not then Bolero.Text trimedTxt
+                if String.IsNullOrEmpty trimedTxt |> not then html.text trimedTxt
 
                 strIndex <- m.Index + m.Length
 
                 let argIndex = int m.Groups.[1].Value
-                placeholderNode (fun args ->
+
+                NodeRenderFragment(fun comp builder index ->
                     let arg = args.[argIndex]
                     match arg with
-                    | :? Bolero.Node as n -> n
-                    | x -> Bolero.Text(string x)
+                    | :? NodeRenderFragment as n -> n.Invoke(comp, builder, index)
+                    | x -> html.text(string x).Invoke(comp, builder, index)
                 )
-    ]
+    }
 
 
-let buildRawNodes (str: string) =
-    [
-        let matches = formatHoleRegex.Matches str
+let buildRawNodes (args: obj []) (str: string) =
+    let matches = formatHoleRegex.Matches str
+    fragment {
         if matches.Count = 0 then
             let trimedTxt = str.Trim()
-            if String.IsNullOrEmpty trimedTxt |> not then Bolero.RawHtml trimedTxt
+            if String.IsNullOrEmpty trimedTxt |> not then html.raw trimedTxt
         else
-            placeholderNode (fun args ->
+            NodeRenderFragment(fun comp builder index ->
                 let sb = StringBuilder()
                 let mutable strIndex = 0
                 for m in matches do
@@ -73,12 +72,12 @@ let buildRawNodes (str: string) =
 
                     strIndex <- m.Index + m.Length
 
-                Bolero.RawHtml(sb.ToString())
+                html.raw(sb.ToString()).Invoke(comp, builder, index)
             )
-    ]
+    }
 
 
-let buildAttrs (name: string, value: string) =
+let buildAttrs (args: obj []) (name: string, value: string) =
     let inline invokeFunction (fn: obj) (x: obj) =
         fn.GetType().InvokeMember("Invoke", Reflection.BindingFlags.InvokeMethod, null, fn, [| x |])
 
@@ -106,95 +105,62 @@ let buildAttrs (name: string, value: string) =
 
     if valueMatches.Count = 1 && valueMatches.[0].Index = 0 && valueMatches.[0].Length = value.Length then
         let argIndex = int valueMatches.[0].Groups.[1].Value
-        placeholderAttr (fun args ->
+        AttrRenderFragment(fun comp builder index ->
             let name = makeName args
             let arg = args.[argIndex]
             if String.IsNullOrEmpty name then
-                List.empty
+                index
             else
                 match arg with
-                | :? MkAttrWithName as fn -> fn name
-                | _ ->
-                    if name.StartsWith "on" then
-                        [ Bolero.Html.attr.callback name (fun x -> invokeFunction arg x :?> unit) ]
-                    else
-                        [ Bolero.Attr(name, arg) ]
+                | :? AttrRenderFragment as fn -> fn.Invoke(comp, builder ,index)
+                | _ -> (name => arg).Invoke(comp, builder, index)
         )
     elif valueMatches.Count > 0 then
-        placeholderAttr (fun args ->
-            let sb = StringBuilder()
-            let mutable strIndex = 0
-            for m in valueMatches do
-                let txt = value.Substring(strIndex, m.Index - strIndex)
-                if String.IsNullOrEmpty txt |> not then sb.Append txt |> ignore
+        let sb = StringBuilder()
+        let mutable strIndex = 0
+        for m in valueMatches do
+            let txt = value.Substring(strIndex, m.Index - strIndex)
+            if String.IsNullOrEmpty txt |> not then sb.Append txt |> ignore
 
-                strIndex <- m.Index + m.Length
+            strIndex <- m.Index + m.Length
 
-                let argIndex = int m.Groups.[1].Value
-                let arg = args.[argIndex]
-                sb.Append(string arg) |> ignore
+            let argIndex = int m.Groups.[1].Value
+            let arg = args.[argIndex]
+            sb.Append(string arg) |> ignore
 
-            let name = makeName args
-            if String.IsNullOrEmpty name then
-                List.empty
-            else
-                [ Bolero.Attr(name, sb.ToString()) ]
-        )
+        let name = makeName args
+        if String.IsNullOrEmpty name then emptyAttr else name => (sb.ToString())
     elif nameMatches.Count > 0 then
-        placeholderAttr (fun args ->
-            let name = makeName args
-            if String.IsNullOrEmpty name then List.empty else [ Bolero.Attr(name, value) ]
-        )
+        let name = makeName args
+        if String.IsNullOrEmpty name then emptyAttr else name => value
     else
-        Bolero.Attr(name, value)
-
-
-let rec buildNodeTree (args: obj []) (nodes: Bolero.Node list) =
-    if args.Length = 0 then
-        nodes
-    else
-        [
-            for node in nodes do
-                match node with
-                | Bolero.Elt (n, attrs, childs) ->
-                    let newAttrs =
-                        [
-                            for attr in attrs do
-                                match attr with
-                                | Bolero.Attr (key, mk) when key = placeholderAttrKey -> yield! (unbox<MkAttr> mk) args
-                                | _ -> attr
-                        ]
-                    let newNodes = buildNodeTree args childs
-                    Bolero.Elt(n, newAttrs, newNodes)
-                | Bolero.Match (ty, mk, _) when ty = placeholderNodeType -> (unbox<MkNode> mk) args
-                | _ -> node
-        ]
+        name => value
 
 
 let parseNodes (str: string) =
-    let doc = HtmlDocument.Parse str
+    let doc = XmlDocument()
 
-    let rec loop (nodes: HtmlNode seq) =
-        [
-            for node in nodes do
-                let name = node.Name()
-                if String.IsNullOrEmpty name then
-                    yield! buildNodes (node.ToString())
+    doc.LoadXml str
+
+    let rec loopNodes (args: obj []) (nodes: XmlNodeList) : NodeRenderFragment =
+        fragment {
+            for i in 0 .. nodes.Count - 1 do
+                let node = nodes.Item i
+                let nodeName = node.Name
+                if String.IsNullOrEmpty nodeName then
+                    buildNodes args (node.ToString())
                 else
-                    Bolero.Elt(
-                        name,
-                        [
-                            for attr in node.Attributes() do
-                                buildAttrs (attr.Name(), attr.Value())
-                        ],
-                        if name = "script" || name = "style" then
-                            [
-                                for n in node.Elements() do
-                                    yield! buildRawNodes (n.ToString())
-                            ]
-                        else
-                            loop (node.Elements())
-                    )
-        ]
+                    EltWithChild nodeName {
+                        for k in 0 .. node.Attributes.Count - 1 do
+                            let attr = node.Attributes.Item k
+                            buildAttrs args (attr.Name, attr.Value)
 
-    doc.Elements() |> loop
+                        if nodeName = "script" || nodeName = "style" then
+                            for j in 0 .. node.ChildNodes.Count - 1 do
+                                buildRawNodes args ((node.ChildNodes.Item j).ToString())
+                        else
+                            loopNodes args nodes
+                    }
+        }
+
+    fun (args: obj []) -> loopNodes args doc.ChildNodes

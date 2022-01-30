@@ -21,11 +21,9 @@ module CodeGen =
 
         try
             let opens =
-                $"""open Bolero.Html
-open FSharp.Data.Adaptive
+                $"""open FSharp.Data.Adaptive
 open Fun.Blazor
-open Microsoft.AspNetCore.Components.{Utils.internalSegment}
-open Microsoft.AspNetCore.Components.Web.{Utils.internalSegment}
+open Fun.Blazor.Operators
 open {targetNamespace}.{Utils.internalSegment}"""
 
             let types = Assembly.Load(sourceAssemblyName).GetTypes()
@@ -36,7 +34,7 @@ open {targetNamespace}.{Utils.internalSegment}"""
 
             let codes =
                 match style with
-                | Style.Feliz -> Generator.generateCode formatedName opens types
+                //| Style.Feliz -> Generator.generateCode formatedName opens types
                 | Style.CE -> CEGenerator.generateCode formatedName opens types
                 | x -> failwith $"Not supportted style: {x}"
 

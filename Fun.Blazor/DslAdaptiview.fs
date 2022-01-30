@@ -49,6 +49,8 @@ type AdaptiviewBuilder(?key: obj, ?isStatic: bool) =
             return render1 >=> render2
         }
 
+    member inline _.Zero() = AVal.init emptyNode
+
 
 [<Extension>]
 type Extensions =

@@ -101,7 +101,28 @@ type FragmentBuilder() =
         )
         =
         render >>> (fn ())
+        
 
+    member inline _.For
+        (
+            renders: 'T seq,
+            [<InlineIfLambda>] fn: 'T -> NodeRenderFragment
+        )
+        =
+        renders |> Seq.map fn |> Seq.fold (>=>) (NodeRenderFragment(fun _ _ i -> i))
+
+
+    member inline _.For
+        (
+            renders: 'T seq,
+            [<InlineIfLambda>] fn: 'T -> AttrRenderFragment
+        )
+        =
+        renders |> Seq.map fn |> Seq.fold (==>) (AttrRenderFragment(fun _ _ i -> i))
+
+    member inline _.YieldFrom(renders: NodeRenderFragment seq) =
+        renders |> Seq.fold (>=>) (NodeRenderFragment(fun _ _ i -> i))
+        
     member inline _.Zero() = NodeRenderFragment(fun _ _ i -> i)
 
 
@@ -160,89 +181,6 @@ type FragmentBuilder() =
         ==> AttrRenderFragment(fun _ builder index ->
             builder.AddEventPreventDefaultAttribute(index, "on" + eventName, value)
             index + 1
-        )
-
-
-type EltBuilder(name) =
-    inherit FragmentBuilder()
-
-    member _.Name: string = name
-
-
-    member inline this.Run([<InlineIfLambda>] render: AttrRenderFragment) =
-        NodeRenderFragment(fun comp builder index ->
-            builder.OpenElement(index, this.Name)
-            let nextIndex = render.Invoke(comp, builder, index + 1)
-            builder.CloseElement()
-            nextIndex
-        )
-
-    member inline this.Run([<InlineIfLambda>] render: NodeRenderFragment) =
-        NodeRenderFragment(fun comp builder index ->
-            builder.OpenElement(index, this.Name)
-            let nextIndex = render.Invoke(comp, builder, index + 1)
-            builder.CloseElement()
-            nextIndex
-        )
-
-
-    member inline _.Yield(x: EltBuilder) =
-        AttrRenderFragment(fun _ builder index ->
-            builder.OpenElement(index, x.Name)
-            builder.CloseElement()
-            index + 1
-        )
-
-    member inline _.Yield(_: ComponentBuilder<'T>) =
-        AttrRenderFragment(fun _ builder index ->
-            builder.OpenComponent<'T>(index)
-            builder.CloseComponent()
-            index + 1
-        )
-
-
-and ComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit FragmentBuilder()
-
-
-    member inline _.Run([<InlineIfLambda>] render: AttrRenderFragment) =
-        NodeRenderFragment(fun comp builder index ->
-            builder.OpenComponent<'T>(index)
-            let nextIndex = render.Invoke(comp, builder, index + 1)
-            builder.CloseElement()
-            nextIndex
-        )
-
-    member inline _.Run([<InlineIfLambda>] render: NodeRenderFragment) =
-        NodeRenderFragment(fun comp builder index ->
-            builder.OpenComponent<'T>(index)
-            let nextIndex = render.Invoke(comp, builder, index + 1)
-            builder.CloseElement()
-            nextIndex
-        )
-
-
-    member inline _.Yield(x: EltBuilder) =
-        NodeRenderFragment(fun _ builder index ->
-            builder.OpenElement(index, x.Name)
-            builder.CloseElement()
-            index + 1
-        )
-
-    member inline _.Yield(_: ComponentBuilder<'T>) =
-        NodeRenderFragment(fun _ builder index ->
-            builder.OpenComponent<'T>(index)
-            builder.CloseComponent()
-            index + 1
-        )
-
-
-    [<CustomOperation("key")>] 
-    member inline _.key([<InlineIfLambda>] render: AttrRenderFragment, k) =
-        render
-        ==> AttrRenderFragment(fun _ builder index ->
-            builder.SetKey k
-            index
         )
 
 

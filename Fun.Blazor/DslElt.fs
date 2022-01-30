@@ -7,9 +7,9 @@ open Microsoft.AspNetCore.Components.Web
 open Operators
 
 
-type EltWithDomAttrs(name) =
+type DomBuilder() =
 
-    inherit EltBuilder(name)
+    inherit FragmentBuilder()
 
 
     [<CustomOperation("style")>]
@@ -1771,8 +1771,133 @@ type EltWithDomAttrs(name) =
         this.onTask (render, "scroll", callback)
 
 
-type EltWithChild(name) =
-    inherit EltWithDomAttrs(name)
+type EltBuilder(name) =
+    inherit DomBuilder()
+
+    member _.Name: string = name
+
+    member inline this.Run([<InlineIfLambda>] render: AttrRenderFragment) =
+        NodeRenderFragment(fun comp builder index ->
+            builder.OpenElement(index, this.Name)
+            let nextIndex = render.Invoke(comp, builder, index + 1)
+            builder.CloseElement()
+            nextIndex
+        )
+
+    member inline this.Run([<InlineIfLambda>] render: NodeRenderFragment) =
+        NodeRenderFragment(fun comp builder index ->
+            builder.OpenElement(index, this.Name)
+            let nextIndex = render.Invoke(comp, builder, index + 1)
+            builder.CloseElement()
+            nextIndex
+        )
+
+        
+    member inline _.Yield(x: EltBuilder) =
+        AttrRenderFragment(fun _ builder index ->
+            builder.OpenElement(index, x.Name)
+            builder.CloseElement()
+            index + 1
+        )
+
+    member inline _.Yield(_: ComponentBuilder<'T>) =
+        AttrRenderFragment(fun _ builder index ->
+            builder.OpenComponent<'T>(index)
+            builder.CloseComponent()
+            index + 1
+        )
+
+
+and ComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit FragmentBuilder()
+
+    member inline _.Run([<InlineIfLambda>] render: AttrRenderFragment) =
+        NodeRenderFragment(fun comp builder index ->
+            builder.OpenComponent<'T>(index)
+            let nextIndex = render.Invoke(comp, builder, index + 1)
+            builder.CloseElement()
+            nextIndex
+        )
+
+    member inline _.Run([<InlineIfLambda>] render: NodeRenderFragment) =
+        NodeRenderFragment(fun comp builder index ->
+            builder.OpenComponent<'T>(index)
+            let nextIndex = render.Invoke(comp, builder, index + 1)
+            builder.CloseElement()
+            nextIndex
+        )
+
+
+    member inline _.Yield(x: EltBuilder) =
+        NodeRenderFragment(fun _ builder index ->
+            builder.OpenElement(index, x.Name)
+            builder.CloseElement()
+            index + 1
+        )
+
+    member inline _.Yield(_: ComponentBuilder<'T>) =
+        NodeRenderFragment(fun _ builder index ->
+            builder.OpenComponent<'T>(index)
+            builder.CloseComponent()
+            index + 1
+        )
+
+
+    [<CustomOperation("key")>] 
+    member inline _.key([<InlineIfLambda>] render: AttrRenderFragment, k) =
+        render
+        ==> AttrRenderFragment(fun _ builder index ->
+            builder.SetKey k
+            index
+        )
+
+
+type ComponentWithDomAttrBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit DomBuilder()
+
+    member inline _.Run([<InlineIfLambda>] render: AttrRenderFragment) =
+        NodeRenderFragment(fun comp builder index ->
+            builder.OpenComponent<'T>(index)
+            let nextIndex = render.Invoke(comp, builder, index + 1)
+            builder.CloseElement()
+            nextIndex
+        )
+
+    member inline _.Run([<InlineIfLambda>] render: NodeRenderFragment) =
+        NodeRenderFragment(fun comp builder index ->
+            builder.OpenComponent<'T>(index)
+            let nextIndex = render.Invoke(comp, builder, index + 1)
+            builder.CloseElement()
+            nextIndex
+        )
+
+
+    member inline _.Yield(x: EltBuilder) =
+        NodeRenderFragment(fun _ builder index ->
+            builder.OpenElement(index, x.Name)
+            builder.CloseElement()
+            index + 1
+        )
+
+    member inline _.Yield(_: ComponentBuilder<'T>) =
+        NodeRenderFragment(fun _ builder index ->
+            builder.OpenComponent<'T>(index)
+            builder.CloseComponent()
+            index + 1
+        )
+
+
+    [<CustomOperation("key")>] 
+    member inline _.key([<InlineIfLambda>] render: AttrRenderFragment, k) =
+        render
+        ==> AttrRenderFragment(fun _ builder index ->
+            builder.SetKey k
+            index
+        )
+
+
+type EltWithChildBuilder(name) =
+    inherit EltBuilder(name)
 
     /// <summary>
     /// Single child node to be added into the element's children
@@ -1894,265 +2019,265 @@ type EltWithChild(name) =
 [<AutoOpen>]
 module Elts =
 
-    let abbr = EltWithChild "abbr"
+    let abbr = EltWithChildBuilder "abbr"
 
-    let acronym = EltWithChild "acronym"
+    let acronym = EltWithChildBuilder "acronym"
 
-    let address = EltWithChild "address"
+    let address = EltWithChildBuilder "address"
 
-    let applet = EltWithChild "applet"
+    let applet = EltWithChildBuilder "applet"
 
-    let area = EltWithChild "area"
+    let area = EltWithChildBuilder "area"
 
-    let article = EltWithChild "article"
+    let article = EltWithChildBuilder "article"
 
-    let aside = EltWithChild "aside"
+    let aside = EltWithChildBuilder "aside"
 
-    let audio = EltWithChild "audio"
+    let audio = EltWithChildBuilder "audio"
 
-    let b = EltWithChild "b"
+    let b = EltWithChildBuilder "b"
 
-    let base' = EltWithChild "base'"
+    let base' = EltWithChildBuilder "base'"
 
-    let basefont = EltWithChild "basefont"
+    let basefont = EltWithChildBuilder "basefont"
 
-    let bdi = EltWithChild "bdi"
+    let bdi = EltWithChildBuilder "bdi"
 
-    let bdo = EltWithChild "bdo"
+    let bdo = EltWithChildBuilder "bdo"
 
-    let big = EltWithChild "big"
+    let big = EltWithChildBuilder "big"
 
-    let blockquote = EltWithChild "blockquote"
+    let blockquote = EltWithChildBuilder "blockquote"
 
-    let br = EltWithChild "br"
+    let br = EltWithChildBuilder "br"
 
-    let button = EltWithChild "button"
+    let button = EltWithChildBuilder "button"
 
-    let canvas = EltWithChild "canvas"
+    let canvas = EltWithChildBuilder "canvas"
 
-    let caption = EltWithChild "caption"
+    let caption = EltWithChildBuilder "caption"
 
-    let center = EltWithChild "center"
+    let center = EltWithChildBuilder "center"
 
-    let cite = EltWithChild "cite"
+    let cite = EltWithChildBuilder "cite"
 
-    let code = EltWithChild "code"
+    let code = EltWithChildBuilder "code"
 
-    let col = EltWithChild "col"
+    let col = EltWithChildBuilder "col"
 
-    let colgroup = EltWithChild "colgroup"
+    let colgroup = EltWithChildBuilder "colgroup"
 
-    let content = EltWithChild "content"
+    let content = EltWithChildBuilder "content"
 
-    let data = EltWithChild "data"
+    let data = EltWithChildBuilder "data"
 
-    let datalist = EltWithChild "datalist"
+    let datalist = EltWithChildBuilder "datalist"
 
-    let dd = EltWithChild "dd"
+    let dd = EltWithChildBuilder "dd"
 
-    let del = EltWithChild "del"
+    let del = EltWithChildBuilder "del"
 
-    let details = EltWithChild "details"
+    let details = EltWithChildBuilder "details"
 
-    let dfn = EltWithChild "dfn"
+    let dfn = EltWithChildBuilder "dfn"
 
-    let dialog = EltWithChild "dialog"
+    let dialog = EltWithChildBuilder "dialog"
 
-    let dir = EltWithChild "dir"
+    let dir = EltWithChildBuilder "dir"
 
-    let div = EltWithChild "div"
+    let div = EltWithChildBuilder "div"
 
-    let dl = EltWithChild "dl"
+    let dl = EltWithChildBuilder "dl"
 
-    let dt = EltWithChild "dt"
+    let dt = EltWithChildBuilder "dt"
 
-    let element = EltWithChild "element"
+    let element = EltWithChildBuilder "element"
 
-    let em = EltWithChild "em"
+    let em = EltWithChildBuilder "em"
 
-    let embed = EltWithChild "embed"
+    let embed = EltWithChildBuilder "embed"
 
-    let fieldset = EltWithChild "fieldset"
+    let fieldset = EltWithChildBuilder "fieldset"
 
-    let figcaption = EltWithChild "figcaption"
+    let figcaption = EltWithChildBuilder "figcaption"
 
-    let figure = EltWithChild "figure"
+    let figure = EltWithChildBuilder "figure"
 
-    let font = EltWithChild "font"
+    let font = EltWithChildBuilder "font"
 
-    let footer = EltWithChild "footer"
+    let footer = EltWithChildBuilder "footer"
 
-    let form = EltWithChild "form"
+    let form = EltWithChildBuilder "form"
 
-    let frame = EltWithChild "frame"
+    let frame = EltWithChildBuilder "frame"
 
-    let frameset = EltWithChild "frameset"
+    let frameset = EltWithChildBuilder "frameset"
 
-    let h1 = EltWithChild "h1"
+    let h1 = EltWithChildBuilder "h1"
 
-    let h2 = EltWithChild "h2"
+    let h2 = EltWithChildBuilder "h2"
 
-    let h3 = EltWithChild "h3"
+    let h3 = EltWithChildBuilder "h3"
 
-    let h4 = EltWithChild "h4"
+    let h4 = EltWithChildBuilder "h4"
 
-    let h5 = EltWithChild "h5"
+    let h5 = EltWithChildBuilder "h5"
 
-    let h6 = EltWithChild "h6"
+    let h6 = EltWithChildBuilder "h6"
 
-    let header = EltWithChild "header"
+    let header = EltWithChildBuilder "header"
 
-    let hr = EltWithChild "hr"
+    let hr = EltWithChildBuilder "hr"
 
-    let i = EltWithChild "i"
+    let i = EltWithChildBuilder "i"
 
-    let iframe = EltWithChild "iframe"
+    let iframe = EltWithChildBuilder "iframe"
 
-    let input = EltWithChild "input"
+    let input = EltWithChildBuilder "input"
 
-    let ins = EltWithChild "ins"
+    let ins = EltWithChildBuilder "ins"
 
-    let kbd = EltWithChild "kbd"
+    let kbd = EltWithChildBuilder "kbd"
 
-    let label = EltWithChild "label"
+    let label = EltWithChildBuilder "label"
 
-    let legend = EltWithChild "legend"
+    let legend = EltWithChildBuilder "legend"
 
-    let li = EltWithChild "li"
+    let li = EltWithChildBuilder "li"
 
-    let link = EltWithChild "link"
+    let link = EltWithChildBuilder "link"
 
-    let main = EltWithChild "main"
+    let main = EltWithChildBuilder "main"
 
-    let map = EltWithChild "map"
+    let map = EltWithChildBuilder "map"
 
-    let mark = EltWithChild "mark"
+    let mark = EltWithChildBuilder "mark"
 
-    let menu = EltWithChild "menu"
+    let menu = EltWithChildBuilder "menu"
 
-    let menuitem = EltWithChild "menuitem"
+    let menuitem = EltWithChildBuilder "menuitem"
 
-    let meter = EltWithChild "meter"
+    let meter = EltWithChildBuilder "meter"
 
-    let nav = EltWithChild "nav"
+    let nav = EltWithChildBuilder "nav"
 
-    let noembed = EltWithChild "noembed"
+    let noembed = EltWithChildBuilder "noembed"
 
-    let noframes = EltWithChild "noframes"
+    let noframes = EltWithChildBuilder "noframes"
 
-    let noscript = EltWithChild "noscript"
+    let noscript = EltWithChildBuilder "noscript"
 
-    let object = EltWithChild "object"
+    let object = EltWithChildBuilder "object"
 
-    let ol = EltWithChild "ol"
+    let ol = EltWithChildBuilder "ol"
 
-    let optgroup = EltWithChild "optgroup"
+    let optgroup = EltWithChildBuilder "optgroup"
 
-    let option = EltWithChild "option"
+    let option = EltWithChildBuilder "option"
 
-    let output = EltWithChild "output"
+    let output = EltWithChildBuilder "output"
 
-    let p = EltWithChild "p"
+    let p = EltWithChildBuilder "p"
 
-    let param = EltWithChild "param"
+    let param = EltWithChildBuilder "param"
 
-    let picture = EltWithChild "picture"
+    let picture = EltWithChildBuilder "picture"
 
-    let pre = EltWithChild "pre"
+    let pre = EltWithChildBuilder "pre"
 
-    let progress = EltWithChild "progress"
+    let progress = EltWithChildBuilder "progress"
 
-    let q = EltWithChild "q"
+    let q = EltWithChildBuilder "q"
 
-    let rb = EltWithChild "rb"
+    let rb = EltWithChildBuilder "rb"
 
-    let rp = EltWithChild "rp"
+    let rp = EltWithChildBuilder "rp"
 
-    let rt = EltWithChild "rt"
+    let rt = EltWithChildBuilder "rt"
 
-    let rtc = EltWithChild "rtc"
+    let rtc = EltWithChildBuilder "rtc"
 
-    let ruby = EltWithChild "ruby"
+    let ruby = EltWithChildBuilder "ruby"
 
-    let s = EltWithChild "s"
+    let s = EltWithChildBuilder "s"
 
-    let samp = EltWithChild "samp"
+    let samp = EltWithChildBuilder "samp"
 
-    let script = EltWithChild "script"
+    let script = EltWithChildBuilder "script"
 
-    let section = EltWithChild "section"
+    let section = EltWithChildBuilder "section"
 
-    let select = EltWithChild "select"
+    let select = EltWithChildBuilder "select"
 
-    let shadow = EltWithChild "shadow"
+    let shadow = EltWithChildBuilder "shadow"
 
-    let slot = EltWithChild "slot"
+    let slot = EltWithChildBuilder "slot"
 
-    let small = EltWithChild "small"
+    let small = EltWithChildBuilder "small"
 
-    let source = EltWithChild "source"
+    let source = EltWithChildBuilder "source"
 
-    let span = EltWithChild "span"
+    let span = EltWithChildBuilder "span"
 
-    let strike = EltWithChild "strike"
+    let strike = EltWithChildBuilder "strike"
 
-    let strong = EltWithChild "strong"
+    let strong = EltWithChildBuilder "strong"
 
-    let style' = EltWithChild "style'"
+    let style' = EltWithChildBuilder "style'"
 
-    let sub = EltWithChild "sub"
+    let sub = EltWithChildBuilder "sub"
 
-    let summary = EltWithChild "summary"
+    let summary = EltWithChildBuilder "summary"
 
-    let sup = EltWithChild "sup"
+    let sup = EltWithChildBuilder "sup"
 
-    let svg = EltWithChild "svg"
+    let svg = EltWithChildBuilder "svg"
 
-    let table = EltWithChild "table"
+    let table = EltWithChildBuilder "table"
 
-    let tbody = EltWithChild "tbody"
+    let tbody = EltWithChildBuilder "tbody"
 
-    let td = EltWithChild "td"
+    let td = EltWithChildBuilder "td"
 
-    let template = EltWithChild "template"
+    let template = EltWithChildBuilder "template"
 
-    let textarea = EltWithChild "textarea"
+    let textarea = EltWithChildBuilder "textarea"
 
-    let tfoot = EltWithChild "tfoot"
+    let tfoot = EltWithChildBuilder "tfoot"
 
-    let th = EltWithChild "th"
+    let th = EltWithChildBuilder "th"
 
-    let thead = EltWithChild "thead"
+    let thead = EltWithChildBuilder "thead"
 
-    let time = EltWithChild "time"
+    let time = EltWithChildBuilder "time"
 
-    let title = EltWithChild "title"
+    let title = EltWithChildBuilder "title"
 
-    let tr = EltWithChild "tr"
+    let tr = EltWithChildBuilder "tr"
 
-    let track = EltWithChild "track"
+    let track = EltWithChildBuilder "track"
 
-    let tt = EltWithChild "tt"
+    let tt = EltWithChildBuilder "tt"
 
-    let u = EltWithChild "u"
+    let u = EltWithChildBuilder "u"
 
-    let ul = EltWithChild "ul"
+    let ul = EltWithChildBuilder "ul"
 
-    let var = EltWithChild "var"
+    let var = EltWithChildBuilder "var"
 
-    let video = EltWithChild "video"
+    let video = EltWithChildBuilder "video"
 
-    let wbr = EltWithDomAttrs "wbr"
+    let wbr = EltBuilder "wbr"
 
-    let img = EltWithDomAttrs "img"
+    let img = EltBuilder "img"
 
-    let html' = EltWithChild "html"
+    let html' = EltWithChildBuilder "html"
 
-    let body = EltWithChild "body"
+    let body = EltWithChildBuilder "body"
 
-    let head = EltWithChild "head"
+    let head = EltWithChildBuilder "head"
 
-    let meta = EltWithChild "meta"
+    let meta = EltWithChildBuilder "meta"
 
 
     /// Put raw js into the script tag
@@ -2178,3 +2303,8 @@ module Elts =
         }
 
     let inline baseUrl (x: string) = base' { href x }
+
+
+    type html =
+        
+        static member inline comp<'T when 'T :> IComponent>() = ComponentBuilder<'T>()

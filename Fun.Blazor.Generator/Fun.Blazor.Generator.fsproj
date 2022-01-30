@@ -19,7 +19,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Fun.Blazor.Feliz\Fun.Blazor.Feliz.fsproj" />
 		<ProjectReference Include="..\Fun.Blazor\Fun.Blazor.fsproj" />
 	</ItemGroup>
 
