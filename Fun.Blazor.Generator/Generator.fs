@@ -45,13 +45,24 @@ let private getMetaInfo (ty: Type) =
                     if returnType = typeof<Microsoft.AspNetCore.Components.RenderFragment> then
                         let paramCount = prop.PropertyType.Name.Substring("Func`".Length) |> int
                         let parameters =
-                            [
-                                for i in 1 .. paramCount - 1 do
-                                    $"x{i}"
-                            ]
-                            |> String.concat " "
+                            if paramCount = 1 then "()"
+                            else
+                                [
+                                    for i in 1 .. paramCount - 1 do
+                                        $"x{i}"
+                                ]
+                                |> String.concat " "
+                        let fnType =
+                            if paramCount = 1 then $"unit -> {nameof NodeRenderFragment}"
+                            else
+                                [
+                                    for _ in 1 .. paramCount - 1 do
+                                        $"_"
+                                    nameof NodeRenderFragment
+                                ]
+                                |> String.concat " -> "
                         [
-                            $"    {memberStart}{name} (fn) = AttrRenderFragment(fun comp builder index -> builder.AddAttribute(index, \"{prop.Name}\", box (Microsoft.AspNetCore.Components.RenderFragment(fun rt -> (fn {parameters}).Invoke(comp, rt, index)))); index + 1)"
+                            $"    {memberStart}{name} (fn: {fnType}) = AttrRenderFragment(fun comp builder index -> builder.AddAttribute(index, \"{prop.Name}\", box ({getTypeName prop.PropertyType}(fun {parameters} -> Microsoft.AspNetCore.Components.RenderFragment(fun tb -> (fn {parameters}).Invoke(comp, tb, 0) |> ignore)))); index + 1)"
                         ]
                     else
                         [
@@ -78,7 +89,7 @@ let private getMetaInfo (ty: Type) =
                 [
                     $"    {memberStart}{name} (x: string) = html.renderFragment(\"{prop.Name}\", html.text x)"
                     $"    {memberStart}{name} (node) = html.renderFragment(\"{prop.Name}\", node)"
-                    $"    {memberStart}{name} (nodes) = html.renderFragment(\"{prop.Name}\", fragment {{ yield! nodes }}"
+                    $"    {memberStart}{name} (nodes) = html.renderFragment(\"{prop.Name}\", fragment {{ yield! nodes }})"
                 ]
 
             elif prop.Name = "Class" && prop.PropertyType = typeof<string> then
@@ -170,20 +181,18 @@ let generateCode (targetNamespace: string) (opens: string) (tys: Type seq) =
                         | Some (ty, generics) ->
                             $"inherit {ty.Namespace |> trimNamespace |> appendStrIfNotEmpty (string '.')}{getFinalTypeName ty}{funBlazorGeneric :: (getTypeNames generics) |> createGenerics |> closeGenerics}"
 
-                    let ref = $"    static member ref x = attr.ref<{originalTypeWithGenerics}> x"
-
-                    let create1 = $"    static member create () = [] |> html.blazor<{originalTypeWithGenerics}>"
+                    let create1 = $"    static member inline create () = {nameof ComponentBuilder}<{originalTypeWithGenerics}>()"
 
                     let create2 =
-                        $"    static member create (nodes) = FelizNode<{funBlazorGeneric}>.concat nodes |> html.blazor<{originalTypeWithGenerics}>"
+                        $"    static member inline create (attrs: {nameof AttrRenderFragment} seq) = {nameof ComponentBuilder}<{originalTypeWithGenerics}>() {{ html.mergeAttrs attrs }}"
 
                     let create3 =
                         if meta.hasChildren then
-                            $"    static member create (nodes: {nameof NodeRenderFragment} list) = [ attr.childContent nodes ] |> html.blazor<{originalTypeWithGenerics}>"
+                            $"    static member inline create (nodes: {nameof NodeRenderFragment} seq) = {nameof ComponentBuilder}<{originalTypeWithGenerics}>() {{ yield! nodes }}"
                             + "\n"
-                            + $"    static member create (node: {nameof NodeRenderFragment}) = [ attr.childContent [ node ] ] |> html.blazor<{originalTypeWithGenerics}>"
+                            + $"    static member inline create (node: {nameof NodeRenderFragment}) = {nameof ComponentBuilder}<{originalTypeWithGenerics}>() {{ node }}"
                             + "\n"
-                            + $"    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<{originalTypeWithGenerics}>"
+                            + $"    static member inline create (x: string) = {nameof ComponentBuilder}<{originalTypeWithGenerics}>(){{ x }}"
                         else
                             ""
 
@@ -196,7 +205,6 @@ type {getFinalTypeName meta.ty}{funBlazorGeneric :: (getTypeNames meta.generics)
 {create1}
 {create2}
 {create3}
-{ref}
 {meta.props}
                     """
                 )

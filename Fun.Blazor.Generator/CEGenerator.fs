@@ -114,7 +114,7 @@ let private getMetaInfo (ty: Type) =
                             ]
                             |> String.concat " "
                         [
-                            $"    {customOperation name} {memberStart}{name} ({contextArg}, fn) = render ==> AttrRenderFragment(fun comp builder index -> builder.AddAttribute(index, \"{prop.Name}\", box (Microsoft.AspNetCore.Components.RenderFragment(fun rt -> (fn {parameters}).Invoke(comp, rt, index)))); index + 1)"
+                            $"    {customOperation name} {memberStart}{name} ({contextArg}, fn) = render ==> AttrRenderFragment(fun comp builder index -> builder.AddAttribute(index, \"{prop.Name}\", box ({getTypeName prop.PropertyType}(fun {parameters} -> Microsoft.AspNetCore.Components.RenderFragment(fun tb -> (fn {parameters}).Invoke(comp, tb, 0) |> ignore)))); index + 1)"
                         ]
                     else
                         [

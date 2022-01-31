@@ -34,7 +34,7 @@ open {targetNamespace}.{Utils.internalSegment}"""
 
             let codes =
                 match style with
-                //| Style.Feliz -> Generator.generateCode formatedName opens types
+                | Style.Feliz -> Generator.generateCode formatedName opens types
                 | Style.CE -> CEGenerator.generateCode formatedName opens types
                 | x -> failwith $"Not supportted style: {x}"
 

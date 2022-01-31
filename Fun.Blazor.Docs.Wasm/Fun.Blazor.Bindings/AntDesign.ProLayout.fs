@@ -3,8 +3,6 @@ namespace rec AntDesign.ProLayout.DslInternals
 open FSharp.Data.Adaptive
 open Fun.Blazor
 open Fun.Blazor.Operators
-open Microsoft.AspNetCore.Components.DslInternals
-open Microsoft.AspNetCore.Components.Web.DslInternals
 open AntDesign.ProLayout.DslInternals
 
 
@@ -25,8 +23,6 @@ namespace rec AntDesign.ProLayout.DslInternals.ProLayout
 open FSharp.Data.Adaptive
 open Fun.Blazor
 open Fun.Blazor.Operators
-open Microsoft.AspNetCore.Components.DslInternals
-open Microsoft.AspNetCore.Components.Web.DslInternals
 open AntDesign.ProLayout.DslInternals
 
 
@@ -45,9 +41,15 @@ type AntProComponentBaseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micr
     [<CustomOperation("SplitMenus")>] member inline _.SplitMenus (render: AttrRenderFragment, x: System.Boolean) = render ==> ("SplitMenus" => x)
     [<CustomOperation("HeaderRender")>] member inline _.HeaderRender (render: AttrRenderFragment, x: System.Boolean) = render ==> ("HeaderRender" => x)
     [<CustomOperation("FooterRender")>] member inline _.FooterRender (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("FooterRender", fragment)
+    [<CustomOperation("FooterRender")>] member inline _.FooterRender (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("FooterRender", html.text x)
+    [<CustomOperation("FooterRender")>] member inline _.FooterRender (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("FooterRender", html.text x)
+    [<CustomOperation("FooterRender")>] member inline _.FooterRender (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("FooterRender", html.text x)
     [<CustomOperation("MenuRender")>] member inline _.MenuRender (render: AttrRenderFragment, x: System.Boolean) = render ==> ("MenuRender" => x)
     [<CustomOperation("MenuHeaderRender")>] member inline _.MenuHeaderRender (render: AttrRenderFragment, x: System.Boolean) = render ==> ("MenuHeaderRender" => x)
     [<CustomOperation("childContent")>] member inline _.childContent (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("ChildContent", fragment)
+    [<CustomOperation("childContent")>] member inline _.childContent (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("ChildContent", html.text x)
+    [<CustomOperation("childContent")>] member inline _.childContent (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("ChildContent", html.text x)
+    [<CustomOperation("childContent")>] member inline _.childContent (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("ChildContent", html.text x)
                 
 
 type BasicLayoutBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -64,6 +66,9 @@ type BasicLayoutBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.As
     [<CustomOperation("BaseURL")>] member inline _.BaseURL (render: AttrRenderFragment, x: System.String) = render ==> ("BaseURL" => x)
     [<CustomOperation("SiderWidth")>] member inline _.SiderWidth (render: AttrRenderFragment, x: System.Int32) = render ==> ("SiderWidth" => x)
     [<CustomOperation("MenuExtraRender")>] member inline _.MenuExtraRender (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("MenuExtraRender", fragment)
+    [<CustomOperation("MenuExtraRender")>] member inline _.MenuExtraRender (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("MenuExtraRender", html.text x)
+    [<CustomOperation("MenuExtraRender")>] member inline _.MenuExtraRender (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("MenuExtraRender", html.text x)
+    [<CustomOperation("MenuExtraRender")>] member inline _.MenuExtraRender (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("MenuExtraRender", html.text x)
     [<CustomOperation("CollapsedButtonRender")>] member inline _.CollapsedButtonRender (render: AttrRenderFragment, fn: System.Boolean -> NodeRenderFragment) = render ==> html.renderFragment("CollapsedButtonRender", fn)
     [<CustomOperation("Breakpoint")>] member inline _.Breakpoint (render: AttrRenderFragment, x: AntDesign.BreakpointType) = render ==> ("Breakpoint" => x)
     [<CustomOperation("OnMenuHeaderClick")>] member inline _.OnMenuHeaderClick (render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs>("OnMenuHeaderClick", fn)
@@ -76,6 +81,9 @@ type BasicLayoutBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.As
     [<CustomOperation("ContentStyle")>] member inline _.ContentStyle (render: AttrRenderFragment, x: System.String) = render ==> ("ContentStyle" => x)
     [<CustomOperation("ColSize")>] member inline _.ColSize (render: AttrRenderFragment, x: System.String) = render ==> ("ColSize" => x)
     [<CustomOperation("RightContentRender")>] member inline _.RightContentRender (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("RightContentRender", fragment)
+    [<CustomOperation("RightContentRender")>] member inline _.RightContentRender (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("RightContentRender", html.text x)
+    [<CustomOperation("RightContentRender")>] member inline _.RightContentRender (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("RightContentRender", html.text x)
+    [<CustomOperation("RightContentRender")>] member inline _.RightContentRender (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("RightContentRender", html.text x)
                 
 
 type GlobalHeaderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -83,6 +91,9 @@ type GlobalHeaderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.A
     [<CustomOperation("PrefixCls")>] member inline _.PrefixCls (render: AttrRenderFragment, x: System.String) = render ==> ("PrefixCls" => x)
     [<CustomOperation("OnCollapse")>] member inline _.OnCollapse (render: AttrRenderFragment, fn) = render ==> html.callback<System.Boolean>("OnCollapse", fn)
     [<CustomOperation("CollapsedButtonRender")>] member inline _.CollapsedButtonRender (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("CollapsedButtonRender", fragment)
+    [<CustomOperation("CollapsedButtonRender")>] member inline _.CollapsedButtonRender (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("CollapsedButtonRender", html.text x)
+    [<CustomOperation("CollapsedButtonRender")>] member inline _.CollapsedButtonRender (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("CollapsedButtonRender", html.text x)
+    [<CustomOperation("CollapsedButtonRender")>] member inline _.CollapsedButtonRender (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("CollapsedButtonRender", html.text x)
     [<CustomOperation("Collapsed")>] member inline _.Collapsed (render: AttrRenderFragment, x: System.Boolean) = render ==> ("Collapsed" => x)
     [<CustomOperation("IsMobile")>] member inline _.IsMobile (render: AttrRenderFragment, x: System.Boolean) = render ==> ("IsMobile" => x)
     [<CustomOperation("Logo")>] member inline _.Logo (render: AttrRenderFragment, x: OneOf.OneOf<System.String, Microsoft.AspNetCore.Components.RenderFragment>) = render ==> ("Logo" => x)
@@ -96,6 +107,9 @@ type HeaderViewBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.Asp
     [<CustomOperation("HasSiderMenu")>] member inline _.HasSiderMenu (render: AttrRenderFragment, x: System.Boolean) = render ==> ("HasSiderMenu" => x)
     [<CustomOperation("SiderWidth")>] member inline _.SiderWidth (render: AttrRenderFragment, x: System.Int32) = render ==> ("SiderWidth" => x)
     [<CustomOperation("HeaderContentRender")>] member inline _.HeaderContentRender (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("HeaderContentRender", fragment)
+    [<CustomOperation("HeaderContentRender")>] member inline _.HeaderContentRender (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("HeaderContentRender", html.text x)
+    [<CustomOperation("HeaderContentRender")>] member inline _.HeaderContentRender (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("HeaderContentRender", html.text x)
+    [<CustomOperation("HeaderContentRender")>] member inline _.HeaderContentRender (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("HeaderContentRender", html.text x)
     [<CustomOperation("MenuData")>] member inline _.MenuData (render: AttrRenderFragment, x: AntDesign.ProLayout.MenuDataItem[]) = render ==> ("MenuData" => x)
                 
 
@@ -143,6 +157,9 @@ type TopNavHeaderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.A
     [<CustomOperation("Logo")>] member inline _.Logo (render: AttrRenderFragment, x: OneOf.OneOf<System.String, Microsoft.AspNetCore.Components.RenderFragment>) = render ==> ("Logo" => x)
     [<CustomOperation("SiderWidth")>] member inline _.SiderWidth (render: AttrRenderFragment, x: System.Int32) = render ==> ("SiderWidth" => x)
     [<CustomOperation("MenuExtraRender")>] member inline _.MenuExtraRender (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("MenuExtraRender", fragment)
+    [<CustomOperation("MenuExtraRender")>] member inline _.MenuExtraRender (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("MenuExtraRender", html.text x)
+    [<CustomOperation("MenuExtraRender")>] member inline _.MenuExtraRender (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("MenuExtraRender", html.text x)
+    [<CustomOperation("MenuExtraRender")>] member inline _.MenuExtraRender (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("MenuExtraRender", html.text x)
     [<CustomOperation("CollapsedButtonRender")>] member inline _.CollapsedButtonRender (render: AttrRenderFragment, fn: System.Boolean -> NodeRenderFragment) = render ==> html.renderFragment("CollapsedButtonRender", fn)
     [<CustomOperation("Breakpoint")>] member inline _.Breakpoint (render: AttrRenderFragment, x: AntDesign.BreakpointType) = render ==> ("Breakpoint" => x)
     [<CustomOperation("OnMenuHeaderClick")>] member inline _.OnMenuHeaderClick (render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs>("OnMenuHeaderClick", fn)
@@ -165,12 +182,18 @@ type SiderMenuWrapperBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microso
 type GlobalFooterBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit AntDomComponentBaseBuilder<'FunBlazorGeneric>()
     [<CustomOperation("Copyright")>] member inline _.Copyright (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("Copyright", fragment)
+    [<CustomOperation("Copyright")>] member inline _.Copyright (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("Copyright", html.text x)
+    [<CustomOperation("Copyright")>] member inline _.Copyright (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("Copyright", html.text x)
+    [<CustomOperation("Copyright")>] member inline _.Copyright (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("Copyright", html.text x)
     [<CustomOperation("Links")>] member inline _.Links (render: AttrRenderFragment, x: AntDesign.ProLayout.LinkItem[]) = render ==> ("Links" => x)
                 
 
 type GridContentBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit AntDomComponentBaseBuilder<'FunBlazorGeneric>()
     [<CustomOperation("childContent")>] member inline _.childContent (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("ChildContent", fragment)
+    [<CustomOperation("childContent")>] member inline _.childContent (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("ChildContent", html.text x)
+    [<CustomOperation("childContent")>] member inline _.childContent (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("ChildContent", html.text x)
+    [<CustomOperation("childContent")>] member inline _.childContent (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("ChildContent", html.text x)
     [<CustomOperation("ContentWidth")>] member inline _.ContentWidth (render: AttrRenderFragment, x: System.String) = render ==> ("ContentWidth" => x)
                 
 
@@ -191,6 +214,9 @@ type NoticeIconBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.Asp
     [<CustomOperation("OnClear")>] member inline _.OnClear (render: AttrRenderFragment, fn) = render ==> html.callback<System.String>("OnClear", fn)
     [<CustomOperation("OnViewMore")>] member inline _.OnViewMore (render: AttrRenderFragment, fn) = render ==> html.callback<System.String>("OnViewMore", fn)
     [<CustomOperation("childContent")>] member inline _.childContent (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("ChildContent", fragment)
+    [<CustomOperation("childContent")>] member inline _.childContent (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("ChildContent", html.text x)
+    [<CustomOperation("childContent")>] member inline _.childContent (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("ChildContent", html.text x)
+    [<CustomOperation("childContent")>] member inline _.childContent (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("ChildContent", html.text x)
                 
 
 type NoticeListBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -211,11 +237,26 @@ type NoticeListBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.Asp
 type PageContainerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit AntDomComponentBaseBuilder<'FunBlazorGeneric>()
     [<CustomOperation("Extra")>] member inline _.Extra (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("Extra", fragment)
+    [<CustomOperation("Extra")>] member inline _.Extra (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("Extra", html.text x)
+    [<CustomOperation("Extra")>] member inline _.Extra (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("Extra", html.text x)
+    [<CustomOperation("Extra")>] member inline _.Extra (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("Extra", html.text x)
     [<CustomOperation("ExtraContent")>] member inline _.ExtraContent (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("ExtraContent", fragment)
+    [<CustomOperation("ExtraContent")>] member inline _.ExtraContent (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("ExtraContent", html.text x)
+    [<CustomOperation("ExtraContent")>] member inline _.ExtraContent (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("ExtraContent", html.text x)
+    [<CustomOperation("ExtraContent")>] member inline _.ExtraContent (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("ExtraContent", html.text x)
     [<CustomOperation("Content")>] member inline _.Content (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("Content", fragment)
+    [<CustomOperation("Content")>] member inline _.Content (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("Content", html.text x)
+    [<CustomOperation("Content")>] member inline _.Content (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("Content", html.text x)
+    [<CustomOperation("Content")>] member inline _.Content (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("Content", html.text x)
     [<CustomOperation("childContent")>] member inline _.childContent (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("ChildContent", fragment)
+    [<CustomOperation("childContent")>] member inline _.childContent (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("ChildContent", html.text x)
+    [<CustomOperation("childContent")>] member inline _.childContent (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("ChildContent", html.text x)
+    [<CustomOperation("childContent")>] member inline _.childContent (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("ChildContent", html.text x)
     [<CustomOperation("Title")>] member inline _.Title (render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
     [<CustomOperation("Breadcrumb")>] member inline _.Breadcrumb (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("Breadcrumb", fragment)
+    [<CustomOperation("Breadcrumb")>] member inline _.Breadcrumb (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("Breadcrumb", html.text x)
+    [<CustomOperation("Breadcrumb")>] member inline _.Breadcrumb (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("Breadcrumb", html.text x)
+    [<CustomOperation("Breadcrumb")>] member inline _.Breadcrumb (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("Breadcrumb", html.text x)
     [<CustomOperation("TabList")>] member inline _.TabList (render: AttrRenderFragment, x: System.Collections.Generic.IList<AntDesign.ProLayout.TabPaneItem>) = render ==> ("TabList" => x)
     [<CustomOperation("TabActiveKey")>] member inline _.TabActiveKey (render: AttrRenderFragment, x: System.String) = render ==> ("TabActiveKey" => x)
     [<CustomOperation("OnTabChange")>] member inline _.OnTabChange (render: AttrRenderFragment, fn) = render ==> html.callback<System.String>("OnTabChange", fn)
@@ -279,6 +320,9 @@ type WrapContentBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.As
     [<CustomOperation("IsChildrenLayout")>] member inline _.IsChildrenLayout (render: AttrRenderFragment, x: System.Boolean) = render ==> ("IsChildrenLayout" => x)
     [<CustomOperation("ContentHeight")>] member inline _.ContentHeight (render: AttrRenderFragment, x: System.Int32) = render ==> ("ContentHeight" => x)
     [<CustomOperation("childContent")>] member inline _.childContent (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("ChildContent", fragment)
+    [<CustomOperation("childContent")>] member inline _.childContent (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("ChildContent", html.text x)
+    [<CustomOperation("childContent")>] member inline _.childContent (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("ChildContent", html.text x)
+    [<CustomOperation("childContent")>] member inline _.childContent (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("ChildContent", html.text x)
                 
 
 type PageLoadingBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -291,6 +335,9 @@ type BodyBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCor
     [<CustomOperation("PrefixCls")>] member inline _.PrefixCls (render: AttrRenderFragment, x: System.String) = render ==> ("PrefixCls" => x)
     [<CustomOperation("Title")>] member inline _.Title (render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
     [<CustomOperation("childContent")>] member inline _.childContent (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("ChildContent", fragment)
+    [<CustomOperation("childContent")>] member inline _.childContent (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("ChildContent", html.text x)
+    [<CustomOperation("childContent")>] member inline _.childContent (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("ChildContent", html.text x)
+    [<CustomOperation("childContent")>] member inline _.childContent (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("ChildContent", html.text x)
                 
 
 type OtherSettingBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =

@@ -3,8 +3,6 @@ namespace rec Blazor.DragDrop.DslInternals
 open FSharp.Data.Adaptive
 open Fun.Blazor
 open Fun.Blazor.Operators
-open Microsoft.AspNetCore.Components.DslInternals
-open Microsoft.AspNetCore.Components.Web.DslInternals
 open Blazor.DragDrop.DslInternals
 
 

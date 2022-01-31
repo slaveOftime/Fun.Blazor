@@ -3,8 +3,6 @@ namespace rec MudBlazor.DslInternals
 open FSharp.Data.Adaptive
 open Fun.Blazor
 open Fun.Blazor.Operators
-open Microsoft.AspNetCore.Components.DslInternals
-open Microsoft.AspNetCore.Components.Web.DslInternals
 open MudBlazor.DslInternals
 
 
@@ -127,16 +125,31 @@ type MudTableBaseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.A
     [<CustomOperation("CurrentPage")>] member inline _.CurrentPage (render: AttrRenderFragment, x: System.Int32) = render ==> ("CurrentPage" => x)
     [<CustomOperation("MultiSelection")>] member inline _.MultiSelection (render: AttrRenderFragment, x: System.Boolean) = render ==> ("MultiSelection" => x)
     [<CustomOperation("ToolBarContent")>] member inline _.ToolBarContent (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("ToolBarContent", fragment)
+    [<CustomOperation("ToolBarContent")>] member inline _.ToolBarContent (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("ToolBarContent", html.text x)
+    [<CustomOperation("ToolBarContent")>] member inline _.ToolBarContent (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("ToolBarContent", html.text x)
+    [<CustomOperation("ToolBarContent")>] member inline _.ToolBarContent (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("ToolBarContent", html.text x)
     [<CustomOperation("Loading")>] member inline _.Loading (render: AttrRenderFragment, x: System.Boolean) = render ==> ("Loading" => x)
     [<CustomOperation("LoadingProgressColor")>] member inline _.LoadingProgressColor (render: AttrRenderFragment, x: MudBlazor.Color) = render ==> ("LoadingProgressColor" => x)
     [<CustomOperation("HeaderContent")>] member inline _.HeaderContent (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("HeaderContent", fragment)
+    [<CustomOperation("HeaderContent")>] member inline _.HeaderContent (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("HeaderContent", html.text x)
+    [<CustomOperation("HeaderContent")>] member inline _.HeaderContent (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("HeaderContent", html.text x)
+    [<CustomOperation("HeaderContent")>] member inline _.HeaderContent (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("HeaderContent", html.text x)
     [<CustomOperation("CustomHeader")>] member inline _.CustomHeader (render: AttrRenderFragment, x: System.Boolean) = render ==> ("CustomHeader" => x)
     [<CustomOperation("HeaderClass")>] member inline _.HeaderClass (render: AttrRenderFragment, x: System.String) = render ==> ("HeaderClass" => x)
     [<CustomOperation("FooterContent")>] member inline _.FooterContent (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("FooterContent", fragment)
+    [<CustomOperation("FooterContent")>] member inline _.FooterContent (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("FooterContent", html.text x)
+    [<CustomOperation("FooterContent")>] member inline _.FooterContent (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("FooterContent", html.text x)
+    [<CustomOperation("FooterContent")>] member inline _.FooterContent (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("FooterContent", html.text x)
     [<CustomOperation("CustomFooter")>] member inline _.CustomFooter (render: AttrRenderFragment, x: System.Boolean) = render ==> ("CustomFooter" => x)
     [<CustomOperation("FooterClass")>] member inline _.FooterClass (render: AttrRenderFragment, x: System.String) = render ==> ("FooterClass" => x)
     [<CustomOperation("ColGroup")>] member inline _.ColGroup (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("ColGroup", fragment)
+    [<CustomOperation("ColGroup")>] member inline _.ColGroup (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("ColGroup", html.text x)
+    [<CustomOperation("ColGroup")>] member inline _.ColGroup (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("ColGroup", html.text x)
+    [<CustomOperation("ColGroup")>] member inline _.ColGroup (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("ColGroup", html.text x)
     [<CustomOperation("PagerContent")>] member inline _.PagerContent (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("PagerContent", fragment)
+    [<CustomOperation("PagerContent")>] member inline _.PagerContent (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("PagerContent", html.text x)
+    [<CustomOperation("PagerContent")>] member inline _.PagerContent (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("PagerContent", html.text x)
+    [<CustomOperation("PagerContent")>] member inline _.PagerContent (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("PagerContent", html.text x)
     [<CustomOperation("ReadOnly")>] member inline _.ReadOnly (render: AttrRenderFragment, x: System.Boolean) = render ==> ("ReadOnly" => x)
     [<CustomOperation("OnCommitEditClick")>] member inline _.OnCommitEditClick (render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs>("OnCommitEditClick", fn)
     [<CustomOperation("OnCancelEditClick")>] member inline _.OnCancelEditClick (render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs>("OnCancelEditClick", fn)
@@ -165,7 +178,13 @@ type MudTableBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.A
     [<CustomOperation("Columns")>] member inline _.Columns (render: AttrRenderFragment, fn: 'T -> NodeRenderFragment) = render ==> html.renderFragment("Columns", fn)
     [<CustomOperation("QuickColumns")>] member inline _.QuickColumns (render: AttrRenderFragment, x: System.String) = render ==> ("QuickColumns" => x)
     [<CustomOperation("NoRecordsContent")>] member inline _.NoRecordsContent (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("NoRecordsContent", fragment)
+    [<CustomOperation("NoRecordsContent")>] member inline _.NoRecordsContent (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("NoRecordsContent", html.text x)
+    [<CustomOperation("NoRecordsContent")>] member inline _.NoRecordsContent (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("NoRecordsContent", html.text x)
+    [<CustomOperation("NoRecordsContent")>] member inline _.NoRecordsContent (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("NoRecordsContent", html.text x)
     [<CustomOperation("LoadingContent")>] member inline _.LoadingContent (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("LoadingContent", fragment)
+    [<CustomOperation("LoadingContent")>] member inline _.LoadingContent (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("LoadingContent", html.text x)
+    [<CustomOperation("LoadingContent")>] member inline _.LoadingContent (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("LoadingContent", html.text x)
+    [<CustomOperation("LoadingContent")>] member inline _.LoadingContent (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("LoadingContent", html.text x)
     [<CustomOperation("HorizontalScrollbar")>] member inline _.HorizontalScrollbar (render: AttrRenderFragment, x: System.Boolean) = render ==> ("HorizontalScrollbar" => x)
     [<CustomOperation("Items")>] member inline _.Items (render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<'T>) = render ==> ("Items" => x)
     [<CustomOperation("Filter")>] member inline _.Filter (render: AttrRenderFragment, fn) = render ==> ("Filter" => (System.Func<'T, System.Boolean>fn))
@@ -249,6 +268,9 @@ type MudChartBaseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.A
     [<CustomOperation("ChartSeries")>] member inline _.ChartSeries (render: AttrRenderFragment, x: System.Collections.Generic.List<MudBlazor.ChartSeries>) = render ==> ("ChartSeries" => x)
     [<CustomOperation("ChartOptions")>] member inline _.ChartOptions (render: AttrRenderFragment, x: MudBlazor.ChartOptions) = render ==> ("ChartOptions" => x)
     [<CustomOperation("CustomGraphics")>] member inline _.CustomGraphics (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("CustomGraphics", fragment)
+    [<CustomOperation("CustomGraphics")>] member inline _.CustomGraphics (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("CustomGraphics", html.text x)
+    [<CustomOperation("CustomGraphics")>] member inline _.CustomGraphics (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("CustomGraphics", html.text x)
+    [<CustomOperation("CustomGraphics")>] member inline _.CustomGraphics (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("CustomGraphics", html.text x)
     [<CustomOperation("ChartType")>] member inline _.ChartType (render: AttrRenderFragment, x: MudBlazor.ChartType) = render ==> ("ChartType" => x)
     [<CustomOperation("Width")>] member inline _.Width (render: AttrRenderFragment, x: System.String) = render ==> ("Width" => x)
     [<CustomOperation("Height")>] member inline _.Height (render: AttrRenderFragment, x: System.String) = render ==> ("Height" => x)
@@ -270,8 +292,6 @@ namespace rec MudBlazor.DslInternals.Charts
 open FSharp.Data.Adaptive
 open Fun.Blazor
 open Fun.Blazor.Operators
-open Microsoft.AspNetCore.Components.DslInternals
-open Microsoft.AspNetCore.Components.Web.DslInternals
 open MudBlazor.DslInternals
 
 
@@ -305,8 +325,6 @@ namespace rec MudBlazor.DslInternals
 open FSharp.Data.Adaptive
 open Fun.Blazor
 open Fun.Blazor.Operators
-open Microsoft.AspNetCore.Components.DslInternals
-open Microsoft.AspNetCore.Components.Web.DslInternals
 open MudBlazor.DslInternals
 
 
@@ -344,7 +362,13 @@ type MudCarouselBuilder<'FunBlazorGeneric, 'TData when 'FunBlazorGeneric :> Micr
     [<CustomOperation("UncheckedIcon")>] member inline _.UncheckedIcon (render: AttrRenderFragment, x: System.String) = render ==> ("UncheckedIcon" => x)
     [<CustomOperation("NextIcon")>] member inline _.NextIcon (render: AttrRenderFragment, x: System.String) = render ==> ("NextIcon" => x)
     [<CustomOperation("NextButtonTemplate")>] member inline _.NextButtonTemplate (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("NextButtonTemplate", fragment)
+    [<CustomOperation("NextButtonTemplate")>] member inline _.NextButtonTemplate (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("NextButtonTemplate", html.text x)
+    [<CustomOperation("NextButtonTemplate")>] member inline _.NextButtonTemplate (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("NextButtonTemplate", html.text x)
+    [<CustomOperation("NextButtonTemplate")>] member inline _.NextButtonTemplate (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("NextButtonTemplate", html.text x)
     [<CustomOperation("PreviousButtonTemplate")>] member inline _.PreviousButtonTemplate (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("PreviousButtonTemplate", fragment)
+    [<CustomOperation("PreviousButtonTemplate")>] member inline _.PreviousButtonTemplate (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("PreviousButtonTemplate", html.text x)
+    [<CustomOperation("PreviousButtonTemplate")>] member inline _.PreviousButtonTemplate (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("PreviousButtonTemplate", html.text x)
+    [<CustomOperation("PreviousButtonTemplate")>] member inline _.PreviousButtonTemplate (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("PreviousButtonTemplate", html.text x)
     [<CustomOperation("BulletTemplate")>] member inline _.BulletTemplate (render: AttrRenderFragment, fn: System.Boolean -> NodeRenderFragment) = render ==> html.renderFragment("BulletTemplate", fn)
     [<CustomOperation("DelimiterTemplate")>] member inline _.DelimiterTemplate (render: AttrRenderFragment, fn: System.Boolean -> NodeRenderFragment) = render ==> html.renderFragment("DelimiterTemplate", fn)
                 
@@ -592,6 +616,9 @@ type MudPickerBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.
     [<CustomOperation("Text'")>] member inline _.Text' (render: AttrRenderFragment, valueFn: System.String * (System.String -> unit)) = render ==> html.bind("Text", valueFn)
     [<CustomOperation("ClassActions")>] member inline _.ClassActions (render: AttrRenderFragment, x: System.String) = render ==> ("ClassActions" => x)
     [<CustomOperation("PickerActions")>] member inline _.PickerActions (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("PickerActions", fragment)
+    [<CustomOperation("PickerActions")>] member inline _.PickerActions (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("PickerActions", html.text x)
+    [<CustomOperation("PickerActions")>] member inline _.PickerActions (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("PickerActions", html.text x)
+    [<CustomOperation("PickerActions")>] member inline _.PickerActions (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("PickerActions", html.text x)
     [<CustomOperation("Margin")>] member inline _.Margin (render: AttrRenderFragment, x: MudBlazor.Margin) = render ==> ("Margin" => x)
                 
 
@@ -765,6 +792,9 @@ type MudBreadcrumbsBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     [<CustomOperation("Items")>] member inline _.Items (render: AttrRenderFragment, x: System.Collections.Generic.List<MudBlazor.BreadcrumbItem>) = render ==> ("Items" => x)
     [<CustomOperation("Separator")>] member inline _.Separator (render: AttrRenderFragment, x: System.String) = render ==> ("Separator" => x)
     [<CustomOperation("SeparatorTemplate")>] member inline _.SeparatorTemplate (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("SeparatorTemplate", fragment)
+    [<CustomOperation("SeparatorTemplate")>] member inline _.SeparatorTemplate (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("SeparatorTemplate", html.text x)
+    [<CustomOperation("SeparatorTemplate")>] member inline _.SeparatorTemplate (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("SeparatorTemplate", html.text x)
+    [<CustomOperation("SeparatorTemplate")>] member inline _.SeparatorTemplate (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("SeparatorTemplate", html.text x)
     [<CustomOperation("ItemTemplate")>] member inline _.ItemTemplate (render: AttrRenderFragment, fn: MudBlazor.BreadcrumbItem -> NodeRenderFragment) = render ==> html.renderFragment("ItemTemplate", fn)
     [<CustomOperation("MaxItems")>] member inline _.MaxItems (render: AttrRenderFragment, x: System.Nullable<System.Byte>) = render ==> ("MaxItems" => x)
     [<CustomOperation("ExpanderIcon")>] member inline _.ExpanderIcon (render: AttrRenderFragment, x: System.String) = render ==> ("ExpanderIcon" => x)
@@ -826,8 +856,17 @@ type MudCardContentBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
 type MudCardHeaderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit MudComponentBaseBuilder<'FunBlazorGeneric>()
     [<CustomOperation("CardHeaderAvatar")>] member inline _.CardHeaderAvatar (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("CardHeaderAvatar", fragment)
+    [<CustomOperation("CardHeaderAvatar")>] member inline _.CardHeaderAvatar (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("CardHeaderAvatar", html.text x)
+    [<CustomOperation("CardHeaderAvatar")>] member inline _.CardHeaderAvatar (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("CardHeaderAvatar", html.text x)
+    [<CustomOperation("CardHeaderAvatar")>] member inline _.CardHeaderAvatar (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("CardHeaderAvatar", html.text x)
     [<CustomOperation("CardHeaderContent")>] member inline _.CardHeaderContent (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("CardHeaderContent", fragment)
+    [<CustomOperation("CardHeaderContent")>] member inline _.CardHeaderContent (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("CardHeaderContent", html.text x)
+    [<CustomOperation("CardHeaderContent")>] member inline _.CardHeaderContent (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("CardHeaderContent", html.text x)
+    [<CustomOperation("CardHeaderContent")>] member inline _.CardHeaderContent (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("CardHeaderContent", html.text x)
     [<CustomOperation("CardHeaderActions")>] member inline _.CardHeaderActions (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("CardHeaderActions", fragment)
+    [<CustomOperation("CardHeaderActions")>] member inline _.CardHeaderActions (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("CardHeaderActions", html.text x)
+    [<CustomOperation("CardHeaderActions")>] member inline _.CardHeaderActions (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("CardHeaderActions", html.text x)
+    [<CustomOperation("CardHeaderActions")>] member inline _.CardHeaderActions (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("CardHeaderActions", html.text x)
                 
 
 type MudCardMediaBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -939,8 +978,14 @@ type ColumnBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.Asp
     [<CustomOperation("HeaderColSpan")>] member inline _.HeaderColSpan (render: AttrRenderFragment, x: System.Int32) = render ==> ("HeaderColSpan" => x)
     [<CustomOperation("Type")>] member inline _.Type (render: AttrRenderFragment, x: MudBlazor.ColumnType) = render ==> ("Type" => x)
     [<CustomOperation("HeaderTemplate")>] member inline _.HeaderTemplate (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("HeaderTemplate", fragment)
+    [<CustomOperation("HeaderTemplate")>] member inline _.HeaderTemplate (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("HeaderTemplate", html.text x)
+    [<CustomOperation("HeaderTemplate")>] member inline _.HeaderTemplate (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("HeaderTemplate", html.text x)
+    [<CustomOperation("HeaderTemplate")>] member inline _.HeaderTemplate (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("HeaderTemplate", html.text x)
     [<CustomOperation("CellTemplate")>] member inline _.CellTemplate (render: AttrRenderFragment, fn: 'T -> NodeRenderFragment) = render ==> html.renderFragment("CellTemplate", fn)
     [<CustomOperation("FooterTemplate")>] member inline _.FooterTemplate (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("FooterTemplate", fragment)
+    [<CustomOperation("FooterTemplate")>] member inline _.FooterTemplate (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("FooterTemplate", html.text x)
+    [<CustomOperation("FooterTemplate")>] member inline _.FooterTemplate (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("FooterTemplate", html.text x)
+    [<CustomOperation("FooterTemplate")>] member inline _.FooterTemplate (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("FooterTemplate", html.text x)
     [<CustomOperation("HeaderClass")>] member inline _.HeaderClass (render: AttrRenderFragment, x: System.String) = render ==> ("HeaderClass" => x)
     [<CustomOperation("HeaderClassFunc")>] member inline _.HeaderClassFunc (render: AttrRenderFragment, fn) = render ==> ("HeaderClassFunc" => (System.Func<'T, System.String>fn))
     [<CustomOperation("HeaderStyle")>] member inline _.HeaderStyle (render: AttrRenderFragment, x: System.String) = render ==> ("HeaderStyle" => x)
@@ -969,6 +1014,9 @@ type FooterCellBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft
     [<CustomOperation("ColSpan")>] member inline _.ColSpan (render: AttrRenderFragment, x: System.Int32) = render ==> ("ColSpan" => x)
     [<CustomOperation("ColumnType")>] member inline _.ColumnType (render: AttrRenderFragment, x: MudBlazor.ColumnType) = render ==> ("ColumnType" => x)
     [<CustomOperation("FooterTemplate")>] member inline _.FooterTemplate (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("FooterTemplate", fragment)
+    [<CustomOperation("FooterTemplate")>] member inline _.FooterTemplate (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("FooterTemplate", html.text x)
+    [<CustomOperation("FooterTemplate")>] member inline _.FooterTemplate (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("FooterTemplate", html.text x)
+    [<CustomOperation("FooterTemplate")>] member inline _.FooterTemplate (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("FooterTemplate", html.text x)
     [<CustomOperation("FooterClass")>] member inline _.FooterClass (render: AttrRenderFragment, x: System.String) = render ==> ("FooterClass" => x)
     [<CustomOperation("FooterStyle")>] member inline _.FooterStyle (render: AttrRenderFragment, x: System.String) = render ==> ("FooterStyle" => x)
                 
@@ -978,6 +1026,9 @@ type HeaderCellBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft
     [<CustomOperation("Title")>] member inline _.Title (render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
     [<CustomOperation("Field")>] member inline _.Field (render: AttrRenderFragment, x: System.String) = render ==> ("Field" => x)
     [<CustomOperation("HeaderTemplate")>] member inline _.HeaderTemplate (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("HeaderTemplate", fragment)
+    [<CustomOperation("HeaderTemplate")>] member inline _.HeaderTemplate (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("HeaderTemplate", html.text x)
+    [<CustomOperation("HeaderTemplate")>] member inline _.HeaderTemplate (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("HeaderTemplate", html.text x)
+    [<CustomOperation("HeaderTemplate")>] member inline _.HeaderTemplate (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("HeaderTemplate", html.text x)
     [<CustomOperation("ColSpan")>] member inline _.ColSpan (render: AttrRenderFragment, x: System.Int32) = render ==> ("ColSpan" => x)
     [<CustomOperation("ColumnType")>] member inline _.ColumnType (render: AttrRenderFragment, x: MudBlazor.ColumnType) = render ==> ("ColumnType" => x)
     [<CustomOperation("SortBy")>] member inline _.SortBy (render: AttrRenderFragment, fn) = render ==> ("SortBy" => (System.Func<'T, System.Object>fn))
@@ -1007,6 +1058,9 @@ type MudDataGridBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsof
     [<CustomOperation("Outlined")>] member inline _.Outlined (render: AttrRenderFragment, x: System.Boolean) = render ==> ("Outlined" => x)
     [<CustomOperation("Bordered")>] member inline _.Bordered (render: AttrRenderFragment, x: System.Boolean) = render ==> ("Bordered" => x)
     [<CustomOperation("ColGroup")>] member inline _.ColGroup (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("ColGroup", fragment)
+    [<CustomOperation("ColGroup")>] member inline _.ColGroup (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("ColGroup", html.text x)
+    [<CustomOperation("ColGroup")>] member inline _.ColGroup (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("ColGroup", html.text x)
+    [<CustomOperation("ColGroup")>] member inline _.ColGroup (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("ColGroup", html.text x)
     [<CustomOperation("Dense")>] member inline _.Dense (render: AttrRenderFragment, x: System.Boolean) = render ==> ("Dense" => x)
     [<CustomOperation("Hover")>] member inline _.Hover (render: AttrRenderFragment, x: System.Boolean) = render ==> ("Hover" => x)
     [<CustomOperation("Striped")>] member inline _.Striped (render: AttrRenderFragment, x: System.Boolean) = render ==> ("Striped" => x)
@@ -1025,18 +1079,39 @@ type MudDataGridBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsof
     [<CustomOperation("CanCancelEdit")>] member inline _.CanCancelEdit (render: AttrRenderFragment, x: System.Boolean) = render ==> ("CanCancelEdit" => x)
     [<CustomOperation("LoadingProgressColor")>] member inline _.LoadingProgressColor (render: AttrRenderFragment, x: MudBlazor.Color) = render ==> ("LoadingProgressColor" => x)
     [<CustomOperation("ToolBarContent")>] member inline _.ToolBarContent (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("ToolBarContent", fragment)
+    [<CustomOperation("ToolBarContent")>] member inline _.ToolBarContent (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("ToolBarContent", html.text x)
+    [<CustomOperation("ToolBarContent")>] member inline _.ToolBarContent (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("ToolBarContent", html.text x)
+    [<CustomOperation("ToolBarContent")>] member inline _.ToolBarContent (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("ToolBarContent", html.text x)
     [<CustomOperation("HorizontalScrollbar")>] member inline _.HorizontalScrollbar (render: AttrRenderFragment, x: System.Boolean) = render ==> ("HorizontalScrollbar" => x)
     [<CustomOperation("HeaderClass")>] member inline _.HeaderClass (render: AttrRenderFragment, x: System.String) = render ==> ("HeaderClass" => x)
     [<CustomOperation("Height")>] member inline _.Height (render: AttrRenderFragment, x: System.String) = render ==> ("Height" => x)
     [<CustomOperation("FooterClass")>] member inline _.FooterClass (render: AttrRenderFragment, x: System.String) = render ==> ("FooterClass" => x)
     [<CustomOperation("QuickFilter")>] member inline _.QuickFilter (render: AttrRenderFragment, fn) = render ==> ("QuickFilter" => (System.Func<'T, System.Boolean>fn))
     [<CustomOperation("Header")>] member inline _.Header (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("Header", fragment)
+    [<CustomOperation("Header")>] member inline _.Header (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("Header", html.text x)
+    [<CustomOperation("Header")>] member inline _.Header (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("Header", html.text x)
+    [<CustomOperation("Header")>] member inline _.Header (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("Header", html.text x)
     [<CustomOperation("Columns")>] member inline _.Columns (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("Columns", fragment)
+    [<CustomOperation("Columns")>] member inline _.Columns (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("Columns", html.text x)
+    [<CustomOperation("Columns")>] member inline _.Columns (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("Columns", html.text x)
+    [<CustomOperation("Columns")>] member inline _.Columns (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("Columns", html.text x)
     [<CustomOperation("Footer")>] member inline _.Footer (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("Footer", fragment)
+    [<CustomOperation("Footer")>] member inline _.Footer (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("Footer", html.text x)
+    [<CustomOperation("Footer")>] member inline _.Footer (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("Footer", html.text x)
+    [<CustomOperation("Footer")>] member inline _.Footer (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("Footer", html.text x)
     [<CustomOperation("ChildRowContent")>] member inline _.ChildRowContent (render: AttrRenderFragment, fn: 'T -> NodeRenderFragment) = render ==> html.renderFragment("ChildRowContent", fn)
     [<CustomOperation("NoRecordsContent")>] member inline _.NoRecordsContent (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("NoRecordsContent", fragment)
+    [<CustomOperation("NoRecordsContent")>] member inline _.NoRecordsContent (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("NoRecordsContent", html.text x)
+    [<CustomOperation("NoRecordsContent")>] member inline _.NoRecordsContent (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("NoRecordsContent", html.text x)
+    [<CustomOperation("NoRecordsContent")>] member inline _.NoRecordsContent (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("NoRecordsContent", html.text x)
     [<CustomOperation("LoadingContent")>] member inline _.LoadingContent (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("LoadingContent", fragment)
+    [<CustomOperation("LoadingContent")>] member inline _.LoadingContent (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("LoadingContent", html.text x)
+    [<CustomOperation("LoadingContent")>] member inline _.LoadingContent (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("LoadingContent", html.text x)
+    [<CustomOperation("LoadingContent")>] member inline _.LoadingContent (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("LoadingContent", html.text x)
     [<CustomOperation("PagerContent")>] member inline _.PagerContent (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("PagerContent", fragment)
+    [<CustomOperation("PagerContent")>] member inline _.PagerContent (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("PagerContent", html.text x)
+    [<CustomOperation("PagerContent")>] member inline _.PagerContent (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("PagerContent", html.text x)
+    [<CustomOperation("PagerContent")>] member inline _.PagerContent (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("PagerContent", html.text x)
     [<CustomOperation("ServerData")>] member inline _.ServerData (render: AttrRenderFragment, fn) = render ==> ("ServerData" => (System.Func<MudBlazor.GridState<'T>, System.Threading.Tasks.Task<MudBlazor.GridData<'T>>>fn))
     [<CustomOperation("RowsPerPage")>] member inline _.RowsPerPage (render: AttrRenderFragment, x: System.Int32) = render ==> ("RowsPerPage" => x)
     [<CustomOperation("CurrentPage")>] member inline _.CurrentPage (render: AttrRenderFragment, x: System.Int32) = render ==> ("CurrentPage" => x)
@@ -1067,8 +1142,17 @@ type RowBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore
 type MudDialogBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit MudComponentBaseBuilder<'FunBlazorGeneric>()
     [<CustomOperation("TitleContent")>] member inline _.TitleContent (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("TitleContent", fragment)
+    [<CustomOperation("TitleContent")>] member inline _.TitleContent (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("TitleContent", html.text x)
+    [<CustomOperation("TitleContent")>] member inline _.TitleContent (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("TitleContent", html.text x)
+    [<CustomOperation("TitleContent")>] member inline _.TitleContent (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("TitleContent", html.text x)
     [<CustomOperation("DialogContent")>] member inline _.DialogContent (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("DialogContent", fragment)
+    [<CustomOperation("DialogContent")>] member inline _.DialogContent (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("DialogContent", html.text x)
+    [<CustomOperation("DialogContent")>] member inline _.DialogContent (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("DialogContent", html.text x)
+    [<CustomOperation("DialogContent")>] member inline _.DialogContent (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("DialogContent", html.text x)
     [<CustomOperation("DialogActions")>] member inline _.DialogActions (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("DialogActions", fragment)
+    [<CustomOperation("DialogActions")>] member inline _.DialogActions (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("DialogActions", html.text x)
+    [<CustomOperation("DialogActions")>] member inline _.DialogActions (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("DialogActions", html.text x)
+    [<CustomOperation("DialogActions")>] member inline _.DialogActions (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("DialogActions", html.text x)
     [<CustomOperation("Options")>] member inline _.Options (render: AttrRenderFragment, x: MudBlazor.DialogOptions) = render ==> ("Options" => x)
     [<CustomOperation("DisableSidePadding")>] member inline _.DisableSidePadding (render: AttrRenderFragment, x: System.Boolean) = render ==> ("DisableSidePadding" => x)
     [<CustomOperation("ClassContent")>] member inline _.ClassContent (render: AttrRenderFragment, x: System.String) = render ==> ("ClassContent" => x)
@@ -1086,7 +1170,13 @@ type MudDialogInstanceBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micros
     [<CustomOperation("Options")>] member inline _.Options (render: AttrRenderFragment, x: MudBlazor.DialogOptions) = render ==> ("Options" => x)
     [<CustomOperation("Title")>] member inline _.Title (render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
     [<CustomOperation("TitleContent")>] member inline _.TitleContent (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("TitleContent", fragment)
+    [<CustomOperation("TitleContent")>] member inline _.TitleContent (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("TitleContent", html.text x)
+    [<CustomOperation("TitleContent")>] member inline _.TitleContent (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("TitleContent", html.text x)
+    [<CustomOperation("TitleContent")>] member inline _.TitleContent (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("TitleContent", html.text x)
     [<CustomOperation("Content")>] member inline _.Content (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("Content", fragment)
+    [<CustomOperation("Content")>] member inline _.Content (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("Content", html.text x)
+    [<CustomOperation("Content")>] member inline _.Content (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("Content", html.text x)
+    [<CustomOperation("Content")>] member inline _.Content (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("Content", html.text x)
     [<CustomOperation("Id")>] member inline _.Id (render: AttrRenderFragment, x: System.Guid) = render ==> ("Id" => x)
     [<CustomOperation("CloseIcon")>] member inline _.CloseIcon (render: AttrRenderFragment, x: System.String) = render ==> ("CloseIcon" => x)
                 
@@ -1127,6 +1217,9 @@ type MudExpansionPanelBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micros
     inherit MudComponentBaseBuilder<'FunBlazorGeneric>()
     [<CustomOperation("MaxHeight")>] member inline _.MaxHeight (render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("MaxHeight" => x)
     [<CustomOperation("TitleContent")>] member inline _.TitleContent (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("TitleContent", fragment)
+    [<CustomOperation("TitleContent")>] member inline _.TitleContent (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("TitleContent", html.text x)
+    [<CustomOperation("TitleContent")>] member inline _.TitleContent (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("TitleContent", html.text x)
+    [<CustomOperation("TitleContent")>] member inline _.TitleContent (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("TitleContent", html.text x)
     [<CustomOperation("Text")>] member inline _.Text (render: AttrRenderFragment, x: System.String) = render ==> ("Text" => x)
     [<CustomOperation("HideIcon")>] member inline _.HideIcon (render: AttrRenderFragment, x: System.Boolean) = render ==> ("HideIcon" => x)
     [<CustomOperation("Icon")>] member inline _.Icon (render: AttrRenderFragment, x: System.String) = render ==> ("Icon" => x)
@@ -1223,6 +1316,9 @@ type MudIconBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNet
 type MudInputControlBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit MudComponentBaseBuilder<'FunBlazorGeneric>()
     [<CustomOperation("InputContent")>] member inline _.InputContent (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("InputContent", fragment)
+    [<CustomOperation("InputContent")>] member inline _.InputContent (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("InputContent", html.text x)
+    [<CustomOperation("InputContent")>] member inline _.InputContent (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("InputContent", html.text x)
+    [<CustomOperation("InputContent")>] member inline _.InputContent (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("InputContent", html.text x)
     [<CustomOperation("Margin")>] member inline _.Margin (render: AttrRenderFragment, x: MudBlazor.Margin) = render ==> ("Margin" => x)
     [<CustomOperation("Required")>] member inline _.Required (render: AttrRenderFragment, x: System.Boolean) = render ==> ("Required" => x)
     [<CustomOperation("Error")>] member inline _.Error (render: AttrRenderFragment, x: System.Boolean) = render ==> ("Error" => x)
@@ -1301,6 +1397,9 @@ type MudListItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.As
     [<CustomOperation("CommandParameter")>] member inline _.CommandParameter (render: AttrRenderFragment, x: System.Object) = render ==> ("CommandParameter" => x)
     [<CustomOperation("Command")>] member inline _.Command (render: AttrRenderFragment, x: System.Windows.Input.ICommand) = render ==> ("Command" => x)
     [<CustomOperation("NestedList")>] member inline _.NestedList (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("NestedList", fragment)
+    [<CustomOperation("NestedList")>] member inline _.NestedList (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("NestedList", html.text x)
+    [<CustomOperation("NestedList")>] member inline _.NestedList (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("NestedList", html.text x)
+    [<CustomOperation("NestedList")>] member inline _.NestedList (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("NestedList", html.text x)
     [<CustomOperation("OnClick")>] member inline _.OnClick (render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs>("OnClick", fn)
                 
 
@@ -1327,6 +1426,9 @@ type MudMenuBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNet
     [<CustomOperation("MaxHeight")>] member inline _.MaxHeight (render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("MaxHeight" => x)
     [<CustomOperation("PositionAtCursor")>] member inline _.PositionAtCursor (render: AttrRenderFragment, x: System.Boolean) = render ==> ("PositionAtCursor" => x)
     [<CustomOperation("ActivatorContent")>] member inline _.ActivatorContent (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("ActivatorContent", fragment)
+    [<CustomOperation("ActivatorContent")>] member inline _.ActivatorContent (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("ActivatorContent", html.text x)
+    [<CustomOperation("ActivatorContent")>] member inline _.ActivatorContent (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("ActivatorContent", html.text x)
+    [<CustomOperation("ActivatorContent")>] member inline _.ActivatorContent (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("ActivatorContent", html.text x)
     [<CustomOperation("ActivationEvent")>] member inline _.ActivationEvent (render: AttrRenderFragment, x: MudBlazor.MouseEvent) = render ==> ("ActivationEvent" => x)
     [<CustomOperation("AnchorOrigin")>] member inline _.AnchorOrigin (render: AttrRenderFragment, x: MudBlazor.Origin) = render ==> ("AnchorOrigin" => x)
     [<CustomOperation("TransformOrigin")>] member inline _.TransformOrigin (render: AttrRenderFragment, x: MudBlazor.Origin) = render ==> ("TransformOrigin" => x)
@@ -1351,14 +1453,29 @@ type MudMessageBoxBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     inherit MudComponentBaseBuilder<'FunBlazorGeneric>()
     [<CustomOperation("Title")>] member inline _.Title (render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
     [<CustomOperation("TitleContent")>] member inline _.TitleContent (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("TitleContent", fragment)
+    [<CustomOperation("TitleContent")>] member inline _.TitleContent (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("TitleContent", html.text x)
+    [<CustomOperation("TitleContent")>] member inline _.TitleContent (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("TitleContent", html.text x)
+    [<CustomOperation("TitleContent")>] member inline _.TitleContent (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("TitleContent", html.text x)
     [<CustomOperation("Message")>] member inline _.Message (render: AttrRenderFragment, x: System.String) = render ==> ("Message" => x)
     [<CustomOperation("MessageContent")>] member inline _.MessageContent (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("MessageContent", fragment)
+    [<CustomOperation("MessageContent")>] member inline _.MessageContent (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("MessageContent", html.text x)
+    [<CustomOperation("MessageContent")>] member inline _.MessageContent (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("MessageContent", html.text x)
+    [<CustomOperation("MessageContent")>] member inline _.MessageContent (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("MessageContent", html.text x)
     [<CustomOperation("CancelText")>] member inline _.CancelText (render: AttrRenderFragment, x: System.String) = render ==> ("CancelText" => x)
     [<CustomOperation("CancelButton")>] member inline _.CancelButton (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("CancelButton", fragment)
+    [<CustomOperation("CancelButton")>] member inline _.CancelButton (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("CancelButton", html.text x)
+    [<CustomOperation("CancelButton")>] member inline _.CancelButton (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("CancelButton", html.text x)
+    [<CustomOperation("CancelButton")>] member inline _.CancelButton (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("CancelButton", html.text x)
     [<CustomOperation("NoText")>] member inline _.NoText (render: AttrRenderFragment, x: System.String) = render ==> ("NoText" => x)
     [<CustomOperation("NoButton")>] member inline _.NoButton (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("NoButton", fragment)
+    [<CustomOperation("NoButton")>] member inline _.NoButton (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("NoButton", html.text x)
+    [<CustomOperation("NoButton")>] member inline _.NoButton (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("NoButton", html.text x)
+    [<CustomOperation("NoButton")>] member inline _.NoButton (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("NoButton", html.text x)
     [<CustomOperation("YesText")>] member inline _.YesText (render: AttrRenderFragment, x: System.String) = render ==> ("YesText" => x)
     [<CustomOperation("YesButton")>] member inline _.YesButton (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("YesButton", fragment)
+    [<CustomOperation("YesButton")>] member inline _.YesButton (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("YesButton", html.text x)
+    [<CustomOperation("YesButton")>] member inline _.YesButton (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("YesButton", html.text x)
+    [<CustomOperation("YesButton")>] member inline _.YesButton (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("YesButton", html.text x)
     [<CustomOperation("OnYes")>] member inline _.OnYes (render: AttrRenderFragment, fn) = render ==> html.callback<System.Boolean>("OnYes", fn)
     [<CustomOperation("OnNo")>] member inline _.OnNo (render: AttrRenderFragment, fn) = render ==> html.callback<System.Boolean>("OnNo", fn)
     [<CustomOperation("OnCancel")>] member inline _.OnCancel (render: AttrRenderFragment, fn) = render ==> html.callback<System.Boolean>("OnCancel", fn)
@@ -1704,8 +1821,17 @@ type MudTimelineItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsof
     [<CustomOperation("TimelineAlign")>] member inline _.TimelineAlign (render: AttrRenderFragment, x: MudBlazor.TimelineAlign) = render ==> ("TimelineAlign" => x)
     [<CustomOperation("HideDot")>] member inline _.HideDot (render: AttrRenderFragment, x: System.Boolean) = render ==> ("HideDot" => x)
     [<CustomOperation("ItemOpposite")>] member inline _.ItemOpposite (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("ItemOpposite", fragment)
+    [<CustomOperation("ItemOpposite")>] member inline _.ItemOpposite (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("ItemOpposite", html.text x)
+    [<CustomOperation("ItemOpposite")>] member inline _.ItemOpposite (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("ItemOpposite", html.text x)
+    [<CustomOperation("ItemOpposite")>] member inline _.ItemOpposite (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("ItemOpposite", html.text x)
     [<CustomOperation("ItemContent")>] member inline _.ItemContent (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("ItemContent", fragment)
+    [<CustomOperation("ItemContent")>] member inline _.ItemContent (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("ItemContent", html.text x)
+    [<CustomOperation("ItemContent")>] member inline _.ItemContent (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("ItemContent", html.text x)
+    [<CustomOperation("ItemContent")>] member inline _.ItemContent (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("ItemContent", html.text x)
     [<CustomOperation("ItemDot")>] member inline _.ItemDot (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("ItemDot", fragment)
+    [<CustomOperation("ItemDot")>] member inline _.ItemDot (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("ItemDot", html.text x)
+    [<CustomOperation("ItemDot")>] member inline _.ItemDot (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("ItemDot", html.text x)
+    [<CustomOperation("ItemDot")>] member inline _.ItemDot (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("ItemDot", html.text x)
                 
 
 type MudTooltipBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -1717,6 +1843,9 @@ type MudTooltipBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.Asp
     [<CustomOperation("Delay'")>] member inline _.Delay' (render: AttrRenderFragment, x: System.Double) = render ==> ("Delay" => x)
     [<CustomOperation("Placement")>] member inline _.Placement (render: AttrRenderFragment, x: MudBlazor.Placement) = render ==> ("Placement" => x)
     [<CustomOperation("TooltipContent")>] member inline _.TooltipContent (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("TooltipContent", fragment)
+    [<CustomOperation("TooltipContent")>] member inline _.TooltipContent (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("TooltipContent", html.text x)
+    [<CustomOperation("TooltipContent")>] member inline _.TooltipContent (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("TooltipContent", html.text x)
+    [<CustomOperation("TooltipContent")>] member inline _.TooltipContent (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("TooltipContent", html.text x)
     [<CustomOperation("Inline")>] member inline _.Inline (render: AttrRenderFragment, x: System.Boolean) = render ==> ("Inline" => x)
     [<CustomOperation("IsVisible")>] member inline _.IsVisible (render: AttrRenderFragment, x: System.Boolean) = render ==> ("IsVisible" => x)
     [<CustomOperation("IsVisible'")>] member inline _.IsVisible' (render: AttrRenderFragment, value: IStore<System.Boolean>) = render ==> html.bind("IsVisible", value)
@@ -1758,6 +1887,9 @@ type MudTreeViewItemBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Micr
     [<CustomOperation("EndTextClass")>] member inline _.EndTextClass (render: AttrRenderFragment, x: System.String) = render ==> ("EndTextClass" => x)
     [<CustomOperation("Disabled")>] member inline _.Disabled (render: AttrRenderFragment, x: System.Boolean) = render ==> ("Disabled" => x)
     [<CustomOperation("Content")>] member inline _.Content (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("Content", fragment)
+    [<CustomOperation("Content")>] member inline _.Content (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("Content", html.text x)
+    [<CustomOperation("Content")>] member inline _.Content (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("Content", html.text x)
+    [<CustomOperation("Content")>] member inline _.Content (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("Content", html.text x)
     [<CustomOperation("Items")>] member inline _.Items (render: AttrRenderFragment, x: System.Collections.Generic.HashSet<'T>) = render ==> ("Items" => x)
     [<CustomOperation("Command")>] member inline _.Command (render: AttrRenderFragment, x: System.Windows.Input.ICommand) = render ==> ("Command" => x)
     [<CustomOperation("Expanded")>] member inline _.Expanded (render: AttrRenderFragment, x: System.Boolean) = render ==> ("Expanded" => x)
@@ -2003,6 +2135,9 @@ type MudPickerContentBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microso
     inherit ComponentBuilder<'FunBlazorGeneric>()
     [<CustomOperation("Classes")>] member inline _.Classes (render: AttrRenderFragment, x: string list) = render ==> html.classes x
     [<CustomOperation("childContent")>] member inline _.childContent (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("ChildContent", fragment)
+    [<CustomOperation("childContent")>] member inline _.childContent (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("ChildContent", html.text x)
+    [<CustomOperation("childContent")>] member inline _.childContent (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("ChildContent", html.text x)
+    [<CustomOperation("childContent")>] member inline _.childContent (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("ChildContent", html.text x)
                 
 
 type MudPickerToolbarBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -2013,6 +2148,9 @@ type MudPickerToolbarBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microso
     [<CustomOperation("Orientation")>] member inline _.Orientation (render: AttrRenderFragment, x: MudBlazor.Orientation) = render ==> ("Orientation" => x)
     [<CustomOperation("Color")>] member inline _.Color (render: AttrRenderFragment, x: MudBlazor.Color) = render ==> ("Color" => x)
     [<CustomOperation("childContent")>] member inline _.childContent (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("ChildContent", fragment)
+    [<CustomOperation("childContent")>] member inline _.childContent (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("ChildContent", html.text x)
+    [<CustomOperation("childContent")>] member inline _.childContent (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("ChildContent", html.text x)
+    [<CustomOperation("childContent")>] member inline _.childContent (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("ChildContent", html.text x)
                 
 
 type MudSpacerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -2045,8 +2183,6 @@ namespace rec MudBlazor.DslInternals.Internal
 open FSharp.Data.Adaptive
 open Fun.Blazor
 open Fun.Blazor.Operators
-open Microsoft.AspNetCore.Components.DslInternals
-open Microsoft.AspNetCore.Components.Web.DslInternals
 open MudBlazor.DslInternals
 
 
@@ -2066,8 +2202,6 @@ namespace rec MudBlazor.DslInternals.Charts
 open FSharp.Data.Adaptive
 open Fun.Blazor
 open Fun.Blazor.Operators
-open Microsoft.AspNetCore.Components.DslInternals
-open Microsoft.AspNetCore.Components.Web.DslInternals
 open MudBlazor.DslInternals
 
 

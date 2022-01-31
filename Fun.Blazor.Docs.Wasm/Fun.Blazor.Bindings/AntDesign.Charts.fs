@@ -3,8 +3,6 @@ namespace rec AntDesign.Charts.DslInternals
 open FSharp.Data.Adaptive
 open Fun.Blazor
 open Fun.Blazor.Operators
-open Microsoft.AspNetCore.Components.DslInternals
-open Microsoft.AspNetCore.Components.Web.DslInternals
 open AntDesign.Charts.DslInternals
 
 

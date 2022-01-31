@@ -13,6 +13,9 @@ type html() =
 
     static member inline fragment = fragment
 
+    static member inline mergeAttrs attrs = attrs |> Seq.fold (==>) emptyAttr
+    static member inline mergeNodes nodes = nodes |> Seq.fold (>=>) emptyNode
+
     static member inline renderFragment<'TItem>(name: string, render: 'TItem -> NodeRenderFragment) =
         AttrRenderFragment(fun comp builder index ->
             builder.AddAttribute(
@@ -44,13 +47,19 @@ type html() =
             index
         )
 
+    static member inline ref([<InlineIfLambda>] fn) =
+        AttrRenderFragment(fun _ builder index ->
+            builder.AddElementReferenceCapture(index, Action<ElementReference> fn)
+            index + 1
+        )
+
     static member inline bind<'T>(name: string, store: IStore<'T>) =
         AttrRenderFragment(fun comp builder index ->
             builder.AddAttribute(index, name, store.Current)
             builder.AddAttribute(
                 index + 1,
                 name + "Changed",
-                EventCallback.Factory.Create(comp, Action<'T>store.Publish)
+                EventCallback.Factory.Create(comp, Action<'T> store.Publish)
             )
             index + 2
         )
@@ -84,12 +93,6 @@ type html() =
             builder.AddAttribute(index, "on" + eventName, EventCallback.Factory.Create(comp, Func<'T, Task> fn))
             index + 1
         )
-
-    ///// With this, we can add any FunBlazor fragment to the attribute which expect RenderFragment.
-    ///// Sometimes third party libray will have complex attributes which will be used to inject other components in.
-    ///// Those complex atrribute types cannot be generated automatically by the cli.
-    //static member inline renderFragment(render: NodeRenderFragment) =
-    //    Microsoft.AspNetCore.Components.RenderFragment(fun builder -> render.Invoke(null, builder, 0) |> ignore)
 
     static member inline raw x =
         NodeRenderFragment(fun _ builder index ->
