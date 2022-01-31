@@ -2,28 +2,21 @@ module Fun.Blazor.HtmlTemplate.Internals
 
 open System
 open System.Text
-open System.Threading.Tasks
 open System.Text.RegularExpressions
 open System.Collections.Concurrent
 open Microsoft.AspNetCore.Components
-open Microsoft.AspNetCore.Components.Web
-open Microsoft.AspNetCore.Components.Rendering
 open System.Xml
 open Fun.Blazor
 open Fun.Blazor.Operators
+
+
+type MakeAttrWithName = string -> AttrRenderFragment
 
 
 let formatHoleRegex = Regex("\{([\d]*)\}")
 
 let internal caches = ConcurrentDictionary<int, obj [] -> NodeRenderFragment>()
 
-
-//[<Struct>]
-//type Hole =
-//    | Attr of attr: AttrRenderFragment
-//    | Node of node: NodeRenderFragment
-//    | AttrHole of attrHole: (obj [] -> AttrRenderFragment)
-//    | NodeHole of nodeHole: (obj [] -> NodeRenderFragment)
 
 
 let buildNodes (args: obj []) (str: string) =
@@ -112,6 +105,7 @@ let buildAttrs (args: obj []) (name: string, value: string) =
                 index
             else
                 match arg with
+                | :? MakeAttrWithName as fn -> (fn name).Invoke(comp, builder ,index)
                 | :? AttrRenderFragment as fn -> fn.Invoke(comp, builder ,index)
                 | _ -> (name => arg).Invoke(comp, builder, index)
         )

@@ -15,10 +15,9 @@ let private errorView es =
     if Seq.isEmpty es then
         html.none
     else
-        let errors = simplifyErrors es
-        MudAlert' {
+        MudAlert'() {
             Severity Severity.Error
-            errors
+            childContent (simplifyErrors es)
         }
 
 
@@ -79,79 +78,83 @@ let demo1 =
                     ]
                 )
 
-        MudPaper' {
+        MudPaper'() {
             Elevation 10
-            Styles [ styl.padding 10 ]
-            MudForm' {
+            styleBuilder { padding 10 }
+            childContent [
+                MudForm'() {
+                    childContent [
+                        adaptiview () {
+                            let! binding, errors = modelForm.UseFieldWithErrors(fun x -> x.Name)
+                            MudTextField'() {
+                                key "name"
+                                Label "Name"
+                                Value' binding
+                                //Error (not errors.IsEmpty)
+                                //ErrorText (simplifyErrors errors)
+                                // There is a bug related to MudBlazor: error will disapre after blur
+                                Immediate true
+                            }
+                            errorView errors
+                        }
+                        adaptiview () {
+                            let! binding, errors = modelForm.UseFieldWithErrors(fun x -> x.Password)
+                            MudTextField'() {
+                                Label "Password"
+                                Value' binding
+                                Immediate true
+                                InputType InputType.Password
+                            }
+                            errorView errors
+                        }
+                        adaptiview () {
+                            let! binding, errors = modelForm.UseFieldWithErrors(fun x -> x.Age)
+                            MudTextField'() {
+                                Label "Age"
+                                Value' binding
+                                Immediate true
+                                InputType InputType.Number
+                            }
+                            errorView errors
+                        }
+                        adaptiview () {
+                            let! (value', setValue), errors = modelForm.UseFieldWithErrors(fun x -> x.Birthday)
+                            MudDatePicker'() {
+                                Label "Birthday"
+                                Date(Nullable value')
+                                DateChanged(Option.ofNullable >> Option.iter setValue)
+                                Error(not errors.IsEmpty)
+                                ErrorText(simplifyErrors errors)
+                            }
+                        }
+                    ]
+                }
+                spaceV4
                 adaptiview () {
-                    let! binding, errors = modelForm.UseFieldWithErrors(fun x -> x.Name)
-                    MudTextField' {
-                        key "name"
-                        Label "Name"
-                        Value' binding
-                        //Error (not errors.IsEmpty)
-                        //ErrorText (simplifyErrors errors)
-                        // There is a bug related to MudBlazor: error will disapre after blur
-                        Immediate true
-                    }
-                    errorView errors
-                }
-                adaptiview () {
-                    let! binding, errors = modelForm.UseFieldWithErrors(fun x -> x.Password)
-                    MudTextField' {
-                        Label "Password"
-                        Value' binding
-                        Immediate true
-                        InputType InputType.Password
-                    }
-                    errorView errors
-                }
-                adaptiview () {
-                    let! binding, errors = modelForm.UseFieldWithErrors(fun x -> x.Age)
-                    MudTextField' {
-                        Label "Age"
-                        Value' binding
-                        Immediate true
-                        InputType InputType.Number
-                    }
-                    errorView errors
-                }
-                adaptiview () {
-                    let! (value', setValue), errors = modelForm.UseFieldWithErrors(fun x -> x.Birthday)
-                    MudDatePicker' {
-                        Label "Birthday"
-                        Date(Nullable value')
-                        DateChanged(Option.ofNullable >> Option.iter setValue)
-                        Error(not errors.IsEmpty)
-                        ErrorText(simplifyErrors errors)
-                    }
-                }
-            }
-            spaceV4
-            adaptiview () {
-                let! errors = modelForm.UseErrors()
-                MudAlert' {
-                    Severity Severity.Info
-                    $"Total errors is {errors.Length}"
-                }
-            }
-            spaceV4
-            adaptiview () {
-                let! hasChanges = modelForm.UseHasChanges()
-                if hasChanges then
-                    MudAlert' {
+                    let! errors = modelForm.UseErrors()
+                    MudAlert'() {
                         Severity Severity.Info
-                        "There are some changes"
+                        childContent $"Total errors is {errors.Length}"
                     }
-                MudButton' {
-                    OnClick(fun _ -> modelForm.SetValue(Model.DefaultValue))
-                    "Reset"
                 }
-                MudButton' {
-                    OnClick(fun _ -> modelForm.UseFieldSetter(fun x -> x.Age) (24))
-                    "Set age to 24"
+                spaceV4
+                adaptiview () {
+                    let! hasChanges = modelForm.UseHasChanges()
+                    if hasChanges then
+                        MudAlert'() {
+                            Severity Severity.Info
+                            childContent "There are some changes"
+                        }
+                    MudButton'() {
+                        OnClick(fun _ -> modelForm.SetValue(Model.DefaultValue))
+                        childContent "Reset"
+                    }
+                    MudButton'() {
+                        OnClick(fun _ -> modelForm.UseFieldSetter(fun x -> x.Age) (24))
+                        childContent "Set age to 24"
+                    }
                 }
-            }
+            ]
         }
     )
 
@@ -165,24 +168,26 @@ let anonymousRecordDemo =
                 .AddValidators((fun x -> x.Age), true, [ minValue 18 AgeIsTooSmall; notEqual 20 AgeCannotEqual ])
 
         div {
-            styles [ styl.padding 10 ]
-            adaptiview () {
-                let! binding, errors = demoForm.UseFieldWithErrors(fun x -> x.Name)
-                MudTextField' {
-                    Label "Name"
-                    Value' binding
+            styleBuilder { padding 10 }
+            childContent [
+                adaptiview () {
+                    let! binding, errors = demoForm.UseFieldWithErrors(fun x -> x.Name)
+                    MudTextField'() {
+                        Label "Name"
+                        Value' binding
+                    }
+                    errorView errors
                 }
-                errorView errors
-            }
-            adaptiview () {
-                let! (currentValue, setValue), errors = demoForm.UseFieldWithErrors(fun x -> x.Age)
-                MudTextField' {
-                    Label "Age"
-                    Value'(currentValue, setValue) // the above binding is just a tuple
-                    InputType InputType.Number
+                adaptiview () {
+                    let! (currentValue, setValue), errors = demoForm.UseFieldWithErrors(fun x -> x.Age)
+                    MudTextField'() {
+                        Label "Age"
+                        Value'(currentValue, setValue) // the above binding is just a tuple
+                        InputType InputType.Number
+                    }
+                    errorView errors
                 }
-                errorView errors
-            }
+            ]
         }
     )
 
@@ -203,11 +208,11 @@ let demo3 =
                 .AddValidators((fun x -> x.Age), true, [ minValue 18 AgeIsTooSmall; notEqual 20 AgeCannotEqual ])
 
         div {
-            styles [ styl.padding 10 ]
+            styleBuilder { padding 10 }
             childContent [
                 adaptiview () {
                     let! binding, errors = demoForm.UseFieldWithErrors(fun x -> x.Name)
-                    MudTextField' {
+                    MudTextField'() {
                         Label "Name"
                         Value' binding
                     }
@@ -215,7 +220,7 @@ let demo3 =
                 }
                 adaptiview () {
                     let! binding, errors = demoForm.UseFieldWithErrors(fun x -> x.Age)
-                    MudTextField' {
+                    MudTextField'() {
                         Label "Age"
                         Value' binding
                         InputType InputType.Number

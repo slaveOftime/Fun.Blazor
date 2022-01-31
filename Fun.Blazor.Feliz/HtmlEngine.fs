@@ -16,6 +16,7 @@ type html with
     static member inline none = emptyNode
 
     static member inline script (x: string) = script { src x }
+    static member inline stylesheet (x: string) = stylesheet x
 
     static member inline a(children: NodeRenderFragment seq) = EltWithChildBuilder "a" { yield! children }
 

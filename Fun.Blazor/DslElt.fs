@@ -13,7 +13,7 @@ type DomBuilder() =
     inherit FragmentBuilder()
 
 
-    [<CustomOperation("style")>]
+    [<CustomOperation("style'")>]
     member inline _.Style([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> ("style" => x)
 
     /// <summary>

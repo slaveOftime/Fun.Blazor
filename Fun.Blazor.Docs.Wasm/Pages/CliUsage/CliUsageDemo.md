@@ -44,9 +44,9 @@ Steps:
 
     let alertDemo =
         MudCard' [
-            MudAlert' {
+            MudAlert'() {
                 Icon Icons.Filled.AccessAlarm
-                "This is the way"
+                childContent "This is the way"
             }
         ]
     ```
@@ -61,7 +61,7 @@ Steps:
         mudCard.create [
             mudAlert.create [
                 mudAlert.icon Icons.Filled.AccessAlarm
-                mudAlert."This is the way"
+                mudAlert.childContent "This is the way"
             ]
         ]
     ```

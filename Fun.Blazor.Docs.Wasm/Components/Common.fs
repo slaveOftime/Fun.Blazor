@@ -5,10 +5,15 @@ open MudBlazor
 open Fun.Blazor
 
 
-let private spaceV (x: int) = div { styles [ styl.height x ] }
+let private spaceV (x: int) = 
+    html.div [
+        attr.styles [ style.height x ]
+    ]
 
-let private spaceH (x: int) = span { styles [ styl.width x ] }
-
+let private spaceH (x: int) = 
+    html.span [
+        attr.styles [ style.width x ]
+    ]
 
 let spaceV1 = spaceV 2
 let spaceV2 = spaceV 6
@@ -22,47 +27,56 @@ let spaceH4 = spaceH 16
 
 
 let linearProgress =
-    MudProgressLinear' {
+    MudProgressLinear'(){
         Indeterminate true
         Color Color.Primary
     }
 
 
 let simplePage (url: string) (titleStr: string) (subTitle: string) (description: string) demos =
-    div {
-        attr.styles [ styl.marginTop 20; styl.marginBottom 20 ]
+    html.div [
+        attr.styles [
+            style.marginTop 20
+            style.marginBottom 20
+        ]
         attr.childContent [
-            MudContainer' {
+            MudContainer'() {
                 MaxWidth MaxWidth.Large
-                MudContainer' {
-                    MaxWidth MaxWidth.Medium
-                    MudLink' {
-                        Href url
-                        Color Color.Primary
-                        Underline Underline.Always
-                        MudText' {
-                            Typo Typo.h4
-                            Align Align.Center
-                            Color Color.Primary
-                            titleStr
-                        }
-                        MudText' {
-                            Typo Typo.h5
-                            Align Align.Center
-                            subTitle
-                        }
+                childContent [
+                    MudContainer'() {
+                        MaxWidth MaxWidth.Medium
+                        childContent [
+                            MudLink'() {
+                                Href url
+                                Color Color.Primary
+                                Underline Underline.Always
+                                childContent [
+                                    MudText'() {
+                                        Typo Typo.h4
+                                        Align Align.Center
+                                        Color Color.Primary
+                                        childContent titleStr
+                                    }
+                                    MudText'() {
+                                        Typo Typo.h5
+                                        Align Align.Center
+                                        childContent subTitle
+                                    }
+                                ]
+                            }
+                            spaceV3
+                            MudText'() {
+                                Typo Typo.body1
+                                Align Align.Center
+                                childContent description
+                            }
+                        ]
                     }
-                    spaceV3
-                    MudText' {
-                        Typo Typo.body1
-                        Align Align.Center
-                        description
-                    }
-                }
 
-                spaceV4
+                    spaceV4
 
-                yield! demos
+                    yield! demos
+                ]
             }
         ]
-    }
+    ]

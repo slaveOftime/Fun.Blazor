@@ -4,12 +4,11 @@ open System
 open HtmlTemplate.Internals
 
 
-//[<AutoOpen>]
-//module Utils =
-//    let callback fn : MkAttrWithName = fun name -> [ Bolero.Html.attr.callback name fn ]
+[<AutoOpen>]
+module Utils =
+    let callback fn : MakeAttrWithName = fun name -> html.callback (name, fn)
 
-//    let callbackTask fn : MkAttrWithName =
-//        fun name -> [ Bolero.Html.attr.task.callback name fn ]
+    let callbackTask fn : MakeAttrWithName = fun name -> html.callbackTask (name, fn)
 
 
 type Template =

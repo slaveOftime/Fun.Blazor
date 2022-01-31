@@ -9,16 +9,16 @@ type html with
 
     static member elmish
         (
-            initState: unit -> 'Model * Cmd<'Msg>,
-            updateState: 'Msg -> 'Model -> 'Model * Cmd<'Msg>,
-            render: 'Model -> Dispatch<'Msg> -> NodeRenderFragment
+            initState: unit -> 'State * Cmd<'Msg>,
+            updateState: 'Msg -> 'State -> 'State * Cmd<'Msg>,
+            render: 'State -> Dispatch<'Msg> -> NodeRenderFragment
         )
         =
         html.inject (fun (hook: IComponentHook) ->
             let initState, initCmd = initState ()
             let store = cval (initState)
 
-            let rec loopCmd (state: 'Model, cmd: Cmd<'Msg>) =
+            let rec loopCmd (state: 'State, cmd: Cmd<'Msg>) =
                 for sub in cmd do
                     sub (fun msg ->
                         let newState, newCmd = updateState msg state
@@ -37,3 +37,13 @@ type html with
                 render state dispatch
             }
         )
+
+
+    static member elmish
+        (
+            initState: unit -> 'State,
+            updateState: 'Msg -> 'State -> 'State,
+            render: 'State -> Dispatch<'Msg> -> NodeRenderFragment
+        )
+        =
+        html.elmish ((fun () -> initState (), Cmd.none), (fun msg state -> updateState msg state, Cmd.none), render)

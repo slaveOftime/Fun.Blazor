@@ -9,16 +9,13 @@ open Utils
 let private getMetaInfo (ty: Type) =
     let rawProps = ty.GetProperties()
     let validProps = getValidBlazorProps ty rawProps
+    let memberStart = "static member inline "
 
     let props =
         validProps
         |> Seq.map (fun prop ->
             let name = lowerFirstCase prop.Name
             let name = if fsharpKeywords |> List.contains name then $"{name}'" else name
-            let memberStart = "static member inline "
-
-            let _createNode = $"FelizNode<{funBlazorGeneric}>.create"
-
 
             let createBindableProps (propTypeName: string) =
                 if isBindable prop validProps then
@@ -142,7 +139,7 @@ let private getMetaInfo (ty: Type) =
 
         | (name, generics), None -> name, generics, None
 
-    let hasChildren = props.Contains "static member childContent"
+    let hasChildren = props.Contains $"{memberStart}childContent"
     {|
         ty = ty
         generics = generics

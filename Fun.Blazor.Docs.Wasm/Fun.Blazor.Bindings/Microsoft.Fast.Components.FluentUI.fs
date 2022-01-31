@@ -10,7 +10,9 @@ type fluentAccordion<'FunBlazorGeneric> =
     
     static member inline create () = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentAccordion>()
     static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentAccordion>() { html.mergeAttrs attrs }
-
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentAccordion>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentAccordion>() { node }
+    static member inline create (x: string) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentAccordion>(){ x }
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
     static member inline childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
@@ -22,7 +24,9 @@ type fluentAccordionItem<'FunBlazorGeneric> =
     
     static member inline create () = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentAccordionItem>()
     static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentAccordionItem>() { html.mergeAttrs attrs }
-
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentAccordionItem>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentAccordionItem>() { node }
+    static member inline create (x: string) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentAccordionItem>(){ x }
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
     static member inline childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
@@ -34,7 +38,9 @@ type fluentAnchor<'FunBlazorGeneric> =
     
     static member inline create () = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentAnchor>()
     static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentAnchor>() { html.mergeAttrs attrs }
-
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentAnchor>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentAnchor>() { node }
+    static member inline create (x: string) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentAnchor>(){ x }
     static member inline href (x: System.String) = "Href" => x
     static member inline appearance (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Appearance>) = "Appearance" => x
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
@@ -47,7 +53,9 @@ type fluentAnchoredRegion<'FunBlazorGeneric> =
     
     static member inline create () = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentAnchoredRegion>()
     static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentAnchoredRegion>() { html.mergeAttrs attrs }
-
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentAnchoredRegion>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentAnchoredRegion>() { node }
+    static member inline create (x: string) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentAnchoredRegion>(){ x }
     static member inline anchor (x: System.String) = "Anchor" => x
     static member inline viewport (x: System.String) = "Viewport" => x
     static member inline horizontalPositioningMode (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Positioning>) = "HorizontalPositioningMode" => x
@@ -71,7 +79,9 @@ type fluentBadge<'FunBlazorGeneric> =
     
     static member inline create () = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentBadge>()
     static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentBadge>() { html.mergeAttrs attrs }
-
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentBadge>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentBadge>() { node }
+    static member inline create (x: string) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentBadge>(){ x }
     static member inline color (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Color>) = "Color" => x
     static member inline fill (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Fill>) = "Fill" => x
     static member inline appearance (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Appearance>) = "Appearance" => x
@@ -85,7 +95,9 @@ type fluentBreadcrumb<'FunBlazorGeneric> =
     
     static member inline create () = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentBreadcrumb>()
     static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentBreadcrumb>() { html.mergeAttrs attrs }
-
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentBreadcrumb>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentBreadcrumb>() { node }
+    static member inline create (x: string) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentBreadcrumb>(){ x }
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
     static member inline childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
@@ -96,7 +108,9 @@ type fluentBreadcrumbItem<'FunBlazorGeneric> =
     
     static member inline create () = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentBreadcrumbItem>()
     static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentBreadcrumbItem>() { html.mergeAttrs attrs }
-
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentBreadcrumbItem>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentBreadcrumbItem>() { node }
+    static member inline create (x: string) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentBreadcrumbItem>(){ x }
     static member inline href (x: System.String) = "Href" => x
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
@@ -108,7 +122,9 @@ type fluentButton<'FunBlazorGeneric> =
     
     static member inline create () = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentButton>()
     static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentButton>() { html.mergeAttrs attrs }
-
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentButton>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentButton>() { node }
+    static member inline create (x: string) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentButton>(){ x }
     static member inline appearance (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Appearance>) = "Appearance" => x
     static member inline disabled (x: System.Nullable<System.Boolean>) = "Disabled" => x
     static member inline autofocus (x: System.Nullable<System.Boolean>) = "Autofocus" => x
@@ -122,7 +138,9 @@ type fluentCard<'FunBlazorGeneric> =
     
     static member inline create () = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentCard>()
     static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentCard>() { html.mergeAttrs attrs }
-
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentCard>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentCard>() { node }
+    static member inline create (x: string) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentCard>(){ x }
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
     static member inline childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
@@ -133,7 +151,9 @@ type fluentDataGrid<'FunBlazorGeneric, 'TItem> =
     
     static member inline create () = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentDataGrid<'TItem>>()
     static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentDataGrid<'TItem>>() { html.mergeAttrs attrs }
-
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentDataGrid<'TItem>>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentDataGrid<'TItem>>() { node }
+    static member inline create (x: string) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentDataGrid<'TItem>>(){ x }
     static member inline generateHeader (x: System.Nullable<Microsoft.Fast.Components.FluentUI.GenerateHeaderOptions>) = "GenerateHeader" => x
     static member inline gridTemplateColumns (x: System.String) = "GridTemplateColumns" => x
     static member inline rowsData (x: System.Collections.Generic.List<'TItem>) = "RowsData" => x
@@ -150,7 +170,9 @@ type fluentDataGridCell<'FunBlazorGeneric> =
     
     static member inline create () = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentDataGridCell>()
     static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentDataGridCell>() { html.mergeAttrs attrs }
-
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentDataGridCell>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentDataGridCell>() { node }
+    static member inline create (x: string) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentDataGridCell>(){ x }
     static member inline cellType (x: System.Nullable<Microsoft.Fast.Components.FluentUI.DataGridCellType>) = "CellType" => x
     static member inline gridColumn (x: System.Int32) = "GridColumn" => x
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
@@ -163,7 +185,9 @@ type fluentDataGridRow<'FunBlazorGeneric, 'TItem> =
     
     static member inline create () = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentDataGridRow<'TItem>>()
     static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentDataGridRow<'TItem>>() { html.mergeAttrs attrs }
-
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentDataGridRow<'TItem>>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentDataGridRow<'TItem>>() { node }
+    static member inline create (x: string) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentDataGridRow<'TItem>>(){ x }
     static member inline rowIndex (x: System.Nullable<System.Int32>) = "RowIndex" => x
     static member inline gridTemplateColumns (x: System.String) = "GridTemplateColumns" => x
     static member inline rowType (x: System.Nullable<Microsoft.Fast.Components.FluentUI.DataGridRowType>) = "RowType" => x
@@ -179,7 +203,9 @@ type fluentDesignSystemProvider<'FunBlazorGeneric> =
     
     static member inline create () = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentDesignSystemProvider>()
     static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentDesignSystemProvider>() { html.mergeAttrs attrs }
-
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentDesignSystemProvider>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentDesignSystemProvider>() { node }
+    static member inline create (x: string) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentDesignSystemProvider>(){ x }
     static member inline noPaint (x: System.Nullable<System.Boolean>) = "NoPaint" => x
     static member inline fillColor (x: System.String) = "FillColor" => x
     static member inline accentBaseColor (x: System.String) = "AccentBaseColor" => x
@@ -251,7 +277,9 @@ type fluentDialog<'FunBlazorGeneric> =
     
     static member inline create () = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentDialog>()
     static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentDialog>() { html.mergeAttrs attrs }
-
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentDialog>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentDialog>() { node }
+    static member inline create (x: string) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentDialog>(){ x }
     static member inline modal (x: System.Nullable<System.Boolean>) = "Modal" => x
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
@@ -264,7 +292,9 @@ type fluentDivider<'FunBlazorGeneric> =
     
     static member inline create () = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentDivider>()
     static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentDivider>() { html.mergeAttrs attrs }
-
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentDivider>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentDivider>() { node }
+    static member inline create (x: string) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentDivider>(){ x }
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
     static member inline childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
@@ -275,7 +305,9 @@ type fluentFlipper<'FunBlazorGeneric> =
     
     static member inline create () = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentFlipper>()
     static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentFlipper>() { html.mergeAttrs attrs }
-
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentFlipper>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentFlipper>() { node }
+    static member inline create (x: string) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentFlipper>(){ x }
     static member inline disabled (x: System.Nullable<System.Boolean>) = "Disabled" => x
     static member inline direction (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Direction>) = "Direction" => x
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
@@ -288,7 +320,9 @@ type fluentHorizontalScroll<'FunBlazorGeneric> =
     
     static member inline create () = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentHorizontalScroll>()
     static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentHorizontalScroll>() { html.mergeAttrs attrs }
-
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentHorizontalScroll>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentHorizontalScroll>() { node }
+    static member inline create (x: string) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentHorizontalScroll>(){ x }
     static member inline speed (x: System.Int32) = "Speed" => x
     static member inline easing (x: System.String) = "Easing" => x
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
@@ -301,7 +335,9 @@ type fluentMenu<'FunBlazorGeneric> =
     
     static member inline create () = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentMenu>()
     static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentMenu>() { html.mergeAttrs attrs }
-
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentMenu>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentMenu>() { node }
+    static member inline create (x: string) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentMenu>(){ x }
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
     static member inline childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
@@ -312,7 +348,9 @@ type fluentMenuItem<'FunBlazorGeneric> =
     
     static member inline create () = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentMenuItem>()
     static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentMenuItem>() { html.mergeAttrs attrs }
-
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentMenuItem>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentMenuItem>() { node }
+    static member inline create (x: string) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentMenuItem>(){ x }
     static member inline disabled (x: System.Nullable<System.Boolean>) = "Disabled" => x
     static member inline checked' (x: System.Nullable<System.Boolean>) = "Checked" => x
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
@@ -325,7 +363,9 @@ type fluentOption<'FunBlazorGeneric> =
     
     static member inline create () = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentOption>()
     static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentOption>() { html.mergeAttrs attrs }
-
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentOption>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentOption>() { node }
+    static member inline create (x: string) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentOption>(){ x }
     static member inline disabled (x: System.Nullable<System.Boolean>) = "Disabled" => x
     static member inline value (x: System.String) = "Value" => x
     static member inline name (x: System.String) = "Name" => x
@@ -340,7 +380,9 @@ type fluentProgress<'FunBlazorGeneric> =
     
     static member inline create () = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentProgress>()
     static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentProgress>() { html.mergeAttrs attrs }
-
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentProgress>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentProgress>() { node }
+    static member inline create (x: string) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentProgress>(){ x }
     static member inline min (x: System.Nullable<System.Int32>) = "Min" => x
     static member inline max (x: System.Nullable<System.Int32>) = "Max" => x
     static member inline value (x: System.String) = "Value" => x
@@ -355,7 +397,9 @@ type fluentProgressRing<'FunBlazorGeneric> =
     
     static member inline create () = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentProgressRing>()
     static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentProgressRing>() { html.mergeAttrs attrs }
-
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentProgressRing>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentProgressRing>() { node }
+    static member inline create (x: string) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentProgressRing>(){ x }
     static member inline min (x: System.Nullable<System.Int32>) = "Min" => x
     static member inline max (x: System.Nullable<System.Int32>) = "Max" => x
     static member inline value (x: System.String) = "Value" => x
@@ -370,7 +414,9 @@ type fluentRadio<'FunBlazorGeneric> =
     
     static member inline create () = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentRadio>()
     static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentRadio>() { html.mergeAttrs attrs }
-
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentRadio>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentRadio>() { node }
+    static member inline create (x: string) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentRadio>(){ x }
     static member inline value (x: System.String) = "Value" => x
     static member inline required (x: System.Nullable<System.Boolean>) = "Required" => x
     static member inline disabled (x: System.Nullable<System.Boolean>) = "Disabled" => x
@@ -386,7 +432,9 @@ type fluentSkeleton<'FunBlazorGeneric> =
     
     static member inline create () = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentSkeleton>()
     static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentSkeleton>() { html.mergeAttrs attrs }
-
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentSkeleton>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentSkeleton>() { node }
+    static member inline create (x: string) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentSkeleton>(){ x }
     static member inline shape (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Shape>) = "Shape" => x
     static member inline shimmer (x: System.Nullable<System.Boolean>) = "Shimmer" => x
     static member inline pattern (x: System.String) = "Pattern" => x
@@ -400,7 +448,9 @@ type fluentSliderLabel<'FunBlazorGeneric> =
     
     static member inline create () = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentSliderLabel>()
     static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentSliderLabel>() { html.mergeAttrs attrs }
-
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentSliderLabel>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentSliderLabel>() { node }
+    static member inline create (x: string) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentSliderLabel>(){ x }
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
     static member inline childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
@@ -413,7 +463,9 @@ type fluentTab<'FunBlazorGeneric> =
     
     static member inline create () = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentTab>()
     static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentTab>() { html.mergeAttrs attrs }
-
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentTab>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentTab>() { node }
+    static member inline create (x: string) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentTab>(){ x }
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
     static member inline childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
@@ -424,7 +476,9 @@ type fluentTabPanel<'FunBlazorGeneric> =
     
     static member inline create () = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentTabPanel>()
     static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentTabPanel>() { html.mergeAttrs attrs }
-
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentTabPanel>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentTabPanel>() { node }
+    static member inline create (x: string) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentTabPanel>(){ x }
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
     static member inline childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
@@ -435,7 +489,9 @@ type fluentTabs<'FunBlazorGeneric> =
     
     static member inline create () = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentTabs>()
     static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentTabs>() { html.mergeAttrs attrs }
-
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentTabs>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentTabs>() { node }
+    static member inline create (x: string) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentTabs>(){ x }
     static member inline activeIndicator (x: System.Nullable<System.Boolean>) = "ActiveIndicator" => x
     static member inline orientation (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Orientation>) = "Orientation" => x
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
@@ -448,7 +504,9 @@ type fluentToolbar<'FunBlazorGeneric> =
     
     static member inline create () = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentToolbar>()
     static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentToolbar>() { html.mergeAttrs attrs }
-
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentToolbar>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentToolbar>() { node }
+    static member inline create (x: string) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentToolbar>(){ x }
     static member inline orientation (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Orientation>) = "Orientation" => x
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
@@ -460,7 +518,9 @@ type fluentTooltip<'FunBlazorGeneric> =
     
     static member inline create () = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentTooltip>()
     static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentTooltip>() { html.mergeAttrs attrs }
-
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentTooltip>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentTooltip>() { node }
+    static member inline create (x: string) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentTooltip>(){ x }
     static member inline anchor (x: System.String) = "Anchor" => x
     static member inline position (x: System.Nullable<Microsoft.Fast.Components.FluentUI.TooltipPosition>) = "Position" => x
     static member inline delay (x: System.Nullable<System.Int32>) = "Delay" => x
@@ -477,7 +537,9 @@ type fluentTreeItem<'FunBlazorGeneric> =
     
     static member inline create () = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentTreeItem>()
     static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentTreeItem>() { html.mergeAttrs attrs }
-
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentTreeItem>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentTreeItem>() { node }
+    static member inline create (x: string) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentTreeItem>(){ x }
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
     static member inline childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
@@ -491,7 +553,9 @@ type fluentTreeView<'FunBlazorGeneric> =
     
     static member inline create () = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentTreeView>()
     static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentTreeView>() { html.mergeAttrs attrs }
-
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentTreeView>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentTreeView>() { node }
+    static member inline create (x: string) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentTreeView>(){ x }
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
     static member inline childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
@@ -518,7 +582,9 @@ type fluentCheckbox<'FunBlazorGeneric> =
     inherit fluentInputBase<'FunBlazorGeneric, System.Boolean>
     static member inline create () = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentCheckbox>()
     static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentCheckbox>() { html.mergeAttrs attrs }
-
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentCheckbox>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentCheckbox>() { node }
+    static member inline create (x: string) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentCheckbox>(){ x }
     static member inline disabled (x: System.Nullable<System.Boolean>) = "Disabled" => x
     static member inline required (x: System.Nullable<System.Boolean>) = "Required" => x
     static member inline readonly (x: System.Nullable<System.Boolean>) = "Readonly" => x
@@ -531,7 +597,9 @@ type fluentCombobox<'FunBlazorGeneric> =
     inherit fluentInputBase<'FunBlazorGeneric, System.String>
     static member inline create () = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentCombobox>()
     static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentCombobox>() { html.mergeAttrs attrs }
-
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentCombobox>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentCombobox>() { node }
+    static member inline create (x: string) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentCombobox>(){ x }
     static member inline name (x: System.String) = "Name" => x
     static member inline appearance (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Appearance>) = "Appearance" => x
     static member inline disabled (x: System.Nullable<System.Boolean>) = "Disabled" => x
@@ -547,7 +615,9 @@ type fluentListbox<'FunBlazorGeneric> =
     inherit fluentInputBase<'FunBlazorGeneric, System.String>
     static member inline create () = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentListbox>()
     static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentListbox>() { html.mergeAttrs attrs }
-
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentListbox>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentListbox>() { node }
+    static member inline create (x: string) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentListbox>(){ x }
     static member inline name (x: System.String) = "Name" => x
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
@@ -558,7 +628,9 @@ type fluentNumberField<'FunBlazorGeneric, 'TValue> =
     inherit fluentInputBase<'FunBlazorGeneric, 'TValue>
     static member inline create () = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentNumberField<'TValue>>()
     static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentNumberField<'TValue>>() { html.mergeAttrs attrs }
-
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentNumberField<'TValue>>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentNumberField<'TValue>>() { node }
+    static member inline create (x: string) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentNumberField<'TValue>>(){ x }
     static member inline disabled (x: System.Nullable<System.Boolean>) = "Disabled" => x
     static member inline readonly (x: System.Nullable<System.Boolean>) = "Readonly" => x
     static member inline required (x: System.Nullable<System.Boolean>) = "Required" => x
@@ -581,7 +653,9 @@ type fluentRadioGroup<'FunBlazorGeneric> =
     inherit fluentInputBase<'FunBlazorGeneric, System.String>
     static member inline create () = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentRadioGroup>()
     static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentRadioGroup>() { html.mergeAttrs attrs }
-
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentRadioGroup>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentRadioGroup>() { node }
+    static member inline create (x: string) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentRadioGroup>(){ x }
     static member inline name (x: System.String) = "Name" => x
     static member inline required (x: System.Nullable<System.Boolean>) = "Required" => x
     static member inline orientation (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Orientation>) = "Orientation" => x
@@ -594,7 +668,9 @@ type fluentSelect<'FunBlazorGeneric> =
     inherit fluentInputBase<'FunBlazorGeneric, System.String>
     static member inline create () = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentSelect>()
     static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentSelect>() { html.mergeAttrs attrs }
-
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentSelect>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentSelect>() { node }
+    static member inline create (x: string) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentSelect>(){ x }
     static member inline name (x: System.String) = "Name" => x
     static member inline disabled (x: System.Nullable<System.Boolean>) = "Disabled" => x
     static member inline appearance (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Appearance>) = "Appearance" => x
@@ -608,7 +684,9 @@ type fluentSlider<'FunBlazorGeneric> =
     inherit fluentInputBase<'FunBlazorGeneric, System.Int32>
     static member inline create () = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentSlider>()
     static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentSlider>() { html.mergeAttrs attrs }
-
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentSlider>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentSlider>() { node }
+    static member inline create (x: string) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentSlider>(){ x }
     static member inline orientation (x: System.Nullable<Microsoft.Fast.Components.FluentUI.Orientation>) = "Orientation" => x
     static member inline min (x: System.Nullable<System.Int32>) = "Min" => x
     static member inline max (x: System.Nullable<System.Int32>) = "Max" => x
@@ -624,7 +702,9 @@ type fluentSwitch<'FunBlazorGeneric> =
     inherit fluentInputBase<'FunBlazorGeneric, System.Boolean>
     static member inline create () = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentSwitch>()
     static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentSwitch>() { html.mergeAttrs attrs }
-
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentSwitch>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentSwitch>() { node }
+    static member inline create (x: string) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentSwitch>(){ x }
     static member inline disabled (x: System.Nullable<System.Boolean>) = "Disabled" => x
     static member inline checked' (x: System.Nullable<System.Boolean>) = "Checked" => x
     static member inline required (x: System.Nullable<System.Boolean>) = "Required" => x
@@ -637,7 +717,9 @@ type fluentTextArea<'FunBlazorGeneric> =
     inherit fluentInputBase<'FunBlazorGeneric, System.String>
     static member inline create () = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentTextArea>()
     static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentTextArea>() { html.mergeAttrs attrs }
-
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentTextArea>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentTextArea>() { node }
+    static member inline create (x: string) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentTextArea>(){ x }
     static member inline disabled (x: System.Nullable<System.Boolean>) = "Disabled" => x
     static member inline readonly (x: System.Nullable<System.Boolean>) = "Readonly" => x
     static member inline required (x: System.Nullable<System.Boolean>) = "Required" => x
@@ -654,7 +736,9 @@ type fluentTextField<'FunBlazorGeneric> =
     inherit fluentInputBase<'FunBlazorGeneric, System.String>
     static member inline create () = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentTextField>()
     static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentTextField>() { html.mergeAttrs attrs }
-
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentTextField>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentTextField>() { node }
+    static member inline create (x: string) = ComponentBuilder<Microsoft.Fast.Components.FluentUI.FluentTextField>(){ x }
     static member inline disabled (x: System.Nullable<System.Boolean>) = "Disabled" => x
     static member inline readonly (x: System.Nullable<System.Boolean>) = "Readonly" => x
     static member inline required (x: System.Nullable<System.Boolean>) = "Required" => x

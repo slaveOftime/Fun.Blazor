@@ -19,27 +19,29 @@ let update msg model =
     | Descrease -> { model with Count = model.Count - 1 }
     
 let view model dispatch =
-    div {
-        MudText' {
+    html.div [
+        MudText'() {
             Typo Typo.h6
             Color Color.Primary
-            model.Count
+            childContent (string model.Count)
         }
-        MudButtonGroup' {
+        MudButtonGroup'() {
             Variant Variant.Outlined
-            MudButton' {
-                Color Color.Primary
-                OnClick (fun _ -> Increase |> dispatch)
-                "Increase"
-            }
-            MudButton' {
-                Color Color.Secondary
-                Variant Variant.Outlined
-                OnClick (fun _ -> Descrease |> dispatch)
-                "Descrease"
-            }
+            childContent [
+                MudButton'() {
+                    Color Color.Primary
+                    OnClick (fun _ -> Increase |> dispatch)
+                    childContent "Increase"
+                }
+                MudButton'() {
+                    Color Color.Secondary
+                    Variant Variant.Outlined
+                    OnClick (fun _ -> Descrease |> dispatch)
+                    childContent "Descrease"
+                }
+            ]
         }
-    }
+    ]
 
 
-let elmishDemo = emptyNode //html.elmish (init, update, view)
+let elmishDemo = html.elmish (init, update, view)
