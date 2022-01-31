@@ -141,9 +141,9 @@ let private getMetaInfo (ty: Type) =
                 let name = if name = "ChildContent" then lowerFirstCase name else name
                 [
                     $"    {customOperation name} {memberStart}{name} ({contextArg}, fragment) = render ==> html.renderFragment(\"{prop.Name}\", fragment)"
-                    //$"    {customOperation name} {memberStart}{name} ({contextArg}, x: string) = Bolero.Html.attr.fragment \"{prop.Name}\" (html.text x) {_addAttr}"
-                    //$"    {customOperation name} {memberStart}{name} ({contextArg}, x: int) = Bolero.Html.attr.fragment \"{prop.Name}\" (html.text x) {_addAttr}"
-                    //$"    {customOperation name} {memberStart}{name} ({contextArg}, x: float) = Bolero.Html.attr.fragment \"{prop.Name}\" (html.text x) {_addAttr}"
+                    $"    {customOperation name} {memberStart}{name} ({contextArg}, x: string) = render ==> html.renderFragment(\"{prop.Name}\", html.text x)"
+                    $"    {customOperation name} {memberStart}{name} ({contextArg}, x: int) = render ==> html.renderFragment(\"{prop.Name}\", html.text x)"
+                    $"    {customOperation name} {memberStart}{name} ({contextArg}, x: float) = render ==> html.renderFragment(\"{prop.Name}\", html.text x)"
                 ]
 
             elif prop.Name = "Class" && prop.PropertyType = typeof<string> then
