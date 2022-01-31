@@ -44,7 +44,7 @@ let private getMetaInfo (ty: Type) =
     let originalTypeWithGenerics = $"{ty.Namespace}.{getTypeShortName ty}{originalGenerics}"
     let customOperation name = $"[<CustomOperation(\"{name}\")>]"
     let memberStart = "member inline _."
-    let contextArg = $"render: AttrRenderFragment"
+    let contextArg = $"[<InlineIfLambda>] render: AttrRenderFragment"
 
     let rawProps = ty.GetProperties()
     let filteredProps = getValidBlazorProps ty rawProps
@@ -261,9 +261,18 @@ let generateCode (targetNamespace: string) (opens: string) (tys: Type seq) =
                         | Some (baseTy, generics) ->
                             $"inherit {baseTy.Namespace |> trimNamespace |> appendStrIfNotEmpty (string '.')}{makeBuilderName meta.ty.BaseType}{funBlazorGeneric :: (getTypeNames generics) |> createGenerics |> closeGenerics}()"
 
+                    let news =
+                        if meta.hasChildren then
+                            $"    static member inline create (x: string) = {builderName}{builderGenerics}(){{ x }}"
+                            + "\n"
+                            + $"    static member inline create (x: {nameof NodeRenderFragment} seq) = {builderName}{builderGenerics}(){{ yield! x }}"
+                        else
+                            $"    static member inline create () = {builderName}{builderGenerics}()"
+
                     $"""
 type {builderName}{builderGenericsWithContraints}() =
     {inheirit'}
+{news}
 {meta.props}
                 """
                 )
@@ -293,11 +302,11 @@ type {builderName}{builderGenericsWithContraints}() =
                         originalTypeWithGenerics :: (getTypeNames meta.generics) |> createGenerics |> closeGenerics
 
 
-                    $"""    let {meta.ty |> getTypeShortName}'{meta.generics
+                    $"""    type {meta.ty |> getTypeShortName}'{meta.generics
                                                                 |> getTypeNames
                                                                 |> createGenerics
                                                                 |> appendStr (createConstraint meta.generics)
-                                                                |> closeGenerics} = {builderName}{builderGenerics}()"""
+                                                                |> closeGenerics}() = inherit {builderName}{builderGenerics}()"""
                 )
                 |> String.concat "\n"
 

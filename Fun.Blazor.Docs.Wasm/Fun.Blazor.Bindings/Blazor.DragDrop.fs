@@ -8,6 +8,7 @@ open Blazor.DragDrop.DslInternals
 
 type DropzoneBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ComponentBuilder<'FunBlazorGeneric>()
+    static member inline create () = DropzoneBuilder<'FunBlazorGeneric, 'TItem>()
     [<CustomOperation("Accepts")>] member inline _.Accepts (render: AttrRenderFragment, fn) = render ==> ("Accepts" => (System.Func<'TItem, 'TItem, System.Boolean>fn))
     [<CustomOperation("AllowsDrag")>] member inline _.AllowsDrag (render: AttrRenderFragment, fn) = render ==> ("AllowsDrag" => (System.Func<'TItem, System.Boolean>fn))
     [<CustomOperation("DragEnd")>] member inline _.DragEnd (render: AttrRenderFragment, fn) = render ==> ("DragEnd" => (System.Action<'TItem>fn))
@@ -35,5 +36,5 @@ module DslCE =
 
     open Blazor.DragDrop.DslInternals
 
-    let Dropzone'<'TItem> = DropzoneBuilder<Plk.Blazor.DragDrop.Dropzone<'TItem>, 'TItem>()
+    type Dropzone'<'TItem>() = inherit DropzoneBuilder<Plk.Blazor.DragDrop.Dropzone<'TItem>, 'TItem>()
             

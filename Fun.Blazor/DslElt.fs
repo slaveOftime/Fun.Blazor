@@ -1799,16 +1799,21 @@ type EltBuilder(name) =
             index + 1
         )
 
-    member inline _.Yield(_: ComponentBuilder<'T>) =
+    member inline _.Yield<'T, 'T1 when 'T :> IComponentBuilder<'T1>>(_: 'T) =
         NodeRenderFragment(fun _ builder index ->
-            builder.OpenComponent<'T>(index)
+            builder.OpenComponent<'T1>(index)
             builder.CloseComponent()
             index + 1
         )
 
 
+and IComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent> = interface end
+
+
 and ComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FragmentBuilder()
+
+    interface IComponentBuilder<'T>
 
     member inline _.Run([<InlineIfLambda>] render: AttrRenderFragment) =
         NodeRenderFragment(fun comp builder index ->
@@ -1834,16 +1839,9 @@ and ComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent>()
             index + 1
         )
 
-    member inline _.Yield(_: ComponentBuilder<'T>) =
+    member inline _.Yield<'T, 'T1 when 'T :> IComponentBuilder<'T1>>(_: 'T) =
         NodeRenderFragment(fun _ builder index ->
-            builder.OpenComponent<'T>(index)
-            builder.CloseComponent()
-            index + 1
-        )
-
-    member inline _.Yield(_: ComponentWithDomAttrBuilder<'T>) =
-        NodeRenderFragment(fun _ builder index ->
-            builder.OpenComponent<'T>(index)
+            builder.OpenComponent<'T1>(index)
             builder.CloseComponent()
             index + 1
         )
@@ -1860,6 +1858,8 @@ and ComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent>()
 
 and ComponentWithDomAttrBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit DomBuilder()
+    
+    interface IComponentBuilder<'T>
 
     member inline _.Run([<InlineIfLambda>] render: AttrRenderFragment) =
         NodeRenderFragment(fun comp builder index ->
@@ -1885,9 +1885,9 @@ and ComponentWithDomAttrBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IC
             index + 1
         )
 
-    member inline _.Yield(_: ComponentBuilder<'T>) =
+    member inline _.Yield<'T, 'T1 when 'T :> IComponentBuilder<'T1>>(_: 'T) =
         NodeRenderFragment(fun _ builder index ->
-            builder.OpenComponent<'T>(index)
+            builder.OpenComponent<'T1>(index)
             builder.CloseComponent()
             index + 1
         )
@@ -2326,3 +2326,17 @@ module Elts =
     type html =
         
         static member inline comp<'T when 'T :> IComponent>() = ComponentBuilder<'T>()
+
+        static member inline fromBuilder<'T, 'T1 when 'T :> ComponentBuilder<'T1>> (x: 'T) =
+            NodeRenderFragment(fun _ builder index ->
+                builder.OpenComponent<'T1>(index)
+                builder.CloseComponent()
+                index + 1
+            )
+
+        static member inline fromBuilder2<'T, 'T1 when 'T :> ComponentWithDomAttrBuilder<'T1>> (x: 'T) =
+            NodeRenderFragment(fun _ builder index ->
+                builder.OpenComponent<'T1>(index)
+                builder.CloseComponent()
+                index + 1
+            )

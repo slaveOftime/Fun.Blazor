@@ -8,6 +8,7 @@ open Microsoft.AspNetCore.Components.Authorization.DslInternals
 
 type AuthorizeViewCoreBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ComponentBuilder<'FunBlazorGeneric>()
+    static member inline create () = AuthorizeViewCoreBuilder<'FunBlazorGeneric>()
     [<CustomOperation("ChildContent")>] member inline _.ChildContent (render: AttrRenderFragment, fn: Microsoft.AspNetCore.Components.Authorization.AuthenticationState -> NodeRenderFragment) = render ==> html.renderFragment("ChildContent", fn)
     [<CustomOperation("NotAuthorized")>] member inline _.NotAuthorized (render: AttrRenderFragment, fn: Microsoft.AspNetCore.Components.Authorization.AuthenticationState -> NodeRenderFragment) = render ==> html.renderFragment("NotAuthorized", fn)
     [<CustomOperation("Authorized")>] member inline _.Authorized (render: AttrRenderFragment, fn: Microsoft.AspNetCore.Components.Authorization.AuthenticationState -> NodeRenderFragment) = render ==> html.renderFragment("Authorized", fn)
@@ -20,12 +21,15 @@ type AuthorizeViewCoreBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micros
 
 type AuthorizeViewBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit AuthorizeViewCoreBuilder<'FunBlazorGeneric>()
+    static member inline create () = AuthorizeViewBuilder<'FunBlazorGeneric>()
     [<CustomOperation("Policy")>] member inline _.Policy (render: AttrRenderFragment, x: System.String) = render ==> ("Policy" => x)
     [<CustomOperation("Roles")>] member inline _.Roles (render: AttrRenderFragment, x: System.String) = render ==> ("Roles" => x)
                 
 
 type CascadingAuthenticationStateBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ComponentBuilder<'FunBlazorGeneric>()
+    static member inline create (x: string) = CascadingAuthenticationStateBuilder<'FunBlazorGeneric>(){ x }
+    static member inline create (x: NodeRenderFragment seq) = CascadingAuthenticationStateBuilder<'FunBlazorGeneric>(){ yield! x }
     [<CustomOperation("childContent")>] member inline _.childContent (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("ChildContent", fragment)
     [<CustomOperation("childContent")>] member inline _.childContent (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("ChildContent", html.text x)
     [<CustomOperation("childContent")>] member inline _.childContent (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("ChildContent", html.text x)
@@ -42,7 +46,7 @@ module DslCE =
 
     open Microsoft.AspNetCore.Components.Authorization.DslInternals
 
-    let AuthorizeViewCore' = AuthorizeViewCoreBuilder<Microsoft.AspNetCore.Components.Authorization.AuthorizeViewCore>()
-    let AuthorizeView' = AuthorizeViewBuilder<Microsoft.AspNetCore.Components.Authorization.AuthorizeView>()
-    let CascadingAuthenticationState' = CascadingAuthenticationStateBuilder<Microsoft.AspNetCore.Components.Authorization.CascadingAuthenticationState>()
+    type AuthorizeViewCore'() = inherit AuthorizeViewCoreBuilder<Microsoft.AspNetCore.Components.Authorization.AuthorizeViewCore>()
+    type AuthorizeView'() = inherit AuthorizeViewBuilder<Microsoft.AspNetCore.Components.Authorization.AuthorizeView>()
+    type CascadingAuthenticationState'() = inherit CascadingAuthenticationStateBuilder<Microsoft.AspNetCore.Components.Authorization.CascadingAuthenticationState>()
             
