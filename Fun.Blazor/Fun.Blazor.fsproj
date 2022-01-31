@@ -20,15 +20,16 @@
 		<Compile Include="Dsl.fs" />
 		<Compile Include="DslElt.fs" />
 		<Compile Include="DslDI.fs" />
-		<Compile Include="DslElmish.fs" />
 		<Compile Include="DslWatch.fs" />
 		<Compile Include="DslAdaptiview.fs" />
+		<Compile Include="DslElmish.fs" />
 		<Compile Include="DslRouting.fs" />
 		<Compile Include="AdaptiveForm.fs" />
 		<Compile Include="DslCE.AspNetCore.fs" />
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Elmish" Version="3.1.0" />
 		<PackageReference Include="FSharp.Control.Reactive" Version="5.0.2" />
 		<PackageReference Include="FSharp.Data.Adaptive" Version="1.2.8" />
 		<PackageReference Include="Fun.Result" Version="2.0.1" />

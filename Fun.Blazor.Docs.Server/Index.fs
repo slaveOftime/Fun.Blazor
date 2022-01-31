@@ -21,7 +21,7 @@ type Index () =
             </head>
             
             <body>
-                {Bolero.Server.Html.rootComp<Index>}
+                {rootComp<Index>}
                 <script src="_framework/blazor.server.js"></script>
                 <link rel="stylesheet" href="css/google-font.css" />
                 <link rel="stylesheet" href="css/drag-drop.css" />
