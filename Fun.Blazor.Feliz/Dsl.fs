@@ -19,10 +19,17 @@ type FunBlazorAttrEngine(mk, mkBool) =
             index + 1
         )
 
-    member inline _.childContent(nodes: NodeRenderFragment seq) = nodes |> Seq.fold (>=>) emptyNode
-    member inline _.childContent(x: string) = html.text x
-    member inline _.childContent(x: int) = html.text x
-    member inline _.childContent(x: float) = html.text x
+    member inline _.childContent(nodes: NodeRenderFragment seq) =
+        AttrRenderFragment(fun comp builder index -> (nodes |> Seq.fold (>=>) emptyNode).Invoke(comp, builder, index))
+
+    member inline _.childContent(x: string) =
+        AttrRenderFragment(fun comp builder index -> (html.text x).Invoke(comp, builder, index))
+    
+    member inline _.childContent(x: int) =
+        AttrRenderFragment(fun comp builder index -> (html.text x).Invoke(comp, builder, index))
+    
+    member inline _.childContent(x: float) =
+        AttrRenderFragment(fun comp builder index -> (html.text x).Invoke(comp, builder, index))
 
     member inline _.styles x = html.styles x
 
@@ -35,4 +42,4 @@ let svg =
 let attr =
     FunBlazorAttrEngine((fun k v -> k => v), (fun k v -> if v then k => null else emptyAttr))
 
-let styl = Feliz.CssEngine(fun k v -> k, v)
+let style = Feliz.CssEngine(fun k v -> k, v)

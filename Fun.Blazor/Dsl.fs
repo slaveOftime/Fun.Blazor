@@ -41,6 +41,16 @@ type html() =
             index + 1
         )
 
+    static member inline renderChild(name: string, fragment: NodeRenderFragment) =
+        NodeRenderFragment(fun comp builder index ->
+            builder.AddAttribute(
+                index,
+                name,
+                box (Microsoft.AspNetCore.Components.RenderFragment(fun tb -> fragment.Invoke(comp, tb, 0) |> ignore))
+            )
+            index + 1
+        )
+
     static member inline key k =
         AttrRenderFragment(fun _ builder index ->
             builder.SetKey k

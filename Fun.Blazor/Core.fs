@@ -125,6 +125,14 @@ type FragmentBuilder() =
         
     member inline _.Zero() = NodeRenderFragment(fun _ _ i -> i)
 
+    
+    [<CustomOperation("key")>] 
+    member inline _.key([<InlineIfLambda>] render: AttrRenderFragment, k) =
+        render
+        ==> AttrRenderFragment(fun _ builder index ->
+            builder.SetKey k
+            index
+        )
 
     [<CustomOperation("ref")>]
     member inline _.ref

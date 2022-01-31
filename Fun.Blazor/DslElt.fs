@@ -1847,16 +1847,38 @@ and ComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent>()
         )
 
 
-    [<CustomOperation("key")>] 
-    member inline _.key([<InlineIfLambda>] render: AttrRenderFragment, k) =
-        render
-        ==> AttrRenderFragment(fun _ builder index ->
-            builder.SetKey k
+and ComponentWithChildBuilder<'T when 'T :> IComponent>() =
+    inherit ComponentBuilder<'T>()
+
+    [<CustomOperation("childContent")>]
+    member inline _.childContent
+        (
+            [<InlineIfLambda>] render: AttrRenderFragment,
+            [<InlineIfLambda>] renderChild: NodeRenderFragment
+        )
+        =
+        render >>> renderChild
+
+    [<CustomOperation("childContent")>]
+    member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, renders: NodeRenderFragment seq) =
+        NodeRenderFragment(fun comp builder index ->
+            let mutable index = render.Invoke(comp, builder, index)
+            for item in renders do
+                index <- item.Invoke(comp, builder, index)
             index
         )
 
+    [<CustomOperation("childContent")>]
+    member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, v: string) = render >>> (html.text v)
 
-and ComponentWithDomAttrBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent>() =
+    [<CustomOperation("childContent")>]
+    member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, v: int) = render >>> (html.text v)
+    
+    [<CustomOperation("childContent")>]
+    member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, v: float) = render >>> (html.text v)
+    
+
+and ComponentWithDomAttrBuilder<'T when 'T :> IComponent>() =
     inherit DomBuilder()
     
     interface IComponentBuilder<'T>
@@ -1893,14 +1915,36 @@ and ComponentWithDomAttrBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IC
         )
 
 
-    [<CustomOperation("key")>] 
-    member inline _.key([<InlineIfLambda>] render: AttrRenderFragment, k) =
-        render
-        ==> AttrRenderFragment(fun _ builder index ->
-            builder.SetKey k
+and ComponentWithDomAndChildAttrBuilder<'T when 'T :> IComponent>() =   
+    inherit ComponentWithDomAttrBuilder<'T>()
+
+    [<CustomOperation("childContent")>]
+    member inline _.childContent
+        (
+            [<InlineIfLambda>] render: AttrRenderFragment,
+            [<InlineIfLambda>] renderChild: NodeRenderFragment
+        )
+        =
+        render >>> renderChild
+
+    [<CustomOperation("childContent")>]
+    member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, renders: NodeRenderFragment seq) =
+        NodeRenderFragment(fun comp builder index ->
+            let mutable index = render.Invoke(comp, builder, index)
+            for item in renders do
+                index <- item.Invoke(comp, builder, index)
             index
         )
 
+    [<CustomOperation("childContent")>]
+    member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, v: string) = render >>> (html.text v)
+
+    [<CustomOperation("childContent")>]
+    member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, v: int) = render >>> (html.text v)
+    
+    [<CustomOperation("childContent")>]
+    member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, v: float) = render >>> (html.text v)
+    
 
 type StyleBuilder () =
     inherit Fun.Css.CssBuilder()
@@ -1924,11 +1968,11 @@ type EltWithChildBuilder(name) =
     /// //   &lt;p>This is my content&lt;/p>
     /// // &lt;/div>
     /// let myText content =
-    ///   p() {
+    ///   p {
     ///    class' "my-class"
     ///    childContent content
     ///   }
-    /// div() {
+    /// div {
     ///   childContent (myText "This is my content")
     /// }
     /// </code>
@@ -1953,7 +1997,7 @@ type EltWithChildBuilder(name) =
     /// //   &lt;p>&lt;p/>
     /// // &lt;/div>
     /// div {
-    ///   childContent [ p() {}; p() {} }
+    ///   childContent [ p; p }
     /// }
     /// </code>
     /// </example>
@@ -2327,16 +2371,16 @@ module Elts =
         
         static member inline comp<'T when 'T :> IComponent>() = ComponentBuilder<'T>()
 
-        static member inline fromBuilder<'T, 'T1 when 'T :> ComponentBuilder<'T1>> (x: 'T) =
+        static member inline fromBuilder<'T, 'T1 when 'T :> IComponentBuilder<'T1>> (x: 'T) =
             NodeRenderFragment(fun _ builder index ->
                 builder.OpenComponent<'T1>(index)
                 builder.CloseComponent()
                 index + 1
             )
 
-        static member inline fromBuilder2<'T, 'T1 when 'T :> ComponentWithDomAttrBuilder<'T1>> (x: 'T) =
+        static member inline fromBuilder<'T when 'T :> EltBuilder> (x: 'T) =
             NodeRenderFragment(fun _ builder index ->
-                builder.OpenComponent<'T1>(index)
+                builder.OpenElement(index, x.Name)
                 builder.CloseComponent()
                 index + 1
             )
