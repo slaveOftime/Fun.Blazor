@@ -8,8 +8,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Compile Include="Types.fs" />
-		<Compile Include="Utils.fs" />
 		<Compile Include="CssBuilder.fs" />
 	</ItemGroup>
 	

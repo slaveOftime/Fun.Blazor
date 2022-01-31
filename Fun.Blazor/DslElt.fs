@@ -1,6 +1,7 @@
 ﻿namespace Fun.Blazor
 
 open System
+open System.Text
 open System.Threading.Tasks
 open Microsoft.AspNetCore.Components
 open Microsoft.AspNetCore.Components.Web
@@ -1901,6 +1902,16 @@ and ComponentWithDomAttrBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IC
         )
 
 
+type StyleBuilder () =
+    inherit Fun.Css.CssBuilder()
+
+    member inline _.Run([<InlineIfLambda>] combine: Fun.Css.CombineKeyValue) =
+        AttrRenderFragment(fun _ builder index ->
+            builder.AddAttribute(index, "style", combine.Invoke(StringBuilder()))
+            index + 1
+        )
+
+
 type EltWithChildBuilder(name) =
     inherit EltBuilder(name)
 
@@ -2308,6 +2319,8 @@ module Elts =
         }
 
     let inline baseUrl (x: string) = base' { href x }
+
+    let styleBuilder = StyleBuilder()
 
 
     type html =
