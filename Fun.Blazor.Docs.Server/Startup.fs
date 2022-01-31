@@ -15,7 +15,8 @@ Host.CreateDefaultBuilder(Environment.GetCommandLineArgs())
                 services.AddControllersWithViews() |> ignore
                 services
                     .AddServerSideBlazor().Services
-                    //.AddFunBlazor()
+                    .AddHttpContextAccessor()
+                    .AddFunBlazor()
                     .AddMudServices()
                     .AddAntDesign()
                     .AddBlazorDragDrop() |> ignore)

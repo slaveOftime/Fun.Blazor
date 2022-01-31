@@ -1951,7 +1951,7 @@ type StyleBuilder () =
 
     member inline _.Run([<InlineIfLambda>] combine: Fun.Css.CombineKeyValue) =
         AttrRenderFragment(fun _ builder index ->
-            builder.AddAttribute(index, "style", combine.Invoke(StringBuilder()))
+            builder.AddAttribute(index, "style", combine.Invoke(StringBuilder()).ToString())
             index + 1
         )
 
