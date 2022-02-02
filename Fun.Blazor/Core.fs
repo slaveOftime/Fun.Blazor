@@ -9,33 +9,60 @@ open Microsoft.AspNetCore.Components.Rendering
 open Fun.Result
 
 
-type AttrRenderFragment = delegate of IComponent * RenderTreeBuilder * int -> int
-type NodeRenderFragment = delegate of IComponent * RenderTreeBuilder * int -> int
+/// Provide a delegate so we can extend how we plug piece of attribute into blazor RenderTree
+/// root should be the nearest root component, builder should be passed by the context, sequence is the usable sequence number.
+/// Return int should be the next useable sequence
+type AttrRenderFragment = delegate of root: IComponent * builder: RenderTreeBuilder * sequence: int -> int
+
+/// Provide a delegate so we can extend how we plug piece of node into blazor RenderTree
+/// root should be the nearest root component, builder should be passed by the context, sequence is the usable sequence number.
+/// Return int should be the next useable sequence
+type NodeRenderFragment = delegate of root: IComponent * builder: RenderTreeBuilder * sequence: int -> int
 
 
 module Operators =
+
+    /// Add Attribute with name and value
     let inline (=>) (name: string) (value: 'Value) =
         AttrRenderFragment(fun _ builder index ->
             builder.AddAttribute(index, name, box value)
             index + 1
         )
 
+    /// Merge two AttrRenderFragment together
     let inline (==>) ([<InlineIfLambda>] render1: AttrRenderFragment) ([<InlineIfLambda>] render2: AttrRenderFragment) =
         AttrRenderFragment(fun comp builder index -> render2.Invoke(comp, builder, render1.Invoke(comp, builder, index)))
 
+    /// Merge two NodeFragment together
     let inline (>=>) ([<InlineIfLambda>] render1: NodeRenderFragment) ([<InlineIfLambda>] render2: NodeRenderFragment) =
         NodeRenderFragment(fun comp builder index -> render2.Invoke(comp, builder, render1.Invoke(comp, builder, index)))
 
+    /// Merge AttrRenderFragment and NodeRenderFragment together.
+    /// This should be used together for building element only. For component we should not use this, because it treat ChildContent different in Blazor
     let inline (>>>) ([<InlineIfLambda>] render1: AttrRenderFragment) ([<InlineIfLambda>] render2: NodeRenderFragment) =
         NodeRenderFragment(fun comp builder index -> render2.Invoke(comp, builder, render1.Invoke(comp, builder, index)))
+
+
+[<AutoOpen>]
+module FragmentUtils =
+    
+    let emptyAttr = AttrRenderFragment(fun _ _ i -> i)
+    let emptyNode = NodeRenderFragment(fun _ _ i -> i)
 
 
 open Operators
 
 
+type IEltBuilder =
+    abstract member Name : string
+
+
+type IComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent> = interface end
+
+
 type FragmentBuilder() =
 
-    member inline _.Yield(_: unit) = AttrRenderFragment(fun _ _ i -> i)
+    member inline _.Yield(_: unit) = emptyAttr
 
     member inline _.Yield(x: int) =
         NodeRenderFragment(fun _ builder index ->
@@ -52,6 +79,20 @@ type FragmentBuilder() =
     member inline _.Yield(x: float) =
         NodeRenderFragment(fun _ builder index ->
             builder.AddContent(index, x)
+            index + 1
+        )
+
+    member inline _.Yield<'T when 'T :> IEltBuilder>(x: 'T) =
+        NodeRenderFragment(fun _ builder index ->
+            builder.OpenElement(index, x.Name)
+            builder.CloseElement()
+            index + 1
+        )
+
+    member inline _.Yield<'T, 'T1 when 'T :> IComponentBuilder<'T1>>(_: 'T) =
+        NodeRenderFragment(fun _ builder index ->
+            builder.OpenComponent<'T1>(index)
+            builder.CloseComponent()
             index + 1
         )
 
@@ -85,7 +126,7 @@ type FragmentBuilder() =
         =
         render1 >=> render2
 
-    
+
     member inline _.For
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
@@ -101,32 +142,22 @@ type FragmentBuilder() =
         )
         =
         render >>> (fn ())
-        
 
-    member inline _.For
-        (
-            renders: 'T seq,
-            [<InlineIfLambda>] fn: 'T -> NodeRenderFragment
-        )
-        =
-        renders |> Seq.map fn |> Seq.fold (>=>) (NodeRenderFragment(fun _ _ i -> i))
+    member inline _.For(renders: 'T seq, [<InlineIfLambda>] fn: 'T -> NodeRenderFragment) =
+        renders |> Seq.map fn |> Seq.fold (>=>) (emptyNode)
 
+    member inline _.For(renders: 'T seq, [<InlineIfLambda>] fn: 'T -> AttrRenderFragment) =
+        renders |> Seq.map fn |> Seq.fold (==>) (emptyAttr)
 
-    member inline _.For
-        (
-            renders: 'T seq,
-            [<InlineIfLambda>] fn: 'T -> AttrRenderFragment
-        )
-        =
-        renders |> Seq.map fn |> Seq.fold (==>) (AttrRenderFragment(fun _ _ i -> i))
 
     member inline _.YieldFrom(renders: NodeRenderFragment seq) =
-        renders |> Seq.fold (>=>) (NodeRenderFragment(fun _ _ i -> i))
-        
-    member inline _.Zero() = NodeRenderFragment(fun _ _ i -> i)
+        renders |> Seq.fold (>=>) (emptyNode)
 
-    
-    [<CustomOperation("key")>] 
+
+    member inline _.Zero() = emptyNode
+
+
+    [<CustomOperation("key")>]
     member inline _.key([<InlineIfLambda>] render: AttrRenderFragment, k) =
         render
         ==> AttrRenderFragment(fun _ builder index ->
@@ -147,8 +178,8 @@ type FragmentBuilder() =
             index + 1
         )
 
-    [<CustomOperation("on")>]
-    member inline _.on
+    [<CustomOperation("callback")>]
+    member inline _.callback
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             eventName,
@@ -157,12 +188,12 @@ type FragmentBuilder() =
         =
         render
         ==> AttrRenderFragment(fun comp builder index ->
-            builder.AddAttribute(index, "on" + eventName, EventCallback.Factory.Create(comp, Action<'T> callback))
+            builder.AddAttribute(index, eventName, EventCallback.Factory.Create(comp, Action<'T> callback))
             index + 1
         )
 
-    [<CustomOperation("onTask")>]
-    member inline _.onTask
+    [<CustomOperation("callback")>]
+    member inline _.callback
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             eventName,
@@ -171,7 +202,7 @@ type FragmentBuilder() =
         =
         render
         ==> AttrRenderFragment(fun comp builder index ->
-            builder.AddAttribute(index, "on" + eventName, EventCallback.Factory.Create(comp, Func<'T, Task> callback))
+            builder.AddAttribute(index, eventName, EventCallback.Factory.Create(comp, Func<'T, Task> callback))
             index + 1
         )
 
@@ -179,7 +210,7 @@ type FragmentBuilder() =
     member inline _.preventDefault([<InlineIfLambda>] render: AttrRenderFragment, eventName, value) =
         render
         ==> AttrRenderFragment(fun _ builder index ->
-            builder.AddEventPreventDefaultAttribute(index, "on" + eventName, value)
+            builder.AddEventPreventDefaultAttribute(index, eventName, value)
             index + 1
         )
 
@@ -187,7 +218,7 @@ type FragmentBuilder() =
     member inline _.stopPropagation([<InlineIfLambda>] render: AttrRenderFragment, eventName, value) =
         render
         ==> AttrRenderFragment(fun _ builder index ->
-            builder.AddEventPreventDefaultAttribute(index, "on" + eventName, value)
+            builder.AddEventPreventDefaultAttribute(index, eventName, value)
             index + 1
         )
 
@@ -207,7 +238,7 @@ type FunFragmentComponent() as this =
     override _.Render() = this.Fragment
 
     [<Parameter>]
-    member val Fragment = NodeRenderFragment(fun _ _ i -> i) with get, set
+    member val Fragment = emptyNode with get, set
 
 
 type IStore<'T> =

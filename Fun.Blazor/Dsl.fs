@@ -104,31 +104,19 @@ type html() =
         )
 
 
-    //static member doctypeHtml(nodes, ?lang) =
-    //    html.fragment {
-    //        html.doctype "html"
-
-    //        html.html {
-    //            "lang" => (defaultArg lang "en")
-
-    //        }
-    //    }
-
-    //static member doctypeHtml(lang: string, nodes: Node list) = html.doctypeHtml (nodes, lang)
-
     static member inline text(x: int) =
         NodeRenderFragment(fun _ builder index ->
             builder.AddContent(index, box x)
             index + 1
         )
 
-    static member text(x: float) =
+    static member inline text(x: float) =
         NodeRenderFragment(fun _ builder index ->
             builder.AddContent(index, box x)
             index + 1
         )
 
-    static member text(x: Guid) =
+    static member inline text(x: Guid) =
         NodeRenderFragment(fun _ builder index ->
             builder.AddContent(index, string x)
             index + 1

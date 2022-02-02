@@ -8,20 +8,120 @@ open Microsoft.AspNetCore.Components.Web
 open Operators
 
 
-type DomBuilder() =
+type StyleBuilder() =
+    inherit Fun.Css.CssBuilder()
 
-    inherit FragmentBuilder()
+    member inline _.Run([<InlineIfLambda>] combine: Fun.Css.CombineKeyValue) =
+        AttrRenderFragment(fun _ builder index ->
+            builder.AddAttribute(index, "style", combine.Invoke(StringBuilder()).ToString())
+            index + 1
+        )
 
 
-    [<CustomOperation("style'")>]
-    member inline _.Style([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> ("style" => x)
+type DomAttrBuilder() =
+    
+    member inline _.Yield(_: unit) = emptyAttr
+
+    member inline _.Yield([<InlineIfLambda>] x: AttrRenderFragment) = x
+
+    member inline _.Delay([<InlineIfLambda>] fn: unit -> AttrRenderFragment) = fn ()
+
+    member inline _.Combine
+        (
+            [<InlineIfLambda>] render1: AttrRenderFragment,
+            [<InlineIfLambda>] render2: AttrRenderFragment
+        )
+        =
+        render1 ==> render2
+
+    member inline _.For
+        (
+            [<InlineIfLambda>] render: AttrRenderFragment,
+            [<InlineIfLambda>] fn: unit -> AttrRenderFragment
+        )
+        =
+        render ==> (fn ())
+
+    member inline _.For(renders: 'T seq, [<InlineIfLambda>] fn: 'T -> AttrRenderFragment) =
+        renders |> Seq.map fn |> Seq.fold (==>) (emptyAttr)
+
+
+    member inline _.Zero() = emptyAttr
+
+
+    /// key for blazor
+    [<CustomOperation("key")>]
+    member inline _.key([<InlineIfLambda>] render: AttrRenderFragment, k) =
+        render
+        ==> AttrRenderFragment(fun _ builder index ->
+            builder.SetKey k
+            index
+        )
+
+    [<CustomOperation("ref")>]
+    member inline _.ref
+        (
+            [<InlineIfLambda>] render: AttrRenderFragment,
+            [<InlineIfLambda>] fn: ElementReference -> unit
+        )
+        =
+        render
+        ==> AttrRenderFragment(fun _ builder index ->
+            builder.AddElementReferenceCapture(index, fn)
+            index + 1
+        )
+
+    [<CustomOperation("callback")>]
+    member inline _.callback
+        (
+            [<InlineIfLambda>] render: AttrRenderFragment,
+            eventName,
+            [<InlineIfLambda>] callback: 'T -> unit
+        )
+        =
+        render
+        ==> AttrRenderFragment(fun comp builder index ->
+            builder.AddAttribute(index, eventName, EventCallback.Factory.Create(comp, Action<'T> callback))
+            index + 1
+        )
+
+    [<CustomOperation("callback")>]
+    member inline _.callback
+        (
+            [<InlineIfLambda>] render: AttrRenderFragment,
+            eventName,
+            [<InlineIfLambda>] callback: 'T -> Task
+        )
+        =
+        render
+        ==> AttrRenderFragment(fun comp builder index ->
+            builder.AddAttribute(index, eventName, EventCallback.Factory.Create(comp, Func<'T, Task> callback))
+            index + 1
+        )
+
+    [<CustomOperation("preventDefault")>]
+    member inline _.preventDefault([<InlineIfLambda>] render: AttrRenderFragment, eventName, value) =
+        render
+        ==> AttrRenderFragment(fun _ builder index ->
+            builder.AddEventPreventDefaultAttribute(index, eventName, value)
+            index + 1
+        )
+
+    [<CustomOperation("stopPropagation")>]
+    member inline _.stopPropagation([<InlineIfLambda>] render: AttrRenderFragment, eventName, value) =
+        render
+        ==> AttrRenderFragment(fun _ builder index ->
+            builder.AddEventPreventDefaultAttribute(index, eventName, value)
+            index + 1
+        )
+
 
     /// <summary>
     /// A list of strings to be applied as classes
     /// </summary>
     /// <example>
     /// <code lang="fsharp">
-    /// div() {
+    /// div {
     ///   classes [ "flex"; "flex-row"; "space-betwen" ]
     /// }
     /// </code>
@@ -29,6 +129,9 @@ type DomBuilder() =
     [<CustomOperation("classes")>]
     member inline _.classes([<InlineIfLambda>] render: AttrRenderFragment, v: string list) =
         render ==> (html.class' (String.concat " " v))
+
+    [<CustomOperation("class")>]
+    member inline _.class'([<InlineIfLambda>] render: AttrRenderFragment, v: string) = render ==> (html.class' v)
 
     /// This is a helper function which can be used together with VSCode extension "Highlight HTML/SQL templates in F#"
     /// You must follow below format
@@ -60,17 +163,17 @@ type DomBuilder() =
 
         render ==> (html.style result)
 
+    [<CustomOperation("style'")>]
+    member inline _.Style([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> ("style" => x)
 
     [<CustomOperation("styles")>]
     member inline _.styles([<InlineIfLambda>] render: AttrRenderFragment, v: (string * string) seq) =
         render ==> (html.style ((makeStyles v).ToString()))
 
-    [<CustomOperation("class")>]
-    member inline _.class'([<InlineIfLambda>] render: AttrRenderFragment, v: string) = render ==> (html.class' v)
     [<CustomOperation("bindRef")>]
     member inline _.bindRef([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("bindRef" => v)
-    [<CustomOperation("key")>]
-    member inline _.key([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("key" => v)
+    [<CustomOperation("key'")>]
+    member inline _.key'([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("key" => v)
     [<CustomOperation("accept")>]
     member inline _.accept([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("accept" => v)
     [<CustomOperation("acceptCharset")>]
@@ -85,11 +188,10 @@ type DomBuilder() =
     member inline _.allow([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("allow" => v)
     [<CustomOperation("alt")>]
     member inline _.alt([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("alt" => v)
-    [<CustomOperation("async")>]
+    [<CustomOperation("")>]
     member inline _.async'([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("async" => v)
     [<CustomOperation("autocapitalize")>]
-    member inline _.autocapitalize([<InlineIfLambda>] render: AttrRenderFragment, v) =
-        render ==> ("autocapitalize" => v)
+    member inline _.autocapitalize([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("autocapitalize" => v)
     [<CustomOperation("autocomplete")>]
     member inline _.autocomplete([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("autocomplete" => v)
     [<CustomOperation("autofocus")>]
@@ -123,8 +225,7 @@ type DomBuilder() =
     [<CustomOperation("content")>]
     member inline _.content([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("content" => v)
     [<CustomOperation("contenteditable")>]
-    member inline _.contenteditable([<InlineIfLambda>] render: AttrRenderFragment, v) =
-        render ==> ("contenteditable" => v)
+    member inline _.contenteditable([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("contenteditable" => v)
     [<CustomOperation("contextmenu")>]
     member inline _.contextmenu([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("contextmenu" => v)
     [<CustomOperation("controls")>]
@@ -154,8 +255,7 @@ type DomBuilder() =
     [<CustomOperation("download")>]
     member inline _.download([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("download" => v)
     [<CustomOperation("draggable")>]
-    member inline _.draggable([<InlineIfLambda>] render: AttrRenderFragment, v: bool) =
-        render ==> ("draggable" => (if v then "true" else "false"))
+    member inline _.draggable([<InlineIfLambda>] render: AttrRenderFragment, v: bool) = render ==> ("draggable" => (if v then "true" else "false"))
     [<CustomOperation("dropzone")>]
     member inline _.dropzone([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("dropzone" => v)
     [<CustomOperation("enctype")>]
@@ -317,17 +417,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: FocusEventArgs -> unit
         )
         =
-        this.on (render, "focus", callback)
-
-    [<CustomOperation("onfocusAsync")>]
-    member inline this.onfocusAsync
+        this.callback (render, "focus", callback)
+    [<CustomOperation("onfocus")>]
+    member inline this.onfocus
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: FocusEventArgs -> Task
         )
         =
-        this.onTask (render, "focus", callback)
-
+        this.callback (render, "focus", callback)
     [<CustomOperation("onblur")>]
     member inline this.onblur
         (
@@ -335,15 +433,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: FocusEventArgs -> unit
         )
         =
-        this.on (render, "blur", callback)
-    [<CustomOperation("onblurAsync")>]
-    member inline this.onblurAsync
+        this.callback (render, "blur", callback)
+    [<CustomOperation("onblur")>]
+    member inline this.onblur
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: FocusEventArgs -> Task
         )
         =
-        this.onTask (render, "blur", callback)
+        this.callback (render, "blur", callback)
     [<CustomOperation("onfocusin")>]
     member inline this.onfocusin
         (
@@ -351,15 +449,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: FocusEventArgs -> unit
         )
         =
-        this.on (render, "focusin", callback)
-    [<CustomOperation("onfocusinAsync")>]
-    member inline this.onfocusinAsync
+        this.callback (render, "focusin", callback)
+    [<CustomOperation("onfocusin")>]
+    member inline this.onfocusin
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: FocusEventArgs -> Task
         )
         =
-        this.onTask (render, "focusin", callback)
+        this.callback (render, "focusin", callback)
     [<CustomOperation("onfocusout")>]
     member inline this.onfocusout
         (
@@ -367,15 +465,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: FocusEventArgs -> unit
         )
         =
-        this.on (render, "focusout", callback)
-    [<CustomOperation("onfocusoutAsync")>]
-    member inline this.onfocusoutAsync
+        this.callback (render, "focusout", callback)
+    [<CustomOperation("onfocusout")>]
+    member inline this.onfocusout
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: FocusEventArgs -> Task
         )
         =
-        this.onTask (render, "focusout", callback)
+        this.callback (render, "focusout", callback)
     [<CustomOperation("onmouseover")>]
     member inline this.onmouseover
         (
@@ -383,15 +481,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: MouseEventArgs -> unit
         )
         =
-        this.on (render, "mouseover", callback)
-    [<CustomOperation("onmouseoverAsync")>]
-    member inline this.onmouseoverAsync
+        this.callback (render, "mouseover", callback)
+    [<CustomOperation("onmouseover")>]
+    member inline this.onmouseover
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: MouseEventArgs -> Task
         )
         =
-        this.onTask (render, "mouseover", callback)
+        this.callback (render, "mouseover", callback)
     [<CustomOperation("onmouseout")>]
     member inline this.onmouseout
         (
@@ -399,15 +497,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: MouseEventArgs -> unit
         )
         =
-        this.on (render, "mouseout", callback)
-    [<CustomOperation("onmouseoutAsync")>]
-    member inline this.onmouseoutAsync
+        this.callback (render, "mouseout", callback)
+    [<CustomOperation("onmouseout")>]
+    member inline this.onmouseout
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: MouseEventArgs -> Task
         )
         =
-        this.onTask (render, "mouseout", callback)
+        this.callback (render, "mouseout", callback)
     [<CustomOperation("onmousemove")>]
     member inline this.onmousemove
         (
@@ -415,15 +513,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: MouseEventArgs -> unit
         )
         =
-        this.on (render, "mousemove", callback)
-    [<CustomOperation("onmousemoveAsync")>]
-    member inline this.onmousemoveAsync
+        this.callback (render, "mousemove", callback)
+    [<CustomOperation("onmousemove")>]
+    member inline this.onmousemove
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: MouseEventArgs -> Task
         )
         =
-        this.onTask (render, "mousemove", callback)
+        this.callback (render, "mousemove", callback)
     [<CustomOperation("onmousedown")>]
     member inline this.onmousedown
         (
@@ -431,15 +529,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: MouseEventArgs -> unit
         )
         =
-        this.on (render, "mousedown", callback)
-    [<CustomOperation("onmousedownAsync")>]
-    member inline this.onmousedownAsync
+        this.callback (render, "mousedown", callback)
+    [<CustomOperation("onmousedown")>]
+    member inline this.onmousedown
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: MouseEventArgs -> Task
         )
         =
-        this.onTask (render, "mousedown", callback)
+        this.callback (render, "mousedown", callback)
     [<CustomOperation("onmouseup")>]
     member inline this.onmouseup
         (
@@ -447,15 +545,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: MouseEventArgs -> unit
         )
         =
-        this.on (render, "mouseup", callback)
-    [<CustomOperation("onmouseupAsync")>]
-    member inline this.onmouseupAsync
+        this.callback (render, "mouseup", callback)
+    [<CustomOperation("onmouseup")>]
+    member inline this.onmouseup
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: MouseEventArgs -> Task
         )
         =
-        this.onTask (render, "mouseup", callback)
+        this.callback (render, "mouseup", callback)
     [<CustomOperation("onclick")>]
     member inline this.onclick
         (
@@ -463,15 +561,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: MouseEventArgs -> unit
         )
         =
-        this.on (render, "click", callback)
-    [<CustomOperation("onclickAsync")>]
-    member inline this.onclickAsync
+        this.callback (render, "click", callback)
+    [<CustomOperation("onclick")>]
+    member inline this.onclick
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: MouseEventArgs -> Task
         )
         =
-        this.onTask (render, "click", callback)
+        this.callback (render, "click", callback)
     [<CustomOperation("ondblclick")>]
     member inline this.ondblclick
         (
@@ -479,15 +577,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: MouseEventArgs -> unit
         )
         =
-        this.on (render, "dblclick", callback)
-    [<CustomOperation("ondblclickAsync")>]
-    member inline this.ondblclickAsync
+        this.callback (render, "dblclick", callback)
+    [<CustomOperation("ondblclick")>]
+    member inline this.ondblclick
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: MouseEventArgs -> Task
         )
         =
-        this.onTask (render, "dblclick", callback)
+        this.callback (render, "dblclick", callback)
     [<CustomOperation("onwheel")>]
     member inline this.onwheel
         (
@@ -495,15 +593,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: MouseEventArgs -> unit
         )
         =
-        this.on (render, "wheel", callback)
-    [<CustomOperation("onwheelAsync")>]
-    member inline this.onwheelAsync
+        this.callback (render, "wheel", callback)
+    [<CustomOperation("onwheel")>]
+    member inline this.onwheel
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: MouseEventArgs -> Task
         )
         =
-        this.onTask (render, "wheel", callback)
+        this.callback (render, "wheel", callback)
     [<CustomOperation("onmousewheel")>]
     member inline this.onmousewheel
         (
@@ -511,15 +609,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: MouseEventArgs -> unit
         )
         =
-        this.on (render, "mousewheel", callback)
-    [<CustomOperation("onmousewheelAsync")>]
-    member inline this.onmousewheelAsync
+        this.callback (render, "mousewheel", callback)
+    [<CustomOperation("onmousewheel")>]
+    member inline this.onmousewheel
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: MouseEventArgs -> Task
         )
         =
-        this.onTask (render, "mousewheel", callback)
+        this.callback (render, "mousewheel", callback)
     [<CustomOperation("oncontextmenu")>]
     member inline this.oncontextmenu
         (
@@ -527,15 +625,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: MouseEventArgs -> unit
         )
         =
-        this.on (render, "contextmenu", callback)
-    [<CustomOperation("oncontextmenuAsync")>]
-    member inline this.oncontextmenuAsync
+        this.callback (render, "contextmenu", callback)
+    [<CustomOperation("oncontextmenu")>]
+    member inline this.oncontextmenu
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: MouseEventArgs -> Task
         )
         =
-        this.onTask (render, "contextmenu", callback)
+        this.callback (render, "contextmenu", callback)
     [<CustomOperation("ondrag")>]
     member inline this.ondrag
         (
@@ -543,15 +641,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: DragEventArgs -> unit
         )
         =
-        this.on (render, "drag", callback)
-    [<CustomOperation("ondragAsync")>]
-    member inline this.ondragAsync
+        this.callback (render, "drag", callback)
+    [<CustomOperation("ondrag")>]
+    member inline this.ondrag
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: DragEventArgs -> Task
         )
         =
-        this.onTask (render, "drag", callback)
+        this.callback (render, "drag", callback)
     [<CustomOperation("ondragend")>]
     member inline this.ondragend
         (
@@ -559,15 +657,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: DragEventArgs -> unit
         )
         =
-        this.on (render, "dragend", callback)
-    [<CustomOperation("ondragendAsync")>]
-    member inline this.ondragendAsync
+        this.callback (render, "dragend", callback)
+    [<CustomOperation("ondragend")>]
+    member inline this.ondragend
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: DragEventArgs -> Task
         )
         =
-        this.onTask (render, "dragend", callback)
+        this.callback (render, "dragend", callback)
     [<CustomOperation("ondragenter")>]
     member inline this.ondragenter
         (
@@ -575,15 +673,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: DragEventArgs -> unit
         )
         =
-        this.on (render, "dragenter", callback)
-    [<CustomOperation("ondragenterAsync")>]
-    member inline this.ondragenterAsync
+        this.callback (render, "dragenter", callback)
+    [<CustomOperation("ondragenter")>]
+    member inline this.ondragenter
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: DragEventArgs -> Task
         )
         =
-        this.onTask (render, "dragenter", callback)
+        this.callback (render, "dragenter", callback)
     [<CustomOperation("ondragleave")>]
     member inline this.ondragleave
         (
@@ -591,15 +689,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: DragEventArgs -> unit
         )
         =
-        this.on (render, "dragleave", callback)
-    [<CustomOperation("ondragleaveAsync")>]
-    member inline this.ondragleaveAsync
+        this.callback (render, "dragleave", callback)
+    [<CustomOperation("ondragleave")>]
+    member inline this.ondragleave
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: DragEventArgs -> Task
         )
         =
-        this.onTask (render, "dragleave", callback)
+        this.callback (render, "dragleave", callback)
     [<CustomOperation("ondragover")>]
     member inline this.ondragover
         (
@@ -607,15 +705,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: DragEventArgs -> unit
         )
         =
-        this.on (render, "dragover", callback)
-    [<CustomOperation("ondragoverAsync")>]
-    member inline this.ondragoverAsync
+        this.callback (render, "dragover", callback)
+    [<CustomOperation("ondragover")>]
+    member inline this.ondragover
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: DragEventArgs -> Task
         )
         =
-        this.onTask (render, "dragover", callback)
+        this.callback (render, "dragover", callback)
     [<CustomOperation("ondragstart")>]
     member inline this.ondragstart
         (
@@ -623,15 +721,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: DragEventArgs -> unit
         )
         =
-        this.on (render, "dragstart", callback)
-    [<CustomOperation("ondragstartAsync")>]
-    member inline this.ondragstartAsync
+        this.callback (render, "dragstart", callback)
+    [<CustomOperation("ondragstart")>]
+    member inline this.ondragstart
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: DragEventArgs -> Task
         )
         =
-        this.onTask (render, "dragstart", callback)
+        this.callback (render, "dragstart", callback)
     [<CustomOperation("ondrop")>]
     member inline this.ondrop
         (
@@ -639,15 +737,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: DragEventArgs -> unit
         )
         =
-        this.on (render, "drop", callback)
-    [<CustomOperation("ondropAsync")>]
-    member inline this.ondropAsync
+        this.callback (render, "drop", callback)
+    [<CustomOperation("ondrop")>]
+    member inline this.ondrop
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: DragEventArgs -> Task
         )
         =
-        this.onTask (render, "drop", callback)
+        this.callback (render, "drop", callback)
     [<CustomOperation("onkeydown")>]
     member inline this.onkeydown
         (
@@ -655,15 +753,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: KeyboardEventArgs -> unit
         )
         =
-        this.on (render, "keydown", callback)
-    [<CustomOperation("onkeydownAsync")>]
-    member inline this.onkeydownAsync
+        this.callback (render, "keydown", callback)
+    [<CustomOperation("onkeydown")>]
+    member inline this.onkeydown
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: KeyboardEventArgs -> Task
         )
         =
-        this.onTask (render, "keydown", callback)
+        this.callback (render, "keydown", callback)
     [<CustomOperation("onkeyup")>]
     member inline this.onkeyup
         (
@@ -671,15 +769,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: KeyboardEventArgs -> unit
         )
         =
-        this.on (render, "keyup", callback)
-    [<CustomOperation("onkeyupAsync")>]
-    member inline this.onkeyupAsync
+        this.callback (render, "keyup", callback)
+    [<CustomOperation("onkeyup")>]
+    member inline this.onkeyup
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: KeyboardEventArgs -> Task
         )
         =
-        this.onTask (render, "keyup", callback)
+        this.callback (render, "keyup", callback)
     [<CustomOperation("onkeypress")>]
     member inline this.onkeypress
         (
@@ -687,15 +785,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: KeyboardEventArgs -> unit
         )
         =
-        this.on (render, "keypress", callback)
-    [<CustomOperation("onkeypressAsync")>]
-    member inline this.onkeypressAsync
+        this.callback (render, "keypress", callback)
+    [<CustomOperation("onkeypress")>]
+    member inline this.onkeypress
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: KeyboardEventArgs -> Task
         )
         =
-        this.onTask (render, "keypress", callback)
+        this.callback (render, "keypress", callback)
     [<CustomOperation("onchange")>]
     member inline this.onchange
         (
@@ -703,15 +801,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: ChangeEventArgs -> unit
         )
         =
-        this.on (render, "change", callback)
-    [<CustomOperation("onchangeAsync")>]
-    member inline this.onchangeAsync
+        this.callback (render, "change", callback)
+    [<CustomOperation("onchange")>]
+    member inline this.onchange
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: ChangeEventArgs -> Task
         )
         =
-        this.onTask (render, "change", callback)
+        this.callback (render, "change", callback)
     [<CustomOperation("oninput")>]
     member inline this.oninput
         (
@@ -719,15 +817,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: ChangeEventArgs -> unit
         )
         =
-        this.on (render, "input", callback)
-    [<CustomOperation("oninputAsync")>]
-    member inline this.oninputAsync
+        this.callback (render, "input", callback)
+    [<CustomOperation("oninput")>]
+    member inline this.oninput
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: ChangeEventArgs -> Task
         )
         =
-        this.onTask (render, "input", callback)
+        this.callback (render, "input", callback)
     [<CustomOperation("oninvalid")>]
     member inline this.oninvalid
         (
@@ -735,15 +833,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: EventArgs -> unit
         )
         =
-        this.on (render, "invalid", callback)
-    [<CustomOperation("oninvalidAsync")>]
-    member inline this.oninvalidAsync
+        this.callback (render, "invalid", callback)
+    [<CustomOperation("oninvalid")>]
+    member inline this.oninvalid
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: EventArgs -> Task
         )
         =
-        this.onTask (render, "invalid", callback)
+        this.callback (render, "invalid", callback)
     [<CustomOperation("onreset")>]
     member inline this.onreset
         (
@@ -751,15 +849,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: EventArgs -> unit
         )
         =
-        this.on (render, "reset", callback)
-    [<CustomOperation("onresetAsync")>]
-    member inline this.onresetAsync
+        this.callback (render, "reset", callback)
+    [<CustomOperation("onreset")>]
+    member inline this.onreset
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: EventArgs -> Task
         )
         =
-        this.onTask (render, "reset", callback)
+        this.callback (render, "reset", callback)
     [<CustomOperation("onselect")>]
     member inline this.onselect
         (
@@ -767,15 +865,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: EventArgs -> unit
         )
         =
-        this.on (render, "select", callback)
-    [<CustomOperation("onselectAsync")>]
-    member inline this.onselectAsync
+        this.callback (render, "select", callback)
+    [<CustomOperation("onselect")>]
+    member inline this.onselect
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: EventArgs -> Task
         )
         =
-        this.onTask (render, "select", callback)
+        this.callback (render, "select", callback)
     [<CustomOperation("onselectstart")>]
     member inline this.onselectstart
         (
@@ -783,15 +881,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: EventArgs -> unit
         )
         =
-        this.on (render, "selectstart", callback)
-    [<CustomOperation("onselectstartAsync")>]
-    member inline this.onselectstartAsync
+        this.callback (render, "selectstart", callback)
+    [<CustomOperation("onselectstart")>]
+    member inline this.onselectstart
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: EventArgs -> Task
         )
         =
-        this.onTask (render, "selectstart", callback)
+        this.callback (render, "selectstart", callback)
     [<CustomOperation("onselectionchange")>]
     member inline this.onselectionchange
         (
@@ -799,15 +897,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: EventArgs -> unit
         )
         =
-        this.on (render, "selectionchange", callback)
-    [<CustomOperation("onselectionchangeAsync")>]
-    member inline this.onselectionchangeAsync
+        this.callback (render, "selectionchange", callback)
+    [<CustomOperation("onselectionchange")>]
+    member inline this.onselectionchange
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: EventArgs -> Task
         )
         =
-        this.onTask (render, "selectionchange", callback)
+        this.callback (render, "selectionchange", callback)
     [<CustomOperation("onsubmit")>]
     member inline this.onsubmit
         (
@@ -815,15 +913,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: EventArgs -> unit
         )
         =
-        this.on (render, "submit", callback)
-    [<CustomOperation("onsubmitAsync")>]
-    member inline this.onsubmitAsync
+        this.callback (render, "submit", callback)
+    [<CustomOperation("onsubmit")>]
+    member inline this.onsubmit
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: EventArgs -> Task
         )
         =
-        this.onTask (render, "submit", callback)
+        this.callback (render, "submit", callback)
     [<CustomOperation("onbeforecopy")>]
     member inline this.onbeforecopy
         (
@@ -831,15 +929,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: EventArgs -> unit
         )
         =
-        this.on (render, "beforecopy", callback)
-    [<CustomOperation("onbeforecopyAsync")>]
-    member inline this.onbeforecopyAsync
+        this.callback (render, "beforecopy", callback)
+    [<CustomOperation("onbeforecopy")>]
+    member inline this.onbeforecopy
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: EventArgs -> Task
         )
         =
-        this.onTask (render, "beforecopy", callback)
+        this.callback (render, "beforecopy", callback)
     [<CustomOperation("onbeforecut")>]
     member inline this.onbeforecut
         (
@@ -847,15 +945,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: EventArgs -> unit
         )
         =
-        this.on (render, "beforecut", callback)
-    [<CustomOperation("onbeforecutAsync")>]
-    member inline this.onbeforecutAsync
+        this.callback (render, "beforecut", callback)
+    [<CustomOperation("onbeforecut")>]
+    member inline this.onbeforecut
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: EventArgs -> Task
         )
         =
-        this.onTask (render, "beforecut", callback)
+        this.callback (render, "beforecut", callback)
     [<CustomOperation("onbeforepaste")>]
     member inline this.onbeforepaste
         (
@@ -863,15 +961,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: EventArgs -> unit
         )
         =
-        this.on (render, "beforepaste", callback)
-    [<CustomOperation("onbeforepasteAsync")>]
-    member inline this.onbeforepasteAsync
+        this.callback (render, "beforepaste", callback)
+    [<CustomOperation("onbeforepaste")>]
+    member inline this.onbeforepaste
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: EventArgs -> Task
         )
         =
-        this.onTask (render, "beforepaste", callback)
+        this.callback (render, "beforepaste", callback)
     [<CustomOperation("oncopy")>]
     member inline this.oncopy
         (
@@ -879,15 +977,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: ClipboardEventArgs -> unit
         )
         =
-        this.on (render, "copy", callback)
-    [<CustomOperation("oncopyAsync")>]
-    member inline this.oncopyAsync
+        this.callback (render, "copy", callback)
+    [<CustomOperation("oncopy")>]
+    member inline this.oncopy
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: ClipboardEventArgs -> Task
         )
         =
-        this.onTask (render, "copy", callback)
+        this.callback (render, "copy", callback)
     [<CustomOperation("oncut")>]
     member inline this.oncut
         (
@@ -895,15 +993,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: ClipboardEventArgs -> unit
         )
         =
-        this.on (render, "cut", callback)
-    [<CustomOperation("oncutAsync")>]
-    member inline this.oncutAsync
+        this.callback (render, "cut", callback)
+    [<CustomOperation("oncut")>]
+    member inline this.oncut
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: ClipboardEventArgs -> Task
         )
         =
-        this.onTask (render, "cut", callback)
+        this.callback (render, "cut", callback)
     [<CustomOperation("onpaste")>]
     member inline this.onpaste
         (
@@ -911,15 +1009,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: ClipboardEventArgs -> unit
         )
         =
-        this.on (render, "paste", callback)
-    [<CustomOperation("onpasteAsync")>]
-    member inline this.onpasteAsync
+        this.callback (render, "paste", callback)
+    [<CustomOperation("onpaste")>]
+    member inline this.onpaste
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: ClipboardEventArgs -> Task
         )
         =
-        this.onTask (render, "paste", callback)
+        this.callback (render, "paste", callback)
     [<CustomOperation("ontouchcancel")>]
     member inline this.ontouchcancel
         (
@@ -927,15 +1025,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: TouchEventArgs -> unit
         )
         =
-        this.on (render, "touchcancel", callback)
-    [<CustomOperation("ontouchcancelAsync")>]
-    member inline this.ontouchcancelAsync
+        this.callback (render, "touchcancel", callback)
+    [<CustomOperation("ontouchcancel")>]
+    member inline this.ontouchcancel
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: TouchEventArgs -> Task
         )
         =
-        this.onTask (render, "touchcancel", callback)
+        this.callback (render, "touchcancel", callback)
     [<CustomOperation("ontouchend")>]
     member inline this.ontouchend
         (
@@ -943,15 +1041,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: TouchEventArgs -> unit
         )
         =
-        this.on (render, "touchend", callback)
-    [<CustomOperation("ontouchendAsync")>]
-    member inline this.ontouchendAsync
+        this.callback (render, "touchend", callback)
+    [<CustomOperation("ontouchend")>]
+    member inline this.ontouchend
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: TouchEventArgs -> Task
         )
         =
-        this.onTask (render, "touchend", callback)
+        this.callback (render, "touchend", callback)
     [<CustomOperation("ontouchmove")>]
     member inline this.ontouchmove
         (
@@ -959,15 +1057,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: TouchEventArgs -> unit
         )
         =
-        this.on (render, "touchmove", callback)
-    [<CustomOperation("ontouchmoveAsync")>]
-    member inline this.ontouchmoveAsync
+        this.callback (render, "touchmove", callback)
+    [<CustomOperation("ontouchmove")>]
+    member inline this.ontouchmove
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: TouchEventArgs -> Task
         )
         =
-        this.onTask (render, "touchmove", callback)
+        this.callback (render, "touchmove", callback)
     [<CustomOperation("ontouchstart")>]
     member inline this.ontouchstart
         (
@@ -975,15 +1073,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: TouchEventArgs -> unit
         )
         =
-        this.on (render, "touchstart", callback)
-    [<CustomOperation("ontouchstartAsync")>]
-    member inline this.ontouchstartAsync
+        this.callback (render, "touchstart", callback)
+    [<CustomOperation("ontouchstart")>]
+    member inline this.ontouchstart
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: TouchEventArgs -> Task
         )
         =
-        this.onTask (render, "touchstart", callback)
+        this.callback (render, "touchstart", callback)
     [<CustomOperation("ontouchenter")>]
     member inline this.ontouchenter
         (
@@ -991,15 +1089,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: TouchEventArgs -> unit
         )
         =
-        this.on (render, "touchenter", callback)
-    [<CustomOperation("ontouchenterAsync")>]
-    member inline this.ontouchenterAsync
+        this.callback (render, "touchenter", callback)
+    [<CustomOperation("ontouchenter")>]
+    member inline this.ontouchenter
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: TouchEventArgs -> Task
         )
         =
-        this.onTask (render, "touchenter", callback)
+        this.callback (render, "touchenter", callback)
     [<CustomOperation("ontouchleave")>]
     member inline this.ontouchleave
         (
@@ -1007,15 +1105,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: TouchEventArgs -> unit
         )
         =
-        this.on (render, "touchleave", callback)
-    [<CustomOperation("ontouchleaveAsync")>]
-    member inline this.ontouchleaveAsync
+        this.callback (render, "touchleave", callback)
+    [<CustomOperation("ontouchleave")>]
+    member inline this.ontouchleave
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: TouchEventArgs -> Task
         )
         =
-        this.onTask (render, "touchleave", callback)
+        this.callback (render, "touchleave", callback)
     [<CustomOperation("onpointercapture")>]
     member inline this.onpointercapture
         (
@@ -1023,15 +1121,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: PointerEventArgs -> unit
         )
         =
-        this.on (render, "pointercapture", callback)
-    [<CustomOperation("onpointercaptureAsync")>]
-    member inline this.onpointercaptureAsync
+        this.callback (render, "pointercapture", callback)
+    [<CustomOperation("onpointercapture")>]
+    member inline this.onpointercapture
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: PointerEventArgs -> Task
         )
         =
-        this.onTask (render, "pointercapture", callback)
+        this.callback (render, "pointercapture", callback)
     [<CustomOperation("onlostpointercapture")>]
     member inline this.onlostpointercapture
         (
@@ -1039,15 +1137,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: PointerEventArgs -> unit
         )
         =
-        this.on (render, "lostpointercapture", callback)
-    [<CustomOperation("onlostpointercaptureAsync")>]
-    member inline this.onlostpointercaptureAsync
+        this.callback (render, "lostpointercapture", callback)
+    [<CustomOperation("onlostpointercapture")>]
+    member inline this.onlostpointercapture
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: PointerEventArgs -> Task
         )
         =
-        this.onTask (render, "lostpointercapture", callback)
+        this.callback (render, "lostpointercapture", callback)
     [<CustomOperation("onpointercancel")>]
     member inline this.onpointercancel
         (
@@ -1055,15 +1153,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: PointerEventArgs -> unit
         )
         =
-        this.on (render, "pointercancel", callback)
-    [<CustomOperation("onpointercancelAsync")>]
-    member inline this.onpointercancelAsync
+        this.callback (render, "pointercancel", callback)
+    [<CustomOperation("onpointercancel")>]
+    member inline this.onpointercancel
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: PointerEventArgs -> Task
         )
         =
-        this.onTask (render, "pointercancel", callback)
+        this.callback (render, "pointercancel", callback)
     [<CustomOperation("onpointerdown")>]
     member inline this.onpointerdown
         (
@@ -1071,15 +1169,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: PointerEventArgs -> unit
         )
         =
-        this.on (render, "pointerdown", callback)
-    [<CustomOperation("onpointerdownAsync")>]
-    member inline this.onpointerdownAsync
+        this.callback (render, "pointerdown", callback)
+    [<CustomOperation("onpointerdown")>]
+    member inline this.onpointerdown
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: PointerEventArgs -> Task
         )
         =
-        this.onTask (render, "pointerdown", callback)
+        this.callback (render, "pointerdown", callback)
     [<CustomOperation("onpointerenter")>]
     member inline this.onpointerenter
         (
@@ -1087,15 +1185,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: PointerEventArgs -> unit
         )
         =
-        this.on (render, "pointerenter", callback)
-    [<CustomOperation("onpointerenterAsync")>]
-    member inline this.onpointerenterAsync
+        this.callback (render, "pointerenter", callback)
+    [<CustomOperation("onpointerenter")>]
+    member inline this.onpointerenter
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: PointerEventArgs -> Task
         )
         =
-        this.onTask (render, "pointerenter", callback)
+        this.callback (render, "pointerenter", callback)
     [<CustomOperation("onpointerleave")>]
     member inline this.onpointerleave
         (
@@ -1103,15 +1201,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: PointerEventArgs -> unit
         )
         =
-        this.on (render, "pointerleave", callback)
-    [<CustomOperation("onpointerleaveAsync")>]
-    member inline this.onpointerleaveAsync
+        this.callback (render, "pointerleave", callback)
+    [<CustomOperation("onpointerleave")>]
+    member inline this.onpointerleave
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: PointerEventArgs -> Task
         )
         =
-        this.onTask (render, "pointerleave", callback)
+        this.callback (render, "pointerleave", callback)
     [<CustomOperation("onpointermove")>]
     member inline this.onpointermove
         (
@@ -1119,15 +1217,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: PointerEventArgs -> unit
         )
         =
-        this.on (render, "pointermove", callback)
-    [<CustomOperation("onpointermoveAsync")>]
-    member inline this.onpointermoveAsync
+        this.callback (render, "pointermove", callback)
+    [<CustomOperation("onpointermove")>]
+    member inline this.onpointermove
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: PointerEventArgs -> Task
         )
         =
-        this.onTask (render, "pointermove", callback)
+        this.callback (render, "pointermove", callback)
     [<CustomOperation("onpointerout")>]
     member inline this.onpointerout
         (
@@ -1135,15 +1233,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: PointerEventArgs -> unit
         )
         =
-        this.on (render, "pointerout", callback)
-    [<CustomOperation("onpointeroutAsync")>]
-    member inline this.onpointeroutAsync
+        this.callback (render, "pointerout", callback)
+    [<CustomOperation("onpointerout")>]
+    member inline this.onpointerout
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: PointerEventArgs -> Task
         )
         =
-        this.onTask (render, "pointerout", callback)
+        this.callback (render, "pointerout", callback)
     [<CustomOperation("onpointerover")>]
     member inline this.onpointerover
         (
@@ -1151,15 +1249,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: PointerEventArgs -> unit
         )
         =
-        this.on (render, "pointerover", callback)
-    [<CustomOperation("onpointeroverAsync")>]
-    member inline this.onpointeroverAsync
+        this.callback (render, "pointerover", callback)
+    [<CustomOperation("onpointerover")>]
+    member inline this.onpointerover
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: PointerEventArgs -> Task
         )
         =
-        this.onTask (render, "pointerover", callback)
+        this.callback (render, "pointerover", callback)
     [<CustomOperation("onpointerup")>]
     member inline this.onpointerup
         (
@@ -1167,15 +1265,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: PointerEventArgs -> unit
         )
         =
-        this.on (render, "pointerup", callback)
-    [<CustomOperation("onpointerupAsync")>]
-    member inline this.onpointerupAsync
+        this.callback (render, "pointerup", callback)
+    [<CustomOperation("onpointerup")>]
+    member inline this.onpointerup
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: PointerEventArgs -> Task
         )
         =
-        this.onTask (render, "pointerup", callback)
+        this.callback (render, "pointerup", callback)
     [<CustomOperation("oncanplay")>]
     member inline this.oncanplay
         (
@@ -1183,15 +1281,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: EventArgs -> unit
         )
         =
-        this.on (render, "canplay", callback)
-    [<CustomOperation("oncanplayAsync")>]
-    member inline this.oncanplayAsync
+        this.callback (render, "canplay", callback)
+    [<CustomOperation("oncanplay")>]
+    member inline this.oncanplay
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: EventArgs -> Task
         )
         =
-        this.onTask (render, "canplay", callback)
+        this.callback (render, "canplay", callback)
     [<CustomOperation("oncanplaythrough")>]
     member inline this.oncanplaythrough
         (
@@ -1199,15 +1297,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: EventArgs -> unit
         )
         =
-        this.on (render, "canplaythrough", callback)
-    [<CustomOperation("oncanplaythroughAsync")>]
-    member inline this.oncanplaythroughAsync
+        this.callback (render, "canplaythrough", callback)
+    [<CustomOperation("oncanplaythrough")>]
+    member inline this.oncanplaythrough
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: EventArgs -> Task
         )
         =
-        this.onTask (render, "canplaythrough", callback)
+        this.callback (render, "canplaythrough", callback)
     [<CustomOperation("oncuechange")>]
     member inline this.oncuechange
         (
@@ -1215,15 +1313,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: EventArgs -> unit
         )
         =
-        this.on (render, "cuechange", callback)
-    [<CustomOperation("oncuechangeAsync")>]
-    member inline this.oncuechangeAsync
+        this.callback (render, "cuechange", callback)
+    [<CustomOperation("oncuechange")>]
+    member inline this.oncuechange
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: EventArgs -> Task
         )
         =
-        this.onTask (render, "cuechange", callback)
+        this.callback (render, "cuechange", callback)
     [<CustomOperation("ondurationchange")>]
     member inline this.ondurationchange
         (
@@ -1231,15 +1329,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: EventArgs -> unit
         )
         =
-        this.on (render, "durationchange", callback)
-    [<CustomOperation("ondurationchangeAsync")>]
-    member inline this.ondurationchangeAsync
+        this.callback (render, "durationchange", callback)
+    [<CustomOperation("ondurationchange")>]
+    member inline this.ondurationchange
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: EventArgs -> Task
         )
         =
-        this.onTask (render, "durationchange", callback)
+        this.callback (render, "durationchange", callback)
     [<CustomOperation("onemptied")>]
     member inline this.onemptied
         (
@@ -1247,15 +1345,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: EventArgs -> unit
         )
         =
-        this.on (render, "emptied", callback)
-    [<CustomOperation("onemptiedAsync")>]
-    member inline this.onemptiedAsync
+        this.callback (render, "emptied", callback)
+    [<CustomOperation("onemptied")>]
+    member inline this.onemptied
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: EventArgs -> Task
         )
         =
-        this.onTask (render, "emptied", callback)
+        this.callback (render, "emptied", callback)
     [<CustomOperation("onpause")>]
     member inline this.onpause
         (
@@ -1263,15 +1361,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: EventArgs -> unit
         )
         =
-        this.on (render, "pause", callback)
-    [<CustomOperation("onpauseAsync")>]
-    member inline this.onpauseAsync
+        this.callback (render, "pause", callback)
+    [<CustomOperation("onpause")>]
+    member inline this.onpause
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: EventArgs -> Task
         )
         =
-        this.onTask (render, "pause", callback)
+        this.callback (render, "pause", callback)
     [<CustomOperation("onplay")>]
     member inline this.onplay
         (
@@ -1279,15 +1377,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: EventArgs -> unit
         )
         =
-        this.on (render, "play", callback)
-    [<CustomOperation("onplayAsync")>]
-    member inline this.onplayAsync
+        this.callback (render, "play", callback)
+    [<CustomOperation("onplay")>]
+    member inline this.onplay
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: EventArgs -> Task
         )
         =
-        this.onTask (render, "play", callback)
+        this.callback (render, "play", callback)
     [<CustomOperation("onplaying")>]
     member inline this.onplaying
         (
@@ -1295,15 +1393,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: EventArgs -> unit
         )
         =
-        this.on (render, "playing", callback)
-    [<CustomOperation("onplayingAsync")>]
-    member inline this.onplayingAsync
+        this.callback (render, "playing", callback)
+    [<CustomOperation("onplaying")>]
+    member inline this.onplaying
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: EventArgs -> Task
         )
         =
-        this.onTask (render, "playing", callback)
+        this.callback (render, "playing", callback)
     [<CustomOperation("onratechange")>]
     member inline this.onratechange
         (
@@ -1311,15 +1409,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: EventArgs -> unit
         )
         =
-        this.on (render, "ratechange", callback)
-    [<CustomOperation("onratechangeAsync")>]
-    member inline this.onratechangeAsync
+        this.callback (render, "ratechange", callback)
+    [<CustomOperation("onratechange")>]
+    member inline this.onratechange
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: EventArgs -> Task
         )
         =
-        this.onTask (render, "ratechange", callback)
+        this.callback (render, "ratechange", callback)
     [<CustomOperation("onseeked")>]
     member inline this.onseeked
         (
@@ -1327,15 +1425,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: EventArgs -> unit
         )
         =
-        this.on (render, "seeked", callback)
-    [<CustomOperation("onseekedAsync")>]
-    member inline this.onseekedAsync
+        this.callback (render, "seeked", callback)
+    [<CustomOperation("onseeked")>]
+    member inline this.onseeked
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: EventArgs -> Task
         )
         =
-        this.onTask (render, "seeked", callback)
+        this.callback (render, "seeked", callback)
     [<CustomOperation("onseeking")>]
     member inline this.onseeking
         (
@@ -1343,15 +1441,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: EventArgs -> unit
         )
         =
-        this.on (render, "seeking", callback)
-    [<CustomOperation("onseekingAsync")>]
-    member inline this.onseekingAsync
+        this.callback (render, "seeking", callback)
+    [<CustomOperation("onseeking")>]
+    member inline this.onseeking
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: EventArgs -> Task
         )
         =
-        this.onTask (render, "seeking", callback)
+        this.callback (render, "seeking", callback)
     [<CustomOperation("onstalled")>]
     member inline this.onstalled
         (
@@ -1359,15 +1457,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: EventArgs -> unit
         )
         =
-        this.on (render, "stalled", callback)
-    [<CustomOperation("onstalledAsync")>]
-    member inline this.onstalledAsync
+        this.callback (render, "stalled", callback)
+    [<CustomOperation("onstalled")>]
+    member inline this.onstalled
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: EventArgs -> Task
         )
         =
-        this.onTask (render, "stalled", callback)
+        this.callback (render, "stalled", callback)
     [<CustomOperation("onstop")>]
     member inline this.onstop
         (
@@ -1375,15 +1473,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: EventArgs -> unit
         )
         =
-        this.on (render, "stop", callback)
-    [<CustomOperation("onstopAsync")>]
-    member inline this.onstopAsync
+        this.callback (render, "stop", callback)
+    [<CustomOperation("onstop")>]
+    member inline this.onstop
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: EventArgs -> Task
         )
         =
-        this.onTask (render, "stop", callback)
+        this.callback (render, "stop", callback)
     [<CustomOperation("onsuspend")>]
     member inline this.onsuspend
         (
@@ -1391,15 +1489,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: EventArgs -> unit
         )
         =
-        this.on (render, "suspend", callback)
-    [<CustomOperation("onsuspendAsync")>]
-    member inline this.onsuspendAsync
+        this.callback (render, "suspend", callback)
+    [<CustomOperation("onsuspend")>]
+    member inline this.onsuspend
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: EventArgs -> Task
         )
         =
-        this.onTask (render, "suspend", callback)
+        this.callback (render, "suspend", callback)
     [<CustomOperation("ontimeupdate")>]
     member inline this.ontimeupdate
         (
@@ -1407,15 +1505,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: EventArgs -> unit
         )
         =
-        this.on (render, "timeupdate", callback)
-    [<CustomOperation("ontimeupdateAsync")>]
-    member inline this.ontimeupdateAsync
+        this.callback (render, "timeupdate", callback)
+    [<CustomOperation("ontimeupdate")>]
+    member inline this.ontimeupdate
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: EventArgs -> Task
         )
         =
-        this.onTask (render, "timeupdate", callback)
+        this.callback (render, "timeupdate", callback)
     [<CustomOperation("onvolumechange")>]
     member inline this.onvolumechange
         (
@@ -1423,15 +1521,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: EventArgs -> unit
         )
         =
-        this.on (render, "volumechange", callback)
-    [<CustomOperation("onvolumechangeAsync")>]
-    member inline this.onvolumechangeAsync
+        this.callback (render, "volumechange", callback)
+    [<CustomOperation("onvolumechange")>]
+    member inline this.onvolumechange
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: EventArgs -> Task
         )
         =
-        this.onTask (render, "volumechange", callback)
+        this.callback (render, "volumechange", callback)
     [<CustomOperation("onwaiting")>]
     member inline this.onwaiting
         (
@@ -1439,15 +1537,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: EventArgs -> unit
         )
         =
-        this.on (render, "waiting", callback)
-    [<CustomOperation("onwaitingAsync")>]
-    member inline this.onwaitingAsync
+        this.callback (render, "waiting", callback)
+    [<CustomOperation("onwaiting")>]
+    member inline this.onwaiting
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: EventArgs -> Task
         )
         =
-        this.onTask (render, "waiting", callback)
+        this.callback (render, "waiting", callback)
     [<CustomOperation("onloadstart")>]
     member inline this.onloadstart
         (
@@ -1455,15 +1553,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: ProgressEventArgs -> unit
         )
         =
-        this.on (render, "loadstart", callback)
-    [<CustomOperation("onloadstartAsync")>]
-    member inline this.onloadstartAsync
+        this.callback (render, "loadstart", callback)
+    [<CustomOperation("onloadstart")>]
+    member inline this.onloadstart
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: ProgressEventArgs -> Task
         )
         =
-        this.onTask (render, "loadstart", callback)
+        this.callback (render, "loadstart", callback)
     [<CustomOperation("ontimeout")>]
     member inline this.ontimeout
         (
@@ -1471,15 +1569,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: ProgressEventArgs -> unit
         )
         =
-        this.on (render, "timeout", callback)
-    [<CustomOperation("ontimeoutAsync")>]
-    member inline this.ontimeoutAsync
+        this.callback (render, "timeout", callback)
+    [<CustomOperation("ontimeout")>]
+    member inline this.ontimeout
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: ProgressEventArgs -> Task
         )
         =
-        this.onTask (render, "timeout", callback)
+        this.callback (render, "timeout", callback)
     [<CustomOperation("onabort")>]
     member inline this.onabort
         (
@@ -1487,15 +1585,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: ProgressEventArgs -> unit
         )
         =
-        this.on (render, "abort", callback)
-    [<CustomOperation("onabortAsync")>]
-    member inline this.onabortAsync
+        this.callback (render, "abort", callback)
+    [<CustomOperation("onabort")>]
+    member inline this.onabort
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: ProgressEventArgs -> Task
         )
         =
-        this.onTask (render, "abort", callback)
+        this.callback (render, "abort", callback)
     [<CustomOperation("onload")>]
     member inline this.onload
         (
@@ -1503,15 +1601,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: ProgressEventArgs -> unit
         )
         =
-        this.on (render, "load", callback)
-    [<CustomOperation("onloadAsync")>]
-    member inline this.onloadAsync
+        this.callback (render, "load", callback)
+    [<CustomOperation("onload")>]
+    member inline this.onload
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: ProgressEventArgs -> Task
         )
         =
-        this.onTask (render, "load", callback)
+        this.callback (render, "load", callback)
     [<CustomOperation("onloadend")>]
     member inline this.onloadend
         (
@@ -1519,15 +1617,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: ProgressEventArgs -> unit
         )
         =
-        this.on (render, "loadend", callback)
-    [<CustomOperation("onloadendAsync")>]
-    member inline this.onloadendAsync
+        this.callback (render, "loadend", callback)
+    [<CustomOperation("onloadend")>]
+    member inline this.onloadend
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: ProgressEventArgs -> Task
         )
         =
-        this.onTask (render, "loadend", callback)
+        this.callback (render, "loadend", callback)
     [<CustomOperation("onprogress")>]
     member inline this.onprogress
         (
@@ -1535,15 +1633,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: ProgressEventArgs -> unit
         )
         =
-        this.on (render, "progress", callback)
-    [<CustomOperation("onprogressAsync")>]
-    member inline this.onprogressAsync
+        this.callback (render, "progress", callback)
+    [<CustomOperation("onprogress")>]
+    member inline this.onprogress
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: ProgressEventArgs -> Task
         )
         =
-        this.onTask (render, "progress", callback)
+        this.callback (render, "progress", callback)
     [<CustomOperation("onerror")>]
     member inline this.onerror
         (
@@ -1551,15 +1649,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: ProgressEventArgs -> unit
         )
         =
-        this.on (render, "error", callback)
-    [<CustomOperation("onerrorAsync")>]
-    member inline this.onerrorAsync
+        this.callback (render, "error", callback)
+    [<CustomOperation("onerror")>]
+    member inline this.onerror
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: ProgressEventArgs -> Task
         )
         =
-        this.onTask (render, "error", callback)
+        this.callback (render, "error", callback)
     [<CustomOperation("onactivate")>]
     member inline this.onactivate
         (
@@ -1567,15 +1665,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: EventArgs -> unit
         )
         =
-        this.on (render, "activate", callback)
-    [<CustomOperation("onactivateAsync")>]
-    member inline this.onactivateAsync
+        this.callback (render, "activate", callback)
+    [<CustomOperation("onactivate")>]
+    member inline this.onactivate
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: EventArgs -> Task
         )
         =
-        this.onTask (render, "activate", callback)
+        this.callback (render, "activate", callback)
     [<CustomOperation("onbeforeactivate")>]
     member inline this.onbeforeactivate
         (
@@ -1583,15 +1681,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: EventArgs -> unit
         )
         =
-        this.on (render, "beforeactivate", callback)
-    [<CustomOperation("onbeforeactivateAsync")>]
-    member inline this.onbeforeactivateAsync
+        this.callback (render, "beforeactivate", callback)
+    [<CustomOperation("onbeforeactivate")>]
+    member inline this.onbeforeactivate
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: EventArgs -> Task
         )
         =
-        this.onTask (render, "beforeactivate", callback)
+        this.callback (render, "beforeactivate", callback)
     [<CustomOperation("onbeforedeactivate")>]
     member inline this.onbeforedeactivate
         (
@@ -1599,15 +1697,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: EventArgs -> unit
         )
         =
-        this.on (render, "beforedeactivate", callback)
-    [<CustomOperation("onbeforedeactivateAsync")>]
-    member inline this.onbeforedeactivateAsync
+        this.callback (render, "beforedeactivate", callback)
+    [<CustomOperation("onbeforedeactivate")>]
+    member inline this.onbeforedeactivate
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: EventArgs -> Task
         )
         =
-        this.onTask (render, "beforedeactivate", callback)
+        this.callback (render, "beforedeactivate", callback)
     [<CustomOperation("ondeactivate")>]
     member inline this.ondeactivate
         (
@@ -1615,15 +1713,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: EventArgs -> unit
         )
         =
-        this.on (render, "deactivate", callback)
-    [<CustomOperation("ondeactivateAsync")>]
-    member inline this.ondeactivateAsync
+        this.callback (render, "deactivate", callback)
+    [<CustomOperation("ondeactivate")>]
+    member inline this.ondeactivate
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: EventArgs -> Task
         )
         =
-        this.onTask (render, "deactivate", callback)
+        this.callback (render, "deactivate", callback)
     [<CustomOperation("onended")>]
     member inline this.onended
         (
@@ -1631,15 +1729,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: EventArgs -> unit
         )
         =
-        this.on (render, "ended", callback)
-    [<CustomOperation("onendedAsync")>]
-    member inline this.onendedAsync
+        this.callback (render, "ended", callback)
+    [<CustomOperation("onended")>]
+    member inline this.onended
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: EventArgs -> Task
         )
         =
-        this.onTask (render, "ended", callback)
+        this.callback (render, "ended", callback)
     [<CustomOperation("onfullscreenchange")>]
     member inline this.onfullscreenchange
         (
@@ -1647,15 +1745,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: EventArgs -> unit
         )
         =
-        this.on (render, "fullscreenchange", callback)
-    [<CustomOperation("onfullscreenchangeAsync")>]
-    member inline this.onfullscreenchangeAsync
+        this.callback (render, "fullscreenchange", callback)
+    [<CustomOperation("onfullscreenchange")>]
+    member inline this.onfullscreenchange
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: EventArgs -> Task
         )
         =
-        this.onTask (render, "fullscreenchange", callback)
+        this.callback (render, "fullscreenchange", callback)
     [<CustomOperation("onfullscreenerror")>]
     member inline this.onfullscreenerror
         (
@@ -1663,15 +1761,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: EventArgs -> unit
         )
         =
-        this.on (render, "fullscreenerror", callback)
-    [<CustomOperation("onfullscreenerrorAsync")>]
-    member inline this.onfullscreenerrorAsync
+        this.callback (render, "fullscreenerror", callback)
+    [<CustomOperation("onfullscreenerror")>]
+    member inline this.onfullscreenerror
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: EventArgs -> Task
         )
         =
-        this.onTask (render, "fullscreenerror", callback)
+        this.callback (render, "fullscreenerror", callback)
     [<CustomOperation("onloadeddata")>]
     member inline this.onloadeddata
         (
@@ -1679,15 +1777,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: EventArgs -> unit
         )
         =
-        this.on (render, "loadeddata", callback)
-    [<CustomOperation("onloadeddataAsync")>]
-    member inline this.onloadeddataAsync
+        this.callback (render, "loadeddata", callback)
+    [<CustomOperation("onloadeddata")>]
+    member inline this.onloadeddata
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: EventArgs -> Task
         )
         =
-        this.onTask (render, "loadeddata", callback)
+        this.callback (render, "loadeddata", callback)
     [<CustomOperation("onloadedmetadata")>]
     member inline this.onloadedmetadata
         (
@@ -1695,15 +1793,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: EventArgs -> unit
         )
         =
-        this.on (render, "loadedmetadata", callback)
-    [<CustomOperation("onloadedmetadataAsync")>]
-    member inline this.onloadedmetadataAsync
+        this.callback (render, "loadedmetadata", callback)
+    [<CustomOperation("onloadedmetadata")>]
+    member inline this.onloadedmetadata
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: EventArgs -> Task
         )
         =
-        this.onTask (render, "loadedmetadata", callback)
+        this.callback (render, "loadedmetadata", callback)
     [<CustomOperation("onpointerlockchange")>]
     member inline this.onpointerlockchange
         (
@@ -1711,15 +1809,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: EventArgs -> unit
         )
         =
-        this.on (render, "pointerlockchange", callback)
-    [<CustomOperation("onpointerlockchangeAsync")>]
-    member inline this.onpointerlockchangeAsync
+        this.callback (render, "pointerlockchange", callback)
+    [<CustomOperation("onpointerlockchange")>]
+    member inline this.onpointerlockchange
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: EventArgs -> Task
         )
         =
-        this.onTask (render, "pointerlockchange", callback)
+        this.callback (render, "pointerlockchange", callback)
     [<CustomOperation("onpointerlockerror")>]
     member inline this.onpointerlockerror
         (
@@ -1727,15 +1825,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: EventArgs -> unit
         )
         =
-        this.on (render, "pointerlockerror", callback)
-    [<CustomOperation("onpointerlockerrorAsync")>]
-    member inline this.onpointerlockerrorAsync
+        this.callback (render, "pointerlockerror", callback)
+    [<CustomOperation("onpointerlockerror")>]
+    member inline this.onpointerlockerror
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: EventArgs -> Task
         )
         =
-        this.onTask (render, "pointerlockerror", callback)
+        this.callback (render, "pointerlockerror", callback)
     [<CustomOperation("onreadystatechange")>]
     member inline this.onreadystatechange
         (
@@ -1743,15 +1841,15 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: EventArgs -> unit
         )
         =
-        this.on (render, "readystatechange", callback)
-    [<CustomOperation("onreadystatechangeAsync")>]
-    member inline this.onreadystatechangeAsync
+        this.callback (render, "readystatechange", callback)
+    [<CustomOperation("onreadystatechange")>]
+    member inline this.onreadystatechange
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: EventArgs -> Task
         )
         =
-        this.onTask (render, "readystatechange", callback)
+        this.callback (render, "readystatechange", callback)
     [<CustomOperation("onscroll")>]
     member inline this.onscroll
         (
@@ -1759,665 +1857,12 @@ type DomBuilder() =
             [<InlineIfLambda>] callback: EventArgs -> unit
         )
         =
-        this.on (render, "scroll", callback)
-    [<CustomOperation("onscrollAsync")>]
-    member inline this.onscrollAsync
+        this.callback (render, "scroll", callback)
+    [<CustomOperation("onscroll")>]
+    member inline this.onscroll
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             [<InlineIfLambda>] callback: EventArgs -> Task
         )
         =
-        this.onTask (render, "scroll", callback)
-
-
-type EltBuilder(name) =
-    inherit DomBuilder()
-
-    member _.Name: string = name
-
-    member inline this.Run([<InlineIfLambda>] render: AttrRenderFragment) =
-        NodeRenderFragment(fun comp builder index ->
-            builder.OpenElement(index, this.Name)
-            let nextIndex = render.Invoke(comp, builder, index + 1)
-            builder.CloseElement()
-            nextIndex
-        )
-
-    member inline this.Run([<InlineIfLambda>] render: NodeRenderFragment) =
-        NodeRenderFragment(fun comp builder index ->
-            builder.OpenElement(index, this.Name)
-            let nextIndex = render.Invoke(comp, builder, index + 1)
-            builder.CloseElement()
-            nextIndex
-        )
-
-        
-    member inline _.Yield(x: EltBuilder) =
-        NodeRenderFragment(fun _ builder index ->
-            builder.OpenElement(index, x.Name)
-            builder.CloseElement()
-            index + 1
-        )
-
-    member inline _.Yield<'T, 'T1 when 'T :> IComponentBuilder<'T1>>(_: 'T) =
-        NodeRenderFragment(fun _ builder index ->
-            builder.OpenComponent<'T1>(index)
-            builder.CloseComponent()
-            index + 1
-        )
-
-
-and IComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent> = interface end
-
-
-and ComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit FragmentBuilder()
-
-    interface IComponentBuilder<'T>
-
-    member inline _.Run([<InlineIfLambda>] render: AttrRenderFragment) =
-        NodeRenderFragment(fun comp builder index ->
-            builder.OpenComponent<'T>(index)
-            let nextIndex = render.Invoke(comp, builder, index + 1)
-            builder.CloseComponent()
-            nextIndex
-        )
-
-    member inline _.Run([<InlineIfLambda>] render: NodeRenderFragment) =
-        NodeRenderFragment(fun comp builder index ->
-            let mutable nextIndex = index
-            builder.OpenComponent<'T>(index)
-            builder.AddAttribute(index + 1, "ChildContent", RenderFragment(fun tb ->
-                nextIndex <- render.Invoke(comp, tb, index + 2)
-            ))
-            builder.CloseComponent()
-            nextIndex
-        )
-
-
-    member inline _.Yield(x: EltBuilder) =
-        NodeRenderFragment(fun _ builder index ->
-            builder.OpenElement(index, x.Name)
-            builder.CloseElement()
-            index + 1
-        )
-
-    member inline _.Yield<'T, 'T1 when 'T :> IComponentBuilder<'T1>>(_: 'T) =
-        NodeRenderFragment(fun _ builder index ->
-            builder.OpenComponent<'T1>(index)
-            builder.CloseComponent()
-            index + 1
-        )
-
-
-and ComponentWithChildBuilder<'T when 'T :> IComponent>() =
-    inherit ComponentBuilder<'T>()
-
-    [<CustomOperation("childContent")>]
-    member inline _.childContent
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] renderChild: NodeRenderFragment
-        )
-        =
-        render >>> renderChild
-
-    [<CustomOperation("childContent")>]
-    member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, renders: NodeRenderFragment seq) =
-        NodeRenderFragment(fun comp builder index ->
-            let mutable index = render.Invoke(comp, builder, index)
-            for item in renders do
-                index <- item.Invoke(comp, builder, index)
-            index
-        )
-
-    [<CustomOperation("childContent")>]
-    member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, v: string) = render >>> (html.text v)
-
-    [<CustomOperation("childContent")>]
-    member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, v: int) = render >>> (html.text v)
-    
-    [<CustomOperation("childContent")>]
-    member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, v: float) = render >>> (html.text v)
-    
-
-and ComponentWithDomAttrBuilder<'T when 'T :> IComponent>() =
-    inherit DomBuilder()
-    
-    interface IComponentBuilder<'T>
-
-    member inline _.Run([<InlineIfLambda>] render: AttrRenderFragment) =
-        NodeRenderFragment(fun comp builder index ->
-            builder.OpenComponent<'T>(index)
-            let nextIndex = render.Invoke(comp, builder, index + 1)
-            builder.CloseComponent()
-            nextIndex
-        )
-
-    member inline _.Run([<InlineIfLambda>] render: NodeRenderFragment) =
-        NodeRenderFragment(fun comp builder index ->
-            builder.OpenComponent<'T>(index)
-            builder.AddAttribute(index + 1, "ChildContent", RenderFragment(fun tb ->
-                render.Invoke(comp, tb, 0) |> ignore
-            ))
-            builder.CloseComponent()
-            index + 2
-        )
-
-    member inline _.Run(renders: AttrRenderFragment * NodeRenderFragment) =
-        NodeRenderFragment(fun comp builder index ->
-            let render1, render2 = renders
-            let mutable nextIndex = index
-            builder.OpenComponent<'T>(index)
-            nextIndex <- render1.Invoke(comp, builder, index + 1)
-            builder.AddAttribute(nextIndex, "ChildContent", RenderFragment(fun tb ->
-                render2.Invoke(comp, tb, 0) |> ignore
-            ))
-            builder.CloseComponent()
-            nextIndex + 1
-        )
-
-    
-    member inline _.Delay([<InlineIfLambda>] fn: unit -> AttrRenderFragment * NodeRenderFragment) = fn ()
-
-    member inline _.For
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] fn: unit -> NodeRenderFragment
-        )
-        =
-        render, fn()
-
-    member inline _.Combine
-        (
-            [<InlineIfLambda>] render1: AttrRenderFragment,
-            [<InlineIfLambda>] render2: NodeRenderFragment
-        )
-        =
-        render1, render2
-
-
-    member inline _.Yield(x: EltBuilder) =
-        NodeRenderFragment(fun _ builder index ->
-            builder.OpenElement(index, x.Name)
-            builder.CloseElement()
-            index + 1
-        )
-
-    member inline _.Yield<'T, 'T1 when 'T :> IComponentBuilder<'T1>>(_: 'T) =
-        NodeRenderFragment(fun _ builder index ->
-            builder.OpenComponent<'T1>(index)
-            builder.CloseComponent()
-            index + 1
-        )
-
-
-and ComponentWithDomAndChildAttrBuilder<'T when 'T :> IComponent>() =   
-    inherit ComponentWithDomAttrBuilder<'T>()
-
-    [<CustomOperation("childContent")>]
-    member inline _.childContent
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] renderChild: NodeRenderFragment
-        )
-        =
-        render >>> renderChild
-
-    [<CustomOperation("childContent")>]
-    member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, renders: NodeRenderFragment seq) =
-        NodeRenderFragment(fun comp builder index ->
-            let mutable index = render.Invoke(comp, builder, index)
-            for item in renders do
-                index <- item.Invoke(comp, builder, index)
-            index
-        )
-
-    [<CustomOperation("childContent")>]
-    member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, v: string) = render >>> (html.text v)
-
-    [<CustomOperation("childContent")>]
-    member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, v: int) = render >>> (html.text v)
-    
-    [<CustomOperation("childContent")>]
-    member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, v: float) = render >>> (html.text v)
-    
-
-type StyleBuilder () =
-    inherit Fun.Css.CssBuilder()
-
-    member inline _.Run([<InlineIfLambda>] combine: Fun.Css.CombineKeyValue) =
-        AttrRenderFragment(fun _ builder index ->
-            builder.AddAttribute(index, "style", combine.Invoke(StringBuilder()).ToString())
-            index + 1
-        )
-
-
-type EltWithChildBuilder(name) =
-    inherit EltBuilder(name)
-
-    /// <summary>
-    /// Single child node to be added into the element's children
-    /// </summary>
-    /// <example>
-    /// <code lang="fsharp">
-    /// // &lt;div>
-    /// //   &lt;p>This is my content&lt;/p>
-    /// // &lt;/div>
-    /// let myText content =
-    ///   p {
-    ///    class' "my-class"
-    ///    childContent content
-    ///   }
-    /// div {
-    ///   childContent (myText "This is my content")
-    /// }
-    /// </code>
-    /// </example>
-    [<CustomOperation("childContent")>]
-    member inline _.childContent
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] renderChild: NodeRenderFragment
-        )
-        =
-        render >>> renderChild
-
-    /// <summary>
-    /// It is recommend to use fragment for better performance
-    /// Multiple Nodes that are going to be added to the element's children
-    /// </summary>
-    /// <example>
-    /// <code lang="fsharp">
-    /// // &lt;div>
-    /// //   &lt;p>&lt;/p>
-    /// //   &lt;p>&lt;p/>
-    /// // &lt;/div>
-    /// div {
-    ///   childContent [ p; p }
-    /// }
-    /// </code>
-    /// </example>
-    [<CustomOperation("childContent")>]
-    member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, renders: NodeRenderFragment seq) =
-        NodeRenderFragment(fun comp builder index ->
-            let mutable index = render.Invoke(comp, builder, index)
-            for item in renders do
-                index <- item.Invoke(comp, builder, index)
-            index
-        )
-
-
-    /// <summary>
-    /// Single child node to be added into the element's children
-    /// </summary>
-    /// <example>
-    /// <code lang="fsharp">
-    /// // &lt;div>
-    /// // This is my content
-    /// // &lt;/div>
-    /// div {
-    ///   childContent "This is my content"
-    /// }
-    /// </code>
-    /// </example>
-    [<CustomOperation("childContent")>]
-    member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, v: string) = render >>> (html.text v)
-
-    /// <summary>
-    /// Single child node to be added into the element's children
-    /// </summary>
-    /// <example>
-    /// <code lang="fsharp">
-    /// // &lt;div>
-    /// // 10
-    /// // &lt;/div>
-    /// div {
-    ///   childContent 10
-    /// }
-    /// </code>
-    /// </example>
-    [<CustomOperation("childContent")>]
-    member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, v: int) = render >>> (html.text v)
-    /// <summary>
-    /// Single child node to be added into the element's children
-    /// </summary>
-    /// <example>
-    /// <code lang="fsharp">
-    /// // &lt;div>
-    /// // 100.25
-    /// // &lt;/div>
-    /// div {
-    ///   childContent 100.25
-    /// }
-    /// </code>
-    /// </example>
-    [<CustomOperation("childContent")>]
-    member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, v: float) = render >>> (html.text v)
-    /// <summary>
-    /// Single child node to be added into the element's children
-    /// </summary>
-    /// <example>
-    /// <code lang="fsharp">
-    /// div {
-    ///   childContentRaw ("""
-    ///     &lt;section>
-    ///       Watch out for XSS attacks if you use this,
-    ///       remember to sanitize your html!
-    ///     &lt;/section>
-    ///   """
-    /// }
-    /// </code>
-    /// </example>
-    [<CustomOperation("childContentRaw")>]
-    member inline _.childContentRaw([<InlineIfLambda>] render: AttrRenderFragment, v: string) = render >>> (html.raw v)
-
-
-[<AutoOpen>]
-module Elts =
-
-    let abbr = EltWithChildBuilder "abbr"
-
-    let acronym = EltWithChildBuilder "acronym"
-
-    let address = EltWithChildBuilder "address"
-
-    let applet = EltWithChildBuilder "applet"
-
-    let area = EltWithChildBuilder "area"
-
-    let article = EltWithChildBuilder "article"
-
-    let aside = EltWithChildBuilder "aside"
-
-    let audio = EltWithChildBuilder "audio"
-
-    let b = EltWithChildBuilder "b"
-
-    let base' = EltWithChildBuilder "base"
-
-    let basefont = EltWithChildBuilder "basefont"
-
-    let bdi = EltWithChildBuilder "bdi"
-
-    let bdo = EltWithChildBuilder "bdo"
-
-    let big = EltWithChildBuilder "big"
-
-    let blockquote = EltWithChildBuilder "blockquote"
-
-    let br = EltWithChildBuilder "br"
-
-    let button = EltWithChildBuilder "button"
-
-    let canvas = EltWithChildBuilder "canvas"
-
-    let caption = EltWithChildBuilder "caption"
-
-    let center = EltWithChildBuilder "center"
-
-    let cite = EltWithChildBuilder "cite"
-
-    let code = EltWithChildBuilder "code"
-
-    let col = EltWithChildBuilder "col"
-
-    let colgroup = EltWithChildBuilder "colgroup"
-
-    let content = EltWithChildBuilder "content"
-
-    let data = EltWithChildBuilder "data"
-
-    let datalist = EltWithChildBuilder "datalist"
-
-    let dd = EltWithChildBuilder "dd"
-
-    let del = EltWithChildBuilder "del"
-
-    let details = EltWithChildBuilder "details"
-
-    let dfn = EltWithChildBuilder "dfn"
-
-    let dialog = EltWithChildBuilder "dialog"
-
-    let dir = EltWithChildBuilder "dir"
-
-    let div = EltWithChildBuilder "div"
-
-    let dl = EltWithChildBuilder "dl"
-
-    let dt = EltWithChildBuilder "dt"
-
-    let element = EltWithChildBuilder "element"
-
-    let em = EltWithChildBuilder "em"
-
-    let embed = EltWithChildBuilder "embed"
-
-    let fieldset = EltWithChildBuilder "fieldset"
-
-    let figcaption = EltWithChildBuilder "figcaption"
-
-    let figure = EltWithChildBuilder "figure"
-
-    let font = EltWithChildBuilder "font"
-
-    let footer = EltWithChildBuilder "footer"
-
-    let form = EltWithChildBuilder "form"
-
-    let frame = EltWithChildBuilder "frame"
-
-    let frameset = EltWithChildBuilder "frameset"
-
-    let h1 = EltWithChildBuilder "h1"
-
-    let h2 = EltWithChildBuilder "h2"
-
-    let h3 = EltWithChildBuilder "h3"
-
-    let h4 = EltWithChildBuilder "h4"
-
-    let h5 = EltWithChildBuilder "h5"
-
-    let h6 = EltWithChildBuilder "h6"
-
-    let header = EltWithChildBuilder "header"
-
-    let hr = EltWithChildBuilder "hr"
-
-    let i = EltWithChildBuilder "i"
-
-    let iframe = EltWithChildBuilder "iframe"
-
-    let input = EltWithChildBuilder "input"
-
-    let ins = EltWithChildBuilder "ins"
-
-    let kbd = EltWithChildBuilder "kbd"
-
-    let label = EltWithChildBuilder "label"
-
-    let legend = EltWithChildBuilder "legend"
-
-    let li = EltWithChildBuilder "li"
-
-    let link = EltWithChildBuilder "link"
-
-    let main = EltWithChildBuilder "main"
-
-    let map = EltWithChildBuilder "map"
-
-    let mark = EltWithChildBuilder "mark"
-
-    let menu = EltWithChildBuilder "menu"
-
-    let menuitem = EltWithChildBuilder "menuitem"
-
-    let meter = EltWithChildBuilder "meter"
-
-    let nav = EltWithChildBuilder "nav"
-
-    let noembed = EltWithChildBuilder "noembed"
-
-    let noframes = EltWithChildBuilder "noframes"
-
-    let noscript = EltWithChildBuilder "noscript"
-
-    let object = EltWithChildBuilder "object"
-
-    let ol = EltWithChildBuilder "ol"
-
-    let optgroup = EltWithChildBuilder "optgroup"
-
-    let option = EltWithChildBuilder "option"
-
-    let output = EltWithChildBuilder "output"
-
-    let p = EltWithChildBuilder "p"
-
-    let param = EltWithChildBuilder "param"
-
-    let picture = EltWithChildBuilder "picture"
-
-    let pre = EltWithChildBuilder "pre"
-
-    let progress = EltWithChildBuilder "progress"
-
-    let q = EltWithChildBuilder "q"
-
-    let rb = EltWithChildBuilder "rb"
-
-    let rp = EltWithChildBuilder "rp"
-
-    let rt = EltWithChildBuilder "rt"
-
-    let rtc = EltWithChildBuilder "rtc"
-
-    let ruby = EltWithChildBuilder "ruby"
-
-    let s = EltWithChildBuilder "s"
-
-    let samp = EltWithChildBuilder "samp"
-
-    let script = EltWithChildBuilder "script"
-
-    let section = EltWithChildBuilder "section"
-
-    let select = EltWithChildBuilder "select"
-
-    let shadow = EltWithChildBuilder "shadow"
-
-    let slot = EltWithChildBuilder "slot"
-
-    let small = EltWithChildBuilder "small"
-
-    let source = EltWithChildBuilder "source"
-
-    let span = EltWithChildBuilder "span"
-
-    let strike = EltWithChildBuilder "strike"
-
-    let strong = EltWithChildBuilder "strong"
-
-    let style' = EltWithChildBuilder "style'"
-
-    let sub = EltWithChildBuilder "sub"
-
-    let summary = EltWithChildBuilder "summary"
-
-    let sup = EltWithChildBuilder "sup"
-
-    let svg = EltWithChildBuilder "svg"
-
-    let table = EltWithChildBuilder "table"
-
-    let tbody = EltWithChildBuilder "tbody"
-
-    let td = EltWithChildBuilder "td"
-
-    let template = EltWithChildBuilder "template"
-
-    let textarea = EltWithChildBuilder "textarea"
-
-    let tfoot = EltWithChildBuilder "tfoot"
-
-    let th = EltWithChildBuilder "th"
-
-    let thead = EltWithChildBuilder "thead"
-
-    let time = EltWithChildBuilder "time"
-
-    let title = EltWithChildBuilder "title"
-
-    let tr = EltWithChildBuilder "tr"
-
-    let track = EltWithChildBuilder "track"
-
-    let tt = EltWithChildBuilder "tt"
-
-    let u = EltWithChildBuilder "u"
-
-    let ul = EltWithChildBuilder "ul"
-
-    let var = EltWithChildBuilder "var"
-
-    let video = EltWithChildBuilder "video"
-
-    let wbr = EltBuilder "wbr"
-
-    let img = EltBuilder "img"
-
-    let html' = EltWithChildBuilder "html"
-
-    let body = EltWithChildBuilder "body"
-
-    let head = EltWithChildBuilder "head"
-
-    let meta = EltWithChildBuilder "meta"
-
-
-    /// Put raw js into the script tag
-    let inline js (x: string) =
-        NodeRenderFragment(fun _ builder index ->
-            builder.OpenElement(index, "script")
-            builder.AddContent(index + 1, x)
-            builder.CloseElement()
-            index + 2
-        )
-
-
-    let inline doctype decl =
-        NodeRenderFragment(fun _ builder index ->
-            builder.AddMarkupContent(index, $"<!DOCTYPE {decl}>\n")
-            index + 1
-        )
-
-    let inline stylesheet (x: string) =
-        link {
-            rel "stylesheet"
-            href x
-        }
-
-    let inline baseUrl (x: string) = base' { href x }
-
-    let styleBuilder = StyleBuilder()
-
-
-    type html =
-        
-        static member inline comp<'T when 'T :> IComponent>() = ComponentBuilder<'T>()
-
-        static member inline fromBuilder<'T, 'T1 when 'T :> IComponentBuilder<'T1>> (x: 'T) =
-            NodeRenderFragment(fun _ builder index ->
-                builder.OpenComponent<'T1>(index)
-                builder.CloseComponent()
-                index + 1
-            )
-
-        static member inline fromBuilder<'T when 'T :> EltBuilder> (x: 'T) =
-            NodeRenderFragment(fun _ builder index ->
-                builder.OpenElement(index, x.Name)
-                builder.CloseComponent()
-                index + 1
-            )
+        this.callback (render, "scroll", callback)

@@ -269,7 +269,7 @@ let generateCode (targetNamespace: string) (opens: string) (tys: Type seq) =
                             + "\n"
                             + $"    static member inline create (x: {nameof NodeRenderFragment} seq) = {builderName}{builderGenerics}(){{ yield! x }}"
                         else
-                            $"    static member inline create () = html.fromBuilder({builderName}{builderGenerics}())"
+                            $"    static member inline create () = {builderName}{builderGenerics}()"
 
                     $"""
 type {builderName}{builderGenericsWithContraints}() =

@@ -14,11 +14,12 @@
 		<Compile Include="Router.Giraffe.FormatExpressions.fs" />
 		<Compile Include="Router.Giraffe.Dsl.fs" />
 		<Compile Include="DIComponent.fs" />
-		<Compile Include="ElmComponent.fs" />
 		<Compile Include="StoreComponent.fs" />
 		<Compile Include="AdaptiveComponent.fs" />
 		<Compile Include="Dsl.fs" />
-		<Compile Include="DslElt.fs" />
+		<Compile Include="DslDomAttrBuilder.fs" />
+		<Compile Include="DslElementBuilder.fs" />
+		<Compile Include="DslComponentBuilder.fs" />
 		<Compile Include="DslDI.fs" />
 		<Compile Include="DslWatch.fs" />
 		<Compile Include="DslAdaptiview.fs" />
