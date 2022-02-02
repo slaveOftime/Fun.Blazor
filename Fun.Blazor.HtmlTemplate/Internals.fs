@@ -5,7 +5,7 @@ open System.Text
 open System.Text.RegularExpressions
 open System.Collections.Concurrent
 open Microsoft.AspNetCore.Components
-open System.Xml
+open FSharp.Data
 open Fun.Blazor
 open Fun.Blazor.Operators
 
@@ -120,6 +120,7 @@ let buildAttrs (name: string, value: string) =
                     match arg with
                     | :? ArgMkAttrWithName as fn -> (fn name).Invoke(comp, builder, index)
                     | :? AttrRenderFragment as fn -> fn.Invoke(comp, builder, index)
+                    | _ when name.StartsWith "on" -> html.callback(name, (fun x -> invokeFunction arg x :?> unit)).Invoke(comp, builder, index)
                     | _ -> (name => arg).Invoke(comp, builder, index)
             )
         )
@@ -172,33 +173,29 @@ let rebuildNodes (nodes: NodeItem list) (args: obj []) =
 
 
 let parseNodes (str: string) =
-    let doc = XmlDocument()
+    let doc = HtmlDocument.Parse str
 
-    doc.LoadXml $"<Root>{str}</Root>"
-
-    let rec loopNodes (nodes: XmlNodeList) =
+    let rec loopNodes (nodes: HtmlNode seq) =
         [
-            for i in 0 .. nodes.Count - 1 do
-                let node = nodes.Item i
-                let nodeName = node.Name
+            for node in nodes do
+                let nodeName = node.Name()
                 if String.IsNullOrEmpty nodeName then
                     yield! buildNodes (node.ToString())
                 else
                     NodeElt(
-                        node.Name,
+                        nodeName,
                         [
-                            for k in 0 .. node.Attributes.Count - 1 do
-                                let attr = node.Attributes.Item k
-                                buildAttrs (attr.Name, attr.Value)
+                            for attr in node.Attributes() do
+                                buildAttrs (attr.Name(), attr.Value())
                         ],
                         [
                             if nodeName = "script" || nodeName = "style" then
-                                for j in 0 .. node.ChildNodes.Count - 1 do
-                                    yield! buildRawNodes ((node.ChildNodes.Item j).ToString())
+                                for ele in node.Elements() do
+                                    yield! buildRawNodes (ele.ToString())
                             else
-                                yield! loopNodes node.ChildNodes
+                                yield! loopNodes (node.Elements())
                         ]
                     )
         ]
 
-    loopNodes doc.ChildNodes
+    loopNodes (doc.Elements())

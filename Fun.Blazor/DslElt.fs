@@ -1819,15 +1819,18 @@ and ComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent>()
         NodeRenderFragment(fun comp builder index ->
             builder.OpenComponent<'T>(index)
             let nextIndex = render.Invoke(comp, builder, index + 1)
-            builder.CloseElement()
+            builder.CloseComponent()
             nextIndex
         )
 
     member inline _.Run([<InlineIfLambda>] render: NodeRenderFragment) =
         NodeRenderFragment(fun comp builder index ->
+            let mutable nextIndex = index
             builder.OpenComponent<'T>(index)
-            let nextIndex = render.Invoke(comp, builder, index + 1)
-            builder.CloseElement()
+            builder.AddAttribute(index + 1, "ChildContent", RenderFragment(fun tb ->
+                nextIndex <- render.Invoke(comp, tb, index + 2)
+            ))
+            builder.CloseComponent()
             nextIndex
         )
 
@@ -1887,17 +1890,51 @@ and ComponentWithDomAttrBuilder<'T when 'T :> IComponent>() =
         NodeRenderFragment(fun comp builder index ->
             builder.OpenComponent<'T>(index)
             let nextIndex = render.Invoke(comp, builder, index + 1)
-            builder.CloseElement()
+            builder.CloseComponent()
             nextIndex
         )
 
     member inline _.Run([<InlineIfLambda>] render: NodeRenderFragment) =
         NodeRenderFragment(fun comp builder index ->
             builder.OpenComponent<'T>(index)
-            let nextIndex = render.Invoke(comp, builder, index + 1)
-            builder.CloseElement()
-            nextIndex
+            builder.AddAttribute(index + 1, "ChildContent", RenderFragment(fun tb ->
+                render.Invoke(comp, tb, 0) |> ignore
+            ))
+            builder.CloseComponent()
+            index + 2
         )
+
+    member inline _.Run(renders: AttrRenderFragment * NodeRenderFragment) =
+        NodeRenderFragment(fun comp builder index ->
+            let render1, render2 = renders
+            let mutable nextIndex = index
+            builder.OpenComponent<'T>(index)
+            nextIndex <- render1.Invoke(comp, builder, index + 1)
+            builder.AddAttribute(nextIndex, "ChildContent", RenderFragment(fun tb ->
+                render2.Invoke(comp, tb, 0) |> ignore
+            ))
+            builder.CloseComponent()
+            nextIndex + 1
+        )
+
+    
+    member inline _.Delay([<InlineIfLambda>] fn: unit -> AttrRenderFragment * NodeRenderFragment) = fn ()
+
+    member inline _.For
+        (
+            [<InlineIfLambda>] render: AttrRenderFragment,
+            [<InlineIfLambda>] fn: unit -> NodeRenderFragment
+        )
+        =
+        render, fn()
+
+    member inline _.Combine
+        (
+            [<InlineIfLambda>] render1: AttrRenderFragment,
+            [<InlineIfLambda>] render2: NodeRenderFragment
+        )
+        =
+        render1, render2
 
 
     member inline _.Yield(x: EltBuilder) =
@@ -2097,7 +2134,7 @@ module Elts =
 
     let b = EltWithChildBuilder "b"
 
-    let base' = EltWithChildBuilder "base'"
+    let base' = EltWithChildBuilder "base"
 
     let basefont = EltWithChildBuilder "basefont"
 

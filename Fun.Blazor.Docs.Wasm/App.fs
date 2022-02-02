@@ -141,7 +141,7 @@ let navmenu =
 let app =
     html.inject (fun (hook: IComponentHook, shareStore: IShareStore) ->
         let isDarkMode = ShareStores.isDarkMode shareStore
-        let openMenu = hook.UseStore false
+        let openMenu = hook.UseStore true
 
         let routes =
             [

@@ -18,6 +18,7 @@ type html with
             let initState, initCmd = initState ()
             let store = cval (initState)
 
+            // TODO should use elmish common implementation
             let rec loopCmd (state: 'State, cmd: Cmd<'Msg>) =
                 for sub in cmd do
                     sub (fun msg ->
@@ -32,7 +33,7 @@ type html with
             adaptiview () {
                 let! state = store
 
-                let dispatch (msg: 'Msg) = loopCmd (updateState msg state)
+                let dispatch (msg: 'Msg) = loopCmd (state, Cmd.ofMsg msg)
 
                 render state dispatch
             }

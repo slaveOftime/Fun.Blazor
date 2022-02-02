@@ -140,11 +140,11 @@ let private getMetaInfo (ty: Type) =
             elif prop.PropertyType = typeof<RenderFragment> then
                 let name = if prop.Name = "ChildContent" then lowerFirstCase name else name
                 [
-                    $"    {customOperation name} {memberStart}{name} ({contextArg}, fragment) = render >>> html.renderChild(\"{prop.Name}\", fragment)"
-                    $"    {customOperation name} {memberStart}{name} ({contextArg}, fragments) = render >>> html.renderChild(\"{prop.Name}\", fragment {{ yield! fragments }})"
-                    $"    {customOperation name} {memberStart}{name} ({contextArg}, x: string) = render >>> html.renderChild(\"{prop.Name}\", html.text x)"
-                    $"    {customOperation name} {memberStart}{name} ({contextArg}, x: int) = render >>> html.renderChild(\"{prop.Name}\", html.text x)"
-                    $"    {customOperation name} {memberStart}{name} ({contextArg}, x: float) = render >>> html.renderChild(\"{prop.Name}\", html.text x)"
+                    $"    {customOperation name} {memberStart}{name} ({contextArg}, fragment) = render ==> html.renderFragment(\"{prop.Name}\", fragment)"
+                    $"    {customOperation name} {memberStart}{name} ({contextArg}, fragments) = render ==> html.renderFragment(\"{prop.Name}\", fragment {{ yield! fragments }})"
+                    $"    {customOperation name} {memberStart}{name} ({contextArg}, x: string) = render ==> html.renderFragment(\"{prop.Name}\", html.text x)"
+                    $"    {customOperation name} {memberStart}{name} ({contextArg}, x: int) = render ==> html.renderFragment(\"{prop.Name}\", html.text x)"
+                    $"    {customOperation name} {memberStart}{name} ({contextArg}, x: float) = render ==> html.renderFragment(\"{prop.Name}\", html.text x)"
                 ]
 
             elif prop.Name = "Class" && prop.PropertyType = typeof<string> then

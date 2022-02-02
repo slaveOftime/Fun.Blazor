@@ -12,11 +12,11 @@ type AuthorizeViewCoreBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micros
     [<CustomOperation("ChildContent")>] member inline _.ChildContent ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.AspNetCore.Components.Authorization.AuthenticationState -> NodeRenderFragment) = render ==> html.renderFragment("ChildContent", fn)
     [<CustomOperation("NotAuthorized")>] member inline _.NotAuthorized ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.AspNetCore.Components.Authorization.AuthenticationState -> NodeRenderFragment) = render ==> html.renderFragment("NotAuthorized", fn)
     [<CustomOperation("Authorized")>] member inline _.Authorized ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.AspNetCore.Components.Authorization.AuthenticationState -> NodeRenderFragment) = render ==> html.renderFragment("Authorized", fn)
-    [<CustomOperation("Authorizing")>] member inline _.Authorizing ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render >>> html.renderChild("Authorizing", fragment)
-    [<CustomOperation("Authorizing")>] member inline _.Authorizing ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render >>> html.renderChild("Authorizing", fragment { yield! fragments })
-    [<CustomOperation("Authorizing")>] member inline _.Authorizing ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render >>> html.renderChild("Authorizing", html.text x)
-    [<CustomOperation("Authorizing")>] member inline _.Authorizing ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render >>> html.renderChild("Authorizing", html.text x)
-    [<CustomOperation("Authorizing")>] member inline _.Authorizing ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render >>> html.renderChild("Authorizing", html.text x)
+    [<CustomOperation("Authorizing")>] member inline _.Authorizing ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("Authorizing", fragment)
+    [<CustomOperation("Authorizing")>] member inline _.Authorizing ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("Authorizing", fragment { yield! fragments })
+    [<CustomOperation("Authorizing")>] member inline _.Authorizing ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("Authorizing", html.text x)
+    [<CustomOperation("Authorizing")>] member inline _.Authorizing ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("Authorizing", html.text x)
+    [<CustomOperation("Authorizing")>] member inline _.Authorizing ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("Authorizing", html.text x)
     [<CustomOperation("Resource")>] member inline _.Resource ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Object) = render ==> ("Resource" => x)
                 
 
@@ -31,11 +31,11 @@ type CascadingAuthenticationStateBuilder<'FunBlazorGeneric when 'FunBlazorGeneri
     inherit ComponentWithChildBuilder<'FunBlazorGeneric>()
     static member inline create (x: string) = CascadingAuthenticationStateBuilder<'FunBlazorGeneric>(){ x }
     static member inline create (x: NodeRenderFragment seq) = CascadingAuthenticationStateBuilder<'FunBlazorGeneric>(){ yield! x }
-    [<CustomOperation("childContent")>] member inline _.childContent ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render >>> html.renderChild("ChildContent", fragment)
-    [<CustomOperation("childContent")>] member inline _.childContent ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render >>> html.renderChild("ChildContent", fragment { yield! fragments })
-    [<CustomOperation("childContent")>] member inline _.childContent ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render >>> html.renderChild("ChildContent", html.text x)
-    [<CustomOperation("childContent")>] member inline _.childContent ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render >>> html.renderChild("ChildContent", html.text x)
-    [<CustomOperation("childContent")>] member inline _.childContent ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render >>> html.renderChild("ChildContent", html.text x)
+    [<CustomOperation("childContent")>] member inline _.childContent ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("ChildContent", fragment)
+    [<CustomOperation("childContent")>] member inline _.childContent ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("ChildContent", fragment { yield! fragments })
+    [<CustomOperation("childContent")>] member inline _.childContent ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("ChildContent", html.text x)
+    [<CustomOperation("childContent")>] member inline _.childContent ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("ChildContent", html.text x)
+    [<CustomOperation("childContent")>] member inline _.childContent ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("ChildContent", html.text x)
                 
             
 

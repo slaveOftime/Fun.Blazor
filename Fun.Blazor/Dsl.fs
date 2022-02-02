@@ -41,15 +41,6 @@ type html() =
             index + 1
         )
 
-    static member inline renderChild(name: string, fragment: NodeRenderFragment) =
-        NodeRenderFragment(fun comp builder index ->
-            builder.AddAttribute(
-                index,
-                name,
-                box (Microsoft.AspNetCore.Components.RenderFragment(fun tb -> fragment.Invoke(comp, tb, 0) |> ignore))
-            )
-            index + 1
-        )
 
     static member inline key k =
         AttrRenderFragment(fun _ builder index ->
@@ -92,17 +83,19 @@ type html() =
             index + 2
         )
 
+
     static member inline callback<'T>(eventName, fn: 'T -> unit) =
         AttrRenderFragment(fun comp builder index ->
-            builder.AddAttribute(index, "on" + eventName, EventCallback.Factory.Create(comp, Action<'T> fn))
+            builder.AddAttribute(index, eventName, EventCallback.Factory.Create(comp, Action<'T> fn))
             index + 1
         )
 
     static member inline callbackTask<'T>(eventName, fn: 'T -> Task) =
         AttrRenderFragment(fun comp builder index ->
-            builder.AddAttribute(index, "on" + eventName, EventCallback.Factory.Create(comp, Func<'T, Task> fn))
+            builder.AddAttribute(index, eventName, EventCallback.Factory.Create(comp, Func<'T, Task> fn))
             index + 1
         )
+
 
     static member inline raw x =
         NodeRenderFragment(fun _ builder index ->
