@@ -54,89 +54,85 @@ let navmenu =
     MudNavMenu'() {
         MudNavLink'() {
             Href "./quick-start"
-            childContent "Quick start"
+            "Quick start"
         }
         MudNavLink'() {
             Href "./router"
-            childContent "Router"
+            "Router"
         }
         MudNavLink'() {
             Href "./adaptive-form"
-            childContent "Adaptive Form"
+            "Adaptive Form"
         }
         MudNavLink'() {
             Href "./elmish"
-            childContent "Elmish"
+            "Elmish"
         }
         MudNavLink'() {
             Href "./cli-usage"
-            childContent "Cli usage"
+            "Cli usage"
         }
         MudNavLink'() {
             Href "./tests"
-            childContent "Tests"
+            "Tests"
         }
         MudNavGroup'() {
             Title "Helper functions"
             Icon Icons.Material.Filled.LiveHelp
             Expanded true
-            childContent [
-                MudNavLink'() {
-                    Href "./helper-functions/html-inject"
-                    childContent "html.inject"
-                }
-                MudNavLink'() {
-                    Href "./helper-functions/component-hook"
-                    childContent "IComponentHook"
-                }
-                MudNavLink'() {
-                    Href "./helper-functions/adaptiview"
-                    childContent "adaptiview"
-                }
-                MudNavLink'() {
-                    Href "./helper-functions/html-watch"
-                    childContent "html.watch"
-                }
-                MudNavLink'() {
-                    Href "./helper-functions/html-template-demo"
-                    childContent "Html Template Demo"
-                }
-                MudNavLink'() {
-                    Href "./helper-functions/global-store"
-                    childContent "Global store"
-                }
-                MudNavLink'() {
-                    Href "./helper-functions/performance"
-                    childContent "Performance"
-                }
-                MudNavLink'() {
-                    Href "./helper-functions/ce-css-builder"
-                    childContent "CE style css builder"
-                }
-            ]
+            MudNavLink'() {
+                Href "./helper-functions/html-inject"
+                "html.inject"
+            }
+            MudNavLink'() {
+                Href "./helper-functions/component-hook"
+                "IComponentHook"
+            }
+            MudNavLink'() {
+                Href "./helper-functions/adaptiview"
+                "adaptiview"
+            }
+            MudNavLink'() {
+                Href "./helper-functions/html-watch"
+                "html.watch"
+            }
+            MudNavLink'() {
+                Href "./helper-functions/html-template-demo"
+                "Html Template Demo"
+            }
+            MudNavLink'() {
+                Href "./helper-functions/global-store"
+                "Global store"
+            }
+            MudNavLink'() {
+                Href "./helper-functions/performance"
+                "Performance"
+            }
+            MudNavLink'() {
+                Href "./helper-functions/ce-css-builder"
+                "CE style css builder"
+            }
         }
         MudNavGroup'() {
             Title "Demos"
             Icon Icons.Material.Filled.School
             Expanded true
-            childContent [
-                MudNavLink'() {
-                    Href "./mudblazor"
-                    childContent "MudBlazor"
-                }
-                MudNavLink'() {
-                    Href "./antdesign"
-                    childContent "Antdesign"
-                }
-                MudNavLink'() {
-                    Href "./fluentui"
-                    childContent "FluentUI"
-                }
-                MudNavLink'() {
-                    Href "./drag-drop"
-                    childContent "Drag Drop"
-                }
-            ]
+            MudNavLink'() {
+                Href "./mudblazor"
+                "MudBlazor"
+            }
+            MudNavLink'() {
+                Href "./antdesign"
+                "Antdesign"
+            }
+            MudNavLink'() {
+                Href "./fluentui"
+                "FluentUI"
+            }
+            MudNavLink'() {
+                Href "./drag-drop"
+                "Drag Drop"
+            }
         }
     }
 
