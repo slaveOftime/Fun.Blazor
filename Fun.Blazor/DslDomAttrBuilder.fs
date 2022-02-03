@@ -389,7 +389,7 @@ type DomAttrBuilder() =
     member _.title'(render: AttrRenderFragment, v) = render ==> ("title" => v)
     [<CustomOperation("translate")>]
     member _.translate(render: AttrRenderFragment, v) = render ==> ("translate" => v)
-    [<CustomOperation("type")>]
+    [<CustomOperation("type'")>]
     member _.type'(render: AttrRenderFragment, v) = render ==> ("type" => v)
     [<CustomOperation("usemap")>]
     member _.usemap(render: AttrRenderFragment, v) = render ==> ("usemap" => v)
