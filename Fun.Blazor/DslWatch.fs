@@ -21,8 +21,8 @@ type html with
     ///   html.watch(obs, _view)
     /// </code>
     /// </example>
-    static member inline watch(store: IObservable<'T>, render: 'T -> NodeRenderFragment, defaultValue: 'T, ?k) =
-        html.comp<StoreComponent<'T>> () {
+    static member watch(store: IObservable<'T>, render: 'T -> NodeRenderFragment, defaultValue: 'T, ?k) =
+        ComponentWithChildBuilder<StoreComponent<'T>> () {
             "DefaultValue" => defaultValue
             "Store" => store
             "RenderFn" => render

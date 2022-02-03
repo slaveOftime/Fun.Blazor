@@ -44,7 +44,10 @@ type ComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent>(
         render ==> (fn ())
 
     member inline _.For(renders: 'T seq, [<InlineIfLambda>] fn: 'T -> AttrRenderFragment) =
-        renders |> Seq.map fn |> Seq.fold (==>) (emptyAttr)
+        renders |> Seq.map fn |> Seq.fold (==>) emptyAttr
+
+    member inline _.YieldFrom(renders: AttrRenderFragment seq) =
+        renders |> Seq.fold (==>) emptyAttr
 
 
     member inline _.Zero() = emptyAttr
@@ -63,12 +66,12 @@ type ComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent>(
     member inline _.ref
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] fn: ElementReference -> unit
+            [<InlineIfLambda>] fn: 'T -> unit
         )
         =
         render
         ==> AttrRenderFragment(fun _ builder index ->
-            builder.AddElementReferenceCapture(index, fn)
+            builder.AddComponentReferenceCapture(index, fun x -> fn(unbox<'T> x))
             index + 1
         )
 
@@ -137,9 +140,9 @@ type ComponentWithChildBuilder<'T when 'T :> IComponent>() =
     /// So we cannot merge AttrRenderFragment and NodeRenderFragment directly.
     /// Instead, we should first invoke AttrRenderFragment then add ChildContent RenderFragment as attribute and switch builder context.
     /// Other method like Delay, For, Combine should also have appropriate implementation to seperate Attr and Node so we can Invoke them standalone.
-    member inline _.Run(renders: AttrRenderFragment * NodeRenderFragment) =
+    member inline _.Run(renders: struct(AttrRenderFragment * NodeRenderFragment)) =
         NodeRenderFragment(fun comp builder index ->
-            let render1, render2 = renders
+            let struct(render1, render2) = renders
             let mutable nextIndex = index
             builder.OpenComponent<'T>(index)
             nextIndex <- render1.Invoke(comp, builder, index + 1)
@@ -198,7 +201,7 @@ type ComponentWithChildBuilder<'T when 'T :> IComponent>() =
             [<InlineIfLambda>] render2: NodeRenderFragment
         )
         =
-        render1, render2
+        struct(render1, render2)
 
     member inline _.Combine
         (
@@ -214,13 +217,13 @@ type ComponentWithChildBuilder<'T when 'T :> IComponent>() =
             [<InlineIfLambda>] fn: unit -> NodeRenderFragment
         )
         =
-        render, (fn ())
+        struct(render, fn ())
 
     member inline _.For(renders: 'T seq, [<InlineIfLambda>] fn: 'T -> NodeRenderFragment) =
-        renders |> Seq.map fn |> Seq.fold (>=>) (emptyNode)
+        renders |> Seq.map fn |> Seq.fold (>=>) emptyNode
 
     member inline _.YieldFrom(renders: NodeRenderFragment seq) =
-        renders |> Seq.fold (>=>) (emptyNode)
+        renders |> Seq.fold (>=>) emptyNode
 
     member inline _.Zero() = emptyNode
 
@@ -264,6 +267,19 @@ type ComponentWithDomAttrBuilder<'T when 'T :> IComponent>() =
             nextIndex
         )
 
+    [<CustomOperation("ref")>]
+    member inline _.ref
+        (
+            [<InlineIfLambda>] render: AttrRenderFragment,
+            [<InlineIfLambda>] fn: 'T -> unit
+        )
+        =
+        render
+        ==> AttrRenderFragment(fun _ builder index ->
+            builder.AddComponentReferenceCapture(index, fun x -> fn(unbox<'T> x))
+            index + 1
+        )
+
 
 type ComponentWithDomAndChildAttrBuilder<'T when 'T :> IComponent>() =
     inherit ComponentWithDomAttrBuilder<'T>()
@@ -284,9 +300,9 @@ type ComponentWithDomAndChildAttrBuilder<'T when 'T :> IComponent>() =
     /// So we cannot merge AttrRenderFragment and NodeRenderFragment directly.
     /// Instead, we should first invoke AttrRenderFragment then add ChildContent RenderFragment as attribute and switch builder context.
     /// Other method like Delay, For, Combine should also have appropriate implementation to seperate Attr and Node so we can Invoke them standalone.
-    member inline _.Run(renders: AttrRenderFragment * NodeRenderFragment) =
+    member inline _.Run(renders: struct (AttrRenderFragment * NodeRenderFragment)) =
         NodeRenderFragment(fun comp builder index ->
-            let render1, render2 = renders
+            let struct (render1, render2) = renders
             let mutable nextIndex = index
             builder.OpenComponent<'T>(index)
             nextIndex <- render1.Invoke(comp, builder, index + 1)
@@ -345,7 +361,7 @@ type ComponentWithDomAndChildAttrBuilder<'T when 'T :> IComponent>() =
             [<InlineIfLambda>] render2: NodeRenderFragment
         )
         =
-        render1, render2
+        struct(render1, render2)
 
     member inline _.Combine
         (
@@ -361,13 +377,13 @@ type ComponentWithDomAndChildAttrBuilder<'T when 'T :> IComponent>() =
             [<InlineIfLambda>] fn: unit -> NodeRenderFragment
         )
         =
-        render, (fn ())
+        struct(render, fn ())
 
     member inline _.For(renders: 'T seq, [<InlineIfLambda>] fn: 'T -> NodeRenderFragment) =
-        renders |> Seq.map fn |> Seq.fold (>=>) (emptyNode)
+        renders |> Seq.map fn |> Seq.fold (>=>) emptyNode
 
     member inline _.YieldFrom(renders: NodeRenderFragment seq) =
-        renders |> Seq.fold (>=>) (emptyNode)
+        renders |> Seq.fold (>=>) emptyNode
 
     member inline _.Zero() = emptyNode
 

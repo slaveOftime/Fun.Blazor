@@ -7,7 +7,7 @@ open AntDesign.ProLayout.DslInternals
 
 
 type AntComponentBaseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentBuilder<'FunBlazorGeneric>()
+    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
     static member inline create () = html.fromBuilder(AntComponentBaseBuilder<'FunBlazorGeneric>())
     [<CustomOperation("RefBack")>] member inline _.RefBack ([<InlineIfLambda>] render: AttrRenderFragment, x: AntDesign.ForwardRef) = render ==> ("RefBack" => x)
                 
@@ -402,7 +402,7 @@ type RegionalSettingBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsof
                 
 
 type _ImportsBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentBuilder<'FunBlazorGeneric>()
+    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
     static member inline create () = html.fromBuilder(_ImportsBuilder<'FunBlazorGeneric>())
 
                 

@@ -158,7 +158,7 @@ let rebuildNodes (nodes: NodeItem list) (args: obj []) =
                 | Node x -> x
                 | NodeMk mk -> mk args
                 | NodeElt (name, attrs, nodes) ->
-                    EltBuilder name {
+                    EltWithChildBuilder name {
                         html.mergeAttrs [
                             for attr in attrs do
                                 match attr with

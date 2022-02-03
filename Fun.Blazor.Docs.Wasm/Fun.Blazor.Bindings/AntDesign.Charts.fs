@@ -7,7 +7,7 @@ open AntDesign.Charts.DslInternals
 
 
 type ChartComponentBaseBuilder<'FunBlazorGeneric, 'TConfig when 'TConfig : not struct and 'TConfig : (new : unit -> 'TConfig) and 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentBuilder<'FunBlazorGeneric>()
+    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
     static member inline create () = html.fromBuilder(ChartComponentBaseBuilder<'FunBlazorGeneric, 'TConfig>())
     [<CustomOperation("Data")>] member inline _.Data ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Object) = render ==> ("Data" => x)
     [<CustomOperation("Config")>] member inline _.Config ([<InlineIfLambda>] render: AttrRenderFragment, x: 'TConfig) = render ==> ("Config" => x)

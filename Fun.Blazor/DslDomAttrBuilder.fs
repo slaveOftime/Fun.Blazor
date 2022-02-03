@@ -43,7 +43,10 @@ type DomAttrBuilder() =
         render ==> (fn ())
 
     member inline _.For(renders: 'T seq, [<InlineIfLambda>] fn: 'T -> AttrRenderFragment) =
-        renders |> Seq.map fn |> Seq.fold (==>) (emptyAttr)
+        renders |> Seq.map fn |> Seq.fold (==>) emptyAttr
+
+    member inline _.YieldFrom(renders: AttrRenderFragment seq) =
+        renders |> Seq.fold (==>) emptyAttr
 
 
     member inline _.Zero() = emptyAttr
@@ -58,19 +61,7 @@ type DomAttrBuilder() =
             index
         )
 
-    [<CustomOperation("ref")>]
-    member inline _.ref
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] fn: ElementReference -> unit
-        )
-        =
-        render
-        ==> AttrRenderFragment(fun _ builder index ->
-            builder.AddElementReferenceCapture(index, fn)
-            index + 1
-        )
-
+    
     [<CustomOperation("callback")>]
     member inline _.callback
         (

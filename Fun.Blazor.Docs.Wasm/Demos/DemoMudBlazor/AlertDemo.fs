@@ -6,7 +6,7 @@ open MudBlazor
 open Fun.Blazor
 
 let alertDemo = html.inject (fun (hook: IComponentHook) ->
-    let cardRef = hook.UseStore None
+    let cardRef = hook.UseStore<MudCard option> None
     let str = hook.UseStore "This is the way"
     
     let number1 = hook.UseStore 100

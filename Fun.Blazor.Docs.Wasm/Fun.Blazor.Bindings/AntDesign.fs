@@ -8,16 +8,16 @@ open AntDesign.DslInternals
 
 type antComponentBase<'FunBlazorGeneric> =
     
-    static member inline create () = ComponentBuilder<AntDesign.AntComponentBase>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.AntComponentBase>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.AntComponentBase>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.AntComponentBase>() { yield! attrs }
 
     static member inline refBack (x: AntDesign.ForwardRef) = "RefBack" => x
                     
 
 type antDomComponentBase<'FunBlazorGeneric> =
     inherit antComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.AntDomComponentBase>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.AntDomComponentBase>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.AntDomComponentBase>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.AntDomComponentBase>() { yield! attrs }
 
     static member inline id (x: System.String) = "Id" => x
     static member inline classes (x: string list) = html.classes x
@@ -34,11 +34,11 @@ open AntDesign.DslInternals
 
 type overlayTrigger<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Internal.OverlayTrigger>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.OverlayTrigger>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.Internal.OverlayTrigger>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.Internal.OverlayTrigger>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.Internal.OverlayTrigger>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Internal.OverlayTrigger>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.OverlayTrigger>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Internal.OverlayTrigger>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Internal.OverlayTrigger>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Internal.OverlayTrigger>(){ x }
     static member inline boundaryAdjustMode (x: AntDesign.TriggerBoundaryAdjustMode) = "BoundaryAdjustMode" => x
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
@@ -82,16 +82,16 @@ open AntDesign.DslInternals
 
 type dropdown<'FunBlazorGeneric> =
     inherit Internal.overlayTrigger<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Dropdown>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Dropdown>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Dropdown>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Dropdown>() { yield! attrs }
 
 
                     
 
 type dropdownButton<'FunBlazorGeneric> =
     inherit dropdown<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.DropdownButton>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.DropdownButton>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.DropdownButton>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.DropdownButton>() { yield! attrs }
 
     static member inline block (x: System.Boolean) = "Block" => x
     static member inline buttonsRender (fn: _ -> _ -> NodeRenderFragment) = AttrRenderFragment(fun comp builder index -> builder.AddAttribute(index, "ButtonsRender", box (System.Func<Microsoft.AspNetCore.Components.RenderFragment, Microsoft.AspNetCore.Components.RenderFragment, Microsoft.AspNetCore.Components.RenderFragment>(fun x1 x2 -> Microsoft.AspNetCore.Components.RenderFragment(fun tb -> (fn x1 x2).Invoke(comp, tb, 0) |> ignore)))); index + 1)
@@ -107,8 +107,8 @@ type dropdownButton<'FunBlazorGeneric> =
 
 type popconfirm<'FunBlazorGeneric> =
     inherit Internal.overlayTrigger<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Popconfirm>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Popconfirm>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Popconfirm>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Popconfirm>() { yield! attrs }
 
     static member inline title (x: System.String) = "Title" => x
     static member inline titleTemplate (x: string) = html.renderFragment("TitleTemplate", html.text x)
@@ -132,8 +132,8 @@ type popconfirm<'FunBlazorGeneric> =
 
 type popover<'FunBlazorGeneric> =
     inherit Internal.overlayTrigger<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Popover>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Popover>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Popover>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Popover>() { yield! attrs }
 
     static member inline title (x: System.String) = "Title" => x
     static member inline titleTemplate (x: string) = html.renderFragment("TitleTemplate", html.text x)
@@ -150,8 +150,8 @@ type popover<'FunBlazorGeneric> =
 
 type tooltip<'FunBlazorGeneric> =
     inherit Internal.overlayTrigger<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Tooltip>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Tooltip>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Tooltip>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Tooltip>() { yield! attrs }
 
     static member inline title (x: OneOf.OneOf<System.String, Microsoft.AspNetCore.Components.RenderFragment, Microsoft.AspNetCore.Components.MarkupString>) = "Title" => x
     static member inline arrowPointAtCenter (x: System.Boolean) = "ArrowPointAtCenter" => x
@@ -169,16 +169,16 @@ open AntDesign.DslInternals
 
 type subMenuTrigger<'FunBlazorGeneric> =
     inherit Internal.overlayTrigger<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Internal.SubMenuTrigger>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.SubMenuTrigger>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Internal.SubMenuTrigger>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.SubMenuTrigger>() { yield! attrs }
 
     static member inline triggerClass (x: System.String) = "TriggerClass" => x
                     
 
 type pickerPanelBase<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Internal.PickerPanelBase>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.PickerPanelBase>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Internal.PickerPanelBase>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.PickerPanelBase>() { yield! attrs }
 
     static member inline onSelect (fn) = "OnSelect" => (System.Action<System.DateTime, System.Int32>fn)
     static member inline pickerIndex (x: System.Int32) = "PickerIndex" => x
@@ -194,8 +194,8 @@ open AntDesign.DslInternals
 
 type datePickerPanelBase<'FunBlazorGeneric, 'TValue> =
     inherit Internal.pickerPanelBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.DatePickerPanelBase<'TValue>>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.DatePickerPanelBase<'TValue>>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.DatePickerPanelBase<'TValue>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.DatePickerPanelBase<'TValue>>() { yield! attrs }
 
     static member inline prefixCls (x: System.String) = "PrefixCls" => x
     static member inline picker (x: System.String) = "Picker" => x
@@ -231,8 +231,8 @@ open AntDesign.DslInternals
 
 type datePickerDatetimePanel<'FunBlazorGeneric, 'TValue> =
     inherit datePickerPanelBase<'FunBlazorGeneric, 'TValue>
-    static member inline create () = ComponentBuilder<AntDesign.Internal.DatePickerDatetimePanel<'TValue>>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.DatePickerDatetimePanel<'TValue>>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Internal.DatePickerDatetimePanel<'TValue>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.DatePickerDatetimePanel<'TValue>>() { yield! attrs }
 
     static member inline showToday (x: System.Boolean) = "ShowToday" => x
     static member inline showTimeFormat (x: System.String) = "ShowTimeFormat" => x
@@ -246,8 +246,8 @@ type datePickerDatetimePanel<'FunBlazorGeneric, 'TValue> =
 
 type datePickerTemplate<'FunBlazorGeneric, 'TValue> =
     inherit datePickerPanelBase<'FunBlazorGeneric, 'TValue>
-    static member inline create () = ComponentBuilder<AntDesign.Internal.DatePickerTemplate<'TValue>>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.DatePickerTemplate<'TValue>>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Internal.DatePickerTemplate<'TValue>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.DatePickerTemplate<'TValue>>() { yield! attrs }
 
     static member inline renderPickerHeader (x: string) = html.renderFragment("RenderPickerHeader", html.text x)
     static member inline renderPickerHeader (node) = html.renderFragment("RenderPickerHeader", node)
@@ -275,8 +275,8 @@ type datePickerTemplate<'FunBlazorGeneric, 'TValue> =
 
 type datePickerDatePanel<'FunBlazorGeneric, 'TValue> =
     inherit datePickerPanelBase<'FunBlazorGeneric, 'TValue>
-    static member inline create () = ComponentBuilder<AntDesign.Internal.DatePickerDatePanel<'TValue>>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.DatePickerDatePanel<'TValue>>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Internal.DatePickerDatePanel<'TValue>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.DatePickerDatePanel<'TValue>>() { yield! attrs }
 
     static member inline isWeek (x: System.Boolean) = "IsWeek" => x
     static member inline showToday (x: System.Boolean) = "ShowToday" => x
@@ -284,24 +284,24 @@ type datePickerDatePanel<'FunBlazorGeneric, 'TValue> =
 
 type datePickerDecadePanel<'FunBlazorGeneric, 'TValue> =
     inherit datePickerPanelBase<'FunBlazorGeneric, 'TValue>
-    static member inline create () = ComponentBuilder<AntDesign.Internal.DatePickerDecadePanel<'TValue>>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.DatePickerDecadePanel<'TValue>>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Internal.DatePickerDecadePanel<'TValue>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.DatePickerDecadePanel<'TValue>>() { yield! attrs }
 
 
                     
 
 type datePickerFooter<'FunBlazorGeneric, 'TValue> =
     inherit datePickerPanelBase<'FunBlazorGeneric, 'TValue>
-    static member inline create () = ComponentBuilder<AntDesign.Internal.DatePickerFooter<'TValue>>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.DatePickerFooter<'TValue>>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Internal.DatePickerFooter<'TValue>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.DatePickerFooter<'TValue>>() { yield! attrs }
 
 
                     
 
 type datePickerHeader<'FunBlazorGeneric, 'TValue> =
     inherit datePickerPanelBase<'FunBlazorGeneric, 'TValue>
-    static member inline create () = ComponentBuilder<AntDesign.Internal.DatePickerHeader<'TValue>>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.DatePickerHeader<'TValue>>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Internal.DatePickerHeader<'TValue>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.DatePickerHeader<'TValue>>() { yield! attrs }
 
     static member inline superChangeDateInterval (x: System.Int32) = "SuperChangeDateInterval" => x
     static member inline changeDateInterval (x: System.Int32) = "ChangeDateInterval" => x
@@ -313,24 +313,24 @@ type datePickerHeader<'FunBlazorGeneric, 'TValue> =
 
 type datePickerMonthPanel<'FunBlazorGeneric, 'TValue> =
     inherit datePickerPanelBase<'FunBlazorGeneric, 'TValue>
-    static member inline create () = ComponentBuilder<AntDesign.Internal.DatePickerMonthPanel<'TValue>>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.DatePickerMonthPanel<'TValue>>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Internal.DatePickerMonthPanel<'TValue>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.DatePickerMonthPanel<'TValue>>() { yield! attrs }
 
 
                     
 
 type datePickerQuarterPanel<'FunBlazorGeneric, 'TValue> =
     inherit datePickerPanelBase<'FunBlazorGeneric, 'TValue>
-    static member inline create () = ComponentBuilder<AntDesign.Internal.DatePickerQuarterPanel<'TValue>>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.DatePickerQuarterPanel<'TValue>>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Internal.DatePickerQuarterPanel<'TValue>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.DatePickerQuarterPanel<'TValue>>() { yield! attrs }
 
 
                     
 
 type datePickerYearPanel<'FunBlazorGeneric, 'TValue> =
     inherit datePickerPanelBase<'FunBlazorGeneric, 'TValue>
-    static member inline create () = ComponentBuilder<AntDesign.Internal.DatePickerYearPanel<'TValue>>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.DatePickerYearPanel<'TValue>>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Internal.DatePickerYearPanel<'TValue>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.DatePickerYearPanel<'TValue>>() { yield! attrs }
 
 
                     
@@ -345,11 +345,11 @@ open AntDesign.DslInternals
 
 type col<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Col>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Col>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.Col>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.Col>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.Col>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Col>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Col>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Col>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Col>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Col>(){ x }
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
     static member inline childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
@@ -369,16 +369,16 @@ type col<'FunBlazorGeneric> =
 
 type gridCol<'FunBlazorGeneric> =
     inherit col<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.GridCol>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.GridCol>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.GridCol>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.GridCol>() { yield! attrs }
 
 
                     
 
 type icon<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Icon>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Icon>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Icon>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Icon>() { yield! attrs }
 
     static member inline spin (x: System.Boolean) = "Spin" => x
     static member inline rotate (x: System.Int32) = "Rotate" => x
@@ -399,32 +399,32 @@ type icon<'FunBlazorGeneric> =
 
 type iconFont<'FunBlazorGeneric> =
     inherit icon<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.IconFont>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.IconFont>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.IconFont>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.IconFont>() { yield! attrs }
 
 
                     
 
 type notificationBase<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.NotificationBase>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.NotificationBase>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.NotificationBase>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.NotificationBase>() { yield! attrs }
 
 
                     
 
 type notification<'FunBlazorGeneric> =
     inherit notificationBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Notification>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Notification>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Notification>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Notification>() { yield! attrs }
 
 
                     
 
 type notificationItem<'FunBlazorGeneric> =
     inherit notificationBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.NotificationItem>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.NotificationItem>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.NotificationItem>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.NotificationItem>() { yield! attrs }
 
     static member inline config (x: AntDesign.NotificationConfig) = "Config" => x
     static member inline onClose (fn) = "OnClose" => (System.Func<AntDesign.NotificationConfig, System.Threading.Tasks.Task>fn)
@@ -432,11 +432,11 @@ type notificationItem<'FunBlazorGeneric> =
 
 type columnBase<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.ColumnBase>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.ColumnBase>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.ColumnBase>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.ColumnBase>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.ColumnBase>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.ColumnBase>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.ColumnBase>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.ColumnBase>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.ColumnBase>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.ColumnBase>(){ x }
     static member inline title (x: System.String) = "Title" => x
     static member inline titleTemplate (x: string) = html.renderFragment("TitleTemplate", html.text x)
     static member inline titleTemplate (node) = html.renderFragment("TitleTemplate", node)
@@ -458,16 +458,16 @@ type columnBase<'FunBlazorGeneric> =
 
 type actionColumn<'FunBlazorGeneric> =
     inherit columnBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.ActionColumn>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.ActionColumn>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.ActionColumn>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.ActionColumn>() { yield! attrs }
 
 
                     
 
 type column<'FunBlazorGeneric, 'TData> =
     inherit columnBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Column<'TData>>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Column<'TData>>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Column<'TData>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Column<'TData>>() { yield! attrs }
 
     static member inline fieldChanged fn = html.callback<'TData>("FieldChanged", fn)
     static member inline fieldExpression (x: System.Linq.Expressions.Expression<System.Func<'TData>>) = "FieldExpression" => x
@@ -493,8 +493,8 @@ type column<'FunBlazorGeneric, 'TData> =
 
 type selection<'FunBlazorGeneric> =
     inherit columnBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Selection>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Selection>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Selection>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Selection>() { yield! attrs }
 
     static member inline type' (x: System.String) = "Type" => x
     static member inline disabled (x: System.Boolean) = "Disabled" => x
@@ -504,19 +504,19 @@ type selection<'FunBlazorGeneric> =
 
 type summaryCell<'FunBlazorGeneric> =
     inherit columnBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.SummaryCell>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.SummaryCell>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.SummaryCell>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.SummaryCell>() { yield! attrs }
 
 
                     
 
 type typographyBase<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.TypographyBase>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.TypographyBase>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.TypographyBase>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.TypographyBase>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.TypographyBase>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.TypographyBase>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.TypographyBase>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.TypographyBase>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.TypographyBase>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.TypographyBase>(){ x }
     static member inline copyable (x: System.Boolean) = "Copyable" => x
     static member inline copyConfig (x: AntDesign.TypographyCopyableConfig) = "CopyConfig" => x
     static member inline delete (x: System.Boolean) = "Delete" => x
@@ -537,8 +537,8 @@ type typographyBase<'FunBlazorGeneric> =
 
 type link<'FunBlazorGeneric> =
     inherit typographyBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Link>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Link>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Link>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Link>() { yield! attrs }
 
     static member inline code (x: System.Boolean) = "Code" => x
     static member inline keyboard (x: System.Boolean) = "Keyboard" => x
@@ -546,8 +546,8 @@ type link<'FunBlazorGeneric> =
 
 type paragraph<'FunBlazorGeneric> =
     inherit typographyBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Paragraph>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Paragraph>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Paragraph>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Paragraph>() { yield! attrs }
 
     static member inline code (x: System.Boolean) = "Code" => x
     static member inline keyboard (x: System.Boolean) = "Keyboard" => x
@@ -555,8 +555,8 @@ type paragraph<'FunBlazorGeneric> =
 
 type text<'FunBlazorGeneric> =
     inherit typographyBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Text>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Text>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Text>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Text>() { yield! attrs }
 
     static member inline code (x: System.Boolean) = "Code" => x
     static member inline keyboard (x: System.Boolean) = "Keyboard" => x
@@ -564,19 +564,19 @@ type text<'FunBlazorGeneric> =
 
 type title<'FunBlazorGeneric> =
     inherit typographyBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Title>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Title>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Title>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Title>() { yield! attrs }
 
     static member inline level (x: System.Int32) = "Level" => x
                     
 
 type affix<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Affix>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Affix>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.Affix>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.Affix>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.Affix>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Affix>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Affix>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Affix>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Affix>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Affix>(){ x }
     static member inline offsetBottom (x: System.Int32) = "OffsetBottom" => x
     static member inline offsetTop (x: System.Int32) = "OffsetTop" => x
     static member inline targetSelector (x: System.String) = "TargetSelector" => x
@@ -588,11 +588,11 @@ type affix<'FunBlazorGeneric> =
 
 type alert<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Alert>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Alert>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.Alert>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.Alert>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.Alert>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Alert>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Alert>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Alert>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Alert>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Alert>(){ x }
     static member inline afterClose fn = html.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs>("AfterClose", fn)
     static member inline banner (x: System.Boolean) = "Banner" => x
     static member inline closable (x: System.Boolean) = "Closable" => x
@@ -615,11 +615,11 @@ type alert<'FunBlazorGeneric> =
 
 type anchor<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Anchor>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Anchor>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.Anchor>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.Anchor>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.Anchor>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Anchor>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Anchor>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Anchor>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Anchor>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Anchor>(){ x }
     static member inline key (x: System.String) = "Key" => x
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
@@ -638,11 +638,11 @@ type anchor<'FunBlazorGeneric> =
 
 type anchorLink<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.AnchorLink>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.AnchorLink>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.AnchorLink>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.AnchorLink>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.AnchorLink>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.AnchorLink>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.AnchorLink>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.AnchorLink>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.AnchorLink>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.AnchorLink>(){ x }
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
     static member inline childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
@@ -653,11 +653,11 @@ type anchorLink<'FunBlazorGeneric> =
 
 type autoCompleteOptGroup<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.AutoCompleteOptGroup>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.AutoCompleteOptGroup>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.AutoCompleteOptGroup>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.AutoCompleteOptGroup>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.AutoCompleteOptGroup>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.AutoCompleteOptGroup>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.AutoCompleteOptGroup>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.AutoCompleteOptGroup>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.AutoCompleteOptGroup>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.AutoCompleteOptGroup>(){ x }
     static member inline label (x: System.String) = "Label" => x
     static member inline labelFragment (x: string) = html.renderFragment("LabelFragment", html.text x)
     static member inline labelFragment (node) = html.renderFragment("LabelFragment", node)
@@ -669,11 +669,11 @@ type autoCompleteOptGroup<'FunBlazorGeneric> =
 
 type autoCompleteOption<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.AutoCompleteOption>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.AutoCompleteOption>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.AutoCompleteOption>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.AutoCompleteOption>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.AutoCompleteOption>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.AutoCompleteOption>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.AutoCompleteOption>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.AutoCompleteOption>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.AutoCompleteOption>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.AutoCompleteOption>(){ x }
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
     static member inline childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
@@ -685,11 +685,11 @@ type autoCompleteOption<'FunBlazorGeneric> =
 
 type avatar<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Avatar>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Avatar>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.Avatar>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.Avatar>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.Avatar>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Avatar>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Avatar>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Avatar>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Avatar>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Avatar>(){ x }
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
     static member inline childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
@@ -705,11 +705,11 @@ type avatar<'FunBlazorGeneric> =
 
 type avatarGroup<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.AvatarGroup>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.AvatarGroup>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.AvatarGroup>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.AvatarGroup>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.AvatarGroup>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.AvatarGroup>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.AvatarGroup>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.AvatarGroup>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.AvatarGroup>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.AvatarGroup>(){ x }
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
     static member inline childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
@@ -720,11 +720,11 @@ type avatarGroup<'FunBlazorGeneric> =
 
 type backTop<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.BackTop>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.BackTop>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.BackTop>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.BackTop>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.BackTop>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.BackTop>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.BackTop>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.BackTop>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.BackTop>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.BackTop>(){ x }
     static member inline icon (x: System.String) = "Icon" => x
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
@@ -736,11 +736,11 @@ type backTop<'FunBlazorGeneric> =
 
 type badge<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Badge>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Badge>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.Badge>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.Badge>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.Badge>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Badge>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Badge>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Badge>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Badge>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Badge>(){ x }
     static member inline color (x: System.String) = "Color" => x
     static member inline presetColor (x: System.Nullable<AntDesign.PresetColor>) = "PresetColor" => x
     static member inline count (x: System.Nullable<System.Int32>) = "Count" => x
@@ -762,11 +762,11 @@ type badge<'FunBlazorGeneric> =
 
 type badgeRibbon<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.BadgeRibbon>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.BadgeRibbon>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.BadgeRibbon>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.BadgeRibbon>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.BadgeRibbon>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.BadgeRibbon>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.BadgeRibbon>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.BadgeRibbon>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.BadgeRibbon>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.BadgeRibbon>(){ x }
     static member inline color (x: System.String) = "Color" => x
     static member inline text (x: System.String) = "Text" => x
     static member inline textTemplate (x: string) = html.renderFragment("TextTemplate", html.text x)
@@ -780,11 +780,11 @@ type badgeRibbon<'FunBlazorGeneric> =
 
 type breadcrumb<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Breadcrumb>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Breadcrumb>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.Breadcrumb>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.Breadcrumb>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.Breadcrumb>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Breadcrumb>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Breadcrumb>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Breadcrumb>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Breadcrumb>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Breadcrumb>(){ x }
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
     static member inline childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
@@ -795,11 +795,11 @@ type breadcrumb<'FunBlazorGeneric> =
 
 type button<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Button>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Button>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.Button>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.Button>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.Button>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Button>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Button>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Button>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Button>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Button>(){ x }
     static member inline color (x: AntDesign.Color) = "Color" => x
     static member inline block (x: System.Boolean) = "Block" => x
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
@@ -821,11 +821,11 @@ type button<'FunBlazorGeneric> =
 
 type buttonGroup<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.ButtonGroup>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.ButtonGroup>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.ButtonGroup>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.ButtonGroup>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.ButtonGroup>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.ButtonGroup>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.ButtonGroup>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.ButtonGroup>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.ButtonGroup>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.ButtonGroup>(){ x }
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
     static member inline childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
@@ -834,8 +834,8 @@ type buttonGroup<'FunBlazorGeneric> =
 
 type calendar<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Calendar>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Calendar>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Calendar>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Calendar>() { yield! attrs }
 
     static member inline value (x: System.DateTime) = "Value" => x
     static member inline defaultValue (x: System.DateTime) = "DefaultValue" => x
@@ -857,11 +857,11 @@ type calendar<'FunBlazorGeneric> =
 
 type card<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Card>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Card>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.Card>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.Card>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.Card>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Card>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Card>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Card>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Card>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Card>(){ x }
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
     static member inline childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
@@ -895,11 +895,11 @@ type card<'FunBlazorGeneric> =
 
 type cardAction<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.CardAction>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.CardAction>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.CardAction>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.CardAction>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.CardAction>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.CardAction>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.CardAction>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.CardAction>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.CardAction>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.CardAction>(){ x }
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
     static member inline childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
@@ -907,11 +907,11 @@ type cardAction<'FunBlazorGeneric> =
 
 type cardGrid<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.CardGrid>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.CardGrid>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.CardGrid>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.CardGrid>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.CardGrid>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.CardGrid>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.CardGrid>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.CardGrid>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.CardGrid>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.CardGrid>(){ x }
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
     static member inline childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
@@ -920,11 +920,11 @@ type cardGrid<'FunBlazorGeneric> =
 
 type carousel<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Carousel>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Carousel>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.Carousel>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.Carousel>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.Carousel>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Carousel>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Carousel>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Carousel>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Carousel>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Carousel>(){ x }
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
     static member inline childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
@@ -935,11 +935,11 @@ type carousel<'FunBlazorGeneric> =
 
 type carouselSlick<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.CarouselSlick>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.CarouselSlick>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.CarouselSlick>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.CarouselSlick>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.CarouselSlick>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.CarouselSlick>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.CarouselSlick>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.CarouselSlick>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.CarouselSlick>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.CarouselSlick>(){ x }
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
     static member inline childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
@@ -947,11 +947,11 @@ type carouselSlick<'FunBlazorGeneric> =
 
 type collapse<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Collapse>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Collapse>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.Collapse>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.Collapse>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.Collapse>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Collapse>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Collapse>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Collapse>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Collapse>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Collapse>(){ x }
     static member inline accordion (x: System.Boolean) = "Accordion" => x
     static member inline bordered (x: System.Boolean) = "Bordered" => x
     static member inline expandIconPosition (x: System.String) = "ExpandIconPosition" => x
@@ -966,11 +966,11 @@ type collapse<'FunBlazorGeneric> =
 
 type panel<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Panel>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Panel>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.Panel>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.Panel>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.Panel>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Panel>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Panel>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Panel>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Panel>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Panel>(){ x }
     static member inline active (x: System.Boolean) = "Active" => x
     static member inline key (x: System.String) = "Key" => x
     static member inline disabled (x: System.Boolean) = "Disabled" => x
@@ -991,11 +991,11 @@ type panel<'FunBlazorGeneric> =
 
 type comment<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Comment>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Comment>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.Comment>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.Comment>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.Comment>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Comment>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Comment>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Comment>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Comment>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Comment>(){ x }
     static member inline author (x: System.String) = "Author" => x
     static member inline authorTemplate (x: string) = html.renderFragment("AuthorTemplate", html.text x)
     static member inline authorTemplate (node) = html.renderFragment("AuthorTemplate", node)
@@ -1020,11 +1020,11 @@ type comment<'FunBlazorGeneric> =
 
 type antContainerComponentBase<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.AntContainerComponentBase>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.AntContainerComponentBase>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.AntContainerComponentBase>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.AntContainerComponentBase>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.AntContainerComponentBase>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.AntContainerComponentBase>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.AntContainerComponentBase>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.AntContainerComponentBase>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.AntContainerComponentBase>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.AntContainerComponentBase>(){ x }
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
     static member inline childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
@@ -1033,8 +1033,8 @@ type antContainerComponentBase<'FunBlazorGeneric> =
 
 type antInputComponentBase<'FunBlazorGeneric, 'TValue> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.AntInputComponentBase<'TValue>>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.AntInputComponentBase<'TValue>>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.AntInputComponentBase<'TValue>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.AntInputComponentBase<'TValue>>() { yield! attrs }
 
     static member inline additionalAttributes (x: System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>) = "AdditionalAttributes" => x
     static member inline value (x: 'TValue) = "Value" => x
@@ -1050,8 +1050,8 @@ type antInputComponentBase<'FunBlazorGeneric, 'TValue> =
 
 type antInputBoolComponentBase<'FunBlazorGeneric> =
     inherit antInputComponentBase<'FunBlazorGeneric, System.Boolean>
-    static member inline create () = ComponentBuilder<AntDesign.AntInputBoolComponentBase>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.AntInputBoolComponentBase>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.AntInputBoolComponentBase>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.AntInputBoolComponentBase>() { yield! attrs }
 
     static member inline autoFocus (x: System.Boolean) = "AutoFocus" => x
     static member inline checked' (x: System.Boolean) = "Checked" => x
@@ -1065,11 +1065,11 @@ type antInputBoolComponentBase<'FunBlazorGeneric> =
 
 type checkbox<'FunBlazorGeneric> =
     inherit antInputBoolComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Checkbox>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Checkbox>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.Checkbox>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.Checkbox>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.Checkbox>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Checkbox>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Checkbox>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Checkbox>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Checkbox>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Checkbox>(){ x }
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
     static member inline childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
@@ -1081,8 +1081,8 @@ type checkbox<'FunBlazorGeneric> =
 
 type switch<'FunBlazorGeneric> =
     inherit antInputBoolComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Switch>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Switch>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Switch>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Switch>() { yield! attrs }
 
     static member inline loading (x: System.Boolean) = "Loading" => x
     static member inline checkedChildren (x: System.String) = "CheckedChildren" => x
@@ -1099,11 +1099,11 @@ type switch<'FunBlazorGeneric> =
 
 type autoComplete<'FunBlazorGeneric, 'TOption> =
     inherit antInputComponentBase<'FunBlazorGeneric, System.String>
-    static member inline create () = ComponentBuilder<AntDesign.AutoComplete<'TOption>>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.AutoComplete<'TOption>>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.AutoComplete<'TOption>>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.AutoComplete<'TOption>>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.AutoComplete<'TOption>>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.AutoComplete<'TOption>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.AutoComplete<'TOption>>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.AutoComplete<'TOption>>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.AutoComplete<'TOption>>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.AutoComplete<'TOption>>(){ x }
     static member inline placeholder (x: System.String) = "Placeholder" => x
     static member inline disabled (x: System.Boolean) = "Disabled" => x
     static member inline defaultActiveFirstOption (x: System.Boolean) = "DefaultActiveFirstOption" => x
@@ -1136,8 +1136,8 @@ type autoComplete<'FunBlazorGeneric, 'TOption> =
 
 type cascader<'FunBlazorGeneric> =
     inherit antInputComponentBase<'FunBlazorGeneric, System.String>
-    static member inline create () = ComponentBuilder<AntDesign.Cascader>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Cascader>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Cascader>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Cascader>() { yield! attrs }
 
     static member inline allowClear (x: System.Boolean) = "AllowClear" => x
     static member inline boundaryAdjustMode (x: AntDesign.TriggerBoundaryAdjustMode) = "BoundaryAdjustMode" => x
@@ -1155,11 +1155,11 @@ type cascader<'FunBlazorGeneric> =
 
 type checkboxGroup<'FunBlazorGeneric> =
     inherit antInputComponentBase<'FunBlazorGeneric, System.String[]>
-    static member inline create () = ComponentBuilder<AntDesign.CheckboxGroup>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.CheckboxGroup>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.CheckboxGroup>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.CheckboxGroup>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.CheckboxGroup>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.CheckboxGroup>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.CheckboxGroup>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.CheckboxGroup>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.CheckboxGroup>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.CheckboxGroup>(){ x }
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
     static member inline childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
@@ -1171,8 +1171,8 @@ type checkboxGroup<'FunBlazorGeneric> =
 
 type datePickerBase<'FunBlazorGeneric, 'TValue> =
     inherit antInputComponentBase<'FunBlazorGeneric, 'TValue>
-    static member inline create () = ComponentBuilder<AntDesign.DatePickerBase<'TValue>>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.DatePickerBase<'TValue>>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.DatePickerBase<'TValue>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.DatePickerBase<'TValue>>() { yield! attrs }
 
     static member inline prefixCls (x: System.String) = "PrefixCls" => x
     static member inline picker (x: System.String) = "Picker" => x
@@ -1215,56 +1215,56 @@ type datePickerBase<'FunBlazorGeneric, 'TValue> =
 
 type datePicker<'FunBlazorGeneric, 'TValue> =
     inherit datePickerBase<'FunBlazorGeneric, 'TValue>
-    static member inline create () = ComponentBuilder<AntDesign.DatePicker<'TValue>>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.DatePicker<'TValue>>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.DatePicker<'TValue>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.DatePicker<'TValue>>() { yield! attrs }
 
     static member inline onChange fn = html.callback<AntDesign.DateTimeChangedEventArgs>("OnChange", fn)
                     
 
 type monthPicker<'FunBlazorGeneric, 'TValue> =
     inherit datePicker<'FunBlazorGeneric, 'TValue>
-    static member inline create () = ComponentBuilder<AntDesign.MonthPicker<'TValue>>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.MonthPicker<'TValue>>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.MonthPicker<'TValue>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.MonthPicker<'TValue>>() { yield! attrs }
 
 
                     
 
 type quarterPicker<'FunBlazorGeneric, 'TValue> =
     inherit datePicker<'FunBlazorGeneric, 'TValue>
-    static member inline create () = ComponentBuilder<AntDesign.QuarterPicker<'TValue>>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.QuarterPicker<'TValue>>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.QuarterPicker<'TValue>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.QuarterPicker<'TValue>>() { yield! attrs }
 
 
                     
 
 type weekPicker<'FunBlazorGeneric, 'TValue> =
     inherit datePicker<'FunBlazorGeneric, 'TValue>
-    static member inline create () = ComponentBuilder<AntDesign.WeekPicker<'TValue>>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.WeekPicker<'TValue>>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.WeekPicker<'TValue>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.WeekPicker<'TValue>>() { yield! attrs }
 
 
                     
 
 type yearPicker<'FunBlazorGeneric, 'TValue> =
     inherit datePicker<'FunBlazorGeneric, 'TValue>
-    static member inline create () = ComponentBuilder<AntDesign.YearPicker<'TValue>>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.YearPicker<'TValue>>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.YearPicker<'TValue>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.YearPicker<'TValue>>() { yield! attrs }
 
 
                     
 
 type timePicker<'FunBlazorGeneric, 'TValue> =
     inherit datePicker<'FunBlazorGeneric, 'TValue>
-    static member inline create () = ComponentBuilder<AntDesign.TimePicker<'TValue>>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.TimePicker<'TValue>>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.TimePicker<'TValue>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.TimePicker<'TValue>>() { yield! attrs }
 
 
                     
 
 type rangePicker<'FunBlazorGeneric, 'TValue> =
     inherit datePickerBase<'FunBlazorGeneric, 'TValue>
-    static member inline create () = ComponentBuilder<AntDesign.RangePicker<'TValue>>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.RangePicker<'TValue>>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.RangePicker<'TValue>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.RangePicker<'TValue>>() { yield! attrs }
 
     static member inline value (x: 'TValue) = "Value" => x
     static member inline onChange fn = html.callback<AntDesign.DateRangeChangedEventArgs>("OnChange", fn)
@@ -1272,8 +1272,8 @@ type rangePicker<'FunBlazorGeneric, 'TValue> =
 
 type inputNumber<'FunBlazorGeneric, 'TValue> =
     inherit antInputComponentBase<'FunBlazorGeneric, 'TValue>
-    static member inline create () = ComponentBuilder<AntDesign.InputNumber<'TValue>>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.InputNumber<'TValue>>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.InputNumber<'TValue>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.InputNumber<'TValue>>() { yield! attrs }
 
     static member inline formatter (fn) = "Formatter" => (System.Func<'TValue, System.String>fn)
     static member inline parser (fn) = "Parser" => (System.Func<System.String, System.String>fn)
@@ -1288,8 +1288,8 @@ type inputNumber<'FunBlazorGeneric, 'TValue> =
 
 type input<'FunBlazorGeneric, 'TValue> =
     inherit antInputComponentBase<'FunBlazorGeneric, 'TValue>
-    static member inline create () = ComponentBuilder<AntDesign.Input<'TValue>>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Input<'TValue>>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Input<'TValue>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Input<'TValue>>() { yield! attrs }
 
     static member inline addOnBefore (x: string) = html.renderFragment("AddOnBefore", html.text x)
     static member inline addOnBefore (node) = html.renderFragment("AddOnBefore", node)
@@ -1329,8 +1329,8 @@ type input<'FunBlazorGeneric, 'TValue> =
 
 type search<'FunBlazorGeneric> =
     inherit input<'FunBlazorGeneric, System.String>
-    static member inline create () = ComponentBuilder<AntDesign.Search>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Search>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Search>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Search>() { yield! attrs }
 
     static member inline classicSearchIcon (x: System.Boolean) = "ClassicSearchIcon" => x
     static member inline enterButton (x: OneOf.OneOf<System.Boolean, System.String>) = "EnterButton" => x
@@ -1340,24 +1340,24 @@ type search<'FunBlazorGeneric> =
 
 type autoCompleteSearch<'FunBlazorGeneric> =
     inherit search<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.AutoCompleteSearch>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.AutoCompleteSearch>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.AutoCompleteSearch>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.AutoCompleteSearch>() { yield! attrs }
 
 
                     
 
 type autoCompleteInput<'FunBlazorGeneric, 'TValue> =
     inherit input<'FunBlazorGeneric, 'TValue>
-    static member inline create () = ComponentBuilder<AntDesign.AutoCompleteInput<'TValue>>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.AutoCompleteInput<'TValue>>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.AutoCompleteInput<'TValue>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.AutoCompleteInput<'TValue>>() { yield! attrs }
 
 
                     
 
 type inputPassword<'FunBlazorGeneric> =
     inherit input<'FunBlazorGeneric, System.String>
-    static member inline create () = ComponentBuilder<AntDesign.InputPassword>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.InputPassword>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.InputPassword>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.InputPassword>() { yield! attrs }
 
     static member inline iconRender (x: string) = html.renderFragment("IconRender", html.text x)
     static member inline iconRender (node) = html.renderFragment("IconRender", node)
@@ -1368,8 +1368,8 @@ type inputPassword<'FunBlazorGeneric> =
 
 type textArea<'FunBlazorGeneric> =
     inherit input<'FunBlazorGeneric, System.String>
-    static member inline create () = ComponentBuilder<AntDesign.TextArea>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.TextArea>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.TextArea>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.TextArea>() { yield! attrs }
 
     static member inline autoSize (x: System.Boolean) = "AutoSize" => x
     static member inline defaultToEmptyString (x: System.Boolean) = "DefaultToEmptyString" => x
@@ -1383,11 +1383,11 @@ type textArea<'FunBlazorGeneric> =
 
 type radioGroup<'FunBlazorGeneric, 'TValue> =
     inherit antInputComponentBase<'FunBlazorGeneric, 'TValue>
-    static member inline create () = ComponentBuilder<AntDesign.RadioGroup<'TValue>>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.RadioGroup<'TValue>>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.RadioGroup<'TValue>>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.RadioGroup<'TValue>>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.RadioGroup<'TValue>>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.RadioGroup<'TValue>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.RadioGroup<'TValue>>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.RadioGroup<'TValue>>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.RadioGroup<'TValue>>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.RadioGroup<'TValue>>(){ x }
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
     static member inline childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
@@ -1401,16 +1401,16 @@ type radioGroup<'FunBlazorGeneric, 'TValue> =
 
 type enumRadioGroup<'FunBlazorGeneric, 'TEnum> =
     inherit radioGroup<'FunBlazorGeneric, 'TEnum>
-    static member inline create () = ComponentBuilder<AntDesign.EnumRadioGroup<'TEnum>>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.EnumRadioGroup<'TEnum>>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.EnumRadioGroup<'TEnum>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.EnumRadioGroup<'TEnum>>() { yield! attrs }
 
 
                     
 
 type selectBase<'FunBlazorGeneric, 'TItemValue, 'TItem> =
     inherit antInputComponentBase<'FunBlazorGeneric, 'TItemValue>
-    static member inline create () = ComponentBuilder<AntDesign.SelectBase<'TItemValue, 'TItem>>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.SelectBase<'TItemValue, 'TItem>>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.SelectBase<'TItemValue, 'TItem>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.SelectBase<'TItemValue, 'TItem>>() { yield! attrs }
 
     static member inline allowClear (x: System.Boolean) = "AllowClear" => x
     static member inline autoClearSearchValue (x: System.Boolean) = "AutoClearSearchValue" => x
@@ -1452,8 +1452,8 @@ type selectBase<'FunBlazorGeneric, 'TItemValue, 'TItem> =
 
 type select'<'FunBlazorGeneric, 'TItemValue, 'TItem> =
     inherit selectBase<'FunBlazorGeneric, 'TItemValue, 'TItem>
-    static member inline create () = ComponentBuilder<AntDesign.Select<'TItemValue, 'TItem>>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Select<'TItemValue, 'TItem>>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Select<'TItemValue, 'TItem>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Select<'TItemValue, 'TItem>>() { yield! attrs }
 
     static member inline boundaryAdjustMode (x: AntDesign.TriggerBoundaryAdjustMode) = "BoundaryAdjustMode" => x
     static member inline bordered (x: System.Boolean) = "Bordered" => x
@@ -1496,27 +1496,27 @@ type select'<'FunBlazorGeneric, 'TItemValue, 'TItem> =
 
 type enumSelect<'FunBlazorGeneric, 'TEnum> =
     inherit select'<'FunBlazorGeneric, 'TEnum, 'TEnum>
-    static member inline create () = ComponentBuilder<AntDesign.EnumSelect<'TEnum>>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.EnumSelect<'TEnum>>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.EnumSelect<'TEnum>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.EnumSelect<'TEnum>>() { yield! attrs }
 
 
                     
 
 type simpleSelect<'FunBlazorGeneric> =
     inherit select'<'FunBlazorGeneric, System.String, System.String>
-    static member inline create () = ComponentBuilder<AntDesign.SimpleSelect>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.SimpleSelect>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.SimpleSelect>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.SimpleSelect>() { yield! attrs }
 
 
                     
 
 type treeSelect<'FunBlazorGeneric, 'TItem when 'TItem : not struct> =
     inherit selectBase<'FunBlazorGeneric, System.String, 'TItem>
-    static member inline create () = ComponentBuilder<AntDesign.TreeSelect<'TItem>>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.TreeSelect<'TItem>>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.TreeSelect<'TItem>>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.TreeSelect<'TItem>>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.TreeSelect<'TItem>>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.TreeSelect<'TItem>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.TreeSelect<'TItem>>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.TreeSelect<'TItem>>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.TreeSelect<'TItem>>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.TreeSelect<'TItem>>(){ x }
     static member inline showExpand (x: System.Boolean) = "ShowExpand" => x
     static member inline multiple (x: System.Boolean) = "Multiple" => x
     static member inline treeCheckable (x: System.Boolean) = "TreeCheckable" => x
@@ -1548,16 +1548,16 @@ type treeSelect<'FunBlazorGeneric, 'TItem when 'TItem : not struct> =
 
 type simpleTreeSelect<'FunBlazorGeneric, 'TItem when 'TItem : not struct> =
     inherit treeSelect<'FunBlazorGeneric, 'TItem>
-    static member inline create () = ComponentBuilder<AntDesign.SimpleTreeSelect<'TItem>>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.SimpleTreeSelect<'TItem>>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.SimpleTreeSelect<'TItem>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.SimpleTreeSelect<'TItem>>() { yield! attrs }
 
     static member inline childrenMethodExpression (fn) = "ChildrenMethodExpression" => (System.Func<System.String, System.Collections.Generic.IList<'TItem>>fn)
                     
 
 type slider<'FunBlazorGeneric, 'TValue> =
     inherit antInputComponentBase<'FunBlazorGeneric, 'TValue>
-    static member inline create () = ComponentBuilder<AntDesign.Slider<'TValue>>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Slider<'TValue>>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Slider<'TValue>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Slider<'TValue>>() { yield! attrs }
 
     static member inline defaultValue (x: 'TValue) = "DefaultValue" => x
     static member inline disabled (x: System.Boolean) = "Disabled" => x
@@ -1581,11 +1581,11 @@ type slider<'FunBlazorGeneric, 'TValue> =
 
 type descriptions<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Descriptions>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Descriptions>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.Descriptions>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.Descriptions>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.Descriptions>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Descriptions>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Descriptions>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Descriptions>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Descriptions>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Descriptions>(){ x }
     static member inline bordered (x: System.Boolean) = "Bordered" => x
     static member inline layout (x: System.String) = "Layout" => x
     static member inline column (x: OneOf.OneOf<System.Int32, System.Collections.Generic.Dictionary<System.String, System.Int32>>) = "Column" => x
@@ -1602,11 +1602,11 @@ type descriptions<'FunBlazorGeneric> =
 
 type descriptionsItem<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.DescriptionsItem>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.DescriptionsItem>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.DescriptionsItem>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.DescriptionsItem>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.DescriptionsItem>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.DescriptionsItem>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.DescriptionsItem>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.DescriptionsItem>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.DescriptionsItem>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.DescriptionsItem>(){ x }
     static member inline title (x: System.String) = "Title" => x
     static member inline titleTemplate (x: string) = html.renderFragment("TitleTemplate", html.text x)
     static member inline titleTemplate (node) = html.renderFragment("TitleTemplate", node)
@@ -1619,11 +1619,11 @@ type descriptionsItem<'FunBlazorGeneric> =
 
 type divider<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Divider>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Divider>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.Divider>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.Divider>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.Divider>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Divider>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Divider>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Divider>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Divider>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Divider>(){ x }
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
     static member inline childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
@@ -1636,11 +1636,11 @@ type divider<'FunBlazorGeneric> =
 
 type drawer<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Drawer>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Drawer>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.Drawer>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.Drawer>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.Drawer>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Drawer>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Drawer>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Drawer>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Drawer>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Drawer>(){ x }
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
     static member inline childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
@@ -1668,19 +1668,19 @@ type drawer<'FunBlazorGeneric> =
 
 type drawerContainer<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.DrawerContainer>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.DrawerContainer>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.DrawerContainer>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.DrawerContainer>() { yield! attrs }
 
 
                     
 
 type empty<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Empty>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Empty>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.Empty>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.Empty>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.Empty>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Empty>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Empty>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Empty>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Empty>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Empty>(){ x }
     static member inline prefixCls (x: System.String) = "PrefixCls" => x
     static member inline imageStyle (x: System.String) = "ImageStyle" => x
     static member inline small (x: System.Boolean) = "Small" => x
@@ -1700,11 +1700,11 @@ type empty<'FunBlazorGeneric> =
 
 type form<'FunBlazorGeneric, 'TModel> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Form<'TModel>>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Form<'TModel>>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.Form<'TModel>>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.Form<'TModel>>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.Form<'TModel>>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Form<'TModel>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Form<'TModel>>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Form<'TModel>>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Form<'TModel>>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Form<'TModel>>(){ x }
     static member inline layout (x: System.String) = "Layout" => x
     static member inline childContent (render: 'TModel -> NodeRenderFragment) = html.renderFragment("ChildContent", render)
     static member inline labelCol (x: AntDesign.ColLayoutParam) = "LabelCol" => x
@@ -1733,11 +1733,11 @@ type form<'FunBlazorGeneric, 'TModel> =
 
 type formItem<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.FormItem>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.FormItem>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.FormItem>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.FormItem>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.FormItem>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.FormItem>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.FormItem>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.FormItem>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.FormItem>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.FormItem>(){ x }
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
     static member inline childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
@@ -1763,11 +1763,11 @@ type formItem<'FunBlazorGeneric> =
 
 type row<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Row>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Row>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.Row>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.Row>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.Row>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Row>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Row>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Row>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Row>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Row>(){ x }
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
     static member inline childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
@@ -1782,8 +1782,8 @@ type row<'FunBlazorGeneric> =
 
 type image<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Image>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Image>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Image>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Image>() { yield! attrs }
 
     static member inline alt (x: System.String) = "Alt" => x
     static member inline fallback (x: System.String) = "Fallback" => x
@@ -1802,19 +1802,19 @@ type image<'FunBlazorGeneric> =
 
 type imagePreviewContainer<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.ImagePreviewContainer>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.ImagePreviewContainer>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.ImagePreviewContainer>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.ImagePreviewContainer>() { yield! attrs }
 
 
                     
 
 type inputGroup<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.InputGroup>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.InputGroup>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.InputGroup>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.InputGroup>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.InputGroup>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.InputGroup>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.InputGroup>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.InputGroup>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.InputGroup>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.InputGroup>(){ x }
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
     static member inline childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
@@ -1824,11 +1824,11 @@ type inputGroup<'FunBlazorGeneric> =
 
 type sider<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Sider>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Sider>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.Sider>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.Sider>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.Sider>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Sider>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Sider>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Sider>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Sider>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Sider>(){ x }
     static member inline collapsible (x: System.Boolean) = "Collapsible" => x
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
@@ -1848,11 +1848,11 @@ type sider<'FunBlazorGeneric> =
 
 type antList<'FunBlazorGeneric, 'TItem> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.AntList<'TItem>>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.AntList<'TItem>>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.AntList<'TItem>>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.AntList<'TItem>>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.AntList<'TItem>>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.AntList<'TItem>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.AntList<'TItem>>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.AntList<'TItem>>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.AntList<'TItem>>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.AntList<'TItem>>(){ x }
     static member inline dataSource (x: System.Collections.Generic.IEnumerable<'TItem>) = "DataSource" => x
     static member inline bordered (x: System.Boolean) = "Bordered" => x
     static member inline header (x: string) = html.renderFragment("Header", html.text x)
@@ -1876,11 +1876,11 @@ type antList<'FunBlazorGeneric, 'TItem> =
 
 type listItem<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.ListItem>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.ListItem>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.ListItem>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.ListItem>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.ListItem>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.ListItem>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.ListItem>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.ListItem>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.ListItem>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.ListItem>(){ x }
     static member inline content (x: System.String) = "Content" => x
     static member inline extra (x: string) = html.renderFragment("Extra", html.text x)
     static member inline extra (node) = html.renderFragment("Extra", node)
@@ -1897,8 +1897,8 @@ type listItem<'FunBlazorGeneric> =
 
 type listItemMeta<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.ListItemMeta>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.ListItemMeta>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.ListItemMeta>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.ListItemMeta>() { yield! attrs }
 
     static member inline title (x: System.String) = "Title" => x
     static member inline titleTemplate (x: string) = html.renderFragment("TitleTemplate", html.text x)
@@ -1916,11 +1916,11 @@ type listItemMeta<'FunBlazorGeneric> =
 
 type mentions<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Mentions>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Mentions>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.Mentions>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.Mentions>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.Mentions>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Mentions>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Mentions>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Mentions>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Mentions>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Mentions>(){ x }
     static member inline autoFocus (x: System.Boolean) = "AutoFocus" => x
     static member inline disable (x: System.Boolean) = "Disable" => x
     static member inline readonly (x: System.Boolean) = "Readonly" => x
@@ -1946,11 +1946,11 @@ type mentions<'FunBlazorGeneric> =
 
 type mentionsOption<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.MentionsOption>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.MentionsOption>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.MentionsOption>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.MentionsOption>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.MentionsOption>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.MentionsOption>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.MentionsOption>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.MentionsOption>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.MentionsOption>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.MentionsOption>(){ x }
     static member inline value (x: System.String) = "Value" => x
     static member inline disable (x: System.Boolean) = "Disable" => x
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
@@ -1960,11 +1960,11 @@ type mentionsOption<'FunBlazorGeneric> =
 
 type menu<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Menu>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Menu>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.Menu>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.Menu>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.Menu>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Menu>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Menu>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Menu>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Menu>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Menu>(){ x }
     static member inline theme (x: AntDesign.MenuTheme) = "Theme" => x
     static member inline mode (x: AntDesign.MenuMode) = "Mode" => x
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
@@ -1996,11 +1996,11 @@ type menu<'FunBlazorGeneric> =
 
 type menuItem<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.MenuItem>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.MenuItem>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.MenuItem>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.MenuItem>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.MenuItem>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.MenuItem>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.MenuItem>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.MenuItem>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.MenuItem>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.MenuItem>(){ x }
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
     static member inline childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
@@ -2018,11 +2018,11 @@ type menuItem<'FunBlazorGeneric> =
 
 type menuItemGroup<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.MenuItemGroup>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.MenuItemGroup>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.MenuItemGroup>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.MenuItemGroup>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.MenuItemGroup>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.MenuItemGroup>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.MenuItemGroup>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.MenuItemGroup>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.MenuItemGroup>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.MenuItemGroup>(){ x }
     static member inline title (x: System.String) = "Title" => x
     static member inline titleTemplate (x: string) = html.renderFragment("TitleTemplate", html.text x)
     static member inline titleTemplate (node) = html.renderFragment("TitleTemplate", node)
@@ -2035,11 +2035,11 @@ type menuItemGroup<'FunBlazorGeneric> =
 
 type menuLink<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.MenuLink>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.MenuLink>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.MenuLink>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.MenuLink>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.MenuLink>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.MenuLink>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.MenuLink>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.MenuLink>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.MenuLink>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.MenuLink>(){ x }
     static member inline activeClass (x: System.String) = "ActiveClass" => x
     static member inline href (x: System.String) = "Href" => x
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
@@ -2051,11 +2051,11 @@ type menuLink<'FunBlazorGeneric> =
 
 type subMenu<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.SubMenu>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.SubMenu>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.SubMenu>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.SubMenu>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.SubMenu>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.SubMenu>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.SubMenu>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.SubMenu>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.SubMenu>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.SubMenu>(){ x }
     static member inline placement (x: System.Nullable<AntDesign.Placement>) = "Placement" => x
     static member inline title (x: System.String) = "Title" => x
     static member inline titleTemplate (x: string) = html.renderFragment("TitleTemplate", html.text x)
@@ -2072,32 +2072,32 @@ type subMenu<'FunBlazorGeneric> =
 
 type message<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Message>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Message>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Message>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Message>() { yield! attrs }
 
 
                     
 
 type messageItem<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.MessageItem>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.MessageItem>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.MessageItem>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.MessageItem>() { yield! attrs }
 
     static member inline config (x: AntDesign.MessageConfig) = "Config" => x
                     
 
 type comfirmContainer<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.ComfirmContainer>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.ComfirmContainer>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.ComfirmContainer>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.ComfirmContainer>() { yield! attrs }
 
 
                     
 
 type confirm<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Confirm>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Confirm>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Confirm>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Confirm>() { yield! attrs }
 
     static member inline config (x: AntDesign.ConfirmOptions) = "Config" => x
     static member inline confirmRef (x: AntDesign.ConfirmRef) = "ConfirmRef" => x
@@ -2106,11 +2106,11 @@ type confirm<'FunBlazorGeneric> =
 
 type dialog<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Dialog>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Dialog>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.Dialog>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.Dialog>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.Dialog>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Dialog>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Dialog>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Dialog>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Dialog>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Dialog>(){ x }
     static member inline config (x: AntDesign.DialogOptions) = "Config" => x
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
@@ -2120,11 +2120,11 @@ type dialog<'FunBlazorGeneric> =
 
 type dialogWrapper<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.DialogWrapper>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.DialogWrapper>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.DialogWrapper>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.DialogWrapper>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.DialogWrapper>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.DialogWrapper>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.DialogWrapper>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.DialogWrapper>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.DialogWrapper>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.DialogWrapper>(){ x }
     static member inline config (x: AntDesign.DialogOptions) = "Config" => x
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
@@ -2138,11 +2138,11 @@ type dialogWrapper<'FunBlazorGeneric> =
 
 type modal<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Modal>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Modal>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.Modal>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.Modal>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.Modal>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Modal>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Modal>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Modal>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Modal>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Modal>(){ x }
     static member inline modalRef (x: AntDesign.ModalRef) = "ModalRef" => x
     static member inline afterClose (fn) = "AfterClose" => (System.Func<System.Threading.Tasks.Task>fn)
     static member inline bodyStyle (x: System.String) = "BodyStyle" => x
@@ -2184,24 +2184,24 @@ type modal<'FunBlazorGeneric> =
 
 type modalContainer<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.ModalContainer>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.ModalContainer>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.ModalContainer>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.ModalContainer>() { yield! attrs }
 
 
                     
 
 type modalFooter<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.ModalFooter>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.ModalFooter>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.ModalFooter>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.ModalFooter>() { yield! attrs }
 
 
                     
 
 type pageHeader<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.PageHeader>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.PageHeader>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.PageHeader>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.PageHeader>() { yield! attrs }
 
     static member inline ghost (x: System.Boolean) = "Ghost" => x
     static member inline backIcon (x: OneOf.OneOf<System.Nullable<System.Boolean>, System.String>) = "BackIcon" => x
@@ -2245,8 +2245,8 @@ type pageHeader<'FunBlazorGeneric> =
 
 type pagination<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Pagination>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Pagination>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Pagination>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Pagination>() { yield! attrs }
 
     static member inline total (x: System.Int32) = "Total" => x
     static member inline defaultCurrent (x: System.Int32) = "DefaultCurrent" => x
@@ -2283,8 +2283,8 @@ type pagination<'FunBlazorGeneric> =
 
 type paginationOptions<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.PaginationOptions>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.PaginationOptions>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.PaginationOptions>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.PaginationOptions>() { yield! attrs }
 
     static member inline isSmall (x: System.Boolean) = "IsSmall" => x
     static member inline disabled (x: System.Boolean) = "Disabled" => x
@@ -2299,8 +2299,8 @@ type paginationOptions<'FunBlazorGeneric> =
 
 type progress<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Progress>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Progress>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Progress>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Progress>() { yield! attrs }
 
     static member inline size (x: AntDesign.ProgressSize) = "Size" => x
     static member inline type' (x: AntDesign.ProgressType) = "Type" => x
@@ -2321,11 +2321,11 @@ type progress<'FunBlazorGeneric> =
 
 type radio<'FunBlazorGeneric, 'TValue> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Radio<'TValue>>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Radio<'TValue>>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.Radio<'TValue>>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.Radio<'TValue>>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.Radio<'TValue>>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Radio<'TValue>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Radio<'TValue>>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Radio<'TValue>>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Radio<'TValue>>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Radio<'TValue>>(){ x }
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
     static member inline childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
@@ -2344,11 +2344,11 @@ type radio<'FunBlazorGeneric, 'TValue> =
 
 type rate<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Rate>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Rate>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.Rate>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.Rate>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.Rate>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Rate>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Rate>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Rate>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Rate>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Rate>(){ x }
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
     static member inline childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
@@ -2371,8 +2371,8 @@ type rate<'FunBlazorGeneric> =
 
 type rateItem<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.RateItem>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.RateItem>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.RateItem>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.RateItem>() { yield! attrs }
 
     static member inline allowHalf (x: System.Boolean) = "AllowHalf" => x
     static member inline onItemHover fn = html.callback<System.Boolean>("OnItemHover", fn)
@@ -2386,11 +2386,11 @@ type rateItem<'FunBlazorGeneric> =
 
 type result<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Result>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Result>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.Result>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.Result>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.Result>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Result>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Result>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Result>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Result>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Result>(){ x }
     static member inline title (x: System.String) = "Title" => x
     static member inline titleTemplate (x: string) = html.renderFragment("TitleTemplate", html.text x)
     static member inline titleTemplate (node) = html.renderFragment("TitleTemplate", node)
@@ -2412,8 +2412,8 @@ type result<'FunBlazorGeneric> =
 
 type selectOption<'FunBlazorGeneric, 'TItemValue, 'TItem> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.SelectOption<'TItemValue, 'TItem>>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.SelectOption<'TItemValue, 'TItem>>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.SelectOption<'TItemValue, 'TItem>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.SelectOption<'TItemValue, 'TItem>>() { yield! attrs }
 
     static member inline disabled (x: System.Boolean) = "Disabled" => x
     static member inline label (x: System.String) = "Label" => x
@@ -2422,19 +2422,19 @@ type selectOption<'FunBlazorGeneric, 'TItemValue, 'TItem> =
 
 type simpleSelectOption<'FunBlazorGeneric> =
     inherit selectOption<'FunBlazorGeneric, System.String, System.String>
-    static member inline create () = ComponentBuilder<AntDesign.SimpleSelectOption>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.SimpleSelectOption>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.SimpleSelectOption>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.SimpleSelectOption>() { yield! attrs }
 
 
                     
 
 type skeleton<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Skeleton>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Skeleton>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.Skeleton>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.Skeleton>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.Skeleton>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Skeleton>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Skeleton>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Skeleton>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Skeleton>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Skeleton>(){ x }
     static member inline active (x: System.Boolean) = "Active" => x
     static member inline loading (x: System.Boolean) = "Loading" => x
     static member inline title (x: System.Boolean) = "Title" => x
@@ -2452,8 +2452,8 @@ type skeleton<'FunBlazorGeneric> =
 
 type skeletonElement<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.SkeletonElement>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.SkeletonElement>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.SkeletonElement>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.SkeletonElement>() { yield! attrs }
 
     static member inline active (x: System.Boolean) = "Active" => x
     static member inline type' (x: System.String) = "Type" => x
@@ -2463,11 +2463,11 @@ type skeletonElement<'FunBlazorGeneric> =
 
 type space<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Space>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Space>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.Space>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.Space>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.Space>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Space>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Space>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Space>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Space>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Space>(){ x }
     static member inline align (x: System.String) = "Align" => x
     static member inline direction (x: AntDesign.DirectionVHType) = "Direction" => x
     static member inline size (x: OneOf.OneOf<System.String, System.ValueTuple<System.String, System.String>>) = "Size" => x
@@ -2482,11 +2482,11 @@ type space<'FunBlazorGeneric> =
 
 type spaceItem<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.SpaceItem>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.SpaceItem>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.SpaceItem>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.SpaceItem>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.SpaceItem>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.SpaceItem>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.SpaceItem>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.SpaceItem>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.SpaceItem>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.SpaceItem>(){ x }
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
     static member inline childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
@@ -2494,11 +2494,11 @@ type spaceItem<'FunBlazorGeneric> =
 
 type spin<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Spin>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Spin>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.Spin>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.Spin>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.Spin>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Spin>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Spin>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Spin>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Spin>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Spin>(){ x }
     static member inline size (x: System.String) = "Size" => x
     static member inline tip (x: System.String) = "Tip" => x
     static member inline delay (x: System.Int32) = "Delay" => x
@@ -2514,11 +2514,11 @@ type spin<'FunBlazorGeneric> =
 
 type statisticComponentBase<'FunBlazorGeneric, 'T> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.StatisticComponentBase<'T>>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.StatisticComponentBase<'T>>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.StatisticComponentBase<'T>>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.StatisticComponentBase<'T>>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.StatisticComponentBase<'T>>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.StatisticComponentBase<'T>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.StatisticComponentBase<'T>>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.StatisticComponentBase<'T>>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.StatisticComponentBase<'T>>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.StatisticComponentBase<'T>>(){ x }
     static member inline prefix (x: System.String) = "Prefix" => x
     static member inline prefixTemplate (x: string) = html.renderFragment("PrefixTemplate", html.text x)
     static member inline prefixTemplate (node) = html.renderFragment("PrefixTemplate", node)
@@ -2540,8 +2540,8 @@ type statisticComponentBase<'FunBlazorGeneric, 'T> =
 
 type countDown<'FunBlazorGeneric> =
     inherit statisticComponentBase<'FunBlazorGeneric, System.DateTime>
-    static member inline create () = ComponentBuilder<AntDesign.CountDown>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.CountDown>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.CountDown>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.CountDown>() { yield! attrs }
 
     static member inline format (x: System.String) = "Format" => x
     static member inline onFinish fn = html.callback<unit>("OnFinish", fn)
@@ -2549,8 +2549,8 @@ type countDown<'FunBlazorGeneric> =
 
 type statistic<'FunBlazorGeneric, 'TValue> =
     inherit statisticComponentBase<'FunBlazorGeneric, 'TValue>
-    static member inline create () = ComponentBuilder<AntDesign.Statistic<'TValue>>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Statistic<'TValue>>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Statistic<'TValue>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Statistic<'TValue>>() { yield! attrs }
 
     static member inline decimalSeparator (x: System.String) = "DecimalSeparator" => x
     static member inline groupSeparator (x: System.String) = "GroupSeparator" => x
@@ -2559,8 +2559,8 @@ type statistic<'FunBlazorGeneric, 'TValue> =
 
 type step<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Step>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Step>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Step>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Step>() { yield! attrs }
 
     static member inline icon (x: System.String) = "Icon" => x
     static member inline status (x: System.String) = "Status" => x
@@ -2582,11 +2582,11 @@ type step<'FunBlazorGeneric> =
 
 type steps<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Steps>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Steps>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.Steps>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.Steps>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.Steps>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Steps>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Steps>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Steps>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Steps>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Steps>(){ x }
     static member inline current (x: System.Int32) = "Current" => x
     static member inline percent (x: System.Nullable<System.Double>) = "Percent" => x
     static member inline progressDot (x: string) = html.renderFragment("ProgressDot", html.text x)
@@ -2607,11 +2607,11 @@ type steps<'FunBlazorGeneric> =
 
 type table<'FunBlazorGeneric, 'TItem> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Table<'TItem>>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Table<'TItem>>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.Table<'TItem>>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.Table<'TItem>>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.Table<'TItem>>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Table<'TItem>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Table<'TItem>>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Table<'TItem>>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Table<'TItem>>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Table<'TItem>>(){ x }
     static member inline renderMode (x: AntDesign.RenderMode) = "RenderMode" => x
     static member inline dataSource (x: System.Collections.Generic.IEnumerable<'TItem>) = "DataSource" => x
     static member inline childContent (render: 'TItem -> NodeRenderFragment) = html.renderFragment("ChildContent", render)
@@ -2679,8 +2679,8 @@ type table<'FunBlazorGeneric, 'TItem> =
 
 type reuseTabs<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.ReuseTabs>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.ReuseTabs>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.ReuseTabs>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.ReuseTabs>() { yield! attrs }
 
     static member inline tabPaneClass (x: System.String) = "TabPaneClass" => x
     static member inline draggable (x: System.Boolean) = "Draggable" => x
@@ -2691,11 +2691,11 @@ type reuseTabs<'FunBlazorGeneric> =
 
 type tabPane<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.TabPane>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.TabPane>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.TabPane>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.TabPane>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.TabPane>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.TabPane>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.TabPane>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.TabPane>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.TabPane>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.TabPane>(){ x }
     static member inline forceRender (x: System.Boolean) = "ForceRender" => x
     static member inline key (x: System.String) = "Key" => x
     static member inline tab (x: System.String) = "Tab" => x
@@ -2714,11 +2714,11 @@ type tabPane<'FunBlazorGeneric> =
 
 type tabs<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Tabs>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Tabs>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.Tabs>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.Tabs>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.Tabs>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Tabs>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Tabs>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Tabs>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Tabs>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Tabs>(){ x }
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
     static member inline childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
@@ -2758,11 +2758,11 @@ type tabs<'FunBlazorGeneric> =
 
 type tag<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Tag>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Tag>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.Tag>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.Tag>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.Tag>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Tag>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Tag>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Tag>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Tag>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Tag>(){ x }
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
     static member inline childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
@@ -2785,11 +2785,11 @@ type tag<'FunBlazorGeneric> =
 
 type timeline<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Timeline>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Timeline>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.Timeline>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.Timeline>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.Timeline>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Timeline>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Timeline>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Timeline>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Timeline>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Timeline>(){ x }
     static member inline mode (x: System.Nullable<AntDesign.TimelineMode>) = "Mode" => x
     static member inline reverse (x: System.Boolean) = "Reverse" => x
     static member inline pending (x: OneOf.OneOf<System.String, Microsoft.AspNetCore.Components.RenderFragment>) = "Pending" => x
@@ -2803,11 +2803,11 @@ type timeline<'FunBlazorGeneric> =
 
 type timelineItem<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.TimelineItem>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.TimelineItem>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.TimelineItem>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.TimelineItem>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.TimelineItem>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.TimelineItem>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.TimelineItem>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.TimelineItem>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.TimelineItem>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.TimelineItem>(){ x }
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
     static member inline childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
@@ -2820,11 +2820,11 @@ type timelineItem<'FunBlazorGeneric> =
 
 type transfer<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Transfer>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Transfer>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.Transfer>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.Transfer>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.Transfer>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Transfer>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Transfer>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Transfer>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Transfer>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Transfer>(){ x }
     static member inline dataSource (x: System.Collections.Generic.IList<AntDesign.TransferItem>) = "DataSource" => x
     static member inline titles (x: System.String[]) = "Titles" => x
     static member inline operations (x: System.String[]) = "Operations" => x
@@ -2850,11 +2850,11 @@ type transfer<'FunBlazorGeneric> =
 
 type tree<'FunBlazorGeneric, 'TItem> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Tree<'TItem>>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Tree<'TItem>>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.Tree<'TItem>>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.Tree<'TItem>>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.Tree<'TItem>>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Tree<'TItem>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Tree<'TItem>>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Tree<'TItem>>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Tree<'TItem>>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Tree<'TItem>>(){ x }
     static member inline showExpand (x: System.Boolean) = "ShowExpand" => x
     static member inline showLine (x: System.Boolean) = "ShowLine" => x
     static member inline showIcon (x: System.Boolean) = "ShowIcon" => x
@@ -2944,19 +2944,19 @@ type tree<'FunBlazorGeneric, 'TItem> =
 
 type directoryTree<'FunBlazorGeneric, 'TItem> =
     inherit tree<'FunBlazorGeneric, 'TItem>
-    static member inline create () = ComponentBuilder<AntDesign.DirectoryTree<'TItem>>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.DirectoryTree<'TItem>>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.DirectoryTree<'TItem>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.DirectoryTree<'TItem>>() { yield! attrs }
 
 
                     
 
 type treeNode<'FunBlazorGeneric, 'TItem> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.TreeNode<'TItem>>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.TreeNode<'TItem>>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.TreeNode<'TItem>>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.TreeNode<'TItem>>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.TreeNode<'TItem>>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.TreeNode<'TItem>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.TreeNode<'TItem>>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.TreeNode<'TItem>>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.TreeNode<'TItem>>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.TreeNode<'TItem>>(){ x }
     static member inline nodes (x: string) = html.renderFragment("Nodes", html.text x)
     static member inline nodes (node) = html.renderFragment("Nodes", node)
     static member inline nodes (nodes) = html.renderFragment("Nodes", fragment { yield! nodes })
@@ -2986,11 +2986,11 @@ type treeNode<'FunBlazorGeneric, 'TItem> =
 
 type upload<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Upload>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Upload>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.Upload>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.Upload>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.Upload>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Upload>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Upload>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Upload>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Upload>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Upload>(){ x }
     static member inline beforeUpload (fn) = "BeforeUpload" => (System.Func<AntDesign.UploadFileItem, System.Boolean>fn)
     static member inline beforeAllUploadAsync (fn) = "BeforeAllUploadAsync" => (System.Func<System.Collections.Generic.List<AntDesign.UploadFileItem>, System.Threading.Tasks.Task<System.Boolean>>fn)
     static member inline beforeAllUpload (fn) = "BeforeAllUpload" => (System.Func<System.Collections.Generic.List<AntDesign.UploadFileItem>, System.Boolean>fn)
@@ -3027,11 +3027,11 @@ type upload<'FunBlazorGeneric> =
 
 type breadcrumbItem<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.BreadcrumbItem>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.BreadcrumbItem>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.BreadcrumbItem>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.BreadcrumbItem>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.BreadcrumbItem>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.BreadcrumbItem>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.BreadcrumbItem>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.BreadcrumbItem>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.BreadcrumbItem>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.BreadcrumbItem>(){ x }
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
     static member inline childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
@@ -3043,16 +3043,16 @@ type breadcrumbItem<'FunBlazorGeneric> =
 
 type calendarHeader<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.CalendarHeader>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.CalendarHeader>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.CalendarHeader>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.CalendarHeader>() { yield! attrs }
 
 
                     
 
 type cardMeta<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.CardMeta>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.CardMeta>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.CardMeta>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.CardMeta>() { yield! attrs }
 
     static member inline title (x: System.String) = "Title" => x
     static member inline titleTemplate (x: string) = html.renderFragment("TitleTemplate", html.text x)
@@ -3070,19 +3070,19 @@ type cardMeta<'FunBlazorGeneric> =
 
 type antContainer<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.AntContainer>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.AntContainer>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.AntContainer>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.AntContainer>() { yield! attrs }
 
 
                     
 
 type template<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Template>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Template>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.Template>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.Template>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.Template>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Template>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Template>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Template>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Template>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Template>(){ x }
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
     static member inline childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
@@ -3091,27 +3091,27 @@ type template<'FunBlazorGeneric> =
 
 type emptyDefaultImg<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.EmptyDefaultImg>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.EmptyDefaultImg>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.EmptyDefaultImg>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.EmptyDefaultImg>() { yield! attrs }
 
     static member inline prefixCls (x: System.String) = "PrefixCls" => x
                     
 
 type emptySimpleImg<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.EmptySimpleImg>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.EmptySimpleImg>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.EmptySimpleImg>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.EmptySimpleImg>() { yield! attrs }
 
     static member inline prefixCls (x: System.String) = "PrefixCls" => x
                     
 
 type content<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Content>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Content>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.Content>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.Content>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.Content>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Content>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Content>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Content>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Content>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Content>(){ x }
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
     static member inline childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
@@ -3119,11 +3119,11 @@ type content<'FunBlazorGeneric> =
 
 type footer<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Footer>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Footer>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.Footer>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.Footer>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.Footer>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Footer>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Footer>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Footer>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Footer>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Footer>(){ x }
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
     static member inline childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
@@ -3131,11 +3131,11 @@ type footer<'FunBlazorGeneric> =
 
 type header<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Header>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Header>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.Header>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.Header>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.Header>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Header>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Header>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Header>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Header>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Header>(){ x }
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
     static member inline childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
@@ -3143,11 +3143,11 @@ type header<'FunBlazorGeneric> =
 
 type layout<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Layout>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Layout>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.Layout>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.Layout>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.Layout>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Layout>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Layout>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Layout>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Layout>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Layout>(){ x }
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
     static member inline childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
@@ -3155,16 +3155,16 @@ type layout<'FunBlazorGeneric> =
 
 type menuDivider<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.MenuDivider>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.MenuDivider>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.MenuDivider>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.MenuDivider>() { yield! attrs }
 
 
                     
 
 type paginationPager<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.PaginationPager>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.PaginationPager>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.PaginationPager>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.PaginationPager>() { yield! attrs }
 
     static member inline showTitle (x: System.Boolean) = "ShowTitle" => x
     static member inline page (x: System.Int32) = "Page" => x
@@ -3187,8 +3187,8 @@ open AntDesign.DslInternals
 
 type selectOptionGroup<'FunBlazorGeneric, 'TItemValue, 'TItem> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Select.Internal.SelectOptionGroup<'TItemValue, 'TItem>>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Select.Internal.SelectOptionGroup<'TItemValue, 'TItem>>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Select.Internal.SelectOptionGroup<'TItemValue, 'TItem>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Select.Internal.SelectOptionGroup<'TItemValue, 'TItem>>() { yield! attrs }
 
 
                     
@@ -3203,8 +3203,8 @@ open AntDesign.DslInternals
 
 type calendarPanelChooser<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Internal.CalendarPanelChooser>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.CalendarPanelChooser>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Internal.CalendarPanelChooser>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.CalendarPanelChooser>() { yield! attrs }
 
     static member inline calendar (x: AntDesign.Calendar) = "Calendar" => x
     static member inline onSelect (fn) = "OnSelect" => (System.Action<System.DateTime, System.Int32>fn)
@@ -3213,11 +3213,11 @@ type calendarPanelChooser<'FunBlazorGeneric> =
 
 type element<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Internal.Element>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.Element>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.Internal.Element>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.Internal.Element>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.Internal.Element>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Internal.Element>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.Element>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Internal.Element>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Internal.Element>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Internal.Element>(){ x }
     static member inline htmlTag (x: System.String) = "HtmlTag" => x
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
@@ -3228,11 +3228,11 @@ type element<'FunBlazorGeneric> =
 
 type overlay<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Internal.Overlay>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.Overlay>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.Internal.Overlay>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.Internal.Overlay>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.Internal.Overlay>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Internal.Overlay>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.Overlay>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Internal.Overlay>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Internal.Overlay>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Internal.Overlay>(){ x }
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
     static member inline childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
@@ -3251,8 +3251,8 @@ type overlay<'FunBlazorGeneric> =
 
 type datePickerPanelChooser<'FunBlazorGeneric, 'TValue> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Internal.DatePickerPanelChooser<'TValue>>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.DatePickerPanelChooser<'TValue>>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Internal.DatePickerPanelChooser<'TValue>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.DatePickerPanelChooser<'TValue>>() { yield! attrs }
 
     static member inline datePicker (x: AntDesign.DatePickerBase<'TValue>) = "DatePicker" => x
     static member inline onSelect (fn) = "OnSelect" => (System.Action<System.DateTime, System.Int32>fn)
@@ -3261,11 +3261,11 @@ type datePickerPanelChooser<'FunBlazorGeneric, 'TValue> =
 
 type uploadButton<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Internal.UploadButton>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.UploadButton>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.Internal.UploadButton>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.Internal.UploadButton>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.Internal.UploadButton>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Internal.UploadButton>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.UploadButton>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Internal.UploadButton>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Internal.UploadButton>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Internal.UploadButton>(){ x }
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
     static member inline childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
@@ -3284,8 +3284,8 @@ type uploadButton<'FunBlazorGeneric> =
 
 type datePickerInput<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Internal.DatePickerInput>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.DatePickerInput>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Internal.DatePickerInput>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.DatePickerInput>() { yield! attrs }
 
     static member inline prefixCls (x: System.String) = "PrefixCls" => x
     static member inline size (x: System.String) = "Size" => x
@@ -3314,8 +3314,8 @@ type datePickerInput<'FunBlazorGeneric> =
 
 type dropdownGroupButton<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Internal.DropdownGroupButton>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.DropdownGroupButton>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Internal.DropdownGroupButton>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.DropdownGroupButton>() { yield! attrs }
 
     static member inline leftButton (x: string) = html.renderFragment("LeftButton", html.text x)
     static member inline leftButton (node) = html.renderFragment("LeftButton", node)
@@ -3327,11 +3327,11 @@ type dropdownGroupButton<'FunBlazorGeneric> =
 
 type tableRow<'FunBlazorGeneric, 'TItem> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.Internal.TableRow<'TItem>>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.TableRow<'TItem>>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.Internal.TableRow<'TItem>>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.Internal.TableRow<'TItem>>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.Internal.TableRow<'TItem>>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Internal.TableRow<'TItem>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.TableRow<'TItem>>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Internal.TableRow<'TItem>>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Internal.TableRow<'TItem>>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Internal.TableRow<'TItem>>(){ x }
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
     static member inline childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
@@ -3347,11 +3347,11 @@ open AntDesign.DslInternals
 
 type configProvider<'FunBlazorGeneric> =
     inherit antComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.ConfigProvider>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.ConfigProvider>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.ConfigProvider>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.ConfigProvider>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.ConfigProvider>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.ConfigProvider>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.ConfigProvider>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.ConfigProvider>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.ConfigProvider>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.ConfigProvider>(){ x }
     static member inline direction (x: System.String) = "Direction" => x
     static member inline form (x: AntDesign.FormConfig) = "Form" => x
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
@@ -3361,35 +3361,35 @@ type configProvider<'FunBlazorGeneric> =
 
 type templateComponentBase<'FunBlazorGeneric, 'TComponentOptions> =
     inherit antComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.TemplateComponentBase<'TComponentOptions>>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.TemplateComponentBase<'TComponentOptions>>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.TemplateComponentBase<'TComponentOptions>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.TemplateComponentBase<'TComponentOptions>>() { yield! attrs }
 
     static member inline options (x: 'TComponentOptions) = "Options" => x
                     
 
 type feedbackComponent<'FunBlazorGeneric, 'TComponentOptions> =
     inherit templateComponentBase<'FunBlazorGeneric, 'TComponentOptions>
-    static member inline create () = ComponentBuilder<AntDesign.FeedbackComponent<'TComponentOptions>>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.FeedbackComponent<'TComponentOptions>>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.FeedbackComponent<'TComponentOptions>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.FeedbackComponent<'TComponentOptions>>() { yield! attrs }
 
     static member inline feedbackRef (x: AntDesign.IFeedbackRef) = "FeedbackRef" => x
                     
 
 type feedbackComponent<'FunBlazorGeneric, 'TComponentOptions, 'TResult> =
     inherit feedbackComponent<'FunBlazorGeneric, 'TComponentOptions>
-    static member inline create () = ComponentBuilder<AntDesign.FeedbackComponent<'TComponentOptions, 'TResult>>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.FeedbackComponent<'TComponentOptions, 'TResult>>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.FeedbackComponent<'TComponentOptions, 'TResult>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.FeedbackComponent<'TComponentOptions, 'TResult>>() { yield! attrs }
 
 
                     
 
 type formProvider<'FunBlazorGeneric> =
     inherit antComponentBase<'FunBlazorGeneric>
-    static member inline create () = ComponentBuilder<AntDesign.FormProvider>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.FormProvider>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.FormProvider>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.FormProvider>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.FormProvider>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.FormProvider>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.FormProvider>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.FormProvider>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.FormProvider>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.FormProvider>(){ x }
     static member inline onFormFinish fn = html.callback<AntDesign.FormProviderFinishEventArgs>("OnFormFinish", fn)
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
@@ -3398,8 +3398,8 @@ type formProvider<'FunBlazorGeneric> =
 
 type component'<'FunBlazorGeneric> =
     
-    static member inline create () = ComponentBuilder<AntDesign.Component>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Component>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Component>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Component>() { yield! attrs }
 
     static member inline type' (x: System.Type) = "Type" => x
     static member inline typeName (x: System.String) = "TypeName" => x
@@ -3408,19 +3408,19 @@ type component'<'FunBlazorGeneric> =
 
 type imagePreview<'FunBlazorGeneric> =
     
-    static member inline create () = ComponentBuilder<AntDesign.ImagePreview>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.ImagePreview>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.ImagePreview>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.ImagePreview>() { yield! attrs }
 
     static member inline imageRef (x: AntDesign.ImageRef) = "ImageRef" => x
                     
 
 type imagePreviewGroup<'FunBlazorGeneric> =
     
-    static member inline create () = ComponentBuilder<AntDesign.ImagePreviewGroup>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.ImagePreviewGroup>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.ImagePreviewGroup>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.ImagePreviewGroup>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.ImagePreviewGroup>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.ImagePreviewGroup>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.ImagePreviewGroup>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.ImagePreviewGroup>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.ImagePreviewGroup>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.ImagePreviewGroup>(){ x }
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
     static member inline childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
@@ -3433,51 +3433,51 @@ type imagePreviewGroup<'FunBlazorGeneric> =
 
 type treeIndent<'FunBlazorGeneric, 'TItem> =
     
-    static member inline create () = ComponentBuilder<AntDesign.TreeIndent<'TItem>>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.TreeIndent<'TItem>>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.TreeIndent<'TItem>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.TreeIndent<'TItem>>() { yield! attrs }
 
     static member inline treeLevel (x: System.Int32) = "TreeLevel" => x
                     
 
 type treeNodeCheckbox<'FunBlazorGeneric, 'TItem> =
     
-    static member inline create () = ComponentBuilder<AntDesign.TreeNodeCheckbox<'TItem>>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.TreeNodeCheckbox<'TItem>>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.TreeNodeCheckbox<'TItem>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.TreeNodeCheckbox<'TItem>>() { yield! attrs }
 
     static member inline onCheckBoxClick fn = html.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs>("OnCheckBoxClick", fn)
                     
 
 type treeNodeSwitcher<'FunBlazorGeneric, 'TItem> =
     
-    static member inline create () = ComponentBuilder<AntDesign.TreeNodeSwitcher<'TItem>>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.TreeNodeSwitcher<'TItem>>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.TreeNodeSwitcher<'TItem>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.TreeNodeSwitcher<'TItem>>() { yield! attrs }
 
     static member inline onSwitcherClick fn = html.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs>("OnSwitcherClick", fn)
                     
 
 type treeNodeTitle<'FunBlazorGeneric, 'TItem> =
     
-    static member inline create () = ComponentBuilder<AntDesign.TreeNodeTitle<'TItem>>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.TreeNodeTitle<'TItem>>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.TreeNodeTitle<'TItem>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.TreeNodeTitle<'TItem>>() { yield! attrs }
 
 
                     
 
 type cardLoading<'FunBlazorGeneric> =
     
-    static member inline create () = ComponentBuilder<AntDesign.CardLoading>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.CardLoading>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.CardLoading>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.CardLoading>() { yield! attrs }
 
 
                     
 
 type summaryRow<'FunBlazorGeneric> =
     
-    static member inline create () = ComponentBuilder<AntDesign.SummaryRow>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.SummaryRow>() { html.mergeAttrs attrs }
-    static member inline create (nodes: NodeRenderFragment seq) = ComponentBuilder<AntDesign.SummaryRow>() { yield! nodes }
-    static member inline create (node: NodeRenderFragment) = ComponentBuilder<AntDesign.SummaryRow>() { node }
-    static member inline create (x: string) = ComponentBuilder<AntDesign.SummaryRow>(){ x }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.SummaryRow>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.SummaryRow>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.SummaryRow>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.SummaryRow>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.SummaryRow>(){ x }
     static member inline childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member inline childContent (node) = html.renderFragment("ChildContent", node)
     static member inline childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
@@ -3493,8 +3493,8 @@ open AntDesign.DslInternals
 
 type statisticComponentBase<'FunBlazorGeneric, 'T> =
     
-    static member inline create () = ComponentBuilder<AntDesign.statistic.StatisticComponentBase<'T>>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.statistic.StatisticComponentBase<'T>>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.statistic.StatisticComponentBase<'T>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.statistic.StatisticComponentBase<'T>>() { yield! attrs }
 
 
                     
@@ -3509,8 +3509,8 @@ open AntDesign.DslInternals
 
 type labelTemplateItem<'FunBlazorGeneric, 'TItemValue, 'TItem> =
     
-    static member inline create () = ComponentBuilder<AntDesign.Select.LabelTemplateItem<'TItemValue, 'TItem>>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Select.LabelTemplateItem<'TItemValue, 'TItem>>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Select.LabelTemplateItem<'TItemValue, 'TItem>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Select.LabelTemplateItem<'TItemValue, 'TItem>>() { yield! attrs }
 
     static member inline labelTemplateItemContent (render: 'TItem -> NodeRenderFragment) = html.renderFragment("LabelTemplateItemContent", render)
     static member inline styles (x: (string * string) seq) = html.styles x
@@ -3532,8 +3532,8 @@ open AntDesign.DslInternals
 
 type selectContent<'FunBlazorGeneric, 'TItemValue, 'TItem> =
     
-    static member inline create () = ComponentBuilder<AntDesign.Select.Internal.SelectContent<'TItemValue, 'TItem>>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Select.Internal.SelectContent<'TItemValue, 'TItem>>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Select.Internal.SelectContent<'TItemValue, 'TItem>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Select.Internal.SelectContent<'TItemValue, 'TItem>>() { yield! attrs }
 
     static member inline prefix (x: System.String) = "Prefix" => x
     static member inline placeholder (x: System.String) = "Placeholder" => x
@@ -3561,8 +3561,8 @@ open AntDesign.DslInternals
 
 type formRulesValidator<'FunBlazorGeneric> =
     
-    static member inline create () = ComponentBuilder<AntDesign.Internal.FormRulesValidator>()
-    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.FormRulesValidator>() { html.mergeAttrs attrs }
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Internal.FormRulesValidator>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.FormRulesValidator>() { yield! attrs }
 
 
                     

@@ -7,7 +7,7 @@ open Blazor.DragDrop.DslInternals
 
 
 type DropzoneBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentBuilder<'FunBlazorGeneric>()
+    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
     static member inline create () = html.fromBuilder(DropzoneBuilder<'FunBlazorGeneric, 'TItem>())
     [<CustomOperation("Accepts")>] member inline _.Accepts ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("Accepts" => (System.Func<'TItem, 'TItem, System.Boolean>fn))
     [<CustomOperation("AllowsDrag")>] member inline _.AllowsDrag ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("AllowsDrag" => (System.Func<'TItem, System.Boolean>fn))

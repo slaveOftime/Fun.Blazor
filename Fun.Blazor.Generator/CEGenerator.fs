@@ -182,7 +182,7 @@ let private getMetaInfo (ty: Type) =
 
     let props =
         props
-        //|> Seq.filter (fun x -> not addBasicDomAttrs || x.Contains $"{memberStart}childContent" |> not)
+        |> Seq.filter (fun x -> not addBasicDomAttrs || x.Contains $"{memberStart}childContent" |> not)
         |> String.concat "\n"
 
     {|
@@ -255,11 +255,13 @@ let generateCode (targetNamespace: string) (opens: string) (tys: Type seq) =
                         //$"inherit {if meta.addBasicDomAttrs then nameof FunBlazorContextWithAttrs else nameof FunBlazorContext}<{funBlazorGeneric}>()"
                         match meta.inheritInfo with
                         | None ->
-                            $"inherit {match meta.hasChildren, meta.addBasicDomAttrs with
-                                       | true, false -> nameof ComponentWithChildBuilder
-                                       | true, true -> nameof ComponentWithDomAndChildAttrBuilder
-                                       | false, false -> nameof ComponentBuilder
-                                       | false, true -> nameof ComponentWithDomAttrBuilder}<{funBlazorGeneric}>()"
+                            // Use ComponentWithDomAndChildAttrBuilder because we cannot do multi inheritance and will endup of a lot of duplication
+                            //$"inherit {match meta.hasChildren, meta.addBasicDomAttrs with
+                            //           | true, false -> nameof ComponentWithChildBuilder
+                            //           | true, true -> nameof ComponentWithDomAndChildAttrBuilder
+                            //           | false, false -> nameof ComponentBuilder
+                            //           | false, true -> nameof ComponentWithDomAttrBuilder}<{funBlazorGeneric}>()"
+                            $"inherit {nameof ComponentWithDomAndChildAttrBuilder}<{funBlazorGeneric}>()"
                         | Some (baseTy, generics) ->
                             $"inherit {baseTy.Namespace |> trimNamespace |> appendStrIfNotEmpty (string '.')}{makeBuilderName meta.ty.BaseType}{funBlazorGeneric :: (getTypeNames generics) |> createGenerics |> closeGenerics}()"
 
@@ -269,7 +271,7 @@ let generateCode (targetNamespace: string) (opens: string) (tys: Type seq) =
                             + "\n"
                             + $"    static member inline create (x: {nameof NodeRenderFragment} seq) = {builderName}{builderGenerics}(){{ yield! x }}"
                         else
-                            $"    static member inline create () = {builderName}{builderGenerics}()"
+                            $"    static member inline create () = html.fromBuilder({builderName}{builderGenerics}())"
 
                     $"""
 type {builderName}{builderGenericsWithContraints}() =

@@ -16,6 +16,22 @@ type html() =
     static member inline mergeAttrs attrs = attrs |> Seq.fold (==>) emptyAttr
     static member inline mergeNodes nodes = nodes |> Seq.fold (>=>) emptyNode
 
+
+    static member inline fromBuilder<'Comp, 'T when 'Comp :> IComponentBuilder<'T>> (_: 'Comp) =
+        NodeRenderFragment(fun _ builder index ->
+            builder.OpenComponent<'T>(index)
+            builder.CloseComponent()
+            index + 1
+        )
+
+    static member inline fromBuilder<'Elt when 'Elt :> IEltBuilder> (elt: 'Elt) =
+        NodeRenderFragment(fun _ builder index ->
+            builder.OpenElement(index, elt.Name)
+            builder.CloseElement()
+            index + 1
+        )
+
+
     static member inline renderFragment<'TItem>(name: string, render: 'TItem -> NodeRenderFragment) =
         AttrRenderFragment(fun comp builder index ->
             builder.AddAttribute(

@@ -220,7 +220,7 @@ type FunBlazorAttrEngine(mk, mkBool) =
 
 
 let svg =
-    FunBlazorSvgEngine((fun tag nodes -> EltBuilder tag { yield! nodes }), html.text, (fun () -> emptyNode))
+    FunBlazorSvgEngine((fun tag nodes -> EltWithChildBuilder tag { yield! nodes }), html.text, (fun () -> emptyNode))
 
 let attr =
     FunBlazorAttrEngine((fun k v -> k => v), (fun k v -> if v then k => null else emptyAttr))

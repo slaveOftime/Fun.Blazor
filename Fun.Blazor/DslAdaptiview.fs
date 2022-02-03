@@ -28,7 +28,7 @@ type AdaptiviewBuilder(?key: obj, ?isStatic: bool) =
     member _.IsStatic = isStatic
 
     member inline this.Run(x: aval<NodeRenderFragment>) =
-        html.comp<AdaptiveComponent> () {
+        ComponentWithChildBuilder<AdaptiveComponent> () {
             "Fragment" => x
             match this.IsStatic with
             | Some true -> "IsStatic" => true

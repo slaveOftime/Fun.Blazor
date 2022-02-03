@@ -178,18 +178,18 @@ let generateCode (targetNamespace: string) (opens: string) (tys: Type seq) =
                         | Some (ty, generics) ->
                             $"inherit {ty.Namespace |> trimNamespace |> appendStrIfNotEmpty (string '.')}{getFinalTypeName ty}{funBlazorGeneric :: (getTypeNames generics) |> createGenerics |> closeGenerics}"
 
-                    let create1 = $"    static member inline create () = {nameof ComponentBuilder}<{originalTypeWithGenerics}>()"
+                    let create1 = $"    static member inline create () = html.fromBuilder({nameof ComponentBuilder}<{originalTypeWithGenerics}>())"
 
                     let create2 =
-                        $"    static member inline create (attrs: {nameof AttrRenderFragment} seq) = {nameof ComponentBuilder}<{originalTypeWithGenerics}>() {{ html.mergeAttrs attrs }}"
+                        $"    static member inline create (attrs: {nameof AttrRenderFragment} seq) = {nameof ComponentBuilder}<{originalTypeWithGenerics}>() {{ yield! attrs }}"
 
                     let create3 =
                         if meta.hasChildren then
-                            $"    static member inline create (nodes: {nameof NodeRenderFragment} seq) = {nameof ComponentBuilder}<{originalTypeWithGenerics}>() {{ yield! nodes }}"
+                            $"    static member inline create (nodes: {nameof NodeRenderFragment} seq) = {nameof ComponentWithChildBuilder}<{originalTypeWithGenerics}>() {{ yield! nodes }}"
                             + "\n"
-                            + $"    static member inline create (node: {nameof NodeRenderFragment}) = {nameof ComponentBuilder}<{originalTypeWithGenerics}>() {{ node }}"
+                            + $"    static member inline create (node: {nameof NodeRenderFragment}) = {nameof ComponentWithChildBuilder}<{originalTypeWithGenerics}>() {{ node }}"
                             + "\n"
-                            + $"    static member inline create (x: string) = {nameof ComponentBuilder}<{originalTypeWithGenerics}>(){{ x }}"
+                            + $"    static member inline create (x: string) = {nameof ComponentWithChildBuilder}<{originalTypeWithGenerics}>(){{ x }}"
                         else
                             ""
 

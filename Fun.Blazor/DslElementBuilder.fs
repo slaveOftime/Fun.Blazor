@@ -1,5 +1,6 @@
 ﻿namespace Fun.Blazor
 
+open Microsoft.AspNetCore.Components
 open Operators
 
 
@@ -15,6 +16,19 @@ type EltBuilder(name) =
             let nextIndex = render.Invoke(comp, builder, index + 1)
             builder.CloseElement()
             nextIndex
+        )
+
+    [<CustomOperation("ref")>]
+    member inline _.ref
+        (
+            [<InlineIfLambda>] render: AttrRenderFragment,
+            [<InlineIfLambda>] fn: ElementReference -> unit
+        )
+        =
+        render
+        ==> AttrRenderFragment(fun _ builder index ->
+            builder.AddElementReferenceCapture(index, fn)
+            index + 1
         )
 
 
@@ -95,10 +109,10 @@ type EltWithChildBuilder(name) =
         render >>> (fn ())
 
     member inline _.For(renders: 'T seq, [<InlineIfLambda>] fn: 'T -> NodeRenderFragment) =
-        renders |> Seq.map fn |> Seq.fold (>=>) (emptyNode)
+        renders |> Seq.map fn |> Seq.fold (>=>) emptyNode
 
     member inline _.YieldFrom(renders: NodeRenderFragment seq) =
-        renders |> Seq.fold (>=>) (emptyNode)
+        renders |> Seq.fold (>=>) emptyNode
 
     member inline _.Zero() = emptyNode
 
