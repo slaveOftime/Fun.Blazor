@@ -140,12 +140,11 @@ type ComponentWithChildBuilder<'T when 'T :> IComponent>() =
     /// So we cannot merge AttrRenderFragment and NodeRenderFragment directly.
     /// Instead, we should first invoke AttrRenderFragment then add ChildContent RenderFragment as attribute and switch builder context.
     /// Other method like Delay, For, Combine should also have appropriate implementation to seperate Attr and Node so we can Invoke them standalone.
-    member inline _.Run(renders: struct(AttrRenderFragment * NodeRenderFragment)) =
+    member inline _.Run(renders: struct (AttrRenderFragment * NodeRenderFragment)) =
         NodeRenderFragment(fun comp builder index ->
-            let struct(render1, render2) = renders
-            let mutable nextIndex = index
+            let struct (render1, render2) = renders
             builder.OpenComponent<'T>(index)
-            nextIndex <- render1.Invoke(comp, builder, index + 1)
+            let nextIndex = render1.Invoke(comp, builder, index + 1)
             builder.AddAttribute(
                 nextIndex,
                 "ChildContent",
@@ -153,6 +152,21 @@ type ComponentWithChildBuilder<'T when 'T :> IComponent>() =
             )
             builder.CloseComponent()
             nextIndex + 1
+        )
+
+    /// Blazor do not allow add attribute after we add reference
+    member inline _.Run(renders: struct (RefRenderFragment * NodeRenderFragment)) =
+        NodeRenderFragment(fun comp builder index ->
+            let struct (render1, render2) = renders
+            builder.OpenComponent<'T>(index)
+            builder.AddAttribute(
+                index + 1,
+                "ChildContent",
+                RenderFragment(fun tb -> render2.Invoke(comp, tb, 0) |> ignore)
+            )
+            let nextIndex = render1.Invoke(comp, builder, index + 2)
+            builder.CloseComponent()
+            nextIndex
         )
 
 
@@ -191,6 +205,8 @@ type ComponentWithChildBuilder<'T when 'T :> IComponent>() =
     member inline _.Yield([<InlineIfLambda>] x: NodeRenderFragment) = x
 
     member inline _.Delay([<InlineIfLambda>] fn: unit -> NodeRenderFragment) = fn ()
+    member inline _.Delay([<InlineIfLambda>] fn: unit -> struct(AttrRenderFragment * NodeRenderFragment)) = fn ()
+    member inline _.Delay([<InlineIfLambda>] fn: unit -> struct(RefRenderFragment * NodeRenderFragment)) = fn ()
 
     /// We should only allow merge AttrRenderFragment with NodeRenderFragment.
     /// Instead of merge NodeRenderFragment with AttrRenderFragment because blazor only allow add attribute then child.
@@ -198,6 +214,14 @@ type ComponentWithChildBuilder<'T when 'T :> IComponent>() =
     member inline _.Combine
         (
             [<InlineIfLambda>] render1: AttrRenderFragment,
+            [<InlineIfLambda>] render2: NodeRenderFragment
+        )
+        =
+        struct(render1, render2)
+
+    member inline _.Combine
+        (
+            [<InlineIfLambda>] render1: RefRenderFragment,
             [<InlineIfLambda>] render2: NodeRenderFragment
         )
         =
@@ -214,6 +238,14 @@ type ComponentWithChildBuilder<'T when 'T :> IComponent>() =
     member inline _.For
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
+            [<InlineIfLambda>] fn: unit -> NodeRenderFragment
+        )
+        =
+        struct(render, fn ())
+
+    member inline _.For
+        (
+            [<InlineIfLambda>] render: RefRenderFragment,
             [<InlineIfLambda>] fn: unit -> NodeRenderFragment
         )
         =
@@ -259,6 +291,7 @@ type ComponentWithDomAttrBuilder<'T when 'T :> IComponent>() =
 
     interface IComponentBuilder<'T>
 
+
     member inline _.Run([<InlineIfLambda>] render: AttrRenderFragment) =
         NodeRenderFragment(fun comp builder index ->
             builder.OpenComponent<'T>(index)
@@ -267,6 +300,15 @@ type ComponentWithDomAttrBuilder<'T when 'T :> IComponent>() =
             nextIndex
         )
 
+    member inline _.Run([<InlineIfLambda>] render: RefRenderFragment) =
+        NodeRenderFragment(fun comp builder index ->
+            builder.OpenComponent<'T>(index)
+            let nextIndex = render.Invoke(comp, builder, index + 1)
+            builder.CloseComponent()
+            nextIndex
+        )
+
+
     [<CustomOperation("ref")>]
     member inline _.ref
         (
@@ -274,11 +316,13 @@ type ComponentWithDomAttrBuilder<'T when 'T :> IComponent>() =
             [<InlineIfLambda>] fn: 'T -> unit
         )
         =
-        render
-        ==> AttrRenderFragment(fun _ builder index ->
-            builder.AddComponentReferenceCapture(index, fun x -> fn(unbox<'T> x))
-            index + 1
+        RefRenderFragment(fun comp builder index ->
+            let nextIndex = render.Invoke(comp, builder, index)
+            builder.AddComponentReferenceCapture(nextIndex, fun x -> fn(unbox<'T> x))
+            nextIndex + 1
         )
+
+    member inline _.Delay([<InlineIfLambda>] fn: unit -> RefRenderFragment) = fn()
 
 
 type ComponentWithDomAndChildAttrBuilder<'T when 'T :> IComponent>() =
@@ -303,9 +347,8 @@ type ComponentWithDomAndChildAttrBuilder<'T when 'T :> IComponent>() =
     member inline _.Run(renders: struct (AttrRenderFragment * NodeRenderFragment)) =
         NodeRenderFragment(fun comp builder index ->
             let struct (render1, render2) = renders
-            let mutable nextIndex = index
             builder.OpenComponent<'T>(index)
-            nextIndex <- render1.Invoke(comp, builder, index + 1)
+            let nextIndex = render1.Invoke(comp, builder, index + 1)
             builder.AddAttribute(
                 nextIndex,
                 "ChildContent",
@@ -313,6 +356,21 @@ type ComponentWithDomAndChildAttrBuilder<'T when 'T :> IComponent>() =
             )
             builder.CloseComponent()
             nextIndex + 1
+        )
+    
+    /// Blazor do not allow add attribute after we add reference
+    member inline _.Run(renders: struct (RefRenderFragment * NodeRenderFragment)) =
+        NodeRenderFragment(fun comp builder index ->
+            let struct (render1, render2) = renders
+            builder.OpenComponent<'T>(index)
+            builder.AddAttribute(
+                index + 1,
+                "ChildContent",
+                RenderFragment(fun tb -> render2.Invoke(comp, tb, 0) |> ignore)
+            )
+            let nextIndex = render1.Invoke(comp, builder, index + 2)
+            builder.CloseComponent()
+            nextIndex
         )
 
 
@@ -351,6 +409,8 @@ type ComponentWithDomAndChildAttrBuilder<'T when 'T :> IComponent>() =
     member inline _.Yield([<InlineIfLambda>] x: NodeRenderFragment) = x
 
     member inline _.Delay([<InlineIfLambda>] fn: unit -> NodeRenderFragment) = fn ()
+    member inline _.Delay([<InlineIfLambda>] fn: unit -> struct(AttrRenderFragment * NodeRenderFragment)) = fn ()
+    member inline _.Delay([<InlineIfLambda>] fn: unit -> struct(RefRenderFragment * NodeRenderFragment)) = fn ()
 
     /// We should only allow merge AttrRenderFragment with NodeRenderFragment.
     /// Instead of merge NodeRenderFragment with AttrRenderFragment because blazor only allow add attribute then child.
@@ -358,6 +418,14 @@ type ComponentWithDomAndChildAttrBuilder<'T when 'T :> IComponent>() =
     member inline _.Combine
         (
             [<InlineIfLambda>] render1: AttrRenderFragment,
+            [<InlineIfLambda>] render2: NodeRenderFragment
+        )
+        =
+        struct(render1, render2)
+
+    member inline _.Combine
+        (
+            [<InlineIfLambda>] render1: RefRenderFragment,
             [<InlineIfLambda>] render2: NodeRenderFragment
         )
         =
@@ -374,6 +442,14 @@ type ComponentWithDomAndChildAttrBuilder<'T when 'T :> IComponent>() =
     member inline _.For
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
+            [<InlineIfLambda>] fn: unit -> NodeRenderFragment
+        )
+        =
+        struct(render, fn ())
+
+    member inline _.For
+        (
+            [<InlineIfLambda>] render: RefRenderFragment,
             [<InlineIfLambda>] fn: unit -> NodeRenderFragment
         )
         =

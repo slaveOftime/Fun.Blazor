@@ -25,10 +25,10 @@ type EltBuilder(name) =
             [<InlineIfLambda>] fn: ElementReference -> unit
         )
         =
-        render
-        ==> AttrRenderFragment(fun _ builder index ->
-            builder.AddElementReferenceCapture(index, fn)
-            index + 1
+        NodeRenderFragment(fun comp builder index ->
+            let nextIndex = render.Invoke(comp, builder, index)
+            builder.AddElementReferenceCapture(nextIndex, fn)
+            nextIndex + 1
         )
 
 

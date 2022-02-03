@@ -19,6 +19,8 @@ type AttrRenderFragment = delegate of root: IComponent * builder: RenderTreeBuil
 /// Return int should be the next useable sequence
 type NodeRenderFragment = delegate of root: IComponent * builder: RenderTreeBuilder * sequence: int -> int
 
+type RefRenderFragment = delegate of root: IComponent * builder: RenderTreeBuilder * sequence: int -> int
+
 
 module Operators =
 
