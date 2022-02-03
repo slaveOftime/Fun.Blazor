@@ -5,32 +5,32 @@ open Operators
 
 type FragmentBuilder() =
 
-    member inline _.Yield(x: int) =
+    member _.Yield(x: int) =
         NodeRenderFragment(fun _ builder index ->
             builder.AddContent(index, x)
             index + 1
         )
 
-    member inline _.Yield(x: string) =
+    member _.Yield(x: string) =
         NodeRenderFragment(fun _ builder index ->
             builder.AddContent(index, x)
             index + 1
         )
 
-    member inline _.Yield(x: float) =
+    member _.Yield(x: float) =
         NodeRenderFragment(fun _ builder index ->
             builder.AddContent(index, x)
             index + 1
         )
 
-    member inline _.Yield<'T when 'T :> IEltBuilder>(x: 'T) =
+    member _.Yield<'T when 'T :> IEltBuilder>(x: 'T) =
         NodeRenderFragment(fun _ builder index ->
             builder.OpenElement(index, x.Name)
             builder.CloseElement()
             index + 1
         )
 
-    member inline _.Yield<'T, 'T1 when 'T :> IComponentBuilder<'T1>>(_: 'T) =
+    member _.Yield<'T, 'T1 when 'T :> IComponentBuilder<'T1>>(_: 'T) =
         NodeRenderFragment(fun _ builder index ->
             builder.OpenComponent<'T1>(index)
             builder.CloseComponent()
