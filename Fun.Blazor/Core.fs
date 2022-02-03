@@ -1,10 +1,8 @@
 ﻿namespace Fun.Blazor
 
 open System
-open System.Threading.Tasks
 open FSharp.Data.Adaptive
 open Microsoft.AspNetCore.Components
-open Microsoft.AspNetCore.Components.Web
 open Microsoft.AspNetCore.Components.Rendering
 open Fun.Result
 
@@ -19,6 +17,7 @@ type AttrRenderFragment = delegate of root: IComponent * builder: RenderTreeBuil
 /// Return int should be the next useable sequence
 type NodeRenderFragment = delegate of root: IComponent * builder: RenderTreeBuilder * sequence: int -> int
 
+/// In blazor, we cannot add attribute after add ref, so we need a clear position to seperate them
 type RefRenderFragment = delegate of root: IComponent * builder: RenderTreeBuilder * sequence: int -> int
 
 
@@ -45,184 +44,10 @@ module Operators =
         NodeRenderFragment(fun comp builder index -> render2.Invoke(comp, builder, render1.Invoke(comp, builder, index)))
 
 
-[<AutoOpen>]
-module FragmentUtils =
-    
-    let emptyAttr = AttrRenderFragment(fun _ _ i -> i)
-    let emptyNode = NodeRenderFragment(fun _ _ i -> i)
-
-
-open Operators
-
-
 type IEltBuilder =
     abstract member Name : string
 
-
 type IComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent> = interface end
-
-
-type FragmentBuilder() =
-
-    member inline _.Yield(_: unit) = emptyAttr
-
-    member inline _.Yield(x: int) =
-        NodeRenderFragment(fun _ builder index ->
-            builder.AddContent(index, x)
-            index + 1
-        )
-
-    member inline _.Yield(x: string) =
-        NodeRenderFragment(fun _ builder index ->
-            builder.AddContent(index, x)
-            index + 1
-        )
-
-    member inline _.Yield(x: float) =
-        NodeRenderFragment(fun _ builder index ->
-            builder.AddContent(index, x)
-            index + 1
-        )
-
-    member inline _.Yield<'T when 'T :> IEltBuilder>(x: 'T) =
-        NodeRenderFragment(fun _ builder index ->
-            builder.OpenElement(index, x.Name)
-            builder.CloseElement()
-            index + 1
-        )
-
-    member inline _.Yield<'T, 'T1 when 'T :> IComponentBuilder<'T1>>(_: 'T) =
-        NodeRenderFragment(fun _ builder index ->
-            builder.OpenComponent<'T1>(index)
-            builder.CloseComponent()
-            index + 1
-        )
-
-    member inline _.Yield([<InlineIfLambda>] x: AttrRenderFragment) = x
-    member inline _.Yield([<InlineIfLambda>] x: NodeRenderFragment) = x
-
-    member inline _.Delay([<InlineIfLambda>] fn: unit -> AttrRenderFragment) = fn ()
-    member inline _.Delay([<InlineIfLambda>] fn: unit -> NodeRenderFragment) = fn ()
-
-    member inline _.Combine
-        (
-            [<InlineIfLambda>] render1: AttrRenderFragment,
-            [<InlineIfLambda>] render2: AttrRenderFragment
-        )
-        =
-        render1 ==> render2
-
-    member inline _.Combine
-        (
-            [<InlineIfLambda>] render1: AttrRenderFragment,
-            [<InlineIfLambda>] render2: NodeRenderFragment
-        )
-        =
-        render1 >>> render2
-
-    member inline _.Combine
-        (
-            [<InlineIfLambda>] render1: NodeRenderFragment,
-            [<InlineIfLambda>] render2: NodeRenderFragment
-        )
-        =
-        render1 >=> render2
-
-
-    member inline _.For
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] fn: unit -> AttrRenderFragment
-        )
-        =
-        render ==> (fn ())
-
-    member inline _.For
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] fn: unit -> NodeRenderFragment
-        )
-        =
-        render >>> (fn ())
-
-    member inline _.For(renders: 'T seq, [<InlineIfLambda>] fn: 'T -> NodeRenderFragment) =
-        renders |> Seq.map fn |> Seq.fold (>=>) (emptyNode)
-
-    member inline _.For(renders: 'T seq, [<InlineIfLambda>] fn: 'T -> AttrRenderFragment) =
-        renders |> Seq.map fn |> Seq.fold (==>) (emptyAttr)
-
-
-    member inline _.YieldFrom(renders: NodeRenderFragment seq) =
-        renders |> Seq.fold (>=>) (emptyNode)
-
-
-    member inline _.Zero() = emptyNode
-
-
-    [<CustomOperation("key")>]
-    member inline _.key([<InlineIfLambda>] render: AttrRenderFragment, k) =
-        render
-        ==> AttrRenderFragment(fun _ builder index ->
-            builder.SetKey k
-            index
-        )
-
-    [<CustomOperation("ref")>]
-    member inline _.ref
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] fn: ElementReference -> unit
-        )
-        =
-        render
-        ==> AttrRenderFragment(fun _ builder index ->
-            builder.AddElementReferenceCapture(index, fn)
-            index + 1
-        )
-
-    [<CustomOperation("callback")>]
-    member inline _.callback
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            eventName,
-            [<InlineIfLambda>] callback: 'T -> unit
-        )
-        =
-        render
-        ==> AttrRenderFragment(fun comp builder index ->
-            builder.AddAttribute(index, eventName, EventCallback.Factory.Create(comp, Action<'T> callback))
-            index + 1
-        )
-
-    [<CustomOperation("callback")>]
-    member inline _.callback
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            eventName,
-            [<InlineIfLambda>] callback: 'T -> Task
-        )
-        =
-        render
-        ==> AttrRenderFragment(fun comp builder index ->
-            builder.AddAttribute(index, eventName, EventCallback.Factory.Create(comp, Func<'T, Task> callback))
-            index + 1
-        )
-
-    [<CustomOperation("preventDefault")>]
-    member inline _.preventDefault([<InlineIfLambda>] render: AttrRenderFragment, eventName, value) =
-        render
-        ==> AttrRenderFragment(fun _ builder index ->
-            builder.AddEventPreventDefaultAttribute(index, eventName, value)
-            index + 1
-        )
-
-    [<CustomOperation("stopPropagation")>]
-    member inline _.stopPropagation([<InlineIfLambda>] render: AttrRenderFragment, eventName, value) =
-        render
-        ==> AttrRenderFragment(fun _ builder index ->
-            builder.AddEventPreventDefaultAttribute(index, eventName, value)
-            index + 1
-        )
 
 
 [<AbstractClass>]
@@ -240,7 +65,7 @@ type FunFragmentComponent() as this =
     override _.Render() = this.Fragment
 
     [<Parameter>]
-    member val Fragment = emptyNode with get, set
+    member val Fragment = NodeRenderFragment(fun _ _ i -> i) with get, set
 
 
 type IStore<'T> =

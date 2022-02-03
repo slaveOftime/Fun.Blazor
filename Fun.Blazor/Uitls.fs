@@ -9,7 +9,8 @@ open System.Threading.Tasks
 open Microsoft.Extensions.Logging
 
 
-let fragment = FragmentBuilder()
+let emptyAttr = AttrRenderFragment(fun _ _ i -> i)
+let emptyNode = NodeRenderFragment(fun _ _ i -> i)
 
 
 let makeStyles (rules: (string * string) seq) =
