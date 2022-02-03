@@ -4,33 +4,35 @@ open System
 open System.Text
 
 
-type CombineKeyValue = delegate of StringBuilder -> StringBuilder
+module Internal =
+    type CombineKeyValue = delegate of StringBuilder -> StringBuilder
 
 
-module Utils =
     let inline (&&&) ([<InlineIfLambda>] comb1: CombineKeyValue) ([<InlineIfLambda>] comb2: CombineKeyValue) =
         CombineKeyValue(fun sb -> comb2.Invoke(comb1.Invoke(sb)))
 
     let inline (&&>) ([<InlineIfLambda>] comb: CombineKeyValue) (x: string) =
-        comb &&& CombineKeyValue(fun sb -> sb.Append(x).Append(": "))
+        CombineKeyValue(fun sb -> comb.Invoke(sb).Append(x).Append(": "))
 
     let inline (&>>) ([<InlineIfLambda>] comb: CombineKeyValue) (x: string, value: string) =
-        comb &&& CombineKeyValue(fun sb -> sb.Append(x).Append(": ").Append(value).Append(";"))
+        CombineKeyValue(fun sb -> comb.Invoke(sb).Append(x).Append(": ").Append(value).Append(";"))
+
 
     type Makers =
-        static member inline mkPxWidthKV(k: string, v: int) =
+        static member inline mkPxWithKV(k: string, v: int) =
             CombineKeyValue(fun x -> x.Append(k).Append(": ").Append(v).Append("px; "))
 
-        static member inline mkPxWidthKV(k: string, v: float) =
+        static member inline mkPxWithKV(k: string, v: float) =
             CombineKeyValue(fun x -> x.Append(k).Append(": ").Append(v).Append("px; "))
 
-        static member inline mkWidthKV(k: string, v: int) =
+        static member inline mkWithKV(k: string, v: int) =
             CombineKeyValue(fun x -> x.Append(k).Append(": ").Append(v).Append("; "))
 
-        static member inline mkWidthKV(k: string, v: float) =
+        static member inline mkWithKV(k: string, v: float) =
             CombineKeyValue(fun x -> x.Append(k).Append(": ").Append(v).Append("; "))
 
-open Utils
+
+open Internal
 open type Makers
 
 
@@ -68,6 +70,7 @@ type CssBuilder() =
     /// Specifies that all the element's properties should be changed to their inherited values if they inherit by default, or to their initial values if not.
     [<CustomOperation("allUnset")>]
     member inline _.allUnset([<InlineIfLambda>] comb: CombineKeyValue) = comb &>> ("all", "unset")
+
     /// Specifies behavior that depends on the stylesheet origin to which the declaration belongs:
     ///
     /// User-agent origin
@@ -91,9 +94,9 @@ type CssBuilder() =
             color: string
         )
         =
-        comb
-        &&& CombineKeyValue(fun x ->
-            x
+        CombineKeyValue(fun x ->
+            comb
+                .Invoke(x)
                 .Append("box-shadow")
                 .Append(horizontalOffset)
                 .Append("px ")
@@ -113,9 +116,9 @@ type CssBuilder() =
             color: string
         )
         =
-        comb
-        &&& CombineKeyValue(fun x ->
-            x
+        CombineKeyValue(fun x ->
+            comb
+                .Invoke(x)
                 .Append("box-shadow: ")
                 .Append(horizontalOffset)
                 .Append("px ")
@@ -138,9 +141,9 @@ type CssBuilder() =
             color: string
         )
         =
-        comb
-        &&& CombineKeyValue(fun x ->
-            x
+        CombineKeyValue(fun x ->
+            comb
+                .Invoke(x)
                 .Append("box-shadow: ")
                 .Append(horizontalOffset)
                 .Append("px ")
@@ -152,6 +155,7 @@ type CssBuilder() =
                 .Append("px ")
                 .Append(color)
         )
+
     [<CustomOperation("boxShadowNone")>]
     member inline _.boxShadowNone([<InlineIfLambda>] comb: CombineKeyValue) = comb &>> ("box-shadow", "none")
     /// Inherits this property from its parent element.
@@ -160,8 +164,7 @@ type CssBuilder() =
         comb &>> ("box-shadow", "inherit")
 
     [<CustomOperation("height")>]
-    member inline _.height([<InlineIfLambda>] comb: CombineKeyValue, value: int) =
-        comb &&& mkPxWidthKV ("height", value)
+    member inline _.height([<InlineIfLambda>] comb: CombineKeyValue, value: int) = comb &&& mkPxWithKV ("height", value)
     [<CustomOperation("height")>]
     member inline _.height([<InlineIfLambda>] comb: CombineKeyValue, value: string) = comb &>> ("height", value)
     /// Inherits this property from its parent element.
@@ -179,7 +182,7 @@ type CssBuilder() =
 
     [<CustomOperation("maxHeight")>]
     member inline _.maxHeight([<InlineIfLambda>] comb: CombineKeyValue, value: int) =
-        comb &&& mkPxWidthKV ("max-height", value)
+        comb &&& mkPxWithKV ("max-height", value)
     [<CustomOperation("maxHeight")>]
     member inline _.maxHeight([<InlineIfLambda>] comb: CombineKeyValue, value: string) = comb &>> ("max-height", value)
     /// Inherits this property from its parent element.
@@ -652,7 +655,7 @@ type CssBuilder() =
 
     [<CustomOperation("outlineWidth")>]
     member inline _.outlineWidth([<InlineIfLambda>] comb: CombineKeyValue, width: int) =
-        comb &&& mkPxWidthKV ("outline-width", width)
+        comb &&& mkPxWithKV ("outline-width", width)
     [<CustomOperation("outlineWidth")>]
     member inline _.outlineWidth([<InlineIfLambda>] comb: CombineKeyValue, width: string) =
         comb &>> ("outline-width", width)
@@ -778,7 +781,7 @@ type CssBuilder() =
     /// The path to the image to be used as a list-item marker
     [<CustomOperation("propertyUrl")>]
     member inline _.propertyUrl([<InlineIfLambda>] comb: CombineKeyValue, path: string) =
-        comb &&> "list-style-image" &&& CombineKeyValue(fun x -> x.Append("url").Append(path).Append(");"))
+        comb &&> "list-style-image" &&& CombineKeyValue(fun x -> x.Append("url").Append(path).Append("); "))
     /// Sets this property to its default value.
     ///
     /// See example https://www.w3schools.com/cssref/playit.asp?filename=playcss_text-align&preval=initial
@@ -920,13 +923,13 @@ type CssBuilder() =
     /// This overload takes an integer that represents a percentage from 0 to 100.
     [<CustomOperation("filterBlur")>]
     member inline _.filterBlur([<InlineIfLambda>] comb: CombineKeyValue, value: int) =
-        comb &&> "filter" &&& CombineKeyValue(fun x -> x.Append("blur(").Append(value).Append("%);"))
+        comb &&> "filter" &&& CombineKeyValue(fun x -> x.Append("blur(").Append(value).Append("%); "))
     /// Applies a blur effect to the elemeen. A larger value will create more blur.
     ///
     /// This overload takes a floating number that goes from 0 to 1,
     [<CustomOperation("filterBlur")>]
     member inline _.filterBlur([<InlineIfLambda>] comb: CombineKeyValue, value: double) =
-        comb &&> "filter" &&& CombineKeyValue(fun x -> x.Append("blur(").Append(value).Append("%);"))
+        comb &&> "filter" &&& CombineKeyValue(fun x -> x.Append("blur(").Append(value).Append("%); "))
     /// Adjusts the brightness of the elemeen
     ///
     /// This overload takes an integer that represents a percentage from 0 to 100.
@@ -934,25 +937,25 @@ type CssBuilder() =
     /// Values over 100% will provide brighter results.
     [<CustomOperation("filterBrightness")>]
     member inline _.filterBrightness([<InlineIfLambda>] comb: CombineKeyValue, value: int) =
-        comb &&> "filter" &&& CombineKeyValue(fun x -> x.Append("brightness(").Append(value).Append("%);"))
+        comb &&> "filter" &&& CombineKeyValue(fun x -> x.Append("brightness(").Append(value).Append("%); "))
     /// Adjusts the brightness of the elemeen. A larger value will create more blur.
     ///
     /// This overload takes a floating number that goes from 0 to 1,
     [<CustomOperation("filterBrightness")>]
     member inline _.filterBrightness([<InlineIfLambda>] comb: CombineKeyValue, value: double) =
-        comb &&> "filter" &&& CombineKeyValue(fun x -> x.Append("brightness(").Append(value).Append("%);"))
+        comb &&> "filter" &&& CombineKeyValue(fun x -> x.Append("brightness(").Append(value).Append("%); "))
     /// Adjusts the contrast of the element.
     ///
     /// This overload takes an integer that represents a percentage from 0 to 100.
     [<CustomOperation("filterContrast")>]
     member inline _.filterContrast([<InlineIfLambda>] comb: CombineKeyValue, value: int) =
-        comb &&> "filter" &&& CombineKeyValue(fun x -> x.Append("contrast(").Append(value).Append("%);"))
+        comb &&> "filter" &&& CombineKeyValue(fun x -> x.Append("contrast(").Append(value).Append("%); "))
     /// Adjusts the contrast of the element. A larger value will create more contrast.
     ///
     /// This overload takes a floating number that goes from 0 to 1
     [<CustomOperation("filterContrast")>]
     member inline _.filterContrast([<InlineIfLambda>] comb: CombineKeyValue, value: double) =
-        comb &&> "filter" &&& CombineKeyValue(fun x -> x.Append("contrast(").Append(value).Append("%);"))
+        comb &&> "filter" &&& CombineKeyValue(fun x -> x.Append("contrast(").Append(value).Append("%); "))
     /// Applies a drop shadow effect.
     [<CustomOperation("filterDropShadow")>]
     member inline _.filterDropShadow
@@ -978,7 +981,7 @@ type CssBuilder() =
                 .Append(spread)
                 .Append("px ")
                 .Append(color)
-                .Append(");")
+                .Append("); ")
         )
     /// Applies a drop shadow effect.
     [<CustomOperation("filterDropShadow")>]
@@ -1002,7 +1005,7 @@ type CssBuilder() =
                 .Append(blur)
                 .Append("px ")
                 .Append(color)
-                .Append(");")
+                .Append("); ")
         )
     /// Applies a drop shadow effect.
     [<CustomOperation("filterDropShadow")>]
@@ -1023,20 +1026,20 @@ type CssBuilder() =
                 .Append(verticalOffset)
                 .Append("px ")
                 .Append(color)
-                .Append(");")
+                .Append("); ")
         )
     /// Converts the image to grayscale
     ///
     /// This overload takes an integer that represents a percentage from 0 to 100.
     [<CustomOperation("filterGrayscale")>]
     member inline _.filterGrayscale([<InlineIfLambda>] comb: CombineKeyValue, value: int) =
-        comb &&> "filter" &&& CombineKeyValue(fun x -> x.Append("grayscale(").Append(value).Append("%);"))
+        comb &&> "filter" &&& CombineKeyValue(fun x -> x.Append("grayscale(").Append(value).Append("%); "))
     /// Converts the image to grayscale
     ///
     /// This overload takes a floating number that goes from 0 to 1
     [<CustomOperation("filterGrayscale")>]
     member inline _.filterGrayscale([<InlineIfLambda>] comb: CombineKeyValue, value: double) =
-        comb &&> "filter" &&& CombineKeyValue(fun x -> x.Append("grayscale(").Append(value).Append("%);"))
+        comb &&> "filter" &&& CombineKeyValue(fun x -> x.Append("grayscale(").Append(value).Append("%); "))
     /// Applies a hue rotation on the image. The value defines the number of degrees around the color circle the image
     /// samples will be adjusted. 0deg is default, and represents the original image.
     ///
@@ -1044,61 +1047,61 @@ type CssBuilder() =
     [<CustomOperation("filterHueRotate")>]
     member inline _.filterHueRotate([<InlineIfLambda>] comb: CombineKeyValue, degrees: int) =
         comb &&> "filter"
-        &&& CombineKeyValue(fun x -> x.Append("hue-rotate(").Append(degrees).Append("deg)"))
-    ///// Inverts the element.
-    /////
-    ///// This overload takes an integer that represents a percentage from 0 to 100.
-    //[<CustomOperation("filterInvert")>]
-    //member inline _.filterInvert([<InlineIfLambda>] comb: CombineKeyValue, value: int) =
-    //    comb &>> ("filter" ("invert(" + ((string value) + "%)")))
-    ///// Inverts the element.
-    /////
-    ///// This overload takes a floating number that goes from 0 to 1
-    //[<CustomOperation("filterInvert")>]
-    //member inline _.filterInvert([<InlineIfLambda>] comb: CombineKeyValue, value: double) =
-    //    comb &>> ("filter" ("invert(" + ((string value) + ")")))
-    ///// Sets the opacity of the element.
-    /////
-    ///// This overload takes an integer that represents a percentage from 0 to 100.
-    //[<CustomOperation("filterOpacity")>]
-    //member inline _.filterOpacity([<InlineIfLambda>] comb: CombineKeyValue, value: int) =
-    //    comb &>> ("filter" ("opacity(" + ((string value) + "%)")))
-    ///// Sets the opacity of the element.
-    /////
-    ///// This overload takes a floating number that goes from 0 to 1
-    //[<CustomOperation("filterOpacity")>]
-    //member inline _.filterOpacity([<InlineIfLambda>] comb: CombineKeyValue, value: double) =
-    //    comb &>> ("filter" ("opacity(" + ((string value) + ")")))
-    ///// Sets the saturation of the element.
-    /////
-    ///// This overload takes an integer that represents a percentage from 0 to 100.
-    //[<CustomOperation("filterSaturate")>]
-    //member inline _.filterSaturate([<InlineIfLambda>] comb: CombineKeyValue, value: int) =
-    //    comb &>> ("filter" ("saturate(" + ((string value) + "%)")))
-    ///// Sets the saturation of the element.
-    /////
-    ///// This overload takes a floating number that goes from 0 to 1
-    //[<CustomOperation("filterSaturate")>]
-    //member inline _.filterSaturate([<InlineIfLambda>] comb: CombineKeyValue, value: double) =
-    //    comb &>> ("filter" ("saturate(" + ((string value) + ")")))
-    ///// Applies Sepia filter to the element.
-    /////
-    ///// This overload takes an integer that represents a percentage from 0 to 100.
-    //[<CustomOperation("filterSepia")>]
-    //member inline _.filterSepia([<InlineIfLambda>] comb: CombineKeyValue, value: int) =
-    //    comb &>> ("filter" ("sepia(" + ((string value) + "%)")))
-    ///// Applies Sepia filter to the element.
-    /////
-    ///// This overload takes a floating number that goes from 0 to 1
-    //[<CustomOperation("filterSepia")>]
-    //member inline _.filterSepia([<InlineIfLambda>] comb: CombineKeyValue, value: double) =
-    //    comb &>> ("filter" ("sepia(" + ((string value) + ")")))
-    ///// The url() function takes the location of an XML file that specifies an SVG filter, and may include an anchor to a specific filter element.
-    /////
-    ///// Example: `filter: url(svg-url#element-id)`
-    //[<CustomOperation("filterUrl")>]
-    //member inline _.filterUrl([<InlineIfLambda>] comb: CombineKeyValue, value: string) =
-    //    comb &>> ("filter" ("url(" + value + ")"))
+        &&& CombineKeyValue(fun x -> x.Append("hue-rotate(").Append(degrees).Append("deg); "))
+    /// Inverts the element.
+    ///
+    /// This overload takes an integer that represents a percentage from 0 to 100.
+    [<CustomOperation("filterInvert")>]
+    member inline _.filterInvert([<InlineIfLambda>] comb: CombineKeyValue, value: int) =
+        CombineKeyValue(fun x -> comb.Invoke(x).Append("filter: ").Append("invert(").Append(value).Append("%); "))
+    /// Inverts the element.
+    ///
+    /// This overload takes a floating number that goes from 0 to 1
+    [<CustomOperation("filterInvert")>]
+    member inline _.filterInvert([<InlineIfLambda>] comb: CombineKeyValue, value: double) =
+        CombineKeyValue(fun x -> comb.Invoke(x).Append("filter: ").Append("invert(").Append(value).Append("%); "))
+    /// Sets the opacity of the element.
+    ///
+    /// This overload takes an integer that represents a percentage from 0 to 100.
+    [<CustomOperation("filterOpacity")>]
+    member inline _.filterOpacity([<InlineIfLambda>] comb: CombineKeyValue, value: int) =
+        CombineKeyValue(fun x -> comb.Invoke(x).Append("filter: ").Append("opacity(").Append(value).Append("%); "))
+    /// Sets the opacity of the element.
+    ///
+    /// This overload takes a floating number that goes from 0 to 1
+    [<CustomOperation("filterOpacity")>]
+    member inline _.filterOpacity([<InlineIfLambda>] comb: CombineKeyValue, value: double) =
+        CombineKeyValue(fun x -> comb.Invoke(x).Append("filter: ").Append("opacity(").Append(value).Append("%); "))
+    /// Sets the saturation of the element.
+    ///
+    /// This overload takes an integer that represents a percentage from 0 to 100.
+    [<CustomOperation("filterSaturate")>]
+    member inline _.filterSaturate([<InlineIfLambda>] comb: CombineKeyValue, value: int) =
+        CombineKeyValue(fun x -> comb.Invoke(x).Append("filter: ").Append("saturate(").Append(value).Append("%); "))
+    /// Sets the saturation of the element.
+    ///
+    /// This overload takes a floating number that goes from 0 to 1
+    [<CustomOperation("filterSaturate")>]
+    member inline _.filterSaturate([<InlineIfLambda>] comb: CombineKeyValue, value: double) =
+        CombineKeyValue(fun x -> comb.Invoke(x).Append("filter: ").Append("saturate(").Append(value).Append("%); "))
+    /// Applies Sepia filter to the element.
+    ///
+    /// This overload takes an integer that represents a percentage from 0 to 100.
+    [<CustomOperation("filterSepia")>]
+    member inline _.filterSepia([<InlineIfLambda>] comb: CombineKeyValue, value: int) =
+        CombineKeyValue(fun x -> comb.Invoke(x).Append("filter: ").Append("sepia(").Append(value).Append("); "))
+    /// Applies Sepia filter to the element.
+    ///
+    /// This overload takes a floating number that goes from 0 to 1
+    [<CustomOperation("filterSepia")>]
+    member inline _.filterSepia([<InlineIfLambda>] comb: CombineKeyValue, value: double) =
+        CombineKeyValue(fun x -> comb.Invoke(x).Append("filter: ").Append("sepia(").Append(value).Append("); "))
+    /// The url() function takes the location of an XML file that specifies an SVG filter, and may include an anchor to a specific filter element.
+    ///
+    /// Example: `filter: url(svg-url#element-id)`
+    [<CustomOperation("filterUrl")>]
+    member inline _.filterUrl([<InlineIfLambda>] comb: CombineKeyValue, value: string) =
+        CombineKeyValue(fun x -> comb.Invoke(x).Append("filter: ").Append("url(").Append(value).Append("); "))
     /// Sets this property to its default value.
     [<CustomOperation("filterInitial")>]
     member inline _.filterInitial([<InlineIfLambda>] comb: CombineKeyValue) = comb &>> ("filter", "initial")
@@ -1353,23 +1356,31 @@ type CssBuilder() =
     [<CustomOperation("animationTimingFunctionEaseInOut")>]
     member inline _.animationTimingFunctionEaseInOut([<InlineIfLambda>] comb: CombineKeyValue) =
         comb &>> ("animation-timing-function", "ease-in-out")
-    ///// Define your own values in the cubic-bezier function. Possible values are numeric values from 0 to 1
-    //[<CustomOperation("animationTimingFunctionCubicBezier")>]
-    //member inline _.animationTimingFunctionCubicBezier
-    //    (
-    //        [<InlineIfLambda>] comb: CombineKeyValue,
-    //        n1: float,
-    //        n2: float,
-    //        n3: float,
-    //        n4: float
-    //    )
-    //    =
-    //    comb
-    //    &&& CombineKeyValue(
-    //        mk
-    //            "animation-timing-function"
-    //            ("cubic-bezier(" +, n1) + "," +, n2) + "," +, n3) + ", " +, n4) + ")")
-    //    )
+    /// Define your own values in the cubic-bezier function. Possible values are numeric values from 0 to 1
+    [<CustomOperation("animationTimingFunctionCubicBezier")>]
+    member inline _.animationTimingFunctionCubicBezier
+        (
+            [<InlineIfLambda>] comb: CombineKeyValue,
+            n1: float,
+            n2: float,
+            n3: float,
+            n4: float
+        )
+        =
+        CombineKeyValue(fun x ->
+            comb
+                .Invoke(x)
+                .Append("animation-timing-function: ")
+                .Append("cubic-bezier(")
+                .Append(n1)
+                .Append(",")
+                .Append(n2)
+                .Append(",")
+                .Append(n3)
+                .Append(",")
+                .Append(n4)
+                .Append("); ")
+        )
     /// Sets this property to its default value)
     [<CustomOperation("animationTimingFunctionInitial")>]
     member inline _.animationTimingFunctionInitial([<InlineIfLambda>] comb: CombineKeyValue) =
@@ -1407,23 +1418,31 @@ type CssBuilder() =
     [<CustomOperation("transitionTimingFunctionStepEnd")>]
     member inline _.transitionTimingFunctionStepEnd([<InlineIfLambda>] comb: CombineKeyValue) =
         comb &>> ("transition-timing-function", "step-end")
-    ///// Define your own values in the cubic-bezier function. Possible values are numeric values from 0 to 1
-    //[<CustomOperation("transitionTimingFunctionCubicBezier")>]
-    //member inline _.transitionTimingFunctionCubicBezier
-    //    (
-    //        [<InlineIfLambda>] comb: CombineKeyValue,
-    //        n1: float,
-    //        n2: float,
-    //        n3: float,
-    //        n4: float
-    //    )
-    //    =
-    //    comb
-    //    &&& CombineKeyValue(
-    //        mk
-    //            "transition-timing-function"
-    //            ("cubic-bezier(" +, n1) + "," +, n2) + "," +, n3) + ", " +, n4) + ")")
-    //    )
+    /// Define your own values in the cubic-bezier function. Possible values are numeric values from 0 to 1
+    [<CustomOperation("transitionTimingFunctionCubicBezier")>]
+    member inline _.transitionTimingFunctionCubicBezier
+        (
+            [<InlineIfLambda>] comb: CombineKeyValue,
+            n1: float,
+            n2: float,
+            n3: float,
+            n4: float
+        )
+        =
+        CombineKeyValue(fun x ->
+            comb
+                .Invoke(x)
+                .Append("transition-timing-function: ")
+                .Append("cubic-bezier(")
+                .Append(n1)
+                .Append(",")
+                .Append(n2)
+                .Append(",")
+                .Append(n3)
+                .Append(",")
+                .Append(n4)
+                .Append("); ")
+        )
     /// Sets this property to its default value)
     [<CustomOperation("transitionTimingFunctionInitial")>]
     member inline _.transitionTimingFunctionInitial([<InlineIfLambda>] comb: CombineKeyValue) =
@@ -1789,166 +1808,192 @@ type CssBuilder() =
     /// Defines that there should be no transformation.
     [<CustomOperation("transformNone")>]
     member inline _.transformNone([<InlineIfLambda>] comb: CombineKeyValue) = comb &>> ("transform", "none")
-    ///// Defines a 2D transformation, using a matrix of six values.
-    //[<CustomOperation("transformMatrix")>]
-    //member inline _.transformMatrix
-    //    (
-    //        [<InlineIfLambda>] comb: CombineKeyValue,
-    //        x1: int,
-    //        y1: int,
-    //        z1: int,
-    //        x2: int,
-    //        y2: int,
-    //        z2: int
-    //    )
-    //    =
-    //    comb
-    //    &&& CombineKeyValue(
-    //        mk
-    //            "transform"
-    //            ("matrix("
-    //             +, x1)
-    //             + ","
-    //             +, y1)
-    //             + ","
-    //             +, z1)
-    //             + ","
-    //             +, x2)
-    //             + ","
-    //             +, y2)
-    //             + ", "
-    //             +, z2)
-    //             + ")")
-    //    )
-    ///// Defines a 2D translation.
-    //[<CustomOperation("transformTranslate")>]
-    //member inline _.transformTranslate([<InlineIfLambda>] comb: CombineKeyValue, x: int, y: int) =
-    //    comb &>> ("transform" ("translate(" +, x) + "px," +, y) + "px)"))
-    ///// Defines a 2D translation.
-    //[<CustomOperation("transformTranslate")>]
-    //member inline _.transformTranslate([<InlineIfLambda>] comb: CombineKeyValue, x: string, y: string) =
-    //    comb &>> ("transform" ("translate(" +, x) + ", " +, y) + ")"))
-    ///// Defines a 3D translation.
-    //[<CustomOperation("transformTranslate3D")>]
-    //member inline _.transformTranslate3D([<InlineIfLambda>] comb: CombineKeyValue, x: int, y: int, z: int) =
-    //    comb
-    //    &&& CombineKeyValue(
-    //        mk "transform" ("translate3d(" +, x) + "px," +, y) + "px," +, z) + "px)")
-    //    )
-    ///// Defines a 3D translation.
-    //[<CustomOperation("transformTranslate3D")>]
-    //member inline _.transformTranslate3D([<InlineIfLambda>] comb: CombineKeyValue, x: string, y: string, z: string) =
-    //    comb
-    //    &&& CombineKeyValue(mk "transform" ("translate3d(" +, x) + "," +, y) + ", " +, z) + ")"))
-    ///// Defines a translation, using only the value for the X-axis.
-    //[<CustomOperation("transformTranslateX")>]
-    //member inline _.transformTranslateX([<InlineIfLambda>] comb: CombineKeyValue, x: int) =
-    //    comb &>> ("transform" ("translateX(" +, x) + "px)"))
-    ///// Defines a translation, using only the value for the X-axis.
-    //[<CustomOperation("transformTranslateX")>]
-    //member inline _.transformTranslateX([<InlineIfLambda>] comb: CombineKeyValue, x: string) =
-    //    comb &>> ("transform" ("translateX(" +, x) + ")"))
-    ///// Defines a translation, using only the value for the Y-axis
-    //[<CustomOperation("transformTranslateY")>]
-    //member inline _.transformTranslateY([<InlineIfLambda>] comb: CombineKeyValue, y: int) =
-    //    comb &>> ("transform" ("translateY(" +, y) + "px)"))
-    ///// Defines a translation, using only the value for the Y-axis
-    //[<CustomOperation("transformTranslateY")>]
-    //member inline _.transformTranslateY([<InlineIfLambda>] comb: CombineKeyValue, y: string) =
-    //    comb &>> ("transform" ("translateY(" +, y) + ")"))
-    ///// Defines a 3D translation, using only the value for the Z-axis
-    ///// Defines a 3D translation, using only the value for the Z-axis
-    //[<CustomOperation("transformTranslateZ")>]
-    //member inline _.transformTranslateZ([<InlineIfLambda>] comb: CombineKeyValue, z: string) =
-    //    comb &>> ("transform" ("translateZ(" +, z) + ")"))
-    ///// Defines a 2D scale transformation.
-    //[<CustomOperation("transformScale")>]
-    //member inline _.transformScale([<InlineIfLambda>] comb: CombineKeyValue, x: int, y: int) =
-    //    comb &>> ("transform" ("scale(" +, x) + ", " +, y) + ")"))
-    ///// Defines a scale transformation.
-    ///// Defines a scale transformation.
-    //[<CustomOperation("transformScale")>]
-    //member inline _.transformScale([<InlineIfLambda>] comb: CombineKeyValue, n: float) =
-    //    comb &>> ("transform" ("scale(" +, n) + ")"))
-    ///// Defines a 3D scale transformation
-    //[<CustomOperation("transformScale3D")>]
-    //member inline _.transformScale3D([<InlineIfLambda>] comb: CombineKeyValue, x: int, y: int, z: int) =
-    //    comb
-    //    &&& CombineKeyValue(mk "transform" ("scale3d(" +, x) + "," +, y) + ", " +, z) + ")"))
-    ///// Defines a scale transformation by giving a value for the X-axis.
-    //[<CustomOperation("transformScaleX")>]
-    //member inline _.transformScaleX([<InlineIfLambda>] comb: CombineKeyValue, x: int) =
-    //    comb &>> ("transform" ("scaleX(" +, x) + ")"))
-    ///// Defines a scale transformation by giving a value for the Y-axis.
-    //[<CustomOperation("transformScaleY")>]
-    //member inline _.transformScaleY([<InlineIfLambda>] comb: CombineKeyValue, y: int) =
-    //    comb &>> ("transform" ("scaleY(" +, y) + ")"))
-    ///// Defines a 3D translation, using only the value for the Z-axis
-    //[<CustomOperation("transformScaleZ")>]
-    //member inline _.transformScaleZ([<InlineIfLambda>] comb: CombineKeyValue, z: int) =
-    //    comb &>> ("transform" ("scaleZ(" +, z) + ")"))
-    ///// Defines a 2D rotation, the angle is specified in the parameter.
-    //[<CustomOperation("transformRotate")>]
-    //member inline _.transformRotate([<InlineIfLambda>] comb: CombineKeyValue, deg: int) =
-    //    comb &>> ("transform" ("rotate(" +, deg) + "deg)"))
-    ///// Defines a 2D rotation, the angle is specified in the parameter.
-    //[<CustomOperation("transformRotate")>]
-    //member inline _.transformRotate([<InlineIfLambda>] comb: CombineKeyValue, deg: float) =
-    //    comb &>> ("transform" ("rotate(" +, deg) + "deg)"))
-    ///// Defines a 3D rotation along the X-axis.
-    //[<CustomOperation("transformRotateX")>]
-    //member inline _.transformRotateX([<InlineIfLambda>] comb: CombineKeyValue, deg: float) =
-    //    comb &>> ("transform" ("rotateX(" +, deg) + "deg)"))
-    ///// Defines a 3D rotation along the X-axis.
-    //[<CustomOperation("transformRotateX")>]
-    //member inline _.transformRotateX([<InlineIfLambda>] comb: CombineKeyValue, deg: int) =
-    //    comb &>> ("transform" ("rotateX(" +, deg) + "deg)"))
-    ///// Defines a 3D rotation along the Y-axis
-    //[<CustomOperation("transformRotateY")>]
-    //member inline _.transformRotateY([<InlineIfLambda>] comb: CombineKeyValue, deg: float) =
-    //    comb &>> ("transform" ("rotateY(" +, deg) + "deg)"))
-    ///// Defines a 3D rotation along the Y-axis
-    //[<CustomOperation("transformRotateY")>]
-    //member inline _.transformRotateY([<InlineIfLambda>] comb: CombineKeyValue, deg: int) =
-    //    comb &>> ("transform" ("rotateY(" +, deg) + "deg)"))
-    ///// Defines a 3D rotation along the Z-axis
-    //[<CustomOperation("transformRotateZ")>]
-    //member inline _.transformRotateZ([<InlineIfLambda>] comb: CombineKeyValue, deg: float) =
-    //    comb &>> ("transform" ("rotateZ(" +, deg) + "deg)"))
-    ///// Defines a 3D rotation along the Z-axis
-    //[<CustomOperation("transformRotateZ")>]
-    //member inline _.transformRotateZ([<InlineIfLambda>] comb: CombineKeyValue, deg: int) =
-    //    comb &>> ("transform" ("rotateZ(" +, deg) + "deg)"))
-    ///// Defines a 2D skew transformation along the X- and the Y-axis.
-    //[<CustomOperation("transformSkew")>]
-    //member inline _.transformSkew([<InlineIfLambda>] comb: CombineKeyValue, xAngle: int, yAngle: int) =
-    //    comb
-    //    &&& CombineKeyValue(mk "transform" ("skew(" +, xAngle) + "deg," +, yAngle) + "deg)"))
-    ///// Defines a 2D skew transformation along the X- and the Y-axis.
-    //[<CustomOperation("transformSkew")>]
-    //member inline _.transformSkew([<InlineIfLambda>] comb: CombineKeyValue, xAngle: float, yAngle: float) =
-    //    comb
-    //    &&& CombineKeyValue(mk "transform" ("skew(" +, xAngle) + "deg," +, yAngle) + "deg)"))
-    ///// Defines a 2D skew transformation along the X-axis
-    //[<CustomOperation("transformSkewX")>]
-    //member inline _.transformSkewX([<InlineIfLambda>] comb: CombineKeyValue, xAngle: int) =
-    //    comb &>> ("transform" ("skewX(" +, xAngle) + "deg)"))
-    ///// Defines a 2D skew transformation along the X-axis
-    //[<CustomOperation("transformSkewX")>]
-    //member inline _.transformSkewX([<InlineIfLambda>] comb: CombineKeyValue, xAngle: float) =
-    //    comb &>> ("transform" ("skewX(" +, xAngle) + "deg)"))
-    ///// Defines a 2D skew transformation along the Y-axis
-    //[<CustomOperation("transformSkewY")>]
-    //member inline _.transformSkewY([<InlineIfLambda>] comb: CombineKeyValue, xAngle: int) =
-    //    comb &>> ("transform" ("skewY(" +, xAngle) + "deg)"))
-    ///// Defines a 2D skew transformation along the Y-axis
-    //[<CustomOperation("transformSkewY")>]
-    //member inline _.transformSkewY([<InlineIfLambda>] comb: CombineKeyValue, xAngle: float) =
-    //    comb &>> ("transform" ("skewY(" +, xAngle) + "deg)"))
-    ///// Defines a perspective view for a 3D transformed element
-    //[<CustomOperation("transformPerspective")>]
-    //member inline _.transformPerspective([<InlineIfLambda>] comb: CombineKeyValue, n: int) =
-    //    comb &>> ("transform" ("perspective(" +, n) + ")"))
+
+    /// Defines a 2D transformation, using a matrix of six values.
+    [<CustomOperation("transformMatrix")>]
+    member inline _.transformMatrix
+        (
+            [<InlineIfLambda>] comb: CombineKeyValue,
+            x1: int,
+            y1: int,
+            z1: int,
+            x2: int,
+            y2: int,
+            z2: int
+        )
+        =
+        CombineKeyValue(fun x ->
+            comb
+                .Invoke(x)
+                .Append("transform: ")
+                .Append("matrix(")
+                .Append(x1)
+                .Append(",")
+                .Append(y2)
+                .Append(",")
+                .Append(z1)
+                .Append(",")
+                .Append(x2)
+                .Append(",")
+                .Append(y2)
+                .Append(",")
+                .Append(z2)
+                .Append("); ")
+        )
+
+    /// Defines a 2D translation.
+    [<CustomOperation("transformTranslate")>]
+    member inline _.transformTranslate([<InlineIfLambda>] comb: CombineKeyValue, x: int, y: int) =
+        CombineKeyValue(fun x ->
+            comb.Invoke(x).Append("transform: ").Append("translate(").Append(x).Append("px, ").Append(y).Append("px); ")
+        )
+
+    /// Defines a 2D translation.
+    [<CustomOperation("transformTranslate")>]
+    member inline _.transformTranslate([<InlineIfLambda>] comb: CombineKeyValue, x: string, y: string) =
+        CombineKeyValue(fun x ->
+            comb.Invoke(x).Append("transform: ").Append("translate(").Append(x).Append(", ").Append(y).Append("); ")
+        )
+    /// Defines a 3D translation.
+    [<CustomOperation("transformTranslate3D")>]
+    member inline _.transformTranslate3D([<InlineIfLambda>] comb: CombineKeyValue, x: int, y: int, z: int) =
+        CombineKeyValue(fun x ->
+            comb
+                .Invoke(x)
+                .Append("transform: ")
+                .Append("translate3d(")
+                .Append(x)
+                .Append("px, ")
+                .Append(y)
+                .Append("px, ")
+                .Append(z)
+                .Append("px); ")
+        )
+
+    /// Defines a 3D translation.
+    [<CustomOperation("transformTranslate3D")>]
+    member inline _.transformTranslate3D([<InlineIfLambda>] comb: CombineKeyValue, x: string, y: string, z: string) =
+        CombineKeyValue(fun x ->
+            comb
+                .Invoke(x)
+                .Append("transform: ")
+                .Append("translate3d(")
+                .Append(x)
+                .Append(", ")
+                .Append(y)
+                .Append(", ")
+                .Append(z)
+                .Append("); ")
+        )
+
+    /// Defines a translation, using only the value for the X-axis.
+    [<CustomOperation("transformTranslateX")>]
+    member inline _.transformTranslateX([<InlineIfLambda>] comb: CombineKeyValue, x: int) =
+        CombineKeyValue(fun x -> comb.Invoke(x).Append("transform: ").Append("translateX(").Append(x).Append("px); "))
+    /// Defines a translation, using only the value for the X-axis.
+    [<CustomOperation("transformTranslateX")>]
+    member inline _.transformTranslateX([<InlineIfLambda>] comb: CombineKeyValue, x: string) =
+        CombineKeyValue(fun x -> comb.Invoke(x).Append("transform: ").Append("translateX(").Append(x).Append("); "))
+    /// Defines a translation, using only the value for the Y-axis
+    [<CustomOperation("transformTranslateY")>]
+    member inline _.transformTranslateY([<InlineIfLambda>] comb: CombineKeyValue, y: int) =
+        CombineKeyValue(fun x -> comb.Invoke(x).Append("transform: ").Append("translateY(").Append(y).Append("px); "))
+    /// Defines a translation, using only the value for the Y-axis
+    [<CustomOperation("transformTranslateY")>]
+    member inline _.transformTranslateY([<InlineIfLambda>] comb: CombineKeyValue, y: string) =
+        CombineKeyValue(fun x -> comb.Invoke(x).Append("transform: ").Append("translateY(").Append(y).Append("); "))
+    /// Defines a 3D translation, using only the value for the Z-axis
+    [<CustomOperation("transformTranslateZ")>]
+    member inline _.transformTranslateZ([<InlineIfLambda>] comb: CombineKeyValue, z: int) =
+        CombineKeyValue(fun x -> comb.Invoke(x).Append("transform: ").Append("translateZ(").Append(z).Append("px); "))
+    /// Defines a 3D translation, using only the value for the Z-axis
+    [<CustomOperation("transformTranslateZ")>]
+    member inline _.transformTranslateZ([<InlineIfLambda>] comb: CombineKeyValue, z: string) =
+        CombineKeyValue(fun x -> comb.Invoke(x).Append("transform: ").Append("translateZ(").Append(z).Append("); "))
+    /// Defines a 2D scale transformation.
+    [<CustomOperation("transformScale")>]
+    member inline _.transformScale([<InlineIfLambda>] comb: CombineKeyValue, x: int, y: int) =
+        CombineKeyValue(fun x ->
+            comb.Invoke(x).Append("transform: ").Append("scale(").Append(x).Append(", ").Append(y).Append("); ")
+        )
+    /// Defines a scale transformation.
+    /// Defines a scale transformation.
+    [<CustomOperation("transformScale")>]
+    member inline _.transformScale([<InlineIfLambda>] comb: CombineKeyValue, n: float) =
+        CombineKeyValue(fun x -> comb.Invoke(x).Append("transform: ").Append("scale(").Append(n).Append("); "))
+    /// Defines a 3D scale transformation
+    [<CustomOperation("transformScale3D")>]
+    member inline _.transformScale3D([<InlineIfLambda>] comb: CombineKeyValue, x: int, y: int, z: int) =
+        CombineKeyValue(fun x ->
+            comb
+                .Invoke(x)
+                .Append("transform: ")
+                .Append("scale3d(")
+                .Append(x)
+                .Append(", ")
+                .Append(y)
+                .Append(", ")
+                .Append(z)
+                .Append("); ")
+        )
+    /// Defines a scale transformation by giving a value for the X-axis.
+    [<CustomOperation("transformScaleX")>]
+    member inline _.transformScaleX([<InlineIfLambda>] comb: CombineKeyValue, x: int) =
+        CombineKeyValue(fun x -> comb.Invoke(x).Append("transform: ").Append("scaleX(").Append(x).Append("); "))
+    /// Defines a scale transformation by giving a value for the Y-axis.
+    [<CustomOperation("transformScaleY")>]
+    member inline _.transformScaleY([<InlineIfLambda>] comb: CombineKeyValue, y: int) =
+        CombineKeyValue(fun x -> comb.Invoke(x).Append("transform: ").Append("scaleY(").Append(x).Append("); "))
+    /// Defines a 3D translation, using only the value for the Z-axis
+    [<CustomOperation("transformScaleZ")>]
+    member inline _.transformScaleZ([<InlineIfLambda>] comb: CombineKeyValue, z: int) =
+        CombineKeyValue(fun x -> comb.Invoke(x).Append("transform: ").Append("scaleZ(").Append(x).Append("); "))
+    /// Defines a 2D rotation, the angle is specified in the parameter.
+    [<CustomOperation("transformRotate")>]
+    member inline _.transformRotate([<InlineIfLambda>] comb: CombineKeyValue, deg: int) =
+        CombineKeyValue(fun x -> comb.Invoke(x).Append("transform: ").Append("rotate(").Append(x).Append("deg); "))
+    /// Defines a 2D rotation, the angle is specified in the parameter.
+    [<CustomOperation("transformRotate")>]
+    member inline _.transformRotate([<InlineIfLambda>] comb: CombineKeyValue, deg: float) =
+        CombineKeyValue(fun x -> comb.Invoke(x).Append("transform: ").Append("rotate(").Append(x).Append("deg); "))
+    /// Defines a 3D rotation along the X-axis.
+    [<CustomOperation("transformRotateX")>]
+    member inline _.transformRotateX([<InlineIfLambda>] comb: CombineKeyValue, deg: float) =
+        CombineKeyValue(fun x -> comb.Invoke(x).Append("transform: ").Append("rotateX(").Append(x).Append("deg); "))
+
+    /// Defines a 3D rotation along the Y-axis
+    [<CustomOperation("transformRotateY")>]
+    member inline _.transformRotateY([<InlineIfLambda>] comb: CombineKeyValue, deg: float) =
+        CombineKeyValue(fun x -> comb.Invoke(x).Append("transform: ").Append("rotateY(").Append(x).Append("deg); "))
+    /// Defines a 3D rotation along the Z-axis
+    [<CustomOperation("transformRotateZ")>]
+    member inline _.transformRotateZ([<InlineIfLambda>] comb: CombineKeyValue, deg: float) =
+        CombineKeyValue(fun x -> comb.Invoke(x).Append("transform: ").Append("rotateZ(").Append(x).Append("deg); "))
+    /// Defines a 2D skew transformation along the X- and the Y-axis.
+    [<CustomOperation("transformSkew")>]
+    member inline _.transformSkew([<InlineIfLambda>] comb: CombineKeyValue, xAngle: float, yAngle: float) =
+        CombineKeyValue(fun x ->
+            comb
+                .Invoke(x)
+                .Append("transform: ")
+                .Append("skew(")
+                .Append(xAngle)
+                .Append("deg, ")
+                .Append(yAngle)
+                .Append("deg); ")
+        )
+    /// Defines a 2D skew transformation along the X-axis
+    [<CustomOperation("transformSkewX")>]
+    member inline _.transformSkewX([<InlineIfLambda>] comb: CombineKeyValue, xAngle: float) =
+        CombineKeyValue(fun x -> comb.Invoke(x).Append("transform: ").Append("skewX(").Append(xAngle).Append("deg); "))
+    /// Defines a 2D skew transformation along the Y-axis
+    [<CustomOperation("transformSkewY")>]
+    member inline _.transformSkewY([<InlineIfLambda>] comb: CombineKeyValue, yAngle: float) =
+        CombineKeyValue(fun x -> comb.Invoke(x).Append("transform: ").Append("skewY(").Append(yAngle).Append("deg); "))
+    /// Defines a perspective view for a 3D transformed element
+    [<CustomOperation("transformPerspective")>]
+    member inline _.transformPerspective([<InlineIfLambda>] comb: CombineKeyValue, n: int) =
+        CombineKeyValue(fun x -> comb.Invoke(x).Append("transform: ").Append("perspective(").Append(n).Append("); "))
     /// Sets this property to its default value.
     [<CustomOperation("transformInitial")>]
     member inline _.transformInitial([<InlineIfLambda>] comb: CombineKeyValue) = comb &>> ("transform", "initial")
@@ -2295,47 +2340,69 @@ type CssBuilder() =
     [<CustomOperation("margin")>]
     member inline _.margin([<InlineIfLambda>] comb: CombineKeyValue, value: string) = comb &>> ("margin", value)
 
-    ///// Sets the margin area on the vertical and horizontal axis.
-    //[<CustomOperation("margin")>]
-    //member inline _.margin([<InlineIfLambda>] comb: CombineKeyValue, vertical: int, horizonal: int) =
-    //    comb &>> ("margin" ((string vertical) + "px " +, horizonal) + "px"))
+    /// Sets the margin area on the vertical and horizontal axis.
+    [<CustomOperation("margin")>]
+    member inline _.margin([<InlineIfLambda>] comb: CombineKeyValue, vertical: int, horizonal: int) =
+        CombineKeyValue(fun x ->
+            comb.Invoke(x).Append("margin: ").Append(vertical).Append("px ").Append(horizonal).Append("px); ")
+        )
 
-    ///// Sets the margin area on the vertical and horizontal axis.
-    //[<CustomOperation("margin")>]
-    //member inline _.margin([<InlineIfLambda>] comb: CombineKeyValue, vertical: string, horizonal: string) =
-    //    comb &>> ("margin" ((string vertical) + ", " +, horizonal)))
+    /// Sets the margin area on the vertical and horizontal axis.
+    [<CustomOperation("margin")>]
+    member inline _.margin([<InlineIfLambda>] comb: CombineKeyValue, vertical: string, horizonal: string) =
+        CombineKeyValue(fun x ->
+            comb.Invoke(x).Append("margin: ").Append(vertical).Append(" ").Append(horizonal).Append("); ")
+        )
 
-    ///// Sets the margin area on all four sides of an element. It is a shorthand for margin-top, margin-right,
-    ///// margin-bottom, and margin-left.
-    //[<CustomOperation("margin")>]
-    //member inline _.margin([<InlineIfLambda>] comb: CombineKeyValue, top: int, right: int, bottom: int, left: int) =
-    //    comb
-    //    &&& CombineKeyValue(
-    //        mk "margin" ((string top) + "px " +, right) + "px " +, bottom) + "px " +, left) + "px")
-    //    )
+    /// Sets the margin area on all four sides of an element. It is a shorthand for margin-top, margin-right,
+    /// margin-bottom, and margin-left.
+    [<CustomOperation("margin")>]
+    member inline _.margin([<InlineIfLambda>] comb: CombineKeyValue, top: int, right: int, bottom: int, left: int) =
+        CombineKeyValue(fun x ->
+            comb
+                .Invoke(x)
+                .Append("margin: ")
+                .Append(top)
+                .Append("px ")
+                .Append(right)
+                .Append("px ")
+                .Append(bottom)
+                .Append("px ")
+                .Append(left)
+                .Append("px); ")
+        )
 
-    ///// Sets the margin area on all four sides of an element. It is a shorthand for margin-top, margin-right,
-    ///// margin-bottom, and margin-left.
-    //[<CustomOperation("margin")>]
-    //member inline _.margin
-    //    (
-    //        [<InlineIfLambda>] comb: CombineKeyValue,
-    //        top: string,
-    //        right: string,
-    //        bottom: string,
-    //        left: string
-    //    )
-    //    =
-    //    comb
-    //    &&& CombineKeyValue(
-    //        mk "margin" ((string top) + ", " +, right) + ", " +, bottom) + ", " +, left))
-    //    )
+    /// Sets the margin area on all four sides of an element. It is a shorthand for margin-top, margin-right,
+    /// margin-bottom, and margin-left.
+    [<CustomOperation("margin")>]
+    member inline _.margin
+        (
+            [<InlineIfLambda>] comb: CombineKeyValue,
+            top: string,
+            right: string,
+            bottom: string,
+            left: string
+        )
+        =
+        CombineKeyValue(fun x ->
+            comb
+                .Invoke(x)
+                .Append("margin: ")
+                .Append(top)
+                .Append(" ")
+                .Append(right)
+                .Append(" ")
+                .Append(bottom)
+                .Append(" ")
+                .Append(left)
+                .Append("); ")
+        )
 
     /// Sets the margin area on the left side of an element. A positive value places it farther from its
     /// neighbors, while a negative value places it closer.
     [<CustomOperation("marginLeft")>]
     member inline _.marginLeft([<InlineIfLambda>] comb: CombineKeyValue, value: int) =
-        comb &&& mkPxWidthKV ("margin-left", value)
+        comb &&& mkPxWithKV ("margin-left", value)
     /// Sets the margin area on the left side of an element. A positive value places it farther from its
     /// neighbors, while a negative value places it closer.
     [<CustomOperation("marginLeft")>]
@@ -2345,7 +2412,7 @@ type CssBuilder() =
     /// neighbors, while a negative value places it closer.
     [<CustomOperation("marginRight")>]
     member inline _.marginRight([<InlineIfLambda>] comb: CombineKeyValue, value: int) =
-        comb &&& mkPxWidthKV ("margin-right", value)
+        comb &&& mkPxWithKV ("margin-right", value)
     /// sets the margin area on the right side of an element. A positive value places it farther from its
     /// neighbors, while a negative value places it closer.
     [<CustomOperation("marginRight")>]
@@ -2355,7 +2422,7 @@ type CssBuilder() =
     /// neighbors, while a negative value places it closer.
     [<CustomOperation("marginTop")>]
     member inline _.marginTop([<InlineIfLambda>] comb: CombineKeyValue, value: int) =
-        comb &&& mkPxWidthKV ("margin-top", value)
+        comb &&& mkPxWithKV ("margin-top", value)
     /// Sets the margin area on the top of an element. A positive value places it farther from its
     /// neighbors, while a negative value places it closer.
     [<CustomOperation("marginTop")>]
@@ -2364,7 +2431,7 @@ type CssBuilder() =
     /// neighbors, while a negative value places it closer.
     [<CustomOperation("marginBottom")>]
     member inline _.marginBottom([<InlineIfLambda>] comb: CombineKeyValue, value: int) =
-        comb &&& mkPxWidthKV ("margin-bottom", value)
+        comb &&& mkPxWithKV ("margin-bottom", value)
     /// Sets the margin area on the bottom of an element. A positive value places it farther from its
     /// neighbors, while a negative value places it closer.
     [<CustomOperation("marginBottom")>]
@@ -2375,37 +2442,52 @@ type CssBuilder() =
     /// padding-right, padding-bottom, and padding-left.
     [<CustomOperation("padding")>]
     member inline _.padding([<InlineIfLambda>] comb: CombineKeyValue, value: int) =
-        comb &&& mkPxWidthKV ("padding", value)
+        comb &&& mkPxWithKV ("padding", value)
     /// Sets the padding area on all four sides of an element. It is a shorthand for padding-top,
     /// padding-right, padding-bottom, and padding-left.
     [<CustomOperation("padding")>]
     member inline _.padding([<InlineIfLambda>] comb: CombineKeyValue, value: string) = comb &>> ("padding", value)
-
-    ///// Sets the padding area for vertical and horizontal axis.
-    //[<CustomOperation("padding")>]
-    //member inline _.padding([<InlineIfLambda>] comb: CombineKeyValue, vertical: string, horizontal: string) =
-    //    comb &>> ("padding" ((string vertical) + ", " +, horizontal)))
-    ///// Sets the padding area on all four sides of an element. It is a shorthand for padding-top,
-    ///// padding-right, padding-bottom, and padding-left.
-    //[<CustomOperation("padding")>]
-    //member inline _.padding
-    //    (
-    //        [<InlineIfLambda>] comb: CombineKeyValue,
-    //        top: string,
-    //        right: string,
-    //        bottom: string,
-    //        left: string
-    //    )
-    //    =
-    //    comb
-    //    &&& CombineKeyValue(
-    //        mk "padding" ((string top) + ", " +, right) + ", " +, bottom) + ", " +, left))
-    //    )
-
+    /// Sets the padding area for vertical and horizontal axis.
+    [<CustomOperation("padding")>]
+    member inline _.padding([<InlineIfLambda>] comb: CombineKeyValue, vertical: int, horizontal: int) =
+        CombineKeyValue(fun x ->
+            comb.Invoke(x).Append("padding: ").Append(vertical).Append("px ").Append(horizontal).Append("px); ")
+        )
+    /// Sets the padding area for vertical and horizontal axis.
+    [<CustomOperation("padding")>]
+    member inline _.padding([<InlineIfLambda>] comb: CombineKeyValue, vertical: string, horizontal: string) =
+        CombineKeyValue(fun x ->
+            comb.Invoke(x).Append("padding: ").Append(vertical).Append(" ").Append(horizontal).Append("); ")
+        )
+    /// Sets the padding area on all four sides of an element. It is a shorthand for padding-top,
+    /// padding-right, padding-bottom, and padding-left.
+    [<CustomOperation("padding")>]
+    member inline _.padding
+        (
+            [<InlineIfLambda>] comb: CombineKeyValue,
+            top: string,
+            right: string,
+            bottom: string,
+            left: string
+        )
+        =
+        CombineKeyValue(fun x ->
+            comb
+                .Invoke(x)
+                .Append("padding: ")
+                .Append(top)
+                .Append(" ")
+                .Append(right)
+                .Append(" ")
+                .Append(bottom)
+                .Append(" ")
+                .Append(left)
+                .Append("); ")
+        )
     /// Sets the height of the padding area on the bottom of an element.
     [<CustomOperation("paddingBottom")>]
     member inline _.paddingBottom([<InlineIfLambda>] comb: CombineKeyValue, value: int) =
-        comb &&& mkPxWidthKV ("padding-bottom", value)
+        comb &&& mkPxWithKV ("padding-bottom", value)
     /// Sets the height of the padding area on the bottom of an element.
     [<CustomOperation("paddingBottom")>]
     member inline _.paddingBottom([<InlineIfLambda>] comb: CombineKeyValue, value: string) =
@@ -2413,7 +2495,7 @@ type CssBuilder() =
     /// Sets the width of the padding area to the left of an element.
     [<CustomOperation("paddingLeft")>]
     member inline _.paddingLeft([<InlineIfLambda>] comb: CombineKeyValue, value: int) =
-        comb &&& mkPxWidthKV ("padding-left", value)
+        comb &&& mkPxWithKV ("padding-left", value)
     /// Sets the width of the padding area to the left of an element.
     [<CustomOperation("paddingLeft")>]
     member inline _.paddingLeft([<InlineIfLambda>] comb: CombineKeyValue, value: string) =
@@ -2421,7 +2503,7 @@ type CssBuilder() =
     /// Sets the width of the padding area on the right of an element.
     [<CustomOperation("paddingRight")>]
     member inline _.paddingRight([<InlineIfLambda>] comb: CombineKeyValue, value: int) =
-        comb &&& mkPxWidthKV ("padding-right", value)
+        comb &&& mkPxWithKV ("padding-right", value)
     /// Sets the width of the padding area on the right of an element.
     [<CustomOperation("paddingRight")>]
     member inline _.paddingRight([<InlineIfLambda>] comb: CombineKeyValue, value: string) =
@@ -2429,7 +2511,7 @@ type CssBuilder() =
     /// Sets the height of the padding area on the top of an element.
     [<CustomOperation("paddingTop")>]
     member inline _.paddingTop([<InlineIfLambda>] comb: CombineKeyValue, value: int) =
-        comb &&& mkPxWidthKV ("padding-top", value)
+        comb &&& mkPxWithKV ("padding-top", value)
     /// Sets the height of the padding area on the top of an element.
     [<CustomOperation("paddingTop")>]
     member inline _.paddingTop([<InlineIfLambda>] comb: CombineKeyValue, value: string) =
@@ -2444,7 +2526,7 @@ type CssBuilder() =
     /// otherwise set with box-sizing.
     [<CustomOperation("flexBasis")>]
     member inline _.flexBasis([<InlineIfLambda>] comb: CombineKeyValue, value: int) =
-        comb &&& mkPxWidthKV ("flex-basis", value)
+        comb &&& mkPxWithKV ("flex-basis", value)
     /// Sets the initial main size of a flex item. It sets the size of the content box unless
     /// otherwise set with box-sizing.
     [<CustomOperation("flexBasis")>]
@@ -2453,7 +2535,7 @@ type CssBuilder() =
     /// space in the flex container should be assigned to the item (the flex grow factor).
     [<CustomOperation("flexGrow")>]
     member inline _.flexGrow([<InlineIfLambda>] comb: CombineKeyValue, value: int) =
-        comb &&& mkWidthKV ("flex-shrink", value)
+        comb &&& mkWithKV ("flex-shrink", value)
     /// Shorthand of flex-grow, flex-shrink and flex-basis
     [<CustomOperation("flex")>]
     member inline _.flex([<InlineIfLambda>] comb: CombineKeyValue, grow: int, ?shrink: int, ?basis: string) =
@@ -2462,643 +2544,640 @@ type CssBuilder() =
     [<CustomOperation("flex")>]
     member inline _.flex([<InlineIfLambda>] comb: CombineKeyValue, value: string) = comb &>> ("flex", value)
 
-    ///// Sets the width of each individual grid column in pixels.
-    /////
-    ///// **CSS**
-    ///// ```css
-    ///// grid-template-columns: 100px 200px 100px;
-    ///// ```
-    ///// **F#**
-    ///// ```f#
-    ///// gridTemplateColumns: [100; 200; 100]
-    ///// ```
-    //[<CustomOperation("gridTemplateColumns")>]
-    //member inline _.gridTemplateColumns([<InlineIfLambda>] comb: CombineKeyValue, value: int seq) =
-    //    let addPixels = fun x -> x + "px"
-    //    comb
-    //    &&& CombineKeyValue(mk "grid-template-columns" (value |> Seq.map, >> addPixels) |> String.concat ", "))
+    /// Sets the width of each individual grid column in pixels.
+    ///
+    /// **CSS**
+    /// ```css
+    /// grid-template-columns: 100px 200px 100px;
+    /// ```
+    /// **F#**
+    /// ```f#
+    /// gridTemplateColumns: [100; 200; 100]
+    /// ```
+    [<CustomOperation("gridTemplateColumns")>]
+    member inline _.gridTemplateColumns([<InlineIfLambda>] comb: CombineKeyValue, value: int seq) =
+        CombineKeyValue(fun x ->
+            let sb = comb.Invoke(x).Append("grid-template-columns: ")
+            for v in value do
+                sb.Append(v).Append("px ") |> ignore
+            sb.Append("; ")
+        )
+    /// Sets the width of each individual grid column.
+    ///
+    /// **CSS**
+    /// ```css
+    /// grid-template-columns: 1fr 1fr 2fr;
+    /// ```
+    [<CustomOperation("gridTemplateColumns")>]
+    member inline _.gridTemplateColumns([<InlineIfLambda>] comb: CombineKeyValue, value) =
+        comb &>> ("grid-template-columns", value)
+    /// Sets the width of a number of grid columns to the defined width, as well as naming the lines between them
+    ///
+    /// **CSS**
+    /// ```css
+    /// grid-template-columns: repeat(3, 1fr [col-start]);
+    /// ```
+    /// **F#**
+    /// ```f#
+    /// style.gridTemplateColumns (3, "1fr", "col-start"))
+    /// ```
+    [<CustomOperation("gridTemplateColumns")>]
+    member inline _.gridTemplateColumns
+        (
+            [<InlineIfLambda>] comb: CombineKeyValue,
+            count: int,
+            size: string,
+            ?areaName: string
+        )
+        =
+        let areaName =
+            match areaName with
+            | Some n -> ", [" + n + "]"
+            | None -> ""
+        CombineKeyValue(fun x ->
+            comb
+                .Invoke(x)
+                .Append("grid-template-columns: ")
+                .Append("repeat(")
+                .Append(count)
+                .Append(", ")
+                .Append(size)
+                .Append(areaName)
+                .Append("); ")
+        )
+    /// Sets the width of a number of grid rows to the defined width
+    ///
+    /// **CSS**
+    /// ```css
+    /// grid-template-rows: 100px 200px 100px;
+    /// ```
+    /// **F#**
+    /// ```f#
+    /// style.gridTemplateRows [100, 200, 100]
+    /// ```
+    [<CustomOperation("gridTemplateRows")>]
+    member inline _.gridTemplateRows([<InlineIfLambda>] comb: CombineKeyValue, value: int seq) =
+        CombineKeyValue(fun x ->
+            let sb = comb.Invoke(x).Append("grid-template-rows: ")
+            for v in value do
+                sb.Append(v).Append("px ") |> ignore
+            sb.Append("; ")
+        )
+    /// Sets the width of a number of grid rows to the defined width
+    ///
+    /// **CSS**
+    /// ```css
+    /// grid-template-rows: 1fr 10% 250px auto;
+    /// ```
+    /// **F#**
+    /// ```f#
+    /// style.gridTemplateRows ["1fr"]
+    /// ```
+    [<CustomOperation("gridTemplateRows")>]
+    member inline _.gridTemplateRows([<InlineIfLambda>] comb: CombineKeyValue, value: string) =
+        comb &>> ("grid-template-rows", value)
+    /// Sets the width of a number of grid rows to the defined width
+    ///
+    /// **CSS**
+    /// ```css
+    /// grid-template-rows: repeat(3, 10%);
+    /// ```
+    /// **F#**
+    /// ```f#
+    /// style.gridTemplateRows (3, length.percent 10))
+    /// ```
+    [<CustomOperation("gridTemplateRows")>]
+    member inline _.gridTemplateRows
+        (
+            [<InlineIfLambda>] comb: CombineKeyValue,
+            count: int,
+            size: string,
+            ?areaName: string
+        )
+        =
+        let areaName =
+            match areaName with
+            | Some n -> " [" + n + "]"
+            | None -> ""
+        CombineKeyValue(fun x ->
+            comb
+                .Invoke(x)
+                .Append("grid-template-rows: ")
+                .Append("repeat(")
+                .Append(count)
+                .Append(", ")
+                .Append(size)
+                .Append(areaName)
+                .Append("); ")
+        )
+    /// 2D representation of grid layout as blocks with names
+    ///
+    /// **CSS**
+    /// ```css
+    /// grid-template-areas:
+    ///     'header header header header'
+    ///     'nav nav . sidebar'
+    ///     'footer footer footer footer';
+    /// ```
+    /// **F#**
+    /// ```f#
+    /// style.gridTemplateAreas [
+    ///     "header header header header"
+    ///     "nav    nav    .      sidebar"
+    ///     "footer footer footer footer"
+    /// ]
+    /// ```
+    [<CustomOperation("gridTemplateAreas")>]
+    member inline _.gridTemplateAreas([<InlineIfLambda>] comb: CombineKeyValue, value: string list) =
+        CombineKeyValue(fun x ->
+            let sb = comb.Invoke(x).Append("grid-template-areas: ")
+            for item in value do
+                sb.Append("'").Append(item).Append("' ") |> ignore
 
-    ///// Sets the width of each individual grid column.
-    /////
-    ///// **CSS**
-    ///// ```css
-    ///// grid-template-columns: 1fr 1fr 2fr;
-    ///// ```
-    ///// **F#**
-    ///// ```f#
-    ///// gridTemplateColumns: [length.fr 1; length.fr 1; length.fr 2]
-    ///// ```
-    //[<CustomOperation("gridTemplateColumns")>]
-    //member inline _.gridTemplateColumns([<InlineIfLambda>] comb: CombineKeyValue, value: string seq) =
-    //    comb &>> ("grid-template-columns" (value |> Seq.map string |> String.concat ", "))
-    ///// Sets the width of a number of grid columns to the defined width, as well as naming the lines between them
-    /////
-    ///// **CSS**
-    ///// ```css
-    ///// grid-template-columns: repeat(3, 1fr [col-start]);
-    ///// ```
-    ///// **F#**
-    ///// ```f#
-    ///// style.gridTemplateColumns (3, length.fr 1, "col-start"))
-    ///// ```
-    //[<CustomOperation("gridTemplateColumns")>]
-    //member inline _.gridTemplateColumns
-    //    (
-    //        [<InlineIfLambda>] comb: CombineKeyValue,
-    //        count: int,
-    //        size: string,
-    //        ?areaName: string
-    //    )
-    //    =
-    //    let areaName =
-    //        match areaName with
-    //        | Some n -> " [" + n + "]"
-    //        | None -> ""
-    //    comb
-    //    &&& CombineKeyValue(
-    //        mk "grid-template-columns" ("repeat(" +, count) + ", " +, size) + areaName + ")")
-    //    )
-    ///// Sets the width of a number of grid rows to the defined width
-    /////
-    ///// **CSS**
-    ///// ```css
-    ///// grid-template-rows: 100px 200px 100px;
-    ///// ```
-    ///// **F#**
-    ///// ```f#
-    ///// style.gridTemplateRows [100, 200, 100]
-    ///// ```
-    //[<CustomOperation("gridTemplateRows")>]
-    //member inline _.gridTemplateRows([<InlineIfLambda>] comb: CombineKeyValue, value: int seq) =
-    //    let addPixels = (fun x -> x + "px")
-    //    comb
-    //    &&& CombineKeyValue(mk "grid-template-rows" (value |> Seq.map, >> addPixels) |> String.concat ", "))
-    ///// Sets the width of a number of grid rows to the defined width
-    /////
-    ///// **CSS**
-    ///// ```css
-    ///// grid-template-rows: 1fr 10% 250px auto;
-    ///// ```
-    ///// **F#**
-    ///// ```f#
-    ///// style.gridTemplateRows [length.fr 1; length.percent 10; length.px 250; length.auto]
-    ///// ```
-    //[<CustomOperation("gridTemplateRows")>]
-    //member inline _.gridTemplateRows([<InlineIfLambda>] comb: CombineKeyValue, value: string seq) =
-    //    comb &>> ("grid-template-rows" (value |> Seq.map string |> String.concat ", "))
-    ///// Sets the width of a number of grid rows to the defined width
-    /////
-    ///// **CSS**
-    ///// ```css
-    ///// grid-template-rows: repeat(3, 10%);
-    ///// ```
-    ///// **F#**
-    ///// ```f#
-    ///// style.gridTemplateRows (3, length.percent 10))
-    ///// ```
-    //[<CustomOperation("gridTemplateRows")>]
-    //member inline _.gridTemplateRows
-    //    (
-    //        [<InlineIfLambda>] comb: CombineKeyValue,
-    //        count: int,
-    //        size: string,
-    //        ?areaName: string
-    //    )
-    //    =
-    //    let areaName =
-    //        match areaName with
-    //        | Some n -> " [" + n + "]"
-    //        | None -> ""
-    //    comb
-    //    &&& CombineKeyValue(
-    //        mk "grid-template-rows" ("repeat(" +, count) + ", " +, size) + areaName + ")")
-    //    )
-    ///// 2D representation of grid layout as blocks with names
-    /////
-    ///// **CSS**
-    ///// ```css
-    ///// grid-template-areas:
-    /////     'header header header header'
-    /////     'nav nav . sidebar'
-    /////     'footer footer footer footer';
-    ///// ```
-    ///// **F#**
-    ///// ```f#
-    ///// style.gridTemplateAreas [
-    /////     ["header"; "header"; "header"; "header" ]
-    /////     ["nav"   ; "nav"   ; "."     ; "sidebar"]
-    /////     ["footer"; "footer"; "footer"; "footer" ]
-    ///// ]
-    ///// ```
-    //[<CustomOperation("gridTemplateAreas")>]
-    //member inline _.gridTemplateAreas([<InlineIfLambda>] comb: CombineKeyValue, value: string list list) =
-    //    let wrapLine = (fun x -> "'" + x + "'")
-    //    let lines = List.map (String.concat ", " >> wrapLine) value
-    //    let block = String.concat "\n" lines
-    //    comb &>> ("grid-template-areas" block)
-    ///// 2D representation of grid layout as blocks with names
-    /////
-    ///// **CSS**
-    ///// ```css
-    ///// grid-template-areas:
-    /////     'header header header header'
-    /////     'nav nav . sidebar'
-    /////     'footer footer footer footer';
-    ///// ```
-    ///// **F#**
-    ///// ```f#
-    ///// style.gridTemplateAreas [|
-    /////     [|"header"; "header"; "header"; "header" |]
-    /////     [|"nav"   ; "nav"   ; "."     ; "sidebar"|]
-    /////     [|"footer"; "footer"; "footer"; "footer" |]
-    ///// |]
-    ///// ```
-    //[<CustomOperation("gridTemplateAreas")>]
-    //member inline _.gridTemplateAreas([<InlineIfLambda>] comb: CombineKeyValue, value: string [] []) =
-    //    let wrapLine = (fun x -> "'" + x + "'")
-    //    let lines = Array.map (String.concat ", " >> wrapLine) value
-    //    let block = String.concat "\n" lines
-    //    comb &>> ("grid-template-areas" block)
-    ///// One-dimensional alternative to the nested list. For column-based layouts
-    /////
-    ///// **CSS**
-    ///// ```css
-    ///// grid-template-areas: 'first second third fourth';
-    ///// ```
-    ///// **F#**
-    ///// ```f#
-    ///// style.gridTemplateAreas ["first"; "second"; "third"; "fourth"]
-    ///// ```
-    //[<CustomOperation("gridTemplateAreas")>]
-    //member inline _.gridTemplateAreas([<InlineIfLambda>] comb: CombineKeyValue, value: string seq) =
-    //    let block = String.concat ", ", value
-    //    comb &>> ("grid-template-areas" ("'" + block + "'"))
-    ///// Specifies the size of the grid lines. You can think of it like
-    ///// setting the width of the gutters between the columns.
-    /////
-    ///// **CSS**
-    ///// ```css
-    ///// column-gap: 10px;
-    ///// ```
-    ///// **F#**
-    ///// ```f#
-    ///// style.columnGap 10
-    ///// ```
-    //[<CustomOperation("columnGap")>]
-    //member inline _.columnGap([<InlineIfLambda>] comb: CombineKeyValue, value: int) =
-    //    comb &>> ("column-gap" &&& CombineKeyValue(fun x -> x.Append(value).Append("px"))
-    ///// Specifies the size of the grid lines. You can think of it like
-    ///// setting the width of the gutters between the columns.
-    /////
-    ///// **CSS**
-    ///// ```css
-    ///// column-gap: 1em;
-    ///// ```
-    ///// **F#**
-    ///// ```f#
-    ///// style.columnGap (length.em 1))
-    ///// ```
-    //[<CustomOperation("columnGap")>]
-    //member inline _.columnGap([<InlineIfLambda>] comb: CombineKeyValue, value: string) =
-    //    comb &>> ("column-gap", value)
-    ///// Specifies the size of the grid lines. You can think of it like
-    ///// setting the width of the gutters between the rows.
-    /////
-    ///// **CSS**
-    ///// ```css
-    ///// row-gap: 10px;
-    ///// ```
-    ///// **F#**
-    ///// ```f#
-    ///// style.rowGap 10
-    ///// ```
-    //[<CustomOperation("rowGap")>]
-    //member inline _.rowGap([<InlineIfLambda>] comb: CombineKeyValue, value: int) =
-    //    comb &>> ("row-gap" &&& CombineKeyValue(fun x -> x.Append(value).Append("px"))
-    ///// Specifies the size of the grid lines. You can think of it like
-    ///// setting the width of the gutters between the rows.
-    /////
-    ///// **CSS**
-    ///// ```css
-    ///// row-gap: 1em;
-    ///// ```
-    ///// **F#**
-    ///// ```f#
-    ///// style.rowGap (length.em 1))
-    ///// ```
-    //[<CustomOperation("rowGap")>]
-    //member inline _.rowGap([<InlineIfLambda>] comb: CombineKeyValue, value: string) =
-    //    comb &>> ("row-gap", value)
-    ///// Specifies the size of the grid lines. You can think of it like
-    ///// setting the width of the gutters between the rows/columns.
-    /////
-    ///// _Shorthand for `rowGap` and `columnGap`_
-    /////
-    ///// **CSS**
-    ///// ```css
-    ///// gap: 1em 2em;
-    ///// ```
-    ///// **F#**
-    ///// ```f#
-    ///// style.gap (length.em 1, length.em 2))
-    ///// ```
-    //[<CustomOperation("gap")>]
-    //member inline _.gap([<InlineIfLambda>] comb: CombineKeyValue, rowGap: string, columnGap: string) =
-    //    comb &>> ("gap" ((string rowGap) + ", " +, columnGap)))
-    //[<CustomOperation("gap")>]
-    //member inline _.gap([<InlineIfLambda>] comb: CombineKeyValue, rowColumnGap: string) =
-    //    comb &>> ("gap" ((string rowColumnGap) + ", " +, rowColumnGap)))
-    ///// Sets where an item in the grid starts
-    ///// The value can be one of the following options:
-    ///// - a named line
-    ///// - a numbered line
-    ///// - span until a named line was hit
-    ///// - span over a specified number of lines
-    /////
-    /////
-    ///// When there are multiple named lines with the same name, you can specify which one by count
-    /////
-    ///// **CSS**
-    ///// ```css
-    ///// grid-column-start: col 2;
-    ///// ```
-    ///// **F#**
-    ///// ```f#
-    ///// style.gridColumnStart ("col", 2))
-    ///// ```
-    //[<CustomOperation("gridColumnStart")>]
-    //member inline _.gridColumnStart([<InlineIfLambda>] comb: CombineKeyValue, value: string, ?count: int) =
-    //    comb &>> ("grid-column-start", value + ", " +, count)))
-    ///// Sets where an item in the grid starts
-    ///// The value can be one of the following options:
-    ///// - a named line
-    ///// - a numbered line
-    ///// - span until a named line was hit
-    ///// - span over a specified number of lines
-    /////
-    /////
-    ///// **CSS**
-    ///// ```css
-    ///// grid-column-start: 2;
-    ///// ```
-    ///// **F#**
-    ///// ```f#
-    ///// style.gridColumnStart 2
-    ///// ```
-    //[<CustomOperation("gridColumnStart")>]
-    //member inline _.gridColumnStart([<InlineIfLambda>] comb: CombineKeyValue, value: int) =
-    //    comb &>> ("grid-column-start", value)
-    ///// Sets where an item in the grid starts
-    ///// The value can be one of the following options:
-    ///// - a named line
-    ///// - a numbered line
-    ///// - span until a named line was hit
-    ///// - span over a specified number of lines
-    /////
-    /////
-    ///// **CSS**
-    ///// ```css
-    ///// grid-column-start: span odd-col;
-    ///// ```
-    ///// **F#**
-    ///// ```f#
-    ///// style.gridColumnStart (gridColumn.span "odd-col"))
-    ///// ```
-    //[<CustomOperation("gridColumnStart")>]
-    //member inline _.gridColumnStart([<InlineIfLambda>] comb: CombineKeyValue, value: string) =
-    //    comb &>> ("grid-column-start", value)
-    ///// Sets where an item in the grid ends
-    ///// The value can be one of the following options:
-    ///// - a named line
-    ///// - a numbered line
-    ///// - span until a named line was hit
-    ///// - span over a specified number of lines
-    /////
-    /////
-    ///// _When there are multiple named lines with the same name, you can specify which one by count_
-    /////
-    ///// **CSS**
-    ///// ```css
-    ///// grid-column-end: odd-col 2;
-    ///// ```
-    ///// **F#**
-    ///// ```f#
-    ///// style.gridColumnEnd ("odd-col", 2))
-    ///// ```
-    //[<CustomOperation("gridColumnEnd")>]
-    //member inline _.gridColumnEnd([<InlineIfLambda>] comb: CombineKeyValue, value: string, ?count: int) =
-    //    comb &>> ("grid-column-end", value + ", " +, count)))
-    ///// Sets where an item in the grid ends
-    ///// The value can be one of the following options:
-    ///// - a named line
-    ///// - a numbered line
-    ///// - span until a named line was hit
-    ///// - span over a specified number of lines
-    /////
-    /////
-    ///// **CSS**
-    ///// ```css
-    ///// grid-column-end: 2;
-    ///// ```
-    ///// **F#**
-    ///// ```f#
-    ///// style.gridColumnEnd 2
-    ///// ```
-    //[<CustomOperation("gridColumnEnd")>]
-    //member inline _.gridColumnEnd([<InlineIfLambda>] comb: CombineKeyValue, value: int) =
-    //    comb &>> ("grid-column-end", value)
-    ///// Sets where an item in the grid ends
-    ///// The value can be one of the following options:
-    ///// - a named line
-    ///// - a numbered line
-    ///// - span until a named line was hit
-    ///// - span over a specified number of lines
-    /////
-    /////
-    ///// **CSS**
-    ///// ```css
-    ///// grid-column-end: span 2;
-    ///// ```
-    ///// **F#**
-    ///// ```f#
-    ///// style.gridColumnEnd (gridColumn.span 2))
-    ///// ```
-    //[<CustomOperation("gridColumnEnd")>]
-    //member inline _.gridColumnEnd([<InlineIfLambda>] comb: CombineKeyValue, value: string) =
-    //    comb &>> ("grid-column-end", value)
-    ///// Sets where an item in the grid starts
-    ///// The value can be one of the following options:
-    ///// - a named line
-    ///// - a numbered line
-    ///// - span until a named line was hit
-    ///// - span over a specified number of lines
-    /////
-    /////
-    ///// **CSS**
-    ///// ```css
-    ///// grid-row-start: col 2;
-    ///// ```
-    ///// **F#**
-    ///// ```f#
-    ///// style.gridRowStart ("col", 2))
-    ///// ```
-    //[<CustomOperation("gridRowStart")>]
-    //member inline _.gridRowStart([<InlineIfLambda>] comb: CombineKeyValue, value: string, ?count: int) =
-    //    comb &>> ("grid-row-start", value + ", " +, count)))
-    ///// Sets where an item in the grid starts
-    ///// The value can be one of the following options:
-    ///// - a named line
-    ///// - a numbered line
-    ///// - span until a named line was hit
-    ///// - span over a specified number of lines
-    /////
-    /////
-    ///// **CSS**
-    ///// ```css
-    ///// grid-row-start: 2;
-    ///// ```
-    ///// **F#**
-    ///// ```f#
-    ///// style.gridRowStart 2
-    ///// ```
-    //[<CustomOperation("gridRowStart")>]
-    //member inline _.gridRowStart([<InlineIfLambda>] comb: CombineKeyValue, value: int) =
-    //    comb &>> ("grid-row-start", value)
-    ///// Sets where an item in the grid starts
-    ///// The value can be one of the following options:
-    ///// - a named line
-    ///// - a numbered line
-    ///// - span until a named line was hit
-    ///// - span over a specified number of lines
-    /////
-    /////
-    ///// **CSS**
-    ///// ```css
-    ///// grid-row-start: span odd-col;
-    ///// ```
-    ///// **F#**
-    ///// ```f#
-    ///// style.gridRowStart (gridRow.span "odd-col"))
-    ///// ```
-    //[<CustomOperation("gridRowStart")>]
-    //member inline _.gridRowStart([<InlineIfLambda>] comb: CombineKeyValue, value: string) =
-    //    comb &>> ("grid-row-start", value)
-    ///// Sets where an item in the grid ends
-    ///// The value can be one of the following options:
-    ///// - a named line
-    ///// - a numbered line
-    ///// - span until a named line was hit
-    ///// - span over a specified number of lines
-    /////
-    /////
-    ///// _When there are multiple named lines with the same name, you can specify which one by count_
-    /////
-    ///// **CSS**
-    ///// ```css
-    ///// grid-row-end: odd-col 2;
-    ///// ```
-    ///// **F#**
-    ///// ```f#
-    ///// style.gridRowEnd ("odd-col", 2))
-    ///// ```
-    //[<CustomOperation("gridRowEnd")>]
-    //member inline _.gridRowEnd([<InlineIfLambda>] comb: CombineKeyValue, value: string, ?count: int) =
-    //    comb &>> ("grid-row-end", value + ", " +, count)))
-    ///// Sets where an item in the grid ends
-    ///// The value can be one of the following options:
-    ///// - a named line
-    ///// - a numbered line
-    ///// - span until a named line was hit
-    ///// - span over a specified number of lines
-    /////
-    /////
-    ///// **CSS**
-    ///// ```css
-    ///// grid-row-end: 2;
-    ///// ```
-    ///// **F#**
-    ///// ```f#
-    ///// style.gridRowEnd 2
-    ///// ```
-    //[<CustomOperation("gridRowEnd")>]
-    //member inline _.gridRowEnd([<InlineIfLambda>] comb: CombineKeyValue, value: int) =
-    //    comb &>> ("grid-row-end", value)
-    ///// Sets where an item in the grid ends
-    ///// The value can be one of the following options:
-    ///// - a named line
-    ///// - a numbered line
-    ///// - span until a named line was hit
-    ///// - span over a specified number of lines
-    /////
-    /////
-    ///// **CSS**
-    ///// ```css
-    ///// grid-row-end: span 2;
-    ///// ```
-    ///// **F#**
-    ///// ```f#
-    ///// style.gridRowEnd (gridRow.span 2))
-    ///// ```
-    //[<CustomOperation("gridRowEnd")>]
-    //member inline _.gridRowEnd([<InlineIfLambda>] comb: CombineKeyValue, value: string) =
-    //    comb &>> ("grid-row-end", value)
-    ///// Determines a grid item��s location within the grid by referring to specific grid lines.
-    ///// start is the line where the item begins, end' is the line where it ends.
-    ///// They can be one of the following options:
-    ///// - a named line
-    ///// - a numbered line
-    ///// - span until a named line was hit
-    ///// - span over a specified number of lines
-    /////
-    /////
-    ///// _Shorthand for `gridColumnStart` and `gridColumnEnds`_
-    /////
-    ///// **CSS**
-    ///// ```css
-    ///// grid-column: col-2 / col-4;
-    ///// ```
-    ///// **F#**
-    ///// ```f#
-    ///// style.gridColumn ("col-2", "col-4"))
-    ///// ```
-    //[<CustomOperation("gridColumn")>]
-    //member inline _.gridColumn([<InlineIfLambda>] comb: CombineKeyValue, start: string, end': string) =
-    //    comb &>> ("grid-column" (start + " / " + end'))
-    ///// Determines a grid item��s location within the grid by referring to specific grid lines.
-    ///// start is the line where the item begins, end' is the line where it ends.
-    ///// They can be one of the following options:
-    ///// - a named line
-    ///// - a numbered line
-    ///// - span until a named line was hit
-    ///// - span over a specified number of lines
-    /////
-    /////
-    ///// _Shorthand for `gridColumnStart` and `gridColumnEnds`_
-    /////
-    ///// **CSS**
-    ///// ```css
-    ///// grid-column: 1 / 3;
-    ///// ```
-    ///// **F#**
-    ///// ```f#
-    ///// style.gridColumn (1, 3))
-    ///// ```
-    //[<CustomOperation("gridColumn")>]
-    //member inline _.gridColumn([<InlineIfLambda>] comb: CombineKeyValue, start: int, end': int) =
-    //    comb &>> ("grid-column", start + " / " + string end'))
-    ///// Determines a grid item��s location within the grid by referring to specific grid lines.
-    ///// start is the line where the item begins, end' is the line where it ends.
-    ///// They can be one of the following options:
-    ///// - a named line
-    ///// - a numbered line
-    ///// - span until a named line was hit
-    ///// - span over a specified number of lines
-    /////
-    /////
-    ///// _Shorthand for `gridRowStart` and `gridRowEnds`_
-    /////
-    ///// **CSS**
-    ///// ```css
-    ///// grid-row: row-2 / row-4;
-    ///// ```
-    ///// **F#**
-    ///// ```f#
-    ///// style.gridRow ("row-2", "row-4"))
-    ///// ```
-    //[<CustomOperation("gridRow")>]
-    //member inline _.gridRow([<InlineIfLambda>] comb: CombineKeyValue, start: string, end': string) =
-    //    comb &>> ("grid-row" (start + " / " + end'))
-    ///// Sets the named grid area the item is placed in
-    /////
-    ///// **CSS**
-    ///// ```css
-    ///// grid-area: header;
-    ///// ```
-    ///// **F#**
-    ///// ```f#
-    ///// style.gridArea "header")
-    ///// ```
-    //[<CustomOperation("gridArea")>]
-    //member inline _.gridArea([<InlineIfLambda>] comb: CombineKeyValue, value: string) =
-    //    comb &>> ("grid-area", value)
-    ///// Shorthand for `grid-template-areas`, `grid-template-columns` and `grid-template-rows`.
-    /////
-    ///// Documentation: https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template
-    /////
-    ///// **CSS**
-    ///// ```css
-    ///// grid-template:  [header-top] 'a a a'      [header-bottom]
-    /////                   [main-top] 'b b b' 1fr  [main-bottom]
-    /////                              / auto 1fr auto;
-    ///// ```
-    ///// **F#**
-    ///// ```f#
-    ///// style.gridTemplate "[header-top] 'a a a'      [header-bottom] " +
-    /////                      "[main-top] 'b b b' 1fr  [main-bottom] " +
-    /////                                "/ auto 1fr auto")
-    ///// ```
-    //[<CustomOperation("gridTemplate")>]
-    //member inline _.gridTemplate([<InlineIfLambda>] comb: CombineKeyValue, value: string) =
-    //    comb &>> ("grid-template", value)
-    //[<CustomOperation("transition")>]
-    //member inline _.transition([<InlineIfLambda>] comb: CombineKeyValue, value: string) =
-    //    comb &>> ("transition", value)
-    ///// Sets the length of time a transition animation should take to complete. By default, the
-    ///// value is 0s, meaning that no animation will occur.
-    //[<CustomOperation("transitionDuration")>]
-    //member inline _.transitionDuration([<InlineIfLambda>] comb: CombineKeyValue, timespan: TimeSpan) =
-    //    comb &>> ("transition-duration", timespan.TotalMilliseconds + "ms"))
-    ///// Sets the length of time a transition animation should take to complete. By default, the
-    ///// value is 0s, meaning that no animation will occur.
-    //[<CustomOperation("transitionDurationSeconds")>]
-    //member inline _.transitionDurationSeconds([<InlineIfLambda>] comb: CombineKeyValue, n: float) =
-    //    comb &>> ("transition-duration", n + "s"))
-    ///// Sets the length of time a transition animation should take to complete. By default, the
-    ///// value is 0s, meaning that no animation will occur.
-    //[<CustomOperation("transitionDurationMilliseconds")>]
-    //member inline _.transitionDurationMilliseconds([<InlineIfLambda>] comb: CombineKeyValue, n: float) =
-    //    comb &>> ("transition-duration", n + "ms"))
-    ///// Sets the length of time a transition animation should take to complete. By default, the
-    ///// value is 0s, meaning that no animation will occur.
-    //[<CustomOperation("transitionDurationSeconds")>]
-    //member inline _.transitionDurationSeconds([<InlineIfLambda>] comb: CombineKeyValue, n: int) =
-    //    comb &>> ("transition-duration", n + "s"))
-    ///// Sets the length of time a transition animation should take to complete. By default, the
-    ///// value is 0s, meaning that no animation will occur.
-    //[<CustomOperation("transitionDurationMilliseconds")>]
-    //member inline _.transitionDurationMilliseconds([<InlineIfLambda>] comb: CombineKeyValue, n: int) =
-    //    comb &>> ("transition-duration", n + "ms"))
-    ///// Specifies the duration to wait before starting a property's transition effect when its value changes.
-    //[<CustomOperation("transitionDelay")>]
-    //member inline _.transitionDelay([<InlineIfLambda>] comb: CombineKeyValue, timespan: TimeSpan) =
-    //    comb &>> ("transition-delay", timespan.TotalMilliseconds + "ms"))
-    ///// Specifies the duration to wait before starting a property's transition effect when its value changes.
-    //[<CustomOperation("transitionDelaySeconds")>]
-    //member inline _.transitionDelaySeconds([<InlineIfLambda>] comb: CombineKeyValue, n: float) =
-    //    comb &>> ("transition-delay", n + "s"))
-    ///// Specifies the duration to wait before starting a property's transition effect when its value changes.
-    //[<CustomOperation("transitionDelayMilliseconds")>]
-    //member inline _.transitionDelayMilliseconds([<InlineIfLambda>] comb: CombineKeyValue, n: float) =
-    //    comb &>> ("transition-delay", n + "ms"))
-    ///// Specifies the duration to wait before starting a property's transition effect when its value changes.
-    //[<CustomOperation("transitionDelaySeconds")>]
-    //member inline _.transitionDelaySeconds([<InlineIfLambda>] comb: CombineKeyValue, n: int) =
-    //    comb &>> ("transition-delay", n + "s"))
-    ///// Specifies the duration to wait before starting a property's transition effect when its value changes.
-    //[<CustomOperation("transitionDelayMilliseconds")>]
-    //member inline _.transitionDelayMilliseconds([<InlineIfLambda>] comb: CombineKeyValue, n: int) =
-    //    comb &>> ("transition-delay", n + "ms"))
-    ///// Sets the CSS properties to which a transition effect should be applied.
-    //[<CustomOperation("transitionProperty")>]
-    //member inline _.transitionProperty([<InlineIfLambda>] comb: CombineKeyValue, property: string) =
-    //    comb &>> ("transition-property" property)
+            sb.Append("; ")
+        )
+    /// Specifies the size of the grid lines. You can think of it like
+    /// setting the width of the gutters between the columns.
+    ///
+    /// **CSS**
+    /// ```css
+    /// column-gap: 10px;
+    /// ```
+    /// **F#**
+    /// ```f#
+    /// style.columnGap 10
+    /// ```
+    [<CustomOperation("columnGap")>]
+    member inline _.columnGap([<InlineIfLambda>] comb: CombineKeyValue, value: int) =
+        comb &&& mkPxWithKV ("column-gap", value)
+    /// Specifies the size of the grid lines. You can think of it like
+    /// setting the width of the gutters between the columns.
+    ///
+    /// **CSS**
+    /// ```css
+    /// column-gap: 1em;
+    /// ```
+    /// **F#**
+    /// ```f#
+    /// style.columnGap (length.em 1))
+    /// ```
+    [<CustomOperation("columnGap")>]
+    member inline _.columnGap([<InlineIfLambda>] comb: CombineKeyValue, value: string) = comb &>> ("column-gap", value)
+    /// Specifies the size of the grid lines. You can think of it like
+    /// setting the width of the gutters between the rows.
+    ///
+    /// **CSS**
+    /// ```css
+    /// row-gap: 10px;
+    /// ```
+    /// **F#**
+    /// ```f#
+    /// style.rowGap 10
+    /// ```
+    [<CustomOperation("rowGap")>]
+    member inline _.rowGap([<InlineIfLambda>] comb: CombineKeyValue, value: int) =
+        comb &&& mkPxWithKV ("row-gap", value)
+    /// Specifies the size of the grid lines. You can think of it like
+    /// setting the width of the gutters between the rows.
+    ///
+    /// **CSS**
+    /// ```css
+    /// row-gap: 1em;
+    /// ```
+    /// **F#**
+    /// ```f#
+    /// style.rowGap (length.em 1))
+    /// ```
+    [<CustomOperation("rowGap")>]
+    member inline _.rowGap([<InlineIfLambda>] comb: CombineKeyValue, value: string) = comb &>> ("row-gap", value)
+    /// Specifies the size of the grid lines. You can think of it like
+    /// setting the width of the gutters between the rows/columns.
+    ///
+    /// _Shorthand for `rowGap` and `columnGap`_
+    ///
+    /// **CSS**
+    /// ```css
+    /// gap: 1em 2em;
+    /// ```
+    /// **F#**
+    /// ```f#
+    /// style.gap (length.em 1, length.em 2))
+    /// ```
+    [<CustomOperation("gap")>]
+    member inline _.gap([<InlineIfLambda>] comb: CombineKeyValue, rowGap: string, columnGap: string) =
+        comb &>> ("gap", rowGap + ", " + columnGap)
+    [<CustomOperation("gap")>]
+    member inline _.gap([<InlineIfLambda>] comb: CombineKeyValue, rowColumnGap: string) =
+        comb &>> ("gap", rowColumnGap + ", " + rowColumnGap)
+    /// Sets where an item in the grid starts
+    /// The value can be one of the following options:
+    /// - a named line
+    /// - a numbered line
+    /// - span until a named line was hit
+    /// - span over a specified number of lines
+    ///
+    ///
+    /// When there are multiple named lines with the same name, you can specify which one by count
+    ///
+    /// **CSS**
+    /// ```css
+    /// grid-column-start: col 2;
+    /// ```
+    /// **F#**
+    /// ```f#
+    /// style.gridColumnStart ("col", 2))
+    /// ```
+    [<CustomOperation("gridColumnStart")>]
+    member inline _.gridColumnStart([<InlineIfLambda>] comb: CombineKeyValue, value: string, ?count: int) =
+        comb
+        &>> ("grid-column-start",
+             value
+             + match count with
+               | Some x -> ", " + string x
+               | _ -> "")
+    /// Sets where an item in the grid starts
+    /// The value can be one of the following options:
+    /// - a named line
+    /// - a numbered line
+    /// - span until a named line was hit
+    /// - span over a specified number of lines
+    ///
+    ///
+    /// **CSS**
+    /// ```css
+    /// grid-column-start: 2;
+    /// ```
+    /// **F#**
+    /// ```f#
+    /// style.gridColumnStart 2
+    /// ```
+    [<CustomOperation("gridColumnStart")>]
+    member inline _.gridColumnStart([<InlineIfLambda>] comb: CombineKeyValue, value: int) =
+        comb &&& mkWithKV ("grid-column-start", value)
+    /// Sets where an item in the grid starts
+    /// The value can be one of the following options:
+    /// - a named line
+    /// - a numbered line
+    /// - span until a named line was hit
+    /// - span over a specified number of lines
+    ///
+    ///
+    /// **CSS**
+    /// ```css
+    /// grid-column-start: span odd-col;
+    /// ```
+    /// **F#**
+    /// ```f#
+    /// style.gridColumnStart (gridColumn.span "odd-col"))
+    /// ```
+    [<CustomOperation("gridColumnStart")>]
+    member inline _.gridColumnStart([<InlineIfLambda>] comb: CombineKeyValue, value: string) =
+        comb &>> ("grid-column-start", value)
+    /// Sets where an item in the grid ends
+    /// The value can be one of the following options:
+    /// - a named line
+    /// - a numbered line
+    /// - span until a named line was hit
+    /// - span over a specified number of lines
+    ///
+    ///
+    /// _When there are multiple named lines with the same name, you can specify which one by count_
+    ///
+    /// **CSS**
+    /// ```css
+    /// grid-column-end: odd-col 2;
+    /// ```
+    /// **F#**
+    /// ```f#
+    /// style.gridColumnEnd ("odd-col", 2))
+    /// ```
+    [<CustomOperation("gridColumnEnd")>]
+    member inline _.gridColumnEnd([<InlineIfLambda>] comb: CombineKeyValue, value: string, ?count: int) =
+        comb
+        &>> ("grid-column-end",
+             value
+             + match count with
+               | Some x -> ", " + string x
+               | _ -> "")
+    /// Sets where an item in the grid ends
+    /// The value can be one of the following options:
+    /// - a named line
+    /// - a numbered line
+    /// - span until a named line was hit
+    /// - span over a specified number of lines
+    ///
+    ///
+    /// **CSS**
+    /// ```css
+    /// grid-column-end: 2;
+    /// ```
+    /// **F#**
+    /// ```f#
+    /// style.gridColumnEnd 2
+    /// ```
+    [<CustomOperation("gridColumnEnd")>]
+    member inline _.gridColumnEnd([<InlineIfLambda>] comb: CombineKeyValue, value: int) =
+        comb &&& mkWithKV ("grid-column-end", value)
+    /// Sets where an item in the grid ends
+    /// The value can be one of the following options:
+    /// - a named line
+    /// - a numbered line
+    /// - span until a named line was hit
+    /// - span over a specified number of lines
+    ///
+    ///
+    /// **CSS**
+    /// ```css
+    /// grid-column-end: span 2;
+    /// ```
+    /// **F#**
+    /// ```f#
+    /// style.gridColumnEnd (gridColumn.span 2))
+    /// ```
+    [<CustomOperation("gridColumnEnd")>]
+    member inline _.gridColumnEnd([<InlineIfLambda>] comb: CombineKeyValue, value: string) =
+        comb &>> ("grid-column-end", value)
+    /// Sets where an item in the grid starts
+    /// The value can be one of the following options:
+    /// - a named line
+    /// - a numbered line
+    /// - span until a named line was hit
+    /// - span over a specified number of lines
+    ///
+    ///
+    /// **CSS**
+    /// ```css
+    /// grid-row-start: col 2;
+    /// ```
+    /// **F#**
+    /// ```f#
+    /// style.gridRowStart ("col", 2))
+    /// ```
+    [<CustomOperation("gridRowStart")>]
+    member inline _.gridRowStart([<InlineIfLambda>] comb: CombineKeyValue, value: string, ?count: int) =
+        comb
+        &>> ("grid-row-start",
+             value
+             + match count with
+               | Some x -> ", " + string x
+               | _ -> "")
+    /// Sets where an item in the grid starts
+    /// The value can be one of the following options:
+    /// - a named line
+    /// - a numbered line
+    /// - span until a named line was hit
+    /// - span over a specified number of lines
+    ///
+    ///
+    /// **CSS**
+    /// ```css
+    /// grid-row-start: 2;
+    /// ```
+    /// **F#**
+    /// ```f#
+    /// style.gridRowStart 2
+    /// ```
+    [<CustomOperation("gridRowStart")>]
+    member inline _.gridRowStart([<InlineIfLambda>] comb: CombineKeyValue, value: int) =
+        comb &&& mkWithKV ("grid-row-start", value)
+    /// Sets where an item in the grid starts
+    /// The value can be one of the following options:
+    /// - a named line
+    /// - a numbered line
+    /// - span until a named line was hit
+    /// - span over a specified number of lines
+    ///
+    ///
+    /// **CSS**
+    /// ```css
+    /// grid-row-start: span odd-col;
+    /// ```
+    /// **F#**
+    /// ```f#
+    /// style.gridRowStart (gridRow.span "odd-col"))
+    /// ```
+    [<CustomOperation("gridRowStart")>]
+    member inline _.gridRowStart([<InlineIfLambda>] comb: CombineKeyValue, value: string) =
+        comb &>> ("grid-row-start", value)
+    /// Sets where an item in the grid ends
+    /// The value can be one of the following options:
+    /// - a named line
+    /// - a numbered line
+    /// - span until a named line was hit
+    /// - span over a specified number of lines
+    ///
+    ///
+    /// _When there are multiple named lines with the same name, you can specify which one by count_
+    ///
+    /// **CSS**
+    /// ```css
+    /// grid-row-end: odd-col 2;
+    /// ```
+    /// **F#**
+    /// ```f#
+    /// style.gridRowEnd ("odd-col", 2))
+    /// ```
+    [<CustomOperation("gridRowEnd")>]
+    member inline _.gridRowEnd([<InlineIfLambda>] comb: CombineKeyValue, value: string, ?count: int) =
+        comb
+        &>> ("grid-row-end",
+             value
+             + match count with
+               | Some x -> ", " + string x
+               | _ -> "")
+    /// Sets where an item in the grid ends
+    /// The value can be one of the following options:
+    /// - a named line
+    /// - a numbered line
+    /// - span until a named line was hit
+    /// - span over a specified number of lines
+    ///
+    ///
+    /// **CSS**
+    /// ```css
+    /// grid-row-end: 2;
+    /// ```
+    /// **F#**
+    /// ```f#
+    /// style.gridRowEnd 2
+    /// ```
+    [<CustomOperation("gridRowEnd")>]
+    member inline _.gridRowEnd([<InlineIfLambda>] comb: CombineKeyValue, value: int) =
+        comb &&& mkWithKV ("grid-row-end", value)
+    /// Sets where an item in the grid ends
+    /// The value can be one of the following options:
+    /// - a named line
+    /// - a numbered line
+    /// - span until a named line was hit
+    /// - span over a specified number of lines
+    ///
+    ///
+    /// **CSS**
+    /// ```css
+    /// grid-row-end: span 2;
+    /// ```
+    /// **F#**
+    /// ```f#
+    /// style.gridRowEnd (gridRow.span 2))
+    /// ```
+    [<CustomOperation("gridRowEnd")>]
+    member inline _.gridRowEnd([<InlineIfLambda>] comb: CombineKeyValue, value: string) =
+        comb &>> ("grid-row-end", value)
+    /// Determines a grid item��s location within the grid by referring to specific grid lines.
+    /// start is the line where the item begins, end' is the line where it ends.
+    /// They can be one of the following options:
+    /// - a named line
+    /// - a numbered line
+    /// - span until a named line was hit
+    /// - span over a specified number of lines
+    ///
+    ///
+    /// _Shorthand for `gridColumnStart` and `gridColumnEnds`_
+    ///
+    /// **CSS**
+    /// ```css
+    /// grid-column: col-2 / col-4;
+    /// ```
+    /// **F#**
+    /// ```f#
+    /// style.gridColumn ("col-2", "col-4"))
+    /// ```
+    [<CustomOperation("gridColumn")>]
+    member inline _.gridColumn([<InlineIfLambda>] comb: CombineKeyValue, start: string, end': string) =
+        comb &>> ("grid-column", start + " / " + end')
+    /// Determines a grid item��s location within the grid by referring to specific grid lines.
+    /// start is the line where the item begins, end' is the line where it ends.
+    /// They can be one of the following options:
+    /// - a named line
+    /// - a numbered line
+    /// - span until a named line was hit
+    /// - span over a specified number of lines
+    ///
+    ///
+    /// _Shorthand for `gridColumnStart` and `gridColumnEnds`_
+    ///
+    /// **CSS**
+    /// ```css
+    /// grid-column: 1 / 3;
+    /// ```
+    /// **F#**
+    /// ```f#
+    /// style.gridColumn (1, 3))
+    /// ```
+    [<CustomOperation("gridColumn")>]
+    member inline _.gridColumn([<InlineIfLambda>] comb: CombineKeyValue, start: int, end': int) =
+        comb &>> ("grid-column", string start + " / " + string end')
+    /// Determines a grid item��s location within the grid by referring to specific grid lines.
+    /// start is the line where the item begins, end' is the line where it ends.
+    /// They can be one of the following options:
+    /// - a named line
+    /// - a numbered line
+    /// - span until a named line was hit
+    /// - span over a specified number of lines
+    ///
+    ///
+    /// _Shorthand for `gridRowStart` and `gridRowEnds`_
+    ///
+    /// **CSS**
+    /// ```css
+    /// grid-row: row-2 / row-4;
+    /// ```
+    /// **F#**
+    /// ```f#
+    /// style.gridRow ("row-2", "row-4"))
+    /// ```
+    [<CustomOperation("gridRow")>]
+    member inline _.gridRow([<InlineIfLambda>] comb: CombineKeyValue, start: string, end': string) =
+        comb &>> ("grid-row", start + " / " + end')
+    /// Sets the named grid area the item is placed in
+    ///
+    /// **CSS**
+    /// ```css
+    /// grid-area: header;
+    /// ```
+    /// **F#**
+    /// ```f#
+    /// style.gridArea "header")
+    /// ```
+    [<CustomOperation("gridArea")>]
+    member inline _.gridArea([<InlineIfLambda>] comb: CombineKeyValue, value: string) = comb &>> ("grid-area", value)
+    /// Shorthand for `grid-template-areas`, `grid-template-columns` and `grid-template-rows`.
+    ///
+    /// Documentation: https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template
+    ///
+    /// **CSS**
+    /// ```css
+    /// grid-template:  [header-top] 'a a a'      [header-bottom]
+    ///                   [main-top] 'b b b' 1fr  [main-bottom]
+    ///                              / auto 1fr auto;
+    /// ```
+    /// **F#**
+    /// ```f#
+    /// style.gridTemplate "[header-top] 'a a a'      [header-bottom] " +
+    ///                      "[main-top] 'b b b' 1fr  [main-bottom] " +
+    ///                                "/ auto 1fr auto")
+    /// ```
+    [<CustomOperation("gridTemplate")>]
+    member inline _.gridTemplate([<InlineIfLambda>] comb: CombineKeyValue, value: string) =
+        comb &>> ("grid-template", value)
+    [<CustomOperation("transition")>]
+    member inline _.transition([<InlineIfLambda>] comb: CombineKeyValue, value: string) = comb &>> ("transition", value)
+    /// Sets the length of time a transition animation should take to complete. By default, the
+    /// value is 0s, meaning that no animation will occur.
+    [<CustomOperation("transitionDuration")>]
+    member inline _.transitionDuration([<InlineIfLambda>] comb: CombineKeyValue, timespan: TimeSpan) =
+        comb &>> ("transition-duration", timespan.TotalMilliseconds.ToString() + "ms")
+    /// Sets the length of time a transition animation should take to complete. By default, the
+    /// value is 0s, meaning that no animation will occur.
+    [<CustomOperation("transitionDurationSeconds")>]
+    member inline _.transitionDurationSeconds([<InlineIfLambda>] comb: CombineKeyValue, n: float) =
+        comb &>> ("transition-duration", string n + "s")
+    /// Sets the length of time a transition animation should take to complete. By default, the
+    /// value is 0s, meaning that no animation will occur.
+    [<CustomOperation("transitionDurationMilliseconds")>]
+    member inline _.transitionDurationMilliseconds([<InlineIfLambda>] comb: CombineKeyValue, n: float) =
+        comb &>> ("transition-duration", string n + "ms")
+    /// Sets the length of time a transition animation should take to complete. By default, the
+    /// value is 0s, meaning that no animation will occur.
+    [<CustomOperation("transitionDurationSeconds")>]
+    member inline _.transitionDurationSeconds([<InlineIfLambda>] comb: CombineKeyValue, n: int) =
+        comb &>> ("transition-duration", string n + "s")
+    /// Sets the length of time a transition animation should take to complete. By default, the
+    /// value is 0s, meaning that no animation will occur.
+    [<CustomOperation("transitionDurationMilliseconds")>]
+    member inline _.transitionDurationMilliseconds([<InlineIfLambda>] comb: CombineKeyValue, n: int) =
+        comb &>> ("transition-duration", string n + "ms")
+    /// Specifies the duration to wait before starting a property's transition effect when its value changes.
+    [<CustomOperation("transitionDelay")>]
+    member inline _.transitionDelay([<InlineIfLambda>] comb: CombineKeyValue, timespan: TimeSpan) =
+        comb &>> ("transition-delay", timespan.TotalMilliseconds.ToString() + "ms")
+    /// Specifies the duration to wait before starting a property's transition effect when its value changes.
+    [<CustomOperation("transitionDelaySeconds")>]
+    member inline _.transitionDelaySeconds([<InlineIfLambda>] comb: CombineKeyValue, n: float) =
+        comb &>> ("transition-delay", string n + "s")
+    /// Specifies the duration to wait before starting a property's transition effect when its value changes.
+    [<CustomOperation("transitionDelayMilliseconds")>]
+    member inline _.transitionDelayMilliseconds([<InlineIfLambda>] comb: CombineKeyValue, n: float) =
+        comb &>> ("transition-delay", string n + "ms")
+    /// Specifies the duration to wait before starting a property's transition effect when its value changes.
+    [<CustomOperation("transitionDelaySeconds")>]
+    member inline _.transitionDelaySeconds([<InlineIfLambda>] comb: CombineKeyValue, n: int) =
+        comb &>> ("transition-delay", string n + "s")
+    /// Specifies the duration to wait before starting a property's transition effect when its value changes.
+    [<CustomOperation("transitionDelayMilliseconds")>]
+    member inline _.transitionDelayMilliseconds([<InlineIfLambda>] comb: CombineKeyValue, n: int) =
+        comb &>> ("transition-delay", string n + "ms")
+    /// Sets the CSS properties to which a transition effect should be applied.
+    [<CustomOperation("transitionProperty")>]
+    member inline _.transitionProperty([<InlineIfLambda>] comb: CombineKeyValue, property: string) =
+        comb &>> ("transition-property", property)
 
     /// Sets the size of the font.
     ///
     /// This property is also used to compute the size of em, ex, and other relative <length> units.
     [<CustomOperation("fontSize")>]
     member inline _.fontSize([<InlineIfLambda>] comb: CombineKeyValue, size: int) =
-        comb &&& mkPxWidthKV ("font-size", size)
+        comb &&& mkPxWithKV ("font-size", size)
     /// Sets the size of the font.
     ///
     /// This property is also used to compute the size of em, ex, and other relative <length> units.
@@ -3111,7 +3190,7 @@ type CssBuilder() =
     /// Note: Negative values are not allowed.
     [<CustomOperation("lineHeight")>]
     member inline _.lineHeight([<InlineIfLambda>] comb: CombineKeyValue, size: int) =
-        comb &&& mkPxWidthKV ("line-height", size)
+        comb &&& mkPxWithKV ("line-height", size)
     /// Specifies the height of a text lines.
     ///
     /// This property is also used to compute the size of em, ex, and other relative <length> units.
@@ -3160,7 +3239,7 @@ type CssBuilder() =
     member inline _.left([<InlineIfLambda>] comb: CombineKeyValue, value: string) = comb &>> ("left", value)
     /// Specifies the horizontal position of a positioned element. It has no effect on non-positioned elements.
     [<CustomOperation("right")>]
-    member inline _.right([<InlineIfLambda>] comb: CombineKeyValue, value: int) = comb &&& mkPxWidthKV ("right", value)
+    member inline _.right([<InlineIfLambda>] comb: CombineKeyValue, value: int) = comb &&& mkPxWithKV ("right", value)
     /// Specifies the horizontal position of a positioned element. It has no effect on non-positioned elements.
     [<CustomOperation("right")>]
     member inline _.right([<InlineIfLambda>] comb: CombineKeyValue, value: string) = comb &>> ("right", value)
@@ -3177,7 +3256,7 @@ type CssBuilder() =
     ///
     [<CustomOperation("outlineOffset")>]
     member inline _.outlineOffset([<InlineIfLambda>] comb: CombineKeyValue, offset: int) =
-        comb &&& mkPxWidthKV ("outline-width", offset)
+        comb &&& mkPxWithKV ("outline-width", offset)
 
     /// The outline-offset property adds space between an outline and the edge or border of an element.
     ///
@@ -3209,7 +3288,7 @@ type CssBuilder() =
     /// Sets the width of the bottom border of an element.
     [<CustomOperation("borderBottomWidth")>]
     member inline _.borderBottomWidth([<InlineIfLambda>] comb: CombineKeyValue, width: int) =
-        comb &&& mkPxWidthKV ("border-bottom-width", width)
+        comb &&& mkPxWithKV ("border-bottom-width", width)
     /// Sets the width of the bottom border of an element.
     [<CustomOperation("borderBottomWidth")>]
     member inline _.borderBottomWidth([<InlineIfLambda>] comb: CombineKeyValue, width: string) =
@@ -3227,7 +3306,7 @@ type CssBuilder() =
     /// Sets the width of the top border of an element.
     [<CustomOperation("borderTopWidth")>]
     member inline _.borderTopWidth([<InlineIfLambda>] comb: CombineKeyValue, width: int) =
-        comb &&& mkPxWidthKV ("border-top-width", width)
+        comb &&& mkPxWithKV ("border-top-width", width)
     /// Sets the width of the top border of an element.
     [<CustomOperation("borderTopWidth")>]
     member inline _.borderTopWidth([<InlineIfLambda>] comb: CombineKeyValue, width: string) =
@@ -3245,7 +3324,7 @@ type CssBuilder() =
     /// Sets the width of the right border of an element.
     [<CustomOperation("borderRightWidth")>]
     member inline _.borderRightWidth([<InlineIfLambda>] comb: CombineKeyValue, width: int) =
-        comb &&& mkPxWidthKV ("border-right-width", width)
+        comb &&& mkPxWithKV ("border-right-width", width)
     /// Sets the width of the right border of an element.
     [<CustomOperation("borderRightWidth")>]
     member inline _.borderRightWidth([<InlineIfLambda>] comb: CombineKeyValue, width: string) =
@@ -3263,7 +3342,7 @@ type CssBuilder() =
     /// Sets the width of the left border of an element.
     [<CustomOperation("borderLeftWidth")>]
     member inline _.borderLeftWidth([<InlineIfLambda>] comb: CombineKeyValue, width: int) =
-        comb &&& mkPxWidthKV ("border-left-width", width)
+        comb &&& mkPxWithKV ("border-left-width", width)
     /// Sets the width of the left border of an element.
     [<CustomOperation("borderLeftWidth")>]
     member inline _.borderLeftWidth([<InlineIfLambda>] comb: CombineKeyValue, width: string) =
@@ -3282,7 +3361,7 @@ type CssBuilder() =
     /// circular corners, or two radii to make elliptical corners.
     [<CustomOperation("borderRadius")>]
     member inline _.borderRadius([<InlineIfLambda>] comb: CombineKeyValue, radius: int) =
-        comb &&& mkPxWidthKV ("border-radius", radius)
+        comb &&& mkPxWithKV ("border-radius", radius)
     /// Rounds the corners of an element's outer border edge. You can set a single radius to make
     /// circular corners, or two radii to make elliptical corners.
     [<CustomOperation("borderRadius")>]
@@ -3291,7 +3370,7 @@ type CssBuilder() =
     /// Sets the width of an element's border.
     [<CustomOperation("borderWidth")>]
     member inline _.borderWidth([<InlineIfLambda>] comb: CombineKeyValue, width: int) =
-        comb &&& mkPxWidthKV ("border-width", width)
+        comb &&& mkPxWithKV ("border-width", width)
     /// Sets the width of an element's border.
     [<CustomOperation("borderWidth")>]
     member inline _.borderWidth([<InlineIfLambda>] comb: CombineKeyValue, top: string, ?right: string) =
@@ -3306,32 +3385,35 @@ type CssBuilder() =
                 )
             )
         )
-    ///// Sets the width of an element's border.
-    //[<CustomOperation("borderWidth")>]
-    //member inline _.borderWidth
-    //    (
-    //        [<InlineIfLambda>] comb: CombineKeyValue,
-    //        top: string,
-    //        right: string,
-    //        bottom: string,
-    //        ?left: string
-    //    )
-    //    =
-    //    comb
-    //    &&& CombineKeyValue(
-    //        mk
-    //            "border-width"
-    //            ((string top)
-    //             + ", "
-    //             +, right)
-    //             + ", "
-    //             +, bottom)
-    //             + (
-    //                 match left with
-    //                 | Some x -> ", " + string x
-    //                 | None -> ""
-    //             ))
-    //    )
+    /// Sets the width of an element's border.
+    [<CustomOperation("borderWidth")>]
+    member inline _.borderWidth
+        (
+            [<InlineIfLambda>] comb: CombineKeyValue,
+            top: string,
+            right: string,
+            bottom: string,
+            ?left: string
+        )
+        =
+        CombineKeyValue(fun x ->
+            comb
+                .Invoke(x)
+                .Append("border-width: ")
+                .Append(top)
+                .Append(", ")
+                .Append(right)
+                .Append(", ")
+                .Append(bottom)
+                .Append(", ")
+                .Append(
+                    match left with
+                    | Some x -> ", " + x
+                    | None -> ""
+                )
+                .Append("; ")
+        )
+
     /// Sets one or more animations to apply to an element. Each name is an @keyframes at-rule that
     /// sets the property values for the animation sequence.
     [<CustomOperation("animationName")>]
@@ -3360,7 +3442,7 @@ type CssBuilder() =
     /// The number of times the animation runs.
     [<CustomOperation("animationDurationCount")>]
     member inline _.animationDurationCount([<InlineIfLambda>] comb: CombineKeyValue, count: int) =
-        comb &&& mkWidthKV ("animation-duration-count", count)
+        comb &&& mkWithKV ("animation-duration-count", count)
     /// Sets the font family for the font specified in a @font-face rule.
     [<CustomOperation("fontFamily")>]
     member inline _.fontFamily([<InlineIfLambda>] comb: CombineKeyValue, family: string) =
@@ -3372,7 +3454,7 @@ type CssBuilder() =
     /// Sets the length of empty space (indentation) that is put before lines of text in a block.
     [<CustomOperation("textIndent")>]
     member inline _.textIndent([<InlineIfLambda>] comb: CombineKeyValue, value: int) =
-        comb &&& mkWidthKV ("text-indent", value)
+        comb &&& mkWithKV ("text-indent", value)
     /// Sets the length of empty space (indentation) that is put before lines of text in a block.
     [<CustomOperation("textIndent")>]
     member inline _.textIndent([<InlineIfLambda>] comb: CombineKeyValue, value: string) =
@@ -3382,13 +3464,13 @@ type CssBuilder() =
     /// Opacity is the degree to which content behind an element is hidden, and is the opposite of transparency.
     [<CustomOperation("opacity")>]
     member inline _.opacity([<InlineIfLambda>] comb: CombineKeyValue, value: double) =
-        comb &&& mkWidthKV ("opacity", value)
+        comb &&& mkWithKV ("opacity", value)
     /// Sets the minimum width of an element.
     ///
     /// It prevents the used value of the width property from becoming smaller than the value specified for min-width.
     [<CustomOperation("minWidth")>]
     member inline _.minWidth([<InlineIfLambda>] comb: CombineKeyValue, value: int) =
-        comb &&& mkPxWidthKV ("min-width", value)
+        comb &&& mkPxWithKV ("min-width", value)
     /// Sets the minimum width of an element.
     ///
     /// It prevents the used value of the width property from becoming smaller than the value specified for min-width.
@@ -3399,7 +3481,7 @@ type CssBuilder() =
     /// It prevents the used value of the width property from becoming larger than the value specified by max-width.
     [<CustomOperation("maxWidth")>]
     member inline _.maxWidth([<InlineIfLambda>] comb: CombineKeyValue, value: int) =
-        comb &&& mkPxWidthKV ("max-width", value)
+        comb &&& mkPxWithKV ("max-width", value)
     /// Sets the maximum width of an element.
     ///
     /// It prevents the used value of the width property from becoming larger than the value specified by max-width.
@@ -3410,7 +3492,7 @@ type CssBuilder() =
     ///
     /// By default, the property defines the width of the content area.
     [<CustomOperation("width")>]
-    member inline _.width([<InlineIfLambda>] comb: CombineKeyValue, value: int) = comb &&& mkPxWidthKV ("width", value)
+    member inline _.width([<InlineIfLambda>] comb: CombineKeyValue, value: int) = comb &&& mkPxWithKV ("width", value)
     /// Sets the width of an element.
     ///
     /// By default, the property defines the width of the content area.
@@ -3424,7 +3506,7 @@ type CssBuilder() =
     /// Short-hand for `style.backgroundImage(sprintf "url('%s')", value)` to set the backround image using a url.
     [<CustomOperation("backgroundImageUrl")>]
     member inline _.backgroundImageUrl([<InlineIfLambda>] comb: CombineKeyValue, value: string) =
-        comb &>> ("background-image", "url('" + value + "')")
+        comb &>> ("background-image", "url('" + value + "'); ")
 
     /// Sets the color of an SVG shape.
     [<CustomOperation("fill")>]
