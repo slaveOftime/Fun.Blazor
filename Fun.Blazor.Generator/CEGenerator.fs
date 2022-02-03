@@ -43,8 +43,8 @@ let private getMetaInfo (ty: Type) =
     let originalGenerics = generics |> getTypeNames |> createGenerics |> closeGenerics
     let originalTypeWithGenerics = $"{ty.Namespace}.{getTypeShortName ty}{originalGenerics}"
     let customOperation name = $"[<CustomOperation(\"{name}\")>]"
-    let memberStart = "member inline _."
-    let contextArg = $"[<InlineIfLambda>] render: AttrRenderFragment"
+    let memberStart = "member _."
+    let contextArg = $"render: AttrRenderFragment"
 
     let rawProps = ty.GetProperties()
     let filteredProps = getValidBlazorProps ty rawProps

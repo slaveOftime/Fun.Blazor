@@ -9,7 +9,7 @@ open Utils
 let private getMetaInfo (ty: Type) =
     let rawProps = ty.GetProperties()
     let validProps = getValidBlazorProps ty rawProps
-    let memberStart = "static member inline "
+    let memberStart = "static member "
 
     let props =
         validProps

@@ -48,7 +48,7 @@ let darkTheme =
 
 
 let navmenu =
-    MudNavMenu'.create [
+    MudNavMenu'() {
         MudNavLink'() {
             Href "./quick-start"
             childContent "Quick start"
@@ -135,7 +135,7 @@ let navmenu =
                 }
             ]
         }
-    ]
+    }
 
 
 let app =
