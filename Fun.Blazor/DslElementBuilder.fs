@@ -441,7 +441,7 @@ module Elts =
 
     let strong = EltWithChildBuilder "strong"
 
-    let style' = EltWithChildBuilder "style'"
+    let style = EltWithChildBuilder "style"
 
     let sub = EltWithChildBuilder "sub"
 

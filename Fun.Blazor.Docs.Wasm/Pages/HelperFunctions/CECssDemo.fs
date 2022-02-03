@@ -3,7 +3,7 @@ module Fun.Blazor.Docs.Wasm.Pages.HelperFunctions.CECssDemo
 
 open Fun.Blazor
 open Fun.Css
-open Fun.Css.Utils
+open Fun.Css.Internal
 
 
 type CssBuilder with

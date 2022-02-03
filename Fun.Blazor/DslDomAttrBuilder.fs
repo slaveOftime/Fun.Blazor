@@ -11,7 +11,7 @@ open Operators
 type StyleBuilder() =
     inherit Fun.Css.CssBuilder()
 
-    member _.Run(combine: Fun.Css.CombineKeyValue) =
+    member _.Run(combine: Fun.Css.Internal.CombineKeyValue) =
         AttrRenderFragment(fun _ builder index ->
             builder.AddAttribute(index, "style", combine.Invoke(StringBuilder()).ToString())
             index + 1
@@ -155,7 +155,7 @@ type DomAttrBuilder() =
         render ==> (html.style result)
 
     [<CustomOperation("style'")>]
-    member _.Style(render: AttrRenderFragment, x: string) = render ==> ("style" => x)
+    member _.style(render: AttrRenderFragment, x: string) = render ==> ("style" => x)
 
     [<CustomOperation("styles")>]
     member _.styles(render: AttrRenderFragment, v: (string * string) seq) =
@@ -179,7 +179,7 @@ type DomAttrBuilder() =
     member _.allow(render: AttrRenderFragment, v) = render ==> ("allow" => v)
     [<CustomOperation("alt")>]
     member _.alt(render: AttrRenderFragment, v) = render ==> ("alt" => v)
-    [<CustomOperation("")>]
+    [<CustomOperation("async'")>]
     member _.async'(render: AttrRenderFragment, v) = render ==> ("async" => v)
     [<CustomOperation("autocapitalize")>]
     member _.autocapitalize(render: AttrRenderFragment, v) = render ==> ("autocapitalize" => v)
