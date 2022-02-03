@@ -1,6 +1,7 @@
 ﻿[<AutoOpen>]
 module Fun.Blazor.Docs.Wasm.App
 
+open FSharp.Data.Adaptive
 open Fun.Blazor
 open Fun.Blazor.Router
 open MudBlazor
@@ -15,7 +16,9 @@ open Fun.Blazor.Docs.Wasm.Pages
 
 
 let defaultTheme =
-    MudTheme(Palette = Palette(Primary = MudColor "#289c8e", Secondary = MudColor "#47cacf", Black = MudColor "#202120"))
+    MudTheme(
+        Palette = Palette(Primary = MudColor "#289c8e", Secondary = MudColor "#47cacf", Black = MudColor "#202120")
+    )
 
 let darkTheme =
     MudTheme(
@@ -137,135 +140,153 @@ let navmenu =
         }
     }
 
+let routes =
+    [
+        subRouteCi "/router" [ routeAny Router.Router.router ]
+        routeCi
+            "/adaptive-form"
+            (demoContainer
+                "Adaptive Form"
+                $"Pages/HelperFunctions/AdaptiveFromDemo"
+                HelperFunctions.AdaptiveFormDemo.adaptiveFormDemo)
+        routeCi "/elmish" Elmish.Elmish.elmish
+        subRouteCi
+            "/helper-functions"
+            [
+                routeCi
+                    "/html-inject"
+                    (demoContainer
+                        "html.inject"
+                        "Pages/HelperFunctions/InjectDemo"
+                        HelperFunctions.InjectDemo.injectDemo)
+                routeCi
+                    "/html-watch"
+                    (demoContainer
+                        "html.watch"
+                        $"Pages/HelperFunctions/HtmlWatchDemo"
+                        HelperFunctions.HtmlWatchDemo.htmlWatchDemo)
+                routeCi
+                    "/adaptiview"
+                    (demoContainer
+                        "adapt"
+                        $"Pages/HelperFunctions/AdaptiveDemo"
+                        HelperFunctions.AdaptiviewDemo.adaptiviewDemo)
+                routeCi
+                    "/component-hook"
+                    (demoContainer
+                        "IComponentHook"
+                        $"Pages/HelperFunctions/ComponentHookDemo"
+                        HelperFunctions.ComponentHookDemo.componentHookDemo)
+                routeCi
+                    "/global-store"
+                    (demoContainer
+                        "Global storage"
+                        $"Pages/HelperFunctions/GlobalStoreDemo"
+                        HelperFunctions.GlobalStoreDemo.globalStoreDemo)
+                routeCi
+                    "/performance"
+                    (demoContainer
+                        "Performance"
+                        $"Pages/HelperFunctions/PerformanceDemo"
+                        HelperFunctions.PerformanceDemo.performanceDemo)
+                routeCi
+                    "/ce-css-builder"
+                    (demoContainer
+                        "CE style css builde"
+                        $"Pages/HelperFunctions/CECssDemo"
+                        HelperFunctions.CECssDemo.ceCssDemo)
+                routeCi
+                    "/html-template-demo"
+                    (demoContainer
+                        "Html Template Demo"
+                        $"Pages/HelperFunctions/HtmlTemplateDemo"
+                        HelperFunctions.HtmlTemplateDemo.htmlTemplateDemo)
+            ]
+        routeCi "/cli-usage" CliUsage.CliUsage.cliUsage
+        routeCi "/tests" Tests.Tests.tests
+        routeCi "/antdesign" demoAntDesign
+        routeCi "/fluentui" demoFluentUI
+        routeCi "/drag-drop" demoDragDrop
+        routeCi "/mudblazor" demoMudBlazor
+    ]
+
 
 let app =
     html.inject (fun (hook: IComponentHook, shareStore: IShareStore) ->
-        let isDarkMode = ShareStores.isDarkMode shareStore
-        let openMenu = hook.UseStore true
+        let isOpen = cval (false)
 
-        let routes =
-            [
-                subRouteCi "/router" [ routeAny Router.Router.router ]
-                routeCi
-                    "/adaptive-form"
-                    (demoContainer "Adaptive Form" $"Pages/HelperFunctions/AdaptiveFromDemo" HelperFunctions.AdaptiveFormDemo.adaptiveFormDemo)
-                routeCi "/elmish" Elmish.Elmish.elmish
-                subRouteCi
-                    "/helper-functions"
-                    [
-                        routeCi "/html-inject" (demoContainer "html.inject" "Pages/HelperFunctions/InjectDemo" HelperFunctions.InjectDemo.injectDemo)
-                        routeCi
-                            "/html-watch"
-                            (demoContainer "html.watch" $"Pages/HelperFunctions/HtmlWatchDemo" HelperFunctions.HtmlWatchDemo.htmlWatchDemo)
-                        routeCi
-                            "/adaptiview"
-                            (demoContainer "adapt" $"Pages/HelperFunctions/AdaptiveDemo" HelperFunctions.AdaptiviewDemo.adaptiviewDemo)
-                        routeCi
-                            "/component-hook"
-                            (demoContainer
-                                "IComponentHook"
-                                $"Pages/HelperFunctions/ComponentHookDemo"
-                                HelperFunctions.ComponentHookDemo.componentHookDemo)
-                        routeCi
-                            "/global-store"
-                            (demoContainer "Global storage" $"Pages/HelperFunctions/GlobalStoreDemo" HelperFunctions.GlobalStoreDemo.globalStoreDemo)
-                        routeCi
-                            "/performance"
-                            (demoContainer "Performance" $"Pages/HelperFunctions/PerformanceDemo" HelperFunctions.PerformanceDemo.performanceDemo)
-                        routeCi
-                            "/ce-css-builder"
-                            (demoContainer "CE style css builde" $"Pages/HelperFunctions/CECssDemo" HelperFunctions.CECssDemo.ceCssDemo)
-                        routeCi
-                            "/html-template-demo"
-                            (demoContainer
-                                "Html Template Demo"
-                                $"Pages/HelperFunctions/HtmlTemplateDemo"
-                                HelperFunctions.HtmlTemplateDemo.htmlTemplateDemo)
-                    ]
-                routeCi "/cli-usage" CliUsage.CliUsage.cliUsage
-                routeCi "/tests" Tests.Tests.tests
-                routeCi "/antdesign" demoAntDesign
-                routeCi "/fluentui" demoFluentUI
-                routeCi "/drag-drop" demoDragDrop
-                routeCi "/mudblazor" demoMudBlazor
-            ]
+        adaptiview () {
+            adaptiview () {
+                let! isDark = shareStore.isDarkMode
+                MudThemeProvider'() { Theme(if isDark then darkTheme else defaultTheme) }
+            }
 
-        html.div [
-            html.watch (isDarkMode, (fun isDark -> MudThemeProvider'() { Theme(if isDark then darkTheme else defaultTheme) }))
-
-            MudDialogProvider'.create ()
-            MudSnackbarProvider'.create ()
+            MudDialogProvider'()
+            MudSnackbarProvider'()
 
             MudLayout'() {
-                childContent [
-                    MudAppBar'() {
-                        Color Color.Primary
+                MudAppBar'() {
+                    Color Color.Primary
+                    Elevation 25
+                    Dense true
+                    adaptiview () {
+                        let! isOpen, setIsOpen = isOpen.WithSetter()
+                        MudIconButton'() {
+                            Icon Icons.Material.Filled.Menu
+                            Color Color.Inherit
+                            Edge Edge.Start
+                            OnClick(fun _ -> setIsOpen (not isOpen))
+                        }
+                    }
+                    MudText'() {
+                        Typo Typo.h6
+                        Color Color.Default
+                        "Fun Blazor"
+                    }
+                    MudSpacer'.create ()
+                    MudIconButton'() {
+                        Icon Icons.Custom.Brands.GitHub
+                        Color Color.Inherit
+                        Link "https://github.com/slaveOftime/Fun.Blazor"
+                    }
+                }
+                adaptiview () {
+                    let! isOpen = isOpen
+                    MudDrawer'() {
+                        Open isOpen
                         Elevation 25
-                        Dense true
-                        childContent [
-                            MudIconButton'() {
-                                Icon Icons.Material.Filled.Menu
-                                Color Color.Inherit
-                                Edge Edge.Start
-                                OnClick(fun _ -> openMenu.Publish not)
-                            }
+                        Variant DrawerVariant.Persistent
+                        MudDrawerHeader'() {
+                            LinkToIndex true
                             MudText'() {
-                                Typo Typo.h6
-                                Color Color.Default
-                                childContent "Fun Blazor"
+                                Color Color.Primary
+                                Typo Typo.h5
+                                "Have fun ✌"
                             }
-                            MudSpacer'.create ()
-                            MudIconButton'() {
-                                Icon Icons.Custom.Brands.GitHub
-                                Color Color.Inherit
-                                Link "https://github.com/slaveOftime/Fun.Blazor"
-                            }
-                        ]
+                        }
+                        navmenu
                     }
-                    html.watch (
-                        openMenu,
-                        fun isOpen ->
-                            MudDrawer'() {
-                                Open isOpen
-                                Elevation 25
-                                Variant DrawerVariant.Persistent
-                                childContent [
-                                    MudDrawerHeader'() {
-                                        LinkToIndex true
-                                        childContent [
-                                            MudText'() {
-                                                Color Color.Primary
-                                                Typo Typo.h5
-                                                childContent "Have fun ✌"
-                                            }
-                                        ]
-                                    }
-                                    navmenu
-                                ]
-                            }
-                    )
-                    MudMainContent'() {
-                        styleBuilder { paddingTop 100; paddingBottom 64 }
-                        childContent [
-                            html.route [
-                                // For host on slaveoftime.fun server mode
-                                yield! routes
-                                // For host on github-pages WASM mode
-                                subRouteCi "/Fun.Blazor" routes
-                                routeAny QuickStart.QuickStart.quickStart
-                            ]
-                            MudScrollToTop'() {
-                                TopOffset 400
-                                childContent [
-                                    MudFab'() {
-                                        Icon Icons.Material.Filled.KeyboardArrowUp
-                                        Color Color.Primary
-                                    }
-                                ]
-                            }
-                        ]
+                }
+                MudMainContent'() {
+                    styleBuilder {
+                        paddingTop 100
+                        paddingBottom 64
                     }
-                ]
+                    html.route [
+                        // For host on slaveoftime.fun server mode
+                        yield! routes
+                        // For host on github-pages WASM mode
+                        subRouteCi "/Fun.Blazor" routes
+                        routeAny QuickStart.QuickStart.quickStart
+                    ]
+                    MudScrollToTop'() {
+                        TopOffset 400
+                        MudFab'() {
+                            Icon Icons.Material.Filled.KeyboardArrowUp
+                            Color Color.Primary
+                        }
+                    }
+                }
             }
-        ]
+        }
     )
