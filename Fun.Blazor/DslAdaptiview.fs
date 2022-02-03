@@ -27,7 +27,7 @@ type AdaptiviewBuilder(?key: obj, ?isStatic: bool) =
     member _.Key = key
     member _.IsStatic = isStatic
 
-    member inline this.Run(x: aval<NodeRenderFragment>) =
+    member this.Run(x: aval<NodeRenderFragment>) =
         ComponentWithChildBuilder<AdaptiveComponent> () {
             "Fragment" => x
             match this.IsStatic with
@@ -40,9 +40,9 @@ type AdaptiviewBuilder(?key: obj, ?isStatic: bool) =
 
     member inline _.Yield([<InlineIfLambda>] x: NodeRenderFragment) = AVal.init x
 
-    member inline _.Delay(fn: unit -> aval<NodeRenderFragment>) = fn ()
+    member inline _.Delay([<InlineIfLambda>] fn: unit -> aval<NodeRenderFragment>) = fn ()
 
-    member inline _.Combine(val1: aval<NodeRenderFragment>, val2: aval<NodeRenderFragment>) =
+    member _.Combine(val1: aval<NodeRenderFragment>, val2: aval<NodeRenderFragment>) =
         adaptive {
             let! render1 = val1
             let! render2 = val2
@@ -58,13 +58,13 @@ type AdaptiviewBuilder(?key: obj, ?isStatic: bool) =
 [<Extension>]
 type Extensions =
     [<Extension>]
-    static member inline Publish(this: cval<'T>, x: 'T) = transact (fun () -> this.Value <- x)
+    static member Publish(this: cval<'T>, x: 'T) = transact (fun () -> this.Value <- x)
 
     [<Extension>]
-    static member inline Publish(this: cval<'T>, fn: 'T -> 'T) = transact (fun () -> this.Value <- fn this.Value)
+    static member Publish(this: cval<'T>, fn: 'T -> 'T) = transact (fun () -> this.Value <- fn this.Value)
 
     [<Extension>]
-    static member inline WithSetter(this: cval<'T>) =
+    static member WithSetter(this: cval<'T>) =
         let setValue x = transact (fun () -> this.Value <- x)
         this |> AVal.map (fun x -> x, setValue)
 
