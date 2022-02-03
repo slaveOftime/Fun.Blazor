@@ -39,6 +39,21 @@ type AdaptiviewBuilder(?key: obj, ?isStatic: bool) =
         }
 
     member inline _.Yield([<InlineIfLambda>] x: NodeRenderFragment) = AVal.init x
+    
+    member _.Yield<'T when 'T :> IEltBuilder>(x: 'T) =
+        AVal.init(NodeRenderFragment(fun _ builder index ->
+            builder.OpenElement(index, x.Name)
+            builder.CloseElement()
+            index + 1
+        ))
+
+    member _.Yield<'T, 'T1 when 'T :> IComponentBuilder<'T1>>(_: 'T) =
+        AVal.init(NodeRenderFragment(fun _ builder index ->
+            builder.OpenComponent<'T1>(index)
+            builder.CloseComponent()
+            index + 1
+        ))
+
 
     member inline _.Delay([<InlineIfLambda>] fn: unit -> aval<NodeRenderFragment>) = fn ()
 
