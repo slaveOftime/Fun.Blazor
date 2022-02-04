@@ -1,5 +1,6 @@
 namespace Fun.Blazor.Docs.Server
 
+open Microsoft.AspNetCore.Http
 open Microsoft.AspNetCore.Mvc.Rendering
 open Fun.Blazor
 
@@ -10,7 +11,7 @@ type Index() =
     override _.Render() = Docs.Wasm.App.app
 
 
-    static member page =
+    static member page (ctx: HttpContext) =
         fragment {
             doctype "html"
             html' {
@@ -24,7 +25,7 @@ type Index() =
                     baseUrl "/"
                 }
                 body {
-                    rootComp<Index> RenderMode.ServerPrerendered
+                    rootComp<Index> ctx RenderMode.ServerPrerendered
 
                     script { src "_framework/blazor.server.js" }
                     stylesheet "css/google-font.css"
@@ -56,7 +57,7 @@ type Index() =
         }
 
 
-    static member page2 =
+    static member page2 ctx =
         Template.html $"""
             <!DOCTYPE html>
             <html>
@@ -69,7 +70,7 @@ type Index() =
             </head>
 
             <body>
-                {rootComp<Index> RenderMode.ServerPrerendered}
+                {rootComp<Index> ctx RenderMode.ServerPrerendered}
 
                 <script src="_framework/blazor.server.js"></script>
                 <link rel="stylesheet" href="css/google-font.css" />

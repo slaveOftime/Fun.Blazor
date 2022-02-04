@@ -18,9 +18,7 @@ type FunBlazorServerExtensions =
 
     [<Extension>]
     static member AddFunBlazorServer(this: IServiceCollection) =
-        this.AddHttpContextAccessor()
-            .AddScoped<IShareStore, ShareStore>()
-            .AddSingleton<IGlobalStore, GlobalStore>()
+        this.AddHttpContextAccessor().AddScoped<IShareStore, ShareStore>().AddSingleton<IGlobalStore, GlobalStore>()
 
 
     [<Extension>]
@@ -40,19 +38,25 @@ type FunBlazorServerExtensions =
 
 
     [<Extension>]
-    static member MapFunBlazor(builder: IEndpointRouteBuilder, fragment, ?pattern) =
+    static member MapFunBlazor
+        (
+            builder: IEndpointRouteBuilder,
+            createFragment: HttpContext -> NodeRenderFragment,
+            ?pattern
+        )
+        =
         let requestDeletegate =
             Microsoft.AspNetCore.Http.RequestDelegate(fun ctx ->
                 task {
-                    if isNull ctx.Response.ContentType then
-                        ctx.Response.ContentType <- "text/html; charset=UTF-8"
-
                     let! result =
                         ctx.RenderFragment(
                             typeof<FunFragmentComponent>,
                             RenderMode.Static,
-                            dict [ "Fragment", box fragment ]
+                            dict [ "Fragment", box (createFragment ctx) ]
                         )
+
+                    if isNull ctx.Response.ContentType then
+                        ctx.Response.ContentType <- "text/html; charset=UTF-8"
 
                     let body = System.Text.Encoding.UTF8.GetBytes result
                     return! ctx.Response.Body.WriteAsync(ReadOnlyMemory body)
@@ -62,3 +66,14 @@ type FunBlazorServerExtensions =
         match pattern with
         | Some x -> builder.MapFallback(x, requestDeletegate)
         | None -> builder.MapFallback(requestDeletegate)
+
+
+    [<Extension>]
+    static member MapFunBlazor
+        (
+            builder: IEndpointRouteBuilder,
+            pattern: string,
+            createFragment: HttpContext -> NodeRenderFragment
+        )
+        =
+        builder.MapFunBlazor(createFragment, pattern)
