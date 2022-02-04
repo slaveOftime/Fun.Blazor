@@ -55,6 +55,11 @@ type FunBlazorComponent() as this =
     inherit ComponentBase()
 
     override _.BuildRenderTree(builder: RenderTreeBuilder) = this.Render().Invoke(this, builder, 0) |> ignore
+    
+    member _.StateHasChanged() = base.StateHasChanged()
+
+    member _.ForceRerender() =
+        this.InvokeAsync(fun () -> this.StateHasChanged()) |> ignore
 
     abstract Render : unit -> NodeRenderFragment
 

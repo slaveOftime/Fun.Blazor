@@ -113,6 +113,10 @@ let navmenu =
                 "CE style css builder"
             }
             MudNavLink'() {
+                Href "./helper-functions/blazor"
+                "Blazor interop"
+            }
+            MudNavLink'() {
                 Href "./helper-functions/bolero"
                 "Bolero interop"
             }
@@ -195,6 +199,12 @@ let routes =
                         "CE style css builde"
                         $"Pages/HelperFunctions/CECssDemo"
                         HelperFunctions.CECssDemo.ceCssDemo)
+                routeCi
+                    "/blazor"
+                    (demoContainer
+                        "Blazor interop"
+                        "Pages/HelperFunctions/InteropWithBlazorDemo"
+                        HelperFunctions.InteropWithBlazorDemo.interopWithBlazorDemo)
                 routeCi
                     "/bolero"
                     (demoContainer

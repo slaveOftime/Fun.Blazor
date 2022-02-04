@@ -26,15 +26,6 @@ type StoreComponent<'T>() as this =
     member val Logger = Unchecked.defaultof<ILogger<StoreComponent<'T>>> with get, set
 
 
-    member internal _.StateHasChanged() =
-        try
-            base.StateHasChanged()
-        with
-            | _ -> ()
-
-    member internal _.Rerender() = this.InvokeAsync(this.StateHasChanged) |> ignore
-
-
     override _.Render() =
         this.Logger.LogDebugForPerf(fun () ->
             if not isValueSet && box value = null then emptyNode else this.RenderFn value
@@ -49,7 +40,7 @@ type StoreComponent<'T>() as this =
         subscription <-
             this.Store.Subscribe(fun x ->
                 value <- x
-                this.Rerender()
+                this.ForceRerender()
             )
 
 

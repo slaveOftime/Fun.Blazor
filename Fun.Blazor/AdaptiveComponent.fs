@@ -24,15 +24,6 @@ type AdaptiveComponent() as this =
     member val Logger = Unchecked.defaultof<ILogger<AdaptiveComponent>> with get, set
 
 
-    member internal _.StateHasChanged() =
-        try
-            base.StateHasChanged()
-        with
-            | _ -> ()
-
-    member internal _.Rerender() = this.InvokeAsync(this.StateHasChanged) |> ignore
-
-
     override _.Render() =
         this.Logger.LogDebugForPerf(fun _ -> fragment |> AVal.force)
 
@@ -45,7 +36,7 @@ type AdaptiveComponent() as this =
             shouldRerender <- true
             fragmentSubscription |> Option.iter (fun x -> x.Dispose())
             fragment <- this.Fragment
-            fragmentSubscription <- Some(fragment.AddCallback(fun _ -> this.Rerender()))
+            fragmentSubscription <- Some(fragment.AddCallback(fun _ -> this.ForceRerender()))
 
     override _.ShouldRender() =
         let result = shouldRerender

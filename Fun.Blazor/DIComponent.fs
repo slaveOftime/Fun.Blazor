@@ -51,7 +51,7 @@ type DIComponent<'T>() as this =
             member _.OnDispose = disposeEvent.Publish
             member _.AddDispose dispose = disposes.Add dispose
             member _.AddDisposes ds = disposes.AddRange(ds)
-            member _.StateHasChanged() = this.ForceSetState()
+            member _.StateHasChanged() = this.ForceRerender()
 
             member _.UseStore<'T>(x: 'T) : IStore<'T> =
                 let newStore = new Store<'T>(x)
@@ -93,10 +93,6 @@ type DIComponent<'T>() as this =
 
     [<Inject>]
     member val Logger = Unchecked.defaultof<ILogger<DIComponent<'T>>> with get, set
-
-
-    member internal _.StateHasChanged() = base.StateHasChanged()
-    member internal _.ForceSetState() = this.InvokeAsync(this.StateHasChanged) |> ignore
 
 
     override _.Render() =

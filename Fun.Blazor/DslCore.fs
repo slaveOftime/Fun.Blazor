@@ -1,6 +1,7 @@
 ﻿namespace Fun.Blazor
 
 open System
+open System.Collections.Concurrent
 open System.Threading.Tasks
 open FSharp.Data.Adaptive
 open Microsoft.AspNetCore.Components
@@ -14,6 +15,48 @@ type html() =
 
     static member mergeAttrs attrs = attrs |> Seq.fold (==>) emptyAttr
     static member mergeNodes nodes = nodes |> Seq.fold (>=>) emptyNode
+
+
+    static member internal compCache = lazy (fun () -> ConcurrentDictionary<Type, Reflection.PropertyInfo []>())
+
+    /// With this we can init a blazor component easier without always write string.
+    /// But it will use reflection so you will pay for the performance cost a little bit.
+    /// Only property with attribute ParameterAttribute will be used.
+    /// ```fsharp
+    ///     html.comp (fun _ ->
+    ///         SomeComp(
+    ///             Param1 = ...,
+    ///             Param2 = ...,
+    ///         )
+    ///     )
+    /// ```
+    static member component<'T when 'T :> IComponent>(fn: IComponent -> 'T) =
+        NodeRenderFragment(fun comp builder index ->
+            builder.OpenComponent<'T>(index)
+
+            let mutable nextIndex = index + 1
+            let instance = fn comp
+            let props =
+                html
+                    .compCache
+                    .Value()
+                    .GetOrAdd(
+                        typeof<'T>,
+                        fun _ ->
+                            instance.GetType().GetProperties()
+                            |> Array.filter (fun prop ->
+                                prop.CustomAttributes
+                                |> Seq.exists (fun x -> x.AttributeType = typeof<ParameterAttribute>)
+                            )
+                    )
+            for prop in props do
+                let value = prop.GetValue(instance)
+                builder.AddAttribute(nextIndex, prop.Name, value)
+                nextIndex <- nextIndex + 1
+
+            builder.CloseComponent()
+            nextIndex
+        )
 
 
     static member fromBuilder<'Comp, 'T when 'Comp :> IComponentBuilder<'T>>(_: 'Comp) =

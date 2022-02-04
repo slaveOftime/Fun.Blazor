@@ -46,6 +46,7 @@
     <Compile Include="Pages\HelperFunctions\PerformanceDemo.fs" />
     <Compile Include="Pages\HelperFunctions\CECssDemo.fs" />
     <Compile Include="Pages\HelperFunctions\HtmlTemplateDemo.fs" />
+    <Compile Include="Pages\HelperFunctions\InteropWithBlazorDemo.fs" />
     <Compile Include="Pages\HelperFunctions\InteropWithBoleroDemo.fs" />
     <None Include="Pages\CliUsage\CliUsageDemo.md" />
     <Compile Include="Pages\CliUsage\CliUsage.fs" />

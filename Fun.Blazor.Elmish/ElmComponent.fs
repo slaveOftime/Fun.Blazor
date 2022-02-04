@@ -22,12 +22,6 @@ type ElmComponent<'State, 'Msg when 'State: equality>() as this =
     member val View = Unchecked.defaultof<'State -> Dispatch<'Msg> -> NodeRenderFragment> with get, set
 
 
-    member internal _.Rerender() = this.StateHasChanged()
-
-    member internal _.ForceRerender() =
-        this.InvokeAsync(fun () -> this.Rerender()) |> ignore
-
-
     override _.Render() =
         match program, state with
         | ValueSome p, ValueSome s -> Program.view p s dispatch
