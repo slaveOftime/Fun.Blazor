@@ -188,7 +188,7 @@ type ComponentWithChildBuilder<'T when 'T :> IComponent>() =
             index + 1
         )
 
-    member _.Yield<'Elt when 'Elt :> IEltBuilder>(x: 'Elt) =
+    member _.Yield<'Elt when 'Elt :> IElementBuilder>(x: 'Elt) =
         NodeRenderFragment(fun _ builder index ->
             builder.OpenElement(index, x.Name)
             builder.CloseElement()
@@ -392,7 +392,7 @@ type ComponentWithDomAndChildAttrBuilder<'T when 'T :> IComponent>() =
             index + 1
         )
 
-    member _.Yield<'Elt when 'Elt :> IEltBuilder>(x: 'Elt) =
+    member _.Yield<'Elt when 'Elt :> IElementBuilder>(x: 'Elt) =
         NodeRenderFragment(fun _ builder index ->
             builder.OpenElement(index, x.Name)
             builder.CloseElement()

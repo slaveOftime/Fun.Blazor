@@ -40,7 +40,7 @@ type AdaptiviewBuilder(?key: obj, ?isStatic: bool) =
 
     member inline _.Yield([<InlineIfLambda>] x: NodeRenderFragment) = AVal.init x
     
-    member _.Yield<'T when 'T :> IEltBuilder>(x: 'T) =
+    member _.Yield<'T when 'T :> IElementBuilder>(x: 'T) =
         AVal.init(NodeRenderFragment(fun _ builder index ->
             builder.OpenElement(index, x.Name)
             builder.CloseElement()

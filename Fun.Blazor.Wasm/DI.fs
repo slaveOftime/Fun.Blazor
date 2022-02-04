@@ -7,10 +7,16 @@ open Fun.Blazor
 
 
 [<Extension>]
-type Extensions =
+type FunBlazorWasmExtensions =
+    
+    [<Extension>]
+    static member AddFunBlazorWasm(this: IServiceCollection) =
+        this.AddScoped<IShareStore, ShareStore>()
+            .AddSingleton<IGlobalStore, GlobalStore>()
+
 
     [<Extension>]
-    static member AddFunBlazorNode(this: WebAssemblyHostBuilder, selector: string, node: NodeRenderFragment) =
+    static member AddFunBlazor(this: WebAssemblyHostBuilder, selector: string, node: NodeRenderFragment) =
         let parameters = ParameterView.FromDictionary(dict [ "Fragment", box node ])
         this.RootComponents.Add(typeof<FunFragmentComponent>, selector, parameters)
         this

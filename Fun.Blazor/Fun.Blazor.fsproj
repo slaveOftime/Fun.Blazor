@@ -15,7 +15,7 @@
 		<Compile Include="DIComponent.fs" />
 		<Compile Include="StoreComponent.fs" />
 		<Compile Include="AdaptiveComponent.fs" />
-		<Compile Include="Dsl.fs" />
+		<Compile Include="DslCore.fs" />
 		<Compile Include="DslFragmentBuilder.fs" />
 		<Compile Include="DslDomAttrBuilder.fs" />
 		<Compile Include="DslElementBuilder.fs" />
@@ -26,7 +26,6 @@
 		<Compile Include="DslRouting.fs" />
 		<Compile Include="AdaptiveForm.fs" />
 		<Compile Include="DslCE.AspNetCore.fs" />
-		<Compile Include="DI.fs" />
 	</ItemGroup>
 
 	<ItemGroup>

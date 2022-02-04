@@ -34,7 +34,7 @@ module Operators =
     let inline (==>) ([<InlineIfLambda>] render1: AttrRenderFragment) ([<InlineIfLambda>] render2: AttrRenderFragment) =
         AttrRenderFragment(fun comp builder index -> render2.Invoke(comp, builder, render1.Invoke(comp, builder, index)))
 
-    /// Merge two NodeFragment together
+    /// Merge two NodeRenderFragment together
     let inline (>=>) ([<InlineIfLambda>] render1: NodeRenderFragment) ([<InlineIfLambda>] render2: NodeRenderFragment) =
         NodeRenderFragment(fun comp builder index -> render2.Invoke(comp, builder, render1.Invoke(comp, builder, index)))
 
@@ -44,7 +44,7 @@ module Operators =
         NodeRenderFragment(fun comp builder index -> render2.Invoke(comp, builder, render1.Invoke(comp, builder, index)))
 
 
-type IEltBuilder =
+type IElementBuilder =
     abstract member Name : string
 
 type IComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent> = interface end

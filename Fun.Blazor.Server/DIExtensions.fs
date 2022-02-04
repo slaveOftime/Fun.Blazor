@@ -14,7 +14,14 @@ open Fun.Blazor
 
 
 [<Extension>]
-type HttpContextExtensions =
+type FunBlazorServerExtensions =
+
+    [<Extension>]
+    static member AddFunBlazorServer(this: IServiceCollection) =
+        this.AddHttpContextAccessor()
+            .AddScoped<IShareStore, ShareStore>()
+            .AddSingleton<IGlobalStore, GlobalStore>()
+
 
     [<Extension>]
     static member RenderFragment(ctx: HttpContext, ty: Type, ?renderMode, ?parameters) =

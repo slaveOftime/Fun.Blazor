@@ -7,12 +7,12 @@ open Operators
 type EltBuilder(name) =
     inherit DomAttrBuilder()
 
-    interface IEltBuilder with
+    interface IElementBuilder with
         member _.Name: string = name
 
     member this.Run(render: AttrRenderFragment) =
         NodeRenderFragment(fun comp builder index ->
-            builder.OpenElement(index, (this :> IEltBuilder).Name)
+            builder.OpenElement(index, (this :> IElementBuilder).Name)
             let nextIndex = render.Invoke(comp, builder, index + 1)
             builder.CloseElement()
             nextIndex
@@ -38,7 +38,7 @@ type EltWithChildBuilder(name) =
 
     member this.Run(render: NodeRenderFragment) =
         NodeRenderFragment(fun comp builder index ->
-            builder.OpenElement(index, (this :> IEltBuilder).Name)
+            builder.OpenElement(index, (this :> IElementBuilder).Name)
             let nextIndex = render.Invoke(comp, builder, index + 1)
             builder.CloseElement()
             nextIndex
@@ -63,7 +63,7 @@ type EltWithChildBuilder(name) =
             index + 1
         )
 
-    member _.Yield<'Elt when 'Elt :> IEltBuilder>(x: 'Elt) =
+    member _.Yield<'Elt when 'Elt :> IElementBuilder>(x: 'Elt) =
         NodeRenderFragment(fun _ builder index ->
             builder.OpenElement(index, x.Name)
             builder.CloseElement()
@@ -524,3 +524,6 @@ module Elts =
 
 
     let styleBuilder = StyleBuilder()
+
+    /// Short name for StyleBuilder
+    let style'' = styleBuilder

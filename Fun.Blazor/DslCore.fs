@@ -23,7 +23,7 @@ type html() =
             index + 1
         )
 
-    static member fromBuilder<'Elt when 'Elt :> IEltBuilder>(elt: 'Elt) =
+    static member fromBuilder<'Elt when 'Elt :> IElementBuilder>(elt: 'Elt) =
         NodeRenderFragment(fun _ builder index ->
             builder.OpenElement(index, elt.Name)
             builder.CloseElement()

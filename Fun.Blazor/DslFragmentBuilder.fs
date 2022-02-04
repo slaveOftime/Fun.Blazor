@@ -23,7 +23,7 @@ type FragmentBuilder() =
             index + 1
         )
 
-    member _.Yield<'T when 'T :> IEltBuilder>(x: 'T) =
+    member _.Yield<'T when 'T :> IElementBuilder>(x: 'T) =
         NodeRenderFragment(fun _ builder index ->
             builder.OpenElement(index, x.Name)
             builder.CloseElement()
