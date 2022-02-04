@@ -1,6 +1,9 @@
-﻿module Fun.Blazor.Docs.Wasm.Components.ShareStores
+﻿[<AutoOpen>]
+module Fun.Blazor.Docs.Wasm.Components.ShareStores
 
 open Fun.Blazor
 
 
-let isDarkMode (shareStore: IShareStore) = shareStore.Create ("isDarkMode", false)
+type IShareStore with
+
+    member store.isDarkMode = store.CreateCVal("isDarkMode", false)

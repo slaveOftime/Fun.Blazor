@@ -19,9 +19,9 @@ let giraffeStyleRouterDemo =
     let link (hrefStr: string) (name': string) =
         MudLink'() {
             Href hrefStr
-            childContent name'
             Underline Underline.Always
-            Styles [ style.marginRight 10 ]
+            styleBuilder { marginRight 10 }
+            childContent name'
         }
 
     html.div [

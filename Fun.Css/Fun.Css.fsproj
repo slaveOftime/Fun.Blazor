@@ -4,12 +4,10 @@
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<LangVersion>preview</LangVersion>
-		<Version>0.1.4</Version>
+		<Version>0.2.1</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Compile Include="Types.fs" />
-		<Compile Include="Utils.fs" />
 		<Compile Include="CssBuilder.fs" />
 	</ItemGroup>
 	

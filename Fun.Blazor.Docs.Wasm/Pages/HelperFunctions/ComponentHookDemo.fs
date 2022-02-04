@@ -36,21 +36,21 @@ let componentHookDemo =
         )
 
         MudPaper'() {
-            Styles [ style.padding 20 ]
+            styleBuilder { padding 20 }
             childContent [
                 html.watch (
                     toggle,
                     fun isToggled ->
                         [
                             MudText'() {
+                                Typo Typo.subtitle1
                                 childContent
                                     "We can use this hook to subscribe lifecycle event of the component which created by html.inject at the beginening. We can create observable store to have a state management for the current component. After the component disposed all the store will also be disposed."
-                                Typo Typo.subtitle1
                             }
                             MudText'() {
-                                childContent $"After every {threshhold} seconds the toggle will be switched"
                                 Typo Typo.subtitle1
                                 Color Color.Info
+                                childContent $"After every {threshhold} seconds the toggle will be switched"
                             }
                             MudSwitch'<bool>() {
                                 Checked isToggled
@@ -58,14 +58,14 @@ let componentHookDemo =
                             }
                             if isToggled then
                                 MudText'() {
-                                    childContent "Toggled successfuly"
                                     Typo Typo.subtitle2
                                     Color Color.Primary
+                                    childContent "Toggled successfuly"
                                 }
                             else
                                 MudText'() {
-                                    childContent "Toggled off now"
                                     Color Color.Secondary
+                                    childContent "Toggled off now"
                                 }
                             html.watch (count, (fun c -> html.text $"Interval Count: {c}"))
                         ]

@@ -80,7 +80,7 @@ let demo1 =
 
         MudPaper'() {
             Elevation 10
-            Styles [ style.padding 10 ]
+            styleBuilder { padding 10 }
             childContent [
                 MudForm'() {
                     childContent [
@@ -167,8 +167,8 @@ let anonymousRecordDemo =
                 .AddValidators((fun x -> x.Name), true, [ minLength 2 NameIsTooShort ])
                 .AddValidators((fun x -> x.Age), true, [ minValue 18 AgeIsTooSmall; notEqual 20 AgeCannotEqual ])
 
-        div () {
-            styles [ style.padding 10 ]
+        div {
+            styleBuilder { padding 10 }
             childContent [
                 adaptiview () {
                     let! binding, errors = demoForm.UseFieldWithErrors(fun x -> x.Name)
@@ -207,8 +207,8 @@ let demo3 =
                 .AddValidators((fun x -> x.Name), true, [ minLength 2 NameIsTooShort ])
                 .AddValidators((fun x -> x.Age), true, [ minValue 18 AgeIsTooSmall; notEqual 20 AgeCannotEqual ])
 
-        div () {
-            styles [ style.padding 10 ]
+        div {
+            styleBuilder { padding 10 }
             childContent [
                 adaptiview () {
                     let! binding, errors = demoForm.UseFieldWithErrors(fun x -> x.Name)
@@ -233,10 +233,10 @@ let demo3 =
 
 
 let adaptiveFormDemo =
-    div.create [
+    div {
         demo1
         spaceV4
         anonymousRecordDemo
         spaceV4
         demo3
-    ]
+    }

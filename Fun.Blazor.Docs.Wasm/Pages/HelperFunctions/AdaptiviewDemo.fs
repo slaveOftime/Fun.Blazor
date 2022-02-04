@@ -35,7 +35,8 @@ let adaptiviewDemo1 = html.inject (fun (hook: IComponentHook) ->
     )
     
     MudPaper'(){
-        Styles [ style.padding 20 ]
+        styleBuilder { padding 20 }
+        styleBuilder { padding 20 }
         childContent [
             adaptiview(){
                 // let! will let the reactive to listen to related source(IStore<_>, aval<_>) changes, and trigger render accordingly
@@ -67,7 +68,7 @@ let adaptiviewDemo1 = html.inject (fun (hook: IComponentHook) ->
                         DarkBackground true
                         childContent [
                             MudPaper'(){
-                                Styles [ style.padding 10; style.width 200; style.height 80 ]
+                                styleBuilder { padding 10; width 200; height 80 }
                                 childContent [
                                     MudText'.create $"Store1 {s1}"
                                     MudButton'(){

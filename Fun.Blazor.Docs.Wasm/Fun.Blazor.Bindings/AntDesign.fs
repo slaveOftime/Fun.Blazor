@@ -1,3793 +1,3569 @@
 namespace rec AntDesign.DslInternals
 
-open Bolero.Html
 open FSharp.Data.Adaptive
 open Fun.Blazor
-open Microsoft.AspNetCore.Components.DslInternals
-open Microsoft.AspNetCore.Components.Web.DslInternals
+open Fun.Blazor.Operators
 open AntDesign.DslInternals
 
 
 type antComponentBase<'FunBlazorGeneric> =
     
-    static member create () = [] |> html.blazor<AntDesign.AntComponentBase>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.AntComponentBase>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.AntComponentBase>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.AntComponentBase>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.AntComponentBase> x
-    static member refBack (x: AntDesign.ForwardRef) = "RefBack" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member refBack (x: AntDesign.ForwardRef) = "RefBack" => x
                     
 
 type antDomComponentBase<'FunBlazorGeneric> =
     inherit antComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.AntDomComponentBase>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.AntDomComponentBase>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.AntDomComponentBase>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.AntDomComponentBase>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.AntDomComponentBase> x
-    static member id (x: System.String) = "Id" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member classes (x: string list) = attr.classes x |> FelizNode<'FunBlazorGeneric>.create
-    static member styles (x: (string * string) list) = attr.styles x |> FelizNode<'FunBlazorGeneric>.create
+    static member id (x: System.String) = "Id" => x
+    static member classes (x: string list) = html.classes x
+    static member styles (x: (string * string) seq) = html.styles x
                     
             
 namespace rec AntDesign.DslInternals.Internal
 
-open Bolero.Html
 open FSharp.Data.Adaptive
 open Fun.Blazor
-open Microsoft.AspNetCore.Components.DslInternals
-open Microsoft.AspNetCore.Components.Web.DslInternals
+open Fun.Blazor.Operators
 open AntDesign.DslInternals
 
 
 type overlayTrigger<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Internal.OverlayTrigger>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Internal.OverlayTrigger>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.Internal.OverlayTrigger>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.Internal.OverlayTrigger>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.Internal.OverlayTrigger>
-    static member ref x = attr.ref<AntDesign.Internal.OverlayTrigger> x
-    static member boundaryAdjustMode (x: AntDesign.TriggerBoundaryAdjustMode) = "BoundaryAdjustMode" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member complexAutoCloseAndVisible (x: System.Boolean) = "ComplexAutoCloseAndVisible" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member disabled (x: System.Boolean) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member hiddenMode (x: System.Boolean) = "HiddenMode" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member inlineFlexMode (x: System.Boolean) = "InlineFlexMode" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member isButton (x: System.Boolean) = "IsButton" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onClick fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> "OnClick" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onMaskClick fn = attr.callbackOfUnit("OnMaskClick", fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member onMouseEnter fn = attr.callbackOfUnit("OnMouseEnter", fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member onMouseLeave fn = attr.callbackOfUnit("OnMouseLeave", fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member onOverlayHiding fn = (Bolero.Html.attr.callback<System.Boolean> "OnOverlayHiding" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onVisibleChange fn = (Bolero.Html.attr.callback<System.Boolean> "OnVisibleChange" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member overlay (x: string) = Bolero.Html.attr.fragment "Overlay" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member overlay (node) = Bolero.Html.attr.fragment "Overlay" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member overlay (nodes) = Bolero.Html.attr.fragment "Overlay" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member overlayClassName (x: System.String) = "OverlayClassName" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member overlayEnterCls (x: System.String) = "OverlayEnterCls" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member overlayHiddenCls (x: System.String) = "OverlayHiddenCls" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member overlayLeaveCls (x: System.String) = "OverlayLeaveCls" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member overlayStyle (x: System.String) = "OverlayStyle" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member placement (x: AntDesign.Placement) = "Placement" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member placementCls (x: System.String) = "PlacementCls" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member popupContainerSelector (x: System.String) = "PopupContainerSelector" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member trigger (x: AntDesign.Trigger[]) = "Trigger" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member triggerCls (x: System.String) = "TriggerCls" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member triggerReference (x: Microsoft.AspNetCore.Components.ElementReference) = "TriggerReference" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member unbound (render: AntDesign.ForwardRef -> Bolero.Node) = Bolero.Html.attr.fragmentWith "Unbound" (fun x -> render x) |> FelizNode<'FunBlazorGeneric>.create
-    static member visible (x: System.Boolean) = "Visible" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Internal.OverlayTrigger>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.OverlayTrigger>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Internal.OverlayTrigger>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Internal.OverlayTrigger>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Internal.OverlayTrigger>(){ x }
+    static member boundaryAdjustMode (x: AntDesign.TriggerBoundaryAdjustMode) = "BoundaryAdjustMode" => x
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member complexAutoCloseAndVisible (x: System.Boolean) = "ComplexAutoCloseAndVisible" => x
+    static member disabled (x: System.Boolean) = "Disabled" => x
+    static member hiddenMode (x: System.Boolean) = "HiddenMode" => x
+    static member inlineFlexMode (x: System.Boolean) = "InlineFlexMode" => x
+    static member isButton (x: System.Boolean) = "IsButton" => x
+    static member onClick fn = html.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs>("OnClick", fn)
+    static member onMaskClick fn = html.callback<unit>("OnMaskClick", fn)
+    static member onMouseEnter fn = html.callback<unit>("OnMouseEnter", fn)
+    static member onMouseLeave fn = html.callback<unit>("OnMouseLeave", fn)
+    static member onOverlayHiding fn = html.callback<System.Boolean>("OnOverlayHiding", fn)
+    static member onVisibleChange fn = html.callback<System.Boolean>("OnVisibleChange", fn)
+    static member overlay (x: string) = html.renderFragment("Overlay", html.text x)
+    static member overlay (node) = html.renderFragment("Overlay", node)
+    static member overlay (nodes) = html.renderFragment("Overlay", fragment { yield! nodes })
+    static member overlayClassName (x: System.String) = "OverlayClassName" => x
+    static member overlayEnterCls (x: System.String) = "OverlayEnterCls" => x
+    static member overlayHiddenCls (x: System.String) = "OverlayHiddenCls" => x
+    static member overlayLeaveCls (x: System.String) = "OverlayLeaveCls" => x
+    static member overlayStyle (x: System.String) = "OverlayStyle" => x
+    static member placement (x: AntDesign.Placement) = "Placement" => x
+    static member placementCls (x: System.String) = "PlacementCls" => x
+    static member popupContainerSelector (x: System.String) = "PopupContainerSelector" => x
+    static member trigger (x: AntDesign.Trigger[]) = "Trigger" => x
+    static member triggerCls (x: System.String) = "TriggerCls" => x
+    static member triggerReference (x: Microsoft.AspNetCore.Components.ElementReference) = "TriggerReference" => x
+    static member unbound (render: AntDesign.ForwardRef -> NodeRenderFragment) = html.renderFragment("Unbound", render)
+    static member visible (x: System.Boolean) = "Visible" => x
                     
             
 namespace rec AntDesign.DslInternals
 
-open Bolero.Html
 open FSharp.Data.Adaptive
 open Fun.Blazor
-open Microsoft.AspNetCore.Components.DslInternals
-open Microsoft.AspNetCore.Components.Web.DslInternals
+open Fun.Blazor.Operators
 open AntDesign.DslInternals
 
 
 type dropdown<'FunBlazorGeneric> =
     inherit Internal.overlayTrigger<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Dropdown>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Dropdown>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Dropdown>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Dropdown>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.Dropdown> x
 
                     
 
 type dropdownButton<'FunBlazorGeneric> =
     inherit dropdown<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.DropdownButton>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.DropdownButton>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.DropdownButton>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.DropdownButton>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.DropdownButton> x
-    static member block (x: System.Boolean) = "Block" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member buttonsRender (fn) = Bolero.FragmentAttr ("ButtonsRender", fun render -> box (System.Func<Microsoft.AspNetCore.Components.RenderFragment, Microsoft.AspNetCore.Components.RenderFragment, Microsoft.AspNetCore.Components.RenderFragment>(fun x1 x2 -> Microsoft.AspNetCore.Components.RenderFragment(fun rt -> render rt (fn x1 x2))))) |> FelizNode<'FunBlazorGeneric>.create
-    static member buttonsClass (x: OneOf.OneOf<System.String, System.ValueTuple<System.String, System.String>>) = "ButtonsClass" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member buttonsStyle (x: OneOf.OneOf<System.String, System.ValueTuple<System.String, System.String>>) = "ButtonsStyle" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member danger (x: System.Boolean) = "Danger" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member ghost (x: System.Boolean) = "Ghost" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member icon (x: System.String) = "Icon" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member loading (x: System.Boolean) = "Loading" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member size (x: System.String) = "Size" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member type' (x: OneOf.OneOf<System.String, System.ValueTuple<System.String, System.String>>) = "Type" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member block (x: System.Boolean) = "Block" => x
+    static member buttonsRender (fn: _ -> _ -> NodeRenderFragment) = AttrRenderFragment(fun comp builder index -> builder.AddAttribute(index, "ButtonsRender", box (System.Func<Microsoft.AspNetCore.Components.RenderFragment, Microsoft.AspNetCore.Components.RenderFragment, Microsoft.AspNetCore.Components.RenderFragment>(fun x1 x2 -> Microsoft.AspNetCore.Components.RenderFragment(fun tb -> (fn x1 x2).Invoke(comp, tb, 0) |> ignore)))); index + 1)
+    static member buttonsClass (x: OneOf.OneOf<System.String, System.ValueTuple<System.String, System.String>>) = "ButtonsClass" => x
+    static member buttonsStyle (x: OneOf.OneOf<System.String, System.ValueTuple<System.String, System.String>>) = "ButtonsStyle" => x
+    static member danger (x: System.Boolean) = "Danger" => x
+    static member ghost (x: System.Boolean) = "Ghost" => x
+    static member icon (x: System.String) = "Icon" => x
+    static member loading (x: System.Boolean) = "Loading" => x
+    static member size (x: System.String) = "Size" => x
+    static member type' (x: OneOf.OneOf<System.String, System.ValueTuple<System.String, System.String>>) = "Type" => x
                     
 
 type popconfirm<'FunBlazorGeneric> =
     inherit Internal.overlayTrigger<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Popconfirm>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Popconfirm>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Popconfirm>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Popconfirm>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.Popconfirm> x
-    static member title (x: System.String) = "Title" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (x: string) = Bolero.Html.attr.fragment "TitleTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (node) = Bolero.Html.attr.fragment "TitleTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (nodes) = Bolero.Html.attr.fragment "TitleTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member cancelText (x: System.String) = "CancelText" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member okText (x: System.String) = "OkText" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member okType (x: System.String) = "OkType" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member okButtonProps (x: AntDesign.ButtonProps) = "OkButtonProps" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member cancelButtonProps (x: AntDesign.ButtonProps) = "CancelButtonProps" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member icon (x: System.String) = "Icon" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member iconTemplate (x: string) = Bolero.Html.attr.fragment "IconTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member iconTemplate (node) = Bolero.Html.attr.fragment "IconTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member iconTemplate (nodes) = Bolero.Html.attr.fragment "IconTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member onCancel fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> "OnCancel" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onConfirm fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> "OnConfirm" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member arrowPointAtCenter (x: System.Boolean) = "ArrowPointAtCenter" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member mouseEnterDelay (x: System.Double) = "MouseEnterDelay" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member mouseLeaveDelay (x: System.Double) = "MouseLeaveDelay" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member title (x: System.String) = "Title" => x
+    static member titleTemplate (x: string) = html.renderFragment("TitleTemplate", html.text x)
+    static member titleTemplate (node) = html.renderFragment("TitleTemplate", node)
+    static member titleTemplate (nodes) = html.renderFragment("TitleTemplate", fragment { yield! nodes })
+    static member cancelText (x: System.String) = "CancelText" => x
+    static member okText (x: System.String) = "OkText" => x
+    static member okType (x: System.String) = "OkType" => x
+    static member okButtonProps (x: AntDesign.ButtonProps) = "OkButtonProps" => x
+    static member cancelButtonProps (x: AntDesign.ButtonProps) = "CancelButtonProps" => x
+    static member icon (x: System.String) = "Icon" => x
+    static member iconTemplate (x: string) = html.renderFragment("IconTemplate", html.text x)
+    static member iconTemplate (node) = html.renderFragment("IconTemplate", node)
+    static member iconTemplate (nodes) = html.renderFragment("IconTemplate", fragment { yield! nodes })
+    static member onCancel fn = html.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs>("OnCancel", fn)
+    static member onConfirm fn = html.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs>("OnConfirm", fn)
+    static member arrowPointAtCenter (x: System.Boolean) = "ArrowPointAtCenter" => x
+    static member mouseEnterDelay (x: System.Double) = "MouseEnterDelay" => x
+    static member mouseLeaveDelay (x: System.Double) = "MouseLeaveDelay" => x
                     
 
 type popover<'FunBlazorGeneric> =
     inherit Internal.overlayTrigger<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Popover>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Popover>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Popover>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Popover>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.Popover> x
-    static member title (x: System.String) = "Title" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (x: string) = Bolero.Html.attr.fragment "TitleTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (node) = Bolero.Html.attr.fragment "TitleTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (nodes) = Bolero.Html.attr.fragment "TitleTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member content (x: System.String) = "Content" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member contentTemplate (x: string) = Bolero.Html.attr.fragment "ContentTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member contentTemplate (node) = Bolero.Html.attr.fragment "ContentTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member contentTemplate (nodes) = Bolero.Html.attr.fragment "ContentTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member arrowPointAtCenter (x: System.Boolean) = "ArrowPointAtCenter" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member mouseEnterDelay (x: System.Double) = "MouseEnterDelay" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member mouseLeaveDelay (x: System.Double) = "MouseLeaveDelay" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member title (x: System.String) = "Title" => x
+    static member titleTemplate (x: string) = html.renderFragment("TitleTemplate", html.text x)
+    static member titleTemplate (node) = html.renderFragment("TitleTemplate", node)
+    static member titleTemplate (nodes) = html.renderFragment("TitleTemplate", fragment { yield! nodes })
+    static member content (x: System.String) = "Content" => x
+    static member contentTemplate (x: string) = html.renderFragment("ContentTemplate", html.text x)
+    static member contentTemplate (node) = html.renderFragment("ContentTemplate", node)
+    static member contentTemplate (nodes) = html.renderFragment("ContentTemplate", fragment { yield! nodes })
+    static member arrowPointAtCenter (x: System.Boolean) = "ArrowPointAtCenter" => x
+    static member mouseEnterDelay (x: System.Double) = "MouseEnterDelay" => x
+    static member mouseLeaveDelay (x: System.Double) = "MouseLeaveDelay" => x
                     
 
 type tooltip<'FunBlazorGeneric> =
     inherit Internal.overlayTrigger<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Tooltip>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Tooltip>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Tooltip>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Tooltip>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.Tooltip> x
-    static member title (x: OneOf.OneOf<System.String, Microsoft.AspNetCore.Components.RenderFragment, Microsoft.AspNetCore.Components.MarkupString>) = "Title" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member arrowPointAtCenter (x: System.Boolean) = "ArrowPointAtCenter" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member mouseEnterDelay (x: System.Double) = "MouseEnterDelay" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member mouseLeaveDelay (x: System.Double) = "MouseLeaveDelay" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member title (x: OneOf.OneOf<System.String, Microsoft.AspNetCore.Components.RenderFragment, Microsoft.AspNetCore.Components.MarkupString>) = "Title" => x
+    static member arrowPointAtCenter (x: System.Boolean) = "ArrowPointAtCenter" => x
+    static member mouseEnterDelay (x: System.Double) = "MouseEnterDelay" => x
+    static member mouseLeaveDelay (x: System.Double) = "MouseLeaveDelay" => x
                     
             
 namespace rec AntDesign.DslInternals.Internal
 
-open Bolero.Html
 open FSharp.Data.Adaptive
 open Fun.Blazor
-open Microsoft.AspNetCore.Components.DslInternals
-open Microsoft.AspNetCore.Components.Web.DslInternals
+open Fun.Blazor.Operators
 open AntDesign.DslInternals
 
 
 type subMenuTrigger<'FunBlazorGeneric> =
     inherit Internal.overlayTrigger<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Internal.SubMenuTrigger>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Internal.SubMenuTrigger>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Internal.SubMenuTrigger>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.SubMenuTrigger>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.Internal.SubMenuTrigger> x
-    static member triggerClass (x: System.String) = "TriggerClass" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member triggerClass (x: System.String) = "TriggerClass" => x
                     
 
 type pickerPanelBase<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Internal.PickerPanelBase>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Internal.PickerPanelBase>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Internal.PickerPanelBase>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.PickerPanelBase>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.Internal.PickerPanelBase> x
-    static member onSelect (fn) = "OnSelect" => (System.Action<System.DateTime, System.Int32>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member pickerIndex (x: System.Int32) = "PickerIndex" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member onSelect (fn) = "OnSelect" => (System.Action<System.DateTime, System.Int32>fn)
+    static member pickerIndex (x: System.Int32) = "PickerIndex" => x
                     
             
 namespace rec AntDesign.DslInternals
 
-open Bolero.Html
 open FSharp.Data.Adaptive
 open Fun.Blazor
-open Microsoft.AspNetCore.Components.DslInternals
-open Microsoft.AspNetCore.Components.Web.DslInternals
+open Fun.Blazor.Operators
 open AntDesign.DslInternals
 
 
 type datePickerPanelBase<'FunBlazorGeneric, 'TValue> =
     inherit Internal.pickerPanelBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.DatePickerPanelBase<'TValue>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.DatePickerPanelBase<'TValue>>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.DatePickerPanelBase<'TValue>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.DatePickerPanelBase<'TValue>>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.DatePickerPanelBase<'TValue>> x
-    static member prefixCls (x: System.String) = "PrefixCls" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member picker (x: System.String) = "Picker" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member isRange (x: System.Boolean) = "IsRange" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member isCalendar (x: System.Boolean) = "IsCalendar" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member isShowHeader (x: System.Boolean) = "IsShowHeader" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member isShowTime (x: System.Boolean) = "IsShowTime" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member locale (x: AntDesign.DatePickerLocale) = "Locale" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member cultureInfo (x: System.Globalization.CultureInfo) = "CultureInfo" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member closePanel (x: System.Action) = "ClosePanel" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member changePickerValue (fn) = "ChangePickerValue" => (System.Action<System.DateTime, System.Nullable<System.Int32>>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member changeValue (fn) = "ChangeValue" => (System.Action<System.DateTime, System.Int32>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member changePickerType (fn) = "ChangePickerType" => (System.Action<System.String, System.Int32>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member getIndexPickerValue (fn) = "GetIndexPickerValue" => (System.Func<System.Int32, System.DateTime>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member getIndexValue (fn) = "GetIndexValue" => (System.Func<System.Int32, System.Nullable<System.DateTime>>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member disabledDate (fn) = "DisabledDate" => (System.Func<System.DateTime, System.Boolean>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member dateRender (fn) = Bolero.FragmentAttr ("DateRender", fun render -> box (System.Func<System.DateTime, System.DateTime, Microsoft.AspNetCore.Components.RenderFragment>(fun x1 x2 -> Microsoft.AspNetCore.Components.RenderFragment(fun rt -> render rt (fn x1 x2))))) |> FelizNode<'FunBlazorGeneric>.create
-    static member monthCellRender (fn) = Bolero.FragmentAttr ("MonthCellRender", fun render -> box (System.Func<System.DateTime, Microsoft.AspNetCore.Components.RenderFragment>(fun x1 -> Microsoft.AspNetCore.Components.RenderFragment(fun rt -> render rt (fn x1))))) |> FelizNode<'FunBlazorGeneric>.create
-    static member calendarDateRender (fn) = Bolero.FragmentAttr ("CalendarDateRender", fun render -> box (System.Func<System.DateTime, Microsoft.AspNetCore.Components.RenderFragment>(fun x1 -> Microsoft.AspNetCore.Components.RenderFragment(fun rt -> render rt (fn x1))))) |> FelizNode<'FunBlazorGeneric>.create
-    static member calendarMonthCellRender (fn) = Bolero.FragmentAttr ("CalendarMonthCellRender", fun render -> box (System.Func<System.DateTime, Microsoft.AspNetCore.Components.RenderFragment>(fun x1 -> Microsoft.AspNetCore.Components.RenderFragment(fun rt -> render rt (fn x1))))) |> FelizNode<'FunBlazorGeneric>.create
-    static member renderExtraFooter (x: string) = Bolero.Html.attr.fragment "RenderExtraFooter" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member renderExtraFooter (node) = Bolero.Html.attr.fragment "RenderExtraFooter" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member renderExtraFooter (nodes) = Bolero.Html.attr.fragment "RenderExtraFooter" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+    static member prefixCls (x: System.String) = "PrefixCls" => x
+    static member picker (x: System.String) = "Picker" => x
+    static member isRange (x: System.Boolean) = "IsRange" => x
+    static member isCalendar (x: System.Boolean) = "IsCalendar" => x
+    static member isShowHeader (x: System.Boolean) = "IsShowHeader" => x
+    static member isShowTime (x: System.Boolean) = "IsShowTime" => x
+    static member locale (x: AntDesign.DatePickerLocale) = "Locale" => x
+    static member cultureInfo (x: System.Globalization.CultureInfo) = "CultureInfo" => x
+    static member closePanel (x: System.Action) = "ClosePanel" => x
+    static member changePickerValue (fn) = "ChangePickerValue" => (System.Action<System.DateTime, System.Nullable<System.Int32>>fn)
+    static member changeValue (fn) = "ChangeValue" => (System.Action<System.DateTime, System.Int32>fn)
+    static member changePickerType (fn) = "ChangePickerType" => (System.Action<System.String, System.Int32>fn)
+    static member getIndexPickerValue (fn) = "GetIndexPickerValue" => (System.Func<System.Int32, System.DateTime>fn)
+    static member getIndexValue (fn) = "GetIndexValue" => (System.Func<System.Int32, System.Nullable<System.DateTime>>fn)
+    static member disabledDate (fn) = "DisabledDate" => (System.Func<System.DateTime, System.Boolean>fn)
+    static member dateRender (fn: _ -> _ -> NodeRenderFragment) = AttrRenderFragment(fun comp builder index -> builder.AddAttribute(index, "DateRender", box (System.Func<System.DateTime, System.DateTime, Microsoft.AspNetCore.Components.RenderFragment>(fun x1 x2 -> Microsoft.AspNetCore.Components.RenderFragment(fun tb -> (fn x1 x2).Invoke(comp, tb, 0) |> ignore)))); index + 1)
+    static member monthCellRender (fn: _ -> NodeRenderFragment) = AttrRenderFragment(fun comp builder index -> builder.AddAttribute(index, "MonthCellRender", box (System.Func<System.DateTime, Microsoft.AspNetCore.Components.RenderFragment>(fun x1 -> Microsoft.AspNetCore.Components.RenderFragment(fun tb -> (fn x1).Invoke(comp, tb, 0) |> ignore)))); index + 1)
+    static member calendarDateRender (fn: _ -> NodeRenderFragment) = AttrRenderFragment(fun comp builder index -> builder.AddAttribute(index, "CalendarDateRender", box (System.Func<System.DateTime, Microsoft.AspNetCore.Components.RenderFragment>(fun x1 -> Microsoft.AspNetCore.Components.RenderFragment(fun tb -> (fn x1).Invoke(comp, tb, 0) |> ignore)))); index + 1)
+    static member calendarMonthCellRender (fn: _ -> NodeRenderFragment) = AttrRenderFragment(fun comp builder index -> builder.AddAttribute(index, "CalendarMonthCellRender", box (System.Func<System.DateTime, Microsoft.AspNetCore.Components.RenderFragment>(fun x1 -> Microsoft.AspNetCore.Components.RenderFragment(fun tb -> (fn x1).Invoke(comp, tb, 0) |> ignore)))); index + 1)
+    static member renderExtraFooter (x: string) = html.renderFragment("RenderExtraFooter", html.text x)
+    static member renderExtraFooter (node) = html.renderFragment("RenderExtraFooter", node)
+    static member renderExtraFooter (nodes) = html.renderFragment("RenderExtraFooter", fragment { yield! nodes })
                     
             
 namespace rec AntDesign.DslInternals.Internal
 
-open Bolero.Html
 open FSharp.Data.Adaptive
 open Fun.Blazor
-open Microsoft.AspNetCore.Components.DslInternals
-open Microsoft.AspNetCore.Components.Web.DslInternals
+open Fun.Blazor.Operators
 open AntDesign.DslInternals
 
 
 type datePickerDatetimePanel<'FunBlazorGeneric, 'TValue> =
     inherit datePickerPanelBase<'FunBlazorGeneric, 'TValue>
-    static member create () = [] |> html.blazor<AntDesign.Internal.DatePickerDatetimePanel<'TValue>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Internal.DatePickerDatetimePanel<'TValue>>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Internal.DatePickerDatetimePanel<'TValue>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.DatePickerDatetimePanel<'TValue>>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.Internal.DatePickerDatetimePanel<'TValue>> x
-    static member showToday (x: System.Boolean) = "ShowToday" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member showTimeFormat (x: System.String) = "ShowTimeFormat" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member format (x: System.String) = "Format" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member disabledHours (fn) = "DisabledHours" => (System.Func<System.DateTime, System.Int32[]>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member disabledMinutes (fn) = "DisabledMinutes" => (System.Func<System.DateTime, System.Int32[]>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member disabledSeconds (fn) = "DisabledSeconds" => (System.Func<System.DateTime, System.Int32[]>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member disabledTime (fn) = "DisabledTime" => (System.Func<System.DateTime, AntDesign.DatePickerDisabledTime>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member onOkClick fn = attr.callbackOfUnit("OnOkClick", fn) |> FelizNode<'FunBlazorGeneric>.create
+    static member showToday (x: System.Boolean) = "ShowToday" => x
+    static member showTimeFormat (x: System.String) = "ShowTimeFormat" => x
+    static member format (x: System.String) = "Format" => x
+    static member disabledHours (fn) = "DisabledHours" => (System.Func<System.DateTime, System.Int32[]>fn)
+    static member disabledMinutes (fn) = "DisabledMinutes" => (System.Func<System.DateTime, System.Int32[]>fn)
+    static member disabledSeconds (fn) = "DisabledSeconds" => (System.Func<System.DateTime, System.Int32[]>fn)
+    static member disabledTime (fn) = "DisabledTime" => (System.Func<System.DateTime, AntDesign.DatePickerDisabledTime>fn)
+    static member onOkClick fn = html.callback<unit>("OnOkClick", fn)
                     
 
 type datePickerTemplate<'FunBlazorGeneric, 'TValue> =
     inherit datePickerPanelBase<'FunBlazorGeneric, 'TValue>
-    static member create () = [] |> html.blazor<AntDesign.Internal.DatePickerTemplate<'TValue>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Internal.DatePickerTemplate<'TValue>>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Internal.DatePickerTemplate<'TValue>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.DatePickerTemplate<'TValue>>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.Internal.DatePickerTemplate<'TValue>> x
-    static member renderPickerHeader (x: string) = Bolero.Html.attr.fragment "RenderPickerHeader" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member renderPickerHeader (node) = Bolero.Html.attr.fragment "RenderPickerHeader" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member renderPickerHeader (nodes) = Bolero.Html.attr.fragment "RenderPickerHeader" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member renderTableHeader (x: string) = Bolero.Html.attr.fragment "RenderTableHeader" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member renderTableHeader (node) = Bolero.Html.attr.fragment "RenderTableHeader" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member renderTableHeader (nodes) = Bolero.Html.attr.fragment "RenderTableHeader" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member renderFirstCol (render: System.DateTime -> Bolero.Node) = Bolero.Html.attr.fragmentWith "RenderFirstCol" (fun x -> render x) |> FelizNode<'FunBlazorGeneric>.create
-    static member renderColValue (render: System.DateTime -> Bolero.Node) = Bolero.Html.attr.fragmentWith "RenderColValue" (fun x -> render x) |> FelizNode<'FunBlazorGeneric>.create
-    static member renderLastCol (render: System.DateTime -> Bolero.Node) = Bolero.Html.attr.fragmentWith "RenderLastCol" (fun x -> render x) |> FelizNode<'FunBlazorGeneric>.create
-    static member viewStartDate (x: System.DateTime) = "ViewStartDate" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member getColTitle (fn) = "GetColTitle" => (System.Func<System.DateTime, System.String>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member getRowClass (fn) = "GetRowClass" => (System.Func<System.DateTime, System.String>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member getNextColValue (fn) = "GetNextColValue" => (System.Func<System.DateTime, System.DateTime>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member isInView (fn) = "IsInView" => (System.Func<System.DateTime, System.Boolean>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member isToday (fn) = "IsToday" => (System.Func<System.DateTime, System.Boolean>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member isSelected (fn) = "IsSelected" => (System.Func<System.DateTime, System.Boolean>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member onRowSelect (fn) = "OnRowSelect" => (System.Action<System.DateTime>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member onValueSelect (fn) = "OnValueSelect" => (System.Action<System.DateTime>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member showFooter (x: System.Boolean) = "ShowFooter" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member maxRow (x: System.Int32) = "MaxRow" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member maxCol (x: System.Int32) = "MaxCol" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member skipDays (x: System.Int32) = "SkipDays" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member renderPickerHeader (x: string) = html.renderFragment("RenderPickerHeader", html.text x)
+    static member renderPickerHeader (node) = html.renderFragment("RenderPickerHeader", node)
+    static member renderPickerHeader (nodes) = html.renderFragment("RenderPickerHeader", fragment { yield! nodes })
+    static member renderTableHeader (x: string) = html.renderFragment("RenderTableHeader", html.text x)
+    static member renderTableHeader (node) = html.renderFragment("RenderTableHeader", node)
+    static member renderTableHeader (nodes) = html.renderFragment("RenderTableHeader", fragment { yield! nodes })
+    static member renderFirstCol (render: System.DateTime -> NodeRenderFragment) = html.renderFragment("RenderFirstCol", render)
+    static member renderColValue (render: System.DateTime -> NodeRenderFragment) = html.renderFragment("RenderColValue", render)
+    static member renderLastCol (render: System.DateTime -> NodeRenderFragment) = html.renderFragment("RenderLastCol", render)
+    static member viewStartDate (x: System.DateTime) = "ViewStartDate" => x
+    static member getColTitle (fn) = "GetColTitle" => (System.Func<System.DateTime, System.String>fn)
+    static member getRowClass (fn) = "GetRowClass" => (System.Func<System.DateTime, System.String>fn)
+    static member getNextColValue (fn) = "GetNextColValue" => (System.Func<System.DateTime, System.DateTime>fn)
+    static member isInView (fn) = "IsInView" => (System.Func<System.DateTime, System.Boolean>fn)
+    static member isToday (fn) = "IsToday" => (System.Func<System.DateTime, System.Boolean>fn)
+    static member isSelected (fn) = "IsSelected" => (System.Func<System.DateTime, System.Boolean>fn)
+    static member onRowSelect (fn) = "OnRowSelect" => (System.Action<System.DateTime>fn)
+    static member onValueSelect (fn) = "OnValueSelect" => (System.Action<System.DateTime>fn)
+    static member showFooter (x: System.Boolean) = "ShowFooter" => x
+    static member maxRow (x: System.Int32) = "MaxRow" => x
+    static member maxCol (x: System.Int32) = "MaxCol" => x
+    static member skipDays (x: System.Int32) = "SkipDays" => x
                     
 
 type datePickerDatePanel<'FunBlazorGeneric, 'TValue> =
     inherit datePickerPanelBase<'FunBlazorGeneric, 'TValue>
-    static member create () = [] |> html.blazor<AntDesign.Internal.DatePickerDatePanel<'TValue>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Internal.DatePickerDatePanel<'TValue>>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Internal.DatePickerDatePanel<'TValue>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.DatePickerDatePanel<'TValue>>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.Internal.DatePickerDatePanel<'TValue>> x
-    static member isWeek (x: System.Boolean) = "IsWeek" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member showToday (x: System.Boolean) = "ShowToday" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member isWeek (x: System.Boolean) = "IsWeek" => x
+    static member showToday (x: System.Boolean) = "ShowToday" => x
                     
 
 type datePickerDecadePanel<'FunBlazorGeneric, 'TValue> =
     inherit datePickerPanelBase<'FunBlazorGeneric, 'TValue>
-    static member create () = [] |> html.blazor<AntDesign.Internal.DatePickerDecadePanel<'TValue>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Internal.DatePickerDecadePanel<'TValue>>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Internal.DatePickerDecadePanel<'TValue>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.DatePickerDecadePanel<'TValue>>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.Internal.DatePickerDecadePanel<'TValue>> x
 
                     
 
 type datePickerFooter<'FunBlazorGeneric, 'TValue> =
     inherit datePickerPanelBase<'FunBlazorGeneric, 'TValue>
-    static member create () = [] |> html.blazor<AntDesign.Internal.DatePickerFooter<'TValue>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Internal.DatePickerFooter<'TValue>>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Internal.DatePickerFooter<'TValue>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.DatePickerFooter<'TValue>>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.Internal.DatePickerFooter<'TValue>> x
 
                     
 
 type datePickerHeader<'FunBlazorGeneric, 'TValue> =
     inherit datePickerPanelBase<'FunBlazorGeneric, 'TValue>
-    static member create () = [] |> html.blazor<AntDesign.Internal.DatePickerHeader<'TValue>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Internal.DatePickerHeader<'TValue>>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Internal.DatePickerHeader<'TValue>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.DatePickerHeader<'TValue>>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.Internal.DatePickerHeader<'TValue>> x
-    static member superChangeDateInterval (x: System.Int32) = "SuperChangeDateInterval" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member changeDateInterval (x: System.Int32) = "ChangeDateInterval" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member showSuperPreChange (x: System.Boolean) = "ShowSuperPreChange" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member showPreChange (x: System.Boolean) = "ShowPreChange" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member showNextChange (x: System.Boolean) = "ShowNextChange" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member showSuperNextChange (x: System.Boolean) = "ShowSuperNextChange" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member superChangeDateInterval (x: System.Int32) = "SuperChangeDateInterval" => x
+    static member changeDateInterval (x: System.Int32) = "ChangeDateInterval" => x
+    static member showSuperPreChange (x: System.Boolean) = "ShowSuperPreChange" => x
+    static member showPreChange (x: System.Boolean) = "ShowPreChange" => x
+    static member showNextChange (x: System.Boolean) = "ShowNextChange" => x
+    static member showSuperNextChange (x: System.Boolean) = "ShowSuperNextChange" => x
                     
 
 type datePickerMonthPanel<'FunBlazorGeneric, 'TValue> =
     inherit datePickerPanelBase<'FunBlazorGeneric, 'TValue>
-    static member create () = [] |> html.blazor<AntDesign.Internal.DatePickerMonthPanel<'TValue>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Internal.DatePickerMonthPanel<'TValue>>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Internal.DatePickerMonthPanel<'TValue>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.DatePickerMonthPanel<'TValue>>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.Internal.DatePickerMonthPanel<'TValue>> x
 
                     
 
 type datePickerQuarterPanel<'FunBlazorGeneric, 'TValue> =
     inherit datePickerPanelBase<'FunBlazorGeneric, 'TValue>
-    static member create () = [] |> html.blazor<AntDesign.Internal.DatePickerQuarterPanel<'TValue>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Internal.DatePickerQuarterPanel<'TValue>>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Internal.DatePickerQuarterPanel<'TValue>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.DatePickerQuarterPanel<'TValue>>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.Internal.DatePickerQuarterPanel<'TValue>> x
 
                     
 
 type datePickerYearPanel<'FunBlazorGeneric, 'TValue> =
     inherit datePickerPanelBase<'FunBlazorGeneric, 'TValue>
-    static member create () = [] |> html.blazor<AntDesign.Internal.DatePickerYearPanel<'TValue>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Internal.DatePickerYearPanel<'TValue>>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Internal.DatePickerYearPanel<'TValue>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.DatePickerYearPanel<'TValue>>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.Internal.DatePickerYearPanel<'TValue>> x
 
                     
             
 namespace rec AntDesign.DslInternals
 
-open Bolero.Html
 open FSharp.Data.Adaptive
 open Fun.Blazor
-open Microsoft.AspNetCore.Components.DslInternals
-open Microsoft.AspNetCore.Components.Web.DslInternals
+open Fun.Blazor.Operators
 open AntDesign.DslInternals
 
 
 type col<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Col>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Col>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.Col>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.Col>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.Col>
-    static member ref x = attr.ref<AntDesign.Col> x
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member flex (x: OneOf.OneOf<System.String, System.Int32>) = "Flex" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member span (x: OneOf.OneOf<System.String, System.Int32>) = "Span" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member order (x: OneOf.OneOf<System.String, System.Int32>) = "Order" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member offset (x: OneOf.OneOf<System.String, System.Int32>) = "Offset" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member push (x: OneOf.OneOf<System.String, System.Int32>) = "Push" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member pull (x: OneOf.OneOf<System.String, System.Int32>) = "Pull" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member xs (x: OneOf.OneOf<System.Int32, AntDesign.EmbeddedProperty>) = "Xs" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member sm (x: OneOf.OneOf<System.Int32, AntDesign.EmbeddedProperty>) = "Sm" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member md (x: OneOf.OneOf<System.Int32, AntDesign.EmbeddedProperty>) = "Md" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member lg (x: OneOf.OneOf<System.Int32, AntDesign.EmbeddedProperty>) = "Lg" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member xl (x: OneOf.OneOf<System.Int32, AntDesign.EmbeddedProperty>) = "Xl" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member xxl (x: OneOf.OneOf<System.Int32, AntDesign.EmbeddedProperty>) = "Xxl" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Col>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Col>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Col>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Col>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Col>(){ x }
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member flex (x: OneOf.OneOf<System.String, System.Int32>) = "Flex" => x
+    static member span (x: OneOf.OneOf<System.String, System.Int32>) = "Span" => x
+    static member order (x: OneOf.OneOf<System.String, System.Int32>) = "Order" => x
+    static member offset (x: OneOf.OneOf<System.String, System.Int32>) = "Offset" => x
+    static member push (x: OneOf.OneOf<System.String, System.Int32>) = "Push" => x
+    static member pull (x: OneOf.OneOf<System.String, System.Int32>) = "Pull" => x
+    static member xs (x: OneOf.OneOf<System.Int32, AntDesign.EmbeddedProperty>) = "Xs" => x
+    static member sm (x: OneOf.OneOf<System.Int32, AntDesign.EmbeddedProperty>) = "Sm" => x
+    static member md (x: OneOf.OneOf<System.Int32, AntDesign.EmbeddedProperty>) = "Md" => x
+    static member lg (x: OneOf.OneOf<System.Int32, AntDesign.EmbeddedProperty>) = "Lg" => x
+    static member xl (x: OneOf.OneOf<System.Int32, AntDesign.EmbeddedProperty>) = "Xl" => x
+    static member xxl (x: OneOf.OneOf<System.Int32, AntDesign.EmbeddedProperty>) = "Xxl" => x
                     
 
 type gridCol<'FunBlazorGeneric> =
     inherit col<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.GridCol>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.GridCol>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.GridCol>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.GridCol>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.GridCol> x
 
                     
 
 type icon<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Icon>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Icon>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Icon>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Icon>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.Icon> x
-    static member spin (x: System.Boolean) = "Spin" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member rotate (x: System.Int32) = "Rotate" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member type' (x: System.String) = "Type" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member theme (x: System.String) = "Theme" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member twotoneColor (x: System.String) = "TwotoneColor" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member iconFont (x: System.String) = "IconFont" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member width (x: System.String) = "Width" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member height (x: System.String) = "Height" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member fill (x: System.String) = "Fill" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member tabIndex (x: System.String) = "TabIndex" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member stopPropagation (x: System.Boolean) = "StopPropagation" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onClick fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> "OnClick" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member component' (x: string) = Bolero.Html.attr.fragment "Component" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member component' (node) = Bolero.Html.attr.fragment "Component" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member component' (nodes) = Bolero.Html.attr.fragment "Component" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+    static member spin (x: System.Boolean) = "Spin" => x
+    static member rotate (x: System.Int32) = "Rotate" => x
+    static member type' (x: System.String) = "Type" => x
+    static member theme (x: System.String) = "Theme" => x
+    static member twotoneColor (x: System.String) = "TwotoneColor" => x
+    static member iconFont (x: System.String) = "IconFont" => x
+    static member width (x: System.String) = "Width" => x
+    static member height (x: System.String) = "Height" => x
+    static member fill (x: System.String) = "Fill" => x
+    static member tabIndex (x: System.String) = "TabIndex" => x
+    static member stopPropagation (x: System.Boolean) = "StopPropagation" => x
+    static member onClick fn = html.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs>("OnClick", fn)
+    static member component' (x: string) = html.renderFragment("Component", html.text x)
+    static member component' (node) = html.renderFragment("Component", node)
+    static member component' (nodes) = html.renderFragment("Component", fragment { yield! nodes })
                     
 
 type iconFont<'FunBlazorGeneric> =
     inherit icon<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.IconFont>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.IconFont>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.IconFont>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.IconFont>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.IconFont> x
 
                     
 
 type notificationBase<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.NotificationBase>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.NotificationBase>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.NotificationBase>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.NotificationBase>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.NotificationBase> x
 
                     
 
 type notification<'FunBlazorGeneric> =
     inherit notificationBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Notification>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Notification>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Notification>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Notification>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.Notification> x
 
                     
 
 type notificationItem<'FunBlazorGeneric> =
     inherit notificationBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.NotificationItem>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.NotificationItem>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.NotificationItem>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.NotificationItem>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.NotificationItem> x
-    static member config (x: AntDesign.NotificationConfig) = "Config" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onClose (fn) = "OnClose" => (System.Func<AntDesign.NotificationConfig, System.Threading.Tasks.Task>fn) |> FelizNode<'FunBlazorGeneric>.create
+    static member config (x: AntDesign.NotificationConfig) = "Config" => x
+    static member onClose (fn) = "OnClose" => (System.Func<AntDesign.NotificationConfig, System.Threading.Tasks.Task>fn)
                     
 
 type columnBase<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.ColumnBase>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.ColumnBase>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.ColumnBase>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.ColumnBase>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.ColumnBase>
-    static member ref x = attr.ref<AntDesign.ColumnBase> x
-    static member title (x: System.String) = "Title" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (x: string) = Bolero.Html.attr.fragment "TitleTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (node) = Bolero.Html.attr.fragment "TitleTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (nodes) = Bolero.Html.attr.fragment "TitleTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member width (x: System.String) = "Width" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member headerStyle (x: System.String) = "HeaderStyle" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member rowSpan (x: System.Int32) = "RowSpan" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member colSpan (x: System.Int32) = "ColSpan" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member headerColSpan (x: System.Int32) = "HeaderColSpan" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member fixed' (x: System.String) = "Fixed" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member ellipsis (x: System.Boolean) = "Ellipsis" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member hidden (x: System.Boolean) = "Hidden" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member align (x: AntDesign.ColumnAlign) = "Align" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member cellRender (render: AntDesign.TableModels.CellData -> Bolero.Node) = Bolero.Html.attr.fragmentWith "CellRender" (fun x -> render x) |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.ColumnBase>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.ColumnBase>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.ColumnBase>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.ColumnBase>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.ColumnBase>(){ x }
+    static member title (x: System.String) = "Title" => x
+    static member titleTemplate (x: string) = html.renderFragment("TitleTemplate", html.text x)
+    static member titleTemplate (node) = html.renderFragment("TitleTemplate", node)
+    static member titleTemplate (nodes) = html.renderFragment("TitleTemplate", fragment { yield! nodes })
+    static member width (x: System.String) = "Width" => x
+    static member headerStyle (x: System.String) = "HeaderStyle" => x
+    static member rowSpan (x: System.Int32) = "RowSpan" => x
+    static member colSpan (x: System.Int32) = "ColSpan" => x
+    static member headerColSpan (x: System.Int32) = "HeaderColSpan" => x
+    static member fixed' (x: System.String) = "Fixed" => x
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member ellipsis (x: System.Boolean) = "Ellipsis" => x
+    static member hidden (x: System.Boolean) = "Hidden" => x
+    static member align (x: AntDesign.ColumnAlign) = "Align" => x
+    static member cellRender (render: AntDesign.TableModels.CellData -> NodeRenderFragment) = html.renderFragment("CellRender", render)
                     
 
 type actionColumn<'FunBlazorGeneric> =
     inherit columnBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.ActionColumn>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.ActionColumn>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.ActionColumn>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.ActionColumn>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.ActionColumn> x
 
                     
 
 type column<'FunBlazorGeneric, 'TData> =
     inherit columnBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Column<'TData>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Column<'TData>>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Column<'TData>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Column<'TData>>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.Column<'TData>> x
-    static member fieldChanged fn = (Bolero.Html.attr.callback<'TData> "FieldChanged" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member fieldExpression (x: System.Linq.Expressions.Expression<System.Func<'TData>>) = "FieldExpression" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member field (x: 'TData) = "Field" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member field' (value: IStore<'TData>) = FelizNode<'FunBlazorGeneric>.create("Field", value)
-    static member field' (value: cval<'TData>) = FelizNode<'FunBlazorGeneric>.create("Field", value)
-    static member field' (valueFn: 'TData * ('TData -> unit)) = FelizNode<'FunBlazorGeneric>.create("Field", valueFn)
-    static member dataIndex (x: System.String) = "DataIndex" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member format (x: System.String) = "Format" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member sortable (x: System.Boolean) = "Sortable" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member sorterCompare (fn) = "SorterCompare" => (System.Func<'TData, 'TData, System.Int32>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member sorterMultiple (x: System.Int32) = "SorterMultiple" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member showSorterTooltip (x: System.Boolean) = "ShowSorterTooltip" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member sortDirections (x: AntDesign.SortDirection[]) = "SortDirections" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member defaultSortOrder (x: AntDesign.SortDirection) = "DefaultSortOrder" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onCell (fn) = "OnCell" => (System.Func<AntDesign.TableModels.CellData, System.Collections.Generic.Dictionary<System.String, System.Object>>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member onHeaderCell (fn) = "OnHeaderCell" => (System.Func<System.Collections.Generic.Dictionary<System.String, System.Object>>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member filterable (x: System.Boolean) = "Filterable" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member filters (x: System.Collections.Generic.IEnumerable<AntDesign.TableFilter<'TData>>) = "Filters" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member filterMultiple (x: System.Boolean) = "FilterMultiple" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onFilter (x: System.Linq.Expressions.Expression<System.Func<'TData, 'TData, System.Boolean>>) = "OnFilter" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member fieldChanged fn = html.callback<'TData>("FieldChanged", fn)
+    static member fieldExpression (x: System.Linq.Expressions.Expression<System.Func<'TData>>) = "FieldExpression" => x
+    static member field (x: 'TData) = "Field" => x
+    static member field' (value: IStore<'TData>) = html.bind("Field", value)
+    static member field' (value: cval<'TData>) = html.bind("Field", value)
+    static member field' (valueFn: 'TData * ('TData -> unit)) = html.bind("Field", valueFn)
+    static member dataIndex (x: System.String) = "DataIndex" => x
+    static member format (x: System.String) = "Format" => x
+    static member sortable (x: System.Boolean) = "Sortable" => x
+    static member sorterCompare (fn) = "SorterCompare" => (System.Func<'TData, 'TData, System.Int32>fn)
+    static member sorterMultiple (x: System.Int32) = "SorterMultiple" => x
+    static member showSorterTooltip (x: System.Boolean) = "ShowSorterTooltip" => x
+    static member sortDirections (x: AntDesign.SortDirection[]) = "SortDirections" => x
+    static member defaultSortOrder (x: AntDesign.SortDirection) = "DefaultSortOrder" => x
+    static member onCell (fn) = "OnCell" => (System.Func<AntDesign.TableModels.CellData, System.Collections.Generic.Dictionary<System.String, System.Object>>fn)
+    static member onHeaderCell (fn) = "OnHeaderCell" => (System.Func<System.Collections.Generic.Dictionary<System.String, System.Object>>fn)
+    static member filterable (x: System.Boolean) = "Filterable" => x
+    static member filters (x: System.Collections.Generic.IEnumerable<AntDesign.TableFilter<'TData>>) = "Filters" => x
+    static member filterMultiple (x: System.Boolean) = "FilterMultiple" => x
+    static member onFilter (x: System.Linq.Expressions.Expression<System.Func<'TData, 'TData, System.Boolean>>) = "OnFilter" => x
                     
 
 type selection<'FunBlazorGeneric> =
     inherit columnBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Selection>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Selection>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Selection>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Selection>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.Selection> x
-    static member type' (x: System.String) = "Type" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member disabled (x: System.Boolean) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member key (x: System.String) = "Key" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member checkStrictly (x: System.Boolean) = "CheckStrictly" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member type' (x: System.String) = "Type" => x
+    static member disabled (x: System.Boolean) = "Disabled" => x
+    static member key (x: System.String) = "Key" => x
+    static member checkStrictly (x: System.Boolean) = "CheckStrictly" => x
                     
 
 type summaryCell<'FunBlazorGeneric> =
     inherit columnBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.SummaryCell>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.SummaryCell>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.SummaryCell>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.SummaryCell>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.SummaryCell> x
 
                     
 
 type typographyBase<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.TypographyBase>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.TypographyBase>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.TypographyBase>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.TypographyBase>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.TypographyBase>
-    static member ref x = attr.ref<AntDesign.TypographyBase> x
-    static member copyable (x: System.Boolean) = "Copyable" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member copyConfig (x: AntDesign.TypographyCopyableConfig) = "CopyConfig" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member delete (x: System.Boolean) = "Delete" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member disabled (x: System.Boolean) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member editable (x: System.Boolean) = "Editable" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member editConfig (x: AntDesign.TypographyEditableConfig) = "EditConfig" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member ellipsis (x: System.Boolean) = "Ellipsis" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member ellipsisConfig (x: AntDesign.TypographyEllipsisConfig) = "EllipsisConfig" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member mark (x: System.Boolean) = "Mark" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member underline (x: System.Boolean) = "Underline" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member strong (x: System.Boolean) = "Strong" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onChange (x: System.Action) = "OnChange" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member type' (x: System.String) = "Type" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.TypographyBase>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.TypographyBase>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.TypographyBase>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.TypographyBase>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.TypographyBase>(){ x }
+    static member copyable (x: System.Boolean) = "Copyable" => x
+    static member copyConfig (x: AntDesign.TypographyCopyableConfig) = "CopyConfig" => x
+    static member delete (x: System.Boolean) = "Delete" => x
+    static member disabled (x: System.Boolean) = "Disabled" => x
+    static member editable (x: System.Boolean) = "Editable" => x
+    static member editConfig (x: AntDesign.TypographyEditableConfig) = "EditConfig" => x
+    static member ellipsis (x: System.Boolean) = "Ellipsis" => x
+    static member ellipsisConfig (x: AntDesign.TypographyEllipsisConfig) = "EllipsisConfig" => x
+    static member mark (x: System.Boolean) = "Mark" => x
+    static member underline (x: System.Boolean) = "Underline" => x
+    static member strong (x: System.Boolean) = "Strong" => x
+    static member onChange (x: System.Action) = "OnChange" => x
+    static member type' (x: System.String) = "Type" => x
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
                     
 
 type link<'FunBlazorGeneric> =
     inherit typographyBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Link>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Link>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Link>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Link>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.Link> x
-    static member code (x: System.Boolean) = "Code" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member keyboard (x: System.Boolean) = "Keyboard" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member code (x: System.Boolean) = "Code" => x
+    static member keyboard (x: System.Boolean) = "Keyboard" => x
                     
 
 type paragraph<'FunBlazorGeneric> =
     inherit typographyBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Paragraph>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Paragraph>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Paragraph>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Paragraph>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.Paragraph> x
-    static member code (x: System.Boolean) = "Code" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member keyboard (x: System.Boolean) = "Keyboard" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member code (x: System.Boolean) = "Code" => x
+    static member keyboard (x: System.Boolean) = "Keyboard" => x
                     
 
 type text<'FunBlazorGeneric> =
     inherit typographyBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Text>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Text>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Text>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Text>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.Text> x
-    static member code (x: System.Boolean) = "Code" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member keyboard (x: System.Boolean) = "Keyboard" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member code (x: System.Boolean) = "Code" => x
+    static member keyboard (x: System.Boolean) = "Keyboard" => x
                     
 
 type title<'FunBlazorGeneric> =
     inherit typographyBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Title>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Title>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Title>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Title>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.Title> x
-    static member level (x: System.Int32) = "Level" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member level (x: System.Int32) = "Level" => x
                     
 
 type affix<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Affix>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Affix>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.Affix>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.Affix>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.Affix>
-    static member ref x = attr.ref<AntDesign.Affix> x
-    static member offsetBottom (x: System.Int32) = "OffsetBottom" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member offsetTop (x: System.Int32) = "OffsetTop" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member targetSelector (x: System.String) = "TargetSelector" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member onChange fn = (Bolero.Html.attr.callback<System.Boolean> "OnChange" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Affix>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Affix>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Affix>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Affix>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Affix>(){ x }
+    static member offsetBottom (x: System.Int32) = "OffsetBottom" => x
+    static member offsetTop (x: System.Int32) = "OffsetTop" => x
+    static member targetSelector (x: System.String) = "TargetSelector" => x
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member onChange fn = html.callback<System.Boolean>("OnChange", fn)
                     
 
 type alert<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Alert>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Alert>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.Alert>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.Alert>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.Alert>
-    static member ref x = attr.ref<AntDesign.Alert> x
-    static member afterClose fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> "AfterClose" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member banner (x: System.Boolean) = "Banner" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member closable (x: System.Boolean) = "Closable" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member closeText (x: System.String) = "CloseText" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member description (x: System.String) = "Description" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member icon (x: string) = Bolero.Html.attr.fragment "Icon" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member icon (node) = Bolero.Html.attr.fragment "Icon" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member icon (nodes) = Bolero.Html.attr.fragment "Icon" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member message (x: System.String) = "Message" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member messageTemplate (x: string) = Bolero.Html.attr.fragment "MessageTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member messageTemplate (node) = Bolero.Html.attr.fragment "MessageTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member messageTemplate (nodes) = Bolero.Html.attr.fragment "MessageTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member showIcon (x: System.Nullable<System.Boolean>) = "ShowIcon" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member type' (x: System.String) = "Type" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onClose fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> "OnClose" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Alert>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Alert>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Alert>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Alert>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Alert>(){ x }
+    static member afterClose fn = html.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs>("AfterClose", fn)
+    static member banner (x: System.Boolean) = "Banner" => x
+    static member closable (x: System.Boolean) = "Closable" => x
+    static member closeText (x: System.String) = "CloseText" => x
+    static member description (x: System.String) = "Description" => x
+    static member icon (x: string) = html.renderFragment("Icon", html.text x)
+    static member icon (node) = html.renderFragment("Icon", node)
+    static member icon (nodes) = html.renderFragment("Icon", fragment { yield! nodes })
+    static member message (x: System.String) = "Message" => x
+    static member messageTemplate (x: string) = html.renderFragment("MessageTemplate", html.text x)
+    static member messageTemplate (node) = html.renderFragment("MessageTemplate", node)
+    static member messageTemplate (nodes) = html.renderFragment("MessageTemplate", fragment { yield! nodes })
+    static member showIcon (x: System.Nullable<System.Boolean>) = "ShowIcon" => x
+    static member type' (x: System.String) = "Type" => x
+    static member onClose fn = html.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs>("OnClose", fn)
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
                     
 
 type anchor<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Anchor>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Anchor>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.Anchor>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.Anchor>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.Anchor>
-    static member ref x = attr.ref<AntDesign.Anchor> x
-    static member key (x: System.String) = "Key" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member affix (x: System.Boolean) = "Affix" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member bounds (x: System.Int32) = "Bounds" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member getContainer (fn) = "GetContainer" => (System.Func<System.String>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member offsetBottom (x: System.Nullable<System.Int32>) = "OffsetBottom" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member offsetTop (x: System.Nullable<System.Int32>) = "OffsetTop" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member showInkInFixed (x: System.Boolean) = "ShowInkInFixed" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onClick fn = (Bolero.Html.attr.callback<System.Tuple<Microsoft.AspNetCore.Components.Web.MouseEventArgs, AntDesign.AnchorLink>> "OnClick" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member getCurrentAnchor (fn) = "GetCurrentAnchor" => (System.Func<System.String>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member targetOffset (x: System.Nullable<System.Int32>) = "TargetOffset" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onChange fn = (Bolero.Html.attr.callback<System.String> "OnChange" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Anchor>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Anchor>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Anchor>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Anchor>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Anchor>(){ x }
+    static member key (x: System.String) = "Key" => x
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member affix (x: System.Boolean) = "Affix" => x
+    static member bounds (x: System.Int32) = "Bounds" => x
+    static member getContainer (fn) = "GetContainer" => (System.Func<System.String>fn)
+    static member offsetBottom (x: System.Nullable<System.Int32>) = "OffsetBottom" => x
+    static member offsetTop (x: System.Nullable<System.Int32>) = "OffsetTop" => x
+    static member showInkInFixed (x: System.Boolean) = "ShowInkInFixed" => x
+    static member onClick fn = html.callback<System.Tuple<Microsoft.AspNetCore.Components.Web.MouseEventArgs, AntDesign.AnchorLink>>("OnClick", fn)
+    static member getCurrentAnchor (fn) = "GetCurrentAnchor" => (System.Func<System.String>fn)
+    static member targetOffset (x: System.Nullable<System.Int32>) = "TargetOffset" => x
+    static member onChange fn = html.callback<System.String>("OnChange", fn)
                     
 
 type anchorLink<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.AnchorLink>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.AnchorLink>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.AnchorLink>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.AnchorLink>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.AnchorLink>
-    static member ref x = attr.ref<AntDesign.AnchorLink> x
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member href (x: System.String) = "Href" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member title (x: System.String) = "Title" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member target (x: System.String) = "Target" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.AnchorLink>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.AnchorLink>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.AnchorLink>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.AnchorLink>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.AnchorLink>(){ x }
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member href (x: System.String) = "Href" => x
+    static member title (x: System.String) = "Title" => x
+    static member target (x: System.String) = "Target" => x
                     
 
 type autoCompleteOptGroup<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.AutoCompleteOptGroup>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.AutoCompleteOptGroup>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.AutoCompleteOptGroup>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.AutoCompleteOptGroup>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.AutoCompleteOptGroup>
-    static member ref x = attr.ref<AntDesign.AutoCompleteOptGroup> x
-    static member label (x: System.String) = "Label" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member labelFragment (x: string) = Bolero.Html.attr.fragment "LabelFragment" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member labelFragment (node) = Bolero.Html.attr.fragment "LabelFragment" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member labelFragment (nodes) = Bolero.Html.attr.fragment "LabelFragment" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.AutoCompleteOptGroup>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.AutoCompleteOptGroup>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.AutoCompleteOptGroup>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.AutoCompleteOptGroup>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.AutoCompleteOptGroup>(){ x }
+    static member label (x: System.String) = "Label" => x
+    static member labelFragment (x: string) = html.renderFragment("LabelFragment", html.text x)
+    static member labelFragment (node) = html.renderFragment("LabelFragment", node)
+    static member labelFragment (nodes) = html.renderFragment("LabelFragment", fragment { yield! nodes })
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
                     
 
 type autoCompleteOption<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.AutoCompleteOption>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.AutoCompleteOption>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.AutoCompleteOption>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.AutoCompleteOption>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.AutoCompleteOption>
-    static member ref x = attr.ref<AntDesign.AutoCompleteOption> x
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member value (x: System.Object) = "Value" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member label (x: System.String) = "Label" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member disabled (x: System.Boolean) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member autoComplete (x: AntDesign.IAutoCompleteRef) = "AutoComplete" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.AutoCompleteOption>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.AutoCompleteOption>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.AutoCompleteOption>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.AutoCompleteOption>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.AutoCompleteOption>(){ x }
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member value (x: System.Object) = "Value" => x
+    static member label (x: System.String) = "Label" => x
+    static member disabled (x: System.Boolean) = "Disabled" => x
+    static member autoComplete (x: AntDesign.IAutoCompleteRef) = "AutoComplete" => x
                     
 
 type avatar<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Avatar>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Avatar>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.Avatar>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.Avatar>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.Avatar>
-    static member ref x = attr.ref<AntDesign.Avatar> x
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member shape (x: System.String) = "Shape" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member size (x: System.String) = "Size" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member text (x: System.String) = "Text" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member src (x: System.String) = "Src" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member srcSet (x: System.String) = "SrcSet" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member alt (x: System.String) = "Alt" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member icon (x: System.String) = "Icon" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onError fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.ErrorEventArgs> "OnError" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Avatar>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Avatar>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Avatar>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Avatar>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Avatar>(){ x }
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member shape (x: System.String) = "Shape" => x
+    static member size (x: System.String) = "Size" => x
+    static member text (x: System.String) = "Text" => x
+    static member src (x: System.String) = "Src" => x
+    static member srcSet (x: System.String) = "SrcSet" => x
+    static member alt (x: System.String) = "Alt" => x
+    static member icon (x: System.String) = "Icon" => x
+    static member onError fn = html.callback<Microsoft.AspNetCore.Components.Web.ErrorEventArgs>("OnError", fn)
                     
 
 type avatarGroup<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.AvatarGroup>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.AvatarGroup>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.AvatarGroup>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.AvatarGroup>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.AvatarGroup>
-    static member ref x = attr.ref<AntDesign.AvatarGroup> x
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member maxCount (x: System.Int32) = "MaxCount" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member maxStyle (x: System.String) = "MaxStyle" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member maxPopoverPlacement (x: AntDesign.Placement) = "MaxPopoverPlacement" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.AvatarGroup>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.AvatarGroup>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.AvatarGroup>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.AvatarGroup>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.AvatarGroup>(){ x }
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member maxCount (x: System.Int32) = "MaxCount" => x
+    static member maxStyle (x: System.String) = "MaxStyle" => x
+    static member maxPopoverPlacement (x: AntDesign.Placement) = "MaxPopoverPlacement" => x
                     
 
 type backTop<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.BackTop>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.BackTop>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.BackTop>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.BackTop>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.BackTop>
-    static member ref x = attr.ref<AntDesign.BackTop> x
-    static member icon (x: System.String) = "Icon" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member visibilityHeight (x: System.Double) = "VisibilityHeight" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member targetSelector (x: System.String) = "TargetSelector" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onClick fn = attr.callbackOfUnit("OnClick", fn) |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.BackTop>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.BackTop>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.BackTop>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.BackTop>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.BackTop>(){ x }
+    static member icon (x: System.String) = "Icon" => x
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member visibilityHeight (x: System.Double) = "VisibilityHeight" => x
+    static member targetSelector (x: System.String) = "TargetSelector" => x
+    static member onClick fn = html.callback<unit>("OnClick", fn)
                     
 
 type badge<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Badge>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Badge>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.Badge>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.Badge>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.Badge>
-    static member ref x = attr.ref<AntDesign.Badge> x
-    static member color (x: System.String) = "Color" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member presetColor (x: System.Nullable<AntDesign.PresetColor>) = "PresetColor" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member count (x: System.Nullable<System.Int32>) = "Count" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member countTemplate (x: string) = Bolero.Html.attr.fragment "CountTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member countTemplate (node) = Bolero.Html.attr.fragment "CountTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member countTemplate (nodes) = Bolero.Html.attr.fragment "CountTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member dot (x: System.Boolean) = "Dot" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member offset (x: System.ValueTuple<System.Int32, System.Int32>) = "Offset" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member overflowCount (x: System.Int32) = "OverflowCount" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member showZero (x: System.Boolean) = "ShowZero" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member status (x: System.String) = "Status" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member text (x: System.String) = "Text" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member title (x: System.String) = "Title" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member size (x: System.String) = "Size" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Badge>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Badge>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Badge>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Badge>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Badge>(){ x }
+    static member color (x: System.String) = "Color" => x
+    static member presetColor (x: System.Nullable<AntDesign.PresetColor>) = "PresetColor" => x
+    static member count (x: System.Nullable<System.Int32>) = "Count" => x
+    static member countTemplate (x: string) = html.renderFragment("CountTemplate", html.text x)
+    static member countTemplate (node) = html.renderFragment("CountTemplate", node)
+    static member countTemplate (nodes) = html.renderFragment("CountTemplate", fragment { yield! nodes })
+    static member dot (x: System.Boolean) = "Dot" => x
+    static member offset (x: System.ValueTuple<System.Int32, System.Int32>) = "Offset" => x
+    static member overflowCount (x: System.Int32) = "OverflowCount" => x
+    static member showZero (x: System.Boolean) = "ShowZero" => x
+    static member status (x: System.String) = "Status" => x
+    static member text (x: System.String) = "Text" => x
+    static member title (x: System.String) = "Title" => x
+    static member size (x: System.String) = "Size" => x
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
                     
 
 type badgeRibbon<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.BadgeRibbon>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.BadgeRibbon>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.BadgeRibbon>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.BadgeRibbon>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.BadgeRibbon>
-    static member ref x = attr.ref<AntDesign.BadgeRibbon> x
-    static member color (x: System.String) = "Color" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member text (x: System.String) = "Text" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member textTemplate (x: string) = Bolero.Html.attr.fragment "TextTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member textTemplate (node) = Bolero.Html.attr.fragment "TextTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member textTemplate (nodes) = Bolero.Html.attr.fragment "TextTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member placement (x: System.String) = "Placement" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.BadgeRibbon>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.BadgeRibbon>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.BadgeRibbon>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.BadgeRibbon>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.BadgeRibbon>(){ x }
+    static member color (x: System.String) = "Color" => x
+    static member text (x: System.String) = "Text" => x
+    static member textTemplate (x: string) = html.renderFragment("TextTemplate", html.text x)
+    static member textTemplate (node) = html.renderFragment("TextTemplate", node)
+    static member textTemplate (nodes) = html.renderFragment("TextTemplate", fragment { yield! nodes })
+    static member placement (x: System.String) = "Placement" => x
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
                     
 
 type breadcrumb<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Breadcrumb>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Breadcrumb>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.Breadcrumb>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.Breadcrumb>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.Breadcrumb>
-    static member ref x = attr.ref<AntDesign.Breadcrumb> x
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member autoGenerate (x: System.Boolean) = "AutoGenerate" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member separator (x: System.String) = "Separator" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member routeLabel (x: System.String) = "RouteLabel" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Breadcrumb>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Breadcrumb>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Breadcrumb>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Breadcrumb>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Breadcrumb>(){ x }
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member autoGenerate (x: System.Boolean) = "AutoGenerate" => x
+    static member separator (x: System.String) = "Separator" => x
+    static member routeLabel (x: System.String) = "RouteLabel" => x
                     
 
 type button<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Button>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Button>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.Button>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.Button>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.Button>
-    static member ref x = attr.ref<AntDesign.Button> x
-    static member color (x: AntDesign.Color) = "Color" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member block (x: System.Boolean) = "Block" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member danger (x: System.Boolean) = "Danger" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member disabled (x: System.Boolean) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member ghost (x: System.Boolean) = "Ghost" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member htmlType (x: System.String) = "HtmlType" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member icon (x: System.String) = "Icon" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member loading (x: System.Boolean) = "Loading" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onClick fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> "OnClick" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onClickStopPropagation (x: System.Boolean) = "OnClickStopPropagation" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member shape (x: System.String) = "Shape" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member size (x: System.String) = "Size" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member type' (x: System.String) = "Type" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member noSpanWrap (x: System.Boolean) = "NoSpanWrap" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Button>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Button>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Button>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Button>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Button>(){ x }
+    static member color (x: AntDesign.Color) = "Color" => x
+    static member block (x: System.Boolean) = "Block" => x
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member danger (x: System.Boolean) = "Danger" => x
+    static member disabled (x: System.Boolean) = "Disabled" => x
+    static member ghost (x: System.Boolean) = "Ghost" => x
+    static member htmlType (x: System.String) = "HtmlType" => x
+    static member icon (x: System.String) = "Icon" => x
+    static member loading (x: System.Boolean) = "Loading" => x
+    static member onClick fn = html.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs>("OnClick", fn)
+    static member onClickStopPropagation (x: System.Boolean) = "OnClickStopPropagation" => x
+    static member shape (x: System.String) = "Shape" => x
+    static member size (x: System.String) = "Size" => x
+    static member type' (x: System.String) = "Type" => x
+    static member noSpanWrap (x: System.Boolean) = "NoSpanWrap" => x
                     
 
 type buttonGroup<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.ButtonGroup>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.ButtonGroup>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.ButtonGroup>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.ButtonGroup>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.ButtonGroup>
-    static member ref x = attr.ref<AntDesign.ButtonGroup> x
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member size (x: System.String) = "Size" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.ButtonGroup>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.ButtonGroup>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.ButtonGroup>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.ButtonGroup>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.ButtonGroup>(){ x }
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member size (x: System.String) = "Size" => x
                     
 
 type calendar<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Calendar>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Calendar>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Calendar>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Calendar>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.Calendar> x
-    static member value (x: System.DateTime) = "Value" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member defaultValue (x: System.DateTime) = "DefaultValue" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member validRange (x: System.DateTime[]) = "ValidRange" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member mode (x: System.String) = "Mode" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member fullScreen (x: System.Boolean) = "FullScreen" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onSelect fn = (Bolero.Html.attr.callback<System.DateTime> "OnSelect" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onChange fn = (Bolero.Html.attr.callback<System.DateTime> "OnChange" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member headerRender (fn) = Bolero.FragmentAttr ("HeaderRender", fun render -> box (System.Func<AntDesign.CalendarHeaderRenderArgs, Microsoft.AspNetCore.Components.RenderFragment>(fun x1 -> Microsoft.AspNetCore.Components.RenderFragment(fun rt -> render rt (fn x1))))) |> FelizNode<'FunBlazorGeneric>.create
-    static member dateCellRender (fn) = Bolero.FragmentAttr ("DateCellRender", fun render -> box (System.Func<System.DateTime, Microsoft.AspNetCore.Components.RenderFragment>(fun x1 -> Microsoft.AspNetCore.Components.RenderFragment(fun rt -> render rt (fn x1))))) |> FelizNode<'FunBlazorGeneric>.create
-    static member dateFullCellRender (fn) = Bolero.FragmentAttr ("DateFullCellRender", fun render -> box (System.Func<System.DateTime, Microsoft.AspNetCore.Components.RenderFragment>(fun x1 -> Microsoft.AspNetCore.Components.RenderFragment(fun rt -> render rt (fn x1))))) |> FelizNode<'FunBlazorGeneric>.create
-    static member monthCellRender (fn) = Bolero.FragmentAttr ("MonthCellRender", fun render -> box (System.Func<System.DateTime, Microsoft.AspNetCore.Components.RenderFragment>(fun x1 -> Microsoft.AspNetCore.Components.RenderFragment(fun rt -> render rt (fn x1))))) |> FelizNode<'FunBlazorGeneric>.create
-    static member monthFullCellRender (fn) = Bolero.FragmentAttr ("MonthFullCellRender", fun render -> box (System.Func<System.DateTime, Microsoft.AspNetCore.Components.RenderFragment>(fun x1 -> Microsoft.AspNetCore.Components.RenderFragment(fun rt -> render rt (fn x1))))) |> FelizNode<'FunBlazorGeneric>.create
-    static member onPanelChange (fn) = "OnPanelChange" => (System.Action<System.DateTime, System.String>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member disabledDate (fn) = "DisabledDate" => (System.Func<System.DateTime, System.Boolean>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member locale (x: AntDesign.DatePickerLocale) = "Locale" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member cultureInfo (x: System.Globalization.CultureInfo) = "CultureInfo" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member value (x: System.DateTime) = "Value" => x
+    static member defaultValue (x: System.DateTime) = "DefaultValue" => x
+    static member validRange (x: System.DateTime[]) = "ValidRange" => x
+    static member mode (x: System.String) = "Mode" => x
+    static member fullScreen (x: System.Boolean) = "FullScreen" => x
+    static member onSelect fn = html.callback<System.DateTime>("OnSelect", fn)
+    static member onChange fn = html.callback<System.DateTime>("OnChange", fn)
+    static member headerRender (fn: _ -> NodeRenderFragment) = AttrRenderFragment(fun comp builder index -> builder.AddAttribute(index, "HeaderRender", box (System.Func<AntDesign.CalendarHeaderRenderArgs, Microsoft.AspNetCore.Components.RenderFragment>(fun x1 -> Microsoft.AspNetCore.Components.RenderFragment(fun tb -> (fn x1).Invoke(comp, tb, 0) |> ignore)))); index + 1)
+    static member dateCellRender (fn: _ -> NodeRenderFragment) = AttrRenderFragment(fun comp builder index -> builder.AddAttribute(index, "DateCellRender", box (System.Func<System.DateTime, Microsoft.AspNetCore.Components.RenderFragment>(fun x1 -> Microsoft.AspNetCore.Components.RenderFragment(fun tb -> (fn x1).Invoke(comp, tb, 0) |> ignore)))); index + 1)
+    static member dateFullCellRender (fn: _ -> NodeRenderFragment) = AttrRenderFragment(fun comp builder index -> builder.AddAttribute(index, "DateFullCellRender", box (System.Func<System.DateTime, Microsoft.AspNetCore.Components.RenderFragment>(fun x1 -> Microsoft.AspNetCore.Components.RenderFragment(fun tb -> (fn x1).Invoke(comp, tb, 0) |> ignore)))); index + 1)
+    static member monthCellRender (fn: _ -> NodeRenderFragment) = AttrRenderFragment(fun comp builder index -> builder.AddAttribute(index, "MonthCellRender", box (System.Func<System.DateTime, Microsoft.AspNetCore.Components.RenderFragment>(fun x1 -> Microsoft.AspNetCore.Components.RenderFragment(fun tb -> (fn x1).Invoke(comp, tb, 0) |> ignore)))); index + 1)
+    static member monthFullCellRender (fn: _ -> NodeRenderFragment) = AttrRenderFragment(fun comp builder index -> builder.AddAttribute(index, "MonthFullCellRender", box (System.Func<System.DateTime, Microsoft.AspNetCore.Components.RenderFragment>(fun x1 -> Microsoft.AspNetCore.Components.RenderFragment(fun tb -> (fn x1).Invoke(comp, tb, 0) |> ignore)))); index + 1)
+    static member onPanelChange (fn) = "OnPanelChange" => (System.Action<System.DateTime, System.String>fn)
+    static member disabledDate (fn) = "DisabledDate" => (System.Func<System.DateTime, System.Boolean>fn)
+    static member locale (x: AntDesign.DatePickerLocale) = "Locale" => x
+    static member cultureInfo (x: System.Globalization.CultureInfo) = "CultureInfo" => x
                     
 
 type card<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Card>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Card>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.Card>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.Card>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.Card>
-    static member ref x = attr.ref<AntDesign.Card> x
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member body (x: string) = Bolero.Html.attr.fragment "Body" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member body (node) = Bolero.Html.attr.fragment "Body" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member body (nodes) = Bolero.Html.attr.fragment "Body" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member actionTemplate (x: string) = Bolero.Html.attr.fragment "ActionTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member actionTemplate (node) = Bolero.Html.attr.fragment "ActionTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member actionTemplate (nodes) = Bolero.Html.attr.fragment "ActionTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member bordered (x: System.Boolean) = "Bordered" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member hoverable (x: System.Boolean) = "Hoverable" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member loading (x: System.Boolean) = "Loading" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member bodyStyle (x: System.String) = "BodyStyle" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member cover (x: string) = Bolero.Html.attr.fragment "Cover" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member cover (node) = Bolero.Html.attr.fragment "Cover" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member cover (nodes) = Bolero.Html.attr.fragment "Cover" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member actions (x: System.Collections.Generic.IList<Microsoft.AspNetCore.Components.RenderFragment>) = "Actions" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member type' (x: System.String) = "Type" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member size (x: System.String) = "Size" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member title (x: System.String) = "Title" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (x: string) = Bolero.Html.attr.fragment "TitleTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (node) = Bolero.Html.attr.fragment "TitleTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (nodes) = Bolero.Html.attr.fragment "TitleTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member extra (x: string) = Bolero.Html.attr.fragment "Extra" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member extra (node) = Bolero.Html.attr.fragment "Extra" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member extra (nodes) = Bolero.Html.attr.fragment "Extra" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member cardTabs (x: string) = Bolero.Html.attr.fragment "CardTabs" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member cardTabs (node) = Bolero.Html.attr.fragment "CardTabs" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member cardTabs (nodes) = Bolero.Html.attr.fragment "CardTabs" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Card>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Card>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Card>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Card>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Card>(){ x }
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member body (x: string) = html.renderFragment("Body", html.text x)
+    static member body (node) = html.renderFragment("Body", node)
+    static member body (nodes) = html.renderFragment("Body", fragment { yield! nodes })
+    static member actionTemplate (x: string) = html.renderFragment("ActionTemplate", html.text x)
+    static member actionTemplate (node) = html.renderFragment("ActionTemplate", node)
+    static member actionTemplate (nodes) = html.renderFragment("ActionTemplate", fragment { yield! nodes })
+    static member bordered (x: System.Boolean) = "Bordered" => x
+    static member hoverable (x: System.Boolean) = "Hoverable" => x
+    static member loading (x: System.Boolean) = "Loading" => x
+    static member bodyStyle (x: System.String) = "BodyStyle" => x
+    static member cover (x: string) = html.renderFragment("Cover", html.text x)
+    static member cover (node) = html.renderFragment("Cover", node)
+    static member cover (nodes) = html.renderFragment("Cover", fragment { yield! nodes })
+    static member actions (x: System.Collections.Generic.IList<Microsoft.AspNetCore.Components.RenderFragment>) = "Actions" => x
+    static member type' (x: System.String) = "Type" => x
+    static member size (x: System.String) = "Size" => x
+    static member title (x: System.String) = "Title" => x
+    static member titleTemplate (x: string) = html.renderFragment("TitleTemplate", html.text x)
+    static member titleTemplate (node) = html.renderFragment("TitleTemplate", node)
+    static member titleTemplate (nodes) = html.renderFragment("TitleTemplate", fragment { yield! nodes })
+    static member extra (x: string) = html.renderFragment("Extra", html.text x)
+    static member extra (node) = html.renderFragment("Extra", node)
+    static member extra (nodes) = html.renderFragment("Extra", fragment { yield! nodes })
+    static member cardTabs (x: string) = html.renderFragment("CardTabs", html.text x)
+    static member cardTabs (node) = html.renderFragment("CardTabs", node)
+    static member cardTabs (nodes) = html.renderFragment("CardTabs", fragment { yield! nodes })
                     
 
 type cardAction<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.CardAction>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.CardAction>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.CardAction>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.CardAction>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.CardAction>
-    static member ref x = attr.ref<AntDesign.CardAction> x
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.CardAction>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.CardAction>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.CardAction>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.CardAction>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.CardAction>(){ x }
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
                     
 
 type cardGrid<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.CardGrid>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.CardGrid>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.CardGrid>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.CardGrid>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.CardGrid>
-    static member ref x = attr.ref<AntDesign.CardGrid> x
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member hoverable (x: System.Boolean) = "Hoverable" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.CardGrid>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.CardGrid>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.CardGrid>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.CardGrid>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.CardGrid>(){ x }
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member hoverable (x: System.Boolean) = "Hoverable" => x
                     
 
 type carousel<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Carousel>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Carousel>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.Carousel>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.Carousel>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.Carousel>
-    static member ref x = attr.ref<AntDesign.Carousel> x
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member dotPosition (x: System.String) = "DotPosition" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member autoplay (x: System.TimeSpan) = "Autoplay" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member effect (x: System.String) = "Effect" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Carousel>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Carousel>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Carousel>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Carousel>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Carousel>(){ x }
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member dotPosition (x: System.String) = "DotPosition" => x
+    static member autoplay (x: System.TimeSpan) = "Autoplay" => x
+    static member effect (x: System.String) = "Effect" => x
                     
 
 type carouselSlick<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.CarouselSlick>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.CarouselSlick>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.CarouselSlick>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.CarouselSlick>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.CarouselSlick>
-    static member ref x = attr.ref<AntDesign.CarouselSlick> x
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.CarouselSlick>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.CarouselSlick>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.CarouselSlick>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.CarouselSlick>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.CarouselSlick>(){ x }
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
                     
 
 type collapse<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Collapse>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Collapse>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.Collapse>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.Collapse>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.Collapse>
-    static member ref x = attr.ref<AntDesign.Collapse> x
-    static member accordion (x: System.Boolean) = "Accordion" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member bordered (x: System.Boolean) = "Bordered" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member expandIconPosition (x: System.String) = "ExpandIconPosition" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member defaultActiveKey (x: System.String[]) = "DefaultActiveKey" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onChange fn = (Bolero.Html.attr.callback<System.String[]> "OnChange" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member expandIcon (x: System.String) = "ExpandIcon" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member expandIconTemplate (render: System.Boolean -> Bolero.Node) = Bolero.Html.attr.fragmentWith "ExpandIconTemplate" (fun x -> render x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Collapse>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Collapse>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Collapse>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Collapse>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Collapse>(){ x }
+    static member accordion (x: System.Boolean) = "Accordion" => x
+    static member bordered (x: System.Boolean) = "Bordered" => x
+    static member expandIconPosition (x: System.String) = "ExpandIconPosition" => x
+    static member defaultActiveKey (x: System.String[]) = "DefaultActiveKey" => x
+    static member onChange fn = html.callback<System.String[]>("OnChange", fn)
+    static member expandIcon (x: System.String) = "ExpandIcon" => x
+    static member expandIconTemplate (render: System.Boolean -> NodeRenderFragment) = html.renderFragment("ExpandIconTemplate", render)
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
                     
 
 type panel<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Panel>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Panel>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.Panel>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.Panel>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.Panel>
-    static member ref x = attr.ref<AntDesign.Panel> x
-    static member active (x: System.Boolean) = "Active" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member key (x: System.String) = "Key" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member disabled (x: System.Boolean) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member showArrow (x: System.Boolean) = "ShowArrow" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member extra (x: System.String) = "Extra" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member extraTemplate (x: string) = Bolero.Html.attr.fragment "ExtraTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member extraTemplate (node) = Bolero.Html.attr.fragment "ExtraTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member extraTemplate (nodes) = Bolero.Html.attr.fragment "ExtraTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member header (x: System.String) = "Header" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member headerTemplate (x: string) = Bolero.Html.attr.fragment "HeaderTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member headerTemplate (node) = Bolero.Html.attr.fragment "HeaderTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member headerTemplate (nodes) = Bolero.Html.attr.fragment "HeaderTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member onActiveChange fn = (Bolero.Html.attr.callback<System.Boolean> "OnActiveChange" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Panel>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Panel>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Panel>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Panel>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Panel>(){ x }
+    static member active (x: System.Boolean) = "Active" => x
+    static member key (x: System.String) = "Key" => x
+    static member disabled (x: System.Boolean) = "Disabled" => x
+    static member showArrow (x: System.Boolean) = "ShowArrow" => x
+    static member extra (x: System.String) = "Extra" => x
+    static member extraTemplate (x: string) = html.renderFragment("ExtraTemplate", html.text x)
+    static member extraTemplate (node) = html.renderFragment("ExtraTemplate", node)
+    static member extraTemplate (nodes) = html.renderFragment("ExtraTemplate", fragment { yield! nodes })
+    static member header (x: System.String) = "Header" => x
+    static member headerTemplate (x: string) = html.renderFragment("HeaderTemplate", html.text x)
+    static member headerTemplate (node) = html.renderFragment("HeaderTemplate", node)
+    static member headerTemplate (nodes) = html.renderFragment("HeaderTemplate", fragment { yield! nodes })
+    static member onActiveChange fn = html.callback<System.Boolean>("OnActiveChange", fn)
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
                     
 
 type comment<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Comment>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Comment>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.Comment>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.Comment>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.Comment>
-    static member ref x = attr.ref<AntDesign.Comment> x
-    static member author (x: System.String) = "Author" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member authorTemplate (x: string) = Bolero.Html.attr.fragment "AuthorTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member authorTemplate (node) = Bolero.Html.attr.fragment "AuthorTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member authorTemplate (nodes) = Bolero.Html.attr.fragment "AuthorTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member avatar (x: System.String) = "Avatar" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member avatarTemplate (x: string) = Bolero.Html.attr.fragment "AvatarTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member avatarTemplate (node) = Bolero.Html.attr.fragment "AvatarTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member avatarTemplate (nodes) = Bolero.Html.attr.fragment "AvatarTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member content (x: System.String) = "Content" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member contentTemplate (x: string) = Bolero.Html.attr.fragment "ContentTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member contentTemplate (node) = Bolero.Html.attr.fragment "ContentTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member contentTemplate (nodes) = Bolero.Html.attr.fragment "ContentTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member datetime (x: System.String) = "Datetime" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member datetimeTemplate (x: string) = Bolero.Html.attr.fragment "DatetimeTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member datetimeTemplate (node) = Bolero.Html.attr.fragment "DatetimeTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member datetimeTemplate (nodes) = Bolero.Html.attr.fragment "DatetimeTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member actions (x: System.Collections.Generic.IList<Microsoft.AspNetCore.Components.RenderFragment>) = "Actions" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Comment>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Comment>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Comment>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Comment>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Comment>(){ x }
+    static member author (x: System.String) = "Author" => x
+    static member authorTemplate (x: string) = html.renderFragment("AuthorTemplate", html.text x)
+    static member authorTemplate (node) = html.renderFragment("AuthorTemplate", node)
+    static member authorTemplate (nodes) = html.renderFragment("AuthorTemplate", fragment { yield! nodes })
+    static member avatar (x: System.String) = "Avatar" => x
+    static member avatarTemplate (x: string) = html.renderFragment("AvatarTemplate", html.text x)
+    static member avatarTemplate (node) = html.renderFragment("AvatarTemplate", node)
+    static member avatarTemplate (nodes) = html.renderFragment("AvatarTemplate", fragment { yield! nodes })
+    static member content (x: System.String) = "Content" => x
+    static member contentTemplate (x: string) = html.renderFragment("ContentTemplate", html.text x)
+    static member contentTemplate (node) = html.renderFragment("ContentTemplate", node)
+    static member contentTemplate (nodes) = html.renderFragment("ContentTemplate", fragment { yield! nodes })
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member datetime (x: System.String) = "Datetime" => x
+    static member datetimeTemplate (x: string) = html.renderFragment("DatetimeTemplate", html.text x)
+    static member datetimeTemplate (node) = html.renderFragment("DatetimeTemplate", node)
+    static member datetimeTemplate (nodes) = html.renderFragment("DatetimeTemplate", fragment { yield! nodes })
+    static member actions (x: System.Collections.Generic.IList<Microsoft.AspNetCore.Components.RenderFragment>) = "Actions" => x
                     
 
 type antContainerComponentBase<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.AntContainerComponentBase>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.AntContainerComponentBase>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.AntContainerComponentBase>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.AntContainerComponentBase>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.AntContainerComponentBase>
-    static member ref x = attr.ref<AntDesign.AntContainerComponentBase> x
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member tag (x: System.String) = "Tag" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.AntContainerComponentBase>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.AntContainerComponentBase>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.AntContainerComponentBase>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.AntContainerComponentBase>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.AntContainerComponentBase>(){ x }
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member tag (x: System.String) = "Tag" => x
                     
 
 type antInputComponentBase<'FunBlazorGeneric, 'TValue> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.AntInputComponentBase<'TValue>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.AntInputComponentBase<'TValue>>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.AntInputComponentBase<'TValue>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.AntInputComponentBase<'TValue>>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.AntInputComponentBase<'TValue>> x
-    static member additionalAttributes (x: System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>) = "AdditionalAttributes" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member value (x: 'TValue) = "Value" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member value' (value: IStore<'TValue>) = FelizNode<'FunBlazorGeneric>.create("Value", value)
-    static member value' (value: cval<'TValue>) = FelizNode<'FunBlazorGeneric>.create("Value", value)
-    static member value' (valueFn: 'TValue * ('TValue -> unit)) = FelizNode<'FunBlazorGeneric>.create("Value", valueFn)
-    static member valueChanged fn = (Bolero.Html.attr.callback<'TValue> "ValueChanged" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member valueExpression (x: System.Linq.Expressions.Expression<System.Func<'TValue>>) = "ValueExpression" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member valuesExpression (x: System.Linq.Expressions.Expression<System.Func<System.Collections.Generic.IEnumerable<'TValue>>>) = "ValuesExpression" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member size (x: System.String) = "Size" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member cultureInfo (x: System.Globalization.CultureInfo) = "CultureInfo" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member additionalAttributes (x: System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>) = "AdditionalAttributes" => x
+    static member value (x: 'TValue) = "Value" => x
+    static member value' (value: IStore<'TValue>) = html.bind("Value", value)
+    static member value' (value: cval<'TValue>) = html.bind("Value", value)
+    static member value' (valueFn: 'TValue * ('TValue -> unit)) = html.bind("Value", valueFn)
+    static member valueChanged fn = html.callback<'TValue>("ValueChanged", fn)
+    static member valueExpression (x: System.Linq.Expressions.Expression<System.Func<'TValue>>) = "ValueExpression" => x
+    static member valuesExpression (x: System.Linq.Expressions.Expression<System.Func<System.Collections.Generic.IEnumerable<'TValue>>>) = "ValuesExpression" => x
+    static member size (x: System.String) = "Size" => x
+    static member cultureInfo (x: System.Globalization.CultureInfo) = "CultureInfo" => x
                     
 
 type antInputBoolComponentBase<'FunBlazorGeneric> =
     inherit antInputComponentBase<'FunBlazorGeneric, System.Boolean>
-    static member create () = [] |> html.blazor<AntDesign.AntInputBoolComponentBase>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.AntInputBoolComponentBase>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.AntInputBoolComponentBase>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.AntInputBoolComponentBase>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.AntInputBoolComponentBase> x
-    static member autoFocus (x: System.Boolean) = "AutoFocus" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member checked' (x: System.Boolean) = "Checked" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member checked'' (value: IStore<System.Boolean>) = FelizNode<'FunBlazorGeneric>.create("Checked", value)
-    static member checked'' (value: cval<System.Boolean>) = FelizNode<'FunBlazorGeneric>.create("Checked", value)
-    static member checked'' (valueFn: System.Boolean * (System.Boolean -> unit)) = FelizNode<'FunBlazorGeneric>.create("Checked", valueFn)
-    static member onChange fn = (Bolero.Html.attr.callback<System.Boolean> "OnChange" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member checkedChanged fn = (Bolero.Html.attr.callback<System.Boolean> "CheckedChanged" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member disabled (x: System.Boolean) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member autoFocus (x: System.Boolean) = "AutoFocus" => x
+    static member checked' (x: System.Boolean) = "Checked" => x
+    static member checked'' (value: IStore<System.Boolean>) = html.bind("Checked", value)
+    static member checked'' (value: cval<System.Boolean>) = html.bind("Checked", value)
+    static member checked'' (valueFn: System.Boolean * (System.Boolean -> unit)) = html.bind("Checked", valueFn)
+    static member onChange fn = html.callback<System.Boolean>("OnChange", fn)
+    static member checkedChanged fn = html.callback<System.Boolean>("CheckedChanged", fn)
+    static member disabled (x: System.Boolean) = "Disabled" => x
                     
 
 type checkbox<'FunBlazorGeneric> =
     inherit antInputBoolComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Checkbox>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Checkbox>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.Checkbox>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.Checkbox>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.Checkbox>
-    static member ref x = attr.ref<AntDesign.Checkbox> x
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member checkedChange fn = (Bolero.Html.attr.callback<System.Boolean> "CheckedChange" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member checkedExpression (x: System.Linq.Expressions.Expression<System.Func<System.Boolean>>) = "CheckedExpression" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member indeterminate (x: System.Boolean) = "Indeterminate" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member label (x: System.String) = "Label" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Checkbox>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Checkbox>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Checkbox>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Checkbox>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Checkbox>(){ x }
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member checkedChange fn = html.callback<System.Boolean>("CheckedChange", fn)
+    static member checkedExpression (x: System.Linq.Expressions.Expression<System.Func<System.Boolean>>) = "CheckedExpression" => x
+    static member indeterminate (x: System.Boolean) = "Indeterminate" => x
+    static member label (x: System.String) = "Label" => x
                     
 
 type switch<'FunBlazorGeneric> =
     inherit antInputBoolComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Switch>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Switch>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Switch>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Switch>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.Switch> x
-    static member loading (x: System.Boolean) = "Loading" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member checkedChildren (x: System.String) = "CheckedChildren" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member checkedChildrenTemplate (x: string) = Bolero.Html.attr.fragment "CheckedChildrenTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member checkedChildrenTemplate (node) = Bolero.Html.attr.fragment "CheckedChildrenTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member checkedChildrenTemplate (nodes) = Bolero.Html.attr.fragment "CheckedChildrenTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member control (x: System.Boolean) = "Control" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onClick fn = attr.callbackOfUnit("OnClick", fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member unCheckedChildren (x: System.String) = "UnCheckedChildren" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member unCheckedChildrenTemplate (x: string) = Bolero.Html.attr.fragment "UnCheckedChildrenTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member unCheckedChildrenTemplate (node) = Bolero.Html.attr.fragment "UnCheckedChildrenTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member unCheckedChildrenTemplate (nodes) = Bolero.Html.attr.fragment "UnCheckedChildrenTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+    static member loading (x: System.Boolean) = "Loading" => x
+    static member checkedChildren (x: System.String) = "CheckedChildren" => x
+    static member checkedChildrenTemplate (x: string) = html.renderFragment("CheckedChildrenTemplate", html.text x)
+    static member checkedChildrenTemplate (node) = html.renderFragment("CheckedChildrenTemplate", node)
+    static member checkedChildrenTemplate (nodes) = html.renderFragment("CheckedChildrenTemplate", fragment { yield! nodes })
+    static member control (x: System.Boolean) = "Control" => x
+    static member onClick fn = html.callback<unit>("OnClick", fn)
+    static member unCheckedChildren (x: System.String) = "UnCheckedChildren" => x
+    static member unCheckedChildrenTemplate (x: string) = html.renderFragment("UnCheckedChildrenTemplate", html.text x)
+    static member unCheckedChildrenTemplate (node) = html.renderFragment("UnCheckedChildrenTemplate", node)
+    static member unCheckedChildrenTemplate (nodes) = html.renderFragment("UnCheckedChildrenTemplate", fragment { yield! nodes })
                     
 
 type autoComplete<'FunBlazorGeneric, 'TOption> =
     inherit antInputComponentBase<'FunBlazorGeneric, System.String>
-    static member create () = [] |> html.blazor<AntDesign.AutoComplete<'TOption>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.AutoComplete<'TOption>>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.AutoComplete<'TOption>>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.AutoComplete<'TOption>>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.AutoComplete<'TOption>>
-    static member ref x = attr.ref<AntDesign.AutoComplete<'TOption>> x
-    static member placeholder (x: System.String) = "Placeholder" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member disabled (x: System.Boolean) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member defaultActiveFirstOption (x: System.Boolean) = "DefaultActiveFirstOption" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member backfill (x: System.Boolean) = "Backfill" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member options (x: System.Collections.Generic.IEnumerable<'TOption>) = "Options" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member optionDataItems (x: System.Collections.Generic.IEnumerable<AntDesign.AutoCompleteDataItem<'TOption>>) = "OptionDataItems" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onSelectionChange fn = (Bolero.Html.attr.callback<AntDesign.AutoCompleteOption> "OnSelectionChange" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onActiveChange fn = (Bolero.Html.attr.callback<AntDesign.AutoCompleteOption> "OnActiveChange" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onInput fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.ChangeEventArgs> "OnInput" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onPanelVisibleChange fn = (Bolero.Html.attr.callback<System.Boolean> "OnPanelVisibleChange" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member optionTemplate (render: AntDesign.AutoCompleteDataItem<'TOption> -> Bolero.Node) = Bolero.Html.attr.fragmentWith "OptionTemplate" (fun x -> render x) |> FelizNode<'FunBlazorGeneric>.create
-    static member optionFormat (fn) = "OptionFormat" => (System.Func<AntDesign.AutoCompleteDataItem<'TOption>, System.String>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member overlayTemplate (x: string) = Bolero.Html.attr.fragment "OverlayTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member overlayTemplate (node) = Bolero.Html.attr.fragment "OverlayTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member overlayTemplate (nodes) = Bolero.Html.attr.fragment "OverlayTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member compareWith (fn) = "CompareWith" => (System.Func<System.Object, System.Object, System.Boolean>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member filterExpression (fn) = "FilterExpression" => (System.Func<AntDesign.AutoCompleteDataItem<'TOption>, System.String, System.Boolean>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member allowFilter (x: System.Boolean) = "AllowFilter" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member width (x: OneOf.OneOf<System.Nullable<System.Int32>, System.String>) = "Width" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member overlayClassName (x: System.String) = "OverlayClassName" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member overlayStyle (x: System.String) = "OverlayStyle" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member popupContainerSelector (x: System.String) = "PopupContainerSelector" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member selectedItem (x: AntDesign.AutoCompleteOption) = "SelectedItem" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member boundaryAdjustMode (x: AntDesign.TriggerBoundaryAdjustMode) = "BoundaryAdjustMode" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member showPanel (x: System.Boolean) = "ShowPanel" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.AutoComplete<'TOption>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.AutoComplete<'TOption>>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.AutoComplete<'TOption>>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.AutoComplete<'TOption>>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.AutoComplete<'TOption>>(){ x }
+    static member placeholder (x: System.String) = "Placeholder" => x
+    static member disabled (x: System.Boolean) = "Disabled" => x
+    static member defaultActiveFirstOption (x: System.Boolean) = "DefaultActiveFirstOption" => x
+    static member backfill (x: System.Boolean) = "Backfill" => x
+    static member options (x: System.Collections.Generic.IEnumerable<'TOption>) = "Options" => x
+    static member optionDataItems (x: System.Collections.Generic.IEnumerable<AntDesign.AutoCompleteDataItem<'TOption>>) = "OptionDataItems" => x
+    static member onSelectionChange fn = html.callback<AntDesign.AutoCompleteOption>("OnSelectionChange", fn)
+    static member onActiveChange fn = html.callback<AntDesign.AutoCompleteOption>("OnActiveChange", fn)
+    static member onInput fn = html.callback<Microsoft.AspNetCore.Components.ChangeEventArgs>("OnInput", fn)
+    static member onPanelVisibleChange fn = html.callback<System.Boolean>("OnPanelVisibleChange", fn)
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member optionTemplate (render: AntDesign.AutoCompleteDataItem<'TOption> -> NodeRenderFragment) = html.renderFragment("OptionTemplate", render)
+    static member optionFormat (fn) = "OptionFormat" => (System.Func<AntDesign.AutoCompleteDataItem<'TOption>, System.String>fn)
+    static member overlayTemplate (x: string) = html.renderFragment("OverlayTemplate", html.text x)
+    static member overlayTemplate (node) = html.renderFragment("OverlayTemplate", node)
+    static member overlayTemplate (nodes) = html.renderFragment("OverlayTemplate", fragment { yield! nodes })
+    static member compareWith (fn) = "CompareWith" => (System.Func<System.Object, System.Object, System.Boolean>fn)
+    static member filterExpression (fn) = "FilterExpression" => (System.Func<AntDesign.AutoCompleteDataItem<'TOption>, System.String, System.Boolean>fn)
+    static member allowFilter (x: System.Boolean) = "AllowFilter" => x
+    static member width (x: OneOf.OneOf<System.Nullable<System.Int32>, System.String>) = "Width" => x
+    static member overlayClassName (x: System.String) = "OverlayClassName" => x
+    static member overlayStyle (x: System.String) = "OverlayStyle" => x
+    static member popupContainerSelector (x: System.String) = "PopupContainerSelector" => x
+    static member selectedItem (x: AntDesign.AutoCompleteOption) = "SelectedItem" => x
+    static member boundaryAdjustMode (x: AntDesign.TriggerBoundaryAdjustMode) = "BoundaryAdjustMode" => x
+    static member showPanel (x: System.Boolean) = "ShowPanel" => x
                     
 
 type cascader<'FunBlazorGeneric> =
     inherit antInputComponentBase<'FunBlazorGeneric, System.String>
-    static member create () = [] |> html.blazor<AntDesign.Cascader>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Cascader>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Cascader>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Cascader>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.Cascader> x
-    static member allowClear (x: System.Boolean) = "AllowClear" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member boundaryAdjustMode (x: AntDesign.TriggerBoundaryAdjustMode) = "BoundaryAdjustMode" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member changeOnSelect (x: System.Boolean) = "ChangeOnSelect" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member defaultValue (x: System.String) = "DefaultValue" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member expandTrigger (x: System.String) = "ExpandTrigger" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member notFoundContent (x: System.String) = "NotFoundContent" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member placeholder (x: System.String) = "Placeholder" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member popupContainerSelector (x: System.String) = "PopupContainerSelector" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member showSearch (x: System.Boolean) = "ShowSearch" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onChange (fn) = "OnChange" => (System.Action<System.Collections.Generic.List<AntDesign.CascaderNode>, System.String, System.String>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member selectedNodesChanged fn = (Bolero.Html.attr.callback<AntDesign.CascaderNode[]> "SelectedNodesChanged" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member options (x: System.Collections.Generic.IEnumerable<AntDesign.CascaderNode>) = "Options" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member allowClear (x: System.Boolean) = "AllowClear" => x
+    static member boundaryAdjustMode (x: AntDesign.TriggerBoundaryAdjustMode) = "BoundaryAdjustMode" => x
+    static member changeOnSelect (x: System.Boolean) = "ChangeOnSelect" => x
+    static member defaultValue (x: System.String) = "DefaultValue" => x
+    static member expandTrigger (x: System.String) = "ExpandTrigger" => x
+    static member notFoundContent (x: System.String) = "NotFoundContent" => x
+    static member placeholder (x: System.String) = "Placeholder" => x
+    static member popupContainerSelector (x: System.String) = "PopupContainerSelector" => x
+    static member showSearch (x: System.Boolean) = "ShowSearch" => x
+    static member onChange (fn) = "OnChange" => (System.Action<System.Collections.Generic.List<AntDesign.CascaderNode>, System.String, System.String>fn)
+    static member selectedNodesChanged fn = html.callback<AntDesign.CascaderNode[]>("SelectedNodesChanged", fn)
+    static member options (x: System.Collections.Generic.IEnumerable<AntDesign.CascaderNode>) = "Options" => x
                     
 
 type checkboxGroup<'FunBlazorGeneric> =
     inherit antInputComponentBase<'FunBlazorGeneric, System.String[]>
-    static member create () = [] |> html.blazor<AntDesign.CheckboxGroup>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.CheckboxGroup>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.CheckboxGroup>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.CheckboxGroup>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.CheckboxGroup>
-    static member ref x = attr.ref<AntDesign.CheckboxGroup> x
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member options (x: OneOf.OneOf<AntDesign.CheckboxOption[], System.String[]>) = "Options" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member mixedMode (x: AntDesign.CheckboxGroupMixedMode) = "MixedMode" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onChange fn = (Bolero.Html.attr.callback<System.String[]> "OnChange" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member disabled (x: System.Boolean) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.CheckboxGroup>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.CheckboxGroup>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.CheckboxGroup>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.CheckboxGroup>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.CheckboxGroup>(){ x }
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member options (x: OneOf.OneOf<AntDesign.CheckboxOption[], System.String[]>) = "Options" => x
+    static member mixedMode (x: AntDesign.CheckboxGroupMixedMode) = "MixedMode" => x
+    static member onChange fn = html.callback<System.String[]>("OnChange", fn)
+    static member disabled (x: System.Boolean) = "Disabled" => x
                     
 
 type datePickerBase<'FunBlazorGeneric, 'TValue> =
     inherit antInputComponentBase<'FunBlazorGeneric, 'TValue>
-    static member create () = [] |> html.blazor<AntDesign.DatePickerBase<'TValue>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.DatePickerBase<'TValue>>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.DatePickerBase<'TValue>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.DatePickerBase<'TValue>>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.DatePickerBase<'TValue>> x
-    static member prefixCls (x: System.String) = "PrefixCls" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member picker (x: System.String) = "Picker" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member popupContainerSelector (x: System.String) = "PopupContainerSelector" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member disabled (x: OneOf.OneOf<System.Boolean, System.Boolean[]>) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member boundaryAdjustMode (x: AntDesign.TriggerBoundaryAdjustMode) = "BoundaryAdjustMode" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member bordered (x: System.Boolean) = "Bordered" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member autoFocus (x: System.Boolean) = "AutoFocus" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member open' (x: System.Boolean) = "Open" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member inputReadOnly (x: System.Boolean) = "InputReadOnly" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member showToday (x: System.Boolean) = "ShowToday" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member locale (x: AntDesign.DatePickerLocale) = "Locale" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member cultureInfo (x: System.Globalization.CultureInfo) = "CultureInfo" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member showTime (x: OneOf.OneOf<System.Boolean, System.String>) = "ShowTime" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member allowClear (x: System.Boolean) = "AllowClear" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member placeholder (x: OneOf.OneOf<System.String, System.String[]>) = "Placeholder" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member popupStyle (x: System.String) = "PopupStyle" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member className (x: System.String) = "ClassName" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member dropdownClassName (x: System.String) = "DropdownClassName" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member format (x: System.String) = "Format" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member defaultValue (x: 'TValue) = "DefaultValue" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member defaultPickerValue (x: 'TValue) = "DefaultPickerValue" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member suffixIcon (x: string) = Bolero.Html.attr.fragment "SuffixIcon" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member suffixIcon (node) = Bolero.Html.attr.fragment "SuffixIcon" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member suffixIcon (nodes) = Bolero.Html.attr.fragment "SuffixIcon" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member renderExtraFooter (x: string) = Bolero.Html.attr.fragment "RenderExtraFooter" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member renderExtraFooter (node) = Bolero.Html.attr.fragment "RenderExtraFooter" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member renderExtraFooter (nodes) = Bolero.Html.attr.fragment "RenderExtraFooter" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member onClearClick fn = attr.callbackOfUnit("OnClearClick", fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member onOpenChange fn = (Bolero.Html.attr.callback<System.Boolean> "OnOpenChange" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onPanelChange fn = (Bolero.Html.attr.callback<AntDesign.DateTimeChangedEventArgs> "OnPanelChange" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member disabledDate (fn) = "DisabledDate" => (System.Func<System.DateTime, System.Boolean>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member disabledHours (fn) = "DisabledHours" => (System.Func<System.DateTime, System.Int32[]>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member disabledMinutes (fn) = "DisabledMinutes" => (System.Func<System.DateTime, System.Int32[]>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member disabledSeconds (fn) = "DisabledSeconds" => (System.Func<System.DateTime, System.Int32[]>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member disabledTime (fn) = "DisabledTime" => (System.Func<System.DateTime, AntDesign.DatePickerDisabledTime>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member dateRender (fn) = Bolero.FragmentAttr ("DateRender", fun render -> box (System.Func<System.DateTime, System.DateTime, Microsoft.AspNetCore.Components.RenderFragment>(fun x1 x2 -> Microsoft.AspNetCore.Components.RenderFragment(fun rt -> render rt (fn x1 x2))))) |> FelizNode<'FunBlazorGeneric>.create
-    static member monthCellRender (fn) = Bolero.FragmentAttr ("MonthCellRender", fun render -> box (System.Func<System.DateTime, Microsoft.AspNetCore.Components.RenderFragment>(fun x1 -> Microsoft.AspNetCore.Components.RenderFragment(fun rt -> render rt (fn x1))))) |> FelizNode<'FunBlazorGeneric>.create
+    static member prefixCls (x: System.String) = "PrefixCls" => x
+    static member picker (x: System.String) = "Picker" => x
+    static member popupContainerSelector (x: System.String) = "PopupContainerSelector" => x
+    static member disabled (x: OneOf.OneOf<System.Boolean, System.Boolean[]>) = "Disabled" => x
+    static member boundaryAdjustMode (x: AntDesign.TriggerBoundaryAdjustMode) = "BoundaryAdjustMode" => x
+    static member bordered (x: System.Boolean) = "Bordered" => x
+    static member autoFocus (x: System.Boolean) = "AutoFocus" => x
+    static member open' (x: System.Boolean) = "Open" => x
+    static member inputReadOnly (x: System.Boolean) = "InputReadOnly" => x
+    static member showToday (x: System.Boolean) = "ShowToday" => x
+    static member locale (x: AntDesign.DatePickerLocale) = "Locale" => x
+    static member cultureInfo (x: System.Globalization.CultureInfo) = "CultureInfo" => x
+    static member showTime (x: OneOf.OneOf<System.Boolean, System.String>) = "ShowTime" => x
+    static member allowClear (x: System.Boolean) = "AllowClear" => x
+    static member placeholder (x: OneOf.OneOf<System.String, System.String[]>) = "Placeholder" => x
+    static member popupStyle (x: System.String) = "PopupStyle" => x
+    static member className (x: System.String) = "ClassName" => x
+    static member dropdownClassName (x: System.String) = "DropdownClassName" => x
+    static member format (x: System.String) = "Format" => x
+    static member defaultValue (x: 'TValue) = "DefaultValue" => x
+    static member defaultPickerValue (x: 'TValue) = "DefaultPickerValue" => x
+    static member suffixIcon (x: string) = html.renderFragment("SuffixIcon", html.text x)
+    static member suffixIcon (node) = html.renderFragment("SuffixIcon", node)
+    static member suffixIcon (nodes) = html.renderFragment("SuffixIcon", fragment { yield! nodes })
+    static member renderExtraFooter (x: string) = html.renderFragment("RenderExtraFooter", html.text x)
+    static member renderExtraFooter (node) = html.renderFragment("RenderExtraFooter", node)
+    static member renderExtraFooter (nodes) = html.renderFragment("RenderExtraFooter", fragment { yield! nodes })
+    static member onClearClick fn = html.callback<unit>("OnClearClick", fn)
+    static member onOpenChange fn = html.callback<System.Boolean>("OnOpenChange", fn)
+    static member onPanelChange fn = html.callback<AntDesign.DateTimeChangedEventArgs>("OnPanelChange", fn)
+    static member disabledDate (fn) = "DisabledDate" => (System.Func<System.DateTime, System.Boolean>fn)
+    static member disabledHours (fn) = "DisabledHours" => (System.Func<System.DateTime, System.Int32[]>fn)
+    static member disabledMinutes (fn) = "DisabledMinutes" => (System.Func<System.DateTime, System.Int32[]>fn)
+    static member disabledSeconds (fn) = "DisabledSeconds" => (System.Func<System.DateTime, System.Int32[]>fn)
+    static member disabledTime (fn) = "DisabledTime" => (System.Func<System.DateTime, AntDesign.DatePickerDisabledTime>fn)
+    static member dateRender (fn: _ -> _ -> NodeRenderFragment) = AttrRenderFragment(fun comp builder index -> builder.AddAttribute(index, "DateRender", box (System.Func<System.DateTime, System.DateTime, Microsoft.AspNetCore.Components.RenderFragment>(fun x1 x2 -> Microsoft.AspNetCore.Components.RenderFragment(fun tb -> (fn x1 x2).Invoke(comp, tb, 0) |> ignore)))); index + 1)
+    static member monthCellRender (fn: _ -> NodeRenderFragment) = AttrRenderFragment(fun comp builder index -> builder.AddAttribute(index, "MonthCellRender", box (System.Func<System.DateTime, Microsoft.AspNetCore.Components.RenderFragment>(fun x1 -> Microsoft.AspNetCore.Components.RenderFragment(fun tb -> (fn x1).Invoke(comp, tb, 0) |> ignore)))); index + 1)
                     
 
 type datePicker<'FunBlazorGeneric, 'TValue> =
     inherit datePickerBase<'FunBlazorGeneric, 'TValue>
-    static member create () = [] |> html.blazor<AntDesign.DatePicker<'TValue>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.DatePicker<'TValue>>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.DatePicker<'TValue>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.DatePicker<'TValue>>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.DatePicker<'TValue>> x
-    static member onChange fn = (Bolero.Html.attr.callback<AntDesign.DateTimeChangedEventArgs> "OnChange" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
+    static member onChange fn = html.callback<AntDesign.DateTimeChangedEventArgs>("OnChange", fn)
                     
 
 type monthPicker<'FunBlazorGeneric, 'TValue> =
     inherit datePicker<'FunBlazorGeneric, 'TValue>
-    static member create () = [] |> html.blazor<AntDesign.MonthPicker<'TValue>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.MonthPicker<'TValue>>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.MonthPicker<'TValue>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.MonthPicker<'TValue>>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.MonthPicker<'TValue>> x
 
                     
 
 type quarterPicker<'FunBlazorGeneric, 'TValue> =
     inherit datePicker<'FunBlazorGeneric, 'TValue>
-    static member create () = [] |> html.blazor<AntDesign.QuarterPicker<'TValue>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.QuarterPicker<'TValue>>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.QuarterPicker<'TValue>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.QuarterPicker<'TValue>>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.QuarterPicker<'TValue>> x
 
                     
 
 type weekPicker<'FunBlazorGeneric, 'TValue> =
     inherit datePicker<'FunBlazorGeneric, 'TValue>
-    static member create () = [] |> html.blazor<AntDesign.WeekPicker<'TValue>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.WeekPicker<'TValue>>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.WeekPicker<'TValue>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.WeekPicker<'TValue>>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.WeekPicker<'TValue>> x
 
                     
 
 type yearPicker<'FunBlazorGeneric, 'TValue> =
     inherit datePicker<'FunBlazorGeneric, 'TValue>
-    static member create () = [] |> html.blazor<AntDesign.YearPicker<'TValue>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.YearPicker<'TValue>>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.YearPicker<'TValue>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.YearPicker<'TValue>>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.YearPicker<'TValue>> x
 
                     
 
 type timePicker<'FunBlazorGeneric, 'TValue> =
     inherit datePicker<'FunBlazorGeneric, 'TValue>
-    static member create () = [] |> html.blazor<AntDesign.TimePicker<'TValue>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.TimePicker<'TValue>>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.TimePicker<'TValue>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.TimePicker<'TValue>>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.TimePicker<'TValue>> x
 
                     
 
 type rangePicker<'FunBlazorGeneric, 'TValue> =
     inherit datePickerBase<'FunBlazorGeneric, 'TValue>
-    static member create () = [] |> html.blazor<AntDesign.RangePicker<'TValue>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.RangePicker<'TValue>>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.RangePicker<'TValue>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.RangePicker<'TValue>>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.RangePicker<'TValue>> x
-    static member value (x: 'TValue) = "Value" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onChange fn = (Bolero.Html.attr.callback<AntDesign.DateRangeChangedEventArgs> "OnChange" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
+    static member value (x: 'TValue) = "Value" => x
+    static member onChange fn = html.callback<AntDesign.DateRangeChangedEventArgs>("OnChange", fn)
                     
 
 type inputNumber<'FunBlazorGeneric, 'TValue> =
     inherit antInputComponentBase<'FunBlazorGeneric, 'TValue>
-    static member create () = [] |> html.blazor<AntDesign.InputNumber<'TValue>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.InputNumber<'TValue>>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.InputNumber<'TValue>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.InputNumber<'TValue>>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.InputNumber<'TValue>> x
-    static member formatter (fn) = "Formatter" => (System.Func<'TValue, System.String>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member parser (fn) = "Parser" => (System.Func<System.String, System.String>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member step (x: 'TValue) = "Step" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member defaultValue (x: 'TValue) = "DefaultValue" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member max (x: 'TValue) = "Max" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member min (x: 'TValue) = "Min" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member disabled (x: System.Boolean) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onChange fn = (Bolero.Html.attr.callback<'TValue> "OnChange" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onFocus fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.FocusEventArgs> "OnFocus" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
+    static member formatter (fn) = "Formatter" => (System.Func<'TValue, System.String>fn)
+    static member parser (fn) = "Parser" => (System.Func<System.String, System.String>fn)
+    static member step (x: 'TValue) = "Step" => x
+    static member defaultValue (x: 'TValue) = "DefaultValue" => x
+    static member max (x: 'TValue) = "Max" => x
+    static member min (x: 'TValue) = "Min" => x
+    static member disabled (x: System.Boolean) = "Disabled" => x
+    static member onChange fn = html.callback<'TValue>("OnChange", fn)
+    static member onFocus fn = html.callback<Microsoft.AspNetCore.Components.Web.FocusEventArgs>("OnFocus", fn)
                     
 
 type input<'FunBlazorGeneric, 'TValue> =
     inherit antInputComponentBase<'FunBlazorGeneric, 'TValue>
-    static member create () = [] |> html.blazor<AntDesign.Input<'TValue>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Input<'TValue>>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Input<'TValue>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Input<'TValue>>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.Input<'TValue>> x
-    static member addOnBefore (x: string) = Bolero.Html.attr.fragment "AddOnBefore" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member addOnBefore (node) = Bolero.Html.attr.fragment "AddOnBefore" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member addOnBefore (nodes) = Bolero.Html.attr.fragment "AddOnBefore" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member addOnAfter (x: string) = Bolero.Html.attr.fragment "AddOnAfter" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member addOnAfter (node) = Bolero.Html.attr.fragment "AddOnAfter" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member addOnAfter (nodes) = Bolero.Html.attr.fragment "AddOnAfter" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member allowClear (x: System.Boolean) = "AllowClear" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member autoComplete (x: System.Boolean) = "AutoComplete" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member autoFocus (x: System.Boolean) = "AutoFocus" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member bordered (x: System.Boolean) = "Bordered" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member debounceMilliseconds (x: System.Int32) = "DebounceMilliseconds" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member defaultValue (x: 'TValue) = "DefaultValue" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member disabled (x: System.Boolean) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member inputElementSuffixClass (x: System.String) = "InputElementSuffixClass" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member maxLength (x: System.Int32) = "MaxLength" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onBlur fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.FocusEventArgs> "OnBlur" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onChange fn = (Bolero.Html.attr.callback<'TValue> "OnChange" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onFocus fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.FocusEventArgs> "OnFocus" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onInput fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.ChangeEventArgs> "OnInput" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onkeyDown fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.KeyboardEventArgs> "OnkeyDown" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onkeyUp fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.KeyboardEventArgs> "OnkeyUp" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onMouseUp fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> "OnMouseUp" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onPressEnter fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.KeyboardEventArgs> "OnPressEnter" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member placeholder (x: System.String) = "Placeholder" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member prefix (x: string) = Bolero.Html.attr.fragment "Prefix" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member prefix (node) = Bolero.Html.attr.fragment "Prefix" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member prefix (nodes) = Bolero.Html.attr.fragment "Prefix" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member readOnly (x: System.Boolean) = "ReadOnly" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member stopPropagation (x: System.Boolean) = "StopPropagation" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member suffix (x: string) = Bolero.Html.attr.fragment "Suffix" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member suffix (node) = Bolero.Html.attr.fragment "Suffix" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member suffix (nodes) = Bolero.Html.attr.fragment "Suffix" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member type' (x: System.String) = "Type" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member wrapperStyle (x: System.String) = "WrapperStyle" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member addOnBefore (x: string) = html.renderFragment("AddOnBefore", html.text x)
+    static member addOnBefore (node) = html.renderFragment("AddOnBefore", node)
+    static member addOnBefore (nodes) = html.renderFragment("AddOnBefore", fragment { yield! nodes })
+    static member addOnAfter (x: string) = html.renderFragment("AddOnAfter", html.text x)
+    static member addOnAfter (node) = html.renderFragment("AddOnAfter", node)
+    static member addOnAfter (nodes) = html.renderFragment("AddOnAfter", fragment { yield! nodes })
+    static member allowClear (x: System.Boolean) = "AllowClear" => x
+    static member autoComplete (x: System.Boolean) = "AutoComplete" => x
+    static member autoFocus (x: System.Boolean) = "AutoFocus" => x
+    static member bordered (x: System.Boolean) = "Bordered" => x
+    static member debounceMilliseconds (x: System.Int32) = "DebounceMilliseconds" => x
+    static member defaultValue (x: 'TValue) = "DefaultValue" => x
+    static member disabled (x: System.Boolean) = "Disabled" => x
+    static member inputElementSuffixClass (x: System.String) = "InputElementSuffixClass" => x
+    static member maxLength (x: System.Int32) = "MaxLength" => x
+    static member onBlur fn = html.callback<Microsoft.AspNetCore.Components.Web.FocusEventArgs>("OnBlur", fn)
+    static member onChange fn = html.callback<'TValue>("OnChange", fn)
+    static member onFocus fn = html.callback<Microsoft.AspNetCore.Components.Web.FocusEventArgs>("OnFocus", fn)
+    static member onInput fn = html.callback<Microsoft.AspNetCore.Components.ChangeEventArgs>("OnInput", fn)
+    static member onkeyDown fn = html.callback<Microsoft.AspNetCore.Components.Web.KeyboardEventArgs>("OnkeyDown", fn)
+    static member onkeyUp fn = html.callback<Microsoft.AspNetCore.Components.Web.KeyboardEventArgs>("OnkeyUp", fn)
+    static member onMouseUp fn = html.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs>("OnMouseUp", fn)
+    static member onPressEnter fn = html.callback<Microsoft.AspNetCore.Components.Web.KeyboardEventArgs>("OnPressEnter", fn)
+    static member placeholder (x: System.String) = "Placeholder" => x
+    static member prefix (x: string) = html.renderFragment("Prefix", html.text x)
+    static member prefix (node) = html.renderFragment("Prefix", node)
+    static member prefix (nodes) = html.renderFragment("Prefix", fragment { yield! nodes })
+    static member readOnly (x: System.Boolean) = "ReadOnly" => x
+    static member stopPropagation (x: System.Boolean) = "StopPropagation" => x
+    static member suffix (x: string) = html.renderFragment("Suffix", html.text x)
+    static member suffix (node) = html.renderFragment("Suffix", node)
+    static member suffix (nodes) = html.renderFragment("Suffix", fragment { yield! nodes })
+    static member type' (x: System.String) = "Type" => x
+    static member wrapperStyle (x: System.String) = "WrapperStyle" => x
                     
 
 type search<'FunBlazorGeneric> =
     inherit input<'FunBlazorGeneric, System.String>
-    static member create () = [] |> html.blazor<AntDesign.Search>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Search>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Search>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Search>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.Search> x
-    static member classicSearchIcon (x: System.Boolean) = "ClassicSearchIcon" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member enterButton (x: OneOf.OneOf<System.Boolean, System.String>) = "EnterButton" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member loading (x: System.Boolean) = "Loading" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onSearch fn = (Bolero.Html.attr.callback<System.String> "OnSearch" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
+    static member classicSearchIcon (x: System.Boolean) = "ClassicSearchIcon" => x
+    static member enterButton (x: OneOf.OneOf<System.Boolean, System.String>) = "EnterButton" => x
+    static member loading (x: System.Boolean) = "Loading" => x
+    static member onSearch fn = html.callback<System.String>("OnSearch", fn)
                     
 
 type autoCompleteSearch<'FunBlazorGeneric> =
     inherit search<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.AutoCompleteSearch>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.AutoCompleteSearch>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.AutoCompleteSearch>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.AutoCompleteSearch>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.AutoCompleteSearch> x
 
                     
 
 type autoCompleteInput<'FunBlazorGeneric, 'TValue> =
     inherit input<'FunBlazorGeneric, 'TValue>
-    static member create () = [] |> html.blazor<AntDesign.AutoCompleteInput<'TValue>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.AutoCompleteInput<'TValue>>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.AutoCompleteInput<'TValue>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.AutoCompleteInput<'TValue>>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.AutoCompleteInput<'TValue>> x
 
                     
 
 type inputPassword<'FunBlazorGeneric> =
     inherit input<'FunBlazorGeneric, System.String>
-    static member create () = [] |> html.blazor<AntDesign.InputPassword>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.InputPassword>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.InputPassword>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.InputPassword>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.InputPassword> x
-    static member iconRender (x: string) = Bolero.Html.attr.fragment "IconRender" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member iconRender (node) = Bolero.Html.attr.fragment "IconRender" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member iconRender (nodes) = Bolero.Html.attr.fragment "IconRender" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member showPassword (x: System.Boolean) = "ShowPassword" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member visibilityToggle (x: System.Boolean) = "VisibilityToggle" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member iconRender (x: string) = html.renderFragment("IconRender", html.text x)
+    static member iconRender (node) = html.renderFragment("IconRender", node)
+    static member iconRender (nodes) = html.renderFragment("IconRender", fragment { yield! nodes })
+    static member showPassword (x: System.Boolean) = "ShowPassword" => x
+    static member visibilityToggle (x: System.Boolean) = "VisibilityToggle" => x
                     
 
 type textArea<'FunBlazorGeneric> =
     inherit input<'FunBlazorGeneric, System.String>
-    static member create () = [] |> html.blazor<AntDesign.TextArea>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.TextArea>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.TextArea>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.TextArea>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.TextArea> x
-    static member autoSize (x: System.Boolean) = "AutoSize" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member defaultToEmptyString (x: System.Boolean) = "DefaultToEmptyString" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member maxRows (x: System.UInt32) = "MaxRows" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member minRows (x: System.UInt32) = "MinRows" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member rows (x: System.UInt32) = "Rows" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onResize fn = (Bolero.Html.attr.callback<AntDesign.OnResizeEventArgs> "OnResize" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member showCount (x: System.Boolean) = "ShowCount" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member value (x: System.String) = "Value" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member autoSize (x: System.Boolean) = "AutoSize" => x
+    static member defaultToEmptyString (x: System.Boolean) = "DefaultToEmptyString" => x
+    static member maxRows (x: System.UInt32) = "MaxRows" => x
+    static member minRows (x: System.UInt32) = "MinRows" => x
+    static member rows (x: System.UInt32) = "Rows" => x
+    static member onResize fn = html.callback<AntDesign.OnResizeEventArgs>("OnResize", fn)
+    static member showCount (x: System.Boolean) = "ShowCount" => x
+    static member value (x: System.String) = "Value" => x
                     
 
 type radioGroup<'FunBlazorGeneric, 'TValue> =
     inherit antInputComponentBase<'FunBlazorGeneric, 'TValue>
-    static member create () = [] |> html.blazor<AntDesign.RadioGroup<'TValue>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.RadioGroup<'TValue>>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.RadioGroup<'TValue>>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.RadioGroup<'TValue>>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.RadioGroup<'TValue>>
-    static member ref x = attr.ref<AntDesign.RadioGroup<'TValue>> x
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member disabled (x: System.Boolean) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member buttonStyle (x: AntDesign.RadioButtonStyle) = "ButtonStyle" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member name (x: System.String) = "Name" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member defaultValue (x: 'TValue) = "DefaultValue" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onChange fn = (Bolero.Html.attr.callback<'TValue> "OnChange" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member options (x: OneOf.OneOf<System.String[], AntDesign.RadioOption<'TValue>[]>) = "Options" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.RadioGroup<'TValue>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.RadioGroup<'TValue>>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.RadioGroup<'TValue>>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.RadioGroup<'TValue>>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.RadioGroup<'TValue>>(){ x }
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member disabled (x: System.Boolean) = "Disabled" => x
+    static member buttonStyle (x: AntDesign.RadioButtonStyle) = "ButtonStyle" => x
+    static member name (x: System.String) = "Name" => x
+    static member defaultValue (x: 'TValue) = "DefaultValue" => x
+    static member onChange fn = html.callback<'TValue>("OnChange", fn)
+    static member options (x: OneOf.OneOf<System.String[], AntDesign.RadioOption<'TValue>[]>) = "Options" => x
                     
 
 type enumRadioGroup<'FunBlazorGeneric, 'TEnum> =
     inherit radioGroup<'FunBlazorGeneric, 'TEnum>
-    static member create () = [] |> html.blazor<AntDesign.EnumRadioGroup<'TEnum>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.EnumRadioGroup<'TEnum>>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.EnumRadioGroup<'TEnum>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.EnumRadioGroup<'TEnum>>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.EnumRadioGroup<'TEnum>> x
 
                     
 
 type selectBase<'FunBlazorGeneric, 'TItemValue, 'TItem> =
     inherit antInputComponentBase<'FunBlazorGeneric, 'TItemValue>
-    static member create () = [] |> html.blazor<AntDesign.SelectBase<'TItemValue, 'TItem>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.SelectBase<'TItemValue, 'TItem>>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.SelectBase<'TItemValue, 'TItem>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.SelectBase<'TItemValue, 'TItem>>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.SelectBase<'TItemValue, 'TItem>> x
-    static member allowClear (x: System.Boolean) = "AllowClear" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member autoClearSearchValue (x: System.Boolean) = "AutoClearSearchValue" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member disabled (x: System.Boolean) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member mode (x: System.String) = "Mode" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member enableSearch (x: System.Boolean) = "EnableSearch" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member loading (x: System.Boolean) = "Loading" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member open' (x: System.Boolean) = "Open" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member placeholder (x: System.String) = "Placeholder" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onFocus (x: System.Action) = "OnFocus" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member sortByGroup (x: AntDesign.SortDirection) = "SortByGroup" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member sortByLabel (x: AntDesign.SortDirection) = "SortByLabel" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member hideSelected (x: System.Boolean) = "HideSelected" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member valueChanged fn = (Bolero.Html.attr.callback<'TItemValue> "ValueChanged" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member valuesChanged fn = (Bolero.Html.attr.callback<System.Collections.Generic.IEnumerable<'TItemValue>> "ValuesChanged" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member suffixIcon (x: string) = Bolero.Html.attr.fragment "SuffixIcon" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member suffixIcon (node) = Bolero.Html.attr.fragment "SuffixIcon" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member suffixIcon (nodes) = Bolero.Html.attr.fragment "SuffixIcon" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member prefixIcon (x: string) = Bolero.Html.attr.fragment "PrefixIcon" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member prefixIcon (node) = Bolero.Html.attr.fragment "PrefixIcon" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member prefixIcon (nodes) = Bolero.Html.attr.fragment "PrefixIcon" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member defaultValues (x: System.Collections.Generic.IEnumerable<'TItemValue>) = "DefaultValues" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onClearSelected (x: System.Action) = "OnClearSelected" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onSelectedItemChanged (fn) = "OnSelectedItemChanged" => (System.Action<'TItem>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member onSelectedItemsChanged (fn) = "OnSelectedItemsChanged" => (System.Action<System.Collections.Generic.IEnumerable<'TItem>>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member values (x: System.Collections.Generic.IEnumerable<'TItemValue>) = "Values" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member values' (value: IStore<System.Collections.Generic.IEnumerable<'TItemValue>>) = FelizNode<'FunBlazorGeneric>.create("Values", value)
-    static member values' (value: cval<System.Collections.Generic.IEnumerable<'TItemValue>>) = FelizNode<'FunBlazorGeneric>.create("Values", value)
-    static member values' (valueFn: System.Collections.Generic.IEnumerable<'TItemValue> * (System.Collections.Generic.IEnumerable<'TItemValue> -> unit)) = FelizNode<'FunBlazorGeneric>.create("Values", valueFn)
-    static member customTagLabelToValue (fn) = "CustomTagLabelToValue" => (System.Func<System.String, 'TItemValue>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member selectOptions (x: string) = Bolero.Html.attr.fragment "SelectOptions" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member selectOptions (node) = Bolero.Html.attr.fragment "SelectOptions" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member selectOptions (nodes) = Bolero.Html.attr.fragment "SelectOptions" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member maxTagTextLength (x: System.Int32) = "MaxTagTextLength" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member labelInValue (x: System.Boolean) = "LabelInValue" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member maxTagCount (x: OneOf.OneOf<System.Int32, AntDesign.Select.ResponsiveTag>) = "MaxTagCount" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member valueOnClear (x: 'TItemValue) = "ValueOnClear" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member allowClear (x: System.Boolean) = "AllowClear" => x
+    static member autoClearSearchValue (x: System.Boolean) = "AutoClearSearchValue" => x
+    static member disabled (x: System.Boolean) = "Disabled" => x
+    static member mode (x: System.String) = "Mode" => x
+    static member enableSearch (x: System.Boolean) = "EnableSearch" => x
+    static member loading (x: System.Boolean) = "Loading" => x
+    static member open' (x: System.Boolean) = "Open" => x
+    static member placeholder (x: System.String) = "Placeholder" => x
+    static member onFocus (x: System.Action) = "OnFocus" => x
+    static member sortByGroup (x: AntDesign.SortDirection) = "SortByGroup" => x
+    static member sortByLabel (x: AntDesign.SortDirection) = "SortByLabel" => x
+    static member hideSelected (x: System.Boolean) = "HideSelected" => x
+    static member valueChanged fn = html.callback<'TItemValue>("ValueChanged", fn)
+    static member valuesChanged fn = html.callback<System.Collections.Generic.IEnumerable<'TItemValue>>("ValuesChanged", fn)
+    static member suffixIcon (x: string) = html.renderFragment("SuffixIcon", html.text x)
+    static member suffixIcon (node) = html.renderFragment("SuffixIcon", node)
+    static member suffixIcon (nodes) = html.renderFragment("SuffixIcon", fragment { yield! nodes })
+    static member prefixIcon (x: string) = html.renderFragment("PrefixIcon", html.text x)
+    static member prefixIcon (node) = html.renderFragment("PrefixIcon", node)
+    static member prefixIcon (nodes) = html.renderFragment("PrefixIcon", fragment { yield! nodes })
+    static member defaultValues (x: System.Collections.Generic.IEnumerable<'TItemValue>) = "DefaultValues" => x
+    static member onClearSelected (x: System.Action) = "OnClearSelected" => x
+    static member onSelectedItemChanged (fn) = "OnSelectedItemChanged" => (System.Action<'TItem>fn)
+    static member onSelectedItemsChanged (fn) = "OnSelectedItemsChanged" => (System.Action<System.Collections.Generic.IEnumerable<'TItem>>fn)
+    static member values (x: System.Collections.Generic.IEnumerable<'TItemValue>) = "Values" => x
+    static member values' (value: IStore<System.Collections.Generic.IEnumerable<'TItemValue>>) = html.bind("Values", value)
+    static member values' (value: cval<System.Collections.Generic.IEnumerable<'TItemValue>>) = html.bind("Values", value)
+    static member values' (valueFn: System.Collections.Generic.IEnumerable<'TItemValue> * (System.Collections.Generic.IEnumerable<'TItemValue> -> unit)) = html.bind("Values", valueFn)
+    static member customTagLabelToValue (fn) = "CustomTagLabelToValue" => (System.Func<System.String, 'TItemValue>fn)
+    static member selectOptions (x: string) = html.renderFragment("SelectOptions", html.text x)
+    static member selectOptions (node) = html.renderFragment("SelectOptions", node)
+    static member selectOptions (nodes) = html.renderFragment("SelectOptions", fragment { yield! nodes })
+    static member maxTagTextLength (x: System.Int32) = "MaxTagTextLength" => x
+    static member labelInValue (x: System.Boolean) = "LabelInValue" => x
+    static member maxTagCount (x: OneOf.OneOf<System.Int32, AntDesign.Select.ResponsiveTag>) = "MaxTagCount" => x
+    static member valueOnClear (x: 'TItemValue) = "ValueOnClear" => x
                     
 
 type select'<'FunBlazorGeneric, 'TItemValue, 'TItem> =
     inherit selectBase<'FunBlazorGeneric, 'TItemValue, 'TItem>
-    static member create () = [] |> html.blazor<AntDesign.Select<'TItemValue, 'TItem>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Select<'TItemValue, 'TItem>>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Select<'TItemValue, 'TItem>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Select<'TItemValue, 'TItem>>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.Select<'TItemValue, 'TItem>> x
-    static member boundaryAdjustMode (x: AntDesign.TriggerBoundaryAdjustMode) = "BoundaryAdjustMode" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member bordered (x: System.Boolean) = "Bordered" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member dataSource (x: System.Collections.Generic.IEnumerable<'TItem>) = "DataSource" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member dataSourceEqualityComparer (x: System.Collections.Generic.IEqualityComparer<'TItem>) = "DataSourceEqualityComparer" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member defaultActiveFirstOption (x: System.Boolean) = "DefaultActiveFirstOption" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member disabledName (x: System.String) = "DisabledName" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member dropdownMatchSelectWidth (x: OneOf.OneOf<System.Boolean, System.String>) = "DropdownMatchSelectWidth" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member dropdownMaxWidth (x: System.String) = "DropdownMaxWidth" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member dropdownRender (fn) = Bolero.FragmentAttr ("DropdownRender", fun render -> box (System.Func<Microsoft.AspNetCore.Components.RenderFragment, Microsoft.AspNetCore.Components.RenderFragment>(fun x1 -> Microsoft.AspNetCore.Components.RenderFragment(fun rt -> render rt (fn x1))))) |> FelizNode<'FunBlazorGeneric>.create
-    static member groupName (x: System.String) = "GroupName" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member ignoreItemChanges (x: System.Boolean) = "IgnoreItemChanges" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member itemTemplate (render: 'TItem -> Bolero.Node) = Bolero.Html.attr.fragmentWith "ItemTemplate" (fun x -> render x) |> FelizNode<'FunBlazorGeneric>.create
-    static member labelName (x: System.String) = "LabelName" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member labelTemplate (render: 'TItem -> Bolero.Node) = Bolero.Html.attr.fragmentWith "LabelTemplate" (fun x -> render x) |> FelizNode<'FunBlazorGeneric>.create
-    static member maxTagPlaceholder (render: System.Collections.Generic.IEnumerable<'TItem> -> Bolero.Node) = Bolero.Html.attr.fragmentWith "MaxTagPlaceholder" (fun x -> render x) |> FelizNode<'FunBlazorGeneric>.create
-    static member notFoundContent (x: string) = Bolero.Html.attr.fragment "NotFoundContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member notFoundContent (node) = Bolero.Html.attr.fragment "NotFoundContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member notFoundContent (nodes) = Bolero.Html.attr.fragment "NotFoundContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member onBlur (x: System.Action) = "OnBlur" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onCreateCustomTag (fn) = "OnCreateCustomTag" => (System.Action<System.String>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member onDataSourceChanged (x: System.Action) = "OnDataSourceChanged" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onDropdownVisibleChange (fn) = "OnDropdownVisibleChange" => (System.Action<System.Boolean>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member onMouseEnter (x: System.Action) = "OnMouseEnter" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onMouseLeave (x: System.Action) = "OnMouseLeave" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onSearch (fn) = "OnSearch" => (System.Action<System.String>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member popupContainerMaxHeight (x: System.String) = "PopupContainerMaxHeight" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member popupContainerSelector (x: System.String) = "PopupContainerSelector" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member showArrowIcon (x: System.Boolean) = "ShowArrowIcon" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member showSearchIcon (x: System.Boolean) = "ShowSearchIcon" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member tokenSeparators (x: System.Char[]) = "TokenSeparators" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member valueChanged fn = (Bolero.Html.attr.callback<'TItemValue> "ValueChanged" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member valueName (x: System.String) = "ValueName" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member value (x: 'TItemValue) = "Value" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member value' (value: IStore<'TItemValue>) = FelizNode<'FunBlazorGeneric>.create("Value", value)
-    static member value' (value: cval<'TItemValue>) = FelizNode<'FunBlazorGeneric>.create("Value", value)
-    static member value' (valueFn: 'TItemValue * ('TItemValue -> unit)) = FelizNode<'FunBlazorGeneric>.create("Value", valueFn)
-    static member defaultValue (x: 'TItemValue) = "DefaultValue" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member boundaryAdjustMode (x: AntDesign.TriggerBoundaryAdjustMode) = "BoundaryAdjustMode" => x
+    static member bordered (x: System.Boolean) = "Bordered" => x
+    static member dataSource (x: System.Collections.Generic.IEnumerable<'TItem>) = "DataSource" => x
+    static member dataSourceEqualityComparer (x: System.Collections.Generic.IEqualityComparer<'TItem>) = "DataSourceEqualityComparer" => x
+    static member defaultActiveFirstOption (x: System.Boolean) = "DefaultActiveFirstOption" => x
+    static member disabledName (x: System.String) = "DisabledName" => x
+    static member dropdownMatchSelectWidth (x: OneOf.OneOf<System.Boolean, System.String>) = "DropdownMatchSelectWidth" => x
+    static member dropdownMaxWidth (x: System.String) = "DropdownMaxWidth" => x
+    static member dropdownRender (fn: _ -> NodeRenderFragment) = AttrRenderFragment(fun comp builder index -> builder.AddAttribute(index, "DropdownRender", box (System.Func<Microsoft.AspNetCore.Components.RenderFragment, Microsoft.AspNetCore.Components.RenderFragment>(fun x1 -> Microsoft.AspNetCore.Components.RenderFragment(fun tb -> (fn x1).Invoke(comp, tb, 0) |> ignore)))); index + 1)
+    static member groupName (x: System.String) = "GroupName" => x
+    static member ignoreItemChanges (x: System.Boolean) = "IgnoreItemChanges" => x
+    static member itemTemplate (render: 'TItem -> NodeRenderFragment) = html.renderFragment("ItemTemplate", render)
+    static member labelName (x: System.String) = "LabelName" => x
+    static member labelTemplate (render: 'TItem -> NodeRenderFragment) = html.renderFragment("LabelTemplate", render)
+    static member maxTagPlaceholder (render: System.Collections.Generic.IEnumerable<'TItem> -> NodeRenderFragment) = html.renderFragment("MaxTagPlaceholder", render)
+    static member notFoundContent (x: string) = html.renderFragment("NotFoundContent", html.text x)
+    static member notFoundContent (node) = html.renderFragment("NotFoundContent", node)
+    static member notFoundContent (nodes) = html.renderFragment("NotFoundContent", fragment { yield! nodes })
+    static member onBlur (x: System.Action) = "OnBlur" => x
+    static member onCreateCustomTag (fn) = "OnCreateCustomTag" => (System.Action<System.String>fn)
+    static member onDataSourceChanged (x: System.Action) = "OnDataSourceChanged" => x
+    static member onDropdownVisibleChange (fn) = "OnDropdownVisibleChange" => (System.Action<System.Boolean>fn)
+    static member onMouseEnter (x: System.Action) = "OnMouseEnter" => x
+    static member onMouseLeave (x: System.Action) = "OnMouseLeave" => x
+    static member onSearch (fn) = "OnSearch" => (System.Action<System.String>fn)
+    static member popupContainerMaxHeight (x: System.String) = "PopupContainerMaxHeight" => x
+    static member popupContainerSelector (x: System.String) = "PopupContainerSelector" => x
+    static member showArrowIcon (x: System.Boolean) = "ShowArrowIcon" => x
+    static member showSearchIcon (x: System.Boolean) = "ShowSearchIcon" => x
+    static member tokenSeparators (x: System.Char[]) = "TokenSeparators" => x
+    static member valueChanged fn = html.callback<'TItemValue>("ValueChanged", fn)
+    static member valueName (x: System.String) = "ValueName" => x
+    static member value (x: 'TItemValue) = "Value" => x
+    static member value' (value: IStore<'TItemValue>) = html.bind("Value", value)
+    static member value' (value: cval<'TItemValue>) = html.bind("Value", value)
+    static member value' (valueFn: 'TItemValue * ('TItemValue -> unit)) = html.bind("Value", valueFn)
+    static member defaultValue (x: 'TItemValue) = "DefaultValue" => x
                     
 
 type enumSelect<'FunBlazorGeneric, 'TEnum> =
     inherit select'<'FunBlazorGeneric, 'TEnum, 'TEnum>
-    static member create () = [] |> html.blazor<AntDesign.EnumSelect<'TEnum>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.EnumSelect<'TEnum>>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.EnumSelect<'TEnum>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.EnumSelect<'TEnum>>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.EnumSelect<'TEnum>> x
 
                     
 
 type simpleSelect<'FunBlazorGeneric> =
     inherit select'<'FunBlazorGeneric, System.String, System.String>
-    static member create () = [] |> html.blazor<AntDesign.SimpleSelect>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.SimpleSelect>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.SimpleSelect>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.SimpleSelect>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.SimpleSelect> x
 
                     
 
 type treeSelect<'FunBlazorGeneric, 'TItem when 'TItem : not struct> =
     inherit selectBase<'FunBlazorGeneric, System.String, 'TItem>
-    static member create () = [] |> html.blazor<AntDesign.TreeSelect<'TItem>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.TreeSelect<'TItem>>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.TreeSelect<'TItem>>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.TreeSelect<'TItem>>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.TreeSelect<'TItem>>
-    static member ref x = attr.ref<AntDesign.TreeSelect<'TItem>> x
-    static member showExpand (x: System.Boolean) = "ShowExpand" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member multiple (x: System.Boolean) = "Multiple" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member treeCheckable (x: System.Boolean) = "TreeCheckable" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member popupContainerSelector (x: System.String) = "PopupContainerSelector" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onMouseEnter (x: System.Action) = "OnMouseEnter" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onMouseLeave (x: System.Action) = "OnMouseLeave" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member labelTemplate (render: 'TItem -> Bolero.Node) = Bolero.Html.attr.fragmentWith "LabelTemplate" (fun x -> render x) |> FelizNode<'FunBlazorGeneric>.create
-    static member showSearchIcon (x: System.Boolean) = "ShowSearchIcon" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member showArrowIcon (x: System.Boolean) = "ShowArrowIcon" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member nodes (x: AntDesign.TreeNode<'TItem>[]) = "Nodes" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member dataSource (x: System.Collections.Generic.IEnumerable<'TItem>) = "DataSource" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member treeDefaultExpandAll (x: System.Boolean) = "TreeDefaultExpandAll" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member dataItemExpression (fn) = "DataItemExpression" => (System.Func<System.Collections.Generic.IEnumerable<'TItem>, System.String, 'TItem>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member dataItemsExpression (fn) = "DataItemsExpression" => (System.Func<System.Collections.Generic.IList<'TItem>, System.Collections.Generic.IEnumerable<System.String>, System.Collections.Generic.IEnumerable<'TItem>>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member rootValue (x: System.String) = "RootValue" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member titleExpression (fn) = "TitleExpression" => (System.Func<'TItem, System.String>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member keyExpression (fn) = "KeyExpression" => (System.Func<'TItem, System.String>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member iconExpression (fn) = "IconExpression" => (System.Func<'TItem, System.String>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member isLeafExpression (fn) = "IsLeafExpression" => (System.Func<'TItem, System.Boolean>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member childrenExpression (fn) = "ChildrenExpression" => (System.Func<'TItem, System.Collections.Generic.IList<'TItem>>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member disabledExpression (fn) = "DisabledExpression" => (System.Func<'TItem, System.Boolean>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member dropdownMatchSelectWidth (x: OneOf.OneOf<System.Boolean, System.String>) = "DropdownMatchSelectWidth" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member dropdownMaxWidth (x: System.String) = "DropdownMaxWidth" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member popupContainerMaxHeight (x: System.String) = "PopupContainerMaxHeight" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.TreeSelect<'TItem>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.TreeSelect<'TItem>>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.TreeSelect<'TItem>>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.TreeSelect<'TItem>>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.TreeSelect<'TItem>>(){ x }
+    static member showExpand (x: System.Boolean) = "ShowExpand" => x
+    static member multiple (x: System.Boolean) = "Multiple" => x
+    static member treeCheckable (x: System.Boolean) = "TreeCheckable" => x
+    static member popupContainerSelector (x: System.String) = "PopupContainerSelector" => x
+    static member onMouseEnter (x: System.Action) = "OnMouseEnter" => x
+    static member onMouseLeave (x: System.Action) = "OnMouseLeave" => x
+    static member labelTemplate (render: 'TItem -> NodeRenderFragment) = html.renderFragment("LabelTemplate", render)
+    static member showSearchIcon (x: System.Boolean) = "ShowSearchIcon" => x
+    static member showArrowIcon (x: System.Boolean) = "ShowArrowIcon" => x
+    static member nodes (x: AntDesign.TreeNode<'TItem>[]) = "Nodes" => x
+    static member dataSource (x: System.Collections.Generic.IEnumerable<'TItem>) = "DataSource" => x
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member treeDefaultExpandAll (x: System.Boolean) = "TreeDefaultExpandAll" => x
+    static member dataItemExpression (fn) = "DataItemExpression" => (System.Func<System.Collections.Generic.IEnumerable<'TItem>, System.String, 'TItem>fn)
+    static member dataItemsExpression (fn) = "DataItemsExpression" => (System.Func<System.Collections.Generic.IList<'TItem>, System.Collections.Generic.IEnumerable<System.String>, System.Collections.Generic.IEnumerable<'TItem>>fn)
+    static member rootValue (x: System.String) = "RootValue" => x
+    static member titleExpression (fn) = "TitleExpression" => (System.Func<'TItem, System.String>fn)
+    static member keyExpression (fn) = "KeyExpression" => (System.Func<'TItem, System.String>fn)
+    static member iconExpression (fn) = "IconExpression" => (System.Func<'TItem, System.String>fn)
+    static member isLeafExpression (fn) = "IsLeafExpression" => (System.Func<'TItem, System.Boolean>fn)
+    static member childrenExpression (fn) = "ChildrenExpression" => (System.Func<'TItem, System.Collections.Generic.IList<'TItem>>fn)
+    static member disabledExpression (fn) = "DisabledExpression" => (System.Func<'TItem, System.Boolean>fn)
+    static member dropdownMatchSelectWidth (x: OneOf.OneOf<System.Boolean, System.String>) = "DropdownMatchSelectWidth" => x
+    static member dropdownMaxWidth (x: System.String) = "DropdownMaxWidth" => x
+    static member popupContainerMaxHeight (x: System.String) = "PopupContainerMaxHeight" => x
                     
 
 type simpleTreeSelect<'FunBlazorGeneric, 'TItem when 'TItem : not struct> =
     inherit treeSelect<'FunBlazorGeneric, 'TItem>
-    static member create () = [] |> html.blazor<AntDesign.SimpleTreeSelect<'TItem>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.SimpleTreeSelect<'TItem>>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.SimpleTreeSelect<'TItem>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.SimpleTreeSelect<'TItem>>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.SimpleTreeSelect<'TItem>> x
-    static member childrenMethodExpression (fn) = "ChildrenMethodExpression" => (System.Func<System.String, System.Collections.Generic.IList<'TItem>>fn) |> FelizNode<'FunBlazorGeneric>.create
+    static member childrenMethodExpression (fn) = "ChildrenMethodExpression" => (System.Func<System.String, System.Collections.Generic.IList<'TItem>>fn)
                     
 
 type slider<'FunBlazorGeneric, 'TValue> =
     inherit antInputComponentBase<'FunBlazorGeneric, 'TValue>
-    static member create () = [] |> html.blazor<AntDesign.Slider<'TValue>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Slider<'TValue>>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Slider<'TValue>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Slider<'TValue>>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.Slider<'TValue>> x
-    static member defaultValue (x: 'TValue) = "DefaultValue" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member disabled (x: System.Boolean) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member dots (x: System.Boolean) = "Dots" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member included (x: System.Boolean) = "Included" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member marks (x: AntDesign.SliderMark[]) = "Marks" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member max (x: System.Double) = "Max" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member min (x: System.Double) = "Min" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member reverse (x: System.Boolean) = "Reverse" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member step (x: System.Nullable<System.Double>) = "Step" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member vertical (x: System.Boolean) = "Vertical" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onAfterChange (fn) = "OnAfterChange" => (System.Action<'TValue>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member onChange (fn) = "OnChange" => (System.Action<'TValue>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member hasTooltip (x: System.Boolean) = "HasTooltip" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member tipFormatter (fn) = "TipFormatter" => (System.Func<System.Double, System.String>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member tooltipPlacement (x: AntDesign.Placement) = "TooltipPlacement" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member tooltipVisible (x: System.Boolean) = "TooltipVisible" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member getTooltipPopupContainer (x: System.Object) = "GetTooltipPopupContainer" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member value (x: 'TValue) = "Value" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member defaultValue (x: 'TValue) = "DefaultValue" => x
+    static member disabled (x: System.Boolean) = "Disabled" => x
+    static member dots (x: System.Boolean) = "Dots" => x
+    static member included (x: System.Boolean) = "Included" => x
+    static member marks (x: AntDesign.SliderMark[]) = "Marks" => x
+    static member max (x: System.Double) = "Max" => x
+    static member min (x: System.Double) = "Min" => x
+    static member reverse (x: System.Boolean) = "Reverse" => x
+    static member step (x: System.Nullable<System.Double>) = "Step" => x
+    static member vertical (x: System.Boolean) = "Vertical" => x
+    static member onAfterChange (fn) = "OnAfterChange" => (System.Action<'TValue>fn)
+    static member onChange (fn) = "OnChange" => (System.Action<'TValue>fn)
+    static member hasTooltip (x: System.Boolean) = "HasTooltip" => x
+    static member tipFormatter (fn) = "TipFormatter" => (System.Func<System.Double, System.String>fn)
+    static member tooltipPlacement (x: AntDesign.Placement) = "TooltipPlacement" => x
+    static member tooltipVisible (x: System.Boolean) = "TooltipVisible" => x
+    static member getTooltipPopupContainer (x: System.Object) = "GetTooltipPopupContainer" => x
+    static member value (x: 'TValue) = "Value" => x
                     
 
 type descriptions<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Descriptions>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Descriptions>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.Descriptions>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.Descriptions>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.Descriptions>
-    static member ref x = attr.ref<AntDesign.Descriptions> x
-    static member bordered (x: System.Boolean) = "Bordered" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member layout (x: System.String) = "Layout" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member column (x: OneOf.OneOf<System.Int32, System.Collections.Generic.Dictionary<System.String, System.Int32>>) = "Column" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member size (x: System.String) = "Size" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member title (x: System.String) = "Title" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (x: string) = Bolero.Html.attr.fragment "TitleTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (node) = Bolero.Html.attr.fragment "TitleTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (nodes) = Bolero.Html.attr.fragment "TitleTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member colon (x: System.Boolean) = "Colon" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Descriptions>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Descriptions>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Descriptions>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Descriptions>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Descriptions>(){ x }
+    static member bordered (x: System.Boolean) = "Bordered" => x
+    static member layout (x: System.String) = "Layout" => x
+    static member column (x: OneOf.OneOf<System.Int32, System.Collections.Generic.Dictionary<System.String, System.Int32>>) = "Column" => x
+    static member size (x: System.String) = "Size" => x
+    static member title (x: System.String) = "Title" => x
+    static member titleTemplate (x: string) = html.renderFragment("TitleTemplate", html.text x)
+    static member titleTemplate (node) = html.renderFragment("TitleTemplate", node)
+    static member titleTemplate (nodes) = html.renderFragment("TitleTemplate", fragment { yield! nodes })
+    static member colon (x: System.Boolean) = "Colon" => x
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
                     
 
 type descriptionsItem<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.DescriptionsItem>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.DescriptionsItem>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.DescriptionsItem>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.DescriptionsItem>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.DescriptionsItem>
-    static member ref x = attr.ref<AntDesign.DescriptionsItem> x
-    static member title (x: System.String) = "Title" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (x: string) = Bolero.Html.attr.fragment "TitleTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (node) = Bolero.Html.attr.fragment "TitleTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (nodes) = Bolero.Html.attr.fragment "TitleTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member span (x: System.Int32) = "Span" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.DescriptionsItem>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.DescriptionsItem>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.DescriptionsItem>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.DescriptionsItem>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.DescriptionsItem>(){ x }
+    static member title (x: System.String) = "Title" => x
+    static member titleTemplate (x: string) = html.renderFragment("TitleTemplate", html.text x)
+    static member titleTemplate (node) = html.renderFragment("TitleTemplate", node)
+    static member titleTemplate (nodes) = html.renderFragment("TitleTemplate", fragment { yield! nodes })
+    static member span (x: System.Int32) = "Span" => x
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
                     
 
 type divider<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Divider>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Divider>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.Divider>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.Divider>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.Divider>
-    static member ref x = attr.ref<AntDesign.Divider> x
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member text (x: System.String) = "Text" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member plain (x: System.Boolean) = "Plain" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member type' (x: AntDesign.DirectionVHType) = "Type" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member orientation (x: System.String) = "Orientation" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member dashed (x: System.Boolean) = "Dashed" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Divider>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Divider>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Divider>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Divider>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Divider>(){ x }
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member text (x: System.String) = "Text" => x
+    static member plain (x: System.Boolean) = "Plain" => x
+    static member type' (x: AntDesign.DirectionVHType) = "Type" => x
+    static member orientation (x: System.String) = "Orientation" => x
+    static member dashed (x: System.Boolean) = "Dashed" => x
                     
 
 type drawer<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Drawer>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Drawer>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.Drawer>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.Drawer>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.Drawer>
-    static member ref x = attr.ref<AntDesign.Drawer> x
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member content (x: OneOf.OneOf<Microsoft.AspNetCore.Components.RenderFragment, System.String>) = "Content" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member closable (x: System.Boolean) = "Closable" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member maskClosable (x: System.Boolean) = "MaskClosable" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member mask (x: System.Boolean) = "Mask" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member keyboard (x: System.Boolean) = "Keyboard" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member title (x: OneOf.OneOf<Microsoft.AspNetCore.Components.RenderFragment, System.String>) = "Title" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member placement (x: System.String) = "Placement" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member maskStyle (x: System.String) = "MaskStyle" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member bodyStyle (x: System.String) = "BodyStyle" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member wrapClassName (x: System.String) = "WrapClassName" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member width (x: System.Int32) = "Width" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member height (x: System.Int32) = "Height" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member zIndex (x: System.Int32) = "ZIndex" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member offsetX (x: System.Int32) = "OffsetX" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member offsetY (x: System.Int32) = "OffsetY" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member visible (x: System.Boolean) = "Visible" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onClose fn = attr.callbackOfUnit("OnClose", fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member handler (x: string) = Bolero.Html.attr.fragment "Handler" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member handler (node) = Bolero.Html.attr.fragment "Handler" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member handler (nodes) = Bolero.Html.attr.fragment "Handler" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Drawer>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Drawer>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Drawer>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Drawer>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Drawer>(){ x }
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member content (x: OneOf.OneOf<Microsoft.AspNetCore.Components.RenderFragment, System.String>) = "Content" => x
+    static member closable (x: System.Boolean) = "Closable" => x
+    static member maskClosable (x: System.Boolean) = "MaskClosable" => x
+    static member mask (x: System.Boolean) = "Mask" => x
+    static member keyboard (x: System.Boolean) = "Keyboard" => x
+    static member title (x: OneOf.OneOf<Microsoft.AspNetCore.Components.RenderFragment, System.String>) = "Title" => x
+    static member placement (x: System.String) = "Placement" => x
+    static member maskStyle (x: System.String) = "MaskStyle" => x
+    static member bodyStyle (x: System.String) = "BodyStyle" => x
+    static member wrapClassName (x: System.String) = "WrapClassName" => x
+    static member width (x: System.Int32) = "Width" => x
+    static member height (x: System.Int32) = "Height" => x
+    static member zIndex (x: System.Int32) = "ZIndex" => x
+    static member offsetX (x: System.Int32) = "OffsetX" => x
+    static member offsetY (x: System.Int32) = "OffsetY" => x
+    static member visible (x: System.Boolean) = "Visible" => x
+    static member onClose fn = html.callback<unit>("OnClose", fn)
+    static member handler (x: string) = html.renderFragment("Handler", html.text x)
+    static member handler (node) = html.renderFragment("Handler", node)
+    static member handler (nodes) = html.renderFragment("Handler", fragment { yield! nodes })
                     
 
 type drawerContainer<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.DrawerContainer>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.DrawerContainer>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.DrawerContainer>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.DrawerContainer>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.DrawerContainer> x
 
                     
 
 type empty<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Empty>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Empty>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.Empty>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.Empty>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.Empty>
-    static member ref x = attr.ref<AntDesign.Empty> x
-    static member prefixCls (x: System.String) = "PrefixCls" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member imageStyle (x: System.String) = "ImageStyle" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member small (x: System.Boolean) = "Small" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member simple (x: System.Boolean) = "Simple" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member description (x: OneOf.OneOf<System.String, System.Nullable<System.Boolean>>) = "Description" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member descriptionTemplate (x: string) = Bolero.Html.attr.fragment "DescriptionTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member descriptionTemplate (node) = Bolero.Html.attr.fragment "DescriptionTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member descriptionTemplate (nodes) = Bolero.Html.attr.fragment "DescriptionTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member image (x: System.String) = "Image" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member imageTemplate (x: string) = Bolero.Html.attr.fragment "ImageTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member imageTemplate (node) = Bolero.Html.attr.fragment "ImageTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member imageTemplate (nodes) = Bolero.Html.attr.fragment "ImageTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Empty>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Empty>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Empty>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Empty>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Empty>(){ x }
+    static member prefixCls (x: System.String) = "PrefixCls" => x
+    static member imageStyle (x: System.String) = "ImageStyle" => x
+    static member small (x: System.Boolean) = "Small" => x
+    static member simple (x: System.Boolean) = "Simple" => x
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member description (x: OneOf.OneOf<System.String, System.Nullable<System.Boolean>>) = "Description" => x
+    static member descriptionTemplate (x: string) = html.renderFragment("DescriptionTemplate", html.text x)
+    static member descriptionTemplate (node) = html.renderFragment("DescriptionTemplate", node)
+    static member descriptionTemplate (nodes) = html.renderFragment("DescriptionTemplate", fragment { yield! nodes })
+    static member image (x: System.String) = "Image" => x
+    static member imageTemplate (x: string) = html.renderFragment("ImageTemplate", html.text x)
+    static member imageTemplate (node) = html.renderFragment("ImageTemplate", node)
+    static member imageTemplate (nodes) = html.renderFragment("ImageTemplate", fragment { yield! nodes })
                     
 
 type form<'FunBlazorGeneric, 'TModel> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Form<'TModel>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Form<'TModel>>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.Form<'TModel>>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.Form<'TModel>>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.Form<'TModel>>
-    static member ref x = attr.ref<AntDesign.Form<'TModel>> x
-    static member layout (x: System.String) = "Layout" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (render: 'TModel -> Bolero.Node) = Bolero.Html.attr.fragmentWith "ChildContent" (fun x -> render x) |> FelizNode<'FunBlazorGeneric>.create
-    static member labelCol (x: AntDesign.ColLayoutParam) = "LabelCol" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member labelAlign (x: System.Nullable<AntDesign.AntLabelAlignType>) = "LabelAlign" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member labelColSpan (x: OneOf.OneOf<System.String, System.Int32>) = "LabelColSpan" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member labelColOffset (x: OneOf.OneOf<System.String, System.Int32>) = "LabelColOffset" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member wrapperCol (x: AntDesign.ColLayoutParam) = "WrapperCol" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member wrapperColSpan (x: OneOf.OneOf<System.String, System.Int32>) = "WrapperColSpan" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member wrapperColOffset (x: OneOf.OneOf<System.String, System.Int32>) = "WrapperColOffset" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member size (x: System.String) = "Size" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member name (x: System.String) = "Name" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member model (x: 'TModel) = "Model" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member loading (x: System.Boolean) = "Loading" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onFinish fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Forms.EditContext> "OnFinish" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onFinishFailed fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Forms.EditContext> "OnFinishFailed" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onFieldChanged fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Forms.FieldChangedEventArgs> "OnFieldChanged" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onValidationRequested fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Forms.ValidationRequestedEventArgs> "OnValidationRequested" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onValidationStateChanged fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Forms.ValidationStateChangedEventArgs> "OnValidationStateChanged" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member validator (x: string) = Bolero.Html.attr.fragment "Validator" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member validator (node) = Bolero.Html.attr.fragment "Validator" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member validator (nodes) = Bolero.Html.attr.fragment "Validator" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member validateOnChange (x: System.Boolean) = "ValidateOnChange" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member validateMode (x: AntDesign.FormValidateMode) = "ValidateMode" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member validateMessages (x: AntDesign.FormValidateErrorMessages) = "ValidateMessages" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Form<'TModel>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Form<'TModel>>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Form<'TModel>>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Form<'TModel>>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Form<'TModel>>(){ x }
+    static member layout (x: System.String) = "Layout" => x
+    static member childContent (render: 'TModel -> NodeRenderFragment) = html.renderFragment("ChildContent", render)
+    static member labelCol (x: AntDesign.ColLayoutParam) = "LabelCol" => x
+    static member labelAlign (x: System.Nullable<AntDesign.AntLabelAlignType>) = "LabelAlign" => x
+    static member labelColSpan (x: OneOf.OneOf<System.String, System.Int32>) = "LabelColSpan" => x
+    static member labelColOffset (x: OneOf.OneOf<System.String, System.Int32>) = "LabelColOffset" => x
+    static member wrapperCol (x: AntDesign.ColLayoutParam) = "WrapperCol" => x
+    static member wrapperColSpan (x: OneOf.OneOf<System.String, System.Int32>) = "WrapperColSpan" => x
+    static member wrapperColOffset (x: OneOf.OneOf<System.String, System.Int32>) = "WrapperColOffset" => x
+    static member size (x: System.String) = "Size" => x
+    static member name (x: System.String) = "Name" => x
+    static member model (x: 'TModel) = "Model" => x
+    static member loading (x: System.Boolean) = "Loading" => x
+    static member onFinish fn = html.callback<Microsoft.AspNetCore.Components.Forms.EditContext>("OnFinish", fn)
+    static member onFinishFailed fn = html.callback<Microsoft.AspNetCore.Components.Forms.EditContext>("OnFinishFailed", fn)
+    static member onFieldChanged fn = html.callback<Microsoft.AspNetCore.Components.Forms.FieldChangedEventArgs>("OnFieldChanged", fn)
+    static member onValidationRequested fn = html.callback<Microsoft.AspNetCore.Components.Forms.ValidationRequestedEventArgs>("OnValidationRequested", fn)
+    static member onValidationStateChanged fn = html.callback<Microsoft.AspNetCore.Components.Forms.ValidationStateChangedEventArgs>("OnValidationStateChanged", fn)
+    static member validator (x: string) = html.renderFragment("Validator", html.text x)
+    static member validator (node) = html.renderFragment("Validator", node)
+    static member validator (nodes) = html.renderFragment("Validator", fragment { yield! nodes })
+    static member validateOnChange (x: System.Boolean) = "ValidateOnChange" => x
+    static member validateMode (x: AntDesign.FormValidateMode) = "ValidateMode" => x
+    static member validateMessages (x: AntDesign.FormValidateErrorMessages) = "ValidateMessages" => x
                     
 
 type formItem<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.FormItem>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.FormItem>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.FormItem>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.FormItem>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.FormItem>
-    static member ref x = attr.ref<AntDesign.FormItem> x
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member label (x: System.String) = "Label" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member labelTemplate (x: string) = Bolero.Html.attr.fragment "LabelTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member labelTemplate (node) = Bolero.Html.attr.fragment "LabelTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member labelTemplate (nodes) = Bolero.Html.attr.fragment "LabelTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member labelCol (x: AntDesign.ColLayoutParam) = "LabelCol" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member labelAlign (x: System.Nullable<AntDesign.AntLabelAlignType>) = "LabelAlign" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member labelColSpan (x: OneOf.OneOf<System.String, System.Int32>) = "LabelColSpan" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member labelColOffset (x: OneOf.OneOf<System.String, System.Int32>) = "LabelColOffset" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member wrapperCol (x: AntDesign.ColLayoutParam) = "WrapperCol" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member wrapperColSpan (x: OneOf.OneOf<System.String, System.Int32>) = "WrapperColSpan" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member wrapperColOffset (x: OneOf.OneOf<System.String, System.Int32>) = "WrapperColOffset" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member noStyle (x: System.Boolean) = "NoStyle" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member required (x: System.Boolean) = "Required" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member labelStyle (x: System.String) = "LabelStyle" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member rules (x: AntDesign.FormValidationRule[]) = "Rules" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member hasFeedback (x: System.Boolean) = "HasFeedback" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member validateStatus (x: AntDesign.FormValidateStatus) = "ValidateStatus" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member help (x: System.String) = "Help" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.FormItem>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.FormItem>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.FormItem>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.FormItem>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.FormItem>(){ x }
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member label (x: System.String) = "Label" => x
+    static member labelTemplate (x: string) = html.renderFragment("LabelTemplate", html.text x)
+    static member labelTemplate (node) = html.renderFragment("LabelTemplate", node)
+    static member labelTemplate (nodes) = html.renderFragment("LabelTemplate", fragment { yield! nodes })
+    static member labelCol (x: AntDesign.ColLayoutParam) = "LabelCol" => x
+    static member labelAlign (x: System.Nullable<AntDesign.AntLabelAlignType>) = "LabelAlign" => x
+    static member labelColSpan (x: OneOf.OneOf<System.String, System.Int32>) = "LabelColSpan" => x
+    static member labelColOffset (x: OneOf.OneOf<System.String, System.Int32>) = "LabelColOffset" => x
+    static member wrapperCol (x: AntDesign.ColLayoutParam) = "WrapperCol" => x
+    static member wrapperColSpan (x: OneOf.OneOf<System.String, System.Int32>) = "WrapperColSpan" => x
+    static member wrapperColOffset (x: OneOf.OneOf<System.String, System.Int32>) = "WrapperColOffset" => x
+    static member noStyle (x: System.Boolean) = "NoStyle" => x
+    static member required (x: System.Boolean) = "Required" => x
+    static member labelStyle (x: System.String) = "LabelStyle" => x
+    static member rules (x: AntDesign.FormValidationRule[]) = "Rules" => x
+    static member hasFeedback (x: System.Boolean) = "HasFeedback" => x
+    static member validateStatus (x: AntDesign.FormValidateStatus) = "ValidateStatus" => x
+    static member help (x: System.String) = "Help" => x
                     
 
 type row<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Row>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Row>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.Row>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.Row>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.Row>
-    static member ref x = attr.ref<AntDesign.Row> x
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member type' (x: System.String) = "Type" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member align (x: System.String) = "Align" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member justify (x: System.String) = "Justify" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member wrap (x: System.Boolean) = "Wrap" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member gutter (x: OneOf.OneOf<System.Int32, System.Collections.Generic.Dictionary<System.String, System.Int32>, System.ValueTuple<System.Int32, System.Int32>, System.ValueTuple<System.Collections.Generic.Dictionary<System.String, System.Int32>, System.Int32>, System.ValueTuple<System.Int32, System.Collections.Generic.Dictionary<System.String, System.Int32>>, System.ValueTuple<System.Collections.Generic.Dictionary<System.String, System.Int32>, System.Collections.Generic.Dictionary<System.String, System.Int32>>>) = "Gutter" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onBreakpoint fn = (Bolero.Html.attr.callback<AntDesign.BreakpointType> "OnBreakpoint" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member defaultBreakpoint (x: System.Nullable<AntDesign.BreakpointType>) = "DefaultBreakpoint" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Row>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Row>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Row>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Row>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Row>(){ x }
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member type' (x: System.String) = "Type" => x
+    static member align (x: System.String) = "Align" => x
+    static member justify (x: System.String) = "Justify" => x
+    static member wrap (x: System.Boolean) = "Wrap" => x
+    static member gutter (x: OneOf.OneOf<System.Int32, System.Collections.Generic.Dictionary<System.String, System.Int32>, System.ValueTuple<System.Int32, System.Int32>, System.ValueTuple<System.Collections.Generic.Dictionary<System.String, System.Int32>, System.Int32>, System.ValueTuple<System.Int32, System.Collections.Generic.Dictionary<System.String, System.Int32>>, System.ValueTuple<System.Collections.Generic.Dictionary<System.String, System.Int32>, System.Collections.Generic.Dictionary<System.String, System.Int32>>>) = "Gutter" => x
+    static member onBreakpoint fn = html.callback<AntDesign.BreakpointType>("OnBreakpoint", fn)
+    static member defaultBreakpoint (x: System.Nullable<AntDesign.BreakpointType>) = "DefaultBreakpoint" => x
                     
 
 type image<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Image>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Image>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Image>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Image>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.Image> x
-    static member alt (x: System.String) = "Alt" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member fallback (x: System.String) = "Fallback" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member height (x: System.String) = "Height" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member width (x: System.String) = "Width" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member placeholder (x: string) = Bolero.Html.attr.fragment "Placeholder" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member placeholder (node) = Bolero.Html.attr.fragment "Placeholder" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member placeholder (nodes) = Bolero.Html.attr.fragment "Placeholder" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member preview (x: System.Boolean) = "Preview" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member previewVisible (x: System.Boolean) = "PreviewVisible" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member src (x: System.String) = "Src" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member previewSrc (x: System.String) = "PreviewSrc" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onClick fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> "OnClick" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member locale (x: AntDesign.ImageLocale) = "Locale" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member alt (x: System.String) = "Alt" => x
+    static member fallback (x: System.String) = "Fallback" => x
+    static member height (x: System.String) = "Height" => x
+    static member width (x: System.String) = "Width" => x
+    static member placeholder (x: string) = html.renderFragment("Placeholder", html.text x)
+    static member placeholder (node) = html.renderFragment("Placeholder", node)
+    static member placeholder (nodes) = html.renderFragment("Placeholder", fragment { yield! nodes })
+    static member preview (x: System.Boolean) = "Preview" => x
+    static member previewVisible (x: System.Boolean) = "PreviewVisible" => x
+    static member src (x: System.String) = "Src" => x
+    static member previewSrc (x: System.String) = "PreviewSrc" => x
+    static member onClick fn = html.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs>("OnClick", fn)
+    static member locale (x: AntDesign.ImageLocale) = "Locale" => x
                     
 
 type imagePreviewContainer<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.ImagePreviewContainer>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.ImagePreviewContainer>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.ImagePreviewContainer>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.ImagePreviewContainer>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.ImagePreviewContainer> x
 
                     
 
 type inputGroup<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.InputGroup>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.InputGroup>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.InputGroup>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.InputGroup>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.InputGroup>
-    static member ref x = attr.ref<AntDesign.InputGroup> x
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member compact (x: System.Boolean) = "Compact" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member size (x: System.String) = "Size" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.InputGroup>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.InputGroup>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.InputGroup>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.InputGroup>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.InputGroup>(){ x }
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member compact (x: System.Boolean) = "Compact" => x
+    static member size (x: System.String) = "Size" => x
                     
 
 type sider<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Sider>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Sider>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.Sider>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.Sider>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.Sider>
-    static member ref x = attr.ref<AntDesign.Sider> x
-    static member collapsible (x: System.Boolean) = "Collapsible" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member trigger (x: string) = Bolero.Html.attr.fragment "Trigger" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member trigger (node) = Bolero.Html.attr.fragment "Trigger" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member trigger (nodes) = Bolero.Html.attr.fragment "Trigger" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member noTrigger (x: System.Boolean) = "NoTrigger" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member breakpoint (x: System.Nullable<AntDesign.BreakpointType>) = "Breakpoint" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member theme (x: AntDesign.SiderTheme) = "Theme" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member width (x: System.Int32) = "Width" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member collapsedWidth (x: System.Int32) = "CollapsedWidth" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member collapsed (x: System.Boolean) = "Collapsed" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onCollapse fn = (Bolero.Html.attr.callback<System.Boolean> "OnCollapse" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onBreakpoint fn = (Bolero.Html.attr.callback<System.Boolean> "OnBreakpoint" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Sider>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Sider>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Sider>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Sider>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Sider>(){ x }
+    static member collapsible (x: System.Boolean) = "Collapsible" => x
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member trigger (x: string) = html.renderFragment("Trigger", html.text x)
+    static member trigger (node) = html.renderFragment("Trigger", node)
+    static member trigger (nodes) = html.renderFragment("Trigger", fragment { yield! nodes })
+    static member noTrigger (x: System.Boolean) = "NoTrigger" => x
+    static member breakpoint (x: System.Nullable<AntDesign.BreakpointType>) = "Breakpoint" => x
+    static member theme (x: AntDesign.SiderTheme) = "Theme" => x
+    static member width (x: System.Int32) = "Width" => x
+    static member collapsedWidth (x: System.Int32) = "CollapsedWidth" => x
+    static member collapsed (x: System.Boolean) = "Collapsed" => x
+    static member onCollapse fn = html.callback<System.Boolean>("OnCollapse", fn)
+    static member onBreakpoint fn = html.callback<System.Boolean>("OnBreakpoint", fn)
                     
 
 type antList<'FunBlazorGeneric, 'TItem> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.AntList<'TItem>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.AntList<'TItem>>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.AntList<'TItem>>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.AntList<'TItem>>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.AntList<'TItem>>
-    static member ref x = attr.ref<AntDesign.AntList<'TItem>> x
-    static member dataSource (x: System.Collections.Generic.IEnumerable<'TItem>) = "DataSource" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member bordered (x: System.Boolean) = "Bordered" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member header (x: string) = Bolero.Html.attr.fragment "Header" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member header (node) = Bolero.Html.attr.fragment "Header" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member header (nodes) = Bolero.Html.attr.fragment "Header" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member footer (x: string) = Bolero.Html.attr.fragment "Footer" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member footer (node) = Bolero.Html.attr.fragment "Footer" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member footer (nodes) = Bolero.Html.attr.fragment "Footer" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member loadMore (x: string) = Bolero.Html.attr.fragment "LoadMore" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member loadMore (node) = Bolero.Html.attr.fragment "LoadMore" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member loadMore (nodes) = Bolero.Html.attr.fragment "LoadMore" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member itemLayout (x: AntDesign.ListItemLayout) = "ItemLayout" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member loading (x: System.Boolean) = "Loading" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member noResult (x: System.String) = "NoResult" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member size (x: System.String) = "Size" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member split (x: System.Boolean) = "Split" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member grid (x: AntDesign.ListGridType) = "Grid" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member pagination (x: AntDesign.PaginationOptions) = "Pagination" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (render: 'TItem -> Bolero.Node) = Bolero.Html.attr.fragmentWith "ChildContent" (fun x -> render x) |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.AntList<'TItem>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.AntList<'TItem>>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.AntList<'TItem>>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.AntList<'TItem>>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.AntList<'TItem>>(){ x }
+    static member dataSource (x: System.Collections.Generic.IEnumerable<'TItem>) = "DataSource" => x
+    static member bordered (x: System.Boolean) = "Bordered" => x
+    static member header (x: string) = html.renderFragment("Header", html.text x)
+    static member header (node) = html.renderFragment("Header", node)
+    static member header (nodes) = html.renderFragment("Header", fragment { yield! nodes })
+    static member footer (x: string) = html.renderFragment("Footer", html.text x)
+    static member footer (node) = html.renderFragment("Footer", node)
+    static member footer (nodes) = html.renderFragment("Footer", fragment { yield! nodes })
+    static member loadMore (x: string) = html.renderFragment("LoadMore", html.text x)
+    static member loadMore (node) = html.renderFragment("LoadMore", node)
+    static member loadMore (nodes) = html.renderFragment("LoadMore", fragment { yield! nodes })
+    static member itemLayout (x: AntDesign.ListItemLayout) = "ItemLayout" => x
+    static member loading (x: System.Boolean) = "Loading" => x
+    static member noResult (x: System.String) = "NoResult" => x
+    static member size (x: System.String) = "Size" => x
+    static member split (x: System.Boolean) = "Split" => x
+    static member grid (x: AntDesign.ListGridType) = "Grid" => x
+    static member pagination (x: AntDesign.PaginationOptions) = "Pagination" => x
+    static member childContent (render: 'TItem -> NodeRenderFragment) = html.renderFragment("ChildContent", render)
                     
 
 type listItem<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.ListItem>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.ListItem>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.ListItem>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.ListItem>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.ListItem>
-    static member ref x = attr.ref<AntDesign.ListItem> x
-    static member content (x: System.String) = "Content" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member extra (x: string) = Bolero.Html.attr.fragment "Extra" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member extra (node) = Bolero.Html.attr.fragment "Extra" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member extra (nodes) = Bolero.Html.attr.fragment "Extra" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member actions (x: Microsoft.AspNetCore.Components.RenderFragment[]) = "Actions" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member colStyle (x: System.String) = "ColStyle" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member itemCount (x: System.Int32) = "ItemCount" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onClick fn = attr.callbackOfUnit("OnClick", fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member noFlex (x: System.Boolean) = "NoFlex" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.ListItem>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.ListItem>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.ListItem>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.ListItem>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.ListItem>(){ x }
+    static member content (x: System.String) = "Content" => x
+    static member extra (x: string) = html.renderFragment("Extra", html.text x)
+    static member extra (node) = html.renderFragment("Extra", node)
+    static member extra (nodes) = html.renderFragment("Extra", fragment { yield! nodes })
+    static member actions (x: Microsoft.AspNetCore.Components.RenderFragment[]) = "Actions" => x
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member colStyle (x: System.String) = "ColStyle" => x
+    static member itemCount (x: System.Int32) = "ItemCount" => x
+    static member onClick fn = html.callback<unit>("OnClick", fn)
+    static member noFlex (x: System.Boolean) = "NoFlex" => x
                     
 
 type listItemMeta<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.ListItemMeta>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.ListItemMeta>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.ListItemMeta>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.ListItemMeta>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.ListItemMeta> x
-    static member title (x: System.String) = "Title" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (x: string) = Bolero.Html.attr.fragment "TitleTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (node) = Bolero.Html.attr.fragment "TitleTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (nodes) = Bolero.Html.attr.fragment "TitleTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member avatar (x: System.String) = "Avatar" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member avatarTemplate (x: string) = Bolero.Html.attr.fragment "AvatarTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member avatarTemplate (node) = Bolero.Html.attr.fragment "AvatarTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member avatarTemplate (nodes) = Bolero.Html.attr.fragment "AvatarTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member description (x: System.String) = "Description" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member descriptionTemplate (x: string) = Bolero.Html.attr.fragment "DescriptionTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member descriptionTemplate (node) = Bolero.Html.attr.fragment "DescriptionTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member descriptionTemplate (nodes) = Bolero.Html.attr.fragment "DescriptionTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+    static member title (x: System.String) = "Title" => x
+    static member titleTemplate (x: string) = html.renderFragment("TitleTemplate", html.text x)
+    static member titleTemplate (node) = html.renderFragment("TitleTemplate", node)
+    static member titleTemplate (nodes) = html.renderFragment("TitleTemplate", fragment { yield! nodes })
+    static member avatar (x: System.String) = "Avatar" => x
+    static member avatarTemplate (x: string) = html.renderFragment("AvatarTemplate", html.text x)
+    static member avatarTemplate (node) = html.renderFragment("AvatarTemplate", node)
+    static member avatarTemplate (nodes) = html.renderFragment("AvatarTemplate", fragment { yield! nodes })
+    static member description (x: System.String) = "Description" => x
+    static member descriptionTemplate (x: string) = html.renderFragment("DescriptionTemplate", html.text x)
+    static member descriptionTemplate (node) = html.renderFragment("DescriptionTemplate", node)
+    static member descriptionTemplate (nodes) = html.renderFragment("DescriptionTemplate", fragment { yield! nodes })
                     
 
 type mentions<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Mentions>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Mentions>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.Mentions>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.Mentions>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.Mentions>
-    static member ref x = attr.ref<AntDesign.Mentions> x
-    static member autoFocus (x: System.Boolean) = "AutoFocus" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member disable (x: System.Boolean) = "Disable" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member readonly (x: System.Boolean) = "Readonly" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member prefix (x: System.String) = "Prefix" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member split (x: System.String) = "Split" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member defaultValue (x: System.String) = "DefaultValue" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member placeholder (x: System.String) = "Placeholder" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member value (x: System.String) = "Value" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member placement (x: System.String) = "Placement" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member rows (x: System.Int32) = "Rows" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member loading (x: System.Boolean) = "Loading" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member valueChange fn = (Bolero.Html.attr.callback<System.String> "ValueChange" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onFocus fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.FocusEventArgs> "OnFocus" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onBlur fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.FocusEventArgs> "OnBlur" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onSearch fn = (Bolero.Html.attr.callback<System.EventArgs> "OnSearch" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member noFoundContent (x: string) = Bolero.Html.attr.fragment "NoFoundContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member noFoundContent (node) = Bolero.Html.attr.fragment "NoFoundContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member noFoundContent (nodes) = Bolero.Html.attr.fragment "NoFoundContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Mentions>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Mentions>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Mentions>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Mentions>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Mentions>(){ x }
+    static member autoFocus (x: System.Boolean) = "AutoFocus" => x
+    static member disable (x: System.Boolean) = "Disable" => x
+    static member readonly (x: System.Boolean) = "Readonly" => x
+    static member prefix (x: System.String) = "Prefix" => x
+    static member split (x: System.String) = "Split" => x
+    static member defaultValue (x: System.String) = "DefaultValue" => x
+    static member placeholder (x: System.String) = "Placeholder" => x
+    static member value (x: System.String) = "Value" => x
+    static member placement (x: System.String) = "Placement" => x
+    static member rows (x: System.Int32) = "Rows" => x
+    static member loading (x: System.Boolean) = "Loading" => x
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member valueChange fn = html.callback<System.String>("ValueChange", fn)
+    static member onFocus fn = html.callback<Microsoft.AspNetCore.Components.Web.FocusEventArgs>("OnFocus", fn)
+    static member onBlur fn = html.callback<Microsoft.AspNetCore.Components.Web.FocusEventArgs>("OnBlur", fn)
+    static member onSearch fn = html.callback<System.EventArgs>("OnSearch", fn)
+    static member noFoundContent (x: string) = html.renderFragment("NoFoundContent", html.text x)
+    static member noFoundContent (node) = html.renderFragment("NoFoundContent", node)
+    static member noFoundContent (nodes) = html.renderFragment("NoFoundContent", fragment { yield! nodes })
                     
 
 type mentionsOption<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.MentionsOption>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.MentionsOption>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.MentionsOption>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.MentionsOption>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.MentionsOption>
-    static member ref x = attr.ref<AntDesign.MentionsOption> x
-    static member value (x: System.String) = "Value" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member disable (x: System.Boolean) = "Disable" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.MentionsOption>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.MentionsOption>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.MentionsOption>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.MentionsOption>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.MentionsOption>(){ x }
+    static member value (x: System.String) = "Value" => x
+    static member disable (x: System.Boolean) = "Disable" => x
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
                     
 
 type menu<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Menu>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Menu>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.Menu>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.Menu>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.Menu>
-    static member ref x = attr.ref<AntDesign.Menu> x
-    static member theme (x: AntDesign.MenuTheme) = "Theme" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member mode (x: AntDesign.MenuMode) = "Mode" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member onSubmenuClicked fn = (Bolero.Html.attr.callback<AntDesign.SubMenu> "OnSubmenuClicked" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onMenuItemClicked fn = (Bolero.Html.attr.callback<AntDesign.MenuItem> "OnMenuItemClicked" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member accordion (x: System.Boolean) = "Accordion" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member selectable (x: System.Boolean) = "Selectable" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member multiple (x: System.Boolean) = "Multiple" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member inlineCollapsed (x: System.Boolean) = "InlineCollapsed" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member inlineIndent (x: System.Int32) = "InlineIndent" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member autoCloseDropdown (x: System.Boolean) = "AutoCloseDropdown" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member defaultSelectedKeys (x: System.Collections.Generic.IEnumerable<System.String>) = "DefaultSelectedKeys" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member defaultOpenKeys (x: System.Collections.Generic.IEnumerable<System.String>) = "DefaultOpenKeys" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member openKeys (x: System.String[]) = "OpenKeys" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member openKeys' (value: IStore<System.String[]>) = FelizNode<'FunBlazorGeneric>.create("OpenKeys", value)
-    static member openKeys' (value: cval<System.String[]>) = FelizNode<'FunBlazorGeneric>.create("OpenKeys", value)
-    static member openKeys' (valueFn: System.String[] * (System.String[] -> unit)) = FelizNode<'FunBlazorGeneric>.create("OpenKeys", valueFn)
-    static member openKeysChanged fn = (Bolero.Html.attr.callback<System.String[]> "OpenKeysChanged" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onOpenChange fn = (Bolero.Html.attr.callback<System.String[]> "OnOpenChange" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member selectedKeys (x: System.String[]) = "SelectedKeys" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member selectedKeys' (value: IStore<System.String[]>) = FelizNode<'FunBlazorGeneric>.create("SelectedKeys", value)
-    static member selectedKeys' (value: cval<System.String[]>) = FelizNode<'FunBlazorGeneric>.create("SelectedKeys", value)
-    static member selectedKeys' (valueFn: System.String[] * (System.String[] -> unit)) = FelizNode<'FunBlazorGeneric>.create("SelectedKeys", valueFn)
-    static member selectedKeysChanged fn = (Bolero.Html.attr.callback<System.String[]> "SelectedKeysChanged" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member triggerSubMenuAction (x: AntDesign.Trigger) = "TriggerSubMenuAction" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Menu>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Menu>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Menu>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Menu>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Menu>(){ x }
+    static member theme (x: AntDesign.MenuTheme) = "Theme" => x
+    static member mode (x: AntDesign.MenuMode) = "Mode" => x
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member onSubmenuClicked fn = html.callback<AntDesign.SubMenu>("OnSubmenuClicked", fn)
+    static member onMenuItemClicked fn = html.callback<AntDesign.MenuItem>("OnMenuItemClicked", fn)
+    static member accordion (x: System.Boolean) = "Accordion" => x
+    static member selectable (x: System.Boolean) = "Selectable" => x
+    static member multiple (x: System.Boolean) = "Multiple" => x
+    static member inlineCollapsed (x: System.Boolean) = "InlineCollapsed" => x
+    static member inlineIndent (x: System.Int32) = "InlineIndent" => x
+    static member autoCloseDropdown (x: System.Boolean) = "AutoCloseDropdown" => x
+    static member defaultSelectedKeys (x: System.Collections.Generic.IEnumerable<System.String>) = "DefaultSelectedKeys" => x
+    static member defaultOpenKeys (x: System.Collections.Generic.IEnumerable<System.String>) = "DefaultOpenKeys" => x
+    static member openKeys (x: System.String[]) = "OpenKeys" => x
+    static member openKeys' (value: IStore<System.String[]>) = html.bind("OpenKeys", value)
+    static member openKeys' (value: cval<System.String[]>) = html.bind("OpenKeys", value)
+    static member openKeys' (valueFn: System.String[] * (System.String[] -> unit)) = html.bind("OpenKeys", valueFn)
+    static member openKeysChanged fn = html.callback<System.String[]>("OpenKeysChanged", fn)
+    static member onOpenChange fn = html.callback<System.String[]>("OnOpenChange", fn)
+    static member selectedKeys (x: System.String[]) = "SelectedKeys" => x
+    static member selectedKeys' (value: IStore<System.String[]>) = html.bind("SelectedKeys", value)
+    static member selectedKeys' (value: cval<System.String[]>) = html.bind("SelectedKeys", value)
+    static member selectedKeys' (valueFn: System.String[] * (System.String[] -> unit)) = html.bind("SelectedKeys", valueFn)
+    static member selectedKeysChanged fn = html.callback<System.String[]>("SelectedKeysChanged", fn)
+    static member triggerSubMenuAction (x: AntDesign.Trigger) = "TriggerSubMenuAction" => x
                     
 
 type menuItem<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.MenuItem>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.MenuItem>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.MenuItem>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.MenuItem>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.MenuItem>
-    static member ref x = attr.ref<AntDesign.MenuItem> x
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member key (x: System.String) = "Key" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member disabled (x: System.Boolean) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onClick fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> "OnClick" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member routerLink (x: System.String) = "RouterLink" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member routerMatch (x: Microsoft.AspNetCore.Components.Routing.NavLinkMatch) = "RouterMatch" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member title (x: System.String) = "Title" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member icon (x: System.String) = "Icon" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member iconTemplate (x: string) = Bolero.Html.attr.fragment "IconTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member iconTemplate (node) = Bolero.Html.attr.fragment "IconTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member iconTemplate (nodes) = Bolero.Html.attr.fragment "IconTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.MenuItem>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.MenuItem>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.MenuItem>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.MenuItem>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.MenuItem>(){ x }
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member key (x: System.String) = "Key" => x
+    static member disabled (x: System.Boolean) = "Disabled" => x
+    static member onClick fn = html.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs>("OnClick", fn)
+    static member routerLink (x: System.String) = "RouterLink" => x
+    static member routerMatch (x: Microsoft.AspNetCore.Components.Routing.NavLinkMatch) = "RouterMatch" => x
+    static member title (x: System.String) = "Title" => x
+    static member icon (x: System.String) = "Icon" => x
+    static member iconTemplate (x: string) = html.renderFragment("IconTemplate", html.text x)
+    static member iconTemplate (node) = html.renderFragment("IconTemplate", node)
+    static member iconTemplate (nodes) = html.renderFragment("IconTemplate", fragment { yield! nodes })
                     
 
 type menuItemGroup<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.MenuItemGroup>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.MenuItemGroup>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.MenuItemGroup>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.MenuItemGroup>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.MenuItemGroup>
-    static member ref x = attr.ref<AntDesign.MenuItemGroup> x
-    static member title (x: System.String) = "Title" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (x: string) = Bolero.Html.attr.fragment "TitleTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (node) = Bolero.Html.attr.fragment "TitleTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (nodes) = Bolero.Html.attr.fragment "TitleTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member key (x: System.String) = "Key" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.MenuItemGroup>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.MenuItemGroup>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.MenuItemGroup>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.MenuItemGroup>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.MenuItemGroup>(){ x }
+    static member title (x: System.String) = "Title" => x
+    static member titleTemplate (x: string) = html.renderFragment("TitleTemplate", html.text x)
+    static member titleTemplate (node) = html.renderFragment("TitleTemplate", node)
+    static member titleTemplate (nodes) = html.renderFragment("TitleTemplate", fragment { yield! nodes })
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member key (x: System.String) = "Key" => x
                     
 
 type menuLink<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.MenuLink>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.MenuLink>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.MenuLink>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.MenuLink>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.MenuLink>
-    static member ref x = attr.ref<AntDesign.MenuLink> x
-    static member activeClass (x: System.String) = "ActiveClass" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member href (x: System.String) = "Href" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member attributes (x: System.Collections.Generic.Dictionary<System.String, System.Object>) = "Attributes" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member match' (x: Microsoft.AspNetCore.Components.Routing.NavLinkMatch) = "Match" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.MenuLink>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.MenuLink>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.MenuLink>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.MenuLink>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.MenuLink>(){ x }
+    static member activeClass (x: System.String) = "ActiveClass" => x
+    static member href (x: System.String) = "Href" => x
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member attributes (x: System.Collections.Generic.Dictionary<System.String, System.Object>) = "Attributes" => x
+    static member match' (x: Microsoft.AspNetCore.Components.Routing.NavLinkMatch) = "Match" => x
                     
 
 type subMenu<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.SubMenu>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.SubMenu>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.SubMenu>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.SubMenu>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.SubMenu>
-    static member ref x = attr.ref<AntDesign.SubMenu> x
-    static member placement (x: System.Nullable<AntDesign.Placement>) = "Placement" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member title (x: System.String) = "Title" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (x: string) = Bolero.Html.attr.fragment "TitleTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (node) = Bolero.Html.attr.fragment "TitleTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (nodes) = Bolero.Html.attr.fragment "TitleTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member key (x: System.String) = "Key" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member disabled (x: System.Boolean) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member isOpen (x: System.Boolean) = "IsOpen" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onTitleClick fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> "OnTitleClick" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.SubMenu>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.SubMenu>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.SubMenu>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.SubMenu>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.SubMenu>(){ x }
+    static member placement (x: System.Nullable<AntDesign.Placement>) = "Placement" => x
+    static member title (x: System.String) = "Title" => x
+    static member titleTemplate (x: string) = html.renderFragment("TitleTemplate", html.text x)
+    static member titleTemplate (node) = html.renderFragment("TitleTemplate", node)
+    static member titleTemplate (nodes) = html.renderFragment("TitleTemplate", fragment { yield! nodes })
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member key (x: System.String) = "Key" => x
+    static member disabled (x: System.Boolean) = "Disabled" => x
+    static member isOpen (x: System.Boolean) = "IsOpen" => x
+    static member onTitleClick fn = html.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs>("OnTitleClick", fn)
                     
 
 type message<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Message>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Message>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Message>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Message>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.Message> x
 
                     
 
 type messageItem<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.MessageItem>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.MessageItem>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.MessageItem>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.MessageItem>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.MessageItem> x
-    static member config (x: AntDesign.MessageConfig) = "Config" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member config (x: AntDesign.MessageConfig) = "Config" => x
                     
 
 type comfirmContainer<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.ComfirmContainer>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.ComfirmContainer>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.ComfirmContainer>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.ComfirmContainer>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.ComfirmContainer> x
 
                     
 
 type confirm<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Confirm>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Confirm>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Confirm>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Confirm>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.Confirm> x
-    static member config (x: AntDesign.ConfirmOptions) = "Config" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member confirmRef (x: AntDesign.ConfirmRef) = "ConfirmRef" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onRemove fn = (Bolero.Html.attr.callback<AntDesign.ConfirmRef> "OnRemove" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
+    static member config (x: AntDesign.ConfirmOptions) = "Config" => x
+    static member confirmRef (x: AntDesign.ConfirmRef) = "ConfirmRef" => x
+    static member onRemove fn = html.callback<AntDesign.ConfirmRef>("OnRemove", fn)
                     
 
 type dialog<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Dialog>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Dialog>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.Dialog>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.Dialog>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.Dialog>
-    static member ref x = attr.ref<AntDesign.Dialog> x
-    static member config (x: AntDesign.DialogOptions) = "Config" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member visible (x: System.Boolean) = "Visible" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Dialog>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Dialog>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Dialog>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Dialog>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Dialog>(){ x }
+    static member config (x: AntDesign.DialogOptions) = "Config" => x
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member visible (x: System.Boolean) = "Visible" => x
                     
 
 type dialogWrapper<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.DialogWrapper>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.DialogWrapper>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.DialogWrapper>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.DialogWrapper>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.DialogWrapper>
-    static member ref x = attr.ref<AntDesign.DialogWrapper> x
-    static member config (x: AntDesign.DialogOptions) = "Config" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member destroyOnClose (x: System.Boolean) = "DestroyOnClose" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member visible (x: System.Boolean) = "Visible" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onBeforeDestroy fn = (Bolero.Html.attr.callback<System.ComponentModel.CancelEventArgs> "OnBeforeDestroy" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onAfterShow fn = attr.callbackOfUnit("OnAfterShow", fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member onAfterHide fn = attr.callbackOfUnit("OnAfterHide", fn) |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.DialogWrapper>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.DialogWrapper>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.DialogWrapper>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.DialogWrapper>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.DialogWrapper>(){ x }
+    static member config (x: AntDesign.DialogOptions) = "Config" => x
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member destroyOnClose (x: System.Boolean) = "DestroyOnClose" => x
+    static member visible (x: System.Boolean) = "Visible" => x
+    static member onBeforeDestroy fn = html.callback<System.ComponentModel.CancelEventArgs>("OnBeforeDestroy", fn)
+    static member onAfterShow fn = html.callback<unit>("OnAfterShow", fn)
+    static member onAfterHide fn = html.callback<unit>("OnAfterHide", fn)
                     
 
 type modal<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Modal>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Modal>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.Modal>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.Modal>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.Modal>
-    static member ref x = attr.ref<AntDesign.Modal> x
-    static member modalRef (x: AntDesign.ModalRef) = "ModalRef" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member afterClose (fn) = "AfterClose" => (System.Func<System.Threading.Tasks.Task>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member bodyStyle (x: System.String) = "BodyStyle" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member cancelText (x: System.Nullable<OneOf.OneOf<System.String, Microsoft.AspNetCore.Components.RenderFragment>>) = "CancelText" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member centered (x: System.Boolean) = "Centered" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member closable (x: System.Boolean) = "Closable" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member draggable (x: System.Boolean) = "Draggable" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member dragInViewport (x: System.Boolean) = "DragInViewport" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member closeIcon (x: string) = Bolero.Html.attr.fragment "CloseIcon" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member closeIcon (node) = Bolero.Html.attr.fragment "CloseIcon" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member closeIcon (nodes) = Bolero.Html.attr.fragment "CloseIcon" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member confirmLoading (x: System.Boolean) = "ConfirmLoading" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member destroyOnClose (x: System.Boolean) = "DestroyOnClose" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member footer (x: System.Nullable<OneOf.OneOf<System.String, Microsoft.AspNetCore.Components.RenderFragment>>) = "Footer" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member getContainer (x: System.Nullable<Microsoft.AspNetCore.Components.ElementReference>) = "GetContainer" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member keyboard (x: System.Boolean) = "Keyboard" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member mask (x: System.Boolean) = "Mask" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member maskClosable (x: System.Boolean) = "MaskClosable" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member maskStyle (x: System.String) = "MaskStyle" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member okText (x: System.Nullable<OneOf.OneOf<System.String, Microsoft.AspNetCore.Components.RenderFragment>>) = "OkText" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member okType (x: System.String) = "OkType" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member title (x: System.String) = "Title" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (x: string) = Bolero.Html.attr.fragment "TitleTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (node) = Bolero.Html.attr.fragment "TitleTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (nodes) = Bolero.Html.attr.fragment "TitleTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member visible (x: System.Boolean) = "Visible" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member width (x: OneOf.OneOf<System.String, System.Double>) = "Width" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member wrapClassName (x: System.String) = "WrapClassName" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member zIndex (x: System.Int32) = "ZIndex" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onCancel fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> "OnCancel" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onOk fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> "OnOk" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member okButtonProps (x: AntDesign.ButtonProps) = "OkButtonProps" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member cancelButtonProps (x: AntDesign.ButtonProps) = "CancelButtonProps" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member locale (x: AntDesign.ModalLocale) = "Locale" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Modal>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Modal>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Modal>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Modal>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Modal>(){ x }
+    static member modalRef (x: AntDesign.ModalRef) = "ModalRef" => x
+    static member afterClose (fn) = "AfterClose" => (System.Func<System.Threading.Tasks.Task>fn)
+    static member bodyStyle (x: System.String) = "BodyStyle" => x
+    static member cancelText (x: System.Nullable<OneOf.OneOf<System.String, Microsoft.AspNetCore.Components.RenderFragment>>) = "CancelText" => x
+    static member centered (x: System.Boolean) = "Centered" => x
+    static member closable (x: System.Boolean) = "Closable" => x
+    static member draggable (x: System.Boolean) = "Draggable" => x
+    static member dragInViewport (x: System.Boolean) = "DragInViewport" => x
+    static member closeIcon (x: string) = html.renderFragment("CloseIcon", html.text x)
+    static member closeIcon (node) = html.renderFragment("CloseIcon", node)
+    static member closeIcon (nodes) = html.renderFragment("CloseIcon", fragment { yield! nodes })
+    static member confirmLoading (x: System.Boolean) = "ConfirmLoading" => x
+    static member destroyOnClose (x: System.Boolean) = "DestroyOnClose" => x
+    static member footer (x: System.Nullable<OneOf.OneOf<System.String, Microsoft.AspNetCore.Components.RenderFragment>>) = "Footer" => x
+    static member getContainer (x: System.Nullable<Microsoft.AspNetCore.Components.ElementReference>) = "GetContainer" => x
+    static member keyboard (x: System.Boolean) = "Keyboard" => x
+    static member mask (x: System.Boolean) = "Mask" => x
+    static member maskClosable (x: System.Boolean) = "MaskClosable" => x
+    static member maskStyle (x: System.String) = "MaskStyle" => x
+    static member okText (x: System.Nullable<OneOf.OneOf<System.String, Microsoft.AspNetCore.Components.RenderFragment>>) = "OkText" => x
+    static member okType (x: System.String) = "OkType" => x
+    static member title (x: System.String) = "Title" => x
+    static member titleTemplate (x: string) = html.renderFragment("TitleTemplate", html.text x)
+    static member titleTemplate (node) = html.renderFragment("TitleTemplate", node)
+    static member titleTemplate (nodes) = html.renderFragment("TitleTemplate", fragment { yield! nodes })
+    static member visible (x: System.Boolean) = "Visible" => x
+    static member width (x: OneOf.OneOf<System.String, System.Double>) = "Width" => x
+    static member wrapClassName (x: System.String) = "WrapClassName" => x
+    static member zIndex (x: System.Int32) = "ZIndex" => x
+    static member onCancel fn = html.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs>("OnCancel", fn)
+    static member onOk fn = html.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs>("OnOk", fn)
+    static member okButtonProps (x: AntDesign.ButtonProps) = "OkButtonProps" => x
+    static member cancelButtonProps (x: AntDesign.ButtonProps) = "CancelButtonProps" => x
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member locale (x: AntDesign.ModalLocale) = "Locale" => x
                     
 
 type modalContainer<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.ModalContainer>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.ModalContainer>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.ModalContainer>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.ModalContainer>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.ModalContainer> x
 
                     
 
 type modalFooter<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.ModalFooter>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.ModalFooter>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.ModalFooter>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.ModalFooter>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.ModalFooter> x
 
                     
 
 type pageHeader<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.PageHeader>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.PageHeader>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.PageHeader>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.PageHeader>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.PageHeader> x
-    static member ghost (x: System.Boolean) = "Ghost" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member backIcon (x: OneOf.OneOf<System.Nullable<System.Boolean>, System.String>) = "BackIcon" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member backIconTemplate (x: string) = Bolero.Html.attr.fragment "BackIconTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member backIconTemplate (node) = Bolero.Html.attr.fragment "BackIconTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member backIconTemplate (nodes) = Bolero.Html.attr.fragment "BackIconTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member title (x: System.String) = "Title" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (x: string) = Bolero.Html.attr.fragment "TitleTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (node) = Bolero.Html.attr.fragment "TitleTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (nodes) = Bolero.Html.attr.fragment "TitleTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member subtitle (x: System.String) = "Subtitle" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member subtitleTemplate (x: string) = Bolero.Html.attr.fragment "SubtitleTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member subtitleTemplate (node) = Bolero.Html.attr.fragment "SubtitleTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member subtitleTemplate (nodes) = Bolero.Html.attr.fragment "SubtitleTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member onBack fn = attr.callbackOfUnit("OnBack", fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member pageHeaderContent (x: string) = Bolero.Html.attr.fragment "PageHeaderContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member pageHeaderContent (node) = Bolero.Html.attr.fragment "PageHeaderContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member pageHeaderContent (nodes) = Bolero.Html.attr.fragment "PageHeaderContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member pageHeaderFooter (x: string) = Bolero.Html.attr.fragment "PageHeaderFooter" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member pageHeaderFooter (node) = Bolero.Html.attr.fragment "PageHeaderFooter" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member pageHeaderFooter (nodes) = Bolero.Html.attr.fragment "PageHeaderFooter" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member pageHeaderBreadcrumb (x: string) = Bolero.Html.attr.fragment "PageHeaderBreadcrumb" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member pageHeaderBreadcrumb (node) = Bolero.Html.attr.fragment "PageHeaderBreadcrumb" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member pageHeaderBreadcrumb (nodes) = Bolero.Html.attr.fragment "PageHeaderBreadcrumb" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member pageHeaderAvatar (x: string) = Bolero.Html.attr.fragment "PageHeaderAvatar" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member pageHeaderAvatar (node) = Bolero.Html.attr.fragment "PageHeaderAvatar" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member pageHeaderAvatar (nodes) = Bolero.Html.attr.fragment "PageHeaderAvatar" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member pageHeaderTitle (x: string) = Bolero.Html.attr.fragment "PageHeaderTitle" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member pageHeaderTitle (node) = Bolero.Html.attr.fragment "PageHeaderTitle" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member pageHeaderTitle (nodes) = Bolero.Html.attr.fragment "PageHeaderTitle" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member pageHeaderSubtitle (x: string) = Bolero.Html.attr.fragment "PageHeaderSubtitle" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member pageHeaderSubtitle (node) = Bolero.Html.attr.fragment "PageHeaderSubtitle" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member pageHeaderSubtitle (nodes) = Bolero.Html.attr.fragment "PageHeaderSubtitle" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member pageHeaderTags (x: string) = Bolero.Html.attr.fragment "PageHeaderTags" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member pageHeaderTags (node) = Bolero.Html.attr.fragment "PageHeaderTags" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member pageHeaderTags (nodes) = Bolero.Html.attr.fragment "PageHeaderTags" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member pageHeaderExtra (x: string) = Bolero.Html.attr.fragment "PageHeaderExtra" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member pageHeaderExtra (node) = Bolero.Html.attr.fragment "PageHeaderExtra" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member pageHeaderExtra (nodes) = Bolero.Html.attr.fragment "PageHeaderExtra" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+    static member ghost (x: System.Boolean) = "Ghost" => x
+    static member backIcon (x: OneOf.OneOf<System.Nullable<System.Boolean>, System.String>) = "BackIcon" => x
+    static member backIconTemplate (x: string) = html.renderFragment("BackIconTemplate", html.text x)
+    static member backIconTemplate (node) = html.renderFragment("BackIconTemplate", node)
+    static member backIconTemplate (nodes) = html.renderFragment("BackIconTemplate", fragment { yield! nodes })
+    static member title (x: System.String) = "Title" => x
+    static member titleTemplate (x: string) = html.renderFragment("TitleTemplate", html.text x)
+    static member titleTemplate (node) = html.renderFragment("TitleTemplate", node)
+    static member titleTemplate (nodes) = html.renderFragment("TitleTemplate", fragment { yield! nodes })
+    static member subtitle (x: System.String) = "Subtitle" => x
+    static member subtitleTemplate (x: string) = html.renderFragment("SubtitleTemplate", html.text x)
+    static member subtitleTemplate (node) = html.renderFragment("SubtitleTemplate", node)
+    static member subtitleTemplate (nodes) = html.renderFragment("SubtitleTemplate", fragment { yield! nodes })
+    static member onBack fn = html.callback<unit>("OnBack", fn)
+    static member pageHeaderContent (x: string) = html.renderFragment("PageHeaderContent", html.text x)
+    static member pageHeaderContent (node) = html.renderFragment("PageHeaderContent", node)
+    static member pageHeaderContent (nodes) = html.renderFragment("PageHeaderContent", fragment { yield! nodes })
+    static member pageHeaderFooter (x: string) = html.renderFragment("PageHeaderFooter", html.text x)
+    static member pageHeaderFooter (node) = html.renderFragment("PageHeaderFooter", node)
+    static member pageHeaderFooter (nodes) = html.renderFragment("PageHeaderFooter", fragment { yield! nodes })
+    static member pageHeaderBreadcrumb (x: string) = html.renderFragment("PageHeaderBreadcrumb", html.text x)
+    static member pageHeaderBreadcrumb (node) = html.renderFragment("PageHeaderBreadcrumb", node)
+    static member pageHeaderBreadcrumb (nodes) = html.renderFragment("PageHeaderBreadcrumb", fragment { yield! nodes })
+    static member pageHeaderAvatar (x: string) = html.renderFragment("PageHeaderAvatar", html.text x)
+    static member pageHeaderAvatar (node) = html.renderFragment("PageHeaderAvatar", node)
+    static member pageHeaderAvatar (nodes) = html.renderFragment("PageHeaderAvatar", fragment { yield! nodes })
+    static member pageHeaderTitle (x: string) = html.renderFragment("PageHeaderTitle", html.text x)
+    static member pageHeaderTitle (node) = html.renderFragment("PageHeaderTitle", node)
+    static member pageHeaderTitle (nodes) = html.renderFragment("PageHeaderTitle", fragment { yield! nodes })
+    static member pageHeaderSubtitle (x: string) = html.renderFragment("PageHeaderSubtitle", html.text x)
+    static member pageHeaderSubtitle (node) = html.renderFragment("PageHeaderSubtitle", node)
+    static member pageHeaderSubtitle (nodes) = html.renderFragment("PageHeaderSubtitle", fragment { yield! nodes })
+    static member pageHeaderTags (x: string) = html.renderFragment("PageHeaderTags", html.text x)
+    static member pageHeaderTags (node) = html.renderFragment("PageHeaderTags", node)
+    static member pageHeaderTags (nodes) = html.renderFragment("PageHeaderTags", fragment { yield! nodes })
+    static member pageHeaderExtra (x: string) = html.renderFragment("PageHeaderExtra", html.text x)
+    static member pageHeaderExtra (node) = html.renderFragment("PageHeaderExtra", node)
+    static member pageHeaderExtra (nodes) = html.renderFragment("PageHeaderExtra", fragment { yield! nodes })
                     
 
 type pagination<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Pagination>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Pagination>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Pagination>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Pagination>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.Pagination> x
-    static member total (x: System.Int32) = "Total" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member defaultCurrent (x: System.Int32) = "DefaultCurrent" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member disabled (x: System.Boolean) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member current (x: System.Int32) = "Current" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member defaultPageSize (x: System.Int32) = "DefaultPageSize" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member pageSize (x: System.Int32) = "PageSize" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onChange fn = (Bolero.Html.attr.callback<AntDesign.PaginationEventArgs> "OnChange" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member hideOnSinglePage (x: System.Boolean) = "HideOnSinglePage" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member showSizeChanger (x: System.Boolean) = "ShowSizeChanger" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member pageSizeOptions (x: System.Int32[]) = "PageSizeOptions" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onShowSizeChange fn = (Bolero.Html.attr.callback<AntDesign.PaginationEventArgs> "OnShowSizeChange" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member showQuickJumper (x: System.Boolean) = "ShowQuickJumper" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member goButton (x: string) = Bolero.Html.attr.fragment "GoButton" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member goButton (node) = Bolero.Html.attr.fragment "GoButton" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member goButton (nodes) = Bolero.Html.attr.fragment "GoButton" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member showTitle (x: System.Boolean) = "ShowTitle" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member showTotal (x: System.Nullable<OneOf.OneOf<System.Func<AntDesign.PaginationTotalContext, System.String>, Microsoft.AspNetCore.Components.RenderFragment<AntDesign.PaginationTotalContext>>>) = "ShowTotal" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member size (x: System.String) = "Size" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member responsive (x: System.Boolean) = "Responsive" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member simple (x: System.Boolean) = "Simple" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member locale (x: AntDesign.PaginationLocale) = "Locale" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member itemRender (render: AntDesign.PaginationItemRenderContext -> Bolero.Node) = Bolero.Html.attr.fragmentWith "ItemRender" (fun x -> render x) |> FelizNode<'FunBlazorGeneric>.create
-    static member showLessItems (x: System.Boolean) = "ShowLessItems" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member showPrevNextJumpers (x: System.Boolean) = "ShowPrevNextJumpers" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member direction (x: System.String) = "Direction" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member prevIcon (render: AntDesign.PaginationItemRenderContext -> Bolero.Node) = Bolero.Html.attr.fragmentWith "PrevIcon" (fun x -> render x) |> FelizNode<'FunBlazorGeneric>.create
-    static member nextIcon (render: AntDesign.PaginationItemRenderContext -> Bolero.Node) = Bolero.Html.attr.fragmentWith "NextIcon" (fun x -> render x) |> FelizNode<'FunBlazorGeneric>.create
-    static member jumpPrevIcon (render: AntDesign.PaginationItemRenderContext -> Bolero.Node) = Bolero.Html.attr.fragmentWith "JumpPrevIcon" (fun x -> render x) |> FelizNode<'FunBlazorGeneric>.create
-    static member jumpNextIcon (render: AntDesign.PaginationItemRenderContext -> Bolero.Node) = Bolero.Html.attr.fragmentWith "JumpNextIcon" (fun x -> render x) |> FelizNode<'FunBlazorGeneric>.create
-    static member totalBoundaryShowSizeChanger (x: System.Int32) = "TotalBoundaryShowSizeChanger" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member unmatchedAttributes (x: System.Collections.Generic.Dictionary<System.String, System.Object>) = "UnmatchedAttributes" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member total (x: System.Int32) = "Total" => x
+    static member defaultCurrent (x: System.Int32) = "DefaultCurrent" => x
+    static member disabled (x: System.Boolean) = "Disabled" => x
+    static member current (x: System.Int32) = "Current" => x
+    static member defaultPageSize (x: System.Int32) = "DefaultPageSize" => x
+    static member pageSize (x: System.Int32) = "PageSize" => x
+    static member onChange fn = html.callback<AntDesign.PaginationEventArgs>("OnChange", fn)
+    static member hideOnSinglePage (x: System.Boolean) = "HideOnSinglePage" => x
+    static member showSizeChanger (x: System.Boolean) = "ShowSizeChanger" => x
+    static member pageSizeOptions (x: System.Int32[]) = "PageSizeOptions" => x
+    static member onShowSizeChange fn = html.callback<AntDesign.PaginationEventArgs>("OnShowSizeChange", fn)
+    static member showQuickJumper (x: System.Boolean) = "ShowQuickJumper" => x
+    static member goButton (x: string) = html.renderFragment("GoButton", html.text x)
+    static member goButton (node) = html.renderFragment("GoButton", node)
+    static member goButton (nodes) = html.renderFragment("GoButton", fragment { yield! nodes })
+    static member showTitle (x: System.Boolean) = "ShowTitle" => x
+    static member showTotal (x: System.Nullable<OneOf.OneOf<System.Func<AntDesign.PaginationTotalContext, System.String>, Microsoft.AspNetCore.Components.RenderFragment<AntDesign.PaginationTotalContext>>>) = "ShowTotal" => x
+    static member size (x: System.String) = "Size" => x
+    static member responsive (x: System.Boolean) = "Responsive" => x
+    static member simple (x: System.Boolean) = "Simple" => x
+    static member locale (x: AntDesign.PaginationLocale) = "Locale" => x
+    static member itemRender (render: AntDesign.PaginationItemRenderContext -> NodeRenderFragment) = html.renderFragment("ItemRender", render)
+    static member showLessItems (x: System.Boolean) = "ShowLessItems" => x
+    static member showPrevNextJumpers (x: System.Boolean) = "ShowPrevNextJumpers" => x
+    static member direction (x: System.String) = "Direction" => x
+    static member prevIcon (render: AntDesign.PaginationItemRenderContext -> NodeRenderFragment) = html.renderFragment("PrevIcon", render)
+    static member nextIcon (render: AntDesign.PaginationItemRenderContext -> NodeRenderFragment) = html.renderFragment("NextIcon", render)
+    static member jumpPrevIcon (render: AntDesign.PaginationItemRenderContext -> NodeRenderFragment) = html.renderFragment("JumpPrevIcon", render)
+    static member jumpNextIcon (render: AntDesign.PaginationItemRenderContext -> NodeRenderFragment) = html.renderFragment("JumpNextIcon", render)
+    static member totalBoundaryShowSizeChanger (x: System.Int32) = "TotalBoundaryShowSizeChanger" => x
+    static member unmatchedAttributes (x: System.Collections.Generic.Dictionary<System.String, System.Object>) = "UnmatchedAttributes" => x
                     
 
 type paginationOptions<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.PaginationOptions>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.PaginationOptions>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.PaginationOptions>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.PaginationOptions>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.PaginationOptions> x
-    static member isSmall (x: System.Boolean) = "IsSmall" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member disabled (x: System.Boolean) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member rootPrefixCls (x: System.String) = "RootPrefixCls" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member changeSize fn = (Bolero.Html.attr.callback<System.Int32> "ChangeSize" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member current (x: System.Int32) = "Current" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member pageSize (x: System.Int32) = "PageSize" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member pageSizeOptions (x: System.Int32[]) = "PageSizeOptions" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member quickGo fn = (Bolero.Html.attr.callback<System.Int32> "QuickGo" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member goButton (x: System.Nullable<OneOf.OneOf<System.Boolean, Microsoft.AspNetCore.Components.RenderFragment>>) = "GoButton" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member isSmall (x: System.Boolean) = "IsSmall" => x
+    static member disabled (x: System.Boolean) = "Disabled" => x
+    static member rootPrefixCls (x: System.String) = "RootPrefixCls" => x
+    static member changeSize fn = html.callback<System.Int32>("ChangeSize", fn)
+    static member current (x: System.Int32) = "Current" => x
+    static member pageSize (x: System.Int32) = "PageSize" => x
+    static member pageSizeOptions (x: System.Int32[]) = "PageSizeOptions" => x
+    static member quickGo fn = html.callback<System.Int32>("QuickGo", fn)
+    static member goButton (x: System.Nullable<OneOf.OneOf<System.Boolean, Microsoft.AspNetCore.Components.RenderFragment>>) = "GoButton" => x
                     
 
 type progress<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Progress>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Progress>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Progress>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Progress>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.Progress> x
-    static member size (x: AntDesign.ProgressSize) = "Size" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member type' (x: AntDesign.ProgressType) = "Type" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member format (fn) = "Format" => (System.Func<System.Double, System.String>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member percent (x: System.Double) = "Percent" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member showInfo (x: System.Boolean) = "ShowInfo" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member status (x: AntDesign.ProgressStatus) = "Status" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member strokeLinecap (x: AntDesign.ProgressStrokeLinecap) = "StrokeLinecap" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member successPercent (x: System.Double) = "SuccessPercent" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member trailColor (x: System.String) = "TrailColor" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member strokeWidth (x: System.Int32) = "StrokeWidth" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member strokeColor (x: OneOf.OneOf<System.String, System.Collections.Generic.Dictionary<System.String, System.String>>) = "StrokeColor" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member steps (x: System.Int32) = "Steps" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member width (x: System.Int32) = "Width" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member gapDegree (x: System.Int32) = "GapDegree" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member gapPosition (x: AntDesign.ProgressGapPosition) = "GapPosition" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member size (x: AntDesign.ProgressSize) = "Size" => x
+    static member type' (x: AntDesign.ProgressType) = "Type" => x
+    static member format (fn) = "Format" => (System.Func<System.Double, System.String>fn)
+    static member percent (x: System.Double) = "Percent" => x
+    static member showInfo (x: System.Boolean) = "ShowInfo" => x
+    static member status (x: AntDesign.ProgressStatus) = "Status" => x
+    static member strokeLinecap (x: AntDesign.ProgressStrokeLinecap) = "StrokeLinecap" => x
+    static member successPercent (x: System.Double) = "SuccessPercent" => x
+    static member trailColor (x: System.String) = "TrailColor" => x
+    static member strokeWidth (x: System.Int32) = "StrokeWidth" => x
+    static member strokeColor (x: OneOf.OneOf<System.String, System.Collections.Generic.Dictionary<System.String, System.String>>) = "StrokeColor" => x
+    static member steps (x: System.Int32) = "Steps" => x
+    static member width (x: System.Int32) = "Width" => x
+    static member gapDegree (x: System.Int32) = "GapDegree" => x
+    static member gapPosition (x: AntDesign.ProgressGapPosition) = "GapPosition" => x
                     
 
 type radio<'FunBlazorGeneric, 'TValue> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Radio<'TValue>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Radio<'TValue>>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.Radio<'TValue>>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.Radio<'TValue>>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.Radio<'TValue>>
-    static member ref x = attr.ref<AntDesign.Radio<'TValue>> x
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member value (x: 'TValue) = "Value" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member autoFocus (x: System.Boolean) = "AutoFocus" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member radioButton (x: System.Boolean) = "RadioButton" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member checked' (x: System.Boolean) = "Checked" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member checked'' (value: IStore<System.Boolean>) = FelizNode<'FunBlazorGeneric>.create("Checked", value)
-    static member checked'' (value: cval<System.Boolean>) = FelizNode<'FunBlazorGeneric>.create("Checked", value)
-    static member checked'' (valueFn: System.Boolean * (System.Boolean -> unit)) = FelizNode<'FunBlazorGeneric>.create("Checked", valueFn)
-    static member defaultChecked (x: System.Boolean) = "DefaultChecked" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member checkedChanged fn = (Bolero.Html.attr.callback<System.Boolean> "CheckedChanged" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member disabled (x: System.Boolean) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member checkedChange fn = (Bolero.Html.attr.callback<System.Boolean> "CheckedChange" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Radio<'TValue>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Radio<'TValue>>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Radio<'TValue>>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Radio<'TValue>>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Radio<'TValue>>(){ x }
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member value (x: 'TValue) = "Value" => x
+    static member autoFocus (x: System.Boolean) = "AutoFocus" => x
+    static member radioButton (x: System.Boolean) = "RadioButton" => x
+    static member checked' (x: System.Boolean) = "Checked" => x
+    static member checked'' (value: IStore<System.Boolean>) = html.bind("Checked", value)
+    static member checked'' (value: cval<System.Boolean>) = html.bind("Checked", value)
+    static member checked'' (valueFn: System.Boolean * (System.Boolean -> unit)) = html.bind("Checked", valueFn)
+    static member defaultChecked (x: System.Boolean) = "DefaultChecked" => x
+    static member checkedChanged fn = html.callback<System.Boolean>("CheckedChanged", fn)
+    static member disabled (x: System.Boolean) = "Disabled" => x
+    static member checkedChange fn = html.callback<System.Boolean>("CheckedChange", fn)
                     
 
 type rate<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Rate>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Rate>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.Rate>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.Rate>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.Rate>
-    static member ref x = attr.ref<AntDesign.Rate> x
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member allowClear (x: System.Boolean) = "AllowClear" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member allowHalf (x: System.Boolean) = "AllowHalf" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member disabled (x: System.Boolean) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member autoFocus (x: System.Boolean) = "AutoFocus" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member character (render: AntDesign.RateItemRenderContext -> Bolero.Node) = Bolero.Html.attr.fragmentWith "Character" (fun x -> render x) |> FelizNode<'FunBlazorGeneric>.create
-    static member count (x: System.Int32) = "Count" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member value (x: System.Decimal) = "Value" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member value' (value: IStore<System.Decimal>) = FelizNode<'FunBlazorGeneric>.create("Value", value)
-    static member value' (value: cval<System.Decimal>) = FelizNode<'FunBlazorGeneric>.create("Value", value)
-    static member value' (valueFn: System.Decimal * (System.Decimal -> unit)) = FelizNode<'FunBlazorGeneric>.create("Value", valueFn)
-    static member valueChanged fn = (Bolero.Html.attr.callback<System.Decimal> "ValueChanged" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member defaultValue (x: System.Decimal) = "DefaultValue" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member tooltips (x: System.String[]) = "Tooltips" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onBlur fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.FocusEventArgs> "OnBlur" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onFocus fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.FocusEventArgs> "OnFocus" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Rate>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Rate>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Rate>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Rate>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Rate>(){ x }
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member allowClear (x: System.Boolean) = "AllowClear" => x
+    static member allowHalf (x: System.Boolean) = "AllowHalf" => x
+    static member disabled (x: System.Boolean) = "Disabled" => x
+    static member autoFocus (x: System.Boolean) = "AutoFocus" => x
+    static member character (render: AntDesign.RateItemRenderContext -> NodeRenderFragment) = html.renderFragment("Character", render)
+    static member count (x: System.Int32) = "Count" => x
+    static member value (x: System.Decimal) = "Value" => x
+    static member value' (value: IStore<System.Decimal>) = html.bind("Value", value)
+    static member value' (value: cval<System.Decimal>) = html.bind("Value", value)
+    static member value' (valueFn: System.Decimal * (System.Decimal -> unit)) = html.bind("Value", valueFn)
+    static member valueChanged fn = html.callback<System.Decimal>("ValueChanged", fn)
+    static member defaultValue (x: System.Decimal) = "DefaultValue" => x
+    static member tooltips (x: System.String[]) = "Tooltips" => x
+    static member onBlur fn = html.callback<Microsoft.AspNetCore.Components.Web.FocusEventArgs>("OnBlur", fn)
+    static member onFocus fn = html.callback<Microsoft.AspNetCore.Components.Web.FocusEventArgs>("OnFocus", fn)
                     
 
 type rateItem<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.RateItem>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.RateItem>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.RateItem>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.RateItem>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.RateItem> x
-    static member allowHalf (x: System.Boolean) = "AllowHalf" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onItemHover fn = (Bolero.Html.attr.callback<System.Boolean> "OnItemHover" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onItemClick fn = (Bolero.Html.attr.callback<System.Boolean> "OnItemClick" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member tooltip (x: System.String) = "Tooltip" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member indexOfGroup (x: System.Int32) = "IndexOfGroup" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member hoverValue (x: System.Int32) = "HoverValue" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member hasHalf (x: System.Boolean) = "HasHalf" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member isFocused (x: System.Boolean) = "IsFocused" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member allowHalf (x: System.Boolean) = "AllowHalf" => x
+    static member onItemHover fn = html.callback<System.Boolean>("OnItemHover", fn)
+    static member onItemClick fn = html.callback<System.Boolean>("OnItemClick", fn)
+    static member tooltip (x: System.String) = "Tooltip" => x
+    static member indexOfGroup (x: System.Int32) = "IndexOfGroup" => x
+    static member hoverValue (x: System.Int32) = "HoverValue" => x
+    static member hasHalf (x: System.Boolean) = "HasHalf" => x
+    static member isFocused (x: System.Boolean) = "IsFocused" => x
                     
 
 type result<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Result>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Result>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.Result>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.Result>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.Result>
-    static member ref x = attr.ref<AntDesign.Result> x
-    static member title (x: System.String) = "Title" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (x: string) = Bolero.Html.attr.fragment "TitleTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (node) = Bolero.Html.attr.fragment "TitleTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (nodes) = Bolero.Html.attr.fragment "TitleTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member subTitle (x: System.String) = "SubTitle" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member subTitleTemplate (x: string) = Bolero.Html.attr.fragment "SubTitleTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member subTitleTemplate (node) = Bolero.Html.attr.fragment "SubTitleTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member subTitleTemplate (nodes) = Bolero.Html.attr.fragment "SubTitleTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member extra (x: string) = Bolero.Html.attr.fragment "Extra" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member extra (node) = Bolero.Html.attr.fragment "Extra" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member extra (nodes) = Bolero.Html.attr.fragment "Extra" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member status (x: System.String) = "Status" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member icon (x: System.String) = "Icon" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member isShowIcon (x: System.Boolean) = "IsShowIcon" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Result>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Result>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Result>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Result>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Result>(){ x }
+    static member title (x: System.String) = "Title" => x
+    static member titleTemplate (x: string) = html.renderFragment("TitleTemplate", html.text x)
+    static member titleTemplate (node) = html.renderFragment("TitleTemplate", node)
+    static member titleTemplate (nodes) = html.renderFragment("TitleTemplate", fragment { yield! nodes })
+    static member subTitle (x: System.String) = "SubTitle" => x
+    static member subTitleTemplate (x: string) = html.renderFragment("SubTitleTemplate", html.text x)
+    static member subTitleTemplate (node) = html.renderFragment("SubTitleTemplate", node)
+    static member subTitleTemplate (nodes) = html.renderFragment("SubTitleTemplate", fragment { yield! nodes })
+    static member extra (x: string) = html.renderFragment("Extra", html.text x)
+    static member extra (node) = html.renderFragment("Extra", node)
+    static member extra (nodes) = html.renderFragment("Extra", fragment { yield! nodes })
+    static member status (x: System.String) = "Status" => x
+    static member icon (x: System.String) = "Icon" => x
+    static member isShowIcon (x: System.Boolean) = "IsShowIcon" => x
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
                     
 
 type selectOption<'FunBlazorGeneric, 'TItemValue, 'TItem> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.SelectOption<'TItemValue, 'TItem>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.SelectOption<'TItemValue, 'TItem>>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.SelectOption<'TItemValue, 'TItem>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.SelectOption<'TItemValue, 'TItem>>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.SelectOption<'TItemValue, 'TItem>> x
-    static member disabled (x: System.Boolean) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member label (x: System.String) = "Label" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member value (x: 'TItemValue) = "Value" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member disabled (x: System.Boolean) = "Disabled" => x
+    static member label (x: System.String) = "Label" => x
+    static member value (x: 'TItemValue) = "Value" => x
                     
 
 type simpleSelectOption<'FunBlazorGeneric> =
     inherit selectOption<'FunBlazorGeneric, System.String, System.String>
-    static member create () = [] |> html.blazor<AntDesign.SimpleSelectOption>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.SimpleSelectOption>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.SimpleSelectOption>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.SimpleSelectOption>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.SimpleSelectOption> x
 
                     
 
 type skeleton<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Skeleton>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Skeleton>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.Skeleton>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.Skeleton>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.Skeleton>
-    static member ref x = attr.ref<AntDesign.Skeleton> x
-    static member active (x: System.Boolean) = "Active" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member loading (x: System.Boolean) = "Loading" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member title (x: System.Boolean) = "Title" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member titleWidth (x: OneOf.OneOf<System.Nullable<System.Int32>, System.String>) = "TitleWidth" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member avatar (x: System.Boolean) = "Avatar" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member avatarSize (x: OneOf.OneOf<System.Nullable<System.Int32>, System.String>) = "AvatarSize" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member avatarShape (x: System.String) = "AvatarShape" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member paragraph (x: System.Boolean) = "Paragraph" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member paragraphRows (x: System.Nullable<System.Int32>) = "ParagraphRows" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member paragraphWidth (x: OneOf.OneOf<System.Nullable<System.Int32>, System.String, System.Collections.Generic.IList<OneOf.OneOf<System.Nullable<System.Int32>, System.String>>>) = "ParagraphWidth" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Skeleton>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Skeleton>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Skeleton>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Skeleton>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Skeleton>(){ x }
+    static member active (x: System.Boolean) = "Active" => x
+    static member loading (x: System.Boolean) = "Loading" => x
+    static member title (x: System.Boolean) = "Title" => x
+    static member titleWidth (x: OneOf.OneOf<System.Nullable<System.Int32>, System.String>) = "TitleWidth" => x
+    static member avatar (x: System.Boolean) = "Avatar" => x
+    static member avatarSize (x: OneOf.OneOf<System.Nullable<System.Int32>, System.String>) = "AvatarSize" => x
+    static member avatarShape (x: System.String) = "AvatarShape" => x
+    static member paragraph (x: System.Boolean) = "Paragraph" => x
+    static member paragraphRows (x: System.Nullable<System.Int32>) = "ParagraphRows" => x
+    static member paragraphWidth (x: OneOf.OneOf<System.Nullable<System.Int32>, System.String, System.Collections.Generic.IList<OneOf.OneOf<System.Nullable<System.Int32>, System.String>>>) = "ParagraphWidth" => x
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
                     
 
 type skeletonElement<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.SkeletonElement>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.SkeletonElement>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.SkeletonElement>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.SkeletonElement>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.SkeletonElement> x
-    static member active (x: System.Boolean) = "Active" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member type' (x: System.String) = "Type" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member size (x: OneOf.OneOf<System.Nullable<System.Int32>, System.String>) = "Size" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member shape (x: System.String) = "Shape" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member active (x: System.Boolean) = "Active" => x
+    static member type' (x: System.String) = "Type" => x
+    static member size (x: OneOf.OneOf<System.Nullable<System.Int32>, System.String>) = "Size" => x
+    static member shape (x: System.String) = "Shape" => x
                     
 
 type space<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Space>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Space>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.Space>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.Space>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.Space>
-    static member ref x = attr.ref<AntDesign.Space> x
-    static member align (x: System.String) = "Align" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member direction (x: AntDesign.DirectionVHType) = "Direction" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member size (x: OneOf.OneOf<System.String, System.ValueTuple<System.String, System.String>>) = "Size" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member wrap (x: System.Boolean) = "Wrap" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member split (x: string) = Bolero.Html.attr.fragment "Split" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member split (node) = Bolero.Html.attr.fragment "Split" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member split (nodes) = Bolero.Html.attr.fragment "Split" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Space>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Space>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Space>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Space>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Space>(){ x }
+    static member align (x: System.String) = "Align" => x
+    static member direction (x: AntDesign.DirectionVHType) = "Direction" => x
+    static member size (x: OneOf.OneOf<System.String, System.ValueTuple<System.String, System.String>>) = "Size" => x
+    static member wrap (x: System.Boolean) = "Wrap" => x
+    static member split (x: string) = html.renderFragment("Split", html.text x)
+    static member split (node) = html.renderFragment("Split", node)
+    static member split (nodes) = html.renderFragment("Split", fragment { yield! nodes })
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
                     
 
 type spaceItem<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.SpaceItem>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.SpaceItem>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.SpaceItem>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.SpaceItem>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.SpaceItem>
-    static member ref x = attr.ref<AntDesign.SpaceItem> x
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.SpaceItem>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.SpaceItem>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.SpaceItem>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.SpaceItem>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.SpaceItem>(){ x }
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
                     
 
 type spin<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Spin>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Spin>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.Spin>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.Spin>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.Spin>
-    static member ref x = attr.ref<AntDesign.Spin> x
-    static member size (x: System.String) = "Size" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member tip (x: System.String) = "Tip" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member delay (x: System.Int32) = "Delay" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member spinning (x: System.Boolean) = "Spinning" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member wrapperClassName (x: System.String) = "WrapperClassName" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member indicator (x: string) = Bolero.Html.attr.fragment "Indicator" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member indicator (node) = Bolero.Html.attr.fragment "Indicator" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member indicator (nodes) = Bolero.Html.attr.fragment "Indicator" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Spin>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Spin>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Spin>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Spin>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Spin>(){ x }
+    static member size (x: System.String) = "Size" => x
+    static member tip (x: System.String) = "Tip" => x
+    static member delay (x: System.Int32) = "Delay" => x
+    static member spinning (x: System.Boolean) = "Spinning" => x
+    static member wrapperClassName (x: System.String) = "WrapperClassName" => x
+    static member indicator (x: string) = html.renderFragment("Indicator", html.text x)
+    static member indicator (node) = html.renderFragment("Indicator", node)
+    static member indicator (nodes) = html.renderFragment("Indicator", fragment { yield! nodes })
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
                     
 
 type statisticComponentBase<'FunBlazorGeneric, 'T> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.StatisticComponentBase<'T>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.StatisticComponentBase<'T>>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.StatisticComponentBase<'T>>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.StatisticComponentBase<'T>>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.StatisticComponentBase<'T>>
-    static member ref x = attr.ref<AntDesign.StatisticComponentBase<'T>> x
-    static member prefix (x: System.String) = "Prefix" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member prefixTemplate (x: string) = Bolero.Html.attr.fragment "PrefixTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member prefixTemplate (node) = Bolero.Html.attr.fragment "PrefixTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member prefixTemplate (nodes) = Bolero.Html.attr.fragment "PrefixTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member suffix (x: System.String) = "Suffix" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member suffixTemplate (x: string) = Bolero.Html.attr.fragment "SuffixTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member suffixTemplate (node) = Bolero.Html.attr.fragment "SuffixTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member suffixTemplate (nodes) = Bolero.Html.attr.fragment "SuffixTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member title (x: System.String) = "Title" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (x: string) = Bolero.Html.attr.fragment "TitleTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (node) = Bolero.Html.attr.fragment "TitleTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (nodes) = Bolero.Html.attr.fragment "TitleTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member value (x: 'T) = "Value" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member valueStyle (x: System.String) = "ValueStyle" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.StatisticComponentBase<'T>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.StatisticComponentBase<'T>>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.StatisticComponentBase<'T>>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.StatisticComponentBase<'T>>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.StatisticComponentBase<'T>>(){ x }
+    static member prefix (x: System.String) = "Prefix" => x
+    static member prefixTemplate (x: string) = html.renderFragment("PrefixTemplate", html.text x)
+    static member prefixTemplate (node) = html.renderFragment("PrefixTemplate", node)
+    static member prefixTemplate (nodes) = html.renderFragment("PrefixTemplate", fragment { yield! nodes })
+    static member suffix (x: System.String) = "Suffix" => x
+    static member suffixTemplate (x: string) = html.renderFragment("SuffixTemplate", html.text x)
+    static member suffixTemplate (node) = html.renderFragment("SuffixTemplate", node)
+    static member suffixTemplate (nodes) = html.renderFragment("SuffixTemplate", fragment { yield! nodes })
+    static member title (x: System.String) = "Title" => x
+    static member titleTemplate (x: string) = html.renderFragment("TitleTemplate", html.text x)
+    static member titleTemplate (node) = html.renderFragment("TitleTemplate", node)
+    static member titleTemplate (nodes) = html.renderFragment("TitleTemplate", fragment { yield! nodes })
+    static member value (x: 'T) = "Value" => x
+    static member valueStyle (x: System.String) = "ValueStyle" => x
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
                     
 
 type countDown<'FunBlazorGeneric> =
     inherit statisticComponentBase<'FunBlazorGeneric, System.DateTime>
-    static member create () = [] |> html.blazor<AntDesign.CountDown>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.CountDown>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.CountDown>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.CountDown>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.CountDown> x
-    static member format (x: System.String) = "Format" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onFinish fn = attr.callbackOfUnit("OnFinish", fn) |> FelizNode<'FunBlazorGeneric>.create
+    static member format (x: System.String) = "Format" => x
+    static member onFinish fn = html.callback<unit>("OnFinish", fn)
                     
 
 type statistic<'FunBlazorGeneric, 'TValue> =
     inherit statisticComponentBase<'FunBlazorGeneric, 'TValue>
-    static member create () = [] |> html.blazor<AntDesign.Statistic<'TValue>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Statistic<'TValue>>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Statistic<'TValue>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Statistic<'TValue>>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.Statistic<'TValue>> x
-    static member decimalSeparator (x: System.String) = "DecimalSeparator" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member groupSeparator (x: System.String) = "GroupSeparator" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member precision (x: System.Int32) = "Precision" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member decimalSeparator (x: System.String) = "DecimalSeparator" => x
+    static member groupSeparator (x: System.String) = "GroupSeparator" => x
+    static member precision (x: System.Int32) = "Precision" => x
                     
 
 type step<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Step>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Step>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Step>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Step>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.Step> x
-    static member icon (x: System.String) = "Icon" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member status (x: System.String) = "Status" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member title (x: System.String) = "Title" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (x: string) = Bolero.Html.attr.fragment "TitleTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (node) = Bolero.Html.attr.fragment "TitleTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (nodes) = Bolero.Html.attr.fragment "TitleTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member subtitle (x: System.String) = "Subtitle" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member subtitleTemplate (x: string) = Bolero.Html.attr.fragment "SubtitleTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member subtitleTemplate (node) = Bolero.Html.attr.fragment "SubtitleTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member subtitleTemplate (nodes) = Bolero.Html.attr.fragment "SubtitleTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member description (x: System.String) = "Description" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member descriptionTemplate (x: string) = Bolero.Html.attr.fragment "DescriptionTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member descriptionTemplate (node) = Bolero.Html.attr.fragment "DescriptionTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member descriptionTemplate (nodes) = Bolero.Html.attr.fragment "DescriptionTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member onClick fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> "OnClick" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member disabled (x: System.Boolean) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member icon (x: System.String) = "Icon" => x
+    static member status (x: System.String) = "Status" => x
+    static member title (x: System.String) = "Title" => x
+    static member titleTemplate (x: string) = html.renderFragment("TitleTemplate", html.text x)
+    static member titleTemplate (node) = html.renderFragment("TitleTemplate", node)
+    static member titleTemplate (nodes) = html.renderFragment("TitleTemplate", fragment { yield! nodes })
+    static member subtitle (x: System.String) = "Subtitle" => x
+    static member subtitleTemplate (x: string) = html.renderFragment("SubtitleTemplate", html.text x)
+    static member subtitleTemplate (node) = html.renderFragment("SubtitleTemplate", node)
+    static member subtitleTemplate (nodes) = html.renderFragment("SubtitleTemplate", fragment { yield! nodes })
+    static member description (x: System.String) = "Description" => x
+    static member descriptionTemplate (x: string) = html.renderFragment("DescriptionTemplate", html.text x)
+    static member descriptionTemplate (node) = html.renderFragment("DescriptionTemplate", node)
+    static member descriptionTemplate (nodes) = html.renderFragment("DescriptionTemplate", fragment { yield! nodes })
+    static member onClick fn = html.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs>("OnClick", fn)
+    static member disabled (x: System.Boolean) = "Disabled" => x
                     
 
 type steps<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Steps>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Steps>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.Steps>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.Steps>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.Steps>
-    static member ref x = attr.ref<AntDesign.Steps> x
-    static member current (x: System.Int32) = "Current" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member percent (x: System.Nullable<System.Double>) = "Percent" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member progressDot (x: string) = Bolero.Html.attr.fragment "ProgressDot" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member progressDot (node) = Bolero.Html.attr.fragment "ProgressDot" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member progressDot (nodes) = Bolero.Html.attr.fragment "ProgressDot" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member showProgressDot (x: System.Boolean) = "ShowProgressDot" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member direction (x: System.String) = "Direction" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member labelPlacement (x: System.String) = "LabelPlacement" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member type' (x: System.String) = "Type" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member size (x: System.String) = "Size" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member startIndex (x: System.Int32) = "StartIndex" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member status (x: System.String) = "Status" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member onChange fn = (Bolero.Html.attr.callback<System.Int32> "OnChange" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Steps>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Steps>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Steps>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Steps>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Steps>(){ x }
+    static member current (x: System.Int32) = "Current" => x
+    static member percent (x: System.Nullable<System.Double>) = "Percent" => x
+    static member progressDot (x: string) = html.renderFragment("ProgressDot", html.text x)
+    static member progressDot (node) = html.renderFragment("ProgressDot", node)
+    static member progressDot (nodes) = html.renderFragment("ProgressDot", fragment { yield! nodes })
+    static member showProgressDot (x: System.Boolean) = "ShowProgressDot" => x
+    static member direction (x: System.String) = "Direction" => x
+    static member labelPlacement (x: System.String) = "LabelPlacement" => x
+    static member type' (x: System.String) = "Type" => x
+    static member size (x: System.String) = "Size" => x
+    static member startIndex (x: System.Int32) = "StartIndex" => x
+    static member status (x: System.String) = "Status" => x
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member onChange fn = html.callback<System.Int32>("OnChange", fn)
                     
 
 type table<'FunBlazorGeneric, 'TItem> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Table<'TItem>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Table<'TItem>>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.Table<'TItem>>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.Table<'TItem>>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.Table<'TItem>>
-    static member ref x = attr.ref<AntDesign.Table<'TItem>> x
-    static member renderMode (x: AntDesign.RenderMode) = "RenderMode" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member dataSource (x: System.Collections.Generic.IEnumerable<'TItem>) = "DataSource" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (render: 'TItem -> Bolero.Node) = Bolero.Html.attr.fragmentWith "ChildContent" (fun x -> render x) |> FelizNode<'FunBlazorGeneric>.create
-    static member rowTemplate (render: 'TItem -> Bolero.Node) = Bolero.Html.attr.fragmentWith "RowTemplate" (fun x -> render x) |> FelizNode<'FunBlazorGeneric>.create
-    static member expandTemplate (render: AntDesign.TableModels.RowData<'TItem> -> Bolero.Node) = Bolero.Html.attr.fragmentWith "ExpandTemplate" (fun x -> render x) |> FelizNode<'FunBlazorGeneric>.create
-    static member defaultExpandAllRows (x: System.Boolean) = "DefaultExpandAllRows" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member rowExpandable (fn) = "RowExpandable" => (System.Func<AntDesign.TableModels.RowData<'TItem>, System.Boolean>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member treeChildren (fn) = "TreeChildren" => (System.Func<'TItem, System.Collections.Generic.IEnumerable<'TItem>>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member onChange fn = (Bolero.Html.attr.callback<AntDesign.TableModels.QueryModel<'TItem>> "OnChange" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onRow (fn) = "OnRow" => (System.Func<AntDesign.TableModels.RowData<'TItem>, System.Collections.Generic.Dictionary<System.String, System.Object>>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member onHeaderRow (fn) = "OnHeaderRow" => (System.Func<System.Collections.Generic.Dictionary<System.String, System.Object>>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member loading (x: System.Boolean) = "Loading" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member title (x: System.String) = "Title" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (x: string) = Bolero.Html.attr.fragment "TitleTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (node) = Bolero.Html.attr.fragment "TitleTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (nodes) = Bolero.Html.attr.fragment "TitleTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member footer (x: System.String) = "Footer" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member footerTemplate (x: string) = Bolero.Html.attr.fragment "FooterTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member footerTemplate (node) = Bolero.Html.attr.fragment "FooterTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member footerTemplate (nodes) = Bolero.Html.attr.fragment "FooterTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member size (x: AntDesign.TableSize) = "Size" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member locale (x: AntDesign.TableLocale) = "Locale" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member bordered (x: System.Boolean) = "Bordered" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member scrollX (x: System.String) = "ScrollX" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member scrollY (x: System.String) = "ScrollY" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member scrollBarWidth (x: System.Int32) = "ScrollBarWidth" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member indentSize (x: System.Int32) = "IndentSize" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member expandIconColumnIndex (x: System.Int32) = "ExpandIconColumnIndex" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member rowClassName (fn) = "RowClassName" => (System.Func<AntDesign.TableModels.RowData<'TItem>, System.String>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member expandedRowClassName (fn) = "ExpandedRowClassName" => (System.Func<AntDesign.TableModels.RowData<'TItem>, System.String>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member onExpand fn = (Bolero.Html.attr.callback<AntDesign.TableModels.RowData<'TItem>> "OnExpand" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member sortDirections (x: AntDesign.SortDirection[]) = "SortDirections" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member tableLayout (x: System.String) = "TableLayout" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onRowClick fn = (Bolero.Html.attr.callback<AntDesign.TableModels.RowData<'TItem>> "OnRowClick" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member remoteDataSource (x: System.Boolean) = "RemoteDataSource" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member responsive (x: System.Boolean) = "Responsive" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member hidePagination (x: System.Boolean) = "HidePagination" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member paginationPosition (x: System.String) = "PaginationPosition" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member paginationTemplate (x: string) = Bolero.Html.attr.fragment "PaginationTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member paginationTemplate (node) = Bolero.Html.attr.fragment "PaginationTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member paginationTemplate (nodes) = Bolero.Html.attr.fragment "PaginationTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member total (x: System.Int32) = "Total" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member total' (value: IStore<System.Int32>) = FelizNode<'FunBlazorGeneric>.create("Total", value)
-    static member total' (value: cval<System.Int32>) = FelizNode<'FunBlazorGeneric>.create("Total", value)
-    static member total' (valueFn: System.Int32 * (System.Int32 -> unit)) = FelizNode<'FunBlazorGeneric>.create("Total", valueFn)
-    static member totalChanged fn = (Bolero.Html.attr.callback<System.Int32> "TotalChanged" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member pageIndex (x: System.Int32) = "PageIndex" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member pageIndex' (value: IStore<System.Int32>) = FelizNode<'FunBlazorGeneric>.create("PageIndex", value)
-    static member pageIndex' (value: cval<System.Int32>) = FelizNode<'FunBlazorGeneric>.create("PageIndex", value)
-    static member pageIndex' (valueFn: System.Int32 * (System.Int32 -> unit)) = FelizNode<'FunBlazorGeneric>.create("PageIndex", valueFn)
-    static member pageIndexChanged fn = (Bolero.Html.attr.callback<System.Int32> "PageIndexChanged" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member pageSize (x: System.Int32) = "PageSize" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member pageSize' (value: IStore<System.Int32>) = FelizNode<'FunBlazorGeneric>.create("PageSize", value)
-    static member pageSize' (value: cval<System.Int32>) = FelizNode<'FunBlazorGeneric>.create("PageSize", value)
-    static member pageSize' (valueFn: System.Int32 * (System.Int32 -> unit)) = FelizNode<'FunBlazorGeneric>.create("PageSize", valueFn)
-    static member pageSizeChanged fn = (Bolero.Html.attr.callback<System.Int32> "PageSizeChanged" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onPageIndexChange fn = (Bolero.Html.attr.callback<AntDesign.PaginationEventArgs> "OnPageIndexChange" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onPageSizeChange fn = (Bolero.Html.attr.callback<AntDesign.PaginationEventArgs> "OnPageSizeChange" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member selectedRows (x: System.Collections.Generic.IEnumerable<'TItem>) = "SelectedRows" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member selectedRows' (value: IStore<System.Collections.Generic.IEnumerable<'TItem>>) = FelizNode<'FunBlazorGeneric>.create("SelectedRows", value)
-    static member selectedRows' (value: cval<System.Collections.Generic.IEnumerable<'TItem>>) = FelizNode<'FunBlazorGeneric>.create("SelectedRows", value)
-    static member selectedRows' (valueFn: System.Collections.Generic.IEnumerable<'TItem> * (System.Collections.Generic.IEnumerable<'TItem> -> unit)) = FelizNode<'FunBlazorGeneric>.create("SelectedRows", valueFn)
-    static member selectedRowsChanged fn = (Bolero.Html.attr.callback<System.Collections.Generic.IEnumerable<'TItem>> "SelectedRowsChanged" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Table<'TItem>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Table<'TItem>>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Table<'TItem>>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Table<'TItem>>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Table<'TItem>>(){ x }
+    static member renderMode (x: AntDesign.RenderMode) = "RenderMode" => x
+    static member dataSource (x: System.Collections.Generic.IEnumerable<'TItem>) = "DataSource" => x
+    static member childContent (render: 'TItem -> NodeRenderFragment) = html.renderFragment("ChildContent", render)
+    static member rowTemplate (render: 'TItem -> NodeRenderFragment) = html.renderFragment("RowTemplate", render)
+    static member expandTemplate (render: AntDesign.TableModels.RowData<'TItem> -> NodeRenderFragment) = html.renderFragment("ExpandTemplate", render)
+    static member defaultExpandAllRows (x: System.Boolean) = "DefaultExpandAllRows" => x
+    static member rowExpandable (fn) = "RowExpandable" => (System.Func<AntDesign.TableModels.RowData<'TItem>, System.Boolean>fn)
+    static member treeChildren (fn) = "TreeChildren" => (System.Func<'TItem, System.Collections.Generic.IEnumerable<'TItem>>fn)
+    static member onChange fn = html.callback<AntDesign.TableModels.QueryModel<'TItem>>("OnChange", fn)
+    static member onRow (fn) = "OnRow" => (System.Func<AntDesign.TableModels.RowData<'TItem>, System.Collections.Generic.Dictionary<System.String, System.Object>>fn)
+    static member onHeaderRow (fn) = "OnHeaderRow" => (System.Func<System.Collections.Generic.Dictionary<System.String, System.Object>>fn)
+    static member loading (x: System.Boolean) = "Loading" => x
+    static member title (x: System.String) = "Title" => x
+    static member titleTemplate (x: string) = html.renderFragment("TitleTemplate", html.text x)
+    static member titleTemplate (node) = html.renderFragment("TitleTemplate", node)
+    static member titleTemplate (nodes) = html.renderFragment("TitleTemplate", fragment { yield! nodes })
+    static member footer (x: System.String) = "Footer" => x
+    static member footerTemplate (x: string) = html.renderFragment("FooterTemplate", html.text x)
+    static member footerTemplate (node) = html.renderFragment("FooterTemplate", node)
+    static member footerTemplate (nodes) = html.renderFragment("FooterTemplate", fragment { yield! nodes })
+    static member size (x: AntDesign.TableSize) = "Size" => x
+    static member locale (x: AntDesign.TableLocale) = "Locale" => x
+    static member bordered (x: System.Boolean) = "Bordered" => x
+    static member scrollX (x: System.String) = "ScrollX" => x
+    static member scrollY (x: System.String) = "ScrollY" => x
+    static member scrollBarWidth (x: System.Int32) = "ScrollBarWidth" => x
+    static member indentSize (x: System.Int32) = "IndentSize" => x
+    static member expandIconColumnIndex (x: System.Int32) = "ExpandIconColumnIndex" => x
+    static member rowClassName (fn) = "RowClassName" => (System.Func<AntDesign.TableModels.RowData<'TItem>, System.String>fn)
+    static member expandedRowClassName (fn) = "ExpandedRowClassName" => (System.Func<AntDesign.TableModels.RowData<'TItem>, System.String>fn)
+    static member onExpand fn = html.callback<AntDesign.TableModels.RowData<'TItem>>("OnExpand", fn)
+    static member sortDirections (x: AntDesign.SortDirection[]) = "SortDirections" => x
+    static member tableLayout (x: System.String) = "TableLayout" => x
+    static member onRowClick fn = html.callback<AntDesign.TableModels.RowData<'TItem>>("OnRowClick", fn)
+    static member remoteDataSource (x: System.Boolean) = "RemoteDataSource" => x
+    static member responsive (x: System.Boolean) = "Responsive" => x
+    static member hidePagination (x: System.Boolean) = "HidePagination" => x
+    static member paginationPosition (x: System.String) = "PaginationPosition" => x
+    static member paginationTemplate (x: string) = html.renderFragment("PaginationTemplate", html.text x)
+    static member paginationTemplate (node) = html.renderFragment("PaginationTemplate", node)
+    static member paginationTemplate (nodes) = html.renderFragment("PaginationTemplate", fragment { yield! nodes })
+    static member total (x: System.Int32) = "Total" => x
+    static member total' (value: IStore<System.Int32>) = html.bind("Total", value)
+    static member total' (value: cval<System.Int32>) = html.bind("Total", value)
+    static member total' (valueFn: System.Int32 * (System.Int32 -> unit)) = html.bind("Total", valueFn)
+    static member totalChanged fn = html.callback<System.Int32>("TotalChanged", fn)
+    static member pageIndex (x: System.Int32) = "PageIndex" => x
+    static member pageIndex' (value: IStore<System.Int32>) = html.bind("PageIndex", value)
+    static member pageIndex' (value: cval<System.Int32>) = html.bind("PageIndex", value)
+    static member pageIndex' (valueFn: System.Int32 * (System.Int32 -> unit)) = html.bind("PageIndex", valueFn)
+    static member pageIndexChanged fn = html.callback<System.Int32>("PageIndexChanged", fn)
+    static member pageSize (x: System.Int32) = "PageSize" => x
+    static member pageSize' (value: IStore<System.Int32>) = html.bind("PageSize", value)
+    static member pageSize' (value: cval<System.Int32>) = html.bind("PageSize", value)
+    static member pageSize' (valueFn: System.Int32 * (System.Int32 -> unit)) = html.bind("PageSize", valueFn)
+    static member pageSizeChanged fn = html.callback<System.Int32>("PageSizeChanged", fn)
+    static member onPageIndexChange fn = html.callback<AntDesign.PaginationEventArgs>("OnPageIndexChange", fn)
+    static member onPageSizeChange fn = html.callback<AntDesign.PaginationEventArgs>("OnPageSizeChange", fn)
+    static member selectedRows (x: System.Collections.Generic.IEnumerable<'TItem>) = "SelectedRows" => x
+    static member selectedRows' (value: IStore<System.Collections.Generic.IEnumerable<'TItem>>) = html.bind("SelectedRows", value)
+    static member selectedRows' (value: cval<System.Collections.Generic.IEnumerable<'TItem>>) = html.bind("SelectedRows", value)
+    static member selectedRows' (valueFn: System.Collections.Generic.IEnumerable<'TItem> * (System.Collections.Generic.IEnumerable<'TItem> -> unit)) = html.bind("SelectedRows", valueFn)
+    static member selectedRowsChanged fn = html.callback<System.Collections.Generic.IEnumerable<'TItem>>("SelectedRowsChanged", fn)
                     
 
 type reuseTabs<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.ReuseTabs>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.ReuseTabs>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.ReuseTabs>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.ReuseTabs>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.ReuseTabs> x
-    static member tabPaneClass (x: System.String) = "TabPaneClass" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member draggable (x: System.Boolean) = "Draggable" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member size (x: AntDesign.TabSize) = "Size" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member body (render: AntDesign.ReuseTabsPageItem -> Bolero.Node) = Bolero.Html.attr.fragmentWith "Body" (fun x -> render x) |> FelizNode<'FunBlazorGeneric>.create
-    static member locale (x: AntDesign.ReuseTabsLocale) = "Locale" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member tabPaneClass (x: System.String) = "TabPaneClass" => x
+    static member draggable (x: System.Boolean) = "Draggable" => x
+    static member size (x: AntDesign.TabSize) = "Size" => x
+    static member body (render: AntDesign.ReuseTabsPageItem -> NodeRenderFragment) = html.renderFragment("Body", render)
+    static member locale (x: AntDesign.ReuseTabsLocale) = "Locale" => x
                     
 
 type tabPane<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.TabPane>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.TabPane>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.TabPane>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.TabPane>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.TabPane>
-    static member ref x = attr.ref<AntDesign.TabPane> x
-    static member forceRender (x: System.Boolean) = "ForceRender" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member key (x: System.String) = "Key" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member tab (x: System.String) = "Tab" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member tabTemplate (x: string) = Bolero.Html.attr.fragment "TabTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member tabTemplate (node) = Bolero.Html.attr.fragment "TabTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member tabTemplate (nodes) = Bolero.Html.attr.fragment "TabTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member tabContextMenu (x: string) = Bolero.Html.attr.fragment "TabContextMenu" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member tabContextMenu (node) = Bolero.Html.attr.fragment "TabContextMenu" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member tabContextMenu (nodes) = Bolero.Html.attr.fragment "TabContextMenu" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member disabled (x: System.Boolean) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member closable (x: System.Boolean) = "Closable" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.TabPane>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.TabPane>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.TabPane>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.TabPane>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.TabPane>(){ x }
+    static member forceRender (x: System.Boolean) = "ForceRender" => x
+    static member key (x: System.String) = "Key" => x
+    static member tab (x: System.String) = "Tab" => x
+    static member tabTemplate (x: string) = html.renderFragment("TabTemplate", html.text x)
+    static member tabTemplate (node) = html.renderFragment("TabTemplate", node)
+    static member tabTemplate (nodes) = html.renderFragment("TabTemplate", fragment { yield! nodes })
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member tabContextMenu (x: string) = html.renderFragment("TabContextMenu", html.text x)
+    static member tabContextMenu (node) = html.renderFragment("TabContextMenu", node)
+    static member tabContextMenu (nodes) = html.renderFragment("TabContextMenu", fragment { yield! nodes })
+    static member disabled (x: System.Boolean) = "Disabled" => x
+    static member closable (x: System.Boolean) = "Closable" => x
                     
 
 type tabs<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Tabs>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Tabs>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.Tabs>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.Tabs>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.Tabs>
-    static member ref x = attr.ref<AntDesign.Tabs> x
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member activeKey (x: System.String) = "ActiveKey" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member activeKey' (value: IStore<System.String>) = FelizNode<'FunBlazorGeneric>.create("ActiveKey", value)
-    static member activeKey' (value: cval<System.String>) = FelizNode<'FunBlazorGeneric>.create("ActiveKey", value)
-    static member activeKey' (valueFn: System.String * (System.String -> unit)) = FelizNode<'FunBlazorGeneric>.create("ActiveKey", valueFn)
-    static member activeKeyChanged fn = (Bolero.Html.attr.callback<System.String> "ActiveKeyChanged" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member animated (x: System.Boolean) = "Animated" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member inkBarAnimated (x: System.Boolean) = "InkBarAnimated" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member renderTabBar (x: System.Object) = "RenderTabBar" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member defaultActiveKey (x: System.String) = "DefaultActiveKey" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member hideAdd (x: System.Boolean) = "HideAdd" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member size (x: AntDesign.TabSize) = "Size" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member tabBarExtraContent (x: string) = Bolero.Html.attr.fragment "TabBarExtraContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member tabBarExtraContent (node) = Bolero.Html.attr.fragment "TabBarExtraContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member tabBarExtraContent (nodes) = Bolero.Html.attr.fragment "TabBarExtraContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member tabBarExtraContentLeft (x: string) = Bolero.Html.attr.fragment "TabBarExtraContentLeft" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member tabBarExtraContentLeft (node) = Bolero.Html.attr.fragment "TabBarExtraContentLeft" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member tabBarExtraContentLeft (nodes) = Bolero.Html.attr.fragment "TabBarExtraContentLeft" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member tabBarExtraContentRight (x: string) = Bolero.Html.attr.fragment "TabBarExtraContentRight" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member tabBarExtraContentRight (node) = Bolero.Html.attr.fragment "TabBarExtraContentRight" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member tabBarExtraContentRight (nodes) = Bolero.Html.attr.fragment "TabBarExtraContentRight" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member tabBarGutter (x: System.Int32) = "TabBarGutter" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member tabBarStyle (x: System.String) = "TabBarStyle" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member tabPosition (x: AntDesign.TabPosition) = "TabPosition" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member type' (x: AntDesign.TabType) = "Type" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onChange fn = (Bolero.Html.attr.callback<System.String> "OnChange" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onEdit (fn) = "OnEdit" => (System.Func<System.String, System.String, System.Threading.Tasks.Task<System.Boolean>>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member onClose fn = (Bolero.Html.attr.callback<System.String> "OnClose" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onAddClick fn = attr.callbackOfUnit("OnAddClick", fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member afterTabCreated fn = (Bolero.Html.attr.callback<System.String> "AfterTabCreated" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onTabClick fn = (Bolero.Html.attr.callback<System.String> "OnTabClick" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member draggable (x: System.Boolean) = "Draggable" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member centered (x: System.Boolean) = "Centered" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Tabs>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Tabs>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Tabs>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Tabs>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Tabs>(){ x }
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member activeKey (x: System.String) = "ActiveKey" => x
+    static member activeKey' (value: IStore<System.String>) = html.bind("ActiveKey", value)
+    static member activeKey' (value: cval<System.String>) = html.bind("ActiveKey", value)
+    static member activeKey' (valueFn: System.String * (System.String -> unit)) = html.bind("ActiveKey", valueFn)
+    static member activeKeyChanged fn = html.callback<System.String>("ActiveKeyChanged", fn)
+    static member animated (x: System.Boolean) = "Animated" => x
+    static member inkBarAnimated (x: System.Boolean) = "InkBarAnimated" => x
+    static member renderTabBar (x: System.Object) = "RenderTabBar" => x
+    static member defaultActiveKey (x: System.String) = "DefaultActiveKey" => x
+    static member hideAdd (x: System.Boolean) = "HideAdd" => x
+    static member size (x: AntDesign.TabSize) = "Size" => x
+    static member tabBarExtraContent (x: string) = html.renderFragment("TabBarExtraContent", html.text x)
+    static member tabBarExtraContent (node) = html.renderFragment("TabBarExtraContent", node)
+    static member tabBarExtraContent (nodes) = html.renderFragment("TabBarExtraContent", fragment { yield! nodes })
+    static member tabBarExtraContentLeft (x: string) = html.renderFragment("TabBarExtraContentLeft", html.text x)
+    static member tabBarExtraContentLeft (node) = html.renderFragment("TabBarExtraContentLeft", node)
+    static member tabBarExtraContentLeft (nodes) = html.renderFragment("TabBarExtraContentLeft", fragment { yield! nodes })
+    static member tabBarExtraContentRight (x: string) = html.renderFragment("TabBarExtraContentRight", html.text x)
+    static member tabBarExtraContentRight (node) = html.renderFragment("TabBarExtraContentRight", node)
+    static member tabBarExtraContentRight (nodes) = html.renderFragment("TabBarExtraContentRight", fragment { yield! nodes })
+    static member tabBarGutter (x: System.Int32) = "TabBarGutter" => x
+    static member tabBarStyle (x: System.String) = "TabBarStyle" => x
+    static member tabPosition (x: AntDesign.TabPosition) = "TabPosition" => x
+    static member type' (x: AntDesign.TabType) = "Type" => x
+    static member onChange fn = html.callback<System.String>("OnChange", fn)
+    static member onEdit (fn) = "OnEdit" => (System.Func<System.String, System.String, System.Threading.Tasks.Task<System.Boolean>>fn)
+    static member onClose fn = html.callback<System.String>("OnClose", fn)
+    static member onAddClick fn = html.callback<unit>("OnAddClick", fn)
+    static member afterTabCreated fn = html.callback<System.String>("AfterTabCreated", fn)
+    static member onTabClick fn = html.callback<System.String>("OnTabClick", fn)
+    static member draggable (x: System.Boolean) = "Draggable" => x
+    static member centered (x: System.Boolean) = "Centered" => x
                     
 
 type tag<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Tag>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Tag>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.Tag>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.Tag>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.Tag>
-    static member ref x = attr.ref<AntDesign.Tag> x
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member closable (x: System.Boolean) = "Closable" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member checkable (x: System.Boolean) = "Checkable" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member checked' (x: System.Boolean) = "Checked" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member checked'' (value: IStore<System.Boolean>) = FelizNode<'FunBlazorGeneric>.create("Checked", value)
-    static member checked'' (value: cval<System.Boolean>) = FelizNode<'FunBlazorGeneric>.create("Checked", value)
-    static member checked'' (valueFn: System.Boolean * (System.Boolean -> unit)) = FelizNode<'FunBlazorGeneric>.create("Checked", valueFn)
-    static member checkedChanged fn = (Bolero.Html.attr.callback<System.Boolean> "CheckedChanged" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member color (x: System.String) = "Color" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member presetColor (x: System.Nullable<AntDesign.PresetColor>) = "PresetColor" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member icon (x: System.String) = "Icon" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member noAnimation (x: System.Boolean) = "NoAnimation" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onClose fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> "OnClose" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onClosing fn = (Bolero.Html.attr.callback<AntDesign.CloseEventArgs<Microsoft.AspNetCore.Components.Web.MouseEventArgs>> "OnClosing" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onClick fn = attr.callbackOfUnit("OnClick", fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member visible (x: System.Boolean) = "Visible" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Tag>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Tag>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Tag>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Tag>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Tag>(){ x }
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member closable (x: System.Boolean) = "Closable" => x
+    static member checkable (x: System.Boolean) = "Checkable" => x
+    static member checked' (x: System.Boolean) = "Checked" => x
+    static member checked'' (value: IStore<System.Boolean>) = html.bind("Checked", value)
+    static member checked'' (value: cval<System.Boolean>) = html.bind("Checked", value)
+    static member checked'' (valueFn: System.Boolean * (System.Boolean -> unit)) = html.bind("Checked", valueFn)
+    static member checkedChanged fn = html.callback<System.Boolean>("CheckedChanged", fn)
+    static member color (x: System.String) = "Color" => x
+    static member presetColor (x: System.Nullable<AntDesign.PresetColor>) = "PresetColor" => x
+    static member icon (x: System.String) = "Icon" => x
+    static member noAnimation (x: System.Boolean) = "NoAnimation" => x
+    static member onClose fn = html.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs>("OnClose", fn)
+    static member onClosing fn = html.callback<AntDesign.CloseEventArgs<Microsoft.AspNetCore.Components.Web.MouseEventArgs>>("OnClosing", fn)
+    static member onClick fn = html.callback<unit>("OnClick", fn)
+    static member visible (x: System.Boolean) = "Visible" => x
                     
 
 type timeline<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Timeline>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Timeline>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.Timeline>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.Timeline>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.Timeline>
-    static member ref x = attr.ref<AntDesign.Timeline> x
-    static member mode (x: System.Nullable<AntDesign.TimelineMode>) = "Mode" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member reverse (x: System.Boolean) = "Reverse" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member pending (x: OneOf.OneOf<System.String, Microsoft.AspNetCore.Components.RenderFragment>) = "Pending" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member pendingDot (x: string) = Bolero.Html.attr.fragment "PendingDot" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member pendingDot (node) = Bolero.Html.attr.fragment "PendingDot" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member pendingDot (nodes) = Bolero.Html.attr.fragment "PendingDot" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Timeline>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Timeline>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Timeline>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Timeline>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Timeline>(){ x }
+    static member mode (x: System.Nullable<AntDesign.TimelineMode>) = "Mode" => x
+    static member reverse (x: System.Boolean) = "Reverse" => x
+    static member pending (x: OneOf.OneOf<System.String, Microsoft.AspNetCore.Components.RenderFragment>) = "Pending" => x
+    static member pendingDot (x: string) = html.renderFragment("PendingDot", html.text x)
+    static member pendingDot (node) = html.renderFragment("PendingDot", node)
+    static member pendingDot (nodes) = html.renderFragment("PendingDot", fragment { yield! nodes })
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
                     
 
 type timelineItem<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.TimelineItem>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.TimelineItem>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.TimelineItem>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.TimelineItem>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.TimelineItem>
-    static member ref x = attr.ref<AntDesign.TimelineItem> x
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member dot (x: string) = Bolero.Html.attr.fragment "Dot" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member dot (node) = Bolero.Html.attr.fragment "Dot" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member dot (nodes) = Bolero.Html.attr.fragment "Dot" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member color (x: System.String) = "Color" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member label (x: System.String) = "Label" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.TimelineItem>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.TimelineItem>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.TimelineItem>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.TimelineItem>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.TimelineItem>(){ x }
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member dot (x: string) = html.renderFragment("Dot", html.text x)
+    static member dot (node) = html.renderFragment("Dot", node)
+    static member dot (nodes) = html.renderFragment("Dot", fragment { yield! nodes })
+    static member color (x: System.String) = "Color" => x
+    static member label (x: System.String) = "Label" => x
                     
 
 type transfer<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Transfer>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Transfer>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.Transfer>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.Transfer>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.Transfer>
-    static member ref x = attr.ref<AntDesign.Transfer> x
-    static member dataSource (x: System.Collections.Generic.IList<AntDesign.TransferItem>) = "DataSource" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member titles (x: System.String[]) = "Titles" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member operations (x: System.String[]) = "Operations" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member disabled (x: System.Boolean) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member showSearch (x: System.Boolean) = "ShowSearch" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member showSelectAll (x: System.Boolean) = "ShowSelectAll" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member targetKeys (x: System.String[]) = "TargetKeys" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member selectedKeys (x: System.String[]) = "SelectedKeys" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onChange fn = (Bolero.Html.attr.callback<AntDesign.TransferChangeArgs> "OnChange" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onScroll fn = (Bolero.Html.attr.callback<AntDesign.TransferScrollArgs> "OnScroll" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onSearch fn = (Bolero.Html.attr.callback<AntDesign.TransferSearchArgs> "OnSearch" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onSelectChange fn = (Bolero.Html.attr.callback<AntDesign.TransferSelectChangeArgs> "OnSelectChange" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member render (fn) = "Render" => (System.Func<AntDesign.TransferItem, OneOf.OneOf<System.String, Microsoft.AspNetCore.Components.RenderFragment>>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member locale (x: AntDesign.TransferLocale) = "Locale" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member footer (x: System.String) = "Footer" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member footerTemplate (x: string) = Bolero.Html.attr.fragment "FooterTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member footerTemplate (node) = Bolero.Html.attr.fragment "FooterTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member footerTemplate (nodes) = Bolero.Html.attr.fragment "FooterTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Transfer>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Transfer>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Transfer>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Transfer>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Transfer>(){ x }
+    static member dataSource (x: System.Collections.Generic.IList<AntDesign.TransferItem>) = "DataSource" => x
+    static member titles (x: System.String[]) = "Titles" => x
+    static member operations (x: System.String[]) = "Operations" => x
+    static member disabled (x: System.Boolean) = "Disabled" => x
+    static member showSearch (x: System.Boolean) = "ShowSearch" => x
+    static member showSelectAll (x: System.Boolean) = "ShowSelectAll" => x
+    static member targetKeys (x: System.String[]) = "TargetKeys" => x
+    static member selectedKeys (x: System.String[]) = "SelectedKeys" => x
+    static member onChange fn = html.callback<AntDesign.TransferChangeArgs>("OnChange", fn)
+    static member onScroll fn = html.callback<AntDesign.TransferScrollArgs>("OnScroll", fn)
+    static member onSearch fn = html.callback<AntDesign.TransferSearchArgs>("OnSearch", fn)
+    static member onSelectChange fn = html.callback<AntDesign.TransferSelectChangeArgs>("OnSelectChange", fn)
+    static member render (fn) = "Render" => (System.Func<AntDesign.TransferItem, OneOf.OneOf<System.String, Microsoft.AspNetCore.Components.RenderFragment>>fn)
+    static member locale (x: AntDesign.TransferLocale) = "Locale" => x
+    static member footer (x: System.String) = "Footer" => x
+    static member footerTemplate (x: string) = html.renderFragment("FooterTemplate", html.text x)
+    static member footerTemplate (node) = html.renderFragment("FooterTemplate", node)
+    static member footerTemplate (nodes) = html.renderFragment("FooterTemplate", fragment { yield! nodes })
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
                     
 
 type tree<'FunBlazorGeneric, 'TItem> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Tree<'TItem>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Tree<'TItem>>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.Tree<'TItem>>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.Tree<'TItem>>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.Tree<'TItem>>
-    static member ref x = attr.ref<AntDesign.Tree<'TItem>> x
-    static member showExpand (x: System.Boolean) = "ShowExpand" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member showLine (x: System.Boolean) = "ShowLine" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member showIcon (x: System.Boolean) = "ShowIcon" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member blockNode (x: System.Boolean) = "BlockNode" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member draggable (x: System.Boolean) = "Draggable" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member disabled (x: System.Boolean) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member showLeafIcon (x: System.Boolean) = "ShowLeafIcon" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member switcherIcon (x: System.String) = "SwitcherIcon" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member nodes (x: string) = Bolero.Html.attr.fragment "Nodes" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member nodes (node) = Bolero.Html.attr.fragment "Nodes" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member nodes (nodes) = Bolero.Html.attr.fragment "Nodes" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member selectable (x: System.Boolean) = "Selectable" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member multiple (x: System.Boolean) = "Multiple" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member defaultSelectedKeys (x: System.String[]) = "DefaultSelectedKeys" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member selectedKey (x: System.String) = "SelectedKey" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member selectedKey' (value: IStore<System.String>) = FelizNode<'FunBlazorGeneric>.create("SelectedKey", value)
-    static member selectedKey' (value: cval<System.String>) = FelizNode<'FunBlazorGeneric>.create("SelectedKey", value)
-    static member selectedKey' (valueFn: System.String * (System.String -> unit)) = FelizNode<'FunBlazorGeneric>.create("SelectedKey", valueFn)
-    static member selectedKeyChanged fn = (Bolero.Html.attr.callback<System.String> "SelectedKeyChanged" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member selectedNode (x: AntDesign.TreeNode<'TItem>) = "SelectedNode" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member selectedNode' (value: IStore<AntDesign.TreeNode<'TItem>>) = FelizNode<'FunBlazorGeneric>.create("SelectedNode", value)
-    static member selectedNode' (value: cval<AntDesign.TreeNode<'TItem>>) = FelizNode<'FunBlazorGeneric>.create("SelectedNode", value)
-    static member selectedNode' (valueFn: AntDesign.TreeNode<'TItem> * (AntDesign.TreeNode<'TItem> -> unit)) = FelizNode<'FunBlazorGeneric>.create("SelectedNode", valueFn)
-    static member selectedNodeChanged fn = (Bolero.Html.attr.callback<AntDesign.TreeNode<'TItem>> "SelectedNodeChanged" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member selectedData (x: 'TItem) = "SelectedData" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member selectedData' (value: IStore<'TItem>) = FelizNode<'FunBlazorGeneric>.create("SelectedData", value)
-    static member selectedData' (value: cval<'TItem>) = FelizNode<'FunBlazorGeneric>.create("SelectedData", value)
-    static member selectedData' (valueFn: 'TItem * ('TItem -> unit)) = FelizNode<'FunBlazorGeneric>.create("SelectedData", valueFn)
-    static member selectedDataChanged fn = (Bolero.Html.attr.callback<'TItem> "SelectedDataChanged" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member selectedKeys (x: System.String[]) = "SelectedKeys" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member selectedKeys' (value: IStore<System.String[]>) = FelizNode<'FunBlazorGeneric>.create("SelectedKeys", value)
-    static member selectedKeys' (value: cval<System.String[]>) = FelizNode<'FunBlazorGeneric>.create("SelectedKeys", value)
-    static member selectedKeys' (valueFn: System.String[] * (System.String[] -> unit)) = FelizNode<'FunBlazorGeneric>.create("SelectedKeys", valueFn)
-    static member selectedKeysChanged fn = (Bolero.Html.attr.callback<System.String[]> "SelectedKeysChanged" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member selectedNodes (x: AntDesign.TreeNode<'TItem>[]) = "SelectedNodes" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member selectedDatas (x: 'TItem[]) = "SelectedDatas" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member checkable (x: System.Boolean) = "Checkable" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member checkStrictly (x: System.Boolean) = "CheckStrictly" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member checkedKeys (x: System.String[]) = "CheckedKeys" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member checkedKeys' (value: IStore<System.String[]>) = FelizNode<'FunBlazorGeneric>.create("CheckedKeys", value)
-    static member checkedKeys' (value: cval<System.String[]>) = FelizNode<'FunBlazorGeneric>.create("CheckedKeys", value)
-    static member checkedKeys' (valueFn: System.String[] * (System.String[] -> unit)) = FelizNode<'FunBlazorGeneric>.create("CheckedKeys", valueFn)
-    static member checkedKeysChanged fn = (Bolero.Html.attr.callback<System.String[]> "CheckedKeysChanged" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member defaultCheckedKeys (x: System.String[]) = "DefaultCheckedKeys" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member searchValue (x: System.String) = "SearchValue" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member searchExpression (fn) = "SearchExpression" => (System.Func<AntDesign.TreeNode<'TItem>, System.Boolean>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member matchedStyle (x: System.String) = "MatchedStyle" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member matchedClass (x: System.String) = "MatchedClass" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member dataSource (x: System.Collections.Generic.IEnumerable<'TItem>) = "DataSource" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member titleExpression (fn) = "TitleExpression" => (System.Func<AntDesign.TreeNode<'TItem>, System.String>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member keyExpression (fn) = "KeyExpression" => (System.Func<AntDesign.TreeNode<'TItem>, System.String>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member iconExpression (fn) = "IconExpression" => (System.Func<AntDesign.TreeNode<'TItem>, System.String>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member isLeafExpression (fn) = "IsLeafExpression" => (System.Func<AntDesign.TreeNode<'TItem>, System.Boolean>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member childrenExpression (fn) = "ChildrenExpression" => (System.Func<AntDesign.TreeNode<'TItem>, System.Collections.Generic.IList<'TItem>>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member disabledExpression (fn) = "DisabledExpression" => (System.Func<AntDesign.TreeNode<'TItem>, System.Boolean>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member onNodeLoadDelayAsync fn = (Bolero.Html.attr.callback<AntDesign.TreeEventArgs<'TItem>> "OnNodeLoadDelayAsync" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onClick fn = (Bolero.Html.attr.callback<AntDesign.TreeEventArgs<'TItem>> "OnClick" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onDblClick fn = (Bolero.Html.attr.callback<AntDesign.TreeEventArgs<'TItem>> "OnDblClick" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onContextMenu fn = (Bolero.Html.attr.callback<AntDesign.TreeEventArgs<'TItem>> "OnContextMenu" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onCheck fn = (Bolero.Html.attr.callback<AntDesign.TreeEventArgs<'TItem>> "OnCheck" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onSelect fn = (Bolero.Html.attr.callback<AntDesign.TreeEventArgs<'TItem>> "OnSelect" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onUnSelect fn = (Bolero.Html.attr.callback<AntDesign.TreeEventArgs<'TItem>> "OnUnSelect" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onExpandChanged fn = (Bolero.Html.attr.callback<AntDesign.TreeEventArgs<'TItem>> "OnExpandChanged" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member indentTemplate (render: AntDesign.TreeNode<'TItem> -> Bolero.Node) = Bolero.Html.attr.fragmentWith "IndentTemplate" (fun x -> render x) |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (render: AntDesign.TreeNode<'TItem> -> Bolero.Node) = Bolero.Html.attr.fragmentWith "TitleTemplate" (fun x -> render x) |> FelizNode<'FunBlazorGeneric>.create
-    static member titleIconTemplate (render: AntDesign.TreeNode<'TItem> -> Bolero.Node) = Bolero.Html.attr.fragmentWith "TitleIconTemplate" (fun x -> render x) |> FelizNode<'FunBlazorGeneric>.create
-    static member switcherIconTemplate (render: AntDesign.TreeNode<'TItem> -> Bolero.Node) = Bolero.Html.attr.fragmentWith "SwitcherIconTemplate" (fun x -> render x) |> FelizNode<'FunBlazorGeneric>.create
-    static member onDragStart fn = (Bolero.Html.attr.callback<AntDesign.TreeEventArgs<'TItem>> "OnDragStart" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onDragEnter fn = (Bolero.Html.attr.callback<AntDesign.TreeEventArgs<'TItem>> "OnDragEnter" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onDragLeave fn = (Bolero.Html.attr.callback<AntDesign.TreeEventArgs<'TItem>> "OnDragLeave" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onDrop fn = (Bolero.Html.attr.callback<AntDesign.TreeEventArgs<'TItem>> "OnDrop" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onDragEnd fn = (Bolero.Html.attr.callback<AntDesign.TreeEventArgs<'TItem>> "OnDragEnd" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member defaultExpandAll (x: System.Boolean) = "DefaultExpandAll" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member defaultExpandParent (x: System.Boolean) = "DefaultExpandParent" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member defaultExpandedKeys (x: System.String[]) = "DefaultExpandedKeys" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member expandedKeys (x: System.String[]) = "ExpandedKeys" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member expandedKeys' (value: IStore<System.String[]>) = FelizNode<'FunBlazorGeneric>.create("ExpandedKeys", value)
-    static member expandedKeys' (value: cval<System.String[]>) = FelizNode<'FunBlazorGeneric>.create("ExpandedKeys", value)
-    static member expandedKeys' (valueFn: System.String[] * (System.String[] -> unit)) = FelizNode<'FunBlazorGeneric>.create("ExpandedKeys", valueFn)
-    static member expandedKeysChanged fn = (Bolero.Html.attr.callback<System.String[]> "ExpandedKeysChanged" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onExpand fn = (Bolero.Html.attr.callback<System.ValueTuple<System.String[], AntDesign.TreeNode<'TItem>, System.Boolean>> "OnExpand" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member autoExpandParent (x: System.Boolean) = "AutoExpandParent" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Tree<'TItem>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Tree<'TItem>>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Tree<'TItem>>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Tree<'TItem>>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Tree<'TItem>>(){ x }
+    static member showExpand (x: System.Boolean) = "ShowExpand" => x
+    static member showLine (x: System.Boolean) = "ShowLine" => x
+    static member showIcon (x: System.Boolean) = "ShowIcon" => x
+    static member blockNode (x: System.Boolean) = "BlockNode" => x
+    static member draggable (x: System.Boolean) = "Draggable" => x
+    static member disabled (x: System.Boolean) = "Disabled" => x
+    static member showLeafIcon (x: System.Boolean) = "ShowLeafIcon" => x
+    static member switcherIcon (x: System.String) = "SwitcherIcon" => x
+    static member nodes (x: string) = html.renderFragment("Nodes", html.text x)
+    static member nodes (node) = html.renderFragment("Nodes", node)
+    static member nodes (nodes) = html.renderFragment("Nodes", fragment { yield! nodes })
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member selectable (x: System.Boolean) = "Selectable" => x
+    static member multiple (x: System.Boolean) = "Multiple" => x
+    static member defaultSelectedKeys (x: System.String[]) = "DefaultSelectedKeys" => x
+    static member selectedKey (x: System.String) = "SelectedKey" => x
+    static member selectedKey' (value: IStore<System.String>) = html.bind("SelectedKey", value)
+    static member selectedKey' (value: cval<System.String>) = html.bind("SelectedKey", value)
+    static member selectedKey' (valueFn: System.String * (System.String -> unit)) = html.bind("SelectedKey", valueFn)
+    static member selectedKeyChanged fn = html.callback<System.String>("SelectedKeyChanged", fn)
+    static member selectedNode (x: AntDesign.TreeNode<'TItem>) = "SelectedNode" => x
+    static member selectedNode' (value: IStore<AntDesign.TreeNode<'TItem>>) = html.bind("SelectedNode", value)
+    static member selectedNode' (value: cval<AntDesign.TreeNode<'TItem>>) = html.bind("SelectedNode", value)
+    static member selectedNode' (valueFn: AntDesign.TreeNode<'TItem> * (AntDesign.TreeNode<'TItem> -> unit)) = html.bind("SelectedNode", valueFn)
+    static member selectedNodeChanged fn = html.callback<AntDesign.TreeNode<'TItem>>("SelectedNodeChanged", fn)
+    static member selectedData (x: 'TItem) = "SelectedData" => x
+    static member selectedData' (value: IStore<'TItem>) = html.bind("SelectedData", value)
+    static member selectedData' (value: cval<'TItem>) = html.bind("SelectedData", value)
+    static member selectedData' (valueFn: 'TItem * ('TItem -> unit)) = html.bind("SelectedData", valueFn)
+    static member selectedDataChanged fn = html.callback<'TItem>("SelectedDataChanged", fn)
+    static member selectedKeys (x: System.String[]) = "SelectedKeys" => x
+    static member selectedKeys' (value: IStore<System.String[]>) = html.bind("SelectedKeys", value)
+    static member selectedKeys' (value: cval<System.String[]>) = html.bind("SelectedKeys", value)
+    static member selectedKeys' (valueFn: System.String[] * (System.String[] -> unit)) = html.bind("SelectedKeys", valueFn)
+    static member selectedKeysChanged fn = html.callback<System.String[]>("SelectedKeysChanged", fn)
+    static member selectedNodes (x: AntDesign.TreeNode<'TItem>[]) = "SelectedNodes" => x
+    static member selectedDatas (x: 'TItem[]) = "SelectedDatas" => x
+    static member checkable (x: System.Boolean) = "Checkable" => x
+    static member checkStrictly (x: System.Boolean) = "CheckStrictly" => x
+    static member checkedKeys (x: System.String[]) = "CheckedKeys" => x
+    static member checkedKeys' (value: IStore<System.String[]>) = html.bind("CheckedKeys", value)
+    static member checkedKeys' (value: cval<System.String[]>) = html.bind("CheckedKeys", value)
+    static member checkedKeys' (valueFn: System.String[] * (System.String[] -> unit)) = html.bind("CheckedKeys", valueFn)
+    static member checkedKeysChanged fn = html.callback<System.String[]>("CheckedKeysChanged", fn)
+    static member defaultCheckedKeys (x: System.String[]) = "DefaultCheckedKeys" => x
+    static member searchValue (x: System.String) = "SearchValue" => x
+    static member searchExpression (fn) = "SearchExpression" => (System.Func<AntDesign.TreeNode<'TItem>, System.Boolean>fn)
+    static member matchedStyle (x: System.String) = "MatchedStyle" => x
+    static member matchedClass (x: System.String) = "MatchedClass" => x
+    static member dataSource (x: System.Collections.Generic.IEnumerable<'TItem>) = "DataSource" => x
+    static member titleExpression (fn) = "TitleExpression" => (System.Func<AntDesign.TreeNode<'TItem>, System.String>fn)
+    static member keyExpression (fn) = "KeyExpression" => (System.Func<AntDesign.TreeNode<'TItem>, System.String>fn)
+    static member iconExpression (fn) = "IconExpression" => (System.Func<AntDesign.TreeNode<'TItem>, System.String>fn)
+    static member isLeafExpression (fn) = "IsLeafExpression" => (System.Func<AntDesign.TreeNode<'TItem>, System.Boolean>fn)
+    static member childrenExpression (fn) = "ChildrenExpression" => (System.Func<AntDesign.TreeNode<'TItem>, System.Collections.Generic.IList<'TItem>>fn)
+    static member disabledExpression (fn) = "DisabledExpression" => (System.Func<AntDesign.TreeNode<'TItem>, System.Boolean>fn)
+    static member onNodeLoadDelayAsync fn = html.callback<AntDesign.TreeEventArgs<'TItem>>("OnNodeLoadDelayAsync", fn)
+    static member onClick fn = html.callback<AntDesign.TreeEventArgs<'TItem>>("OnClick", fn)
+    static member onDblClick fn = html.callback<AntDesign.TreeEventArgs<'TItem>>("OnDblClick", fn)
+    static member onContextMenu fn = html.callback<AntDesign.TreeEventArgs<'TItem>>("OnContextMenu", fn)
+    static member onCheck fn = html.callback<AntDesign.TreeEventArgs<'TItem>>("OnCheck", fn)
+    static member onSelect fn = html.callback<AntDesign.TreeEventArgs<'TItem>>("OnSelect", fn)
+    static member onUnSelect fn = html.callback<AntDesign.TreeEventArgs<'TItem>>("OnUnSelect", fn)
+    static member onExpandChanged fn = html.callback<AntDesign.TreeEventArgs<'TItem>>("OnExpandChanged", fn)
+    static member indentTemplate (render: AntDesign.TreeNode<'TItem> -> NodeRenderFragment) = html.renderFragment("IndentTemplate", render)
+    static member titleTemplate (render: AntDesign.TreeNode<'TItem> -> NodeRenderFragment) = html.renderFragment("TitleTemplate", render)
+    static member titleIconTemplate (render: AntDesign.TreeNode<'TItem> -> NodeRenderFragment) = html.renderFragment("TitleIconTemplate", render)
+    static member switcherIconTemplate (render: AntDesign.TreeNode<'TItem> -> NodeRenderFragment) = html.renderFragment("SwitcherIconTemplate", render)
+    static member onDragStart fn = html.callback<AntDesign.TreeEventArgs<'TItem>>("OnDragStart", fn)
+    static member onDragEnter fn = html.callback<AntDesign.TreeEventArgs<'TItem>>("OnDragEnter", fn)
+    static member onDragLeave fn = html.callback<AntDesign.TreeEventArgs<'TItem>>("OnDragLeave", fn)
+    static member onDrop fn = html.callback<AntDesign.TreeEventArgs<'TItem>>("OnDrop", fn)
+    static member onDragEnd fn = html.callback<AntDesign.TreeEventArgs<'TItem>>("OnDragEnd", fn)
+    static member defaultExpandAll (x: System.Boolean) = "DefaultExpandAll" => x
+    static member defaultExpandParent (x: System.Boolean) = "DefaultExpandParent" => x
+    static member defaultExpandedKeys (x: System.String[]) = "DefaultExpandedKeys" => x
+    static member expandedKeys (x: System.String[]) = "ExpandedKeys" => x
+    static member expandedKeys' (value: IStore<System.String[]>) = html.bind("ExpandedKeys", value)
+    static member expandedKeys' (value: cval<System.String[]>) = html.bind("ExpandedKeys", value)
+    static member expandedKeys' (valueFn: System.String[] * (System.String[] -> unit)) = html.bind("ExpandedKeys", valueFn)
+    static member expandedKeysChanged fn = html.callback<System.String[]>("ExpandedKeysChanged", fn)
+    static member onExpand fn = html.callback<System.ValueTuple<System.String[], AntDesign.TreeNode<'TItem>, System.Boolean>>("OnExpand", fn)
+    static member autoExpandParent (x: System.Boolean) = "AutoExpandParent" => x
                     
 
 type directoryTree<'FunBlazorGeneric, 'TItem> =
     inherit tree<'FunBlazorGeneric, 'TItem>
-    static member create () = [] |> html.blazor<AntDesign.DirectoryTree<'TItem>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.DirectoryTree<'TItem>>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.DirectoryTree<'TItem>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.DirectoryTree<'TItem>>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.DirectoryTree<'TItem>> x
 
                     
 
 type treeNode<'FunBlazorGeneric, 'TItem> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.TreeNode<'TItem>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.TreeNode<'TItem>>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.TreeNode<'TItem>>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.TreeNode<'TItem>>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.TreeNode<'TItem>>
-    static member ref x = attr.ref<AntDesign.TreeNode<'TItem>> x
-    static member nodes (x: string) = Bolero.Html.attr.fragment "Nodes" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member nodes (node) = Bolero.Html.attr.fragment "Nodes" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member nodes (nodes) = Bolero.Html.attr.fragment "Nodes" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member key (x: System.String) = "Key" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member disabled (x: System.Boolean) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member selected (x: System.Boolean) = "Selected" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member loading (x: System.Boolean) = "Loading" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member isLeaf (x: System.Boolean) = "IsLeaf" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member expanded (x: System.Boolean) = "Expanded" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member checked' (x: System.Boolean) = "Checked" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member indeterminate (x: System.Boolean) = "Indeterminate" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member disableCheckbox (x: System.Boolean) = "DisableCheckbox" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member draggable (x: System.Boolean) = "Draggable" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member icon (x: System.String) = "Icon" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member iconTemplate (render: AntDesign.TreeNode<'TItem> -> Bolero.Node) = Bolero.Html.attr.fragmentWith "IconTemplate" (fun x -> render x) |> FelizNode<'FunBlazorGeneric>.create
-    static member switcherIcon (x: System.String) = "SwitcherIcon" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member switcherIconTemplate (render: AntDesign.TreeNode<'TItem> -> Bolero.Node) = Bolero.Html.attr.fragmentWith "SwitcherIconTemplate" (fun x -> render x) |> FelizNode<'FunBlazorGeneric>.create
-    static member title (x: System.String) = "Title" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (x: string) = Bolero.Html.attr.fragment "TitleTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (node) = Bolero.Html.attr.fragment "TitleTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (nodes) = Bolero.Html.attr.fragment "TitleTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member dataItem (x: 'TItem) = "DataItem" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.TreeNode<'TItem>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.TreeNode<'TItem>>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.TreeNode<'TItem>>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.TreeNode<'TItem>>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.TreeNode<'TItem>>(){ x }
+    static member nodes (x: string) = html.renderFragment("Nodes", html.text x)
+    static member nodes (node) = html.renderFragment("Nodes", node)
+    static member nodes (nodes) = html.renderFragment("Nodes", fragment { yield! nodes })
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member key (x: System.String) = "Key" => x
+    static member disabled (x: System.Boolean) = "Disabled" => x
+    static member selected (x: System.Boolean) = "Selected" => x
+    static member loading (x: System.Boolean) = "Loading" => x
+    static member isLeaf (x: System.Boolean) = "IsLeaf" => x
+    static member expanded (x: System.Boolean) = "Expanded" => x
+    static member checked' (x: System.Boolean) = "Checked" => x
+    static member indeterminate (x: System.Boolean) = "Indeterminate" => x
+    static member disableCheckbox (x: System.Boolean) = "DisableCheckbox" => x
+    static member draggable (x: System.Boolean) = "Draggable" => x
+    static member icon (x: System.String) = "Icon" => x
+    static member iconTemplate (render: AntDesign.TreeNode<'TItem> -> NodeRenderFragment) = html.renderFragment("IconTemplate", render)
+    static member switcherIcon (x: System.String) = "SwitcherIcon" => x
+    static member switcherIconTemplate (render: AntDesign.TreeNode<'TItem> -> NodeRenderFragment) = html.renderFragment("SwitcherIconTemplate", render)
+    static member title (x: System.String) = "Title" => x
+    static member titleTemplate (x: string) = html.renderFragment("TitleTemplate", html.text x)
+    static member titleTemplate (node) = html.renderFragment("TitleTemplate", node)
+    static member titleTemplate (nodes) = html.renderFragment("TitleTemplate", fragment { yield! nodes })
+    static member dataItem (x: 'TItem) = "DataItem" => x
                     
 
 type upload<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Upload>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Upload>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.Upload>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.Upload>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.Upload>
-    static member ref x = attr.ref<AntDesign.Upload> x
-    static member beforeUpload (fn) = "BeforeUpload" => (System.Func<AntDesign.UploadFileItem, System.Boolean>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member beforeAllUploadAsync (fn) = "BeforeAllUploadAsync" => (System.Func<System.Collections.Generic.List<AntDesign.UploadFileItem>, System.Threading.Tasks.Task<System.Boolean>>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member beforeAllUpload (fn) = "BeforeAllUpload" => (System.Func<System.Collections.Generic.List<AntDesign.UploadFileItem>, System.Boolean>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member name (x: System.String) = "Name" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member action (x: System.String) = "Action" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member disabled (x: System.Boolean) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member data (x: System.Collections.Generic.Dictionary<System.String, System.Object>) = "Data" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member listType (x: System.String) = "ListType" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member directory (x: System.Boolean) = "Directory" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member multiple (x: System.Boolean) = "Multiple" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member accept (x: System.String) = "Accept" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member showUploadList (x: System.Boolean) = "ShowUploadList" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member fileList (x: System.Collections.Generic.List<AntDesign.UploadFileItem>) = "FileList" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member fileList' (value: IStore<System.Collections.Generic.List<AntDesign.UploadFileItem>>) = FelizNode<'FunBlazorGeneric>.create("FileList", value)
-    static member fileList' (value: cval<System.Collections.Generic.List<AntDesign.UploadFileItem>>) = FelizNode<'FunBlazorGeneric>.create("FileList", value)
-    static member fileList' (valueFn: System.Collections.Generic.List<AntDesign.UploadFileItem> * (System.Collections.Generic.List<AntDesign.UploadFileItem> -> unit)) = FelizNode<'FunBlazorGeneric>.create("FileList", valueFn)
-    static member locale (x: AntDesign.UploadLocale) = "Locale" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member fileListChanged fn = (Bolero.Html.attr.callback<System.Collections.Generic.List<AntDesign.UploadFileItem>> "FileListChanged" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member defaultFileList (x: System.Collections.Generic.List<AntDesign.UploadFileItem>) = "DefaultFileList" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member headers (x: System.Collections.Generic.Dictionary<System.String, System.String>) = "Headers" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onSingleCompleted fn = (Bolero.Html.attr.callback<AntDesign.UploadInfo> "OnSingleCompleted" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onCompleted fn = (Bolero.Html.attr.callback<AntDesign.UploadInfo> "OnCompleted" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onChange fn = (Bolero.Html.attr.callback<AntDesign.UploadInfo> "OnChange" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onRemove (fn) = "OnRemove" => (System.Func<AntDesign.UploadFileItem, System.Threading.Tasks.Task<System.Boolean>>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member onPreview fn = (Bolero.Html.attr.callback<AntDesign.UploadFileItem> "OnPreview" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onDownload fn = (Bolero.Html.attr.callback<AntDesign.UploadFileItem> "OnDownload" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member showButton (x: System.Boolean) = "ShowButton" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member drag (x: System.Boolean) = "Drag" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member method (x: System.String) = "Method" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Upload>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Upload>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Upload>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Upload>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Upload>(){ x }
+    static member beforeUpload (fn) = "BeforeUpload" => (System.Func<AntDesign.UploadFileItem, System.Boolean>fn)
+    static member beforeAllUploadAsync (fn) = "BeforeAllUploadAsync" => (System.Func<System.Collections.Generic.List<AntDesign.UploadFileItem>, System.Threading.Tasks.Task<System.Boolean>>fn)
+    static member beforeAllUpload (fn) = "BeforeAllUpload" => (System.Func<System.Collections.Generic.List<AntDesign.UploadFileItem>, System.Boolean>fn)
+    static member name (x: System.String) = "Name" => x
+    static member action (x: System.String) = "Action" => x
+    static member disabled (x: System.Boolean) = "Disabled" => x
+    static member data (x: System.Collections.Generic.Dictionary<System.String, System.Object>) = "Data" => x
+    static member listType (x: System.String) = "ListType" => x
+    static member directory (x: System.Boolean) = "Directory" => x
+    static member multiple (x: System.Boolean) = "Multiple" => x
+    static member accept (x: System.String) = "Accept" => x
+    static member showUploadList (x: System.Boolean) = "ShowUploadList" => x
+    static member fileList (x: System.Collections.Generic.List<AntDesign.UploadFileItem>) = "FileList" => x
+    static member fileList' (value: IStore<System.Collections.Generic.List<AntDesign.UploadFileItem>>) = html.bind("FileList", value)
+    static member fileList' (value: cval<System.Collections.Generic.List<AntDesign.UploadFileItem>>) = html.bind("FileList", value)
+    static member fileList' (valueFn: System.Collections.Generic.List<AntDesign.UploadFileItem> * (System.Collections.Generic.List<AntDesign.UploadFileItem> -> unit)) = html.bind("FileList", valueFn)
+    static member locale (x: AntDesign.UploadLocale) = "Locale" => x
+    static member fileListChanged fn = html.callback<System.Collections.Generic.List<AntDesign.UploadFileItem>>("FileListChanged", fn)
+    static member defaultFileList (x: System.Collections.Generic.List<AntDesign.UploadFileItem>) = "DefaultFileList" => x
+    static member headers (x: System.Collections.Generic.Dictionary<System.String, System.String>) = "Headers" => x
+    static member onSingleCompleted fn = html.callback<AntDesign.UploadInfo>("OnSingleCompleted", fn)
+    static member onCompleted fn = html.callback<AntDesign.UploadInfo>("OnCompleted", fn)
+    static member onChange fn = html.callback<AntDesign.UploadInfo>("OnChange", fn)
+    static member onRemove (fn) = "OnRemove" => (System.Func<AntDesign.UploadFileItem, System.Threading.Tasks.Task<System.Boolean>>fn)
+    static member onPreview fn = html.callback<AntDesign.UploadFileItem>("OnPreview", fn)
+    static member onDownload fn = html.callback<AntDesign.UploadFileItem>("OnDownload", fn)
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member showButton (x: System.Boolean) = "ShowButton" => x
+    static member drag (x: System.Boolean) = "Drag" => x
+    static member method (x: System.String) = "Method" => x
                     
 
 type breadcrumbItem<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.BreadcrumbItem>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.BreadcrumbItem>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.BreadcrumbItem>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.BreadcrumbItem>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.BreadcrumbItem>
-    static member ref x = attr.ref<AntDesign.BreadcrumbItem> x
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member overlay (x: string) = Bolero.Html.attr.fragment "Overlay" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member overlay (node) = Bolero.Html.attr.fragment "Overlay" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member overlay (nodes) = Bolero.Html.attr.fragment "Overlay" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member href (x: System.String) = "Href" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.BreadcrumbItem>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.BreadcrumbItem>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.BreadcrumbItem>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.BreadcrumbItem>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.BreadcrumbItem>(){ x }
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member overlay (x: string) = html.renderFragment("Overlay", html.text x)
+    static member overlay (node) = html.renderFragment("Overlay", node)
+    static member overlay (nodes) = html.renderFragment("Overlay", fragment { yield! nodes })
+    static member href (x: System.String) = "Href" => x
                     
 
 type calendarHeader<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.CalendarHeader>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.CalendarHeader>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.CalendarHeader>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.CalendarHeader>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.CalendarHeader> x
 
                     
 
 type cardMeta<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.CardMeta>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.CardMeta>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.CardMeta>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.CardMeta>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.CardMeta> x
-    static member title (x: System.String) = "Title" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (x: string) = Bolero.Html.attr.fragment "TitleTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (node) = Bolero.Html.attr.fragment "TitleTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member titleTemplate (nodes) = Bolero.Html.attr.fragment "TitleTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member description (x: System.String) = "Description" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member descriptionTemplate (x: string) = Bolero.Html.attr.fragment "DescriptionTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member descriptionTemplate (node) = Bolero.Html.attr.fragment "DescriptionTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member descriptionTemplate (nodes) = Bolero.Html.attr.fragment "DescriptionTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member avatar (x: System.String) = "Avatar" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member avatarTemplate (x: string) = Bolero.Html.attr.fragment "AvatarTemplate" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member avatarTemplate (node) = Bolero.Html.attr.fragment "AvatarTemplate" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member avatarTemplate (nodes) = Bolero.Html.attr.fragment "AvatarTemplate" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+    static member title (x: System.String) = "Title" => x
+    static member titleTemplate (x: string) = html.renderFragment("TitleTemplate", html.text x)
+    static member titleTemplate (node) = html.renderFragment("TitleTemplate", node)
+    static member titleTemplate (nodes) = html.renderFragment("TitleTemplate", fragment { yield! nodes })
+    static member description (x: System.String) = "Description" => x
+    static member descriptionTemplate (x: string) = html.renderFragment("DescriptionTemplate", html.text x)
+    static member descriptionTemplate (node) = html.renderFragment("DescriptionTemplate", node)
+    static member descriptionTemplate (nodes) = html.renderFragment("DescriptionTemplate", fragment { yield! nodes })
+    static member avatar (x: System.String) = "Avatar" => x
+    static member avatarTemplate (x: string) = html.renderFragment("AvatarTemplate", html.text x)
+    static member avatarTemplate (node) = html.renderFragment("AvatarTemplate", node)
+    static member avatarTemplate (nodes) = html.renderFragment("AvatarTemplate", fragment { yield! nodes })
                     
 
 type antContainer<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.AntContainer>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.AntContainer>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.AntContainer>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.AntContainer>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.AntContainer> x
 
                     
 
 type template<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Template>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Template>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.Template>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.Template>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.Template>
-    static member ref x = attr.ref<AntDesign.Template> x
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member if' (fn) = "If" => (System.Func<System.Boolean>fn) |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Template>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Template>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Template>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Template>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Template>(){ x }
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member if' (fn) = "If" => (System.Func<System.Boolean>fn)
                     
 
 type emptyDefaultImg<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.EmptyDefaultImg>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.EmptyDefaultImg>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.EmptyDefaultImg>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.EmptyDefaultImg>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.EmptyDefaultImg> x
-    static member prefixCls (x: System.String) = "PrefixCls" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member prefixCls (x: System.String) = "PrefixCls" => x
                     
 
 type emptySimpleImg<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.EmptySimpleImg>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.EmptySimpleImg>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.EmptySimpleImg>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.EmptySimpleImg>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.EmptySimpleImg> x
-    static member prefixCls (x: System.String) = "PrefixCls" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member prefixCls (x: System.String) = "PrefixCls" => x
                     
 
 type content<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Content>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Content>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.Content>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.Content>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.Content>
-    static member ref x = attr.ref<AntDesign.Content> x
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Content>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Content>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Content>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Content>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Content>(){ x }
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
                     
 
 type footer<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Footer>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Footer>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.Footer>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.Footer>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.Footer>
-    static member ref x = attr.ref<AntDesign.Footer> x
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Footer>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Footer>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Footer>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Footer>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Footer>(){ x }
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
                     
 
 type header<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Header>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Header>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.Header>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.Header>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.Header>
-    static member ref x = attr.ref<AntDesign.Header> x
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Header>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Header>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Header>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Header>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Header>(){ x }
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
                     
 
 type layout<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Layout>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Layout>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.Layout>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.Layout>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.Layout>
-    static member ref x = attr.ref<AntDesign.Layout> x
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Layout>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Layout>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Layout>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Layout>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Layout>(){ x }
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
                     
 
 type menuDivider<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.MenuDivider>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.MenuDivider>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.MenuDivider>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.MenuDivider>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.MenuDivider> x
 
                     
 
 type paginationPager<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.PaginationPager>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.PaginationPager>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.PaginationPager>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.PaginationPager>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.PaginationPager> x
-    static member showTitle (x: System.Boolean) = "ShowTitle" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member page (x: System.Int32) = "Page" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member rootPrefixCls (x: System.String) = "RootPrefixCls" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member active (x: System.Boolean) = "Active" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member disabled (x: System.Boolean) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onClick fn = (Bolero.Html.attr.callback<System.Int32> "OnClick" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onKeyPress fn = (Bolero.Html.attr.callback<System.ValueTuple<Microsoft.AspNetCore.Components.Web.KeyboardEventArgs, System.Action>> "OnKeyPress" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member itemRender (render: AntDesign.PaginationItemRenderContext -> Bolero.Node) = Bolero.Html.attr.fragmentWith "ItemRender" (fun x -> render x) |> FelizNode<'FunBlazorGeneric>.create
-    static member unmatchedAttributes (x: System.Collections.Generic.Dictionary<System.String, System.Object>) = "UnmatchedAttributes" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member showTitle (x: System.Boolean) = "ShowTitle" => x
+    static member page (x: System.Int32) = "Page" => x
+    static member rootPrefixCls (x: System.String) = "RootPrefixCls" => x
+    static member active (x: System.Boolean) = "Active" => x
+    static member disabled (x: System.Boolean) = "Disabled" => x
+    static member onClick fn = html.callback<System.Int32>("OnClick", fn)
+    static member onKeyPress fn = html.callback<System.ValueTuple<Microsoft.AspNetCore.Components.Web.KeyboardEventArgs, System.Action>>("OnKeyPress", fn)
+    static member itemRender (render: AntDesign.PaginationItemRenderContext -> NodeRenderFragment) = html.renderFragment("ItemRender", render)
+    static member unmatchedAttributes (x: System.Collections.Generic.Dictionary<System.String, System.Object>) = "UnmatchedAttributes" => x
                     
             
 namespace rec AntDesign.DslInternals.Select.Internal
 
-open Bolero.Html
 open FSharp.Data.Adaptive
 open Fun.Blazor
-open Microsoft.AspNetCore.Components.DslInternals
-open Microsoft.AspNetCore.Components.Web.DslInternals
+open Fun.Blazor.Operators
 open AntDesign.DslInternals
 
 
 type selectOptionGroup<'FunBlazorGeneric, 'TItemValue, 'TItem> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Select.Internal.SelectOptionGroup<'TItemValue, 'TItem>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Select.Internal.SelectOptionGroup<'TItemValue, 'TItem>>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Select.Internal.SelectOptionGroup<'TItemValue, 'TItem>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Select.Internal.SelectOptionGroup<'TItemValue, 'TItem>>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.Select.Internal.SelectOptionGroup<'TItemValue, 'TItem>> x
 
                     
             
 namespace rec AntDesign.DslInternals.Internal
 
-open Bolero.Html
 open FSharp.Data.Adaptive
 open Fun.Blazor
-open Microsoft.AspNetCore.Components.DslInternals
-open Microsoft.AspNetCore.Components.Web.DslInternals
+open Fun.Blazor.Operators
 open AntDesign.DslInternals
 
 
 type calendarPanelChooser<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Internal.CalendarPanelChooser>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Internal.CalendarPanelChooser>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Internal.CalendarPanelChooser>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.CalendarPanelChooser>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.Internal.CalendarPanelChooser> x
-    static member calendar (x: AntDesign.Calendar) = "Calendar" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onSelect (fn) = "OnSelect" => (System.Action<System.DateTime, System.Int32>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member pickerIndex (x: System.Int32) = "PickerIndex" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member calendar (x: AntDesign.Calendar) = "Calendar" => x
+    static member onSelect (fn) = "OnSelect" => (System.Action<System.DateTime, System.Int32>fn)
+    static member pickerIndex (x: System.Int32) = "PickerIndex" => x
                     
 
 type element<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Internal.Element>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Internal.Element>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.Internal.Element>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.Internal.Element>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.Internal.Element>
-    static member ref x = attr.ref<AntDesign.Internal.Element> x
-    static member htmlTag (x: System.String) = "HtmlTag" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member refChanged fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.ElementReference> "RefChanged" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member attributes (x: System.Collections.Generic.Dictionary<System.String, System.Object>) = "Attributes" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Internal.Element>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.Element>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Internal.Element>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Internal.Element>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Internal.Element>(){ x }
+    static member htmlTag (x: System.String) = "HtmlTag" => x
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member refChanged fn = html.callback<Microsoft.AspNetCore.Components.ElementReference>("RefChanged", fn)
+    static member attributes (x: System.Collections.Generic.Dictionary<System.String, System.Object>) = "Attributes" => x
                     
 
 type overlay<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Internal.Overlay>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Internal.Overlay>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.Internal.Overlay>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.Internal.Overlay>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.Internal.Overlay>
-    static member ref x = attr.ref<AntDesign.Internal.Overlay> x
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member onOverlayMouseEnter fn = attr.callbackOfUnit("OnOverlayMouseEnter", fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member onOverlayMouseLeave fn = attr.callbackOfUnit("OnOverlayMouseLeave", fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member onOverlayMouseUp fn = attr.callbackOfUnit("OnOverlayMouseUp", fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member onShow fn = attr.callbackOfUnit("OnShow", fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member onHide fn = attr.callbackOfUnit("OnHide", fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member overlayChildPrefixCls (x: System.String) = "OverlayChildPrefixCls" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member hideMillisecondsDelay (x: System.Int32) = "HideMillisecondsDelay" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member waitForHideAnimMilliseconds (x: System.Int32) = "WaitForHideAnimMilliseconds" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member verticalOffset (x: System.Int32) = "VerticalOffset" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member horizontalOffset (x: System.Int32) = "HorizontalOffset" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member hiddenMode (x: System.Boolean) = "HiddenMode" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Internal.Overlay>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.Overlay>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Internal.Overlay>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Internal.Overlay>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Internal.Overlay>(){ x }
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member onOverlayMouseEnter fn = html.callback<unit>("OnOverlayMouseEnter", fn)
+    static member onOverlayMouseLeave fn = html.callback<unit>("OnOverlayMouseLeave", fn)
+    static member onOverlayMouseUp fn = html.callback<unit>("OnOverlayMouseUp", fn)
+    static member onShow fn = html.callback<unit>("OnShow", fn)
+    static member onHide fn = html.callback<unit>("OnHide", fn)
+    static member overlayChildPrefixCls (x: System.String) = "OverlayChildPrefixCls" => x
+    static member hideMillisecondsDelay (x: System.Int32) = "HideMillisecondsDelay" => x
+    static member waitForHideAnimMilliseconds (x: System.Int32) = "WaitForHideAnimMilliseconds" => x
+    static member verticalOffset (x: System.Int32) = "VerticalOffset" => x
+    static member horizontalOffset (x: System.Int32) = "HorizontalOffset" => x
+    static member hiddenMode (x: System.Boolean) = "HiddenMode" => x
                     
 
 type datePickerPanelChooser<'FunBlazorGeneric, 'TValue> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Internal.DatePickerPanelChooser<'TValue>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Internal.DatePickerPanelChooser<'TValue>>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Internal.DatePickerPanelChooser<'TValue>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.DatePickerPanelChooser<'TValue>>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.Internal.DatePickerPanelChooser<'TValue>> x
-    static member datePicker (x: AntDesign.DatePickerBase<'TValue>) = "DatePicker" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onSelect (fn) = "OnSelect" => (System.Action<System.DateTime, System.Int32>fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member pickerIndex (x: System.Int32) = "PickerIndex" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member datePicker (x: AntDesign.DatePickerBase<'TValue>) = "DatePicker" => x
+    static member onSelect (fn) = "OnSelect" => (System.Action<System.DateTime, System.Int32>fn)
+    static member pickerIndex (x: System.Int32) = "PickerIndex" => x
                     
 
 type uploadButton<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Internal.UploadButton>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Internal.UploadButton>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.Internal.UploadButton>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.Internal.UploadButton>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.Internal.UploadButton>
-    static member ref x = attr.ref<AntDesign.Internal.UploadButton> x
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member listType (x: System.String) = "ListType" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member showButton (x: System.Boolean) = "ShowButton" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member name (x: System.String) = "Name" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member directory (x: System.Boolean) = "Directory" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member multiple (x: System.Boolean) = "Multiple" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member accept (x: System.String) = "Accept" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member data (x: System.Collections.Generic.Dictionary<System.String, System.Object>) = "Data" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member headers (x: System.Collections.Generic.Dictionary<System.String, System.String>) = "Headers" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member action (x: System.String) = "Action" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member method (x: System.String) = "Method" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member disabled (x: System.Boolean) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Internal.UploadButton>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.UploadButton>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Internal.UploadButton>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Internal.UploadButton>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Internal.UploadButton>(){ x }
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member listType (x: System.String) = "ListType" => x
+    static member showButton (x: System.Boolean) = "ShowButton" => x
+    static member name (x: System.String) = "Name" => x
+    static member directory (x: System.Boolean) = "Directory" => x
+    static member multiple (x: System.Boolean) = "Multiple" => x
+    static member accept (x: System.String) = "Accept" => x
+    static member data (x: System.Collections.Generic.Dictionary<System.String, System.Object>) = "Data" => x
+    static member headers (x: System.Collections.Generic.Dictionary<System.String, System.String>) = "Headers" => x
+    static member action (x: System.String) = "Action" => x
+    static member method (x: System.String) = "Method" => x
+    static member disabled (x: System.Boolean) = "Disabled" => x
                     
 
 type datePickerInput<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Internal.DatePickerInput>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Internal.DatePickerInput>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Internal.DatePickerInput>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.DatePickerInput>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.Internal.DatePickerInput> x
-    static member prefixCls (x: System.String) = "PrefixCls" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member size (x: System.String) = "Size" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member value (x: System.String) = "Value" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member placeholder (x: System.String) = "Placeholder" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member readOnly (x: System.Boolean) = "ReadOnly" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member isRange (x: System.Boolean) = "IsRange" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member disabled (x: System.Boolean) = "Disabled" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member autoFocus (x: System.Boolean) = "AutoFocus" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member showSuffixIcon (x: System.Boolean) = "ShowSuffixIcon" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member showTime (x: System.Boolean) = "ShowTime" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member htmlInputSize (x: System.Int32) = "HtmlInputSize" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member suffixIcon (x: string) = Bolero.Html.attr.fragment "SuffixIcon" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member suffixIcon (node) = Bolero.Html.attr.fragment "SuffixIcon" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member suffixIcon (nodes) = Bolero.Html.attr.fragment "SuffixIcon" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member onClick fn = attr.callbackOfUnit("OnClick", fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member onfocus fn = attr.callbackOfUnit("Onfocus", fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member onBlur fn = attr.callbackOfUnit("OnBlur", fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member onfocusout fn = attr.callbackOfUnit("Onfocusout", fn) |> FelizNode<'FunBlazorGeneric>.create
-    static member onKeyUp fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.KeyboardEventArgs> "OnKeyUp" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onKeyDown fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.KeyboardEventArgs> "OnKeyDown" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onInput fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.ChangeEventArgs> "OnInput" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member allowClear (x: System.Boolean) = "AllowClear" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onClickClear fn = attr.callbackOfUnit("OnClickClear", fn) |> FelizNode<'FunBlazorGeneric>.create
+    static member prefixCls (x: System.String) = "PrefixCls" => x
+    static member size (x: System.String) = "Size" => x
+    static member value (x: System.String) = "Value" => x
+    static member placeholder (x: System.String) = "Placeholder" => x
+    static member readOnly (x: System.Boolean) = "ReadOnly" => x
+    static member isRange (x: System.Boolean) = "IsRange" => x
+    static member disabled (x: System.Boolean) = "Disabled" => x
+    static member autoFocus (x: System.Boolean) = "AutoFocus" => x
+    static member showSuffixIcon (x: System.Boolean) = "ShowSuffixIcon" => x
+    static member showTime (x: System.Boolean) = "ShowTime" => x
+    static member htmlInputSize (x: System.Int32) = "HtmlInputSize" => x
+    static member suffixIcon (x: string) = html.renderFragment("SuffixIcon", html.text x)
+    static member suffixIcon (node) = html.renderFragment("SuffixIcon", node)
+    static member suffixIcon (nodes) = html.renderFragment("SuffixIcon", fragment { yield! nodes })
+    static member onClick fn = html.callback<unit>("OnClick", fn)
+    static member onfocus fn = html.callback<unit>("Onfocus", fn)
+    static member onBlur fn = html.callback<unit>("OnBlur", fn)
+    static member onfocusout fn = html.callback<unit>("Onfocusout", fn)
+    static member onKeyUp fn = html.callback<Microsoft.AspNetCore.Components.Web.KeyboardEventArgs>("OnKeyUp", fn)
+    static member onKeyDown fn = html.callback<Microsoft.AspNetCore.Components.Web.KeyboardEventArgs>("OnKeyDown", fn)
+    static member onInput fn = html.callback<Microsoft.AspNetCore.Components.ChangeEventArgs>("OnInput", fn)
+    static member allowClear (x: System.Boolean) = "AllowClear" => x
+    static member onClickClear fn = html.callback<unit>("OnClickClear", fn)
                     
 
 type dropdownGroupButton<'FunBlazorGeneric> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Internal.DropdownGroupButton>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Internal.DropdownGroupButton>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Internal.DropdownGroupButton>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.DropdownGroupButton>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.Internal.DropdownGroupButton> x
-    static member leftButton (x: string) = Bolero.Html.attr.fragment "LeftButton" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member leftButton (node) = Bolero.Html.attr.fragment "LeftButton" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member leftButton (nodes) = Bolero.Html.attr.fragment "LeftButton" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member rightButton (x: string) = Bolero.Html.attr.fragment "RightButton" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member rightButton (node) = Bolero.Html.attr.fragment "RightButton" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member rightButton (nodes) = Bolero.Html.attr.fragment "RightButton" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+    static member leftButton (x: string) = html.renderFragment("LeftButton", html.text x)
+    static member leftButton (node) = html.renderFragment("LeftButton", node)
+    static member leftButton (nodes) = html.renderFragment("LeftButton", fragment { yield! nodes })
+    static member rightButton (x: string) = html.renderFragment("RightButton", html.text x)
+    static member rightButton (node) = html.renderFragment("RightButton", node)
+    static member rightButton (nodes) = html.renderFragment("RightButton", fragment { yield! nodes })
                     
 
 type tableRow<'FunBlazorGeneric, 'TItem> =
     inherit antDomComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.Internal.TableRow<'TItem>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Internal.TableRow<'TItem>>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.Internal.TableRow<'TItem>>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.Internal.TableRow<'TItem>>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.Internal.TableRow<'TItem>>
-    static member ref x = attr.ref<AntDesign.Internal.TableRow<'TItem>> x
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Internal.TableRow<'TItem>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.TableRow<'TItem>>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.Internal.TableRow<'TItem>>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.Internal.TableRow<'TItem>>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.Internal.TableRow<'TItem>>(){ x }
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
                     
             
 namespace rec AntDesign.DslInternals
 
-open Bolero.Html
 open FSharp.Data.Adaptive
 open Fun.Blazor
-open Microsoft.AspNetCore.Components.DslInternals
-open Microsoft.AspNetCore.Components.Web.DslInternals
+open Fun.Blazor.Operators
 open AntDesign.DslInternals
 
 
 type configProvider<'FunBlazorGeneric> =
     inherit antComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.ConfigProvider>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.ConfigProvider>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.ConfigProvider>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.ConfigProvider>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.ConfigProvider>
-    static member ref x = attr.ref<AntDesign.ConfigProvider> x
-    static member direction (x: System.String) = "Direction" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member form (x: AntDesign.FormConfig) = "Form" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.ConfigProvider>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.ConfigProvider>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.ConfigProvider>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.ConfigProvider>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.ConfigProvider>(){ x }
+    static member direction (x: System.String) = "Direction" => x
+    static member form (x: AntDesign.FormConfig) = "Form" => x
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
                     
 
 type templateComponentBase<'FunBlazorGeneric, 'TComponentOptions> =
     inherit antComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.TemplateComponentBase<'TComponentOptions>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.TemplateComponentBase<'TComponentOptions>>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.TemplateComponentBase<'TComponentOptions>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.TemplateComponentBase<'TComponentOptions>>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.TemplateComponentBase<'TComponentOptions>> x
-    static member options (x: 'TComponentOptions) = "Options" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member options (x: 'TComponentOptions) = "Options" => x
                     
 
 type feedbackComponent<'FunBlazorGeneric, 'TComponentOptions> =
     inherit templateComponentBase<'FunBlazorGeneric, 'TComponentOptions>
-    static member create () = [] |> html.blazor<AntDesign.FeedbackComponent<'TComponentOptions>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.FeedbackComponent<'TComponentOptions>>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.FeedbackComponent<'TComponentOptions>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.FeedbackComponent<'TComponentOptions>>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.FeedbackComponent<'TComponentOptions>> x
-    static member feedbackRef (x: AntDesign.IFeedbackRef) = "FeedbackRef" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member feedbackRef (x: AntDesign.IFeedbackRef) = "FeedbackRef" => x
                     
 
 type feedbackComponent<'FunBlazorGeneric, 'TComponentOptions, 'TResult> =
     inherit feedbackComponent<'FunBlazorGeneric, 'TComponentOptions>
-    static member create () = [] |> html.blazor<AntDesign.FeedbackComponent<'TComponentOptions, 'TResult>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.FeedbackComponent<'TComponentOptions, 'TResult>>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.FeedbackComponent<'TComponentOptions, 'TResult>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.FeedbackComponent<'TComponentOptions, 'TResult>>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.FeedbackComponent<'TComponentOptions, 'TResult>> x
 
                     
 
 type formProvider<'FunBlazorGeneric> =
     inherit antComponentBase<'FunBlazorGeneric>
-    static member create () = [] |> html.blazor<AntDesign.FormProvider>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.FormProvider>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.FormProvider>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.FormProvider>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.FormProvider>
-    static member ref x = attr.ref<AntDesign.FormProvider> x
-    static member onFormFinish fn = (Bolero.Html.attr.callback<AntDesign.FormProviderFinishEventArgs> "OnFormFinish" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.FormProvider>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.FormProvider>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.FormProvider>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.FormProvider>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.FormProvider>(){ x }
+    static member onFormFinish fn = html.callback<AntDesign.FormProviderFinishEventArgs>("OnFormFinish", fn)
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
                     
 
 type component'<'FunBlazorGeneric> =
     
-    static member create () = [] |> html.blazor<AntDesign.Component>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Component>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Component>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Component>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.Component> x
-    static member type' (x: System.Type) = "Type" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member typeName (x: System.String) = "TypeName" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member parameters (x: System.Collections.Generic.IDictionary<System.String, System.Object>) = "Parameters" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member type' (x: System.Type) = "Type" => x
+    static member typeName (x: System.String) = "TypeName" => x
+    static member parameters (x: System.Collections.Generic.IDictionary<System.String, System.Object>) = "Parameters" => x
                     
 
 type imagePreview<'FunBlazorGeneric> =
     
-    static member create () = [] |> html.blazor<AntDesign.ImagePreview>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.ImagePreview>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.ImagePreview>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.ImagePreview>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.ImagePreview> x
-    static member imageRef (x: AntDesign.ImageRef) = "ImageRef" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member imageRef (x: AntDesign.ImageRef) = "ImageRef" => x
                     
 
 type imagePreviewGroup<'FunBlazorGeneric> =
     
-    static member create () = [] |> html.blazor<AntDesign.ImagePreviewGroup>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.ImagePreviewGroup>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.ImagePreviewGroup>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.ImagePreviewGroup>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.ImagePreviewGroup>
-    static member ref x = attr.ref<AntDesign.ImagePreviewGroup> x
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
-    static member previewVisible (x: System.Boolean) = "PreviewVisible" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member previewVisible' (value: IStore<System.Boolean>) = FelizNode<'FunBlazorGeneric>.create("PreviewVisible", value)
-    static member previewVisible' (value: cval<System.Boolean>) = FelizNode<'FunBlazorGeneric>.create("PreviewVisible", value)
-    static member previewVisible' (valueFn: System.Boolean * (System.Boolean -> unit)) = FelizNode<'FunBlazorGeneric>.create("PreviewVisible", valueFn)
-    static member previewVisibleChanged fn = (Bolero.Html.attr.callback<System.Boolean> "PreviewVisibleChanged" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.ImagePreviewGroup>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.ImagePreviewGroup>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.ImagePreviewGroup>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.ImagePreviewGroup>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.ImagePreviewGroup>(){ x }
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
+    static member previewVisible (x: System.Boolean) = "PreviewVisible" => x
+    static member previewVisible' (value: IStore<System.Boolean>) = html.bind("PreviewVisible", value)
+    static member previewVisible' (value: cval<System.Boolean>) = html.bind("PreviewVisible", value)
+    static member previewVisible' (valueFn: System.Boolean * (System.Boolean -> unit)) = html.bind("PreviewVisible", valueFn)
+    static member previewVisibleChanged fn = html.callback<System.Boolean>("PreviewVisibleChanged", fn)
                     
 
 type treeIndent<'FunBlazorGeneric, 'TItem> =
     
-    static member create () = [] |> html.blazor<AntDesign.TreeIndent<'TItem>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.TreeIndent<'TItem>>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.TreeIndent<'TItem>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.TreeIndent<'TItem>>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.TreeIndent<'TItem>> x
-    static member treeLevel (x: System.Int32) = "TreeLevel" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member treeLevel (x: System.Int32) = "TreeLevel" => x
                     
 
 type treeNodeCheckbox<'FunBlazorGeneric, 'TItem> =
     
-    static member create () = [] |> html.blazor<AntDesign.TreeNodeCheckbox<'TItem>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.TreeNodeCheckbox<'TItem>>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.TreeNodeCheckbox<'TItem>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.TreeNodeCheckbox<'TItem>>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.TreeNodeCheckbox<'TItem>> x
-    static member onCheckBoxClick fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> "OnCheckBoxClick" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
+    static member onCheckBoxClick fn = html.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs>("OnCheckBoxClick", fn)
                     
 
 type treeNodeSwitcher<'FunBlazorGeneric, 'TItem> =
     
-    static member create () = [] |> html.blazor<AntDesign.TreeNodeSwitcher<'TItem>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.TreeNodeSwitcher<'TItem>>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.TreeNodeSwitcher<'TItem>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.TreeNodeSwitcher<'TItem>>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.TreeNodeSwitcher<'TItem>> x
-    static member onSwitcherClick fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> "OnSwitcherClick" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
+    static member onSwitcherClick fn = html.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs>("OnSwitcherClick", fn)
                     
 
 type treeNodeTitle<'FunBlazorGeneric, 'TItem> =
     
-    static member create () = [] |> html.blazor<AntDesign.TreeNodeTitle<'TItem>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.TreeNodeTitle<'TItem>>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.TreeNodeTitle<'TItem>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.TreeNodeTitle<'TItem>>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.TreeNodeTitle<'TItem>> x
 
                     
 
 type cardLoading<'FunBlazorGeneric> =
     
-    static member create () = [] |> html.blazor<AntDesign.CardLoading>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.CardLoading>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.CardLoading>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.CardLoading>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.CardLoading> x
 
                     
 
 type summaryRow<'FunBlazorGeneric> =
     
-    static member create () = [] |> html.blazor<AntDesign.SummaryRow>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.SummaryRow>
-    static member create (nodes: Bolero.Node list) = [ attr.childContent nodes ] |> html.blazor<AntDesign.SummaryRow>
-    static member create (node: Bolero.Node) = [ attr.childContent [ node ] ] |> html.blazor<AntDesign.SummaryRow>
-    static member create (x: string) = [ attr.childContent [ html.text x ] ] |> html.blazor<AntDesign.SummaryRow>
-    static member ref x = attr.ref<AntDesign.SummaryRow> x
-    static member childContent (x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (node) = Bolero.Html.attr.fragment "ChildContent" (node) |> FelizNode<'FunBlazorGeneric>.create
-    static member childContent (nodes) = Bolero.Html.attr.fragment "ChildContent" (nodes |> html.fragment) |> FelizNode<'FunBlazorGeneric>.create
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.SummaryRow>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.SummaryRow>() { yield! attrs }
+    static member inline create (nodes: NodeRenderFragment seq) = ComponentWithChildBuilder<AntDesign.SummaryRow>() { yield! nodes }
+    static member inline create (node: NodeRenderFragment) = ComponentWithChildBuilder<AntDesign.SummaryRow>() { node }
+    static member inline create (x: string) = ComponentWithChildBuilder<AntDesign.SummaryRow>(){ x }
+    static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
+    static member childContent (node) = html.renderFragment("ChildContent", node)
+    static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
                     
             
 namespace rec AntDesign.DslInternals.statistic
 
-open Bolero.Html
 open FSharp.Data.Adaptive
 open Fun.Blazor
-open Microsoft.AspNetCore.Components.DslInternals
-open Microsoft.AspNetCore.Components.Web.DslInternals
+open Fun.Blazor.Operators
 open AntDesign.DslInternals
 
 
 type statisticComponentBase<'FunBlazorGeneric, 'T> =
     
-    static member create () = [] |> html.blazor<AntDesign.statistic.StatisticComponentBase<'T>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.statistic.StatisticComponentBase<'T>>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.statistic.StatisticComponentBase<'T>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.statistic.StatisticComponentBase<'T>>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.statistic.StatisticComponentBase<'T>> x
 
                     
             
 namespace rec AntDesign.DslInternals.Select
 
-open Bolero.Html
 open FSharp.Data.Adaptive
 open Fun.Blazor
-open Microsoft.AspNetCore.Components.DslInternals
-open Microsoft.AspNetCore.Components.Web.DslInternals
+open Fun.Blazor.Operators
 open AntDesign.DslInternals
 
 
 type labelTemplateItem<'FunBlazorGeneric, 'TItemValue, 'TItem> =
     
-    static member create () = [] |> html.blazor<AntDesign.Select.LabelTemplateItem<'TItemValue, 'TItem>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Select.LabelTemplateItem<'TItemValue, 'TItem>>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Select.LabelTemplateItem<'TItemValue, 'TItem>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Select.LabelTemplateItem<'TItemValue, 'TItem>>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.Select.LabelTemplateItem<'TItemValue, 'TItem>> x
-    static member labelTemplateItemContent (render: 'TItem -> Bolero.Node) = Bolero.Html.attr.fragmentWith "LabelTemplateItemContent" (fun x -> render x) |> FelizNode<'FunBlazorGeneric>.create
-    static member styles (x: (string * string) list) = attr.styles x |> FelizNode<'FunBlazorGeneric>.create
-    static member classes (x: string list) = attr.classes x |> FelizNode<'FunBlazorGeneric>.create
-    static member contentStyle (x: System.String) = "ContentStyle" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member contentClass (x: System.String) = "ContentClass" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member removeIconStyle (x: System.String) = "RemoveIconStyle" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member removeIconClass (x: System.String) = "RemoveIconClass" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member refBack (x: AntDesign.ForwardRef) = "RefBack" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member labelTemplateItemContent (render: 'TItem -> NodeRenderFragment) = html.renderFragment("LabelTemplateItemContent", render)
+    static member styles (x: (string * string) seq) = html.styles x
+    static member classes (x: string list) = html.classes x
+    static member contentStyle (x: System.String) = "ContentStyle" => x
+    static member contentClass (x: System.String) = "ContentClass" => x
+    static member removeIconStyle (x: System.String) = "RemoveIconStyle" => x
+    static member removeIconClass (x: System.String) = "RemoveIconClass" => x
+    static member refBack (x: AntDesign.ForwardRef) = "RefBack" => x
                     
             
 namespace rec AntDesign.DslInternals.Select.Internal
 
-open Bolero.Html
 open FSharp.Data.Adaptive
 open Fun.Blazor
-open Microsoft.AspNetCore.Components.DslInternals
-open Microsoft.AspNetCore.Components.Web.DslInternals
+open Fun.Blazor.Operators
 open AntDesign.DslInternals
 
 
 type selectContent<'FunBlazorGeneric, 'TItemValue, 'TItem> =
     
-    static member create () = [] |> html.blazor<AntDesign.Select.Internal.SelectContent<'TItemValue, 'TItem>>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Select.Internal.SelectContent<'TItemValue, 'TItem>>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Select.Internal.SelectContent<'TItemValue, 'TItem>>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Select.Internal.SelectContent<'TItemValue, 'TItem>>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.Select.Internal.SelectContent<'TItemValue, 'TItem>> x
-    static member prefix (x: System.String) = "Prefix" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member placeholder (x: System.String) = "Placeholder" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member isOverlayShow (x: System.Boolean) = "IsOverlayShow" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member showPlaceholder (x: System.Boolean) = "ShowPlaceholder" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member maxTagCount (x: System.Int32) = "MaxTagCount" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member onInput fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.ChangeEventArgs> "OnInput" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onKeyUp fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.KeyboardEventArgs> "OnKeyUp" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onKeyDown fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.KeyboardEventArgs> "OnKeyDown" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onFocus fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.FocusEventArgs> "OnFocus" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onBlur fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.FocusEventArgs> "OnBlur" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onClearClick fn = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> "OnClearClick" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member onRemoveSelected fn = (Bolero.Html.attr.callback<AntDesign.Select.Internal.SelectOptionItem<'TItemValue, 'TItem>> "OnRemoveSelected" (fun e -> fn e)) |> FelizNode<'FunBlazorGeneric>.create
-    static member searchValue (x: System.String) = "SearchValue" => x |> FelizNode<'FunBlazorGeneric>.create
-    static member refBack (x: AntDesign.ForwardRef) = "RefBack" => x |> FelizNode<'FunBlazorGeneric>.create
+    static member prefix (x: System.String) = "Prefix" => x
+    static member placeholder (x: System.String) = "Placeholder" => x
+    static member isOverlayShow (x: System.Boolean) = "IsOverlayShow" => x
+    static member showPlaceholder (x: System.Boolean) = "ShowPlaceholder" => x
+    static member maxTagCount (x: System.Int32) = "MaxTagCount" => x
+    static member onInput fn = html.callback<Microsoft.AspNetCore.Components.ChangeEventArgs>("OnInput", fn)
+    static member onKeyUp fn = html.callback<Microsoft.AspNetCore.Components.Web.KeyboardEventArgs>("OnKeyUp", fn)
+    static member onKeyDown fn = html.callback<Microsoft.AspNetCore.Components.Web.KeyboardEventArgs>("OnKeyDown", fn)
+    static member onFocus fn = html.callback<Microsoft.AspNetCore.Components.Web.FocusEventArgs>("OnFocus", fn)
+    static member onBlur fn = html.callback<Microsoft.AspNetCore.Components.Web.FocusEventArgs>("OnBlur", fn)
+    static member onClearClick fn = html.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs>("OnClearClick", fn)
+    static member onRemoveSelected fn = html.callback<AntDesign.Select.Internal.SelectOptionItem<'TItemValue, 'TItem>>("OnRemoveSelected", fn)
+    static member searchValue (x: System.String) = "SearchValue" => x
+    static member refBack (x: AntDesign.ForwardRef) = "RefBack" => x
                     
             
 namespace rec AntDesign.DslInternals.Internal
 
-open Bolero.Html
 open FSharp.Data.Adaptive
 open Fun.Blazor
-open Microsoft.AspNetCore.Components.DslInternals
-open Microsoft.AspNetCore.Components.Web.DslInternals
+open Fun.Blazor.Operators
 open AntDesign.DslInternals
 
 
 type formRulesValidator<'FunBlazorGeneric> =
     
-    static member create () = [] |> html.blazor<AntDesign.Internal.FormRulesValidator>
-    static member create (nodes) = FelizNode<'FunBlazorGeneric>.concat nodes |> html.blazor<AntDesign.Internal.FormRulesValidator>
+    static member inline create () = html.fromBuilder(ComponentBuilder<AntDesign.Internal.FormRulesValidator>())
+    static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.Internal.FormRulesValidator>() { yield! attrs }
 
-    static member ref x = attr.ref<AntDesign.Internal.FormRulesValidator> x
 
                     
             

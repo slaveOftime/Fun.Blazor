@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<Version>2.0.0-beta001</Version>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Include="Dsl.fs" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="Bolero" Version="0.18.16" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Fun.Blazor\Fun.Blazor.fsproj" />
+	</ItemGroup>
+	
+	<ItemGroup>
+		<PackageReference Update="FSharp.Core" Version="6.0.1" />
+	</ItemGroup>
+
+</Project>

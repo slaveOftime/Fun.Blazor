@@ -1,84 +1,76 @@
-﻿namespace rec Fun.Blazor
+﻿namespace Fun.Blazor
 
 open System
 open FSharp.Data.Adaptive
 open Microsoft.AspNetCore.Components
-open Bolero
-open Bolero.Html
+open Microsoft.AspNetCore.Components.Rendering
 open Fun.Result
 
 
-type FunBlazorRef<'T> = Ref<'T>
+/// Provide a delegate so we can extend how we plug piece of attribute into blazor RenderTree
+/// root should be the nearest root component, builder should be passed by the context, sequence is the usable sequence number.
+/// Return int should be the next useable sequence
+type AttrRenderFragment = delegate of root: IComponent * builder: RenderTreeBuilder * sequence: int -> int
+
+/// Provide a delegate so we can extend how we plug piece of node into blazor RenderTree
+/// root should be the nearest root component, builder should be passed by the context, sequence is the usable sequence number.
+/// Return int should be the next useable sequence
+type NodeRenderFragment = delegate of root: IComponent * builder: RenderTreeBuilder * sequence: int -> int
+
+/// In blazor, we cannot add attribute after add ref, so we need a clear position to seperate them
+type RefRenderFragment = delegate of root: IComponent * builder: RenderTreeBuilder * sequence: int -> int
 
 
-type FunBlazorComponent = Bolero.Component
+module Operators =
+
+    /// Add Attribute with name and value
+    let inline (=>) (name: string) (value: 'Value) =
+        AttrRenderFragment(fun _ builder index ->
+            builder.AddAttribute(index, name, box value)
+            index + 1
+        )
+
+    /// Merge two AttrRenderFragment together
+    let inline (==>) ([<InlineIfLambda>] render1: AttrRenderFragment) ([<InlineIfLambda>] render2: AttrRenderFragment) =
+        AttrRenderFragment(fun comp builder index -> render2.Invoke(comp, builder, render1.Invoke(comp, builder, index)))
+
+    /// Merge two NodeRenderFragment together
+    let inline (>=>) ([<InlineIfLambda>] render1: NodeRenderFragment) ([<InlineIfLambda>] render2: NodeRenderFragment) =
+        NodeRenderFragment(fun comp builder index -> render2.Invoke(comp, builder, render1.Invoke(comp, builder, index)))
+
+    /// Merge AttrRenderFragment and NodeRenderFragment together.
+    /// This should be used together for building element only. For component we should not use this, because it treat ChildContent different in Blazor
+    let inline (>>>) ([<InlineIfLambda>] render1: AttrRenderFragment) ([<InlineIfLambda>] render2: NodeRenderFragment) =
+        NodeRenderFragment(fun comp builder index -> render2.Invoke(comp, builder, render1.Invoke(comp, builder, index)))
 
 
-type SingleNodeComponent() as this =
+type IElementBuilder =
+    abstract member Name : string
+
+type IComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent> = interface end
+
+
+[<AbstractClass>]
+type FunBlazorComponent() as this =
+    inherit ComponentBase()
+
+    override _.BuildRenderTree(builder: RenderTreeBuilder) = this.Render().Invoke(this, builder, 0) |> ignore
+    
+    member _.StateHasChanged() = base.StateHasChanged()
+
+    member _.ForceRerender() =
+        this.InvokeAsync(fun () -> this.StateHasChanged()) |> ignore
+
+    abstract Render : unit -> NodeRenderFragment
+
+
+type FunFragmentComponent() as this =
     inherit FunBlazorComponent()
 
-    override _.Render() = this.Node
+    override _.Render() = this.Fragment
 
     [<Parameter>]
-    member val Node = Unchecked.defaultof<Bolero.Node> with get, set
-
-
-/// Base class for Computation Expression style DSL
-type FunBlazorBuilder<'Component when 'Component :> Microsoft.AspNetCore.Components.IComponent>() =
-    let attrs = Collections.Generic.List<Attr>()
-    let nodes = Collections.Generic.List<Node>()
-
-    member this.AddAttr x =
-        attrs.Add x
-        this
-    member this.AddNode x =
-        nodes.Add x
-        this
-    member this.AddNodes x =
-        nodes.AddRange x
-        this
-
-    member this.AddBinding(name, value: IStore<'T>) =
-        name => value.Current |> this.AddAttr |> ignore
-        Bolero.Html.attr.callback<'T> $"{name}Changed" value.Publish |> this.AddAttr
-
-    member this.AddBinding(name, value: cval<'T>) =
-        name => AVal.force value |> this.AddAttr |> ignore
-        Bolero.Html.attr.callback<'T> $"{name}Changed" (fun x -> transact (fun _ -> value.Value <- x))
-        |> this.AddAttr
-
-    member this.AddBinding(name, (value: 'T, fn)) =
-        name => value |> this.AddAttr |> ignore
-        Bolero.Html.attr.callback<'T> $"{name}Changed" fn |> this.AddAttr
-
-
-    member this.Props() = attrs, nodes
-
-    member this.CreateNode() =
-        Bolero.Html.comp<'Component> (Seq.toList attrs) (Seq.toList nodes)
-
-    // Executes a computation expression
-    member this.Run _ =
-        Bolero.Html.comp<'Component> (Seq.toList attrs) (Seq.toList nodes)
-
-    member this.Yield _ = this
-
-    member this.Zero _ = Html.empty
-
-    [<CustomOperation("ref")>]
-    member this.ref(_: FunBlazorBuilder<'Component>, v) = Bolero.Html.attr.ref v |> this.AddAttr
-
-    [<CustomOperation("onevent")>]
-    member this.event(_: FunBlazorBuilder<'Component>, eventName, callback) =
-        Bolero.Html.on.event eventName callback |> this.AddAttr
-
-    [<CustomOperation("preventDefault")>]
-    member this.preventDefault(_: FunBlazorBuilder<'Component>, eventName, value) =
-        Bolero.Html.on.preventDefault eventName value |> this.AddAttr
-
-    [<CustomOperation("stopPropagation")>]
-    member this.stopPropagation(_: FunBlazorBuilder<'Component>, eventName, value) =
-        Bolero.Html.on.stopPropagation eventName value |> this.AddAttr
+    member val Fragment = NodeRenderFragment(fun _ _ i -> i) with get, set
 
 
 type IStore<'T> =

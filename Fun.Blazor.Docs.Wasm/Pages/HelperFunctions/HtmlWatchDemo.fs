@@ -30,7 +30,7 @@ let htmlWatchDemo = html.inject (fun (hook: IComponentHook) ->
     )
 
     MudPaper'(){
-        Styles [ style.padding 20 ]
+        styleBuilder { padding 20 }
         childContent [
             // We can use this to watch IStore<_>
             // When anything changed in the store we will call the render function you provided below

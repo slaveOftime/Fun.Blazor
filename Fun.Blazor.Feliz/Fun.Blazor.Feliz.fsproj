@@ -3,15 +3,14 @@
 	<PropertyGroup>
 		<TargetFramework>net5.0</TargetFramework>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
-		<Version>1.2.1</Version>
+		<Version>2.0.0-beta001</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Compile Include="Core.fs" />
-		<Compile Include="Utils.fs" />
+		<Compile Include="Router.fs" />
+		<Compile Include="AttrEngine.fs" />
 		<Compile Include="HtmlEngine.fs" />
 		<Compile Include="Dsl.fs" />
-		<Compile Include="Dsl.AspNetCore.fs" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -19,6 +18,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
 		<PackageReference Include="Feliz.Engine" Version="1.0.0-beta-004" />
 	</ItemGroup>
 	

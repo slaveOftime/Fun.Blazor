@@ -87,8 +87,6 @@ let fsharpKeywords =
 
 let internalSegment = "DslInternals"
 let funBlazorGeneric = "'FunBlazorGeneric"
-let boleroNode = "Bolero.Node"
-let boleroAttr = "Bolero.Attr"
 
 
 let lowerFirstCase (str: string) =

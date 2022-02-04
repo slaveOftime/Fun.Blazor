@@ -51,7 +51,7 @@ type DIComponent<'T>() as this =
             member _.OnDispose = disposeEvent.Publish
             member _.AddDispose dispose = disposes.Add dispose
             member _.AddDisposes ds = disposes.AddRange(ds)
-            member _.StateHasChanged() = this.ForceSetState()
+            member _.StateHasChanged() = this.ForceRerender()
 
             member _.UseStore<'T>(x: 'T) : IStore<'T> =
                 let newStore = new Store<'T>(x)
@@ -81,7 +81,7 @@ type DIComponent<'T>() as this =
 
 
     [<Parameter>]
-    member val RenderFn = Unchecked.defaultof<'T -> Bolero.Node> with get, set
+    member val RenderFn: 'T -> NodeRenderFragment = fun _ -> emptyNode with get, set
 
     /// With this we can avoid rerender when parameter reset
     /// If component is not recreated then all the rerender will use the closure state created by the first RenderFn
@@ -95,14 +95,10 @@ type DIComponent<'T>() as this =
     member val Logger = Unchecked.defaultof<ILogger<DIComponent<'T>>> with get, set
 
 
-    member internal _.StateHasChanged() = base.StateHasChanged()
-    member internal _.ForceSetState() = this.InvokeAsync(this.StateHasChanged) |> ignore
-
-
     override _.Render() =
         this.Logger.LogDebugForPerf(fun () ->
             match node with
-            | None -> Bolero.Empty
+            | None -> emptyNode
             | Some node -> node
         )
 

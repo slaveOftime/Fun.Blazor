@@ -6,10 +6,9 @@ open HtmlTemplate.Internals
 
 [<AutoOpen>]
 module Utils =
-    let callback fn : MkAttrWithName = fun name -> [ Bolero.Html.attr.callback name fn ]
+    let callback fn : ArgMkAttrWithName = fun name -> html.callback (name, fn)
 
-    let callbackTask fn : MkAttrWithName =
-        fun name -> [ Bolero.Html.attr.task.callback name fn ]
+    let callbackTask fn : ArgMkAttrWithName = fun name -> html.callbackTask (name, fn)
 
 
 type Template =
@@ -18,6 +17,6 @@ type Template =
     /// For none standard event, you also need to wireup the event argument type by: https://docs.microsoft.com/en-us/aspnet/core/blazor/components/event-handling?view=aspnetcore-6.0#custom-event-arguments
     /// But it is only supported in aspnet 6. So currently you cannot get the event args very easily.
     static member html(html: FormattableString) =
-        caches.GetOrAdd(html.Format.GetHashCode(), (fun _ -> parseNodes html.Format))
-        |> buildNodeTree (html.GetArguments())
-        |> Bolero.ForEach
+        let nodes =
+            caches.GetOrAdd(html.Format.GetHashCode(), Func<int, NodeItem list>(fun _ -> parseNodes html.Format))
+        rebuildNodes nodes (html.GetArguments())

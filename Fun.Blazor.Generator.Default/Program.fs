@@ -3,17 +3,17 @@ open System.Reflection
 open Fun.Blazor.Generator
 
 
-let opens = """open Bolero.Html
-open FSharp.Data.Adaptive
-open Fun.Blazor"""
+let opens = """open FSharp.Data.Adaptive
+open Fun.Blazor
+open Fun.Blazor.Operators"""
 
 
 let componentTypes = Assembly.LoadFile(__SOURCE_DIRECTORY__ + "/bin/Debug/net5.0/Microsoft.AspNetCore.Components.dll").GetTypes()
 let webTypes = Assembly.LoadFile(__SOURCE_DIRECTORY__ + "/bin/Debug/net5.0/Microsoft.AspNetCore.Components.Web.dll").GetTypes()
 
 
-let componentsDsl = Generator.generateCode "Microsoft.AspNetCore.Components" opens componentTypes
-let webDsl = Generator.generateCode "Microsoft.AspNetCore.Components.Web" opens webTypes
+let componentsDsl = CEGenerator.generateCode "Microsoft.AspNetCore.Components" opens componentTypes
+let webDsl = CEGenerator.generateCode "Microsoft.AspNetCore.Components.Web" opens webTypes
 
 let dslPath = __SOURCE_DIRECTORY__ + "\..\Fun.Blazor.Feliz\Dsl.AspNetCore.fs"
 let dslCode = 

@@ -26,7 +26,7 @@ let externalDemo1 extenalX = html.inject ("externalDemo1", fun (hook: IComponent
     )
 
     MudPaper'(){
-        Styles [ style.padding 10 ]
+        styleBuilder { padding 10 }
         childContent [
             MudText'.create "externalDemo1"
             spaceV3
@@ -56,7 +56,7 @@ let injectDemo = html.inject (fun (hook: IComponentHook, snackbar: ISnackbar) ->
     )
 
     MudPaper'(){
-        Styles [ style.padding 15 ]
+        styleBuilder { padding 15 }
         childContent [
             spaceV3
             html.watch (store, fun s1 -> [

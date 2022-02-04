@@ -11,6 +11,4 @@ let cliUsage =
         "Fun.Blazor.Cli"
         "Use this to generate third party dsl code"
         ""
-        [
-            sourceSection "Pages/CliUsage/CliUsageDemo"
-        ]
+        (sourceSection "Pages/CliUsage/CliUsageDemo")

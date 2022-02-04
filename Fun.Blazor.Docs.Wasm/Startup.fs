@@ -10,10 +10,10 @@ open Fun.Blazor.Docs.Wasm
 let builder = WebAssemblyHostBuilder.CreateDefault(Environment.GetCommandLineArgs())
         
 builder
-    .AddFunBlazorNode("#app", app)
+    .AddFunBlazor("#app", app)
     .Logging.AddBrowserConsole().SetMinimumLevel(LogLevel.Debug)
     .Services
-        .AddFunBlazor()
+        .AddFunBlazorWasm()
         .AddAntDesign()
         .AddMudServices()
         .AddBlazorDragDrop()

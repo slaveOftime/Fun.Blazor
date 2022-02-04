@@ -3,8 +3,8 @@ module Fun.Blazor.DslAdaptive
 
 open System.Runtime.CompilerServices
 open FSharp.Data.Adaptive
-open Bolero
 open Fun.Blazor
+open Operators
 
 
 /// This will generate an alist<Node> as a Node parameter.
@@ -22,29 +22,52 @@ open Fun.Blazor
 /// </code>
 /// </example>
 type AdaptiviewBuilder(?key: obj, ?isStatic: bool) =
-    inherit AListBuilder()
+    inherit AValBuilder()
 
-    member _.Run(x: alist<Node>) =
-        Bolero.Node.BlazorComponent<AdaptiveComponent>(
-            [
-                "Node" => x
-                match isStatic with
-                | Some true -> "IsStatic" => true
-                | _ -> ()
-                match key with
-                | Some key -> Bolero.Key key
-                | None -> ()
-            ],
-            []
-        )
+    member _.Key = key
+    member _.IsStatic = isStatic
 
-    member _.Delay(fn: unit -> alist<_>) = fn ()
+    member this.Run(x: aval<NodeRenderFragment>) =
+        ComponentWithChildBuilder<AdaptiveComponent> () {
+            "Fragment" => x
+            match this.IsStatic with
+            | Some true -> "IsStatic" => true
+            | _ -> emptyAttr
+            match this.Key with
+            | Some k -> html.key k
+            | None -> emptyAttr
+        }
 
-    member _.Combine(c1, c2) = AList.append c1 c2
+    member inline _.Yield([<InlineIfLambda>] x: NodeRenderFragment) = AVal.init x
+    
+    member _.Yield<'T when 'T :> IElementBuilder>(x: 'T) =
+        AVal.init(NodeRenderFragment(fun _ builder index ->
+            builder.OpenElement(index, x.Name)
+            builder.CloseElement()
+            index + 1
+        ))
 
-    member _.Yield x = AList.single x
+    member _.Yield<'T, 'T1 when 'T :> IComponentBuilder<'T1>>(_: 'T) =
+        AVal.init(NodeRenderFragment(fun _ builder index ->
+            builder.OpenComponent<'T1>(index)
+            builder.CloseComponent()
+            index + 1
+        ))
 
-    member _.Zero() = AList.empty
+
+    member inline _.Delay([<InlineIfLambda>] fn: unit -> aval<NodeRenderFragment>) = fn ()
+
+    member _.Combine(val1: aval<NodeRenderFragment>, val2: aval<NodeRenderFragment>) =
+        adaptive {
+            let! render1 = val1
+            let! render2 = val2
+            return render1 >=> render2
+        }
+
+    member inline _.Zero() = AVal.init emptyNode
+
+    member inline _.For(ls: 'T seq, [<InlineIfLambda>] fn: 'T -> aval<NodeRenderFragment>) =
+        ls |> Seq.map fn |> Seq.fold (AVal.map2 (>=>)) (AVal.init emptyNode)
 
 
 [<Extension>]
@@ -92,15 +115,4 @@ type Extensions =
         sub
 
 
-[<RequireQualifiedAccess>]
-module Adapt =
-    let withSetter (this: cval<'T>) =
-        let setValue x = transact (fun () -> this.Value <- x)
-        this |> AVal.map (fun x -> x, setValue)
-
-
 type adaptiview = AdaptiviewBuilder
-
-
-[<System.Obsolete "Use adaptiview for explicity instead">]
-let adapt = AdaptiviewBuilder()

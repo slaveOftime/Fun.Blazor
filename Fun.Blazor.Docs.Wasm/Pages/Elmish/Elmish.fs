@@ -12,6 +12,4 @@ let elmish =
         "Elmish MVU"
         "Loved by a lot of F# developers"
         "Elmish implements core abstractions that can be used to build Fable applications following the “model view update” style of architecture, as made famous by Elm."
-        [
-            demoContainer "Elmish" $"{root}/ElmishDemo" elmishDemo
-        ]
+        (demoContainer "Elmish" $"{root}/ElmishDemo" elmishDemo)

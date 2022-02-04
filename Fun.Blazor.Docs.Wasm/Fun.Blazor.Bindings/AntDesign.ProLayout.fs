@@ -1,408 +1,409 @@
 namespace rec AntDesign.ProLayout.DslInternals
 
-open Bolero.Html
 open FSharp.Data.Adaptive
 open Fun.Blazor
-open Microsoft.AspNetCore.Components.DslInternals
-open Microsoft.AspNetCore.Components.Web.DslInternals
+open Fun.Blazor.Operators
 open AntDesign.ProLayout.DslInternals
 
 
 type AntComponentBaseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit FunBlazorBuilder<'FunBlazorGeneric>()
-    static member create () = AntComponentBaseBuilder<'FunBlazorGeneric>().CreateNode()
-    [<CustomOperation("RefBack")>] member this.RefBack (_: FunBlazorBuilder<'FunBlazorGeneric>, x: AntDesign.ForwardRef) = "RefBack" => x |> this.AddAttr
+    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    static member inline create () = html.fromBuilder(AntComponentBaseBuilder<'FunBlazorGeneric>())
+    [<CustomOperation("RefBack")>] member _.RefBack (render: AttrRenderFragment, x: AntDesign.ForwardRef) = render ==> ("RefBack" => x)
                 
 
 type AntDomComponentBaseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit AntComponentBaseBuilder<'FunBlazorGeneric>()
-    static member create () = AntDomComponentBaseBuilder<'FunBlazorGeneric>().CreateNode()
-    [<CustomOperation("Id")>] member this.Id (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "Id" => x |> this.AddAttr
-    [<CustomOperation("Classes")>] member this.Classes (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string list) = attr.classes x |> this.AddAttr
-    [<CustomOperation("Styles")>] member this.Styles (_: FunBlazorBuilder<'FunBlazorGeneric>, x: (string * string) list) = attr.styles x |> this.AddAttr
+    static member inline create () = html.fromBuilder(AntDomComponentBaseBuilder<'FunBlazorGeneric>())
+    [<CustomOperation("Id")>] member _.Id (render: AttrRenderFragment, x: System.String) = render ==> ("Id" => x)
+    [<CustomOperation("Classes")>] member _.Classes (render: AttrRenderFragment, x: string list) = render ==> html.classes x
+    [<CustomOperation("Styles")>] member _.Styles (render: AttrRenderFragment, x: (string * string) list) = render ==> html.styles x
                 
             
 namespace rec AntDesign.ProLayout.DslInternals.ProLayout
 
-open Bolero.Html
 open FSharp.Data.Adaptive
 open Fun.Blazor
-open Microsoft.AspNetCore.Components.DslInternals
-open Microsoft.AspNetCore.Components.Web.DslInternals
+open Fun.Blazor.Operators
 open AntDesign.ProLayout.DslInternals
 
 
 type AntProComponentBaseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit AntDomComponentBaseBuilder<'FunBlazorGeneric>()
-    new (x: string) as this = AntProComponentBaseBuilder<'FunBlazorGeneric>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.text) |> this.AddAttr |> ignore
-    new (x: Bolero.Node list) as this = AntProComponentBaseBuilder<'FunBlazorGeneric>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.fragment) |> this.AddAttr |> ignore
-    static member create (x: string) = AntProComponentBaseBuilder<'FunBlazorGeneric>(x).CreateNode()
-    static member create (x: Bolero.Node list) = AntProComponentBaseBuilder<'FunBlazorGeneric>(x).CreateNode()
-    [<CustomOperation("NavTheme")>] member this.NavTheme (_: FunBlazorBuilder<'FunBlazorGeneric>, x: AntDesign.MenuTheme) = "NavTheme" => x |> this.AddAttr
-    [<CustomOperation("HeaderHeight")>] member this.HeaderHeight (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Int32) = "HeaderHeight" => x |> this.AddAttr
-    [<CustomOperation("Layout")>] member this.Layout (_: FunBlazorBuilder<'FunBlazorGeneric>, x: AntDesign.ProLayout.Layout) = "Layout" => x |> this.AddAttr
-    [<CustomOperation("ContentWidth")>] member this.ContentWidth (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "ContentWidth" => x |> this.AddAttr
-    [<CustomOperation("FixedHeader")>] member this.FixedHeader (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Boolean) = "FixedHeader" => x |> this.AddAttr
-    [<CustomOperation("FixSiderbar")>] member this.FixSiderbar (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Boolean) = "FixSiderbar" => x |> this.AddAttr
-    [<CustomOperation("Title")>] member this.Title (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "Title" => x |> this.AddAttr
-    [<CustomOperation("IconfontUrl")>] member this.IconfontUrl (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "IconfontUrl" => x |> this.AddAttr
-    [<CustomOperation("PrimaryColor")>] member this.PrimaryColor (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "PrimaryColor" => x |> this.AddAttr
-    [<CustomOperation("ColorWeak")>] member this.ColorWeak (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Boolean) = "ColorWeak" => x |> this.AddAttr
-    [<CustomOperation("SplitMenus")>] member this.SplitMenus (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Boolean) = "SplitMenus" => x |> this.AddAttr
-    [<CustomOperation("HeaderRender")>] member this.HeaderRender (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Boolean) = "HeaderRender" => x |> this.AddAttr
-    [<CustomOperation("FooterRender")>] member this.FooterRender (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "FooterRender" (html.fragment nodes) |> this.AddAttr
-    [<CustomOperation("FooterRender")>] member this.FooterRender (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "FooterRender" (html.text x) |> this.AddAttr
-    [<CustomOperation("FooterRender")>] member this.FooterRender (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "FooterRender" (html.text x) |> this.AddAttr
-    [<CustomOperation("FooterRender")>] member this.FooterRender (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "FooterRender" (html.text x) |> this.AddAttr
-    [<CustomOperation("MenuRender")>] member this.MenuRender (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Boolean) = "MenuRender" => x |> this.AddAttr
-    [<CustomOperation("MenuHeaderRender")>] member this.MenuHeaderRender (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Boolean) = "MenuHeaderRender" => x |> this.AddAttr
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (html.fragment nodes) |> this.AddAttr
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> this.AddAttr
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> this.AddAttr
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> this.AddAttr
+    static member inline create (x: string) = AntProComponentBaseBuilder<'FunBlazorGeneric>(){ x }
+    static member inline create (x: NodeRenderFragment seq) = AntProComponentBaseBuilder<'FunBlazorGeneric>(){ yield! x }
+    [<CustomOperation("NavTheme")>] member _.NavTheme (render: AttrRenderFragment, x: AntDesign.MenuTheme) = render ==> ("NavTheme" => x)
+    [<CustomOperation("HeaderHeight")>] member _.HeaderHeight (render: AttrRenderFragment, x: System.Int32) = render ==> ("HeaderHeight" => x)
+    [<CustomOperation("Layout")>] member _.Layout (render: AttrRenderFragment, x: AntDesign.ProLayout.Layout) = render ==> ("Layout" => x)
+    [<CustomOperation("ContentWidth")>] member _.ContentWidth (render: AttrRenderFragment, x: System.String) = render ==> ("ContentWidth" => x)
+    [<CustomOperation("FixedHeader")>] member _.FixedHeader (render: AttrRenderFragment, x: System.Boolean) = render ==> ("FixedHeader" => x)
+    [<CustomOperation("FixSiderbar")>] member _.FixSiderbar (render: AttrRenderFragment, x: System.Boolean) = render ==> ("FixSiderbar" => x)
+    [<CustomOperation("Title")>] member _.Title (render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
+    [<CustomOperation("IconfontUrl")>] member _.IconfontUrl (render: AttrRenderFragment, x: System.String) = render ==> ("IconfontUrl" => x)
+    [<CustomOperation("PrimaryColor")>] member _.PrimaryColor (render: AttrRenderFragment, x: System.String) = render ==> ("PrimaryColor" => x)
+    [<CustomOperation("ColorWeak")>] member _.ColorWeak (render: AttrRenderFragment, x: System.Boolean) = render ==> ("ColorWeak" => x)
+    [<CustomOperation("SplitMenus")>] member _.SplitMenus (render: AttrRenderFragment, x: System.Boolean) = render ==> ("SplitMenus" => x)
+    [<CustomOperation("HeaderRender")>] member _.HeaderRender (render: AttrRenderFragment, x: System.Boolean) = render ==> ("HeaderRender" => x)
+    [<CustomOperation("FooterRender")>] member _.FooterRender (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("FooterRender", fragment)
+    [<CustomOperation("FooterRender")>] member _.FooterRender (render: AttrRenderFragment, fragments) = render ==> html.renderFragment("FooterRender", fragment { yield! fragments })
+    [<CustomOperation("FooterRender")>] member _.FooterRender (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("FooterRender", html.text x)
+    [<CustomOperation("FooterRender")>] member _.FooterRender (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("FooterRender", html.text x)
+    [<CustomOperation("FooterRender")>] member _.FooterRender (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("FooterRender", html.text x)
+    [<CustomOperation("MenuRender")>] member _.MenuRender (render: AttrRenderFragment, x: System.Boolean) = render ==> ("MenuRender" => x)
+    [<CustomOperation("MenuHeaderRender")>] member _.MenuHeaderRender (render: AttrRenderFragment, x: System.Boolean) = render ==> ("MenuHeaderRender" => x)
+    [<CustomOperation("childContent")>] member _.childContent (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("ChildContent", fragment)
+    [<CustomOperation("childContent")>] member _.childContent (render: AttrRenderFragment, fragments) = render ==> html.renderFragment("ChildContent", fragment { yield! fragments })
+    [<CustomOperation("childContent")>] member _.childContent (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("ChildContent", html.text x)
+    [<CustomOperation("childContent")>] member _.childContent (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("ChildContent", html.text x)
+    [<CustomOperation("childContent")>] member _.childContent (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("ChildContent", html.text x)
                 
 
 type BasicLayoutBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ProLayout.AntProComponentBaseBuilder<'FunBlazorGeneric>()
-    static member create () = BasicLayoutBuilder<'FunBlazorGeneric>().CreateNode()
-    [<CustomOperation("Collapsed")>] member this.Collapsed (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Boolean) = "Collapsed" => x |> this.AddAttr
-    [<CustomOperation("HandleOpenChange")>] member this.HandleOpenChange (_: FunBlazorBuilder<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<System.Boolean> "HandleOpenChange" (fun e -> fn e)) |> this.AddAttr
-    [<CustomOperation("IsMobile")>] member this.IsMobile (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Boolean) = "IsMobile" => x |> this.AddAttr
-    [<CustomOperation("MenuData")>] member this.MenuData (_: FunBlazorBuilder<'FunBlazorGeneric>, x: AntDesign.ProLayout.MenuDataItem[]) = "MenuData" => x |> this.AddAttr
-    [<CustomOperation("Mode")>] member this.Mode (_: FunBlazorBuilder<'FunBlazorGeneric>, x: AntDesign.MenuMode) = "Mode" => x |> this.AddAttr
-    [<CustomOperation("OnCollapse")>] member this.OnCollapse (_: FunBlazorBuilder<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<System.Boolean> "OnCollapse" (fun e -> fn e)) |> this.AddAttr
-    [<CustomOperation("OpenKeys")>] member this.OpenKeys (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String[]) = "OpenKeys" => x |> this.AddAttr
-    [<CustomOperation("Theme")>] member this.Theme (_: FunBlazorBuilder<'FunBlazorGeneric>, x: AntDesign.MenuTheme) = "Theme" => x |> this.AddAttr
-    [<CustomOperation("Logo")>] member this.Logo (_: FunBlazorBuilder<'FunBlazorGeneric>, x: OneOf.OneOf<System.String, Microsoft.AspNetCore.Components.RenderFragment>) = "Logo" => x |> this.AddAttr
-    [<CustomOperation("BaseURL")>] member this.BaseURL (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "BaseURL" => x |> this.AddAttr
-    [<CustomOperation("SiderWidth")>] member this.SiderWidth (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Int32) = "SiderWidth" => x |> this.AddAttr
-    [<CustomOperation("MenuExtraRender")>] member this.MenuExtraRender (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "MenuExtraRender" (html.fragment nodes) |> this.AddAttr
-    [<CustomOperation("MenuExtraRender")>] member this.MenuExtraRender (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "MenuExtraRender" (html.text x) |> this.AddAttr
-    [<CustomOperation("MenuExtraRender")>] member this.MenuExtraRender (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "MenuExtraRender" (html.text x) |> this.AddAttr
-    [<CustomOperation("MenuExtraRender")>] member this.MenuExtraRender (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "MenuExtraRender" (html.text x) |> this.AddAttr
-    [<CustomOperation("CollapsedButtonRender")>] member this.CollapsedButtonRender (_: FunBlazorBuilder<'FunBlazorGeneric>, render: System.Boolean -> Bolero.Node) = Bolero.Html.attr.fragmentWith "CollapsedButtonRender" (fun x -> render x) |> this.AddAttr
-    [<CustomOperation("Breakpoint")>] member this.Breakpoint (_: FunBlazorBuilder<'FunBlazorGeneric>, x: AntDesign.BreakpointType) = "Breakpoint" => x |> this.AddAttr
-    [<CustomOperation("OnMenuHeaderClick")>] member this.OnMenuHeaderClick (_: FunBlazorBuilder<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> "OnMenuHeaderClick" (fun e -> fn e)) |> this.AddAttr
-    [<CustomOperation("Hide")>] member this.Hide (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Boolean) = "Hide" => x |> this.AddAttr
-    [<CustomOperation("Links")>] member this.Links (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Collections.Generic.List<Microsoft.AspNetCore.Components.RenderFragment>) = "Links" => x |> this.AddAttr
-    [<CustomOperation("OnOpenChange")>] member this.OnOpenChange (_: FunBlazorBuilder<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<System.String[]> "OnOpenChange" (fun e -> fn e)) |> this.AddAttr
-    [<CustomOperation("Pure")>] member this.Pure (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Boolean) = "Pure" => x |> this.AddAttr
-    [<CustomOperation("Loading")>] member this.Loading (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Boolean) = "Loading" => x |> this.AddAttr
-    [<CustomOperation("DisableContentMargin")>] member this.DisableContentMargin (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Boolean) = "DisableContentMargin" => x |> this.AddAttr
-    [<CustomOperation("ContentStyle")>] member this.ContentStyle (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "ContentStyle" => x |> this.AddAttr
-    [<CustomOperation("ColSize")>] member this.ColSize (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "ColSize" => x |> this.AddAttr
-    [<CustomOperation("RightContentRender")>] member this.RightContentRender (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "RightContentRender" (html.fragment nodes) |> this.AddAttr
-    [<CustomOperation("RightContentRender")>] member this.RightContentRender (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "RightContentRender" (html.text x) |> this.AddAttr
-    [<CustomOperation("RightContentRender")>] member this.RightContentRender (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "RightContentRender" (html.text x) |> this.AddAttr
-    [<CustomOperation("RightContentRender")>] member this.RightContentRender (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "RightContentRender" (html.text x) |> this.AddAttr
+    static member inline create () = html.fromBuilder(BasicLayoutBuilder<'FunBlazorGeneric>())
+    [<CustomOperation("Collapsed")>] member _.Collapsed (render: AttrRenderFragment, x: System.Boolean) = render ==> ("Collapsed" => x)
+    [<CustomOperation("HandleOpenChange")>] member _.HandleOpenChange (render: AttrRenderFragment, fn) = render ==> html.callback<System.Boolean>("HandleOpenChange", fn)
+    [<CustomOperation("IsMobile")>] member _.IsMobile (render: AttrRenderFragment, x: System.Boolean) = render ==> ("IsMobile" => x)
+    [<CustomOperation("MenuData")>] member _.MenuData (render: AttrRenderFragment, x: AntDesign.ProLayout.MenuDataItem[]) = render ==> ("MenuData" => x)
+    [<CustomOperation("Mode")>] member _.Mode (render: AttrRenderFragment, x: AntDesign.MenuMode) = render ==> ("Mode" => x)
+    [<CustomOperation("OnCollapse")>] member _.OnCollapse (render: AttrRenderFragment, fn) = render ==> html.callback<System.Boolean>("OnCollapse", fn)
+    [<CustomOperation("OpenKeys")>] member _.OpenKeys (render: AttrRenderFragment, x: System.String[]) = render ==> ("OpenKeys" => x)
+    [<CustomOperation("Theme")>] member _.Theme (render: AttrRenderFragment, x: AntDesign.MenuTheme) = render ==> ("Theme" => x)
+    [<CustomOperation("Logo")>] member _.Logo (render: AttrRenderFragment, x: OneOf.OneOf<System.String, Microsoft.AspNetCore.Components.RenderFragment>) = render ==> ("Logo" => x)
+    [<CustomOperation("BaseURL")>] member _.BaseURL (render: AttrRenderFragment, x: System.String) = render ==> ("BaseURL" => x)
+    [<CustomOperation("SiderWidth")>] member _.SiderWidth (render: AttrRenderFragment, x: System.Int32) = render ==> ("SiderWidth" => x)
+    [<CustomOperation("MenuExtraRender")>] member _.MenuExtraRender (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("MenuExtraRender", fragment)
+    [<CustomOperation("MenuExtraRender")>] member _.MenuExtraRender (render: AttrRenderFragment, fragments) = render ==> html.renderFragment("MenuExtraRender", fragment { yield! fragments })
+    [<CustomOperation("MenuExtraRender")>] member _.MenuExtraRender (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("MenuExtraRender", html.text x)
+    [<CustomOperation("MenuExtraRender")>] member _.MenuExtraRender (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("MenuExtraRender", html.text x)
+    [<CustomOperation("MenuExtraRender")>] member _.MenuExtraRender (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("MenuExtraRender", html.text x)
+    [<CustomOperation("CollapsedButtonRender")>] member _.CollapsedButtonRender (render: AttrRenderFragment, fn: System.Boolean -> NodeRenderFragment) = render ==> html.renderFragment("CollapsedButtonRender", fn)
+    [<CustomOperation("Breakpoint")>] member _.Breakpoint (render: AttrRenderFragment, x: AntDesign.BreakpointType) = render ==> ("Breakpoint" => x)
+    [<CustomOperation("OnMenuHeaderClick")>] member _.OnMenuHeaderClick (render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs>("OnMenuHeaderClick", fn)
+    [<CustomOperation("Hide")>] member _.Hide (render: AttrRenderFragment, x: System.Boolean) = render ==> ("Hide" => x)
+    [<CustomOperation("Links")>] member _.Links (render: AttrRenderFragment, x: System.Collections.Generic.List<Microsoft.AspNetCore.Components.RenderFragment>) = render ==> ("Links" => x)
+    [<CustomOperation("OnOpenChange")>] member _.OnOpenChange (render: AttrRenderFragment, fn) = render ==> html.callback<System.String[]>("OnOpenChange", fn)
+    [<CustomOperation("Pure")>] member _.Pure (render: AttrRenderFragment, x: System.Boolean) = render ==> ("Pure" => x)
+    [<CustomOperation("Loading")>] member _.Loading (render: AttrRenderFragment, x: System.Boolean) = render ==> ("Loading" => x)
+    [<CustomOperation("DisableContentMargin")>] member _.DisableContentMargin (render: AttrRenderFragment, x: System.Boolean) = render ==> ("DisableContentMargin" => x)
+    [<CustomOperation("ContentStyle")>] member _.ContentStyle (render: AttrRenderFragment, x: System.String) = render ==> ("ContentStyle" => x)
+    [<CustomOperation("ColSize")>] member _.ColSize (render: AttrRenderFragment, x: System.String) = render ==> ("ColSize" => x)
+    [<CustomOperation("RightContentRender")>] member _.RightContentRender (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("RightContentRender", fragment)
+    [<CustomOperation("RightContentRender")>] member _.RightContentRender (render: AttrRenderFragment, fragments) = render ==> html.renderFragment("RightContentRender", fragment { yield! fragments })
+    [<CustomOperation("RightContentRender")>] member _.RightContentRender (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("RightContentRender", html.text x)
+    [<CustomOperation("RightContentRender")>] member _.RightContentRender (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("RightContentRender", html.text x)
+    [<CustomOperation("RightContentRender")>] member _.RightContentRender (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("RightContentRender", html.text x)
                 
 
 type GlobalHeaderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ProLayout.AntProComponentBaseBuilder<'FunBlazorGeneric>()
-    static member create () = GlobalHeaderBuilder<'FunBlazorGeneric>().CreateNode()
-    [<CustomOperation("PrefixCls")>] member this.PrefixCls (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "PrefixCls" => x |> this.AddAttr
-    [<CustomOperation("OnCollapse")>] member this.OnCollapse (_: FunBlazorBuilder<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<System.Boolean> "OnCollapse" (fun e -> fn e)) |> this.AddAttr
-    [<CustomOperation("CollapsedButtonRender")>] member this.CollapsedButtonRender (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "CollapsedButtonRender" (html.fragment nodes) |> this.AddAttr
-    [<CustomOperation("CollapsedButtonRender")>] member this.CollapsedButtonRender (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "CollapsedButtonRender" (html.text x) |> this.AddAttr
-    [<CustomOperation("CollapsedButtonRender")>] member this.CollapsedButtonRender (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "CollapsedButtonRender" (html.text x) |> this.AddAttr
-    [<CustomOperation("CollapsedButtonRender")>] member this.CollapsedButtonRender (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "CollapsedButtonRender" (html.text x) |> this.AddAttr
-    [<CustomOperation("Collapsed")>] member this.Collapsed (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Boolean) = "Collapsed" => x |> this.AddAttr
-    [<CustomOperation("IsMobile")>] member this.IsMobile (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Boolean) = "IsMobile" => x |> this.AddAttr
-    [<CustomOperation("Logo")>] member this.Logo (_: FunBlazorBuilder<'FunBlazorGeneric>, x: OneOf.OneOf<System.String, Microsoft.AspNetCore.Components.RenderFragment>) = "Logo" => x |> this.AddAttr
+    static member inline create () = html.fromBuilder(GlobalHeaderBuilder<'FunBlazorGeneric>())
+    [<CustomOperation("PrefixCls")>] member _.PrefixCls (render: AttrRenderFragment, x: System.String) = render ==> ("PrefixCls" => x)
+    [<CustomOperation("OnCollapse")>] member _.OnCollapse (render: AttrRenderFragment, fn) = render ==> html.callback<System.Boolean>("OnCollapse", fn)
+    [<CustomOperation("CollapsedButtonRender")>] member _.CollapsedButtonRender (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("CollapsedButtonRender", fragment)
+    [<CustomOperation("CollapsedButtonRender")>] member _.CollapsedButtonRender (render: AttrRenderFragment, fragments) = render ==> html.renderFragment("CollapsedButtonRender", fragment { yield! fragments })
+    [<CustomOperation("CollapsedButtonRender")>] member _.CollapsedButtonRender (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("CollapsedButtonRender", html.text x)
+    [<CustomOperation("CollapsedButtonRender")>] member _.CollapsedButtonRender (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("CollapsedButtonRender", html.text x)
+    [<CustomOperation("CollapsedButtonRender")>] member _.CollapsedButtonRender (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("CollapsedButtonRender", html.text x)
+    [<CustomOperation("Collapsed")>] member _.Collapsed (render: AttrRenderFragment, x: System.Boolean) = render ==> ("Collapsed" => x)
+    [<CustomOperation("IsMobile")>] member _.IsMobile (render: AttrRenderFragment, x: System.Boolean) = render ==> ("IsMobile" => x)
+    [<CustomOperation("Logo")>] member _.Logo (render: AttrRenderFragment, x: OneOf.OneOf<System.String, Microsoft.AspNetCore.Components.RenderFragment>) = render ==> ("Logo" => x)
                 
 
 type HeaderViewBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ProLayout.AntProComponentBaseBuilder<'FunBlazorGeneric>()
-    static member create () = HeaderViewBuilder<'FunBlazorGeneric>().CreateNode()
-    [<CustomOperation("Collapsed")>] member this.Collapsed (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Boolean) = "Collapsed" => x |> this.AddAttr
-    [<CustomOperation("IsMobile")>] member this.IsMobile (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Boolean) = "IsMobile" => x |> this.AddAttr
-    [<CustomOperation("Logo")>] member this.Logo (_: FunBlazorBuilder<'FunBlazorGeneric>, x: OneOf.OneOf<System.String, Microsoft.AspNetCore.Components.RenderFragment>) = "Logo" => x |> this.AddAttr
-    [<CustomOperation("HasSiderMenu")>] member this.HasSiderMenu (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Boolean) = "HasSiderMenu" => x |> this.AddAttr
-    [<CustomOperation("SiderWidth")>] member this.SiderWidth (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Int32) = "SiderWidth" => x |> this.AddAttr
-    [<CustomOperation("HeaderContentRender")>] member this.HeaderContentRender (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "HeaderContentRender" (html.fragment nodes) |> this.AddAttr
-    [<CustomOperation("HeaderContentRender")>] member this.HeaderContentRender (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "HeaderContentRender" (html.text x) |> this.AddAttr
-    [<CustomOperation("HeaderContentRender")>] member this.HeaderContentRender (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "HeaderContentRender" (html.text x) |> this.AddAttr
-    [<CustomOperation("HeaderContentRender")>] member this.HeaderContentRender (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "HeaderContentRender" (html.text x) |> this.AddAttr
-    [<CustomOperation("MenuData")>] member this.MenuData (_: FunBlazorBuilder<'FunBlazorGeneric>, x: AntDesign.ProLayout.MenuDataItem[]) = "MenuData" => x |> this.AddAttr
+    static member inline create () = html.fromBuilder(HeaderViewBuilder<'FunBlazorGeneric>())
+    [<CustomOperation("Collapsed")>] member _.Collapsed (render: AttrRenderFragment, x: System.Boolean) = render ==> ("Collapsed" => x)
+    [<CustomOperation("IsMobile")>] member _.IsMobile (render: AttrRenderFragment, x: System.Boolean) = render ==> ("IsMobile" => x)
+    [<CustomOperation("Logo")>] member _.Logo (render: AttrRenderFragment, x: OneOf.OneOf<System.String, Microsoft.AspNetCore.Components.RenderFragment>) = render ==> ("Logo" => x)
+    [<CustomOperation("HasSiderMenu")>] member _.HasSiderMenu (render: AttrRenderFragment, x: System.Boolean) = render ==> ("HasSiderMenu" => x)
+    [<CustomOperation("SiderWidth")>] member _.SiderWidth (render: AttrRenderFragment, x: System.Int32) = render ==> ("SiderWidth" => x)
+    [<CustomOperation("HeaderContentRender")>] member _.HeaderContentRender (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("HeaderContentRender", fragment)
+    [<CustomOperation("HeaderContentRender")>] member _.HeaderContentRender (render: AttrRenderFragment, fragments) = render ==> html.renderFragment("HeaderContentRender", fragment { yield! fragments })
+    [<CustomOperation("HeaderContentRender")>] member _.HeaderContentRender (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("HeaderContentRender", html.text x)
+    [<CustomOperation("HeaderContentRender")>] member _.HeaderContentRender (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("HeaderContentRender", html.text x)
+    [<CustomOperation("HeaderContentRender")>] member _.HeaderContentRender (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("HeaderContentRender", html.text x)
+    [<CustomOperation("MenuData")>] member _.MenuData (render: AttrRenderFragment, x: AntDesign.ProLayout.MenuDataItem[]) = render ==> ("MenuData" => x)
                 
 
 type BaseMenuBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ProLayout.AntProComponentBaseBuilder<'FunBlazorGeneric>()
-    static member create () = BaseMenuBuilder<'FunBlazorGeneric>().CreateNode()
-    [<CustomOperation("Collapsed")>] member this.Collapsed (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Boolean) = "Collapsed" => x |> this.AddAttr
-    [<CustomOperation("HandleOpenChange")>] member this.HandleOpenChange (_: FunBlazorBuilder<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<System.Boolean> "HandleOpenChange" (fun e -> fn e)) |> this.AddAttr
-    [<CustomOperation("IsMobile")>] member this.IsMobile (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Boolean) = "IsMobile" => x |> this.AddAttr
-    [<CustomOperation("MenuData")>] member this.MenuData (_: FunBlazorBuilder<'FunBlazorGeneric>, x: AntDesign.ProLayout.MenuDataItem[]) = "MenuData" => x |> this.AddAttr
-    [<CustomOperation("Mode")>] member this.Mode (_: FunBlazorBuilder<'FunBlazorGeneric>, x: AntDesign.MenuMode) = "Mode" => x |> this.AddAttr
-    [<CustomOperation("OnCollapse")>] member this.OnCollapse (_: FunBlazorBuilder<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<System.Boolean> "OnCollapse" (fun e -> fn e)) |> this.AddAttr
-    [<CustomOperation("OpenKeys")>] member this.OpenKeys (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String[]) = "OpenKeys" => x |> this.AddAttr
+    static member inline create () = html.fromBuilder(BaseMenuBuilder<'FunBlazorGeneric>())
+    [<CustomOperation("Collapsed")>] member _.Collapsed (render: AttrRenderFragment, x: System.Boolean) = render ==> ("Collapsed" => x)
+    [<CustomOperation("HandleOpenChange")>] member _.HandleOpenChange (render: AttrRenderFragment, fn) = render ==> html.callback<System.Boolean>("HandleOpenChange", fn)
+    [<CustomOperation("IsMobile")>] member _.IsMobile (render: AttrRenderFragment, x: System.Boolean) = render ==> ("IsMobile" => x)
+    [<CustomOperation("MenuData")>] member _.MenuData (render: AttrRenderFragment, x: AntDesign.ProLayout.MenuDataItem[]) = render ==> ("MenuData" => x)
+    [<CustomOperation("Mode")>] member _.Mode (render: AttrRenderFragment, x: AntDesign.MenuMode) = render ==> ("Mode" => x)
+    [<CustomOperation("OnCollapse")>] member _.OnCollapse (render: AttrRenderFragment, fn) = render ==> html.callback<System.Boolean>("OnCollapse", fn)
+    [<CustomOperation("OpenKeys")>] member _.OpenKeys (render: AttrRenderFragment, x: System.String[]) = render ==> ("OpenKeys" => x)
                 
 
 type SiderMenuBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ProLayout.AntProComponentBaseBuilder<'FunBlazorGeneric>()
-    static member create () = SiderMenuBuilder<'FunBlazorGeneric>().CreateNode()
-    [<CustomOperation("HandleOpenChange")>] member this.HandleOpenChange (_: FunBlazorBuilder<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<System.Boolean> "HandleOpenChange" (fun e -> fn e)) |> this.AddAttr
-    [<CustomOperation("IsMobile")>] member this.IsMobile (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Boolean) = "IsMobile" => x |> this.AddAttr
-    [<CustomOperation("MenuData")>] member this.MenuData (_: FunBlazorBuilder<'FunBlazorGeneric>, x: AntDesign.ProLayout.MenuDataItem[]) = "MenuData" => x |> this.AddAttr
-    [<CustomOperation("Mode")>] member this.Mode (_: FunBlazorBuilder<'FunBlazorGeneric>, x: AntDesign.MenuMode) = "Mode" => x |> this.AddAttr
-    [<CustomOperation("OnCollapse")>] member this.OnCollapse (_: FunBlazorBuilder<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<System.Boolean> "OnCollapse" (fun e -> fn e)) |> this.AddAttr
-    [<CustomOperation("OpenKeys")>] member this.OpenKeys (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String[]) = "OpenKeys" => x |> this.AddAttr
-    [<CustomOperation("Logo")>] member this.Logo (_: FunBlazorBuilder<'FunBlazorGeneric>, x: OneOf.OneOf<System.String, Microsoft.AspNetCore.Components.RenderFragment>) = "Logo" => x |> this.AddAttr
-    [<CustomOperation("BaseURL")>] member this.BaseURL (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "BaseURL" => x |> this.AddAttr
-    [<CustomOperation("SiderWidth")>] member this.SiderWidth (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Int32) = "SiderWidth" => x |> this.AddAttr
-    [<CustomOperation("Breakpoint")>] member this.Breakpoint (_: FunBlazorBuilder<'FunBlazorGeneric>, x: AntDesign.BreakpointType) = "Breakpoint" => x |> this.AddAttr
-    [<CustomOperation("Hide")>] member this.Hide (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Boolean) = "Hide" => x |> this.AddAttr
-    [<CustomOperation("Links")>] member this.Links (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Collections.Generic.List<Microsoft.AspNetCore.Components.RenderFragment>) = "Links" => x |> this.AddAttr
-    [<CustomOperation("OnMenuHeaderClick")>] member this.OnMenuHeaderClick (_: FunBlazorBuilder<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> "OnMenuHeaderClick" (fun e -> fn e)) |> this.AddAttr
-    [<CustomOperation("OnOpenChange")>] member this.OnOpenChange (_: FunBlazorBuilder<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<System.String[]> "OnOpenChange" (fun e -> fn e)) |> this.AddAttr
-    [<CustomOperation("SiderTheme")>] member this.SiderTheme (_: FunBlazorBuilder<'FunBlazorGeneric>, x: AntDesign.SiderTheme) = "SiderTheme" => x |> this.AddAttr
-    [<CustomOperation("CollapsedButtonRender")>] member this.CollapsedButtonRender (_: FunBlazorBuilder<'FunBlazorGeneric>, render: System.Boolean -> Bolero.Node) = Bolero.Html.attr.fragmentWith "CollapsedButtonRender" (fun x -> render x) |> this.AddAttr
+    static member inline create () = html.fromBuilder(SiderMenuBuilder<'FunBlazorGeneric>())
+    [<CustomOperation("HandleOpenChange")>] member _.HandleOpenChange (render: AttrRenderFragment, fn) = render ==> html.callback<System.Boolean>("HandleOpenChange", fn)
+    [<CustomOperation("IsMobile")>] member _.IsMobile (render: AttrRenderFragment, x: System.Boolean) = render ==> ("IsMobile" => x)
+    [<CustomOperation("MenuData")>] member _.MenuData (render: AttrRenderFragment, x: AntDesign.ProLayout.MenuDataItem[]) = render ==> ("MenuData" => x)
+    [<CustomOperation("Mode")>] member _.Mode (render: AttrRenderFragment, x: AntDesign.MenuMode) = render ==> ("Mode" => x)
+    [<CustomOperation("OnCollapse")>] member _.OnCollapse (render: AttrRenderFragment, fn) = render ==> html.callback<System.Boolean>("OnCollapse", fn)
+    [<CustomOperation("OpenKeys")>] member _.OpenKeys (render: AttrRenderFragment, x: System.String[]) = render ==> ("OpenKeys" => x)
+    [<CustomOperation("Logo")>] member _.Logo (render: AttrRenderFragment, x: OneOf.OneOf<System.String, Microsoft.AspNetCore.Components.RenderFragment>) = render ==> ("Logo" => x)
+    [<CustomOperation("BaseURL")>] member _.BaseURL (render: AttrRenderFragment, x: System.String) = render ==> ("BaseURL" => x)
+    [<CustomOperation("SiderWidth")>] member _.SiderWidth (render: AttrRenderFragment, x: System.Int32) = render ==> ("SiderWidth" => x)
+    [<CustomOperation("Breakpoint")>] member _.Breakpoint (render: AttrRenderFragment, x: AntDesign.BreakpointType) = render ==> ("Breakpoint" => x)
+    [<CustomOperation("Hide")>] member _.Hide (render: AttrRenderFragment, x: System.Boolean) = render ==> ("Hide" => x)
+    [<CustomOperation("Links")>] member _.Links (render: AttrRenderFragment, x: System.Collections.Generic.List<Microsoft.AspNetCore.Components.RenderFragment>) = render ==> ("Links" => x)
+    [<CustomOperation("OnMenuHeaderClick")>] member _.OnMenuHeaderClick (render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs>("OnMenuHeaderClick", fn)
+    [<CustomOperation("OnOpenChange")>] member _.OnOpenChange (render: AttrRenderFragment, fn) = render ==> html.callback<System.String[]>("OnOpenChange", fn)
+    [<CustomOperation("SiderTheme")>] member _.SiderTheme (render: AttrRenderFragment, x: AntDesign.SiderTheme) = render ==> ("SiderTheme" => x)
+    [<CustomOperation("CollapsedButtonRender")>] member _.CollapsedButtonRender (render: AttrRenderFragment, fn: System.Boolean -> NodeRenderFragment) = render ==> html.renderFragment("CollapsedButtonRender", fn)
                 
 
 type TopNavHeaderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ProLayout.AntProComponentBaseBuilder<'FunBlazorGeneric>()
-    static member create () = TopNavHeaderBuilder<'FunBlazorGeneric>().CreateNode()
-    [<CustomOperation("Collapsed")>] member this.Collapsed (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Boolean) = "Collapsed" => x |> this.AddAttr
-    [<CustomOperation("HandleOpenChange")>] member this.HandleOpenChange (_: FunBlazorBuilder<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<System.Boolean> "HandleOpenChange" (fun e -> fn e)) |> this.AddAttr
-    [<CustomOperation("IsMobile")>] member this.IsMobile (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Boolean) = "IsMobile" => x |> this.AddAttr
-    [<CustomOperation("MenuData")>] member this.MenuData (_: FunBlazorBuilder<'FunBlazorGeneric>, x: AntDesign.ProLayout.MenuDataItem[]) = "MenuData" => x |> this.AddAttr
-    [<CustomOperation("Mode")>] member this.Mode (_: FunBlazorBuilder<'FunBlazorGeneric>, x: AntDesign.MenuMode) = "Mode" => x |> this.AddAttr
-    [<CustomOperation("OnCollapse")>] member this.OnCollapse (_: FunBlazorBuilder<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<System.Boolean> "OnCollapse" (fun e -> fn e)) |> this.AddAttr
-    [<CustomOperation("OpenKeys")>] member this.OpenKeys (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String[]) = "OpenKeys" => x |> this.AddAttr
-    [<CustomOperation("Theme")>] member this.Theme (_: FunBlazorBuilder<'FunBlazorGeneric>, x: AntDesign.MenuTheme) = "Theme" => x |> this.AddAttr
-    [<CustomOperation("Logo")>] member this.Logo (_: FunBlazorBuilder<'FunBlazorGeneric>, x: OneOf.OneOf<System.String, Microsoft.AspNetCore.Components.RenderFragment>) = "Logo" => x |> this.AddAttr
-    [<CustomOperation("SiderWidth")>] member this.SiderWidth (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Int32) = "SiderWidth" => x |> this.AddAttr
-    [<CustomOperation("MenuExtraRender")>] member this.MenuExtraRender (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "MenuExtraRender" (html.fragment nodes) |> this.AddAttr
-    [<CustomOperation("MenuExtraRender")>] member this.MenuExtraRender (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "MenuExtraRender" (html.text x) |> this.AddAttr
-    [<CustomOperation("MenuExtraRender")>] member this.MenuExtraRender (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "MenuExtraRender" (html.text x) |> this.AddAttr
-    [<CustomOperation("MenuExtraRender")>] member this.MenuExtraRender (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "MenuExtraRender" (html.text x) |> this.AddAttr
-    [<CustomOperation("CollapsedButtonRender")>] member this.CollapsedButtonRender (_: FunBlazorBuilder<'FunBlazorGeneric>, render: System.Boolean -> Bolero.Node) = Bolero.Html.attr.fragmentWith "CollapsedButtonRender" (fun x -> render x) |> this.AddAttr
-    [<CustomOperation("Breakpoint")>] member this.Breakpoint (_: FunBlazorBuilder<'FunBlazorGeneric>, x: AntDesign.BreakpointType) = "Breakpoint" => x |> this.AddAttr
-    [<CustomOperation("OnMenuHeaderClick")>] member this.OnMenuHeaderClick (_: FunBlazorBuilder<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs> "OnMenuHeaderClick" (fun e -> fn e)) |> this.AddAttr
-    [<CustomOperation("Hide")>] member this.Hide (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Boolean) = "Hide" => x |> this.AddAttr
-    [<CustomOperation("Links")>] member this.Links (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Collections.Generic.List<Microsoft.AspNetCore.Components.RenderFragment>) = "Links" => x |> this.AddAttr
-    [<CustomOperation("OnOpenChange")>] member this.OnOpenChange (_: FunBlazorBuilder<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<System.String[]> "OnOpenChange" (fun e -> fn e)) |> this.AddAttr
+    static member inline create () = html.fromBuilder(TopNavHeaderBuilder<'FunBlazorGeneric>())
+    [<CustomOperation("Collapsed")>] member _.Collapsed (render: AttrRenderFragment, x: System.Boolean) = render ==> ("Collapsed" => x)
+    [<CustomOperation("HandleOpenChange")>] member _.HandleOpenChange (render: AttrRenderFragment, fn) = render ==> html.callback<System.Boolean>("HandleOpenChange", fn)
+    [<CustomOperation("IsMobile")>] member _.IsMobile (render: AttrRenderFragment, x: System.Boolean) = render ==> ("IsMobile" => x)
+    [<CustomOperation("MenuData")>] member _.MenuData (render: AttrRenderFragment, x: AntDesign.ProLayout.MenuDataItem[]) = render ==> ("MenuData" => x)
+    [<CustomOperation("Mode")>] member _.Mode (render: AttrRenderFragment, x: AntDesign.MenuMode) = render ==> ("Mode" => x)
+    [<CustomOperation("OnCollapse")>] member _.OnCollapse (render: AttrRenderFragment, fn) = render ==> html.callback<System.Boolean>("OnCollapse", fn)
+    [<CustomOperation("OpenKeys")>] member _.OpenKeys (render: AttrRenderFragment, x: System.String[]) = render ==> ("OpenKeys" => x)
+    [<CustomOperation("Theme")>] member _.Theme (render: AttrRenderFragment, x: AntDesign.MenuTheme) = render ==> ("Theme" => x)
+    [<CustomOperation("Logo")>] member _.Logo (render: AttrRenderFragment, x: OneOf.OneOf<System.String, Microsoft.AspNetCore.Components.RenderFragment>) = render ==> ("Logo" => x)
+    [<CustomOperation("SiderWidth")>] member _.SiderWidth (render: AttrRenderFragment, x: System.Int32) = render ==> ("SiderWidth" => x)
+    [<CustomOperation("MenuExtraRender")>] member _.MenuExtraRender (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("MenuExtraRender", fragment)
+    [<CustomOperation("MenuExtraRender")>] member _.MenuExtraRender (render: AttrRenderFragment, fragments) = render ==> html.renderFragment("MenuExtraRender", fragment { yield! fragments })
+    [<CustomOperation("MenuExtraRender")>] member _.MenuExtraRender (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("MenuExtraRender", html.text x)
+    [<CustomOperation("MenuExtraRender")>] member _.MenuExtraRender (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("MenuExtraRender", html.text x)
+    [<CustomOperation("MenuExtraRender")>] member _.MenuExtraRender (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("MenuExtraRender", html.text x)
+    [<CustomOperation("CollapsedButtonRender")>] member _.CollapsedButtonRender (render: AttrRenderFragment, fn: System.Boolean -> NodeRenderFragment) = render ==> html.renderFragment("CollapsedButtonRender", fn)
+    [<CustomOperation("Breakpoint")>] member _.Breakpoint (render: AttrRenderFragment, x: AntDesign.BreakpointType) = render ==> ("Breakpoint" => x)
+    [<CustomOperation("OnMenuHeaderClick")>] member _.OnMenuHeaderClick (render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs>("OnMenuHeaderClick", fn)
+    [<CustomOperation("Hide")>] member _.Hide (render: AttrRenderFragment, x: System.Boolean) = render ==> ("Hide" => x)
+    [<CustomOperation("Links")>] member _.Links (render: AttrRenderFragment, x: System.Collections.Generic.List<Microsoft.AspNetCore.Components.RenderFragment>) = render ==> ("Links" => x)
+    [<CustomOperation("OnOpenChange")>] member _.OnOpenChange (render: AttrRenderFragment, fn) = render ==> html.callback<System.String[]>("OnOpenChange", fn)
                 
 
 type FooterViewBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ProLayout.AntProComponentBaseBuilder<'FunBlazorGeneric>()
-    static member create () = FooterViewBuilder<'FunBlazorGeneric>().CreateNode()
-    [<CustomOperation("Copyright")>] member this.Copyright (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "Copyright" => x |> this.AddAttr
-    [<CustomOperation("Links")>] member this.Links (_: FunBlazorBuilder<'FunBlazorGeneric>, x: AntDesign.ProLayout.LinkItem[]) = "Links" => x |> this.AddAttr
+    static member inline create () = html.fromBuilder(FooterViewBuilder<'FunBlazorGeneric>())
+    [<CustomOperation("Copyright")>] member _.Copyright (render: AttrRenderFragment, x: System.String) = render ==> ("Copyright" => x)
+    [<CustomOperation("Links")>] member _.Links (render: AttrRenderFragment, x: AntDesign.ProLayout.LinkItem[]) = render ==> ("Links" => x)
                 
 
 type SiderMenuWrapperBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ProLayout.AntProComponentBaseBuilder<'FunBlazorGeneric>()
-    static member create () = SiderMenuWrapperBuilder<'FunBlazorGeneric>().CreateNode()
+    static member inline create () = html.fromBuilder(SiderMenuWrapperBuilder<'FunBlazorGeneric>())
 
                 
 
 type GlobalFooterBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit AntDomComponentBaseBuilder<'FunBlazorGeneric>()
-    static member create () = GlobalFooterBuilder<'FunBlazorGeneric>().CreateNode()
-    [<CustomOperation("Copyright")>] member this.Copyright (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "Copyright" (html.fragment nodes) |> this.AddAttr
-    [<CustomOperation("Copyright")>] member this.Copyright (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "Copyright" (html.text x) |> this.AddAttr
-    [<CustomOperation("Copyright")>] member this.Copyright (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "Copyright" (html.text x) |> this.AddAttr
-    [<CustomOperation("Copyright")>] member this.Copyright (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "Copyright" (html.text x) |> this.AddAttr
-    [<CustomOperation("Links")>] member this.Links (_: FunBlazorBuilder<'FunBlazorGeneric>, x: AntDesign.ProLayout.LinkItem[]) = "Links" => x |> this.AddAttr
+    static member inline create () = html.fromBuilder(GlobalFooterBuilder<'FunBlazorGeneric>())
+    [<CustomOperation("Copyright")>] member _.Copyright (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("Copyright", fragment)
+    [<CustomOperation("Copyright")>] member _.Copyright (render: AttrRenderFragment, fragments) = render ==> html.renderFragment("Copyright", fragment { yield! fragments })
+    [<CustomOperation("Copyright")>] member _.Copyright (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("Copyright", html.text x)
+    [<CustomOperation("Copyright")>] member _.Copyright (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("Copyright", html.text x)
+    [<CustomOperation("Copyright")>] member _.Copyright (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("Copyright", html.text x)
+    [<CustomOperation("Links")>] member _.Links (render: AttrRenderFragment, x: AntDesign.ProLayout.LinkItem[]) = render ==> ("Links" => x)
                 
 
 type GridContentBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit AntDomComponentBaseBuilder<'FunBlazorGeneric>()
-    new (x: string) as this = GridContentBuilder<'FunBlazorGeneric>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.text) |> this.AddAttr |> ignore
-    new (x: Bolero.Node list) as this = GridContentBuilder<'FunBlazorGeneric>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.fragment) |> this.AddAttr |> ignore
-    static member create (x: string) = GridContentBuilder<'FunBlazorGeneric>(x).CreateNode()
-    static member create (x: Bolero.Node list) = GridContentBuilder<'FunBlazorGeneric>(x).CreateNode()
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (html.fragment nodes) |> this.AddAttr
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> this.AddAttr
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> this.AddAttr
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> this.AddAttr
-    [<CustomOperation("ContentWidth")>] member this.ContentWidth (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "ContentWidth" => x |> this.AddAttr
+    static member inline create (x: string) = GridContentBuilder<'FunBlazorGeneric>(){ x }
+    static member inline create (x: NodeRenderFragment seq) = GridContentBuilder<'FunBlazorGeneric>(){ yield! x }
+    [<CustomOperation("childContent")>] member _.childContent (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("ChildContent", fragment)
+    [<CustomOperation("childContent")>] member _.childContent (render: AttrRenderFragment, fragments) = render ==> html.renderFragment("ChildContent", fragment { yield! fragments })
+    [<CustomOperation("childContent")>] member _.childContent (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("ChildContent", html.text x)
+    [<CustomOperation("childContent")>] member _.childContent (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("ChildContent", html.text x)
+    [<CustomOperation("childContent")>] member _.childContent (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("ChildContent", html.text x)
+    [<CustomOperation("ContentWidth")>] member _.ContentWidth (render: AttrRenderFragment, x: System.String) = render ==> ("ContentWidth" => x)
                 
 
 type HeaderSearchBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit AntDomComponentBaseBuilder<'FunBlazorGeneric>()
-    static member create () = HeaderSearchBuilder<'FunBlazorGeneric>().CreateNode()
-    [<CustomOperation("DefaultValue")>] member this.DefaultValue (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "DefaultValue" => x |> this.AddAttr
-    [<CustomOperation("Placeholder")>] member this.Placeholder (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "Placeholder" => x |> this.AddAttr
-    [<CustomOperation("OnVisibleChange")>] member this.OnVisibleChange (_: FunBlazorBuilder<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<System.Boolean> "OnVisibleChange" (fun e -> fn e)) |> this.AddAttr
-    [<CustomOperation("Options")>] member this.Options (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Collections.Generic.List<AntDesign.AutoCompleteDataItem<System.String>>) = "Options" => x |> this.AddAttr
+    static member inline create () = html.fromBuilder(HeaderSearchBuilder<'FunBlazorGeneric>())
+    [<CustomOperation("DefaultValue")>] member _.DefaultValue (render: AttrRenderFragment, x: System.String) = render ==> ("DefaultValue" => x)
+    [<CustomOperation("Placeholder")>] member _.Placeholder (render: AttrRenderFragment, x: System.String) = render ==> ("Placeholder" => x)
+    [<CustomOperation("OnVisibleChange")>] member _.OnVisibleChange (render: AttrRenderFragment, fn) = render ==> html.callback<System.Boolean>("OnVisibleChange", fn)
+    [<CustomOperation("Options")>] member _.Options (render: AttrRenderFragment, x: System.Collections.Generic.List<AntDesign.AutoCompleteDataItem<System.String>>) = render ==> ("Options" => x)
                 
 
 type NoticeIconBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit AntDomComponentBaseBuilder<'FunBlazorGeneric>()
-    new (x: string) as this = NoticeIconBuilder<'FunBlazorGeneric>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.text) |> this.AddAttr |> ignore
-    new (x: Bolero.Node list) as this = NoticeIconBuilder<'FunBlazorGeneric>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.fragment) |> this.AddAttr |> ignore
-    static member create (x: string) = NoticeIconBuilder<'FunBlazorGeneric>(x).CreateNode()
-    static member create (x: Bolero.Node list) = NoticeIconBuilder<'FunBlazorGeneric>(x).CreateNode()
-    [<CustomOperation("Visible")>] member this.Visible (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Boolean) = "Visible" => x |> this.AddAttr
-    [<CustomOperation("Count")>] member this.Count (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Int32) = "Count" => x |> this.AddAttr
-    [<CustomOperation("ClearText")>] member this.ClearText (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "ClearText" => x |> this.AddAttr
-    [<CustomOperation("ViewMoreText")>] member this.ViewMoreText (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "ViewMoreText" => x |> this.AddAttr
-    [<CustomOperation("OnClear")>] member this.OnClear (_: FunBlazorBuilder<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<System.String> "OnClear" (fun e -> fn e)) |> this.AddAttr
-    [<CustomOperation("OnViewMore")>] member this.OnViewMore (_: FunBlazorBuilder<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<System.String> "OnViewMore" (fun e -> fn e)) |> this.AddAttr
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (html.fragment nodes) |> this.AddAttr
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> this.AddAttr
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> this.AddAttr
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> this.AddAttr
+    static member inline create (x: string) = NoticeIconBuilder<'FunBlazorGeneric>(){ x }
+    static member inline create (x: NodeRenderFragment seq) = NoticeIconBuilder<'FunBlazorGeneric>(){ yield! x }
+    [<CustomOperation("Visible")>] member _.Visible (render: AttrRenderFragment, x: System.Boolean) = render ==> ("Visible" => x)
+    [<CustomOperation("Count")>] member _.Count (render: AttrRenderFragment, x: System.Int32) = render ==> ("Count" => x)
+    [<CustomOperation("ClearText")>] member _.ClearText (render: AttrRenderFragment, x: System.String) = render ==> ("ClearText" => x)
+    [<CustomOperation("ViewMoreText")>] member _.ViewMoreText (render: AttrRenderFragment, x: System.String) = render ==> ("ViewMoreText" => x)
+    [<CustomOperation("OnClear")>] member _.OnClear (render: AttrRenderFragment, fn) = render ==> html.callback<System.String>("OnClear", fn)
+    [<CustomOperation("OnViewMore")>] member _.OnViewMore (render: AttrRenderFragment, fn) = render ==> html.callback<System.String>("OnViewMore", fn)
+    [<CustomOperation("childContent")>] member _.childContent (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("ChildContent", fragment)
+    [<CustomOperation("childContent")>] member _.childContent (render: AttrRenderFragment, fragments) = render ==> html.renderFragment("ChildContent", fragment { yield! fragments })
+    [<CustomOperation("childContent")>] member _.childContent (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("ChildContent", html.text x)
+    [<CustomOperation("childContent")>] member _.childContent (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("ChildContent", html.text x)
+    [<CustomOperation("childContent")>] member _.childContent (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("ChildContent", html.text x)
                 
 
 type NoticeListBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit AntDomComponentBaseBuilder<'FunBlazorGeneric>()
-    static member create () = NoticeListBuilder<'FunBlazorGeneric>().CreateNode()
-    [<CustomOperation("TabKey")>] member this.TabKey (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "TabKey" => x |> this.AddAttr
-    [<CustomOperation("EmptyText")>] member this.EmptyText (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "EmptyText" => x |> this.AddAttr
-    [<CustomOperation("Data")>] member this.Data (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Collections.Generic.ICollection<AntDesign.ProLayout.NoticeIconData>) = "Data" => x |> this.AddAttr
-    [<CustomOperation("ShowClear")>] member this.ShowClear (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Boolean) = "ShowClear" => x |> this.AddAttr
-    [<CustomOperation("ShowViewMore")>] member this.ShowViewMore (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Boolean) = "ShowViewMore" => x |> this.AddAttr
-    [<CustomOperation("OnClear")>] member this.OnClear (_: FunBlazorBuilder<'FunBlazorGeneric>, fn) = attr.callbackOfUnit("OnClear", fn) |> this.AddAttr
-    [<CustomOperation("OnViewMore")>] member this.OnViewMore (_: FunBlazorBuilder<'FunBlazorGeneric>, fn) = attr.callbackOfUnit("OnViewMore", fn) |> this.AddAttr
-    [<CustomOperation("OnItemClick")>] member this.OnItemClick (_: FunBlazorBuilder<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<System.String> "OnItemClick" (fun e -> fn e)) |> this.AddAttr
-    [<CustomOperation("Title")>] member this.Title (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "Title" => x |> this.AddAttr
-    [<CustomOperation("ClearText")>] member this.ClearText (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "ClearText" => x |> this.AddAttr
-    [<CustomOperation("ViewMoreText")>] member this.ViewMoreText (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "ViewMoreText" => x |> this.AddAttr
+    static member inline create () = html.fromBuilder(NoticeListBuilder<'FunBlazorGeneric>())
+    [<CustomOperation("TabKey")>] member _.TabKey (render: AttrRenderFragment, x: System.String) = render ==> ("TabKey" => x)
+    [<CustomOperation("EmptyText")>] member _.EmptyText (render: AttrRenderFragment, x: System.String) = render ==> ("EmptyText" => x)
+    [<CustomOperation("Data")>] member _.Data (render: AttrRenderFragment, x: System.Collections.Generic.ICollection<AntDesign.ProLayout.NoticeIconData>) = render ==> ("Data" => x)
+    [<CustomOperation("ShowClear")>] member _.ShowClear (render: AttrRenderFragment, x: System.Boolean) = render ==> ("ShowClear" => x)
+    [<CustomOperation("ShowViewMore")>] member _.ShowViewMore (render: AttrRenderFragment, x: System.Boolean) = render ==> ("ShowViewMore" => x)
+    [<CustomOperation("OnClear")>] member _.OnClear (render: AttrRenderFragment, fn) = render ==> html.callback<unit>("OnClear", fn)
+    [<CustomOperation("OnViewMore")>] member _.OnViewMore (render: AttrRenderFragment, fn) = render ==> html.callback<unit>("OnViewMore", fn)
+    [<CustomOperation("OnItemClick")>] member _.OnItemClick (render: AttrRenderFragment, fn) = render ==> html.callback<System.String>("OnItemClick", fn)
+    [<CustomOperation("Title")>] member _.Title (render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
+    [<CustomOperation("ClearText")>] member _.ClearText (render: AttrRenderFragment, x: System.String) = render ==> ("ClearText" => x)
+    [<CustomOperation("ViewMoreText")>] member _.ViewMoreText (render: AttrRenderFragment, x: System.String) = render ==> ("ViewMoreText" => x)
                 
 
 type PageContainerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit AntDomComponentBaseBuilder<'FunBlazorGeneric>()
-    new (x: string) as this = PageContainerBuilder<'FunBlazorGeneric>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.text) |> this.AddAttr |> ignore
-    new (x: Bolero.Node list) as this = PageContainerBuilder<'FunBlazorGeneric>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.fragment) |> this.AddAttr |> ignore
-    static member create (x: string) = PageContainerBuilder<'FunBlazorGeneric>(x).CreateNode()
-    static member create (x: Bolero.Node list) = PageContainerBuilder<'FunBlazorGeneric>(x).CreateNode()
-    [<CustomOperation("Extra")>] member this.Extra (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "Extra" (html.fragment nodes) |> this.AddAttr
-    [<CustomOperation("Extra")>] member this.Extra (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "Extra" (html.text x) |> this.AddAttr
-    [<CustomOperation("Extra")>] member this.Extra (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "Extra" (html.text x) |> this.AddAttr
-    [<CustomOperation("Extra")>] member this.Extra (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "Extra" (html.text x) |> this.AddAttr
-    [<CustomOperation("ExtraContent")>] member this.ExtraContent (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ExtraContent" (html.fragment nodes) |> this.AddAttr
-    [<CustomOperation("ExtraContent")>] member this.ExtraContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ExtraContent" (html.text x) |> this.AddAttr
-    [<CustomOperation("ExtraContent")>] member this.ExtraContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ExtraContent" (html.text x) |> this.AddAttr
-    [<CustomOperation("ExtraContent")>] member this.ExtraContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ExtraContent" (html.text x) |> this.AddAttr
-    [<CustomOperation("Content")>] member this.Content (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "Content" (html.fragment nodes) |> this.AddAttr
-    [<CustomOperation("Content")>] member this.Content (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "Content" (html.text x) |> this.AddAttr
-    [<CustomOperation("Content")>] member this.Content (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "Content" (html.text x) |> this.AddAttr
-    [<CustomOperation("Content")>] member this.Content (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "Content" (html.text x) |> this.AddAttr
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (html.fragment nodes) |> this.AddAttr
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> this.AddAttr
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> this.AddAttr
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> this.AddAttr
-    [<CustomOperation("Title")>] member this.Title (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "Title" => x |> this.AddAttr
-    [<CustomOperation("Breadcrumb")>] member this.Breadcrumb (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "Breadcrumb" (html.fragment nodes) |> this.AddAttr
-    [<CustomOperation("Breadcrumb")>] member this.Breadcrumb (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "Breadcrumb" (html.text x) |> this.AddAttr
-    [<CustomOperation("Breadcrumb")>] member this.Breadcrumb (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "Breadcrumb" (html.text x) |> this.AddAttr
-    [<CustomOperation("Breadcrumb")>] member this.Breadcrumb (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "Breadcrumb" (html.text x) |> this.AddAttr
-    [<CustomOperation("TabList")>] member this.TabList (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Collections.Generic.IList<AntDesign.ProLayout.TabPaneItem>) = "TabList" => x |> this.AddAttr
-    [<CustomOperation("TabActiveKey")>] member this.TabActiveKey (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "TabActiveKey" => x |> this.AddAttr
-    [<CustomOperation("OnTabChange")>] member this.OnTabChange (_: FunBlazorBuilder<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<System.String> "OnTabChange" (fun e -> fn e)) |> this.AddAttr
+    static member inline create (x: string) = PageContainerBuilder<'FunBlazorGeneric>(){ x }
+    static member inline create (x: NodeRenderFragment seq) = PageContainerBuilder<'FunBlazorGeneric>(){ yield! x }
+    [<CustomOperation("Extra")>] member _.Extra (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("Extra", fragment)
+    [<CustomOperation("Extra")>] member _.Extra (render: AttrRenderFragment, fragments) = render ==> html.renderFragment("Extra", fragment { yield! fragments })
+    [<CustomOperation("Extra")>] member _.Extra (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("Extra", html.text x)
+    [<CustomOperation("Extra")>] member _.Extra (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("Extra", html.text x)
+    [<CustomOperation("Extra")>] member _.Extra (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("Extra", html.text x)
+    [<CustomOperation("ExtraContent")>] member _.ExtraContent (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("ExtraContent", fragment)
+    [<CustomOperation("ExtraContent")>] member _.ExtraContent (render: AttrRenderFragment, fragments) = render ==> html.renderFragment("ExtraContent", fragment { yield! fragments })
+    [<CustomOperation("ExtraContent")>] member _.ExtraContent (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("ExtraContent", html.text x)
+    [<CustomOperation("ExtraContent")>] member _.ExtraContent (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("ExtraContent", html.text x)
+    [<CustomOperation("ExtraContent")>] member _.ExtraContent (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("ExtraContent", html.text x)
+    [<CustomOperation("Content")>] member _.Content (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("Content", fragment)
+    [<CustomOperation("Content")>] member _.Content (render: AttrRenderFragment, fragments) = render ==> html.renderFragment("Content", fragment { yield! fragments })
+    [<CustomOperation("Content")>] member _.Content (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("Content", html.text x)
+    [<CustomOperation("Content")>] member _.Content (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("Content", html.text x)
+    [<CustomOperation("Content")>] member _.Content (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("Content", html.text x)
+    [<CustomOperation("childContent")>] member _.childContent (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("ChildContent", fragment)
+    [<CustomOperation("childContent")>] member _.childContent (render: AttrRenderFragment, fragments) = render ==> html.renderFragment("ChildContent", fragment { yield! fragments })
+    [<CustomOperation("childContent")>] member _.childContent (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("ChildContent", html.text x)
+    [<CustomOperation("childContent")>] member _.childContent (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("ChildContent", html.text x)
+    [<CustomOperation("childContent")>] member _.childContent (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("ChildContent", html.text x)
+    [<CustomOperation("Title")>] member _.Title (render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
+    [<CustomOperation("Breadcrumb")>] member _.Breadcrumb (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("Breadcrumb", fragment)
+    [<CustomOperation("Breadcrumb")>] member _.Breadcrumb (render: AttrRenderFragment, fragments) = render ==> html.renderFragment("Breadcrumb", fragment { yield! fragments })
+    [<CustomOperation("Breadcrumb")>] member _.Breadcrumb (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("Breadcrumb", html.text x)
+    [<CustomOperation("Breadcrumb")>] member _.Breadcrumb (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("Breadcrumb", html.text x)
+    [<CustomOperation("Breadcrumb")>] member _.Breadcrumb (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("Breadcrumb", html.text x)
+    [<CustomOperation("TabList")>] member _.TabList (render: AttrRenderFragment, x: System.Collections.Generic.IList<AntDesign.ProLayout.TabPaneItem>) = render ==> ("TabList" => x)
+    [<CustomOperation("TabActiveKey")>] member _.TabActiveKey (render: AttrRenderFragment, x: System.String) = render ==> ("TabActiveKey" => x)
+    [<CustomOperation("OnTabChange")>] member _.OnTabChange (render: AttrRenderFragment, fn) = render ==> html.callback<System.String>("OnTabChange", fn)
                 
 
 type AvatarDropdownBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit AntDomComponentBaseBuilder<'FunBlazorGeneric>()
-    static member create () = AvatarDropdownBuilder<'FunBlazorGeneric>().CreateNode()
-    [<CustomOperation("Avatar")>] member this.Avatar (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "Avatar" => x |> this.AddAttr
-    [<CustomOperation("Name")>] member this.Name (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "Name" => x |> this.AddAttr
-    [<CustomOperation("OnItemSelected")>] member this.OnItemSelected (_: FunBlazorBuilder<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<AntDesign.MenuItem> "OnItemSelected" (fun e -> fn e)) |> this.AddAttr
-    [<CustomOperation("MenuItems")>] member this.MenuItems (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Collections.Generic.IEnumerable<AntDesign.ProLayout.AvatarMenuItem>) = "MenuItems" => x |> this.AddAttr
+    static member inline create () = html.fromBuilder(AvatarDropdownBuilder<'FunBlazorGeneric>())
+    [<CustomOperation("Avatar")>] member _.Avatar (render: AttrRenderFragment, x: System.String) = render ==> ("Avatar" => x)
+    [<CustomOperation("Name")>] member _.Name (render: AttrRenderFragment, x: System.String) = render ==> ("Name" => x)
+    [<CustomOperation("OnItemSelected")>] member _.OnItemSelected (render: AttrRenderFragment, fn) = render ==> html.callback<AntDesign.MenuItem>("OnItemSelected", fn)
+    [<CustomOperation("MenuItems")>] member _.MenuItems (render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<AntDesign.ProLayout.AvatarMenuItem>) = render ==> ("MenuItems" => x)
                 
 
 type SelectLangBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit AntDomComponentBaseBuilder<'FunBlazorGeneric>()
-    static member create () = SelectLangBuilder<'FunBlazorGeneric>().CreateNode()
-    [<CustomOperation("Locales")>] member this.Locales (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String[]) = "Locales" => x |> this.AddAttr
-    [<CustomOperation("SelectedLocale")>] member this.SelectedLocale (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "SelectedLocale" => x |> this.AddAttr
-    [<CustomOperation("LanguageLabels")>] member this.LanguageLabels (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Collections.Generic.IDictionary<System.String, System.String>) = "LanguageLabels" => x |> this.AddAttr
-    [<CustomOperation("LanguageIcons")>] member this.LanguageIcons (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Collections.Generic.IDictionary<System.String, System.String>) = "LanguageIcons" => x |> this.AddAttr
-    [<CustomOperation("OnItemSelected")>] member this.OnItemSelected (_: FunBlazorBuilder<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<AntDesign.MenuItem> "OnItemSelected" (fun e -> fn e)) |> this.AddAttr
+    static member inline create () = html.fromBuilder(SelectLangBuilder<'FunBlazorGeneric>())
+    [<CustomOperation("Locales")>] member _.Locales (render: AttrRenderFragment, x: System.String[]) = render ==> ("Locales" => x)
+    [<CustomOperation("SelectedLocale")>] member _.SelectedLocale (render: AttrRenderFragment, x: System.String) = render ==> ("SelectedLocale" => x)
+    [<CustomOperation("LanguageLabels")>] member _.LanguageLabels (render: AttrRenderFragment, x: System.Collections.Generic.IDictionary<System.String, System.String>) = render ==> ("LanguageLabels" => x)
+    [<CustomOperation("LanguageIcons")>] member _.LanguageIcons (render: AttrRenderFragment, x: System.Collections.Generic.IDictionary<System.String, System.String>) = render ==> ("LanguageIcons" => x)
+    [<CustomOperation("OnItemSelected")>] member _.OnItemSelected (render: AttrRenderFragment, fn) = render ==> html.callback<AntDesign.MenuItem>("OnItemSelected", fn)
                 
 
 type BlockCheckboxBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit AntDomComponentBaseBuilder<'FunBlazorGeneric>()
-    static member create () = BlockCheckboxBuilder<'FunBlazorGeneric>().CreateNode()
-    [<CustomOperation("PrefixCls")>] member this.PrefixCls (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "PrefixCls" => x |> this.AddAttr
-    [<CustomOperation("List")>] member this.List (_: FunBlazorBuilder<'FunBlazorGeneric>, x: AntDesign.ProLayout.CheckboxItem[]) = "List" => x |> this.AddAttr
-    [<CustomOperation("ValueChanged")>] member this.ValueChanged (_: FunBlazorBuilder<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<System.String> "ValueChanged" (fun e -> fn e)) |> this.AddAttr
-    [<CustomOperation("OnChange")>] member this.OnChange (_: FunBlazorBuilder<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<System.String> "OnChange" (fun e -> fn e)) |> this.AddAttr
-    [<CustomOperation("Value")>] member this.Value (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "Value" => x |> this.AddAttr
-    [<CustomOperation("Value'")>] member this.Value' (_: FunBlazorBuilder<'FunBlazorGeneric>, value: IStore<System.String>) = this.AddBinding("Value", value)
-    [<CustomOperation("Value'")>] member this.Value' (_: FunBlazorBuilder<'FunBlazorGeneric>, value: cval<System.String>) = this.AddBinding("Value", value)
-    [<CustomOperation("Value'")>] member this.Value' (_: FunBlazorBuilder<'FunBlazorGeneric>, valueFn: System.String * (System.String -> unit)) = this.AddBinding("Value", valueFn)
+    static member inline create () = html.fromBuilder(BlockCheckboxBuilder<'FunBlazorGeneric>())
+    [<CustomOperation("PrefixCls")>] member _.PrefixCls (render: AttrRenderFragment, x: System.String) = render ==> ("PrefixCls" => x)
+    [<CustomOperation("List")>] member _.List (render: AttrRenderFragment, x: AntDesign.ProLayout.CheckboxItem[]) = render ==> ("List" => x)
+    [<CustomOperation("ValueChanged")>] member _.ValueChanged (render: AttrRenderFragment, fn) = render ==> html.callback<System.String>("ValueChanged", fn)
+    [<CustomOperation("OnChange")>] member _.OnChange (render: AttrRenderFragment, fn) = render ==> html.callback<System.String>("OnChange", fn)
+    [<CustomOperation("Value")>] member _.Value (render: AttrRenderFragment, x: System.String) = render ==> ("Value" => x)
+    [<CustomOperation("Value'")>] member _.Value' (render: AttrRenderFragment, value: IStore<System.String>) = render ==> html.bind("Value", value)
+    [<CustomOperation("Value'")>] member _.Value' (render: AttrRenderFragment, value: cval<System.String>) = render ==> html.bind("Value", value)
+    [<CustomOperation("Value'")>] member _.Value' (render: AttrRenderFragment, valueFn: System.String * (System.String -> unit)) = render ==> html.bind("Value", valueFn)
                 
 
 type LayoutSettingBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit AntDomComponentBaseBuilder<'FunBlazorGeneric>()
-    static member create () = LayoutSettingBuilder<'FunBlazorGeneric>().CreateNode()
+    static member inline create () = html.fromBuilder(LayoutSettingBuilder<'FunBlazorGeneric>())
 
                 
 
 type SettingDrawerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit AntDomComponentBaseBuilder<'FunBlazorGeneric>()
-    static member create () = SettingDrawerBuilder<'FunBlazorGeneric>().CreateNode()
-    [<CustomOperation("HideHintAlert")>] member this.HideHintAlert (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Boolean) = "HideHintAlert" => x |> this.AddAttr
-    [<CustomOperation("HideCopyButton")>] member this.HideCopyButton (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Boolean) = "HideCopyButton" => x |> this.AddAttr
+    static member inline create () = html.fromBuilder(SettingDrawerBuilder<'FunBlazorGeneric>())
+    [<CustomOperation("HideHintAlert")>] member _.HideHintAlert (render: AttrRenderFragment, x: System.Boolean) = render ==> ("HideHintAlert" => x)
+    [<CustomOperation("HideCopyButton")>] member _.HideCopyButton (render: AttrRenderFragment, x: System.Boolean) = render ==> ("HideCopyButton" => x)
                 
 
 type ThemeColorBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit AntDomComponentBaseBuilder<'FunBlazorGeneric>()
-    static member create () = ThemeColorBuilder<'FunBlazorGeneric>().CreateNode()
-    [<CustomOperation("Colors")>] member this.Colors (_: FunBlazorBuilder<'FunBlazorGeneric>, x: AntDesign.ProLayout.ColorItem[]) = "Colors" => x |> this.AddAttr
-    [<CustomOperation("Title")>] member this.Title (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "Title" => x |> this.AddAttr
-    [<CustomOperation("ValueChanged")>] member this.ValueChanged (_: FunBlazorBuilder<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<System.String> "ValueChanged" (fun e -> fn e)) |> this.AddAttr
-    [<CustomOperation("OnChange")>] member this.OnChange (_: FunBlazorBuilder<'FunBlazorGeneric>, fn) = (Bolero.Html.attr.callback<System.String> "OnChange" (fun e -> fn e)) |> this.AddAttr
-    [<CustomOperation("Value")>] member this.Value (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "Value" => x |> this.AddAttr
-    [<CustomOperation("Value'")>] member this.Value' (_: FunBlazorBuilder<'FunBlazorGeneric>, value: IStore<System.String>) = this.AddBinding("Value", value)
-    [<CustomOperation("Value'")>] member this.Value' (_: FunBlazorBuilder<'FunBlazorGeneric>, value: cval<System.String>) = this.AddBinding("Value", value)
-    [<CustomOperation("Value'")>] member this.Value' (_: FunBlazorBuilder<'FunBlazorGeneric>, valueFn: System.String * (System.String -> unit)) = this.AddBinding("Value", valueFn)
+    static member inline create () = html.fromBuilder(ThemeColorBuilder<'FunBlazorGeneric>())
+    [<CustomOperation("Colors")>] member _.Colors (render: AttrRenderFragment, x: AntDesign.ProLayout.ColorItem[]) = render ==> ("Colors" => x)
+    [<CustomOperation("Title")>] member _.Title (render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
+    [<CustomOperation("ValueChanged")>] member _.ValueChanged (render: AttrRenderFragment, fn) = render ==> html.callback<System.String>("ValueChanged", fn)
+    [<CustomOperation("OnChange")>] member _.OnChange (render: AttrRenderFragment, fn) = render ==> html.callback<System.String>("OnChange", fn)
+    [<CustomOperation("Value")>] member _.Value (render: AttrRenderFragment, x: System.String) = render ==> ("Value" => x)
+    [<CustomOperation("Value'")>] member _.Value' (render: AttrRenderFragment, value: IStore<System.String>) = render ==> html.bind("Value", value)
+    [<CustomOperation("Value'")>] member _.Value' (render: AttrRenderFragment, value: cval<System.String>) = render ==> html.bind("Value", value)
+    [<CustomOperation("Value'")>] member _.Value' (render: AttrRenderFragment, valueFn: System.String * (System.String -> unit)) = render ==> html.bind("Value", valueFn)
                 
 
 type WrapContentBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit AntDomComponentBaseBuilder<'FunBlazorGeneric>()
-    new (x: string) as this = WrapContentBuilder<'FunBlazorGeneric>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.text) |> this.AddAttr |> ignore
-    new (x: Bolero.Node list) as this = WrapContentBuilder<'FunBlazorGeneric>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.fragment) |> this.AddAttr |> ignore
-    static member create (x: string) = WrapContentBuilder<'FunBlazorGeneric>(x).CreateNode()
-    static member create (x: Bolero.Node list) = WrapContentBuilder<'FunBlazorGeneric>(x).CreateNode()
-    [<CustomOperation("PrefixCls")>] member this.PrefixCls (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "PrefixCls" => x |> this.AddAttr
-    [<CustomOperation("IsChildrenLayout")>] member this.IsChildrenLayout (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Boolean) = "IsChildrenLayout" => x |> this.AddAttr
-    [<CustomOperation("ContentHeight")>] member this.ContentHeight (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.Int32) = "ContentHeight" => x |> this.AddAttr
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (html.fragment nodes) |> this.AddAttr
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> this.AddAttr
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> this.AddAttr
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> this.AddAttr
+    static member inline create (x: string) = WrapContentBuilder<'FunBlazorGeneric>(){ x }
+    static member inline create (x: NodeRenderFragment seq) = WrapContentBuilder<'FunBlazorGeneric>(){ yield! x }
+    [<CustomOperation("PrefixCls")>] member _.PrefixCls (render: AttrRenderFragment, x: System.String) = render ==> ("PrefixCls" => x)
+    [<CustomOperation("IsChildrenLayout")>] member _.IsChildrenLayout (render: AttrRenderFragment, x: System.Boolean) = render ==> ("IsChildrenLayout" => x)
+    [<CustomOperation("ContentHeight")>] member _.ContentHeight (render: AttrRenderFragment, x: System.Int32) = render ==> ("ContentHeight" => x)
+    [<CustomOperation("childContent")>] member _.childContent (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("ChildContent", fragment)
+    [<CustomOperation("childContent")>] member _.childContent (render: AttrRenderFragment, fragments) = render ==> html.renderFragment("ChildContent", fragment { yield! fragments })
+    [<CustomOperation("childContent")>] member _.childContent (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("ChildContent", html.text x)
+    [<CustomOperation("childContent")>] member _.childContent (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("ChildContent", html.text x)
+    [<CustomOperation("childContent")>] member _.childContent (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("ChildContent", html.text x)
                 
 
 type PageLoadingBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit AntDomComponentBaseBuilder<'FunBlazorGeneric>()
-    static member create () = PageLoadingBuilder<'FunBlazorGeneric>().CreateNode()
+    static member inline create () = html.fromBuilder(PageLoadingBuilder<'FunBlazorGeneric>())
 
                 
 
 type BodyBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit AntDomComponentBaseBuilder<'FunBlazorGeneric>()
-    new (x: string) as this = BodyBuilder<'FunBlazorGeneric>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.text) |> this.AddAttr |> ignore
-    new (x: Bolero.Node list) as this = BodyBuilder<'FunBlazorGeneric>() then Bolero.Html.attr.fragment "ChildContent" (x |> html.fragment) |> this.AddAttr |> ignore
-    static member create (x: string) = BodyBuilder<'FunBlazorGeneric>(x).CreateNode()
-    static member create (x: Bolero.Node list) = BodyBuilder<'FunBlazorGeneric>(x).CreateNode()
-    [<CustomOperation("PrefixCls")>] member this.PrefixCls (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "PrefixCls" => x |> this.AddAttr
-    [<CustomOperation("Title")>] member this.Title (_: FunBlazorBuilder<'FunBlazorGeneric>, x: System.String) = "Title" => x |> this.AddAttr
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorBuilder<'FunBlazorGeneric>, nodes) = Bolero.Html.attr.fragment "ChildContent" (html.fragment nodes) |> this.AddAttr
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: string) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> this.AddAttr
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: int) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> this.AddAttr
-    [<CustomOperation("childContent")>] member this.childContent (_: FunBlazorBuilder<'FunBlazorGeneric>, x: float) = Bolero.Html.attr.fragment "ChildContent" (html.text x) |> this.AddAttr
+    static member inline create (x: string) = BodyBuilder<'FunBlazorGeneric>(){ x }
+    static member inline create (x: NodeRenderFragment seq) = BodyBuilder<'FunBlazorGeneric>(){ yield! x }
+    [<CustomOperation("PrefixCls")>] member _.PrefixCls (render: AttrRenderFragment, x: System.String) = render ==> ("PrefixCls" => x)
+    [<CustomOperation("Title")>] member _.Title (render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
+    [<CustomOperation("childContent")>] member _.childContent (render: AttrRenderFragment, fragment) = render ==> html.renderFragment("ChildContent", fragment)
+    [<CustomOperation("childContent")>] member _.childContent (render: AttrRenderFragment, fragments) = render ==> html.renderFragment("ChildContent", fragment { yield! fragments })
+    [<CustomOperation("childContent")>] member _.childContent (render: AttrRenderFragment, x: string) = render ==> html.renderFragment("ChildContent", html.text x)
+    [<CustomOperation("childContent")>] member _.childContent (render: AttrRenderFragment, x: int) = render ==> html.renderFragment("ChildContent", html.text x)
+    [<CustomOperation("childContent")>] member _.childContent (render: AttrRenderFragment, x: float) = render ==> html.renderFragment("ChildContent", html.text x)
                 
 
 type OtherSettingBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit AntDomComponentBaseBuilder<'FunBlazorGeneric>()
-    static member create () = OtherSettingBuilder<'FunBlazorGeneric>().CreateNode()
+    static member inline create () = html.fromBuilder(OtherSettingBuilder<'FunBlazorGeneric>())
 
                 
 
 type RegionalSettingBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit AntDomComponentBaseBuilder<'FunBlazorGeneric>()
-    static member create () = RegionalSettingBuilder<'FunBlazorGeneric>().CreateNode()
+    static member inline create () = html.fromBuilder(RegionalSettingBuilder<'FunBlazorGeneric>())
 
                 
 
 type _ImportsBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit FunBlazorBuilder<'FunBlazorGeneric>()
-    static member create () = _ImportsBuilder<'FunBlazorGeneric>().CreateNode()
+    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    static member inline create () = html.fromBuilder(_ImportsBuilder<'FunBlazorGeneric>())
 
                 
             

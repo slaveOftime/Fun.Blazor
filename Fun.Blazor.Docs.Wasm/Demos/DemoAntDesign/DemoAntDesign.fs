@@ -9,13 +9,13 @@ let private rootDir = "Demos/DemoAntDesign"
 
 
 let demoAntDesign =
-    html.div [
+    div {
         simplePage
             "https://antblazor.com/"
             "Ant Design"
             "For Blazor"
             "Following the Ant Design specification, we developed a Blazor Components library ant-design-blazor that contains a set of high quality components and demos for building rich, interactive user interfaces."
-            [
+            (fragment {
                 demoContainer "Modal" $"{rootDir}/ModalDemo" modalDemo
                 demoDivider
                 demoContainer "Dropdown" $"{rootDir}/DropDownDemo" dropDownDemo
@@ -23,6 +23,6 @@ let demoAntDesign =
                 demoContainer "Collapse" $"{rootDir}/CollapseDemo" collapseDemo
                 demoDivider
                 demoContainer "Chart" $"{rootDir}/ChartDemo" chartDemo
-            ]
-        html.stylesheet "_content/AntDesign/css/ant-design-blazor.css"
-    ]
+            })
+        stylesheet "_content/AntDesign/css/ant-design-blazor.css"
+    }
