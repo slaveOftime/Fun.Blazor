@@ -408,7 +408,7 @@ type DomAttrBuilder() =
             callback: FocusEventArgs -> unit
         )
         =
-        this.callback (render, "focus", callback)
+        this.callback (render, "onfocus", callback)
     [<CustomOperation("onfocus")>]
     member this.onfocus
         (
@@ -416,7 +416,7 @@ type DomAttrBuilder() =
             callback: FocusEventArgs -> Task
         )
         =
-        this.callback (render, "focus", callback)
+        this.callback (render, "onfocus", callback)
     [<CustomOperation("onblur")>]
     member this.onblur
         (
@@ -424,7 +424,7 @@ type DomAttrBuilder() =
             callback: FocusEventArgs -> unit
         )
         =
-        this.callback (render, "blur", callback)
+        this.callback (render, "onblur", callback)
     [<CustomOperation("onblur")>]
     member this.onblur
         (
@@ -432,7 +432,7 @@ type DomAttrBuilder() =
             callback: FocusEventArgs -> Task
         )
         =
-        this.callback (render, "blur", callback)
+        this.callback (render, "onblur", callback)
     [<CustomOperation("onfocusin")>]
     member this.onfocusin
         (
@@ -440,7 +440,7 @@ type DomAttrBuilder() =
             callback: FocusEventArgs -> unit
         )
         =
-        this.callback (render, "focusin", callback)
+        this.callback (render, "onfocusin", callback)
     [<CustomOperation("onfocusin")>]
     member this.onfocusin
         (
@@ -448,7 +448,7 @@ type DomAttrBuilder() =
             callback: FocusEventArgs -> Task
         )
         =
-        this.callback (render, "focusin", callback)
+        this.callback (render, "onfocusin", callback)
     [<CustomOperation("onfocusout")>]
     member this.onfocusout
         (
@@ -456,7 +456,7 @@ type DomAttrBuilder() =
             callback: FocusEventArgs -> unit
         )
         =
-        this.callback (render, "focusout", callback)
+        this.callback (render, "onfocusout", callback)
     [<CustomOperation("onfocusout")>]
     member this.onfocusout
         (
@@ -464,7 +464,7 @@ type DomAttrBuilder() =
             callback: FocusEventArgs -> Task
         )
         =
-        this.callback (render, "focusout", callback)
+        this.callback (render, "onfocusout", callback)
     [<CustomOperation("onmouseover")>]
     member this.onmouseover
         (
@@ -472,7 +472,7 @@ type DomAttrBuilder() =
             callback: MouseEventArgs -> unit
         )
         =
-        this.callback (render, "mouseover", callback)
+        this.callback (render, "onmouseover", callback)
     [<CustomOperation("onmouseover")>]
     member this.onmouseover
         (
@@ -480,7 +480,7 @@ type DomAttrBuilder() =
             callback: MouseEventArgs -> Task
         )
         =
-        this.callback (render, "mouseover", callback)
+        this.callback (render, "onmouseover", callback)
     [<CustomOperation("onmouseout")>]
     member this.onmouseout
         (
@@ -488,7 +488,7 @@ type DomAttrBuilder() =
             callback: MouseEventArgs -> unit
         )
         =
-        this.callback (render, "mouseout", callback)
+        this.callback (render, "onmouseout", callback)
     [<CustomOperation("onmouseout")>]
     member this.onmouseout
         (
@@ -496,7 +496,7 @@ type DomAttrBuilder() =
             callback: MouseEventArgs -> Task
         )
         =
-        this.callback (render, "mouseout", callback)
+        this.callback (render, "onmouseout", callback)
     [<CustomOperation("onmousemove")>]
     member this.onmousemove
         (
@@ -504,7 +504,7 @@ type DomAttrBuilder() =
             callback: MouseEventArgs -> unit
         )
         =
-        this.callback (render, "mousemove", callback)
+        this.callback (render, "onmousemove", callback)
     [<CustomOperation("onmousemove")>]
     member this.onmousemove
         (
@@ -512,7 +512,7 @@ type DomAttrBuilder() =
             callback: MouseEventArgs -> Task
         )
         =
-        this.callback (render, "mousemove", callback)
+        this.callback (render, "onmousemove", callback)
     [<CustomOperation("onmousedown")>]
     member this.onmousedown
         (
@@ -520,7 +520,7 @@ type DomAttrBuilder() =
             callback: MouseEventArgs -> unit
         )
         =
-        this.callback (render, "mousedown", callback)
+        this.callback (render, "onmousedown", callback)
     [<CustomOperation("onmousedown")>]
     member this.onmousedown
         (
@@ -528,7 +528,7 @@ type DomAttrBuilder() =
             callback: MouseEventArgs -> Task
         )
         =
-        this.callback (render, "mousedown", callback)
+        this.callback (render, "onmousedown", callback)
     [<CustomOperation("onmouseup")>]
     member this.onmouseup
         (
@@ -536,7 +536,7 @@ type DomAttrBuilder() =
             callback: MouseEventArgs -> unit
         )
         =
-        this.callback (render, "mouseup", callback)
+        this.callback (render, "onmouseup", callback)
     [<CustomOperation("onmouseup")>]
     member this.onmouseup
         (
@@ -544,7 +544,7 @@ type DomAttrBuilder() =
             callback: MouseEventArgs -> Task
         )
         =
-        this.callback (render, "mouseup", callback)
+        this.callback (render, "onmouseup", callback)
     [<CustomOperation("onclick")>]
     member this.onclick
         (
@@ -552,7 +552,7 @@ type DomAttrBuilder() =
             callback: MouseEventArgs -> unit
         )
         =
-        this.callback (render, "click", callback)
+        this.callback (render, "onclick", callback)
     [<CustomOperation("onclick")>]
     member this.onclick
         (
@@ -560,7 +560,7 @@ type DomAttrBuilder() =
             callback: MouseEventArgs -> Task
         )
         =
-        this.callback (render, "click", callback)
+        this.callback (render, "onclick", callback)
     [<CustomOperation("ondblclick")>]
     member this.ondblclick
         (
@@ -568,7 +568,7 @@ type DomAttrBuilder() =
             callback: MouseEventArgs -> unit
         )
         =
-        this.callback (render, "dblclick", callback)
+        this.callback (render, "ondblclick", callback)
     [<CustomOperation("ondblclick")>]
     member this.ondblclick
         (
@@ -576,7 +576,7 @@ type DomAttrBuilder() =
             callback: MouseEventArgs -> Task
         )
         =
-        this.callback (render, "dblclick", callback)
+        this.callback (render, "ondblclick", callback)
     [<CustomOperation("onwheel")>]
     member this.onwheel
         (
@@ -584,7 +584,7 @@ type DomAttrBuilder() =
             callback: MouseEventArgs -> unit
         )
         =
-        this.callback (render, "wheel", callback)
+        this.callback (render, "onwheel", callback)
     [<CustomOperation("onwheel")>]
     member this.onwheel
         (
@@ -592,7 +592,7 @@ type DomAttrBuilder() =
             callback: MouseEventArgs -> Task
         )
         =
-        this.callback (render, "wheel", callback)
+        this.callback (render, "onwheel", callback)
     [<CustomOperation("onmousewheel")>]
     member this.onmousewheel
         (
@@ -600,7 +600,7 @@ type DomAttrBuilder() =
             callback: MouseEventArgs -> unit
         )
         =
-        this.callback (render, "mousewheel", callback)
+        this.callback (render, "onmousewheel", callback)
     [<CustomOperation("onmousewheel")>]
     member this.onmousewheel
         (
@@ -608,7 +608,7 @@ type DomAttrBuilder() =
             callback: MouseEventArgs -> Task
         )
         =
-        this.callback (render, "mousewheel", callback)
+        this.callback (render, "onmousewheel", callback)
     [<CustomOperation("oncontextmenu")>]
     member this.oncontextmenu
         (
@@ -616,7 +616,7 @@ type DomAttrBuilder() =
             callback: MouseEventArgs -> unit
         )
         =
-        this.callback (render, "contextmenu", callback)
+        this.callback (render, "oncontextmenu", callback)
     [<CustomOperation("oncontextmenu")>]
     member this.oncontextmenu
         (
@@ -624,7 +624,7 @@ type DomAttrBuilder() =
             callback: MouseEventArgs -> Task
         )
         =
-        this.callback (render, "contextmenu", callback)
+        this.callback (render, "oncontextmenu", callback)
     [<CustomOperation("ondrag")>]
     member this.ondrag
         (
@@ -632,7 +632,7 @@ type DomAttrBuilder() =
             callback: DragEventArgs -> unit
         )
         =
-        this.callback (render, "drag", callback)
+        this.callback (render, "ondrag", callback)
     [<CustomOperation("ondrag")>]
     member this.ondrag
         (
@@ -640,7 +640,7 @@ type DomAttrBuilder() =
             callback: DragEventArgs -> Task
         )
         =
-        this.callback (render, "drag", callback)
+        this.callback (render, "ondrag", callback)
     [<CustomOperation("ondragend")>]
     member this.ondragend
         (
@@ -648,7 +648,7 @@ type DomAttrBuilder() =
             callback: DragEventArgs -> unit
         )
         =
-        this.callback (render, "dragend", callback)
+        this.callback (render, "ondragend", callback)
     [<CustomOperation("ondragend")>]
     member this.ondragend
         (
@@ -656,7 +656,7 @@ type DomAttrBuilder() =
             callback: DragEventArgs -> Task
         )
         =
-        this.callback (render, "dragend", callback)
+        this.callback (render, "ondragend", callback)
     [<CustomOperation("ondragenter")>]
     member this.ondragenter
         (
@@ -664,7 +664,7 @@ type DomAttrBuilder() =
             callback: DragEventArgs -> unit
         )
         =
-        this.callback (render, "dragenter", callback)
+        this.callback (render, "ondragenter", callback)
     [<CustomOperation("ondragenter")>]
     member this.ondragenter
         (
@@ -672,7 +672,7 @@ type DomAttrBuilder() =
             callback: DragEventArgs -> Task
         )
         =
-        this.callback (render, "dragenter", callback)
+        this.callback (render, "ondragenter", callback)
     [<CustomOperation("ondragleave")>]
     member this.ondragleave
         (
@@ -680,7 +680,7 @@ type DomAttrBuilder() =
             callback: DragEventArgs -> unit
         )
         =
-        this.callback (render, "dragleave", callback)
+        this.callback (render, "ondragleave", callback)
     [<CustomOperation("ondragleave")>]
     member this.ondragleave
         (
@@ -688,7 +688,7 @@ type DomAttrBuilder() =
             callback: DragEventArgs -> Task
         )
         =
-        this.callback (render, "dragleave", callback)
+        this.callback (render, "ondragleave", callback)
     [<CustomOperation("ondragover")>]
     member this.ondragover
         (
@@ -696,7 +696,7 @@ type DomAttrBuilder() =
             callback: DragEventArgs -> unit
         )
         =
-        this.callback (render, "dragover", callback)
+        this.callback (render, "ondragover", callback)
     [<CustomOperation("ondragover")>]
     member this.ondragover
         (
@@ -704,7 +704,7 @@ type DomAttrBuilder() =
             callback: DragEventArgs -> Task
         )
         =
-        this.callback (render, "dragover", callback)
+        this.callback (render, "ondragover", callback)
     [<CustomOperation("ondragstart")>]
     member this.ondragstart
         (
@@ -712,7 +712,7 @@ type DomAttrBuilder() =
             callback: DragEventArgs -> unit
         )
         =
-        this.callback (render, "dragstart", callback)
+        this.callback (render, "ondragstart", callback)
     [<CustomOperation("ondragstart")>]
     member this.ondragstart
         (
@@ -720,7 +720,7 @@ type DomAttrBuilder() =
             callback: DragEventArgs -> Task
         )
         =
-        this.callback (render, "dragstart", callback)
+        this.callback (render, "ondragstart", callback)
     [<CustomOperation("ondrop")>]
     member this.ondrop
         (
@@ -728,7 +728,7 @@ type DomAttrBuilder() =
             callback: DragEventArgs -> unit
         )
         =
-        this.callback (render, "drop", callback)
+        this.callback (render, "ondrop", callback)
     [<CustomOperation("ondrop")>]
     member this.ondrop
         (
@@ -736,7 +736,7 @@ type DomAttrBuilder() =
             callback: DragEventArgs -> Task
         )
         =
-        this.callback (render, "drop", callback)
+        this.callback (render, "ondrop", callback)
     [<CustomOperation("onkeydown")>]
     member this.onkeydown
         (
@@ -744,7 +744,7 @@ type DomAttrBuilder() =
             callback: KeyboardEventArgs -> unit
         )
         =
-        this.callback (render, "keydown", callback)
+        this.callback (render, "onkeydown", callback)
     [<CustomOperation("onkeydown")>]
     member this.onkeydown
         (
@@ -752,7 +752,7 @@ type DomAttrBuilder() =
             callback: KeyboardEventArgs -> Task
         )
         =
-        this.callback (render, "keydown", callback)
+        this.callback (render, "onkeydown", callback)
     [<CustomOperation("onkeyup")>]
     member this.onkeyup
         (
@@ -760,7 +760,7 @@ type DomAttrBuilder() =
             callback: KeyboardEventArgs -> unit
         )
         =
-        this.callback (render, "keyup", callback)
+        this.callback (render, "onkeyup", callback)
     [<CustomOperation("onkeyup")>]
     member this.onkeyup
         (
@@ -768,7 +768,7 @@ type DomAttrBuilder() =
             callback: KeyboardEventArgs -> Task
         )
         =
-        this.callback (render, "keyup", callback)
+        this.callback (render, "onkeyup", callback)
     [<CustomOperation("onkeypress")>]
     member this.onkeypress
         (
@@ -776,7 +776,7 @@ type DomAttrBuilder() =
             callback: KeyboardEventArgs -> unit
         )
         =
-        this.callback (render, "keypress", callback)
+        this.callback (render, "onkeypress", callback)
     [<CustomOperation("onkeypress")>]
     member this.onkeypress
         (
@@ -784,7 +784,7 @@ type DomAttrBuilder() =
             callback: KeyboardEventArgs -> Task
         )
         =
-        this.callback (render, "keypress", callback)
+        this.callback (render, "onkeypress", callback)
     [<CustomOperation("onchange")>]
     member this.onchange
         (
@@ -792,7 +792,7 @@ type DomAttrBuilder() =
             callback: ChangeEventArgs -> unit
         )
         =
-        this.callback (render, "change", callback)
+        this.callback (render, "onchange", callback)
     [<CustomOperation("onchange")>]
     member this.onchange
         (
@@ -800,7 +800,7 @@ type DomAttrBuilder() =
             callback: ChangeEventArgs -> Task
         )
         =
-        this.callback (render, "change", callback)
+        this.callback (render, "onchange", callback)
     [<CustomOperation("oninput")>]
     member this.oninput
         (
@@ -808,7 +808,7 @@ type DomAttrBuilder() =
             callback: ChangeEventArgs -> unit
         )
         =
-        this.callback (render, "input", callback)
+        this.callback (render, "oninput", callback)
     [<CustomOperation("oninput")>]
     member this.oninput
         (
@@ -816,7 +816,7 @@ type DomAttrBuilder() =
             callback: ChangeEventArgs -> Task
         )
         =
-        this.callback (render, "input", callback)
+        this.callback (render, "oninput", callback)
     [<CustomOperation("oninvalid")>]
     member this.oninvalid
         (
@@ -824,7 +824,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> unit
         )
         =
-        this.callback (render, "invalid", callback)
+        this.callback (render, "oninvalid", callback)
     [<CustomOperation("oninvalid")>]
     member this.oninvalid
         (
@@ -832,7 +832,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> Task
         )
         =
-        this.callback (render, "invalid", callback)
+        this.callback (render, "oninvalid", callback)
     [<CustomOperation("onreset")>]
     member this.onreset
         (
@@ -840,7 +840,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> unit
         )
         =
-        this.callback (render, "reset", callback)
+        this.callback (render, "onreset", callback)
     [<CustomOperation("onreset")>]
     member this.onreset
         (
@@ -848,7 +848,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> Task
         )
         =
-        this.callback (render, "reset", callback)
+        this.callback (render, "onreset", callback)
     [<CustomOperation("onselect")>]
     member this.onselect
         (
@@ -856,7 +856,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> unit
         )
         =
-        this.callback (render, "select", callback)
+        this.callback (render, "onselect", callback)
     [<CustomOperation("onselect")>]
     member this.onselect
         (
@@ -864,7 +864,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> Task
         )
         =
-        this.callback (render, "select", callback)
+        this.callback (render, "onselect", callback)
     [<CustomOperation("onselectstart")>]
     member this.onselectstart
         (
@@ -872,7 +872,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> unit
         )
         =
-        this.callback (render, "selectstart", callback)
+        this.callback (render, "onselectstart", callback)
     [<CustomOperation("onselectstart")>]
     member this.onselectstart
         (
@@ -880,7 +880,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> Task
         )
         =
-        this.callback (render, "selectstart", callback)
+        this.callback (render, "onselectstart", callback)
     [<CustomOperation("onselectionchange")>]
     member this.onselectionchange
         (
@@ -888,7 +888,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> unit
         )
         =
-        this.callback (render, "selectionchange", callback)
+        this.callback (render, "onselectionchange", callback)
     [<CustomOperation("onselectionchange")>]
     member this.onselectionchange
         (
@@ -896,7 +896,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> Task
         )
         =
-        this.callback (render, "selectionchange", callback)
+        this.callback (render, "onselectionchange", callback)
     [<CustomOperation("onsubmit")>]
     member this.onsubmit
         (
@@ -904,7 +904,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> unit
         )
         =
-        this.callback (render, "submit", callback)
+        this.callback (render, "onsubmit", callback)
     [<CustomOperation("onsubmit")>]
     member this.onsubmit
         (
@@ -912,7 +912,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> Task
         )
         =
-        this.callback (render, "submit", callback)
+        this.callback (render, "onsubmit", callback)
     [<CustomOperation("onbeforecopy")>]
     member this.onbeforecopy
         (
@@ -920,7 +920,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> unit
         )
         =
-        this.callback (render, "beforecopy", callback)
+        this.callback (render, "onbeforecopy", callback)
     [<CustomOperation("onbeforecopy")>]
     member this.onbeforecopy
         (
@@ -928,7 +928,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> Task
         )
         =
-        this.callback (render, "beforecopy", callback)
+        this.callback (render, "onbeforecopy", callback)
     [<CustomOperation("onbeforecut")>]
     member this.onbeforecut
         (
@@ -936,7 +936,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> unit
         )
         =
-        this.callback (render, "beforecut", callback)
+        this.callback (render, "onbeforecut", callback)
     [<CustomOperation("onbeforecut")>]
     member this.onbeforecut
         (
@@ -944,7 +944,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> Task
         )
         =
-        this.callback (render, "beforecut", callback)
+        this.callback (render, "onbeforecut", callback)
     [<CustomOperation("onbeforepaste")>]
     member this.onbeforepaste
         (
@@ -952,7 +952,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> unit
         )
         =
-        this.callback (render, "beforepaste", callback)
+        this.callback (render, "onbeforepaste", callback)
     [<CustomOperation("onbeforepaste")>]
     member this.onbeforepaste
         (
@@ -960,7 +960,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> Task
         )
         =
-        this.callback (render, "beforepaste", callback)
+        this.callback (render, "onbeforepaste", callback)
     [<CustomOperation("oncopy")>]
     member this.oncopy
         (
@@ -968,7 +968,7 @@ type DomAttrBuilder() =
             callback: ClipboardEventArgs -> unit
         )
         =
-        this.callback (render, "copy", callback)
+        this.callback (render, "oncopy", callback)
     [<CustomOperation("oncopy")>]
     member this.oncopy
         (
@@ -976,7 +976,7 @@ type DomAttrBuilder() =
             callback: ClipboardEventArgs -> Task
         )
         =
-        this.callback (render, "copy", callback)
+        this.callback (render, "oncopy", callback)
     [<CustomOperation("oncut")>]
     member this.oncut
         (
@@ -984,7 +984,7 @@ type DomAttrBuilder() =
             callback: ClipboardEventArgs -> unit
         )
         =
-        this.callback (render, "cut", callback)
+        this.callback (render, "oncut", callback)
     [<CustomOperation("oncut")>]
     member this.oncut
         (
@@ -992,7 +992,7 @@ type DomAttrBuilder() =
             callback: ClipboardEventArgs -> Task
         )
         =
-        this.callback (render, "cut", callback)
+        this.callback (render, "oncut", callback)
     [<CustomOperation("onpaste")>]
     member this.onpaste
         (
@@ -1000,7 +1000,7 @@ type DomAttrBuilder() =
             callback: ClipboardEventArgs -> unit
         )
         =
-        this.callback (render, "paste", callback)
+        this.callback (render, "onpaste", callback)
     [<CustomOperation("onpaste")>]
     member this.onpaste
         (
@@ -1008,7 +1008,7 @@ type DomAttrBuilder() =
             callback: ClipboardEventArgs -> Task
         )
         =
-        this.callback (render, "paste", callback)
+        this.callback (render, "onpaste", callback)
     [<CustomOperation("ontouchcancel")>]
     member this.ontouchcancel
         (
@@ -1016,7 +1016,7 @@ type DomAttrBuilder() =
             callback: TouchEventArgs -> unit
         )
         =
-        this.callback (render, "touchcancel", callback)
+        this.callback (render, "ontouchcancel", callback)
     [<CustomOperation("ontouchcancel")>]
     member this.ontouchcancel
         (
@@ -1024,7 +1024,7 @@ type DomAttrBuilder() =
             callback: TouchEventArgs -> Task
         )
         =
-        this.callback (render, "touchcancel", callback)
+        this.callback (render, "ontouchcancel", callback)
     [<CustomOperation("ontouchend")>]
     member this.ontouchend
         (
@@ -1032,7 +1032,7 @@ type DomAttrBuilder() =
             callback: TouchEventArgs -> unit
         )
         =
-        this.callback (render, "touchend", callback)
+        this.callback (render, "ontouchend", callback)
     [<CustomOperation("ontouchend")>]
     member this.ontouchend
         (
@@ -1040,7 +1040,7 @@ type DomAttrBuilder() =
             callback: TouchEventArgs -> Task
         )
         =
-        this.callback (render, "touchend", callback)
+        this.callback (render, "ontouchend", callback)
     [<CustomOperation("ontouchmove")>]
     member this.ontouchmove
         (
@@ -1048,7 +1048,7 @@ type DomAttrBuilder() =
             callback: TouchEventArgs -> unit
         )
         =
-        this.callback (render, "touchmove", callback)
+        this.callback (render, "ontouchmove", callback)
     [<CustomOperation("ontouchmove")>]
     member this.ontouchmove
         (
@@ -1056,7 +1056,7 @@ type DomAttrBuilder() =
             callback: TouchEventArgs -> Task
         )
         =
-        this.callback (render, "touchmove", callback)
+        this.callback (render, "ontouchmove", callback)
     [<CustomOperation("ontouchstart")>]
     member this.ontouchstart
         (
@@ -1064,7 +1064,7 @@ type DomAttrBuilder() =
             callback: TouchEventArgs -> unit
         )
         =
-        this.callback (render, "touchstart", callback)
+        this.callback (render, "ontouchstart", callback)
     [<CustomOperation("ontouchstart")>]
     member this.ontouchstart
         (
@@ -1072,7 +1072,7 @@ type DomAttrBuilder() =
             callback: TouchEventArgs -> Task
         )
         =
-        this.callback (render, "touchstart", callback)
+        this.callback (render, "ontouchstart", callback)
     [<CustomOperation("ontouchenter")>]
     member this.ontouchenter
         (
@@ -1080,7 +1080,7 @@ type DomAttrBuilder() =
             callback: TouchEventArgs -> unit
         )
         =
-        this.callback (render, "touchenter", callback)
+        this.callback (render, "ontouchenter", callback)
     [<CustomOperation("ontouchenter")>]
     member this.ontouchenter
         (
@@ -1088,7 +1088,7 @@ type DomAttrBuilder() =
             callback: TouchEventArgs -> Task
         )
         =
-        this.callback (render, "touchenter", callback)
+        this.callback (render, "ontouchenter", callback)
     [<CustomOperation("ontouchleave")>]
     member this.ontouchleave
         (
@@ -1096,7 +1096,7 @@ type DomAttrBuilder() =
             callback: TouchEventArgs -> unit
         )
         =
-        this.callback (render, "touchleave", callback)
+        this.callback (render, "ontouchleave", callback)
     [<CustomOperation("ontouchleave")>]
     member this.ontouchleave
         (
@@ -1104,7 +1104,7 @@ type DomAttrBuilder() =
             callback: TouchEventArgs -> Task
         )
         =
-        this.callback (render, "touchleave", callback)
+        this.callback (render, "ontouchleave", callback)
     [<CustomOperation("onpointercapture")>]
     member this.onpointercapture
         (
@@ -1112,7 +1112,7 @@ type DomAttrBuilder() =
             callback: PointerEventArgs -> unit
         )
         =
-        this.callback (render, "pointercapture", callback)
+        this.callback (render, "onpointercapture", callback)
     [<CustomOperation("onpointercapture")>]
     member this.onpointercapture
         (
@@ -1120,7 +1120,7 @@ type DomAttrBuilder() =
             callback: PointerEventArgs -> Task
         )
         =
-        this.callback (render, "pointercapture", callback)
+        this.callback (render, "onpointercapture", callback)
     [<CustomOperation("onlostpointercapture")>]
     member this.onlostpointercapture
         (
@@ -1128,7 +1128,7 @@ type DomAttrBuilder() =
             callback: PointerEventArgs -> unit
         )
         =
-        this.callback (render, "lostpointercapture", callback)
+        this.callback (render, "onlostpointercapture", callback)
     [<CustomOperation("onlostpointercapture")>]
     member this.onlostpointercapture
         (
@@ -1136,7 +1136,7 @@ type DomAttrBuilder() =
             callback: PointerEventArgs -> Task
         )
         =
-        this.callback (render, "lostpointercapture", callback)
+        this.callback (render, "onlostpointercapture", callback)
     [<CustomOperation("onpointercancel")>]
     member this.onpointercancel
         (
@@ -1144,7 +1144,7 @@ type DomAttrBuilder() =
             callback: PointerEventArgs -> unit
         )
         =
-        this.callback (render, "pointercancel", callback)
+        this.callback (render, "onpointercancel", callback)
     [<CustomOperation("onpointercancel")>]
     member this.onpointercancel
         (
@@ -1152,7 +1152,7 @@ type DomAttrBuilder() =
             callback: PointerEventArgs -> Task
         )
         =
-        this.callback (render, "pointercancel", callback)
+        this.callback (render, "onpointercancel", callback)
     [<CustomOperation("onpointerdown")>]
     member this.onpointerdown
         (
@@ -1160,7 +1160,7 @@ type DomAttrBuilder() =
             callback: PointerEventArgs -> unit
         )
         =
-        this.callback (render, "pointerdown", callback)
+        this.callback (render, "onpointerdown", callback)
     [<CustomOperation("onpointerdown")>]
     member this.onpointerdown
         (
@@ -1168,7 +1168,7 @@ type DomAttrBuilder() =
             callback: PointerEventArgs -> Task
         )
         =
-        this.callback (render, "pointerdown", callback)
+        this.callback (render, "onpointerdown", callback)
     [<CustomOperation("onpointerenter")>]
     member this.onpointerenter
         (
@@ -1176,7 +1176,7 @@ type DomAttrBuilder() =
             callback: PointerEventArgs -> unit
         )
         =
-        this.callback (render, "pointerenter", callback)
+        this.callback (render, "onpointerenter", callback)
     [<CustomOperation("onpointerenter")>]
     member this.onpointerenter
         (
@@ -1184,7 +1184,7 @@ type DomAttrBuilder() =
             callback: PointerEventArgs -> Task
         )
         =
-        this.callback (render, "pointerenter", callback)
+        this.callback (render, "onpointerenter", callback)
     [<CustomOperation("onpointerleave")>]
     member this.onpointerleave
         (
@@ -1192,7 +1192,7 @@ type DomAttrBuilder() =
             callback: PointerEventArgs -> unit
         )
         =
-        this.callback (render, "pointerleave", callback)
+        this.callback (render, "onpointerleave", callback)
     [<CustomOperation("onpointerleave")>]
     member this.onpointerleave
         (
@@ -1200,7 +1200,7 @@ type DomAttrBuilder() =
             callback: PointerEventArgs -> Task
         )
         =
-        this.callback (render, "pointerleave", callback)
+        this.callback (render, "onpointerleave", callback)
     [<CustomOperation("onpointermove")>]
     member this.onpointermove
         (
@@ -1208,7 +1208,7 @@ type DomAttrBuilder() =
             callback: PointerEventArgs -> unit
         )
         =
-        this.callback (render, "pointermove", callback)
+        this.callback (render, "onpointermove", callback)
     [<CustomOperation("onpointermove")>]
     member this.onpointermove
         (
@@ -1216,7 +1216,7 @@ type DomAttrBuilder() =
             callback: PointerEventArgs -> Task
         )
         =
-        this.callback (render, "pointermove", callback)
+        this.callback (render, "onpointermove", callback)
     [<CustomOperation("onpointerout")>]
     member this.onpointerout
         (
@@ -1224,7 +1224,7 @@ type DomAttrBuilder() =
             callback: PointerEventArgs -> unit
         )
         =
-        this.callback (render, "pointerout", callback)
+        this.callback (render, "onpointerout", callback)
     [<CustomOperation("onpointerout")>]
     member this.onpointerout
         (
@@ -1232,7 +1232,7 @@ type DomAttrBuilder() =
             callback: PointerEventArgs -> Task
         )
         =
-        this.callback (render, "pointerout", callback)
+        this.callback (render, "onpointerout", callback)
     [<CustomOperation("onpointerover")>]
     member this.onpointerover
         (
@@ -1240,7 +1240,7 @@ type DomAttrBuilder() =
             callback: PointerEventArgs -> unit
         )
         =
-        this.callback (render, "pointerover", callback)
+        this.callback (render, "onpointerover", callback)
     [<CustomOperation("onpointerover")>]
     member this.onpointerover
         (
@@ -1248,7 +1248,7 @@ type DomAttrBuilder() =
             callback: PointerEventArgs -> Task
         )
         =
-        this.callback (render, "pointerover", callback)
+        this.callback (render, "onpointerover", callback)
     [<CustomOperation("onpointerup")>]
     member this.onpointerup
         (
@@ -1256,7 +1256,7 @@ type DomAttrBuilder() =
             callback: PointerEventArgs -> unit
         )
         =
-        this.callback (render, "pointerup", callback)
+        this.callback (render, "onpointerup", callback)
     [<CustomOperation("onpointerup")>]
     member this.onpointerup
         (
@@ -1264,7 +1264,7 @@ type DomAttrBuilder() =
             callback: PointerEventArgs -> Task
         )
         =
-        this.callback (render, "pointerup", callback)
+        this.callback (render, "onpointerup", callback)
     [<CustomOperation("oncanplay")>]
     member this.oncanplay
         (
@@ -1272,7 +1272,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> unit
         )
         =
-        this.callback (render, "canplay", callback)
+        this.callback (render, "oncanplay", callback)
     [<CustomOperation("oncanplay")>]
     member this.oncanplay
         (
@@ -1280,7 +1280,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> Task
         )
         =
-        this.callback (render, "canplay", callback)
+        this.callback (render, "oncanplay", callback)
     [<CustomOperation("oncanplaythrough")>]
     member this.oncanplaythrough
         (
@@ -1288,7 +1288,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> unit
         )
         =
-        this.callback (render, "canplaythrough", callback)
+        this.callback (render, "oncanplaythrough", callback)
     [<CustomOperation("oncanplaythrough")>]
     member this.oncanplaythrough
         (
@@ -1296,7 +1296,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> Task
         )
         =
-        this.callback (render, "canplaythrough", callback)
+        this.callback (render, "oncanplaythrough", callback)
     [<CustomOperation("oncuechange")>]
     member this.oncuechange
         (
@@ -1304,7 +1304,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> unit
         )
         =
-        this.callback (render, "cuechange", callback)
+        this.callback (render, "oncuechange", callback)
     [<CustomOperation("oncuechange")>]
     member this.oncuechange
         (
@@ -1312,7 +1312,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> Task
         )
         =
-        this.callback (render, "cuechange", callback)
+        this.callback (render, "oncuechange", callback)
     [<CustomOperation("ondurationchange")>]
     member this.ondurationchange
         (
@@ -1320,7 +1320,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> unit
         )
         =
-        this.callback (render, "durationchange", callback)
+        this.callback (render, "ondurationchange", callback)
     [<CustomOperation("ondurationchange")>]
     member this.ondurationchange
         (
@@ -1328,7 +1328,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> Task
         )
         =
-        this.callback (render, "durationchange", callback)
+        this.callback (render, "ondurationchange", callback)
     [<CustomOperation("onemptied")>]
     member this.onemptied
         (
@@ -1336,7 +1336,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> unit
         )
         =
-        this.callback (render, "emptied", callback)
+        this.callback (render, "onemptied", callback)
     [<CustomOperation("onemptied")>]
     member this.onemptied
         (
@@ -1344,7 +1344,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> Task
         )
         =
-        this.callback (render, "emptied", callback)
+        this.callback (render, "onemptied", callback)
     [<CustomOperation("onpause")>]
     member this.onpause
         (
@@ -1352,7 +1352,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> unit
         )
         =
-        this.callback (render, "pause", callback)
+        this.callback (render, "onpause", callback)
     [<CustomOperation("onpause")>]
     member this.onpause
         (
@@ -1360,7 +1360,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> Task
         )
         =
-        this.callback (render, "pause", callback)
+        this.callback (render, "onpause", callback)
     [<CustomOperation("onplay")>]
     member this.onplay
         (
@@ -1368,7 +1368,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> unit
         )
         =
-        this.callback (render, "play", callback)
+        this.callback (render, "onplay", callback)
     [<CustomOperation("onplay")>]
     member this.onplay
         (
@@ -1376,7 +1376,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> Task
         )
         =
-        this.callback (render, "play", callback)
+        this.callback (render, "onplay", callback)
     [<CustomOperation("onplaying")>]
     member this.onplaying
         (
@@ -1384,7 +1384,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> unit
         )
         =
-        this.callback (render, "playing", callback)
+        this.callback (render, "onplaying", callback)
     [<CustomOperation("onplaying")>]
     member this.onplaying
         (
@@ -1392,7 +1392,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> Task
         )
         =
-        this.callback (render, "playing", callback)
+        this.callback (render, "onplaying", callback)
     [<CustomOperation("onratechange")>]
     member this.onratechange
         (
@@ -1400,7 +1400,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> unit
         )
         =
-        this.callback (render, "ratechange", callback)
+        this.callback (render, "onratechange", callback)
     [<CustomOperation("onratechange")>]
     member this.onratechange
         (
@@ -1408,7 +1408,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> Task
         )
         =
-        this.callback (render, "ratechange", callback)
+        this.callback (render, "onratechange", callback)
     [<CustomOperation("onseeked")>]
     member this.onseeked
         (
@@ -1416,7 +1416,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> unit
         )
         =
-        this.callback (render, "seeked", callback)
+        this.callback (render, "onseeked", callback)
     [<CustomOperation("onseeked")>]
     member this.onseeked
         (
@@ -1424,7 +1424,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> Task
         )
         =
-        this.callback (render, "seeked", callback)
+        this.callback (render, "onseeked", callback)
     [<CustomOperation("onseeking")>]
     member this.onseeking
         (
@@ -1432,7 +1432,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> unit
         )
         =
-        this.callback (render, "seeking", callback)
+        this.callback (render, "onseeking", callback)
     [<CustomOperation("onseeking")>]
     member this.onseeking
         (
@@ -1440,7 +1440,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> Task
         )
         =
-        this.callback (render, "seeking", callback)
+        this.callback (render, "onseeking", callback)
     [<CustomOperation("onstalled")>]
     member this.onstalled
         (
@@ -1448,7 +1448,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> unit
         )
         =
-        this.callback (render, "stalled", callback)
+        this.callback (render, "onstalled", callback)
     [<CustomOperation("onstalled")>]
     member this.onstalled
         (
@@ -1456,7 +1456,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> Task
         )
         =
-        this.callback (render, "stalled", callback)
+        this.callback (render, "onstalled", callback)
     [<CustomOperation("onstop")>]
     member this.onstop
         (
@@ -1464,7 +1464,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> unit
         )
         =
-        this.callback (render, "stop", callback)
+        this.callback (render, "onstop", callback)
     [<CustomOperation("onstop")>]
     member this.onstop
         (
@@ -1472,7 +1472,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> Task
         )
         =
-        this.callback (render, "stop", callback)
+        this.callback (render, "onstop", callback)
     [<CustomOperation("onsuspend")>]
     member this.onsuspend
         (
@@ -1480,7 +1480,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> unit
         )
         =
-        this.callback (render, "suspend", callback)
+        this.callback (render, "onsuspend", callback)
     [<CustomOperation("onsuspend")>]
     member this.onsuspend
         (
@@ -1488,7 +1488,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> Task
         )
         =
-        this.callback (render, "suspend", callback)
+        this.callback (render, "onsuspend", callback)
     [<CustomOperation("ontimeupdate")>]
     member this.ontimeupdate
         (
@@ -1496,7 +1496,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> unit
         )
         =
-        this.callback (render, "timeupdate", callback)
+        this.callback (render, "ontimeupdate", callback)
     [<CustomOperation("ontimeupdate")>]
     member this.ontimeupdate
         (
@@ -1504,7 +1504,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> Task
         )
         =
-        this.callback (render, "timeupdate", callback)
+        this.callback (render, "ontimeupdate", callback)
     [<CustomOperation("onvolumechange")>]
     member this.onvolumechange
         (
@@ -1512,7 +1512,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> unit
         )
         =
-        this.callback (render, "volumechange", callback)
+        this.callback (render, "onvolumechange", callback)
     [<CustomOperation("onvolumechange")>]
     member this.onvolumechange
         (
@@ -1520,7 +1520,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> Task
         )
         =
-        this.callback (render, "volumechange", callback)
+        this.callback (render, "onvolumechange", callback)
     [<CustomOperation("onwaiting")>]
     member this.onwaiting
         (
@@ -1528,7 +1528,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> unit
         )
         =
-        this.callback (render, "waiting", callback)
+        this.callback (render, "onwaiting", callback)
     [<CustomOperation("onwaiting")>]
     member this.onwaiting
         (
@@ -1536,7 +1536,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> Task
         )
         =
-        this.callback (render, "waiting", callback)
+        this.callback (render, "onwaiting", callback)
     [<CustomOperation("onloadstart")>]
     member this.onloadstart
         (
@@ -1544,7 +1544,7 @@ type DomAttrBuilder() =
             callback: ProgressEventArgs -> unit
         )
         =
-        this.callback (render, "loadstart", callback)
+        this.callback (render, "onloadstart", callback)
     [<CustomOperation("onloadstart")>]
     member this.onloadstart
         (
@@ -1552,7 +1552,7 @@ type DomAttrBuilder() =
             callback: ProgressEventArgs -> Task
         )
         =
-        this.callback (render, "loadstart", callback)
+        this.callback (render, "onloadstart", callback)
     [<CustomOperation("ontimeout")>]
     member this.ontimeout
         (
@@ -1560,7 +1560,7 @@ type DomAttrBuilder() =
             callback: ProgressEventArgs -> unit
         )
         =
-        this.callback (render, "timeout", callback)
+        this.callback (render, "ontimeout", callback)
     [<CustomOperation("ontimeout")>]
     member this.ontimeout
         (
@@ -1568,7 +1568,7 @@ type DomAttrBuilder() =
             callback: ProgressEventArgs -> Task
         )
         =
-        this.callback (render, "timeout", callback)
+        this.callback (render, "ontimeout", callback)
     [<CustomOperation("onabort")>]
     member this.onabort
         (
@@ -1576,7 +1576,7 @@ type DomAttrBuilder() =
             callback: ProgressEventArgs -> unit
         )
         =
-        this.callback (render, "abort", callback)
+        this.callback (render, "onabort", callback)
     [<CustomOperation("onabort")>]
     member this.onabort
         (
@@ -1584,7 +1584,7 @@ type DomAttrBuilder() =
             callback: ProgressEventArgs -> Task
         )
         =
-        this.callback (render, "abort", callback)
+        this.callback (render, "onabort", callback)
     [<CustomOperation("onload")>]
     member this.onload
         (
@@ -1592,7 +1592,7 @@ type DomAttrBuilder() =
             callback: ProgressEventArgs -> unit
         )
         =
-        this.callback (render, "load", callback)
+        this.callback (render, "onload", callback)
     [<CustomOperation("onload")>]
     member this.onload
         (
@@ -1600,7 +1600,7 @@ type DomAttrBuilder() =
             callback: ProgressEventArgs -> Task
         )
         =
-        this.callback (render, "load", callback)
+        this.callback (render, "onload", callback)
     [<CustomOperation("onloadend")>]
     member this.onloadend
         (
@@ -1608,7 +1608,7 @@ type DomAttrBuilder() =
             callback: ProgressEventArgs -> unit
         )
         =
-        this.callback (render, "loadend", callback)
+        this.callback (render, "onloadend", callback)
     [<CustomOperation("onloadend")>]
     member this.onloadend
         (
@@ -1616,7 +1616,7 @@ type DomAttrBuilder() =
             callback: ProgressEventArgs -> Task
         )
         =
-        this.callback (render, "loadend", callback)
+        this.callback (render, "onloadend", callback)
     [<CustomOperation("onprogress")>]
     member this.onprogress
         (
@@ -1624,7 +1624,7 @@ type DomAttrBuilder() =
             callback: ProgressEventArgs -> unit
         )
         =
-        this.callback (render, "progress", callback)
+        this.callback (render, "onprogress", callback)
     [<CustomOperation("onprogress")>]
     member this.onprogress
         (
@@ -1632,7 +1632,7 @@ type DomAttrBuilder() =
             callback: ProgressEventArgs -> Task
         )
         =
-        this.callback (render, "progress", callback)
+        this.callback (render, "onprogress", callback)
     [<CustomOperation("onerror")>]
     member this.onerror
         (
@@ -1640,7 +1640,7 @@ type DomAttrBuilder() =
             callback: ProgressEventArgs -> unit
         )
         =
-        this.callback (render, "error", callback)
+        this.callback (render, "onerror", callback)
     [<CustomOperation("onerror")>]
     member this.onerror
         (
@@ -1648,7 +1648,7 @@ type DomAttrBuilder() =
             callback: ProgressEventArgs -> Task
         )
         =
-        this.callback (render, "error", callback)
+        this.callback (render, "onerror", callback)
     [<CustomOperation("onactivate")>]
     member this.onactivate
         (
@@ -1656,7 +1656,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> unit
         )
         =
-        this.callback (render, "activate", callback)
+        this.callback (render, "onactivate", callback)
     [<CustomOperation("onactivate")>]
     member this.onactivate
         (
@@ -1664,7 +1664,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> Task
         )
         =
-        this.callback (render, "activate", callback)
+        this.callback (render, "onactivate", callback)
     [<CustomOperation("onbeforeactivate")>]
     member this.onbeforeactivate
         (
@@ -1672,7 +1672,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> unit
         )
         =
-        this.callback (render, "beforeactivate", callback)
+        this.callback (render, "onbeforeactivate", callback)
     [<CustomOperation("onbeforeactivate")>]
     member this.onbeforeactivate
         (
@@ -1680,7 +1680,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> Task
         )
         =
-        this.callback (render, "beforeactivate", callback)
+        this.callback (render, "onbeforeactivate", callback)
     [<CustomOperation("onbeforedeactivate")>]
     member this.onbeforedeactivate
         (
@@ -1688,7 +1688,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> unit
         )
         =
-        this.callback (render, "beforedeactivate", callback)
+        this.callback (render, "onbeforedeactivate", callback)
     [<CustomOperation("onbeforedeactivate")>]
     member this.onbeforedeactivate
         (
@@ -1696,7 +1696,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> Task
         )
         =
-        this.callback (render, "beforedeactivate", callback)
+        this.callback (render, "onbeforedeactivate", callback)
     [<CustomOperation("ondeactivate")>]
     member this.ondeactivate
         (
@@ -1704,7 +1704,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> unit
         )
         =
-        this.callback (render, "deactivate", callback)
+        this.callback (render, "ondeactivate", callback)
     [<CustomOperation("ondeactivate")>]
     member this.ondeactivate
         (
@@ -1712,7 +1712,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> Task
         )
         =
-        this.callback (render, "deactivate", callback)
+        this.callback (render, "ondeactivate", callback)
     [<CustomOperation("onended")>]
     member this.onended
         (
@@ -1720,7 +1720,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> unit
         )
         =
-        this.callback (render, "ended", callback)
+        this.callback (render, "onended", callback)
     [<CustomOperation("onended")>]
     member this.onended
         (
@@ -1728,7 +1728,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> Task
         )
         =
-        this.callback (render, "ended", callback)
+        this.callback (render, "onended", callback)
     [<CustomOperation("onfullscreenchange")>]
     member this.onfullscreenchange
         (
@@ -1736,7 +1736,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> unit
         )
         =
-        this.callback (render, "fullscreenchange", callback)
+        this.callback (render, "onfullscreenchange", callback)
     [<CustomOperation("onfullscreenchange")>]
     member this.onfullscreenchange
         (
@@ -1744,7 +1744,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> Task
         )
         =
-        this.callback (render, "fullscreenchange", callback)
+        this.callback (render, "onfullscreenchange", callback)
     [<CustomOperation("onfullscreenerror")>]
     member this.onfullscreenerror
         (
@@ -1752,7 +1752,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> unit
         )
         =
-        this.callback (render, "fullscreenerror", callback)
+        this.callback (render, "onfullscreenerror", callback)
     [<CustomOperation("onfullscreenerror")>]
     member this.onfullscreenerror
         (
@@ -1760,7 +1760,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> Task
         )
         =
-        this.callback (render, "fullscreenerror", callback)
+        this.callback (render, "onfullscreenerror", callback)
     [<CustomOperation("onloadeddata")>]
     member this.onloadeddata
         (
@@ -1768,7 +1768,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> unit
         )
         =
-        this.callback (render, "loadeddata", callback)
+        this.callback (render, "onloadeddata", callback)
     [<CustomOperation("onloadeddata")>]
     member this.onloadeddata
         (
@@ -1776,7 +1776,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> Task
         )
         =
-        this.callback (render, "loadeddata", callback)
+        this.callback (render, "onloadeddata", callback)
     [<CustomOperation("onloadedmetadata")>]
     member this.onloadedmetadata
         (
@@ -1784,7 +1784,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> unit
         )
         =
-        this.callback (render, "loadedmetadata", callback)
+        this.callback (render, "onloadedmetadata", callback)
     [<CustomOperation("onloadedmetadata")>]
     member this.onloadedmetadata
         (
@@ -1792,7 +1792,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> Task
         )
         =
-        this.callback (render, "loadedmetadata", callback)
+        this.callback (render, "onloadedmetadata", callback)
     [<CustomOperation("onpointerlockchange")>]
     member this.onpointerlockchange
         (
@@ -1800,7 +1800,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> unit
         )
         =
-        this.callback (render, "pointerlockchange", callback)
+        this.callback (render, "onpointerlockchange", callback)
     [<CustomOperation("onpointerlockchange")>]
     member this.onpointerlockchange
         (
@@ -1808,7 +1808,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> Task
         )
         =
-        this.callback (render, "pointerlockchange", callback)
+        this.callback (render, "onpointerlockchange", callback)
     [<CustomOperation("onpointerlockerror")>]
     member this.onpointerlockerror
         (
@@ -1816,7 +1816,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> unit
         )
         =
-        this.callback (render, "pointerlockerror", callback)
+        this.callback (render, "onpointerlockerror", callback)
     [<CustomOperation("onpointerlockerror")>]
     member this.onpointerlockerror
         (
@@ -1824,7 +1824,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> Task
         )
         =
-        this.callback (render, "pointerlockerror", callback)
+        this.callback (render, "onpointerlockerror", callback)
     [<CustomOperation("onreadystatechange")>]
     member this.onreadystatechange
         (
@@ -1832,7 +1832,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> unit
         )
         =
-        this.callback (render, "readystatechange", callback)
+        this.callback (render, "onreadystatechange", callback)
     [<CustomOperation("onreadystatechange")>]
     member this.onreadystatechange
         (
@@ -1840,7 +1840,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> Task
         )
         =
-        this.callback (render, "readystatechange", callback)
+        this.callback (render, "onreadystatechange", callback)
     [<CustomOperation("onscroll")>]
     member this.onscroll
         (
@@ -1848,7 +1848,7 @@ type DomAttrBuilder() =
             callback: EventArgs -> unit
         )
         =
-        this.callback (render, "scroll", callback)
+        this.callback (render, "onscroll", callback)
     [<CustomOperation("onscroll")>]
     member this.onscroll
         (
@@ -1856,4 +1856,4 @@ type DomAttrBuilder() =
             callback: EventArgs -> Task
         )
         =
-        this.callback (render, "scroll", callback)
+        this.callback (render, "onscroll", callback)
