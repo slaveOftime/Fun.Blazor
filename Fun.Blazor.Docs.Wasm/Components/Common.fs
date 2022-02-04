@@ -32,7 +32,7 @@ let simplePage
     (titleStr: string)
     (subTitle: string)
     (description: string)
-    (demos: NodeRenderFragment seq)
+    (demos: NodeRenderFragment)
     =
     html.div [
         attr.styles [ style.marginTop 20; style.marginBottom 20 ]
@@ -65,7 +65,7 @@ let simplePage
                     }
                 }
                 spaceV4
-                yield! demos
+                demos
             }
         ]
     ]

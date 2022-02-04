@@ -13,7 +13,7 @@ let demoDivider =
     }
 
 
-let demoContainer (titleStr: string) fileName (contentStr: string) =
+let demoContainer (titleStr: string) fileName (demo: NodeRenderFragment) =
     div {
         style'' { margin 10 }
         MudText'() {
@@ -23,7 +23,7 @@ let demoContainer (titleStr: string) fileName (contentStr: string) =
         spaceV2
         MudPaper'() {
             Elevation 40
-            contentStr
+            demo
         }
         spaceV2
         sourceSection fileName

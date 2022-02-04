@@ -1,7 +1,6 @@
 ﻿[<AutoOpen>]
 module Fun.Blazor.Docs.Wasm.Pages.Tests.Tests
 
-open Fun.Blazor
 open Fun.Blazor.Docs.Wasm.Components
 
 
@@ -11,6 +10,4 @@ let tests =
         "Test with bUnit"
         "bUnit made testing so simple, but with Fun.Blazor it is even simpler"
         ""
-        [
-            sourceSection "Pages/Tests/TestsDemo"
-        ]
+        (sourceSection "Pages/Tests/TestsDemo")
