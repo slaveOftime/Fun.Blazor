@@ -112,6 +112,10 @@ let navmenu =
                 Href "./helper-functions/ce-css-builder"
                 "CE style css builder"
             }
+            MudNavLink'() {
+                Href "./helper-functions/bolero"
+                "Bolero interop"
+            }
         }
         MudNavGroup'() {
             Title "Demos"
@@ -191,6 +195,12 @@ let routes =
                         "CE style css builde"
                         $"Pages/HelperFunctions/CECssDemo"
                         HelperFunctions.CECssDemo.ceCssDemo)
+                routeCi
+                    "/bolero"
+                    (demoContainer
+                        "Bolero interop"
+                        "Pages/HelperFunctions/InteropWithBoleroDemo"
+                        HelperFunctions.InteropWithBoleroDemo.interopWithBoleroDemo)
                 routeCi
                     "/html-template-demo"
                     (demoContainer
