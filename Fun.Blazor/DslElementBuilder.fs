@@ -1,5 +1,6 @@
 ﻿namespace Fun.Blazor
 
+open System
 open Microsoft.AspNetCore.Components
 open Operators
 
@@ -159,6 +160,7 @@ type EltWithChildBuilder(name) =
     /// </code>
     /// </example>
     [<CustomOperation("childContent")>]
+    [<Obsolete "This is not recommend, please use fragment or remove childContent and yield your content directly.">]
     member _.childContent(render: AttrRenderFragment, renders: NodeRenderFragment seq) =
         NodeRenderFragment(fun comp builder index ->
             let mutable index = render.Invoke(comp, builder, index)
@@ -441,7 +443,7 @@ module Elts =
 
     let strong = EltWithChildBuilder "strong"
 
-    let style = EltWithChildBuilder "style"
+    let style' = EltWithChildBuilder "style"
 
     let sub = EltWithChildBuilder "sub"
 

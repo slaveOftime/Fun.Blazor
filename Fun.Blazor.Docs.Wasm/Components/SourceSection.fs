@@ -76,12 +76,14 @@ let sourceSection fileName =
                         Indeterminate true
                     }
                 | DeferredState.Loaded codes ->
-                    html.div [
-                        html.article [ attr.classes [ "markdown-body" ]; attr.childContent [ html.raw codes ] ]
-                        html.script "https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/components/prism-core.min.js"
-                        html.script
-                            "https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/plugins/autoloader/prism-autoloader.min.js"
-                    ]
+                    div {
+                        article {
+                            class' "markdown-body"
+                            html.raw codes
+                        }
+                        script { src "https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/components/prism-core.min.js" }
+                        script { src "https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/plugins/autoloader/prism-autoloader.min.js" }
+                    }
                 | DeferredState.LoadFailed e ->
                     MudAlert'() {
                         Severity Severity.Error

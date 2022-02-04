@@ -121,7 +121,7 @@ type DomAttrBuilder() =
     member _.classes(render: AttrRenderFragment, v: string list) =
         render ==> (html.class' (String.concat " " v))
 
-    [<CustomOperation("class")>]
+    [<CustomOperation("class'")>]
     member _.class'(render: AttrRenderFragment, v: string) = render ==> (html.class' v)
 
     /// This is a helper function which can be used together with VSCode extension "Highlight HTML/SQL templates in F#"

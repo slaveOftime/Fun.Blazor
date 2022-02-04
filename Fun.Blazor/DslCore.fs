@@ -30,7 +30,7 @@ type html() =
     ///         )
     ///     )
     /// ```
-    static member component<'T when 'T :> IComponent>(fn: IComponent -> 'T) =
+    static member comp<'T when 'T :> IComponent>(fn: IComponent -> 'T) =
         NodeRenderFragment(fun comp builder index ->
             builder.OpenComponent<'T>(index)
 

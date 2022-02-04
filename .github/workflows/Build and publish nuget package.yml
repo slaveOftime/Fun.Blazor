@@ -30,12 +30,14 @@ jobs:
     - name: Publish nuget packages
       run: |
         dotnet pack -c Release Fun.Blazor/Fun.Blazor.fsproj -o .
-        dotnet pack -c Release Fun.Blazor.Feliz/Fun.Blazor.Feliz.fsproj -o .
         dotnet pack -c Release Fun.Blazor.Cli/Fun.Blazor.Cli.fsproj -o .
-        dotnet pack -c Release Fun.Blazor.HtmlTemplate/Fun.Blazor.HtmlTemplate.fsproj -o .
+        dotnet pack -c Release Fun.Blazor.Elmish/Fun.Blazor.Elmish.fsproj -o .
+        dotnet pack -c Release Fun.Blazor.Feliz/Fun.Blazor.Feliz.fsproj -o .
         dotnet pack -c Release Fun.Blazor.Generator/Fun.Blazor.Generator.fsproj -o .
+        dotnet pack -c Release Fun.Blazor.HtmlTemplate/Fun.Blazor.HtmlTemplate.fsproj -o .
         dotnet pack -c Release Fun.Blazor.Server/Fun.Blazor.Server.fsproj -o .
         dotnet pack -c Release Fun.Blazor.Wasm/Fun.Blazor.Wasm.fsproj -o .
+        dotnet pack -c Release Fun.Bolero/Fun.Bolero.fsproj -o .
         dotnet pack -c Release Fun.Css/Fun.Css.fsproj -o .
         dotnet nuget push *.nupkg -s https://api.nuget.org/v3/index.json -k ${{secrets.NUGET_API_KEY}} --skip-duplicate
     

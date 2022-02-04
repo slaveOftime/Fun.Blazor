@@ -34,7 +34,7 @@ let interopWithBlazorDemo =
         p { "We have cli to generate third party blazor component which should have better performance." }
         p { "But sometimes we may want to build it directly, we can do it like this:" }
         br
-        html.component (fun root ->
+        html.comp (fun root ->
             MudAlert(
                 Severity = Severity.Success,
                 ChildContent = root.Render(html.text "Hi")
@@ -43,7 +43,7 @@ let interopWithBlazorDemo =
         br
         adaptiview () {
             let! count, setCount = cval(0).WithSetter()
-            html.component (fun _ -> CompForBlazor(Count = count))
+            html.comp (fun _ -> CompForBlazor(Count = count))
             MudButton'() {
                 Color Color.Primary
                 OnClick(fun _ -> setCount 5)

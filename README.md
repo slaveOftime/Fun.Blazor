@@ -3,7 +3,7 @@
 This is a project to make F# developer to write blazor easier.
 
 It is based on [bolero](https://github.com/fsbolero/Bolero) and  [Feliz.Engine](https://github.com/alfonsogarciacaro/Feliz.Engine) before. \
-Now the dependency of bolero is removed to make it lighter. Feliz style is also not recommend because it will cause more allocation than CE style.
+Now the dependency of bolero is removed to make it lighter. Feliz style is also not recommend because it will cause more allocation and render loop than CE style.
 
 [Server side docs](https://funblazor.slaveoftime.fun)
 
@@ -13,7 +13,7 @@ Now the dependency of bolero is removed to make it lighter. Feliz style is also 
 ## What you can get with this project?
 
 1. Use F# ❤️😊 for blazor
-2. Template, Feliz and computation expression style DSL for internal and third party blazor libraries
+2. Template, computation expression style DSL for internal and third party blazor libraries
 4. Dependency injection (html.inject)
 3. Elmish model (html.elmish), obervable model (html.watch), adaptive model(adaptiview)
 
@@ -24,12 +24,12 @@ https://github.com/slaveOftime/Fun.Blazor.Samples
 
 Template is also available (thanks: @AngelMunoz):
 ```shell
-dotnet new --install Fun.Blazor.Templates::1.0.0-beta-001
+dotnet new --install Fun.Blazor.Templates::2.0.0-beta-001
 ```
 
 ## Some tips
 
-1. Fun.Blazor: with basic stuff and CE style by default because it has better performance than Feliz style
+1. Fun.Blazor
 
 ```fsharp
     let demo =
@@ -40,7 +40,7 @@ dotnet new --install Fun.Blazor.Templates::1.0.0-beta-001
                 childContent "Increase"
             }
             div {
-                styleBuilder {
+                style'' {
                     color "red"
                 }
                 $"value = {v}"
@@ -77,3 +77,25 @@ dotnet new --install Fun.Blazor.Templates::1.0.0-beta-001
             }
         }
 ```
+
+
+## Migrate from V1
+
+- For all the internal dom element like div, we should change
+```fsharp
+div() {}
+```
+to
+```fsharp
+div {}
+```
+
+- For server side, we should add nuget packages: Fun.Blazor.Server
+
+    AddFunBlazor is changed to AddFunBlazorServer \
+    MapFallbackToBolero is changed to MapFunBlazor
+
+- For wasm side, we should add nuget packages: Fun.Blazor.Wasm
+
+    AddFunBlazor is changed to AddFunBlazorWasm \
+    AddFunBlazorNode is changed to AddFunBlazor
