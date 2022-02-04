@@ -7,23 +7,19 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Compile Include="Router.fs" />
-		<Compile Include="AttrEngine.fs" />
-		<Compile Include="HtmlEngine.fs" />
-		<Compile Include="Dsl.fs" />
+		<Compile Include="DslElmish.fs" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Fun.Blazor\Fun.Blazor.fsproj" />
+	  <PackageReference Include="Elmish" Version="3.1.0" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
-		<PackageReference Include="Feliz.Engine" Version="1.0.0-beta-004" />
+		<ProjectReference Include="..\Fun.Blazor\Fun.Blazor.fsproj" />
 	</ItemGroup>
 	
 	<ItemGroup>
 		<PackageReference Update="FSharp.Core" Version="6.0.1" />
 	</ItemGroup>
-	
+
 </Project>

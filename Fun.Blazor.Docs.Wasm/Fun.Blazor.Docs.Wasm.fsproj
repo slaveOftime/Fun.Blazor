@@ -70,6 +70,7 @@
     <PackageReference Update="FSharp.Core" Version="6.0.1" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Fun.Blazor.Elmish\Fun.Blazor.Elmish.fsproj" />
     <ProjectReference Include="..\Fun.Blazor.Feliz\Fun.Blazor.Feliz.fsproj" />
     <ProjectReference Include="..\Fun.Blazor.HtmlTemplate\Fun.Blazor.HtmlTemplate.fsproj" />
     <ProjectReference Include="..\Fun.Blazor.Wasm\Fun.Blazor.Wasm.fsproj" />

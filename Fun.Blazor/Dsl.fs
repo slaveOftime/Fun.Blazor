@@ -16,14 +16,14 @@ type html() =
     static member mergeNodes nodes = nodes |> Seq.fold (>=>) emptyNode
 
 
-    static member fromBuilder<'Comp, 'T when 'Comp :> IComponentBuilder<'T>> (_: 'Comp) =
+    static member fromBuilder<'Comp, 'T when 'Comp :> IComponentBuilder<'T>>(_: 'Comp) =
         NodeRenderFragment(fun _ builder index ->
             builder.OpenComponent<'T>(index)
             builder.CloseComponent()
             index + 1
         )
 
-    static member fromBuilder<'Elt when 'Elt :> IEltBuilder> (elt: 'Elt) =
+    static member fromBuilder<'Elt when 'Elt :> IEltBuilder>(elt: 'Elt) =
         NodeRenderFragment(fun _ builder index ->
             builder.OpenElement(index, elt.Name)
             builder.CloseElement()
@@ -64,10 +64,11 @@ type html() =
         )
 
     static member ref(fn) =
-        AttrRenderFragment(fun _ builder index ->
+        RefRenderFragment(fun _ builder index ->
             builder.AddElementReferenceCapture(index, Action<ElementReference> fn)
             index + 1
         )
+
 
     static member bind<'T>(name: string, store: IStore<'T>) =
         AttrRenderFragment(fun comp builder index ->
@@ -142,6 +143,7 @@ type html() =
             builder.AddContent(index, x)
             index + 1
         )
+
 
     static member style(x: string) = "style" => x
     static member styles(x) = "style" => (makeStyles x)
