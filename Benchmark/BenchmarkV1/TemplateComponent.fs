@@ -15,7 +15,7 @@ type TemplateComponent() =
         
     
     override _.Render() =
-        let count =
+        let counter =
             adaptiview () {
                 let! count, setCount = cval(1).WithSetter()
                 Template.html $"""
@@ -49,7 +49,7 @@ type TemplateComponent() =
                     <p class="class">
                         p
                     </p>
-                    {count}
+                    {counter}
                 </section>
             </div>
         """

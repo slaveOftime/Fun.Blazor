@@ -15,6 +15,19 @@ type CEComponent() =
 
 
     override _.Render() =
+        let counter =
+            adaptiview () {
+                let! count, setCount = cval(1).WithSetter()
+                p () {
+                    class' "class"
+                    childContent $"Count = {count}"
+                }
+                button () {
+                    onclick (fun _ -> setCount (count + 1))
+                    childContent "Increase"
+                }
+            }
+
         div () {
             class' "class"
             css "color: red;"
@@ -44,17 +57,7 @@ type CEComponent() =
                         class' "class"
                         childContent "p"
                     }
-                    adaptiview () {
-                        let! count, setCount = cval(1).WithSetter()
-                        p () {
-                            class' "class"
-                            childContent $"Count = {count}"
-                        }
-                        button () {
-                            onclick (fun _ -> setCount (count + 1))
-                            childContent "Increase"
-                        }
-                    }
+                    counter
                 ]
             ]
         }

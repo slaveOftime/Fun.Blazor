@@ -1,6 +1,5 @@
 ﻿namespace Fun.Blazor.Benchmark
 
-open FSharp.Data.Adaptive
 open Microsoft.AspNetCore.Components.Rendering
 open Bolero
 open Bolero.Html
