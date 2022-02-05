@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="CEComponent.fs" />
+    <Compile Include="FelizComponent.fs" />
+    <Compile Include="TemplateComponent.fs" />
+    <Compile Include="Program.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BenchmarkDotNet" Version="0.13.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Fun.Blazor.Feliz\Fun.Blazor.Feliz.fsproj" />
+    <ProjectReference Include="..\..\Fun.Blazor.HtmlTemplate\Fun.Blazor.HtmlTemplate.fsproj" />
+    <ProjectReference Include="..\..\Fun.Blazor\Fun.Blazor.fsproj" />
+  </ItemGroup>
+
+</Project>
