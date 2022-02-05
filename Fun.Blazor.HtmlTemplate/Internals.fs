@@ -3,6 +3,7 @@ module Fun.Blazor.HtmlTemplate.Internals
 open System
 open System.Text
 open System.Text.RegularExpressions
+open System.Collections.Generic
 open System.Collections.Concurrent
 open Microsoft.AspNetCore.Components
 open FSharp.Data
@@ -151,8 +152,25 @@ let buildAttrs (name: string, value: string) =
         Attr(name => value)
 
 
-let rebuildNodes (nodes: NodeItem list) (args: obj []) =
-    let rec loopNodes (nodes: NodeItem list) : NodeRenderFragment =
+let mergeNodes (items: NodeItem seq) =
+    let list = List()
+    for item in items do
+        match Seq.tryLast list, item with
+        | Some (Node pre), Node current -> list.[list.Count - 1] <- Node(pre >=> current)
+        | _ -> list.Add item
+    Seq.toList list
+
+let mergeAttrs (items: AttrItem seq) =
+    let list = List()
+    for item in items do
+        match Seq.tryLast list, item with
+        | Some (Attr pre), Attr current -> list.[list.Count - 1] <- Attr(pre ==> current)
+        | _ -> list.Add item
+    Seq.toList list
+
+
+let rebuildNodes (nodes: NodeItem seq) (args: obj []) =
+    let rec loopNodes (nodes: NodeItem seq) : NodeRenderFragment =
         fragment {
             for node in nodes do
                 match node with
@@ -182,21 +200,37 @@ let parseNodes (str: string) =
                 let nodeName = node.Name()
                 if String.IsNullOrEmpty nodeName then
                     yield! buildNodes (node.ToString())
+
                 else
-                    NodeElt(
-                        nodeName,
+                    let attrs =
                         [
                             for attr in node.Attributes() do
                                 buildAttrs (attr.Name(), attr.Value())
-                        ],
-                        [
-                            if nodeName = "script" || nodeName = "style" then
+                        ]
+                        |> mergeAttrs
+
+                    let nodes =
+                        if nodeName = "script" || nodeName = "style" then
+                            [
                                 for ele in node.Elements() do
                                     yield! buildRawNodes (ele.ToString())
-                            else
-                                yield! loopNodes (node.Elements())
-                        ]
-                    )
+                            ]
+                            |> mergeNodes
+                        else
+                            loopNodes (node.Elements())
+
+                    match attrs, nodes with
+                    | [ Attr attr ], [] -> Node(EltWithChildBuilder nodeName { attr })
+                    | [], [ Node node ] -> Node(EltWithChildBuilder nodeName { node })
+                    | [ Attr attr ], [ Node node ] ->
+                        Node(
+                            EltWithChildBuilder nodeName {
+                                attr
+                                node
+                            }
+                        )
+                    | _ -> NodeElt(nodeName, attrs, nodes)
         ]
+        |> mergeNodes
 
     loopNodes (doc.Elements())

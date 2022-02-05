@@ -8,6 +8,12 @@ open Fun.Blazor.Benchmark
 type Benchmarks() =
 
     [<Benchmark>]
+    member _.BuildRenderTreeForCSharp() = CSharpComponent().Build()
+
+    [<Benchmark>]
+    member _.BuildRenderTreeForBolero() = BoleroComponent().Build()
+
+    [<Benchmark>]
     member _.BuildRenderTreeForCE() = CEComponent().Build()
 
     [<Benchmark>]
@@ -15,12 +21,6 @@ type Benchmarks() =
 
     [<Benchmark>]
     member _.BuildRenderTreeForTemplate() = TemplateComponent().Build()
-
-    [<Benchmark>]
-    member _.BuildRenderTreeForBolero() = BoleroComponent().Build()
-
-    [<Benchmark>]
-    member _.BuildRenderTreeForCSharp() = CSharpComponent().Build()
 
 
 BenchmarkRunner.Run(typeof<Benchmarks>.Assembly) |> ignore

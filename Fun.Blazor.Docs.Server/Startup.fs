@@ -25,6 +25,6 @@ Host.CreateDefaultBuilder(Environment.GetCommandLineArgs())
                     .UseRouting()
                     .UseEndpoints(fun endpoints ->
                         endpoints.MapBlazorHub() |> ignore
-                        endpoints.MapFunBlazor(Index.page) |> ignore) |> ignore) |> ignore)
+                        endpoints.MapFunBlazor(Index.page2) |> ignore) |> ignore) |> ignore)
     .Build()
     .Run()
