@@ -9,11 +9,13 @@
     <Compile Include="CEComponent.fs" />
     <Compile Include="FelizComponent.fs" />
     <Compile Include="TemplateComponent.fs" />
+    <Compile Include="BoleroComponent.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" Version="0.13.1" />
+    <PackageReference Include="Bolero" Version="0.18.16" />
   </ItemGroup>
 
   <ItemGroup>

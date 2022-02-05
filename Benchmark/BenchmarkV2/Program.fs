@@ -15,5 +15,8 @@ type Benchmarks() =
     [<Benchmark>]
     member _.BuildRenderTreeForTemplate() = TemplateComponent().Build()
 
+    [<Benchmark>]
+    member _.BuildRenderTreeForBolero() = BoleroComponent().Build()
+
 
 BenchmarkRunner.Run(typeof<Benchmarks>.Assembly) |> ignore

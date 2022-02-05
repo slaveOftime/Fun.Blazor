@@ -10,16 +10,17 @@ open Fun.Blazor
 open Fun.Blazor.Operators
 
 
-type ArgMkAttrWithName = string -> AttrRenderFragment
-
 type AttrItem =
-    | Attr of AttrRenderFragment
-    | AttrMk of (obj [] -> AttrRenderFragment)
+    | Attr of attr: AttrRenderFragment
+    | AttrMk of attrMk: (obj [] -> AttrRenderFragment)
 
 type NodeItem =
-    | Node of NodeRenderFragment
-    | NodeMk of (obj [] -> NodeRenderFragment)
-    | NodeElt of string * AttrItem list * NodeItem list
+    | Node of node: NodeRenderFragment
+    | NodeMk of ndoeMk: (obj [] -> NodeRenderFragment)
+    | NodeElt of name: string * attrs: AttrItem list * nodes: NodeItem list
+
+
+type ArgMkAttrWithName = string -> AttrRenderFragment
 
 
 let formatHoleRegex = Regex("\{([\d]*)\}")
