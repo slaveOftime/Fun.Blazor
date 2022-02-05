@@ -28,7 +28,7 @@ let virtualizeDemo =
                 overflowYAuto
             }
             childContent [
-                Virtualize' {
+                Virtualize'() {
                     Items items
                     ChildContent(fun i ->
                         div {
