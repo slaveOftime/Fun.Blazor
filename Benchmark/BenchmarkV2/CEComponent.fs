@@ -20,34 +20,34 @@ type CEComponent() =
             css "color: red;"
             p {
                 class' "class"
-                "p"
+                "p1"
             }
             p {
                 class' "class"
-                "p"
+                "p2"
             }
             p {
                 class' "class"
-                "p"
+                "p3"
             }
             p {
                 class' "class"
-                "p"
+                "p4"
             }
             p {
                 class' "class"
-                "p"
+                "p5"
             }
             section {
                 p {
                     class' "class"
-                    "p"
+                    "p6"
                 }
                 adaptiview () {
                     let! count, setCount = cval(1).WithSetter()
                     p {
                         class' "class"
-                        childContent $"Count = {count}"
+                        $"Count = {count}"
                     }
                     button {
                         onclick (fun _ -> setCount (count + 1))

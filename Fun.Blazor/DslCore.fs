@@ -59,14 +59,14 @@ type html() =
         )
 
 
-    static member fromBuilder<'Comp, 'T when 'Comp :> IComponentBuilder<'T>>(_: 'Comp) =
+    static member inline fromBuilder<'Comp, 'T when 'Comp :> IComponentBuilder<'T>>(_: 'Comp) =
         NodeRenderFragment(fun _ builder index ->
             builder.OpenComponent<'T>(index)
             builder.CloseComponent()
             index + 1
         )
 
-    static member fromBuilder<'Elt when 'Elt :> IElementBuilder>(elt: 'Elt) =
+    static member inline fromBuilder<'Elt when 'Elt :> IElementBuilder>(elt: 'Elt) =
         NodeRenderFragment(fun _ builder index ->
             builder.OpenElement(index, elt.Name)
             builder.CloseElement()
@@ -100,13 +100,13 @@ type html() =
         )
 
 
-    static member key k =
+    static member inline key k =
         AttrRenderFragment(fun _ builder index ->
             builder.SetKey k
             index
         )
 
-    static member ref(fn) =
+    static member inline ref(fn) =
         RefRenderFragment(fun _ builder index ->
             builder.AddElementReferenceCapture(index, Action<ElementReference> fn)
             index + 1
@@ -143,52 +143,52 @@ type html() =
         )
 
 
-    static member callback<'T>(eventName, fn: 'T -> unit) =
+    static member inline callback<'T>(eventName, fn: 'T -> unit) =
         AttrRenderFragment(fun comp builder index ->
             builder.AddAttribute(index, eventName, EventCallback.Factory.Create(comp, Action<'T> fn))
             index + 1
         )
 
-    static member callbackTask<'T>(eventName, fn: 'T -> Task) =
+    static member inline callbackTask<'T>(eventName, fn: 'T -> Task) =
         AttrRenderFragment(fun comp builder index ->
             builder.AddAttribute(index, eventName, EventCallback.Factory.Create(comp, Func<'T, Task> fn))
             index + 1
         )
 
 
-    static member raw x =
+    static member inline raw x =
         NodeRenderFragment(fun _ builder index ->
             builder.AddMarkupContent(index, x)
             index + 1
         )
 
 
-    static member text(x: int) =
+    static member inline text(x: int) =
         NodeRenderFragment(fun _ builder index ->
             builder.AddContent(index, box x)
             index + 1
         )
 
-    static member text(x: float) =
+    static member inline text(x: float) =
         NodeRenderFragment(fun _ builder index ->
             builder.AddContent(index, box x)
             index + 1
         )
 
-    static member text(x: Guid) =
+    static member inline text(x: Guid) =
         NodeRenderFragment(fun _ builder index ->
             builder.AddContent(index, string x)
             index + 1
         )
 
-    static member text(x: string) =
+    static member inline text(x: string) =
         NodeRenderFragment(fun _ builder index ->
             builder.AddContent(index, x)
             index + 1
         )
 
 
-    static member style(x: string) = "style" => x
-    static member styles(x) = "style" => (makeStyles x)
-    static member class'(x: string) = "class" => x
-    static member classes(x: string seq) = "class" => (String.concat " " x)
+    static member inline style(x: string) = "style" => x
+    static member inline styles(x) = "style" => (makeStyles x)
+    static member inline class'(x: string) = "class" => x
+    static member inline classes(x: string seq) = "class" => (String.concat " " x)

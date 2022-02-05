@@ -11,7 +11,7 @@ type EltBuilder(name) =
     interface IElementBuilder with
         member _.Name: string = name
 
-    member this.Run(render: AttrRenderFragment) =
+    member inline this.Run([<InlineIfLambda>] render: AttrRenderFragment) =
         NodeRenderFragment(fun comp builder index ->
             builder.OpenElement(index, (this :> IElementBuilder).Name)
             let nextIndex = render.Invoke(comp, builder, index + 1)
@@ -20,10 +20,10 @@ type EltBuilder(name) =
         )
 
     [<CustomOperation("ref")>]
-    member _.ref
+    member inline _.ref
         (
-            render: AttrRenderFragment,
-            fn: ElementReference -> unit
+            [<InlineIfLambda>] render: AttrRenderFragment,
+            [<InlineIfLambda>] fn: ElementReference -> unit
         )
         =
         NodeRenderFragment(fun comp builder index ->
@@ -37,7 +37,7 @@ type EltWithChildBuilder(name) =
     inherit EltBuilder(name)
 
 
-    member this.Run(render: NodeRenderFragment) =
+    member inline this.Run([<InlineIfLambda>] render: NodeRenderFragment) =
         NodeRenderFragment(fun comp builder index ->
             builder.OpenElement(index, (this :> IElementBuilder).Name)
             let nextIndex = render.Invoke(comp, builder, index + 1)
@@ -46,32 +46,32 @@ type EltWithChildBuilder(name) =
         )
     
 
-    member _.Yield(x: int) =
+    member inline _.Yield(x: int) =
         NodeRenderFragment(fun _ builder index ->
             builder.AddContent(index, x)
             index + 1
         )
 
-    member _.Yield(x: string) =
+    member inline _.Yield(x: string) =
         NodeRenderFragment(fun _ builder index ->
             builder.AddContent(index, x)
             index + 1
         )
 
-    member _.Yield(x: float) =
+    member inline _.Yield(x: float) =
         NodeRenderFragment(fun _ builder index ->
             builder.AddContent(index, x)
             index + 1
         )
 
-    member _.Yield<'Elt when 'Elt :> IElementBuilder>(x: 'Elt) =
+    member inline _.Yield<'Elt when 'Elt :> IElementBuilder>(x: 'Elt) =
         NodeRenderFragment(fun _ builder index ->
             builder.OpenElement(index, x.Name)
             builder.CloseElement()
             index + 1
         )
 
-    member _.Yield<'Comp, 'T1 when 'Comp :> IComponentBuilder<'T1>>(_: 'Comp) =
+    member inline _.Yield<'Comp, 'T1 when 'Comp :> IComponentBuilder<'T1>>(_: 'Comp) =
         NodeRenderFragment(fun _ builder index ->
             builder.OpenComponent<'T1>(index)
             builder.CloseComponent()
@@ -136,10 +136,10 @@ type EltWithChildBuilder(name) =
     /// </code>
     /// </example>
     [<CustomOperation("childContent")>]
-    member _.childContent
+    member inline _.childContent
         (
-            render: AttrRenderFragment,
-            renderChild: NodeRenderFragment
+            [<InlineIfLambda>]  render: AttrRenderFragment,
+            [<InlineIfLambda>]  renderChild: NodeRenderFragment
         )
         =
         render >>> renderChild
@@ -161,7 +161,7 @@ type EltWithChildBuilder(name) =
     /// </example>
     [<CustomOperation("childContent")>]
     [<Obsolete "This is not recommend, please use fragment or remove childContent and yield your content directly.">]
-    member _.childContent(render: AttrRenderFragment, renders: NodeRenderFragment seq) =
+    member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, renders: NodeRenderFragment seq) =
         NodeRenderFragment(fun comp builder index ->
             let mutable index = render.Invoke(comp, builder, index)
             for item in renders do
@@ -183,7 +183,7 @@ type EltWithChildBuilder(name) =
     /// </code>
     /// </example>
     [<CustomOperation("childContent")>]
-    member _.childContent(render: AttrRenderFragment, v: string) = render >>> (html.text v)
+    member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, v: string) = render >>> (html.text v)
 
     /// <summary>
     /// Single child node to be added into the element's children
@@ -199,7 +199,7 @@ type EltWithChildBuilder(name) =
     /// </code>
     /// </example>
     [<CustomOperation("childContent")>]
-    member _.childContent(render: AttrRenderFragment, v: int) = render >>> (html.text v)
+    member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, v: int) = render >>> (html.text v)
 
     /// <summary>
     /// Single child node to be added into the element's children
@@ -215,7 +215,7 @@ type EltWithChildBuilder(name) =
     /// </code>
     /// </example>
     [<CustomOperation("childContent")>]
-    member _.childContent(render: AttrRenderFragment, v: float) = render >>> (html.text v)
+    member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, v: float) = render >>> (html.text v)
 
     /// <summary>
     /// Single child node to be added into the element's children
@@ -233,7 +233,7 @@ type EltWithChildBuilder(name) =
     /// </code>
     /// </example>
     [<CustomOperation("childContentRaw")>]
-    member _.childContentRaw(render: AttrRenderFragment, v: string) = render >>> (html.raw v)
+    member inline _.childContentRaw([<InlineIfLambda>] render: AttrRenderFragment, v: string) = render >>> (html.raw v)
 
 
 [<AutoOpen>]
@@ -501,7 +501,7 @@ module Elts =
 
 
     /// Put raw js into the script tag
-    let js (x: string) =
+    let inline js (x: string) =
         NodeRenderFragment(fun _ builder index ->
             builder.OpenElement(index, "script")
             builder.AddContent(index + 1, x)
@@ -510,19 +510,19 @@ module Elts =
         )
 
 
-    let doctype decl =
+    let inline doctype decl =
         NodeRenderFragment(fun _ builder index ->
             builder.AddMarkupContent(index, $"<!DOCTYPE {decl}>\n")
             index + 1
         )
 
-    let stylesheet (x: string) =
+    let inline stylesheet (x: string) =
         link {
             rel "stylesheet"
             href x
         }
 
-    let baseUrl (x: string) = base' { href x }
+    let inline baseUrl (x: string) = base' { href x }
 
 
     let styleBuilder = StyleBuilder()
