@@ -20,4 +20,8 @@
     <PackageReference Include="Fun.Blazor.HtmlTemplate" Version="0.2.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CSharpComponents\CSharpComponents.csproj" />
+  </ItemGroup>
+
 </Project>

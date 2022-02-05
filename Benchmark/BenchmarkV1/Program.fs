@@ -1,5 +1,6 @@
 ﻿open BenchmarkDotNet.Attributes
 open BenchmarkDotNet.Running
+open CSharpComponents
 open Fun.Blazor.Benchmark
 
 
@@ -7,16 +8,19 @@ open Fun.Blazor.Benchmark
 type Benchmarks() =
 
     [<Benchmark>]
-    member _.BuildRenderTreeForCE() = CEComponent().Build()
+    member _.BuildRenderTreeWithCSharp() = CSharpComponent().Build()
 
     [<Benchmark>]
-    member _.BuildRenderTreeForFeliz() = FelizComponent().Build()
+    member _.BuildRenderTreeWithBolero() = BoleroComponent().Build()
 
     [<Benchmark>]
-    member _.BuildRenderTreeForTemplate() = TemplateComponent().Build()
+    member _.BuildRenderTreeWithCE() = CEComponent().Build()
 
     [<Benchmark>]
-    member _.BuildRenderTreeForBolero() = BoleroComponent().Build()
+    member _.BuildRenderTreeWithTemplate() = TemplateComponent().Build()
+
+    [<Benchmark>]
+    member _.BuildRenderTreeWithFeliz() = FelizComponent().Build()
 
 
 BenchmarkRunner.Run(typeof<Benchmarks>.Assembly) |> ignore
