@@ -12,7 +12,7 @@ type ComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent>(
     interface IComponentBuilder<'T>
 
 
-    member _.Run(render: AttrRenderFragment) =
+    member inline _.Run([<InlineIfLambda>] render: AttrRenderFragment) =
         NodeRenderFragment(fun comp builder index ->
             builder.OpenComponent<'T>(index)
             let nextIndex = render.Invoke(comp, builder, index + 1)
@@ -55,7 +55,7 @@ type ComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent>(
 
     /// key for blazor
     [<CustomOperation("key")>]
-    member _.key(render: AttrRenderFragment, k) =
+    member inline _.key([<InlineIfLambda>] render: AttrRenderFragment, k) =
         render
         ==> AttrRenderFragment(fun _ builder index ->
             builder.SetKey k
@@ -63,10 +63,10 @@ type ComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent>(
         )
 
     [<CustomOperation("ref")>]
-    member _.ref
+    member inline _.ref
         (
-            render: AttrRenderFragment,
-            fn: 'T -> unit
+            [<InlineIfLambda>] render: AttrRenderFragment,
+            [<InlineIfLambda>] fn: 'T -> unit
         )
         =
         render
@@ -76,11 +76,11 @@ type ComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent>(
         )
 
     [<CustomOperation("callback")>]
-    member _.callback
+    member inline _.callback
         (
-            render: AttrRenderFragment,
+            [<InlineIfLambda>] render: AttrRenderFragment,
             eventName,
-            callback: 'T -> unit
+            [<InlineIfLambda>] callback: 'T -> unit
         )
         =
         render
@@ -90,11 +90,11 @@ type ComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent>(
         )
 
     [<CustomOperation("callback")>]
-    member _.callback
+    member inline _.callback
         (
-            render: AttrRenderFragment,
+            [<InlineIfLambda>] render: AttrRenderFragment,
             eventName,
-            callback: 'T -> Task
+            [<InlineIfLambda>] callback: 'T -> Task
         )
         =
         render
@@ -104,7 +104,7 @@ type ComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent>(
         )
 
     [<CustomOperation("preventDefault")>]
-    member _.preventDefault(render: AttrRenderFragment, eventName, value) =
+    member inline _.preventDefault([<InlineIfLambda>] render: AttrRenderFragment, eventName, value) =
         render
         ==> AttrRenderFragment(fun _ builder index ->
             builder.AddEventPreventDefaultAttribute(index, eventName, value)
@@ -112,7 +112,7 @@ type ComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent>(
         )
 
     [<CustomOperation("stopPropagation")>]
-    member _.stopPropagation(render: AttrRenderFragment, eventName, value) =
+    member inline _.stopPropagation([<InlineIfLambda>] render: AttrRenderFragment, eventName, value) =
         render
         ==> AttrRenderFragment(fun _ builder index ->
             builder.AddEventPreventDefaultAttribute(index, eventName, value)
@@ -124,7 +124,7 @@ type ComponentWithChildBuilder<'T when 'T :> IComponent>() =
     inherit ComponentBuilder<'T>()
     
 
-    member _.Run(render: NodeRenderFragment) =
+    member inline _.Run([<InlineIfLambda>] render: NodeRenderFragment) =
         NodeRenderFragment(fun comp builder index ->
             builder.OpenComponent<'T>(index)
             builder.AddAttribute(
@@ -170,32 +170,32 @@ type ComponentWithChildBuilder<'T when 'T :> IComponent>() =
         )
 
 
-    member _.Yield(x: int) =
+    member inline _.Yield(x: int) =
         NodeRenderFragment(fun _ builder index ->
             builder.AddContent(index, x)
             index + 1
         )
 
-    member _.Yield(x: string) =
+    member inline _.Yield(x: string) =
         NodeRenderFragment(fun _ builder index ->
             builder.AddContent(index, x)
             index + 1
         )
 
-    member _.Yield(x: float) =
+    member inline _.Yield(x: float) =
         NodeRenderFragment(fun _ builder index ->
             builder.AddContent(index, x)
             index + 1
         )
 
-    member _.Yield<'Elt when 'Elt :> IElementBuilder>(x: 'Elt) =
+    member inline _.Yield<'Elt when 'Elt :> IElementBuilder>(x: 'Elt) =
         NodeRenderFragment(fun _ builder index ->
             builder.OpenElement(index, x.Name)
             builder.CloseElement()
             index + 1
         )
 
-    member _.Yield<'Comp, 'T1 when 'Comp :> IComponentBuilder<'T1>>(_: 'Comp) =
+    member inline _.Yield<'Comp, 'T1 when 'Comp :> IComponentBuilder<'T1>>(_: 'Comp) =
         NodeRenderFragment(fun _ builder index ->
             builder.OpenComponent<'T1>(index)
             builder.CloseComponent()
@@ -261,29 +261,29 @@ type ComponentWithChildBuilder<'T when 'T :> IComponent>() =
 
 
     [<CustomOperation("childContent")>]
-    member _.childContent
+    member inline _.childContent
         (
-            render: AttrRenderFragment,
-            renderChild: NodeRenderFragment
+            [<InlineIfLambda>] render: AttrRenderFragment,
+            [<InlineIfLambda>] renderChild: NodeRenderFragment
         )
         =
         render ==> html.renderFragment ("ChildContent", renderChild)
 
     [<CustomOperation("childContent")>]
     [<Obsolete "This is not recommend, please use fragment or remove childContent and yield your content directly.">]
-    member _.childContent(render: AttrRenderFragment, renders: NodeRenderFragment seq) =
+    member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, renders: NodeRenderFragment seq) =
         render ==> html.renderFragment ("ChildContent", html.mergeNodes renders)
 
     [<CustomOperation("childContent")>]
-    member _.childContent(render: AttrRenderFragment, v: string) =
+    member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, v: string) =
         render ==> html.renderFragment ("ChildContent", html.text v)
 
     [<CustomOperation("childContent")>]
-    member _.childContent(render: AttrRenderFragment, v: int) =
+    member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, v: int) =
         render ==> html.renderFragment ("ChildContent", html.text v)
 
     [<CustomOperation("childContent")>]
-    member _.childContent(render: AttrRenderFragment, v: float) =
+    member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, v: float) =
         render ==> html.renderFragment ("ChildContent", html.text v)
 
 
@@ -293,7 +293,7 @@ type ComponentWithDomAttrBuilder<'T when 'T :> IComponent>() =
     interface IComponentBuilder<'T>
 
 
-    member _.Run(render: AttrRenderFragment) =
+    member inline _.Run([<InlineIfLambda>]render: AttrRenderFragment) =
         NodeRenderFragment(fun comp builder index ->
             builder.OpenComponent<'T>(index)
             let nextIndex = render.Invoke(comp, builder, index + 1)
@@ -301,7 +301,7 @@ type ComponentWithDomAttrBuilder<'T when 'T :> IComponent>() =
             nextIndex
         )
 
-    member _.Run(render: RefRenderFragment) =
+    member inline _.Run([<InlineIfLambda>] render: RefRenderFragment) =
         NodeRenderFragment(fun comp builder index ->
             builder.OpenComponent<'T>(index)
             let nextIndex = render.Invoke(comp, builder, index + 1)
@@ -311,10 +311,10 @@ type ComponentWithDomAttrBuilder<'T when 'T :> IComponent>() =
 
 
     [<CustomOperation("ref")>]
-    member _.ref
+    member inline _.ref
         (
-            render: AttrRenderFragment,
-            fn: 'T -> unit
+            [<InlineIfLambda>] render: AttrRenderFragment,
+            [<InlineIfLambda>] fn: 'T -> unit
         )
         =
         RefRenderFragment(fun comp builder index ->
@@ -329,7 +329,7 @@ type ComponentWithDomAttrBuilder<'T when 'T :> IComponent>() =
 type ComponentWithDomAndChildAttrBuilder<'T when 'T :> IComponent>() =
     inherit ComponentWithDomAttrBuilder<'T>()
 
-    member _.Run(render: NodeRenderFragment) =
+    member inline _.Run([<InlineIfLambda>] render: NodeRenderFragment) =
         NodeRenderFragment(fun comp builder index ->
             builder.OpenComponent<'T>(index)
             builder.AddAttribute(
@@ -375,32 +375,32 @@ type ComponentWithDomAndChildAttrBuilder<'T when 'T :> IComponent>() =
         )
 
 
-    member _.Yield(x: int) =
+    member inline _.Yield(x: int) =
         NodeRenderFragment(fun _ builder index ->
             builder.AddContent(index, x)
             index + 1
         )
 
-    member _.Yield(x: string) =
+    member inline _.Yield(x: string) =
         NodeRenderFragment(fun _ builder index ->
             builder.AddContent(index, x)
             index + 1
         )
 
-    member _.Yield(x: float) =
+    member inline _.Yield(x: float) =
         NodeRenderFragment(fun _ builder index ->
             builder.AddContent(index, x)
             index + 1
         )
 
-    member _.Yield<'Elt when 'Elt :> IElementBuilder>(x: 'Elt) =
+    member inline _.Yield<'Elt when 'Elt :> IElementBuilder>(x: 'Elt) =
         NodeRenderFragment(fun _ builder index ->
             builder.OpenElement(index, x.Name)
             builder.CloseElement()
             index + 1
         )
 
-    member _.Yield<'Comp, 'T1 when 'Comp :> IComponentBuilder<'T1>>(_: 'Comp) =
+    member inline _.Yield<'Comp, 'T1 when 'Comp :> IComponentBuilder<'T1>>(_: 'Comp) =
         NodeRenderFragment(fun _ builder index ->
             builder.OpenComponent<'T1>(index)
             builder.CloseComponent()
@@ -466,27 +466,27 @@ type ComponentWithDomAndChildAttrBuilder<'T when 'T :> IComponent>() =
 
 
     [<CustomOperation("childContent")>]
-    member _.childContent
+    member inline _.childContent
         (
-            render: AttrRenderFragment,
-            renderChild: NodeRenderFragment
+            [<InlineIfLambda>] render: AttrRenderFragment,
+            [<InlineIfLambda>] renderChild: NodeRenderFragment
         )
         =
         render ==> html.renderFragment ("ChildContent", renderChild)
 
     [<CustomOperation("childContent")>]
     [<Obsolete "This is not recommend, please use fragment or remove childContent and yield your content directly.">]
-    member _.childContent(render: AttrRenderFragment, renders: NodeRenderFragment seq) =
+    member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, renders: NodeRenderFragment seq) =
         render ==> html.renderFragment ("ChildContent", html.mergeNodes renders)
 
     [<CustomOperation("childContent")>]
-    member _.childContent(render: AttrRenderFragment, v: string) =
+    member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, v: string) =
         render ==> html.renderFragment ("ChildContent", html.text v)
 
     [<CustomOperation("childContent")>]
-    member _.childContent(render: AttrRenderFragment, v: int) =
+    member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, v: int) =
         render ==> html.renderFragment ("ChildContent", html.text v)
 
     [<CustomOperation("childContent")>]
-    member _.childContent(render: AttrRenderFragment, v: float) =
+    member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, v: float) =
         render ==> html.renderFragment ("ChildContent", html.text v)

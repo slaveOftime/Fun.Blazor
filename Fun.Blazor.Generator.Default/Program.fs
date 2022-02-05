@@ -12,28 +12,28 @@ let componentTypes = Assembly.LoadFile(__SOURCE_DIRECTORY__ + "/bin/Debug/net5.0
 let webTypes = Assembly.LoadFile(__SOURCE_DIRECTORY__ + "/bin/Debug/net5.0/Microsoft.AspNetCore.Components.Web.dll").GetTypes()
 
 
-let componentsDsl = CEGenerator.generateCode "Microsoft.AspNetCore.Components" opens componentTypes
-let webDsl = CEGenerator.generateCode "Microsoft.AspNetCore.Components.Web" opens webTypes
+//let componentsDsl = CEGenerator.generateCode "Microsoft.AspNetCore.Components" opens componentTypes
+//let webDsl = CEGenerator.generateCode "Microsoft.AspNetCore.Components.Web" opens webTypes
 
-let dslPath = __SOURCE_DIRECTORY__ + "\..\Fun.Blazor.Feliz\Dsl.AspNetCore.fs"
-let dslCode = 
-    $"""{componentsDsl.internalCode}
+//let dslPath = __SOURCE_DIRECTORY__ + "\..\Fun.Blazor.Feliz\Dsl.AspNetCore.fs"
+//let dslCode = 
+//    $"""{componentsDsl.internalCode}
 
-// ===========================================================================================
+//// ===========================================================================================
 
-{componentsDsl.dslCode}
+//{componentsDsl.dslCode}
 
-// ===========================================================================================
-// ===========================================================================================
+//// ===========================================================================================
+//// ===========================================================================================
 
-{webDsl.internalCode}
+//{webDsl.internalCode}
 
-// ===========================================================================================
+//// ===========================================================================================
 
-{webDsl.dslCode}
-    """
+//{webDsl.dslCode}
+//    """
     
-File.WriteAllText(dslPath, dslCode)
+//File.WriteAllText(dslPath, dslCode)
 
 
 let componentsDslCE = CEGenerator.generateCode "Microsoft.AspNetCore.Components" opens componentTypes
