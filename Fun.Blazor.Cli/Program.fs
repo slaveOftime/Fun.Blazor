@@ -26,7 +26,7 @@ type GenerateSettings() =
     member val Sdk = "" with get, set
     
     [<Description("Fun.Blazor.Generator version")>]
-    [<CommandOption("-gv|--generator-version")>]
+    [<CommandOption("--generator-version")>]
     member val GeneratorVersion = "2.0.0-beta003" with get, set
 
 
