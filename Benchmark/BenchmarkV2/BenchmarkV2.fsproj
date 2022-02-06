@@ -6,16 +6,20 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="CEComponent.fs" />
-    <Compile Include="FelizComponent.fs" />
-    <Compile Include="TemplateComponent.fs" />
-    <Compile Include="BoleroComponent.fs" />
+    <Compile Include="Fun.Blazor.Bindings\MudBlazor.fs" />
+    <Compile Include="BasicBenchmark\CEComponent.fs" />
+    <Compile Include="BasicBenchmark\FelizComponent.fs" />
+    <Compile Include="BasicBenchmark\TemplateComponent.fs" />
+    <Compile Include="BasicBenchmark\BoleroComponent.fs" />
+    <Compile Include="BasicBenchmark\Benchmarks.fs" />
+    <Compile Include="BlazorInterop\Benchmarks.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" Version="0.13.1" />
     <PackageReference Include="Bolero" Version="0.18.16" />
+    <PackageReference Include="MudBlazor" Version="6.0.6" />
   </ItemGroup>
 
   <ItemGroup>

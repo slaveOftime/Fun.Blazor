@@ -1,4 +1,4 @@
-﻿namespace Fun.Blazor.Benchmark
+﻿namespace Benchmark.BasicBenchmark
 
 open FSharp.Data.Adaptive
 open Microsoft.AspNetCore.Components.Rendering

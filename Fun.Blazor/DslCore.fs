@@ -19,18 +19,18 @@ type html() =
 
     static member internal compCache = lazy (fun () -> ConcurrentDictionary<Type, Reflection.PropertyInfo []>())
 
-    /// With this we can init a blazor component easier without always write string.
-    /// But it will use reflection so you will pay for the performance cost a little bit.
-    /// Only property with attribute ParameterAttribute will be used.
+    /// With this we can init a blazor component easier without always write string for binding paratemters.
+    /// But it will use reflection so you will pay for the performance cost so we should use it carefully.
+    /// Only property with attribute ParameterAttribute will be passed through.
     /// ```fsharp
-    ///     html.comp (fun _ ->
+    ///     html.blazor (fun _ ->
     ///         SomeComp(
     ///             Param1 = ...,
     ///             Param2 = ...,
     ///         )
     ///     )
     /// ```
-    static member comp<'T when 'T :> IComponent>(fn: IComponent -> 'T) =
+    static member blazor<'T when 'T :> IComponent>(fn: IComponent -> 'T, ?render: AttrRenderFragment) =
         NodeRenderFragment(fun comp builder index ->
             builder.OpenComponent<'T>(index)
 
@@ -49,10 +49,16 @@ type html() =
                                 |> Seq.exists (fun x -> x.AttributeType = typeof<ParameterAttribute>)
                             )
                     )
+
             for prop in props do
                 let value = prop.GetValue(instance)
                 builder.AddAttribute(nextIndex, prop.Name, value)
                 nextIndex <- nextIndex + 1
+
+            nextIndex <-
+                match render with
+                | None -> nextIndex
+                | Some r -> r.Invoke(comp, builder, nextIndex)
 
             builder.CloseComponent()
             nextIndex
