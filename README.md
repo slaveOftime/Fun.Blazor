@@ -35,9 +35,9 @@ dotnet new --install Fun.Blazor.Templates::2.0.0-beta-001
     let demo =
         adaptiview(){
             let! v, setValue = FSharp.Data.Adaptive.cval(1).WithSetter()
-            button(){
+            button {
                 onclick (fun _ -> setValue (v + 1))
-                childContent "Increase"
+                "Increase"
             }
             div {
                 style'' {
