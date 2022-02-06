@@ -1,6 +1,7 @@
 ﻿namespace Fun.Blazor
 
 open System
+open Fun.Blazor
 open HtmlTemplate.Internals
 
 
@@ -17,6 +18,13 @@ type Template =
     /// For none standard event, you also need to wireup the event argument type by: https://docs.microsoft.com/en-us/aspnet/core/blazor/components/event-handling?view=aspnetcore-6.0#custom-event-arguments
     /// But it is only supported in aspnet 6. So currently you cannot get the event args very easily.
     static member html(html: FormattableString) =
-        let nodes =
-            caches.GetOrAdd(html.Format.GetHashCode(), Func<int, NodeItem list>(fun _ -> parseNodes html.Format))
-        rebuildNodes nodes (html.GetArguments())
+        let args = html.GetArguments()
+        if args.Length = 0 then
+            NodeRenderFragment(fun _ builder index ->
+                builder.AddMarkupContent(index, html.Format)
+                index + 1
+            )
+        else
+            let nodes =
+                caches.GetOrAdd(html.Format.GetHashCode(), Func<int, NodeItem list>(fun _ -> parseNodes html.Format))
+            rebuildNodes nodes args
