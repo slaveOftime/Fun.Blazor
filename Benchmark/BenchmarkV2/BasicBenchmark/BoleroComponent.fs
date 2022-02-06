@@ -7,6 +7,10 @@ open Bolero.Html
 
 type BoleroComponent() =
     inherit Component()
+    
+    let mutable count = 0
+
+    let increase () = count <- count + 1
 
 
     member this.Build() =
@@ -15,7 +19,6 @@ type BoleroComponent() =
 
 
     override _.Render() =
-        let count = 1
         div [ attr.``class`` "1"; attr.style "color: red;" ] [
             p [ attr.``class`` "class" ] [
                 text "p"
@@ -39,7 +42,7 @@ type BoleroComponent() =
                 p [ attr.``class`` "class" ] [
                     text $"Count = {count}"
                 ]
-                button [ Html.on.click (fun _ -> ()) ] [
+                button [ Html.on.click (fun _ -> increase()) ] [
                     text "Increase"
                 ]
             ]

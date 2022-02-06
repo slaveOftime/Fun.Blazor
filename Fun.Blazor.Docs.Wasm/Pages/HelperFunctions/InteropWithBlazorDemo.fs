@@ -11,6 +11,7 @@ open MudBlazor
 type CompForBlazor() as this =
     inherit FunBlazorComponent()
 
+    let mutable c = 0
 
     [<Parameter>]
     member val Count = 0 with get, set
@@ -18,9 +19,9 @@ type CompForBlazor() as this =
 
     override _.Render() =
         div {
-            p { $"This is for blazor. Count = {this.Count}" }
+            p { $"This is for blazor. Count = {c}" }
             button {
-                onclick (fun _ -> this.Count <- this.Count + 1)
+                onclick (fun _ -> c <- c + 1)
                 "Increase"
             }
         }

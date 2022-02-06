@@ -1,12 +1,15 @@
 ﻿namespace Benchmark.BasicBenchmark
 
-open FSharp.Data.Adaptive
 open Microsoft.AspNetCore.Components.Rendering
 open Fun.Blazor
 
 
 type CEComponent() =
     inherit FunBlazorComponent()
+
+    let mutable count = 0
+
+    let increase () = count <- count + 1
 
 
     member this.Build() =
@@ -15,19 +18,6 @@ type CEComponent() =
 
 
     override _.Render() =
-        let counter =
-            adaptiview () {
-                let! count, setCount = cval(1).WithSetter()
-                p {
-                    class' "class"
-                    $"Count = {1}"
-                }
-                button {
-                    onclick (fun _ -> setCount (count + 1))
-                    "Increase"
-                }
-            }
-
         div {
             class' "class"
             css "color: red;"
@@ -56,6 +46,13 @@ type CEComponent() =
                     class' "class"
                     "p6"
                 }
-                counter
+                p {
+                    class' "class"
+                    $"Count = {1}"
+                }
+                button {
+                    onclick (fun _ -> increase ())
+                    "Increase"
+                }
             }
         }

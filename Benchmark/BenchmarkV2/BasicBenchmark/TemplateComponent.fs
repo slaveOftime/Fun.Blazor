@@ -1,12 +1,15 @@
 ﻿namespace Benchmark.BasicBenchmark
 
-open FSharp.Data.Adaptive
 open Microsoft.AspNetCore.Components.Rendering
 open Fun.Blazor
 
 
 type TemplateComponent() =
     inherit FunBlazorComponent()
+    
+    let mutable count = 0
+
+    let increase () = count <- count + 1
 
 
     member this.Build() =
@@ -15,46 +18,33 @@ type TemplateComponent() =
         
     
     override _.Render() =
-        let counter =
-            adaptiview () {
-                let! count, setCount = cval(1).WithSetter()
-                Template.html $"""
-                    <p class="class">
-                        Count = {count}
-                    </p>
-                    <button onclick={fun _ -> setCount (count + 1)}>
-                        Increase
-                    </button>
-                """
-            }
-
-        let staticPart =
-            Template.html $"""
-                <p class="class">
-                    p
-                </p>
-                <p class="class">
-                    p
-                </p>
-                <p class="class">
-                    p
-                </p>
-                <p class="class">
-                    p
-                </p>
-                <p class="class">
-                    p
-                </p>
-            """
-
         Template.html $"""
             <div class="class" style="color: red;">
-                {staticPart}
+                <p class="class">
+                    p
+                </p>
+                <p class="class">
+                    p
+                </p>
+                <p class="class">
+                    p
+                </p>
+                <p class="class">
+                    p
+                </p>
+                <p class="class">
+                    p
+                </p>
                 <section>
                     <p class="class">
                         p
                     </p>
-                    {counter}
+                    <p class="class">
+                        Count = {count}
+                    </p>
+                    <button onclick={fun _ -> increase()}>
+                        Increase
+                    </button>
                 </section>
             </div>
         """

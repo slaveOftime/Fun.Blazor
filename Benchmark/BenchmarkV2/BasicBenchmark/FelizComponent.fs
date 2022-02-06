@@ -1,12 +1,15 @@
 ﻿namespace Benchmark.BasicBenchmark
 
-open FSharp.Data.Adaptive
 open Microsoft.AspNetCore.Components.Rendering
 open Fun.Blazor
 
 
 type FelizComponent() =
     inherit FunBlazorComponent()
+    
+    let mutable count = 0
+
+    let increase () = count <- count + 1
 
 
     member this.Build() =
@@ -15,19 +18,6 @@ type FelizComponent() =
 
 
     override _.Render() =
-        let counter =
-            adaptiview () {
-                let! count, setCount = cval(1).WithSetter()
-                html.p [
-                    attr.className "class"
-                    attr.childContent $"Count = {count}"
-                ]
-                html.button [
-                    attr.onclick (fun _ -> setCount (count + 1))
-                    attr.childContent "Increase"
-                ]
-            }
-
         html.div [
             attr.className "1"
             attr.style "color: red;"
@@ -57,7 +47,14 @@ type FelizComponent() =
                         attr.className "class"
                         attr.childContent "p"
                     ]
-                    counter
+                    html.p [
+                        attr.className "class"
+                        attr.childContent $"Count = {count}"
+                    ]
+                    html.button [
+                        attr.onclick (fun _ -> increase())
+                        attr.childContent "Increase"
+                    ]
                 ]
             ]
         ]

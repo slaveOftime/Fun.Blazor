@@ -79,6 +79,17 @@ dotnet new --install Fun.Blazor.Templates::2.0.0-beta-001
 ```
 
 
+## Benchmark
+
+|                      Method |       Mean |    Error |   StdDev |  Gen 0 |  Gen 1 | Allocated |
+|---------------------------- |-----------:|---------:|---------:|-------:|-------:|----------:|
+|   BuildRenderTreeWithCSharp |   380.1 ns |  7.18 ns |  8.81 ns | 0.0610 |      - |     384 B |
+|   BuildRenderTreeWithBolero | 1,906.9 ns | 35.35 ns | 31.34 ns | 0.6943 | 0.0038 |   4,368 B |
+|       BuildRenderTreeWithCE | 1,009.8 ns | 19.78 ns | 34.64 ns | 0.3128 |      - |   1,968 B |
+| BuildRenderTreeWithTemplate | 2,507.6 ns | 49.90 ns | 64.88 ns | 0.6752 | 0.0038 |   4,256 B |
+|    BuildRenderTreeWithFeliz | 2,302.9 ns | 42.20 ns | 39.48 ns | 1.1864 | 0.0114 |   7,448 B |
+
+
 ## Migrate from V1
 
 - For all the internal dom element like div, we should change
