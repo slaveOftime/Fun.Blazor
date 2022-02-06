@@ -64,10 +64,10 @@ type AdaptiviewBuilder(?key: obj, ?isStatic: bool) =
             return render1 >=> render2
         }
 
-    member inline _.Zero() = AVal.init emptyNode
+    member inline _.Zero() = AVal.constant emptyNode
 
     member inline _.For(ls: 'T seq, [<InlineIfLambda>] fn: 'T -> aval<NodeRenderFragment>) =
-        ls |> Seq.map fn |> Seq.fold (AVal.map2 (>=>)) (AVal.init emptyNode)
+        ls |> Seq.map fn |> Seq.fold (AVal.map2 (>=>)) (AVal.constant emptyNode)
 
 
 [<Extension>]
