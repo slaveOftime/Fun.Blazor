@@ -1,4 +1,4 @@
-﻿namespace Fun.Blazor.Benchmark
+﻿namespace Benchmark.BasicBenchmark
 
 open FSharp.Data.Adaptive
 open Microsoft.AspNetCore.Components.Rendering
@@ -28,23 +28,28 @@ type TemplateComponent() =
                 """
             }
 
+        let staticPart =
+            Template.html $"""
+                <p class="class">
+                    p
+                </p>
+                <p class="class">
+                    p
+                </p>
+                <p class="class">
+                    p
+                </p>
+                <p class="class">
+                    p
+                </p>
+                <p class="class">
+                    p
+                </p>
+            """
+
         Template.html $"""
             <div class="class" style="color: red;">
-                <p class="class">
-                    p
-                </p>
-                <p class="class">
-                    p
-                </p>
-                <p class="class">
-                    p
-                </p>
-                <p class="class">
-                    p
-                </p>
-                <p class="class">
-                    p
-                </p>
+                {staticPart}
                 <section>
                     <p class="class">
                         p
