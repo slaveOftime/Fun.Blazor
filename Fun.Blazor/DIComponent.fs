@@ -81,7 +81,7 @@ type DIComponent<'T>() as this =
 
 
     [<Parameter>]
-    member val RenderFn: 'T -> NodeRenderFragment = fun _ -> emptyNode with get, set
+    member val RenderFn: 'T -> NodeRenderFragment = fun _ -> emptyNode() with get, set
 
     /// With this we can avoid rerender when parameter reset
     /// If component is not recreated then all the rerender will use the closure state created by the first RenderFn
@@ -98,7 +98,7 @@ type DIComponent<'T>() as this =
     override _.Render() =
         this.Logger.LogDebugForPerf(fun () ->
             match node with
-            | None -> emptyNode
+            | None -> emptyNode()
             | Some node -> node
         )
 

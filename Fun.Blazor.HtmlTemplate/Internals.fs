@@ -141,12 +141,12 @@ let buildAttrs (name: string, value: string) =
                 sb.Append(string arg) |> ignore
 
             let name = makeName args
-            if String.IsNullOrEmpty name then emptyAttr else name => (sb.ToString())
+            if String.IsNullOrEmpty name then emptyAttr() else name => (sb.ToString())
         )
     elif nameMatches.Count > 0 then
         AttrMk(fun args ->
             let name = makeName args
-            if String.IsNullOrEmpty name then emptyAttr else name => value
+            if String.IsNullOrEmpty name then emptyAttr() else name => value
         )
     else
         Attr(name => value)

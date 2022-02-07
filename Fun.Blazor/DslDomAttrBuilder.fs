@@ -20,7 +20,7 @@ type StyleBuilder() =
 
 type DomAttrBuilder() =
     
-    member inline _.Yield(_: unit) = emptyAttr
+    member inline _.Yield(_: unit) = emptyAttr()
 
     member inline _.Yield([<InlineIfLambda>] x: AttrRenderFragment) = x
 
@@ -43,13 +43,13 @@ type DomAttrBuilder() =
         render ==> (fn ())
 
     member inline _.For(renders: 'T seq, [<InlineIfLambda>] fn: 'T -> AttrRenderFragment) =
-        renders |> Seq.map fn |> Seq.fold (==>) emptyAttr
+        renders |> Seq.map fn |> Seq.fold (==>) (emptyAttr())
 
     member inline _.YieldFrom(renders: AttrRenderFragment seq) =
-        renders |> Seq.fold (==>) emptyAttr
+        renders |> Seq.fold (==>) (emptyAttr())
 
 
-    member inline _.Zero() = emptyAttr
+    member inline _.Zero() = emptyAttr()
 
 
     /// key for blazor

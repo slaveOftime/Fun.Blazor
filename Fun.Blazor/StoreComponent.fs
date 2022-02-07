@@ -20,7 +20,7 @@ type StoreComponent<'T>() as this =
     member val Store = Unchecked.defaultof<IObservable<'T>> with get, set
 
     [<Parameter>]
-    member val RenderFn: 'T -> NodeRenderFragment = fun _ -> emptyNode with get, set
+    member val RenderFn: 'T -> NodeRenderFragment = fun _ -> emptyNode() with get, set
 
     [<Inject>]
     member val Logger = Unchecked.defaultof<ILogger<StoreComponent<'T>>> with get, set
@@ -28,7 +28,7 @@ type StoreComponent<'T>() as this =
 
     override _.Render() =
         this.Logger.LogDebugForPerf(fun () ->
-            if not isValueSet && box value = null then emptyNode else this.RenderFn value
+            if not isValueSet && box value = null then emptyNode() else this.RenderFn value
         )
 
 

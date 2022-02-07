@@ -32,10 +32,10 @@ type AdaptiviewBuilder(?key: obj, ?isStatic: bool) =
             "Fragment" => x
             match this.IsStatic with
             | Some true -> "IsStatic" => true
-            | _ -> emptyAttr
+            | _ -> emptyAttr()
             match this.Key with
             | Some k -> html.key k
-            | None -> emptyAttr
+            | None -> emptyAttr()
         }
 
     member inline _.Yield([<InlineIfLambda>] x: NodeRenderFragment) = AVal.constant x
@@ -64,10 +64,10 @@ type AdaptiviewBuilder(?key: obj, ?isStatic: bool) =
             return render1 >=> render2
         }
 
-    member inline _.Zero() = AVal.constant emptyNode
+    member inline _.Zero() = AVal.constant (emptyNode())
 
     member inline _.For(ls: 'T seq, [<InlineIfLambda>] fn: 'T -> aval<NodeRenderFragment>) =
-        ls |> Seq.map fn |> Seq.fold (AVal.map2 (>=>)) (AVal.constant emptyNode)
+        ls |> Seq.map fn |> Seq.fold (AVal.map2 (>=>)) (AVal.constant (emptyNode()))
 
 
 [<Extension>]

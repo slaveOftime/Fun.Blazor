@@ -10,11 +10,11 @@ open Operators
 
 type html() =
 
-    static member inline none = emptyNode
+    static member inline none = emptyNode()
 
 
-    static member mergeAttrs attrs = attrs |> Seq.fold (==>) emptyAttr
-    static member mergeNodes nodes = nodes |> Seq.fold (>=>) emptyNode
+    static member mergeAttrs attrs = attrs |> Seq.fold (==>) (emptyAttr())
+    static member mergeNodes nodes = nodes |> Seq.fold (>=>) (emptyNode())
 
 
     static member internal compCache = lazy (fun () -> ConcurrentDictionary<Type, Reflection.PropertyInfo []>())
