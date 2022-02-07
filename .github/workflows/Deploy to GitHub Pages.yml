@@ -27,8 +27,8 @@ jobs:
     
 
     # changes the base-tag in index.html from '/' to 'Fun.Blazor' to match GitHub Pages repository subdirectory
-    - name: Change base-tag in index.html from / to Fun.Blazor
-      run: sed -i 's/<base href="\/" \/>/<base href="\/Fun.Blazor\/" \/>/g' Fun.Blazor.Docs.Wasm.Release/wwwroot/index.html
+    - name: Change base-tag in index.html from / to Fun.Blazor.Docs
+      run: sed -i 's/<base href="\/" \/>/<base href="\/Fun.Blazor.Docs\/" \/>/g' Fun.Blazor.Docs.Wasm.Release/wwwroot/index.html
     
     # copy index.html to 404.html to serve the same file when a file is not found
     - name: Create 404.html
@@ -39,8 +39,9 @@ jobs:
       run: touch Fun.Blazor.Docs.Wasm.Release/wwwroot/.nojekyll
       
     - name: Commit wwwroot to GitHub Pages
-      uses: JamesIves/github-pages-deploy-action@4.1.4
+      uses: JamesIves/github-pages-deploy-action@4.2.3
       with:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        BRANCH: gh-pages
-        FOLDER: Fun.Blazor.Docs.Wasm.Release/wwwroot
+        token: ${{ secrets.GH_PAGES_PAT }}
+        branch: gh-pages
+        folder: Fun.Blazor.Docs.Wasm.Release/wwwroot
+        repository-name: slaveOftime/Fun.Blazor.Docs
