@@ -292,7 +292,7 @@ let app =
                         // For host on slaveoftime.fun server mode
                         yield! routes
                         // For host on github-pages WASM mode
-                        subRouteCi "/Fun.Blazor" routes
+                        subRouteCi "/Fun.Blazor.Docs" routes
                         routeAny QuickStart.QuickStart.quickStart
                     ]
                     MudScrollToTop'() {

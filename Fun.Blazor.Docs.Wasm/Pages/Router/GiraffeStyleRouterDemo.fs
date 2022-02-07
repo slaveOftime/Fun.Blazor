@@ -6,9 +6,10 @@ open Fun.Blazor
 open Fun.Blazor.Router
 
 let giraffeStyleRouterDemo =
-    let formatQueries = Map.toList >> List.map (fun (k, v) -> $"key = {k}, value = {v}") >> String.concat "; "
+    let formatQueries =
+        Map.toList >> List.map (fun (k, v) -> $"key = {k}, value = {v}") >> String.concat "; "
 
-    let route = 
+    let route =
         subRouteCi "/router" [
             routeCi "/document" (html.text "Dcoument page")
             routeCif "/document/%i" (fun x -> html.text $"Document {x}")
@@ -32,12 +33,10 @@ let giraffeStyleRouterDemo =
         MudText'() {
             Typo Typo.subtitle2
             Color Color.Secondary
-            childContent [
-                html.route [
-                    route
-                    subRouteCi "/Fun.Blazor" [ route ] // For github-pages hosting
-                    routeAny (html.text "Not my concern.")
-                ]
+            html.route [
+                route
+                subRouteCi "/Fun.Blazor.Docs" [ route ] // For github-pages hosting
+                routeAny (html.text "Not my concern.")
             ]
         }
         link "./router/document" "Route to document"

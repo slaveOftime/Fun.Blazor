@@ -1,81 +1,81 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <LangVersion>preview</LangVersion>
-  </PropertyGroup>
-  <ItemGroup>
-    <Compile Include="Fun.Blazor.Bindings\AntDesign.Charts.fs" />
-    <Compile Include="Fun.Blazor.Bindings\AntDesign.fs" />
-    <Compile Include="Fun.Blazor.Bindings\AntDesign.ProLayout.fs" />
-    <Compile Include="Fun.Blazor.Bindings\Blazor.DragDrop.fs" />
-    <Compile Include="Fun.Blazor.Bindings\Microsoft.AspNetCore.Components.Authorization.fs" />
-    <Compile Include="Fun.Blazor.Bindings\Microsoft.Fast.Components.FluentUI.fs" />
-    <Compile Include="Fun.Blazor.Bindings\MudBlazor.fs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Components\Common.fs" />
-    <Compile Include="Components\ShareStores.fs" />
-    <Compile Include="Components\SourceSection.fs" />
-    <Compile Include="Components\DemoContainer.fs" />
-    <Compile Include="Demos\DemoMudBlazor\AlertDemo.fs" />
-    <Compile Include="Demos\DemoMudBlazor\AppBarDemo.fs" />
-    <Compile Include="Demos\DemoMudBlazor\DemoMudBlazor.fs" />
-    <Compile Include="Demos\DemoAntDesign\ModalDemo.fs" />
-    <Compile Include="Demos\DemoAntDesign\DropDownDemo.fs" />
-    <Compile Include="Demos\DemoAntDesign\CollapseDemo.fs" />
-    <Compile Include="Demos\DemoAntDesign\ChartDemo.fs" />
-    <Compile Include="Demos\DemoAntDesign\DemoAntDesign.fs" />
-    <Compile Include="Demos\DemoFluentUI\SkeletonDemo.fs" />
-    <Compile Include="Demos\DemoFluentUI\DemoFluentUI.fs" />
-    <Compile Include="Demos\DemoDragDrop\ListDragDropDemo.fs" />
-    <Compile Include="Demos\DemoDragDrop\DemoDragDrop.fs" />
-    <Compile Include="Pages\QuickStart\BasicUsageDemo.fs" />
-    <Compile Include="Pages\QuickStart\QuickStart.fs" />
-    <Compile Include="Pages\Router\GiraffeStyleRouterDemo.fs" />
-    <Compile Include="Pages\Router\RouterDemo.fs" />
-    <Compile Include="Pages\Router\Router.fs" />
-    <Compile Include="Pages\Elmish\ElmishDemo.fs" />
-    <Compile Include="Pages\Elmish\Elmish.fs" />
-    <Compile Include="Pages\HelperFunctions\InjectDemo.fs" />
-    <Compile Include="Pages\HelperFunctions\HtmlWatchDemo.fs" />
-    <Compile Include="Pages\HelperFunctions\AdaptiviewDemo.fs" />
-    <Compile Include="Pages\HelperFunctions\ComponentHookDemo.fs" />
-    <Compile Include="Pages\HelperFunctions\GlobalStoreDemo.fs" />
-    <Compile Include="Pages\HelperFunctions\AdaptiveFormDemo.fs" />
-    <Compile Include="Pages\HelperFunctions\PerformanceDemo.fs" />
-    <Compile Include="Pages\HelperFunctions\CECssDemo.fs" />
-    <Compile Include="Pages\HelperFunctions\HtmlTemplateDemo.fs" />
-    <Compile Include="Pages\HelperFunctions\InteropWithBlazorDemo.fs" />
-    <Compile Include="Pages\HelperFunctions\InteropWithBoleroDemo.fs" />
-    <None Include="Pages\CliUsage\CliUsageDemo.md" />
-    <Compile Include="Pages\CliUsage\CliUsage.fs" />
-    <None Include="Pages\Tests\TestsDemo.md" />
-    <Compile Include="Pages\Tests\Tests.fs" />
-    <Compile Include="App.fs" />
-    <Compile Include="Startup.fs" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Majorsoft.Blazor.WebAssembly.Logging.Console" Version="1.5.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.1" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
-    <PackageReference FunBlazorStyle="Feliz" Include="AntDesign" Version="0.10.3.1" />
-    <PackageReference Include="AntDesign.ProLayout" Version="0.1.10" FunBlazorStyle="CE" />
-    <PackageReference FunBlazorStyle="CE" Include="AntDesign.Charts" Version="0.2.2" />
-    <PackageReference FunBlazorStyle="CE" Include="MudBlazor" Version="6.0.4" />
-    <PackageReference FunBlazorStyle="CE" Include="Microsoft.AspNetCore.Components.Authorization" Version="6.0.1" />
-    <PackageReference FunBlazorStyle="Feliz" Include="Microsoft.Fast.Components.FluentUI" Version="1.1.0" />
-    <PackageReference FunBlazorNamespace="Blazor.DragDrop" FunBlazorAssemblyName="Plk.Blazor.DragDrop" Include="blazor-dragdrop" Version="2.3.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Update="FSharp.Core" Version="6.0.1" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Fun.Blazor.Elmish\Fun.Blazor.Elmish.fsproj" />
-    <ProjectReference Include="..\Fun.Blazor.Feliz\Fun.Blazor.Feliz.fsproj" />
-    <ProjectReference Include="..\Fun.Blazor.HtmlTemplate\Fun.Blazor.HtmlTemplate.fsproj" />
-    <ProjectReference Include="..\Fun.Blazor.Wasm\Fun.Blazor.Wasm.fsproj" />
-    <ProjectReference Include="..\Fun.Bolero\Fun.Bolero.fsproj" />
-  </ItemGroup>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<LangVersion>preview</LangVersion>
+	</PropertyGroup>
+	<ItemGroup>
+		<Compile Include="Fun.Blazor.Bindings\AntDesign.Charts.fs" />
+		<Compile Include="Fun.Blazor.Bindings\AntDesign.fs" />
+		<Compile Include="Fun.Blazor.Bindings\AntDesign.ProLayout.fs" />
+		<Compile Include="Fun.Blazor.Bindings\Blazor.DragDrop.fs" />
+		<Compile Include="Fun.Blazor.Bindings\Microsoft.AspNetCore.Components.Authorization.fs" />
+		<Compile Include="Fun.Blazor.Bindings\Microsoft.Fast.Components.FluentUI.fs" />
+		<Compile Include="Fun.Blazor.Bindings\MudBlazor.fs" />
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Include="Components\Common.fs" />
+		<Compile Include="Components\ShareStores.fs" />
+		<Compile Include="Components\SourceSection.fs" />
+		<Compile Include="Components\DemoContainer.fs" />
+		<Compile Include="Demos\DemoMudBlazor\AlertDemo.fs" />
+		<Compile Include="Demos\DemoMudBlazor\AppBarDemo.fs" />
+		<Compile Include="Demos\DemoMudBlazor\DemoMudBlazor.fs" />
+		<Compile Include="Demos\DemoAntDesign\ModalDemo.fs" />
+		<Compile Include="Demos\DemoAntDesign\DropDownDemo.fs" />
+		<Compile Include="Demos\DemoAntDesign\CollapseDemo.fs" />
+		<Compile Include="Demos\DemoAntDesign\ChartDemo.fs" />
+		<Compile Include="Demos\DemoAntDesign\DemoAntDesign.fs" />
+		<Compile Include="Demos\DemoFluentUI\SkeletonDemo.fs" />
+		<Compile Include="Demos\DemoFluentUI\DemoFluentUI.fs" />
+		<Compile Include="Demos\DemoDragDrop\ListDragDropDemo.fs" />
+		<Compile Include="Demos\DemoDragDrop\DemoDragDrop.fs" />
+		<Compile Include="Pages\QuickStart\BasicUsageDemo.fs" />
+		<Compile Include="Pages\QuickStart\QuickStart.fs" />
+		<Compile Include="Pages\Router\GiraffeStyleRouterDemo.fs" />
+		<Compile Include="Pages\Router\RouterDemo.fs" />
+		<Compile Include="Pages\Router\Router.fs" />
+		<Compile Include="Pages\Elmish\ElmishDemo.fs" />
+		<Compile Include="Pages\Elmish\Elmish.fs" />
+		<Compile Include="Pages\HelperFunctions\InjectDemo.fs" />
+		<Compile Include="Pages\HelperFunctions\HtmlWatchDemo.fs" />
+		<Compile Include="Pages\HelperFunctions\AdaptiviewDemo.fs" />
+		<Compile Include="Pages\HelperFunctions\ComponentHookDemo.fs" />
+		<Compile Include="Pages\HelperFunctions\GlobalStoreDemo.fs" />
+		<Compile Include="Pages\HelperFunctions\AdaptiveFormDemo.fs" />
+		<Compile Include="Pages\HelperFunctions\PerformanceDemo.fs" />
+		<Compile Include="Pages\HelperFunctions\CECssDemo.fs" />
+		<Compile Include="Pages\HelperFunctions\HtmlTemplateDemo.fs" />
+		<Compile Include="Pages\HelperFunctions\InteropWithBlazorDemo.fs" />
+		<Compile Include="Pages\HelperFunctions\InteropWithBoleroDemo.fs" />
+		<None Include="Pages\CliUsage\CliUsageDemo.md" />
+		<Compile Include="Pages\CliUsage\CliUsage.fs" />
+		<None Include="Pages\Tests\TestsDemo.md" />
+		<Compile Include="Pages\Tests\Tests.fs" />
+		<Compile Include="App.fs" />
+		<Compile Include="Startup.fs" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Majorsoft.Blazor.WebAssembly.Logging.Console" Version="1.5.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.1" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.1" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
+		<PackageReference FunBlazorStyle="Feliz" Include="AntDesign" Version="0.10.3.1" />
+		<PackageReference Include="AntDesign.ProLayout" Version="0.1.10" FunBlazorStyle="CE" />
+		<PackageReference FunBlazorStyle="CE" Include="AntDesign.Charts" Version="0.2.2" />
+		<PackageReference FunBlazorStyle="CE" Include="MudBlazor" Version="6.0.4" />
+		<PackageReference FunBlazorStyle="CE" Include="Microsoft.AspNetCore.Components.Authorization" Version="6.0.1" />
+		<PackageReference FunBlazorStyle="Feliz" Include="Microsoft.Fast.Components.FluentUI" Version="1.1.0" />
+		<PackageReference FunBlazorNamespace="Blazor.DragDrop" FunBlazorAssemblyName="Plk.Blazor.DragDrop" Include="blazor-dragdrop" Version="2.3.0" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Update="FSharp.Core" Version="6.0.1" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Fun.Blazor.Elmish\Fun.Blazor.Elmish.fsproj" />
+		<ProjectReference Include="..\Fun.Blazor.Feliz\Fun.Blazor.Feliz.fsproj" />
+		<ProjectReference Include="..\Fun.Blazor.HtmlTemplate\Fun.Blazor.HtmlTemplate.fsproj" />
+		<ProjectReference Include="..\Fun.Blazor.Wasm\Fun.Blazor.Wasm.fsproj" />
+		<ProjectReference Include="..\Fun.Bolero\Fun.Bolero.fsproj" />
+	</ItemGroup>
 </Project>

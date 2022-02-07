@@ -23,6 +23,10 @@ let private deferredObserve (data: Task<Result<string, string>>) =
         | Choice2Of2 x -> DeferredState.LoadFailed x.Message
     )
 
+
+let private version = "2.0.0"
+
+
 let private getFromHostServer (env: IHostingEnvironment) (fileName: string) =
     let path =
 #if DEBUG
@@ -33,6 +37,7 @@ let private getFromHostServer (env: IHostingEnvironment) (fileName: string) =
 
     System.IO.File.ReadAllTextAsync(path) |> Task.map Ok |> deferredObserve
 
+
 let private getFromGithub (fileName: string) =
     let client = new HttpClient()
 
@@ -40,10 +45,10 @@ let private getFromGithub (fileName: string) =
 #if DEBUG
         "https://localhost:5001"
 #else
-        "https://slaveoftime.github.io/Fun.Blazor"
+        "https://slaveoftime.github.io/Fun.Blazor.Docs"
 #endif
 
-    client.GetAsync($"{host}/code-docs/{fileName}.html")
+    client.GetAsync($"{host}/code-docs/{fileName}.html?v={version}")
     |> Task.bind (fun x ->
         if x.IsSuccessStatusCode then
             x.Content.ReadAsStringAsync() |> Task.map Ok
