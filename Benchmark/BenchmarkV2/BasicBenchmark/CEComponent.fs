@@ -20,7 +20,7 @@ type CEComponent() =
     override _.Render() =
         div {
             class' "class"
-            css "color: red;"
+            style' "color: red;"
             p {
                 class' "class"
                 "p1"

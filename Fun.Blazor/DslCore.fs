@@ -194,7 +194,7 @@ type html() =
         )
 
 
-    static member inline style(x: string) = "style" => x
-    static member inline styles(x) = "style" => (makeStyles x)
-    static member inline class'(x: string) = "class" => x
-    static member inline classes(x: string seq) = "class" => (String.concat " " x)
+    static member inline style(x: string) = "style" =>> x
+    static member inline styles(x) = "style" =>> (makeStyles x).ToString()
+    static member inline class'(x: string) = "class" =>> x
+    static member inline classes(x: string seq) = "class" =>> (String.concat " " x)

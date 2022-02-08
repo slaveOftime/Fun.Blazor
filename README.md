@@ -94,11 +94,11 @@ dotnet new --install Fun.Blazor.Templates::2.0.0-beta002
 
 |                      Method |       Mean |    Error |   StdDev |  Gen 0 |  Gen 1 | Allocated |
 |---------------------------- |-----------:|---------:|---------:|-------:|-------:|----------:|
-|   BuildRenderTreeWithCSharp |   380.1 ns |  7.18 ns |  8.81 ns | 0.0610 |      - |     384 B |
-|   BuildRenderTreeWithBolero | 1,906.9 ns | 35.35 ns | 31.34 ns | 0.6943 | 0.0038 |   4,368 B |
-|       BuildRenderTreeWithCE | 1,009.8 ns | 19.78 ns | 34.64 ns | 0.3128 |      - |   1,968 B |
-| BuildRenderTreeWithTemplate | 2,507.6 ns | 49.90 ns | 64.88 ns | 0.6752 | 0.0038 |   4,256 B |
-|    BuildRenderTreeWithFeliz | 2,302.9 ns | 42.20 ns | 39.48 ns | 1.1864 | 0.0114 |   7,448 B |
+|   BuildRenderTreeWithCSharp |   367.9 ns |  6.45 ns |  6.03 ns | 0.0610 |      - |     384 B |
+|   BuildRenderTreeWithBolero | 2,017.4 ns | 37.50 ns | 38.51 ns | 0.6943 | 0.0038 |   4,368 B |
+|       BuildRenderTreeWithCE |   807.7 ns |  9.99 ns |  8.34 ns | 0.2861 |      - |   1,800 B |
+| BuildRenderTreeWithTemplate | 3,348.9 ns | 53.01 ns | 47.00 ns | 0.7668 | 0.0076 |   4,832 B |
+|    BuildRenderTreeWithFeliz | 2,334.7 ns | 33.95 ns | 31.76 ns | 1.2970 | 0.0153 |   8,152 B |
 
 
 ## Migrate from V1
