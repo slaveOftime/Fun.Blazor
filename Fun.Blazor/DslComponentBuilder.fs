@@ -21,7 +21,7 @@ type ComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent>(
         )
 
     
-    member inline _.Yield(_: unit) = emptyAttr
+    member inline _.Yield(_: unit) = emptyAttr()
 
     member inline _.Yield([<InlineIfLambda>] x: AttrRenderFragment) = x
 
@@ -44,13 +44,13 @@ type ComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent>(
         render ==> (fn ())
 
     member inline _.For(renders: 'T seq, [<InlineIfLambda>] fn: 'T -> AttrRenderFragment) =
-        renders |> Seq.map fn |> Seq.fold (==>) emptyAttr
+        renders |> Seq.map fn |> Seq.fold (==>) (emptyAttr())
 
     member inline _.YieldFrom(renders: AttrRenderFragment seq) =
-        renders |> Seq.fold (==>) emptyAttr
+        renders |> Seq.fold (==>) (emptyAttr())
 
 
-    member inline _.Zero() = emptyAttr
+    member inline _.Zero() = emptyAttr()
 
 
     /// key for blazor
@@ -252,12 +252,12 @@ type ComponentWithChildBuilder<'T when 'T :> IComponent>() =
         struct(render, fn ())
 
     member inline _.For(renders: 'T seq, [<InlineIfLambda>] fn: 'T -> NodeRenderFragment) =
-        renders |> Seq.map fn |> Seq.fold (>=>) emptyNode
+        renders |> Seq.map fn |> Seq.fold (>=>) (emptyNode())
 
     member inline _.YieldFrom(renders: NodeRenderFragment seq) =
-        renders |> Seq.fold (>=>) emptyNode
+        renders |> Seq.fold (>=>) (emptyNode())
 
-    member inline _.Zero() = emptyNode
+    member inline _.Zero() = emptyNode()
 
 
     [<CustomOperation("childContent")>]
@@ -457,12 +457,12 @@ type ComponentWithDomAndChildAttrBuilder<'T when 'T :> IComponent>() =
         struct(render, fn ())
 
     member inline _.For(renders: 'T seq, [<InlineIfLambda>] fn: 'T -> NodeRenderFragment) =
-        renders |> Seq.map fn |> Seq.fold (>=>) emptyNode
+        renders |> Seq.map fn |> Seq.fold (>=>) (emptyNode())
 
     member inline _.YieldFrom(renders: NodeRenderFragment seq) =
-        renders |> Seq.fold (>=>) emptyNode
+        renders |> Seq.fold (>=>) (emptyNode())
 
-    member inline _.Zero() = emptyNode
+    member inline _.Zero() = emptyNode()
 
 
     [<CustomOperation("childContent")>]

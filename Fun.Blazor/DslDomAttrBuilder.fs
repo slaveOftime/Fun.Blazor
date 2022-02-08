@@ -20,7 +20,7 @@ type StyleBuilder() =
 
 type DomAttrBuilder() =
     
-    member inline _.Yield(_: unit) = emptyAttr
+    member inline _.Yield(_: unit) = emptyAttr()
 
     member inline _.Yield([<InlineIfLambda>] x: AttrRenderFragment) = x
 
@@ -43,13 +43,13 @@ type DomAttrBuilder() =
         render ==> (fn ())
 
     member inline _.For(renders: 'T seq, [<InlineIfLambda>] fn: 'T -> AttrRenderFragment) =
-        renders |> Seq.map fn |> Seq.fold (==>) emptyAttr
+        renders |> Seq.map fn |> Seq.fold (==>) (emptyAttr())
 
     member inline _.YieldFrom(renders: AttrRenderFragment seq) =
-        renders |> Seq.fold (==>) emptyAttr
+        renders |> Seq.fold (==>) (emptyAttr())
 
 
-    member inline _.Zero() = emptyAttr
+    member inline _.Zero() = emptyAttr()
 
 
     /// key for blazor
@@ -144,8 +144,8 @@ type DomAttrBuilder() =
             elif css.StartsWith "_{" then
                 let lastEndIndex = css.LastIndexOf "}"
                 if css.Substring(lastEndIndex + 1).Trim().Split("\n")
-                   |> Seq.filter (String.IsNullOrEmpty >> not)
-                   |> Seq.length = 0 then
+                    |> Seq.filter (String.IsNullOrEmpty >> not)
+                    |> Seq.length = 0 then
                     css.Substring(2, lastEndIndex - 2).Split("\n") |> Seq.map (fun x -> x.Trim()) |> String.concat " "
                 else
                     css
@@ -155,7 +155,7 @@ type DomAttrBuilder() =
         render ==> (html.style result)
 
     [<CustomOperation("style'")>]
-    member inline _.style([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> ("style" => x)
+    member inline _.style([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> (html.style x)
 
     [<CustomOperation("styles")>]
     member _.styles(render: AttrRenderFragment, v: (string * string) seq) =
@@ -168,9 +168,9 @@ type DomAttrBuilder() =
     [<CustomOperation("accept")>]
     member inline _.accept([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("accept" => v)
     [<CustomOperation("acceptCharset")>]
-    member inline _.acceptCharset([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("acceptCharset" => v)
+    member inline _.acceptCharset([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("acceptCharset" =>> v)
     [<CustomOperation("accesskey")>]
-    member inline _.accesskey([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("accesskey" => v)
+    member inline _.accesskey([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("accesskey" =>> v)
     [<CustomOperation("action")>]
     member inline _.action([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("action" => v)
     [<CustomOperation("align")>]
@@ -178,37 +178,37 @@ type DomAttrBuilder() =
     [<CustomOperation("allow")>]
     member inline _.allow([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("allow" => v)
     [<CustomOperation("alt")>]
-    member inline _.alt([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("alt" => v)
+    member inline _.alt([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("alt" =>> v)
     [<CustomOperation("async'")>]
     member inline _.async'([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("async" => v)
     [<CustomOperation("autocapitalize")>]
     member inline _.autocapitalize([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("autocapitalize" => v)
     [<CustomOperation("autocomplete")>]
-    member inline _.autocomplete([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("autocomplete" => v)
+    member inline _.autocomplete([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("autocomplete" =>>> v)
     [<CustomOperation("autofocus")>]
-    member inline _.autofocus([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("autofocus" => v)
+    member inline _.autofocus([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("autofocus" =>>> v)
     [<CustomOperation("autoplay")>]
-    member inline _.autoplay([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("autoplay" => v)
+    member inline _.autoplay([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("autoplay" =>>> v)
     [<CustomOperation("bgcolor")>]
-    member inline _.bgcolor([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("bgcolor" => v)
+    member inline _.bgcolor([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("bgcolor" =>> v)
     [<CustomOperation("border")>]
     member inline _.border([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("border" => v)
     [<CustomOperation("buffered")>]
-    member inline _.buffered([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("buffered" => v)
+    member inline _.buffered([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("buffered" =>>> v)
     [<CustomOperation("challenge")>]
     member inline _.challenge([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("challenge" => v)
     [<CustomOperation("charset")>]
-    member inline _.charset([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("charset" => v)
+    member inline _.charset([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("charset" =>> v)
     [<CustomOperation("checked")>]
-    member inline _.checked'([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("checked" => v)
+    member inline _.checked'([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("checked" =>>> v)
     [<CustomOperation("cite")>]
     member inline _.cite([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("cite" => v)
     [<CustomOperation("code")>]
-    member inline _.code([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("code" => v)
+    member inline _.code([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("code" =>> v)
     [<CustomOperation("codebase")>]
-    member inline _.codebase([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("codebase" => v)
+    member inline _.codebase([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("codebase" =>> v)
     [<CustomOperation("color")>]
-    member inline _.color([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("color" => v)
+    member inline _.color([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("color" =>> v)
     [<CustomOperation("cols")>]
     member inline _.cols([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("cols" => v)
     [<CustomOperation("colspan")>]
@@ -238,11 +238,11 @@ type DomAttrBuilder() =
     [<CustomOperation("defer")>]
     member inline _.defer([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("defer" => v)
     [<CustomOperation("dir")>]
-    member inline _.dir([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("dir" => v)
+    member inline _.dir([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("dir" =>> v)
     [<CustomOperation("dirname")>]
-    member inline _.dirname([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("dirname" => v)
+    member inline _.dirname([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("dirname" =>> v)
     [<CustomOperation("disabled")>]
-    member inline _.disabled([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("disabled" => v)
+    member inline _.disabled([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("disabled" =>>> v)
     [<CustomOperation("download")>]
     member inline _.download([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("download" => v)
     [<CustomOperation("draggable")>]
@@ -262,13 +262,13 @@ type DomAttrBuilder() =
     [<CustomOperation("height")>]
     member inline _.height([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("height" => v)
     [<CustomOperation("hidden")>]
-    member inline _.hidden([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("hidden" => v)
+    member inline _.hidden([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("hidden" =>>> v)
     [<CustomOperation("high")>]
     member inline _.high([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("high" => v)
     [<CustomOperation("href")>]
-    member inline _.href([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("href" => v)
+    member inline _.href([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("href" =>> v)
     [<CustomOperation("hreflang")>]
-    member inline _.hreflang([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("hreflang" => v)
+    member inline _.hreflang([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("hreflang" =>> v)
     [<CustomOperation("httpEquiv")>]
     member inline _.httpEquiv([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("httpEquiv" => v)
     [<CustomOperation("icon")>]
@@ -276,7 +276,7 @@ type DomAttrBuilder() =
     [<CustomOperation("id")>]
     member inline _.id([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("id" => v)
     [<CustomOperation("importance")>]
-    member inline _.importance([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("importance" => v)
+    member inline _.importance([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("importance" =>>> v)
     [<CustomOperation("integrity")>]
     member inline _.integrity([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("integrity" => v)
     [<CustomOperation("ismap")>]
@@ -288,13 +288,13 @@ type DomAttrBuilder() =
     [<CustomOperation("kind")>]
     member inline _.kind([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("kind" => v)
     [<CustomOperation("label")>]
-    member inline _.label([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("label" => v)
+    member inline _.label([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("label" =>> v)
     [<CustomOperation("lang")>]
-    member inline _.lang([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("lang" => v)
+    member inline _.lang([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("lang" =>> v)
     [<CustomOperation("language")>]
-    member inline _.language([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("language" => v)
+    member inline _.language([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("language" =>> v)
     [<CustomOperation("lazyload")>]
-    member inline _.lazyload([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("lazyload" => v)
+    member inline _.lazyload([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("lazyload" =>>> v)
     [<CustomOperation("list")>]
     member inline _.list([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("list" => v)
     [<CustomOperation("loop")>]
@@ -320,7 +320,7 @@ type DomAttrBuilder() =
     [<CustomOperation("muted")>]
     member inline _.muted([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("muted" => v)
     [<CustomOperation("name")>]
-    member inline _.name([<InlineIfLambda>] render: AttrRenderFragment, v: string) = render ==> ("name" => v)
+    member inline _.name([<InlineIfLambda>] render: AttrRenderFragment, v: string) = render ==> ("name" =>> v)
     [<CustomOperation("novalidate")>]
     member inline _.novalidate([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("novalidate" => v)
     [<CustomOperation("open")>]
@@ -328,21 +328,21 @@ type DomAttrBuilder() =
     [<CustomOperation("optimum")>]
     member inline _.optimum([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("optimum" => v)
     [<CustomOperation("pattern")>]
-    member inline _.pattern([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("pattern" => v)
+    member inline _.pattern([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("pattern" =>> v)
     [<CustomOperation("ping")>]
     member inline _.ping([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("ping" => v)
     [<CustomOperation("placeholder")>]
-    member inline _.placeholder([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("placeholder" => v)
+    member inline _.placeholder([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("placeholder" =>> v)
     [<CustomOperation("poster")>]
     member inline _.poster([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("poster" => v)
     [<CustomOperation("preload")>]
     member inline _.preload([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("preload" => v)
     [<CustomOperation("readonly")>]
-    member inline _.readonly([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("readonly" => v)
+    member inline _.readonly([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("readonly" =>>> v)
     [<CustomOperation("rel")>]
     member inline _.rel([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("rel" => v)
     [<CustomOperation("required")>]
-    member inline _.required([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("required" => v)
+    member inline _.required([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("required" =>>> v)
     [<CustomOperation("reversed")>]
     member inline _.reversed([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("reversed" => v)
     [<CustomOperation("rows")>]
@@ -354,7 +354,7 @@ type DomAttrBuilder() =
     [<CustomOperation("scope")>]
     member inline _.scope([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("scope" => v)
     [<CustomOperation("selected")>]
-    member inline _.selected([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("selected" => v)
+    member inline _.selected([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("selected" =>>> v)
     [<CustomOperation("shape")>]
     member inline _.shape([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("shape" => v)
     [<CustomOperation("size")>]
@@ -368,11 +368,11 @@ type DomAttrBuilder() =
     [<CustomOperation("spellcheck")>]
     member inline _.spellcheck([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("spellcheck" => v)
     [<CustomOperation("src")>]
-    member inline _.src([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("src" => v)
+    member inline _.src([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("src" =>> v)
     [<CustomOperation("srcdoc")>]
-    member inline _.srcdoc([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("srcdoc" => v)
+    member inline _.srcdoc([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("srcdoc" =>> v)
     [<CustomOperation("srclang")>]
-    member inline _.srclang([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("srclang" => v)
+    member inline _.srclang([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("srclang" =>> v)
     [<CustomOperation("srcset")>]
     member inline _.srcset([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("srcset" => v)
     [<CustomOperation("start")>]
@@ -380,13 +380,13 @@ type DomAttrBuilder() =
     [<CustomOperation("step")>]
     member inline _.step([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("step" => v)
     [<CustomOperation("summary")>]
-    member inline _.summary([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("summary" => v)
+    member inline _.summary([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("summary" =>> v)
     [<CustomOperation("tabindex")>]
     member inline _.tabindex([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("tabindex" => v)
     [<CustomOperation("target")>]
     member inline _.target([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("target" => v)
     [<CustomOperation("title'")>]
-    member inline _.title'([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("title" => v)
+    member inline _.title'([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("title" =>> v)
     [<CustomOperation("translate")>]
     member inline _.translate([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("translate" => v)
     [<CustomOperation("type'")>]

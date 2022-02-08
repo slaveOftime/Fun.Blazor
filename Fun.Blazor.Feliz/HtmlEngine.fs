@@ -12,9 +12,6 @@ type html with
     static member inline custom(key: string, children: seq<NodeRenderFragment>) =
         EltWithChildBuilder key { yield! children }
 
-    /// The empty element, renders nothing on screen
-    static member inline none = emptyNode
-
     static member inline script (x: string) = script { src x }
     static member inline stylesheet (x: string) = stylesheet x
 

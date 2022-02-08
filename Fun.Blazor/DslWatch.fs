@@ -28,7 +28,7 @@ type html with
             "RenderFn" => render
             match k with
             | Some k -> html.key k
-            | None -> emptyAttr
+            | None -> emptyAttr()
         }
 
     /// <summary>

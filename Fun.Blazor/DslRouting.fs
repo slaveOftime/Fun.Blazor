@@ -24,5 +24,5 @@ type html with
                 |> hook.AddDispose
             )
 
-            html.watch (location, choose routes >> Option.defaultValue emptyNode)
+            html.watch (location, choose routes >> Option.defaultWith emptyNode)
         )

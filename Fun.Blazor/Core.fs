@@ -30,6 +30,24 @@ module Operators =
             index + 1
         )
 
+    /// Add Attribute with name and string value
+    let inline (=>>) (name: string) (value: string) =
+        AttrRenderFragment(fun _ builder index ->
+            builder.AddAttribute(index, name, value)
+            index + 1
+        )
+
+    /// Add Attribute with name and bool value
+    /// If true then add the name to attribute else do nothing
+    let inline (=>>>) (name: string) (value: bool) =
+        AttrRenderFragment(fun _ builder index ->
+            if value then
+                builder.AddAttribute(index, name)
+                index + 1
+            else
+                index
+        )
+
     /// Merge two AttrRenderFragment together
     let inline (==>) ([<InlineIfLambda>] render1: AttrRenderFragment) ([<InlineIfLambda>] render2: AttrRenderFragment) =
         AttrRenderFragment(fun comp builder index -> render2.Invoke(comp, builder, render1.Invoke(comp, builder, index)))
