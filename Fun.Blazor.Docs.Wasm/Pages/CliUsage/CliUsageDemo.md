@@ -1,24 +1,28 @@
 ﻿```
 dotnet tool install -g Fun.Blazor.Cli
-dotnet add package Fun.Blazor.Feliz
 ```
 
 Steps:
 
-1. Add any third party blazor components like AntDesign to your application and build in debug mode or restore it to pull the nuget packages
+1. Add any third party blazor components like MudBlazor to your application
 
     `FunBlazor`
         
         Add this empty attribute to below line in your project file you will get the default generating settings
-        Will generate code in namespace of the package name (AntDesign), with computation expression style
+        Will generate code in namespace of the package name (MudBlazor), with computation expression style
+        No need this if you have any attribute which start with FunBlazor
 
-   ```
-    <PackageReference FunBlazor="" Include="AntDesign" Version="0.8.2" />
-   ```
+    ```
+    <PackageReference FunBlazor="" Include="MudBlazor" Version="6.0.6" />
+    ```
 
-   `FunBlazorNamespace`: Give namespace
-   
-   `FunBlazorStyle`: Feliz | CE, this will override the settings in the commandline
+    `FunBlazorNamespace`: Give namespace
+
+    `FunBlazorAssemblyName`: Sometimes the assembly name is different with the package name, so you can use this to specify it
+        
+    `FunBlazorStyle`: CE | Feliz (not recommended anymore), this will override the settings in the commandline
+
+    `FunBlazorInline`: Inline to improve performance but may increase bundle size, turned on by default. This will override the settings in the commandline
    
 
 2. Run the command
@@ -27,7 +31,7 @@ Steps:
     fun-blazor generate ./YourApplication.fsproj
     ```
 
-    By default, code will be generated in the `Fun.Blazor.Bindings` folder. All the binding types are in lowercase
+    By default, code will be generated in the `Fun.Blazor.Bindings` folder.
 
     `-o|--outDir`: Customize the generated folder name
 
@@ -36,7 +40,7 @@ Steps:
 
 3. Enjoy it
 
-    CE style (You need set LangVersion to preview for your project, because CustomOperation override is in preview):
+    CE style (You need set LangVersion to preview for your project if you are using dotnet 5, because CustomOperation override is in preview):
 
     ```fsharp
     open Fun.Blazor
@@ -51,7 +55,7 @@ Steps:
         ]
     ```
 
-    Feliz style
+    Feliz style (not recomended anymore because performance)
 
     ```fsharp
     open Fun.Blazor

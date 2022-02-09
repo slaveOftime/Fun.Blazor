@@ -10,7 +10,7 @@ open Fun.Result
 open Utils
 
 
-let private getMetaInfo (ty: Type) =
+let private getMetaInfo useInline (ty: Type) =
     let getTypeMeta (ty: Type) =
         if ty.Name.Contains "`" then
             let generics =
@@ -43,8 +43,8 @@ let private getMetaInfo (ty: Type) =
     let originalGenerics = generics |> getTypeNames |> createGenerics |> closeGenerics
     let originalTypeWithGenerics = $"{ty.Namespace}.{getTypeShortName ty}{originalGenerics}"
     let customOperation name = $"[<CustomOperation(\"{name}\")>]"
-    let memberStart = "member _."
-    let contextArg = $"render: AttrRenderFragment"
+    let memberStart = if useInline then "member inline _." else "member _."
+    let contextArg = if useInline then "[<InlineIfLambda>] render: AttrRenderFragment" else "render: AttrRenderFragment"
 
     let rawProps = ty.GetProperties()
     let filteredProps = getValidBlazorProps ty rawProps
@@ -195,8 +195,8 @@ let private getMetaInfo (ty: Type) =
     |}
 
 
-let generateCode (targetNamespace: string) (opens: string) (tys: Type seq) =
-    let metaInfos = tys |> MetaInfo.create (getMetaInfo >> fun x -> Namespace x.ty.Namespace, x)
+let generateCode (targetNamespace: string) (opens: string) (tys: Type seq) useInline =
+    let metaInfos = tys |> MetaInfo.create (getMetaInfo useInline >> fun x -> Namespace x.ty.Namespace, x)
 
     let trimNamespace (ns: string) =
         metaInfos.rootNamespaces

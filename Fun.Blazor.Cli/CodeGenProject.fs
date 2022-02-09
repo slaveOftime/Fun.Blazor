@@ -17,6 +17,7 @@ type PackageMeta =
         SourceAssemblyName: string
         TargetNamespace: string
         Style: Style
+        UseInline: bool
     }
 
 
@@ -89,7 +90,7 @@ module CodeGenProject =
                 .Run()
 
             bootstrapCode.AppendLine
-                $"Fun.Blazor.Generator.CodeGen.createCodeFile @\"{codesDir}\" Fun.Blazor.Generator.Style.{package.Style} \"{package.TargetNamespace}\" \"{package.SourceAssemblyName}\""
+                $"Fun.Blazor.Generator.CodeGen.createCodeFile @\"{codesDir}\" Fun.Blazor.Generator.Style.{package.Style} \"{package.TargetNamespace}\" \"{package.SourceAssemblyName}\" {package.UseInline.ToString().ToLower()}"
             |> ignore
         
         AnsiConsole.WriteLine()

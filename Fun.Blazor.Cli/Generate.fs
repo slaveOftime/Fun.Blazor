@@ -4,6 +4,7 @@ open System
 open System.IO
 open System.Xml.Linq
 open Spectre.Console
+open Fun.Result
 open Fun.Blazor.Generator
 
 
@@ -15,6 +16,7 @@ let private FunBlazorPrefix = "FunBlazor"
 let private FunBlazorAssemblyNameAttr = $"{FunBlazorPrefix}AssemblyName"
 let private FunBlazorNamespaceAttr = $"{FunBlazorPrefix}Namespace"
 let private FunBlazorStyleAttr = $"{FunBlazorPrefix}Style"
+let private FunBlazorInlineAttr = $"{FunBlazorPrefix}Inline"
 
 
 let private clean (project: XDocument) (projectFile: string) (codesDirName: string) =
@@ -37,7 +39,7 @@ let private clean (project: XDocument) (projectFile: string) (codesDirName: stri
     )
 
 
-let private findPackageMetas (project: XDocument) style =
+let private findPackageMetas (project: XDocument) style useInline =
     project.Element(xn "Project").Elements(xn "ItemGroup")
     |> Seq.map (fun x -> x.Elements(xn "PackageReference"))
     |> Seq.concat
@@ -62,6 +64,13 @@ let private findPackageMetas (project: XDocument) style =
                     | nameof Style.Feliz -> Style.Feliz
                     | nameof Style.CE -> Style.CE
                     | _ -> style
+            UseInline =
+                match node.Attribute(xn FunBlazorInlineAttr) with
+                | null -> useInline
+                | attr ->
+                    match attr.Value with
+                    | SafeStringLower "false" -> false
+                    | _ -> true
         }
     )
 
@@ -87,7 +96,7 @@ let private attachCodeFiles (project: XDocument) (projectFile: string) (codesDir
 
 
 
-let startGenerate (projectFile: string) (codesDirName: string) (style: Style) sdkStr generatorVersion =
+let startGenerate (projectFile: string) (codesDirName: string) (style: Style) sdkStr generatorVersion useInline =
     AnsiConsole.MarkupLine $"Found project: [green]{projectFile}[/]"
     AnsiConsole.WriteLine()
 
@@ -101,7 +110,7 @@ let startGenerate (projectFile: string) (codesDirName: string) (style: Style) sd
 
     AnsiConsole.WriteLine()
     AnsiConsole.MarkupLine "Find packages and generate codes"
-    findPackageMetas project style |> CodeGenProject.createAndRun projectFile codesDirName sdk generatorVersion
+    findPackageMetas project style useInline |> CodeGenProject.createAndRun projectFile codesDirName sdk generatorVersion
 
 
     AnsiConsole.WriteLine()

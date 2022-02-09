@@ -27,7 +27,12 @@ type GenerateSettings() =
     
     [<Description("Fun.Blazor.Generator version")>]
     [<CommandOption("--generator-version")>]
-    member val GeneratorVersion = "2.0.0-beta003" with get, set
+    member val GeneratorVersion = "2.0.0-beta005" with get, set
+    
+    [<Description("Turn on inline option for generated code")>]
+    [<CommandOption("--inline")>]
+    [<DefaultValue true>] // Default value for bool is different
+    member val Inline = true with get, set
 
 
 type GenerateCommand() =
@@ -63,7 +68,7 @@ type GenerateCommand() =
             AnsiConsole.MarkupLine "[red] project is required[/]"
             -1
         | Some path ->
-            Generate.startGenerate path settings.OutDir settings.Style settings.Sdk settings.GeneratorVersion
+            Generate.startGenerate path settings.OutDir settings.Style settings.Sdk settings.GeneratorVersion settings.Inline
             0
 
 
