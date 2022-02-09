@@ -14,7 +14,7 @@ module CodeGen =
     let private (</>) x y = Path.Combine(x, y)
 
 
-    let createCodeFile codesDir style (targetNamespace: string) (sourceAssemblyName: string) =
+    let createCodeFile codesDir style (targetNamespace: string) (sourceAssemblyName: string) useInline =
         printfn $"Generating code for {targetNamespace}: {sourceAssemblyName}"
 
         let formatedName = targetNamespace.Replace("-", "_")
@@ -34,8 +34,8 @@ open {targetNamespace}.{Utils.internalSegment}"""
 
             let codes =
                 match style with
-                | Style.Feliz -> Generator.generateCode formatedName opens types
-                | Style.CE -> CEGenerator.generateCode formatedName opens types
+                | Style.Feliz -> Generator.generateCode formatedName opens types useInline
+                | Style.CE -> CEGenerator.generateCode formatedName opens types useInline
                 | x -> failwith $"Not supportted style: {x}"
 
             let code =

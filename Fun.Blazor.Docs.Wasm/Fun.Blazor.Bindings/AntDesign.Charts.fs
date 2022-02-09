@@ -9,14 +9,14 @@ open AntDesign.Charts.DslInternals
 type ChartComponentBaseBuilder<'FunBlazorGeneric, 'TConfig when 'TConfig : not struct and 'TConfig : (new : unit -> 'TConfig) and 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
     static member inline create () = html.fromBuilder(ChartComponentBaseBuilder<'FunBlazorGeneric, 'TConfig>())
-    [<CustomOperation("Data")>] member _.Data (render: AttrRenderFragment, x: System.Object) = render ==> ("Data" => x)
-    [<CustomOperation("Config")>] member _.Config (render: AttrRenderFragment, x: 'TConfig) = render ==> ("Config" => x)
-    [<CustomOperation("JsonConfig")>] member _.JsonConfig (render: AttrRenderFragment, x: System.String) = render ==> ("JsonConfig" => x)
-    [<CustomOperation("JsConfig")>] member _.JsConfig (render: AttrRenderFragment, x: System.String) = render ==> ("JsConfig" => x)
-    [<CustomOperation("OtherConfig")>] member _.OtherConfig (render: AttrRenderFragment, x: System.Object) = render ==> ("OtherConfig" => x)
-    [<CustomOperation("OnCreateAfter")>] member _.OnCreateAfter (render: AttrRenderFragment, fn) = render ==> html.callback<AntDesign.Charts.IChartComponent>("OnCreateAfter", fn)
-    [<CustomOperation("OnFirstRender")>] member _.OnFirstRender (render: AttrRenderFragment, fn) = render ==> html.callback<AntDesign.Charts.IChartComponent>("OnFirstRender", fn)
-    [<CustomOperation("OnTitleClick")>] member _.OnTitleClick (render: AttrRenderFragment, fn) = render ==> html.callback<AntDesign.Charts.ChartEvent>("OnTitleClick", fn)
+    [<CustomOperation("Data")>] member inline _.Data ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Object) = render ==> ("Data" => x)
+    [<CustomOperation("Config")>] member inline _.Config ([<InlineIfLambda>] render: AttrRenderFragment, x: 'TConfig) = render ==> ("Config" => x)
+    [<CustomOperation("JsonConfig")>] member inline _.JsonConfig ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("JsonConfig" => x)
+    [<CustomOperation("JsConfig")>] member inline _.JsConfig ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("JsConfig" => x)
+    [<CustomOperation("OtherConfig")>] member inline _.OtherConfig ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Object) = render ==> ("OtherConfig" => x)
+    [<CustomOperation("OnCreateAfter")>] member inline _.OnCreateAfter ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<AntDesign.Charts.IChartComponent>("OnCreateAfter", fn)
+    [<CustomOperation("OnFirstRender")>] member inline _.OnFirstRender ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<AntDesign.Charts.IChartComponent>("OnFirstRender", fn)
+    [<CustomOperation("OnTitleClick")>] member inline _.OnTitleClick ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<AntDesign.Charts.ChartEvent>("OnTitleClick", fn)
                 
 
 type AreaBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =

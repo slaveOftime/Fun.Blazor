@@ -36,8 +36,8 @@ let webTypes = Assembly.LoadFile(__SOURCE_DIRECTORY__ + "/bin/Debug/net5.0/Micro
 //File.WriteAllText(dslPath, dslCode)
 
 
-let componentsDslCE = CEGenerator.generateCode "Microsoft.AspNetCore.Components" opens componentTypes
-let webDslCE = CEGenerator.generateCode "Microsoft.AspNetCore.Components.Web" opens webTypes
+let componentsDslCE = CEGenerator.generateCode "Microsoft.AspNetCore.Components" opens componentTypes true
+let webDslCE = CEGenerator.generateCode "Microsoft.AspNetCore.Components.Web" opens webTypes true
 
 let dslCEPath = __SOURCE_DIRECTORY__ + "\..\Fun.Blazor\DslCE.AspNetCore.fs"
 let dslCECode = 

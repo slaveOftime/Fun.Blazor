@@ -6,10 +6,10 @@ open Microsoft.AspNetCore.Components
 open Fun.Blazor
 open Utils
 
-let private getMetaInfo (ty: Type) =
+let private getMetaInfo useInline (ty: Type) =
     let rawProps = ty.GetProperties()
     let validProps = getValidBlazorProps ty rawProps
-    let memberStart = "static member "
+    let memberStart = if useInline then "static member inline " else "static member "
 
     let props =
         validProps
@@ -149,8 +149,8 @@ let private getMetaInfo (ty: Type) =
     |}
 
 
-let generateCode (targetNamespace: string) (opens: string) (tys: Type seq) =
-    let metaInfos = tys |> MetaInfo.create (getMetaInfo >> fun x -> Namespace x.ty.Namespace, x)
+let generateCode (targetNamespace: string) (opens: string) (tys: Type seq) useInline =
+    let metaInfos = tys |> MetaInfo.create (getMetaInfo useInline >> fun x -> Namespace x.ty.Namespace, x)
 
     let getFinalTypeName = getTypeShortName >> lowerFirstCase >> avoidFsharpKeywords
 
