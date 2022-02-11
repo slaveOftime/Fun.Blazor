@@ -23,15 +23,16 @@ type Index() =
                     }
                     title { "Fun Blazor" }
                     baseUrl "/"
+                    stylesheet "_content/MudBlazor/MudBlazor.min.css"
                 }
                 body {
                     rootComp<Index> ctx RenderMode.ServerPrerendered
 
+                    script { src "_content/MudBlazor/MudBlazor.min.js" }
                     script { src "_framework/blazor.server.js" }
+
                     stylesheet "css/google-font.css"
                     stylesheet "css/drag-drop.css"
-                    stylesheet "_content/MudBlazor/MudBlazor.min.css"
-                    script { src "_content/MudBlazor/MudBlazor.min.js" }
 
                     stylesheet "css/github-markdown.css"
                     stylesheet "css/prism-night-owl.css"
@@ -67,16 +68,17 @@ type Index() =
                 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
                 <title>Fun Blazor</title>
                 <base href="/" />
+                <link rel="stylesheet" href="_content/MudBlazor/MudBlazor.min.css" />
             </head>
 
             <body>
                 {rootComp<Index> ctx RenderMode.ServerPrerendered}
 
+                <script src="_content/MudBlazor/MudBlazor.min.js"></script>
                 <script src="_framework/blazor.server.js"></script>
+
                 <link rel="stylesheet" href="css/google-font.css" />
                 <link rel="stylesheet" href="css/drag-drop.css" />
-                <link rel="stylesheet" href="_content/MudBlazor/MudBlazor.min.css" />
-                <script src="_content/MudBlazor/MudBlazor.min.js"></script>
 
                 <link rel="stylesheet" href="css/github-markdown.css" />
                 <link rel="stylesheet" href="css/prism-night-owl.css" />
