@@ -56,7 +56,7 @@ type html with
     ///
     /// 'Services should be something you defined in the asp.net core DI or unit
     /// 'Services must be a tuple like (hook: IComponentHook, sp: IServiceProvider)
-    static member injectWithNoKey(render: 'Services -> AttrRenderFragment) =
+    static member injectWithNoKey(render: 'Services -> NodeRenderFragment) =
         ComponentWithChildBuilder<DIComponent<'Services>> () {
             "RenderFn" => render
             "IsStatic" => true
