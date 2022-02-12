@@ -1,15 +1,16 @@
 ﻿namespace Fun.Blazor
 
 open System
+open System.Threading.Tasks
 open Fun.Blazor
 open HtmlTemplate.Internals
 
 
 [<AutoOpen>]
 module Utils =
-    let callback fn : ArgMkAttrWithName = fun name -> html.callback (name, fn)
+    let callback (fn: 'T -> unit) : ArgMkAttrWithName = fun name -> html.callback<'T> (name, fn)
 
-    let callbackTask fn : ArgMkAttrWithName = fun name -> html.callbackTask (name, fn)
+    let callbackTask (fn: 'T -> Task) : ArgMkAttrWithName = fun name -> html.callbackTask<'T> (name, fn)
 
 
 type Template =

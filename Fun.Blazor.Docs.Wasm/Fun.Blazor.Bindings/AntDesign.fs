@@ -49,9 +49,12 @@ type overlayTrigger<'FunBlazorGeneric> =
     static member inlineFlexMode (x: System.Boolean) = "InlineFlexMode" => x
     static member isButton (x: System.Boolean) = "IsButton" => x
     static member onClick fn = html.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs>("OnClick", fn)
-    static member onMaskClick fn = html.callback<unit>("OnMaskClick", fn)
-    static member onMouseEnter fn = html.callback<unit>("OnMouseEnter", fn)
-    static member onMouseLeave fn = html.callback<unit>("OnMouseLeave", fn)
+    static member onMaskClick fn = html.callback("OnMaskClick", fn)
+    static member onMaskClick fn = html.callbackTask("OnMaskClick", fn)
+    static member onMouseEnter fn = html.callback("OnMouseEnter", fn)
+    static member onMouseEnter fn = html.callbackTask("OnMouseEnter", fn)
+    static member onMouseLeave fn = html.callback("OnMouseLeave", fn)
+    static member onMouseLeave fn = html.callbackTask("OnMouseLeave", fn)
     static member onOverlayHiding fn = html.callback<System.Boolean>("OnOverlayHiding", fn)
     static member onVisibleChange fn = html.callback<System.Boolean>("OnVisibleChange", fn)
     static member overlay (x: string) = html.renderFragment("Overlay", html.text x)
@@ -241,7 +244,8 @@ type datePickerDatetimePanel<'FunBlazorGeneric, 'TValue> =
     static member disabledMinutes (fn) = "DisabledMinutes" => (System.Func<System.DateTime, System.Int32[]>fn)
     static member disabledSeconds (fn) = "DisabledSeconds" => (System.Func<System.DateTime, System.Int32[]>fn)
     static member disabledTime (fn) = "DisabledTime" => (System.Func<System.DateTime, AntDesign.DatePickerDisabledTime>fn)
-    static member onOkClick fn = html.callback<unit>("OnOkClick", fn)
+    static member onOkClick fn = html.callback("OnOkClick", fn)
+    static member onOkClick fn = html.callbackTask("OnOkClick", fn)
                     
 
 type datePickerTemplate<'FunBlazorGeneric, 'TValue> =
@@ -731,7 +735,8 @@ type backTop<'FunBlazorGeneric> =
     static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
     static member visibilityHeight (x: System.Double) = "VisibilityHeight" => x
     static member targetSelector (x: System.String) = "TargetSelector" => x
-    static member onClick fn = html.callback<unit>("OnClick", fn)
+    static member onClick fn = html.callback("OnClick", fn)
+    static member onClick fn = html.callbackTask("OnClick", fn)
                     
 
 type badge<'FunBlazorGeneric> =
@@ -1090,7 +1095,8 @@ type switch<'FunBlazorGeneric> =
     static member checkedChildrenTemplate (node) = html.renderFragment("CheckedChildrenTemplate", node)
     static member checkedChildrenTemplate (nodes) = html.renderFragment("CheckedChildrenTemplate", fragment { yield! nodes })
     static member control (x: System.Boolean) = "Control" => x
-    static member onClick fn = html.callback<unit>("OnClick", fn)
+    static member onClick fn = html.callback("OnClick", fn)
+    static member onClick fn = html.callbackTask("OnClick", fn)
     static member unCheckedChildren (x: System.String) = "UnCheckedChildren" => x
     static member unCheckedChildrenTemplate (x: string) = html.renderFragment("UnCheckedChildrenTemplate", html.text x)
     static member unCheckedChildrenTemplate (node) = html.renderFragment("UnCheckedChildrenTemplate", node)
@@ -1201,7 +1207,8 @@ type datePickerBase<'FunBlazorGeneric, 'TValue> =
     static member renderExtraFooter (x: string) = html.renderFragment("RenderExtraFooter", html.text x)
     static member renderExtraFooter (node) = html.renderFragment("RenderExtraFooter", node)
     static member renderExtraFooter (nodes) = html.renderFragment("RenderExtraFooter", fragment { yield! nodes })
-    static member onClearClick fn = html.callback<unit>("OnClearClick", fn)
+    static member onClearClick fn = html.callback("OnClearClick", fn)
+    static member onClearClick fn = html.callbackTask("OnClearClick", fn)
     static member onOpenChange fn = html.callback<System.Boolean>("OnOpenChange", fn)
     static member onPanelChange fn = html.callback<AntDesign.DateTimeChangedEventArgs>("OnPanelChange", fn)
     static member disabledDate (fn) = "DisabledDate" => (System.Func<System.DateTime, System.Boolean>fn)
@@ -1660,7 +1667,8 @@ type drawer<'FunBlazorGeneric> =
     static member offsetX (x: System.Int32) = "OffsetX" => x
     static member offsetY (x: System.Int32) = "OffsetY" => x
     static member visible (x: System.Boolean) = "Visible" => x
-    static member onClose fn = html.callback<unit>("OnClose", fn)
+    static member onClose fn = html.callback("OnClose", fn)
+    static member onClose fn = html.callbackTask("OnClose", fn)
     static member handler (x: string) = html.renderFragment("Handler", html.text x)
     static member handler (node) = html.renderFragment("Handler", node)
     static member handler (nodes) = html.renderFragment("Handler", fragment { yield! nodes })
@@ -1891,7 +1899,8 @@ type listItem<'FunBlazorGeneric> =
     static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
     static member colStyle (x: System.String) = "ColStyle" => x
     static member itemCount (x: System.Int32) = "ItemCount" => x
-    static member onClick fn = html.callback<unit>("OnClick", fn)
+    static member onClick fn = html.callback("OnClick", fn)
+    static member onClick fn = html.callbackTask("OnClick", fn)
     static member noFlex (x: System.Boolean) = "NoFlex" => x
                     
 
@@ -2132,8 +2141,10 @@ type dialogWrapper<'FunBlazorGeneric> =
     static member destroyOnClose (x: System.Boolean) = "DestroyOnClose" => x
     static member visible (x: System.Boolean) = "Visible" => x
     static member onBeforeDestroy fn = html.callback<System.ComponentModel.CancelEventArgs>("OnBeforeDestroy", fn)
-    static member onAfterShow fn = html.callback<unit>("OnAfterShow", fn)
-    static member onAfterHide fn = html.callback<unit>("OnAfterHide", fn)
+    static member onAfterShow fn = html.callback("OnAfterShow", fn)
+    static member onAfterShow fn = html.callbackTask("OnAfterShow", fn)
+    static member onAfterHide fn = html.callback("OnAfterHide", fn)
+    static member onAfterHide fn = html.callbackTask("OnAfterHide", fn)
                     
 
 type modal<'FunBlazorGeneric> =
@@ -2216,7 +2227,8 @@ type pageHeader<'FunBlazorGeneric> =
     static member subtitleTemplate (x: string) = html.renderFragment("SubtitleTemplate", html.text x)
     static member subtitleTemplate (node) = html.renderFragment("SubtitleTemplate", node)
     static member subtitleTemplate (nodes) = html.renderFragment("SubtitleTemplate", fragment { yield! nodes })
-    static member onBack fn = html.callback<unit>("OnBack", fn)
+    static member onBack fn = html.callback("OnBack", fn)
+    static member onBack fn = html.callbackTask("OnBack", fn)
     static member pageHeaderContent (x: string) = html.renderFragment("PageHeaderContent", html.text x)
     static member pageHeaderContent (node) = html.renderFragment("PageHeaderContent", node)
     static member pageHeaderContent (nodes) = html.renderFragment("PageHeaderContent", fragment { yield! nodes })
@@ -2544,7 +2556,8 @@ type countDown<'FunBlazorGeneric> =
     static member inline create (attrs: AttrRenderFragment seq) = ComponentBuilder<AntDesign.CountDown>() { yield! attrs }
 
     static member format (x: System.String) = "Format" => x
-    static member onFinish fn = html.callback<unit>("OnFinish", fn)
+    static member onFinish fn = html.callback("OnFinish", fn)
+    static member onFinish fn = html.callbackTask("OnFinish", fn)
                     
 
 type statistic<'FunBlazorGeneric, 'TValue> =
@@ -2749,7 +2762,8 @@ type tabs<'FunBlazorGeneric> =
     static member onChange fn = html.callback<System.String>("OnChange", fn)
     static member onEdit (fn) = "OnEdit" => (System.Func<System.String, System.String, System.Threading.Tasks.Task<System.Boolean>>fn)
     static member onClose fn = html.callback<System.String>("OnClose", fn)
-    static member onAddClick fn = html.callback<unit>("OnAddClick", fn)
+    static member onAddClick fn = html.callback("OnAddClick", fn)
+    static member onAddClick fn = html.callbackTask("OnAddClick", fn)
     static member afterTabCreated fn = html.callback<System.String>("AfterTabCreated", fn)
     static member onTabClick fn = html.callback<System.String>("OnTabClick", fn)
     static member draggable (x: System.Boolean) = "Draggable" => x
@@ -2779,7 +2793,8 @@ type tag<'FunBlazorGeneric> =
     static member noAnimation (x: System.Boolean) = "NoAnimation" => x
     static member onClose fn = html.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs>("OnClose", fn)
     static member onClosing fn = html.callback<AntDesign.CloseEventArgs<Microsoft.AspNetCore.Components.Web.MouseEventArgs>>("OnClosing", fn)
-    static member onClick fn = html.callback<unit>("OnClick", fn)
+    static member onClick fn = html.callback("OnClick", fn)
+    static member onClick fn = html.callbackTask("OnClick", fn)
     static member visible (x: System.Boolean) = "Visible" => x
                     
 
@@ -3236,11 +3251,16 @@ type overlay<'FunBlazorGeneric> =
     static member childContent (x: string) = html.renderFragment("ChildContent", html.text x)
     static member childContent (node) = html.renderFragment("ChildContent", node)
     static member childContent (nodes) = html.renderFragment("ChildContent", fragment { yield! nodes })
-    static member onOverlayMouseEnter fn = html.callback<unit>("OnOverlayMouseEnter", fn)
-    static member onOverlayMouseLeave fn = html.callback<unit>("OnOverlayMouseLeave", fn)
-    static member onOverlayMouseUp fn = html.callback<unit>("OnOverlayMouseUp", fn)
-    static member onShow fn = html.callback<unit>("OnShow", fn)
-    static member onHide fn = html.callback<unit>("OnHide", fn)
+    static member onOverlayMouseEnter fn = html.callback("OnOverlayMouseEnter", fn)
+    static member onOverlayMouseEnter fn = html.callbackTask("OnOverlayMouseEnter", fn)
+    static member onOverlayMouseLeave fn = html.callback("OnOverlayMouseLeave", fn)
+    static member onOverlayMouseLeave fn = html.callbackTask("OnOverlayMouseLeave", fn)
+    static member onOverlayMouseUp fn = html.callback("OnOverlayMouseUp", fn)
+    static member onOverlayMouseUp fn = html.callbackTask("OnOverlayMouseUp", fn)
+    static member onShow fn = html.callback("OnShow", fn)
+    static member onShow fn = html.callbackTask("OnShow", fn)
+    static member onHide fn = html.callback("OnHide", fn)
+    static member onHide fn = html.callbackTask("OnHide", fn)
     static member overlayChildPrefixCls (x: System.String) = "OverlayChildPrefixCls" => x
     static member hideMillisecondsDelay (x: System.Int32) = "HideMillisecondsDelay" => x
     static member waitForHideAnimMilliseconds (x: System.Int32) = "WaitForHideAnimMilliseconds" => x
@@ -3301,15 +3321,20 @@ type datePickerInput<'FunBlazorGeneric> =
     static member suffixIcon (x: string) = html.renderFragment("SuffixIcon", html.text x)
     static member suffixIcon (node) = html.renderFragment("SuffixIcon", node)
     static member suffixIcon (nodes) = html.renderFragment("SuffixIcon", fragment { yield! nodes })
-    static member onClick fn = html.callback<unit>("OnClick", fn)
-    static member onfocus fn = html.callback<unit>("Onfocus", fn)
-    static member onBlur fn = html.callback<unit>("OnBlur", fn)
-    static member onfocusout fn = html.callback<unit>("Onfocusout", fn)
+    static member onClick fn = html.callback("OnClick", fn)
+    static member onClick fn = html.callbackTask("OnClick", fn)
+    static member onfocus fn = html.callback("Onfocus", fn)
+    static member onfocus fn = html.callbackTask("Onfocus", fn)
+    static member onBlur fn = html.callback("OnBlur", fn)
+    static member onBlur fn = html.callbackTask("OnBlur", fn)
+    static member onfocusout fn = html.callback("Onfocusout", fn)
+    static member onfocusout fn = html.callbackTask("Onfocusout", fn)
     static member onKeyUp fn = html.callback<Microsoft.AspNetCore.Components.Web.KeyboardEventArgs>("OnKeyUp", fn)
     static member onKeyDown fn = html.callback<Microsoft.AspNetCore.Components.Web.KeyboardEventArgs>("OnKeyDown", fn)
     static member onInput fn = html.callback<Microsoft.AspNetCore.Components.ChangeEventArgs>("OnInput", fn)
     static member allowClear (x: System.Boolean) = "AllowClear" => x
-    static member onClickClear fn = html.callback<unit>("OnClickClear", fn)
+    static member onClickClear fn = html.callback("OnClickClear", fn)
+    static member onClickClear fn = html.callbackTask("OnClickClear", fn)
                     
 
 type dropdownGroupButton<'FunBlazorGeneric> =
