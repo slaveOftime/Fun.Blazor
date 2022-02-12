@@ -251,7 +251,7 @@ type ComponentWithChildBuilder<'T when 'T :> IComponent>() =
         =
         struct(render, fn ())
 
-    member inline _.For(renders: 'T seq, [<InlineIfLambda>] fn: 'T -> NodeRenderFragment) =
+    member inline _.For(renders: 'Data seq, [<InlineIfLambda>] fn: 'Data -> NodeRenderFragment) =
         renders |> Seq.map fn |> Seq.fold (>=>) (emptyNode())
 
     member inline _.YieldFrom(renders: NodeRenderFragment seq) =
@@ -456,7 +456,7 @@ type ComponentWithDomAndChildAttrBuilder<'T when 'T :> IComponent>() =
         =
         struct(render, fn ())
 
-    member inline _.For(renders: 'T seq, [<InlineIfLambda>] fn: 'T -> NodeRenderFragment) =
+    member inline _.For(renders: 'Data seq, [<InlineIfLambda>] fn: 'Data -> NodeRenderFragment) =
         renders |> Seq.map fn |> Seq.fold (>=>) (emptyNode())
 
     member inline _.YieldFrom(renders: NodeRenderFragment seq) =
