@@ -16,7 +16,6 @@ type CssBuilder with
         comb
         &&& css'' {
                 custom "border-bottom" "8px solid blue"
-                color "asd"
                 backgroundBlendModeColor
             }
 
@@ -33,30 +32,31 @@ let ceCssDemo =
             flexWrapWrap
             myStyles
         }
-        div {
-            style'' {
-                width 100
-                height 30
-                // only support if
-                if 1 < 2 then
-                    borderRadius 15
-                    backgroundColor color.yellow
-                    margin 10
-                //else
-                //    borderBottom (length.px 4) borderStyle.solid color.hotPink
-                // FS3086	A custom operation may not be used in conjunction with 'use', 'try/with', 'try/finally', 'if/then/else' or 'match' operators within this computation expression	Fun.Blazor.Docs.Wasm	C:\Users\woo\Documents\Code\Slaveoftime\Fun.Blazor\Fun.Blazor.Docs.Wasm\Pages\HelperFunctions\CECssDemo.fs	32	Active
-            }
+        for _ in 1 .. 10 do
             div {
                 style'' {
                     width 100
                     height 30
-                    // But you can yield another CombineKeyValue delegate like:
-                    // css'' is short name to build a CssBuilder which will return as a CombineKeyValue delegate
-                    match 1 with
-                    | 1 -> css'' { backgroundColor "red" }
-                    | 2 -> css'' { backgroundColor "blue" }
-                    | _ -> css'' { backgroundColor "green" }
+                    // only support if
+                    if 1 < 2 then
+                        borderRadius 15
+                        backgroundColor color.yellow
+                        margin 10
+                    //else
+                    //    borderBottom (length.px 4) borderStyle.solid color.hotPink
+                    // FS3086	A custom operation may not be used in conjunction with 'use', 'try/with', 'try/finally', 'if/then/else' or 'match' operators within this computation expression	Fun.Blazor.Docs.Wasm	C:\Users\woo\Documents\Code\Slaveoftime\Fun.Blazor\Fun.Blazor.Docs.Wasm\Pages\HelperFunctions\CECssDemo.fs	32	Active
                 }
+            }
+        div {
+            style'' {
+                width 100
+                height 30
+                // But you can yield another CombineKeyValue delegate like:
+                // css'' is short name to build a CssBuilder which will return as a CombineKeyValue delegate
+                match 1 with
+                | 1 -> css'' { backgroundColor "red" }
+                | 2 -> css'' { backgroundColor "blue" }
+                | _ -> css'' { backgroundColor "green" }
             }
         }
     }
