@@ -39,6 +39,7 @@ open type Makers
 type CssBuilder() =
 
     member inline _.Yield(_: unit) = CombineKeyValue(fun sb -> sb)
+    member inline _.Yield([<InlineIfLambda>] x: CombineKeyValue) = x
 
     member inline _.Run([<InlineIfLambda>] combine: CombineKeyValue) = combine.Invoke(StringBuilder())
 
@@ -60,6 +61,9 @@ type CssBuilder() =
     [<CustomOperation("custom")>]
     member inline _.custom([<InlineIfLambda>] comb: CombineKeyValue, key: string, value: string) = comb &>> (key, value)
 
+    
+    [<CustomOperation("zoom")>]
+    member inline _.zoom([<InlineIfLambda>] comb: CombineKeyValue, x: float) = comb &&& mkWithKV("zoom", x)
 
     /// Specifies that all the element's properties should be changed to their initial values.
     [<CustomOperation("allInitial")>]
@@ -2483,6 +2487,31 @@ type CssBuilder() =
                 .Append(" ")
                 .Append(left)
                 .Append("); ")
+        )
+    /// Sets the padding area on all four sides of an element. It is a shorthand for padding-top,
+    /// padding-right, padding-bottom, and padding-left.
+    [<CustomOperation("padding")>]
+    member inline _.padding
+        (
+            [<InlineIfLambda>] comb: CombineKeyValue,
+            top: int,
+            right: int,
+            bottom: int,
+            left: int
+        )
+        =
+        CombineKeyValue(fun x ->
+            comb
+                .Invoke(x)
+                .Append("padding: ")
+                .Append(top)
+                .Append("px ")
+                .Append(right)
+                .Append("px ")
+                .Append(bottom)
+                .Append("px ")
+                .Append(left)
+                .Append("px); ")
         )
     /// Sets the height of the padding area on the bottom of an element.
     [<CustomOperation("paddingBottom")>]
