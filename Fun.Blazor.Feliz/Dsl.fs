@@ -34,9 +34,9 @@ type html with
 
 
 let svg =
-    FunBlazorSvgEngine((fun tag nodes -> EltWithChildBuilder tag { yield! nodes }), html.text, emptyNode)
+    FunBlazorSvgEngine((fun tag nodes -> EltWithChildBuilder tag { yield! nodes }), html.text, Internal.emptyNode)
 
 let attr =
-    FunBlazorAttrEngine((fun k v -> k => v), (fun k v -> if v then k => null else emptyAttr()))
+    FunBlazorAttrEngine((fun k v -> k => v), (fun k v -> if v then k => null else Internal.emptyAttr()))
 
 let style = Feliz.CssEngine(fun k v -> k, v)

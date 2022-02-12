@@ -1,11 +1,11 @@
 ﻿namespace Fun.Blazor
 
 open System
-open System.Text
 open System.Threading.Tasks
 open Microsoft.AspNetCore.Components
 open Microsoft.AspNetCore.Components.Web
 open Operators
+open Internal
 
 
 type StyleBuilder() =
@@ -13,7 +13,9 @@ type StyleBuilder() =
 
     member inline _.Run([<InlineIfLambda>] combine: Fun.Css.Internal.CombineKeyValue) =
         AttrRenderFragment(fun _ builder index ->
-            builder.AddAttribute(index, "style", combine.Invoke(StringBuilder()).ToString())
+            let sb = stringBuilderPool.Get()
+            builder.AddAttribute(index, "style", combine.Invoke(sb).ToString())
+            stringBuilderPool.Return sb
             index + 1
         )
 
@@ -155,11 +157,10 @@ type DomAttrBuilder() =
         render ==> (html.style result)
 
     [<CustomOperation("style'")>]
-    member inline _.style([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> (html.style x)
+    member inline _.style([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.style x
 
     [<CustomOperation("styles")>]
-    member _.styles(render: AttrRenderFragment, v: (string * string) seq) =
-        render ==> (html.style ((makeStyles v).ToString()))
+    member _.styles(render: AttrRenderFragment, v: (string * string) seq) = render ==> html.style (makeStyles v)
 
     [<CustomOperation("bindRef")>]
     member inline _.bindRef([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("bindRef" => v)

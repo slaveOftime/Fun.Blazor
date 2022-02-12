@@ -3,6 +3,7 @@
 open System
 open Microsoft.Extensions.Logging
 open Microsoft.AspNetCore.Components
+open Internal
 
 
 type StoreComponent<'T>() as this =

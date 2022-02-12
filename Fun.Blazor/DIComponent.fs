@@ -5,6 +5,7 @@ open System.Collections.Generic
 open FSharp.Data.Adaptive
 open Microsoft.Extensions.Logging
 open Microsoft.AspNetCore.Components
+open Internal
 
 
 [<AutoOpen>]

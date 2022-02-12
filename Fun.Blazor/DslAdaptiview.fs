@@ -5,6 +5,7 @@ open System.Runtime.CompilerServices
 open FSharp.Data.Adaptive
 open Fun.Blazor
 open Operators
+open Internal
 
 
 /// This will generate an alist<Node> as a Node parameter.

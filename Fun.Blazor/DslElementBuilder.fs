@@ -3,6 +3,7 @@
 open System
 open Microsoft.AspNetCore.Components
 open Operators
+open Internal
 
 
 type EltBuilder(name) =
@@ -526,6 +527,10 @@ module Elts =
 
 
     let styleBuilder = StyleBuilder()
+    let cssBuilder = Fun.Css.CssBuilder()
 
     /// Short name for StyleBuilder
     let style'' = styleBuilder
+
+    /// Short name for cssBuilder
+    let css'' = cssBuilder

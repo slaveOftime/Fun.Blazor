@@ -13,6 +13,9 @@
     <Compile Include="BasicBenchmark\BoleroComponent.fs" />
     <Compile Include="BasicBenchmark\Benchmarks.fs" />
     <Compile Include="BlazorInterop\Benchmarks.fs" />
+    <Compile Include="StyleBuilding\CECssComponent.fs" />
+    <Compile Include="StyleBuilding\FelizCssComponent.fs" />
+    <Compile Include="StyleBuilding\Benchmarks.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 

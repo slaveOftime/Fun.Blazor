@@ -7,15 +7,17 @@ open System.Text
 module Internal =
     type CombineKeyValue = delegate of StringBuilder -> StringBuilder
 
-
+    /// Merge two togeter
     let inline (&&&) ([<InlineIfLambda>] comb1: CombineKeyValue) ([<InlineIfLambda>] comb2: CombineKeyValue) =
         CombineKeyValue(fun sb -> comb2.Invoke(comb1.Invoke(sb)))
 
+    /// Append key only 
     let inline (&&>) ([<InlineIfLambda>] comb: CombineKeyValue) (x: string) =
         CombineKeyValue(fun sb -> comb.Invoke(sb).Append(x).Append(": "))
 
+    /// Append key value pair
     let inline (&>>) ([<InlineIfLambda>] comb: CombineKeyValue) (x: string, value: string) =
-        CombineKeyValue(fun sb -> comb.Invoke(sb).Append(x).Append(": ").Append(value).Append(";"))
+        CombineKeyValue(fun sb -> comb.Invoke(sb).Append(x).Append(": ").Append(value).Append("; "))
 
 
     type Makers =
@@ -41,7 +43,7 @@ type CssBuilder() =
     member inline _.Yield(_: unit) = CombineKeyValue(fun sb -> sb)
     member inline _.Yield([<InlineIfLambda>] x: CombineKeyValue) = x
 
-    member inline _.Run([<InlineIfLambda>] combine: CombineKeyValue) = combine.Invoke(StringBuilder())
+    member inline _.Run([<InlineIfLambda>] combine: CombineKeyValue) = combine
 
     member inline _.For([<InlineIfLambda>] comb: CombineKeyValue, [<InlineIfLambda>] fn: unit -> CombineKeyValue) =
         comb &&& (fn ())

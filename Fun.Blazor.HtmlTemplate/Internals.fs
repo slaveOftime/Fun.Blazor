@@ -8,7 +8,8 @@ open System.Collections.Concurrent
 open Microsoft.AspNetCore.Components
 open FSharp.Data
 open Fun.Blazor
-open Fun.Blazor.Operators
+open Operators
+open Internal
 
 
 type AttrItem =

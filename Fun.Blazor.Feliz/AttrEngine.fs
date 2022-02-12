@@ -15,7 +15,7 @@ type FunBlazorAttrEngine(mk, mkBool) =
         )
 
     member inline _.childContent(nodes: NodeRenderFragment seq) =
-        AttrRenderFragment(fun comp builder index -> (nodes |> Seq.fold (>=>) (emptyNode())).Invoke(comp, builder, index))
+        AttrRenderFragment(fun comp builder index -> (nodes |> Seq.fold (>=>) html.none).Invoke(comp, builder, index))
 
     member inline _.childContent(x: string) =
         AttrRenderFragment(fun comp builder index -> (html.text x).Invoke(comp, builder, index))

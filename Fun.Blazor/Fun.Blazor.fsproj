@@ -3,12 +3,12 @@
 	<PropertyGroup>
 		<TargetFramework>net5.0</TargetFramework>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
-		<Version>2.0.0-beta006</Version>
+		<Version>2.0.0-beta007</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<Compile Include="Core.fs" />
-		<Compile Include="Uitls.fs" />
+		<Compile Include="Utils.fs" />
 		<Compile Include="Store.fs" />
 		<Compile Include="Router.Giraffe.FormatExpressions.fs" />
 		<Compile Include="Router.Giraffe.Dsl.fs" />
@@ -35,6 +35,7 @@
 		<PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.13" />
+		<PackageReference Include="Microsoft.Extensions.ObjectPool" Version="6.0.2" />
 	</ItemGroup>
 
 	<ItemGroup>

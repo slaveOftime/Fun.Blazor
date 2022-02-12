@@ -4,6 +4,7 @@ open System
 open FSharp.Data.Adaptive
 open Microsoft.Extensions.Logging
 open Microsoft.AspNetCore.Components
+open Internal
 
 
 type AdaptiveComponent() as this =

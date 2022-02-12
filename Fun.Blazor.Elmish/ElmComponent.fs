@@ -25,7 +25,7 @@ type ElmComponent<'State, 'Msg when 'State: equality>() as this =
     override _.Render() =
         match program, state with
         | ValueSome p, ValueSome s -> Program.view p s dispatch
-        | _ -> emptyNode()
+        | _ -> html.none
 
 
     override _.OnInitialized() =

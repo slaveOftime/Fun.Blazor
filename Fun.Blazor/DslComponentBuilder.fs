@@ -5,6 +5,7 @@ open System.Threading.Tasks
 open Microsoft.AspNetCore.Components
 open Microsoft.AspNetCore.Components.Web
 open Operators
+open Internal
 
 
 type ComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent>() =

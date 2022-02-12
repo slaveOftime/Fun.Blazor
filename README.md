@@ -101,6 +101,12 @@ dotnet new --install Fun.Blazor.Templates::2.0.0-beta002
 |    BuildRenderTreeWithFeliz | 2,334.7 ns | 33.95 ns | 31.76 ns | 1.2970 | 0.0153 |   8,152 B |
 
 
+|                   Method |     Mean |    Error |   StdDev |  Gen 0 | Allocated |
+|------------------------- |---------:|---------:|---------:|-------:|----------:|
+| BuildStyleWithCssBuilder | 375.8 ns |  7.87 ns | 22.44 ns | 0.1211 |     760 B |
+|      BuildStyleWithFeliz | 693.1 ns | 13.05 ns | 13.96 ns | 0.2918 |   1,832 B |
+
+
 ## Migrate from V1
 
 - For all the internal dom element like div, we should change

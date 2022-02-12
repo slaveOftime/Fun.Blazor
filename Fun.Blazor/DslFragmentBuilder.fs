@@ -1,6 +1,7 @@
 ﻿namespace Fun.Blazor
 
 open Operators
+open Internal
 
 
 type FragmentBuilder() =

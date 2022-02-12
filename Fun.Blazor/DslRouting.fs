@@ -5,6 +5,7 @@ open System
 open Microsoft.AspNetCore.Components
 open Microsoft.AspNetCore.Components.Routing
 open Fun.Blazor.Router
+open Internal
 
 
 type html with

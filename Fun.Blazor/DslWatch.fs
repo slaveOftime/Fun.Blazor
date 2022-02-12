@@ -3,6 +3,7 @@ module Fun.Blazor.DslWatch
 
 open System
 open Operators
+open Internal
 
 
 type html with
