@@ -11,10 +11,6 @@ module Internal =
     let inline (&&&) ([<InlineIfLambda>] comb1: CombineKeyValue) ([<InlineIfLambda>] comb2: CombineKeyValue) =
         CombineKeyValue(fun sb -> comb2.Invoke(comb1.Invoke(sb)))
 
-    /// Append key only
-    let inline (&&>) ([<InlineIfLambda>] comb: CombineKeyValue) (x: string) =
-        CombineKeyValue(fun sb -> comb.Invoke(sb).Append(x).Append(": "))
-
     /// Append key value pair
     let inline (&>>) ([<InlineIfLambda>] comb: CombineKeyValue) (x: string, value: string) =
         CombineKeyValue(fun sb -> comb.Invoke(sb).Append(x).Append(": ").Append(value).Append("; "))
@@ -439,8 +435,7 @@ type CssBuilder() =
     /// Defines from thin to thick characters. 400 is the same as normal, and 700 is the same as bold.
     /// Possible values are [100, 200, 300, 400, 500, 600, 700, 800, 900]
     [<CustomOperation("fontWeight")>]
-    member inline _.fontWeight([<InlineIfLambda>] comb: CombineKeyValue, weight: int) =
-        comb &&> "font-weight" &&& CombineKeyValue(fun x -> x.Append(weight).Append(";"))
+    member inline _.fontWeight([<InlineIfLambda>] comb: CombineKeyValue, weight: int) = comb &&& mkWithKV ("font-weight", weight)
     /// Defines normal characters. This is default.
     [<CustomOperation("fontWeightNormal")>]
     member inline _.fontWeightNormal([<InlineIfLambda>] comb: CombineKeyValue) = comb &>> ("font-weight", "normal")
@@ -697,7 +692,8 @@ type CssBuilder() =
     /// The path to the image to be used as a list-item marker
     [<CustomOperation("propertyUrl")>]
     member inline _.propertyUrl([<InlineIfLambda>] comb: CombineKeyValue, path: string) =
-        comb &&> "list-style-image" &&& CombineKeyValue(fun x -> x.Append("url").Append(path).Append("); "))
+        comb
+        &&& CombineKeyValue(fun x -> x.Append("list-style-image: url(").Append(path).Append("); "))
     /// Sets this property to its default value.
     ///
     /// See example https://www.w3schools.com/cssref/playit.asp?filename=playcss_text-align&preval=initial
@@ -810,13 +806,13 @@ type CssBuilder() =
     /// This overload takes an integer that represents a percentage from 0 to 100.
     [<CustomOperation("filterBlur")>]
     member inline _.filterBlur([<InlineIfLambda>] comb: CombineKeyValue, value: int) =
-        comb &&> "filter" &&& CombineKeyValue(fun x -> x.Append("blur(").Append(value).Append("%); "))
+        comb &&& CombineKeyValue(fun x -> x.Append("filter: blur(").Append(value).Append("%); "))
     /// Applies a blur effect to the elemeen. A larger value will create more blur.
     ///
     /// This overload takes a floating number that goes from 0 to 1,
     [<CustomOperation("filterBlur")>]
     member inline _.filterBlur([<InlineIfLambda>] comb: CombineKeyValue, value: double) =
-        comb &&> "filter" &&& CombineKeyValue(fun x -> x.Append("blur(").Append(value).Append("%); "))
+        comb &&& CombineKeyValue(fun x -> x.Append("filter: blur(").Append(value * 100.).Append("%); "))
     /// Adjusts the brightness of the elemeen
     ///
     /// This overload takes an integer that represents a percentage from 0 to 100.
@@ -824,25 +820,25 @@ type CssBuilder() =
     /// Values over 100% will provide brighter results.
     [<CustomOperation("filterBrightness")>]
     member inline _.filterBrightness([<InlineIfLambda>] comb: CombineKeyValue, value: int) =
-        comb &&> "filter" &&& CombineKeyValue(fun x -> x.Append("brightness(").Append(value).Append("%); "))
+        comb &&& CombineKeyValue(fun x -> x.Append("filter: brightness(").Append(value).Append("%); "))
     /// Adjusts the brightness of the elemeen. A larger value will create more blur.
     ///
     /// This overload takes a floating number that goes from 0 to 1,
     [<CustomOperation("filterBrightness")>]
     member inline _.filterBrightness([<InlineIfLambda>] comb: CombineKeyValue, value: double) =
-        comb &&> "filter" &&& CombineKeyValue(fun x -> x.Append("brightness(").Append(value).Append("%); "))
+        comb &&& CombineKeyValue(fun x -> x.Append("filter: brightness(").Append(value * 100.).Append("%); "))
     /// Adjusts the contrast of the element.
     ///
     /// This overload takes an integer that represents a percentage from 0 to 100.
     [<CustomOperation("filterContrast")>]
     member inline _.filterContrast([<InlineIfLambda>] comb: CombineKeyValue, value: int) =
-        comb &&> "filter" &&& CombineKeyValue(fun x -> x.Append("contrast(").Append(value).Append("%); "))
+        comb &&& CombineKeyValue(fun x -> x.Append("filter: contrast(").Append(value).Append("%); "))
     /// Adjusts the contrast of the element. A larger value will create more contrast.
     ///
     /// This overload takes a floating number that goes from 0 to 1
     [<CustomOperation("filterContrast")>]
     member inline _.filterContrast([<InlineIfLambda>] comb: CombineKeyValue, value: double) =
-        comb &&> "filter" &&& CombineKeyValue(fun x -> x.Append("contrast(").Append(value).Append("%); "))
+        comb &&& CombineKeyValue(fun x -> x.Append("filter: contrast(").Append(value * 100.).Append("%); "))
     /// Applies a drop shadow effect.
     [<CustomOperation("filterDropShadow")>]
     member inline _.filterDropShadow
@@ -855,10 +851,10 @@ type CssBuilder() =
             color: string
         )
         =
-        comb &&> "filter"
+        comb
         &&& CombineKeyValue(fun x ->
             x
-                .Append("drop-shadow(")
+                .Append("filter: drop-shadow(")
                 .Append(horizontalOffset)
                 .Append("px ")
                 .Append(verticalOffset)
@@ -873,10 +869,10 @@ type CssBuilder() =
     /// Applies a drop shadow effect.
     [<CustomOperation("filterDropShadow")>]
     member inline _.filterDropShadow([<InlineIfLambda>] comb: CombineKeyValue, horizontalOffset: int, verticalOffset: int, blur: int, color: string) =
-        comb &&> "filter"
+        comb
         &&& CombineKeyValue(fun x ->
             x
-                .Append("drop-shadow(")
+                .Append("filter: drop-shadow(")
                 .Append(horizontalOffset)
                 .Append("px ")
                 .Append(verticalOffset)
@@ -889,10 +885,10 @@ type CssBuilder() =
     /// Applies a drop shadow effect.
     [<CustomOperation("filterDropShadow")>]
     member inline _.filterDropShadow([<InlineIfLambda>] comb: CombineKeyValue, horizontalOffset: int, verticalOffset: int, color: string) =
-        comb &&> "filter"
+        comb
         &&& CombineKeyValue(fun x ->
             x
-                .Append("drop-shadow(")
+                .Append("filter: drop-shadow(")
                 .Append(horizontalOffset)
                 .Append("px ")
                 .Append(verticalOffset)
@@ -905,21 +901,20 @@ type CssBuilder() =
     /// This overload takes an integer that represents a percentage from 0 to 100.
     [<CustomOperation("filterGrayscale")>]
     member inline _.filterGrayscale([<InlineIfLambda>] comb: CombineKeyValue, value: int) =
-        comb &&> "filter" &&& CombineKeyValue(fun x -> x.Append("grayscale(").Append(value).Append("%); "))
+        comb &&& CombineKeyValue(fun x -> x.Append("filter: grayscale(").Append(value).Append("%); "))
     /// Converts the image to grayscale
     ///
     /// This overload takes a floating number that goes from 0 to 1
     [<CustomOperation("filterGrayscale")>]
     member inline _.filterGrayscale([<InlineIfLambda>] comb: CombineKeyValue, value: double) =
-        comb &&> "filter" &&& CombineKeyValue(fun x -> x.Append("grayscale(").Append(value).Append("%); "))
+        comb &&& CombineKeyValue(fun x -> x.Append("filter: grayscale(").Append(value).Append("%); "))
     /// Applies a hue rotation on the image. The value defines the number of degrees around the color circle the image
     /// samples will be adjusted. 0deg is default, and represents the original image.
     ///
     /// **Note**: Maximum value is 360
     [<CustomOperation("filterHueRotate")>]
     member inline _.filterHueRotate([<InlineIfLambda>] comb: CombineKeyValue, degrees: int) =
-        comb &&> "filter"
-        &&& CombineKeyValue(fun x -> x.Append("hue-rotate(").Append(degrees).Append("deg); "))
+        comb &&& CombineKeyValue(fun x -> x.Append("filter: hue-rotate(").Append(degrees).Append("deg); "))
     /// Inverts the element.
     ///
     /// This overload takes an integer that represents a percentage from 0 to 100.
@@ -2217,8 +2212,7 @@ type CssBuilder() =
     /// Sets the flex shrink factor of a flex item. If the size of all flex items is larger than
     /// the flex container, items shrink to fit according to flex-shrink.
     [<CustomOperation("flexShrink")>]
-    member inline _.flexShrink([<InlineIfLambda>] comb: CombineKeyValue, value: int) =
-        comb &&> "flex-shrink" &&& CombineKeyValue(fun x -> x.Append(value).Append(";"))
+    member inline _.flexShrink([<InlineIfLambda>] comb: CombineKeyValue, value: int) = comb &&& mkWithKV ("flex-shrink", value)
     /// Sets the initial main size of a flex item. It sets the size of the content box unless
     /// otherwise set with box-sizing.
     [<CustomOperation("flexBasis")>]
@@ -2230,7 +2224,7 @@ type CssBuilder() =
     /// Sets the flex grow factor of a flex item main size. It specifies how much of the remaining
     /// space in the flex container should be assigned to the item (the flex grow factor).
     [<CustomOperation("flexGrow")>]
-    member inline _.flexGrow([<InlineIfLambda>] comb: CombineKeyValue, value: int) = comb &&& mkWithKV ("flex-shrink", value)
+    member inline _.flexGrow([<InlineIfLambda>] comb: CombineKeyValue, value: int) = comb &&& mkWithKV ("flex-grow", value)
     /// Shorthand of flex-grow, flex-shrink and flex-basis
     [<CustomOperation("flex")>]
     member inline _.flex([<InlineIfLambda>] comb: CombineKeyValue, grow: int, ?shrink: int, ?basis: string) =
@@ -3019,16 +3013,18 @@ type CssBuilder() =
     /// Sets the width of an element's border.
     [<CustomOperation("borderWidth")>]
     member inline _.borderWidth([<InlineIfLambda>] comb: CombineKeyValue, top: string, ?right: string) =
-        comb &&> "border-width"
+        comb
         &&& CombineKeyValue(fun x ->
-            x.Append(
-                top
-                + (
-                    match right with
-                    | Some x -> ", " + string x
-                    | None -> ""
+            x
+                .Append("border-width: ")
+                .Append(
+                    top
+                    + (
+                        match right with
+                        | Some x -> ", " + string x
+                        | None -> ""
+                    )
                 )
-            )
         )
     /// Sets the width of an element's border.
     [<CustomOperation("borderWidth")>]
