@@ -8,6 +8,7 @@
   <ItemGroup>
     <Compile Include="Fun.Blazor.Bindings\MudBlazor.fs" />
     <Compile Include="BasicBenchmark\CEComponent.fs" />
+    <Compile Include="BasicBenchmark\CEFelizComponent.fs" />
     <Compile Include="BasicBenchmark\FelizComponent.fs" />
     <Compile Include="BasicBenchmark\TemplateComponent.fs" />
     <Compile Include="BasicBenchmark\BoleroComponent.fs" />
