@@ -156,9 +156,21 @@ type html() =
             index + 1
         )
 
+    static member inline callback(eventName, fn: unit -> unit) =
+        AttrRenderFragment(fun comp builder index ->
+            builder.AddAttribute(index, eventName, EventCallback.Factory.Create(comp, Action fn))
+            index + 1
+        )
+
     static member inline callbackTask<'T>(eventName, fn: 'T -> Task) =
         AttrRenderFragment(fun comp builder index ->
             builder.AddAttribute(index, eventName, EventCallback.Factory.Create(comp, Func<'T, Task> fn))
+            index + 1
+        )
+
+    static member inline callbackTask(eventName, fn: unit -> Task) =
+        AttrRenderFragment(fun comp builder index ->
+            builder.AddAttribute(index, eventName, EventCallback.Factory.Create(comp, Func<Task> fn))
             index + 1
         )
 

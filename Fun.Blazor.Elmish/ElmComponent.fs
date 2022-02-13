@@ -32,7 +32,8 @@ type ElmComponent<'State, 'Msg when 'State: equality>() as this =
         let initState, initCmd = this.Init()
 
         state <- ValueSome initState
-        program <-
+
+        let pro =
             Program.mkProgram (fun () -> initState, initCmd) this.Update this.View
             |> Program.withSetState (fun model disp ->
                 let newState = ValueSome model
@@ -41,11 +42,6 @@ type ElmComponent<'State, 'Msg when 'State: equality>() as this =
                 dispatch <- disp
                 if shouldRerender then this.ForceRerender()
             )
-            |> ValueSome
 
-
-    override _.OnAfterRender(firstRender) =
-        match program, firstRender with
-        | ValueSome p, true -> Program.run p
-
-        | _ -> ()
+        program <- ValueSome pro
+        Program.run pro

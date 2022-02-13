@@ -79,7 +79,8 @@ let private getMetaInfo useInline (ty: Type) =
             elif prop.PropertyType.Name.StartsWith "EventCallback"
                  || prop.PropertyType.Name.StartsWith "Microsoft.AspNetCore.Components.EventCallback" then
                 [
-                    $"    {memberStart}{name} fn = html.callback<unit>(\"{prop.Name}\", fn)"
+                    $"    {memberStart}{name} fn = html.callback(\"{prop.Name}\", fn)"
+                    $"    {memberStart}{name} fn = html.callbackTask(\"{prop.Name}\", fn)"
                 ]
 
             elif prop.PropertyType = typeof<RenderFragment> then
