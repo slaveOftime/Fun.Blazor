@@ -240,6 +240,10 @@ type EltWithChildBuilder(name) =
 [<AutoOpen>]
 module Elts =
 
+    let a = EltWithChildBuilder "a"
+
+    let anchor = EltWithChildBuilder "anchor"
+
     let abbr = EltWithChildBuilder "abbr"
 
     let acronym = EltWithChildBuilder "acronym"
