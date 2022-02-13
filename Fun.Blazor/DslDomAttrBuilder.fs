@@ -104,7 +104,7 @@ type DomAttrBuilder() =
     member inline _.stopPropagation([<InlineIfLambda>] render: AttrRenderFragment, eventName, value) =
         render
         ==> AttrRenderFragment(fun _ builder index ->
-            builder.AddEventPreventDefaultAttribute(index, eventName, value)
+            builder.AddEventStopPropagationAttribute(index, eventName, value)
             index + 1
         )
 
