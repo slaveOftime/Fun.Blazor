@@ -8,9 +8,9 @@ open HtmlTemplate.Internals
 
 [<AutoOpen>]
 module Utils =
-    let callback (fn: 'T -> unit) : ArgMkAttrWithName = fun name -> html.callback<'T> (name, fn)
+    let callback<'T> (fn: 'T -> unit) : ArgMkAttrWithName = fun name -> html.callback<'T> (name, fn)
 
-    let callbackTask (fn: 'T -> Task) : ArgMkAttrWithName = fun name -> html.callbackTask<'T> (name, fn)
+    let callbackTask<'T> (fn: 'T -> Task) : ArgMkAttrWithName = fun name -> html.callbackTask<'T> (name, fn)
 
 
 type Template =
