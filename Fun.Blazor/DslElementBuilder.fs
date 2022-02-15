@@ -509,7 +509,7 @@ module Elts =
     let inline js (x: string) =
         NodeRenderFragment(fun _ builder index ->
             builder.OpenElement(index, "script")
-            builder.AddContent(index + 1, x)
+            builder.AddMarkupContent(index + 1, x)
             builder.CloseElement()
             index + 2
         )
