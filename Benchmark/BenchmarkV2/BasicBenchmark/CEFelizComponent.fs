@@ -18,6 +18,18 @@ type CEFelizComponent() =
 
 
     override _.Render() =
+        let counter =
+            fragment {
+                p {
+                    attr.className "class"
+                    attr.childContent $"Count = {count}"
+                }
+                button {
+                    attr.onclick (fun _ -> increase ())
+                    attr.childContent "Increase"
+                }
+            }
+
         div {
             attr.className "1"
             attr.style "color: red;"
@@ -46,13 +58,6 @@ type CEFelizComponent() =
                     attr.className "class"
                     attr.childContent "p"
                 }
-                p {
-                    attr.className "class"
-                    attr.childContent $"Count = {count}"
-                }
-                button {
-                    attr.onclick (fun _ -> increase ())
-                    attr.childContent "Increase"
-                }
+                counter
             }
         }

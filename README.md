@@ -92,14 +92,14 @@ dotnet new --install Fun.Blazor.Templates::2.0.0-beta002
 
 ## Benchmark
 
-|                      Method |       Mean |    Error |   StdDev |     Median |  Gen 0 |  Gen 1 | Allocated |
-|---------------------------- |-----------:|---------:|---------:|-----------:|-------:|-------:|----------:|
-|   BuildRenderTreeWithCSharp |   383.9 ns |  5.46 ns |  5.10 ns |   382.0 ns | 0.0610 |      - |     384 B |
-|   BuildRenderTreeWithBolero | 2,039.7 ns | 26.73 ns | 23.69 ns | 2,035.0 ns | 0.6943 | 0.0038 |   4,368 B |
-|       BuildRenderTreeWithCE |   858.3 ns | 16.96 ns | 26.41 ns |   845.2 ns | 0.2861 |      - |   1,800 B |
-| BuildRenderTreeWithTemplate | 3,464.1 ns | 22.09 ns | 19.58 ns | 3,457.0 ns | 0.7668 | 0.0076 |   4,832 B |
-|    BuildRenderTreeWithFeliz | 2,471.7 ns | 45.39 ns | 40.23 ns | 2,459.6 ns | 1.2474 | 0.0114 |   7,832 B |
-|  BuildRenderTreeWithCEFeliz | 1,309.1 ns | 25.26 ns | 56.49 ns | 1,286.7 ns | 0.6180 | 0.0038 |   3,880 B |
+|                      Method |       Mean |    Error |    StdDev |     Median |  Gen 0 |  Gen 1 | Allocated |
+|---------------------------- |-----------:|---------:|----------:|-----------:|-------:|-------:|----------:|
+|   BuildRenderTreeWithCSharp |   387.0 ns |  6.54 ns |   6.12 ns |   388.2 ns | 0.0610 |      - |     384 B |
+|   BuildRenderTreeWithBolero | 2,097.9 ns | 41.77 ns | 112.20 ns | 2,057.3 ns | 0.6943 | 0.0038 |   4,368 B |
+|       BuildRenderTreeWithCE |   808.5 ns | 16.01 ns |  39.26 ns |   794.1 ns | 0.1745 |      - |   1,096 B |
+| BuildRenderTreeWithTemplate | 3,817.9 ns | 84.19 ns | 248.24 ns | 3,769.4 ns | 0.7668 | 0.0076 |   4,832 B |
+|    BuildRenderTreeWithFeliz | 2,616.5 ns | 51.97 ns | 123.52 ns | 2,618.0 ns | 1.2474 | 0.0114 |   7,832 B |
+|  BuildRenderTreeWithCEFeliz | 1,456.7 ns | 34.21 ns | 100.32 ns | 1,452.7 ns | 0.6180 | 0.0038 |   3,880 B |
 
 
 |                   Method |     Mean |    Error |   StdDev |  Gen 0 | Allocated |

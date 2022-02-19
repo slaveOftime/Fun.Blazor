@@ -52,9 +52,11 @@
     <Compile Include="Pages\CliUsage\CliUsage.fs" />
     <None Include="Pages\Tests\TestsDemo.md" />
     <Compile Include="Pages\Tests\Tests.fs" />
+    <Compile Include="Nav.fs" />
     <Compile Include="App.fs" />
     <Compile Include="Startup.fs" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <PackageReference Include="Majorsoft.Blazor.WebAssembly.Logging.Console" Version="1.5.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.1" />

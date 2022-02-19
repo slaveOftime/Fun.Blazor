@@ -18,6 +18,18 @@ type CEComponent() =
 
 
     override _.Render() =
+        let counter =
+            fragment {
+                p {
+                    class' "class"
+                    $"Count = {count}"
+                }
+                button {
+                    onclick (fun _ -> increase ())
+                    "Increase"
+                }
+            }
+            
         div {
             class' "class"
             style' "color: red;"
@@ -46,13 +58,8 @@ type CEComponent() =
                     class' "class"
                     "p6"
                 }
-                p {
-                    class' "class"
-                    $"Count = {1}"
-                }
-                button {
-                    onclick (fun _ -> increase ())
-                    "Increase"
-                }
+                // Declare a variable help fsharp to have better inline which can save a lot of allocation for delegate
+                // In this benchmark it can save 40%
+                counter
             }
         }
