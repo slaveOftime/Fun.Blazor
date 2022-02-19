@@ -74,6 +74,8 @@ type DIComponent<'T>() as this =
                 store.Observable.Subscribe(fun x -> transact (fun _ -> value'.Value <- x)) |> disposes.Add
                 value'.AddCallback(fun (x: 'T) -> store.Publish x) |> disposes.Add
                 value'
+
+            member _.ServiceProvider = this.Services
         }
 
 

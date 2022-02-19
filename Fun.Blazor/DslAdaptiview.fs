@@ -1,8 +1,12 @@
 ﻿[<AutoOpen>]
 module Fun.Blazor.DslAdaptive
 
+open System
+open System.Threading.Tasks
 open System.Runtime.CompilerServices
 open FSharp.Data.Adaptive
+open FSharp.Control.Reactive
+open Fun.Result
 open Fun.Blazor
 open Operators
 open Internal
@@ -114,6 +118,19 @@ type Extensions =
         | ValueNone -> value |> AVal.force |> ignore
 
         sub
+
+
+[<RequireQualifiedAccess>]
+module AVal =
+    let ofTask (defaultValue: 'T) (ts: Task<'T>) =
+        let data = cval defaultValue
+        ts |> Task.map data.Publish |> ignore
+        data :> aval<'T>
+
+    let ofObservable (defaultValue: 'T) (handleDispose) (obs: IObservable<'T>) =
+        let data = cval defaultValue
+        obs |> Observable.subscribe data.Publish |> handleDispose
+        data :> aval<'T>
 
 
 type adaptiview = AdaptiviewBuilder
