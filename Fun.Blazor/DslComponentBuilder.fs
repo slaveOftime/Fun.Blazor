@@ -476,7 +476,7 @@ type ComponentWithDomAndChildAttrBuilder<'T when 'T :> IComponent>() =
         render ==> html.renderFragment ("ChildContent", renderChild)
 
     [<CustomOperation("childContent")>]
-    [<Obsolete "This is not recommend, please use fragment or remove childContent and yield your content directly.">]
+    //[<Obsolete "This is not recommend, please use fragment or remove childContent and yield your content directly.">]
     member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, renders: NodeRenderFragment seq) =
         render ==> html.renderFragment ("ChildContent", html.mergeNodes renders)
 

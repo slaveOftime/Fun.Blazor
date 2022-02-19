@@ -25,7 +25,6 @@
 		<Compile Include="DslAdaptiview.fs" />
 		<Compile Include="DslRouting.fs" />
 		<Compile Include="AdaptiveForm.fs" />
-		<Compile Include="DslCE.AspNetCore.fs" />
 	</ItemGroup>
 
 	<ItemGroup>

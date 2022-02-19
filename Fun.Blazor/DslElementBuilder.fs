@@ -161,7 +161,7 @@ type EltWithChildBuilder(name) =
     /// </code>
     /// </example>
     [<CustomOperation("childContent")>]
-    [<Obsolete "This is not recommend, please use fragment or remove childContent and yield your content directly.">]
+    //[<Obsolete "This is not recommend, please use fragment or remove childContent and yield your content directly.">]
     member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, renders: NodeRenderFragment seq) =
         NodeRenderFragment(fun comp builder index ->
             let mutable index = render.Invoke(comp, builder, index)
