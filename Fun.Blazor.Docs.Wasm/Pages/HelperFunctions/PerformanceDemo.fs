@@ -2,12 +2,10 @@
 module Fun.Blazor.Docs.Wasm.Pages.HelperFunctions.PerformanceDemo
 
 open FSharp.Data.Adaptive
-open Microsoft.AspNetCore.Components.Web
-open Fun.Css
+open Microsoft.AspNetCore.Components.Web.Virtualization
 open MudBlazor
 open Fun.Blazor
 open Fun.Blazor.Docs.Wasm.Components
-open Microsoft.AspNetCore.Components
 
 
 let testLength = 10_000
