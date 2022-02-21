@@ -239,8 +239,7 @@ type IComponentHook =
     abstract ServiceProvider: IServiceProvider
 
 
-// Will serve as a scoped service
-type IShareStore =
+type IStoreManager =
     /// Create an IStore and share between components and dispose it after session disposed
     abstract Create: string * 'T -> IStore<'T>
 
@@ -263,8 +262,11 @@ type IShareStore =
     abstract ServiceProvider: IServiceProvider
 
 
+// Will serve as a scoped service
+type IShareStore =
+    inherit IStoreManager
 
 // Will serve as a singleton service
 // * Note this is not distributable
 type IGlobalStore =
-    inherit IShareStore
+    inherit IStoreManager

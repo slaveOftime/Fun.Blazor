@@ -32,7 +32,7 @@ type Store<'T>(defaultValue: 'T) =
             if subsribtion <> null then subsribtion.Dispose()
 
 
-type ShareStore(sp: IServiceProvider) =
+type StoreManager(sp: IServiceProvider) =
     let stores = ConcurrentDictionary<string, IDisposable>()
     let avals = ConcurrentDictionary<string, IAdaptiveValue>()
     let subscriptions = List<IDisposable>()
@@ -90,7 +90,13 @@ type ShareStore(sp: IServiceProvider) =
             subscriptions |> Seq.iter (fun sub -> sub.Dispose())
 
 
+type ShareStore(sp: IServiceProvider) =
+    inherit StoreManager(sp)
+
+    interface IShareStore
+
+
 type GlobalStore(sp: IServiceProvider) =
-    inherit ShareStore(sp)
+    inherit StoreManager(sp)
 
     interface IGlobalStore
