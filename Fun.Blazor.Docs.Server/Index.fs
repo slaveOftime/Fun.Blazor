@@ -3,12 +3,29 @@ namespace Fun.Blazor.Docs.Server
 open Microsoft.AspNetCore.Http
 open Microsoft.AspNetCore.Mvc.Rendering
 open Fun.Blazor
+open Fun.Blazor.Hotreload
 
 
-type Index() =
+module Hotreload =
+    let hotreloadRender =
+        div { "12 123 23 1234" }
+
+
+type Index() as this =
     inherit FunBlazorComponent()
 
-    override _.Render() = Docs.Wasm.App.app
+    let mutable render = Docs.Wasm.App.app
+
+    let setRender r =
+        render <- r
+        this.ForceRerender()
+
+    override _.Render() = render
+
+    
+    override _.OnAfterRender (first) =
+        if first then
+            enableHotreload (fun _ _ -> ())  setRender
 
 
     static member page (ctx: HttpContext) =

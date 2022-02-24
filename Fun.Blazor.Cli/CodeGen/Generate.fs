@@ -1,4 +1,4 @@
-﻿module Fun.Blazor.Cli.Generate
+﻿module Fun.Blazor.Cli.CodeGen.Generate
 
 open System
 open System.IO

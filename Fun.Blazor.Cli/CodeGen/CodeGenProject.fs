@@ -1,4 +1,4 @@
-﻿namespace Fun.Blazor.Cli
+﻿namespace Fun.Blazor.Cli.CodeGen
 
 open System
 open System.IO

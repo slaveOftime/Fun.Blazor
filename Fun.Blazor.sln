@@ -37,6 +37,8 @@ Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "BenchmarkV2", "Benchmark\Be
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSharpComponents", "Benchmark\CSharpComponents\CSharpComponents.csproj", "{4E9816B3-C977-4713-A8BB-22AE446E2318}"
 EndProject
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Fun.Blazor.HotReload", "Fun.Blazor.HotReload\Fun.Blazor.HotReload.fsproj", "{10B2F0A6-45D4-40A2-942F-09EF32FA2FD9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -239,6 +241,18 @@ Global
 		{4E9816B3-C977-4713-A8BB-22AE446E2318}.Release|x64.Build.0 = Release|Any CPU
 		{4E9816B3-C977-4713-A8BB-22AE446E2318}.Release|x86.ActiveCfg = Release|Any CPU
 		{4E9816B3-C977-4713-A8BB-22AE446E2318}.Release|x86.Build.0 = Release|Any CPU
+		{10B2F0A6-45D4-40A2-942F-09EF32FA2FD9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10B2F0A6-45D4-40A2-942F-09EF32FA2FD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10B2F0A6-45D4-40A2-942F-09EF32FA2FD9}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{10B2F0A6-45D4-40A2-942F-09EF32FA2FD9}.Debug|x64.Build.0 = Debug|Any CPU
+		{10B2F0A6-45D4-40A2-942F-09EF32FA2FD9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{10B2F0A6-45D4-40A2-942F-09EF32FA2FD9}.Debug|x86.Build.0 = Debug|Any CPU
+		{10B2F0A6-45D4-40A2-942F-09EF32FA2FD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10B2F0A6-45D4-40A2-942F-09EF32FA2FD9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10B2F0A6-45D4-40A2-942F-09EF32FA2FD9}.Release|x64.ActiveCfg = Release|Any CPU
+		{10B2F0A6-45D4-40A2-942F-09EF32FA2FD9}.Release|x64.Build.0 = Release|Any CPU
+		{10B2F0A6-45D4-40A2-942F-09EF32FA2FD9}.Release|x86.ActiveCfg = Release|Any CPU
+		{10B2F0A6-45D4-40A2-942F-09EF32FA2FD9}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
