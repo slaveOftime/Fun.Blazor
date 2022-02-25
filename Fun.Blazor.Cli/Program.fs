@@ -1,42 +1,24 @@
 ﻿open System.IO
-open System.ComponentModel
+open System.Linq
 open Spectre.Console
 open Spectre.Console.Cli
 open Fun.Blazor.Generator
 open Fun.Blazor.Cli
 
 
-type GenerateSettings() =
-    inherit CommandSettings()
+type WatchCommand() =
+    inherit Command<WatchSettings>()
 
-    [<Description("Project you want to add bindings")>]
-    [<CommandArgument(0, "[PROJECT]")>]
-    member val Project = "" with get, set
-
-    [<Description("Output directory of generated codes")>]
-    [<CommandOption("-o|--outDir")>]
-    member val OutDir = "Fun.Blazor.Bindings" with get, set
-
-    [<Description("Dsl style Feliz|CE")>]
-    [<CommandOption("-s|--style")>]
-    member val Style = Style.CE with get, set
-
-    [<Description(".NET SDK version")>]
-    [<CommandOption("--sdk")>]
-    member val Sdk = "" with get, set
-    
-    [<Description("Fun.Blazor.Generator version")>]
-    [<CommandOption("--generator-version")>]
-    member val GeneratorVersion = "2.0.0-beta013" with get, set
-    
-    [<Description("Turn on inline option for generated code")>]
-    [<CommandOption("--inline")>]
-    [<DefaultValue true>] // Default value for bool is different
-    member val Inline = true with get, set
+    override _.Execute(_, settings) =
+        FSharp.Compiler.PortaCode.ProcessCommandLine.ProcessCommandLine [|
+            "watch"
+            settings.Project
+            $"--send:{settings.Server}/fun-blazor-hot-reload"
+        |]
 
 
 type GenerateCommand() =
-    inherit Command<GenerateSettings>()
+    inherit Command<CodeGenSettings>()
 
     override _.Execute(_, settings) =
         let path =
@@ -68,7 +50,7 @@ type GenerateCommand() =
             AnsiConsole.MarkupLine "[red] project is required[/]"
             -1
         | Some path ->
-            Generate.startGenerate path settings.OutDir settings.Style settings.Sdk settings.GeneratorVersion settings.Inline
+            CodeGen.Generate.startGenerate path settings.OutDir settings.Style settings.Sdk settings.GeneratorVersion settings.Inline
             0
 
 
@@ -80,6 +62,18 @@ module Program =
 
         let application = CommandApp()
 
-        application.Configure(fun config -> config.AddCommand<GenerateCommand>("generate") |> ignore)
+        application.Configure(fun config ->
+            config
+                .AddCommand<WatchCommand>("watch")
+                .WithDescription("Used for hot-reload")
+                .WithExample([| "watch"; "{your fsharp project}"; "--server"; "https://localhost:5001" |])
+            |> ignore
+
+            config
+                .AddCommand<GenerateCommand>("generate")
+                .WithDescription("Generate DSL for blazor libraries like Microsoft.AspNetCore.Components.Web, MudBlazor etc.")
+                .WithExample([| "generate" |])
+            |> ignore
+        )
 
         application.Run args

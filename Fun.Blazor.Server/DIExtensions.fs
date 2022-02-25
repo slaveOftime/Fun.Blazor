@@ -2,6 +2,7 @@
 
 open System
 open System.IO
+open System.Text
 open System.Text.Encodings.Web
 open System.Runtime.CompilerServices
 open Microsoft.AspNetCore.Http
@@ -27,8 +28,7 @@ type FunBlazorServerExtensions =
             let htmlHelper = ctx.RequestServices.GetService<IHtmlHelper>()
             (htmlHelper :?> IViewContextAware).Contextualize(ViewContext(HttpContext = ctx))
 
-            let! result =
-                htmlHelper.RenderComponentAsync(ty, defaultArg renderMode RenderMode.Static, defaultArg parameters null)
+            let! result = htmlHelper.RenderComponentAsync(ty, defaultArg renderMode RenderMode.Static, defaultArg parameters null)
 
             use sw = new StringWriter()
             result.WriteTo(sw, HtmlEncoder.Default)
@@ -38,13 +38,9 @@ type FunBlazorServerExtensions =
 
 
     [<Extension>]
-    static member MapFunBlazor
-        (
-            builder: IEndpointRouteBuilder,
-            createFragment: HttpContext -> NodeRenderFragment,
-            ?pattern
-        )
-        =
+    static member MapFunBlazor(builder: IEndpointRouteBuilder, createFragment: HttpContext -> NodeRenderFragment, ?pattern) =
+        builder.MapHotReloadPoints()
+
         let requestDeletegate =
             Microsoft.AspNetCore.Http.RequestDelegate(fun ctx ->
                 task {
@@ -52,7 +48,9 @@ type FunBlazorServerExtensions =
                         ctx.RenderFragment(
                             typeof<FunFragmentComponent>,
                             RenderMode.Static,
-                            dict [ "Fragment", box (createFragment ctx) ]
+                            dict [
+                                "Fragment", box (createFragment ctx)
+                            ]
                         )
 
                     if isNull ctx.Response.ContentType then
@@ -69,11 +67,29 @@ type FunBlazorServerExtensions =
 
 
     [<Extension>]
-    static member MapFunBlazor
-        (
-            builder: IEndpointRouteBuilder,
-            pattern: string,
-            createFragment: HttpContext -> NodeRenderFragment
-        )
-        =
+    static member MapFunBlazor(builder: IEndpointRouteBuilder, pattern: string, createFragment: HttpContext -> NodeRenderFragment) =
+        builder.MapHotReloadPoints()
         builder.MapFunBlazor(createFragment, pattern)
+
+
+    [<Extension>]
+    static member internal MapHotReloadPoints(builder: IEndpointRouteBuilder) =
+#if DEBUG
+        builder.MapPut(
+            "/fun-blazor-hot-reload",
+            RequestDelegate(fun ctx ->
+                task {
+                    let store = ctx.RequestServices.GetService<IGlobalStore>()
+                    use data = new MemoryStream()
+                    do! ctx.Request.Body.CopyToAsync(data)
+                    do! data.FlushAsync()
+                    store.Create(HotReloadComponent.HotReloadStoreName, "[]").Publish(Encoding.UTF8.GetString(data.ToArray()))
+
+                    return "Hot reload server received data."
+                }
+            )
+        )
+        |> ignore
+#endif
+
+        ()

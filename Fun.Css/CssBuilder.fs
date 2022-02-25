@@ -46,7 +46,7 @@ type CssBuilder() =
     member inline _.For(ls: 'T seq, [<InlineIfLambda>] fn: 'T -> CombineKeyValue) =
         ls |> Seq.map fn |> Seq.fold (&&&) (CombineKeyValue(fun x -> x))
 
-    member inline _.Delay([<InlineIfLambda>] fn: unit -> CombineKeyValue) = fn ()
+    member _.Delay(fn: unit -> CombineKeyValue) = fn ()
 
     member inline _.Zero() = CombineKeyValue(fun sb -> sb)
 

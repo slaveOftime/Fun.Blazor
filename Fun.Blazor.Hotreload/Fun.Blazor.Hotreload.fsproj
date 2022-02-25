@@ -3,24 +3,25 @@
 	<PropertyGroup>
 		<TargetFrameworks>net5.0;net6.0</TargetFrameworks>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
-		<Version>2.0.0-beta014</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Compile Include="ElmComponent.fs" />
-		<Compile Include="DslElmish.fs" />
+		<Compile Include="CodeModel.fs" />
+		<Compile Include="Interpreter.fs" />
+		<Compile Include="HotReload.fs" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="Elmish" Version="3.1.0" />
+		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+		<PackageReference Include="FSharp.SystemTextJson" Version="0.17.4" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\Fun.Blazor\Fun.Blazor.fsproj" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
-		<PackageReference Update="FSharp.Core" Version="6.0.1" />
+		<PackageReference Update="FSharp.Core" Version="6.0.3" />
 	</ItemGroup>
 
 </Project>
