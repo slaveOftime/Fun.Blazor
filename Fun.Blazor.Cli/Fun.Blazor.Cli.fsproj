@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
 		<TargetFrameworks>net5.0;net6.0</TargetFrameworks>
-		<Version>2.0.0-beta014</Version>
+		<Version>2.0.0-beta015</Version>
 		<PackAsTool>true</PackAsTool>
 		<ToolCommandName>fun-blazor</ToolCommandName>
 		<PackageOutputPath>./nupkg</PackageOutputPath>
@@ -16,8 +16,8 @@
 	<ItemGroup>
 		<Compile Include="Types.fs" />
 		<Compile Include="Watch\ProjectCracker.fs" />
-		<Compile Include="..\Fun.Blazor.Hotreload\CodeModel.fs" Link="Watch\CodeModel.fs" />
-		<Compile Include="..\Fun.Blazor.Hotreload\Interpreter.fs" Link="Watch\Interpreter.fs" />
+		<Compile Include="..\Fun.Blazor.Server\CodeModel.fs" Link="Watch\CodeModel.fs" />
+		<Compile Include="..\Fun.Blazor.Server\Interpreter.fs" Link="Watch\Interpreter.fs" />
 		<Compile Include="Watch\FromCompilerService.fs" />
 		<Compile Include="Watch\LiveCheckEvaluation.fs" />
 		<Compile Include="Watch\ProcessCommandLine.fs" />
