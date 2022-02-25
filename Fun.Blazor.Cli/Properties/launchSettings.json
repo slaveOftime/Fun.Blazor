@@ -2,7 +2,7 @@
   "profiles": {
     "Fun.Blazor.Cli": {
       "commandName": "Project",
-      "commandLineArgs": "generate \"..\\..\\..\\..\\Fun.Blazor.Docs.Wasm\\Fun.Blazor.Docs.Wasm.fsproj\""
+      "commandLineArgs": "watch \"C:\\Users\\woo\\Documents\\Code\\Slaveoftime\\Slaveoftime.Site\\Slaveoftime.Site\\Slaveoftime.Site.fsproj\" --server https://localhost:6001"
     }
   }
 }
