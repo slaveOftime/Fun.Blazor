@@ -559,7 +559,8 @@ type EvalContext(assemblyName: AssemblyName, ?dyntypes: bool, ?assemblyResolver:
                             | null -> None
                             | t -> Some t
                         else
-                            None
+                            System.Reflection.Assembly.GetEntryAssembly().GetType(typeName)
+                            |> Option.ofObj
                     match try2 with
                     //| Some t -> REntity t
                     //| None ->

@@ -37,7 +37,7 @@ module private Extensions =
 
     /// Starts the HttpServer listening for changes
     let reload renderEntryName (codeData: string) (updateRenderFn: NodeRenderFragment -> unit) =
-        let interp = EvalContext(System.Reflection.Assembly.GetExecutingAssembly().GetName())
+        let interp = EvalContext(System.Reflection.Assembly.GetEntryAssembly().GetName())
 
         let switchD (files: (string * DFile) []) =
             lock
@@ -49,12 +49,9 @@ module private Extensions =
                                 printfn "LiveUpdate: adding declarations...."
                                 interp.AddDecls file.Code
 
-                            for (path, file) in files do
-                                if path.Contains "Startup.fs" || path.Contains "Index.fs" then
-                                    printfn "LiveUpdate: ignore %s" path
-                                else
-                                    printfn "LiveUpdate: evaluating decls in code package for side effects...."
-                                    interp.EvalDecls(envEmpty, file.Code)
+                            for (_, file) in files do
+                                printfn "LiveUpdate: evaluating decls in code package for side effects...."
+                                interp.EvalDecls(envEmpty, file.Code)
                             Result.Ok()
                         with
                             | exn -> Result.Error exn

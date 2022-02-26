@@ -278,9 +278,9 @@ let ProcessCommandLine (argv: string []) =
             |> Array.filter (fun x ->
                 use iter = File.ReadLines(x).GetEnumerator()
                 if iter.MoveNext() then
-                    iter.Current.Contains "// ignore by hot-reload" |> not
+                    iter.Current.Contains "// hot-reload"
                 else
-                    true
+                    false
             )
 
         let changed why _ =
@@ -293,7 +293,7 @@ let ProcessCommandLine (argv: string []) =
 
                 | Result.Ok allFileContents ->
 
-                    let parseTrees = List.choose fst allFileContents
+                    // let parseTrees = List.choose fst allFileContents
                     let implFiles = List.map snd allFileContents
                     match webhook with
                     | Some hook ->
@@ -365,7 +365,7 @@ let ProcessCommandLine (argv: string []) =
 
             let watchers =
                 [
-                    for sourceFile in options.SourceFiles do
+                    for sourceFile in filteredFiles do
                         yield mkWatcher sourceFile
                         if useEditFiles then yield mkWatcher sourceFile
                 ]
