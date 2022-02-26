@@ -651,7 +651,7 @@ type EvalContext(assemblyName: AssemblyName, ?dyntypes: bool, ?assemblyResolver:
             match env.Types.TryGetValue v with
             | true, res -> RType res
             | _ ->
-                printfn "variable type %s not found" v
+                //printfn "variable type %s not found" v
                 RType typeof<obj>
 
     /// Resolve an F# union case

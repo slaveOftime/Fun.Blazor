@@ -282,9 +282,10 @@ let ProcessCommandLine (argv: string []) =
                 let filteredFiles =
                     options.SourceFiles
                     |> Array.filter (fun x ->
-                        use iter = File.ReadLines(x).GetEnumerator()
-                        if iter.MoveNext() then
-                            if iter.Current.Contains("// hot-reload", StringComparison.OrdinalIgnoreCase) then
+                        use fs = File.Open(x, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)
+                        use sr = new StreamReader(fs)
+                        if sr.Peek() >= 0 then
+                            if sr.ReadLine().Contains("// hot-reload", StringComparison.OrdinalIgnoreCase) then
                                 true
                             else
                                 //printfn "ignored %s: because no \"// hot-reload\" at the top of the source file" x
