@@ -2272,24 +2272,25 @@ type EvalContext(assemblyName: AssemblyName, ?dyntypes: bool, ?assemblyResolver:
         Value(box res)
 
     member ctxt.EvalUnionCaseGet(env, unionExpr, unionType, unionCase, unionCaseField) =
-        let unionCaseR = resolveUnionCase (env, unionType, unionCase)
-        let unionCaseFieldR = resolveField (env, unionType, unionCaseField)
         let unionV: obj = ctxt.EvalExpr(env, unionExpr) |> getVal
+        //let unionCaseR = resolveUnionCase (env, unionType, unionCase)
+        //let unionCaseFieldR = resolveField (env, unionType, unionCaseField)
 
         let res =
-            match unionCaseR with
-            | RUnionCase _ ->
-                match unionCaseFieldR with
-                | RField ((:? FieldInfo as finfo), _) -> finfo.GetValue(unionV)
-                | RField ((:? PropertyInfo as pinfo), _) -> pinfo.GetValue(unionV)
-                | _ -> failwithf "unexpected field resolution %A in EvalUnionCaseGet" unionCaseFieldR
-            | UUnionCase (_tag, _unionCaseName) ->
+            //match unionCaseR with
+            //| RUnionCase _ ->
+            //    match unionCaseFieldR with
+            //    | RField ((:? FieldInfo as finfo), _) -> finfo.GetValue(unionV)
+            //    | RField ((:? PropertyInfo as pinfo), _) -> pinfo.GetValue(unionV)
+            //    | _ -> failwithf "unexpected field resolution %A in EvalUnionCaseGet" unionCaseFieldR
+            //| UUnionCase (index, _unionCaseName) ->
                 match unionV with
                 | :? UnionValue as unionV ->
-                    let (UnionValue (_tag, _unionCaseName, fields)) = unionV
-                    match unionCaseFieldR with
-                    | UField (index, _, _) -> fields.[index]
-                    | RField _ -> failwithf "unexpected field resolution %A in EvalUnionCaseGet" unionCaseFieldR
+                    let (UnionValue (index, _unionCaseName, fields)) = unionV
+                    fields.[index]
+                    //match unionCaseFieldR with
+                    //| UField (index, _, _) -> fields.[index]
+                    //| RField _ -> failwithf "unexpected field resolution %A in EvalUnionCaseGet" unionCaseFieldR
                 | _ -> failwithf "unexpected value '%A' in EvalUnionCaseGet" unionV
         Value(box res)
 
