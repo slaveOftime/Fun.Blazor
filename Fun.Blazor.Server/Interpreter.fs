@@ -878,8 +878,21 @@ type EvalContext(assemblyName: AssemblyName, ?dyntypes: bool, ?assemblyResolver:
                 | _res ->
                     let (RTypesErased formalEnv paramTysV) = resolveTypes (formalEnv, v.ArgTypes)
                     match entityType.GetMethod(v.Name, bindAll, null, paramTysV, null) with
-                    | null -> failwithf "couldn't bind property %A for %A" v entityType //ctxt.InterpMethod(formalEnv, eR, nm, paramTys)
-                    //| null -> ctxt.InterpMethod(formalEnv, eR, nm, paramTys)
+                    | null ->
+                        let meth =
+                            _res 
+                            |> Seq.tryFind (fun x -> 
+                                let ps = x.GetParameters()
+                                let mutable isDiff = false
+                                let mutable i = 0
+                                while not isDiff && i < ps.Length do
+                                    isDiff <- ps.[i].ParameterType.Name.Split("`").[0] <> paramTysV.[i].Name.Split("`").[0]
+                                    i <- i + 1
+                                not isDiff
+                            ) 
+                        match meth with
+                        | Some x -> RMethod x
+                        | None -> failwithf "couldn't bind property %A for %A" v entityType
                     | minfo -> RMethod minfo
 
         | entityR -> interpMethod (formalEnv, entityR, v.Name, v.ArgTypes, range)
