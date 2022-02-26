@@ -273,20 +273,25 @@ let ProcessCommandLine (argv: string []) =
 
         let mutable lastCompileStart = System.DateTime.Now
 
-        let filteredFiles =
-            options.SourceFiles
-            |> Array.filter (fun x ->
-                use iter = File.ReadLines(x).GetEnumerator()
-                if iter.MoveNext() then
-                    iter.Current.Contains "// hot-reload"
-                else
-                    false
-            )
 
         let changed why _ =
             try
                 printfn "fslive: COMPILING (%s)...." why
                 lastCompileStart <- System.DateTime.Now
+
+                let filteredFiles =
+                    options.SourceFiles
+                    |> Array.filter (fun x ->
+                        use iter = File.ReadLines(x).GetEnumerator()
+                        if iter.MoveNext() then
+                            if iter.Current.Contains "// hot-reload" then
+                                true
+                            else
+                                printfn "ignored %s: because no \"// hot-reload\" at the top of the source file" x
+                                false
+                        else
+                            false
+                    )
 
                 match checkFiles filteredFiles with
                 | Result.Error res -> Result.Error res
@@ -365,7 +370,7 @@ let ProcessCommandLine (argv: string []) =
 
             let watchers =
                 [
-                    for sourceFile in filteredFiles do
+                    for sourceFile in options.SourceFiles do
                         yield mkWatcher sourceFile
                         if useEditFiles then yield mkWatcher sourceFile
                 ]

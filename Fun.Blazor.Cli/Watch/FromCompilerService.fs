@@ -334,15 +334,15 @@ type Convert(includeRanges: bool, tolerateIncomplete: bool) =
         let paramTypesR = convParamTypes memb
 
         // TODO: extensions of generic type
-        if
-            memb.IsExtensionMember && memb.ApparentEnclosingEntity.GenericParameters.Count > 0
-            && not
-                (
-                    memb.CompiledName = "ProgramRunner`2.EnableLiveUpdate"
-                    || memb.CompiledName = "ProgramRunner`3.EnableLiveUpdate"
-                )
-        then
-            failwithf "NYI: extension of generic type, needs FCS support: %A::%A" memb.ApparentEnclosingEntity memb
+        //if
+        //    memb.IsExtensionMember && memb.ApparentEnclosingEntity.GenericParameters.Count > 0
+        //    && not
+        //        (
+        //            memb.CompiledName = "ProgramRunner`2.EnableLiveUpdate"
+        //            || memb.CompiledName = "ProgramRunner`3.EnableLiveUpdate"
+        //        )
+        //then
+        //    failwithf "NYI: extension of generic type, needs FCS support: %A::%A" memb.ApparentEnclosingEntity memb
 
         {
             Entity = convEntityRef memb.DeclaringEntity.Value
