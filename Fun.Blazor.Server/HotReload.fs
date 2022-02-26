@@ -154,7 +154,6 @@ type HotReloadComponent(renderEntryName, initRender) as this =
     override _.Render() = render
 
     override _.OnAfterRender(first) =
-#if DEBUG
         if first then
             sub <-
                 this
@@ -167,9 +166,6 @@ type HotReloadComponent(renderEntryName, initRender) as this =
                         printfn "Code changes applied in %d ms" sw.ElapsedMilliseconds
                     )
                 |> ValueSome
-#endif
-        ()
-
 
     interface IDisposable with
         member _.Dispose() =

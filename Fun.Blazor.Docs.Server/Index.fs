@@ -6,10 +6,16 @@ open Fun.Blazor
 
 
 type Index() =
+
+#if DEBUG
     inherit HotReloadComponent("Fun.Blazor.Docs.Wasm.App.app", Fun.Blazor.Docs.Wasm.App.app)
+#else
+    inherit FunBlazorComponent()
+    override _.Render() = Fun.Blazor.Docs.Wasm.App.app
+#endif
 
 
-    static member page (ctx: HttpContext) =
+    static member page(ctx: HttpContext) =
         fragment {
             doctype "html"
             html' {
@@ -35,10 +41,7 @@ type Index() =
                     stylesheet "css/github-markdown.css"
                     stylesheet "css/prism-night-owl.css"
                     script { src "https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/components/prism-core.min.js" }
-                    script {
-                        src
-                            "https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/plugins/autoloader/prism-autoloader.min.js"
-                    }
+                    script { src "https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/plugins/autoloader/prism-autoloader.min.js" }
 
                     stylesheet "https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/default.css"
                     script { src "https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/index.min.js" }
