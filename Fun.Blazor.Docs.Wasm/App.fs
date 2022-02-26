@@ -1,4 +1,5 @@
-﻿[<AutoOpen>]
+﻿// hot-reload
+[<AutoOpen>]
 module Fun.Blazor.Docs.Wasm.App
 
 open FSharp.Data.Adaptive
@@ -114,8 +115,8 @@ let app =
 
         adaptiview () {
             theme
-            MudDialogProvider'()
-            MudSnackbarProvider'()
+            MudDialogProvider'.create()
+            MudSnackbarProvider'.create()
             MudLayout'() {
                 appBar
                 drawer

@@ -6,7 +6,7 @@ open Fun.Blazor
 
 
 type Index() =
-    inherit HotReloadComponent("Docs.Wasm.App.app", Docs.Wasm.App.app)
+    inherit HotReloadComponent("Fun.Blazor.Docs.Wasm.App.app", Fun.Blazor.Docs.Wasm.App.app)
 
 
     static member page (ctx: HttpContext) =

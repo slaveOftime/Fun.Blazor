@@ -1,5 +1,6 @@
 ﻿namespace Fun.Blazor
 
+open System
 open FSharp.Compiler.PortaCode.CodeModel
 open FSharp.Compiler.PortaCode.Interpreter
 open Microsoft.AspNetCore.Components
@@ -83,12 +84,12 @@ module private Extensions =
                                         if membDef.Parameters.Length > 0 then
                                             printfn "*** LiveUpdate failure:"
                                             printfn "***   [x] got code package"
-                                            printfn "***   [x] found declaration called 'programLiveUpdate' or 'program'"
+                                            printfn "***   [x] found declaration called '%s'" renderEntryName
                                             printfn "***   FAIL: the declaration has parameters, it must be a single top-level value"
                                             Some
                                                 {
                                                     Quacked =
-                                                        "couldn't quack! Found declaration called 'program' or 'programLiveUpdate' but the declaration has parameters!"
+                                                        $"couldn't quack! Found declaration called '{renderEntryName}' but the declaration has parameters!"
                                                 }
 
                                         else
@@ -105,7 +106,7 @@ module private Extensions =
                                             | p ->
                                                 printfn "*** LiveUpdate failure:"
                                                 printfn "***   [x] got code package"
-                                                printfn "***   [x] found declaration called 'programLiveUpdate' or 'program'"
+                                                printfn "***   [x] found declaration called '%s'" renderEntryName
                                                 printfn "***   [x] it had no parameters (good!)"
                                                 printfn
                                                     "***   FAIL: the declaration had the wrong type '%A', expected 'Program<Arg, Model, Msg>'"
@@ -116,9 +117,9 @@ module private Extensions =
                             | None ->
                                 printfn "*** LiveUpdate failure:"
                                 printfn "***   [x] got code package"
-                                printfn "***   FAIL: couldn't find declaration called 'program' or 'programLiveUpdate'"
+                                printfn "***   FAIL: couldn't find declaration called '%s'" renderEntryName
                                 {
-                                    Quacked = "couldn't quack! No declaration called 'program' or 'programLiveUpdate'!"
+                                    Quacked = $"couldn't quack! No declaration called '{renderEntryName}'!"
                                 }
                             | Some res -> res
                 )
@@ -138,6 +139,7 @@ module private Extensions =
 type HotReloadComponent(renderEntryName, initRender) as this =
     inherit FunBlazorComponent()
 
+    let mutable sub = ValueNone
     let mutable render = initRender
 
     let setRender r =
@@ -154,9 +156,23 @@ type HotReloadComponent(renderEntryName, initRender) as this =
     override _.OnAfterRender(first) =
 #if DEBUG
         if first then
-            this
-                .GlobalStore
-                .Create(HotReloadComponent.HotReloadStoreName, "[]")
-                .Observable.Add(fun codeData -> Extensions.reload renderEntryName codeData setRender |> ignore)
+            sub <-
+                this
+                    .GlobalStore
+                    .Create(HotReloadComponent.HotReloadStoreName, "[]")
+                    .Observable.Subscribe(fun codeData ->
+                        let sw = System.Diagnostics.Stopwatch.StartNew()
+                        printfn "Received code changes, applying"
+                        Extensions.reload renderEntryName codeData setRender |> ignore
+                        printfn "Code changes applied in %d ms" sw.ElapsedMilliseconds
+                    )
+                |> ValueSome
 #endif
         ()
+
+
+    interface IDisposable with
+        member _.Dispose() =
+            match sub with
+            | ValueSome x -> x.Dispose()
+            | ValueNone -> ()

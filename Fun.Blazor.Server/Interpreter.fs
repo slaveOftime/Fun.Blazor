@@ -539,6 +539,8 @@ type EvalContext(assemblyName: AssemblyName, ?dyntypes: bool, ?assemblyResolver:
     //let op_pown = methinfoof <@ Operators.pown @>
     let op_pow = methinfoof <@ Operators.op_Exponentiation @>
 
+    let allAsms = lazy (AppDomain.CurrentDomain.GetAssemblies())
+
     /// Resolve an F# entity (type or module)
     let resolveEntity entityRef =
         match entityResolutions.TryGetValue(entityRef) with
@@ -561,6 +563,10 @@ type EvalContext(assemblyName: AssemblyName, ?dyntypes: bool, ?assemblyResolver:
                         else
                             System.Reflection.Assembly.GetEntryAssembly().GetType(typeName)
                             |> Option.ofObj
+                            |> function
+                                | Some x -> Some x
+                                | None -> allAsms.Value |> Array.tryPick (fun asm -> asm.GetType(typeName) |> Option.ofObj)
+
                     match try2 with
                     //| Some t -> REntity t
                     //| None ->
@@ -858,7 +864,7 @@ type EvalContext(assemblyName: AssemblyName, ?dyntypes: bool, ?assemblyResolver:
                     with
                 | [| minfo |] -> makeRMethod minfo
 
-                // Handle 
+                // Handle
                 | [||] when v.Name = "Yield" ->
                     let ms =
                         entityType.GetMethods(bindAll)
@@ -880,16 +886,46 @@ type EvalContext(assemblyName: AssemblyName, ?dyntypes: bool, ?assemblyResolver:
                     match entityType.GetMethod(v.Name, bindAll, null, paramTysV, null) with
                     | null ->
                         let meth =
-                            _res 
-                            |> Seq.tryFind (fun x -> 
+                            _res
+                            |> Seq.tryFind (fun x ->
                                 let ps = x.GetParameters()
+
                                 let mutable isDiff = false
                                 let mutable i = 0
+
                                 while not isDiff && i < ps.Length do
-                                    isDiff <- ps.[i].ParameterType.Name.Split("`").[0] <> paramTysV.[i].Name.Split("`").[0]
+                                    let name1 =
+                                        ps.[i].ParameterType.FullName
+                                        |> function
+                                            | null -> ps.[i].ParameterType.Name
+                                            | x -> x
+                                    isDiff <- 
+                                        match v.ArgTypes.[i] with
+                                        | DVariableType x -> x <> name1
+                                        | _ ->
+                                            let name2 =
+                                                paramTysV.[i].FullName
+                                                |> function
+                                                    | null -> paramTysV.[i].Name
+                                                    | x -> x
+                                            name1 <> name2
                                     i <- i + 1
+
                                 not isDiff
-                            ) 
+                            )
+                            |> function
+                                | Some x -> Some x
+                                | None -> // lose constraint again
+                                    _res
+                                    |> Seq.tryFind (fun x ->
+                                        let ps = x.GetParameters()
+                                        let mutable isDiff = false
+                                        let mutable i = 0
+                                        while not isDiff && i < ps.Length do
+                                            isDiff <- ps.[i].ParameterType.Name.Split("`").[0] <> paramTysV.[i].Name.Split("`").[0]
+                                            i <- i + 1
+                                        not isDiff
+                                    )
                         match meth with
                         | Some x -> RMethod x
                         | None -> failwithf "couldn't bind property %A for %A" v entityType
@@ -2130,7 +2166,7 @@ type EvalContext(assemblyName: AssemblyName, ?dyntypes: bool, ?assemblyResolver:
                 (fun (arg: obj) ->
                     let env = bind sink env lambdaVar (Value arg)
                     ctxt.EvalExpr(env, bodyExpr) |> getVal
-            )
+                )
             )
             |> box
             |> Value
@@ -2284,14 +2320,14 @@ type EvalContext(assemblyName: AssemblyName, ?dyntypes: bool, ?assemblyResolver:
             //    | RField ((:? PropertyInfo as pinfo), _) -> pinfo.GetValue(unionV)
             //    | _ -> failwithf "unexpected field resolution %A in EvalUnionCaseGet" unionCaseFieldR
             //| UUnionCase (index, _unionCaseName) ->
-                match unionV with
-                | :? UnionValue as unionV ->
-                    let (UnionValue (index, _unionCaseName, fields)) = unionV
-                    fields.[index]
-                    //match unionCaseFieldR with
-                    //| UField (index, _, _) -> fields.[index]
-                    //| RField _ -> failwithf "unexpected field resolution %A in EvalUnionCaseGet" unionCaseFieldR
-                | _ -> failwithf "unexpected value '%A' in EvalUnionCaseGet" unionV
+            match unionV with
+            | :? UnionValue as unionV ->
+                let (UnionValue (index, _unionCaseName, fields)) = unionV
+                fields.[index]
+            //match unionCaseFieldR with
+            //| UField (index, _, _) -> fields.[index]
+            //| RField _ -> failwithf "unexpected field resolution %A in EvalUnionCaseGet" unionCaseFieldR
+            | _ -> failwithf "unexpected value '%A' in EvalUnionCaseGet" unionV
         Value(box res)
 
     member ctxt.EvalUnionCaseTag(env, unionExpr, unionType) =

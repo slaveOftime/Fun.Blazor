@@ -284,10 +284,10 @@ let ProcessCommandLine (argv: string []) =
                     |> Array.filter (fun x ->
                         use iter = File.ReadLines(x).GetEnumerator()
                         if iter.MoveNext() then
-                            if iter.Current.Contains "// hot-reload" then
+                            if iter.Current.Contains("// hot-reload", StringComparison.OrdinalIgnoreCase) then
                                 true
                             else
-                                printfn "ignored %s: because no \"// hot-reload\" at the top of the source file" x
+                                //printfn "ignored %s: because no \"// hot-reload\" at the top of the source file" x
                                 false
                         else
                             false
@@ -359,8 +359,10 @@ let ProcessCommandLine (argv: string []) =
                             | _ -> DateTime.MaxValue
                     printfn "change %s, lastCOmpileStart=%A, lastWriteTime = %O" sourceFile lastCompileStart lastWriteTime
                     if lastWriteTime > lastCompileStart then
+                        let sw = System.Diagnostics.Stopwatch.StartNew()
                         printfn "changed %s" sourceFile
                         changed msg e |> ignore
+                        printfn "finished changes in %d ms" sw.ElapsedMilliseconds
 
                 watcher.Changed.Add(fileChange (sprintf "Changed %s" fileName))
                 watcher.Created.Add(fileChange (sprintf "Created %s" fileName))

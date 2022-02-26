@@ -1,5 +1,4 @@
 ﻿open System.IO
-open System.Linq
 open Spectre.Console
 open Spectre.Console.Cli
 open Fun.Blazor.Generator
@@ -14,6 +13,7 @@ type WatchCommand() =
             "watch"
             settings.Project
             $"--send:{settings.Server}/fun-blazor-hot-reload"
+            "--livecheck"
         |]
 
 

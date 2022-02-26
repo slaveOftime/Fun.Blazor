@@ -581,20 +581,18 @@ type Convert(includeRanges: bool, tolerateIncomplete: bool) =
                 //if v.IsValCompiledAsMethod || not v.IsMember then
                 let vR =
                     try
-                        convMemberDef v
+                        Ok(convMemberDef v)
                     with
-                        | exn -> failwithf "error converting defn of %s\n%A" v.CompiledName exn
+                        | exn -> Error exn
                 let eR =
                     try
                         Ok(convExpr e)
                     with
                         | exn -> Error exn
-                match eR with
-                | Ok eR -> yield DDeclMember(vR, eR, isLiveCheck)
-                | Error exn ->
-                    match exn with
-                    | IncompleteExpr when tolerateIncomplete -> ()
-                    | _ -> failwithf "error converting rhs of %s\n%A" v.CompiledName exn
+                match vR, eR with
+                | Ok vR, Ok eR -> yield DDeclMember(vR, eR, isLiveCheck)
+                | _ when tolerateIncomplete -> ()
+                | _ -> failwithf "error converting rhs of %s\n%A" v.CompiledName exn
 
             | FSharpImplementationFileDeclaration.InitAction (e) ->
                 let eR =
