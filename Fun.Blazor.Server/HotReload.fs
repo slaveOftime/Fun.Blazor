@@ -158,8 +158,8 @@ type HotReloadComponent(renderEntryName, initRender) as this =
             sub <-
                 this
                     .GlobalStore
-                    .Create(HotReloadComponent.HotReloadStoreName, "[]")
-                    .Observable.Subscribe(fun codeData ->
+                    .CreateCVal(HotReloadComponent.HotReloadStoreName, "[]")
+                    .AddInstantCallback(fun codeData ->
                         let sw = System.Diagnostics.Stopwatch.StartNew()
                         printfn "Received code changes, applying"
                         Extensions.reload renderEntryName codeData setRender |> ignore

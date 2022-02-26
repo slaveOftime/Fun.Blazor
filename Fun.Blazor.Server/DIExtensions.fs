@@ -84,7 +84,7 @@ type FunBlazorServerExtensions =
                     use data = new MemoryStream()
                     do! ctx.Request.Body.CopyToAsync(data)
                     do! data.FlushAsync()
-                    store.Create(HotReloadComponent.HotReloadStoreName, "[]").Publish(Encoding.UTF8.GetString(data.ToArray()))
+                    store.CreateCVal(HotReloadComponent.HotReloadStoreName, "[]").Publish(Encoding.UTF8.GetString(data.ToArray()))
 
                     return "Hot reload server received data."
                 }
