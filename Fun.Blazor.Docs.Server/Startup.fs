@@ -1,6 +1,7 @@
+#nowarn "0020"
+
 open System
 open Microsoft.AspNetCore.Builder
-open Microsoft.AspNetCore.Hosting
 open Microsoft.Extensions.Hosting
 open Microsoft.Extensions.DependencyInjection
 open MudBlazor.Services
@@ -8,23 +9,21 @@ open Plk.Blazor.DragDrop
 open Fun.Blazor.Docs.Server
 
 
-Host.CreateDefaultBuilder(Environment.GetCommandLineArgs())
-    .ConfigureWebHostDefaults(fun builder ->
-        builder
-            .ConfigureServices(fun (services: IServiceCollection) ->
-                services.AddControllersWithViews() |> ignore
-                services
-                    .AddServerSideBlazor().Services
-                    .AddFunBlazorServer()
-                    .AddMudServices()
-                    .AddAntDesign()
-                    .AddBlazorDragDrop() |> ignore)
-            .Configure(fun (application: IApplicationBuilder) ->
-                application
-                    .UseStaticFiles()
-                    .UseRouting()
-                    .UseEndpoints(fun endpoints ->
-                        endpoints.MapBlazorHub() |> ignore
-                        endpoints.MapFunBlazor(Index.page2) |> ignore) |> ignore) |> ignore)
-    .Build()
-    .Run()
+let builder = WebApplication.CreateBuilder(Environment.GetCommandLineArgs())
+
+builder.Services.AddControllersWithViews()
+builder.Services.AddServerSideBlazor().Services.AddFunBlazorServer().AddMudServices().AddAntDesign().AddBlazorDragDrop()
+
+
+let app = builder.Build()
+
+app.UseStaticFiles()
+
+app.MapBlazorHub()
+app.MapFunBlazor(Index.page2)
+
+#if DEBUG
+app.UseFunBlazorHotReload()
+#endif
+
+app.Run()

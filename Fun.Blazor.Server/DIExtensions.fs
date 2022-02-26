@@ -39,8 +39,6 @@ type FunBlazorServerExtensions =
 
     [<Extension>]
     static member MapFunBlazor(builder: IEndpointRouteBuilder, createFragment: HttpContext -> NodeRenderFragment, ?pattern) =
-        builder.MapHotReloadPoints()
-
         let requestDeletegate =
             Microsoft.AspNetCore.Http.RequestDelegate(fun ctx ->
                 task {
@@ -68,13 +66,12 @@ type FunBlazorServerExtensions =
 
     [<Extension>]
     static member MapFunBlazor(builder: IEndpointRouteBuilder, pattern: string, createFragment: HttpContext -> NodeRenderFragment) =
-        builder.MapHotReloadPoints()
         builder.MapFunBlazor(createFragment, pattern)
 
 
+    /// This is only supposed to be used in DEBUG mode
     [<Extension>]
-    static member internal MapHotReloadPoints(builder: IEndpointRouteBuilder) =
-#if DEBUG
+    static member UseFunBlazorHotReload(builder: IEndpointRouteBuilder) =
         builder.MapPut(
             "/fun-blazor-hot-reload",
             RequestDelegate(fun ctx ->
@@ -90,6 +87,3 @@ type FunBlazorServerExtensions =
             )
         )
         |> ignore
-#endif
-
-        ()
