@@ -12,6 +12,7 @@
 		<Compile Include="CodeModel.fs" />
 		<Compile Include="Interpreter.fs" />
 		<Compile Include="HotReload.fs" />
+		<Compile Include="HotReloadComponent.fs" />
 		<Compile Include="DIExtensions.fs" />
 		<Compile Include="DslExtensions.fs" />
 	</ItemGroup>

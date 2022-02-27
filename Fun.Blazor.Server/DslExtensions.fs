@@ -18,3 +18,21 @@ module FunBlazorServerExtensions =
             builder.AddMarkupContent(index, result)
             index + 1
         )
+
+
+    /// Apply style text to a apecific style tag in the end of html body to override other style
+    /// This is supposed to be used for hot-reload
+    let hotReloadJSInterop =
+        js """
+            window.hotReloadStyle = (id, style) => {
+                let ele = document.getElementById(id)
+                if (ele) {
+                    ele.innerText = style
+                } else {
+                    ele = document.createElement("style")
+                    ele.id = id
+                    ele.innerText = style
+                    document.body.appendChild(ele)
+                }
+            }
+        """
