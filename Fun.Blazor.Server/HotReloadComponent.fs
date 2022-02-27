@@ -14,7 +14,7 @@ open Fun.Blazor
 /// renderEntryName: should be the full name of the initRender. ("Demo.App.app", app).
 /// I use IGlobalStore to create a store "--fun-blazor-hot-reload-store" to receive the code changes, so you should not create any store named like that.
 /// You should use it together with Fun.Blazor.Cli.
-type HotReloadComponent(renderEntryName, initRender) as this =
+type HotReloadComponent(renderEntryName, initRender, ?staticAssetsDir) as this =
     inherit FunBlazorComponent()
 
     let mutable disposes: IDisposable list = []
@@ -77,8 +77,10 @@ type HotReloadComponent(renderEntryName, initRender) as this =
 
     override _.OnAfterRender(firstRender) =
         if firstRender then
-            let dir = System.IO.Path.Combine(this.HostingEnv.ContentRootPath, "wwwroot")
-            let cssWatcher = makeCssWatcher dir
+            let dir =
+                match staticAssetsDir with
+                | Some x -> x
+                | None -> System.IO.Path.Combine(this.HostingEnv.ContentRootPath, "wwwroot")
 
             disposes <-
                 [
@@ -92,17 +94,21 @@ type HotReloadComponent(renderEntryName, initRender) as this =
                             printfn "Code changes applied in %d ms" sw.ElapsedMilliseconds
                         )
 
-                    cssWatcher.Changed
-                    |> Observable.throttle (TimeSpan.FromMilliseconds 300)
-                    |> Observable.subscribe (fun x -> handleChanges dir x.Name)
+                    if Directory.Exists dir |> not then
+                        printfn "Static assets folder is not found, hot reload may not work for them. %s" dir
+                    else
+                        let cssWatcher = makeCssWatcher dir
+                        cssWatcher.Changed
+                        |> Observable.throttle (TimeSpan.FromMilliseconds 300)
+                        |> Observable.subscribe (fun x -> handleChanges dir x.Name)
 
-                    cssWatcher.Renamed
-                    |> Observable.throttle (TimeSpan.FromMilliseconds 300)
-                    |> Observable.subscribe (fun x -> handleChanges dir x.Name)
+                        cssWatcher.Renamed
+                        |> Observable.throttle (TimeSpan.FromMilliseconds 300)
+                        |> Observable.subscribe (fun x -> handleChanges dir x.Name)
 
-                    cssWatcher.Deleted |> Observable.subscribe (fun x -> handleDelete x.Name)
+                        cssWatcher.Deleted |> Observable.subscribe (fun x -> handleDelete x.Name)
 
-                    cssWatcher
+                        cssWatcher
                 ]
 
 
