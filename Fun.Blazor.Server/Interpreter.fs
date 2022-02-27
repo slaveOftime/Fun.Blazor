@@ -129,10 +129,10 @@ type Sink =
 
     /// Called after an enitity declaration is established.  If dynamic emit of types
     /// is enabled then the System.Type for the entity will be available in entityR
-    abstract NotifyEstablishEntityDecl : entity: DEntityDef * entityR: ResolvedEntity * memberDecls: (DMemberDef * DExpr) [] -> DDiagnostic []
+    abstract NotifyEstablishEntityDecl: entity: DEntityDef * entityR: ResolvedEntity * memberDecls: (DMemberDef * DExpr) [] -> DDiagnostic []
 
     /// Called whenever a call is completed, showing caller reference and called method
-    abstract NotifyCallAndReturn :
+    abstract NotifyCallAndReturn:
         caller: DMemberRef option
         * callerRange: DRange option
         * callee: Choice<MethodInfo, DMemberDef>
@@ -142,19 +142,19 @@ type Sink =
         unit
 
     /// Called whenever a value in a module is computed
-    abstract NotifyBindValue : DMemberDef * Value -> unit
+    abstract NotifyBindValue: DMemberDef * Value -> unit
 
     /// Called whenever a class or record field is set
-    abstract NotifySetField : DType * DFieldDef * Value -> unit
+    abstract NotifySetField: DType * DFieldDef * Value -> unit
 
     /// Called whenever a class or record field is set
-    abstract NotifyGetField : DType * DFieldDef * DRange option * Value -> unit
+    abstract NotifyGetField: DType * DFieldDef * DRange option * Value -> unit
 
     /// Called whenever a parameter or expression local is bound or a local is computed
-    abstract NotifyBindLocal : DLocalDef * Value -> unit
+    abstract NotifyBindLocal: DLocalDef * Value -> unit
 
     /// Called whenever a local is used
-    abstract NotifyUseLocal : DLocalRef * Value -> unit
+    abstract NotifyUseLocal: DLocalRef * Value -> unit
 
 let emptySink =
     { new Sink with
@@ -455,16 +455,19 @@ type EvalContext(assemblyName: AssemblyName, ?dyntypes: bool, ?assemblyResolver:
     let assemblyResolver = defaultArg assemblyResolver System.Reflection.Assembly.Load
     let dyntypes = defaultArg dyntypes false
     let sink = defaultArg sink emptySink
-    let entityResolutions = ConcurrentDictionary<DEntityRef, ResolvedEntity>(HashIdentity.Structural)
+    let entityResolutions =
+        ConcurrentDictionary<DEntityRef, ResolvedEntity>(HashIdentity.Structural)
     let methodThunks =
         ConcurrentDictionary<(ResolvedEntity * string * ResolvedTypes), (DMemberDef * Value)>(HashIdentity.Structural)
     let dispatchSlots =
         ConcurrentDictionary<(ResolvedEntity * string * ResolvedTypes), bool>(HashIdentity.Structural)
-    let fieldDefMap = ConcurrentDictionary<(string * string), DFieldDef>(HashIdentity.Structural)
+    let fieldDefMap =
+        ConcurrentDictionary<(string * string), DFieldDef>(HashIdentity.Structural)
 
     // For emitting shell types
     let mutable shellTypeThunkCount = 0
-    let shellTypeThunks = ConcurrentDictionary<int, MethodLambdaValue>(HashIdentity.Structural)
+    let shellTypeThunks =
+        ConcurrentDictionary<int, MethodLambdaValue>(HashIdentity.Structural)
 
     // TODO: add these resolution tables
     //let unionCaseResolutions = ConcurrentDictionary<(DType * DUnionCaseRef),ResolvedUnionCase>(HashIdentity.Structural)
@@ -899,15 +902,16 @@ type EvalContext(assemblyName: AssemblyName, ?dyntypes: bool, ?assemblyResolver:
                                         |> function
                                             | null -> ps.[i].ParameterType.Name
                                             | x -> x
-                                    isDiff <- 
+                                    isDiff <-
                                         match v.ArgTypes.[i] with
                                         | DVariableType x -> x <> name1
                                         | _ ->
                                             let name2 =
-                                                paramTysV.[i].FullName
-                                                |> function
-                                                    | null -> paramTysV.[i].Name
-                                                    | x -> x
+                                                match ps.[i].ParameterType.FullName, paramTysV.[i].FullName with
+                                                | null, null
+                                                | null, _
+                                                | _, null -> paramTysV.[i].Name
+                                                | _, x -> x
                                             name1 <> name2
                                     i <- i + 1
 
@@ -1005,13 +1009,16 @@ type EvalContext(assemblyName: AssemblyName, ?dyntypes: bool, ?assemblyResolver:
     /// virtual methods and interface implementations, and constructors to actually make an object of the
     /// correct type.
     member ctxt.EmitShellTypes(decls: DDecl []) =
-        let asmB = AssemblyBuilder.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.Run)
+        let asmB =
+            AssemblyBuilder.DefineDynamicAssembly(assemblyName, AssemblyBuilderAccess.Run)
         let modB = asmB.DefineDynamicModule("Module")
 
-        let shellTypeConstructorBuilders = Dictionary<DMemberRef, (ConstructorBuilder * Type [])>(HashIdentity.Structural)
+        let shellTypeConstructorBuilders =
+            Dictionary<DMemberRef, (ConstructorBuilder * Type [])>(HashIdentity.Structural)
         let shellTypeMethodBuilders =
             Dictionary<DMemberRef, (MethodBuilder * Type [] * Type)>(HashIdentity.Structural)
-        let shellTypeEntityInfo = Dictionary<DEntityRef, DEntityDef>(HashIdentity.Structural)
+        let shellTypeEntityInfo =
+            Dictionary<DEntityRef, DEntityDef>(HashIdentity.Structural)
 
         // Store the returning context in a static field of each generated type
         let ctxtTypB = modB.DefineType("$ctxt")
@@ -1408,7 +1415,8 @@ type EvalContext(assemblyName: AssemblyName, ?dyntypes: bool, ?assemblyResolver:
                                 | _ -> failwith "unexpected: couldn't resolve ctor"
                         let (RTypesErased env baseCtorTypeArgsT) = resolveTypes (env, baseCtorTypeArgs)
                         let ibaseCtorInfo = instantiateConstructor baseCtorTypeArgsT baseCtorInfo
-                        let ibaseCtorParamTypes = baseCtorParamTypes |> Array.map (instantiateType baseCtorTypeArgsT)
+                        let ibaseCtorParamTypes =
+                            baseCtorParamTypes |> Array.map (instantiateType baseCtorTypeArgsT)
 
                         ilg.Emit(OpCodes.Ldarg, 0)
                         // The arguments to the constructor are evaluated in the interpreter
@@ -1740,7 +1748,7 @@ type EvalContext(assemblyName: AssemblyName, ?dyntypes: bool, ?assemblyResolver:
             let start = ctxt.EvalExpr(env, startExpr).Value :?> int
             let limi = ctxt.EvalExpr(env, limitExpr).Value :?> int
             let bodyf = ctxt.EvalExpr(env, consumeExpr).Value
-            for i in start .. limi do
+            for i in start..limi do
                 bodyf.GetType().GetMethod("Invoke").Invoke(bodyf, [| box i |]) |> ignore
             Value null
         (*
@@ -1848,7 +1856,8 @@ type EvalContext(assemblyName: AssemblyName, ?dyntypes: bool, ?assemblyResolver:
         argsV |> Array.map getVal
 
     member ctxt.EvalExprOpt(env, objExprOpt) =
-        let objValOpt = objExprOpt |> Option.map (fun objExpr -> ctxt.EvalExpr(env, objExpr))
+        let objValOpt =
+            objExprOpt |> Option.map (fun objExpr -> ctxt.EvalExpr(env, objExpr))
         objValOpt |> Option.map getVal |> Option.toObj
 
     member _.EvalDefaultValue(env, defaultType) =
@@ -2010,7 +2019,8 @@ type EvalContext(assemblyName: AssemblyName, ?dyntypes: bool, ?assemblyResolver:
             match methR, typeArgs1R, typeArgs2R with
             | RMethod (:? MethodInfo as minfo), RTypesErased env typeArgs1V, RTypesErased env typeArgs2V ->
                 let iminfo = instantiateMethod minfo typeArgs1V typeArgs2V
-                let argsV = if iminfo.Name = "Yield" && argsV.Length = 0 then [| box () |] else argsV
+                let argsV =
+                    if iminfo.Name = "Yield" && argsV.Length = 0 then [| box () |] else argsV
 
                 let res = protectInvoke (fun () -> iminfo.Invoke(objOptV, argsV)) |> Value
 
@@ -2309,8 +2319,6 @@ type EvalContext(assemblyName: AssemblyName, ?dyntypes: bool, ?assemblyResolver:
 
     member ctxt.EvalUnionCaseGet(env, unionExpr, unionType, unionCase, unionCaseField) =
         let unionV: obj = ctxt.EvalExpr(env, unionExpr) |> getVal
-        //let unionCaseR = resolveUnionCase (env, unionType, unionCase)
-        //let unionCaseFieldR = resolveField (env, unionType, unionCaseField)
 
         let res =
             //match unionCaseR with
@@ -2327,7 +2335,11 @@ type EvalContext(assemblyName: AssemblyName, ?dyntypes: bool, ?assemblyResolver:
             //match unionCaseFieldR with
             //| UField (index, _, _) -> fields.[index]
             //| RField _ -> failwithf "unexpected field resolution %A in EvalUnionCaseGet" unionCaseFieldR
-            | _ -> failwithf "unexpected value '%A' in EvalUnionCaseGet" unionV
+            | _ ->
+                match unionV.GetType().GetProperty("Item") with
+                | null -> failwithf "unexpected value '%A' in EvalUnionCaseGet" unionV
+                | f -> f.GetValue(unionV)
+        //failwithf "unexpected value '%A' in EvalUnionCaseGet" unionV
         Value(box res)
 
     member ctxt.EvalUnionCaseTag(env, unionExpr, unionType) =
