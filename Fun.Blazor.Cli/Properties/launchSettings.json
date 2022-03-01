@@ -1,8 +1,8 @@
 {
-    "profiles": {
-        "Fun.Blazor.Cli": {
-            "commandName": "Project",
-            "commandLineArgs": "watch \"$(SolutionDir)\\Fun.Blazor.Docs.Wasm\\Fun.Blazor.Docs.Wasm.fsproj\" -s https://localhost:5001"
-        }
+  "profiles": {
+    "Fun.Blazor.Cli": {
+      "commandName": "Project",
+      "commandLineArgs": "watch \"$(SolutionDir)\\Fun.Blazor.Docs.Wasm\\Fun.Blazor.Docs.Wasm.fsproj\" --staticAssetsDir \"$(SolutionDir)\\Fun.Blazor.Docs.Wasm\\wwwroot\""
     }
+  }
 }

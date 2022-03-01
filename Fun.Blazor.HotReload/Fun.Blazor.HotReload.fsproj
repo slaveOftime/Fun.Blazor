@@ -7,15 +7,20 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Compile Include="DIExtensions.fs" />
+		<Compile Include="CodeModel.fs" />
+		<Compile Include="Interpreter.fs" />
+		<Compile Include="Utils.fs" />
+		<Compile Include="HotReloadComponent.fs" />
+		<Compile Include="Dsl.fs" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Fun.Blazor\Fun.Blazor.fsproj" />
+		<PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.2" />
+		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.13" />
+	  <ProjectReference Include="..\Fun.Blazor\Fun.Blazor.fsproj" />
 	</ItemGroup>
 
 	<ItemGroup>

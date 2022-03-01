@@ -1,4 +1,4 @@
-﻿module Fun.Blazor.Server.HotReload
+﻿module Fun.Blazor.HotReload.Utils
 
 open FSharp.Compiler.PortaCode.CodeModel
 open FSharp.Compiler.PortaCode.Interpreter
@@ -32,6 +32,9 @@ let rec internal tryFindMemberByName fullName (decls: DDecl []) =
         | _ -> None
     )
 
+
+let private jsonOptions = Newtonsoft.Json.JsonSerializerSettings()
+jsonOptions.MaxDepth <- 1000
 
 /// Starts the HttpServer listening for changes
 let internal reload renderEntryName (codeData: string) (updateRenderFn: NodeRenderFragment -> unit) =
@@ -121,8 +124,11 @@ let internal reload renderEntryName (codeData: string) (updateRenderFn: NodeRend
                         | Some res -> res
             )
 
-    let options = Newtonsoft.Json.JsonSerializerSettings()
-    options.MaxDepth <- 1000
-    let req =
-        Newtonsoft.Json.JsonConvert.DeserializeObject<(string * DFile) []>(codeData, options)
-    switchD req
+    let sw = System.Diagnostics.Stopwatch.StartNew()
+    printfn "Start render ..."
+    let req = Newtonsoft.Json.JsonConvert.DeserializeObject<(string * DFile) []>(codeData, jsonOptions)
+    printfn "Code deserialized %A ms" sw.ElapsedMilliseconds
+
+    sw.Restart()
+    switchD req |> ignore
+    printfn "Code applied %A ms" sw.ElapsedMilliseconds

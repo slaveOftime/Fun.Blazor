@@ -9,12 +9,8 @@ type WatchCommand() =
     inherit Command<WatchSettings>()
 
     override _.Execute(_, settings) =
-        FSharp.Compiler.PortaCode.ProcessCommandLine.ProcessCommandLine [|
-            "watch"
-            settings.Project
-            $"--send:{settings.Server}/fun-blazor-hot-reload"
-            "--livecheck"
-        |]
+        Watch.WatcherServer.runServer settings
+        0
 
 
 type GenerateCommand() =

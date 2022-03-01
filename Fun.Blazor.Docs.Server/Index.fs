@@ -6,19 +6,14 @@ open Fun.Blazor
 
 
 type Index() =
-
-#if DEBUG
-    inherit HotReloadComponent
-        (
-            "Fun.Blazor.Docs.Wasm.App.app",
-            Fun.Blazor.Docs.Wasm.App.app,
-            staticAssetsDir = __SOURCE_DIRECTORY__ + "/../Fun.Blazor.Docs.Wasm/wwwroot"
-        )
-#else
     inherit FunBlazorComponent()
-    override _.Render() = Fun.Blazor.Docs.Wasm.App.app
-#endif
 
+    override _.Render() =
+#if DEBUG
+        html.hotReloadComp (Fun.Blazor.Docs.Wasm.App.app, "Fun.Blazor.Docs.Wasm.App.app")
+#else
+        Fun.Blazor.Docs.Wasm.App.app
+#endif
 
     static member page(ctx: HttpContext) =
         fragment {
@@ -60,16 +55,17 @@ type Index() =
                         type' "module"
                     }
 
-                    #if DEBUG
-                    hotReloadJSInterop
-                    #endif
+#if DEBUG
+                    html.hotReloadJSInterop
+#endif
                 }
             }
         }
 
 
     static member page2 ctx =
-        Template.html $"""
+        Template.html
+            $"""
                 <!DOCTYPE html>
                 <html>
 
@@ -106,11 +102,11 @@ type Index() =
 
                     {
 #if DEBUG
-                        hotReloadJSInterop
+                     html.hotReloadJSInterop
 #else
-                        html.none
+                     html.none
 #endif
-                    }
+            }
                 </body>
 
                 </html>

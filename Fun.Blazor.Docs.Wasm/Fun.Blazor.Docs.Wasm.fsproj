@@ -56,7 +56,6 @@
     <Compile Include="App.fs" />
     <Compile Include="Startup.fs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <PackageReference Include="Majorsoft.Blazor.WebAssembly.Logging.Console" Version="1.5.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.1" />
@@ -78,6 +77,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Fun.Blazor.Elmish\Fun.Blazor.Elmish.fsproj" />
     <ProjectReference Include="..\Fun.Blazor.Feliz\Fun.Blazor.Feliz.fsproj" />
+    <ProjectReference Include="..\Fun.Blazor.HotReload\Fun.Blazor.HotReload.fsproj" />
     <ProjectReference Include="..\Fun.Blazor.HtmlTemplate\Fun.Blazor.HtmlTemplate.fsproj" />
     <ProjectReference Include="..\Fun.Blazor.Wasm\Fun.Blazor.Wasm.fsproj" />
     <ProjectReference Include="..\Fun.Bolero\Fun.Bolero.fsproj" />

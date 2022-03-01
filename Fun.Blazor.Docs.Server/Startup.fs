@@ -20,11 +20,6 @@ let app = builder.Build()
 app.UseStaticFiles()
 
 app.MapBlazorHub()
-
-#if DEBUG
-app.MapFunBlazor(Index.page2, hotReload = true)
-#else
 app.MapFunBlazor(Index.page2)
-#endif
 
 app.Run()

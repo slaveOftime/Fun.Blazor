@@ -16,8 +16,8 @@
 	<ItemGroup>
 		<Compile Include="Types.fs" />
 		<Compile Include="Watch\ProjectCracker.fs" />
-		<Compile Include="..\Fun.Blazor.Server\CodeModel.fs" Link="Watch\CodeModel.fs" />
-		<Compile Include="..\Fun.Blazor.Server\Interpreter.fs" Link="Watch\Interpreter.fs" />
+		<Compile Include="..\Fun.Blazor.HotReload\CodeModel.fs" Link="Watch\CodeModel.fs" />
+		<Compile Include="..\Fun.Blazor.HotReload\Interpreter.fs" Link="Watch\Interpreter.fs" />
 		<Compile Include="Watch\FromCompilerService.fs" />
 		<Compile Include="Watch\LiveCheckEvaluation.fs" />
 		<Compile Include="Watch\ProcessCommandLine.fs" />
