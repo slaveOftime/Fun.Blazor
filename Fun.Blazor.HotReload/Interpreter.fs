@@ -6,6 +6,7 @@ open System.Reflection
 open System.Reflection.Emit
 open System.Collections.Concurrent
 open System.Collections.Generic
+open FSharp.Quotations
 open FSharp.Compiler.PortaCode.CodeModel
 open FSharp.Reflection
 
@@ -865,6 +866,7 @@ type EvalContext(assemblyName: AssemblyName, ?dyntypes: bool, ?assemblyResolver:
                     entityType.GetMethods(bindAll)
                     |> Array.filter (fun m -> m.Name = v.Name && m.GetParameters().Length = n)
                     with
+                | [| minfo |] when minfo.Name = "QuotationToLambdaExpression" -> makeRMethod (entityType.GetMethod("QuotationToExpression"))
                 | [| minfo |] -> makeRMethod minfo
 
                 // Handle
@@ -941,7 +943,14 @@ type EvalContext(assemblyName: AssemblyName, ?dyntypes: bool, ?assemblyResolver:
         if minfo.DeclaringType.IsGenericType then
             let iminfo = minfo.DeclaringType.MakeGenericType(typeArgs1V)
             match iminfo.GetMethods(bindAll) |> Array.tryFind (fun m -> m.MetadataToken = minfo.MetadataToken) with
-            | Some minfo2 -> if minfo.IsGenericMethod then minfo2.MakeGenericMethod(typeArgs1V) else minfo2
+            | Some minfo2 ->
+                if minfo.IsGenericMethod then
+                    try
+                        minfo2.MakeGenericMethod(typeArgs1V)
+                    with
+                        | _ -> minfo2.MakeGenericMethod(typeArgs2V)
+                else
+                    minfo2
             | None -> failwithf "didn't find a matching method for %A with the right token" minfo
         elif minfo.IsGenericMethod then
             minfo.MakeGenericMethod(typeArgs2V)
@@ -1840,6 +1849,22 @@ type EvalContext(assemblyName: AssemblyName, ?dyntypes: bool, ?assemblyResolver:
             | ty when ty.IsEnum -> Value(Enum.ToObject(ty, constValueObj))
             | _ -> Value(Convert.ChangeType(constValueObj, constTypeR))
         //| _ -> Value constValueObj
+
+        | DExpr.Quote quote ->
+            match quote with
+            | NewDelegate (_, DExpr.Lambda (_, _, def, DExpr.FSharpFieldGet (_, dType, (DFieldRef (_, name)), _))) ->
+                match resolveType (env, dType) with
+                | RType ty ->
+                    match ty.GetProperty name with
+                    | prop ->
+                        let var = Var(def.Name, ty)
+                        let getter = Expr.PropertyGet(Expr.Var var, prop)
+                        let funcTy = typedefof<System.Func<int, int>>.MakeGenericType (ty, prop.PropertyType)
+                        let funcExpr = Expr.NewDelegate(funcTy, [ var ], getter)
+                        Value funcExpr
+                | _ -> failwithf "Unhandled %+A" quote
+            | _ -> failwithf "Unhandled Quote %+A" quote
+
         | _ -> failwithf "unrecognized %+A" expr
 
     member ctxt.EvalTraitCall(env, traitName, sourceTypes, isInstance, argTypes, argExprs) =
