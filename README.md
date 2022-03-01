@@ -24,7 +24,7 @@ https://github.com/slaveOftime/Fun.Blazor.Samples
 
 Template is also available (thanks: @AngelMunoz):
 ```shell
-dotnet new --install Fun.Blazor.Templates::2.0.0-beta002
+dotnet new --install Fun.Blazor.Templates::2.0.0-beta012
 ```
 
 ## Some tips
