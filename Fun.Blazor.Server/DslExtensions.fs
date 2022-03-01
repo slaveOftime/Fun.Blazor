@@ -22,6 +22,7 @@ module FunBlazorServerExtensions =
 
     /// Apply style text to a apecific style tag in the end of html body to override other style
     /// This is supposed to be used for hot-reload
+    /// * If you are using Visual Studio this should not be necessary
     let hotReloadJSInterop =
         js """
             window.hotReloadStyle = (id, style) => {
