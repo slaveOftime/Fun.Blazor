@@ -20,11 +20,7 @@ type Template =
     /// But it is only supported in aspnet 6. So currently you cannot get the event args very easily.
     static member html(html: FormattableString) =
         let args = html.GetArguments()
-        if args.Length = 0 then
-            NodeRenderFragment(fun _ builder index ->
-                builder.AddMarkupContent(index, html.Format)
-                index + 1
-            )
+        if args.Length = 0 then Static.html html.Format
         else
             let nodes =
                 caches.GetOrAdd(html.Format.GetHashCode(), Func<int, NodeItem list>(fun _ -> parseNodes html.Format))

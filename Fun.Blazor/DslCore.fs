@@ -211,3 +211,13 @@ type html() =
     static member inline styles(x) = "style" =>> makeStyles x
     static member inline class'(x: string) = "class" =>> x
     static member inline classes(x: string seq) = "class" =>> (String.concat " " x)
+
+
+type Static =
+
+    /// This is for pure static html markup
+    static member html (x: string) =
+        NodeRenderFragment(fun _ builder index ->
+            builder.AddMarkupContent(index, x)
+            index + 1
+        )
