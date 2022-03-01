@@ -373,7 +373,7 @@ let ProcessCommandLine (token: CancellationToken) sendCode (argv: string []) =
                             printfn "changed %s" sourceFile
                             changed msg e |> ignore
                             printfn "finished changes in %d ms" sw.ElapsedMilliseconds
-
+                    
                     watcher.Changed.Add(fileChange (sprintf "Changed %s" fileName))
                     watcher.Created.Add(fileChange (sprintf "Created %s" fileName))
                     watcher.Deleted.Add(fileChange (sprintf "Deleted %s" fileName))
@@ -395,7 +395,6 @@ let ProcessCommandLine (token: CancellationToken) sendCode (argv: string []) =
 
                 for watcher in watchers do
                     watcher.EnableRaisingEvents <- false
-
 
             else
                 ()

@@ -10,6 +10,10 @@ open Microsoft.AspNetCore.SignalR.Client
 open Fun.Blazor
 
 
+module private Cache =
+    let mutable lastRenderFn = Option<NodeRenderFragment>.None
+
+
 type HotReloadComponent() as this =
     inherit FunBlazorComponent()
 
@@ -18,6 +22,7 @@ type HotReloadComponent() as this =
 
 
     let setRender r =
+        Cache.lastRenderFn <- Some r
         this.RenderFn <- r
         this.ForceRerender()
 
@@ -67,7 +72,8 @@ type HotReloadComponent() as this =
                 do! hub.StartAsync(tokenSource.Token)
                 printfn "Started hot-reload hub"
             }
-            |> ignore
+
+            Cache.lastRenderFn |> Option.iter setRender
 
 
     interface IDisposable with

@@ -47,6 +47,8 @@ type CodeWatcher(scf: IServiceScopeFactory) =
 type StaticAssetsWatcher(scf: IServiceScopeFactory) =
     inherit BackgroundService()
 
+    let mutable cssWatcher = ValueNone
+
     let makeCssWatcher dir =
         let watcher = new FileSystemWatcher(dir)
 
@@ -71,7 +73,7 @@ type StaticAssetsWatcher(scf: IServiceScopeFactory) =
             let settings = sp.GetService<WatchSettings>()
             let hotReloadHub = sp.GetService<IHubContext<HotReloadHub>>()
 
-            let dir = 
+            let dir =
                 if String.IsNullOrEmpty settings.StaticAssetsDir then
                     Path.Combine(Path.GetDirectoryName(Path.GetFullPath(settings.Project)), "wwwroot")
                 else
@@ -79,7 +81,8 @@ type StaticAssetsWatcher(scf: IServiceScopeFactory) =
 
             let sendCode (name: string) =
                 printfn "css changed: %s" name
-                use fs = File.Open(Path.Combine(dir, name), FileMode.Open, FileAccess.Read, FileShare.ReadWrite)
+                use fs =
+                    File.Open(Path.Combine(dir, name), FileMode.Open, FileAccess.Read, FileShare.ReadWrite)
                 use sr = new StreamReader(fs)
                 hotReloadHub.Clients.All.SendAsync("CssChanged", name, sr.ReadToEnd()).Wait()
                 printfn "css changes is sent: %s" name
@@ -92,22 +95,36 @@ type StaticAssetsWatcher(scf: IServiceScopeFactory) =
             if Directory.Exists dir then
                 printfn "Start static assests watching %s" dir
 
-                let cssWatcher = makeCssWatcher dir
-                cssWatcher.Changed
+                cssWatcher <- ValueSome(makeCssWatcher dir)
+
+                cssWatcher.Value.Changed
                 |> Observable.throttle (TimeSpan.FromMilliseconds 300)
                 |> Observable.subscribe (fun x -> sendCode x.Name)
 
-                cssWatcher.Renamed
+                cssWatcher.Value.Created
                 |> Observable.throttle (TimeSpan.FromMilliseconds 300)
                 |> Observable.subscribe (fun x -> sendCode x.Name)
 
-                cssWatcher.Deleted |> Observable.subscribe (fun x -> sendEmptyCode x.Name)
+                cssWatcher.Value.Created
+                |> Observable.throttle (TimeSpan.FromMilliseconds 300)
+                |> Observable.subscribe (fun x -> sendCode x.Name)
+
+                cssWatcher.Value.Renamed
+                |> Observable.throttle (TimeSpan.FromMilliseconds 300)
+                |> Observable.subscribe (fun x -> sendCode x.Name)
+
+                cssWatcher.Value.Deleted |> Observable.subscribe (fun x -> sendEmptyCode x.Name)
+
             else
                 printfn "Static assets folder is not exist."
 
 
             while not token.IsCancellationRequested && Directory.Exists dir do
                 do! Task.Delay 2000
+
+            match cssWatcher with
+            | ValueSome x -> x.Dispose()
+            | _ -> ()
         }
 
 
