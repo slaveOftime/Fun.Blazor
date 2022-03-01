@@ -71,20 +71,28 @@ type StaticAssetsWatcher(scf: IServiceScopeFactory) =
             let settings = sp.GetService<WatchSettings>()
             let hotReloadHub = sp.GetService<IHubContext<HotReloadHub>>()
 
+            let dir = 
+                if String.IsNullOrEmpty settings.StaticAssetsDir then
+                    Path.Combine(Path.GetDirectoryName(Path.GetFullPath(settings.Project)), "wwwroot")
+                else
+                    Path.GetFullPath settings.StaticAssetsDir
+
             let sendCode (name: string) =
-                use fs =
-                    File.Open(Path.Combine(settings.StaticAccetsDir, name), FileMode.Open, FileAccess.Read, FileShare.ReadWrite)
+                printfn "css changed: %s" name
+                use fs = File.Open(Path.Combine(dir, name), FileMode.Open, FileAccess.Read, FileShare.ReadWrite)
                 use sr = new StreamReader(fs)
                 hotReloadHub.Clients.All.SendAsync("CssChanged", name, sr.ReadToEnd()).Wait()
+                printfn "css changes is sent: %s" name
 
             let sendEmptyCode (name: string) =
+                printfn "css removed: %s" name
                 hotReloadHub.Clients.All.SendAsync("CssChanged", name, "").Wait()
 
 
-            if Directory.Exists settings.StaticAccetsDir then
-                printfn "Start static accests watching %s" settings.StaticAccetsDir
+            if Directory.Exists dir then
+                printfn "Start static assests watching %s" dir
 
-                let cssWatcher = makeCssWatcher settings.StaticAccetsDir
+                let cssWatcher = makeCssWatcher dir
                 cssWatcher.Changed
                 |> Observable.throttle (TimeSpan.FromMilliseconds 300)
                 |> Observable.subscribe (fun x -> sendCode x.Name)
@@ -94,9 +102,11 @@ type StaticAssetsWatcher(scf: IServiceScopeFactory) =
                 |> Observable.subscribe (fun x -> sendCode x.Name)
 
                 cssWatcher.Deleted |> Observable.subscribe (fun x -> sendEmptyCode x.Name)
+            else
+                printfn "Static assets folder is not exist."
 
 
-            while not token.IsCancellationRequested && Directory.Exists settings.StaticAccetsDir do
+            while not token.IsCancellationRequested && Directory.Exists dir do
                 do! Task.Delay 2000
         }
 

@@ -12,13 +12,13 @@ type WatchSettings() =
     [<CommandArgument(0, "[PROJECT]")>]
     member val Project = "" with get, set
 
-    [<Description("Server host will be used to host the cli")>]
+    [<Description("Server host will be used to host the cli. Default value is http://localhost:9025")>]
     [<CommandOption("-s|--server")>]
     member val Server = "http://localhost:9025" with get, set
 
-    [<Description("Static accets directory which contains file like css. Default value is http://localhost:9025")>]
+    [<Description("Static assets directory which contains file like css. Default value will be the wwwroot under the project folder.")>]
     [<CommandOption("--staticAssetsDir")>]
-    member val StaticAccetsDir = "" with get, set
+    member val StaticAssetsDir = "" with get, set
 
 
 type CodeGenSettings() =
