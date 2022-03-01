@@ -34,6 +34,7 @@ jobs:
         dotnet pack -c Release Fun.Blazor.Elmish/Fun.Blazor.Elmish.fsproj -o .
         dotnet pack -c Release Fun.Blazor.Feliz/Fun.Blazor.Feliz.fsproj -o .
         dotnet pack -c Release Fun.Blazor.Generator/Fun.Blazor.Generator.fsproj -o .
+        dotnet pack -c Release Fun.Blazor.HotReload/Fun.Blazor.HotReload.fsproj -o .
         dotnet pack -c Release Fun.Blazor.HtmlTemplate/Fun.Blazor.HtmlTemplate.fsproj -o .
         dotnet pack -c Release Fun.Blazor.Server/Fun.Blazor.Server.fsproj -o .
         dotnet pack -c Release Fun.Blazor.Wasm/Fun.Blazor.Wasm.fsproj -o .
