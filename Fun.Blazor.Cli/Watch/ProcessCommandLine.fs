@@ -18,7 +18,7 @@ open FSharp.Compiler.PortaCode.FromCompilerService
 
 let checker = FSharpChecker.Create(keepAssemblyContents = true)
 
-let ProcessCommandLine (argv: string []) =
+let ProcessCommandLine sendCode (argv: string []) =
     let mutable fsproj = None
     let mutable dump = false
     let mutable livecheck = false
@@ -264,9 +264,11 @@ let ProcessCommandLine (argv: string []) =
                 let json = jsonFiles (Array.ofList fileContents)
                 printfn "fslive: GOT JSON, length = %d" json.Length
                 printfn "fslive: SENDING TO WEBHOOK... " // : <<<%s>>>... --> %s" json.[0 .. min (json.Length - 1) 100] hook
-                let content = new StringContent(json, Encoding.UTF8, "application/json")
-                let resp = httpClient.PutAsync(hook, content).Result
-                printfn "fslive: RESP FROM WEBHOOK: [%A] %s" resp.StatusCode (resp.Content.ReadAsStringAsync().Result)
+                // let content = new StringContent(json, Encoding.UTF8, "application/json")
+                // let resp = httpClient.PutAsync(hook, content).Result
+                sendCode json
+                printfn "Send code successful"
+                // printfn "fslive: RESP FROM WEBHOOK: [%A] %s" resp.StatusCode (resp.Content.ReadAsStringAsync().Result)
             with
                 | err -> printfn "fslive: ERROR SENDING TO WEBHOOK: %A" (err.ToString())
 

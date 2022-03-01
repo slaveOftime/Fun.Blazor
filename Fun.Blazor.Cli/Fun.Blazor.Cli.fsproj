@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
-		<TargetFrameworks>net5.0;net6.0</TargetFrameworks>
+		<TargetFrameworks>net6.0</TargetFrameworks>
 		<Version>2.0.0-beta019</Version>
 		<PackAsTool>true</PackAsTool>
 		<ToolCommandName>fun-blazor</ToolCommandName>
@@ -21,6 +21,7 @@
 		<Compile Include="Watch\FromCompilerService.fs" />
 		<Compile Include="Watch\LiveCheckEvaluation.fs" />
 		<Compile Include="Watch\ProcessCommandLine.fs" />
+		<Compile Include="Watch\WatcherServer.fs" />
 		<Compile Include="CodeGen\CodeGenProject.fs" />
 		<Compile Include="CodeGen\Generate.fs" />
 		<Compile Include="Program.fs" />
