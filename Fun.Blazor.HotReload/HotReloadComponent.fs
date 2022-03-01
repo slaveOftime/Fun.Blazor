@@ -22,7 +22,6 @@ type HotReloadComponent() as this =
 
 
     let setRender r =
-        Cache.lastRenderFn <- Some r
         this.RenderFn <- r
         this.ForceRerender()
 
@@ -55,7 +54,10 @@ type HotReloadComponent() as this =
                 "CodeChanged",
                 fun code ->
                     printfn "Code changed"
-                    Utils.reload this.RenderEntryName code setRender
+                    Utils.reload this.RenderEntryName code (fun x ->
+                        Cache.lastRenderFn <- Some x
+                        setRender x
+                    )
                     printfn "Code changes applied"
             )
 
