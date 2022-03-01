@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<TargetFrameworks>net5.0;net6.0</TargetFrameworks>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
-		<Version>2.0.0-beta020</Version>
+		<Version>2.0.0-beta021</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
