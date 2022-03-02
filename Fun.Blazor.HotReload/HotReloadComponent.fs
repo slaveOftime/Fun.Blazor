@@ -3,7 +3,7 @@
 namespace Fun.Blazor.HotReload
 
 open System
-open System.Threading
+open System.Collections.Concurrent
 open Microsoft.JSInterop
 open Microsoft.AspNetCore.Components
 open Microsoft.AspNetCore.SignalR.Client
@@ -11,14 +11,73 @@ open Fun.Blazor
 
 
 module private Cache =
-    let mutable lastRenderFn = Option<NodeRenderFragment>.None
+    let private jsonOptions = Newtonsoft.Json.JsonSerializerSettings()
+    jsonOptions.MaxDepth <- 1000
+
+    let mutable lastRenderFns = ConcurrentDictionary<string, NodeRenderFragment>()
+
+    let private hubLocker = obj ()
+    let mutable private hubConnection = Option<HubConnection>.None
+
+    /// Support multiple hot-reload entries for fsharp code changes
+    let private codeChangeStore =
+        new Store<(string * FSharp.Compiler.PortaCode.CodeModel.DFile) []>([||]) :> IStore<_>
+
+    /// Only need one callback for css
+    let mutable changeCssCallback = fun (name: string) (css: string) -> ()
+
+    let private makeHub (host: string) =
+        let hub = HubConnectionBuilder().WithUrl($"{host}/hot-reload-hub").Build()
+        hubConnection <- Some hub
+        task {
+            printfn "Starting hot-reload hub"
+            hub.On(
+                "CodeChanged",
+                fun code ->
+                    let sw = System.Diagnostics.Stopwatch.StartNew()
+                    printfn "Received raw code changes"
+                    let result =
+                        Newtonsoft.Json.JsonConvert.DeserializeObject<(string * FSharp.Compiler.PortaCode.CodeModel.DFile) []>(code, jsonOptions)
+                    printfn "Code changes deserialized in %d ms" sw.ElapsedMilliseconds
+                    codeChangeStore.Publish result
+            )
+            hub.On<string, string>(
+                "CssChanged",
+                fun name code ->
+                    printfn "Received css %s changes" name
+                    changeCssCallback name code
+                    printfn "css %s changes applied" name
+            )
+            do! hub.StartAsync()
+            printfn "Started hot-reload hub"
+        }
+
+    let getCodeChangesObserver (host: string) =
+        lock
+            hubLocker
+            (fun () ->
+                match hubConnection with
+                | Some h when
+                    h.State = HubConnectionState.Connected
+                    || h.State = HubConnectionState.Connecting
+                    || h.State = HubConnectionState.Reconnecting
+                    ->
+                    ()
+
+                | Some h ->
+                    h.DisposeAsync() |> ignore
+                    makeHub (host) |> ignore
+
+                | None -> makeHub (host) |> ignore
+            )
+
+        codeChangeStore.Observable
 
 
 type HotReloadComponent() as this =
     inherit FunBlazorComponent()
 
     let mutable disposes: IDisposable list = []
-    let tokenSource = new CancellationTokenSource()
 
 
     let setRender r =
@@ -48,38 +107,27 @@ type HotReloadComponent() as this =
 
     override _.OnAfterRender(firstRender) =
         if firstRender then
-            let hub = HubConnectionBuilder().WithUrl($"{this.Host}/hot-reload-hub").Build()
+            let codeChangedObserver = Cache.getCodeChangesObserver this.Host
 
-            hub.On<string>(
-                "CodeChanged",
-                fun code ->
-                    printfn "Code changed"
-                    Utils.reload this.RenderEntryName code (fun x ->
-                        Cache.lastRenderFn <- Some x
-                        setRender x
+            disposes <-
+                [
+                    codeChangedObserver.Subscribe(fun code ->
+                        Utils.reload
+                            this.RenderEntryName
+                            code
+                            (fun x ->
+                                Cache.lastRenderFns.AddOrUpdate(this.RenderEntryName, (fun _ -> x), (fun _ _ -> x))
+                                setRender x
+                            )
                     )
-                    printfn "Code changes applied"
-            )
+                ]
 
-            hub.On<string, string>(
-                "CssChanged",
-                fun name code ->
-                    printfn "css %s changed" name
-                    this.JS.InvokeAsync("hotReloadStyle", $"hot-reload-css-{name.GetHashCode()}", code)
-                    printfn "css %s changes applied" name
-            )
+            Cache.changeCssCallback <- fun name code -> this.JS.InvokeAsync("hotReloadStyle", $"hot-reload-css-{name.GetHashCode()}", code) |> ignore
 
-            task {
-                printfn "Start hot-reload hub"
-                do! hub.StartAsync(tokenSource.Token)
-                printfn "Started hot-reload hub"
-            }
-
-            Cache.lastRenderFn |> Option.iter setRender
+            match Cache.lastRenderFns.TryGetValue this.RenderEntryName with
+            | true, x -> setRender x
+            | _ -> ()
 
 
     interface IDisposable with
-        member _.Dispose() =
-            tokenSource.Cancel()
-            tokenSource.Dispose()
-            disposes |> List.iter (fun x -> x.Dispose())
+        member _.Dispose() = disposes |> List.iter (fun x -> x.Dispose())

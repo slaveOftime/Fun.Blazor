@@ -33,11 +33,8 @@ let rec internal tryFindMemberByName fullName (decls: DDecl []) =
     )
 
 
-let private jsonOptions = Newtonsoft.Json.JsonSerializerSettings()
-jsonOptions.MaxDepth <- 1000
-
 /// Starts the HttpServer listening for changes
-let internal reload renderEntryName (codeData: string) (updateRenderFn: NodeRenderFragment -> unit) =
+let internal reload renderEntryName (codeData: (string * DFile) []) (updateRenderFn: NodeRenderFragment -> unit) =
     let interp = EvalContext(System.Reflection.Assembly.GetEntryAssembly().GetName())
 
     let switchD (files: (string * DFile) []) =
@@ -125,10 +122,5 @@ let internal reload renderEntryName (codeData: string) (updateRenderFn: NodeRend
             )
 
     let sw = System.Diagnostics.Stopwatch.StartNew()
-    printfn "Start render ..."
-    let req = Newtonsoft.Json.JsonConvert.DeserializeObject<(string * DFile) []>(codeData, jsonOptions)
-    printfn "Code deserialized %A ms" sw.ElapsedMilliseconds
-
-    sw.Restart()
-    switchD req |> ignore
+    switchD codeData |> ignore
     printfn "Code applied %A ms" sw.ElapsedMilliseconds
