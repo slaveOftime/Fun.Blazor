@@ -81,7 +81,7 @@ type html() =
         )
 
 
-    static member renderFragment<'TItem>(name: string, render: 'TItem -> NodeRenderFragment) =
+    static member inline renderFragment<'TItem>(name: string, [<InlineIfLambda>] render: 'TItem -> NodeRenderFragment) =
         AttrRenderFragment(fun comp builder index ->
             builder.AddAttribute(
                 index,

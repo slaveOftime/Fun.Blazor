@@ -26,7 +26,8 @@ type ComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent>(
 
     member inline _.Yield([<InlineIfLambda>] x: AttrRenderFragment) = x
 
-    member inline _.Delay([<InlineIfLambda>] fn: unit -> AttrRenderFragment) = fn ()
+    member inline _.Delay([<InlineIfLambda>] fn: unit -> AttrRenderFragment) =
+        AttrRenderFragment(fun c b i -> fn().Invoke(c, b, i))
 
     member inline _.Combine([<InlineIfLambda>] render1: AttrRenderFragment, [<InlineIfLambda>] render2: AttrRenderFragment) = render1 ==> render2
 
@@ -163,7 +164,8 @@ type ComponentWithChildBuilder<'T when 'T :> IComponent>() =
 
     member inline _.Yield([<InlineIfLambda>] x: NodeRenderFragment) = x
 
-    member inline _.Delay([<InlineIfLambda>] fn: unit -> NodeRenderFragment) = fn ()
+    member inline _.Delay([<InlineIfLambda>] fn: unit -> NodeRenderFragment) =
+        NodeRenderFragment(fun c b i -> fn().Invoke(c, b, i))
     member inline _.Delay([<InlineIfLambda>] fn: unit -> (AttrRenderFragment * NodeRenderFragment)) = fn ()
     member inline _.Delay([<InlineIfLambda>] fn: unit -> (RefRenderFragment * NodeRenderFragment)) = fn ()
 
@@ -241,7 +243,8 @@ type ComponentWithDomAttrBuilder<'T when 'T :> IComponent>() =
             nextIndex + 1
         )
 
-    member inline _.Delay([<InlineIfLambda>] fn: unit -> RefRenderFragment) = fn ()
+    member inline _.Delay([<InlineIfLambda>] fn: unit -> RefRenderFragment) =
+        RefRenderFragment(fun c b i -> fn().Invoke(c, b, i))
 
 
 type ComponentWithDomAndChildAttrBuilder<'T when 'T :> IComponent>() =
@@ -315,7 +318,9 @@ type ComponentWithDomAndChildAttrBuilder<'T when 'T :> IComponent>() =
 
     member inline _.Yield([<InlineIfLambda>] x: NodeRenderFragment) = x
 
-    member inline _.Delay([<InlineIfLambda>] fn: unit -> NodeRenderFragment) = fn ()
+    member inline _.Delay([<InlineIfLambda>] fn: unit -> NodeRenderFragment) =
+        NodeRenderFragment(fun c b i -> fn().Invoke(c, b, i))
+
     member inline _.Delay([<InlineIfLambda>] fn: unit -> (AttrRenderFragment * NodeRenderFragment)) = fn ()
     member inline _.Delay([<InlineIfLambda>] fn: unit -> (RefRenderFragment * NodeRenderFragment)) = fn ()
 

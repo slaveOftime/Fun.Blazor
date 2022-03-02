@@ -17,19 +17,7 @@ type CEComponent() =
         this.BuildRenderTree(builder)
 
 
-    override _.Render() =
-        let counter =
-            fragment {
-                p {
-                    class' "class"
-                    $"Count = {count}"
-                }
-                button {
-                    onclick (fun _ -> increase ())
-                    "Increase"
-                }
-            }
-            
+    override _.Render() =            
         div {
             class' "class"
             style' "color: red;"
@@ -58,8 +46,13 @@ type CEComponent() =
                     class' "class"
                     "p6"
                 }
-                // Declare a variable help fsharp to have better inline which can save a lot of allocation for delegate
-                // In this benchmark it can save 40%
-                counter
+                p {
+                    class' "class"
+                    $"Count = {count}"
+                }
+                button {
+                    onclick (fun _ -> increase ())
+                    "Increase"
+                }
             }
         }

@@ -21,17 +21,14 @@ type EltBuilder(name) =
         )
 
     [<CustomOperation("ref")>]
-    member inline _.ref
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] fn: ElementReference -> unit
-        )
-        =
+    member inline _.ref([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ElementReference -> unit) =
         NodeRenderFragment(fun comp builder index ->
             let nextIndex = render.Invoke(comp, builder, index)
             builder.AddElementReferenceCapture(nextIndex, fn)
             nextIndex + 1
         )
+
+    member inline _.For([<InlineIfLambda>] render: NodeRenderFragment, [<InlineIfLambda>] fn: unit -> NodeRenderFragment) = render >=> (fn ())
 
 
 type EltWithChildBuilder(name) =
@@ -45,7 +42,7 @@ type EltWithChildBuilder(name) =
             builder.CloseElement()
             nextIndex
         )
-    
+
 
     member inline _.Yield(x: int) =
         NodeRenderFragment(fun _ builder index ->
@@ -81,42 +78,24 @@ type EltWithChildBuilder(name) =
 
     member inline _.Yield([<InlineIfLambda>] x: NodeRenderFragment) = x
 
-    member inline _.Delay([<InlineIfLambda>] fn: unit -> NodeRenderFragment) = fn ()
+    member inline _.Delay([<InlineIfLambda>] fn: unit -> NodeRenderFragment) =
+        NodeRenderFragment(fun c b i -> fn().Invoke(c, b, i))
 
     /// We should only allow merge AttrRenderFragment with NodeRenderFragment.
     /// Instead of merge NodeRenderFragment with AttrRenderFragment because blazor only allow add attribute then child.
     /// Also it is clear for the DSL
-    member inline _.Combine
-        (
-            [<InlineIfLambda>] render1: AttrRenderFragment,
-            [<InlineIfLambda>] render2: NodeRenderFragment
-        )
-        =
-        render1 >>> render2
+    member inline _.Combine([<InlineIfLambda>] render1: AttrRenderFragment, [<InlineIfLambda>] render2: NodeRenderFragment) = render1 >>> render2
 
-    member inline _.Combine
-        (
-            [<InlineIfLambda>] render1: NodeRenderFragment,
-            [<InlineIfLambda>] render2: NodeRenderFragment
-        )
-        =
-        render1 >=> render2
+    member inline _.Combine([<InlineIfLambda>] render1: NodeRenderFragment, [<InlineIfLambda>] render2: NodeRenderFragment) = render1 >=> render2
 
-    member inline _.For
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] fn: unit -> NodeRenderFragment
-        )
-        =
-        render >>> (fn ())
+    member inline _.For([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> NodeRenderFragment) = render >>> (fn ())
 
     member inline _.For(renders: 'T seq, [<InlineIfLambda>] fn: 'T -> NodeRenderFragment) =
-        renders |> Seq.map fn |> Seq.fold (>=>) (emptyNode())
+        renders |> Seq.map fn |> Seq.fold (>=>) (emptyNode ())
 
-    member inline _.YieldFrom(renders: NodeRenderFragment seq) =
-        renders |> Seq.fold (>=>) (emptyNode())
+    member inline _.YieldFrom(renders: NodeRenderFragment seq) = renders |> Seq.fold (>=>) (emptyNode ())
 
-    member inline _.Zero() = emptyNode()
+    member inline _.Zero() = emptyNode ()
 
     /// <summary>
     /// Single child node to be added into the element's children
@@ -137,12 +116,7 @@ type EltWithChildBuilder(name) =
     /// </code>
     /// </example>
     [<CustomOperation("childContent")>]
-    member inline _.childContent
-        (
-            [<InlineIfLambda>]  render: AttrRenderFragment,
-            [<InlineIfLambda>]  renderChild: NodeRenderFragment
-        )
-        =
+    member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] renderChild: NodeRenderFragment) =
         render >>> renderChild
 
     /// <summary>

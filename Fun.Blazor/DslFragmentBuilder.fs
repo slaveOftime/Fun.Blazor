@@ -31,7 +31,7 @@ type FragmentBuilder() =
             index + 1
         )
 
-    member inline _.Yield<'T, 'T1 when 'T :> IComponentBuilder<'T1>>(_: 'T) =
+    member inline _.Yield<'Comp, 'T1 when 'Comp :> IComponentBuilder<'T1>>(_: 'Comp) =
         NodeRenderFragment(fun _ builder index ->
             builder.OpenComponent<'T1>(index)
             builder.CloseComponent()
@@ -40,7 +40,7 @@ type FragmentBuilder() =
 
     member inline _.Yield([<InlineIfLambda>] x: NodeRenderFragment) = x
 
-    member inline _.Delay([<InlineIfLambda>] fn: unit -> NodeRenderFragment) = fn ()
+    member inline _.Delay([<InlineIfLambda>] fn: unit -> NodeRenderFragment) = NodeRenderFragment(fun c b i -> fn().Invoke(c, b, i))
 
     member inline _.Combine
         (

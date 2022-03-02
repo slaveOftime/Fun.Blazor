@@ -133,6 +133,22 @@ dotnet new --install Fun.Blazor.Templates::2.0.0-beta013
     }
     ```
 
+    Or
+
+    ```fsharp
+    let fragment1 = ✅
+        fragment {
+            bunch of items
+        }
+
+    div {
+        onclick ignore
+        other attrs
+        div { "hi" }
+        fragment1
+    }
+    ```
+
     Instead of below:
 
     ```fsharp
@@ -151,29 +167,18 @@ dotnet new --install Fun.Blazor.Templates::2.0.0-beta013
     For more detail you can check my blog post [Hot-reload in Fun.Blazor](https://www.slaveoftime.fun/blog/d959e36a-f4fe-4a10-88af-5e738633db0f?title=%20Hot-reload%20in%20Fun.Blazor).  
 
 
-3. Inline
+3. ref position
 
-    Sometimes it is a little tricky to make inline work as expected for fsharp.
+    When you want to use ref attribute, you need to put it like below
 
     ```fsharp
-    let postCard (post: Post) =
-        let url = $"blog/{post.Id}?title={post.Title}" ✅
-        let title = post.Title ✅
-
-        div {
-            h2 {
-                a {
-                    href url
-                    title ✅
-                    post.Title ❌ // this will break inline and cause more allocation
-                }
-            }
-        }
+    div {
+        some other attibutes
+        ref ... ✅
+        child items like: div {}
+    }
     ```
 
-    Or you can create smaller fragment and do not care it inline, then you compose it in a larger fragment which care about it.
-
-    Inline for CE will impact more for memory allocation instead of speed. Those allocation are for create new delegate. But even without inline CE still is still pretty fast. But if you can take care about your coding style then you can get better performance.
 
 ## Code structure example
 

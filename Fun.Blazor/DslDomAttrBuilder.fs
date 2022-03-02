@@ -21,37 +21,25 @@ type StyleBuilder() =
 
 
 type DomAttrBuilder() =
-    
-    member inline _.Yield(_: unit) = emptyAttr()
+
+    member inline _.Yield(_: unit) = emptyAttr ()
 
     member inline _.Yield([<InlineIfLambda>] x: AttrRenderFragment) = x
 
-    member inline _.Delay([<InlineIfLambda>] fn: unit -> AttrRenderFragment) = fn ()
+    member inline _.Delay([<InlineIfLambda>] fn: unit -> AttrRenderFragment) =
+        AttrRenderFragment(fun c b i -> fn().Invoke(c, b, i))
 
-    member inline _.Combine
-        (
-            [<InlineIfLambda>] render1: AttrRenderFragment,
-            [<InlineIfLambda>] render2: AttrRenderFragment
-        )
-        =
-        render1 ==> render2
+    member inline _.Combine([<InlineIfLambda>] render1: AttrRenderFragment, [<InlineIfLambda>] render2: AttrRenderFragment) = render1 ==> render2
 
-    member inline _.For
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] fn: unit -> AttrRenderFragment
-        )
-        =
-        render ==> (fn ())
+    member inline _.For([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> AttrRenderFragment) = render ==> (fn ())
 
     member inline _.For(renders: 'T seq, [<InlineIfLambda>] fn: 'T -> AttrRenderFragment) =
-        renders |> Seq.map fn |> Seq.fold (==>) (emptyAttr())
+        renders |> Seq.map fn |> Seq.fold (==>) (emptyAttr ())
 
-    member inline _.YieldFrom(renders: AttrRenderFragment seq) =
-        renders |> Seq.fold (==>) (emptyAttr())
+    member inline _.YieldFrom(renders: AttrRenderFragment seq) = renders |> Seq.fold (==>) (emptyAttr ())
 
 
-    member inline _.Zero() = emptyAttr()
+    member inline _.Zero() = emptyAttr ()
 
 
     /// key for blazor
@@ -63,15 +51,9 @@ type DomAttrBuilder() =
             index
         )
 
-    
+
     [<CustomOperation("callback")>]
-    member inline _.callback
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            eventName,
-            [<InlineIfLambda>] callback: 'T -> unit
-        )
-        =
+    member inline _.callback([<InlineIfLambda>] render: AttrRenderFragment, eventName, [<InlineIfLambda>] callback: 'T -> unit) =
         render
         ==> AttrRenderFragment(fun comp builder index ->
             builder.AddAttribute(index, eventName, EventCallback.Factory.Create(comp, Action<'T> callback))
@@ -79,13 +61,7 @@ type DomAttrBuilder() =
         )
 
     [<CustomOperation("callback")>]
-    member inline _.callback
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            eventName,
-            [<InlineIfLambda>] callback: 'T -> Task
-        )
-        =
+    member inline _.callback([<InlineIfLambda>] render: AttrRenderFragment, eventName, [<InlineIfLambda>] callback: 'T -> Task) =
         render
         ==> AttrRenderFragment(fun comp builder index ->
             builder.AddAttribute(index, eventName, EventCallback.Factory.Create(comp, Func<'T, Task> callback))
@@ -120,8 +96,7 @@ type DomAttrBuilder() =
     /// </code>
     /// </example>
     [<CustomOperation("classes")>]
-    member inline _.classes([<InlineIfLambda>] render: AttrRenderFragment, v: string list) =
-        render ==> (html.class' (String.concat " " v))
+    member inline _.classes([<InlineIfLambda>] render: AttrRenderFragment, v: string list) = render ==> (html.class' (String.concat " " v))
 
     [<CustomOperation("class'")>]
     member inline _.class'([<InlineIfLambda>] render: AttrRenderFragment, v: string) = render ==> (html.class' v)
@@ -146,8 +121,8 @@ type DomAttrBuilder() =
             elif css.StartsWith "_{" then
                 let lastEndIndex = css.LastIndexOf "}"
                 if css.Substring(lastEndIndex + 1).Trim().Split("\n")
-                    |> Seq.filter (String.IsNullOrEmpty >> not)
-                    |> Seq.length = 0 then
+                   |> Seq.filter (String.IsNullOrEmpty >> not)
+                   |> Seq.length = 0 then
                     css.Substring(2, lastEndIndex - 2).Split("\n") |> Seq.map (fun x -> x.Trim()) |> String.concat " "
                 else
                     css
@@ -247,7 +222,8 @@ type DomAttrBuilder() =
     [<CustomOperation("download")>]
     member inline _.download([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("download" => v)
     [<CustomOperation("draggable")>]
-    member _.draggable(render: AttrRenderFragment, v: bool) = render ==> ("draggable" => (if v then "true" else "false"))
+    member _.draggable(render: AttrRenderFragment, v: bool) =
+        render ==> ("draggable" => (if v then "true" else "false"))
     [<CustomOperation("dropzone")>]
     member inline _.dropzone([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("dropzone" => v)
     [<CustomOperation("enctype")>]
@@ -403,1458 +379,548 @@ type DomAttrBuilder() =
 
 
     [<CustomOperation("onfocus")>]
-    member inline this.onfocus
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: FocusEventArgs -> unit
-        )
-        =
+    member inline this.onfocus([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: FocusEventArgs -> unit) =
         this.callback (render, "onfocus", callback)
     [<CustomOperation("onfocus")>]
-    member inline this.onfocus
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: FocusEventArgs -> Task
-        )
-        =
+    member inline this.onfocus([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: FocusEventArgs -> Task) =
         this.callback (render, "onfocus", callback)
     [<CustomOperation("onblur")>]
-    member inline this.onblur
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: FocusEventArgs -> unit
-        )
-        =
+    member inline this.onblur([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: FocusEventArgs -> unit) =
         this.callback (render, "onblur", callback)
     [<CustomOperation("onblur")>]
-    member inline this.onblur
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: FocusEventArgs -> Task
-        )
-        =
+    member inline this.onblur([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: FocusEventArgs -> Task) =
         this.callback (render, "onblur", callback)
     [<CustomOperation("onfocusin")>]
-    member inline this.onfocusin
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: FocusEventArgs -> unit
-        )
-        =
+    member inline this.onfocusin([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: FocusEventArgs -> unit) =
         this.callback (render, "onfocusin", callback)
     [<CustomOperation("onfocusin")>]
-    member inline this.onfocusin
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: FocusEventArgs -> Task
-        )
-        =
+    member inline this.onfocusin([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: FocusEventArgs -> Task) =
         this.callback (render, "onfocusin", callback)
     [<CustomOperation("onfocusout")>]
-    member inline this.onfocusout
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: FocusEventArgs -> unit
-        )
-        =
+    member inline this.onfocusout([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: FocusEventArgs -> unit) =
         this.callback (render, "onfocusout", callback)
     [<CustomOperation("onfocusout")>]
-    member inline this.onfocusout
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: FocusEventArgs -> Task
-        )
-        =
+    member inline this.onfocusout([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: FocusEventArgs -> Task) =
         this.callback (render, "onfocusout", callback)
     [<CustomOperation("onmouseover")>]
-    member inline this.onmouseover
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: MouseEventArgs -> unit
-        )
-        =
+    member inline this.onmouseover([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: MouseEventArgs -> unit) =
         this.callback (render, "onmouseover", callback)
     [<CustomOperation("onmouseover")>]
-    member inline this.onmouseover
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: MouseEventArgs -> Task
-        )
-        =
+    member inline this.onmouseover([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: MouseEventArgs -> Task) =
         this.callback (render, "onmouseover", callback)
     [<CustomOperation("onmouseout")>]
-    member inline this.onmouseout
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: MouseEventArgs -> unit
-        )
-        =
+    member inline this.onmouseout([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: MouseEventArgs -> unit) =
         this.callback (render, "onmouseout", callback)
     [<CustomOperation("onmouseout")>]
-    member inline this.onmouseout
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: MouseEventArgs -> Task
-        )
-        =
+    member inline this.onmouseout([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: MouseEventArgs -> Task) =
         this.callback (render, "onmouseout", callback)
     [<CustomOperation("onmousemove")>]
-    member inline this.onmousemove
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: MouseEventArgs -> unit
-        )
-        =
+    member inline this.onmousemove([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: MouseEventArgs -> unit) =
         this.callback (render, "onmousemove", callback)
     [<CustomOperation("onmousemove")>]
-    member inline this.onmousemove
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: MouseEventArgs -> Task
-        )
-        =
+    member inline this.onmousemove([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: MouseEventArgs -> Task) =
         this.callback (render, "onmousemove", callback)
     [<CustomOperation("onmousedown")>]
-    member inline this.onmousedown
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: MouseEventArgs -> unit
-        )
-        =
+    member inline this.onmousedown([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: MouseEventArgs -> unit) =
         this.callback (render, "onmousedown", callback)
     [<CustomOperation("onmousedown")>]
-    member inline this.onmousedown
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: MouseEventArgs -> Task
-        )
-        =
+    member inline this.onmousedown([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: MouseEventArgs -> Task) =
         this.callback (render, "onmousedown", callback)
     [<CustomOperation("onmouseup")>]
-    member inline this.onmouseup
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: MouseEventArgs -> unit
-        )
-        =
+    member inline this.onmouseup([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: MouseEventArgs -> unit) =
         this.callback (render, "onmouseup", callback)
     [<CustomOperation("onmouseup")>]
-    member inline this.onmouseup
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: MouseEventArgs -> Task
-        )
-        =
+    member inline this.onmouseup([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: MouseEventArgs -> Task) =
         this.callback (render, "onmouseup", callback)
     [<CustomOperation("onclick")>]
-    member inline this.onclick
-        (
-            [<InlineIfLambda>]  render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: MouseEventArgs -> unit
-        )
-        =
+    member inline this.onclick([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: MouseEventArgs -> unit) =
         this.callback (render, "onclick", callback)
     [<CustomOperation("onclick")>]
-    member inline this.onclick
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: MouseEventArgs -> Task
-        )
-        =
+    member inline this.onclick([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: MouseEventArgs -> Task) =
         this.callback (render, "onclick", callback)
     [<CustomOperation("ondblclick")>]
-    member inline this.ondblclick
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: MouseEventArgs -> unit
-        )
-        =
+    member inline this.ondblclick([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: MouseEventArgs -> unit) =
         this.callback (render, "ondblclick", callback)
     [<CustomOperation("ondblclick")>]
-    member inline this.ondblclick
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: MouseEventArgs -> Task
-        )
-        =
+    member inline this.ondblclick([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: MouseEventArgs -> Task) =
         this.callback (render, "ondblclick", callback)
     [<CustomOperation("onwheel")>]
-    member inline this.onwheel
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: MouseEventArgs -> unit
-        )
-        =
+    member inline this.onwheel([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: MouseEventArgs -> unit) =
         this.callback (render, "onwheel", callback)
     [<CustomOperation("onwheel")>]
-    member inline this.onwheel
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: MouseEventArgs -> Task
-        )
-        =
+    member inline this.onwheel([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: MouseEventArgs -> Task) =
         this.callback (render, "onwheel", callback)
     [<CustomOperation("onmousewheel")>]
-    member inline this.onmousewheel
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: MouseEventArgs -> unit
-        )
-        =
+    member inline this.onmousewheel([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: MouseEventArgs -> unit) =
         this.callback (render, "onmousewheel", callback)
     [<CustomOperation("onmousewheel")>]
-    member inline this.onmousewheel
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: MouseEventArgs -> Task
-        )
-        =
+    member inline this.onmousewheel([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: MouseEventArgs -> Task) =
         this.callback (render, "onmousewheel", callback)
     [<CustomOperation("oncontextmenu")>]
-    member inline this.oncontextmenu
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: MouseEventArgs -> unit
-        )
-        =
+    member inline this.oncontextmenu([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: MouseEventArgs -> unit) =
         this.callback (render, "oncontextmenu", callback)
     [<CustomOperation("oncontextmenu")>]
-    member inline this.oncontextmenu
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: MouseEventArgs -> Task
-        )
-        =
+    member inline this.oncontextmenu([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: MouseEventArgs -> Task) =
         this.callback (render, "oncontextmenu", callback)
     [<CustomOperation("ondrag")>]
-    member inline this.ondrag
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: DragEventArgs -> unit
-        )
-        =
+    member inline this.ondrag([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: DragEventArgs -> unit) =
         this.callback (render, "ondrag", callback)
     [<CustomOperation("ondrag")>]
-    member inline this.ondrag
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: DragEventArgs -> Task
-        )
-        =
+    member inline this.ondrag([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: DragEventArgs -> Task) =
         this.callback (render, "ondrag", callback)
     [<CustomOperation("ondragend")>]
-    member inline this.ondragend
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: DragEventArgs -> unit
-        )
-        =
+    member inline this.ondragend([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: DragEventArgs -> unit) =
         this.callback (render, "ondragend", callback)
     [<CustomOperation("ondragend")>]
-    member inline this.ondragend
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: DragEventArgs -> Task
-        )
-        =
+    member inline this.ondragend([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: DragEventArgs -> Task) =
         this.callback (render, "ondragend", callback)
     [<CustomOperation("ondragenter")>]
-    member inline this.ondragenter
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: DragEventArgs -> unit
-        )
-        =
+    member inline this.ondragenter([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: DragEventArgs -> unit) =
         this.callback (render, "ondragenter", callback)
     [<CustomOperation("ondragenter")>]
-    member inline this.ondragenter
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: DragEventArgs -> Task
-        )
-        =
+    member inline this.ondragenter([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: DragEventArgs -> Task) =
         this.callback (render, "ondragenter", callback)
     [<CustomOperation("ondragleave")>]
-    member inline this.ondragleave
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: DragEventArgs -> unit
-        )
-        =
+    member inline this.ondragleave([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: DragEventArgs -> unit) =
         this.callback (render, "ondragleave", callback)
     [<CustomOperation("ondragleave")>]
-    member inline this.ondragleave
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: DragEventArgs -> Task
-        )
-        =
+    member inline this.ondragleave([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: DragEventArgs -> Task) =
         this.callback (render, "ondragleave", callback)
     [<CustomOperation("ondragover")>]
-    member inline this.ondragover
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: DragEventArgs -> unit
-        )
-        =
+    member inline this.ondragover([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: DragEventArgs -> unit) =
         this.callback (render, "ondragover", callback)
     [<CustomOperation("ondragover")>]
-    member inline this.ondragover
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: DragEventArgs -> Task
-        )
-        =
+    member inline this.ondragover([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: DragEventArgs -> Task) =
         this.callback (render, "ondragover", callback)
     [<CustomOperation("ondragstart")>]
-    member inline this.ondragstart
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: DragEventArgs -> unit
-        )
-        =
+    member inline this.ondragstart([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: DragEventArgs -> unit) =
         this.callback (render, "ondragstart", callback)
     [<CustomOperation("ondragstart")>]
-    member inline this.ondragstart
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: DragEventArgs -> Task
-        )
-        =
+    member inline this.ondragstart([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: DragEventArgs -> Task) =
         this.callback (render, "ondragstart", callback)
     [<CustomOperation("ondrop")>]
-    member inline this.ondrop
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: DragEventArgs -> unit
-        )
-        =
+    member inline this.ondrop([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: DragEventArgs -> unit) =
         this.callback (render, "ondrop", callback)
     [<CustomOperation("ondrop")>]
-    member inline this.ondrop
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: DragEventArgs -> Task
-        )
-        =
+    member inline this.ondrop([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: DragEventArgs -> Task) =
         this.callback (render, "ondrop", callback)
     [<CustomOperation("onkeydown")>]
-    member inline this.onkeydown
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: KeyboardEventArgs -> unit
-        )
-        =
+    member inline this.onkeydown([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: KeyboardEventArgs -> unit) =
         this.callback (render, "onkeydown", callback)
     [<CustomOperation("onkeydown")>]
-    member inline this.onkeydown
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: KeyboardEventArgs -> Task
-        )
-        =
+    member inline this.onkeydown([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: KeyboardEventArgs -> Task) =
         this.callback (render, "onkeydown", callback)
     [<CustomOperation("onkeyup")>]
-    member inline this.onkeyup
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: KeyboardEventArgs -> unit
-        )
-        =
+    member inline this.onkeyup([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: KeyboardEventArgs -> unit) =
         this.callback (render, "onkeyup", callback)
     [<CustomOperation("onkeyup")>]
-    member inline this.onkeyup
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: KeyboardEventArgs -> Task
-        )
-        =
+    member inline this.onkeyup([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: KeyboardEventArgs -> Task) =
         this.callback (render, "onkeyup", callback)
     [<CustomOperation("onkeypress")>]
-    member inline this.onkeypress
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: KeyboardEventArgs -> unit
-        )
-        =
+    member inline this.onkeypress([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: KeyboardEventArgs -> unit) =
         this.callback (render, "onkeypress", callback)
     [<CustomOperation("onkeypress")>]
-    member inline this.onkeypress
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: KeyboardEventArgs -> Task
-        )
-        =
+    member inline this.onkeypress([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: KeyboardEventArgs -> Task) =
         this.callback (render, "onkeypress", callback)
     [<CustomOperation("onchange")>]
-    member inline this.onchange
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: ChangeEventArgs -> unit
-        )
-        =
+    member inline this.onchange([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: ChangeEventArgs -> unit) =
         this.callback (render, "onchange", callback)
     [<CustomOperation("onchange")>]
-    member inline this.onchange
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: ChangeEventArgs -> Task
-        )
-        =
+    member inline this.onchange([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: ChangeEventArgs -> Task) =
         this.callback (render, "onchange", callback)
     [<CustomOperation("oninput")>]
-    member inline this.oninput
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: ChangeEventArgs -> unit
-        )
-        =
+    member inline this.oninput([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: ChangeEventArgs -> unit) =
         this.callback (render, "oninput", callback)
     [<CustomOperation("oninput")>]
-    member inline this.oninput
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: ChangeEventArgs -> Task
-        )
-        =
+    member inline this.oninput([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: ChangeEventArgs -> Task) =
         this.callback (render, "oninput", callback)
     [<CustomOperation("oninvalid")>]
-    member inline this.oninvalid
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> unit
-        )
-        =
+    member inline this.oninvalid([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> unit) =
         this.callback (render, "oninvalid", callback)
     [<CustomOperation("oninvalid")>]
-    member inline this.oninvalid
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> Task
-        )
-        =
+    member inline this.oninvalid([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> Task) =
         this.callback (render, "oninvalid", callback)
     [<CustomOperation("onreset")>]
-    member inline this.onreset
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> unit
-        )
-        =
+    member inline this.onreset([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> unit) =
         this.callback (render, "onreset", callback)
     [<CustomOperation("onreset")>]
-    member inline this.onreset
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> Task
-        )
-        =
+    member inline this.onreset([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> Task) =
         this.callback (render, "onreset", callback)
     [<CustomOperation("onselect")>]
-    member inline this.onselect
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> unit
-        )
-        =
+    member inline this.onselect([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> unit) =
         this.callback (render, "onselect", callback)
     [<CustomOperation("onselect")>]
-    member inline this.onselect
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> Task
-        )
-        =
+    member inline this.onselect([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> Task) =
         this.callback (render, "onselect", callback)
     [<CustomOperation("onselectstart")>]
-    member inline this.onselectstart
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> unit
-        )
-        =
+    member inline this.onselectstart([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> unit) =
         this.callback (render, "onselectstart", callback)
     [<CustomOperation("onselectstart")>]
-    member inline this.onselectstart
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> Task
-        )
-        =
+    member inline this.onselectstart([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> Task) =
         this.callback (render, "onselectstart", callback)
     [<CustomOperation("onselectionchange")>]
-    member inline this.onselectionchange
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> unit
-        )
-        =
+    member inline this.onselectionchange([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> unit) =
         this.callback (render, "onselectionchange", callback)
     [<CustomOperation("onselectionchange")>]
-    member inline this.onselectionchange
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> Task
-        )
-        =
+    member inline this.onselectionchange([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> Task) =
         this.callback (render, "onselectionchange", callback)
     [<CustomOperation("onsubmit")>]
-    member inline this.onsubmit
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> unit
-        )
-        =
+    member inline this.onsubmit([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> unit) =
         this.callback (render, "onsubmit", callback)
     [<CustomOperation("onsubmit")>]
-    member inline this.onsubmit
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> Task
-        )
-        =
+    member inline this.onsubmit([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> Task) =
         this.callback (render, "onsubmit", callback)
     [<CustomOperation("onbeforecopy")>]
-    member inline this.onbeforecopy
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> unit
-        )
-        =
+    member inline this.onbeforecopy([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> unit) =
         this.callback (render, "onbeforecopy", callback)
     [<CustomOperation("onbeforecopy")>]
-    member inline this.onbeforecopy
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> Task
-        )
-        =
+    member inline this.onbeforecopy([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> Task) =
         this.callback (render, "onbeforecopy", callback)
     [<CustomOperation("onbeforecut")>]
-    member inline this.onbeforecut
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> unit
-        )
-        =
+    member inline this.onbeforecut([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> unit) =
         this.callback (render, "onbeforecut", callback)
     [<CustomOperation("onbeforecut")>]
-    member inline this.onbeforecut
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> Task
-        )
-        =
+    member inline this.onbeforecut([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> Task) =
         this.callback (render, "onbeforecut", callback)
     [<CustomOperation("onbeforepaste")>]
-    member inline this.onbeforepaste
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> unit
-        )
-        =
+    member inline this.onbeforepaste([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> unit) =
         this.callback (render, "onbeforepaste", callback)
     [<CustomOperation("onbeforepaste")>]
-    member inline this.onbeforepaste
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> Task
-        )
-        =
+    member inline this.onbeforepaste([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> Task) =
         this.callback (render, "onbeforepaste", callback)
     [<CustomOperation("oncopy")>]
-    member inline this.oncopy
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: ClipboardEventArgs -> unit
-        )
-        =
+    member inline this.oncopy([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: ClipboardEventArgs -> unit) =
         this.callback (render, "oncopy", callback)
     [<CustomOperation("oncopy")>]
-    member inline this.oncopy
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: ClipboardEventArgs -> Task
-        )
-        =
+    member inline this.oncopy([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: ClipboardEventArgs -> Task) =
         this.callback (render, "oncopy", callback)
     [<CustomOperation("oncut")>]
-    member inline this.oncut
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: ClipboardEventArgs -> unit
-        )
-        =
+    member inline this.oncut([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: ClipboardEventArgs -> unit) =
         this.callback (render, "oncut", callback)
     [<CustomOperation("oncut")>]
-    member inline this.oncut
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: ClipboardEventArgs -> Task
-        )
-        =
+    member inline this.oncut([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: ClipboardEventArgs -> Task) =
         this.callback (render, "oncut", callback)
     [<CustomOperation("onpaste")>]
-    member inline this.onpaste
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: ClipboardEventArgs -> unit
-        )
-        =
+    member inline this.onpaste([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: ClipboardEventArgs -> unit) =
         this.callback (render, "onpaste", callback)
     [<CustomOperation("onpaste")>]
-    member inline this.onpaste
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: ClipboardEventArgs -> Task
-        )
-        =
+    member inline this.onpaste([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: ClipboardEventArgs -> Task) =
         this.callback (render, "onpaste", callback)
     [<CustomOperation("ontouchcancel")>]
-    member inline this.ontouchcancel
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: TouchEventArgs -> unit
-        )
-        =
+    member inline this.ontouchcancel([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: TouchEventArgs -> unit) =
         this.callback (render, "ontouchcancel", callback)
     [<CustomOperation("ontouchcancel")>]
-    member inline this.ontouchcancel
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: TouchEventArgs -> Task
-        )
-        =
+    member inline this.ontouchcancel([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: TouchEventArgs -> Task) =
         this.callback (render, "ontouchcancel", callback)
     [<CustomOperation("ontouchend")>]
-    member inline this.ontouchend
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: TouchEventArgs -> unit
-        )
-        =
+    member inline this.ontouchend([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: TouchEventArgs -> unit) =
         this.callback (render, "ontouchend", callback)
     [<CustomOperation("ontouchend")>]
-    member inline this.ontouchend
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: TouchEventArgs -> Task
-        )
-        =
+    member inline this.ontouchend([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: TouchEventArgs -> Task) =
         this.callback (render, "ontouchend", callback)
     [<CustomOperation("ontouchmove")>]
-    member inline this.ontouchmove
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: TouchEventArgs -> unit
-        )
-        =
+    member inline this.ontouchmove([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: TouchEventArgs -> unit) =
         this.callback (render, "ontouchmove", callback)
     [<CustomOperation("ontouchmove")>]
-    member inline this.ontouchmove
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: TouchEventArgs -> Task
-        )
-        =
+    member inline this.ontouchmove([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: TouchEventArgs -> Task) =
         this.callback (render, "ontouchmove", callback)
     [<CustomOperation("ontouchstart")>]
-    member inline this.ontouchstart
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: TouchEventArgs -> unit
-        )
-        =
+    member inline this.ontouchstart([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: TouchEventArgs -> unit) =
         this.callback (render, "ontouchstart", callback)
     [<CustomOperation("ontouchstart")>]
-    member inline this.ontouchstart
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: TouchEventArgs -> Task
-        )
-        =
+    member inline this.ontouchstart([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: TouchEventArgs -> Task) =
         this.callback (render, "ontouchstart", callback)
     [<CustomOperation("ontouchenter")>]
-    member inline this.ontouchenter
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: TouchEventArgs -> unit
-        )
-        =
+    member inline this.ontouchenter([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: TouchEventArgs -> unit) =
         this.callback (render, "ontouchenter", callback)
     [<CustomOperation("ontouchenter")>]
-    member inline this.ontouchenter
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: TouchEventArgs -> Task
-        )
-        =
+    member inline this.ontouchenter([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: TouchEventArgs -> Task) =
         this.callback (render, "ontouchenter", callback)
     [<CustomOperation("ontouchleave")>]
-    member inline this.ontouchleave
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: TouchEventArgs -> unit
-        )
-        =
+    member inline this.ontouchleave([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: TouchEventArgs -> unit) =
         this.callback (render, "ontouchleave", callback)
     [<CustomOperation("ontouchleave")>]
-    member inline this.ontouchleave
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: TouchEventArgs -> Task
-        )
-        =
+    member inline this.ontouchleave([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: TouchEventArgs -> Task) =
         this.callback (render, "ontouchleave", callback)
     [<CustomOperation("onpointercapture")>]
-    member inline this.onpointercapture
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: PointerEventArgs -> unit
-        )
-        =
+    member inline this.onpointercapture([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: PointerEventArgs -> unit) =
         this.callback (render, "onpointercapture", callback)
     [<CustomOperation("onpointercapture")>]
-    member inline this.onpointercapture
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: PointerEventArgs -> Task
-        )
-        =
+    member inline this.onpointercapture([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: PointerEventArgs -> Task) =
         this.callback (render, "onpointercapture", callback)
     [<CustomOperation("onlostpointercapture")>]
-    member inline this.onlostpointercapture
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: PointerEventArgs -> unit
-        )
-        =
+    member inline this.onlostpointercapture([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: PointerEventArgs -> unit) =
         this.callback (render, "onlostpointercapture", callback)
     [<CustomOperation("onlostpointercapture")>]
-    member inline this.onlostpointercapture
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: PointerEventArgs -> Task
-        )
-        =
+    member inline this.onlostpointercapture([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: PointerEventArgs -> Task) =
         this.callback (render, "onlostpointercapture", callback)
     [<CustomOperation("onpointercancel")>]
-    member inline this.onpointercancel
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: PointerEventArgs -> unit
-        )
-        =
+    member inline this.onpointercancel([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: PointerEventArgs -> unit) =
         this.callback (render, "onpointercancel", callback)
     [<CustomOperation("onpointercancel")>]
-    member inline this.onpointercancel
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: PointerEventArgs -> Task
-        )
-        =
+    member inline this.onpointercancel([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: PointerEventArgs -> Task) =
         this.callback (render, "onpointercancel", callback)
     [<CustomOperation("onpointerdown")>]
-    member inline this.onpointerdown
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: PointerEventArgs -> unit
-        )
-        =
+    member inline this.onpointerdown([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: PointerEventArgs -> unit) =
         this.callback (render, "onpointerdown", callback)
     [<CustomOperation("onpointerdown")>]
-    member inline this.onpointerdown
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: PointerEventArgs -> Task
-        )
-        =
+    member inline this.onpointerdown([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: PointerEventArgs -> Task) =
         this.callback (render, "onpointerdown", callback)
     [<CustomOperation("onpointerenter")>]
-    member inline this.onpointerenter
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: PointerEventArgs -> unit
-        )
-        =
+    member inline this.onpointerenter([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: PointerEventArgs -> unit) =
         this.callback (render, "onpointerenter", callback)
     [<CustomOperation("onpointerenter")>]
-    member inline this.onpointerenter
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: PointerEventArgs -> Task
-        )
-        =
+    member inline this.onpointerenter([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: PointerEventArgs -> Task) =
         this.callback (render, "onpointerenter", callback)
     [<CustomOperation("onpointerleave")>]
-    member inline this.onpointerleave
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: PointerEventArgs -> unit
-        )
-        =
+    member inline this.onpointerleave([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: PointerEventArgs -> unit) =
         this.callback (render, "onpointerleave", callback)
     [<CustomOperation("onpointerleave")>]
-    member inline this.onpointerleave
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: PointerEventArgs -> Task
-        )
-        =
+    member inline this.onpointerleave([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: PointerEventArgs -> Task) =
         this.callback (render, "onpointerleave", callback)
     [<CustomOperation("onpointermove")>]
-    member inline this.onpointermove
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: PointerEventArgs -> unit
-        )
-        =
+    member inline this.onpointermove([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: PointerEventArgs -> unit) =
         this.callback (render, "onpointermove", callback)
     [<CustomOperation("onpointermove")>]
-    member inline this.onpointermove
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: PointerEventArgs -> Task
-        )
-        =
+    member inline this.onpointermove([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: PointerEventArgs -> Task) =
         this.callback (render, "onpointermove", callback)
     [<CustomOperation("onpointerout")>]
-    member inline this.onpointerout
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: PointerEventArgs -> unit
-        )
-        =
+    member inline this.onpointerout([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: PointerEventArgs -> unit) =
         this.callback (render, "onpointerout", callback)
     [<CustomOperation("onpointerout")>]
-    member inline this.onpointerout
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: PointerEventArgs -> Task
-        )
-        =
+    member inline this.onpointerout([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: PointerEventArgs -> Task) =
         this.callback (render, "onpointerout", callback)
     [<CustomOperation("onpointerover")>]
-    member inline this.onpointerover
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: PointerEventArgs -> unit
-        )
-        =
+    member inline this.onpointerover([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: PointerEventArgs -> unit) =
         this.callback (render, "onpointerover", callback)
     [<CustomOperation("onpointerover")>]
-    member inline this.onpointerover
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: PointerEventArgs -> Task
-        )
-        =
+    member inline this.onpointerover([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: PointerEventArgs -> Task) =
         this.callback (render, "onpointerover", callback)
     [<CustomOperation("onpointerup")>]
-    member inline this.onpointerup
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: PointerEventArgs -> unit
-        )
-        =
+    member inline this.onpointerup([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: PointerEventArgs -> unit) =
         this.callback (render, "onpointerup", callback)
     [<CustomOperation("onpointerup")>]
-    member inline this.onpointerup
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: PointerEventArgs -> Task
-        )
-        =
+    member inline this.onpointerup([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: PointerEventArgs -> Task) =
         this.callback (render, "onpointerup", callback)
     [<CustomOperation("oncanplay")>]
-    member inline this.oncanplay
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> unit
-        )
-        =
+    member inline this.oncanplay([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> unit) =
         this.callback (render, "oncanplay", callback)
     [<CustomOperation("oncanplay")>]
-    member inline this.oncanplay
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> Task
-        )
-        =
+    member inline this.oncanplay([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> Task) =
         this.callback (render, "oncanplay", callback)
     [<CustomOperation("oncanplaythrough")>]
-    member inline this.oncanplaythrough
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> unit
-        )
-        =
+    member inline this.oncanplaythrough([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> unit) =
         this.callback (render, "oncanplaythrough", callback)
     [<CustomOperation("oncanplaythrough")>]
-    member inline this.oncanplaythrough
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> Task
-        )
-        =
+    member inline this.oncanplaythrough([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> Task) =
         this.callback (render, "oncanplaythrough", callback)
     [<CustomOperation("oncuechange")>]
-    member inline this.oncuechange
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> unit
-        )
-        =
+    member inline this.oncuechange([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> unit) =
         this.callback (render, "oncuechange", callback)
     [<CustomOperation("oncuechange")>]
-    member inline this.oncuechange
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> Task
-        )
-        =
+    member inline this.oncuechange([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> Task) =
         this.callback (render, "oncuechange", callback)
     [<CustomOperation("ondurationchange")>]
-    member inline this.ondurationchange
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> unit
-        )
-        =
+    member inline this.ondurationchange([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> unit) =
         this.callback (render, "ondurationchange", callback)
     [<CustomOperation("ondurationchange")>]
-    member inline this.ondurationchange
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> Task
-        )
-        =
+    member inline this.ondurationchange([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> Task) =
         this.callback (render, "ondurationchange", callback)
     [<CustomOperation("onemptied")>]
-    member inline this.onemptied
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> unit
-        )
-        =
+    member inline this.onemptied([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> unit) =
         this.callback (render, "onemptied", callback)
     [<CustomOperation("onemptied")>]
-    member inline this.onemptied
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> Task
-        )
-        =
+    member inline this.onemptied([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> Task) =
         this.callback (render, "onemptied", callback)
     [<CustomOperation("onpause")>]
-    member inline this.onpause
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> unit
-        )
-        =
+    member inline this.onpause([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> unit) =
         this.callback (render, "onpause", callback)
     [<CustomOperation("onpause")>]
-    member inline this.onpause
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> Task
-        )
-        =
+    member inline this.onpause([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> Task) =
         this.callback (render, "onpause", callback)
     [<CustomOperation("onplay")>]
-    member inline this.onplay
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> unit
-        )
-        =
+    member inline this.onplay([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> unit) =
         this.callback (render, "onplay", callback)
     [<CustomOperation("onplay")>]
-    member inline this.onplay
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> Task
-        )
-        =
+    member inline this.onplay([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> Task) =
         this.callback (render, "onplay", callback)
     [<CustomOperation("onplaying")>]
-    member inline this.onplaying
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> unit
-        )
-        =
+    member inline this.onplaying([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> unit) =
         this.callback (render, "onplaying", callback)
     [<CustomOperation("onplaying")>]
-    member inline this.onplaying
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> Task
-        )
-        =
+    member inline this.onplaying([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> Task) =
         this.callback (render, "onplaying", callback)
     [<CustomOperation("onratechange")>]
-    member inline this.onratechange
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> unit
-        )
-        =
+    member inline this.onratechange([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> unit) =
         this.callback (render, "onratechange", callback)
     [<CustomOperation("onratechange")>]
-    member inline this.onratechange
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> Task
-        )
-        =
+    member inline this.onratechange([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> Task) =
         this.callback (render, "onratechange", callback)
     [<CustomOperation("onseeked")>]
-    member inline this.onseeked
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> unit
-        )
-        =
+    member inline this.onseeked([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> unit) =
         this.callback (render, "onseeked", callback)
     [<CustomOperation("onseeked")>]
-    member inline this.onseeked
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> Task
-        )
-        =
+    member inline this.onseeked([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> Task) =
         this.callback (render, "onseeked", callback)
     [<CustomOperation("onseeking")>]
-    member inline this.onseeking
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> unit
-        )
-        =
+    member inline this.onseeking([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> unit) =
         this.callback (render, "onseeking", callback)
     [<CustomOperation("onseeking")>]
-    member inline this.onseeking
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> Task
-        )
-        =
+    member inline this.onseeking([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> Task) =
         this.callback (render, "onseeking", callback)
     [<CustomOperation("onstalled")>]
-    member inline this.onstalled
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> unit
-        )
-        =
+    member inline this.onstalled([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> unit) =
         this.callback (render, "onstalled", callback)
     [<CustomOperation("onstalled")>]
-    member inline this.onstalled
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> Task
-        )
-        =
+    member inline this.onstalled([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> Task) =
         this.callback (render, "onstalled", callback)
     [<CustomOperation("onstop")>]
-    member inline this.onstop
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> unit
-        )
-        =
+    member inline this.onstop([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> unit) =
         this.callback (render, "onstop", callback)
     [<CustomOperation("onstop")>]
-    member inline this.onstop
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> Task
-        )
-        =
+    member inline this.onstop([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> Task) =
         this.callback (render, "onstop", callback)
     [<CustomOperation("onsuspend")>]
-    member inline this.onsuspend
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> unit
-        )
-        =
+    member inline this.onsuspend([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> unit) =
         this.callback (render, "onsuspend", callback)
     [<CustomOperation("onsuspend")>]
-    member inline this.onsuspend
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> Task
-        )
-        =
+    member inline this.onsuspend([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> Task) =
         this.callback (render, "onsuspend", callback)
     [<CustomOperation("ontimeupdate")>]
-    member inline this.ontimeupdate
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> unit
-        )
-        =
+    member inline this.ontimeupdate([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> unit) =
         this.callback (render, "ontimeupdate", callback)
     [<CustomOperation("ontimeupdate")>]
-    member inline this.ontimeupdate
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> Task
-        )
-        =
+    member inline this.ontimeupdate([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> Task) =
         this.callback (render, "ontimeupdate", callback)
     [<CustomOperation("onvolumechange")>]
-    member inline this.onvolumechange
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> unit
-        )
-        =
+    member inline this.onvolumechange([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> unit) =
         this.callback (render, "onvolumechange", callback)
     [<CustomOperation("onvolumechange")>]
-    member inline this.onvolumechange
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> Task
-        )
-        =
+    member inline this.onvolumechange([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> Task) =
         this.callback (render, "onvolumechange", callback)
     [<CustomOperation("onwaiting")>]
-    member inline this.onwaiting
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> unit
-        )
-        =
+    member inline this.onwaiting([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> unit) =
         this.callback (render, "onwaiting", callback)
     [<CustomOperation("onwaiting")>]
-    member inline this.onwaiting
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> Task
-        )
-        =
+    member inline this.onwaiting([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> Task) =
         this.callback (render, "onwaiting", callback)
     [<CustomOperation("onloadstart")>]
-    member inline this.onloadstart
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: ProgressEventArgs -> unit
-        )
-        =
+    member inline this.onloadstart([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: ProgressEventArgs -> unit) =
         this.callback (render, "onloadstart", callback)
     [<CustomOperation("onloadstart")>]
-    member inline this.onloadstart
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: ProgressEventArgs -> Task
-        )
-        =
+    member inline this.onloadstart([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: ProgressEventArgs -> Task) =
         this.callback (render, "onloadstart", callback)
     [<CustomOperation("ontimeout")>]
-    member inline this.ontimeout
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: ProgressEventArgs -> unit
-        )
-        =
+    member inline this.ontimeout([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: ProgressEventArgs -> unit) =
         this.callback (render, "ontimeout", callback)
     [<CustomOperation("ontimeout")>]
-    member inline this.ontimeout
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: ProgressEventArgs -> Task
-        )
-        =
+    member inline this.ontimeout([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: ProgressEventArgs -> Task) =
         this.callback (render, "ontimeout", callback)
     [<CustomOperation("onabort")>]
-    member inline this.onabort
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: ProgressEventArgs -> unit
-        )
-        =
+    member inline this.onabort([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: ProgressEventArgs -> unit) =
         this.callback (render, "onabort", callback)
     [<CustomOperation("onabort")>]
-    member inline this.onabort
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: ProgressEventArgs -> Task
-        )
-        =
+    member inline this.onabort([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: ProgressEventArgs -> Task) =
         this.callback (render, "onabort", callback)
     [<CustomOperation("onload")>]
-    member inline this.onload
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: ProgressEventArgs -> unit
-        )
-        =
+    member inline this.onload([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: ProgressEventArgs -> unit) =
         this.callback (render, "onload", callback)
     [<CustomOperation("onload")>]
-    member inline this.onload
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: ProgressEventArgs -> Task
-        )
-        =
+    member inline this.onload([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: ProgressEventArgs -> Task) =
         this.callback (render, "onload", callback)
     [<CustomOperation("onloadend")>]
-    member inline this.onloadend
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: ProgressEventArgs -> unit
-        )
-        =
+    member inline this.onloadend([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: ProgressEventArgs -> unit) =
         this.callback (render, "onloadend", callback)
     [<CustomOperation("onloadend")>]
-    member inline this.onloadend
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: ProgressEventArgs -> Task
-        )
-        =
+    member inline this.onloadend([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: ProgressEventArgs -> Task) =
         this.callback (render, "onloadend", callback)
     [<CustomOperation("onprogress")>]
-    member inline this.onprogress
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: ProgressEventArgs -> unit
-        )
-        =
+    member inline this.onprogress([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: ProgressEventArgs -> unit) =
         this.callback (render, "onprogress", callback)
     [<CustomOperation("onprogress")>]
-    member inline this.onprogress
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: ProgressEventArgs -> Task
-        )
-        =
+    member inline this.onprogress([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: ProgressEventArgs -> Task) =
         this.callback (render, "onprogress", callback)
     [<CustomOperation("onerror")>]
-    member inline this.onerror
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: ProgressEventArgs -> unit
-        )
-        =
+    member inline this.onerror([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: ProgressEventArgs -> unit) =
         this.callback (render, "onerror", callback)
     [<CustomOperation("onerror")>]
-    member inline this.onerror
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: ProgressEventArgs -> Task
-        )
-        =
+    member inline this.onerror([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: ProgressEventArgs -> Task) =
         this.callback (render, "onerror", callback)
     [<CustomOperation("onactivate")>]
-    member inline this.onactivate
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> unit
-        )
-        =
+    member inline this.onactivate([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> unit) =
         this.callback (render, "onactivate", callback)
     [<CustomOperation("onactivate")>]
-    member inline this.onactivate
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> Task
-        )
-        =
+    member inline this.onactivate([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> Task) =
         this.callback (render, "onactivate", callback)
     [<CustomOperation("onbeforeactivate")>]
-    member inline this.onbeforeactivate
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> unit
-        )
-        =
+    member inline this.onbeforeactivate([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> unit) =
         this.callback (render, "onbeforeactivate", callback)
     [<CustomOperation("onbeforeactivate")>]
-    member inline this.onbeforeactivate
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> Task
-        )
-        =
+    member inline this.onbeforeactivate([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> Task) =
         this.callback (render, "onbeforeactivate", callback)
     [<CustomOperation("onbeforedeactivate")>]
-    member inline this.onbeforedeactivate
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> unit
-        )
-        =
+    member inline this.onbeforedeactivate([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> unit) =
         this.callback (render, "onbeforedeactivate", callback)
     [<CustomOperation("onbeforedeactivate")>]
-    member inline this.onbeforedeactivate
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> Task
-        )
-        =
+    member inline this.onbeforedeactivate([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> Task) =
         this.callback (render, "onbeforedeactivate", callback)
     [<CustomOperation("ondeactivate")>]
-    member inline this.ondeactivate
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> unit
-        )
-        =
+    member inline this.ondeactivate([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> unit) =
         this.callback (render, "ondeactivate", callback)
     [<CustomOperation("ondeactivate")>]
-    member inline this.ondeactivate
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> Task
-        )
-        =
+    member inline this.ondeactivate([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> Task) =
         this.callback (render, "ondeactivate", callback)
     [<CustomOperation("onended")>]
-    member inline this.onended
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> unit
-        )
-        =
+    member inline this.onended([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> unit) =
         this.callback (render, "onended", callback)
     [<CustomOperation("onended")>]
-    member inline this.onended
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> Task
-        )
-        =
+    member inline this.onended([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> Task) =
         this.callback (render, "onended", callback)
     [<CustomOperation("onfullscreenchange")>]
-    member inline this.onfullscreenchange
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> unit
-        )
-        =
+    member inline this.onfullscreenchange([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> unit) =
         this.callback (render, "onfullscreenchange", callback)
     [<CustomOperation("onfullscreenchange")>]
-    member inline this.onfullscreenchange
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> Task
-        )
-        =
+    member inline this.onfullscreenchange([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> Task) =
         this.callback (render, "onfullscreenchange", callback)
     [<CustomOperation("onfullscreenerror")>]
-    member inline this.onfullscreenerror
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> unit
-        )
-        =
+    member inline this.onfullscreenerror([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> unit) =
         this.callback (render, "onfullscreenerror", callback)
     [<CustomOperation("onfullscreenerror")>]
-    member inline this.onfullscreenerror
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> Task
-        )
-        =
+    member inline this.onfullscreenerror([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> Task) =
         this.callback (render, "onfullscreenerror", callback)
     [<CustomOperation("onloadeddata")>]
-    member inline this.onloadeddata
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> unit
-        )
-        =
+    member inline this.onloadeddata([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> unit) =
         this.callback (render, "onloadeddata", callback)
     [<CustomOperation("onloadeddata")>]
-    member inline this.onloadeddata
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> Task
-        )
-        =
+    member inline this.onloadeddata([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> Task) =
         this.callback (render, "onloadeddata", callback)
     [<CustomOperation("onloadedmetadata")>]
-    member inline this.onloadedmetadata
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> unit
-        )
-        =
+    member inline this.onloadedmetadata([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> unit) =
         this.callback (render, "onloadedmetadata", callback)
     [<CustomOperation("onloadedmetadata")>]
-    member inline this.onloadedmetadata
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> Task
-        )
-        =
+    member inline this.onloadedmetadata([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> Task) =
         this.callback (render, "onloadedmetadata", callback)
     [<CustomOperation("onpointerlockchange")>]
-    member inline this.onpointerlockchange
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> unit
-        )
-        =
+    member inline this.onpointerlockchange([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> unit) =
         this.callback (render, "onpointerlockchange", callback)
     [<CustomOperation("onpointerlockchange")>]
-    member inline this.onpointerlockchange
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> Task
-        )
-        =
+    member inline this.onpointerlockchange([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> Task) =
         this.callback (render, "onpointerlockchange", callback)
     [<CustomOperation("onpointerlockerror")>]
-    member inline this.onpointerlockerror
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> unit
-        )
-        =
+    member inline this.onpointerlockerror([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> unit) =
         this.callback (render, "onpointerlockerror", callback)
     [<CustomOperation("onpointerlockerror")>]
-    member inline this.onpointerlockerror
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> Task
-        )
-        =
+    member inline this.onpointerlockerror([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> Task) =
         this.callback (render, "onpointerlockerror", callback)
     [<CustomOperation("onreadystatechange")>]
-    member inline this.onreadystatechange
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> unit
-        )
-        =
+    member inline this.onreadystatechange([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> unit) =
         this.callback (render, "onreadystatechange", callback)
     [<CustomOperation("onreadystatechange")>]
-    member inline this.onreadystatechange
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> Task
-        )
-        =
+    member inline this.onreadystatechange([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> Task) =
         this.callback (render, "onreadystatechange", callback)
     [<CustomOperation("onscroll")>]
-    member inline this.onscroll
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> unit
-        )
-        =
+    member inline this.onscroll([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> unit) =
         this.callback (render, "onscroll", callback)
     [<CustomOperation("onscroll")>]
-    member inline this.onscroll
-        (
-            [<InlineIfLambda>] render: AttrRenderFragment,
-            [<InlineIfLambda>] callback: EventArgs -> Task
-        )
-        =
+    member inline this.onscroll([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> Task) =
         this.callback (render, "onscroll", callback)
