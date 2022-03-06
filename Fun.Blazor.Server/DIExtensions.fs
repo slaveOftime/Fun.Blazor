@@ -2,7 +2,6 @@
 
 open System
 open System.IO
-open System.Text
 open System.Text.Encodings.Web
 open System.Runtime.CompilerServices
 open Microsoft.AspNetCore.Http
@@ -38,7 +37,7 @@ type FunBlazorServerExtensions =
 
 
     [<Extension>]
-    static member MapFunBlazor(builder: IEndpointRouteBuilder, createFragment: HttpContext -> NodeRenderFragment, ?pattern, ?hotReload) =
+    static member MapFunBlazor(builder: IEndpointRouteBuilder, createFragment: HttpContext -> NodeRenderFragment, ?pattern) =
         let requestDeletegate =
             Microsoft.AspNetCore.Http.RequestDelegate(fun ctx ->
                 task {
@@ -65,5 +64,5 @@ type FunBlazorServerExtensions =
 
 
     [<Extension>]
-    static member MapFunBlazor(builder: IEndpointRouteBuilder, pattern: string, createFragment: HttpContext -> NodeRenderFragment, ?hotReload) =
+    static member MapFunBlazor(builder: IEndpointRouteBuilder, pattern: string, createFragment: HttpContext -> NodeRenderFragment) =
         builder.MapFunBlazor(createFragment, pattern)

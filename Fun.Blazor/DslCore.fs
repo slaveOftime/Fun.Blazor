@@ -11,11 +11,11 @@ open Internal
 
 type html() =
 
-    static member inline none = emptyNode()
+    static member inline none = emptyNode ()
 
 
-    static member mergeAttrs attrs = attrs |> Seq.fold (==>) (emptyAttr())
-    static member mergeNodes nodes = nodes |> Seq.fold (>=>) (emptyNode())
+    static member mergeAttrs attrs = attrs |> Seq.fold (==>) (emptyAttr ())
+    static member mergeNodes nodes = nodes |> Seq.fold (>=>) (emptyNode ())
 
 
     static member internal compCache = lazy (fun () -> ConcurrentDictionary<Type, Reflection.PropertyInfo []>())
@@ -45,10 +45,7 @@ type html() =
                         typeof<'T>,
                         fun _ ->
                             instance.GetType().GetProperties()
-                            |> Array.filter (fun prop ->
-                                prop.CustomAttributes
-                                |> Seq.exists (fun x -> x.AttributeType = typeof<ParameterAttribute>)
-                            )
+                            |> Array.filter (fun prop -> prop.CustomAttributes |> Seq.exists (fun x -> x.AttributeType = typeof<ParameterAttribute>))
                     )
 
             for prop in props do
@@ -60,6 +57,31 @@ type html() =
                 match render with
                 | None -> nextIndex
                 | Some r -> r.Invoke(comp, builder, nextIndex)
+
+            builder.CloseComponent()
+            nextIndex
+        )
+
+
+    /// <summary>
+    /// Make a blazor component to a render fragment with a render for attributes
+    /// You can open Fun.Blazor.Operators to build attribute very easily:
+    /// </summary>
+    /// <example>
+    /// <code lang="fsharp">
+    /// ("attrName1" => attrValue1)
+    /// ==> ("attrName2" => attrValue2)
+    /// ==> ("attrName3" => attrValue3)
+    /// </code>
+    /// </example>
+    static member inline blazor<'T when 'T :> IComponent>(?render: AttrRenderFragment) =
+        NodeRenderFragment(fun comp builder index ->
+            builder.OpenComponent<'T>(index)
+
+            let nextIndex =
+                match render with
+                | None -> index + 1
+                | Some r -> r.Invoke(comp, builder, index + 1)
 
             builder.CloseComponent()
             nextIndex
@@ -88,8 +110,7 @@ type html() =
                 name,
                 box (
                     Microsoft.AspNetCore.Components.RenderFragment<'TItem>(fun x ->
-                        Microsoft.AspNetCore.Components.RenderFragment(fun tb -> render(x).Invoke(comp, tb, 0) |> ignore
-                        )
+                        Microsoft.AspNetCore.Components.RenderFragment(fun tb -> render(x).Invoke(comp, tb, 0) |> ignore)
                     )
                 )
             )
@@ -98,11 +119,7 @@ type html() =
 
     static member renderFragment(name: string, fragment: NodeRenderFragment) =
         AttrRenderFragment(fun comp builder index ->
-            builder.AddAttribute(
-                index,
-                name,
-                box (Microsoft.AspNetCore.Components.RenderFragment(fun tb -> fragment.Invoke(comp, tb, 0) |> ignore))
-            )
+            builder.AddAttribute(index, name, box (Microsoft.AspNetCore.Components.RenderFragment(fun tb -> fragment.Invoke(comp, tb, 0) |> ignore)))
             index + 1
         )
 
@@ -123,11 +140,7 @@ type html() =
     static member bind<'T>(name: string, store: IStore<'T>) =
         AttrRenderFragment(fun comp builder index ->
             builder.AddAttribute(index, name, store.Current)
-            builder.AddAttribute(
-                index + 1,
-                name + "Changed",
-                EventCallback.Factory.Create(comp, Action<'T> store.Publish)
-            )
+            builder.AddAttribute(index + 1, name + "Changed", EventCallback.Factory.Create(comp, Action<'T> store.Publish))
             index + 2
         )
 
@@ -216,7 +229,7 @@ type html() =
 type Static =
 
     /// This is for pure static html markup
-    static member html (x: string) =
+    static member html(x: string) =
         NodeRenderFragment(fun _ builder index ->
             builder.AddMarkupContent(index, x)
             index + 1
