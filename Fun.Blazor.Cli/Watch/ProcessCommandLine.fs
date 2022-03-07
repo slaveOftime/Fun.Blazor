@@ -47,7 +47,7 @@ let ProcessCommandLine (token: CancellationToken) sendCode (argv: string []) =
                     elif arg = "--" then
                         haveDashes <- true
                     elif arg.StartsWith "--projarg:" then
-                        msbuildArgs <- msbuildArgs @ [ arg.["----projarg:".Length ..] ]
+                        msbuildArgs <- msbuildArgs @ [ arg.["----projarg:".Length..] ]
                     elif arg.StartsWith "--define:" then
                         otherFlags <- otherFlags @ [ arg ]
                     elif arg = "--once" then
@@ -68,7 +68,7 @@ let ProcessCommandLine (token: CancellationToken) sendCode (argv: string []) =
                     elif arg = "--writeinfo" then
                         writeinfo <- true
                     elif arg.StartsWith "--send:" then
-                        webhook <- Some arg.["--send:".Length ..]
+                        webhook <- Some arg.["--send:".Length..]
                     elif arg = "--send" then
                         webhook <- Some defaultUrl
                     elif arg = "--version" then
@@ -124,6 +124,11 @@ let ProcessCommandLine (token: CancellationToken) sendCode (argv: string []) =
             infoDir, editFile
 
         let readFile (fileName: string) =
+            let readAllText file =
+                use fs = File.Open(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)
+                use sr = new StreamReader(fs)
+                sr.ReadToEnd()
+
             if useEditFiles && watch then
                 let infoDir, editFile = editDirAndFile fileName
                 let preferEditFile =
@@ -136,11 +141,11 @@ let ProcessCommandLine (token: CancellationToken) sendCode (argv: string []) =
                         | _ -> false
                 if preferEditFile then
                     printfn "*** preferring %s to %s ***" editFile fileName
-                    File.ReadAllText editFile
+                    readAllText editFile
                 else
-                    File.ReadAllText fileName
+                    readAllText fileName
             else
-                File.ReadAllText fileName
+                readAllText fileName
 
         let options =
             match fsproj with
@@ -189,9 +194,8 @@ let ProcessCommandLine (token: CancellationToken) sendCode (argv: string []) =
                     Result.Ok options
 
         match options with
-        | Result.Error () ->
-            failwith "fslive: error processing project options or script"
-            
+        | Result.Error () -> failwith "fslive: error processing project options or script"
+
         | Result.Ok options ->
             let options =
                 { options with
@@ -373,7 +377,7 @@ let ProcessCommandLine (token: CancellationToken) sendCode (argv: string []) =
                             printfn "changed %s" sourceFile
                             changed msg e |> ignore
                             printfn "finished changes in %d ms" sw.ElapsedMilliseconds
-                    
+
                     watcher.Changed.Add(fileChange (sprintf "Changed %s" fileName))
                     watcher.Created.Add(fileChange (sprintf "Created %s" fileName))
                     watcher.Deleted.Add(fileChange (sprintf "Deleted %s" fileName))
