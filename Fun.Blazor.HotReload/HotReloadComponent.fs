@@ -3,6 +3,7 @@
 namespace Fun.Blazor.HotReload
 
 open System
+open System.Collections.Generic
 open System.Collections.Concurrent
 open Microsoft.JSInterop
 open Microsoft.AspNetCore.Components
@@ -10,68 +11,85 @@ open Microsoft.AspNetCore.SignalR.Client
 open Fun.Blazor
 
 
+type private CssChanges = { Name: string; Css: string }
+
+type private HubBundle =
+    {
+        Hub: HubConnection
+        CodeObserver: IObservable<(string * FSharp.Compiler.PortaCode.CodeModel.DFile) []>
+        CssObserver: IObservable<CssChanges>
+    }
+
+
 module private Cache =
-    let private jsonOptions = Newtonsoft.Json.JsonSerializerSettings()
-    jsonOptions.MaxDepth <- 1000
+
+    let private jsonOptions =
+        let options = Newtonsoft.Json.JsonSerializerSettings()
+        options.MaxDepth <- 1000
+        options
 
     let mutable lastRenderFns = ConcurrentDictionary<string, NodeRenderFragment>()
 
     let private hubLocker = obj ()
-    let mutable private hubConnection = Option<HubConnection>.None
 
-    /// Support multiple hot-reload entries for fsharp code changes
-    let private codeChangeStore =
-        new Store<(string * FSharp.Compiler.PortaCode.CodeModel.DFile) []>([||]) :> IStore<_>
+    let mutable private hubConnections = Dictionary<string, HubBundle>()
 
-    /// Only need one callback for css
-    let mutable changeCssCallback = fun (name: string) (css: string) -> ()
 
-    let private makeHub (host: string) =
+    let private makeHubBundle (host: string) =
         let hub = HubConnectionBuilder().WithUrl($"{host}/hot-reload-hub").Build()
-        hubConnection <- Some hub
+        let codeStore = new Store<(string * FSharp.Compiler.PortaCode.CodeModel.DFile) []>([||]) :> IStore<_>
+        let cssStore = new Store<CssChanges>({ Name = ""; Css = "" }) :> IStore<_>
+        
         task {
-            printfn "Starting hot-reload hub"
+            printfn "Starting hot-reload hub: %s" host
             hub.On(
                 "CodeChanged",
                 fun code ->
                     let sw = System.Diagnostics.Stopwatch.StartNew()
-                    printfn "Received raw code changes"
+                    printfn "Received raw code changes: %s" host
                     let result =
                         Newtonsoft.Json.JsonConvert.DeserializeObject<(string * FSharp.Compiler.PortaCode.CodeModel.DFile) []>(code, jsonOptions)
-                    printfn "Code changes deserialized in %d ms" sw.ElapsedMilliseconds
-                    codeChangeStore.Publish result
+                    printfn "Code changes deserialized in %d ms: %s" sw.ElapsedMilliseconds host
+                    codeStore.Publish result
             )
             hub.On<string, string>(
                 "CssChanged",
                 fun name code ->
-                    printfn "Received css %s changes" name
-                    changeCssCallback name code
-                    printfn "css %s changes applied" name
+                    printfn "Received css %s changes: %s" name host
+                    cssStore.Publish { Name = name; Css = code }
+                    printfn "css %s changes applied: %s" name host
             )
             do! hub.StartAsync()
-            printfn "Started hot-reload hub"
+            printfn "Started hot-reload hub: %s" host
         }
 
-    let getCodeChangesObserver (host: string) =
+        {
+            Hub = hub
+            CodeObserver = codeStore.Observable
+            CssObserver = cssStore.Observable
+        }
+
+
+    let getHubBundle (host: string) =
+        let makeNew () =
+            let bundle = makeHubBundle host
+            hubConnections.[host] <- bundle
+            bundle
+
         lock
             hubLocker
             (fun () ->
-                match hubConnection with
-                | Some h when
-                    h.State = HubConnectionState.Connected
-                    || h.State = HubConnectionState.Connecting
-                    || h.State = HubConnectionState.Reconnecting
-                    ->
-                    ()
-
-                | Some h ->
-                    h.DisposeAsync() |> ignore
-                    makeHub (host) |> ignore
-
-                | None -> makeHub (host) |> ignore
+                match hubConnections.TryGetValue host with
+                | true, bundle ->
+                    if bundle.Hub.State = HubConnectionState.Connected
+                       || bundle.Hub.State = HubConnectionState.Connecting
+                       || bundle.Hub.State = HubConnectionState.Reconnecting then
+                        bundle
+                    else
+                        bundle.Hub.DisposeAsync() |> ignore
+                        makeNew ()
+                | _ -> makeNew ()
             )
-
-        codeChangeStore.Observable
 
 
 type HotReloadComponent() as this =
@@ -107,11 +125,11 @@ type HotReloadComponent() as this =
 
     override _.OnAfterRender(firstRender) =
         if firstRender then
-            let codeChangedObserver = Cache.getCodeChangesObserver this.Host
+            let hubBundle = Cache.getHubBundle this.Host
 
             disposes <-
                 [
-                    codeChangedObserver.Subscribe(fun code ->
+                    hubBundle.CodeObserver.Subscribe(fun code ->
                         Utils.reload
                             this.RenderEntryName
                             code
@@ -120,9 +138,12 @@ type HotReloadComponent() as this =
                                 setRender x
                             )
                     )
-                ]
 
-            Cache.changeCssCallback <- fun name code -> this.JS.InvokeAsync("hotReloadStyle", $"hot-reload-css-{name.GetHashCode()}", code) |> ignore
+                    hubBundle.CssObserver.Subscribe(fun data ->
+                        this.JS.InvokeAsync("hotReloadStyle", $"hot-reload-css-{this.Host.GetHashCode()}-{data.Name.GetHashCode()}", data.Css)
+                        |> ignore
+                    )
+                ]
 
             match Cache.lastRenderFns.TryGetValue this.RenderEntryName with
             | true, x -> setRender x

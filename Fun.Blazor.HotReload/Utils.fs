@@ -94,8 +94,8 @@ let internal reload renderEntryName (codeData: (string * DFile) []) (updateRende
                                         printfn $"LiveUpdate: evaluating '{renderEntryName}'...."
                                         let entity = interp.ResolveEntity(membDef.EnclosingEntity)
                                         let (_, programObj) = interp.GetExprDeclResult(entity, membDef.Name)
-                                        match getVal programObj with
 
+                                        match getVal programObj with
                                         | :? NodeRenderFragment as render ->
                                             updateRenderFn render
                                             Some { Quacked = "LiveUpdate successful" }
@@ -106,7 +106,7 @@ let internal reload renderEntryName (codeData: (string * DFile) []) (updateRende
                                             printfn "***   [x] found declaration called '%s'" renderEntryName
                                             printfn "***   [x] it had no parameters (good!)"
                                             printfn
-                                                "***   FAIL: the declaration had the wrong type '%A', expected 'Program<Arg, Model, Msg>'"
+                                                "***   FAIL: the declaration had the wrong type '%A'. it must be a single top-level value in a module."
                                                 (p.GetType())
                                             Some { Quacked = "LiveUpdate couldn't quack! types mismatch!" }
                             )
