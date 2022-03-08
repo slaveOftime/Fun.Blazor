@@ -8,6 +8,7 @@ open System.Collections.Concurrent
 open Microsoft.JSInterop
 open Microsoft.AspNetCore.Components
 open Microsoft.AspNetCore.SignalR.Client
+open MessagePack
 open Fun.Blazor
 
 
@@ -23,11 +24,6 @@ type private HubBundle =
 
 module private Cache =
 
-    let private jsonOptions =
-        let options = Newtonsoft.Json.JsonSerializerSettings()
-        options.MaxDepth <- 1000
-        options
-
     let mutable lastRenderFns = ConcurrentDictionary<string, NodeRenderFragment>()
 
     let private hubLocker = obj ()
@@ -39,18 +35,20 @@ module private Cache =
         let hub = HubConnectionBuilder().WithUrl($"{host}/hot-reload-hub").Build()
         let codeStore = new Store<(string * FSharp.Compiler.PortaCode.CodeModel.DFile) []>([||]) :> IStore<_>
         let cssStore = new Store<CssChanges>({ Name = ""; Css = "" }) :> IStore<_>
-        
+
         task {
             printfn "Starting hot-reload hub: %s" host
             hub.On(
                 "CodeChanged",
-                fun code ->
+                fun (code: byte []) ->
                     let sw = System.Diagnostics.Stopwatch.StartNew()
-                    printfn "Received raw code changes: %s" host
-                    let result =
-                        Newtonsoft.Json.JsonConvert.DeserializeObject<(string * FSharp.Compiler.PortaCode.CodeModel.DFile) []>(code, jsonOptions)
-                    printfn "Code changes deserialized in %d ms: %s" sw.ElapsedMilliseconds host
-                    codeStore.Publish result
+                    printfn "Received raw code changes: %s. Length: %d" host code.Length
+                    try
+                        let result = FSharp.Compiler.PortaCode.CodeModel.CodeChangesPack.FromBytes code
+                        printfn "Code changes deserialized in %d ms: %s" sw.ElapsedMilliseconds host
+                        codeStore.Publish result.Changes
+                    with
+                        | ex -> printfn "Process code changes failed: %s" ex.Message
             )
             hub.On<string, string>(
                 "CssChanged",

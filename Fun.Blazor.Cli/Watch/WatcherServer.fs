@@ -27,20 +27,26 @@ type CodeWatcher(scf: IServiceScopeFactory) =
             let settings = sp.GetService<WatchSettings>()
             let hotReloadHub = sp.GetService<IHubContext<HotReloadHub>>()
 
-            let sendCode (x: string) =
+            let sendCode (x: byte []) =
                 hotReloadHub.Clients.All.SendAsync("CodeChanged", x).Wait()
 
             printfn "Start code watcher"
 
-            FSharp.Compiler.PortaCode.ProcessCommandLine.ProcessCommandLine
-                token
-                sendCode
-                [|
-                    "watch"
-                    settings.Project
-                    $"--send:{settings.Server}/fun-blazor-hot-reload"
-                    "--livecheck"
-                |]
+            let result, dispose =
+                FSharp.Compiler.PortaCode.ProcessCommandLine.ProcessCommandLine
+                    sendCode
+                    [|
+                        "watch"
+                        settings.Project
+                        $"--send:{settings.Server}/fun-blazor-hot-reload"
+                        "--livecheck"
+                    |]
+
+            while not token.IsCancellationRequested && result = 0 do
+                do! Task.Delay 2000
+
+            dispose ()
+            printfn "Code watcher exited."
         }
 
 
@@ -125,6 +131,8 @@ type StaticAssetsWatcher(scf: IServiceScopeFactory) =
             match cssWatcher with
             | ValueSome x -> x.Dispose()
             | _ -> ()
+
+            printfn "CSS watcher exited."
         }
 
 

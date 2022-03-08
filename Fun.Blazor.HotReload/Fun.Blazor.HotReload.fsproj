@@ -15,8 +15,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="MessagePack.FSharpExtensions" Version="3.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.2" />
-		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -29,7 +29,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="CliWrap" Version="3.4.1" />
-		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+		<PackageReference Include="MessagePack.FSharpExtensions" Version="3.0.0" />
 		<PackageReference Include="Spectre.Console" Version="0.43.0" />
 		<PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.0.0" />
 		<PackageReference Include="FSharp.Compiler.Service" Version="41.0.2" />

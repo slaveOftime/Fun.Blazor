@@ -2,27 +2,43 @@
 
 module FSharp.Compiler.PortaCode.CodeModel
 
+open MessagePack
+open MessagePack.FSharp
+open MessagePack.Resolvers
 
+
+[<MessagePackObject>]
 type DRange =
     {
+        [<Key(0)>]
         File: string
+        [<Key(1)>]
         StartLine: int
+        [<Key(2)>]
         StartColumn: int
+        [<Key(3)>]
         EndLine: int
+        [<Key(4)>]
         EndColumn: int
     }
 
     override range.ToString() =
         sprintf "%s: (%d,%d)-(%d-%d)" range.File range.StartLine range.StartColumn range.EndLine range.EndColumn
 
+[<MessagePackObject>]
 type DDiagnostic =
     {
+        [<Key(0)>]
         Severity: int
+        [<Key(1)>]
         Number: int
+        [<Key(2)>]
         Message: string
+        [<Key(3)>]
         LocationStack: DRange []
     }
 
+    [<Key(4)>]
     member diag.Location = Array.last diag.LocationStack
     override diag.ToString() =
         let sev =
@@ -41,6 +57,7 @@ type DDiagnostic =
             |> String.concat "\n"
 
 /// A representation of resolved F# expressions that can be serialized
+[<MessagePackObject>]
 type DExpr =
     | Value of DLocalRef
     | ThisValue of DType
@@ -89,7 +106,7 @@ type DExpr =
     | ILFieldSet of DExpr option * DType * string * DExpr
     | ILAsm of string * DType [] * DExpr []
 
-and DType =
+and [<MessagePackObject>] DType =
     | DNamedType of DEntityRef * DType []
     | DFunctionType of DType * DType
     | DTupleType of bool * DType []
@@ -98,41 +115,70 @@ and DType =
     | DByRefType of DType
     | DVariableType of string
 
-and DLocalDef =
+and [<MessagePackObject>] DLocalDef =
     {
+        [<Key(0)>]
         Name: string
+        [<Key(1)>]
         IsMutable: bool
+        [<Key(2)>]
         LocalType: DType
+        [<Key(3)>]
         Range: DRange option
+        [<Key(4)>]
         IsCompilerGenerated: bool
     }
 
-and DFieldDef =
+and [<MessagePackObject>] DFieldDef =
     {
+        [<Key(0)>]
         Name: string
+        [<Key(1)>]
         IsStatic: bool
+        [<Key(2)>]
         IsMutable: bool
+        [<Key(3)>]
         FieldType: DType
+        [<Key(4)>]
         Range: DRange option
+        [<Key(5)>]
         IsCompilerGenerated: bool
     }
 
-and DSlotRef = { Member: DMemberRef; DeclaringType: DType }
-and DMemberDef =
+and [<MessagePackObject>] DSlotRef =
     {
+        [<Key 0>]
+        Member: DMemberRef
+        [<Key 1>]
+        DeclaringType: DType
+    }
+and [<MessagePackObject>] DMemberDef =
+    {
+        [<Key(0)>]
         EnclosingEntity: DEntityRef
+        [<Key(1)>]
         Name: string
+        [<Key(2)>]
         GenericParameters: DGenericParameterDef []
+        [<Key(3)>]
         ImplementedSlots: DSlotRef []
+        [<Key(4)>]
         IsInstance: bool
+        [<Key(5)>]
         IsValue: bool
+        [<Key(6)>]
         IsCompilerGenerated: bool
+        [<Key(7)>]
         CustomAttributes: DCustomAttributeDef []
+        [<Key(8)>]
         Parameters: DLocalDef []
+        [<Key(9)>]
         ReturnType: DType
+        [<Key(10)>]
         Range: DRange option
     }
 
+    [<Key(11)>]
     member x.Ref =
         {
             Entity = x.EnclosingEntity
@@ -142,80 +188,144 @@ and DMemberDef =
             ReturnType = x.ReturnType
         }
 
-and DGenericParameterDef =
+and [<MessagePackObject>] DGenericParameterDef =
     {
+        [<Key(0)>]
         Name: string
+        [<Key(1)>]
         InterfaceConstraints: DType []
+        [<Key(2)>]
         BaseTypeConstraint: DType option
+        [<Key(3)>]
         DefaultConstructorConstraint: bool
+        [<Key(4)>]
         NotNullableValueTypeConstraint: bool
+        [<Key(5)>]
         ReferenceTypeConstraint: bool
     }
 
-and DEntityDef =
+and [<MessagePackObject>] DEntityDef =
     {
+        [<Key(0)>]
         QualifiedName: string
+        [<Key(1)>]
         Name: string
+        [<Key(2)>]
         GenericParameters: DGenericParameterDef []
+        [<Key(3)>]
         BaseType: DType option
+        [<Key(4)>]
         DeclaredInterfaces: DType []
+        [<Key(5)>]
         DeclaredFields: DFieldDef []
+        [<Key(6)>]
         DeclaredDispatchSlots: DMemberDef []
+        [<Key(7)>]
         IsUnion: bool
+        [<Key(8)>]
         IsRecord: bool
+        [<Key(9)>]
         IsStruct: bool
+        [<Key(10)>]
         IsInterface: bool
+        [<Key(11)>]
         CustomAttributes: DCustomAttributeDef []
         //IsAbstractClass: bool
+        [<Key(12)>]
         UnionCases: string []
+        [<Key(13)>]
         Range: DRange option
     }
 
+    [<Key(14)>]
     member x.Ref = DEntityRef x.QualifiedName
 
-and DCustomAttributeDef =
+and [<MessagePackObject>] DCustomAttributeDef =
     {
+        [<Key(0)>]
         AttributeType: DEntityRef
+        [<Key(1)>]
         ConstructorArguments: (DType * obj) []
+        [<Key(2)>]
         NamedArguments: (DType * string * bool * obj) []
     }
 
-and DEntityRef = | DEntityRef of string
+and [<MessagePackObject>] DEntityRef = | DEntityRef of string
 
-and DMemberRef =
+and [<MessagePackObject>] DMemberRef =
     {
+        [<Key(0)>]
         Entity: DEntityRef
+        [<Key(1)>]
         Name: string
+        [<Key(2)>]
         GenericArity: int
+        [<Key(3)>]
         ArgTypes: DType []
+        [<Key(4)>]
         ReturnType: DType
     }
 
-and DLocalRef =
+and [<MessagePackObject>] DLocalRef =
     {
+        [<Key(0)>]
         Name: string
+        [<Key(1)>]
         IsThisValue: bool
+        [<Key(2)>]
         IsMutable: bool
+        [<Key(3)>]
         IsCompilerGenerated: bool
+        [<Key(4)>]
         Range: DRange option
     }
 
-and DFieldRef = | DFieldRef of int * string
+and [<MessagePackObject>] DFieldRef = | DFieldRef of int * string
 
-and DUnionCaseRef = | DUnionCaseRef of string
+and [<MessagePackObject>] DUnionCaseRef = | DUnionCaseRef of string
 
-and DObjectExprOverrideDef =
+and [<MessagePackObject>] DObjectExprOverrideDef =
     {
+        [<Key(0)>]
         Name: string
+        [<Key(1)>]
         Slot: DSlotRef
+        [<Key(2)>]
         GenericParameters: DGenericParameterDef []
+        [<Key(3)>]
         Parameters: DLocalDef []
+        [<Key(4)>]
         Body: DExpr
     }
 
+[<MessagePackObject>]
 type DDecl =
     | DDeclEntity of DEntityDef * DDecl []
     | DDeclMember of DMemberDef * DExpr * isLiveCheck: bool
     | InitAction of DExpr * DRange option
 
-type DFile = { Code: DDecl [] }
+[<MessagePackObject>]
+type DFile =
+    {
+        [<Key(0)>]
+        Code: DDecl []
+    }
+
+
+let CodeChangesPackOptions =
+    MessagePackSerializerOptions.Standard.WithResolver(Resolvers.CompositeResolver.Create(FSharpResolver.Instance, StandardResolver.Instance))
+
+
+[<MessagePackObject>]
+type CodeChangesPack =
+    {
+        [<Key(0)>]
+        Changes: (string * DFile) []
+    }
+
+    static member FromBytes (bytes: byte[]) =
+        use stream = new System.IO.MemoryStream(bytes)
+        MessagePackSerializer.Deserialize<CodeChangesPack>(stream, CodeChangesPackOptions)
+
+    member this.ToBytes () =
+        MessagePackSerializer.Serialize(this, CodeChangesPackOptions)
