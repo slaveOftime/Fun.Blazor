@@ -2342,7 +2342,7 @@ type EvalContext(assemblyName: AssemblyName, ?dyntypes: bool, ?assemblyResolver:
                 | _ -> failwithf "unexpected value '%A' in EvalUnionCaseTest" unionV
         Value(box res)
 
-    member ctxt.EvalUnionCaseGet(env, unionExpr, unionType, unionCase, unionCaseField) =
+    member ctxt.EvalUnionCaseGet(env, unionExpr, unionType, unionCase, (DFieldRef (_, unionCaseFieldName))) =
         let unionV: obj = ctxt.EvalExpr(env, unionExpr) |> getVal
 
         let res =
@@ -2361,7 +2361,7 @@ type EvalContext(assemblyName: AssemblyName, ?dyntypes: bool, ?assemblyResolver:
             //| UField (index, _, _) -> fields.[index]
             //| RField _ -> failwithf "unexpected field resolution %A in EvalUnionCaseGet" unionCaseFieldR
             | _ ->
-                match unionV.GetType().GetProperty("Item") with
+                match unionV.GetType().GetProperty(unionCaseFieldName) with
                 | null -> failwithf "unexpected value '%A' in EvalUnionCaseGet" unionV
                 | f -> f.GetValue(unionV)
         //failwithf "unexpected value '%A' in EvalUnionCaseGet" unionV
