@@ -100,6 +100,15 @@ let internal reload renderEntryName (codeData: (string * DFile) []) (updateRende
                                             updateRenderFn render
                                             Some { Quacked = "LiveUpdate successful" }
 
+                                        | :? MethodLambdaValue as (MethodLambdaValue fn) ->
+                                            try
+                                                fn([||], [||]) |> unbox<NodeRenderFragment> |> updateRenderFn
+                                                Some { Quacked = "LiveUpdate successful" }
+                                            with ex ->
+                                                printfn "*** Can only support lambda without argument"
+                                                printfn "*** %s" ex.Message
+                                                Some { Quacked = "LiveUpdate couldn't quack! types mismatch!" }
+                                                
                                         | p ->
                                             printfn "*** LiveUpdate failure:"
                                             printfn "***   [x] got code package"
