@@ -12,6 +12,7 @@ open Microsoft.Extensions.Hosting
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.AspNetCore.SignalR
 open Fun.Blazor.Cli
+open Fun.Blazor.Cli.Watch
 
 
 type HotReloadHub() =
@@ -27,25 +28,15 @@ type CodeWatcher(scf: IServiceScopeFactory) =
             let settings = sp.GetService<WatchSettings>()
             let hotReloadHub = sp.GetService<IHubContext<HotReloadHub>>()
 
-            let sendCode (x: byte []) =
-                hotReloadHub.Clients.All.SendAsync("CodeChanged", x).Wait()
+            let sendCode (x: byte []) = hotReloadHub.Clients.All.SendAsync("CodeChanged", x).Wait()
 
             printfn "Start code watcher"
 
-            let result, dispose =
-                FSharp.Compiler.PortaCode.ProcessCommandLine.ProcessCommandLine
-                    sendCode
-                    [|
-                        "watch"
-                        settings.Project
-                        $"--send:{settings.Server}/fun-blazor-hot-reload"
-                        "--livecheck"
-                    |]
+            use _ = processCommandLine sendCode (Source.FSharpProj settings.Project) []
 
-            while not token.IsCancellationRequested && result = 0 do
+            while not token.IsCancellationRequested do
                 do! Task.Delay 2000
 
-            dispose ()
             printfn "Code watcher exited."
         }
 
@@ -72,6 +63,7 @@ type StaticAssetsWatcher(scf: IServiceScopeFactory) =
         watcher.IncludeSubdirectories <- true
         watcher.EnableRaisingEvents <- true
         watcher
+
 
     override _.ExecuteAsync(token) =
         task {
