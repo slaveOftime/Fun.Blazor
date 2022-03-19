@@ -58,6 +58,23 @@ The basic steps:
         Control2.fs // hot-reload
     ```
 
+    Below expression will not work for hot-reload
+
+    ```fsharp
+    div {
+        for item in items do // ❌
+            div { string item }
+    }
+     // Use this:
+     ```fsharp
+    div {
+        childContent [ // ✅
+            for item in items do
+                div { string item }
+        ]
+    }
+    ```
+
 - The first save will take more time
 
 - To get hot-reload for other components which is defined in different files

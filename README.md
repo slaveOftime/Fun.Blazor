@@ -41,6 +41,7 @@ Now the docs are only written as an experimental playground and simple introduct
 
 ## Please check the samples for quick start
 
+https://github.com/slaveOftime/Slaveoftime.Site
 https://github.com/slaveOftime/Fun.Blazor.Samples
 
 Below version may not be updated, please check here [![Nuget](https://img.shields.io/nuget/vpre/Fun.Blazor.Templates)](https://www.nuget.org/packages/Fun.Blazor.Templates)
@@ -56,7 +57,7 @@ dotnet new --install Fun.Blazor.Templates::2.0.0-beta013
 
     ```fsharp
     let demo =
-        adaptiview(){
+        adaptiview(){ // this is more recommend than html.watch and html.elmish
             let! v, setValue = FSharp.Data.Adaptive.cval(1).WithSetter()
             button {
                 onclick (fun _ -> setValue (v + 1))
