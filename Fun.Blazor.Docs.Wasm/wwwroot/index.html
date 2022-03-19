@@ -10,7 +10,7 @@
 
 <body>
     <div id="app">Loading...</div>
-    <script src="_framework/blazor.webassembly.js"></script>
+    <script src="_framework/blazor.webassembly.js" autostart="false"></script>
     <link rel="stylesheet" href="css/google-font.css" />
     <link rel="stylesheet" href="css/drag-drop.css" />
     <link rel="stylesheet" href="_content/MudBlazor/MudBlazor.min.css" />
@@ -20,6 +20,28 @@
     <link rel="stylesheet" href="css/prism-night-owl.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/components/prism-core.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script type="module">
+        import { BrotliDecode } from './decode.min.js';
+        Blazor.start({
+          loadBootResource: function (type, name, defaultUri, integrity) {
+            if (type !== 'dotnetjs' && location.hostname !== 'localhost') {
+              return (async function () {
+                const response = await fetch(defaultUri + '.br', { cache: 'no-cache' });
+                if (!response.ok) {
+                  throw new Error(response.statusText);
+                }
+                const originalResponseBuffer = await response.arrayBuffer();
+                const originalResponseArray = new Int8Array(originalResponseBuffer);
+                const decompressedResponseArray = BrotliDecode(originalResponseArray);
+                const contentType = type === 
+                  'dotnetwasm' ? 'application/wasm' : 'application/octet-stream';
+                return new Response(decompressedResponseArray, 
+                  { headers: { 'content-type': contentType } });
+              })();
+            }
+          }
+        });
+      </script>
 </body>
 
 </html>
