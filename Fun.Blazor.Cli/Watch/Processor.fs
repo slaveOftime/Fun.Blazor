@@ -1,7 +1,7 @@
 ﻿// Copyright 2018 Fabulous contributors. See LICENSE.md for license.
 
 [<AutoOpen>]
-module Fun.Blazor.Cli.Watch.ProcessCommandLine
+module Fun.Blazor.Cli.Watch.Processor
 
 open System
 open System.IO
@@ -73,7 +73,7 @@ let private isFileHotReloadEnabled (file: string) =
         false
 
 
-let processCommandLine sendCode (source: Source) (msbuildArgs: string list) =
+let process' sendCode (source: Source) (msbuildArgs: string list) =
     let useEditFiles = false
     let mutable lastCompileStart = System.DateTime.Now
 

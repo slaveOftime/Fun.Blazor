@@ -32,7 +32,7 @@ type CodeWatcher(scf: IServiceScopeFactory) =
 
             printfn "Start code watcher"
 
-            use _ = processCommandLine sendCode (Source.FSharpProj settings.Project) []
+            use _ = process' sendCode (Source.FSharpProj settings.Project) []
 
             while not token.IsCancellationRequested do
                 do! Task.Delay 2000

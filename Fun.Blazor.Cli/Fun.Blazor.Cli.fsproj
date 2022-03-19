@@ -20,7 +20,7 @@
 		<Compile Include="..\Fun.Blazor.HotReload\Interpreter.fs" Link="Watch\Interpreter.fs" />
 		<Compile Include="Watch\FromCompilerService.fs" />
 		<Compile Include="Watch\LiveCheckEvaluation.fs" />
-		<Compile Include="Watch\ProcessCommandLine.fs" />
+		<Compile Include="Watch\Processor.fs" />
 		<Compile Include="Watch\WatcherServer.fs" />
 		<Compile Include="CodeGen\CodeGenProject.fs" />
 		<Compile Include="CodeGen\Generate.fs" />
