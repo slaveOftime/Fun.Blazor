@@ -213,13 +213,11 @@ let process' sendCode (source: Source) (msbuildArgs: string list) =
             let watcher = new FileSystemWatcher(path, fileName)
             
             watcher.NotifyFilter <-
-                NotifyFilters.Attributes
-                ||| NotifyFilters.CreationTime
+                NotifyFilters.CreationTime
+                ||| NotifyFilters.DirectoryName
                 ||| NotifyFilters.FileName
-                ||| NotifyFilters.LastAccess
                 ||| NotifyFilters.LastWrite
                 ||| NotifyFilters.Size
-                ||| NotifyFilters.Security
 
             let fileChange msg e =
                 let lastWriteTime =

@@ -50,13 +50,10 @@ type StaticAssetsWatcher(scf: IServiceScopeFactory) =
         let watcher = new FileSystemWatcher(dir)
 
         watcher.NotifyFilter <-
-            NotifyFilters.Attributes
-            ||| NotifyFilters.CreationTime
+            NotifyFilters.CreationTime
             ||| NotifyFilters.DirectoryName
             ||| NotifyFilters.FileName
-            ||| NotifyFilters.LastAccess
             ||| NotifyFilters.LastWrite
-            ||| NotifyFilters.Security
             ||| NotifyFilters.Size
 
         watcher.Filter <- "*.css"
