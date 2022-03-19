@@ -19,7 +19,7 @@
 This is a project to make F# developer to write blazor easier.
 
 It is based on [bolero](https://github.com/fsbolero/Bolero) and  [Feliz.Engine](https://github.com/alfonsogarciacaro/Feliz.Engine) before. \
-Now **(in V2)** the dependency of bolero is removed to make it lighter. Feliz style is deprecated because it will cause more allocation and render loop than CE style, also it is too verbose as a DSL.
+Now **(in V2)** the dependency of bolero is removed to make it lighter. **Feliz style is deprecated** because it will cause more allocation and render loop than CE style, also it is too verbose as a DSL.
 
 
 ## Docs
@@ -160,7 +160,7 @@ dotnet new --install Fun.Blazor.Templates::2.0.0-beta013
     div {
         some other attibutes
         ref ... ✅
-        child items like: div {} or use childContent [ ... ]
+        childContent [ ... ]
     }
     ```
 
