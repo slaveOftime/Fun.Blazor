@@ -50,8 +50,8 @@ type FragmentBuilder() =
         =
         render1 >=> render2
 
-    member inline _.For(renders: 'T seq, [<InlineIfLambda>] fn: 'T -> NodeRenderFragment) =
-        renders |> Seq.map fn |> Seq.fold (>=>) (emptyNode())
+    //member inline _.For(renders: 'T seq, [<InlineIfLambda>] fn: 'T -> NodeRenderFragment) =
+    //    renders |> Seq.map fn |> Seq.fold (>=>) (emptyNode())
 
     member inline _.YieldFrom(renders: NodeRenderFragment seq) = renders |> Seq.fold (>=>) (emptyNode())
 

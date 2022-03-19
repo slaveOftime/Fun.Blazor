@@ -33,20 +33,17 @@ type EltBuilder(name) =
 
     
     /// Create empty element
-    member this.create() =
+    member inline this.create() =
         NodeRenderFragment(fun _ builder index ->
             builder.OpenElement(index, (this :> IElementBuilder).Name)
             builder.CloseElement()
             index + 1
         )
 
-    member this.create(childItems: NodeRenderFragment seq) =
+    member inline this.create(childItems: NodeRenderFragment seq) =
         NodeRenderFragment(fun comp builder index ->
             builder.OpenElement(index, (this :> IElementBuilder).Name)
-
-            let render = childItems |> Seq.fold (>=>) (emptyNode ())
-            let nextIndex = render.Invoke(comp, builder, index + 1)
-
+            let nextIndex = html.fragment(childItems).Invoke(comp, builder, index + 1)
             builder.CloseElement()
             nextIndex
         )
@@ -126,7 +123,7 @@ type EltWithChildBuilder(name) =
 
     member inline _.For([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> NodeRenderFragment) = render >>> (fn ())
 
-    member inline _.For(renders: 'T seq, [<InlineIfLambda>] fn: 'T -> NodeRenderFragment) = renders |> Seq.map fn |> Seq.fold (>=>) (emptyNode ())
+    //member inline _.For(renders: 'T seq, [<InlineIfLambda>] fn: 'T -> NodeRenderFragment) = renders |> Seq.map fn |> Seq.fold (>=>) (emptyNode ())
 
     member inline _.YieldFrom(renders: NodeRenderFragment seq) = renders |> Seq.fold (>=>) (emptyNode ())
 
