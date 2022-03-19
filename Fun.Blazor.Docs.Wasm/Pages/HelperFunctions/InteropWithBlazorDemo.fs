@@ -4,11 +4,10 @@ module Fun.Blazor.Docs.Wasm.Pages.HelperFunctions.InteropWithBlazorDemo
 open FSharp.Data.Adaptive
 open Microsoft.AspNetCore.Components
 open Fun.Blazor
-open Fun.Blazor.Operators
 open MudBlazor
 
 
-type CompForBlazor() as this =
+type CompForBlazor() =
     inherit FunBlazorComponent()
 
     let mutable c = 0
@@ -28,17 +27,12 @@ type CompForBlazor() as this =
 
 
 let interopWithBlazorDemo =
-    div {
+    div.create [
         p { "We have cli to generate third party blazor component which should have better performance." }
         p { "But sometimes we may want to build it directly, we can do it like this:" }
-        br
-        html.blazor (fun ctx ->
-            MudAlert(
-                Severity = Severity.Success,
-                ChildContent = ctx.Render(html.text "Hi")
-            )
-        )
-        br
+        br.create ()
+        html.blazor (fun ctx -> MudAlert(Severity = Severity.Success, ChildContent = ctx.Render(html.text "Hi")))
+        br.create ()
         adaptiview () {
             let! count, setCount = cval(0).WithSetter()
             html.blazor (fun _ -> CompForBlazor(Count = count))
@@ -48,4 +42,4 @@ let interopWithBlazorDemo =
                 "Set count to 5"
             }
         }
-    }
+    ]

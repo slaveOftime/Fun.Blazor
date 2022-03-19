@@ -21,26 +21,24 @@ let giraffeStyleRouterDemo =
 
     let link (hrefStr: string) (name': string) =
         MudLink'() {
+            style { marginRight 10 }
             Href hrefStr
             Underline Underline.Always
-            styleBuilder { marginRight 10 }
-            childContent name'
+            name'
         }
 
-    div {
-        childContent [
-            MudText'() {
-                Typo Typo.subtitle2
-                Color Color.Secondary
-                html.route [
-                    route
-                    subRouteCi "/Fun.Blazor.Docs" [ route ] // For github-pages hosting
-                    routeAny (html.text "Not my concern.")
-                ]
-            }
-            link "./router/document" "Route to document"
-            link "./router/document/12" "Route to document 12"
-            link "./router/documents?filter=test&q2=2" "Route to documents with query"
-            link "./router/documents/fun-blazor?filter=test&q2=2" "Route to documents with query"
-        ]
-    }
+    div.create [
+        MudText'() {
+            Typo Typo.subtitle2
+            Color Color.Secondary
+            html.route [
+                route
+                subRouteCi "/Fun.Blazor.Docs" [ route ] // For github-pages hosting
+                routeAny (html.text "Not my concern.")
+            ]
+        }
+        link "./router/document" "Route to document"
+        link "./router/document/12" "Route to document 12"
+        link "./router/documents?filter=test&q2=2" "Route to documents with query"
+        link "./router/documents/fun-blazor?filter=test&q2=2" "Route to documents with query"
+    ]

@@ -36,7 +36,6 @@ type Index() =
                     script { src "_framework/blazor.server.js" }
 
                     stylesheet "css/google-font.css"
-                    stylesheet "css/drag-drop.css"
 
                     stylesheet "css/github-markdown.css"
                     stylesheet "css/prism-night-owl.css"
@@ -60,7 +59,7 @@ type Index() =
                 <head>
                     <meta charset="utf-8" />
                     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-                    <title>Fun Blazor</title>
+                    <title>Fun Blazor Server Docs</title>
                     <base href="/" />
                     <link rel="stylesheet" href="_content/MudBlazor/MudBlazor.min.css" />
                 </head>
@@ -72,7 +71,6 @@ type Index() =
                     <script src="_framework/blazor.server.js"></script>
 
                     <link rel="stylesheet" href="css/google-font.css" />
-                    <link rel="stylesheet" href="css/drag-drop.css" />
 
                     <link rel="stylesheet" href="css/github-markdown.css" />
                     <link rel="stylesheet" href="css/prism-night-owl.css" />

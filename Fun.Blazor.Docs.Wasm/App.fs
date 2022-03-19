@@ -71,18 +71,20 @@ let app =
                 Color Color.Primary
                 Elevation 25
                 Dense true
-                menuBtn
-                MudText'() {
-                    Typo Typo.h6
-                    Color Color.Default
-                    "Fun Blazor"
-                }
-                MudSpacer'.create ()
-                MudIconButton'() {
-                    Icon Icons.Custom.Brands.GitHub
-                    Color Color.Inherit
-                    Link "https://github.com/slaveOftime/Fun.Blazor"
-                }
+                childContent [
+                    menuBtn
+                    MudText'() {
+                        Typo Typo.h6
+                        Color Color.Default
+                        "Fun Blazor"
+                    }
+                    MudSpacer'.create ()
+                    MudIconButton'() {
+                        Icon Icons.Custom.Brands.GitHub
+                        Color Color.Inherit
+                        Link "https://github.com/slaveOftime/Fun.Blazor"
+                    }
+                ]
             }
 
         let drawer =
@@ -113,15 +115,15 @@ let app =
                 routeAny QuickStart.QuickStart.quickStart
             ]
 
-        adaptiview () {
+        html.fragment [
             theme
-            MudDialogProvider'.create()
-            MudSnackbarProvider'.create()
-            MudLayout'() {
+            MudDialogProvider'.create ()
+            MudSnackbarProvider'.create ()
+            MudLayout'.create [
                 appBar
                 drawer
                 MudMainContent'() {
-                    styleBuilder {
+                    style {
                         paddingTop 100
                         paddingBottom 64
                     }
@@ -134,7 +136,7 @@ let app =
                         }
                     }
                 }
-            }
+            ]
             interopScript
-        }
+        ]
     )

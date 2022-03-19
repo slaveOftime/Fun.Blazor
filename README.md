@@ -19,7 +19,7 @@
 This is a project to make F# developer to write blazor easier.
 
 It is based on [bolero](https://github.com/fsbolero/Bolero) and  [Feliz.Engine](https://github.com/alfonsogarciacaro/Feliz.Engine) before. \
-Now **(in V2)** the dependency of bolero is removed to make it lighter. Feliz style is also not recommend and maybe deprecated in the future because it will cause more allocation and render loop than CE style, also it is too verbose as a DSL.
+Now **(in V2)** the dependency of bolero is removed to make it lighter. Feliz style is deprecated because it will cause more allocation and render loop than CE style, also it is too verbose as a DSL.
 
 
 ## Docs
@@ -36,7 +36,7 @@ Now the docs are only written as an experimental playground and simple introduct
 1. Use F# ❤️😊 for blazor
 2. Template, computation expression style DSL for internal and third party blazor libraries
 4. Dependency injection (html.inject)
-3. [Adaptive](https://github.com/fsprojects/FSharp.Data.Adaptive) model (adaptiview), [elmish](https://github.com/elmish/elmish) model (html.elmish), [obervable](https://github.com/fsprojects/FSharp.Control.Reactive) model (html.watch)
+3. [Adaptive](https://github.com/fsprojects/FSharp.Data.Adaptive) model (adaptiview) (**recommend**), [elmish](https://github.com/elmish/elmish) model (html.elmish), [obervable](https://github.com/fsprojects/FSharp.Control.Reactive) model (html.watch)
 
 
 ## Please check the samples for quick start

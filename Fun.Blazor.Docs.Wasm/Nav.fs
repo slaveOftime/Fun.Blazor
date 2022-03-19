@@ -95,7 +95,7 @@ let routes =
         subRouteCi "/router" [ routeAny Router.Router.router ]
         routeCi
             "/adaptive-form"
-            (demoContainer "Adaptive Form" $"Pages/HelperFunctions/AdaptiveFromDemo" HelperFunctions.AdaptiveFormDemo.adaptiveFormDemo)
+            (demoContainer "Adaptive Form" $"Pages/HelperFunctions/AdaptiveFormDemo" HelperFunctions.AdaptiveFormDemo.adaptiveFormDemo)
         routeCi "/hot-reload" HotReload.HotReload.hotReload
         routeCi "/elmish" Elmish.Elmish.elmish
         subRouteCi

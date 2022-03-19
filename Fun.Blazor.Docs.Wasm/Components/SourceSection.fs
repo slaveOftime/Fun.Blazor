@@ -25,7 +25,7 @@ let private deferredObserve (data: Task<Result<string, string>>) =
     )
 
 
-let private version = "2.0.1"
+let private version = "2.0.0-beta030"
 
 
 let private getFromHostServer (env: IHostingEnvironment) (fileName: string) =
@@ -73,7 +73,16 @@ let sourceSection fileName =
                             getFromGithub fileName
                 )
 
-            hook.OnFirstAfterRender.Add(fun () -> js.highlightCode () |> ignore)
+            hook.OnFirstAfterRender.Add(fun () ->
+                js.highlightCode () |> ignore
+                hook.AddDisposes [
+                    code.Observable.Subscribe(
+                        function
+                        | DeferredState.Loaded _ -> js.highlightCode () |> ignore
+                        | _ -> ()
+                    )
+                ]
+            )
 
             html.watch (
                 code,

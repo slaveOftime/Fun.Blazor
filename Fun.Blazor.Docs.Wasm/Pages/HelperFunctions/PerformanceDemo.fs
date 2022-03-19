@@ -21,28 +21,26 @@ let virtualizeDemo =
             childContent $"Create {testLength} items for virtualize test"
         }
         div {
-            styleBuilder {
+            style {
                 maxHeight 100
                 overflowYAuto
             }
-            childContent [
-                Virtualize'() {
-                    Items items
-                    ChildContent(fun i ->
-                        div {
-                            styleBuilder { color "blue" }
-                            childContent $"item {i}"
-                        }
-                    )
-                }
-            ]
+            Virtualize'() {
+                Items items
+                ChildContent(fun i ->
+                    div {
+                        style { color "blue" }
+                        childContent $"item {i}"
+                    }
+                )
+            }
         }
     }
 
 
 let bigListDemo =
     MudPaper'() {
-        styleBuilder { padding 10 }
+        style { padding 10 }
         childContent [
             adaptiview () {
                 let! items, setItems = cval([||]).WithSetter()
@@ -60,7 +58,7 @@ let bigListDemo =
                     childContent [
                         for i in items do
                             div {
-                                styleBuilder { color "blue" }
+                                style { color "blue" }
                                 childContent $"item {i}"
                             }
                     ]
@@ -159,10 +157,10 @@ let multipleChanges =
 
 
 let performanceDemo =
-    div {
+    div.create [
         virtualizeDemo
         spaceV4
         bigListDemo
         spaceV4
         multipleChanges
-    }
+    ]

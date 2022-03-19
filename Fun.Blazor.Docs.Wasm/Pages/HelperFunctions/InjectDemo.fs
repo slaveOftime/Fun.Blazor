@@ -29,7 +29,7 @@ let externalDemo1 extenalX =
             )
 
             MudPaper'() {
-                styleBuilder { padding 10 }
+                style { padding 10 }
                 childContent [
                     MudText'.create "externalDemo1"
                     spaceV3
@@ -60,7 +60,7 @@ let injectDemo =
         )
 
         MudPaper'() {
-            styleBuilder { padding 15 }
+            style { padding 15 }
             childContent [
                 spaceV3
                 html.watch (

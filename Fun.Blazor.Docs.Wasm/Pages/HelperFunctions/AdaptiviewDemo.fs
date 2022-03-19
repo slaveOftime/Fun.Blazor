@@ -36,56 +36,58 @@ let adaptiviewDemo1 =
         )
 
         MudPaper'() {
-            styleBuilder { padding 20 }
-            styleBuilder { padding 20 }
+            style { padding 20 }
+            style { padding 20 }
             childContent [
                 adaptiview () {
                     // let! will let the reactive to listen to related source(IStore<_>, aval<_>) changes, and trigger render accordingly
                     let! s1 = store1
                     let! s2 = store2
                     let! s4 = store4
-                    MudText'.create $"Store1 {s1}"
-                    MudText'.create $"Store4 {s4}"
-                    if (s1 > 5 && s1 < 10) || s2 > 15 then
-                        adaptiview () {
-                            let! s3 = store3
-                            MudText'.create $"Store2 {s2}"
-                            MudText'.create $"Store3 {s3}"
-                        }
-                    for i in 0..s1 do
-                        if i % 2 = 0 then
-                            adaptiview i {
+                    html.fragment [
+                        MudText'.create $"Store1 {s1}"
+                        MudText'.create $"Store4 {s4}"
+                        if (s1 > 5 && s1 < 10) || s2 > 15 then
+                            adaptiview () {
                                 let! s3 = store3
-                                MudText'.create $"Seq {i} {s3}"
+                                MudText'.create $"Store2 {s2}"
+                                MudText'.create $"Store3 {s3}"
                             }
-                    MudButton'() {
-                        OnClick(fun _ -> isVisible.Publish true)
-                        childContent "Open Dialog"
-                    }
-                    adaptiview () {
-                        let! isVisible' = isVisible
-                        MudOverlay'() {
-                            Visible isVisible'
-                            DarkBackground true
-                            childContent [
-                                MudPaper'() {
-                                    style {
-                                        padding 10
-                                        width 200
-                                        height 80
-                                    }
-                                    childContent [
-                                        MudText'.create $"Store1 {s1}"
-                                        MudButton'() {
-                                            OnClick(fun _ -> isVisible.Publish false)
-                                            Variant Variant.Filled
-                                            childContent "Close"
-                                        }
-                                    ]
+                        for i in 0..s1 do
+                            if i % 2 = 0 then
+                                adaptiview i {
+                                    let! s3 = store3
+                                    MudText'.create $"Seq {i} {s3}"
                                 }
-                            ]
+                        MudButton'() {
+                            OnClick(fun _ -> isVisible.Publish true)
+                            childContent "Open Dialog"
                         }
-                    }
+                        adaptiview () {
+                            let! isVisible' = isVisible
+                            MudOverlay'() {
+                                Visible isVisible'
+                                DarkBackground true
+                                childContent [
+                                    MudPaper'() {
+                                        style {
+                                            padding 10
+                                            width 200
+                                            height 80
+                                        }
+                                        childContent [
+                                            MudText'.create $"Store1 {s1}"
+                                            MudButton'() {
+                                                OnClick(fun _ -> isVisible.Publish false)
+                                                Variant Variant.Filled
+                                                childContent "Close"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    ]
                 }
             ]
         }
@@ -105,35 +107,37 @@ let adaptiviewDemo2 =
         adaptiview () {
             let! n1 = number1
 
-            div { $"Number1 = {n1}" }
-            adaptiview () {
-                let! n2 = number2
-                div.create $"Number2 = {n2}"
-                MudButton'() {
-                    OnClick(fun _ -> number2.Publish((+) 1))
-                    childContent "Increase Number2"
-                }
-            }
-            adaptiview () {
-                let! n3 = number3
-                let! n4 = number4
-                let! n5 = number5
-                let! n6 = number6
-                div { $"Number3 = {n3}; Number4 = {n4}; Number5 = {n5}; Number6 = {n6}" }
-            }
-            MudButtonGroup'() {
-                Variant Variant.Filled
-                childContent [
-                    MudButton'() {
-                        OnClick(fun _ -> number1.Publish((+) 1))
-                        childContent "Increase Number1"
-                    }
+            html.fragment [
+                div { $"Number1 = {n1}" }
+                adaptiview () {
+                    let! n2 = number2
+                    div.create $"Number2 = {n2}"
                     MudButton'() {
                         OnClick(fun _ -> number2.Publish((+) 1))
                         childContent "Increase Number2"
                     }
-                ]
-            }
+                }
+                adaptiview () {
+                    let! n3 = number3
+                    let! n4 = number4
+                    let! n5 = number5
+                    let! n6 = number6
+                    div { $"Number3 = {n3}; Number4 = {n4}; Number5 = {n5}; Number6 = {n6}" }
+                }
+                MudButtonGroup'() {
+                    Variant Variant.Filled
+                    childContent [
+                        MudButton'() {
+                            OnClick(fun _ -> number1.Publish((+) 1))
+                            childContent "Increase Number1"
+                        }
+                        MudButton'() {
+                            OnClick(fun _ -> number2.Publish((+) 1))
+                            childContent "Increase Number2"
+                        }
+                    ]
+                }
+            ]
         }
     )
 

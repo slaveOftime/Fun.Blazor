@@ -7,9 +7,7 @@ open Bolero
 
 
 let private boleroDemo =
-    Html.div [
-        Html.attr.style "background-color: red;"
-    ] [
+    Html.div [ Html.attr.style "background-color: red;" ] [
         Html.text "Below we are using Fun.Blazor in bolero node tree"
         html.funFragment (
             div {

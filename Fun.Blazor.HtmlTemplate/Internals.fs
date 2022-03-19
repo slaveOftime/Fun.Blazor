@@ -86,8 +86,7 @@ let buildRawNodes (str: string) =
 
 
 let buildAttrs (name: string, value: string) =
-    let inline invokeFunction (fn: obj) (x: obj) =
-        fn.GetType().InvokeMember("Invoke", Reflection.BindingFlags.InvokeMethod, null, fn, [| x |])
+    let inline invokeFunction (fn: obj) (x: obj) = fn.GetType().InvokeMember("Invoke", Reflection.BindingFlags.InvokeMethod, null, fn, [| x |])
 
     let nameMatches = formatHoleRegex.Matches name
     let valueMatches = formatHoleRegex.Matches value
@@ -142,12 +141,12 @@ let buildAttrs (name: string, value: string) =
                 sb.Append(string arg) |> ignore
 
             let name = makeName args
-            if String.IsNullOrEmpty name then emptyAttr() else name => (sb.ToString())
+            if String.IsNullOrEmpty name then emptyAttr () else name => (sb.ToString())
         )
     elif nameMatches.Count > 0 then
         AttrMk(fun args ->
             let name = makeName args
-            if String.IsNullOrEmpty name then emptyAttr() else name => value
+            if String.IsNullOrEmpty name then emptyAttr () else name => value
         )
     else
         Attr(name => value)
@@ -172,7 +171,7 @@ let mergeAttrs (items: AttrItem seq) =
 
 let rebuildNodes (nodes: NodeItem seq) (args: obj []) =
     let rec loopNodes (nodes: NodeItem seq) : NodeRenderFragment =
-        fragment {
+        html.fragment [
             for node in nodes do
                 match node with
                 | Node x -> x
@@ -187,7 +186,7 @@ let rebuildNodes (nodes: NodeItem seq) (args: obj []) =
                         ]
                         loopNodes nodes
                     }
-        }
+        ]
 
     loopNodes nodes
 
