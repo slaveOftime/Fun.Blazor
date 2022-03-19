@@ -12,6 +12,7 @@ type EltBuilder(name) =
     interface IElementBuilder with
         member _.Name: string = name
 
+
     member inline this.Run([<InlineIfLambda>] render: AttrRenderFragment) =
         NodeRenderFragment(fun comp builder index ->
             builder.OpenElement(index, (this :> IElementBuilder).Name)
@@ -29,6 +30,42 @@ type EltBuilder(name) =
         )
 
     member inline _.For([<InlineIfLambda>] render: NodeRenderFragment, [<InlineIfLambda>] fn: unit -> NodeRenderFragment) = render >=> (fn ())
+
+    
+    /// Create empty element
+    member this.create() =
+        NodeRenderFragment(fun _ builder index ->
+            builder.OpenElement(index, (this :> IElementBuilder).Name)
+            builder.CloseElement()
+            index + 1
+        )
+
+    member this.create(childItems: NodeRenderFragment seq) =
+        NodeRenderFragment(fun comp builder index ->
+            builder.OpenElement(index, (this :> IElementBuilder).Name)
+
+            let render = childItems |> Seq.fold (>=>) (emptyNode ())
+            let nextIndex = render.Invoke(comp, builder, index + 1)
+
+            builder.CloseElement()
+            nextIndex
+        )
+
+    member inline this.create(x: string) =
+        NodeRenderFragment(fun _ builder index ->
+            builder.OpenElement(index, (this :> IElementBuilder).Name)
+            builder.AddContent(index + 1, x)
+            builder.CloseElement()
+            index + 2
+        )
+
+    member inline this.create(x: float) =
+        NodeRenderFragment(fun _ builder index ->
+            builder.OpenElement(index, (this :> IElementBuilder).Name)
+            builder.AddContent(index + 1, x)
+            builder.CloseElement()
+            index + 2
+        )
 
 
 type EltWithChildBuilder(name) =
@@ -78,8 +115,7 @@ type EltWithChildBuilder(name) =
 
     member inline _.Yield([<InlineIfLambda>] x: NodeRenderFragment) = x
 
-    member inline _.Delay([<InlineIfLambda>] fn: unit -> NodeRenderFragment) =
-        NodeRenderFragment(fun c b i -> fn().Invoke(c, b, i))
+    member inline _.Delay([<InlineIfLambda>] fn: unit -> NodeRenderFragment) = NodeRenderFragment(fun c b i -> fn().Invoke(c, b, i))
 
     /// We should only allow merge AttrRenderFragment with NodeRenderFragment.
     /// Instead of merge NodeRenderFragment with AttrRenderFragment because blazor only allow add attribute then child.
@@ -90,8 +126,7 @@ type EltWithChildBuilder(name) =
 
     member inline _.For([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> NodeRenderFragment) = render >>> (fn ())
 
-    member inline _.For(renders: 'T seq, [<InlineIfLambda>] fn: 'T -> NodeRenderFragment) =
-        renders |> Seq.map fn |> Seq.fold (>=>) (emptyNode ())
+    member inline _.For(renders: 'T seq, [<InlineIfLambda>] fn: 'T -> NodeRenderFragment) = renders |> Seq.map fn |> Seq.fold (>=>) (emptyNode ())
 
     member inline _.YieldFrom(renders: NodeRenderFragment seq) = renders |> Seq.fold (>=>) (emptyNode ())
 
@@ -135,7 +170,6 @@ type EltWithChildBuilder(name) =
     /// </code>
     /// </example>
     [<CustomOperation("childContent")>]
-    //[<Obsolete "This is not recommend, please use fragment or remove childContent and yield your content directly.">]
     member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, renders: NodeRenderFragment seq) =
         NodeRenderFragment(fun comp builder index ->
             let mutable index = render.Invoke(comp, builder, index)
@@ -508,7 +542,23 @@ module Elts =
     let cssBuilder = Fun.Css.CssBuilder()
 
     /// Short name for StyleBuilder
-    let style'' = styleBuilder
+    let style = styleBuilder
 
+    /// <summary>
     /// Short name for cssBuilder
-    let css'' = cssBuilder
+    /// You can use it as build block when you have complex logic for style
+    /// </summary>
+    /// <example>
+    /// <code lang="fsharp">
+    /// div {
+    ///     style {
+    ///         color "red"
+    ///         if true then
+    ///             css {
+    ///                 backgroundColor "green"
+    ///             }
+    ///     }
+    /// }
+    /// </code>
+    /// </example>
+    let css = cssBuilder

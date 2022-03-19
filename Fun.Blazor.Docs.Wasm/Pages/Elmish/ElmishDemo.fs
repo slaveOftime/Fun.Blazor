@@ -40,7 +40,7 @@ let update msg model =
         )
 
 let view model dispatch =
-    html.div [
+    div.create [
         MudText'() {
             Typo Typo.h6
             Color Color.Primary

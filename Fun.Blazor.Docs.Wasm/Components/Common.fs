@@ -5,9 +5,9 @@ open MudBlazor
 open Fun.Blazor
 
 
-let private spaceV (x: int) = div { style'' { height x } }
+let private spaceV (x: int) = div { style { height x } }
 
-let private spaceH (x: int) = span { style'' { width x } }
+let private spaceH (x: int) = span { style { width x } }
 
 let spaceV1 = spaceV 2
 let spaceV2 = spaceV 6
@@ -27,16 +27,13 @@ let linearProgress =
     }
 
 
-let simplePage
-    (url: string)
-    (titleStr: string)
-    (subTitle: string)
-    (description: string)
-    (demos: NodeRenderFragment)
-    =
-    html.div [
-        attr.styles [ style.marginTop 20; style.marginBottom 20 ]
-        attr.childContent [
+let simplePage (url: string) (titleStr: string) (subTitle: string) (description: string) (demos: NodeRenderFragment) =
+    div {
+        style {
+            marginTop 20
+            marginBottom 20
+        }
+        childContent [
             MudContainer'() {
                 MaxWidth MaxWidth.Large
                 MudContainer'() {
@@ -68,4 +65,4 @@ let simplePage
                 demos
             }
         ]
-    ]
+    }

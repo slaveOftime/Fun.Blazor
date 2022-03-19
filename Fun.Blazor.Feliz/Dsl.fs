@@ -39,4 +39,6 @@ let svg =
 let attr =
     FunBlazorAttrEngine((fun k v -> k => v), (fun k v -> if v then k => null else Internal.emptyAttr()))
 
-let style = Feliz.CssEngine(fun k v -> k, v)
+/// Feliz is not recommend, so will reserve style for CE builder
+/// If you do not use CE build, you can just create an alias "style" for styl
+let styl = Feliz.CssEngine(fun k v -> k, v)

@@ -21,6 +21,3 @@ type Benchmarks() =
 
     [<Benchmark>]
     member _.BuildRenderTreeWithFeliz() = FelizComponent().Build()
-
-    [<Benchmark>]
-    member _.BuildRenderTreeWithCEFeliz() = CEFelizComponent().Build()

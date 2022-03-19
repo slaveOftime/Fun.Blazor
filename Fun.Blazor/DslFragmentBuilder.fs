@@ -62,4 +62,6 @@ type FragmentBuilder() =
 [<AutoOpen>]
 module FragmentBuilderUtils =
 
+    /// When child items are not too much, we can use this.
+    /// To handling a lot of items, please use html.fragment for better intellicense performance
     let fragment = FragmentBuilder()

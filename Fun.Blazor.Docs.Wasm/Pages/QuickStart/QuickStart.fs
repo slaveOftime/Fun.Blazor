@@ -14,9 +14,9 @@ let quickStart =
         "Fun.Blazor"
         "This is a project to make F# developer to write blazor easier."
         "It is based on Bolero and Feliz.Engine"
-        (fragment {
+        (html.fragment [
             div {
-                style'' { margin 20 }
+                style { margin 20 }
                 class' "d-flex justify-center"
                 MudButton'() {
                     Link "./cli-usage"
@@ -26,4 +26,4 @@ let quickStart =
                 }
             }
             sourceSection "README"
-         })
+         ])

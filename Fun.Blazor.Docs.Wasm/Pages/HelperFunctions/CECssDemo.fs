@@ -10,19 +10,19 @@ type CssBuilder with
 
     /// Inline them to get better performance (faster and less allocation)
     /// CombineKeyValue is just a delegate which can pass StringBuilder in and out to concat piece of string together
-    /// Finally when style'' execute, it will invoke the delegate and append all strings together, then make an attribute for blazor element or componennt
+    /// Finally when style execute, it will invoke the delegate and append all strings together, then make an attribute for blazor element or componennt
     [<CustomOperation("myStyles")>]
     member inline _.myStyles([<InlineIfLambda>] comb: CombineKeyValue) =
         comb
-        &&& css'' {
-                custom "border-bottom" "8px solid blue"
-                backgroundBlendModeColor
-            }
+        &&& css {
+            custom "border-bottom" "8px solid blue"
+            backgroundBlendModeColor
+        }
 
 
 let ceCssDemo =
     div {
-        style'' {
+        style {
             color color.darkRed
             backgroundColor color.green
             height "10%"
@@ -32,9 +32,9 @@ let ceCssDemo =
             flexWrapWrap
             myStyles
         }
-        for _ in 1 .. 10 do
+        for _ in 1..10 do
             div {
-                style'' {
+                style {
                     width 100
                     height 30
                     // only support if
@@ -48,15 +48,15 @@ let ceCssDemo =
                 }
             }
         div {
-            style'' {
+            style {
                 width 100
                 height 30
                 // But you can yield another CombineKeyValue delegate like:
-                // css'' is short name to build a CssBuilder which will return as a CombineKeyValue delegate
+                // css is short name to build a CssBuilder which will return as a CombineKeyValue delegate
                 match 1 with
-                | 1 -> css'' { backgroundColor "red" }
-                | 2 -> css'' { backgroundColor "blue" }
-                | _ -> css'' { backgroundColor "green" }
+                | 1 -> css { backgroundColor "red" }
+                | 2 -> css { backgroundColor "blue" }
+                | _ -> css { backgroundColor "green" }
             }
         }
     }

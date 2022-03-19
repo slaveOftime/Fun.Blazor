@@ -17,6 +17,8 @@ type html() =
     static member mergeAttrs attrs = attrs |> Seq.fold (==>) (emptyAttr ())
     static member mergeNodes nodes = nodes |> Seq.fold (>=>) (emptyNode ())
 
+    static member fragment nodes = html.mergeNodes nodes
+
 
     static member internal compCache = lazy (fun () -> ConcurrentDictionary<Type, Reflection.PropertyInfo []>())
 

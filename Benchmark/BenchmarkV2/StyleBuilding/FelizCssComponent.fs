@@ -1,8 +1,6 @@
 ﻿namespace Benchmark.StyleBuilding
 
-open System.Text
 open Microsoft.AspNetCore.Components.Rendering
-open BenchmarkDotNet.Attributes
 open Fun.Blazor
 open Fun.Css
 open Feliz
@@ -10,6 +8,8 @@ open Feliz
 
 type FelizCssComponent() =
     inherit FunBlazorComponent()
+
+    let style = styl
 
     member this.Build() =
         use builder = new RenderTreeBuilder()

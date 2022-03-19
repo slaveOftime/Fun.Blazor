@@ -101,36 +101,6 @@ type DomAttrBuilder() =
     [<CustomOperation("class'")>]
     member inline _.class'([<InlineIfLambda>] render: AttrRenderFragment, v: string) = render ==> (html.class' v)
 
-    /// This is a helper function which can be used together with VSCode extension "Highlight HTML/SQL templates in F#"
-    /// You must follow below format
-    /// css """_{
-    ///     color: red;
-    /// }"""
-    ///
-    /// Please be careful when you want to interop some values in it or you have special char like % you should do things like:
-    /// css $"""_{{
-    ///     width: {yourWeight}px;
-    ///     height: 100%%;
-    /// }}"""
-    ///
-    [<CustomOperation("css")>]
-    member _.css(render: AttrRenderFragment, css: string) =
-        let result =
-            if String.IsNullOrEmpty css then
-                ""
-            elif css.StartsWith "_{" then
-                let lastEndIndex = css.LastIndexOf "}"
-                if css.Substring(lastEndIndex + 1).Trim().Split("\n")
-                   |> Seq.filter (String.IsNullOrEmpty >> not)
-                   |> Seq.length = 0 then
-                    css.Substring(2, lastEndIndex - 2).Split("\n") |> Seq.map (fun x -> x.Trim()) |> String.concat " "
-                else
-                    css
-            else
-                css
-
-        render ==> (html.style result)
-
     [<CustomOperation("style'")>]
     member inline _.style([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.style x
 

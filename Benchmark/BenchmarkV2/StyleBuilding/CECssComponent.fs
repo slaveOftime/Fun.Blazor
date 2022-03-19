@@ -1,8 +1,6 @@
 ﻿namespace Benchmark.StyleBuilding
 
-open System.Text
 open Microsoft.AspNetCore.Components.Rendering
-open BenchmarkDotNet.Attributes
 open Fun.Blazor
 open Fun.Css
 open Feliz
@@ -18,7 +16,7 @@ type CECssComponent() =
     override _.Render() =
         let count = 1
         div {
-            style'' {
+            style {
                 color color.darkRed
                 backgroundColor color.green
                 height "10%"
@@ -28,15 +26,15 @@ type CECssComponent() =
                 flexWrapWrap
                 match count with
                 | 0 ->
-                    css'' {
+                    css {
                         zIndex 10
                         alignContentFlexEnd
                     }
                 | 1 ->
-                    css'' {
+                    css {
                         zIndex 16
                         alignContentFlexStart
                     }
-                | _ -> css'' { alignContentInitial }
+                | _ -> css { alignContentInitial }
             }
         }

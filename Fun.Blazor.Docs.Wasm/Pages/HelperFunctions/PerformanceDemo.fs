@@ -17,7 +17,7 @@ let virtualizeDemo =
 
         MudButton'() {
             Variant Variant.Filled
-            OnClick(fun _ -> setItems [| 1 .. testLength |])
+            OnClick(fun _ -> setItems [| 1..testLength |])
             childContent $"Create {testLength} items for virtualize test"
         }
         div {
@@ -48,11 +48,11 @@ let bigListDemo =
                 let! items, setItems = cval([||]).WithSetter()
                 MudButton'() {
                     Variant Variant.Filled
-                    OnClick(fun _ -> setItems [| 1 .. testLength |])
+                    OnClick(fun _ -> setItems [| 1..testLength |])
                     childContent $"Create {testLength} items for CE style"
                 }
                 div {
-                    styleBuilder {
+                    style {
                         marginTop 10
                         maxHeight 100
                         overflowYAuto
@@ -71,19 +71,23 @@ let bigListDemo =
                 let! items, setItems = cval([||]).WithSetter()
                 MudButton'() {
                     Variant Variant.Filled
-                    OnClick(fun _ -> setItems [| 1 .. 10_000 |])
+                    OnClick(fun _ -> setItems [| 1..10_000 |])
                     childContent $"Create {testLength} items feliz style"
                 }
-                html.div [
-                    attr.styles [ style.marginTop 10; style.maxHeight 100; style.overflowYAuto ]
-                    attr.childContent [
+                div {
+                    style {
+                        marginTop 10
+                        maxHeight 100
+                        overflowYAuto
+                    }
+                    childContent [
                         for i in items do
-                            html.div [
-                                attr.styles [ style.color "green" ]
-                                attr.childContent [ html.text $"item {i}" ]
-                            ]
+                            div {
+                                style { color "green" }
+                                $"item {i}"
+                            }
                     ]
-                ]
+                }
             }
         ]
     }
@@ -125,11 +129,11 @@ let multipleChanges =
                     OnClick(fun _ ->
                         // By this we cannot avoid multiple time calculation
                         // Because Publish method already called transact
-                        transact
-                        <| fun _ ->
+                        transact (fun _ ->
                             v1.Publish((+) 1)
                             v2.Publish((+) 1)
                             v3.Publish((+) 1)
+                        )
                     )
                     childContent "Change all with nested transact"
                 }
@@ -144,14 +148,21 @@ let multipleChanges =
             ]
         }
         div {
-            styleBuilder {
+            style {
                 marginTop 10
                 fontWeightBold
                 color "blue"
             }
-            childContent $"v1 = {n1}; v2 = {n2}; v3 = {n3}"
+            $"v1 = {n1}; v2 = {n2}; v3 = {n3}"
         }
     }
 
 
-let performanceDemo = html.div [ virtualizeDemo; spaceV4; bigListDemo; spaceV4; multipleChanges ]
+let performanceDemo =
+    div {
+        virtualizeDemo
+        spaceV4
+        bigListDemo
+        spaceV4
+        multipleChanges
+    }

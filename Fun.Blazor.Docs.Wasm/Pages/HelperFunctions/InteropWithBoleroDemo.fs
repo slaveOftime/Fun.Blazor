@@ -13,7 +13,7 @@ let private boleroDemo =
         Html.text "Below we are using Fun.Blazor in bolero node tree"
         html.funFragment (
             div {
-                style'' {
+                style {
                     padding 10
                     color "white"
                     backgroundColor "blue"

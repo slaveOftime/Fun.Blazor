@@ -11,8 +11,8 @@ open Microsoft.Extensions.ObjectPool
 
 
 module Internal =
-    let inline emptyAttr () = AttrRenderFragment(fun _ _ i -> i)
-    let inline emptyNode () = NodeRenderFragment(fun _ _ i -> i)
+    let inline emptyAttr () = AttrRenderFragment(fun _ _ i -> i + 1)
+    let inline emptyNode () = NodeRenderFragment(fun _ _ i -> i + 1)
 
 
     let objectPoolProvider = DefaultObjectPoolProvider()
@@ -33,26 +33,24 @@ module Internal =
     type ILogger with
 
         member this.LogDebugForPerf fn =
-    #if DEBUG
+#if DEBUG
             let sw = Stopwatch.StartNew()
             this.LogDebug($"Function started")
             let result = fn ()
             this.LogDebug($"Function finished in {sw.ElapsedMilliseconds}")
             result
-    #else
+#else
             fn ()
-    #endif
+#endif
 
 
 module Observable =
-    let ofTask (x: Task<_>) =
-        Observable.FromAsync(fun (token: Threading.CancellationToken) -> x)
+    let ofTask (x: Task<_>) = Observable.FromAsync(fun (token: Threading.CancellationToken) -> x)
 
 
 type IComponent with
 
-    member comp.Render(fragment: NodeRenderFragment) =
-        RenderFragment(fun builder -> fragment.Invoke(comp, builder, 0) |> ignore)
+    member comp.Render(fragment: NodeRenderFragment) = RenderFragment(fun builder -> fragment.Invoke(comp, builder, 0) |> ignore)
 
     member comp.Callback<'T>(fn: 'T -> unit) = EventCallback.Factory.Create<'T>(comp, fn)
     member comp.Callback<'T>(fn: 'T -> Task) = EventCallback.Factory.Create<'T>(comp, fn)

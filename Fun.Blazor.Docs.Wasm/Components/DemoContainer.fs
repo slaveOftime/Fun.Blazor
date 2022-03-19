@@ -15,16 +15,18 @@ let demoDivider =
 
 let demoContainer (titleStr: string) fileName (demo: NodeRenderFragment) =
     div {
-        style'' { margin 10 }
-        MudText'() {
-            Typo Typo.h6
-            titleStr
-        }
-        spaceV2
-        MudPaper'() {
-            Elevation 40
-            demo
-        }
-        spaceV2
-        sourceSection fileName
+        style { margin 10 }
+        childContent [
+            MudText'() {
+                Typo Typo.h6
+                titleStr
+            }
+            spaceV2
+            MudPaper'() {
+                Elevation 40
+                demo
+            }
+            spaceV2
+            sourceSection fileName
+        ]
     }
