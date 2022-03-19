@@ -134,22 +134,6 @@ dotnet new --install Fun.Blazor.Templates::2.0.0-beta013
     }
     ```
 
-    Or
-
-    ```fsharp
-    let fragment1 = ✅
-        fragment {
-            bunch of items
-        }
-
-    div {
-        onclick ignore
-        other attrs
-        div { "hi" }
-        fragment1
-    }
-    ```
-
     Instead of below:
 
     ```fsharp
@@ -176,7 +160,7 @@ dotnet new --install Fun.Blazor.Templates::2.0.0-beta013
     div {
         some other attibutes
         ref ... ✅
-        child items like: div {}
+        child items like: div {} or use childContent [ ... ]
     }
     ```
 
@@ -236,9 +220,11 @@ You can try this:
     let comp1 =
         html.inject (fun (svc1, shareStore: IShareStore, ...) ->
             div {
-                fragment1
-                fragment2 shareStore
-                fragment3
+                childContent [
+                    fragment1
+                    fragment2 shareStore
+                    fragment3
+                ]
             }
         )
 ```
