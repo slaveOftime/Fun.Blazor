@@ -135,5 +135,6 @@ let app =
                     }
                 }
             }
+            interopScript
         }
     )

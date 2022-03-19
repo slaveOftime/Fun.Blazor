@@ -4,7 +4,6 @@ open System
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.AspNetCore.Components.WebAssembly.Hosting
 open MudBlazor.Services
-open Plk.Blazor.DragDrop
 open Fun.Blazor
 open Fun.Blazor.Docs.Wasm
 
@@ -21,8 +20,6 @@ builder
 builder
     .Services
     .AddFunBlazorWasm()
-    .AddAntDesign()
     .AddMudServices()
-    .AddBlazorDragDrop()
 
 builder.Build().RunAsync()

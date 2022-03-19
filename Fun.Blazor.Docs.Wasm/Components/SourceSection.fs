@@ -6,9 +6,10 @@ open System.Threading.Tasks
 open FSharp.Control.Reactive
 open Microsoft.Extensions.Configuration
 open Microsoft.AspNetCore.Hosting
+open Microsoft.JSInterop
 open MudBlazor
-open Fun.Blazor
 open Fun.Result
+open Fun.Blazor
 
 
 let private deferredObserve (data: Task<Result<string, string>>) =
@@ -61,7 +62,7 @@ let private getFromGithub (fileName: string) =
 let sourceSection fileName =
     html.inject (
         fileName,
-        fun (env: IHostingEnvironment, config: IConfiguration, globalStore: IGlobalStore) ->
+        fun (env: IHostingEnvironment, config: IConfiguration, globalStore: IGlobalStore, hook: IComponentHook, js: IJSRuntime) ->
             let code =
                 globalStore.CreateDeferred(
                     $"code-source-{fileName}",
@@ -71,6 +72,8 @@ let sourceSection fileName =
                         else
                             getFromGithub fileName
                 )
+
+            hook.OnFirstAfterRender.Add(fun () -> js.highlightCode () |> ignore)
 
             html.watch (
                 code,
@@ -86,8 +89,6 @@ let sourceSection fileName =
                             class' "markdown-body"
                             html.raw codes
                         }
-                        script { src "https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/components/prism-core.min.js" }
-                        script { src "https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/plugins/autoloader/prism-autoloader.min.js" }
                     }
                 | DeferredState.LoadFailed e ->
                     MudAlert'() {

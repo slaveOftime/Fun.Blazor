@@ -4,106 +4,89 @@ module Fun.Blazor.Docs.Wasm.Nav
 open Fun.Blazor
 open Fun.Blazor.Router
 open MudBlazor
-open Fun.Blazor.Docs.Wasm.DemoMudBlazor
-open Fun.Blazor.Docs.Wasm.DemoAntDesign
-open Fun.Blazor.Docs.Wasm.DemoFluentUI
-open Fun.Blazor.Docs.Wasm.DemoDragDrop
 open Fun.Blazor.Docs.Wasm.Components
 open Fun.Blazor.Docs.Wasm.Pages
 
 
 let navmenu =
     MudNavMenu'() {
-        MudNavLink'() {
-            Href "./quick-start"
-            "Quick start"
-        }
-        MudNavLink'() {
-            Href "./router"
-            "Router"
-        }
-        MudNavLink'() {
-            Href "./adaptive-form"
-            "Adaptive Form"
-        }
-        MudNavLink'() {
-            Href "./elmish"
-            "Elmish"
-        }
-        MudNavLink'() {
-            Href "./cli-usage"
-            "Cli usage"
-        }
-        MudNavLink'() {
-            Href "./tests"
-            "Tests"
-        }
-        MudNavGroup'() {
-            Title "Helper functions"
-            Icon Icons.Material.Filled.LiveHelp
-            Expanded true
+        childContent [
             MudNavLink'() {
-                Href "./helper-functions/html-inject"
-                "html.inject"
+                Href "./quick-start"
+                "Quick start"
             }
             MudNavLink'() {
-                Href "./helper-functions/component-hook"
-                "IComponentHook"
+                Href "./router"
+                "Router"
             }
             MudNavLink'() {
-                Href "./helper-functions/adaptiview"
-                "adaptiview"
+                Href "./adaptive-form"
+                "Adaptive Form"
             }
             MudNavLink'() {
-                Href "./helper-functions/html-watch"
-                "html.watch"
+                Href "./hot-reload"
+                "HotReload"
             }
             MudNavLink'() {
-                Href "./helper-functions/html-template-demo"
-                "Html Template Demo"
+                Href "./elmish"
+                "Elmish"
             }
             MudNavLink'() {
-                Href "./helper-functions/global-store"
-                "Global store"
+                Href "./cli-usage"
+                "Cli usage"
             }
             MudNavLink'() {
-                Href "./helper-functions/performance"
-                "Performance"
+                Href "./tests"
+                "Tests"
             }
-            MudNavLink'() {
-                Href "./helper-functions/ce-css-builder"
-                "CE style css builder"
+            MudNavGroup'() {
+                Title "Helper functions"
+                Icon Icons.Material.Filled.LiveHelp
+                Expanded true
+                childContent [
+                    MudNavLink'() {
+                        Href "./helper-functions/html-inject"
+                        "html.inject"
+                    }
+                    MudNavLink'() {
+                        Href "./helper-functions/component-hook"
+                        "IComponentHook"
+                    }
+                    MudNavLink'() {
+                        Href "./helper-functions/adaptiview"
+                        "adaptiview"
+                    }
+                    MudNavLink'() {
+                        Href "./helper-functions/html-watch"
+                        "html.watch"
+                    }
+                    MudNavLink'() {
+                        Href "./helper-functions/html-template-demo"
+                        "Html Template Demo"
+                    }
+                    MudNavLink'() {
+                        Href "./helper-functions/global-store"
+                        "Global store"
+                    }
+                    MudNavLink'() {
+                        Href "./helper-functions/performance"
+                        "Performance"
+                    }
+                    MudNavLink'() {
+                        Href "./helper-functions/ce-css-builder"
+                        "CE style css builder"
+                    }
+                    MudNavLink'() {
+                        Href "./helper-functions/blazor"
+                        "Blazor interop"
+                    }
+                    MudNavLink'() {
+                        Href "./helper-functions/bolero"
+                        "Bolero interop"
+                    }
+                ]
             }
-            MudNavLink'() {
-                Href "./helper-functions/blazor"
-                "Blazor interop"
-            }
-            MudNavLink'() {
-                Href "./helper-functions/bolero"
-                "Bolero interop"
-            }
-        }
-        MudNavGroup'() {
-            Title "Demos"
-            Icon Icons.Material.Filled.School
-            Expanded true
-            MudNavLink'() {
-                Href "./mudblazor"
-                "MudBlazor"
-            }
-            MudNavLink'() {
-                Href "./antdesign"
-                "Antdesign"
-            }
-            MudNavLink'() {
-                Href "./fluentui"
-                "FluentUI"
-            }
-            MudNavLink'() {
-                Href "./drag-drop"
-                "Drag Drop"
-            }
-        }
+        ]
     }
 
 
@@ -113,6 +96,7 @@ let routes =
         routeCi
             "/adaptive-form"
             (demoContainer "Adaptive Form" $"Pages/HelperFunctions/AdaptiveFromDemo" HelperFunctions.AdaptiveFormDemo.adaptiveFormDemo)
+        routeCi "/hot-reload" HotReload.HotReload.hotReload
         routeCi "/elmish" Elmish.Elmish.elmish
         subRouteCi
             "/helper-functions"
@@ -148,8 +132,4 @@ let routes =
             ]
         routeCi "/cli-usage" CliUsage.CliUsage.cliUsage
         routeCi "/tests" Tests.Tests.tests
-        routeCi "/antdesign" demoAntDesign
-        routeCi "/fluentui" demoFluentUI
-        routeCi "/drag-drop" demoDragDrop
-        routeCi "/mudblazor" demoMudBlazor
     ]
