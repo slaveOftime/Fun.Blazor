@@ -12,7 +12,7 @@ The basic steps:
 
 1. Define entry point
 
-    You can pick a component as an entry point and replace it with below code at its use place. Add **// hot-reload** at the top of the usage file (**entry file**).
+    You can pick a component as an entry point and replace it with below code at its usage place.
 
     When you have multiple projects, to get better performance. You can have multiple entry for every project. You can use the last parameter to target to different cli watch host.
 
