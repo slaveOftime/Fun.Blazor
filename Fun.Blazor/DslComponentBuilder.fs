@@ -91,6 +91,14 @@ type ComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent>(
         )
 
 
+    static member inline create() =
+        NodeRenderFragment(fun _ builder index ->
+            builder.OpenComponent<'T>(index)
+            builder.CloseComponent()
+            index + 1
+        )
+
+
 type ComponentWithChildBuilder<'T when 'T :> IComponent>() =
     inherit ComponentBuilder<'T>()
 
@@ -209,6 +217,51 @@ type ComponentWithChildBuilder<'T when 'T :> IComponent>() =
         render ==> html.renderFragment ("ChildContent", html.text v)
 
 
+    static member inline create(x: int) =
+        NodeRenderFragment(fun comp builder index ->
+            builder.OpenComponent<'T>(index)
+            let nextIndex =
+                html.renderFragment("ChildContent", html.text x).Invoke(comp, builder, index + 1)
+            builder.CloseComponent()
+            nextIndex
+        )
+
+    static member inline create(x: string) =
+        NodeRenderFragment(fun comp builder index ->
+            builder.OpenComponent<'T>(index)
+            let nextIndex =
+                html.renderFragment("ChildContent", html.text x).Invoke(comp, builder, index + 1)
+            builder.CloseComponent()
+            nextIndex
+        )
+
+    static member inline create(x: float) =
+        NodeRenderFragment(fun comp builder index ->
+            builder.OpenComponent<'T>(index)
+            let nextIndex =
+                html.renderFragment("ChildContent", html.text x).Invoke(comp, builder, index + 1)
+            builder.CloseComponent()
+            nextIndex
+        )
+
+    static member inline create(x: NodeRenderFragment) =
+        NodeRenderFragment(fun comp builder index ->
+            builder.OpenComponent<'T>(index)
+            let nextIndex = html.renderFragment("ChildContent", x).Invoke(comp, builder, index + 1)
+            builder.CloseComponent()
+            nextIndex
+        )
+
+    static member inline create(x: NodeRenderFragment seq) =
+        NodeRenderFragment(fun comp builder index ->
+            builder.OpenComponent<'T>(index)
+            let nextIndex =
+                html.renderFragment("ChildContent", html.fragment x).Invoke(comp, builder, index + 1)
+            builder.CloseComponent()
+            nextIndex
+        )
+
+
 type ComponentWithDomAttrBuilder<'T when 'T :> IComponent>() =
     inherit DomAttrBuilder()
 
@@ -241,6 +294,14 @@ type ComponentWithDomAttrBuilder<'T when 'T :> IComponent>() =
         )
 
     member inline _.Delay([<InlineIfLambda>] fn: unit -> RefRenderFragment) = RefRenderFragment(fun c b i -> fn().Invoke(c, b, i))
+
+
+    static member inline create() =
+        NodeRenderFragment(fun _ builder index ->
+            builder.OpenComponent<'T>(index)
+            builder.CloseComponent()
+            index + 1
+        )
 
 
 type ComponentWithDomAndChildAttrBuilder<'T when 'T :> IComponent>() =
@@ -358,3 +419,48 @@ type ComponentWithDomAndChildAttrBuilder<'T when 'T :> IComponent>() =
     [<CustomOperation("childContent")>]
     member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, v: float) =
         render ==> html.renderFragment ("ChildContent", html.text v)
+
+
+    static member inline create(x: int) =
+        NodeRenderFragment(fun comp builder index ->
+            builder.OpenComponent<'T>(index)
+            let nextIndex =
+                html.renderFragment("ChildContent", html.text x).Invoke(comp, builder, index + 1)
+            builder.CloseComponent()
+            nextIndex
+        )
+
+    static member inline create(x: string) =
+        NodeRenderFragment(fun comp builder index ->
+            builder.OpenComponent<'T>(index)
+            let nextIndex =
+                html.renderFragment("ChildContent", html.text x).Invoke(comp, builder, index + 1)
+            builder.CloseComponent()
+            nextIndex
+        )
+
+    static member inline create(x: float) =
+        NodeRenderFragment(fun comp builder index ->
+            builder.OpenComponent<'T>(index)
+            let nextIndex =
+                html.renderFragment("ChildContent", html.text x).Invoke(comp, builder, index + 1)
+            builder.CloseComponent()
+            nextIndex
+        )
+
+    static member inline create(x: NodeRenderFragment) =
+        NodeRenderFragment(fun comp builder index ->
+            builder.OpenComponent<'T>(index)
+            let nextIndex = html.renderFragment("ChildContent", x).Invoke(comp, builder, index + 1)
+            builder.CloseComponent()
+            nextIndex
+        )
+
+    static member inline create(x: NodeRenderFragment seq) =
+        NodeRenderFragment(fun comp builder index ->
+            builder.OpenComponent<'T>(index)
+            let nextIndex =
+                html.renderFragment("ChildContent", html.fragment x).Invoke(comp, builder, index + 1)
+            builder.CloseComponent()
+            nextIndex
+        )

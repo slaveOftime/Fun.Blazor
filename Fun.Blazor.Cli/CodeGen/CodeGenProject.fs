@@ -66,7 +66,7 @@ module CodeGenProject =
 
 #if DEBUG
         let generatorProject =
-            __SOURCE_DIRECTORY__ </> ".." </> "Fun.Blazor.Generator" </> "Fun.Blazor.Generator.fsproj"
+            __SOURCE_DIRECTORY__ </> ".." </> ".." </> "Fun.Blazor.Generator" </> "Fun.Blazor.Generator.fsproj"
         Cli.Wrap("dotnet").WithArguments($"add reference {generatorProject}").WithWorkingDirectory(codeGenFolder).Run()
 #else
         let version =

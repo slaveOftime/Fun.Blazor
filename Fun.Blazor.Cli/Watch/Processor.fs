@@ -61,13 +61,16 @@ let private convFile (i: FSharpImplementationFileContents) =
 
 
 let private isFileHotReloadEnabled (file: string) =
-    use fs = File.Open(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)
-    use sr = new StreamReader(fs)
-    if sr.Peek() >= 0 then
-        if sr.ReadLine().Contains("// hot-reload", StringComparison.OrdinalIgnoreCase) then
-            true
+    if File.Exists file then
+        use fs = File.Open(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)
+        use sr = new StreamReader(fs)
+        if sr.Peek() >= 0 then
+            if sr.ReadLine().Contains("// hot-reload", StringComparison.OrdinalIgnoreCase) then
+                true
+            else
+                //printfn "ignored %s: because no \"// hot-reload\" at the top of the source file" x
+                false
         else
-            //printfn "ignored %s: because no \"// hot-reload\" at the top of the source file" x
             false
     else
         false
@@ -183,13 +186,12 @@ let process' sendCode (source: Source) (msbuildArgs: string list) =
             | err -> printfn "fslive: ERROR SENDING: %A" (err.ToString())
 
 
-        let changed why _ =
+        let changed why =
             try
                 printfn "fslive: COMPILING (%s)...." why
                 lastCompileStart <- System.DateTime.Now
 
-                let result =
-                    options.SourceFiles |> Array.filter isFileHotReloadEnabled |> checkFiles
+                let result = options.SourceFiles |> Array.filter isFileHotReloadEnabled |> checkFiles
 
                 match result with
                 | Result.Error res -> Result.Error res
@@ -210,9 +212,9 @@ let process' sendCode (source: Source) (msbuildArgs: string list) =
             let fileName = Path.GetFileName(sourceFile)
 
             printfn "fslive: WATCHING %s in %s" fileName path
-            
+
             let watcher = new FileSystemWatcher(path, fileName)
-            
+
             watcher.NotifyFilter <-
                 NotifyFilters.CreationTime
                 ||| NotifyFilters.DirectoryName
@@ -220,23 +222,23 @@ let process' sendCode (source: Source) (msbuildArgs: string list) =
                 ||| NotifyFilters.LastWrite
                 ||| NotifyFilters.Size
 
-            let fileChange msg e =
+            let fileChange msg path =
                 let lastWriteTime =
                     try
                         max (File.GetCreationTime(sourceFile)) (File.GetLastWriteTime(sourceFile))
                     with
                     | _ -> DateTime.MaxValue
                 printfn "change %s, lastCOmpileStart=%A, lastWriteTime = %O" sourceFile lastCompileStart lastWriteTime
-                if lastWriteTime > lastCompileStart then
+                if isFileHotReloadEnabled path && lastWriteTime > lastCompileStart then
                     let sw = System.Diagnostics.Stopwatch.StartNew()
                     printfn "changed %s" sourceFile
-                    changed msg e |> ignore
+                    changed msg |> ignore
                     printfn "finished changes in %d ms" sw.ElapsedMilliseconds
 
-            watcher.Changed.Add(fileChange (sprintf "Changed %s" fileName))
-            watcher.Created.Add(fileChange (sprintf "Created %s" fileName))
-            watcher.Deleted.Add(fileChange (sprintf "Deleted %s" fileName))
-            watcher.Renamed.Add(fileChange (sprintf "Renamed %s" fileName))
+            watcher.Changed.Add(fun e -> fileChange (sprintf "Changed %s" fileName) e.FullPath)
+            watcher.Created.Add(fun e -> fileChange (sprintf "Created %s" fileName) e.FullPath)
+            watcher.Deleted.Add(fun e -> fileChange (sprintf "Deleted %s" fileName) e.FullPath)
+            watcher.Renamed.Add(fun e -> fileChange (sprintf "Renamed %s" fileName) e.OldFullPath)
             watcher
 
 

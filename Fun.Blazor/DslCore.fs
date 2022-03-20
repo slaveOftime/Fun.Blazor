@@ -119,7 +119,7 @@ type html() =
             index + 1
         )
 
-    static member renderFragment(name: string, fragment: NodeRenderFragment) =
+    static member inline renderFragment(name: string, fragment: NodeRenderFragment) =
         AttrRenderFragment(fun comp builder index ->
             builder.AddAttribute(index, name, box (Microsoft.AspNetCore.Components.RenderFragment(fun tb -> fragment.Invoke(comp, tb, 0) |> ignore)))
             index + 1

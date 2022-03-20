@@ -20,7 +20,7 @@ type IStore<'T> with
     /// }
     /// </code>
     /// </example>
-    member this.ToWithSetter() = this.Current, (fun x -> this.Publish(fun _ -> x))
+    member this.WithSetter() = this.Current, (fun x -> this.Publish(fun _ -> x))
 
 
 type IStoreManager with

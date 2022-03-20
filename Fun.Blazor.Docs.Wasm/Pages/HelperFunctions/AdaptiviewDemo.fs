@@ -209,7 +209,7 @@ let adaptiviewDemo5 =
                         childContent "Increase Number1"
                     }
                     MudSwitch'() {
-                        Checked' display
+                        Checked' (display.WithSetter())
                         childContent "Toggle"
                     }
                 ]

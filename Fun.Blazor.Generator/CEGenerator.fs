@@ -141,13 +141,13 @@ let private getMetaInfo useInline (ty: Type) =
                 ]
 
             elif prop.PropertyType = typeof<RenderFragment> then
-                let name = formatChildContentName name
                 [
-                    $"    {customOperation name} {memberStart}{name} ({contextArg}, fragment) = render ==> html.renderFragment(\"{prop.Name}\", fragment)"
-                    $"    {customOperation name} {memberStart}{name} ({contextArg}, fragments) = render ==> html.renderFragment(\"{prop.Name}\", fragment {{ yield! fragments }})"
-                    $"    {customOperation name} {memberStart}{name} ({contextArg}, x: string) = render ==> html.renderFragment(\"{prop.Name}\", html.text x)"
-                    $"    {customOperation name} {memberStart}{name} ({contextArg}, x: int) = render ==> html.renderFragment(\"{prop.Name}\", html.text x)"
-                    $"    {customOperation name} {memberStart}{name} ({contextArg}, x: float) = render ==> html.renderFragment(\"{prop.Name}\", html.text x)"
+                    if name <> "ChildContent" then
+                        $"    {customOperation name} {memberStart}{name} ({contextArg}, fragment) = render ==> html.renderFragment(\"{prop.Name}\", fragment)"
+                        $"    {customOperation name} {memberStart}{name} ({contextArg}, fragments) = render ==> html.renderFragment(\"{prop.Name}\", fragment {{ yield! fragments }})"
+                        $"    {customOperation name} {memberStart}{name} ({contextArg}, x: string) = render ==> html.renderFragment(\"{prop.Name}\", html.text x)"
+                        $"    {customOperation name} {memberStart}{name} ({contextArg}, x: int) = render ==> html.renderFragment(\"{prop.Name}\", html.text x)"
+                        $"    {customOperation name} {memberStart}{name} ({contextArg}, x: float) = render ==> html.renderFragment(\"{prop.Name}\", html.text x)"
                 ]
 
             elif prop.Name = "Class" && prop.PropertyType = typeof<string> then
@@ -171,7 +171,9 @@ let private getMetaInfo useInline (ty: Type) =
         |> Seq.concat
 
 
-    let hasChildren = props |> Seq.exists (fun x -> x.Contains $"{memberStart}childContent")
+    // Because we are using ComponentWithDomAndChildAttrBuilder
+    // props |> Seq.exists (fun x -> x.Contains $"{memberStart}childContent")
+    let hasChildren = true
 
     let isSplatAttributesProp (p: PropertyInfo) =
         option {
@@ -268,18 +270,9 @@ let generateCode (targetNamespace: string) (opens: string) (tys: Type seq) useIn
                         | Some (baseTy, generics) ->
                             $"inherit {baseTy.Namespace |> trimNamespace |> appendStrIfNotEmpty (string '.')}{makeBuilderName meta.ty.BaseType}{funBlazorGeneric :: (getTypeNames generics) |> createGenerics |> closeGenerics}()"
 
-                    let news =
-                        if meta.hasChildren then
-                            $"    static member inline create (x: string) = {builderName}{builderGenerics}(){{ x }}"
-                            + "\n"
-                            + $"    static member inline create (x: {nameof NodeRenderFragment} seq) = {builderName}{builderGenerics}(){{ yield! x }}"
-                        else
-                            $"    static member inline create () = html.fromBuilder({builderName}{builderGenerics}())"
-
                     $"""
 type {builderName}{builderGenericsWithContraints}() =
     {inheirit'}
-{news}
 {meta.props}
                 """
                 )

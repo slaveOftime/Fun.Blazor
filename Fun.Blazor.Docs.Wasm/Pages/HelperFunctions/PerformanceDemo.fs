@@ -27,7 +27,7 @@ let virtualizeDemo =
             }
             Virtualize'() {
                 Items items
-                ChildContent(fun i ->
+                childContent(fun i ->
                     div {
                         style { color "blue" }
                         childContent $"item {i}"

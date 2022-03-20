@@ -32,7 +32,7 @@ type CodeGenSettings() =
     [<CommandOption("-o|--outDir")>]
     member val OutDir = "Fun.Blazor.Bindings" with get, set
 
-    [<Description("Dsl style Feliz|CE")>]
+    [<Description("Dsl style CE")>]
     [<CommandOption("-s|--style")>]
     member val Style = Style.CE with get, set
 

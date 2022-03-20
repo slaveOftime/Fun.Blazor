@@ -2,7 +2,7 @@
   "profiles": {
     "Fun.Blazor.Cli": {
       "commandName": "Project",
-      "commandLineArgs": "watch \"$(SolutionDir)\\Fun.Blazor.Docs.Wasm\\Fun.Blazor.Docs.Wasm.fsproj\""
+      "commandLineArgs": "generate \"$(SolutionDir)\\Fun.Blazor.Docs.Wasm\\Fun.Blazor.Docs.Wasm.fsproj\""
     }
   }
 }

@@ -20,7 +20,7 @@ Steps:
 
     `FunBlazorAssemblyName`: Sometimes the assembly name is different with the package name, so you can use this to specify it
         
-    `FunBlazorStyle`: CE | Feliz (not recommended anymore), this will override the settings in the commandline
+    `FunBlazorStyle`: CE, this will override the settings in the commandline
 
     `FunBlazorInline`: Inline to improve performance but may increase bundle size, turned on by default. This will override the settings in the commandline
    
@@ -35,7 +35,7 @@ Steps:
 
     `-o|--outDir`: Customize the generated folder name
 
-    `-s|--style`: Customize the style (Feliz | CE)
+    `-s|--style`: Customize the style (CE)
 
 
 3. Enjoy it
@@ -52,20 +52,5 @@ Steps:
                 Icon Icons.Filled.AccessAlarm
                 childContent "This is the way"
             }
-        ]
-    ```
-
-    Feliz style (not recomended anymore because performance)
-
-    ```fsharp
-    open Fun.Blazor
-    open MudBlazor
-
-    let alertDemo =
-        mudCard.create [
-            mudAlert.create [
-                mudAlert.icon Icons.Filled.AccessAlarm
-                mudAlert.childContent "This is the way"
-            ]
         ]
     ```

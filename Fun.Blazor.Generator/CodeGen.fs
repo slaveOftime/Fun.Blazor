@@ -34,7 +34,7 @@ open {targetNamespace}.{Utils.internalSegment}"""
 
             let codes =
                 match style with
-                | Style.Feliz -> Generator.generateCode formatedName opens types useInline
+                | Style.Feliz -> failwith "Feliz is deprecated" // Generator.generateCode formatedName opens types useInline
                 | Style.CE -> CEGenerator.generateCode formatedName opens types useInline
                 | x -> failwith $"Not supportted style: {x}"
 
