@@ -128,6 +128,7 @@ type StaticAssetsWatcher(scf: IServiceScopeFactory) =
 let runServer (setting: WatchSettings) =
     Host
         .CreateDefaultBuilder()
+        .ConfigureHostConfiguration(fun builder -> builder.Sources.Clear())
         .ConfigureWebHostDefaults(fun webBuilder ->
             webBuilder
                 .ConfigureServices(fun services ->

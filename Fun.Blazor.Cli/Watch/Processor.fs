@@ -81,7 +81,8 @@ let process' sendCode (source: Source) (msbuildArgs: string list) =
     let options =
         match source with
         | FSharpProj fsprojFile ->
-            match FSharpDaemon.ProjectCracker.load (new System.Collections.Concurrent.ConcurrentDictionary<_, _>()) fsprojFile msbuildArgs with
+            let fullPath = Path.GetFullPath fsprojFile
+            match FSharpDaemon.ProjectCracker.load (new System.Collections.Concurrent.ConcurrentDictionary<_, _>()) fullPath msbuildArgs with
             | Ok (options, sourceFiles, _log) ->
                 let options = { options with SourceFiles = Array.ofList sourceFiles }
                 let sourceFilesSet = Set.ofList sourceFiles
