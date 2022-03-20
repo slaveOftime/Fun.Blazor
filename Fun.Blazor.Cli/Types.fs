@@ -42,7 +42,7 @@ type CodeGenSettings() =
     
     [<Description("Fun.Blazor.Generator version")>]
     [<CommandOption("--generator-version")>]
-    member val GeneratorVersion = "2.0.0-beta031" with get, set
+    member val GeneratorVersion = "2.0.0-beta033" with get, set
     
     [<Description("Turn on inline option for generated code")>]
     [<CommandOption("--inline")>]
