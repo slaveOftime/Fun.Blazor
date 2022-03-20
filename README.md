@@ -147,10 +147,10 @@ dotnet new --install Fun.Blazor.Templates::2.0.0-beta013
 
 2. Hot-reload
 
-    Now the default templates contain limited hot-reload support. Because blazor wasm json serialization is very slow, so I created a side project (blazor server mode) to boot up it.  
+    Now the default templates contain limited hot-reload support.
     It is also very slow to have too much file to be hot-reloaded, so you need to add **// hot-reload** at the top of the file you want to enable hot-reload.
     For more detail you can check my blog post [Hot-reload in Fun.Blazor](https://www.slaveoftime.fun/blog/d959e36a-f4fe-4a10-88af-5e738633db0f?title=%20Hot-reload%20in%20Fun.Blazor).  
-
+    Or check the document.
 
 3. ref position
 
