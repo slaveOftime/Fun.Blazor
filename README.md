@@ -64,7 +64,7 @@ dotnet new --install Fun.Blazor.Templates::2.0.0-beta013
                 "Increase"
             }
             div {
-                style'' { color "red" }
+                style { color "red" }
                 $"value = {v}"
             }
         }
@@ -127,7 +127,7 @@ dotnet new --install Fun.Blazor.Templates::2.0.0-beta013
     div {
         onclick ignore
         other attrs
-        childContent [ ✅
+        childContent [ ✅ it is recommended to use this when you got more than one child items
             div { "hi" }
             ...a lot of child items
         ]
