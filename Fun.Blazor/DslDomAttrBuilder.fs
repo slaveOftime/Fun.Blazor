@@ -26,8 +26,7 @@ type DomAttrBuilder() =
 
     member inline _.Yield([<InlineIfLambda>] x: AttrRenderFragment) = x
 
-    member inline _.Delay([<InlineIfLambda>] fn: unit -> AttrRenderFragment) =
-        AttrRenderFragment(fun c b i -> fn().Invoke(c, b, i))
+    member inline _.Delay([<InlineIfLambda>] fn: unit -> AttrRenderFragment) = AttrRenderFragment(fun c b i -> fn().Invoke(c, b, i))
 
     member inline _.Combine([<InlineIfLambda>] render1: AttrRenderFragment, [<InlineIfLambda>] render2: AttrRenderFragment) = render1 ==> render2
 
@@ -192,8 +191,7 @@ type DomAttrBuilder() =
     [<CustomOperation("download")>]
     member inline _.download([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("download" => v)
     [<CustomOperation("draggable")>]
-    member _.draggable(render: AttrRenderFragment, v: bool) =
-        render ==> ("draggable" => (if v then "true" else "false"))
+    member _.draggable(render: AttrRenderFragment, v: bool) = render ==> ("draggable" => (if v then "true" else "false"))
     [<CustomOperation("dropzone")>]
     member inline _.dropzone([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("dropzone" => v)
     [<CustomOperation("enctype")>]

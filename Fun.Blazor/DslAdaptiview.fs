@@ -5,7 +5,6 @@ open System
 open System.Threading.Tasks
 open System.Runtime.CompilerServices
 open FSharp.Data.Adaptive
-open FSharp.Control.Reactive
 open Fun.Result
 open Fun.Blazor
 open Operators
@@ -18,7 +17,7 @@ open Internal
 /// <example>
 /// <code lang="fsharp">
 ///     adaptiview(){
-///         1. change hanpend
+///         1. change hanppened
 ///         adaptiview(){
 ///             2. this will init again, so if you want to keep the state of x you should move the definition upper or set isStatic to true
 ///             let! x = cval 123
@@ -33,31 +32,35 @@ type AdaptiviewBuilder(?key: obj, ?isStatic: bool) =
     member _.IsStatic = isStatic
 
     member this.Run(x: aval<NodeRenderFragment>) =
-        ComponentWithChildBuilder<AdaptiveComponent> () {
+        ComponentWithChildBuilder<AdaptiveComponent>() {
             "Fragment" => x
             match this.IsStatic with
             | Some true -> "IsStatic" => true
-            | _ -> emptyAttr()
+            | _ -> emptyAttr ()
             match this.Key with
             | Some k -> html.key k
-            | None -> emptyAttr()
+            | None -> emptyAttr ()
         }
 
     member inline _.Yield([<InlineIfLambda>] x: NodeRenderFragment) = AVal.constant x
-    
+
     member inline _.Yield<'T when 'T :> IElementBuilder>(x: 'T) =
-        AVal.constant(NodeRenderFragment(fun _ builder index ->
-            builder.OpenElement(index, x.Name)
-            builder.CloseElement()
-            index + 1
-        ))
+        AVal.constant (
+            NodeRenderFragment(fun _ builder index ->
+                builder.OpenElement(index, x.Name)
+                builder.CloseElement()
+                index + 1
+            )
+        )
 
     member inline _.Yield<'T, 'T1 when 'T :> IComponentBuilder<'T1>>(_: 'T) =
-        AVal.constant(NodeRenderFragment(fun _ builder index ->
-            builder.OpenComponent<'T1>(index)
-            builder.CloseComponent()
-            index + 1
-        ))
+        AVal.constant (
+            NodeRenderFragment(fun _ builder index ->
+                builder.OpenComponent<'T1>(index)
+                builder.CloseComponent()
+                index + 1
+            )
+        )
 
 
     member inline _.Delay([<InlineIfLambda>] fn: unit -> aval<NodeRenderFragment>) = fn ()
@@ -69,10 +72,10 @@ type AdaptiviewBuilder(?key: obj, ?isStatic: bool) =
             return render1 >=> render2
         }
 
-    member inline _.Zero() = AVal.constant (emptyNode())
+    member inline _.Zero() = AVal.constant (emptyNode ())
 
     member inline _.For(ls: 'T seq, [<InlineIfLambda>] fn: 'T -> aval<NodeRenderFragment>) =
-        ls |> Seq.map fn |> Seq.fold (AVal.map2 (>=>)) (AVal.constant (emptyNode()))
+        ls |> Seq.map fn |> Seq.fold (AVal.map2 (>=>)) (AVal.constant (emptyNode ()))
 
 
 [<Extension>]

@@ -11,12 +11,12 @@ type AdaptiveComponent() as this =
     inherit FunBlazorComponent()
 
     let mutable fragmentSubscription: IDisposable option = None
-    let mutable fragment = AVal.constant (emptyNode())
+    let mutable fragment = AVal.constant (emptyNode ())
     let mutable shouldRerender = true
 
 
     [<Parameter>]
-    member val Fragment: aval<NodeRenderFragment> = AVal.constant (emptyNode()) with get, set
+    member val Fragment: aval<NodeRenderFragment> = AVal.constant (emptyNode ()) with get, set
 
     [<Parameter>]
     member val IsStatic = false with get, set
@@ -25,8 +25,7 @@ type AdaptiveComponent() as this =
     member val Logger = Unchecked.defaultof<ILogger<AdaptiveComponent>> with get, set
 
 
-    override _.Render() =
-        this.Logger.LogDebugForPerf(fun _ -> fragment |> AVal.force)
+    override _.Render() = this.Logger.LogDebugForPerf(fun _ -> fragment |> AVal.force)
 
 
     override _.OnParametersSet() =
@@ -46,5 +45,4 @@ type AdaptiveComponent() as this =
 
 
     interface IDisposable with
-        member _.Dispose() =
-            fragmentSubscription |> Option.iter (fun x -> x.Dispose())
+        member _.Dispose() = fragmentSubscription |> Option.iter (fun x -> x.Dispose())

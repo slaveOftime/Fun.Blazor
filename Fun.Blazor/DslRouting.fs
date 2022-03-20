@@ -2,6 +2,7 @@
 module Fun.Blazor.DslRouting
 
 open System
+open FSharp.Data.Adaptive
 open Microsoft.AspNetCore.Components
 open Microsoft.AspNetCore.Components.Routing
 open Fun.Blazor.Router
@@ -12,7 +13,7 @@ type html with
 
     static member route(routes: Router<NodeRenderFragment> list) =
         html.inject (fun (hook: IComponentHook, nav: NavigationManager, interception: INavigationInterception) ->
-            let location = hook.UseStore (Uri nav.Uri).PathAndQuery
+            let location = cval (Uri nav.Uri).PathAndQuery
 
             hook.OnFirstAfterRender.Add(fun () ->
                 interception.EnableNavigationInterceptionAsync() |> ignore
@@ -20,10 +21,13 @@ type html with
                     try
                         location.Publish (Uri e.Location).PathAndQuery
                     with
-                        | _ -> ()
+                    | _ -> ()
                 )
                 |> hook.AddDispose
             )
 
-            html.watch (location, choose routes >> Option.defaultWith emptyNode)
+            adaptiview () {
+                let! location = location
+                choose routes location |> Option.defaultWith emptyNode
+            }
         )

@@ -49,6 +49,8 @@ let private getMetaInfo useInline (ty: Type) =
     let rawProps = ty.GetProperties()
     let filteredProps = getValidBlazorProps ty rawProps
 
+    let formatChildContentName x = if x = "ChildContent" then lowerFirstCase x else x
+
     let props =
         filteredProps
         |> Seq.map (fun prop ->
@@ -81,7 +83,6 @@ let private getMetaInfo useInline (ty: Type) =
                 if isBindable prop filteredProps then
                     let bindName = name + "'"
                     [
-                        $"    {customOperation bindName} {memberStart}{bindName} ({contextArg}, value: IStore<{propTypeName}>) = render ==> html.bind(\"{prop.Name}\", value)"
                         $"    {customOperation bindName} {memberStart}{bindName} ({contextArg}, value: cval<{propTypeName}>) = render ==> html.bind(\"{prop.Name}\", value)"
                         $"    {customOperation bindName} {memberStart}{bindName} ({contextArg}, valueFn: {propTypeName} * ({propTypeName} -> unit)) = render ==> html.bind(\"{prop.Name}\", valueFn)"
                     ]
@@ -95,6 +96,7 @@ let private getMetaInfo useInline (ty: Type) =
                         $"    {customOperation name} {memberStart}{name} ({contextArg}, fn) = render ==> html.callback<{getTypeName prop.PropertyType.GenericTypeArguments.[0]}>(\"{prop.Name}\", fn)"
                     ]
                 elif prop.PropertyType.Name.StartsWith "RenderFragment`" then
+                    let name = formatChildContentName name
                     [
                         $"    {customOperation name} {memberStart}{name} ({contextArg}, fn: {getTypeName prop.PropertyType.GenericTypeArguments.[0]} -> {nameof NodeRenderFragment}) = render ==> html.renderFragment(\"{prop.Name}\", fn)"
                     ]
@@ -139,7 +141,7 @@ let private getMetaInfo useInline (ty: Type) =
                 ]
 
             elif prop.PropertyType = typeof<RenderFragment> then
-                let name = if prop.Name = "ChildContent" then lowerFirstCase name else name
+                let name = formatChildContentName name
                 [
                     $"    {customOperation name} {memberStart}{name} ({contextArg}, fragment) = render ==> html.renderFragment(\"{prop.Name}\", fragment)"
                     $"    {customOperation name} {memberStart}{name} ({contextArg}, fragments) = render ==> html.renderFragment(\"{prop.Name}\", fragment {{ yield! fragments }})"

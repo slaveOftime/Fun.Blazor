@@ -14,7 +14,7 @@ open type System.Net.WebUtility
 // ---------------------------
 
 let private formatStringMap =
-    let decodeSlashes (str : string) =
+    let decodeSlashes (str: string) =
         // Kestrel has made the weird decision to
         // partially decode a route argument, which
         // means that a given route argument would get
@@ -26,36 +26,40 @@ let private formatStringMap =
         // https://github.com/aspnet/Mvc/issues/4599
         str.Replace("%2F", "/").Replace("%2f", "/") |> UrlDecode
 
-    let parseGuid (str : string) = Guid str
+    let parseGuid (str: string) = Guid str
 
     let guidPattern =
         "([0-9A-Fa-f]{8}\-[0-9A-Fa-f]{4}\-[0-9A-Fa-f]{4}\-[0-9A-Fa-f]{4}\-[0-9A-Fa-f]{12}|[0-9A-Fa-f]{32}|[-_0-9A-Za-z]{22})"
 
     dict [
-    // Char    Regex                    Parser
-    // -------------------------------------------------------------
-        'b', ("(?i:(true|false)){1}",   (fun (s : string) -> bool.Parse s)   >> box)  // bool
-        'c', ("([^/]{1})",              char                                 >> box)  // char
-        's', ("([^/]+)",                decodeSlashes                        >> box)  // string
-        'i', ("(-?\d+)",                int32                                >> box)  // int
-        'd', ("(-?\d+)",                int64                                >> box)  // int64
-        'f', ("(-?\d+\.{1}\d+)",        float                                >> box)  // float
-        'O', (guidPattern,              parseGuid                            >> box)  // Guid
+        // Char    Regex                    Parser
+        // -------------------------------------------------------------
+        'b', ("(?i:(true|false)){1}", (fun (s: string) -> bool.Parse s) >> box) // bool
+        'c', ("([^/]{1})", char >> box) // char
+        's', ("([^/]+)", decodeSlashes >> box) // string
+        'i', ("(-?\d+)", int32 >> box) // int
+        'd', ("(-?\d+)", int64 >> box) // int64
+        'f', ("(-?\d+\.{1}\d+)", float >> box) // float
+        'O', (guidPattern, parseGuid >> box) // Guid
     ]
 
 type MatchMode =
-    | Exact                // Will try to match entire string from start to end.
-    | StartsWith           // Will try to match a substring. Subject string should start with test case.
-    | EndsWith             // Will try to match a substring. Subject string should end with test case.
-    | Contains             // Will try to match a substring. Subject string should contain test case.
+    | Exact // Will try to match entire string from start to end.
+    | StartsWith // Will try to match a substring. Subject string should start with test case.
+    | EndsWith // Will try to match a substring. Subject string should end with test case.
+    | Contains // Will try to match a substring. Subject string should contain test case.
 
-type MatchOptions = { IgnoreCase: bool; MatchMode: MatchMode; }
-with
+type MatchOptions =
+    {
+        IgnoreCase: bool
+        MatchMode: MatchMode
+    }
+
     static member Exact = { IgnoreCase = false; MatchMode = Exact }
     static member IgnoreCaseExact = { IgnoreCase = true; MatchMode = Exact }
 
-let private convertToRegexPatternAndFormatChars (mode : MatchMode) (formatString : string) =
-    let rec convert (chars : char list) =
+let private convertToRegexPatternAndFormatChars (mode: MatchMode) (formatString: string) =
+    let rec convert (chars: char list) =
         match chars with
         | '%' :: '%' :: tail ->
             let pattern, formatChars = convert tail
@@ -88,52 +92,44 @@ let private convertToRegexPatternAndFormatChars (mode : MatchMode) (formatString
 /// <param name="options">The options record with specifications on how the matching should behave.</param>
 /// <param name="input">The input string from which the parsed arguments shall be extracted.</param>
 /// <returns>Matched value as an option of 'T</returns>
-let tryMatchInput<'T> (format : string) (options : MatchOptions) (input : string) =
+let tryMatchInput<'T> (format: string) (options: MatchOptions) (input: string) =
     try
-        let pattern, formatChars =
-            format
-            |> Regex.Escape
-            |> convertToRegexPatternAndFormatChars options.MatchMode
+        let pattern, formatChars = format |> Regex.Escape |> convertToRegexPatternAndFormatChars options.MatchMode
 
         let options =
             match options.IgnoreCase with
-            | true  -> RegexOptions.IgnoreCase
+            | true -> RegexOptions.IgnoreCase
             | false -> RegexOptions.None
 
         let result = Regex.Match(input, pattern, options)
 
-        if result.Groups.Count <= 1 then None
+        if result.Groups.Count <= 1 then
+            None
         else
-            let groups =
-                result.Groups
-                |> Seq.cast<Group>
-                |> Seq.skip 1
+            let groups = result.Groups |> Seq.cast<Group> |> Seq.skip 1
 
             let values =
                 (groups, formatChars)
                 ||> Seq.map2 (fun g c ->
-                    let _, parser   = formatStringMap.[c]
-                    let value       = parser g.Value
-                    value)
+                    let _, parser = formatStringMap.[c]
+                    let value = parser g.Value
+                    value
+                )
                 |> Seq.toArray
 
             let result =
                 match values.Length with
                 | 1 -> values.[0]
                 | _ ->
-                    let types =
-                        values
-                        |> Array.map (fun v -> v.GetType())
+                    let types = values |> Array.map (fun v -> v.GetType())
                     let tupleType = FSharpType.MakeTupleType types
                     FSharpValue.MakeTuple(values, tupleType)
-            result
-            :?> 'T
-            |> Some
+            result :?> 'T |> Some
     with
     | ex ->
-        #if DEBUG
+#if DEBUG
         raise ex
-        #endif
+#endif
         None
 
 /// <summary>
@@ -143,10 +139,11 @@ let tryMatchInput<'T> (format : string) (options : MatchOptions) (input : string
 /// <param name="ignoreCase">The flag to make matching case insensitive.</param>
 /// <param name="input">The input string from which the parsed arguments shall be extracted.</param>
 /// <returns>Matched value as an option of 'T</returns>
-let tryMatchInputExact<'T> (format : string) (ignoreCase : bool) (input : string) =
-    let options = match ignoreCase with
-                  | true -> MatchOptions.IgnoreCaseExact
-                  | false -> MatchOptions.Exact
+let tryMatchInputExact<'T> (format: string) (ignoreCase: bool) (input: string) =
+    let options =
+        match ignoreCase with
+        | true -> MatchOptions.IgnoreCaseExact
+        | false -> MatchOptions.Exact
     tryMatchInput<'T> format options input
 
 
@@ -171,25 +168,24 @@ let tryMatchInputExact<'T> (format : string) (ignoreCase : bool) (input : string
 /// </summary>
 /// <param name="format">The format string which shall be used for parsing.</param>
 /// <returns>Returns <see cref="Microsoft.FSharp.Core.Unit"/> if validation was successful otherwise will throw an `Exception`.</returns>
-let validateFormat (format : PrintfFormat<_,_,_,_, 'T>) =
+let validateFormat (format: PrintfFormat<_, _, _, _, 'T>) =
 
-    let mapping = [
-        'b' , typeof<bool>           // bool
-        'c' , typeof<char>           // char
-        's' , typeof<string>         // string
-        'i' , typeof<int32>          // int
-        'd' , typeof<int64>          // int64
-        'f' , typeof<float>          // float
-        'O' , typeof<System.Guid>    // guid
-        'u' , typeof<uint64>         // guid
-    ]
+    let mapping =
+        [
+            'b', typeof<bool> // bool
+            'c', typeof<char> // char
+            's', typeof<string> // string
+            'i', typeof<int32> // int
+            'd', typeof<int64> // int64
+            'f', typeof<float> // float
+            'O', typeof<System.Guid> // guid
+            'u', typeof<uint64> // guid
+        ]
 
     let tuplePrint pos last name =
         let mutable result = "("
         for i in 0 .. last do
-            if i = pos
-            then result <- result + name
-            else result <- result + "_"
+            if i = pos then result <- result + name else result <- result + "_"
             if i <> last then result <- result + ","
         result + ")"
 
@@ -211,12 +207,12 @@ let validateFormat (format : PrintfFormat<_,_,_,_, 'T>) =
         | [] -> ()
         | (tChar, x) :: xs ->
             if tChar = mChar then
-                parseChars <- (mChar,x) :: parseChars
+                parseChars <- (mChar, x) :: parseChars
                 matches <- matches + 1
             else
                 charTypeMatch xs mChar
 
-    let rec typeCharMatch ls (xType : System.Type) =
+    let rec typeCharMatch ls (xType: System.Type) =
         match ls with
         | [] -> sprintf "%s has no associated format char parameter" xType.Name
         | (tChar, x) :: xs ->
@@ -230,34 +226,48 @@ let validateFormat (format : PrintfFormat<_,_,_,_, 'T>) =
         if matchNext then
             charTypeMatch mapping mChar
             matchNext <- false
-        else
-            if mChar = '%' then matchNext <- true
+        else if mChar = '%' then
+            matchNext <- true
 
     if FSharpType.IsTuple(t) then
         let types = FSharpType.GetTupleElements(t)
-        if types.Length <> matches then failwithf "Format string error: Number of parameters (%i) does not match number of tuple variables (%i)." types.Length matches
+        if types.Length <> matches then
+            failwithf "Format string error: Number of parameters (%i) does not match number of tuple variables (%i)." types.Length matches
 
-        let rec check(ls,pos) =
+        let rec check (ls, pos) =
             match ls, pos with
-            | [] , -1 -> ()
-            | (mChar,ct) :: xs , i ->
+            | [], -1 -> ()
+            | (mChar, ct) :: xs, i ->
                 if ct <> types.[i] then
                     let hdlFmt = tuplePrint i (types.Length - 1) types.[i].Name
-                    let expFmt = tuplePrint i (types.Length - 1)  ct.Name
+                    let expFmt = tuplePrint i (types.Length - 1) ct.Name
                     let guidance = typeCharMatch mapping types.[i]
 
-                    failwithf "Format string error: routef '%s' has type '%s' but handler expects '%s', mismatch on %s parameter '%%%c', %s." path expFmt hdlFmt (posPrint (i + 1)) mChar guidance
+                    failwithf
+                        "Format string error: routef '%s' has type '%s' but handler expects '%s', mismatch on %s parameter '%%%c', %s."
+                        path
+                        expFmt
+                        hdlFmt
+                        (posPrint (i + 1))
+                        mChar
+                        guidance
                 else
-                    check(xs,i - 1)
-            | x , y -> failwithf "Format string error: Unknown validation error: %A [%i]." x y
+                    check (xs, i - 1)
+            | x, y -> failwithf "Format string error: Unknown validation error: %A [%i]." x y
 
-        check( parseChars , types.Length - 1)
-
+        check (parseChars, types.Length - 1)
     else
-        if matches <> 1 then failwithf "Format string error: Number of parameters (%i) does not match single variable." matches
+        if matches <> 1 then
+            failwithf "Format string error: Number of parameters (%i) does not match single variable." matches
         match parseChars with
-        | [(mChar,ct)] ->
+        | [ (mChar, ct) ] ->
             if ct <> t then
                 let guidance = typeCharMatch mapping t
-                failwithf "Format string error: routef '%s' has type '%s' but handler expects '%s', mismatch on parameter '%%%c', %s." path ct.Name t.Name mChar guidance
+                failwithf
+                    "Format string error: routef '%s' has type '%s' but handler expects '%s', mismatch on parameter '%%%c', %s."
+                    path
+                    ct.Name
+                    t.Name
+                    mChar
+                    guidance
         | x -> failwithf "Format string error: Unknown validation error: %A." x

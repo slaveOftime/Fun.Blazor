@@ -24,7 +24,7 @@ type html with
     /// </code>
     /// </example>
     static member inject(render: 'Services -> NodeRenderFragment) =
-        ComponentWithChildBuilder<DIComponent<'Services>> () {
+        ComponentWithChildBuilder<DIComponent<'Services>>() {
             key (Guid.NewGuid())
             "RenderFn" => render
             "IsStatic" => false
@@ -44,7 +44,7 @@ type html with
     /// </code>
     /// </example>
     static member inject(k, render: 'Services -> NodeRenderFragment) =
-        ComponentWithChildBuilder<DIComponent<'Services>> () {
+        ComponentWithChildBuilder<DIComponent<'Services>>() {
             key k
             "RenderFn" => render
             "IsStatic" => true
@@ -57,7 +57,7 @@ type html with
     /// 'Services should be something you defined in the asp.net core DI or unit
     /// 'Services must be a tuple like (hook: IComponentHook, sp: IServiceProvider)
     static member injectWithNoKey(render: 'Services -> NodeRenderFragment) =
-        ComponentWithChildBuilder<DIComponent<'Services>> () {
+        ComponentWithChildBuilder<DIComponent<'Services>>() {
             "RenderFn" => render
             "IsStatic" => true
         }

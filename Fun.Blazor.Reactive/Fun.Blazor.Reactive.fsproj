@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net5.0;net6.0</TargetFrameworks>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<Version>2.0.0-beta033</Version>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Include="Core.fs" />
+		<Compile Include="Utils.fs" />
+		<Compile Include="Extensions.fs" />
+		<Compile Include="ReactiveComponent.fs" />
+		<Compile Include="DslWatch.fs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="FSharp.Control.Reactive" Version="5.0.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Fun.Blazor\Fun.Blazor.fsproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Update="FSharp.Core" Version="6.0.1" />
+	</ItemGroup>
+
+</Project>

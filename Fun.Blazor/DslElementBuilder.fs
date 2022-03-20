@@ -31,7 +31,7 @@ type EltBuilder(name) =
 
     member inline _.For([<InlineIfLambda>] render: NodeRenderFragment, [<InlineIfLambda>] fn: unit -> NodeRenderFragment) = render >=> (fn ())
 
-    
+
     /// Create empty element
     member inline this.create() =
         NodeRenderFragment(fun _ builder index ->

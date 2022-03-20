@@ -27,8 +27,7 @@ module ServiceProviderExtensions =
 
         member sp.GetMultipleServices(depsType: Type) = sp.GetMultipleServices(depsType, (fun _ -> null))
 
-        member sp.GetMultipleServices<'Types>() =
-            sp.GetMultipleServices(typeof<'Types>, (fun _ -> null)) |> unbox<'Types>
+        member sp.GetMultipleServices<'Types>() = sp.GetMultipleServices(typeof<'Types>, (fun _ -> null)) |> unbox<'Types>
 
 
 type DIComponent<'T>() as this =
@@ -53,38 +52,15 @@ type DIComponent<'T>() as this =
             member _.AddDispose dispose = disposes.Add dispose
             member _.AddDisposes ds = disposes.AddRange(ds)
             member _.StateHasChanged() = this.ForceRerender()
-
-            member _.UseStore<'T>(x: 'T) : IStore<'T> =
-                let newStore = new Store<'T>(x)
-                disposes.Add newStore
-                newStore :> IStore<'T>
-
-            member _.UseAVal<'T>(store: IStore<'T>) : aval<'T> =
-                let value' = cval store.Current
-                store.Observable.Subscribe(fun x -> transact (fun _ -> value'.Value <- x)) |> disposes.Add
-                value' :> aval<'T>
-
-            member _.UseAVal<'T>(defaultValue: 'T, obser: IObservable<'T>) : aval<'T> =
-                let value' = cval defaultValue
-                obser.Subscribe(fun x -> transact (fun _ -> value'.Value <- x)) |> disposes.Add
-                value' :> aval<'T>
-
-            member _.UseCVal<'T>(store: IStore<'T>) : cval<'T> =
-                let value' = cval store.Current
-                store.Observable.Subscribe(fun x -> transact (fun _ -> value'.Value <- x)) |> disposes.Add
-                value'.AddCallback(fun (x: 'T) -> store.Publish x) |> disposes.Add
-                value'
-
             member _.ServiceProvider = this.Services
         }
 
 
-    let handleNotFoundType ty =
-        if ty = typeof<IComponentHook> then box blazorLifecycle else null
+    let handleNotFoundType ty = if ty = typeof<IComponentHook> then box blazorLifecycle else null
 
 
     [<Parameter>]
-    member val RenderFn: 'T -> NodeRenderFragment = fun _ -> emptyNode() with get, set
+    member val RenderFn: 'T -> NodeRenderFragment = fun _ -> emptyNode () with get, set
 
     /// With this we can avoid rerender when parameter reset
     /// If component is not recreated then all the rerender will use the closure state created by the first RenderFn
@@ -101,7 +77,7 @@ type DIComponent<'T>() as this =
     override _.Render() =
         this.Logger.LogDebugForPerf(fun () ->
             match node with
-            | None -> emptyNode()
+            | None -> emptyNode ()
             | Some node -> node
         )
 

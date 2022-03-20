@@ -20,7 +20,6 @@ let private getMetaInfo useInline (ty: Type) =
             let createBindableProps (propTypeName: string) =
                 if isBindable prop validProps then
                     [
-                        $"    {memberStart}{name}' (value: IStore<{propTypeName}>) = html.bind(\"{prop.Name}\", value)"
                         $"    {memberStart}{name}' (value: cval<{propTypeName}>) = html.bind(\"{prop.Name}\", value)"
                         $"    {memberStart}{name}' (valueFn: {propTypeName} * ({propTypeName} -> unit)) = html.bind(\"{prop.Name}\", valueFn)"
                     ]

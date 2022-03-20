@@ -3,7 +3,6 @@ module Fun.Blazor.Utils
 
 open System
 open System.Diagnostics
-open System.Reactive.Linq
 open System.Threading.Tasks
 open Microsoft.Extensions.Logging
 open Microsoft.AspNetCore.Components
@@ -43,9 +42,6 @@ module Internal =
             fn ()
 #endif
 
-
-module Observable =
-    let ofTask (x: Task<_>) = Observable.FromAsync(fun (token: Threading.CancellationToken) -> x)
 
 
 type IComponent with

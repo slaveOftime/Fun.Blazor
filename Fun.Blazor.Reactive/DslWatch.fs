@@ -23,7 +23,7 @@ type html with
     /// </code>
     /// </example>
     static member watch(store: IObservable<'T>, render: 'T -> NodeRenderFragment, defaultValue: 'T, ?k) =
-        ComponentWithChildBuilder<StoreComponent<'T>> () {
+        ComponentWithChildBuilder<ReactiveComponent<'T>> () {
             "DefaultValue" => defaultValue
             "Store" => store
             "RenderFn" => render

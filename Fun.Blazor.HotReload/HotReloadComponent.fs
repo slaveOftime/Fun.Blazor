@@ -5,6 +5,7 @@ namespace Fun.Blazor.HotReload
 open System
 open System.Collections.Generic
 open System.Collections.Concurrent
+open FSharp.Data.Adaptive
 open Microsoft.JSInterop
 open Microsoft.AspNetCore.Components
 open Microsoft.AspNetCore.SignalR.Client
@@ -17,8 +18,8 @@ type private CssChanges = { Name: string; Css: string }
 type private HubBundle =
     {
         Hub: HubConnection
-        CodeObserver: IObservable<(string * FSharp.Compiler.PortaCode.CodeModel.DFile) []>
-        CssObserver: IObservable<CssChanges>
+        CodeObserver: aval<(string * FSharp.Compiler.PortaCode.CodeModel.DFile) []>
+        CssObserver: aval<CssChanges>
     }
 
 
@@ -33,8 +34,8 @@ module private Cache =
 
     let private makeHubBundle (host: string) =
         let hub = HubConnectionBuilder().WithUrl($"{host}/hot-reload-hub").Build()
-        let codeStore = new Store<(string * FSharp.Compiler.PortaCode.CodeModel.DFile) []>([||]) :> IStore<_>
-        let cssStore = new Store<CssChanges>({ Name = ""; Css = "" }) :> IStore<_>
+        let codeStore = cval<(string * FSharp.Compiler.PortaCode.CodeModel.DFile) []> ([||])
+        let cssStore = cval<CssChanges> ({ Name = ""; Css = "" })
 
         task {
             printfn "Starting hot-reload hub: %s" host
@@ -48,7 +49,7 @@ module private Cache =
                         printfn "Code changes deserialized in %d ms: %s" sw.ElapsedMilliseconds host
                         codeStore.Publish result.Changes
                     with
-                        | ex -> printfn "Process code changes failed: %s" ex.Message
+                    | ex -> printfn "Process code changes failed: %s" ex.Message
             )
             hub.On<string, string>(
                 "CssChanged",
@@ -63,8 +64,8 @@ module private Cache =
 
         {
             Hub = hub
-            CodeObserver = codeStore.Observable
-            CssObserver = cssStore.Observable
+            CodeObserver = codeStore
+            CssObserver = cssStore
         }
 
 
@@ -127,7 +128,7 @@ type HotReloadComponent() as this =
 
             disposes <-
                 [
-                    hubBundle.CodeObserver.Subscribe(fun code ->
+                    hubBundle.CodeObserver.AddInstantCallback(fun code ->
                         Utils.reload
                             this.RenderEntryName
                             code
@@ -137,7 +138,7 @@ type HotReloadComponent() as this =
                             )
                     )
 
-                    hubBundle.CssObserver.Subscribe(fun data ->
+                    hubBundle.CssObserver.AddInstantCallback(fun data ->
                         this.JS.InvokeAsync("hotReloadStyle", $"hot-reload-css-{this.Host.GetHashCode()}-{data.Name.GetHashCode()}", data.Css)
                         |> ignore
                     )

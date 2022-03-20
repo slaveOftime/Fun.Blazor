@@ -6,7 +6,7 @@ open Microsoft.AspNetCore.Components
 open Internal
 
 
-type StoreComponent<'T>() as this =
+type ReactiveComponent<'T>() as this =
     inherit FunBlazorComponent()
 
     let mutable subscription = null
@@ -24,7 +24,7 @@ type StoreComponent<'T>() as this =
     member val RenderFn: 'T -> NodeRenderFragment = fun _ -> emptyNode() with get, set
 
     [<Inject>]
-    member val Logger = Unchecked.defaultof<ILogger<StoreComponent<'T>>> with get, set
+    member val Logger = Unchecked.defaultof<ILogger<ReactiveComponent<'T>>> with get, set
 
 
     override _.Render() =

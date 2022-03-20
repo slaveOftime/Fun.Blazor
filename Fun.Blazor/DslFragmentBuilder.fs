@@ -42,21 +42,15 @@ type FragmentBuilder() =
 
     member inline _.Delay([<InlineIfLambda>] fn: unit -> NodeRenderFragment) = NodeRenderFragment(fun c b i -> fn().Invoke(c, b, i))
 
-    member inline _.Combine
-        (
-            [<InlineIfLambda>] render1: NodeRenderFragment,
-            [<InlineIfLambda>] render2: NodeRenderFragment
-        )
-        =
-        render1 >=> render2
+    member inline _.Combine([<InlineIfLambda>] render1: NodeRenderFragment, [<InlineIfLambda>] render2: NodeRenderFragment) = render1 >=> render2
 
     //member inline _.For(renders: 'T seq, [<InlineIfLambda>] fn: 'T -> NodeRenderFragment) =
     //    renders |> Seq.map fn |> Seq.fold (>=>) (emptyNode())
 
-    member inline _.YieldFrom(renders: NodeRenderFragment seq) = renders |> Seq.fold (>=>) (emptyNode())
+    member inline _.YieldFrom(renders: NodeRenderFragment seq) = renders |> Seq.fold (>=>) (emptyNode ())
 
 
-    member inline _.Zero() = emptyNode()
+    member inline _.Zero() = emptyNode ()
 
 
 [<AutoOpen>]

@@ -2,14 +2,12 @@
 module Fun.Blazor.I18n
 
 open System
-open System.IO
 open System.Collections.Generic
 open System.Text.Json
 
 
 let private (<.>) prefix name = if String.IsNullOrEmpty(prefix) then name else prefix + "." + name
 
-let private (</>) x y = Path.Combine(x, y)
 
 let rec private fillDictionary (dict: Dictionary<string, string>) (token: JsonElement) (prefix: string) =
     match token.ValueKind with
@@ -30,14 +28,14 @@ let private fromJsonToMap (dict: Dictionary<string, string>) (json: string) =
 
 
 /// <summary>
-/// This is a placeholder function. 
+/// This is a placeholder function.
 /// It will not hanve any effect. It is used when you do not actually want to translate a key, you just want to make sure the key is valid.
 /// </summary>
 let inline tran x = x
 
 
 /// <summary>
-/// Translate json tranlstion string into a flated dictionary. 
+/// Translate json tranlstion string into a flated dictionary.
 /// Used together with VSCode extension "i18n Ally" to provide intellicense.
 /// </summary>
 /// <example>

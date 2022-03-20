@@ -43,6 +43,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{56197BED-E
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{28D5D89E-BB83-4B21-BE34-E6C37DFEC157}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fun.Blazor.Reactive", "Fun.Blazor.Reactive\Fun.Blazor.Reactive.fsproj", "{A2689E21-6DC4-4419-90CD-903156EBAAE8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -257,6 +259,18 @@ Global
 		{2499F279-6425-4AAD-AD90-CE4DEFB762C3}.Release|x64.Build.0 = Release|Any CPU
 		{2499F279-6425-4AAD-AD90-CE4DEFB762C3}.Release|x86.ActiveCfg = Release|Any CPU
 		{2499F279-6425-4AAD-AD90-CE4DEFB762C3}.Release|x86.Build.0 = Release|Any CPU
+		{A2689E21-6DC4-4419-90CD-903156EBAAE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2689E21-6DC4-4419-90CD-903156EBAAE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2689E21-6DC4-4419-90CD-903156EBAAE8}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A2689E21-6DC4-4419-90CD-903156EBAAE8}.Debug|x64.Build.0 = Debug|Any CPU
+		{A2689E21-6DC4-4419-90CD-903156EBAAE8}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A2689E21-6DC4-4419-90CD-903156EBAAE8}.Debug|x86.Build.0 = Debug|Any CPU
+		{A2689E21-6DC4-4419-90CD-903156EBAAE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2689E21-6DC4-4419-90CD-903156EBAAE8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2689E21-6DC4-4419-90CD-903156EBAAE8}.Release|x64.ActiveCfg = Release|Any CPU
+		{A2689E21-6DC4-4419-90CD-903156EBAAE8}.Release|x64.Build.0 = Release|Any CPU
+		{A2689E21-6DC4-4419-90CD-903156EBAAE8}.Release|x86.ActiveCfg = Release|Any CPU
+		{A2689E21-6DC4-4419-90CD-903156EBAAE8}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

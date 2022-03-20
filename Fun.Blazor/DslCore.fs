@@ -139,12 +139,6 @@ type html() =
         )
 
 
-    static member bind<'T>(name: string, store: IStore<'T>) =
-        AttrRenderFragment(fun comp builder index ->
-            builder.AddAttribute(index, name, store.Current)
-            builder.AddAttribute(index + 1, name + "Changed", EventCallback.Factory.Create(comp, Action<'T> store.Publish))
-            index + 2
-        )
 
     static member bind<'T>(name: string, store: cval<'T>) =
         AttrRenderFragment(fun comp builder index ->
