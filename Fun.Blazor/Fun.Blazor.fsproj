@@ -9,6 +9,7 @@
 	<ItemGroup>
 		<Compile Include="Core.fs" />
 		<Compile Include="Utils.fs" />
+		<Compile Include="I18n.fs" />
 		<Compile Include="Store.fs" />
 		<Compile Include="Router.Giraffe.FormatExpressions.fs" />
 		<Compile Include="Router.Giraffe.Dsl.fs" />
