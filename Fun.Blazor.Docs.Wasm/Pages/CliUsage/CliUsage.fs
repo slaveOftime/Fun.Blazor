@@ -1,7 +1,6 @@
 ﻿[<AutoOpen>]
 module Fun.Blazor.Docs.Wasm.Pages.CliUsage.CliUsage
 
-open Fun.Blazor
 open Fun.Blazor.Docs.Wasm.Components
 
 

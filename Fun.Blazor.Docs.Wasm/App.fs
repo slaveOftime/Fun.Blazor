@@ -46,7 +46,7 @@ let darkTheme =
 
 
 let app =
-    html.inject (fun (hook: IComponentHook, shareStore: IShareStore) ->
+    html.inject (fun (shareStore: IShareStore) ->
         let isOpen = cval (false)
 
         let theme =

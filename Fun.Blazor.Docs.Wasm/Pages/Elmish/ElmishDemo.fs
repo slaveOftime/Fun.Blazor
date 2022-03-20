@@ -48,22 +48,24 @@ let view model dispatch =
         }
         MudButtonGroup'() {
             Variant Variant.Outlined
-            MudButton'() {
-                Color Color.Primary
-                OnClick(fun _ -> Increase |> dispatch)
-                "Increase"
-            }
-            MudButton'() {
-                Color Color.Primary
-                OnClick(fun _ -> IncreaseTask |> dispatch)
-                "Increase task (delayed in 1s)"
-            }
-            MudButton'() {
-                Color Color.Secondary
-                Variant Variant.Outlined
-                OnClick(fun _ -> Decrease |> dispatch)
-                "Decrease (loop in 3s)"
-            }
+            childContent [
+                MudButton'() {
+                    Color Color.Primary
+                    OnClick(fun _ -> Increase |> dispatch)
+                    "Increase"
+                }
+                MudButton'() {
+                    Color Color.Primary
+                    OnClick(fun _ -> IncreaseTask |> dispatch)
+                    "Increase task (delayed in 1s)"
+                }
+                MudButton'() {
+                    Color Color.Secondary
+                    Variant Variant.Outlined
+                    OnClick(fun _ -> Decrease |> dispatch)
+                    "Decrease (loop in 3s)"
+                }
+            ]
         }
     ]
 
