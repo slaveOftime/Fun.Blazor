@@ -2,6 +2,7 @@
 module Fun.Blazor.FelizDsl
 
 open System
+open FSharp.Data.Adaptive
 open Fun.Blazor
 open Fun.Blazor.Operators
 open Microsoft.AspNetCore.Components
@@ -16,7 +17,7 @@ type html with
 
     static member route(render: string list -> NodeRenderFragment) =
         html.inject (fun (hook: IComponentHook, nav: NavigationManager, interception: INavigationInterception) ->
-            let location = hook.UseStore nav.Uri
+            let location = cval nav.Uri
 
             hook.OnFirstAfterRender.Add(fun () ->
                 interception.EnableNavigationInterceptionAsync() |> ignore
@@ -24,12 +25,15 @@ type html with
                     try
                         location.Publish e.Location
                     with
-                        | _ -> ()
+                    | _ -> ()
                 )
                 |> hook.AddDispose
             )
 
-            html.watch (location, (fun loc -> RouterUtils.urlSegments (Uri loc).PathAndQuery RouteMode.Path |> render))
+            adaptiview () {
+                let! location = location
+                RouterUtils.urlSegments (Uri location).PathAndQuery RouteMode.Path |> render
+            }
         )
 
 
@@ -37,7 +41,7 @@ let svg =
     FunBlazorSvgEngine((fun tag nodes -> EltWithChildBuilder tag { yield! nodes }), html.text, Internal.emptyNode)
 
 let attr =
-    FunBlazorAttrEngine((fun k v -> k => v), (fun k v -> if v then k => null else Internal.emptyAttr()))
+    FunBlazorAttrEngine((fun k v -> k => v), (fun k v -> if v then k => null else Internal.emptyAttr ()))
 
 /// Feliz is not recommend, so will reserve style for CE builder
 /// If you do not use CE build, you can just create an alias "style" for styl
