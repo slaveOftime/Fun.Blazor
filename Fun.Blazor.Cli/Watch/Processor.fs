@@ -61,19 +61,35 @@ let private convFile (i: FSharpImplementationFileContents) =
 
 
 let private isFileHotReloadEnabled (file: string) =
-    if File.Exists file then
-        use fs = File.Open(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)
-        use sr = new StreamReader(fs)
-        if sr.Peek() >= 0 then
-            if sr.ReadLine().Contains("// hot-reload", StringComparison.OrdinalIgnoreCase) then
-                true
+    let check () =
+        if File.Exists file then
+            use fs = File.Open(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)
+            use sr = new StreamReader(fs)
+            if sr.Peek() >= 0 then
+                if sr.ReadLine().Contains("// hot-reload", StringComparison.OrdinalIgnoreCase) then
+                    true
+                else
+                    //printfn "ignored %s: because no \"// hot-reload\" at the top of the source file" x
+                    false
             else
-                //printfn "ignored %s: because no \"// hot-reload\" at the top of the source file" x
                 false
         else
             false
-    else
-        false
+
+    let mutable count = 0
+    let mutable isCheckSuccess = false
+    let mutable result = false
+    while count < 3 && not isCheckSuccess do
+        try
+            result <- check ()
+            isCheckSuccess <- true
+        with
+        | _ -> count <- count + 1
+
+    if not isCheckSuccess then
+        printfn "Check file hot-reload failed, please save the file again: %s" file
+
+    result
 
 
 let process' sendCode (source: Source) (msbuildArgs: string list) =
