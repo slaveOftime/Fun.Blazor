@@ -3,16 +3,11 @@
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
-		<LangVersion>preview</LangVersion>
 		<Version>0.2.5</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<Compile Include="CssBuilder.fs" />
-	</ItemGroup>
-	
-	<ItemGroup>
-		<PackageReference Update="FSharp.Core" Version="6.0.1" />
 	</ItemGroup>
 
 </Project>

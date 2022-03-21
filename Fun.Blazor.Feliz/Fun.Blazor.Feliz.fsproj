@@ -22,8 +22,4 @@
 		<PackageReference Include="Feliz.Engine" Version="1.0.0-beta-004" />
 	</ItemGroup>
 	
-	<ItemGroup>
-		<PackageReference Update="FSharp.Core" Version="6.0.1" />
-	</ItemGroup>
-	
 </Project>

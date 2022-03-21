@@ -65,7 +65,7 @@ type Convert(includeRanges: bool, tolerateIncomplete: bool) =
 
         | FSharpExprPatterns.Coerce (targetType, inpExpr) -> DExpr.Coerce(convType targetType, convExpr inpExpr)
 
-        | FSharpExprPatterns.FastIntegerForLoop (startExpr, limitExpr, consumeExpr, isUp) ->
+        | FSharpExprPatterns.FastIntegerForLoop (startExpr, limitExpr, consumeExpr, isUp, _, _) ->
             DExpr.FastIntegerForLoop(convExpr startExpr, convExpr limitExpr, convExpr consumeExpr, isUp)
 
         | FSharpExprPatterns.ILAsm (asmCode, typeArgs, argExprs) -> DExpr.ILAsm(asmCode, convTypes typeArgs, convExprs argExprs)
@@ -80,11 +80,16 @@ type Convert(includeRanges: bool, tolerateIncomplete: bool) =
         | FSharpExprPatterns.Lambda (lambdaVar, bodyExpr) ->
             DExpr.Lambda(convType lambdaVar.FullType, convType bodyExpr.Type, convLocalDef lambdaVar, convExpr bodyExpr)
 
-        | FSharpExprPatterns.Let ((bindingVar, bindingExpr), bodyExpr) ->
+        | FSharpExprPatterns.Let ((bindingVar, bindingExpr, _), bodyExpr) ->
             DExpr.Let((convLocalDef bindingVar, convExpr bindingExpr), convExpr bodyExpr)
 
         | FSharpExprPatterns.LetRec (recursiveBindings, bodyExpr) ->
-            DExpr.LetRec(List.mapToArray (map2 convLocalDef convExpr) recursiveBindings, convExpr bodyExpr)
+            DExpr.LetRec(
+                recursiveBindings
+                |> List.map (fun (x, y, _) -> x, y)
+                |> List.mapToArray (map2 convLocalDef convExpr),
+                convExpr bodyExpr
+            )
 
         | FSharpExprPatterns.NewArray (arrayType, argExprs) -> DExpr.NewArray(convType arrayType, convExprs argExprs)
 
@@ -127,9 +132,9 @@ type Convert(includeRanges: bool, tolerateIncomplete: bool) =
             let rangeR = convRange expr.Range
             DExpr.Sequential(convExpr firstExpr, convExpr secondExpr, rangeR)
 
-        | FSharpExprPatterns.TryFinally (bodyExpr, finalizeExpr) -> DExpr.TryFinally(convExpr bodyExpr, convExpr finalizeExpr)
+        | FSharpExprPatterns.TryFinally (bodyExpr, finalizeExpr, _, _) -> DExpr.TryFinally(convExpr bodyExpr, convExpr finalizeExpr)
 
-        | FSharpExprPatterns.TryWith (bodyExpr, filterVar, filterExpr, catchVar, catchExpr) ->
+        | FSharpExprPatterns.TryWith (bodyExpr, filterVar, filterExpr, catchVar, catchExpr, _, _) ->
             DExpr.TryWith(convExpr bodyExpr, convLocalDef filterVar, convExpr filterExpr, convLocalDef catchVar, convExpr catchExpr)
 
         | FSharpExprPatterns.TupleGet (tupleType, tupleElemIndex, tupleExpr) -> DExpr.TupleGet(convType tupleType, tupleElemIndex, convExpr tupleExpr)
@@ -195,7 +200,7 @@ type Convert(includeRanges: bool, tolerateIncomplete: bool) =
             let rangeR = convRange expr.Range
             DExpr.ValueSet(valToSetR, convExpr valueExpr, rangeR)
 
-        | FSharpExprPatterns.WhileLoop (guardExpr, bodyExpr) -> DExpr.WhileLoop(convExpr guardExpr, convExpr bodyExpr)
+        | FSharpExprPatterns.WhileLoop (guardExpr, bodyExpr, _) -> DExpr.WhileLoop(convExpr guardExpr, convExpr bodyExpr)
 
         | FSharpExprPatterns.BaseValue baseType -> DExpr.BaseValue(convType baseType)
 
@@ -481,8 +486,7 @@ type Convert(includeRanges: bool, tolerateIncomplete: bool) =
             failwith "convEntityRef: can't convert a type abbreviation"
         DEntityRef entity.QualifiedName
 
-    and stripTypeAbbreviations (typ: FSharpType) : FSharpType =
-        if typ.IsAbbreviation then stripTypeAbbreviations typ.AbbreviatedType else typ
+    and stripTypeAbbreviations (typ: FSharpType) : FSharpType = if typ.IsAbbreviation then stripTypeAbbreviations typ.AbbreviatedType else typ
 
     and isInterfaceType (typ: FSharpType) =
         if typ.IsAbbreviation then
@@ -551,8 +555,7 @@ type Convert(includeRanges: bool, tolerateIncomplete: bool) =
             Range = convRange f.DeclarationLocation
             IsCompilerGenerated = f.IsCompilerGenerated
         }
-    and convGenericParamDefs (gps: seq<FSharpGenericParameter>) =
-        gps |> Seq.toArray |> Array.map convGenericParamDef
+    and convGenericParamDefs (gps: seq<FSharpGenericParameter>) = gps |> Seq.toArray |> Array.map convGenericParamDef
 
     let rec convDecl d =
         [|
@@ -569,7 +572,7 @@ type Convert(includeRanges: bool, tolerateIncomplete: bool) =
                         try
                             convEntityDef e
                         with
-                            | exn -> failwithf "error converting entity %s\n%A" e.CompiledName exn
+                        | exn -> failwithf "error converting entity %s\n%A" e.CompiledName exn
                     let declsR = convDecls subDecls
                     yield DDeclEntity(eR, declsR)
 
@@ -583,12 +586,12 @@ type Convert(includeRanges: bool, tolerateIncomplete: bool) =
                     try
                         Ok(convMemberDef v)
                     with
-                        | exn -> Error exn
+                    | exn -> Error exn
                 let eR =
                     try
                         Ok(convExpr e)
                     with
-                        | exn -> Error exn
+                    | exn -> Error exn
                 match vR, eR with
                 | Ok vR, Ok eR -> yield DDeclMember(vR, eR, isLiveCheck)
                 | _ when tolerateIncomplete -> ()
@@ -599,7 +602,7 @@ type Convert(includeRanges: bool, tolerateIncomplete: bool) =
                     try
                         Ok(convExpr e)
                     with
-                        | exn -> Error exn
+                    | exn -> Error exn
                 match eR with
                 | Ok eR -> yield DDecl.InitAction(eR, convRange e.Range)
                 | Error exn ->

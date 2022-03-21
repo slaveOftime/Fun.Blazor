@@ -18,8 +18,4 @@
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.13" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<PackageReference Update="FSharp.Core" Version="6.0.1" />
-	</ItemGroup>
-
 </Project>
