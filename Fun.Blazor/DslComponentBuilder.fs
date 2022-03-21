@@ -186,6 +186,10 @@ type ComponentWithChildBuilder<'T when 'T :> IComponent>() =
 
     member inline _.For([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> NodeRenderFragment) = (render, fn ())
 
+    member inline _.For([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> AttrRenderFragment * NodeRenderFragment) =
+        let attr, node = fn ()
+        attr ==> render, node
+
     member inline _.For([<InlineIfLambda>] render: RefRenderFragment, [<InlineIfLambda>] fn: unit -> NodeRenderFragment) = (render, fn ())
 
     //member inline _.For(renders: 'Data seq, [<InlineIfLambda>] fn: 'Data -> NodeRenderFragment) =
@@ -392,6 +396,10 @@ type ComponentWithDomAndChildAttrBuilder<'T when 'T :> IComponent>() =
     member inline _.For([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> NodeRenderFragment) = (render, fn ())
 
     member inline _.For([<InlineIfLambda>] render: RefRenderFragment, [<InlineIfLambda>] fn: unit -> NodeRenderFragment) = (render, fn ())
+
+    member inline _.For([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> AttrRenderFragment * NodeRenderFragment) =
+        let attr, node = fn ()
+        attr ==> render, node
 
     //member inline _.For(renders: 'Data seq, [<InlineIfLambda>] fn: 'Data -> NodeRenderFragment) =
     //    renders |> Seq.map fn |> Seq.fold (>=>) (emptyNode ())
