@@ -42,12 +42,13 @@ Now the docs are only written as an experimental playground and simple introduct
 ## Please check the samples for quick start
 
 https://github.com/slaveOftime/Slaveoftime.Site
+
 https://github.com/slaveOftime/Fun.Blazor.Samples
 
 Below version may not be updated, please check here [![Nuget](https://img.shields.io/nuget/vpre/Fun.Blazor.Templates)](https://www.nuget.org/packages/Fun.Blazor.Templates)
 
 ```shell
-dotnet new --install Fun.Blazor.Templates::2.0.0-beta013
+dotnet new --install Fun.Blazor.Templates::2.0.0-beta*
 ```
 
 
@@ -58,14 +59,14 @@ dotnet new --install Fun.Blazor.Templates::2.0.0-beta013
     ```fsharp
     let demo =
         adaptiview(){ // this is more recommend than html.watch and html.elmish
-            let! v, setValue = FSharp.Data.Adaptive.cval(1).WithSetter()
+            let! count, setCount = FSharp.Data.Adaptive.cval(1).WithSetter()
             button {
-                onclick (fun _ -> setValue (v + 1))
+                onclick (fun _ -> setValue (count + 1))
                 "Increase"
             }
             div {
                 style { color "red" }
-                $"value = {v}"
+                $"value = {count}"
             }
         }
     ```
@@ -73,7 +74,6 @@ dotnet new --install Fun.Blazor.Templates::2.0.0-beta013
 2. **Fun.Blazor.HtmlTemplate**: help you to convert plain string to dom tree. And with VSCode + Ionide-fsharp + Highlight HTML/SQL templates you can get embeded intellicense. You can check more detail in [shoelacejs + tailwind demo](https://github.com/slaveOftime/Fun.Blazor.Samples/tree/main/templates/MinimalBlazorWASMAppWithShoelaceAndTailwind)
 
     ```fsharp
-    // If there is no argument for formatable string then it will be very efficient. So it is better to always keep static part and dynamic part in different places.
     let staticPart =
         Static.html """
             <div style="color: hotpink;">Congratulations! You made it ❤️</div>
@@ -82,52 +82,49 @@ dotnet new --install Fun.Blazor.Templates::2.0.0-beta013
     // The performance will not be good as CE DSL for initial start. Because it need to parse at runtime and cache for next usage.
     let dynamicPart =
         adaptiview(){
-            let! v, setValue = FSharp.Data.Adaptive.cval(1).WithSetter()
+            let! count, setCount = FSharp.Data.Adaptive.cval(1).WithSetter()
             Template.html $"""
                 <div>
                     {staticPart}
-                    {v}
-                    <button onclick={fun _ -> setValue (v + 1)}></button>
+                    {count}
+                    <button onclick={fun _ -> setCount (count + 1)}></button>
                 </div>
             """
         }
     ```
 
 
-3. **Fun.Blazor.Cli**: support hot-reload, help you to generate CE style binding automatically for any blazor third party libraries.
+3. **Fun.Blazor.Cli**: support hot-reload and help you to generate CE style binding automatically for any blazor third party libraries.
 
     [Docs for how to use it](https://funblazor.slaveoftime.fun/cli-usage)
+
+    [Docs for hot-reload](https://funblazor.slaveoftime.fun/hot-reload)]
     
     [Samples for using MudBlazor](https://github.com/slaveOftime/Fun.Blazor.Samples/tree/main/templates/BlazorWASMAppWithMudBlazor)
-
-    ```shell
-    dotnet tool install --global Fun.Blazor.Cli --version 2.0.0-beta023
-    ```
-    
 
     ```fsharp
     open Fun.Blazor
     open MudBlazor
 
     let alertDemo =
-        MudCard'() {
+        MudCard'.create [
             MudAlert'() {
                 Icon Icons.Filled.AccessAlarm
                 "This is the way"
             }
-        }
+        ]
     ```
 
 
 ## Pitfalls
 
-1. FSharp compiler cannot handle large computation expression. It is better to make simple CE block smaller and single file smaller. Or use sequence like seq/list/array with childContent:
+1. FSharp compiler cannot handle some large computation expression. It is better to make single CE block smaller and single file smaller. Or use sequence like seq/list/array with childContent:
 
     ```fsharp
     div {
         onclick ignore
         other attrs
-        childContent [ ✅ it is recommended to use this when you got more than one child items
+        childContent [ // ✅ it is recommended to use this when you got more than one child items
             div { "hi" }
             ...a lot of child items
         ]
@@ -148,22 +145,35 @@ dotnet new --install Fun.Blazor.Templates::2.0.0-beta013
 2. Hot-reload
 
     Now the default templates contain limited hot-reload support.
-    It is also very slow to have too much file to be hot-reloaded, so you need to add **// hot-reload** at the top of the file you want to enable hot-reload.
+    It is very slow to have too much file to be hot-reloaded, so you need to add **// hot-reload** at the top of the file you want to enable hot-reload.
     For more detail you can check my blog post [Hot-reload in Fun.Blazor](https://www.slaveoftime.fun/blog/d959e36a-f4fe-4a10-88af-5e738633db0f?title=%20Hot-reload%20in%20Fun.Blazor).  
-    Or check the document.
+    Or check the [document](https://funblazor.slaveoftime.fun/hot-reload)
 
-3. ref position
+3. attribute, items position in CE
 
     When you want to use ref attribute, you need to put it like below
 
     ```fsharp
     div {
+        onclick (fun _ -> ())
         some other attibutes
-        ref ... ✅
+        ref (fun x -> ()) // ✅
         childContent [ ... ]
     }
     ```
 
+    Or
+
+    ```fsharp
+    div {
+        some other attibutes
+        onclick (fun _ -> ())
+        ref (fun x -> ()) // ✅
+        div { 1 }
+        div { 1 }
+        // ...
+    }
+    ```
 
 ## Code structure example
 
@@ -264,7 +274,6 @@ let app =
 |       BuildRenderTreeWithCE |   808.5 ns | 16.01 ns |  39.26 ns |   794.1 ns | 0.1745 |      - |   1,096 B |
 | BuildRenderTreeWithTemplate | 3,817.9 ns | 84.19 ns | 248.24 ns | 3,769.4 ns | 0.7668 | 0.0076 |   4,832 B |
 |    BuildRenderTreeWithFeliz | 2,616.5 ns | 51.97 ns | 123.52 ns | 2,618.0 ns | 1.2474 | 0.0114 |   7,832 B |
-|  BuildRenderTreeWithCEFeliz | 1,456.7 ns | 34.21 ns | 100.32 ns | 1,452.7 ns | 0.6180 | 0.0038 |   3,880 B |
 
 
 |                   Method |     Mean |    Error |   StdDev |  Gen 0 | Allocated |
