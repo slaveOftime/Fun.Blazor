@@ -34,8 +34,18 @@ let rec internal tryFindMemberByName fullName (decls: DDecl []) =
 
 
 /// Starts the HttpServer listening for changes
-let internal reload renderEntryName (codeData: (string * DFile) []) (updateRenderFn: NodeRenderFragment -> unit) =
+let internal reload<'T> renderEntryName (codeData: (string * DFile) []) (updateRenderFn: ('T -> NodeRenderFragment) -> unit) =
     let interp = EvalContext(System.Reflection.Assembly.GetEntryAssembly().GetName())
+
+    let unsupport () =
+        printfn "*** LiveUpdate failure:"
+        printfn "***   [x] got code package"
+        printfn "***   [x] found declaration called '%s'" renderEntryName
+        printfn "***   [x] it had no parameters (good!)"
+        printfn "***   FAIL: the declaration had the wrong type '%A'. it must be a single top-level value in a module." (p.GetType())
+        Some { Quacked = "LiveUpdate couldn't quack! types mismatch!" }
+
+    let success () = Some { Quacked = "LiveUpdate successful" }
 
     let switchD (files: (string * DFile) []) =
         lock
@@ -52,7 +62,7 @@ let internal reload renderEntryName (codeData: (string * DFile) []) (updateRende
                             interp.EvalDecls(envEmpty, file.Code)
                         Result.Ok()
                     with
-                        | exn -> Result.Error exn
+                    | exn -> Result.Error exn
 
                 match res with
                 | Result.Error exn ->
@@ -64,61 +74,50 @@ let internal reload renderEntryName (codeData: (string * DFile) []) (updateRende
                     }
 
                 | Result.Ok () ->
-
                     match files.Length with
                     | 0 -> { Quacked = "couldn't quack! Files were empty!" }
                     | _ ->
                         let result =
                             files
                             |> Array.tryPick (fun (_, file) ->
-
                                 let renderEntry = tryFindMemberByName renderEntryName file.Code
 
                                 match renderEntry with
                                 | None -> None
-
                                 | Some (membDef, _) ->
+                                    printfn $"LiveUpdate: evaluating '{renderEntryName}'...."
+
                                     if membDef.Parameters.Length > 0 then
-                                        printfn "*** LiveUpdate failure:"
-                                        printfn "***   [x] got code package"
-                                        printfn "***   [x] found declaration called '%s'" renderEntryName
-                                        printfn "***   FAIL: the declaration has parameters, it must be a single top-level value"
-                                        Some
-                                            {
-                                                Quacked =
-                                                    $"couldn't quack! Found declaration called '{renderEntryName}' but the declaration has parameters!"
-                                            }
+                                        printfn $"LiveUpdate: evaluating '{renderEntryName}'...."
+                                        let method = interp.ResolveMethod membDef.Ref membDef.Range
+                                        match method with
+                                        | ResolvedMember.UMethod (_, method) ->
+                                            match method.Value with
+                                            | :? MethodLambdaValue as (MethodLambdaValue fn) ->
+                                                try
+                                                    updateRenderFn (fun x -> unbox (fn ([||], [| x |])))
+                                                    success ()
+                                                with
+                                                | _ -> unsupport ()
+                                            | _ -> unsupport ()
+                                        | _ -> unsupport ()
 
                                     else
-
-                                        printfn $"LiveUpdate: evaluating '{renderEntryName}'...."
                                         let entity = interp.ResolveEntity(membDef.EnclosingEntity)
-                                        let (_, programObj) = interp.GetExprDeclResult(entity, membDef.Name)
-
+                                        let _, programObj = interp.GetExprDeclResult(entity, membDef.Name)
                                         match getVal programObj with
                                         | :? NodeRenderFragment as render ->
-                                            updateRenderFn render
-                                            Some { Quacked = "LiveUpdate successful" }
-
+                                            updateRenderFn (fun _ -> render)
+                                            success ()
                                         | :? MethodLambdaValue as (MethodLambdaValue fn) ->
                                             try
-                                                fn([||], [||]) |> unbox<NodeRenderFragment> |> updateRenderFn
-                                                Some { Quacked = "LiveUpdate successful" }
-                                            with ex ->
-                                                printfn "*** Can only support lambda without argument"
-                                                printfn "*** %s" ex.Message
-                                                Some { Quacked = "LiveUpdate couldn't quack! types mismatch!" }
-                                                
-                                        | p ->
-                                            printfn "*** LiveUpdate failure:"
-                                            printfn "***   [x] got code package"
-                                            printfn "***   [x] found declaration called '%s'" renderEntryName
-                                            printfn "***   [x] it had no parameters (good!)"
-                                            printfn
-                                                "***   FAIL: the declaration had the wrong type '%A'. it must be a single top-level value in a module."
-                                                (p.GetType())
-                                            Some { Quacked = "LiveUpdate couldn't quack! types mismatch!" }
+                                                updateRenderFn (fun _ -> unbox (fn ([||], [||])))
+                                                success ()
+                                            with
+                                            | _ -> unsupport ()
+                                        | p -> unsupport ()
                             )
+
                         match result with
                         | None ->
                             printfn "*** LiveUpdate failure:"

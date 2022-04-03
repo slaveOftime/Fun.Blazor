@@ -25,7 +25,7 @@ type private HubBundle =
 
 module private Cache =
 
-    let mutable lastRenderFns = ConcurrentDictionary<string, NodeRenderFragment>()
+    let mutable lastRenderFns = ConcurrentDictionary<string, obj>()
 
     let private hubLocker = obj ()
 
@@ -91,7 +91,7 @@ module private Cache =
             )
 
 
-type HotReloadComponent() as this =
+type HotReloadComponent<'T>() as this =
     inherit FunBlazorComponent()
 
     let mutable disposes: IDisposable list = []
@@ -103,7 +103,10 @@ type HotReloadComponent() as this =
 
 
     [<Parameter>]
-    member val RenderFn = html.none with get, set
+    member val RenderFn = fun (_: 'T) -> html.none with get, set
+
+    [<Parameter>]
+    member val RenderFnArg = Unchecked.defaultof<'T> with get, set
 
     [<Parameter>]
     member val RenderEntryName = "" with get, set
@@ -119,7 +122,7 @@ type HotReloadComponent() as this =
     member val JS: IJSRuntime = Unchecked.defaultof<IJSRuntime> with get, set
 
 
-    override _.Render() = this.RenderFn
+    override _.Render() = this.RenderFn this.RenderFnArg
 
 
     override _.OnAfterRender(firstRender) =
@@ -129,11 +132,11 @@ type HotReloadComponent() as this =
             disposes <-
                 [
                     hubBundle.CodeObserver.AddInstantCallback(fun code ->
-                        Utils.reload
+                        Utils.reload<'T>
                             this.RenderEntryName
                             code
                             (fun x ->
-                                Cache.lastRenderFns.AddOrUpdate(this.RenderEntryName, (fun _ -> x), (fun _ _ -> x))
+                                Cache.lastRenderFns.AddOrUpdate(this.RenderEntryName, (fun _ -> box x), (fun _ _ -> box x))
                                 setRender x
                             )
                     )
@@ -145,7 +148,7 @@ type HotReloadComponent() as this =
                 ]
 
             match Cache.lastRenderFns.TryGetValue this.RenderEntryName with
-            | true, x -> setRender x
+            | true, x -> setRender (unbox x)
             | _ -> ()
 
 
