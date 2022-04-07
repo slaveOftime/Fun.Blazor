@@ -21,6 +21,15 @@ type EltBuilder(name) =
             nextIndex
         )
 
+    member inline this.Run([<InlineIfLambda>] render: NodeRenderFragment) =
+        NodeRenderFragment(fun comp builder index ->
+            builder.OpenElement(index, (this :> IElementBuilder).Name)
+            let nextIndex = render.Invoke(comp, builder, index + 1)
+            builder.CloseElement()
+            nextIndex
+        )
+
+
     [<CustomOperation("ref")>]
     member inline _.ref([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ElementReference -> unit) =
         NodeRenderFragment(fun comp builder index ->
@@ -28,6 +37,9 @@ type EltBuilder(name) =
             builder.AddElementReferenceCapture(nextIndex, fn)
             nextIndex + 1
         )
+
+
+    member inline _.Delay([<InlineIfLambda>] fn: unit -> NodeRenderFragment) = NodeRenderFragment(fun c b i -> fn().Invoke(c, b, i))
 
     member inline _.For([<InlineIfLambda>] render: NodeRenderFragment, [<InlineIfLambda>] fn: unit -> NodeRenderFragment) = render >=> (fn ())
 
@@ -68,16 +80,6 @@ type EltBuilder(name) =
 type EltWithChildBuilder(name) =
     inherit EltBuilder(name)
 
-
-    member inline this.Run([<InlineIfLambda>] render: NodeRenderFragment) =
-        NodeRenderFragment(fun comp builder index ->
-            builder.OpenElement(index, (this :> IElementBuilder).Name)
-            let nextIndex = render.Invoke(comp, builder, index + 1)
-            builder.CloseElement()
-            nextIndex
-        )
-
-
     member inline _.Yield(x: int) =
         NodeRenderFragment(fun _ builder index ->
             builder.AddContent(index, x)
@@ -111,8 +113,6 @@ type EltWithChildBuilder(name) =
         )
 
     member inline _.Yield([<InlineIfLambda>] x: NodeRenderFragment) = x
-
-    member inline _.Delay([<InlineIfLambda>] fn: unit -> NodeRenderFragment) = NodeRenderFragment(fun c b i -> fn().Invoke(c, b, i))
 
     /// We should only allow merge AttrRenderFragment with NodeRenderFragment.
     /// Instead of merge NodeRenderFragment with AttrRenderFragment because blazor only allow add attribute then child.
