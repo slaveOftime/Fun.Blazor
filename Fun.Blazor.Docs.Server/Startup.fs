@@ -12,6 +12,7 @@ let builder = WebApplication.CreateBuilder(Environment.GetCommandLineArgs())
 
 builder.Services.AddControllersWithViews()
 builder.Services.AddServerSideBlazor().Services.AddFunBlazorServer().AddMudServices()
+builder.Services.AddScoped<Fun.Blazor.Docs.Wasm.Pages.HelperFunctions.InjectDemo.ScopedDemoService>()
 
 
 let app = builder.Build()

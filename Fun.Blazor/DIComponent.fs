@@ -53,6 +53,12 @@ type DIComponent<'T>() as this =
             member _.AddDisposes ds = disposes.AddRange(ds)
             member _.StateHasChanged() = this.ForceRerender()
             member _.ServiceProvider = this.Services
+            member _.ScopedServiceProvider =
+                if isNull this.ScopedServices then
+                    failwithf
+                        "You should use html.scoped to wrap your components. Or create a CascadeValue component to provide a IServiceProvider with name '%s'"
+                        Internal.FunBlazorScopedServicesName
+                this.ScopedServices
         }
 
 
@@ -66,6 +72,9 @@ type DIComponent<'T>() as this =
     /// If component is not recreated then all the rerender will use the closure state created by the first RenderFn
     [<Parameter>]
     member val IsStatic = false with get, set
+
+    [<CascadingParameter(Name = Internal.FunBlazorScopedServicesName)>]
+    member val ScopedServices = Unchecked.defaultof<IServiceProvider> with get, set
 
     [<Inject>]
     member val Services = Unchecked.defaultof<IServiceProvider> with get, set
@@ -84,7 +93,8 @@ type DIComponent<'T>() as this =
 
     override _.OnInitialized() =
         let depsType, _ = Reflection.FSharpType.GetFunctionElements(this.RenderFn.GetType())
-        let services = this.Services.GetMultipleServices(depsType, handleNotFoundType) :?> 'T
+        let services =
+            this.Services.GetMultipleServices(depsType, handleNotFoundType) :?> 'T
         let newNode = this.RenderFn services
         node <- newNode |> Some
 

@@ -2,6 +2,7 @@
 module Fun.Blazor.DslDI
 
 open System
+open Microsoft.Extensions.DependencyInjection
 open Operators
 
 
@@ -61,3 +62,48 @@ type html with
             "RenderFn" => render
             "IsStatic" => true
         }
+
+
+    /// This will get a IServiceScopeFactory from container and create a new scope and add it to CascadingValue if useRootScope = true.
+    /// So all its child content can get service from this new scope by using hook.ScopedServiceProvider.
+    /// The new scope will be disposed when this component is disposed.
+    static member scoped(useRootScope, node: NodeRenderFragment) =
+        html.inject (fun (hook: IComponentHook) ->
+            let scope =
+                if useRootScope then
+                    None
+                else
+                    hook.ServiceProvider.GetService<IServiceScopeFactory>().CreateScope() |> Some
+
+            hook.OnDispose.Add(fun _ -> scope |> Option.iter (fun x -> x.Dispose()))
+
+            NodeRenderFragment(fun comp builder index ->
+                builder.OpenComponent<Microsoft.AspNetCore.Components.CascadingValue<IServiceProvider>>(index)
+                builder.AddAttribute(index + 1, "Name", Internal.FunBlazorScopedServicesName)
+                builder.AddAttribute(
+                    index + 2,
+                    "Value",
+                    match scope with
+                    | Some scope -> scope.ServiceProvider
+                    | None -> hook.ServiceProvider
+                )
+                builder.AddAttribute(index + 3, "IsFixed", true)
+                builder.AddAttribute(
+                    index + 4,
+                    "ChildContent",
+                    Microsoft.AspNetCore.Components.RenderFragment(fun tb -> node.Invoke(comp, tb, 0) |> ignore)
+                )
+                builder.CloseComponent()
+                index + 5
+            )
+        )
+
+    /// This will get a IServiceScopeFactory from container and create a new scope and add it to CascadingValue.
+    /// So all its child content can get service from this new scope by using hook.ScopedServiceProvider.
+    /// The new scope will be disposed when this component is disposed.
+    static member scoped(node: NodeRenderFragment) = html.scoped (false, node)
+
+    /// This will get a IServiceScopeFactory from container and create a new scope and add it to CascadingValue.
+    /// So all its child content can get service from this new scope by using hook.ScopedServiceProvider.
+    /// The new scope will be disposed when this component is disposed.
+    static member scoped(nodes: NodeRenderFragment seq) = html.scoped (html.fragment nodes)

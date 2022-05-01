@@ -150,6 +150,22 @@ type IComponentHook =
     /// which means we can the extension that can be standalone and be reused more easizer
     abstract ServiceProvider : IServiceProvider
 
+    /// <summary>
+    /// This is using CascadeValue from blazor. So to use this you will need to provider a wrapper around your child components or elements. 
+    /// You also need to provider a root value for it, otherwise you will get null exception for using it.
+    /// </summary>
+    /// <example>
+    /// <code lang="fsharp">
+    /// html.scoped [
+    ///     html.inject (fun (hook: IComponentHook ->)
+    ///         hook.ScopedServiceProvider ... you can use it then
+    ///         ...
+    ///     )
+    /// ]
+    /// </code>
+    /// </example>
+    abstract ScopedServiceProvider : IServiceProvider
+
 
 type IStoreManager =
 

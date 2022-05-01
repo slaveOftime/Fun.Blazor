@@ -2,10 +2,17 @@
 module Fun.Blazor.Docs.Wasm.Pages.HelperFunctions.InjectDemo
 
 open System
+open FSharp.Data.Adaptive
 open FSharp.Control.Reactive
+open Microsoft.Extensions.DependencyInjection
 open MudBlazor
 open Fun.Blazor
 open Fun.Blazor.Docs.Wasm.Components
+
+
+type ScopedDemoService() =
+    member val Count = cval 0 with get, set
+
 
 //                                        Here we provide a key
 //                                        If we do not provide a key, then every time we call externalDemo1 we will create a new component
@@ -38,6 +45,37 @@ let externalDemo1 extenalX =
                     html.watch (store1, (fun s1 -> div.create $"Store: {s1}"))
                 ]
             }
+    )
+
+
+let scopedDemo =
+    html.inject (fun (demo1: ScopedDemoService) ->
+        let view (demo: ScopedDemoService) msg =
+            adaptiview () {
+                let! count, setCount = demo.Count.WithSetter()
+
+                div {
+                    button {
+                        onclick (fun _ -> setCount (count + 1))
+                        "Increase"
+                    }
+                    div { $"{msg}: {count}" }
+                }
+                spaceV2
+            }
+
+        MudPaper'() {
+            style { padding 10 }
+            Elevation 2
+            view demo1 "Count from normal scope"
+            html.scoped [
+                html.inject (fun (hook: IComponentHook) -> view (hook.ScopedServiceProvider.GetService<ScopedDemoService>()) "Count from scope1")
+                html.inject (fun (hook: IComponentHook) -> view (hook.ScopedServiceProvider.GetService<ScopedDemoService>()) "Count from scope1")
+            ]
+            html.scoped [
+                html.inject (fun (hook: IComponentHook) -> view (hook.ScopedServiceProvider.GetService<ScopedDemoService>()) "Count from scope2")
+            ]
+        }
     )
 
 
@@ -76,6 +114,10 @@ let injectDemo =
                 )
                 // Because these code will only be execute one time, so below string will not change
                 MudText'.create $"Store will not be updated here: {store.Current}"
+                spaceV4
+                MudDivider'.create ()
+                spaceV4
+                scopedDemo
             ]
         }
     )

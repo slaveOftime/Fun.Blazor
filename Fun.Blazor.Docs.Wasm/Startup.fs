@@ -21,5 +21,6 @@ builder
     .Services
     .AddFunBlazorWasm()
     .AddMudServices()
+    .AddScoped<Fun.Blazor.Docs.Wasm.Pages.HelperFunctions.InjectDemo.ScopedDemoService>()
 
 builder.Build().RunAsync()
