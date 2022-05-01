@@ -104,6 +104,11 @@ let startGenerate (projectFile: string) (codesDirName: string) (style: Style) sd
     let project = XDocument.Load projectFile
 
 
+    let codesDir = Path.Combine(Path.GetDirectoryName(Path.GetFullPath(projectFile)), codesDirName)
+    if codesDir |> Directory.Exists |> not then
+        Directory.CreateDirectory codesDir |> ignore
+
+
     AnsiConsole.MarkupLine "Clean previous generated code files"
     clean project projectFile codesDirName
 
