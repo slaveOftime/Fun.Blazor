@@ -453,7 +453,7 @@ module Elts =
 
     let strong = EltWithChildBuilder "strong"
 
-    let style' = EltWithChildBuilder "style"
+    let styleElt = EltWithChildBuilder "style"
 
     let sub = EltWithChildBuilder "sub"
 
@@ -537,6 +537,9 @@ module Elts =
 
     let styleBuilder = StyleBuilder()
     let cssBuilder = Fun.Css.CssBuilder()
+
+    /// Build a style string
+    let styleStr = StyleStrBuilder()
 
     /// Short name for StyleBuilder
     let style = styleBuilder

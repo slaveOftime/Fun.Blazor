@@ -17,17 +17,13 @@ module Internal =
 
 
     type Makers =
-        static member inline mkPxWithKV(k: string, v: int) =
-            CombineKeyValue(fun x -> x.Append(k).Append(": ").Append(v).Append("px; "))
+        static member inline mkPxWithKV(k: string, v: int) = CombineKeyValue(fun x -> x.Append(k).Append(": ").Append(v).Append("px; "))
 
-        static member inline mkPxWithKV(k: string, v: float) =
-            CombineKeyValue(fun x -> x.Append(k).Append(": ").Append(v).Append("px; "))
+        static member inline mkPxWithKV(k: string, v: float) = CombineKeyValue(fun x -> x.Append(k).Append(": ").Append(v).Append("px; "))
 
-        static member inline mkWithKV(k: string, v: int) =
-            CombineKeyValue(fun x -> x.Append(k).Append(": ").Append(v).Append("; "))
+        static member inline mkWithKV(k: string, v: int) = CombineKeyValue(fun x -> x.Append(k).Append(": ").Append(v).Append("; "))
 
-        static member inline mkWithKV(k: string, v: float) =
-            CombineKeyValue(fun x -> x.Append(k).Append(": ").Append(v).Append("; "))
+        static member inline mkWithKV(k: string, v: float) = CombineKeyValue(fun x -> x.Append(k).Append(": ").Append(v).Append("; "))
 
 
 open Internal
@@ -43,8 +39,7 @@ type CssBuilder() =
 
     member inline _.For([<InlineIfLambda>] comb: CombineKeyValue, [<InlineIfLambda>] fn: unit -> CombineKeyValue) = comb &&& (fn ())
 
-    member inline _.For(ls: 'T seq, [<InlineIfLambda>] fn: 'T -> CombineKeyValue) =
-        ls |> Seq.map fn |> Seq.fold (&&&) (CombineKeyValue(fun x -> x))
+    member inline _.For(ls: 'T seq, [<InlineIfLambda>] fn: 'T -> CombineKeyValue) = ls |> Seq.map fn |> Seq.fold (&&&) (CombineKeyValue(fun x -> x))
 
     member inline _.Delay([<InlineIfLambda>] fn: unit -> CombineKeyValue) = CombineKeyValue(fun x -> fn().Invoke(x))
 
@@ -96,7 +91,7 @@ type CssBuilder() =
                 .Append(verticalOffset)
                 .Append("px ")
                 .Append(color)
-                .Append(";")
+                .Append("; ")
         )
 
     [<CustomOperation("boxShadow")>]
@@ -112,7 +107,7 @@ type CssBuilder() =
                 .Append(blur)
                 .Append("px ")
                 .Append(color)
-                .Append(";")
+                .Append("; ")
         )
 
     [<CustomOperation("boxShadow")>]
@@ -139,6 +134,7 @@ type CssBuilder() =
                 .Append(spread)
                 .Append("px ")
                 .Append(color)
+                .Append("; ")
         )
 
     [<CustomOperation("boxShadowNone")>]
@@ -626,8 +622,7 @@ type CssBuilder() =
     member inline _.listStyleTypeDecimal([<InlineIfLambda>] comb: CombineKeyValue) = comb &>> ("list-style-type", "decimal")
     /// The marker is a number with leading zeros (01, 02, 03, etc.))
     [<CustomOperation("listStyleTypeDecimalLeadingZero")>]
-    member inline _.listStyleTypeDecimalLeadingZero([<InlineIfLambda>] comb: CombineKeyValue) =
-        comb &>> ("list-style-type", "decimal-leading-zero")
+    member inline _.listStyleTypeDecimalLeadingZero([<InlineIfLambda>] comb: CombineKeyValue) = comb &>> ("list-style-type", "decimal-leading-zero")
     /// The marker is traditional Georgian numbering
     [<CustomOperation("listStyleTypeGeorgian")>]
     member inline _.listStyleTypeGeorgian([<InlineIfLambda>] comb: CombineKeyValue) = comb &>> ("list-style-type", "georgian")
@@ -692,8 +687,7 @@ type CssBuilder() =
     /// The path to the image to be used as a list-item marker
     [<CustomOperation("propertyUrl")>]
     member inline _.propertyUrl([<InlineIfLambda>] comb: CombineKeyValue, path: string) =
-        comb
-        &&& CombineKeyValue(fun x -> x.Append("list-style-image: url(").Append(path).Append("); "))
+        comb &&& CombineKeyValue(fun x -> x.Append("list-style-image: url(").Append(path).Append("); "))
     /// Sets this property to its default value.
     ///
     /// See example https://www.w3schools.com/cssref/playit.asp?filename=playcss_text-align&preval=initial
@@ -826,7 +820,8 @@ type CssBuilder() =
     /// This overload takes a floating number that goes from 0 to 1,
     [<CustomOperation("filterBrightness")>]
     member inline _.filterBrightness([<InlineIfLambda>] comb: CombineKeyValue, value: double) =
-        comb &&& CombineKeyValue(fun x -> x.Append("filter: brightness(").Append(value * 100.).Append("%); "))
+        comb
+        &&& CombineKeyValue(fun x -> x.Append("filter: brightness(").Append(value * 100.).Append("%); "))
     /// Adjusts the contrast of the element.
     ///
     /// This overload takes an integer that represents a percentage from 0 to 100.
@@ -1175,12 +1170,10 @@ type CssBuilder() =
     member inline _.animationTimingFunctionEaseIn([<InlineIfLambda>] comb: CombineKeyValue) = comb &>> ("animation-timing-function", "ease-in")
     /// Specifies a animation effect with a slow end (equivalent to cubic-bezier(0,0,0.58,1)).
     [<CustomOperation("animationTimingFunctionEaseOut")>]
-    member inline _.animationTimingFunctionEaseOut([<InlineIfLambda>] comb: CombineKeyValue) =
-        comb &>> ("animation-timing-function", "ease-out")
+    member inline _.animationTimingFunctionEaseOut([<InlineIfLambda>] comb: CombineKeyValue) = comb &>> ("animation-timing-function", "ease-out")
     /// Specifies a animation effect with a slow start and end (equivalent to cubic-bezier(0.42,0,0.58,1)))
     [<CustomOperation("animationTimingFunctionEaseInOut")>]
-    member inline _.animationTimingFunctionEaseInOut([<InlineIfLambda>] comb: CombineKeyValue) =
-        comb &>> ("animation-timing-function", "ease-in-out")
+    member inline _.animationTimingFunctionEaseInOut([<InlineIfLambda>] comb: CombineKeyValue) = comb &>> ("animation-timing-function", "ease-in-out")
     /// Define your own values in the cubic-bezier function. Possible values are numeric values from 0 to 1
     [<CustomOperation("animationTimingFunctionCubicBezier")>]
     member inline _.animationTimingFunctionCubicBezier([<InlineIfLambda>] comb: CombineKeyValue, n1: float, n2: float, n3: float, n4: float) =
@@ -1214,12 +1207,10 @@ type CssBuilder() =
     member inline _.transitionTimingFunctionLinear([<InlineIfLambda>] comb: CombineKeyValue) = comb &>> ("transition-timing-function", "linear")
     /// Specifies a transition effect with a slow start (equivalent to cubic-bezier(0.42,0,1,1)).
     [<CustomOperation("transitionTimingFunctionEaseIn")>]
-    member inline _.transitionTimingFunctionEaseIn([<InlineIfLambda>] comb: CombineKeyValue) =
-        comb &>> ("transition-timing-function", "ease-in")
+    member inline _.transitionTimingFunctionEaseIn([<InlineIfLambda>] comb: CombineKeyValue) = comb &>> ("transition-timing-function", "ease-in")
     /// Specifies a transition effect with a slow end (equivalent to cubic-bezier(0,0,0.58,1)).
     [<CustomOperation("transitionTimingFunctionEaseOut")>]
-    member inline _.transitionTimingFunctionEaseOut([<InlineIfLambda>] comb: CombineKeyValue) =
-        comb &>> ("transition-timing-function", "ease-out")
+    member inline _.transitionTimingFunctionEaseOut([<InlineIfLambda>] comb: CombineKeyValue) = comb &>> ("transition-timing-function", "ease-out")
     /// Specifies a transition effect with a slow start and end (equivalent to cubic-bezier(0.42,0,0.58,1)))
     [<CustomOperation("transitionTimingFunctionEaseInOut")>]
     member inline _.transitionTimingFunctionEaseInOut([<InlineIfLambda>] comb: CombineKeyValue) =
@@ -1230,8 +1221,7 @@ type CssBuilder() =
         comb &>> ("transition-timing-function", "step-start")
     /// Equivalent to steps(1, end))
     [<CustomOperation("transitionTimingFunctionStepEnd")>]
-    member inline _.transitionTimingFunctionStepEnd([<InlineIfLambda>] comb: CombineKeyValue) =
-        comb &>> ("transition-timing-function", "step-end")
+    member inline _.transitionTimingFunctionStepEnd([<InlineIfLambda>] comb: CombineKeyValue) = comb &>> ("transition-timing-function", "step-end")
     /// Define your own values in the cubic-bezier function. Possible values are numeric values from 0 to 1
     [<CustomOperation("transitionTimingFunctionCubicBezier")>]
     member inline _.transitionTimingFunctionCubicBezier([<InlineIfLambda>] comb: CombineKeyValue, n1: float, n2: float, n3: float, n4: float) =
@@ -1251,8 +1241,7 @@ type CssBuilder() =
         )
     /// Sets this property to its default value)
     [<CustomOperation("transitionTimingFunctionInitial")>]
-    member inline _.transitionTimingFunctionInitial([<InlineIfLambda>] comb: CombineKeyValue) =
-        comb &>> ("transition-timing-function", "initial")
+    member inline _.transitionTimingFunctionInitial([<InlineIfLambda>] comb: CombineKeyValue) = comb &>> ("transition-timing-function", "initial")
     /// Inherits this property from its parent element.
     [<CustomOperation("transitionTimingFunctionInheritFromParent")>]
     member inline _.transitionTimingFunctionInheritFromParent([<InlineIfLambda>] comb: CombineKeyValue) =
@@ -1814,8 +1803,7 @@ type CssBuilder() =
 
     /// Specifies that the animation should be played infinite times (forever))
     [<CustomOperation("animationIterationCountInfinite")>]
-    member inline _.animationIterationCountInfinite([<InlineIfLambda>] comb: CombineKeyValue) =
-        comb &>> ("animation-iteration-count", "infinite")
+    member inline _.animationIterationCountInfinite([<InlineIfLambda>] comb: CombineKeyValue) = comb &>> ("animation-iteration-count", "infinite")
     /// Sets this property to its default value)
     [<CustomOperation("animationIterationCountInitial")>]
     member inline _.animationIterationCountInitial([<InlineIfLambda>] comb: CombineKeyValue) = comb &>> ("animation-iteration-count", "initial")
@@ -2165,7 +2153,7 @@ type CssBuilder() =
                 .Append(bottom)
                 .Append(" ")
                 .Append(left)
-                .Append("); ")
+                .Append("; ")
         )
     /// Sets the padding area on all four sides of an element. It is a shorthand for padding-top,
     /// padding-right, padding-bottom, and padding-left.
@@ -2182,7 +2170,7 @@ type CssBuilder() =
                 .Append(bottom)
                 .Append("px ")
                 .Append(left)
-                .Append("px); ")
+                .Append("px; ")
         )
     /// Sets the height of the padding area on the bottom of an element.
     [<CustomOperation("paddingBottom")>]
@@ -2435,10 +2423,11 @@ type CssBuilder() =
     /// style.gap (length.em 1, length.em 2))
     /// ```
     [<CustomOperation("gap")>]
-    member inline _.gap([<InlineIfLambda>] comb: CombineKeyValue, rowGap: string, columnGap: string) = comb &>> ("gap", rowGap + ", " + columnGap)
+    member inline _.gap([<InlineIfLambda>] comb: CombineKeyValue, rowGap: string, columnGap: string) = comb &>> ("gap", rowGap + " " + columnGap)
     [<CustomOperation("gap")>]
-    member inline _.gap([<InlineIfLambda>] comb: CombineKeyValue, rowColumnGap: string) =
-        comb &>> ("gap", rowColumnGap + ", " + rowColumnGap)
+    member inline _.gap([<InlineIfLambda>] comb: CombineKeyValue, gap: string) = comb &>> ("gap", gap)
+    [<CustomOperation("gap")>]
+    member inline _.gap([<InlineIfLambda>] comb: CombineKeyValue, gap: int) = comb &>> ("gap", string gap + "px")
     /// Sets where an item in the grid starts
     /// The value can be one of the following options:
     /// - a named line
@@ -2918,8 +2907,8 @@ type CssBuilder() =
     /// An outline is a line that is drawn around elements (outside the borders) to make the element "stand out".
     ///
     /// The `outline-color` property specifies the color of an outline.
-
     /// **Note**: Always declare the outline-style property before the outline-color property. An element must have an outline before you change the color of it.
+
     [<CustomOperation("outlineColor")>]
     member inline _.outlineColor([<InlineIfLambda>] comb: CombineKeyValue, color: string) = comb &>> ("outline-color", color)
 
@@ -2944,8 +2933,7 @@ type CssBuilder() =
     member inline _.borderBottomStyle([<InlineIfLambda>] comb: CombineKeyValue, style: string) = comb &>> ("border-bottom-style", style)
     /// Sets the width of the bottom border of an element.
     [<CustomOperation("borderBottomWidth")>]
-    member inline _.borderBottomWidth([<InlineIfLambda>] comb: CombineKeyValue, width: int) =
-        comb &&& mkPxWithKV ("border-bottom-width", width)
+    member inline _.borderBottomWidth([<InlineIfLambda>] comb: CombineKeyValue, width: int) = comb &&& mkPxWithKV ("border-bottom-width", width)
     /// Sets the width of the bottom border of an element.
     [<CustomOperation("borderBottomWidth")>]
     member inline _.borderBottomWidth([<InlineIfLambda>] comb: CombineKeyValue, width: string) = comb &>> ("border-bottom-width", width)
@@ -3025,6 +3013,7 @@ type CssBuilder() =
                         | None -> ""
                     )
                 )
+                .Append("; ")
         )
     /// Sets the width of an element's border.
     [<CustomOperation("borderWidth")>]
@@ -3057,8 +3046,7 @@ type CssBuilder() =
         comb &>> ("animation-duration", string timespan.TotalMilliseconds + "ms")
     /// Sets the length of time that an animation takes to complete one cycle.
     [<CustomOperation("animationDuration")>]
-    member inline _.animationDuration([<InlineIfLambda>] comb: CombineKeyValue, seconds: int) =
-        comb &>> ("animation-duration", string seconds + "s")
+    member inline _.animationDuration([<InlineIfLambda>] comb: CombineKeyValue, seconds: int) = comb &>> ("animation-duration", string seconds + "s")
     /// Sets when an animation starts.
     ///
     /// The animation can start later, immediately from its beginning, or immediately and partway through the animation.
@@ -3069,8 +3057,7 @@ type CssBuilder() =
     ///
     /// The animation can start later, immediately from its beginning, or immediately and partway through the animation.
     [<CustomOperation("animationDelay")>]
-    member inline _.animationDelay([<InlineIfLambda>] comb: CombineKeyValue, seconds: int) =
-        comb &>> ("animation-delay", string seconds + "s")
+    member inline _.animationDelay([<InlineIfLambda>] comb: CombineKeyValue, seconds: int) = comb &>> ("animation-delay", string seconds + "s")
     /// The number of times the animation runs.
     [<CustomOperation("animationDurationCount")>]
     member inline _.animationDurationCount([<InlineIfLambda>] comb: CombineKeyValue, count: int) =
@@ -3130,7 +3117,7 @@ type CssBuilder() =
     /// Short-hand for `style.backgroundImage(sprintf "url('%s')", value)` to set the backround image using a url.
     [<CustomOperation("backgroundImageUrl")>]
     member inline _.backgroundImageUrl([<InlineIfLambda>] comb: CombineKeyValue, value: string) =
-        comb &>> ("background-image", "url('" + value + "'); ")
+        comb &>> ("background-image", "url('" + value + "')")
 
     /// Sets the color of an SVG shape.
     [<CustomOperation("fill")>]

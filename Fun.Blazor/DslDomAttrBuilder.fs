@@ -20,6 +20,16 @@ type StyleBuilder() =
         )
 
 
+type StyleStrBuilder() =
+    inherit Fun.Css.CssBuilder()
+
+    member inline _.Run([<InlineIfLambda>] combine: Fun.Css.Internal.CombineKeyValue) =
+        let sb = stringBuilderPool.Get()
+        let str = combine.Invoke(sb).ToString()
+        stringBuilderPool.Return sb
+        str
+
+
 type DomAttrBuilder() =
 
     member inline _.Yield(_: unit) = emptyAttr ()
