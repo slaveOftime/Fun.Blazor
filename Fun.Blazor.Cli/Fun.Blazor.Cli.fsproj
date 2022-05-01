@@ -28,9 +28,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CliWrap" Version="3.4.2" />
+		<PackageReference Include="CliWrap" Version="3.4.4" />
 		<PackageReference Include="MessagePack.FSharpExtensions" Version="3.0.0" />
-		<PackageReference Include="Spectre.Console" Version="0.43.0" />
+		<PackageReference Include="Spectre.Console" Version="0.44.0" />
 		<PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.1.0" />
 		<PackageReference Include="FSharp.Compiler.Service" Version="41.0.3" />
 		<PackageReference Include="FSharp.Control.Reactive" Version="5.0.2" />
