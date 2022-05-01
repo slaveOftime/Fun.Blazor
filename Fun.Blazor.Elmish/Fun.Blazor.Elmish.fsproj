@@ -3,6 +3,8 @@
 	<PropertyGroup>
 		<TargetFrameworks>net5.0;net6.0</TargetFrameworks>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<TrimMode>link</TrimMode>
+		<IsTrimmable>true</IsTrimmable>
 		<Version>2.0.0-beta041</Version>
 	</PropertyGroup>
 
