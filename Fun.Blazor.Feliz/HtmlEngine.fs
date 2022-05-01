@@ -478,7 +478,7 @@ type html with
     static member inline strong(attrs: AttrRenderFragment seq) = strong { html.mergeAttrs attrs }
     static member inline strong(children: NodeRenderFragment seq) = strong { yield! children }
 
-    static member inline style(v: string) = style' { v }
+    static member inline style(v: string) = styleElt { v }
 
     static member inline sub(v: float) = sub { v }
     static member inline sub(v: int) = sub { v }

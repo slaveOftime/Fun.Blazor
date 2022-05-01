@@ -819,10 +819,10 @@ type DomAttrBuilder() =
     member inline this.onprogress([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: ProgressEventArgs -> Task) =
         this.callback (render, "onprogress", callback)
     [<CustomOperation("onerror")>]
-    member inline this.onerror([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: ProgressEventArgs -> unit) =
+    member inline this.onerror([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: ErrorEventArgs -> unit) =
         this.callback (render, "onerror", callback)
     [<CustomOperation("onerror")>]
-    member inline this.onerror([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: ProgressEventArgs -> Task) =
+    member inline this.onerror([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: ErrorEventArgs -> Task) =
         this.callback (render, "onerror", callback)
     [<CustomOperation("onactivate")>]
     member inline this.onactivate([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] callback: EventArgs -> unit) =
