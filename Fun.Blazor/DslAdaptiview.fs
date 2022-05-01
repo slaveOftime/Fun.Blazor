@@ -78,6 +78,11 @@ type AdaptiviewBuilder(?key: obj, ?isStatic: bool) =
         ls |> Seq.map fn |> Seq.fold (AVal.map2 (>=>)) (AVal.constant (emptyNode ()))
 
 
+type IAdaptiveValue<'T> with
+
+    member this.Value = AVal.force this
+
+
 [<Extension>]
 type Extensions =
     [<Extension>]
