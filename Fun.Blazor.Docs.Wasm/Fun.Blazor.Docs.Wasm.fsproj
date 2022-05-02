@@ -4,10 +4,6 @@
 		<TargetFramework>net6.0</TargetFramework>
 	</PropertyGroup>
 	<ItemGroup>
-		<Compile Include="Fun.Blazor.Bindings\Microsoft.AspNetCore.Components.fs" />
-		<Compile Include="Fun.Blazor.Bindings\MudBlazor.fs" />
-	</ItemGroup>
-	<ItemGroup>
 		<Compile Include="Components\JsInterop.fs" />
 		<Compile Include="Components\Common.fs" />
 		<Compile Include="Components\ShareStores.fs" />
@@ -42,13 +38,12 @@
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Majorsoft.Blazor.WebAssembly.Logging.Console" Version="1.5.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.1" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.4" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.4" PrivateAssets="all" />
 		<PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
-		<PackageReference FunBlazorStyle="CE" FunBlazorNamespace="Microsoft.AspNetCore.Components" Include="Microsoft.AspNetCore.Components.Web" Version="6.0.2" />
-		<PackageReference FunBlazorStyle="CE" Include="MudBlazor" Version="6.0.9" />
 	</ItemGroup>
 	<ItemGroup>
+		<ProjectReference Include="..\Fun.Blazor.Docs.Controls\Fun.Blazor.Docs.Controls.fsproj" />
 		<ProjectReference Include="..\Fun.Blazor.Elmish\Fun.Blazor.Elmish.fsproj" />
 		<ProjectReference Include="..\Fun.Blazor.HotReload\Fun.Blazor.HotReload.fsproj" />
 		<ProjectReference Include="..\Fun.Blazor.HtmlTemplate\Fun.Blazor.HtmlTemplate.fsproj" />
@@ -57,14 +52,13 @@
 		<ProjectReference Include="..\Fun.Bolero\Fun.Bolero.fsproj" />
 	</ItemGroup>
 
-	<Target Name="ConfigureTrimming"
-        BeforeTargets="PrepareForILLink">
+	<Target Name="ConfigureTrimming" BeforeTargets="PrepareForILLink">
 		<ItemGroup>
 			<ManagedAssemblyToLink Condition="'%(Filename)' == 'FSharp.Data'">
 				<TrimMode>link</TrimMode>
 				<IsTrimmable>true</IsTrimmable>
 			</ManagedAssemblyToLink>
-			<ManagedAssemblyToLink Condition="'%(Filename)' == 'FSharp.Core'">
+			<ManagedAssemblyToLink Condition="'%(Filename)' == 'FSharp.Control.Reactive'">
 				<TrimMode>link</TrimMode>
 				<IsTrimmable>true</IsTrimmable>
 			</ManagedAssemblyToLink>
