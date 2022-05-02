@@ -25,7 +25,7 @@ let private deferredObserve (data: Task<Result<string, string>>) =
     )
 
 
-let private version = "2.0.0-beta044"
+let private version = "2.0.0-beta045"
 
 
 let private getFromHostServer (env: IHostingEnvironment) (fileName: string) =
