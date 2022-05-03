@@ -30,15 +30,12 @@
 
 	<ItemGroup>
 		<PackageReference Include="FSharp.Data.Adaptive" Version="1.2.13" />
-		<PackageReference Include="Fun.Result" Version="2.0.3" />
+		<PackageReference Include="Fun.Css" Version="0.2.6" />
+		<PackageReference Include="Fun.Result" Version="2.0.4" />
 		<PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.13" />
 		<PackageReference Include="Microsoft.Extensions.ObjectPool" Version="6.0.4" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<ProjectReference Include="..\Fun.Css\Fun.Css.fsproj" />
 	</ItemGroup>
 
 </Project>

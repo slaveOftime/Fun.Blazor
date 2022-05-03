@@ -17,8 +17,6 @@ Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Fun.Blazor.Tests", "Fun.Bla
 EndProject
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Fun.Blazor.Feliz", "Fun.Blazor.Feliz\Fun.Blazor.Feliz.fsproj", "{E178186E-812F-43F5-B52F-F8998B18CF59}"
 EndProject
-Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Fun.Css", "Fun.Css\Fun.Css.fsproj", "{7DAF5502-9010-418F-AE9E-4EA370788397}"
-EndProject
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Fun.Blazor.HtmlTemplate", "Fun.Blazor.HtmlTemplate\Fun.Blazor.HtmlTemplate.fsproj", "{8BF7E79A-E3BA-48E9-AE25-10B03B39BEFD}"
 EndProject
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Fun.Blazor.Server", "Fun.Blazor.Server\Fun.Blazor.Server.fsproj", "{C0BE35FE-A528-4EA3-8BA3-E4CE9FC6BB67}"
@@ -44,8 +42,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{28D5D89E-BB83-4B21-BE34-E6C37DFEC157}"
 EndProject
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Fun.Blazor.Reactive", "Fun.Blazor.Reactive\Fun.Blazor.Reactive.fsproj", "{A2689E21-6DC4-4419-90CD-903156EBAAE8}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Bindings", "Bindings", "{B8253477-E3CB-4628-ABA9-6A17AD27B301}"
 EndProject
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Fun.Blazor.Docs.Controls", "Fun.Blazor.Docs.Controls\Fun.Blazor.Docs.Controls.fsproj", "{23B74C09-CD32-4933-8AC7-CBC44A47DC14}"
 EndProject
@@ -143,18 +139,6 @@ Global
 		{E178186E-812F-43F5-B52F-F8998B18CF59}.Release|x64.Build.0 = Release|Any CPU
 		{E178186E-812F-43F5-B52F-F8998B18CF59}.Release|x86.ActiveCfg = Release|Any CPU
 		{E178186E-812F-43F5-B52F-F8998B18CF59}.Release|x86.Build.0 = Release|Any CPU
-		{7DAF5502-9010-418F-AE9E-4EA370788397}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7DAF5502-9010-418F-AE9E-4EA370788397}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7DAF5502-9010-418F-AE9E-4EA370788397}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{7DAF5502-9010-418F-AE9E-4EA370788397}.Debug|x64.Build.0 = Debug|Any CPU
-		{7DAF5502-9010-418F-AE9E-4EA370788397}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{7DAF5502-9010-418F-AE9E-4EA370788397}.Debug|x86.Build.0 = Debug|Any CPU
-		{7DAF5502-9010-418F-AE9E-4EA370788397}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7DAF5502-9010-418F-AE9E-4EA370788397}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7DAF5502-9010-418F-AE9E-4EA370788397}.Release|x64.ActiveCfg = Release|Any CPU
-		{7DAF5502-9010-418F-AE9E-4EA370788397}.Release|x64.Build.0 = Release|Any CPU
-		{7DAF5502-9010-418F-AE9E-4EA370788397}.Release|x86.ActiveCfg = Release|Any CPU
-		{7DAF5502-9010-418F-AE9E-4EA370788397}.Release|x86.Build.0 = Release|Any CPU
 		{8BF7E79A-E3BA-48E9-AE25-10B03B39BEFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8BF7E79A-E3BA-48E9-AE25-10B03B39BEFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8BF7E79A-E3BA-48E9-AE25-10B03B39BEFD}.Debug|x64.ActiveCfg = Debug|Any CPU
