@@ -12,7 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference FunBlazorStyle="CE" FunBlazorNamespace="Microsoft.AspNetCore.Components" Include="Microsoft.AspNetCore.Components.Web" Version="6.0.4" />
-    <PackageReference FunBlazorStyle="CE" Include="MudBlazor" Version="6.0.9" />
+    <PackageReference FunBlazorStyle="CE" Include="MudBlazor" Version="6.0.10" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fun.Blazor\Fun.Blazor.fsproj" />
