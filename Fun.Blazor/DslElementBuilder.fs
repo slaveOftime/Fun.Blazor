@@ -537,6 +537,7 @@ module Elts =
 
     let styleBuilder = StyleBuilder()
     let cssBuilder = Fun.Css.CssBuilder()
+    let ruleset ruleName = RulesetBuilder ruleName
 
     /// Build a style string
     let styleStr = StyleStrBuilder()

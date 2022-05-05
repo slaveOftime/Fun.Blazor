@@ -113,7 +113,7 @@ let routes =
                 routeCi
                     "/performance"
                     (demoContainer "Performance" $"Pages/HelperFunctions/PerformanceDemo" HelperFunctions.PerformanceDemo.performanceDemo)
-                routeCi "/ce-css-builder" (demoContainer "CE style css builde" $"Pages/HelperFunctions/CECssDemo" HelperFunctions.CECssDemo.ceCssDemo)
+                routeCi "/ce-css-builder" (demoContainer "CE style css builder" $"Pages/HelperFunctions/CECssDemo" HelperFunctions.CECssDemo.ceCssDemo)
                 routeCi
                     "/blazor"
                     (demoContainer

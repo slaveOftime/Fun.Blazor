@@ -30,6 +30,20 @@ type StyleStrBuilder() =
         str
 
 
+type RulesetBuilder(ruleName: string) =
+    inherit Fun.Css.CssBuilder()
+
+    member _.Run(combine: Fun.Css.Internal.CombineKeyValue) =
+        let sb = stringBuilderPool.Get()
+        sb.Append(ruleName).AppendLine(" {") |> ignore
+        sb.Append("    ") |> ignore
+        combine.Invoke(sb) |> ignore
+        sb.AppendLine().AppendLine("}") |> ignore
+        let str = sb.ToString()
+        stringBuilderPool.Return sb
+        str
+
+
 type DomAttrBuilder() =
 
     member inline _.Yield(_: unit) = emptyAttr ()
