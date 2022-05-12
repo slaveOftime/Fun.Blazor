@@ -267,9 +267,9 @@ let app =
 
 ## Benchmark
 
-|                      Method |       Mean |    Error |   StdDev |     Median |  Gen 0 | Allocated |
-|---------------------------- |-----------:|---------:|---------:|-----------:|-------:|----------:|
-|   BuildRenderTreeWithCSharp |   416.7 ns | 13.89 ns | 39.86 ns |   403.5 ns | 0.0916 |     384 B |
-|       BuildRenderTreeWithCE |   797.5 ns | 17.70 ns | 51.62 ns |   785.2 ns | 0.1755 |     736 B |
-|   BuildRenderTreeWithBolero | 1,016.8 ns | 26.82 ns | 77.81 ns |   991.0 ns | 0.3815 |   1,600 B |
-| BuildRenderTreeWithTemplate | 2,678.2 ns | 48.70 ns | 40.67 ns | 2,682.2 ns | 1.0109 |   4,240 B |
+|                      Method |       Mean |    Error |   StdDev |  Gen 0 | Allocated |
+|---------------------------- |-----------:|---------:|---------:|-------:|----------:|
+|   BuildRenderTreeWithCSharp |   383.3 ns |  7.47 ns | 14.03 ns | 0.0916 |     384 B |
+|   BuildRenderTreeWithBolero |   908.4 ns | 11.39 ns | 17.74 ns | 0.3824 |   1,600 B |
+|       BuildRenderTreeWithCE |   708.3 ns |  9.00 ns |  7.51 ns | 0.1755 |     736 B |
+| BuildRenderTreeWithTemplate | 2,638.0 ns | 49.19 ns | 43.61 ns | 1.0109 |   4,240 B |

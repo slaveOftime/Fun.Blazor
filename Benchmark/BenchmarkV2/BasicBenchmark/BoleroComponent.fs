@@ -20,36 +20,36 @@ type BoleroComponent() =
 
     override _.Render() =
         div {
-            attr.``class`` "1"
+            attr.``class`` "class"
             attr.style "color: red;"
             p {
                 attr.``class`` "class"
-                text "p"
+                "p1"
             }
             p {
                 attr.``class`` "class"
-                text "p"
+                "p2"
             }
             p {
                 attr.``class`` "class"
-                text "p"
+                "p3"
             }
             p {
                 attr.``class`` "class"
-                text "p"
+                "p4"
             }
             p {
                 attr.``class`` "class"
-                text "p"
+                "p5"
             }
             section {
                 p {
                     attr.``class`` "class"
-                    text "p"
+                    "p6"
                 }
                 p {
                     attr.``class`` "class"
-                    text $"Count = {count}"
+                    $"Count = {count}"
                 }
                 button {
                     Html.on.click (fun _ -> increase ())
