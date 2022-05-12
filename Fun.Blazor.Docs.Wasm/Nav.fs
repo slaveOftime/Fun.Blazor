@@ -121,12 +121,6 @@ let routes =
                         "Pages/HelperFunctions/InteropWithBlazorDemo"
                         HelperFunctions.InteropWithBlazorDemo.interopWithBlazorDemo)
                 routeCi
-                    "/bolero"
-                    (demoContainer
-                        "Bolero interop"
-                        "Pages/HelperFunctions/InteropWithBoleroDemo"
-                        HelperFunctions.InteropWithBoleroDemo.interopWithBoleroDemo)
-                routeCi
                     "/html-template-demo"
                     (demoContainer "Html Template Demo" $"Pages/HelperFunctions/HtmlTemplateDemo" HelperFunctions.HtmlTemplateDemo.htmlTemplateDemo)
             ]

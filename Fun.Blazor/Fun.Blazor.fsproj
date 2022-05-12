@@ -35,7 +35,7 @@
 		<PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.13" />
-		<PackageReference Include="Microsoft.Extensions.ObjectPool" Version="6.0.4" />
+		<PackageReference Include="Microsoft.Extensions.ObjectPool" Version="6.0.5" />
 	</ItemGroup>
 
 </Project>

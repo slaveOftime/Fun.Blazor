@@ -267,38 +267,9 @@ let app =
 
 ## Benchmark
 
-|                      Method |       Mean |    Error |    StdDev |     Median |  Gen 0 |  Gen 1 | Allocated |
-|---------------------------- |-----------:|---------:|----------:|-----------:|-------:|-------:|----------:|
-|   BuildRenderTreeWithCSharp |   387.0 ns |  6.54 ns |   6.12 ns |   388.2 ns | 0.0610 |      - |     384 B |
-|   BuildRenderTreeWithBolero | 2,097.9 ns | 41.77 ns | 112.20 ns | 2,057.3 ns | 0.6943 | 0.0038 |   4,368 B |
-|       BuildRenderTreeWithCE |   808.5 ns | 16.01 ns |  39.26 ns |   794.1 ns | 0.1745 |      - |   1,096 B |
-| BuildRenderTreeWithTemplate | 3,817.9 ns | 84.19 ns | 248.24 ns | 3,769.4 ns | 0.7668 | 0.0076 |   4,832 B |
-|    BuildRenderTreeWithFeliz | 2,616.5 ns | 51.97 ns | 123.52 ns | 2,618.0 ns | 1.2474 | 0.0114 |   7,832 B |
-
-
-|                   Method |     Mean |    Error |   StdDev |  Gen 0 | Allocated |
-|------------------------- |---------:|---------:|---------:|-------:|----------:|
-| BuildStyleWithCssBuilder | 375.8 ns |  7.87 ns | 22.44 ns | 0.1211 |     760 B |
-|      BuildStyleWithFeliz | 693.1 ns | 13.05 ns | 13.96 ns | 0.2918 |   1,832 B |
-
-
-## Migrate from V1
-
-- For all the internal dom element like div, we should change
-```fsharp
-div() {}
-```
-to
-```fsharp
-div {}
-```
-
-- For server side, we should add nuget packages: Fun.Blazor.Server
-
-    AddFunBlazor is changed to AddFunBlazorServer \
-    MapFallbackToBolero is changed to MapFunBlazor
-
-- For wasm side, we should add nuget packages: Fun.Blazor.Wasm
-
-    AddFunBlazor is changed to AddFunBlazorWasm \
-    AddFunBlazorNode is changed to AddFunBlazor
+|                      Method |       Mean |    Error |   StdDev |     Median |  Gen 0 | Allocated |
+|---------------------------- |-----------:|---------:|---------:|-----------:|-------:|----------:|
+|   BuildRenderTreeWithCSharp |   416.7 ns | 13.89 ns | 39.86 ns |   403.5 ns | 0.0916 |     384 B |
+|       BuildRenderTreeWithCE |   797.5 ns | 17.70 ns | 51.62 ns |   785.2 ns | 0.1755 |     736 B |
+|   BuildRenderTreeWithBolero | 1,016.8 ns | 26.82 ns | 77.81 ns |   991.0 ns | 0.3815 |   1,600 B |
+| BuildRenderTreeWithTemplate | 2,678.2 ns | 48.70 ns | 40.67 ns | 2,682.2 ns | 1.0109 |   4,240 B |

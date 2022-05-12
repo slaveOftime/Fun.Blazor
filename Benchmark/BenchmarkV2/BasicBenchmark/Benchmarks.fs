@@ -18,6 +18,3 @@ type Benchmarks() =
 
     [<Benchmark>]
     member _.BuildRenderTreeWithTemplate() = TemplateComponent().Build()
-
-    [<Benchmark>]
-    member _.BuildRenderTreeWithFeliz() = FelizComponent().Build()
