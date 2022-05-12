@@ -114,6 +114,11 @@ type IComponentHook =
     /// </summary>
     abstract OnDispose: IEvent<unit>
 
+    abstract AddInitializedTask: makeTask: (unit -> Task) -> unit
+    abstract AddAfterRenderTask: makeTask: (bool -> Task) -> unit
+    abstract AddFirstAfterRenderTask: makeTask: (unit -> Task) -> unit
+    abstract AddParameterSetTask: makeTask: (unit -> Task) -> unit
+
     /// <summary>
     /// Adds a disposable object to the disposables list, these will be disposed together with the current component
     /// </summary>

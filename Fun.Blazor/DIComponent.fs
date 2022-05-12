@@ -1,6 +1,7 @@
 ﻿namespace Fun.Blazor
 
 open System
+open System.Threading.Tasks
 open System.Collections.Generic
 open FSharp.Data.Adaptive
 open Microsoft.Extensions.Logging
@@ -39,8 +40,12 @@ type DIComponent<'T>() as this =
     let mutable node = None
     let mutable shouldRerender = true
 
-    let initialized = new Event<unit>()
+    let parameterSetTasks = List<unit -> Task>()
+    let initializedTasks = List<unit -> Task>()
+    let initializedEvent = new Event<unit>()
     let afterRenderEvent = new Event<bool>()
+    let afterRenderTasks = List<bool -> Task>()
+    let firstAfterRenderTasks = List<unit -> Task>()
     let firstAfterRenderEvent = new Event<unit>()
     let disposeEvent = new Event<unit>()
     let disposes = new List<IDisposable>()
@@ -49,9 +54,13 @@ type DIComponent<'T>() as this =
     let blazorLifecycle =
         { new IComponentHook with
             member _.OnAfterRender = afterRenderEvent.Publish
-            member _.OnInitialized = initialized.Publish
+            member _.OnInitialized = initializedEvent.Publish
             member _.OnFirstAfterRender = firstAfterRenderEvent.Publish
             member _.OnDispose = disposeEvent.Publish
+            member _.AddInitializedTask makeTask = initializedTasks.Add makeTask
+            member _.AddAfterRenderTask makeTask = afterRenderTasks.Add makeTask
+            member _.AddFirstAfterRenderTask makeTask = firstAfterRenderTasks.Add makeTask
+            member _.AddParameterSetTask makeTask = parameterSetTasks.Add makeTask
             member _.AddDispose dispose = disposes.Add dispose
             member _.AddDisposes ds = disposes.AddRange(ds)
             member _.StateHasChanged() = this.ForceRerender()
@@ -101,13 +110,25 @@ type DIComponent<'T>() as this =
         let newNode = this.RenderFn services
         node <- newNode |> Some
 
-        initialized.Trigger()
+        initializedEvent.Trigger()
+
+    override _.OnInitializedAsync() =
+        task {
+            for makeTask in initializedTasks do
+                do! makeTask ()
+        }
 
 
     override _.OnParametersSet() =
         if this.IsStatic && node.IsSome then
             // Avoid rerender for static mode
             shouldRerender <- false
+
+    override _.OnParametersSetAsync() =
+        task {
+            for makeTask in parameterSetTasks do
+                do! makeTask ()
+        }
 
 
     override _.ShouldRender() =
@@ -119,6 +140,15 @@ type DIComponent<'T>() as this =
     override _.OnAfterRender firstRender =
         afterRenderEvent.Trigger firstRender
         if firstRender then firstAfterRenderEvent.Trigger()
+
+    override _.OnAfterRenderAsync firstRender =
+        task {
+            for makeTask in afterRenderTasks do
+                do! makeTask firstRender
+            if firstRender then
+                for makeTask in firstAfterRenderTasks do
+                    do! makeTask ()
+        }
 
 
     interface IDisposable with

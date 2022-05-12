@@ -11,11 +11,21 @@ let componentHookDemo =
     html.inject (fun (hook: IComponentHook) ->
         let toggle = hook.UseStore false
         let count = hook.UseStore 0
+        let taskMsg1 = hook.UseStore ""
+        let taskMsg2 = hook.UseStore ""
         let threshhold = 3
 
         hook.OnInitialized.Add(fun () ->
             toggle.Publish true
             count.Publish((+) 10)
+        )
+
+        hook.AddInitializedTask(fun () ->
+            task {
+                taskMsg1.Publish "Initialized task delay starting"
+                do! System.Threading.Tasks.Task.Delay 3000
+                taskMsg1.Publish "Initialized task delay finished"
+            }
         )
 
         hook.OnFirstAfterRender.Add(fun () ->
@@ -34,6 +44,15 @@ let componentHookDemo =
             )
             |> hook.AddDispose
         )
+
+        hook.AddAfterRenderTask(fun firstRender ->
+            task {
+                taskMsg2.Publish "AfterRender task delay starting"
+                do! System.Threading.Tasks.Task.Delay 3000
+                taskMsg2.Publish "AfterRender task delay finished"
+            }
+        )
+
 
         MudPaper'() {
             style { padding 20 }
@@ -66,7 +85,9 @@ let componentHookDemo =
                                 Color Color.Secondary
                                 childContent "Toggled off now"
                             }
-                        html.watch (count, (fun c -> html.text $"Interval Count: {c}"))
+                        html.watch (count, (fun c -> div { $"Interval Count: {c}" }))
+                        html.watch (taskMsg1, (fun c -> div { $"Task msg 1 : {c}" }))
+                        html.watch (taskMsg2, (fun c -> div { $"Task msg 2 : {c}" }))
                     ]
             )
         }
