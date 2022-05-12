@@ -11,14 +11,14 @@ open System.Runtime.CompilerServices
 type Validator<'T, 'Prop, 'Error> = AdaptiveForm<'T, 'Error> -> 'Prop -> 'Error list
 
 
-type AdaptiveForm<'T, 'Error> (defaultValue: 'T) as this =
+type AdaptiveForm<'T, 'Error>(defaultValue: 'T) as this =
     let ty = typeof<'T>
 
     let props =
         if FSharp.Reflection.FSharpType.IsRecord ty then
             FSharp.Reflection.FSharpType.GetRecordFields(ty) |> Seq.ofArray
         else
-            ty.GetProperties().Where(fun x -> not(x.GetAccessors(true).Any(fun x -> x.IsStatic)))
+            ty.GetProperties().Where(fun x -> not (x.GetAccessors(true).Any(fun x -> x.IsStatic)))
 
 
     let hasChanges = cval false
@@ -33,34 +33,41 @@ type AdaptiveForm<'T, 'Error> (defaultValue: 'T) as this =
         | ExpressionType.Convert -> getExpressionName (exp :?> UnaryExpression).Operand
         | _ -> failwith "Unsupported expression"
 
+
     do
         fields <-
             props
             |> Seq.map (fun p ->
-                let v = cval(p.GetValue defaultValue)
-                v.AddLazyCallback (fun _ -> hasChanges.Publish true) |> disposes.Add
-                KeyValuePair(p.Name, v))
+                let v = cval (p.GetValue defaultValue)
+                v.AddLazyCallback(fun _ -> hasChanges.Publish true) |> disposes.Add
+                KeyValuePair(p.Name, v)
+            )
             |> Dictionary
 
-        errors <-
-            props
-            |> Seq.map (fun x -> KeyValuePair(x.Name, cval []))
-            |> Dictionary
+        errors <- props |> Seq.map (fun x -> KeyValuePair(x.Name, cval [])) |> Dictionary
 
 
-    member _.SetValue (value: 'T) =
-        transact <| fun _ ->
-            for KeyValue(_, error) in errors do
+    member _.SetValue(value: 'T) =
+        transact (fun _ ->
+            for KeyValue (_, error) in errors do
                 error.Value <- []
 
             for prop in props do
                 fields.[prop.Name].Value <- prop.GetValue value
 
-        hasChanges.Publish false
+            hasChanges.Value <- false
+        )
 
-    
-    member _.GetValue () =
-        let fields = fields |> Seq.map (function KeyValue(_, x) -> x.Value) |> Seq.toArray
+
+
+    member _.GetValue() =
+        let fields =
+            fields
+            |> Seq.map (
+                function
+                | KeyValue (_, x) -> x.Value
+            )
+            |> Seq.toArray
 
         if FSharp.Reflection.FSharpType.IsRecord ty then
             FSharp.Reflection.FSharpValue.MakeRecord(ty, fields)
@@ -69,45 +76,40 @@ type AdaptiveForm<'T, 'Error> (defaultValue: 'T) as this =
         |> unbox<'T>
 
 
-    member _.AddValidators (prop: Expression<Func<'T, 'Prop>>, checkAll, validators': Validator<'T, 'Prop, 'Error> list) =
+    member _.AddValidators(prop: Expression<Func<'T, 'Prop>>, checkAll, validators': Validator<'T, 'Prop, 'Error> list) =
         let name = getExpressionName prop
         let field = fields.[name]
 
         let validate value =
             if checkAll then
-                validators'
-                |> List.map (fun fn -> fn this value)
-                |> List.concat
-                |> errors.[name].Publish
+                validators' |> List.map (fun fn -> fn this value) |> List.concat |> errors.[name].Publish
             else
                 validators'
                 |> List.tryPick (fun fn ->
                     match fn this value with
                     | [] -> None
-                    | x -> Some x)
+                    | x -> Some x
+                )
                 |> Option.defaultValue []
                 |> errors.[name].Publish
 
-        field.AddCallback (unbox<'Prop> >> validate) |> disposes.Add
+        field.AddCallback(unbox<'Prop> >> validate) |> disposes.Add
 
         this
 
 
     member _.UseHasChanges() = hasChanges :> aval<bool>
 
-    member _.UseFieldValue (propSelector: Expression<Func<'T, 'Prop>>) =
-        fields.[getExpressionName propSelector] |> AVal.map unbox<'Prop>
+    member _.UseFieldValue(propSelector: Expression<Func<'T, 'Prop>>) = fields.[getExpressionName propSelector] |> AVal.map unbox<'Prop>
 
-    member _.UseFieldSetter (propSelector: Expression<Func<'T, 'Prop>>) =
-        fun (v: 'Prop) ->
-            fields.[getExpressionName propSelector].Publish(v)
+    member _.UseFieldSetter(propSelector: Expression<Func<'T, 'Prop>>) = fun (v: 'Prop) -> fields.[getExpressionName propSelector].Publish(v)
 
-    member _.UseField (propSelector: Expression<Func<'T, 'Prop>>) =
+    member _.UseField(propSelector: Expression<Func<'T, 'Prop>>) =
         let field = fields.[getExpressionName propSelector]
         let setter (x: 'Prop) = field.Publish x
         field |> AVal.map (fun x -> unbox<'Prop> x, setter)
 
-    member _.UseFieldWithErrors (propSelector: Expression<Func<'T, 'Prop>>) =
+    member _.UseFieldWithErrors(propSelector: Expression<Func<'T, 'Prop>>) =
         let propName = getExpressionName propSelector
         let field = fields.[propName]
         let setter (x: 'Prop) = field.Publish x
@@ -119,26 +121,28 @@ type AdaptiveForm<'T, 'Error> (defaultValue: 'T) as this =
         }
 
 
-    member _.UseErrors () =
+    member _.UseErrors() =
         errors
-        |> Seq.map (function KeyValue(_, v) -> v)
+        |> Seq.map (
+            function
+            | KeyValue (_, v) -> v
+        )
         |> Seq.fold
             (fun state errors ->
                 adaptive {
                     let! statedErrors = state
                     let! errors = errors
-                    return statedErrors@errors
-                })
+                    return statedErrors @ errors
+                }
+            )
             (AVal.constant [])
 
-    
-    member _.GetFieldValue propSelector =
-        this.UseFieldValue propSelector |> AVal.force
+
+    member _.GetFieldValue propSelector = this.UseFieldValue propSelector |> AVal.force
 
 
     interface IDisposable with
-        member _.Dispose() =
-            disposes |> Seq.iter (fun d -> d.Dispose())
+        member _.Dispose() = disposes |> Seq.iter (fun d -> d.Dispose())
 
 
 [<Extension>]
@@ -146,57 +150,35 @@ type AdaptiveFormExtensions =
     [<Extension>]
     static member UseAdaptiveForm<'T, 'Error>(this: IComponentHook, defaultValue) =
         let form = new AdaptiveForm<'T, 'Error>(defaultValue)
-        this.AddDisposes [ form ]
+        this.AddDispose form
         form
 
 
 module Validators =
-    let required error: Validator<'T, _, 'Error> =
+    let required error : Validator<'T, _, 'Error> = fun _ value -> if String.IsNullOrEmpty value then [ error ] else []
+
+    let notEqual target error : Validator<'T, _, 'Error> = fun _ value -> if target = value then [ error value ] else []
+
+
+    let maxLength max error : Validator<'T, _, 'Error> =
         fun _ value ->
-            if String.IsNullOrEmpty value then
-                [ error ]
+            if not (String.IsNullOrEmpty value) && value.Length > max then
+                [ error max ]
             else
                 []
-    
-    let notEqual target error: Validator<'T, _, 'Error> =
+
+    let minLength min error : Validator<'T, _, 'Error> =
         fun _ value ->
-            if target = value then [ error value ]
-            else []
-    
-    
-    let maxLength max error: Validator<'T, _, 'Error> =
-        fun _ value ->
-            if not (String.IsNullOrEmpty value) && value.Length > max
-            then [ error max ]
-            else []
-    
-    let minLength min error: Validator<'T, _, 'Error> =
-        fun _ value ->
-            if not (String.IsNullOrEmpty value) && value.Length < min
-            then [ error min ]
-            else []
-    
-    
-    let maxValue max error: Validator<'T, _, 'Error> =
-        fun _ value ->
-            if value > max
-            then [ error max ]
-            else []
-    
-    let minValue min error: Validator<'T, _, 'Error> =
-        fun _ value ->
-            if value < min
-            then [ error min ]
-            else []
-    
-    let seqMinLen min error: Validator<'T, _, 'Error> =
-        fun _ value ->
-            if value |> Seq.length < min
-            then [ error min ]
-            else []
-    
-    let seqMaxLen max error: Validator<'T, _, 'Error> =
-        fun _ value ->
-            if value |> Seq.length > max
-            then [ error max ]
-            else []
+            if not (String.IsNullOrEmpty value) && value.Length < min then
+                [ error min ]
+            else
+                []
+
+
+    let maxValue max error : Validator<'T, _, 'Error> = fun _ value -> if value > max then [ error max ] else []
+
+    let minValue min error : Validator<'T, _, 'Error> = fun _ value -> if value < min then [ error min ] else []
+
+    let seqMinLen min error : Validator<'T, _, 'Error> = fun _ value -> if value |> Seq.length < min then [ error min ] else []
+
+    let seqMaxLen max error : Validator<'T, _, 'Error> = fun _ value -> if value |> Seq.length > max then [ error max ] else []

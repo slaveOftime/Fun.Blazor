@@ -20,7 +20,8 @@ type html() =
     static member fragment nodes = html.mergeNodes nodes
 
 
-    static member internal compCache = lazy (fun () -> ConcurrentDictionary<Type, Reflection.PropertyInfo []>())
+    static member internal compCache =
+        lazy (fun () -> ConcurrentDictionary<Type, Reflection.PropertyInfo []>())
 
     /// With this we can init a blazor component easier without always write string for binding paratemters.
     /// But it will use reflection so you will pay for the performance cost so we should use it carefully.
@@ -71,9 +72,11 @@ type html() =
     /// </summary>
     /// <example>
     /// <code lang="fsharp">
-    /// ("attrName1" => attrValue1)
-    /// ==> ("attrName2" => attrValue2)
-    /// ==> ("attrName3" => attrValue3)
+    /// html.blazor (
+    ///     ("attrName1" => attrValue1)
+    ///     ==> ("attrName2" => attrValue2)
+    ///     ==> ("attrName3" => attrValue3)
+    /// )
     /// </code>
     /// </example>
     static member inline blazor<'T when 'T :> IComponent>(?render: AttrRenderFragment) =
@@ -137,7 +140,6 @@ type html() =
             builder.AddElementReferenceCapture(index, Action<ElementReference> fn)
             index + 1
         )
-
 
 
     static member bind<'T>(name: string, store: cval<'T>) =

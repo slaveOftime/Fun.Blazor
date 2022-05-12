@@ -25,9 +25,12 @@ module ServiceProviderExtensions =
             else
                 getSvc depsType
 
-        member sp.GetMultipleServices(depsType: Type) = sp.GetMultipleServices(depsType, (fun _ -> null))
+        member sp.GetMultipleServices(depsType: Type) = sp.GetMultipleServices(depsType, (fun x -> failwith $"Service {x} is not registered"))
 
-        member sp.GetMultipleServices<'Types>() = sp.GetMultipleServices(typeof<'Types>, (fun _ -> null)) |> unbox<'Types>
+        /// 'Types must be a tuple or unit
+        member sp.GetMultipleServices<'Types>() =
+            sp.GetMultipleServices(typeof<'Types>, (fun x -> failwith $"Service {x} is not registered"))
+            |> unbox<'Types>
 
 
 type DIComponent<'T>() as this =

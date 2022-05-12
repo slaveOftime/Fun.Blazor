@@ -29,7 +29,7 @@ let private fromJsonToMap (dict: Dictionary<string, string>) (json: string) =
 
 /// <summary>
 /// This is a placeholder function.
-/// It will not hanve any effect. It is used when you do not actually want to translate a key, you just want to make sure the key is valid.
+/// It will not hanve any effect. It is used when you do not actually want to translate a key, you just want to make sure the key is valid by VSCode plugin "i18n Ally".
 /// </summary>
 let inline tran x = x
 

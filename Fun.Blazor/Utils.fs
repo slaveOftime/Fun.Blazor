@@ -13,7 +13,8 @@ module Internal =
     let inline emptyAttr () = AttrRenderFragment(fun _ _ i -> i + 1)
     let inline emptyNode () = NodeRenderFragment(fun _ _ i -> i + 1)
 
-    let [<Literal>] FunBlazorScopedServicesName = "fun-blazor-scoped-services"
+    [<Literal>]
+    let FunBlazorScopedServicesName = "fun-blazor-scoped-services"
 
 
     let objectPoolProvider = DefaultObjectPoolProvider()
@@ -33,7 +34,7 @@ module Internal =
 
     type ILogger with
 
-        member this.LogDebugForPerf fn =
+        member inline this.LogDebugForPerf fn =
 #if DEBUG
             let sw = Stopwatch.StartNew()
             this.LogDebug($"Function started")

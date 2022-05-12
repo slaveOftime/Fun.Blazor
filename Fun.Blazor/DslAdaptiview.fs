@@ -11,20 +11,6 @@ open Operators
 open Internal
 
 
-/// This will generate an alist<Node> as a Node parameter.
-/// When the isStatic is not set to true, every time when you call this it will trigger OnParametersSet,
-/// so when you write code like below:
-/// <example>
-/// <code lang="fsharp">
-///     adaptiview(){
-///         1. change hanppened
-///         adaptiview(){
-///             2. this will init again, so if you want to keep the state of x you should move the definition upper or set isStatic to true
-///             let! x = cval 123
-///         }
-///     }
-/// </code>
-/// </example>
 type AdaptiviewBuilder(?key: obj, ?isStatic: bool) =
     inherit AValBuilder()
 
@@ -141,4 +127,51 @@ module AVal =
         data :> aval<'T>
 
 
+/// This will generate an alist<Node> as a Node parameter.
+/// When the isStatic is not set to true, every time when you call this it will trigger OnParametersSet,
+/// so when you write code like below:
+/// <example>
+/// <code lang="fsharp">
+///     1. change hanppened
+///     adaptiview(isStatic = false){
+///         2. this will init again, so if you want to keep the state of x you should move the definition of x upper or set isStatic to true
+///         let! x = cval 123
+///     }
+///
+/// let counters =
+///    adaptiview () {
+///        let! count1, setCount1 = cval(1).WithSetter()
+///        let! count2, setCount2 = cval(2).WithSetter()
+///        div {
+///            button {
+///                onclick (fun _ -> setCount1 (count1 + 1))
+///                "Increase count1 will casuse count2 be reset"
+///            }
+///            button {
+///                onclick (fun _ -> setCount2 (count2 + 1))
+///                "Increase count2"
+///            }
+///         }
+///     }
+///
+/// But you can define like below
+/// let counters =
+///    let count1 = cval 1
+///    let count2 = cval 2
+///    adaptiview () {
+///        let! count1, setCount1 = count1.WithSetter()
+///        let! count2, setCount2 = count2.WithSetter()
+///        div {
+///            button {
+///                onclick (fun _ -> setCount1 (count1 + 1))
+///                "Increase count1 will casuse count2 be reset"
+///            }
+///            button {
+///                onclick (fun _ -> setCount2 (count2 + 1))
+///                "Increase count2"
+///            }
+///         }
+///     }
+/// </code>
+/// </example>
 type adaptiview = AdaptiviewBuilder

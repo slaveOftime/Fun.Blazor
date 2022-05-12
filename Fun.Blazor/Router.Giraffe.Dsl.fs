@@ -90,10 +90,10 @@ let routeCifWithQueries path view : Router<'View> =
     routeCifWithQuery
         (path)
         (fun routeParams query ->
-            let queries = QueryHelpers.ParseNullableQuery query |> Seq.map (|KeyValue|) |> Map.ofSeq
+            let queries =
+                QueryHelpers.ParseNullableQuery query |> Seq.map (|KeyValue|) |> Map.ofSeq
             view routeParams queries
         )
-
 
 let routeCiWithQueries path view : Router<'View> =
     routeCiWithQuery (path) (QueryHelpers.ParseNullableQuery >> Seq.map (|KeyValue|) >> Map.ofSeq >> view)

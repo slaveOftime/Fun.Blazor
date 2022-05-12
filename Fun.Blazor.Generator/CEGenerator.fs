@@ -83,7 +83,6 @@ let private getMetaInfo useInline (ty: Type) =
                 if isBindable prop filteredProps then
                     let bindName = name + "'"
                     [
-                        $"    {customOperation bindName} {memberStart}{bindName} ({contextArg}, value: cval<{propTypeName}>) = render ==> html.bind(\"{prop.Name}\", value)"
                         $"    {customOperation bindName} {memberStart}{bindName} ({contextArg}, valueFn: {propTypeName} * ({propTypeName} -> unit)) = render ==> html.bind(\"{prop.Name}\", valueFn)"
                     ]
                 else
@@ -94,6 +93,7 @@ let private getMetaInfo useInline (ty: Type) =
                    || prop.PropertyType.Name.StartsWith "Microsoft.AspNetCore.Components.EventCallback" then
                     [
                         $"    {customOperation name} {memberStart}{name} ({contextArg}, fn) = render ==> html.callback<{getTypeName prop.PropertyType.GenericTypeArguments.[0]}>(\"{prop.Name}\", fn)"
+                        $"    {customOperation name} {memberStart}{name} ({contextArg}, fn) = render ==> html.callbackTask<{getTypeName prop.PropertyType.GenericTypeArguments.[0]}>(\"{prop.Name}\", fn)"
                     ]
                 elif prop.PropertyType.Name.StartsWith "RenderFragment`" then
                     let name = formatChildContentName name

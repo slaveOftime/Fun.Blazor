@@ -152,7 +152,6 @@ type EltWithChildBuilder(name) =
         render >>> renderChild
 
     /// <summary>
-    /// It is recommend to use fragment for better performance
     /// Multiple Nodes that are going to be added to the element's children
     /// </summary>
     /// <example>

@@ -39,7 +39,7 @@ let update msg model =
             }
         )
 
-let view model dispatch =
+let view model (dispatch: Msg -> unit) =
     div.create [
         MudText'() {
             Typo Typo.h6

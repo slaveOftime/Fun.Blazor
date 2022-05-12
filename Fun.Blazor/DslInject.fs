@@ -18,10 +18,12 @@ type html with
     /// </summary>
     /// <example>
     /// <code lang="fsharp">
-    /// let View() =
-    ///   let _view (hook: IComponentHook, jsRuntime: IJsRuntime) =
-    ///     button() { (* ... code ... *)
-    ///   html.inject _view
+    /// let view =
+    ///   html.inject (hook: IComponentHook, jsRuntime: IJsRuntime) =
+    ///      div {
+    ///          ...
+    ///      }
+    ///   )
     /// </code>
     /// </example>
     static member inject(render: 'Services -> NodeRenderFragment) =
@@ -64,9 +66,10 @@ type html with
         }
 
 
-    /// This will get a IServiceScopeFactory from container and create a new scope and add it to CascadingValue if useRootScope = true.
+    /// This will get a IServiceScopeFactory from container and create a new scope and add it to CascadingValue.
     /// So all its child content can get service from this new scope by using hook.ScopedServiceProvider.
     /// The new scope will be disposed when this component is disposed.
+    /// If useRootScope = true, the root ServiceProvider will be added to CascadingValue instead of create a new scope.
     static member scoped(useRootScope, node: NodeRenderFragment) =
         html.inject (fun (hook: IComponentHook) ->
             let scope =
