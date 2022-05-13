@@ -1,129 +1,87 @@
-﻿[<AutoOpen>]
+﻿// hot-reload
+[<AutoOpen>]
 module Fun.Blazor.Docs.Wasm.Nav
 
+open FSharp.Data.Adaptive
+open Microsoft.AspNetCore.WebUtilities
+open Fun.Result
 open Fun.Blazor
 open Fun.Blazor.Router
 open MudBlazor
-open Fun.Blazor.Docs.Wasm.Components
-open Fun.Blazor.Docs.Wasm.Pages
+open Fun.Blazor.Docs.Controls
 
 
 let navmenu =
-    MudNavMenu'() {
-        childContent [
-            MudNavLink'() {
-                Href "./quick-start"
-                "Quick start"
-            }
-            MudNavLink'() {
-                Href "./router"
-                "Router"
-            }
-            MudNavLink'() {
-                Href "./adaptive-form"
-                "Adaptive Form"
-            }
-            MudNavLink'() {
-                Href "./hot-reload"
-                "HotReload"
-            }
-            MudNavLink'() {
-                Href "./elmish"
-                "Elmish"
-            }
-            MudNavLink'() {
-                Href "./cli-usage"
-                "Cli usage"
-            }
-            MudNavLink'() {
-                Href "./tests"
-                "Tests"
-            }
-            MudNavGroup'() {
-                Title "Helper functions"
-                Icon Icons.Material.Filled.LiveHelp
-                Expanded true
+    html.inject (
+        "navmenu",
+        fun (hook: IComponentHook) ->
+
+            let rec buildDocMenuTree path (items: DocTreeNode list) =
+                html.fragment [
+                    for item in items do
+                        match item with
+                        | DocTreeNode.Category (indexDoc, docs, childs) ->
+                            let path = path + "/" + indexDoc.Name
+                            MudNavGroup'() {
+                                style { color "#40505d" }
+                                Title indexDoc.Name
+                                childContent [
+                                    for doc in docs do
+                                        MudNavLink'() {
+                                            Href(path + "/" + doc.Name)
+                                            doc.Name
+                                        }
+                                    buildDocMenuTree path childs
+                                ]
+                            }
+                        | DocTreeNode.Doc doc ->
+                            MudNavLink'() {
+                                Href(path + "/" + doc.Name)
+                                doc.Name
+                            }
+                ]
+
+
+            div {
+                style {
+                    height "100%"
+                    displayFlex
+                    flexDirectionColumn
+                    overflowHidden
+                }
                 childContent [
-                    MudNavLink'() {
-                        Href "./helper-functions/html-inject"
-                        "html.inject"
-                    }
-                    MudNavLink'() {
-                        Href "./helper-functions/component-hook"
-                        "IComponentHook"
-                    }
-                    MudNavLink'() {
-                        Href "./helper-functions/adaptiview"
-                        "adaptiview"
-                    }
-                    MudNavLink'() {
-                        Href "./helper-functions/html-watch"
-                        "html.watch"
-                    }
-                    MudNavLink'() {
-                        Href "./helper-functions/html-template-demo"
-                        "Html Template Demo"
-                    }
-                    MudNavLink'() {
-                        Href "./helper-functions/global-store"
-                        "Global store"
-                    }
-                    MudNavLink'() {
-                        Href "./helper-functions/performance"
-                        "Performance"
-                    }
-                    MudNavLink'() {
-                        Href "./helper-functions/ce-css-builder"
-                        "CE style css builder"
-                    }
-                    MudNavLink'() {
-                        Href "./helper-functions/blazor"
-                        "Blazor interop"
-                    }
-                    MudNavLink'() {
-                        Href "./helper-functions/bolero"
-                        "Bolero interop"
+                    spaceV3
+                    div {
+                        style {
+                            flexGrow 1
+                            overflowAuto
+                        }
+                        childContent [
+                            adaptiview () {
+                                let! tree, isLoading = hook.GetOrLoadDocsTree() |> AVal.map (LoadingState.unzip [])
+                                if isLoading then MudProgressLinear'.create ()
+                                MudNavMenu'() { buildDocMenuTree "?doc=" tree }
+                            }
+                        ]
                     }
                 ]
             }
-        ]
-    }
+    )
 
 
-let routes =
-    [
-        subRouteCi "/router" [ routeAny Router.Router.router ]
-        routeCi
-            "/adaptive-form"
-            (demoContainer "Adaptive Form" $"Pages/HelperFunctions/AdaptiveFormDemo" HelperFunctions.AdaptiveFormDemo.adaptiveFormDemo)
-        routeCi "/hot-reload" HotReload.HotReload.hotReload
-        routeCi "/elmish" Elmish.Elmish.elmish
-        subRouteCi
-            "/helper-functions"
-            [
-                routeCi "/html-inject" (demoContainer "html.inject" "Pages/HelperFunctions/InjectDemo" HelperFunctions.InjectDemo.injectDemo)
-                routeCi "/html-watch" (demoContainer "html.watch" $"Pages/HelperFunctions/HtmlWatchDemo" HelperFunctions.HtmlWatchDemo.htmlWatchDemo)
-                routeCi "/adaptiview" (demoContainer "adapt" $"Pages/HelperFunctions/AdaptiveDemo" HelperFunctions.AdaptiviewDemo.adaptiviewDemo)
-                routeCi
-                    "/component-hook"
-                    (demoContainer "IComponentHook" $"Pages/HelperFunctions/ComponentHookDemo" HelperFunctions.ComponentHookDemo.componentHookDemo)
-                routeCi
-                    "/global-store"
-                    (demoContainer "Global storage" $"Pages/HelperFunctions/GlobalStoreDemo" HelperFunctions.GlobalStoreDemo.globalStoreDemo)
-                routeCi
-                    "/performance"
-                    (demoContainer "Performance" $"Pages/HelperFunctions/PerformanceDemo" HelperFunctions.PerformanceDemo.performanceDemo)
-                routeCi "/ce-css-builder" (demoContainer "CE style css builder" $"Pages/HelperFunctions/CECssDemo" HelperFunctions.CECssDemo.ceCssDemo)
-                routeCi
-                    "/blazor"
-                    (demoContainer
-                        "Blazor interop"
-                        "Pages/HelperFunctions/InteropWithBlazorDemo"
-                        HelperFunctions.InteropWithBlazorDemo.interopWithBlazorDemo)
-                routeCi
-                    "/html-template-demo"
-                    (demoContainer "Html Template Demo" $"Pages/HelperFunctions/HtmlTemplateDemo" HelperFunctions.HtmlTemplateDemo.htmlTemplateDemo)
-            ]
-        routeCi "/cli-usage" CliUsage.CliUsage.cliUsage
-        routeCi "/tests" Tests.Tests.tests
-    ]
+let docRouting (docs: DocTreeNode list) : Router<NodeRenderFragment> =
+    fun url ->
+        let index = url.IndexOf "?"
+        if index = -1 then
+            None
+        else
+            let quries = QueryHelpers.ParseNullableQuery(url.Substring(index + 1))
+            match quries.TryGetValue "doc" with
+            | false, _ -> None
+            | true, path ->
+                path.ToString().Split("/")
+                |> Seq.map (fun x -> x.Trim())
+                |> Seq.filter ((<>) "")
+                |> Seq.toList
+                |> findDoc docs
+                |> Option.map docView

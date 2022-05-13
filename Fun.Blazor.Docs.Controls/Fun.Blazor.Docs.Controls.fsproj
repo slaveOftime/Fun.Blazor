@@ -9,6 +9,9 @@
   <ItemGroup>
     <Compile Include="Fun.Blazor.Bindings\Microsoft.AspNetCore.Components.fs" />
     <Compile Include="Fun.Blazor.Bindings\MudBlazor.fs" />
+    <Compile Include="Theme.fs" />
+    <Compile Include="JsInterop.fs" />
+    <Compile Include="Common.fs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference FunBlazorStyle="CE" FunBlazorNamespace="Microsoft.AspNetCore.Components" Include="Microsoft.AspNetCore.Components.Web" Version="6.0.4" />
