@@ -48,7 +48,7 @@ type IComponentHook with
             globalStore.CreateCVal("DocsTree", LoadingState<DocTreeNode list>.NotStartYet)
 
         if not docTreeStore.Value.IsLoadingNow then
-            http.GetStringAsync("/docs/index.json")
+            http.GetStringAsync("/Docs/index.json")
             |> hook.RenderCall(fromJson<DocTreeNode list> >> LoadingState.Loaded >> docTreeStore.Publish)
 
         docTreeStore :> aval<_>
@@ -63,7 +63,7 @@ type IComponentHook with
             globalStore.CreateCVal("docs-html-" + lang + "-" + key, LoadingState<string>.NotStartYet)
 
         if htmlStore.Value.IsLoadingNow |> not then
-            http.GetStringAsync("/docs/" + key + "?" + query)
+            http.GetStringAsync("/Docs/" + key + "?" + query)
             |> hook.RenderCall(fun data -> htmlStore.Publish(LoadingState.Loaded data))
 
         htmlStore :> aval<_>
