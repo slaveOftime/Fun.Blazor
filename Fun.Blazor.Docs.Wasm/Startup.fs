@@ -25,12 +25,7 @@ builder
     .AddScoped<Fun.Blazor.Docs.Wasm.Demos.ScopedDemoService>()
     .AddScoped<HttpClient>(fun _ ->
         let http = new HttpClient()
-        http.BaseAddress <-
-#if DEBUG
-            Uri(builder.HostEnvironment.BaseAddress)
-#else
-            Uri(builder.HostEnvironment.BaseAddress + "Fun.Blazor.Docs/")
-#endif
+        http.BaseAddress <-  Uri builder.HostEnvironment.BaseAddress
         http
     )
 

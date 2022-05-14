@@ -7,7 +7,6 @@ open System.IO
 open System.Text.RegularExpressions
 open System.Text.Json
 open System.Text.Json.Serialization
-open System.Globalization
 open Fake.IO
 open Fake.IO.FileSystemOperators
 open Fake.IO.Globbing.Operators
@@ -249,8 +248,6 @@ module DocBuilder =
 
 
     let build () =
-        CultureInfo.CurrentCulture <- CultureInfo.InvariantCulture
-
         printfn "Process demos"
         Shell.cleanDir (wwwroot </> demos)
         Shell.copyDir (wwwroot </> demos) (wasm </> demos) (fun _ -> true)
@@ -268,9 +265,8 @@ module DocBuilder =
                     |> String.concat "\n"
                     |> fun x -> x.Trim()
                     |> sprintf "```fsharp\n%s\n```\n"
-                
-                DocsHelper.markdownToHtml baseUrl code
-                |> File.writeString false (dir </> name + ".html")
+
+                DocsHelper.markdownToHtml baseUrl code |> File.writeString false (dir </> name + ".html")
 
                 File.delete file
 
@@ -285,6 +281,7 @@ module DocBuilder =
 
         let docsDir = wwwroot </> docs
         DocsHelper.getDocTree baseUrl docsDir ".en.md" docsDir
+        |> List.sortBy DocsHelper.sortDocNodeByFolderName
         |> DocsHelper.toJson
         |> File.writeString false (docsDir </> "index.json")
 
