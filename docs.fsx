@@ -243,8 +243,8 @@ module DocBuilder =
 
     let wasm = __SOURCE_DIRECTORY__ </> "Fun.Blazor.Docs.Wasm"
     let wwwroot = wasm </> "wwwroot"
-    let demos = "demos"
-    let docs = "docs"
+    let demos = "Demos"
+    let docs = "Docs"
     let baseUrl = "/"
 
 
