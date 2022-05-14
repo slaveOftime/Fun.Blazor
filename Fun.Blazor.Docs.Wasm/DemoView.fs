@@ -54,7 +54,7 @@ let demoView (demo: Demo) =
                         | LoadingState.Reloading sourceCode ->
                             spaceV2
                             div {
-                                style {backgroundColor "#011627"; padding 5 }
+                                style {backgroundColor "#1e1e1e"; padding 5 }
                                 article {
                                     html.raw sourceCode
                                 }

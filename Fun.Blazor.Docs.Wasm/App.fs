@@ -89,7 +89,7 @@ let app =
             }
 
 
-        html.fragment [
+        div.create [
             theme
             MudDialogProvider'.create ()
             MudSnackbarProvider'.create ()

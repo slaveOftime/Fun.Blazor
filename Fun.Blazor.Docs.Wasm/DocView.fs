@@ -3,6 +3,7 @@
 module Fun.Blazor.Docs.Wasm.DocView
 
 open FSharp.Data.Adaptive
+open Microsoft.JSInterop
 open Fun.Result
 open Fun.Blazor
 open MudBlazor
@@ -12,9 +13,12 @@ open Fun.Blazor.Docs.Controls
 let docView (doc: DocBrief) =
     html.inject (
         doc,
-        fun (hook: IComponentHook) ->
+        fun (hook: IComponentHook, js: IJSRuntime) ->
             let langStr = "en"
             let segments = doc.LangSegments |> Map.tryFind langStr |> Option.defaultValue []
+
+            hook.OnFirstAfterRender.Add(fun () -> js.highlightCode () |> ignore)
+
 
             MudContainer'() {
                 childContent [
