@@ -1,1 +1,112 @@
 # Get started
+
+
+## Please check the samples for quick start
+
+https://github.com/slaveOftime/Slaveoftime.Site
+
+https://github.com/slaveOftime/Fun.Blazor.Samples
+
+https://github.com/slaveOftime/Fun.Blazor/tree/master/Fun.Blazor.Docs.Wasm
+
+
+## We also have dotnet templates:
+
+```shell
+dotnet new --install Fun.Blazor.Templates::2.0.0
+```
+
+    Below version may not be updated, please check here [![Nuget](https://img.shields.io/nuget/vpre/Fun.Blazor.Templates)](https://www.nuget.org/packages/Fun.Blazor.Templates)
+
+With this template, you can create server / wasm blazor with [MudBlazor](https://mudblazor.com/) or [shoelacejs](https://shoelace.style/) supported.
+
+
+## Code structure example
+
+This project support multiple pattern for state management. From my experience it is not good to use elmish for your whole project. Because the performance and state share concern, also sometimes it feels a little verbose.  
+
+You can try this:
+
+**Db**  
+**Domain**  
+**Services**  
+**UI**  
+|--- Stores.fs // contains shared store or global store
+
+```fsharp
+    type IShareStore with // scoped for the session in blazor server mode
+        member store.IsDark = store.CreateCVal("IsDark", true)
+
+    type IGlobalStore with // Singleton store, shared for all
+        ...
+```
+
+|--- Hooks.fs // standalone UI logic
+
+```fsharp
+    type IComponentHook with
+        member hook.TryLoadPosts(page) =
+            task {
+                ...
+            }
+
+        member hook.UseSettingsForm() =
+            hook
+                .UseAdaptiveForm({| Name = "foo"; ... |})
+                .AddValidators(...)
+                .AddValidators(...)
+```
+
+|--- Controls.fs // Some small shared controls  
+|--- Comp1.fs // Your business component  
+
+```fsharp
+    // Make your fragment smaller, so you can compose it in cleaner way and get better inline optimization, hot-reload speeding and intellisense performance
+    let private fragment1 = div {...}
+
+    let private fragment2 (shareStore: IShareStore) =
+        adaptiview {
+            let! isDark, setIsDark = shareStore.IsDark.WithSetter()   
+            div { ... } 
+        }
+
+    // or use elmish if you like
+    let private fragment3 = html.elmish (init, update, view)
+
+    let comp1 =
+        html.inject (fun (svc1, shareStore: IShareStore, ...) ->
+            div {
+                childContent [
+                    fragment1
+                    fragment2 shareStore
+                    fragment3
+                ]
+            }
+        )
+```
+
+|--- Comp2.Hooks.fs // in case you have large component, or you can even create separate folder for the whole component  
+|--- Comp2.Control1.fs // manage large control which is only for your business Comp2  
+|--- Comp2.fs // The entry for your comp2  
+|--- App.fs // compose your components or pages
+
+```fsharp
+let private routes =
+    html.route [
+        routeCi "/page1" comp1
+        routeAny comp2
+    ]
+
+let app =
+    div {
+        header
+        routes
+        footer
+    }
+```
+
+|--- Index.fs // if you are using blazor server mode, you need to have this. You can check the template.  
+|--- Startup.fs
+
+> You can check repo https://github.com/slaveOftime/Slaveoftime.Site as a reference for those practical tips.
+

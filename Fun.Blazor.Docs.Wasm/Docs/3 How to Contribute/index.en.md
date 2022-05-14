@@ -18,3 +18,14 @@ If you want to contribute to documents (very welcomed, because my English is is 
         After you changed the docs, then under repo's root folder,  
         Run **dotnet fsi build.fsx -t GenerateDocs**  
         Run **dotnet run --project .\Fun.Blazor.Docs.Server\Fun.Blazor.Docs.Server.fsproj**
+
+- To write demo components, you must create something like:
+
+```fsharp
+module Fun.Blazor.Docs.Wasm.Demos.DemoName
+
+open Fun.Blazor
+
+// must be called entry
+let entry = div { "hi" }
+```
