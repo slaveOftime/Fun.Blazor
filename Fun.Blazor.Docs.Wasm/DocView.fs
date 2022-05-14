@@ -22,7 +22,7 @@ let docView (doc: DocBrief) =
                         match segment with
                         | Segment.Demo key ->
                             demos
-                            |> Map.tryFind key
+                            |> Map.tryFind (key.ToLower())
                             |> Option.map demoView
                             |> Option.defaultValue (html.text "Demo is not found")
                         | Segment.Html key ->

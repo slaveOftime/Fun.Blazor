@@ -1,4 +1,4 @@
-# About Fun.Blazor
+# About
 
 This is a project to make F# developer to write blazor easier.
 

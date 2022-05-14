@@ -23,7 +23,6 @@ let navmenu =
                         | DocTreeNode.Category (indexDoc, docs, childs) ->
                             let path = path + "/" + indexDoc.Name
                             MudNavGroup'() {
-                                style { color "#40505d" }
                                 Title indexDoc.Name
                                 childContent [
                                     for doc in docs do

@@ -85,7 +85,7 @@ module internal DocsHelper =
         let dir = Path.getDirectory file
         let fileName = Path.GetFileNameWithoutExtension file
         let content = File.readAsString file
-        let results = Regex("{{([^{]+)}}").Matches(content)
+        let results = Regex("{{([^{][\S]+)}}").Matches(content)
 
         File.delete file
 
@@ -245,7 +245,7 @@ module DocBuilder =
     let wwwroot = wasm </> "wwwroot"
     let demos = "Demos"
     let docs = "Docs"
-    let baseUrl = "/"
+    let baseUrl = "docs/"
 
 
     let build () =

@@ -7,6 +7,6 @@ open Fun.Blazor.Docs.Wasm.Demos
 
 let demos =
     Map.ofList [
-        "counter", { View = counter; Source = "demos/counter.html" }
+        "counter", { View = counter; Source = "Demos/counter.html" }
     ]
         
