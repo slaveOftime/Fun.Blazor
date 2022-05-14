@@ -22,7 +22,7 @@ jobs:
     - name: Build artifacts
       run: |
         dotnet tool restore
-        dotnet fsi build.fsx -t GenerateDocForWasm
+        dotnet fsi build.fsx -t GenerateDocs
         dotnet publish Fun.Blazor.Docs.Wasm/Fun.Blazor.Docs.Wasm.fsproj -c Release -o Fun.Blazor.Docs.Wasm.Release --nologo
     
 
