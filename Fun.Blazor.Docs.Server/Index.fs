@@ -20,6 +20,9 @@ type Index() =
         let store = ctx.RequestServices.GetMultipleServices<IShareStore>()
         store.IsServerSideRendering.Publish true
 
+        // Must defined as a variable and use it later for SSR 
+        let root = rootComp<Index> ctx RenderMode.ServerPrerendered
+
         fragment {
             doctype "html"
             html' {
@@ -34,7 +37,7 @@ type Index() =
                     stylesheet "_content/MudBlazor/MudBlazor.min.css"
                 }
                 body {
-                    rootComp<Index> ctx RenderMode.ServerPrerendered
+                    root
 
                     script { src "_content/MudBlazor/MudBlazor.min.js" }
                     script { src "_framework/blazor.server.js" }
