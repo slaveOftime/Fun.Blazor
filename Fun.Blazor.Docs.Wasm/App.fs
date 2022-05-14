@@ -78,11 +78,11 @@ let app =
 
         let drawer =
             adaptiview () {
-                let! isOpen = isOpen
+                let! binding = isOpen.WithSetter()
                 MudDrawer'() {
-                    Open isOpen
+                    Open' binding
                     Elevation 25
-                    Variant DrawerVariant.Persistent
+                    PreserveOpenState true
                     ClipMode DrawerClipMode.Always
                     navmenu
                 }
