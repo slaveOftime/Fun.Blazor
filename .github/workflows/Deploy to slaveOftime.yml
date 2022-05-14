@@ -23,7 +23,7 @@ jobs:
     - name: Bundle
       run: |
         dotnet tool restore
-        dotnet fsi build.fsx -t GenerateDocForWasm
+        dotnet fsi build.fsx -t GenerateDocs
         dotnet publish Fun.Blazor.Docs.Server/Fun.Blazor.Docs.Server.fsproj -c Release -o Fun.Blazor.Docs.Server.Release --nologo
 
     - name: Deploy
