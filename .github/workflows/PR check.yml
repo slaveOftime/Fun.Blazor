@@ -1,0 +1,32 @@
+name: PR check
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - edited
+
+jobs:
+  deploy-to-github-pages:
+    runs-on: ubuntu-20.04
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
+
+    - name: Restore
+      run: dotnet tool restore
+
+    - name: Generate docs
+      run: dotnet fsi build.fsx -t GenerateDocs
+
+    - name: Test
+      run: dotnet test
+        
+    - name: build
+      run: dotnet build

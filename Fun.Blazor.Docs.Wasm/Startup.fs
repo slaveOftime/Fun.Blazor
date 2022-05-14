@@ -1,6 +1,7 @@
 #nowarn "0020"
 
 open System
+open System.Net.Http
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.AspNetCore.Components.WebAssembly.Hosting
 open MudBlazor.Services
@@ -21,6 +22,11 @@ builder
     .Services
     .AddFunBlazorWasm()
     .AddMudServices()
-    .AddScoped<Fun.Blazor.Docs.Wasm.Pages.HelperFunctions.InjectDemo.ScopedDemoService>()
+    .AddScoped<Fun.Blazor.Docs.Wasm.Demos.ScopedDemoService>()
+    .AddScoped<HttpClient>(fun _ ->
+        let http = new HttpClient()
+        http.BaseAddress <- Uri builder.HostEnvironment.BaseAddress
+        http
+    )
 
 builder.Build().RunAsync()

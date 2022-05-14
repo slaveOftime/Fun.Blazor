@@ -3,56 +3,27 @@
 module Fun.Blazor.Docs.Wasm.App
 
 open FSharp.Data.Adaptive
+open Fun.Result
 open Fun.Blazor
 open Fun.Blazor.Router
 open MudBlazor
-open MudBlazor.Utilities
-open Fun.Blazor.Docs.Wasm.Components
-open Fun.Blazor.Docs.Wasm.Pages
-
-
-
-let defaultTheme =
-    MudTheme(Palette = Palette(Primary = MudColor "#289c8e", Secondary = MudColor "#47cacf", Black = MudColor "#202120"))
-
-let darkTheme =
-    MudTheme(
-        Palette =
-            Palette(
-                Primary = MudColor "#289c8e",
-                Secondary = MudColor "#47cacf",
-                Black = MudColor "#27272f",
-                Background = MudColor "#32333d",
-                BackgroundGrey = MudColor "#27272f",
-                Surface = MudColor "#373740",
-                DrawerBackground = MudColor "#27272f",
-                DrawerText = MudColor "rgba(255,255,255, 0.50)",
-                DrawerIcon = MudColor "rgba(255,255,255, 0.50)",
-                AppbarBackground = MudColor "#27272f",
-                AppbarText = MudColor "rgba(255,255,255, 0.70)",
-                TextPrimary = MudColor "#289c8e",
-                TextSecondary = MudColor "#33d0e8",
-                ActionDefault = MudColor "#adadb1",
-                ActionDisabled = MudColor "rgba(255,255,255, 0.26)",
-                ActionDisabledBackground = MudColor "rgba(255,255,255, 0.12)",
-                Divider = MudColor "rgba(255,255,255, 0.12)",
-                DividerLight = MudColor "rgba(255,255,255, 0.06)",
-                TableLines = MudColor "rgba(255,255,255, 0.12)",
-                LinesDefault = MudColor "rgba(255,255,255, 0.12)",
-                LinesInputs = MudColor "rgba(255,255,255, 0.3)",
-                TextDisabled = MudColor "rgba(255,255,255, 0.2)"
-            )
-    )
+open Fun.Blazor.Docs.Controls
 
 
 let app =
-    html.inject (fun (shareStore: IShareStore) ->
-        let isOpen = cval (false)
+    html.inject (fun (hook: IComponentHook, shareStore: IShareStore) ->
+        let isOpen = cval true
 
         let theme =
             adaptiview () {
-                let! isDark = shareStore.isDarkMode
-                MudThemeProvider'() { Theme(if isDark then darkTheme else defaultTheme) }
+                let! isDark = shareStore.IsDarkMode
+
+                MudThemeProvider'() { Theme(if isDark then Theme.darkTheme else Theme.defaultTheme) }
+
+                if isDark then
+                    stylesheet "css/github-markdown-dark.css"
+                else
+                    stylesheet "css/github-markdown-light.css"
             }
 
         let menuBtn =
@@ -68,7 +39,11 @@ let app =
 
         let appBar =
             MudAppBar'() {
-                Color Color.Primary
+                style {
+                    custom "backdrop-filter" "blur(15px)"
+                    backgroundColor "transparent"
+                    color Theme.primaryColor
+                }
                 Elevation 25
                 Dense true
                 childContent [
@@ -78,7 +53,21 @@ let app =
                         Color Color.Default
                         "Fun Blazor"
                     }
+                    MudImage'() {
+                        style { margin 10 }
+                        Height 35
+                        Width 35
+                        Src $"fun-blazor.png"
+                    }
                     MudSpacer'.create ()
+                    adaptiview () {
+                        let! isDark, setIsDark = shareStore.IsDarkMode.WithSetter()
+                        MudIconButton'() {
+                            Color Color.Inherit
+                            Icon(if isDark then Icons.Filled.Brightness4 else Icons.Filled.Brightness3)
+                            OnClick(fun _ -> setIsDark (not isDark))
+                        }
+                    }
                     MudIconButton'() {
                         Icon Icons.Custom.Brands.GitHub
                         Color Color.Inherit
@@ -94,26 +83,11 @@ let app =
                     Open isOpen
                     Elevation 25
                     Variant DrawerVariant.Persistent
-                    MudDrawerHeader'() {
-                        LinkToIndex true
-                        MudText'() {
-                            Color Color.Primary
-                            Typo Typo.h5
-                            "Have fun ✌"
-                        }
-                    }
+                    ClipMode DrawerClipMode.Always
                     navmenu
                 }
             }
 
-        let routing =
-            html.route [
-                // For host on slaveoftime.fun server mode
-                yield! routes
-                // For host on github-pages WASM mode
-                subRouteCi "/Fun.Blazor.Docs" routes
-                routeAny QuickStart.QuickStart.quickStart
-            ]
 
         html.fragment [
             theme
@@ -127,7 +101,30 @@ let app =
                         paddingTop 100
                         paddingBottom 64
                     }
-                    routing
+                    adaptiview () {
+                        match! hook.GetOrLoadDocsTree() with
+                        | LoadingState.NotStartYet -> notFound
+                        | LoadingState.Loading -> MudProgressLinear'.create ()
+                        | LoadingState.Loaded docs
+                        | LoadingState.Reloading docs ->
+                            html.route [
+                                // For host on slaveoftime.fun server mode
+                                docRouting docs
+                                Demos.GiraffeStyleRouter.demoRouting
+                                // For host on github-pages WASM mode
+                                subRouteCi "/Fun.Blazor.Docs" [ docRouting docs; Demos.GiraffeStyleRouter.demoRouting ]
+                                routeAny (
+                                    docs
+                                    |> Seq.tryHead
+                                    |> Option.map (
+                                        function
+                                        | DocTreeNode.Category (doc, _, _)
+                                        | DocTreeNode.Doc doc -> docView doc
+                                    )
+                                    |> Option.defaultValue notFound
+                                )
+                            ]
+                    }
                     MudScrollToTop'() {
                         TopOffset 400
                         MudFab'() {
