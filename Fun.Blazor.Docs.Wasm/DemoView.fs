@@ -21,6 +21,7 @@ let demoView (demo: Demo) =
                 style { padding 20 }
                 Elevation 5
                 demo.View
+                spaceV2
                 div {
                     style {
                         displayFlex
@@ -33,8 +34,7 @@ let demoView (demo: Demo) =
                             OnClick(fun _ -> 
                                 task {
                                     setShowCode (not showCode)
-                                    //do! js.highlightCode()
-                                    do! Task.Delay 500
+                                    do! Task.Delay 100
                                     do! js.highlightCode()
                                 } |> ignore
                             )
@@ -52,6 +52,7 @@ let demoView (demo: Demo) =
                         | LoadingState.Loading -> linearProgress
                         | LoadingState.Loaded sourceCode
                         | LoadingState.Reloading sourceCode ->
+                            spaceV2
                             div {
                                 style {backgroundColor "#011627"; padding 5 }
                                 article {

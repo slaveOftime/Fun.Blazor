@@ -20,11 +20,8 @@ let docView (doc: DocBrief) =
                 childContent [
                     for segment in segments do
                         match segment with
-                        | Segment.Demo key ->
-                            demos
-                            |> Map.tryFind (key.ToLower())
-                            |> Option.map demoView
-                            |> Option.defaultValue (html.text "Demo is not found")
+                        | Segment.Demo key -> demos |> Map.tryFind key |> Option.map demoView |> Option.defaultValue notFound
+
                         | Segment.Html key ->
                             adaptiview () {
                                 match! hook.GetOrLoadDocHtml(langStr, key, "cacheKey=" + string doc.LastModified.Ticks) with

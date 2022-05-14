@@ -10,5 +10,5 @@ Anyway it is opinionated project, because I really like CE style, even its intel
 
 Below is a very simple counter which is using adaptive model.
 
-{{counter}}
+{{Counter}}
 

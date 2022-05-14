@@ -22,6 +22,7 @@ builder
     .Services
     .AddFunBlazorWasm()
     .AddMudServices()
+    .AddScoped<Fun.Blazor.Docs.Wasm.Demos.ScopedDemoService>()
     .AddScoped<HttpClient>(fun _ ->
         let http = new HttpClient()
         http.BaseAddress <- Uri builder.HostEnvironment.BaseAddress

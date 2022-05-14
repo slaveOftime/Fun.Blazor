@@ -4,10 +4,19 @@
 		<TargetFramework>net6.0</TargetFramework>
 	</PropertyGroup>
 	<ItemGroup>
-		<Compile Include="Demos\Counter.fs" />
 		<Compile Include="Types.fs" />
 		<Compile Include="Utils.fs" />
 		<Compile Include="Hooks.fs" />
+		<Compile Include="Demos\Counter.fs" />
+		<Compile Include="Demos\GiraffeStyleRouter.fs" />
+		<Compile Include="Demos\AdaptiveForm.fs" />
+		<Compile Include="Demos\AdaptiviewDemo.fs" />
+		<Compile Include="Demos\HtmlTemplateDemo.fs" />
+		<Compile Include="Demos\GlobalStoreDemo.fs" />
+		<Compile Include="Demos\InlineStyleDemo.fs" />
+		<Compile Include="Demos\CssRuleDemo.fs" />
+		<Compile Include="Demos\SimpleInjectionDemo.fs" />
+		<Compile Include="Demos\ScopedServiceDemo.fs" />
 		<Compile Include="DemoMaps.fs" />
 		<Compile Include="DemoView.fs" />
 		<Compile Include="DocView.fs" />

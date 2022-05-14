@@ -17,6 +17,7 @@ let services = builder.Services
 
 services.AddControllersWithViews()
 services.AddServerSideBlazor().Services.AddFunBlazorServer().AddMudServices()
+services.AddScoped<Fun.Blazor.Docs.Wasm.Demos.ScopedDemoService>()
 
 services.AddScoped<HttpClient>(fun (sp) ->
     let httpContext = sp.GetService<IHttpContextAccessor>()

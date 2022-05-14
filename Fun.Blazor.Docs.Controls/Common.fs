@@ -25,3 +25,13 @@ let linearProgress =
         Indeterminate true
         Color Color.Primary
     }
+
+
+let notFound =
+    div {
+        style { padding 20 }
+        MudText'() {
+            Typo Typo.subtitle1
+            "Content not found"
+        }
+    }

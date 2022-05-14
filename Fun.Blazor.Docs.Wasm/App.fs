@@ -103,15 +103,16 @@ let app =
                     }
                     adaptiview () {
                         match! hook.GetOrLoadDocsTree() with
-                        | LoadingState.NotStartYet
+                        | LoadingState.NotStartYet -> notFound
                         | LoadingState.Loading -> MudProgressLinear'.create ()
                         | LoadingState.Loaded docs
                         | LoadingState.Reloading docs ->
                             html.route [
                                 // For host on slaveoftime.fun server mode
                                 docRouting docs
+                                Demos.GiraffeStyleRouter.demoRouting
                                 // For host on github-pages WASM mode
-                                subRouteCi "/Fun.Blazor.Docs" [ docRouting docs ]
+                                subRouteCi "/Fun.Blazor.Docs" [ docRouting docs; Demos.GiraffeStyleRouter.demoRouting ]
                                 routeAny (
                                     docs
                                     |> Seq.tryHead
@@ -120,7 +121,7 @@ let app =
                                         | DocTreeNode.Category (doc, _, _)
                                         | DocTreeNode.Doc doc -> docView doc
                                     )
-                                    |> Option.defaultValue (html.text "not found")
+                                    |> Option.defaultValue notFound
                                 )
                             ]
                     }

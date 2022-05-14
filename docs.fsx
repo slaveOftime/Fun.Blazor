@@ -259,7 +259,7 @@ module DocBuilder =
             |> Seq.toList
             |> List.map (fun file ->
                 let dir = Path.getDirectory file
-                let name = Path.GetFileNameWithoutExtension(file).ToLower()
+                let name = Path.GetFileNameWithoutExtension(file)
 
                 let code =
                     File.ReadAllLines file
@@ -273,7 +273,7 @@ module DocBuilder =
 
                 File.delete file
 
-                $""""{name}", {{ View = {name}; Source = "{demos + "/" + name + ".html"}" }}"""
+                $"""        "{name}", {{ View = {name}.entry; Source = "{demos + "/" + name + ".html"}" }}"""
             )
             |> String.concat "\n"
 
@@ -300,6 +300,6 @@ open Fun.Blazor.Docs.Wasm.Demos
 
 let demos =
     Map.ofList [
-        {demosStr}
+{demosStr}
     ]
         """
