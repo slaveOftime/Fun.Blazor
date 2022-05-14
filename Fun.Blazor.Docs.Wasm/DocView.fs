@@ -2,6 +2,7 @@
 [<AutoOpen>]
 module Fun.Blazor.Docs.Wasm.DocView
 
+open System.Threading.Tasks
 open FSharp.Data.Adaptive
 open Microsoft.JSInterop
 open Fun.Result
@@ -16,8 +17,20 @@ let docView (doc: DocBrief) =
         fun (hook: IComponentHook, js: IJSRuntime) ->
             let langStr = "en"
             let segments = doc.LangSegments |> Map.tryFind langStr |> Option.defaultValue []
+            let docSegmentLoadedCount = cval 0
 
-            hook.OnFirstAfterRender.Add(fun () -> js.highlightCode () |> ignore)
+
+            hook.OnFirstAfterRender.Add(fun () ->
+                hook.AddDisposes [
+                    docSegmentLoadedCount.AddInstantCallback(fun _ ->
+                        task {
+                            do! Task.Delay 100
+                            do! js.highlightCode ()
+                        }
+                        |> ignore
+                    )
+                ]
+            )
 
 
             MudContainer'() {
@@ -33,6 +46,7 @@ let docView (doc: DocBrief) =
                                 | LoadingState.Loading -> linearProgress
                                 | LoadingState.Loaded docHtml
                                 | LoadingState.Reloading docHtml ->
+                                    docSegmentLoadedCount.Publish((+) 1)
                                     div {
                                         article {
                                             class' "markdown-body"

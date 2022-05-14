@@ -16,6 +16,21 @@ let demoView (demo: Demo) =
         demo,
         fun (hook: IComponentHook, js: IJSRuntime) ->
             let showCode = cval false
+            let codeLoadedCount = cval 0
+
+
+            hook.OnFirstAfterRender.Add(fun () ->
+                hook.AddDisposes [
+                    codeLoadedCount.AddInstantCallback(fun _ ->
+                        task {
+                            do! Task.Delay 100
+                            do! js.highlightCode ()
+                        }
+                        |> ignore
+                    )
+                ]
+            )
+
 
             MudPaper'() {
                 style { padding 20 }
@@ -31,13 +46,7 @@ let demoView (demo: Demo) =
                     adaptiview () {
                         let! showCode, setShowCode = showCode.WithSetter()
                         MudButton'() {
-                            OnClick(fun _ -> 
-                                task {
-                                    setShowCode (not showCode)
-                                    do! Task.Delay 100
-                                    do! js.highlightCode()
-                                } |> ignore
-                            )
+                            OnClick(fun _ -> setShowCode (not showCode))
                             StartIcon(if showCode then Icons.Filled.HideSource else Icons.Filled.Source)
                             if showCode then "Hide source code" else "Show source code"
                         }
@@ -52,12 +61,14 @@ let demoView (demo: Demo) =
                         | LoadingState.Loading -> linearProgress
                         | LoadingState.Loaded sourceCode
                         | LoadingState.Reloading sourceCode ->
+                            codeLoadedCount.Publish((+) 1)
                             spaceV2
                             div {
-                                style {backgroundColor "#1e1e1e"; padding 5 }
-                                article {
-                                    html.raw sourceCode
+                                style {
+                                    backgroundColor "#151522"
+                                    padding 5
                                 }
+                                article { html.raw sourceCode }
                             }
                 }
             }
