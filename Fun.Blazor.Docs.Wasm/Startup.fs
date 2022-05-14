@@ -29,7 +29,7 @@ builder
 #if DEBUG
             Uri(builder.HostEnvironment.BaseAddress)
 #else
-            Uri(builder.HostEnvironment.BaseAddress + "/Fun.Blazor.Docs")
+            Uri(builder.HostEnvironment.BaseAddress + "Fun.Blazor.Docs/")
 #endif
         http
     )

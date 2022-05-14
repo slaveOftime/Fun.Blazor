@@ -2,12 +2,12 @@
 #r "nuget: FSharp.SystemTextJson, 0.17.4"
 #r "nuget: Markdig, 0.30.2"
 
-
 open System
 open System.IO
 open System.Text.RegularExpressions
 open System.Text.Json
 open System.Text.Json.Serialization
+open System.Globalization
 open Fake.IO
 open Fake.IO.FileSystemOperators
 open Fake.IO.Globbing.Operators
@@ -226,7 +226,7 @@ module internal DocsHelper =
                 |> if isReleaseFolder then
                        List.sortByDescending (fun x -> x.Name)
                    else
-                       List.sortBy (fun x -> x.Name)
+                       List.sortBy (fun x -> x.FolderName)
 
             let childs =
                 dirs
@@ -245,10 +245,11 @@ module DocBuilder =
     let wwwroot = wasm </> "wwwroot"
     let demos = "Demos"
     let docs = "Docs"
-    let baseUrl = "docs/"
+    let baseUrl = "Docs/"
 
 
     let build () =
+        CultureInfo.CurrentCulture <- CultureInfo.InvariantCulture
 
         printfn "Process demos"
         Shell.cleanDir (wwwroot </> demos)
