@@ -1,5 +1,5 @@
 ﻿[<AutoOpen>]
-module Fun.Blazor.Docs.Controls.JsInterop
+module Fun.Blazor.Docs.Wasm.JsInterop
 
 open Microsoft.JSInterop
 open Fun.Blazor

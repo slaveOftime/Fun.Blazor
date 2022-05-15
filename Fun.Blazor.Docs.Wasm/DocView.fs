@@ -8,7 +8,7 @@ open Microsoft.JSInterop
 open Fun.Result
 open Fun.Blazor
 open MudBlazor
-open Fun.Blazor.Docs.Controls
+open Fun.Blazor.Docs.Wasm
 
 
 let docView (doc: DocBrief) =

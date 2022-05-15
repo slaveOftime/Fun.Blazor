@@ -5,7 +5,7 @@ open System
 open FSharp.Control.Reactive
 open MudBlazor
 open Fun.Blazor
-open Fun.Blazor.Docs.Controls
+open Fun.Blazor.Docs.Wasm
 
 // Here we provide a key
 // If we do not provide a key, then every time we call this we will create a new component

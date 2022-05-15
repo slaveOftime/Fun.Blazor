@@ -1,5 +1,5 @@
 ﻿[<AutoOpen>]
-module Fun.Blazor.Docs.Controls.Common
+module Fun.Blazor.Docs.Wasm.Controls
 
 open System.Threading.Tasks
 open MudBlazor

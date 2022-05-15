@@ -6,7 +6,10 @@
 	<ItemGroup>
 		<Compile Include="Types.fs" />
 		<Compile Include="Utils.fs" />
+		<Compile Include="Theme.fs" />
 		<Compile Include="Hooks.fs" />
+		<Compile Include="JsInterop.fs" />
+		<Compile Include="Controls.fs" />
 		<Compile Include="Demos\Counter.fs" />
 		<Compile Include="Demos\GiraffeStyleRouter.fs" />
 		<Compile Include="Demos\AdaptiveForm.fs" />

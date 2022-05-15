@@ -1,4 +1,4 @@
-﻿module Fun.Blazor.Docs.Controls.Theme
+﻿module Fun.Blazor.Docs.Wasm.Theme
 
 open MudBlazor
 open MudBlazor.Utilities

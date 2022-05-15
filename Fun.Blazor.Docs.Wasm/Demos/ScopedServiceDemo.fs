@@ -5,7 +5,7 @@ open FSharp.Data.Adaptive
 open Microsoft.Extensions.DependencyInjection
 open MudBlazor
 open Fun.Blazor
-open Fun.Blazor.Docs.Controls
+open Fun.Blazor.Docs.Wasm
 
 
 type ScopedDemoService() =
