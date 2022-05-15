@@ -1,6 +1,7 @@
 ﻿[<AutoOpen>]
 module Fun.Blazor.DslElmish
 
+open FSharp.Data.Adaptive
 open Elmish
 open Operators
 
@@ -16,18 +17,48 @@ type html with
             view: 'State -> Dispatch<'Msg> -> NodeRenderFragment
         )
         =
-        ComponentWithChildBuilder<ElmComponent<'State, 'Msg>>(){
+        ComponentWithChildBuilder<ElmComponent<'State, 'Msg>>() {
             "Init" => init
             "Update" => update
             "View" => view
         }
 
 
-    static member elmish
+    static member elmish(initState: unit -> 'State, updateState: 'Msg -> 'State -> 'State, render: 'State -> Dispatch<'Msg> -> NodeRenderFragment) =
+        html.elmish ((fun () -> initState (), Cmd.none), (fun msg state -> updateState msg state, Cmd.none), render)
+
+
+type IComponentHook with
+
+    /// Make a simple elmish model with adaptive data
+    member hook.UseElmish<'Model, 'Msg>
         (
-            initState: unit -> 'State,
-            updateState: 'Msg -> 'State -> 'State,
-            render: 'State -> Dispatch<'Msg> -> NodeRenderFragment
+            state: cval<'Model>,
+            update: 'Msg -> 'Model -> 'Model * Cmd<'Msg>,
+            ?initCmd: Cmd<'Msg>,
+            ?execInitCmdAfterRender: bool
         )
         =
-        html.elmish ((fun () -> initState (), Cmd.none), (fun msg state -> updateState msg state, Cmd.none), render)
+        let execInitCmdAfterRender = defaultArg execInitCmdAfterRender true
+
+        let rec dispatch msg =
+            let newState, newCmd = update msg state.Value
+            state.Publish newState
+            newCmd |> List.iter (fun sub -> sub dispatch)
+
+        let execCmd = List.iter (fun sub -> sub dispatch)
+
+        match initCmd with
+        | None -> ()
+        | Some initCmd when execInitCmdAfterRender -> hook.OnFirstAfterRender.Add(fun () -> execCmd initCmd)
+        | Some initCmd -> execCmd initCmd
+
+        dispatch
+
+
+    member hook.UseElmish<'Model, 'Msg>(init, update, ?execInitCmdAfterRender) =
+        let initState, initCmd = init ()
+        let state = cval initState
+        let dispatch =
+            hook.UseElmish<'Model, 'Msg>(state, update, initCmd = initCmd, execInitCmdAfterRender = defaultArg execInitCmdAfterRender true)
+        state :> aval<_>, dispatch

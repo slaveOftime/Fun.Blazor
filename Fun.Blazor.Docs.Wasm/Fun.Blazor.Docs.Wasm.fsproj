@@ -21,6 +21,7 @@
 		<Compile Include="Demos\SimpleInjectionDemo.fs" />
 		<Compile Include="Demos\ScopedServiceDemo.fs" />
 		<Compile Include="Demos\ElmishDemo.fs" />
+		<Compile Include="Demos\AdaptiveElmish.fs" />
 		<Compile Include="DemoMaps.fs" />
 		<Compile Include="DemoView.fs" />
 		<Compile Include="DocView.fs" />

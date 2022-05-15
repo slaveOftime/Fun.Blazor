@@ -7,6 +7,7 @@ open Fun.Blazor.Docs.Wasm.Demos
 
 let demos =
     Map.ofList [
+        "AdaptiveElmish", { View = AdaptiveElmish.entry; Source = "Demos/AdaptiveElmish.html" }
         "AdaptiveForm", { View = AdaptiveForm.entry; Source = "Demos/AdaptiveForm.html" }
         "AdaptiviewDemo", { View = AdaptiviewDemo.entry; Source = "Demos/AdaptiviewDemo.html" }
         "Counter", { View = Counter.entry; Source = "Demos/Counter.html" }

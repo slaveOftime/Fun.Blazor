@@ -7,15 +7,15 @@ open Fun.Blazor
 open Elmish
 
 
-type Model = { Count: int }
+type private Model = { Count: int }
 
-type Msg =
+type private Msg =
     | Increase
     | Decrease
     | IncreaseTask
 
 
-let delayDecrease =
+let private delayDecrease =
     Cmd.OfAsync.result (
         async {
             do! Async.Sleep 3000
@@ -24,9 +24,9 @@ let delayDecrease =
     )
 
 
-let init () = { Count = 0 }, delayDecrease
+let private init () = { Count = 0 }, delayDecrease
 
-let update msg model =
+let private update msg model =
     match msg with
     | Increase -> { model with Count = model.Count + 1 }, Cmd.none
     | Decrease -> { model with Count = model.Count - 1 }, delayDecrease
@@ -39,7 +39,7 @@ let update msg model =
             }
         )
 
-let view model (dispatch: Msg -> unit) =
+let private view model (dispatch: Msg -> unit) =
     div.create [
         MudText'() {
             Typo Typo.h6
