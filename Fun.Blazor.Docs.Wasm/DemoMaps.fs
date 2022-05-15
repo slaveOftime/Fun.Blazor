@@ -11,6 +11,7 @@ let demos =
         "AdaptiviewDemo", { View = AdaptiviewDemo.entry; Source = "Demos/AdaptiviewDemo.html" }
         "Counter", { View = Counter.entry; Source = "Demos/Counter.html" }
         "CssRuleDemo", { View = CssRuleDemo.entry; Source = "Demos/CssRuleDemo.html" }
+        "ElmishDemo", { View = ElmishDemo.entry; Source = "Demos/ElmishDemo.html" }
         "GiraffeStyleRouter", { View = GiraffeStyleRouter.entry; Source = "Demos/GiraffeStyleRouter.html" }
         "GlobalStoreDemo", { View = GlobalStoreDemo.entry; Source = "Demos/GlobalStoreDemo.html" }
         "HtmlTemplateDemo", { View = HtmlTemplateDemo.entry; Source = "Demos/HtmlTemplateDemo.html" }

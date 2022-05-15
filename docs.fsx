@@ -39,7 +39,10 @@ type DocTreeNode =
 module internal DocsHelper =
 
     [<Literal>]
-    let ROOT = "index"
+    let INDEX = "README"
+
+    [<Literal>]
+    let DefaultLang = "en"
 
     let toJson x =
         let options = JsonSerializerOptions()
@@ -48,8 +51,8 @@ module internal DocsHelper =
         JsonSerializer.Serialize(x, options)
 
 
-    let private isMainFile (file: string) = (Path.GetFileName file).StartsWith(ROOT, StringComparison.OrdinalIgnoreCase)
-    let private isMdLangdFile ext (file: string) = file.EndsWith(ext, StringComparison.OrdinalIgnoreCase)
+    let private isMainFile (file: string) = (Path.GetFileName file).StartsWith(INDEX, StringComparison.OrdinalIgnoreCase)
+    let private isExpectedFile ext (file: string) = file.EndsWith(ext, StringComparison.OrdinalIgnoreCase)
 
     let private formatUrl (url: string) = url.Replace(@"\", @"/")
 
@@ -143,7 +146,7 @@ module internal DocsHelper =
         let dir = Path.getDirectory file
         let filename =
             file |> Path.GetFileNameWithoutExtension |> Path.GetFileNameWithoutExtension
-        let files = Directory.GetFiles(dir, $"{filename}.*.md")
+        let files = Directory.GetFiles(dir, $"{filename}*.md")
         let fileInfo = FileInfo file
 
         {
@@ -155,7 +158,10 @@ module internal DocsHelper =
                 files
                 |> Seq.map (fun file ->
                     let lang =
-                        file |> Path.GetFileNameWithoutExtension |> Path.GetExtension |> (fun x -> x.Substring(1))
+                        file
+                        |> Path.GetFileNameWithoutExtension
+                        |> Path.GetExtension
+                        |> fun x -> if String.IsNullOrEmpty x then DefaultLang else x.Substring(1)
                     lang, markdownToSegments baseUrl rootDir file
                 )
                 |> Map.ofSeq
@@ -191,8 +197,8 @@ module internal DocsHelper =
             files
             |> Seq.fold
                 (fun (main, other) f ->
-                    if isMainFile f && isMdLangdFile ext f then f :: main, other
-                    elif isMdLangdFile ext f then main, f :: other
+                    if isMainFile f then f :: main, other
+                    elif isExpectedFile ext f then main, f :: other
                     else main, other
                 )
                 ([], [])
@@ -280,7 +286,7 @@ module DocBuilder =
         Shell.copyDir (wwwroot </> docs) (wasm </> docs) (fun _ -> true)
 
         let docsDir = wwwroot </> docs
-        DocsHelper.getDocTree baseUrl docsDir ".en.md" docsDir
+        DocsHelper.getDocTree baseUrl docsDir ".md" docsDir
         |> List.sortBy DocsHelper.sortDocNodeByFolderName
         |> DocsHelper.toJson
         |> File.writeString false (docsDir </> "index.json")
