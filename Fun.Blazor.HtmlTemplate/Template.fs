@@ -10,7 +10,7 @@ open HtmlTemplate.Internals
 module Utils =
     let callback<'T> (fn: 'T -> unit) : ArgMkAttrWithName = fun name -> html.callback<'T> (name, fn)
 
-    let callbackTask<'T> (fn: 'T -> Task) : ArgMkAttrWithName = fun name -> html.callbackTask<'T> (name, fn)
+    let callbackTask<'T> (fn: 'T -> Task<unit>) : ArgMkAttrWithName = fun name -> html.callbackTask<'T> (name, fn)
 
 
 type Template =

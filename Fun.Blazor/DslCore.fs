@@ -173,15 +173,15 @@ type html() =
             index + 1
         )
 
-    static member inline callbackTask<'T>(eventName, fn: 'T -> Task) =
+    static member inline callbackTask<'T>(eventName, fn: 'T -> Task<unit>) =
         AttrRenderFragment(fun comp builder index ->
-            builder.AddAttribute(index, eventName, EventCallback.Factory.Create(comp, Func<'T, Task> fn))
+            builder.AddAttribute(index, eventName, EventCallback.Factory.Create(comp, Func<'T, Task>(fun x -> fn x :> Task)))
             index + 1
         )
 
-    static member inline callbackTask(eventName, fn: unit -> Task) =
+    static member inline callbackTask(eventName, fn: unit -> Task<unit>) =
         AttrRenderFragment(fun comp builder index ->
-            builder.AddAttribute(index, eventName, EventCallback.Factory.Create(comp, Func<Task> fn))
+            builder.AddAttribute(index, eventName, EventCallback.Factory.Create(comp, Func<Task>(fun () -> fn () :> Task)))
             index + 1
         )
 

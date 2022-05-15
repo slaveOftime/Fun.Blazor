@@ -62,6 +62,17 @@ let view model (dispatch: Msg -> unit) =
                 MudButton'() {
                     Color Color.Secondary
                     Variant Variant.Outlined
+                    OnClick(fun _ ->
+                        task {
+                            do! System.Threading.Tasks.Task.Delay 1000
+                            Increase |> dispatch
+                        }
+                    )
+                    "Increase (Delay 1s in click event)"
+                }
+                MudButton'() {
+                    Color Color.Secondary
+                    Variant Variant.Outlined
                     OnClick(fun _ -> Decrease |> dispatch)
                     "Decrease (loop in 3s)"
                 }
