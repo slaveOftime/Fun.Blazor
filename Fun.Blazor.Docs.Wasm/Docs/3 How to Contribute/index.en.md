@@ -21,11 +21,11 @@ If you want to contribute to documents (very welcomed, because my English is is 
 
 - To write demo components, you must create something like:
 
-```fsharp
-module Fun.Blazor.Docs.Wasm.Demos.DemoName
+    ```fsharp
+    module Fun.Blazor.Docs.Wasm.Demos.DemoName
 
-open Fun.Blazor
+    open Fun.Blazor
 
-// must be called entry
-let entry = div { "hi" }
-```
+    // must be called entry
+    let entry = div { "hi" }
+    ```

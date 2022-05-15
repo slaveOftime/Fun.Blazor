@@ -25,4 +25,4 @@ let yourUI =
 
 And **adaptiview** can also accept parameters like isStatic/key, with this, even you recall **yourUI**, it will not affect the isolated part.
 
-{{adaptiviewDemo}}
+{{AdaptiviewDemo}}

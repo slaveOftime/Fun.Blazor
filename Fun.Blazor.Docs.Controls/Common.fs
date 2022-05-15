@@ -1,6 +1,7 @@
 ﻿[<AutoOpen>]
 module Fun.Blazor.Docs.Controls.Common
 
+open System.Threading.Tasks
 open MudBlazor
 open Fun.Blazor
 
@@ -35,3 +36,19 @@ let notFound =
             "Content not found"
         }
     }
+
+
+type DocDrawer() as this =
+    inherit MudDrawer()
+
+    interface Interfaces.INavigationEventReceiver with
+        member _.OnNavigation() =
+            task {
+                do! Task.Delay 10 // This is used to fix the navigation issue
+                do! this.OnNavigation()
+            }
+            |> ignore
+            Task.CompletedTask
+
+type DocDrawer'() =
+    inherit DslInternals.MudDrawerBuilder<DocDrawer>()

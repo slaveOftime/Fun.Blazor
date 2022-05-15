@@ -79,7 +79,7 @@ let app =
         let drawer =
             adaptiview () {
                 let! binding = isOpen.WithSetter()
-                MudDrawer'() {
+                DocDrawer'() {
                     Open' binding
                     Elevation 25
                     PreserveOpenState true
@@ -135,5 +135,6 @@ let app =
                 }
             ]
             interopScript
+            styleElt { ruleset ".markdown-body li" { listStyleTypeInitial } }
         ]
     )
