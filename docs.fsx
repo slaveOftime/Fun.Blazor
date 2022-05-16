@@ -283,7 +283,7 @@ module DocBuilder =
 
         printfn "Process docs"
         Shell.cleanDir (wwwroot </> docs)
-        Shell.copyDir (wwwroot </> docs) (wasm </> docs) (fun _ -> true)
+        Shell.copyDir (wwwroot </> docs) (__SOURCE_DIRECTORY__ </> docs) (fun _ -> true)
 
         let docsDir = wwwroot </> docs
         DocsHelper.getDocTree baseUrl docsDir ".md" docsDir

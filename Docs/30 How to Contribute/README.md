@@ -4,7 +4,7 @@ If you want to contribute to the source code, just make a PR and @ me then I wil
 
 If you want to contribute to documents (very welcomed, because my English is is not very good, so my documentation may not be very readable), there are some conventions:
 
-- All the docs is under **Fun.Blazor.Docs.Wasm/Docs**. They are just markdown, you can change it accordingly.
+- All the docs is under **Docs**. They are just markdown, you can change it accordingly.
 - In the markdown file, the first line should be something like: **# your topic**
 - There is a number before every topic folder, it is used to sort the final menu accordingly
 - Under every folder, there is a **README.md** file. Which is the main entry to the topic.
