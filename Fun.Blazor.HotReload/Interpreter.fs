@@ -134,13 +134,13 @@ type Sink =
 
     /// Called whenever a call is completed, showing caller reference and called method
     abstract NotifyCallAndReturn:
-        caller: DMemberRef option
-        * callerRange: DRange option
-        * callee: Choice<MethodInfo, DMemberDef>
-        * typeArgs: Type []
-        * args: obj []
-        * returnValue: Value ->
-        unit
+        caller: DMemberRef option *
+        callerRange: DRange option *
+        callee: Choice<MethodInfo, DMemberDef> *
+        typeArgs: Type [] *
+        args: obj [] *
+        returnValue: Value ->
+            unit
 
     /// Called whenever a value in a module is computed
     abstract NotifyBindValue: DMemberDef * Value -> unit
@@ -190,8 +190,7 @@ let bind (sink: Sink) (env: Env) (var: DLocalDef) (value: Value) =
 
 let bindMany sink env vars values = (env, vars, values) |||> Array.fold2 (bind sink)
 
-let bindType (env: Env) (var: DGenericParameterDef) value =
-    { env with Types = env.Types.Add(var.Name, value) }
+let bindType (env: Env) (var: DGenericParameterDef) value = { env with Types = env.Types.Add(var.Name, value) }
 
 type DMemberDef with
 
@@ -211,7 +210,7 @@ let protectInvoke f =
     try
         f ()
     with
-        | exn -> protectRaise exn
+    | exn -> protectRaise exn
 
 let WilFailTraitCallInvoke (traitName, sourceTypeR: Type, isInstance) =
     let bindingFlags =
@@ -243,9 +242,9 @@ let EvalTraitCallInvoke (traitName, sourceTypeRs: Type list, isInstance, argExpr
         try
             protectInvoke (fun () -> sourceTypeR.InvokeMember(traitName, bindingFlags, null, objV, argsV))
         with
-            | e ->
-                printfn "failed!"
-                reraise ()
+        | e ->
+            printfn "failed!"
+            reraise ()
     Value resObj
 
 let inline unOp op (argsV: obj []) f32 f64 =
@@ -316,32 +315,23 @@ let negOp op (argsV: obj []) =
     | (:? decimal as v1) -> Value(box (-v1))
     | _ -> EvalTraitCallInvoke(op, [ argsV.[0].GetType() ], false, argsV)
 
-let minusOp argsV =
-    binOp "op_Subtraction" argsV (-) (-) (-) (-) (-) (-) (-) (-) (-) (-) (-)
+let minusOp argsV = binOp "op_Subtraction" argsV (-) (-) (-) (-) (-) (-) (-) (-) (-) (-) (-)
 
-let divideOp argsV =
-    binOp "op_Division" argsV (/) (/) (/) (/) (/) (/) (/) (/) (/) (/) (/)
+let divideOp argsV = binOp "op_Division" argsV (/) (/) (/) (/) (/) (/) (/) (/) (/) (/) (/)
 
-let modOp argsV =
-    binOp "op_Modulus" argsV (%) (%) (%) (%) (%) (%) (%) (%) (%) (%) (%)
+let modOp argsV = binOp "op_Modulus" argsV (%) (%) (%) (%) (%) (%) (%) (%) (%) (%) (%)
 
-let shiftleftOp argsV =
-    shiftOp "op_LeftShift" argsV (<<<) (<<<) (<<<) (<<<) (<<<) (<<<) (<<<) (<<<)
+let shiftleftOp argsV = shiftOp "op_LeftShift" argsV (<<<) (<<<) (<<<) (<<<) (<<<) (<<<) (<<<) (<<<)
 
-let shiftrightOp argsV =
-    shiftOp "op_RightShift" argsV (>>>) (>>>) (>>>) (>>>) (>>>) (>>>) (>>>) (>>>)
+let shiftrightOp argsV = shiftOp "op_RightShift" argsV (>>>) (>>>) (>>>) (>>>) (>>>) (>>>) (>>>) (>>>)
 
-let landOp argsV =
-    logicBinOp "op_BitwiseAnd" argsV (&&&) (&&&) (&&&) (&&&) (&&&) (&&&) (&&&) (&&&)
+let landOp argsV = logicBinOp "op_BitwiseAnd" argsV (&&&) (&&&) (&&&) (&&&) (&&&) (&&&) (&&&) (&&&)
 
-let lorOp argsV =
-    logicBinOp "op_BitwiseOr" argsV (|||) (|||) (|||) (|||) (|||) (|||) (|||) (|||)
+let lorOp argsV = logicBinOp "op_BitwiseOr" argsV (|||) (|||) (|||) (|||) (|||) (|||) (|||) (|||)
 
-let lxorOp argsV =
-    logicBinOp "op_ExclusiveOr" argsV (^^^) (^^^) (^^^) (^^^) (^^^) (^^^) (^^^) (^^^)
+let lxorOp argsV = logicBinOp "op_ExclusiveOr" argsV (^^^) (^^^) (^^^) (^^^) (^^^) (^^^) (^^^) (^^^)
 
-let lnegOp argsV =
-    logicUnOp "op_LogicalNot" argsV (~~~) (~~~) (~~~) (~~~) (~~~) (~~~) (~~~) (~~~)
+let lnegOp argsV = logicUnOp "op_LogicalNot" argsV (~~~) (~~~) (~~~) (~~~) (~~~) (~~~) (~~~) (~~~)
 
 let checked_minusOp argsV =
     binOp
@@ -380,8 +370,7 @@ let acosOp argsV = unOp "Acos" argsV acos acos
 let asinOp argsV = unOp "Asin" argsV asin asin
 let atanOp argsV = unOp "Atan" argsV atan atan
 
-let atan2Op argsV =
-    binOp "Atan2" argsV fail fail fail fail fail fail fail fail atan2 atan2 fail
+let atan2Op argsV = binOp "Atan2" argsV fail fail fail fail fail fail fail fail atan2 atan2 fail
 
 let ceilOp argsV = unOp "Ceil" argsV ceil ceil
 let expOp argsV = unOp "Exp" argsV exp exp
@@ -399,8 +388,7 @@ let sinhOp argsV = unOp "Sinh" argsV sinh sinh
 let tanOp argsV = unOp "Tan" argsV tan tan
 let tanhOp argsV = unOp "Tanh" argsV tanh tanh
 //let pownOp argsV = unOp "Pown" argsV pown pown
-let powOp argsV =
-    binOp "Pow" argsV fail fail fail fail fail fail fail fail ( ** ) ( ** ) fail
+let powOp argsV = binOp "Pow" argsV fail fail fail fail fail fail fail fail ( ** ) ( ** ) fail
 
 /// Record a stack of ranges in an exception
 type System.Exception with
@@ -442,14 +430,14 @@ let protectEval compgen (r: DRange option) f =
         try
             f ()
         with
-            | e ->
-                e.EvalLocationStack <-
-                    (let m = r.Value
-                     [|
-                         yield (m.File, m.StartLine, m.StartColumn, m.EndLine, m.EndColumn)
-                         yield! e.EvalLocationStack
-                     |])
-                raise e
+        | e ->
+            e.EvalLocationStack <-
+                (let m = r.Value
+                 [|
+                     yield (m.File, m.StartLine, m.StartColumn, m.EndLine, m.EndColumn)
+                     yield! e.EvalLocationStack
+                 |])
+            raise e
 
 /// Context for evaluation/interpretation
 type EvalContext(assemblyName: AssemblyName, ?dyntypes: bool, ?assemblyResolver: (AssemblyName -> Assembly), ?sink: Sink) =
@@ -858,7 +846,26 @@ type EvalContext(assemblyName: AssemblyName, ?dyntypes: bool, ?assemblyResolver:
                 | _res ->
                     let (RTypesErased formalEnv paramTysV) = resolveTypes (formalEnv, v.ArgTypes)
                     match entityType.GetConstructor(bindAll, null, paramTysV, null) with
-                    | null -> failwithf "couldn't bind constructor %A for %A" v entityType //ctxt.InterpMethod(formalEnv, eR, nm, paramTys)
+                    | null ->
+                        entityType.GetConstructors()
+                        |> Seq.tryFind (fun ctr ->
+                            let ctrParams = ctr.GetParameters()
+                            if ctrParams.Length = paramTysV.Length then
+                                let mutable isRelaxSame = true
+                                let mutable index = 0
+                                while index < ctrParams.Length && isRelaxSame do
+                                    let p1 = ctrParams.[index]
+                                    let p2 = paramTysV.[index]
+                                    index <- index + 1
+                                    isRelaxSame <- p1.ParameterType.Name = p2.Name
+                                isRelaxSame
+
+                            else
+                                false
+                        )
+                        |> function
+                            | Some cinfo -> RMethod cinfo
+                            | _ -> failwithf "couldn't bind constructor %A for %A" v entityType //ctxt.InterpMethod(formalEnv, eR, nm, paramTys)
                     | cinfo -> RMethod cinfo
 
             else
@@ -948,7 +955,7 @@ type EvalContext(assemblyName: AssemblyName, ?dyntypes: bool, ?assemblyResolver:
                     try
                         minfo2.MakeGenericMethod(typeArgs1V)
                     with
-                        | _ -> minfo2.MakeGenericMethod(typeArgs2V)
+                    | _ -> minfo2.MakeGenericMethod(typeArgs2V)
                 else
                     minfo2
             | None -> failwithf "didn't find a matching method for %A with the right token" minfo
@@ -980,11 +987,9 @@ type EvalContext(assemblyName: AssemblyName, ?dyntypes: bool, ?assemblyResolver:
         assert (not (isNull ty))
         ty
 
-    let typeIsNotQueryable (ty: Type) =
-        (ty :? TypeBuilder) || ((ty.GetType()).Equals(TypeBuilderInstantiationT))
+    let typeIsNotQueryable (ty: Type) = (ty :? TypeBuilder) || ((ty.GetType()).Equals(TypeBuilderInstantiationT))
 
-    let getGenericTypeDefinition (ty: Type) =
-        if ty.IsGenericType then ty.GetGenericTypeDefinition() else ty
+    let getGenericTypeDefinition (ty: Type) = if ty.IsGenericType then ty.GetGenericTypeDefinition() else ty
 
     let instantiateConstructor typeArgsT (cinfo: ConstructorInfo) =
         let parentT = getGenericTypeDefinition cinfo.DeclaringType
@@ -1039,11 +1044,9 @@ type EvalContext(assemblyName: AssemblyName, ?dyntypes: bool, ?assemblyResolver:
         // TODO: emitting shell types for union and record types requires us to add all the
         // attributes generated by the F# compiler for those kinds of types.
         // These are not reported to us by FCS
-        let canEmitShellType (entityDef: DEntityDef) =
-            not (entityDef.IsUnion || entityDef.IsRecord || entityDef.IsStruct)
+        let canEmitShellType (entityDef: DEntityDef) = not (entityDef.IsUnion || entityDef.IsRecord || entityDef.IsStruct)
 
-        let canEmitShellMethod (membDef: DMemberDef) =
-            shellTypeEntityInfo.ContainsKey(membDef.EnclosingEntity)
+        let canEmitShellMethod (membDef: DMemberDef) = shellTypeEntityInfo.ContainsKey(membDef.EnclosingEntity)
 
         let defineGenericParamaterConstraints env (gpBs: Type []) (gps: DGenericParameterDef []) =
             let gpBs = [| for p in gpBs -> p :?> GenericTypeParameterBuilder |]
@@ -1170,8 +1173,7 @@ type EvalContext(assemblyName: AssemblyName, ?dyntypes: bool, ?assemblyResolver:
             let cb = CustomAttributeBuilder(ctor, ctorArgs, props, propVals, flds, fldVals)
             cb
 
-        let buildCustomAttributes range (attrs: DCustomAttributeDef []) f =
-            Array.iter (buildCustomAttribute range >> f) attrs
+        let buildCustomAttributes range (attrs: DCustomAttributeDef []) f = Array.iter (buildCustomAttribute range >> f) attrs
 
         //printfn "defining base type and define the interfaces..."
         /// Set the base type and define the interfaces
@@ -1607,7 +1609,7 @@ type EvalContext(assemblyName: AssemblyName, ?dyntypes: bool, ?assemblyResolver:
         try
             protectEval false range (fun () -> ctxt.EvalExpr(env, expr)) |> Ok
         with
-            | exn -> exn |> Error
+        | exn -> exn |> Error
 
     /// Try to evaluate the declarations, collecting errors and optimisitically continuing
     /// as we go.  Optionally evaluate only the ones marked with the [<LiveCheck>] attribute,
@@ -1859,7 +1861,8 @@ type EvalContext(assemblyName: AssemblyName, ?dyntypes: bool, ?assemblyResolver:
                     | prop ->
                         let var = Var(def.Name, ty)
                         let getter = Expr.PropertyGet(Expr.Var var, prop)
-                        let funcTy = typedefof<System.Func<int, int>>.MakeGenericType (ty, prop.PropertyType)
+                        let funcTy =
+                            typedefof<System.Func<int, int>>.MakeGenericType (ty, prop.PropertyType)
                         let funcExpr = Expr.NewDelegate(funcTy, [ var ], getter)
                         Value funcExpr
                 | _ -> failwithf "Unhandled %+A" quote
@@ -2139,7 +2142,10 @@ type EvalContext(assemblyName: AssemblyName, ?dyntypes: bool, ?assemblyResolver:
                     let fields = getFields objV
                     match fields.Fields.TryGetValue fdef.Name with
                     | true, v -> v |> Value
-                    | _ -> failwithf "field not found: %s" fdef.Name
+                    | _ ->
+                        match objV.GetType().GetProperties() |> Seq.tryFind (fun x -> x.Name = fdef.Name) with
+                        | Some prop -> prop.GetValue(objV) |> Value
+                        | _ -> failwithf "field not found: %s" fdef.Name
             sink.NotifyGetField(recordOrClassType, fdef, m, value)
             value
 
@@ -2309,7 +2315,7 @@ type EvalContext(assemblyName: AssemblyName, ?dyntypes: bool, ?assemblyResolver:
         try
             ctxt.EvalExpr(env, bodyExpr)
         with
-            | e when ctxt.EvalBool(bind sink env filterVar (Value e), filterExpr) -> ctxt.EvalExpr(bind sink env catchVar (Value e), catchExpr)
+        | e when ctxt.EvalBool(bind sink env filterVar (Value e), filterExpr) -> ctxt.EvalExpr(bind sink env catchVar (Value e), catchExpr)
 
     member ctxt.EvalTupleGet(env, tupleElemIndex, tupleExpr) =
         let tupleExprV = ctxt.EvalExpr(env, tupleExpr) |> getVal
