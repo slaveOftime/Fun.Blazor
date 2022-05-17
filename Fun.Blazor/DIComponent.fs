@@ -4,6 +4,7 @@ open System
 open System.Threading.Tasks
 open System.Collections.Generic
 open FSharp.Data.Adaptive
+open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.Logging
 open Microsoft.AspNetCore.Components
 open Internal
@@ -32,6 +33,13 @@ module ServiceProviderExtensions =
         member sp.GetMultipleServices<'Types>() =
             sp.GetMultipleServices(typeof<'Types>, (fun x -> failwith $"Service {x} is not registered"))
             |> unbox<'Types>
+
+
+    type IComponentHook with
+
+        /// This will get service from DI container. The service 'T is registered by AddHookService<'T>().
+        /// With this we can have better unit testing experience. If you do not want to do UT, you can just create extension method directly on IComponentHook
+        member hook.GetHookService<'T>() = hook.ServiceProvider.GetService<IComponentHook -> 'T>() (hook)
 
 
 type DIComponent<'T>() as this =
@@ -65,6 +73,7 @@ type DIComponent<'T>() as this =
             member _.AddDisposes ds = disposes.AddRange(ds)
             member _.StateHasChanged() = this.ForceRerender()
             member _.ServiceProvider = this.Services
+
             member _.ScopedServiceProvider =
                 if isNull this.ScopedServices then
                     failwithf
