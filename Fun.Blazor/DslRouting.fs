@@ -11,23 +11,28 @@ open Internal
 
 type html with
 
-    static member route(routes: Router<NodeRenderFragment> list) =
-        html.inject (fun (hook: IComponentHook, nav: NavigationManager, interception: INavigationInterception) ->
-            let location = cval (Uri nav.Uri).PathAndQuery
+    /// By default we will set key for this component.
+    static member route(routes: Router<NodeRenderFragment> list, ?key: obj) =
+        html.inject (
+            defaultArg key "fun-blazor-routers",
+            fun (hook: IComponentHook, nav: NavigationManager, interception: INavigationInterception) ->
+                let location = cval (Uri nav.Uri).PathAndQuery
 
-            hook.OnFirstAfterRender.Add(fun () ->
-                interception.EnableNavigationInterceptionAsync() |> ignore
-                nav.LocationChanged.Subscribe(fun e ->
-                    try
-                        location.Publish (Uri e.Location).PathAndQuery
-                    with
-                    | _ -> ()
+                hook.OnFirstAfterRender.Add(fun () ->
+                    interception.EnableNavigationInterceptionAsync() |> ignore
+                    nav.LocationChanged.Subscribe(fun e ->
+                        try
+                            location.Publish (Uri e.Location).PathAndQuery
+                        with
+                        | _ -> ()
+                    )
+                    |> hook.AddDispose
                 )
-                |> hook.AddDispose
-            )
 
-            adaptiview () {
-                let! location = location
-                choose routes location |> Option.defaultWith emptyNode
-            }
+                adaptiview () {
+                    let! location = location
+                    choose routes location |> Option.defaultWith emptyNode
+                }
         )
+
+    static member route(key: obj, routes: Router<NodeRenderFragment> list) = html.route (routes, key = key)
