@@ -80,7 +80,35 @@ type FunBlazorComponent() as this =
 
     member _.ForceRerender() = this.InvokeAsync(fun () -> this.StateHasChanged()) |> ignore
 
+    /// This is used to override the default implementation in base class to avoid trigger StateHasChanged.
+    /// Because in Fun.Blazor everytime should be static by default and UI should be rerender if data is changed. 
+    /// But if you want to create a component for using in csharp project, then you may want to turn this off to avoid maually trigger StateHasChanged.
+    /// Because csharp prefer to rerender the whole component when event hanppened, but in Fun.Blazor that will cost redundant calculation. 
+    member val DisableEventTriggerStateHasChanged = true with get, set
+
+
     abstract Render: unit -> NodeRenderFragment
+
+
+    interface IHandleEvent with
+        /// We should be careful with this, because aspnetcore team may change the HandleEventAsync. So we should sync with their implementation.
+        /// https://github.com/dotnet/aspnetcore/blob/8b30d862de6c9146f466061d51aa3f1414ee2337/src/Components/Components/src/ComponentBase.cs#L301
+        member _.HandleEventAsync(callback, arg) =
+            let taskResult = callback.InvokeAsync(arg)
+            let shouldAwaitTask =
+                taskResult.Status <> TaskStatus.RanToCompletion && taskResult.Status <> TaskStatus.Canceled
+
+            if not this.DisableEventTriggerStateHasChanged then this.StateHasChanged()
+
+            if shouldAwaitTask then
+                task {
+                    try
+                        do! taskResult
+                    with
+                    | e when not taskResult.IsCanceled -> raise e
+                }
+            else
+                Task.CompletedTask
 
 
 type FunFragmentComponent() as this =
