@@ -20,6 +20,7 @@
 		<Compile Include="Demos\CssRuleDemo.fs" />
 		<Compile Include="Demos\SimpleInjectionDemo.fs" />
 		<Compile Include="Demos\ScopedServiceDemo.fs" />
+		<Compile Include="Demos\BasicHookDemo.fs" />
 		<Compile Include="Demos\ElmishDemo.fs" />
 		<Compile Include="Demos\AdaptiveElmish.fs" />
 		<Compile Include="DemoMaps.fs" />
