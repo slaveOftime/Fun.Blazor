@@ -35,7 +35,7 @@ let docView (doc: DocBrief) =
                 hook.AddDisposes [
                     docSegmentLoadedCount.AddInstantCallback(
                         function
-                        | x when x = docSegmentsCount && not isCodeHighlighted ->
+                        | x when x >= docSegmentsCount && not isCodeHighlighted ->
                             task {
                                 do! Task.Delay 100
                                 do! js.highlightCode ()
