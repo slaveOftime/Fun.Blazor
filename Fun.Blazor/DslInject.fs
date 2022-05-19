@@ -66,6 +66,15 @@ type html with
         }
 
 
+    /// This will create a component.
+    /// It is same as html.inject, but with different name which may make more sense from different point of view. 
+    static member comp(render: 'Services -> NodeRenderFragment) = html.inject (render)
+
+    /// This will create a component.
+    /// It is same as html.inject, but with different name which may make more sense from different point of view. 
+    static member comp(key, render: 'Services -> NodeRenderFragment) = html.inject (key, render)
+
+
     /// This will get a IServiceScopeFactory from container and create a new scope and add it to CascadingValue.
     /// So all its child content can get service from this new scope by using hook.ScopedServiceProvider.
     /// The new scope will be disposed when this component is disposed.
