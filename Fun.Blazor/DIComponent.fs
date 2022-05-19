@@ -45,46 +45,101 @@ module ServiceProviderExtensions =
 type DIComponent<'T>() as this =
     inherit FunBlazorComponent()
 
-    let mutable node = None
+    let mutable node = ValueNone
     let mutable shouldRerender = true
 
-    let parameterSetTasks = List<unit -> Task>()
-    let initializedTasks = List<unit -> Task>()
-    let initializedEvent = new Event<unit>()
-    let afterRenderEvent = new Event<bool>()
-    let afterRenderTasks = List<bool -> Task>()
-    let firstAfterRenderTasks = List<unit -> Task>()
-    let firstAfterRenderEvent = new Event<unit>()
-    let disposeEvent = new Event<unit>()
-    let disposes = new List<IDisposable>()
+
+    let mutable initializedEvent: Event<unit> voption = ValueNone
+    let mutable afterRenderEvent: Event<bool> voption = ValueNone
+    let mutable firstAfterRenderEvent: Event<unit> voption = ValueNone
+    let mutable disposeEvent: Event<unit> voption = ValueNone
+
+    let mutable parameterSetTasks: List<unit -> Task> = null
+    let mutable initializedTasks: List<unit -> Task> = null
+    let mutable afterRenderTasks: List<bool -> Task> = null
+    let mutable firstAfterRenderTasks: List<unit -> Task> = null
+    let mutable disposes: List<IDisposable> = null
+
+    let mutable hook: IComponentHook voption = ValueNone
 
 
-    let blazorLifecycle =
-        { new IComponentHook with
-            member _.OnAfterRender = afterRenderEvent.Publish
-            member _.OnInitialized = initializedEvent.Publish
-            member _.OnFirstAfterRender = firstAfterRenderEvent.Publish
-            member _.OnDispose = disposeEvent.Publish
-            member _.AddInitializedTask makeTask = initializedTasks.Add makeTask
-            member _.AddAfterRenderTask makeTask = afterRenderTasks.Add makeTask
-            member _.AddFirstAfterRenderTask makeTask = firstAfterRenderTasks.Add makeTask
-            member _.AddParameterSetTask makeTask = parameterSetTasks.Add makeTask
-            member _.AddDispose dispose = disposes.Add dispose
-            member _.AddDisposes ds = disposes.AddRange(ds)
-            member _.StateHasChanged() = this.ForceRerender()
-            member _.ServiceProvider = this.Services
+    member _.InitializedEvent
+        with private get () =
+            if initializedEvent.IsNone then initializedEvent <- ValueSome(Event<_>())
+            initializedEvent.Value
 
-            member _.ScopedServiceProvider =
-                if isNull this.ScopedServices then
-                    failwithf
-                        "You should use html.scoped to wrap your components. Or create a CascadeValue component to provide a IServiceProvider with name '%s'"
-                        Internal.FunBlazorScopedServicesName
-                this.ScopedServices
-        }
+    member _.AfterRenderEvent
+        with private get () =
+            if afterRenderEvent.IsNone then afterRenderEvent <- ValueSome(Event<_>())
+            afterRenderEvent.Value
+
+    member _.FirstAfterRenderEvent
+        with private get () =
+            if firstAfterRenderEvent.IsNone then
+                firstAfterRenderEvent <- ValueSome(Event<_>())
+            firstAfterRenderEvent.Value
+
+    member _.DisposeEvent
+        with private get () =
+            if disposeEvent.IsNone then disposeEvent <- ValueSome(Event<_>())
+            disposeEvent.Value
+
+    member _.ParameterSetTasks
+        with private get () =
+            if parameterSetTasks = null then parameterSetTasks <- new List<_>()
+            parameterSetTasks
+
+    member _.InitializedTasks
+        with private get () =
+            if initializedTasks = null then initializedTasks <- new List<_>()
+            initializedTasks
+
+    member _.AfterRenderTasks
+        with private get () =
+            if afterRenderTasks = null then afterRenderTasks <- new List<_>()
+            afterRenderTasks
+
+    member _.FirstAfterRenderTasks
+        with private get () =
+            if firstAfterRenderTasks = null then firstAfterRenderTasks <- new List<_>()
+            firstAfterRenderTasks
+
+    member _.Disposes
+        with private get () =
+            if disposes = null then disposes <- new List<_>()
+            disposes
 
 
-    let handleNotFoundType ty = if ty = typeof<IComponentHook> then box blazorLifecycle else null
+    member private _.HandleNotFoundType ty =
+        if ty = typeof<IComponentHook> then
+            if hook.IsNone then
+                hook <-
+                    ValueSome
+                        { new IComponentHook with
+                            member _.OnAfterRender = this.AfterRenderEvent.Publish
+                            member _.OnInitialized = this.InitializedEvent.Publish
+                            member _.OnFirstAfterRender = this.FirstAfterRenderEvent.Publish
+                            member _.OnDispose = this.DisposeEvent.Publish
+                            member _.AddInitializedTask makeTask = this.InitializedTasks.Add makeTask
+                            member _.AddAfterRenderTask makeTask = this.AfterRenderTasks.Add makeTask
+                            member _.AddFirstAfterRenderTask makeTask = this.FirstAfterRenderTasks.Add makeTask
+                            member _.AddParameterSetTask makeTask = this.ParameterSetTasks.Add makeTask
+                            member _.AddDispose dispose = this.Disposes.Add dispose
+                            member _.AddDisposes ds = this.Disposes.AddRange(ds)
+                            member _.StateHasChanged() = this.ForceRerender()
+                            member _.SetDisableEventTriggerStateHasChanged(x) = this.DisableEventTriggerStateHasChanged <- x
+                            member _.ServiceProvider = this.Services
 
+                            member _.ScopedServiceProvider =
+                                if isNull this.ScopedServices then
+                                    failwithf
+                                        "You should use html.scoped to wrap your components. Or create a CascadeValue component to provide a IServiceProvider with name '%s'"
+                                        Internal.FunBlazorScopedServicesName
+                                this.ScopedServices
+                        }
+            box hook.Value
+        else
+            null
 
     [<Parameter>]
     member val RenderFn: 'T -> NodeRenderFragment = fun _ -> emptyNode () with get, set
@@ -107,24 +162,25 @@ type DIComponent<'T>() as this =
     override _.Render() =
         this.Logger.LogDebugForPerf(fun () ->
             match node with
-            | None -> emptyNode ()
-            | Some node -> node
+            | ValueNone -> emptyNode ()
+            | ValueSome node -> node
         )
 
 
     override _.OnInitialized() =
         let depsType, _ = Reflection.FSharpType.GetFunctionElements(this.RenderFn.GetType())
         let services =
-            this.Services.GetMultipleServices(depsType, handleNotFoundType) :?> 'T
+            this.Services.GetMultipleServices(depsType, this.HandleNotFoundType) :?> 'T
         let newNode = this.RenderFn services
-        node <- newNode |> Some
+        node <- newNode |> ValueSome
 
-        initializedEvent.Trigger()
+        if initializedEvent.IsSome then initializedEvent.Value.Trigger()
 
     override _.OnInitializedAsync() =
         task {
-            for makeTask in initializedTasks do
-                do! makeTask ()
+            if initializedTasks <> null then
+                for makeTask in initializedTasks do
+                    do! makeTask ()
         }
 
 
@@ -135,8 +191,9 @@ type DIComponent<'T>() as this =
 
     override _.OnParametersSetAsync() =
         task {
-            for makeTask in parameterSetTasks do
-                do! makeTask ()
+            if parameterSetTasks <> null then
+                for makeTask in parameterSetTasks do
+                    do! makeTask ()
         }
 
 
@@ -147,14 +204,16 @@ type DIComponent<'T>() as this =
 
 
     override _.OnAfterRender firstRender =
-        afterRenderEvent.Trigger firstRender
-        if firstRender then firstAfterRenderEvent.Trigger()
+        if afterRenderEvent.IsSome then afterRenderEvent.Value.Trigger firstRender
+        if firstAfterRenderEvent.IsSome && firstRender then
+            firstAfterRenderEvent.Value.Trigger()
 
     override _.OnAfterRenderAsync firstRender =
         task {
-            for makeTask in afterRenderTasks do
-                do! makeTask firstRender
-            if firstRender then
+            if afterRenderTasks <> null then
+                for makeTask in afterRenderTasks do
+                    do! makeTask firstRender
+            if firstRender && firstAfterRenderTasks <> null then
                 for makeTask in firstAfterRenderTasks do
                     do! makeTask ()
         }
@@ -162,5 +221,5 @@ type DIComponent<'T>() as this =
 
     interface IDisposable with
         member _.Dispose() =
-            disposeEvent.Trigger()
-            disposes |> Seq.iter (fun x -> x.Dispose())
+            if disposeEvent.IsSome then disposeEvent.Value.Trigger()
+            if disposes <> null then disposes |> Seq.iter (fun x -> x.Dispose())

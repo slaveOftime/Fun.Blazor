@@ -81,9 +81,9 @@ type FunBlazorComponent() as this =
     member _.ForceRerender() = this.InvokeAsync(fun () -> this.StateHasChanged()) |> ignore
 
     /// This is used to override the default implementation in base class to avoid trigger StateHasChanged.
-    /// Because in Fun.Blazor everytime should be static by default and UI should be rerender if data is changed. 
+    /// Because in Fun.Blazor everytime should be static by default and UI should be rerender if data is changed.
     /// But if you want to create a component for using in csharp project, then you may want to turn this off to avoid maually trigger StateHasChanged.
-    /// Because csharp prefer to rerender the whole component when event hanppened, but in Fun.Blazor that will cost redundant calculation. 
+    /// Because csharp prefer to rerender the whole component when event hanppened, but in Fun.Blazor that will cost redundant calculation.
     member val DisableEventTriggerStateHasChanged = true with get, set
 
 
@@ -176,6 +176,9 @@ type IComponentHook =
     /// Notify the component that its state has changed. When applicable, this will cause the component to be re-rendered.
     /// </summary>
     abstract StateHasChanged: unit -> unit
+
+    /// With this we can toggle the behavior to the default blazor component behavior when it makes sense to you.
+    abstract SetDisableEventTriggerStateHasChanged: bool -> unit
 
     /// With this we can create extension of the hook and access all resources
     /// which means we can the extension that can be standalone and be reused more easizer
