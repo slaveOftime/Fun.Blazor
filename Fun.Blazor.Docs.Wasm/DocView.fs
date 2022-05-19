@@ -17,17 +17,32 @@ let docView (doc: DocBrief) =
         fun (hook: IComponentHook, js: IJSRuntime) ->
             let langStr = "en"
             let segments = doc.LangSegments |> Map.tryFind langStr |> Option.defaultValue []
+
+            let docSegmentsCount =
+                segments
+                |> Seq.filter (
+                    function
+                    | Segment.Html _ -> true
+                    | _ -> false
+                )
+                |> Seq.length
+
             let docSegmentLoadedCount = cval 0
 
 
             hook.OnFirstAfterRender.Add(fun () ->
+                let mutable isCodeHighlighted = false
                 hook.AddDisposes [
-                    docSegmentLoadedCount.AddInstantCallback(fun _ ->
-                        task {
-                            do! Task.Delay 100
-                            do! js.highlightCode ()
-                        }
-                        |> ignore
+                    docSegmentLoadedCount.AddInstantCallback(
+                        function
+                        | x when x = docSegmentsCount && not isCodeHighlighted ->
+                            task {
+                                do! Task.Delay 100
+                                do! js.highlightCode ()
+                                isCodeHighlighted <- true
+                            }
+                            |> ignore
+                        | _ -> ()
                     )
                 ]
             )
