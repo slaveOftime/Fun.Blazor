@@ -58,7 +58,7 @@ module internal DocsHelper =
 
 
     let markdownToHtml baseUrl (markdown: string) =
-        let pipeline = MarkdownPipelineBuilder().Build()
+        let pipeline = MarkdownPipelineBuilder().UseAdvancedExtensions().Build()
         use writer = new StringWriter()
         let renderer = new HtmlRenderer(writer)
 

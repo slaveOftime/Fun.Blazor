@@ -18,12 +18,12 @@ Below is a very simple counter which is using adaptive model.
 
 ## Benchmarks
 
-|               Method |       Mean |    Error |   StdDev |  Gen 0 | Allocated |
-|--------------------- |-----------:|---------:|---------:|-------:|----------:|
-|    Build_RazorCSharp |   400.3 ns |  6.99 ns |  6.20 ns | 0.0610 |     384 B |
-|         Build_Bolero |   926.1 ns | 17.49 ns | 17.96 ns | 0.2546 |   1,600 B |
-|       Build_FunCssCE |   731.1 ns | 14.07 ns | 21.49 ns | 0.1173 |     736 B |
-| Build_FunCssTemplate | 2,569.9 ns | 42.22 ns | 39.50 ns | 0.6752 |   4,240 B |
+|               Method        |       Mean |    Error |   StdDev |  Gen 0 | Allocated |
+|---------------------------- |-----------:|---------:|---------:|-------:|----------:|
+|       RenderWithRazorCSharp |   400.3 ns |  6.99 ns |  6.20 ns | 0.0610 |     384 B |
+|            RenderWithBolero |   926.1 ns | 17.49 ns | 17.96 ns | 0.2546 |   1,600 B |
+|       RenderWithFunBlazorCE |   731.1 ns | 14.07 ns | 21.49 ns | 0.1173 |     736 B |
+| RenderWithFunBlazorTemplate | 2,569.9 ns | 42.22 ns | 39.50 ns | 0.6752 |   4,240 B |
 
 
 ## How is this work

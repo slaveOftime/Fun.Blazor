@@ -8,13 +8,13 @@ open CSharpComponents
 type Benchmarks() =
 
     [<Benchmark>]
-    member _.Build_RazorCSharp() = CSharpComponent().Build()
+    member _.RenderWithRazorCSharp() = CSharpComponent().Build()
 
     [<Benchmark>]
-    member _.Build_Bolero() = BoleroComponent().Build()
+    member _.RenderWithBolero() = BoleroComponent().Build()
 
     [<Benchmark>]
-    member _.Build_FunCssCE() = CEComponent().Build()
+    member _.RenderWithFunBlazorCE() = CEComponent().Build()
 
     [<Benchmark>]
-    member _.Build_FunCssTemplate() = TemplateComponent().Build()
+    member _.RenderWithFunBlazorTemplate() = TemplateComponent().Build()
