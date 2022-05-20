@@ -21,6 +21,9 @@ type AdaptiveComponent() as this =
     [<Parameter>]
     member val IsStatic = false with get, set
 
+    [<Parameter>]
+    member val DisableEventTriggerStateHasChangedParam = true with get, set
+
     [<Inject>]
     member val Logger = Unchecked.defaultof<ILogger<AdaptiveComponent>> with get, set
 
@@ -29,6 +32,8 @@ type AdaptiveComponent() as this =
 
 
     override _.OnParametersSet() =
+        this.DisableEventTriggerStateHasChanged <- this.DisableEventTriggerStateHasChangedParam
+
         if this.IsStatic && fragmentSubscription.IsSome then
             // Avoid rerender for static mode
             shouldRerender <- false

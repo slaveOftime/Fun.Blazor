@@ -63,69 +63,53 @@ type DIComponent<'T>() as this =
     let mutable hook: IComponentHook voption = ValueNone
 
 
-    member _.InitializedEvent
-        with private get () =
-            if initializedEvent.IsNone then initializedEvent <- ValueSome(Event<_>())
-            initializedEvent.Value
-
-    member _.AfterRenderEvent
-        with private get () =
-            if afterRenderEvent.IsNone then afterRenderEvent <- ValueSome(Event<_>())
-            afterRenderEvent.Value
-
-    member _.FirstAfterRenderEvent
-        with private get () =
-            if firstAfterRenderEvent.IsNone then
-                firstAfterRenderEvent <- ValueSome(Event<_>())
-            firstAfterRenderEvent.Value
-
-    member _.DisposeEvent
-        with private get () =
-            if disposeEvent.IsNone then disposeEvent <- ValueSome(Event<_>())
-            disposeEvent.Value
-
-    member _.ParameterSetTasks
-        with private get () =
-            if parameterSetTasks = null then parameterSetTasks <- new List<_>()
-            parameterSetTasks
-
-    member _.InitializedTasks
-        with private get () =
-            if initializedTasks = null then initializedTasks <- new List<_>()
-            initializedTasks
-
-    member _.AfterRenderTasks
-        with private get () =
-            if afterRenderTasks = null then afterRenderTasks <- new List<_>()
-            afterRenderTasks
-
-    member _.FirstAfterRenderTasks
-        with private get () =
-            if firstAfterRenderTasks = null then firstAfterRenderTasks <- new List<_>()
-            firstAfterRenderTasks
-
-    member _.Disposes
-        with private get () =
-            if disposes = null then disposes <- new List<_>()
-            disposes
-
-
     member private _.HandleNotFoundType ty =
         if ty = typeof<IComponentHook> then
             if hook.IsNone then
                 hook <-
                     ValueSome
                         { new IComponentHook with
-                            member _.OnAfterRender = this.AfterRenderEvent.Publish
-                            member _.OnInitialized = this.InitializedEvent.Publish
-                            member _.OnFirstAfterRender = this.FirstAfterRenderEvent.Publish
-                            member _.OnDispose = this.DisposeEvent.Publish
-                            member _.AddInitializedTask makeTask = this.InitializedTasks.Add makeTask
-                            member _.AddAfterRenderTask makeTask = this.AfterRenderTasks.Add makeTask
-                            member _.AddFirstAfterRenderTask makeTask = this.FirstAfterRenderTasks.Add makeTask
-                            member _.AddParameterSetTask makeTask = this.ParameterSetTasks.Add makeTask
-                            member _.AddDispose dispose = this.Disposes.Add dispose
-                            member _.AddDisposes ds = this.Disposes.AddRange(ds)
+                            member _.OnAfterRender =
+                                if afterRenderEvent.IsNone then afterRenderEvent <- ValueSome(Event<_>())
+                                afterRenderEvent.Value.Publish
+
+                            member _.OnInitialized =
+                                if initializedEvent.IsNone then initializedEvent <- ValueSome(Event<_>())
+                                initializedEvent.Value.Publish
+
+                            member _.OnFirstAfterRender =
+                                if firstAfterRenderEvent.IsNone then
+                                    firstAfterRenderEvent <- ValueSome(Event<_>())
+                                firstAfterRenderEvent.Value.Publish
+
+                            member _.OnDispose =
+                                if disposeEvent.IsNone then disposeEvent <- ValueSome(Event<_>())
+                                disposeEvent.Value.Publish
+
+                            member _.AddInitializedTask makeTask =
+                                if initializedTasks = null then initializedTasks <- new List<_>()
+                                initializedTasks.Add makeTask
+
+                            member _.AddAfterRenderTask makeTask =
+                                if afterRenderTasks = null then afterRenderTasks <- new List<_>()
+                                afterRenderTasks.Add makeTask
+
+                            member _.AddFirstAfterRenderTask makeTask =
+                                if firstAfterRenderTasks = null then firstAfterRenderTasks <- new List<_>()
+                                firstAfterRenderTasks.Add makeTask
+
+                            member _.AddParameterSetTask makeTask =
+                                if parameterSetTasks = null then parameterSetTasks <- new List<_>()
+                                parameterSetTasks.Add makeTask
+
+                            member _.AddDispose dispose =
+                                if disposes = null then disposes <- new List<_>()
+                                disposes.Add dispose
+
+                            member _.AddDisposes ds =
+                                if disposes = null then disposes <- new List<_>()
+                                disposes.AddRange(ds)
+
                             member _.StateHasChanged() = this.ForceRerender()
                             member _.SetDisableEventTriggerStateHasChanged(x) = this.DisableEventTriggerStateHasChanged <- x
                             member _.ServiceProvider = this.Services
@@ -140,6 +124,7 @@ type DIComponent<'T>() as this =
             box hook.Value
         else
             null
+
 
     [<Parameter>]
     member val RenderFn: 'T -> NodeRenderFragment = fun _ -> emptyNode () with get, set

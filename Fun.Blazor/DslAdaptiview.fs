@@ -11,7 +11,7 @@ open Operators
 open Internal
 
 
-type AdaptiviewBuilder(?key: obj, ?isStatic: bool) =
+type AdaptiviewBuilder(?key: obj, ?isStatic: bool, ?disableEventTriggerStateHasChanged) =
     inherit AValBuilder()
 
     member _.Key = key
@@ -20,6 +20,7 @@ type AdaptiviewBuilder(?key: obj, ?isStatic: bool) =
     member this.Run(x: aval<NodeRenderFragment>) =
         ComponentWithChildBuilder<AdaptiveComponent>() {
             "Fragment" => x
+            "DisableEventTriggerStateHasChangedParam" => defaultArg disableEventTriggerStateHasChanged true
             match this.IsStatic with
             | Some true -> "IsStatic" => true
             | _ -> emptyAttr ()
