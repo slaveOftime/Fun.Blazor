@@ -537,6 +537,12 @@ module Elts =
     let styleBuilder = StyleBuilder()
     let cssBuilder = Fun.Css.CssBuilder()
     let ruleset ruleName = RulesetBuilder ruleName
+    
+    let inline keyframes identifier = KeyFramesBuilder identifier
+    let inline keyframe (x: int) = KeyFrameBuilder(sprintf "%d%%" x)
+    let keyframeFrom = KeyFrameBuilder "from"
+    let keyframeTo = KeyFrameBuilder "to"
+
 
     /// Build a style string
     let styleStr = StyleStrBuilder()

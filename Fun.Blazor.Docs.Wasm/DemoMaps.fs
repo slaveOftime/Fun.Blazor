@@ -19,6 +19,7 @@ let demos =
         "GlobalStoreDemo", { View = GlobalStoreDemo.entry; Source = "Demos/GlobalStoreDemo.html" }
         "HtmlTemplateDemo", { View = HtmlTemplateDemo.entry; Source = "Demos/HtmlTemplateDemo.html" }
         "InlineStyleDemo", { View = InlineStyleDemo.entry; Source = "Demos/InlineStyleDemo.html" }
+        "KeyFramesDemo", { View = KeyFramesDemo.entry; Source = "Demos/KeyFramesDemo.html" }
         "ScopedServiceDemo", { View = ScopedServiceDemo.entry; Source = "Demos/ScopedServiceDemo.html" }
         "SimpleInjectionDemo", { View = SimpleInjectionDemo.entry; Source = "Demos/SimpleInjectionDemo.html" }
     ]

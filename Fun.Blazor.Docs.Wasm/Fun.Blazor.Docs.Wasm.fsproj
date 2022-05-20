@@ -19,6 +19,7 @@
 		<Compile Include="Demos\GlobalStoreDemo.fs" />
 		<Compile Include="Demos\InlineStyleDemo.fs" />
 		<Compile Include="Demos\CssRuleDemo.fs" />
+		<Compile Include="Demos\KeyFramesDemo.fs" />
 		<Compile Include="Demos\SimpleInjectionDemo.fs" />
 		<Compile Include="Demos\ScopedServiceDemo.fs" />
 		<Compile Include="Demos\BasicHookDemo.fs" />

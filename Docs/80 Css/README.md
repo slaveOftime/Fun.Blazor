@@ -9,3 +9,8 @@ Because it is using computation expression, so you can extend its custom operati
 Also, you can build css rules with it:
 
 {{CssRuleDemo}}
+
+
+You can also build simple keyframes
+
+{{KeyFramesDemo}}
