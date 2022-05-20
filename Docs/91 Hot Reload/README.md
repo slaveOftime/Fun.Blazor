@@ -10,6 +10,8 @@ You can install template to create project with setted up hot-reload
 dotnet new --install Fun.Blazor.Templates::2.0.0
 ```
 
+![image](../assets/site-hot-reload.gif)
+
 The basic steps:
 
 1. Define entry point

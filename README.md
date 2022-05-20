@@ -1,16 +1,8 @@
 # Fun.Blazor [![Nuget](https://img.shields.io/nuget/vpre/Fun.Blazor)](https://www.nuget.org/packages/Fun.Blazor)
 
-## What
+![image](./Docs//assets/fun-blazor%3D.png)
 
 This is a project to make F# developer to write blazor easier.
-
-It is based on [bolero](https://github.com/fsbolero/Bolero) and  [Feliz.Engine](https://github.com/alfonsogarciacaro/Feliz.Engine) before. 
-Now **(in V2)** the dependency of bolero is removed to make it lighter. **Feliz style is deprecated** because it will cause more allocation and render loop than CE style in my previous implementation.
-
-[Wasm side docs (may take a while to load)](https://slaveoftime.github.io/Fun.Blazor.Docs/)
-
-
-## What you can get with this project?
 
 1. Use F# ❤️😊 for blazor
 2. Template, computation expression style DSL for internal and third party blazor libraries
@@ -21,12 +13,12 @@ Now **(in V2)** the dependency of bolero is removed to make it lighter. **Feliz 
 
 ## Benchmark
 
-|                      Method |       Mean |    Error |   StdDev |  Gen 0 | Allocated |
-|---------------------------- |-----------:|---------:|---------:|-------:|----------:|
-|   BuildRenderTreeWithCSharp |   383.3 ns |  7.47 ns | 14.03 ns | 0.0916 |     384 B |
-|   BuildRenderTreeWithBolero |   908.4 ns | 11.39 ns | 17.74 ns | 0.3824 |   1,600 B |
-|       BuildRenderTreeWithCE |   708.3 ns |  9.00 ns |  7.51 ns | 0.1755 |     736 B |
-| BuildRenderTreeWithTemplate | 2,638.0 ns | 49.19 ns | 43.61 ns | 1.0109 |   4,240 B |
+|               Method |       Mean |    Error |   StdDev |  Gen 0 | Allocated |
+|--------------------- |-----------:|---------:|---------:|-------:|----------:|
+|    Build_RazorCSharp |   400.3 ns |  6.99 ns |  6.20 ns | 0.0610 |     384 B |
+|         Build_Bolero |   926.1 ns | 17.49 ns | 17.96 ns | 0.2546 |   1,600 B |
+|       Build_FunCssCE |   731.1 ns | 14.07 ns | 21.49 ns | 0.1173 |     736 B |
+| Build_FunCssTemplate | 2,569.9 ns | 42.22 ns | 39.50 ns | 0.6752 |   4,240 B |
 
 
 ## Main projects
