@@ -4,17 +4,12 @@
 
 This is a project to make F# developer to write blazor easier.
 
-1. Use F# ❤️😊 for blazor
-2. Template, computation expression style DSL for internal and third party blazor libraries
+1. Use F# ❤️ for blazor
+2. Computation expression (CE) style DSL for internal and third party blazor libraries
 3. Dependency injection (html.inject/html.comp)
 4. [Adaptive](https://github.com/fsprojects/FSharp.Data.Adaptive) model (adaptiview/AdaptivieForm) (**recommend**), [elmish](https://github.com/elmish/elmish) model (html.elmish)
 5. Giraffe style routing (html.route)
 6. Type safe style (Fun.Css)
-
-Below is a very simple counter which is using adaptive model.
-
-{{Counter}}
-
 
 ## Benchmarks
 
@@ -26,7 +21,14 @@ Below is a very simple counter which is using adaptive model.
 | RenderWithFunBlazorTemplate | 2,569.9 ns | 42.22 ns | 39.50 ns | 0.6752 |   4,240 B |
 
 
-## How is this work
+## Simple demo
+
+Below is a very simple counter which is using adaptive model.
+
+{{Counter}}
+
+
+## How does this work?
 
 Fun.Blazor's concept is very simple, provide a bunch of delegates to let **blazor** to handle.
 
@@ -97,8 +99,7 @@ There are some pitfalls which you may keep in mind:
 
     ```fsharp
     div {
-        onclick (fun _ -> ())
-        some other attibutes
+        attributes ...
         ref (fun x -> ()) // ✅
         childContent [ ... ]
     }
@@ -108,8 +109,7 @@ There are some pitfalls which you may keep in mind:
 
     ```fsharp
     div {
-        some other attibutes
-        onclick (fun _ -> ())
+        attributes ...
         ref (fun x -> ()) // ✅
         div { 1 }
         div { 1 }
