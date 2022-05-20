@@ -5,11 +5,13 @@
 This is a project to make F# developer to write blazor easier.
 
 1. Use F# ❤️😊 for blazor
-2. Template, computation expression style DSL for internal and third party blazor libraries
+2. Computation expression (CE) style DSL for internal and third party blazor libraries
 3. Dependency injection (html.inject/html.comp)
 4. [Adaptive](https://github.com/fsprojects/FSharp.Data.Adaptive) model (adaptiview/AdaptivieForm) (**recommend**), [elmish](https://github.com/elmish/elmish) model (html.elmish)
 5. Giraffe style routing (html.route)
 6. Type safe style (Fun.Css)
+
+Check the [WASM Docs](https://slaveoftime.github.io/Fun.Blazor.Docs/) for more 🚀
 
 ## Benchmark
 
