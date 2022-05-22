@@ -12,6 +12,7 @@ let demos =
         "AdaptiviewDemo", { View = AdaptiviewDemo.entry; Source = "Demos/AdaptiviewDemo.html" }
         "AdaptiviewMathDemo", { View = AdaptiviewMathDemo.entry; Source = "Demos/AdaptiviewMathDemo.html" }
         "BasicHookDemo", { View = BasicHookDemo.entry; Source = "Demos/BasicHookDemo.html" }
+        "BlazorStyleComp", { View = BlazorStyleComp.entry; Source = "Demos/BlazorStyleComp.html" }
         "Counter", { View = Counter.entry; Source = "Demos/Counter.html" }
         "CssRuleDemo", { View = CssRuleDemo.entry; Source = "Demos/CssRuleDemo.html" }
         "ElmishDemo", { View = ElmishDemo.entry; Source = "Demos/ElmishDemo.html" }

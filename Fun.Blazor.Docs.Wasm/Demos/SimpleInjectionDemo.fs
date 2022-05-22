@@ -17,15 +17,15 @@ let entry =
     html.inject (
         "externalDemo1",
         fun (hook: IComponentHook) ->
-            // Below code will only be executed once
-            // No matter how extenalX is changed, it will not trigger rerender
-
-            let store1 = hook.UseStore 10
+            let mutable count = 0
 
             hook.OnFirstAfterRender.Add(fun () ->
                 TimeSpan.FromSeconds 1.
                 |> Observable.interval
-                |> Observable.subscribe (fun _ -> store1.Publish((+) 1))
+                |> Observable.subscribe (fun _ -> 
+                    count <- count + 1
+                    hook.StateHasChanged()
+                )
                 |> hook.AddDispose
             )
 
@@ -36,7 +36,7 @@ let entry =
                     spaceV3
                     div { "extenalX = %d{extenalX}" }
                     spaceV2
-                    html.watch (store1, (fun s1 -> div.create $"Store: {s1}"))
+                    div.create $"Count = {count}"
                 ]
             }
     )

@@ -12,11 +12,11 @@ https://github.com/slaveOftime/Fun.Blazor/tree/master/Fun.Blazor.Docs.Wasm
 
 ## We also have dotnet templates:
 
+[![Nuget](https://img.shields.io/nuget/vpre/Fun.Blazor.Templates)](https://www.nuget.org/packages/Fun.Blazor.Templates)
+
 ```shell
 dotnet new --install Fun.Blazor.Templates::2.0.0
 ```
-
-    Below version may not be updated, please check here [![Nuget](https://img.shields.io/nuget/vpre/Fun.Blazor.Templates)](https://www.nuget.org/packages/Fun.Blazor.Templates)
 
 With this template, you can create server / wasm blazor with [MudBlazor](https://mudblazor.com/) or [shoelacejs](https://shoelace.style/) supported.
 

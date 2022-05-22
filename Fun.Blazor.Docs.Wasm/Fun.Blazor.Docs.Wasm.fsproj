@@ -25,6 +25,7 @@
 		<Compile Include="Demos\BasicHookDemo.fs" />
 		<Compile Include="Demos\ElmishDemo.fs" />
 		<Compile Include="Demos\AdaptiveElmish.fs" />
+		<Compile Include="Demos\BlazorStyleComp.fs" />
 		<Compile Include="DemoMaps.fs" />
 		<Compile Include="DemoView.fs" />
 		<Compile Include="DocView.fs" />

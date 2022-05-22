@@ -18,11 +18,11 @@ let entry =
             }
         )
 
-        adaptiview () {
-            let! msg = msg
-            MudAlert'() {
-                Severity Severity.Info
-                msg
+        MudAlert'() {
+            Severity Severity.Info
+            adaptiview () {
+                let! msg = msg
+                html.text msg
             }
         }
     )

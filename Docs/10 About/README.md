@@ -27,6 +27,10 @@ Below is a very simple counter which is using adaptive model.
 
 {{Counter}}
 
+Another demo by by using html.comp.
+
+{{BlazorStyleComp}}
+
 
 ## How does this work?
 
