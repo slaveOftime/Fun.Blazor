@@ -15,18 +15,29 @@ let demoView (demo: Demo) =
     html.inject (
         demo,
         fun (hook: IComponentHook, js: IJSRuntime) ->
+            let codeHtml = hook.GetOrLoadDemoCodeHtml demo.Source
             let showCode = cval false
-            let codeLoadedCount = cval 0
+
+            let shouldHightLight = 
+                adaptive {
+                    let! codeHtml = codeHtml
+                    let! showCode = showCode
+                    return codeHtml.Value.IsSome && showCode
+                }
 
 
             hook.OnFirstAfterRender.Add(fun () ->
                 hook.AddDisposes [
-                    codeLoadedCount.AddInstantCallback(fun _ ->
-                        task {
-                            do! Task.Delay 100
-                            do! js.highlightCode ()
-                        }
-                        |> ignore
+                    shouldHightLight.AddInstantCallback(
+                        function
+                        | true ->
+                            task {
+                                do! Task.Delay 100
+                                do! js.highlightCode ()
+                            }
+                            |> ignore
+                        | _ ->
+                            ()
                     )
                 ]
             )
@@ -56,12 +67,11 @@ let demoView (demo: Demo) =
                     match! showCode with
                     | false -> ()
                     | true ->
-                        match! hook.GetOrLoadDemoCodeHtml demo.Source with
+                        match! codeHtml with
                         | LoadingState.NotStartYet
                         | LoadingState.Loading -> linearProgress
                         | LoadingState.Loaded sourceCode
                         | LoadingState.Reloading sourceCode ->
-                            codeLoadedCount.Publish((+) 1)
                             spaceV2
                             div {
                                 style {

@@ -88,6 +88,35 @@ let app =
                 }
             }
 
+        let routesView =
+            adaptiview () {
+                match! hook.GetOrLoadDocsTree() with
+                | LoadingState.NotStartYet -> notFound
+                | LoadingState.Loading -> MudProgressLinear'.create ()
+                | LoadingState.Loaded docs
+                | LoadingState.Reloading docs ->
+                    let routes = [
+                        docRouting docs
+                        Demos.GiraffeStyleRouter.demoRouting
+                    ]
+                    html.route(docs, [
+                        // For host on slaveoftime.fun server mode
+                        yield! routes
+                        // For host on github-pages WASM mode
+                        subRouteCi "/Fun.Blazor.Docs" routes
+                        routeAny (
+                            docs
+                            |> Seq.tryHead
+                            |> Option.map (
+                                function
+                                | DocTreeNode.Category (doc, _, _)
+                                | DocTreeNode.Doc doc -> docView doc
+                            )
+                            |> Option.defaultValue notFound
+                        )
+                    ])
+            }
+
 
         div.create [
             theme
@@ -101,30 +130,7 @@ let app =
                         paddingTop 100
                         paddingBottom 64
                     }
-                    adaptiview () {
-                        match! hook.GetOrLoadDocsTree() with
-                        | LoadingState.NotStartYet -> notFound
-                        | LoadingState.Loading -> MudProgressLinear'.create ()
-                        | LoadingState.Loaded docs
-                        | LoadingState.Reloading docs ->
-                            html.route [
-                                // For host on slaveoftime.fun server mode
-                                docRouting docs
-                                Demos.GiraffeStyleRouter.demoRouting
-                                // For host on github-pages WASM mode
-                                subRouteCi "/Fun.Blazor.Docs" [ docRouting docs; Demos.GiraffeStyleRouter.demoRouting ]
-                                routeAny (
-                                    docs
-                                    |> Seq.tryHead
-                                    |> Option.map (
-                                        function
-                                        | DocTreeNode.Category (doc, _, _)
-                                        | DocTreeNode.Doc doc -> docView doc
-                                    )
-                                    |> Option.defaultValue notFound
-                                )
-                            ]
-                    }
+                    routesView
                     MudScrollToTop'() {
                         TopOffset 400
                         MudFab'() {

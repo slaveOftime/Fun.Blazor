@@ -3,14 +3,18 @@
 
 ## Please check the samples for quick start
 
-https://github.com/slaveOftime/Slaveoftime.Site
-
-https://github.com/slaveOftime/Fun.Blazor.Samples
-
+This contains the code for the document site itself:
 https://github.com/slaveOftime/Fun.Blazor/tree/master/Fun.Blazor.Docs.Wasm
 
+I use this to build my simple personal blogs:
+https://github.com/slaveOftime/Slaveoftime.Site
 
-## We also have dotnet templates:
+This contains the code for Fun.Blazor templates, also with more samples in it:
+https://github.com/slaveOftime/Fun.Blazor.Samples
+
+
+
+## Use dotnet templates:
 
 [![Nuget](https://img.shields.io/nuget/vpre/Fun.Blazor.Templates)](https://www.nuget.org/packages/Fun.Blazor.Templates)
 
@@ -20,8 +24,12 @@ dotnet new --install Fun.Blazor.Templates::2.0.0
 
 With this template, you can create server / wasm blazor with [MudBlazor](https://mudblazor.com/) or [shoelacejs](https://shoelace.style/) supported.
 
+```shell
+dotnet new fb-mix -o CoolMixMode
+```
 
-## Code structure example
+
+## Code structure example (Just my opinionated way)
 
 This project support multiple pattern for state management. From my experience it is not good to use elmish for your whole project. Because the performance and state share concern, also sometimes it feels a little verbose.  
 
@@ -37,7 +45,7 @@ You can try this:
     type IShareStore with // scoped for the session in blazor server mode
         member store.IsDark = store.CreateCVal("IsDark", true)
 
-    type IGlobalStore with // Singleton store, shared for all
+    type IGlobalStore with // Singleton store, shared for all. Used in server side blazor to share some data for all connected users.
         ...
 ```
 
