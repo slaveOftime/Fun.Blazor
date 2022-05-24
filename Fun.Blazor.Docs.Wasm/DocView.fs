@@ -57,7 +57,7 @@ let docView (doc: DocBrief) =
                         | Segment.Html key ->
                             adaptiview () {
                                 match! hook.GetOrLoadDocHtml(langStr, key, "cacheKey=" + string doc.LastModified.Ticks) with
-                                | LoadingState.NotStartYet
+                                | LoadingState.NotStartYet -> notFound
                                 | LoadingState.Loading -> linearProgress
                                 | LoadingState.Loaded docHtml
                                 | LoadingState.Reloading docHtml ->

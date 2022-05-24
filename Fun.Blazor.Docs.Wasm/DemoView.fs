@@ -18,7 +18,7 @@ let demoView (demo: Demo) =
             let codeHtml = hook.GetOrLoadDemoCodeHtml demo.Source
             let showCode = cval false
 
-            let shouldHightLight = 
+            let shouldHightLight =
                 adaptive {
                     let! codeHtml = codeHtml
                     let! showCode = showCode
@@ -36,8 +36,7 @@ let demoView (demo: Demo) =
                                 do! js.highlightCode ()
                             }
                             |> ignore
-                        | _ ->
-                            ()
+                        | _ -> ()
                     )
                 ]
             )
@@ -68,7 +67,7 @@ let demoView (demo: Demo) =
                     | false -> ()
                     | true ->
                         match! codeHtml with
-                        | LoadingState.NotStartYet
+                        | LoadingState.NotStartYet -> notFound
                         | LoadingState.Loading -> linearProgress
                         | LoadingState.Loaded sourceCode
                         | LoadingState.Reloading sourceCode ->
