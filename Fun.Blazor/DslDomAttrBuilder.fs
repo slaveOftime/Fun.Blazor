@@ -75,8 +75,7 @@ type KeyFramesBuilder(identifier: string) =
 
     member inline _.Delay([<InlineIfLambda>] fn: unit -> KeyFrame) = KeyFrame(fun x -> fn().Invoke(x))
 
-    member inline _.Combine([<InlineIfLambda>] kf1: KeyFrame, [<InlineIfLambda>] kf2: KeyFrame) =
-        KeyFrame(fun sb -> kf2.Invoke(kf1.Invoke(sb)))
+    member inline _.Combine([<InlineIfLambda>] kf1: KeyFrame, [<InlineIfLambda>] kf2: KeyFrame) = KeyFrame(fun sb -> kf2.Invoke(kf1.Invoke(sb)))
 
 
 type DomAttrBuilder() =
@@ -84,6 +83,37 @@ type DomAttrBuilder() =
     member inline _.Yield(_: unit) = emptyAttr ()
 
     member inline _.Yield([<InlineIfLambda>] x: AttrRenderFragment) = x
+
+
+    member inline _.Yield((key, value): string * string) =
+        AttrRenderFragment(fun _ builder index ->
+            builder.AddAttribute(index, key, value)
+            index + 1
+        )
+
+    member inline _.Yield((key, value): string * int) =
+        AttrRenderFragment(fun _ builder index ->
+            builder.AddAttribute(index, key, value)
+            index + 1
+        )
+
+    member inline _.Yield((key, value): string * float) =
+        AttrRenderFragment(fun _ builder index ->
+            builder.AddAttribute(index, key, value)
+            index + 1
+        )
+
+    member inline _.Yield((key, value): string * bool) =
+        AttrRenderFragment(fun _ builder index ->
+            builder.AddAttribute(index, key, value)
+            index + 1
+        )
+
+    member inline _.Yield((key, fn): string * (unit -> unit)) = html.callback (key, fn)
+    member inline _.Yield((key, fn): string * ('T -> unit)) = html.callback (key, fn)
+    member inline _.Yield((key, fn): string * (unit -> Task<unit>)) = html.callbackTask (key, fn)
+    member inline _.Yield((key, fn): string * ('T -> Task<unit>)) = html.callbackTask (key, fn)
+
 
     member inline _.Delay([<InlineIfLambda>] fn: unit -> AttrRenderFragment) = AttrRenderFragment(fun c b i -> fn().Invoke(c, b, i))
 

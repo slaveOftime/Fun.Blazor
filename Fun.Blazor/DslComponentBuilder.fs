@@ -26,6 +26,38 @@ type ComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent>(
 
     member inline _.Yield([<InlineIfLambda>] x: AttrRenderFragment) = x
 
+
+    member inline _.Yield((key, value): string * string) =
+        AttrRenderFragment(fun _ builder index ->
+            builder.AddAttribute(index, key, value)
+            index + 1
+        )
+
+    member inline _.Yield((key, value): string * int) =
+        AttrRenderFragment(fun _ builder index ->
+            builder.AddAttribute(index, key, value)
+            index + 1
+        )
+
+    member inline _.Yield((key, value): string * float) =
+        AttrRenderFragment(fun _ builder index ->
+            builder.AddAttribute(index, key, value)
+            index + 1
+        )
+
+    member inline _.Yield((key, value): string * bool) =
+        AttrRenderFragment(fun _ builder index ->
+            builder.AddAttribute(index, key, value)
+            index + 1
+        )
+
+
+    member inline _.Yield((key, fn): string * (unit -> unit)) = html.callback (key, fn)
+    member inline _.Yield((key, fn): string * ('T -> unit)) = html.callback (key, fn)
+    member inline _.Yield((key, fn): string * (unit -> Task<unit>)) = html.callbackTask (key, fn)
+    member inline _.Yield((key, fn): string * ('T -> Task<unit>)) = html.callbackTask (key, fn)
+
+
     member inline _.Delay([<InlineIfLambda>] fn: unit -> AttrRenderFragment) = AttrRenderFragment(fun c b i -> fn().Invoke(c, b, i))
 
     member inline _.Combine([<InlineIfLambda>] render1: AttrRenderFragment, [<InlineIfLambda>] render2: AttrRenderFragment) = render1 ==> render2
@@ -251,7 +283,8 @@ type ComponentWithChildBuilder<'T when 'T :> IComponent>() =
     static member inline create(x: NodeRenderFragment) =
         NodeRenderFragment(fun comp builder index ->
             builder.OpenComponent<'T>(index)
-            let nextIndex = html.renderFragment("ChildContent", x).Invoke(comp, builder, index + 1)
+            let nextIndex =
+                html.renderFragment("ChildContent", x).Invoke(comp, builder, index + 1)
             builder.CloseComponent()
             nextIndex
         )
@@ -459,7 +492,8 @@ type ComponentWithDomAndChildAttrBuilder<'T when 'T :> IComponent>() =
     static member inline create(x: NodeRenderFragment) =
         NodeRenderFragment(fun comp builder index ->
             builder.OpenComponent<'T>(index)
-            let nextIndex = html.renderFragment("ChildContent", x).Invoke(comp, builder, index + 1)
+            let nextIndex =
+                html.renderFragment("ChildContent", x).Invoke(comp, builder, index + 1)
             builder.CloseComponent()
             nextIndex
         )

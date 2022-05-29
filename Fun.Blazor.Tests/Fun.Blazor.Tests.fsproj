@@ -12,6 +12,7 @@
 		<Compile Include="RouterTests.fs" />
 		<Compile Include="I18nTests.fs" />
 		<Compile Include="HookTests.fs" />
+		<Compile Include="DomTests.fs" />
 		<Compile Include="Program.fs" />
 	</ItemGroup>
 
