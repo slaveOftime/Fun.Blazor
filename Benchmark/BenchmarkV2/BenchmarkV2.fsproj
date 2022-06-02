@@ -16,7 +16,7 @@
 
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" Version="0.13.1" />
-    <PackageReference Include="Bolero" Version="0.20.12" />
+    <PackageReference Include="Bolero" Version="0.20.17" />
     <PackageReference Include="MudBlazor" Version="6.0.10" />
   </ItemGroup>
 

@@ -32,7 +32,7 @@
 	<ItemGroup>
 		<PackageReference Include="FSharp.Data.Adaptive" Version="1.2.13" />
 		<PackageReference Include="Fun.Css" Version="0.3.1" />
-		<PackageReference Include="Fun.Result" Version="2.0.5" />
+		<PackageReference Include="Fun.Result" Version="2.0.6" />
 		<PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.13" />
