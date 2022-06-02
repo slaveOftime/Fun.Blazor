@@ -128,6 +128,10 @@ module AVal =
         data :> aval<'T>
 
 
+    let inline addLazyCallback fn (data: aval<_>) = data.AddLazyCallback fn
+    let inline addInstantCallback fn (data: aval<_>) = data.AddInstantCallback fn
+
+
 /// This will generate an alist<Node> as a Node parameter.
 /// When the isStatic is not set to true, every time when you call this it will trigger OnParametersSet,
 /// so when you write code like below:
