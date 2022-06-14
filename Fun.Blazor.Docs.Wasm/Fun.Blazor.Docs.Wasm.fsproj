@@ -34,7 +34,7 @@
 		<Compile Include="Startup.fs" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="FSharp.SystemTextJson" Version="0.17.4" />
+		<PackageReference Include="FSharp.SystemTextJson" Version="0.18.24" />
 		<PackageReference Include="Majorsoft.Blazor.WebAssembly.Logging.Console" Version="1.5.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.4" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.4" PrivateAssets="all" />
