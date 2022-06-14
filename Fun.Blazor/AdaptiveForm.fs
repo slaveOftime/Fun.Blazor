@@ -51,13 +51,10 @@ type AdaptiveForm<'T, 'Error>(defaultValue: 'T) as this =
         transact (fun _ ->
             for KeyValue (_, error) in errors do
                 error.Value <- []
-
             for prop in props do
                 fields.[prop.Name].Value <- prop.GetValue value
-
-            hasChanges.Value <- false
         )
-
+        hasChanges.Publish false
 
 
     member _.GetValue() =
