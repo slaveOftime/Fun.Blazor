@@ -12,11 +12,10 @@ open Fake.IO.Globbing.Operators
 fsi.CommandLineArgs |> Array.skip 1 |> BuildTask.setupContextFromArgv
 
 
-
 let generateDocs = BuildTask.create "GenerateDocs" [] { Docs.DocBuilder.build () }
 
 let processGitHubDocs =
-    BuildTask.create "ProcessGitHubDocs" [ generateDocs ] {
+    BuildTask.create "ProcessGitHubDocs" [] {
         let targetDir = "Fun.Blazor.Docs.Wasm.Release"
         !!(targetDir </> "**" </> "index.html")
         |> Seq.iter (File.applyReplace (fun x -> x.Replace("""<base href="/"/>""", """<base href="/Fun.Blazor.Docs/" /> """)))
