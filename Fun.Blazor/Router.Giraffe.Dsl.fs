@@ -91,12 +91,24 @@ let routeCifWithQueries path view : Router<'View> =
         (path)
         (fun routeParams query ->
             let queries =
-                QueryHelpers.ParseNullableQuery query |> Seq.map (|KeyValue|) |> Map.ofSeq
+                try
+                    QueryHelpers.ParseNullableQuery query |> Seq.map (|KeyValue|) |> Map.ofSeq
+                with
+                | _ -> Map.empty
             view routeParams queries
         )
 
 let routeCiWithQueries path view : Router<'View> =
-    routeCiWithQuery (path) (QueryHelpers.ParseNullableQuery >> Seq.map (|KeyValue|) >> Map.ofSeq >> view)
+    routeCiWithQuery
+        (path)
+        (fun query ->
+            let quries =
+                try
+                    QueryHelpers.ParseNullableQuery query |> Seq.map (|KeyValue|) |> Map.ofSeq
+                with
+                | _ -> Map.empty
+            view quries
+        )
 
 
 /// Match any url
