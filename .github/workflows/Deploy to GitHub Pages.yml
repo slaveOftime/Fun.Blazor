@@ -28,7 +28,7 @@ jobs:
 
     # changes the base-tag in index.html from '/' to 'Fun.Blazor' to match GitHub Pages repository subdirectory
     - name: Change base-tag in index.html from / to Fun.Blazor.Docs
-      run: sed -i 's/<base href="\/"\/>/<base href="\/Fun.Blazor.Docs\/" \/>/g' Fun.Blazor.Docs.Wasm.Release/wwwroot/index.html
+      run: dotnet fsi build.tsx -t ProcessGitHubDocs
     
     # copy index.html to 404.html to serve the same file when a file is not found
     - name: Create 404.html
