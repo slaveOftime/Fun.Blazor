@@ -2,6 +2,8 @@
 <Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
+		<BlazorWasmPrerenderingRootComponentType>Fun.Blazor.Docs.Wasm.PrerenderApp</BlazorWasmPrerenderingRootComponentType>
+		<BlazorWasmPrerenderingDeleteLoadingContents>true</BlazorWasmPrerenderingDeleteLoadingContents>
 	</PropertyGroup>
 	<ItemGroup>
 		<Compile Include="Types.fs" />
@@ -34,6 +36,7 @@
 		<Compile Include="Startup.fs" />
 	</ItemGroup>
 	<ItemGroup>
+		<PackageReference Include="BlazorWasmPreRendering.Build" Version="1.0.0-preview.24.1" />
 		<PackageReference Include="FSharp.SystemTextJson" Version="0.18.24" />
 		<PackageReference Include="Majorsoft.Blazor.WebAssembly.Logging.Console" Version="1.5.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.4" />

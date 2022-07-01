@@ -6,6 +6,7 @@ open System.Net.Http
 open System.Text.Json
 open System.Text.Json.Serialization
 open FSharp.Data.Adaptive
+open Microsoft.JSInterop
 open Fun.Result
 open Fun.Blazor
 open MudBlazor
@@ -20,7 +21,12 @@ let private jsonOptions =
 type IShareStore with
 
     member store.IsServerSideRendering =
-        store.CreateCVal(nameof store.IsServerSideRendering, false)
+        let js = store.ServiceProvider.GetMultipleServices<IJSRuntime>()
+        let isWasm =
+            match js with
+            | :? IJSInProcessRuntime -> true
+            | _ -> false
+        store.CreateCVal(nameof store.IsServerSideRendering, not isWasm)
 
     member store.IsDarkMode = store.CreateCVal(nameof store.IsDarkMode, true)
 

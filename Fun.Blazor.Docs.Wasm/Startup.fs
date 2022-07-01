@@ -1,3 +1,5 @@
+namespace Fun.Blazor.Docs.Wasm
+
 #nowarn "0020"
 
 open System
@@ -9,24 +11,45 @@ open Fun.Blazor
 open Fun.Blazor.Docs.Wasm
 
 
-let builder = WebAssemblyHostBuilder.CreateDefault(Environment.GetCommandLineArgs())
+type PrerenderApp() =
+    inherit FunBlazorComponent()
 
-builder
+    override _.Render() = App.app
+
+
+type Program =
+
+    static member ConfigureServices(services: IServiceCollection, baseAddress: string) =
+        services
+            .AddFunBlazorWasm()
+            .AddMudServices()
+            .AddScoped<Fun.Blazor.Docs.Wasm.Demos.ScopedDemoService>()
+            .AddScoped<HttpClient>(fun _ ->
+                let http = new HttpClient()
+                http.BaseAddress <- Uri baseAddress
+                http
+            )
+        ()
+
+
+    static member Main(args: string[]) =
+        let builder = WebAssemblyHostBuilder.CreateDefault(args)
+
 #if DEBUG
-    .AddFunBlazor("#app", html.hotReloadComp (app, "Fun.Blazor.Docs.Wasm.App.app"))
+        builder.AddFunBlazor("#app", html.hotReloadComp (app, "Fun.Blazor.Docs.Wasm.App.app"))
 #else
-    .AddFunBlazor("#app", app)
+        builder.RootComponents.Add<PrerenderApp>("#app")
 #endif
 
-builder
-    .Services
-    .AddFunBlazorWasm()
-    .AddMudServices()
-    .AddScoped<Fun.Blazor.Docs.Wasm.Demos.ScopedDemoService>()
-    .AddScoped<HttpClient>(fun _ ->
-        let http = new HttpClient()
-        http.BaseAddress <-  Uri builder.HostEnvironment.BaseAddress
-        http
-    )
+        Program.ConfigureServices(builder.Services, builder.HostEnvironment.BaseAddress)
 
-builder.Build().RunAsync()
+        builder.Build().RunAsync()
+
+        -1
+
+
+module Startup =
+
+    [<EntryPoint>]
+    let main args = Program.Main args
+    

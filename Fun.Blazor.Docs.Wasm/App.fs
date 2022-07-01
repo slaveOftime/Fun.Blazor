@@ -10,6 +10,35 @@ open MudBlazor
 open Fun.Blazor.Docs.Wasm
 
 
+let private isReadyIndicator =
+    html.comp (fun (hook: IComponentHook) ->
+        let mutable showMessage = true
+    
+        hook.OnFirstAfterRender.Add(fun _ ->
+            showMessage <- false
+            hook.StateHasChanged()
+        )
+    
+        div {
+            style { displayFlex; alignItemsCenter }
+            if showMessage then
+                spaceH4
+                MudProgressCircular'() {
+                    Size Size.Small
+                    Color Color.Warning
+                    Indeterminate true
+                }
+                spaceH2
+                MudText'() {
+                    Color Color.Warning
+                    Typo Typo.subtitle2
+                    ".NET WASM is still loading..."
+                }
+                spaceH4
+        }
+    )
+    
+
 let app =
     html.inject (fun (hook: IComponentHook, shareStore: IShareStore) ->
         let isOpen = cval true
@@ -59,6 +88,7 @@ let app =
                         Width 35
                         Src $"fun-blazor.png"
                     }
+                    isReadyIndicator
                     MudSpacer'.create ()
                     adaptiview () {
                         let! isDark, setIsDark = shareStore.IsDarkMode.WithSetter()
