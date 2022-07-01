@@ -2,10 +2,13 @@
 module Fun.Blazor.Docs.Wasm.Utils
 
 open System
-open System.Net
 
 
-let private isNameEqualPath (name: string) (path: string) = name.Equals(WebUtility.UrlDecode path, StringComparison.OrdinalIgnoreCase)
+let sanitizeFileName (name: string) = name.Replace(" ", "-")
+
+let private isNameEqualPath (name: string) (path: string) = 
+    name = path ||
+    (sanitizeFileName name).Equals(path, StringComparison.OrdinalIgnoreCase)
 
 
 let rec findDoc (docs: DocTreeNode list) (paths: string list) =
