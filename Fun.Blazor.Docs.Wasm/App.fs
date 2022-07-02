@@ -20,21 +20,25 @@ let private isReadyIndicator =
         )
     
         div {
-            style { displayFlex; alignItemsCenter }
             if showMessage then
-                spaceH4
-                MudProgressCircular'() {
-                    Size Size.Small
-                    Color Color.Warning
-                    Indeterminate true
+                div {
+                    style { margin -40 10 40 10 }
+                    MudProgressLinear'() {
+                        Color Color.Warning
+                        Indeterminate true
+                    }
+                    spaceV2
+                    MudText'() {
+                        Color Color.Warning
+                        Typo Typo.subtitle2
+                        ".NET WASM is still loading. You can interact in this page after it's fully loaded."
+                    }
+                    MudText'() {
+                        Color Color.Info
+                        Typo Typo.body2
+                        "Current page is prerendered."
+                    }
                 }
-                spaceH2
-                MudText'() {
-                    Color Color.Warning
-                    Typo Typo.subtitle2
-                    ".NET WASM is still loading..."
-                }
-                spaceH4
         }
     )
     
@@ -88,7 +92,6 @@ let app =
                         Width 35
                         Src $"fun-blazor.png"
                     }
-                    isReadyIndicator
                     MudSpacer'.create ()
                     adaptiview () {
                         let! isDark, setIsDark = shareStore.IsDarkMode.WithSetter()
@@ -160,6 +163,7 @@ let app =
                         paddingTop 100
                         paddingBottom 64
                     }
+                    isReadyIndicator
                     routesView
                     MudScrollToTop'() {
                         TopOffset 400
