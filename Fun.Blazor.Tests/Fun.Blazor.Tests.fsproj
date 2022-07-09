@@ -1,39 +1,39 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
-	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
-		<IsPackable>false</IsPackable>
-		<GenerateProgramFile>false</GenerateProgramFile>
-	</PropertyGroup>
-
-	<ItemGroup>
-		<Compile Include="Utils.fs" />
-		<Compile Include="AdaptiveTests.fs" />
-		<Compile Include="RouterTests.fs" />
-		<Compile Include="I18nTests.fs" />
-		<Compile Include="HookTests.fs" />
-		<Compile Include="DomTests.fs" />
-		<Compile Include="CascadingValueTests.fs" />
-		<Compile Include="Program.fs" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<PackageReference Include="Moq" Version="4.18.1" />
-		<PackageReference Include="bunit" Version="1.8.15" />
-		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
-		<PackageReference Include="xunit" Version="2.4.1" />
-		<PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-			<PrivateAssets>all</PrivateAssets>
-		</PackageReference>
-		<PackageReference Include="coverlet.collector" Version="3.1.2">
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-			<PrivateAssets>all</PrivateAssets>
-		</PackageReference>
-	</ItemGroup>
-	
-	<ItemGroup>
-		<ProjectReference Include="..\Fun.Blazor\Fun.Blazor.fsproj" />
-	</ItemGroup>
-
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <GenerateProgramFile>false</GenerateProgramFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Fun.Blazor.Bindings\MudBlazor.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Utils.fs" />
+    <Compile Include="AdaptiveTests.fs" />
+    <Compile Include="RouterTests.fs" />
+    <Compile Include="I18nTests.fs" />
+    <Compile Include="HookTests.fs" />
+    <Compile Include="DomTests.fs" />
+    <Compile Include="CascadingValueTests.fs" />
+    <Compile Include="Program.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Moq" Version="4.18.1" />
+    <PackageReference Include="bunit" Version="1.8.15" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
+    <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector" Version="3.1.2">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference FunBlazorStyle="CE" Include="MudBlazor" Version="6.0.10" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Fun.Blazor\Fun.Blazor.fsproj" />
+  </ItemGroup>
 </Project>

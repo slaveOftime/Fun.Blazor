@@ -6,6 +6,7 @@ open Moq
 open Xunit
 open Bunit
 open Fun.Blazor
+open MudBlazor
 
 
 let private createTestContext () =
@@ -101,3 +102,30 @@ let ``DOM share attrs`` () =
 
     let result = context.RenderNode demo
     result.MarkupMatches("""<img src="test" style="width: 10px; " readonly=""></img>""")
+
+
+[<Fact>]
+let ``DOM CE DSL build check`` () =
+    div {
+        data 123
+        asAttrRenderFragment
+    }
+    |> ignore
+
+    MudAutocomplete'() {
+        Margin Margin.Dense
+        Variant Variant.Text
+        MaxItems 100
+        Clearable true
+        Adornment Adornment.Start
+        AdornmentIcon Icons.Filled.Search
+        IconSize Size.Small
+        asAttrRenderFragment
+    }
+    |> ignore
+
+    CascadingValue'() {
+        IsFixed true
+        asAttrRenderFragment
+    }
+    |> ignore

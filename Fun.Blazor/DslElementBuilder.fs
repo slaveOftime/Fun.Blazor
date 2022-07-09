@@ -27,8 +27,6 @@ type EltBuilder(name) =
             builder.CloseElement()
             nextIndex
         )
-        
-    member inline _.Run(AttrRenderFragmentWrapper x) = x
 
 
     [<CustomOperation("ref")>]
@@ -41,7 +39,6 @@ type EltBuilder(name) =
 
 
     member inline _.Delay([<InlineIfLambda>] fn: unit -> NodeRenderFragment) = NodeRenderFragment(fun c b i -> fn().Invoke(c, b, i))
-    member inline _.Delay([<InlineIfLambda>] fn: unit -> AttrRenderFragmentWrapper) = fn()
 
     member inline _.For([<InlineIfLambda>] render: NodeRenderFragment, [<InlineIfLambda>] fn: unit -> NodeRenderFragment) = render >=> (fn ())
 
@@ -77,10 +74,6 @@ type EltBuilder(name) =
             builder.CloseElement()
             index + 2
         )
-
-        
-    [<CustomOperation("asAttrRenderFragment")>]
-    member inline _.asAttrRenderFragment(render: AttrRenderFragment) = AttrRenderFragmentWrapper render
 
 
 type EltWithChildBuilder(name) =
