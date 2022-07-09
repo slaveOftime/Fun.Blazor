@@ -20,6 +20,8 @@ type ComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent>(
             builder.CloseComponent()
             nextIndex
         )
+        
+    member inline _.Run(AttrRenderFragmentWrapper x) = x
 
 
     member inline _.Yield(_: unit) = emptyAttr ()
@@ -121,6 +123,9 @@ type ComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent>(
             builder.AddEventPreventDefaultAttribute(index, eventName, value)
             index + 1
         )
+    
+    [<CustomOperation("asAttrRenderFragment")>]
+    member inline _.asAttrRenderFragment(x: AttrRenderFragment) = AttrRenderFragmentWrapper x
 
 
     static member inline create() =

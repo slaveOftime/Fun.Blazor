@@ -1,6 +1,5 @@
 ﻿namespace Fun.Blazor
 
-open System
 open Microsoft.AspNetCore.Components
 open Operators
 open Internal
@@ -12,7 +11,7 @@ type EltBuilder(name) =
     interface IElementBuilder with
         member _.Name: string = name
 
-
+    
     member inline this.Run([<InlineIfLambda>] render: AttrRenderFragment) =
         NodeRenderFragment(fun comp builder index ->
             builder.OpenElement(index, (this :> IElementBuilder).Name)
@@ -28,6 +27,8 @@ type EltBuilder(name) =
             builder.CloseElement()
             nextIndex
         )
+        
+    member inline _.Run(AttrRenderFragmentWrapper x) = x
 
 
     [<CustomOperation("ref")>]
@@ -40,6 +41,7 @@ type EltBuilder(name) =
 
 
     member inline _.Delay([<InlineIfLambda>] fn: unit -> NodeRenderFragment) = NodeRenderFragment(fun c b i -> fn().Invoke(c, b, i))
+    member inline _.Delay([<InlineIfLambda>] fn: unit -> AttrRenderFragmentWrapper) = fn()
 
     member inline _.For([<InlineIfLambda>] render: NodeRenderFragment, [<InlineIfLambda>] fn: unit -> NodeRenderFragment) = render >=> (fn ())
 
@@ -75,6 +77,10 @@ type EltBuilder(name) =
             builder.CloseElement()
             index + 2
         )
+
+        
+    [<CustomOperation("asAttrRenderFragment")>]
+    member inline _.asAttrRenderFragment(render: AttrRenderFragment) = AttrRenderFragmentWrapper render
 
 
 type EltWithChildBuilder(name) =
@@ -533,6 +539,8 @@ module Elts =
 
     let inline baseUrl (x: string) = base' { href x }
 
+    /// Can be used to build shared dom attributes fragment
+    let domAttr = DomAttrBuilder()
 
     let styleBuilder = StyleBuilder()
     let cssBuilder = Fun.Css.CssBuilder()

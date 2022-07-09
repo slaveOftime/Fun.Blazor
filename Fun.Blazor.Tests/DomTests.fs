@@ -81,3 +81,23 @@ let ``DOM events simple`` () =
         result.Find("div").Change(null)
         result.MarkupMatches("""<div>count=3</div>""")
     }
+
+
+
+[<Fact>]
+let ``DOM share attrs`` () =
+    let context = createTestContext ()
+
+    let sharedImgAttr = img {
+        style { width 10 }
+        readonly true
+        asAttrRenderFragment
+    }
+
+    let demo = img {
+        src "test"
+        sharedImgAttr
+    }
+
+    let result = context.RenderNode demo
+    result.MarkupMatches("""<img src="test" style="width: 10px; " readonly=""></img>""")

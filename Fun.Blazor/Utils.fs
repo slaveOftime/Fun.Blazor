@@ -31,6 +31,10 @@ module Internal =
         stringBuilderPool.Return sb
         result
 
+    /// Please do not depend on this type, it maybe renamed in the future
+    [<Struct>]
+    type AttrRenderFragmentWrapper = AttrRenderFragmentWrapper of AttrRenderFragment
+
 
     type ILogger with
 
