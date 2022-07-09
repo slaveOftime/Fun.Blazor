@@ -97,6 +97,7 @@ type html with
                     | Some scope -> scope.ServiceProvider
                     | None -> hook.ServiceProvider
                 )
+                node
             }
         )
 
