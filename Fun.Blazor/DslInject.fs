@@ -67,11 +67,11 @@ type html with
 
 
     /// This will create a component.
-    /// It is same as html.inject, but with different name which may make more sense from different point of view. 
+    /// It is same as html.inject, but with different name which may make more sense from different point of view.
     static member comp(render: 'Services -> NodeRenderFragment) = html.inject (render)
 
     /// This will create a component.
-    /// It is same as html.inject, but with different name which may make more sense from different point of view. 
+    /// It is same as html.inject, but with different name which may make more sense from different point of view.
     static member comp(key, render: 'Services -> NodeRenderFragment) = html.inject (key, render)
 
 
@@ -89,25 +89,15 @@ type html with
 
             hook.OnDispose.Add(fun _ -> scope |> Option.iter (fun x -> x.Dispose()))
 
-            NodeRenderFragment(fun comp builder index ->
-                builder.OpenComponent<Microsoft.AspNetCore.Components.CascadingValue<IServiceProvider>>(index)
-                builder.AddAttribute(index + 1, "Name", Internal.FunBlazorScopedServicesName)
-                builder.AddAttribute(
-                    index + 2,
-                    "Value",
+            CascadingValue'() {
+                Name Internal.FunBlazorScopedServicesName
+                IsFixed true
+                Value(
                     match scope with
                     | Some scope -> scope.ServiceProvider
                     | None -> hook.ServiceProvider
                 )
-                builder.AddAttribute(index + 3, "IsFixed", true)
-                builder.AddAttribute(
-                    index + 4,
-                    "ChildContent",
-                    Microsoft.AspNetCore.Components.RenderFragment(fun tb -> node.Invoke(comp, tb, 0) |> ignore)
-                )
-                builder.CloseComponent()
-                index + 5
-            )
+            }
         )
 
     /// This will get a IServiceScopeFactory from container and create a new scope and add it to CascadingValue.

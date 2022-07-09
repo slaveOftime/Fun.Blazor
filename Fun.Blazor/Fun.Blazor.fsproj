@@ -22,6 +22,7 @@
 		<Compile Include="DslDomAttrBuilder.fs" />
 		<Compile Include="DslElementBuilder.fs" />
 		<Compile Include="DslComponentBuilder.fs" />
+		<Compile Include="DslComponents.fs" />
 		<Compile Include="DslInject.fs" />
 		<Compile Include="DslAdaptiview.fs" />
 		<Compile Include="DslRouting.fs" />
