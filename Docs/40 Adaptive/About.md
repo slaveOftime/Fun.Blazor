@@ -23,6 +23,8 @@ let yourUI =
     }
 ```
 
+<p style="color: red">But please remember, adaptive model is optional if you do not like it you can use your own model.</p>
+
 You may notice that you can also do below things and it may look cleaner from different point of view. But **DisableEventTriggerStateHasChanged** is turned on by default. The reason is just for reducing the calculating virtual dom. With adaptiview we can narrow dom to a specific part for recalculating the dom in an isolated way. If you check the **Form** documents, you will see it use this pattern a lot. With that, we can have better performance for large UI dom tree. 
 
 {{BlazorStyleComp}}
