@@ -37,10 +37,16 @@ let sharedButtonAttrs =
     button {
         style {
             commonStyle
-            color "red" // css priority/override is controlled by browser. For "color", "red" will be used.
+            // css priority/override is controlled by browser. 
+            // For "color", "red" will be used.
+            color "red" 
         }
         data 456
-        commonAttr  // attribute priority is controlled by blazor core. Currently only the first added attribute will be used when you are trying to add same attribute. That is why I put commonAttr lower than "data 456", so the 456 will be used even in commonAttr "data" is 123.
+        // attribute priority is controlled by blazor core. 
+        // Currently only the first added attribute will be used when you are trying to add same attribute. 
+        // That is why I put commonAttr lower than "data 456", 
+        // so the 456 will be used even in commonAttr "data" is 123.
+        commonAttr
         asAttrRenderFragment // Here is the thing to make the magic happen
     }
 
@@ -55,7 +61,7 @@ let demo =
     }    
 ```
 
-You can also create extension operation method to create something to reuse.
+You can also create extension operation method to create something to reuse. And with this way, it is type safer because it attach to a specific type. It if better to use it for global sharing stuff. As for **asAttrRenderFragment**, it is recommend to use it only locally, because what it generate is just **AttrRenderFragment** which can be combined any where.
 
 For css you can do:
 
@@ -99,6 +105,10 @@ let demo =
 For DOM element/component, you can do:
 
 ```fsharp
+open Fun.Blazor
+open Fun.Blazor.Operators
+open MudBlazor
+
 type MudTable'<'T> with
 
     [<CustomOperation("HeaderAndRow")>]
@@ -107,14 +117,22 @@ type MudTable'<'T> with
         let render = this.HeaderContent(render, html.fragment headers)
         this.RowTemplate(render, (fun row -> html.inject (row, (fun () -> mappers |> Seq.map (snd >> fun fn -> fn row) |> html.fragment))))
 
+    [<CustomOperation("withDefaultSettings")>]
+    member inline _.withDefaultSettings([<InlineIfLambda>] render: AttrRenderFragment) =
+        render
+        ==> MudTable'() {
+            Hover true
+            FixedHeader true
+            HorizontalScrollbar true
+            Breakpoint Breakpoint.None
+            asAttrRenderFragment // with this feature we can have a better coding experience
+        }
+
+
 let demo =
     MudTable'() {
         Height "100%"
-        FixedHeader true
-        HorizontalScrollbar true
-        Breakpoint Breakpoint.None
         Items items
-        Hover true
         HeaderAndRow [
             MudTh'() { "Name" },
             fun item -> MudTd'() { item.Name }
@@ -122,5 +140,6 @@ let demo =
             MudTh'() { "Age" },
             fun item -> MudTd'() { item.Age }
         ]
+        withDefaultSettings
     }
 ```

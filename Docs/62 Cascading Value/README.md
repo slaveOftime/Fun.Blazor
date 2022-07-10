@@ -2,13 +2,15 @@
 
 You can check the concept in [blazor official documents](https://docs.microsoft.com/en-us/aspnet/core/blazor/components/cascading-values-and-parameters?view=aspnetcore-6.0)
 
-How use it in **Fun.Blazor**?
+How to use it in **Fun.Blazor**?
 
 ```fsharp
 type MyContext() =
     inherit FunBlazorComponent()
 
-    // Currently I did not find any usable apis to consume CascadingValue directly, and the only way is by attribute. So we will first define a class component to consume it
+    // Currently I did not find any usable apis to consume CascadingValue directly,
+    // and the only way is by attribute. 
+    // So we will first define a class component to consume it.
     [<CascadingParameter(Name = "MyContext")>]
     member val Context = 0 with get, set
 
