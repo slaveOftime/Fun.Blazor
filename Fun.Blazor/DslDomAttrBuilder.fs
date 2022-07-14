@@ -81,8 +81,8 @@ type KeyFramesBuilder(identifier: string) =
 type DomAttrBuilder() =
 
     member inline _.Run(AttrRenderFragmentWrapper x) = x
-    
-    
+
+
     member inline _.Yield(_: unit) = emptyAttr ()
 
     member inline _.Yield([<InlineIfLambda>] x: AttrRenderFragment) = x
@@ -119,7 +119,7 @@ type DomAttrBuilder() =
 
 
     member inline _.Delay([<InlineIfLambda>] fn: unit -> AttrRenderFragment) = AttrRenderFragment(fun c b i -> fn().Invoke(c, b, i))
-    member inline _.Delay([<InlineIfLambda>] fn: unit -> AttrRenderFragmentWrapper) = fn()
+    member inline _.Delay([<InlineIfLambda>] fn: unit -> AttrRenderFragmentWrapper) = fn ()
 
     member inline _.Combine([<InlineIfLambda>] render1: AttrRenderFragment, [<InlineIfLambda>] render2: AttrRenderFragment) = render1 ==> render2
 
@@ -133,20 +133,15 @@ type DomAttrBuilder() =
 
     member inline _.Zero() = emptyAttr ()
 
-
+    
     /// key for blazor
     [<CustomOperation("key")>]
-    member inline _.key([<InlineIfLambda>] render: AttrRenderFragment, k) =
-        render
-        ==> AttrRenderFragment(fun _ builder index ->
-            builder.SetKey k
-            index
-        )
-    
-        
+    member inline _.key([<InlineIfLambda>] render: AttrRenderFragment, k) = render ==> html.key k
+
+
     [<CustomOperation("asAttrRenderFragment")>]
     member inline _.asAttrRenderFragment(render: AttrRenderFragment) = AttrRenderFragmentWrapper render
-    
+
 
     [<CustomOperation("callback")>]
     member inline _.callback([<InlineIfLambda>] render: AttrRenderFragment, eventName, [<InlineIfLambda>] callback: 'T -> unit) =

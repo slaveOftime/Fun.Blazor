@@ -28,7 +28,7 @@ type html with
     /// </example>
     static member inject(render: 'Services -> NodeRenderFragment) =
         ComponentWithChildBuilder<DIComponent<'Services>>() {
-            key (Guid.NewGuid())
+            key ("DIComponent-" + Guid.NewGuid().ToString())
             "RenderFn" => render
             "IsStatic" => false
         }

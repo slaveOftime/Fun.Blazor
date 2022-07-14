@@ -74,7 +74,21 @@ type IComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent>
 type FunBlazorComponent() as this =
     inherit ComponentBase()
 
+#if DEBUG
+    [<Parameter>]
+    member val FunBlazorDebugKey: obj = null with get, set
+#endif
+
     override _.BuildRenderTree(builder: RenderTreeBuilder) = this.Render().Invoke(this, builder, 0) |> ignore
+
+    override _.OnInitialized() =
+#if DEBUG
+        match this.FunBlazorDebugKey with
+        | null -> ()
+        | x -> printfn "Initialized FunBlazorComponent with key: %A" x
+#endif
+        ()
+
 
     member _.StateHasChanged() = base.StateHasChanged()
 
@@ -104,8 +118,8 @@ type FunBlazorComponent() as this =
                 task {
                     try
                         do! taskResult
-                    with
-                    | e when not taskResult.IsCanceled -> raise e
+                    with e when not taskResult.IsCanceled ->
+                        raise e
                 }
             else
                 Task.CompletedTask

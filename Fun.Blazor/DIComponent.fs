@@ -153,6 +153,8 @@ type DIComponent<'T>() as this =
 
 
     override _.OnInitialized() =
+        base.OnInitialized()
+        
         let depsType, _ = Reflection.FSharpType.GetFunctionElements(this.RenderFn.GetType())
         let services =
             this.Services.GetMultipleServices(depsType, this.HandleNotFoundType) :?> 'T

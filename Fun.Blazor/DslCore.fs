@@ -21,7 +21,7 @@ type html() =
 
 
     static member internal compCache =
-        lazy (fun () -> ConcurrentDictionary<Type, Reflection.PropertyInfo []>())
+        lazy (fun () -> ConcurrentDictionary<Type, Reflection.PropertyInfo[]>())
 
     /// With this we can init a blazor component easier without always write string for binding paratemters.
     /// But it will use reflection so you will pay for the performance cost so we should use it carefully.
@@ -132,7 +132,12 @@ type html() =
     static member inline key k =
         AttrRenderFragment(fun _ builder index ->
             builder.SetKey k
+#if DEBUG
+            builder.AddAttribute(index, "FunBlazorDebugKey", box k)
+            index + 1
+#else
             index
+#endif
         )
 
     static member inline ref(fn) =

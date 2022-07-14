@@ -29,6 +29,8 @@ type ElmComponent<'State, 'Msg when 'State: equality>() as this =
 
 
     override _.OnInitialized() =
+        base.OnInitialized()
+
         let initState, initCmd = this.Init()
 
         state <- ValueSome initState

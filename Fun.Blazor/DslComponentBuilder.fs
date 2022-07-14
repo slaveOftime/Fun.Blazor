@@ -20,7 +20,7 @@ type ComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent>(
             builder.CloseComponent()
             nextIndex
         )
-        
+
     member inline _.Run(AttrRenderFragmentWrapper x) = x
 
 
@@ -61,7 +61,7 @@ type ComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent>(
 
 
     member inline _.Delay([<InlineIfLambda>] fn: unit -> AttrRenderFragment) = AttrRenderFragment(fun c b i -> fn().Invoke(c, b, i))
-    member inline _.Delay([<InlineIfLambda>] fn: unit -> AttrRenderFragmentWrapper) = fn()
+    member inline _.Delay([<InlineIfLambda>] fn: unit -> AttrRenderFragmentWrapper) = fn ()
 
     member inline _.Combine([<InlineIfLambda>] render1: AttrRenderFragment, [<InlineIfLambda>] render2: AttrRenderFragment) = render1 ==> render2
 
@@ -78,12 +78,7 @@ type ComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent>(
 
     /// key for blazor
     [<CustomOperation("key")>]
-    member inline _.key([<InlineIfLambda>] render: AttrRenderFragment, k) =
-        render
-        ==> AttrRenderFragment(fun _ builder index ->
-            builder.SetKey k
-            index
-        )
+    member inline _.key([<InlineIfLambda>] render: AttrRenderFragment, k) = render ==> html.key k
 
     [<CustomOperation("ref")>]
     member inline _.ref([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: 'T -> unit) =
@@ -124,7 +119,7 @@ type ComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent>(
             builder.AddEventPreventDefaultAttribute(index, eventName, value)
             index + 1
         )
-    
+
     [<CustomOperation("asAttrRenderFragment")>]
     member inline _.asAttrRenderFragment(x: AttrRenderFragment) = AttrRenderFragmentWrapper x
 
