@@ -32,7 +32,7 @@ Check the [WASM Docs](https://slaveoftime.github.io/Fun.Blazor.Docs/) for more ð
         adaptiview(){
             let! count, setCount = FSharp.Data.Adaptive.cval(1).WithSetter()
             button {
-                onclick (fun _ -> setValue (count + 1))
+                onclick (fun _ -> setCount (count + 1))
                 "Increase"
             }
             div {
