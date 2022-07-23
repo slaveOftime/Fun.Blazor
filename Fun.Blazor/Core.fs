@@ -75,6 +75,8 @@ type FunBlazorComponent() as this =
     inherit ComponentBase()
 
 #if DEBUG
+    static member val EnablePrintDebugInfo = false with get, set
+
     [<Parameter>]
     member val FunBlazorDebugKey: obj = null with get, set
 #endif
@@ -83,7 +85,8 @@ type FunBlazorComponent() as this =
 
     override _.OnInitialized() =
 #if DEBUG
-        printfn "Initialized FunBlazorComponent with key: %A" this.FunBlazorDebugKey
+        if FunBlazorComponent.EnablePrintDebugInfo then
+            printfn "Initialized FunBlazorComponent with key: %A" this.FunBlazorDebugKey
 #endif
         ()
 
