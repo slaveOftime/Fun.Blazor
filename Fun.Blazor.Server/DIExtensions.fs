@@ -22,40 +22,38 @@ type FunBlazorServerExtensions =
 
 
     [<Extension>]
-    static member RenderFragment(ctx: HttpContext, ty: Type, ?renderMode, ?parameters) =
-        task {
-            let htmlHelper = ctx.RequestServices.GetService<IHtmlHelper>()
-            (htmlHelper :?> IViewContextAware).Contextualize(ViewContext(HttpContext = ctx))
+    static member RenderFragment(ctx: HttpContext, ty: Type, ?renderMode, ?parameters) = task {
+        let htmlHelper = ctx.RequestServices.GetService<IHtmlHelper>()
+        (htmlHelper :?> IViewContextAware).Contextualize(ViewContext(HttpContext = ctx))
 
-            let! result = htmlHelper.RenderComponentAsync(ty, defaultArg renderMode RenderMode.Static, defaultArg parameters null)
+        let! result = htmlHelper.RenderComponentAsync(ty, defaultArg renderMode RenderMode.Static, defaultArg parameters null)
 
-            use sw = new StringWriter()
-            result.WriteTo(sw, HtmlEncoder.Default)
-            do! sw.FlushAsync()
-            return sw.ToString()
-        }
+        use sw = new StringWriter()
+        result.WriteTo(sw, HtmlEncoder.Default)
+        do! sw.FlushAsync()
+        return sw.ToString()
+    }
+
+
+    /// Build DOM string and write to response
+    static member WriteFunDom(ctx: HttpContext, node: NodeRenderFragment, ?renderMode) = task {
+        let! result = ctx.RenderFragment(typeof<FunFragmentComponent>, defaultArg renderMode RenderMode.Static, dict [ "Fragment", box node ])
+        do! ctx.Response.WriteAsync result
+    }
 
 
     [<Extension>]
     static member MapFunBlazor(builder: IEndpointRouteBuilder, createFragment: HttpContext -> NodeRenderFragment, ?pattern) =
         let requestDeletegate =
-            Microsoft.AspNetCore.Http.RequestDelegate(fun ctx ->
-                task {
-                    let! result =
-                        ctx.RenderFragment(
-                            typeof<FunFragmentComponent>,
-                            RenderMode.Static,
-                            dict [
-                                "Fragment", box (createFragment ctx)
-                            ]
-                        )
+            Microsoft.AspNetCore.Http.RequestDelegate(fun ctx -> task {
+                let! result = ctx.RenderFragment(typeof<FunFragmentComponent>, RenderMode.Static, dict [ "Fragment", box (createFragment ctx) ])
 
-                    if isNull ctx.Response.ContentType then
-                        ctx.Response.ContentType <- "text/html; charset=UTF-8"
+                if isNull ctx.Response.ContentType then
+                    ctx.Response.ContentType <- "text/html; charset=UTF-8"
 
-                    let body = System.Text.Encoding.UTF8.GetBytes result
-                    return! ctx.Response.Body.WriteAsync(ReadOnlyMemory body)
-                }
+                let body = System.Text.Encoding.UTF8.GetBytes result
+                return! ctx.Response.Body.WriteAsync(ReadOnlyMemory body)
+            }
             )
 
         match pattern with

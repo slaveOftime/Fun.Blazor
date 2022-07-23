@@ -83,9 +83,7 @@ type FunBlazorComponent() as this =
 
     override _.OnInitialized() =
 #if DEBUG
-        match this.FunBlazorDebugKey with
-        | null -> ()
-        | x -> printfn "Initialized FunBlazorComponent with key: %A" x
+        printfn "Initialized FunBlazorComponent with key: %A" this.FunBlazorDebugKey
 #endif
         ()
 
