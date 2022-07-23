@@ -10,7 +10,7 @@
 
 	<ItemGroup>
 		<Compile Include="Core.fs" />
-		<Compile Include="DslHxBuilder.fs" />
+		<Compile Include="DslHtmxBuilder.fs" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -1,4 +1,5 @@
-﻿module Fun.Htmx.DslHxBuilder
+﻿[<AutoOpen>]
+module Fun.Htmx.DslHtmxBuilder
 
 open System.Text
 open Fun.Result
