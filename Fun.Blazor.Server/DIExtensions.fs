@@ -36,6 +36,7 @@ type FunBlazorServerExtensions =
 
 
     /// Build DOM string and write to response
+    [<Extension>]
     static member WriteFunDom(ctx: HttpContext, node: NodeRenderFragment, ?renderMode) = task {
         let! result = ctx.RenderFragment(typeof<FunFragmentComponent>, defaultArg renderMode RenderMode.Static, dict [ "Fragment", box node ])
         do! ctx.Response.WriteAsync result
