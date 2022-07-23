@@ -17,10 +17,12 @@
     <Compile Include="HookTests.fs" />
     <Compile Include="DomTests.fs" />
     <Compile Include="CascadingValueTests.fs" />
+    <Compile Include="ServerTests.fs" />
     <Compile Include="HtmxTests.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="6.0.7" />
     <PackageReference Include="Moq" Version="4.18.1" />
     <PackageReference Include="bunit" Version="1.8.15" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
@@ -36,6 +38,7 @@
     <PackageReference FunBlazorStyle="CE" Include="MudBlazor" Version="6.0.10" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Fun.Blazor.Server\Fun.Blazor.Server.fsproj" />
     <ProjectReference Include="..\Fun.Blazor\Fun.Blazor.fsproj" />
     <ProjectReference Include="..\Fun.Htmx\Fun.Htmx.fsproj" />
   </ItemGroup>
