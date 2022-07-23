@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFrameworks>net5.0;net6.0</TargetFrameworks>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<OutputType>library</OutputType>
+		<IsPackable>true</IsPackable>
+		<Version>0.0.1</Version>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Include="Core.fs" />
+		<Compile Include="DslHxBuilder.fs" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Fun.Blazor.Server\Fun.Blazor.Server.fsproj" />
+	</ItemGroup>
+
+</Project>

@@ -38,5 +38,6 @@ jobs:
         dotnet pack -c Release Fun.Blazor.Reactive/Fun.Blazor.Reactive.fsproj -o .
         dotnet pack -c Release Fun.Blazor.Server/Fun.Blazor.Server.fsproj -o .
         dotnet pack -c Release Fun.Blazor.Wasm/Fun.Blazor.Wasm.fsproj -o .
+        dotnet pack -c Release Fun.Htmx/Fun.Htmx.fsproj -o .
         dotnet nuget push *.nupkg -s https://api.nuget.org/v3/index.json -k ${{secrets.NUGET_API_KEY}} --skip-duplicate
     
