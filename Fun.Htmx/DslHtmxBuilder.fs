@@ -30,34 +30,47 @@ type DomAttrBuilder with
     member inline _.hxTarget([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> ("hx-target" => x)
 
 
-    [<CustomOperation "hxTrigger">]
-    member inline _.hxTrigger([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> ("hx-trigger" => x)
-
+    /// By default, AJAX requests are triggered by the "natural" event of an element
+    ///
+    /// - input, textarea & select are triggered on the change event.
+    /// - form is triggered on the submit event.
+    /// - everything else is triggered by the click event.
+    ///
+    /// If you want different behavior you can use the hx-trigger attribute to specify which event will cause the request.
     [<CustomOperation "hxTrigger">]
     member inline _.hxTrigger([<InlineIfLambda>] render: AttrRenderFragment, x: TriggerBuilder) = render ==> ("hx-trigger" => x.ToString())
 
+    /// By default, AJAX requests are triggered by the "natural" event of an element
+    ///
+    /// - input, textarea & select are triggered on the change event.
+    /// - form is triggered on the submit event.
+    /// - everything else is triggered by the click event.
+    ///
+    /// If you want different behavior you can use the hx-trigger attribute to specify which event will cause the request.
     [<CustomOperation "hxTrigger">]
-    member inline this.hxTrigger
+    member inline _.hxTrigger
         (
             [<InlineIfLambda>] render: AttrRenderFragment,
             event: string,
-            ?sse: bool,
-            ?once: bool,
-            ?filter: string,
-            ?changed: bool,
-            ?delay: int,
-            ?throttle: int,
-            ?from: string,
-            ?target: string,
-            ?consume: bool,
-            ?queue: HxQueue
+            ?sse,
+            ?once,
+            ?filter,
+            ?changed,
+            ?delay,
+            ?throttle,
+            ?from,
+            ?target,
+            ?consume,
+            ?queue,
+            ?root,
+            ?threshold
         )
         =
         let triggerStr =
             TriggerBuilder()
                 .AddTrigger(
                     event,
-                    sse = defaultArg once false,
+                    sse = defaultArg sse false,
                     once = defaultArg once false,
                     filter = defaultArg filter "",
                     changed = defaultArg changed false,
@@ -66,15 +79,17 @@ type DomAttrBuilder with
                     from = defaultArg from "",
                     target = defaultArg target "",
                     consume = defaultArg consume false,
-                    queue = defaultArg queue HxQueue.None
+                    queue = defaultArg queue HxQueue.None,
+                    root = defaultArg root "",
+                    threshold = defaultArg threshold 0.
                 )
                 .ToString()
 
-        this.hxTrigger (render, triggerStr)
+        render ==> ("hx-trigger" => triggerStr)
 
 
     [<CustomOperation "hxTriggerPolling">]
-    member inline this.hxTriggerPolling([<InlineIfLambda>] render: AttrRenderFragment, time: int, ?filter: string) =
+    member inline _.hxTriggerPolling([<InlineIfLambda>] render: AttrRenderFragment, time: int, ?filter: string) =
         let sb = new StringBuilder()
         sb.Append("every ").Append(time).Append("ms") |> ignore
 
@@ -82,7 +97,7 @@ type DomAttrBuilder with
         | Some (SafeString f) -> sb.Append(" [").Append(f).Append("]") |> ignore
         | _ -> ()
 
-        this.hxTrigger (render, sb.ToString())
+        render ==> ("hx-trigger" => sb.ToString())
 
 
     [<CustomOperation "hxSwap">]
@@ -124,10 +139,12 @@ type DomAttrBuilder with
     member inline _.hxInclude([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> ("hx-include" => x)
 
 
+    /// If you want the htmx-request class added to a different element, you can use the hx-indicator attribute with a CSS selector to do so.
     [<CustomOperation "hxIndicator">]
     member inline _.hxIndicator([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> ("hx-indicator" => x)
 
 
+    /// Often you want to coordinate the requests between two elements. For example, you may want a request from one element to supersede the request of another element, or to wait until the other elements request has finished.
     [<CustomOperation "hxSync">]
     member inline _.hxSync([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> ("hx-sync" => x)
 
@@ -155,19 +172,24 @@ type DomAttrBuilder with
     member inline _.hxPushUrl([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("hx-push-url" => if x then "true" else "false")
 
 
+    /// For security, if you don't want a particular part of the DOM to allow for htmx functionality, you can place this on the enclosing element of that area.
     [<CustomOperation "hxDisable">]
     member inline _.hxDisable([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("hx-disable" => if x then "true" else "false")
 
+    /// For security, if you don't want a particular part of the DOM to allow for htmx functionality, you can place this on the enclosing element of that area.
+    [<CustomOperation "hxDataDisable">]
+    member inline _.hxDataDisable([<InlineIfLambda>] render: AttrRenderFragment, x: bool) =
+        render ==> ("data-hx-disable" => if x then "true" else "false")
 
 
     [<CustomOperation "hxWS">]
     member inline _.hxWS([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> ("hx-ws" => x)
 
-    [<CustomOperation "hxWSConnect_ws">]
-    member inline _.hxWSConnect_ws([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> ("hx-ws" => "connect:ws:" + x)
+    [<CustomOperation "hxWS_connect_ws">]
+    member inline _.hxWS_connect_ws([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> ("hx-ws" => "connect:ws:" + x)
 
-    [<CustomOperation "hxWSConnect_wss">]
-    member inline _.hxWSConnect_wss([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> ("hx-ws" => "connect:wss:" + x)
+    [<CustomOperation "hxWS_connect_wss">]
+    member inline _.hxWS_connect_wss([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> ("hx-ws" => "connect:wss:" + x)
 
     [<CustomOperation "hxWS_send">]
     member inline _.hxWS_send([<InlineIfLambda>] render: AttrRenderFragment, ?x: string) =

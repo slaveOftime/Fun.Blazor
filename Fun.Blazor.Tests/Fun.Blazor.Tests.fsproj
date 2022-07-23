@@ -17,6 +17,7 @@
     <Compile Include="HookTests.fs" />
     <Compile Include="DomTests.fs" />
     <Compile Include="CascadingValueTests.fs" />
+    <Compile Include="HtmxTests.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>
@@ -36,5 +37,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fun.Blazor\Fun.Blazor.fsproj" />
+    <ProjectReference Include="..\Fun.Htmx\Fun.Htmx.fsproj" />
   </ItemGroup>
 </Project>
