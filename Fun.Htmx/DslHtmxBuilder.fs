@@ -7,7 +7,23 @@ open Fun.Blazor
 open Fun.Blazor.Operators
 
 
+[<AutoOpen>]
+module Internal =
+
+    let inline appendSwapModifier (modifier: SwapModifier option) (str: string) =
+        match modifier with
+        | Some modifier -> str + " " + modifier.ToString()
+        | _ -> str
+
+
 type DomAttrBuilder with
+
+    member inline _.Yield(x: HxTrigger) =
+        AttrRenderFragment(fun _ builder index ->
+            builder.AddAttribute(index, "hx-trigger", x.ToString())
+            index + 1
+        )
+
 
     [<CustomOperation "hxGet">]
     member inline _.hxGet([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> ("hx-get" => x)
@@ -29,6 +45,18 @@ type DomAttrBuilder with
     [<CustomOperation "hxTarget">]
     member inline _.hxTarget([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> ("hx-target" => x)
 
+    /// Indicates that the element that the hx-target attribute is on is the target.
+    [<CustomOperation "hxTarget_this">]
+    member inline _.hxTarget_this([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("hx-target" => "this")
+
+    /// find the closest parent ancestor that matches the given CSS selector. (e.g. closest tr will target the closest table row to the element).
+    [<CustomOperation "hxTarget_closest">]
+    member inline _.hxTarget_closest([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> ("hx-target" => "closest " + x)
+
+    /// Find the first child descendant element that matches the given CSS selector. (e.g find tr will target the first child descendant row to the element)
+    [<CustomOperation "hxTarget_find">]
+    member inline _.hxTarget_find([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> ("hx-target" => "find " + x)
+
 
     /// By default, AJAX requests are triggered by the "natural" event of an element
     ///
@@ -38,7 +66,7 @@ type DomAttrBuilder with
     ///
     /// If you want different behavior you can use the hx-trigger attribute to specify which event will cause the request.
     [<CustomOperation "hxTrigger">]
-    member inline _.hxTrigger([<InlineIfLambda>] render: AttrRenderFragment, x: TriggerBuilder) = render ==> ("hx-trigger" => x.ToString())
+    member inline _.hxTrigger([<InlineIfLambda>] render: AttrRenderFragment, x: HxTrigger) = render ==> ("hx-trigger" => x.ToString())
 
     /// By default, AJAX requests are triggered by the "natural" event of an element
     ///
@@ -56,8 +84,8 @@ type DomAttrBuilder with
             ?once,
             ?filter,
             ?changed,
-            ?delay,
-            ?throttle,
+            ?delayMs,
+            ?throttleMs,
             ?from,
             ?target,
             ?consume,
@@ -66,32 +94,31 @@ type DomAttrBuilder with
             ?threshold
         )
         =
-        let triggerStr =
-            TriggerBuilder()
-                .AddTrigger(
-                    event,
-                    sse = defaultArg sse false,
-                    once = defaultArg once false,
-                    filter = defaultArg filter "",
-                    changed = defaultArg changed false,
-                    delay = defaultArg delay 0,
-                    throttle = defaultArg throttle 0,
-                    from = defaultArg from "",
-                    target = defaultArg target "",
-                    consume = defaultArg consume false,
-                    queue = defaultArg queue HxQueue.None,
-                    root = defaultArg root "",
-                    threshold = defaultArg threshold 0.
-                )
-                .ToString()
+        let trigger =
+            HxTrigger(
+                event,
+                sse = defaultArg sse false,
+                once = defaultArg once false,
+                filter = defaultArg filter "",
+                changed = defaultArg changed false,
+                delayMs = defaultArg delayMs 0,
+                throttleMs = defaultArg throttleMs 0,
+                from = defaultArg from "",
+                target = defaultArg target "",
+                consume = defaultArg consume false,
+                queue = defaultArg queue HxQueue.None,
+                root = defaultArg root "",
+                threshold = defaultArg threshold 0.
+            )
 
-        render ==> ("hx-trigger" => triggerStr)
+        render ==> ("hx-trigger" => trigger.ToString())
 
 
+    /// If you want an element to poll the given URL rather than wait for an event, you can use the every syntax with the hx-trigger attribute.
     [<CustomOperation "hxTriggerPolling">]
-    member inline _.hxTriggerPolling([<InlineIfLambda>] render: AttrRenderFragment, time: int, ?filter: string) =
+    member inline _.hxTriggerPolling([<InlineIfLambda>] render: AttrRenderFragment, timeMs: int, ?filter: string) =
         let sb = new StringBuilder()
-        sb.Append("every ").Append(time).Append("ms") |> ignore
+        sb.Append("every ").Append(timeMs).Append("ms") |> ignore
 
         match filter with
         | Some (SafeString f) -> sb.Append(" [").Append(f).Append("]") |> ignore
@@ -100,33 +127,102 @@ type DomAttrBuilder with
         render ==> ("hx-trigger" => sb.ToString())
 
 
+    /// The hx-swap attribute allows you to specify how the response will be swapped in relative to the target of an AJAX request.
     [<CustomOperation "hxSwap">]
     member inline _.hxSwap([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> ("hx-swap" => x)
 
+    /// The hx-swap attribute allows you to specify how the response will be swapped in relative to the target of an AJAX request.
     [<CustomOperation "hxSwap_innerHTML">]
-    member inline _.hxSwap_innerHTML([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("hx-swap" => "innerHTML")
+    member inline _.hxSwap_innerHTML([<InlineIfLambda>] render: AttrRenderFragment, ?modifier: SwapModifier) =
+        render ==> ("hx-swap" => ("innerHTML" |> appendSwapModifier modifier))
 
+    /// The hx-swap attribute allows you to specify how the response will be swapped in relative to the target of an AJAX request.
     [<CustomOperation "hxSwap_outerHTML">]
-    member inline _.hxSwap_outerHTML([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("hx-swap" => "outerHTML")
+    member inline _.hxSwap_outerHTML([<InlineIfLambda>] render: AttrRenderFragment, ?modifier: SwapModifier) =
+        render ==> ("hx-swap" => ("outerHTML" |> appendSwapModifier modifier))
 
+    /// The hx-swap attribute allows you to specify how the response will be swapped in relative to the target of an AJAX request.
     [<CustomOperation "hxSwap_afterbegin">]
-    member inline _.hxSwap_afterbegin([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("hx-swap" => "afterbegin")
+    member inline _.hxSwap_afterbegin([<InlineIfLambda>] render: AttrRenderFragment, ?modifier: SwapModifier) =
+        render ==> ("hx-swap" => ("afterbegin" |> appendSwapModifier modifier))
 
+    /// The hx-swap attribute allows you to specify how the response will be swapped in relative to the target of an AJAX request.
     [<CustomOperation "hxSwap_beforebegin">]
-    member inline _.hxSwap_beforebegin([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("hx-swap" => "beforebegin")
+    member inline _.hxSwap_beforebegin([<InlineIfLambda>] render: AttrRenderFragment, ?modifier: SwapModifier) =
+        render ==> ("hx-swap" => ("beforebegin" |> appendSwapModifier modifier))
 
+    /// The hx-swap attribute allows you to specify how the response will be swapped in relative to the target of an AJAX request.
     [<CustomOperation "hxSwap_beforeend">]
-    member inline _.hxSwap_beforeend([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("hx-swap" => "beforeend")
+    member inline _.hxSwap_beforeend([<InlineIfLambda>] render: AttrRenderFragment, ?modifier: SwapModifier) =
+        render ==> ("hx-swap" => ("beforeend" |> appendSwapModifier modifier))
 
+    /// The hx-swap attribute allows you to specify how the response will be swapped in relative to the target of an AJAX request.
     [<CustomOperation "hxSwap_afterend">]
-    member inline _.hxSwap_afterend([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("hx-swap" => "afterend")
+    member inline _.hxSwap_afterend([<InlineIfLambda>] render: AttrRenderFragment, ?modifier: SwapModifier) =
+        render ==> ("hx-swap" => ("afterend" |> appendSwapModifier modifier))
 
+    /// The hx-swap attribute allows you to specify how the response will be swapped in relative to the target of an AJAX request.
     [<CustomOperation "hxSwap_none">]
-    member inline _.hxSwap_none([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("hx-swap" => "none")
+    member inline _.hxSwap_none([<InlineIfLambda>] render: AttrRenderFragment, ?modifier: SwapModifier) =
+        render ==> ("hx-swap" => ("none" |> appendSwapModifier modifier))
 
-    /// If you want to swap content from a response directly into the DOM by using the id attribute
+
+    /// The hx-swap-oob attribute allows you to specify that some content in a response should be swapped into the DOM somewhere other than the target, that is "Out of Band". This allows you to piggy back updates to other element updates on a response.
     [<CustomOperation "hxSwap_oob">]
     member inline _.hxSwap_oob([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("hx-swap-oob" => if x then "true" else "false")
+
+    /// The hx-swap-oob attribute allows you to specify that some content in a response should be swapped into the DOM somewhere other than the target, that is "Out of Band". This allows you to piggy back updates to other element updates on a response.
+    [<CustomOperation "hxSwap_oob_innerHTML">]
+    member inline _.hxSwap_oob_innerHTML([<InlineIfLambda>] render: AttrRenderFragment, ?modifier: SwapModifier) =
+        render ==> ("hx-swap-oob" => ("innerHTML" |> appendSwapModifier modifier))
+
+    /// The hx-swap-oob attribute allows you to specify that some content in a response should be swapped into the DOM somewhere other than the target, that is "Out of Band". This allows you to piggy back updates to other element updates on a response.
+    [<CustomOperation "hxSwap_oob_outerHTML">]
+    member inline _.hxSwap_oob_outerHTML([<InlineIfLambda>] render: AttrRenderFragment, ?modifier: SwapModifier) =
+        render ==> ("hx-swap-oob" => ("outerHTML" |> appendSwapModifier modifier))
+
+    /// The hx-swap-oob attribute allows you to specify that some content in a response should be swapped into the DOM somewhere other than the target, that is "Out of Band". This allows you to piggy back updates to other element updates on a response.
+    [<CustomOperation "hxSwap_oob_afterbegin">]
+    member inline _.hxSwap_oob_afterbegin([<InlineIfLambda>] render: AttrRenderFragment, ?modifier: SwapModifier) =
+        render ==> ("hx-swap-oob" => ("afterbegin" |> appendSwapModifier modifier))
+
+    /// The hx-swap-oob attribute allows you to specify that some content in a response should be swapped into the DOM somewhere other than the target, that is "Out of Band". This allows you to piggy back updates to other element updates on a response.
+    [<CustomOperation "hxSwap_oob_beforebegin">]
+    member inline _.hxSwap_oob_beforebegin([<InlineIfLambda>] render: AttrRenderFragment, ?modifier: SwapModifier) =
+        render ==> ("hx-swap-oob" => ("beforebegin" |> appendSwapModifier modifier))
+
+    /// The hx-swap-oob attribute allows you to specify that some content in a response should be swapped into the DOM somewhere other than the target, that is "Out of Band". This allows you to piggy back updates to other element updates on a response.
+    [<CustomOperation "hxSwap_oob_beforeend">]
+    member inline _.hxSwap_oob_beforeend([<InlineIfLambda>] render: AttrRenderFragment, ?modifier: SwapModifier) =
+        render ==> ("hx-swap-oob" => ("beforeend" |> appendSwapModifier modifier))
+
+    /// The hx-swap-oob attribute allows you to specify that some content in a response should be swapped into the DOM somewhere other than the target, that is "Out of Band". This allows you to piggy back updates to other element updates on a response.
+    [<CustomOperation "hxSwap_oob_afterend">]
+    member inline _.hxSwap_oob_afterend([<InlineIfLambda>] render: AttrRenderFragment, ?modifier: SwapModifier) =
+        render ==> ("hx-swap-oob" => ("afterend" |> appendSwapModifier modifier))
+
+    /// The hx-swap-oob attribute allows you to specify that some content in a response should be swapped into the DOM somewhere other than the target, that is "Out of Band". This allows you to piggy back updates to other element updates on a response.
+    [<CustomOperation "hxSwap_oob_none">]
+    member inline _.hxSwap_oob_none([<InlineIfLambda>] render: AttrRenderFragment, ?modifier: SwapModifier) =
+        render ==> ("hx-swap-oob" => ("none" |> appendSwapModifier modifier))
+
+
+    /// Include all the comma separated list of parameter names
+    [<CustomOperation "hxParams">]
+    member inline _.hxParams([<InlineIfLambda>] render: AttrRenderFragment, x: string) =
+        let ps =
+            match x with
+            | SafeString x -> x
+            | _ -> "*"
+        render ==> ("hx-params" => ps)
+
+    /// Include no parameters
+    [<CustomOperation "hxParams_none">]
+    member inline _.hxParams_none([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("hx-params" => "none")
+
+    /// Include all except the comma separated list of parameter names
+    [<CustomOperation "hxParams_not">]
+    member inline _.hxParams_none([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> ("hx-params" => "not " + x)
 
 
     /// Allows you to select the content you want swapped from a response

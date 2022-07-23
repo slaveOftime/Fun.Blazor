@@ -337,10 +337,27 @@ module hxEvt =
         let unload = "unload"
 
 
-
-
-type TriggerBuilder() =
+type HxTrigger(event: string, ?sse, ?once, ?filter, ?changed, ?delayMs, ?throttleMs, ?from, ?target, ?consume, ?queue, ?root, ?threshold) as this =
     let sb = new StringBuilder()
+
+    do
+        this.AddTrigger(
+            event,
+            sse = defaultArg sse false,
+            once = defaultArg once false,
+            filter = defaultArg filter "",
+            changed = defaultArg changed false,
+            delayMs = defaultArg delayMs 0,
+            throttleMs = defaultArg throttleMs 0,
+            from = defaultArg from "",
+            target = defaultArg target "",
+            consume = defaultArg consume false,
+            queue = defaultArg queue HxQueue.None,
+            root = defaultArg root "",
+            threshold = defaultArg threshold 0.
+        )
+        |> ignore
+
 
     member this.AddTrigger
         (
@@ -349,8 +366,8 @@ type TriggerBuilder() =
             ?filter: string,
             ?once: bool,
             ?changed: bool,
-            ?delay: int,
-            ?throttle: int,
+            ?delayMs: int,
+            ?throttleMs: int,
             ?from: string,
             ?target: string,
             ?consume: bool,
@@ -379,11 +396,11 @@ type TriggerBuilder() =
         | Some true -> sb.Append(" changed") |> ignore
         | _ -> ()
 
-        match delay with
+        match delayMs with
         | Some d when d > 0 -> sb.Append(" delay:").Append(d).Append("ms") |> ignore
         | _ -> ()
 
-        match throttle with
+        match throttleMs with
         | Some t when t > 0 -> sb.Append(" throttle:").Append(t).Append("ms") |> ignore
         | _ -> ()
 
@@ -417,3 +434,62 @@ type TriggerBuilder() =
 
 
     override _.ToString() = sb.ToString()
+
+
+type hxTrigger' = HxTrigger
+
+
+type SwapModifier() =
+    let dicts = System.Collections.Generic.Dictionary<string, string>()
+
+    /// You can modify the amount of time that htmx will wait after receiving a response to swap the content by including a swap modifier
+    member this.Swap(ms: int) =
+        dicts["swap"] <- string ms
+        this
+
+    /// You can modify the time between the swap and the settle logic by including a settle modifier
+    member this.Settle(ms: int) =
+        dicts["settle"] <- string ms
+        this
+
+
+    member this.ScrollTop(?target: string) =
+        dicts["scroll"] <-
+            match target with
+            | Some (SafeString x) -> x + ":top"
+            | _ -> "top"
+        this
+
+    member this.ScrollBottom(?target: string) =
+        dicts["scroll"] <-
+            match target with
+            | Some (SafeString x) -> x + ":bottom"
+            | _ -> "bottom"
+        this
+
+    member this.ShowTop(?target: string) =
+        dicts["show"] <-
+            match target with
+            | Some (SafeString x) -> x + ":top"
+            | _ -> "top"
+        this
+
+    member this.ShowBottom(?target: string) =
+        dicts["show"] <-
+            match target with
+            | Some (SafeString x) -> x + ":bottom"
+            | _ -> "bottom"
+        this
+
+
+    member this.FocusScroll(x: bool) =
+        dicts["focus-scroll"] <- if x then "true" else "false"
+        this
+
+
+    override _.ToString() =
+        let sb = new StringBuilder()
+        for KeyValue (k, v) in dicts do
+            if sb.Length > 0 then sb.Append(" ") |> ignore
+            sb.Append(k).Append(":").Append(v) |> ignore
+        sb.ToString()
