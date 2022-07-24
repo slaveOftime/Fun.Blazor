@@ -1,6 +1,7 @@
 ﻿namespace Fun.Blazor
 
 open System
+open System.Text
 open System.Collections.Concurrent
 open System.Threading.Tasks
 open FSharp.Data.Adaptive
@@ -18,6 +19,15 @@ type html() =
     static member mergeNodes nodes = nodes |> Seq.fold (>=>) (emptyNode ())
 
     static member fragment nodes = html.mergeNodes nodes
+
+
+    /// This api currently only support element
+    static member inline renderToString(node: NodeRenderFragment) =
+        let sb = stringBuilderPool.Get()
+        node.Invoke(null, StringRenderTreeBuilder sb, 0) |> ignore
+        let str = sb.ToString()
+        stringBuilderPool.Return sb
+        str
 
 
     static member internal compCache =
@@ -115,7 +125,7 @@ type html() =
                 name,
                 box (
                     Microsoft.AspNetCore.Components.RenderFragment<'TItem>(fun x ->
-                        Microsoft.AspNetCore.Components.RenderFragment(fun tb -> render(x).Invoke(comp, tb, 0) |> ignore)
+                        Microsoft.AspNetCore.Components.RenderFragment(fun tb -> render(x).Invoke(comp, BlazorRenderTreeBuilder tb, 0) |> ignore)
                     )
                 )
             )
@@ -124,7 +134,11 @@ type html() =
 
     static member inline renderFragment(name: string, fragment: NodeRenderFragment) =
         AttrRenderFragment(fun comp builder index ->
-            builder.AddAttribute(index, name, box (Microsoft.AspNetCore.Components.RenderFragment(fun tb -> fragment.Invoke(comp, tb, 0) |> ignore)))
+            builder.AddAttribute(
+                index,
+                name,
+                box (Microsoft.AspNetCore.Components.RenderFragment(fun tb -> fragment.Invoke(comp, BlazorRenderTreeBuilder tb, 0) |> ignore))
+            )
             index + 1
         )
 

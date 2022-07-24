@@ -139,7 +139,7 @@ type ComponentWithChildBuilder<'T when 'T :> IComponent>() =
     member inline _.Run([<InlineIfLambda>] render: NodeRenderFragment) =
         NodeRenderFragment(fun comp builder index ->
             builder.OpenComponent<'T>(index)
-            builder.AddAttribute(index + 1, "ChildContent", RenderFragment(fun tb -> render.Invoke(comp, tb, 0) |> ignore))
+            builder.AddAttribute(index + 1, "ChildContent", RenderFragment(fun tb -> render.Invoke(comp, BlazorRenderTreeBuilder tb, 0) |> ignore))
             builder.CloseComponent()
             index + 2
         )
@@ -153,7 +153,7 @@ type ComponentWithChildBuilder<'T when 'T :> IComponent>() =
             let (render1, render2) = renders
             builder.OpenComponent<'T>(index)
             let nextIndex = render1.Invoke(comp, builder, index + 1)
-            builder.AddAttribute(nextIndex, "ChildContent", RenderFragment(fun tb -> render2.Invoke(comp, tb, 0) |> ignore))
+            builder.AddAttribute(nextIndex, "ChildContent", RenderFragment(fun tb -> render2.Invoke(comp, BlazorRenderTreeBuilder tb, 0) |> ignore))
             builder.CloseComponent()
             nextIndex + 1
         )
@@ -163,7 +163,7 @@ type ComponentWithChildBuilder<'T when 'T :> IComponent>() =
         NodeRenderFragment(fun comp builder index ->
             let (render1, render2) = renders
             builder.OpenComponent<'T>(index)
-            builder.AddAttribute(index + 1, "ChildContent", RenderFragment(fun tb -> render2.Invoke(comp, tb, 0) |> ignore))
+            builder.AddAttribute(index + 1, "ChildContent", RenderFragment(fun tb -> render2.Invoke(comp, BlazorRenderTreeBuilder tb, 0) |> ignore))
             let nextIndex = render1.Invoke(comp, builder, index + 2)
             builder.CloseComponent()
             nextIndex
@@ -348,7 +348,7 @@ type ComponentWithDomAndChildAttrBuilder<'T when 'T :> IComponent>() =
     member inline _.Run([<InlineIfLambda>] render: NodeRenderFragment) =
         NodeRenderFragment(fun comp builder index ->
             builder.OpenComponent<'T>(index)
-            builder.AddAttribute(index + 1, "ChildContent", RenderFragment(fun tb -> render.Invoke(comp, tb, 0) |> ignore))
+            builder.AddAttribute(index + 1, "ChildContent", RenderFragment(fun tb -> render.Invoke(comp, BlazorRenderTreeBuilder tb, 0) |> ignore))
             builder.CloseComponent()
             index + 2
         )
@@ -362,7 +362,7 @@ type ComponentWithDomAndChildAttrBuilder<'T when 'T :> IComponent>() =
             let (render1, render2) = renders
             builder.OpenComponent<'T>(index)
             let nextIndex = render1.Invoke(comp, builder, index + 1)
-            builder.AddAttribute(nextIndex, "ChildContent", RenderFragment(fun tb -> render2.Invoke(comp, tb, 0) |> ignore))
+            builder.AddAttribute(nextIndex, "ChildContent", RenderFragment(fun tb -> render2.Invoke(comp, BlazorRenderTreeBuilder tb, 0) |> ignore))
             builder.CloseComponent()
             nextIndex + 1
         )
@@ -372,7 +372,7 @@ type ComponentWithDomAndChildAttrBuilder<'T when 'T :> IComponent>() =
         NodeRenderFragment(fun comp builder index ->
             let (render1, render2) = renders
             builder.OpenComponent<'T>(index)
-            builder.AddAttribute(index + 1, "ChildContent", RenderFragment(fun tb -> render2.Invoke(comp, tb, 0) |> ignore))
+            builder.AddAttribute(index + 1, "ChildContent", RenderFragment(fun tb -> render2.Invoke(comp, BlazorRenderTreeBuilder tb, 0) |> ignore))
             let nextIndex = render1.Invoke(comp, builder, index + 2)
             builder.CloseComponent()
             nextIndex

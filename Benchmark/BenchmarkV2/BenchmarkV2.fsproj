@@ -11,12 +11,14 @@
     <Compile Include="BasicBenchmark\BoleroComponent.fs" />
     <Compile Include="BasicBenchmark\Benchmarks.fs" />
     <Compile Include="BlazorInterop\Benchmarks.fs" />
+    <Compile Include="GanerateHtml\Benchmarks.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" Version="0.13.1" />
     <PackageReference Include="Bolero" Version="0.20.17" />
+    <PackageReference Include="Giraffe.ViewEngine" Version="1.4.0" />
     <PackageReference Include="MudBlazor" Version="6.0.10" />
   </ItemGroup>
 

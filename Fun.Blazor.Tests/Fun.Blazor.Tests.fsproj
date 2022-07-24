@@ -18,6 +18,7 @@
     <Compile Include="DomTests.fs" />
     <Compile Include="CascadingValueTests.fs" />
     <Compile Include="ServerTests.fs" />
+    <Compile Include="StringRenderTreeBuilderTests.fs" />
     <Compile Include="HtmxTests.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>

@@ -10,15 +10,15 @@ open Microsoft.AspNetCore.Components.Rendering
 /// Provide a delegate so we can extend how we plug piece of attribute into blazor RenderTree
 /// root should be the nearest root component, builder should be passed by the context, sequence is the usable sequence number.
 /// Return int should be the next useable sequence
-type AttrRenderFragment = delegate of root: IComponent * builder: RenderTreeBuilder * sequence: int -> int
+type AttrRenderFragment = delegate of root: IComponent * builder: IRenderTreeBuilder * sequence: int -> int
 
 /// Provide a delegate so we can extend how we plug piece of node into blazor RenderTree
 /// root should be the nearest root component, builder should be passed by the context, sequence is the usable sequence number.
 /// Return int should be the next useable sequence
-type NodeRenderFragment = delegate of root: IComponent * builder: RenderTreeBuilder * sequence: int -> int
+type NodeRenderFragment = delegate of root: IComponent * builder: IRenderTreeBuilder * sequence: int -> int
 
 /// In blazor, we cannot add attribute after add ref, so we need a clear position to seperate them
-type RefRenderFragment = delegate of root: IComponent * builder: RenderTreeBuilder * sequence: int -> int
+type RefRenderFragment = delegate of root: IComponent * builder: IRenderTreeBuilder * sequence: int -> int
 
 
 module Operators =
@@ -81,7 +81,7 @@ type FunBlazorComponent() as this =
     member val FunBlazorDebugKey: obj = null with get, set
 #endif
 
-    override _.BuildRenderTree(builder: RenderTreeBuilder) = this.Render().Invoke(this, builder, 0) |> ignore
+    override _.BuildRenderTree(builder: RenderTreeBuilder) = this.Render().Invoke(this, BlazorRenderTreeBuilder builder, 0) |> ignore
 
     override _.OnInitialized() =
 #if DEBUG

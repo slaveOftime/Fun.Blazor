@@ -15,12 +15,21 @@ Check the [WASM Docs](https://slaveoftime.github.io/Fun.Blazor.Docs/) for more ð
 
 ## Benchmark
 
+Render blazor tree 
+
 |               Method        |       Mean |    Error |   StdDev |  Gen 0 | Allocated |
 |---------------------------- |-----------:|---------:|---------:|-------:|----------:|
 |       RenderWithRazorCSharp |   400.3 ns |  6.99 ns |  6.20 ns | 0.0610 |     384 B |
 |            RenderWithBolero |   926.1 ns | 17.49 ns | 17.96 ns | 0.2546 |   1,600 B |
 |       RenderWithFunBlazorCE |   731.1 ns | 14.07 ns | 21.49 ns | 0.1173 |     736 B |
 | RenderWithFunBlazorTemplate | 2,569.9 ns | 42.22 ns | 39.50 ns | 0.6752 |   4,240 B |
+
+Render simple html element string 
+
+|        Method |     Mean |    Error |   StdDev |  Gen 0 | Allocated |
+|-------------- |---------:|---------:|---------:|-------:|----------:|
+|   GiraffeDemo | 897.9 ns | 17.95 ns | 21.37 ns | 2.6455 |  11,072 B |
+| FunBlazorDemo | 457.7 ns |  8.86 ns |  8.70 ns | 0.1545 |     648 B |
 
 
 ## Main projects

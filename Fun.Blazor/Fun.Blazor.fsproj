@@ -9,6 +9,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<Compile Include="RenderTree\IRenderTreeBuilder.fs" />
+		<Compile Include="RenderTree\BlazorRenderTreeBuilder.fs" />
+		<Compile Include="RenderTree\StringRenderTreeBuilder.fs" />
 		<Compile Include="Core.fs" />
 		<Compile Include="Utils.fs" />
 		<Compile Include="I18n.fs" />
