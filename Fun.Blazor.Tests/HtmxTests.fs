@@ -35,17 +35,20 @@ let ``TriggerBuilder should work`` () =
                     )
                 }
                 div {
-                    hxTrigger' (hxEvt.mouse.dblclick, once = true)
+                    hxTrigger'(hxEvt.mouse.dblclick, once = true)
+                        .AddTrigger(hxEvt.mouse.click)
+                        .AddTrigger(hxEvt.mouse.mousemove)
+                        .AddTrigger(hxEvt.mouse.mouseover)
                     "TEST"
                 }
                 div {
                     hxTrigger hxEvt.revealed
-                    hxSwap_beforebegin (SwapModifier().Swap(1).Settle(2).FocusScroll(true).ScrollTop("#target").ShowTop())
+                    hxSwap_beforebegin'().Swap(1).Settle(2).FocusScroll(true).ScrollTop("#target").ShowTop()
                 }
                 div {
                     hxPost "/test2"
                     hxTarget_find "#find"
-                    hxSwap_oob_afterend (SwapModifier().FocusScroll(true))
+                    hxSwap_oob_afterend'().FocusScroll(true)
                 }
             }
         )
@@ -53,7 +56,7 @@ let ``TriggerBuilder should work`` () =
     result.MarkupMatches(
         """
         <div hx-get="/test" hx-trigger="sse:load[ctlKey] once changed delay:100ms throttle:200ms from:#from target:#target consume queue:first, click"></div>
-        <div hx-trigger="dblclick once">TEST</div>
+        <div hx-trigger="dblclick once, click, mousemove, mouseover">TEST</div>
         <div hx-trigger="revealed" hx-swap="beforebegin swap:1 settle:2 focus-scroll:true scroll:#target:top show:top"></div>
         <div hx-post="/test2" hx-target="find #find" hx-swap-oob="afterend focus-scroll:true"></div>
         """

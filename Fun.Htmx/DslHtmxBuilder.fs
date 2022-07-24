@@ -7,20 +7,17 @@ open Fun.Blazor
 open Fun.Blazor.Operators
 
 
-[<AutoOpen>]
-module Internal =
-
-    let inline appendSwapModifier (modifier: SwapModifier option) (str: string) =
-        match modifier with
-        | Some modifier -> str + " " + modifier.ToString()
-        | _ -> str
-
-
 type DomAttrBuilder with
 
     member inline _.Yield(x: HxTrigger) =
         AttrRenderFragment(fun _ builder index ->
             builder.AddAttribute(index, "hx-trigger", x.ToString())
+            index + 1
+        )
+
+    member inline _.Yield(swap: HxSwapAndModifier) =
+        AttrRenderFragment(fun _ builder index ->
+            builder.AddAttribute(index, (if swap.OOB then "hx-swap-oob" else "hx-swap"), swap.ToString())
             index + 1
         )
 
@@ -133,38 +130,31 @@ type DomAttrBuilder with
 
     /// The hx-swap attribute allows you to specify how the response will be swapped in relative to the target of an AJAX request.
     [<CustomOperation "hxSwap_innerHTML">]
-    member inline _.hxSwap_innerHTML([<InlineIfLambda>] render: AttrRenderFragment, ?modifier: SwapModifier) =
-        render ==> ("hx-swap" => ("innerHTML" |> appendSwapModifier modifier))
+    member inline _.hxSwap_innerHTML([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("hx-swap" => "innerHTML")
 
     /// The hx-swap attribute allows you to specify how the response will be swapped in relative to the target of an AJAX request.
     [<CustomOperation "hxSwap_outerHTML">]
-    member inline _.hxSwap_outerHTML([<InlineIfLambda>] render: AttrRenderFragment, ?modifier: SwapModifier) =
-        render ==> ("hx-swap" => ("outerHTML" |> appendSwapModifier modifier))
+    member inline _.hxSwap_outerHTML([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("hx-swap" => "outerHTML")
 
     /// The hx-swap attribute allows you to specify how the response will be swapped in relative to the target of an AJAX request.
     [<CustomOperation "hxSwap_afterbegin">]
-    member inline _.hxSwap_afterbegin([<InlineIfLambda>] render: AttrRenderFragment, ?modifier: SwapModifier) =
-        render ==> ("hx-swap" => ("afterbegin" |> appendSwapModifier modifier))
+    member inline _.hxSwap_afterbegin([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("hx-swap" => "afterbegin")
 
     /// The hx-swap attribute allows you to specify how the response will be swapped in relative to the target of an AJAX request.
     [<CustomOperation "hxSwap_beforebegin">]
-    member inline _.hxSwap_beforebegin([<InlineIfLambda>] render: AttrRenderFragment, ?modifier: SwapModifier) =
-        render ==> ("hx-swap" => ("beforebegin" |> appendSwapModifier modifier))
+    member inline _.hxSwap_beforebegin([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("hx-swap" => "beforebegin")
 
     /// The hx-swap attribute allows you to specify how the response will be swapped in relative to the target of an AJAX request.
     [<CustomOperation "hxSwap_beforeend">]
-    member inline _.hxSwap_beforeend([<InlineIfLambda>] render: AttrRenderFragment, ?modifier: SwapModifier) =
-        render ==> ("hx-swap" => ("beforeend" |> appendSwapModifier modifier))
+    member inline _.hxSwap_beforeend([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("hx-swap" => "beforeend")
 
     /// The hx-swap attribute allows you to specify how the response will be swapped in relative to the target of an AJAX request.
     [<CustomOperation "hxSwap_afterend">]
-    member inline _.hxSwap_afterend([<InlineIfLambda>] render: AttrRenderFragment, ?modifier: SwapModifier) =
-        render ==> ("hx-swap" => ("afterend" |> appendSwapModifier modifier))
+    member inline _.hxSwap_afterend([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("hx-swap" => "afterend")
 
     /// The hx-swap attribute allows you to specify how the response will be swapped in relative to the target of an AJAX request.
     [<CustomOperation "hxSwap_none">]
-    member inline _.hxSwap_none([<InlineIfLambda>] render: AttrRenderFragment, ?modifier: SwapModifier) =
-        render ==> ("hx-swap" => ("none" |> appendSwapModifier modifier))
+    member inline _.hxSwap_none([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("hx-swap" => "none")
 
 
     /// The hx-swap-oob attribute allows you to specify that some content in a response should be swapped into the DOM somewhere other than the target, that is "Out of Band". This allows you to piggy back updates to other element updates on a response.
@@ -173,38 +163,31 @@ type DomAttrBuilder with
 
     /// The hx-swap-oob attribute allows you to specify that some content in a response should be swapped into the DOM somewhere other than the target, that is "Out of Band". This allows you to piggy back updates to other element updates on a response.
     [<CustomOperation "hxSwap_oob_innerHTML">]
-    member inline _.hxSwap_oob_innerHTML([<InlineIfLambda>] render: AttrRenderFragment, ?modifier: SwapModifier) =
-        render ==> ("hx-swap-oob" => ("innerHTML" |> appendSwapModifier modifier))
+    member inline _.hxSwap_oob_innerHTML([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("hx-swap-oob" => "innerHTML")
 
     /// The hx-swap-oob attribute allows you to specify that some content in a response should be swapped into the DOM somewhere other than the target, that is "Out of Band". This allows you to piggy back updates to other element updates on a response.
     [<CustomOperation "hxSwap_oob_outerHTML">]
-    member inline _.hxSwap_oob_outerHTML([<InlineIfLambda>] render: AttrRenderFragment, ?modifier: SwapModifier) =
-        render ==> ("hx-swap-oob" => ("outerHTML" |> appendSwapModifier modifier))
+    member inline _.hxSwap_oob_outerHTML([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("hx-swap-oob" => "outerHTML")
 
     /// The hx-swap-oob attribute allows you to specify that some content in a response should be swapped into the DOM somewhere other than the target, that is "Out of Band". This allows you to piggy back updates to other element updates on a response.
     [<CustomOperation "hxSwap_oob_afterbegin">]
-    member inline _.hxSwap_oob_afterbegin([<InlineIfLambda>] render: AttrRenderFragment, ?modifier: SwapModifier) =
-        render ==> ("hx-swap-oob" => ("afterbegin" |> appendSwapModifier modifier))
+    member inline _.hxSwap_oob_afterbegin([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("hx-swap-oob" => "afterbegin")
 
     /// The hx-swap-oob attribute allows you to specify that some content in a response should be swapped into the DOM somewhere other than the target, that is "Out of Band". This allows you to piggy back updates to other element updates on a response.
     [<CustomOperation "hxSwap_oob_beforebegin">]
-    member inline _.hxSwap_oob_beforebegin([<InlineIfLambda>] render: AttrRenderFragment, ?modifier: SwapModifier) =
-        render ==> ("hx-swap-oob" => ("beforebegin" |> appendSwapModifier modifier))
+    member inline _.hxSwap_oob_beforebegin([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("hx-swap-oob" => "beforebegin")
 
     /// The hx-swap-oob attribute allows you to specify that some content in a response should be swapped into the DOM somewhere other than the target, that is "Out of Band". This allows you to piggy back updates to other element updates on a response.
     [<CustomOperation "hxSwap_oob_beforeend">]
-    member inline _.hxSwap_oob_beforeend([<InlineIfLambda>] render: AttrRenderFragment, ?modifier: SwapModifier) =
-        render ==> ("hx-swap-oob" => ("beforeend" |> appendSwapModifier modifier))
+    member inline _.hxSwap_oob_beforeend([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("hx-swap-oob" => "beforeend")
 
     /// The hx-swap-oob attribute allows you to specify that some content in a response should be swapped into the DOM somewhere other than the target, that is "Out of Band". This allows you to piggy back updates to other element updates on a response.
     [<CustomOperation "hxSwap_oob_afterend">]
-    member inline _.hxSwap_oob_afterend([<InlineIfLambda>] render: AttrRenderFragment, ?modifier: SwapModifier) =
-        render ==> ("hx-swap-oob" => ("afterend" |> appendSwapModifier modifier))
+    member inline _.hxSwap_oob_afterend([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("hx-swap-oob" => "afterend")
 
     /// The hx-swap-oob attribute allows you to specify that some content in a response should be swapped into the DOM somewhere other than the target, that is "Out of Band". This allows you to piggy back updates to other element updates on a response.
     [<CustomOperation "hxSwap_oob_none">]
-    member inline _.hxSwap_oob_none([<InlineIfLambda>] render: AttrRenderFragment, ?modifier: SwapModifier) =
-        render ==> ("hx-swap-oob" => ("none" |> appendSwapModifier modifier))
+    member inline _.hxSwap_oob_none([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("hx-swap-oob" => "none")
 
 
     /// Include all the comma separated list of parameter names

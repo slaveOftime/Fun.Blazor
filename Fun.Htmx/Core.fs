@@ -439,8 +439,11 @@ type HxTrigger(event: string, ?sse, ?once, ?filter, ?changed, ?delayMs, ?throttl
 type hxTrigger' = HxTrigger
 
 
-type SwapModifier() =
+type HxSwapAndModifier(ty: string, ?oob: bool) =
     let dicts = System.Collections.Generic.Dictionary<string, string>()
+
+    member _.Type = ty
+    member _.OOB = defaultArg oob false
 
     /// You can modify the amount of time that htmx will wait after receiving a response to swap the content by including a swap modifier
     member this.Swap(ms: int) =
@@ -489,7 +492,46 @@ type SwapModifier() =
 
     override _.ToString() =
         let sb = new StringBuilder()
+        sb.Append(ty) |> ignore
         for KeyValue (k, v) in dicts do
             if sb.Length > 0 then sb.Append(" ") |> ignore
             sb.Append(k).Append(":").Append(v) |> ignore
         sb.ToString()
+
+
+type hxSwap_innerHTML'() =
+    inherit HxSwapAndModifier "innerHTML"
+
+type hxSwap_outerHTML'() =
+    inherit HxSwapAndModifier "outerHTML"
+
+type hxSwap_afterbegin'() =
+    inherit HxSwapAndModifier "afterbegin"
+
+type hxSwap_beforebegin'() =
+    inherit HxSwapAndModifier "beforebegin"
+
+type hxSwap_beforeend'() =
+    inherit HxSwapAndModifier "beforeend"
+
+type hxSwap_afterend'() =
+    inherit HxSwapAndModifier "afterend"
+
+
+type hxSwap_oob_innerHTML'() =
+    inherit HxSwapAndModifier("innerHTML", true)
+
+type hxSwap_oob_outerHTML'() =
+    inherit HxSwapAndModifier("outerHTML", true)
+
+type hxSwap_oob_afterbegin'() =
+    inherit HxSwapAndModifier("afterbegin", true)
+
+type hxSwap_oob_beforebegin'() =
+    inherit HxSwapAndModifier("beforebegin", true)
+
+type hxSwap_oob_beforeend'() =
+    inherit HxSwapAndModifier("beforeend", true)
+
+type hxSwap_oob_afterend'() =
+    inherit HxSwapAndModifier("afterend", true)
