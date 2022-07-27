@@ -41,10 +41,15 @@ let private getMetaInfo useInline (ty: Type) =
         | (name, generics), None -> name, generics, None
 
     let originalGenerics = generics |> getTypeNames |> createGenerics |> closeGenerics
-    let originalTypeWithGenerics = $"{ty.Namespace}.{getTypeShortName ty}{originalGenerics}"
+    let originalTypeWithGenerics =
+        $"{ty.Namespace}.{getTypeShortName ty}{originalGenerics}"
     let customOperation name = $"[<CustomOperation(\"{name}\")>]"
     let memberStart = if useInline then "member inline _." else "member _."
-    let contextArg = if useInline then "[<InlineIfLambda>] render: AttrRenderFragment" else "render: AttrRenderFragment"
+    let contextArg =
+        if useInline then
+            "[<InlineIfLambda>] render: AttrRenderFragment"
+        else
+            "render: AttrRenderFragment"
 
     let rawProps = ty.GetProperties()
     let filteredProps = getValidBlazorProps ty rawProps
@@ -56,25 +61,27 @@ let private getMetaInfo useInline (ty: Type) =
         |> Seq.map (fun prop ->
             let name = prop.Name
             let name =
-                if fsharpKeywords
-                   @ [
-                       "Bind"
-                       "Delay"
-                       "Return"
-                       "ReturnFrom"
-                       "Run"
-                       "Combine"
-                       "For"
-                       "TryFinally"
-                       "TryWith"
-                       "Using"
-                       "While"
-                       "Yield"
-                       "YieldFrom"
-                       "Zero"
-                       "Quote"
-                   ]
-                   |> List.contains name then
+                if
+                    fsharpKeywords
+                    @ [
+                        "Bind"
+                        "Delay"
+                        "Return"
+                        "ReturnFrom"
+                        "Run"
+                        "Combine"
+                        "For"
+                        "TryFinally"
+                        "TryWith"
+                        "Using"
+                        "While"
+                        "Yield"
+                        "YieldFrom"
+                        "Zero"
+                        "Quote"
+                    ]
+                    |> List.contains name
+                then
                     $"{name}'"
                 else
                     name
@@ -89,8 +96,10 @@ let private getMetaInfo useInline (ty: Type) =
                     []
 
             if prop.PropertyType.IsGenericType then
-                if prop.PropertyType.Name.StartsWith "EventCallback"
-                   || prop.PropertyType.Name.StartsWith "Microsoft.AspNetCore.Components.EventCallback" then
+                if
+                    prop.PropertyType.Name.StartsWith "EventCallback"
+                    || prop.PropertyType.Name.StartsWith "Microsoft.AspNetCore.Components.EventCallback"
+                then
                     [
                         $"    {customOperation name} {memberStart}{name} ({contextArg}, fn) = render ==> html.callback<{getTypeName prop.PropertyType.GenericTypeArguments.[0]}>(\"{prop.Name}\", fn)"
                         $"    {customOperation name} {memberStart}{name} ({contextArg}, fn) = render ==> html.callbackTask<{getTypeName prop.PropertyType.GenericTypeArguments.[0]}>(\"{prop.Name}\", fn)"
@@ -100,8 +109,10 @@ let private getMetaInfo useInline (ty: Type) =
                     [
                         $"    {customOperation name} {memberStart}{name} ({contextArg}, fn: {getTypeName prop.PropertyType.GenericTypeArguments.[0]} -> {nameof NodeRenderFragment}) = render ==> html.renderFragment(\"{prop.Name}\", fn)"
                     ]
-                elif prop.PropertyType.Namespace = "System"
-                     && (prop.PropertyType.Name.StartsWith "Func`" || prop.PropertyType.Name.StartsWith "Action`") then
+                elif
+                    prop.PropertyType.Namespace = "System"
+                    && (prop.PropertyType.Name.StartsWith "Func`" || prop.PropertyType.Name.StartsWith "Action`")
+                then
                     [
                         $"    {customOperation name} {memberStart}{name} ({contextArg}, fn) = render ==> (\"{prop.Name}\" => ({getTypeName prop.PropertyType}fn))"
                     ]
@@ -133,8 +144,10 @@ let private getMetaInfo useInline (ty: Type) =
                         yield! createBindableProps propTypeName
                     ]
 
-            elif prop.PropertyType.Name.StartsWith "EventCallback"
-                 || prop.PropertyType.Name.StartsWith "Microsoft.AspNetCore.Components.EventCallback" then
+            elif
+                prop.PropertyType.Name.StartsWith "EventCallback"
+                || prop.PropertyType.Name.StartsWith "Microsoft.AspNetCore.Components.EventCallback"
+            then
                 [
                     $"    {customOperation name} {memberStart}{name} ({contextArg}, fn) = render ==> html.callback(\"{prop.Name}\", fn)"
                     $"    {customOperation name} {memberStart}{name} ({contextArg}, fn) = render ==> html.callbackTask(\"{prop.Name}\", fn)"
@@ -201,7 +214,8 @@ let private getMetaInfo useInline (ty: Type) =
 
 
 let generateCode (targetNamespace: string) (opens: string) (tys: Type seq) useInline =
-    let metaInfos = tys |> MetaInfo.create (getMetaInfo useInline >> fun x -> Namespace x.ty.Namespace, x)
+    let metaInfos =
+        tys |> MetaInfo.create (getMetaInfo useInline >> fun x -> Namespace x.ty.Namespace, x)
 
     let trimNamespace (ns: string) =
         metaInfos.rootNamespaces
@@ -244,10 +258,13 @@ let generateCode (targetNamespace: string) (opens: string) (tys: Type seq) useIn
             let code =
                 metas
                 |> Seq.map (fun meta ->
-                    let originalGenerics = meta.generics |> getTypeNames |> createGenerics |> closeGenerics
-                    let originalTypeWithGenerics = $"{meta.ty.Namespace}.{getTypeShortName meta.ty}{originalGenerics}"
+                    let originalGenerics =
+                        meta.generics |> getTypeNames |> createGenerics |> closeGenerics
+                    let originalTypeWithGenerics =
+                        $"{meta.ty.Namespace}.{getTypeShortName meta.ty}{originalGenerics}"
                     let builderName = makeBuilderName meta.ty
-                    let funBlazorGenericConstraint = $"{funBlazorGeneric} :> Microsoft.AspNetCore.Components.IComponent"
+                    let funBlazorGenericConstraint =
+                        $"{funBlazorGeneric} :> Microsoft.AspNetCore.Components.IComponent"
                     let builderGenerics =
                         funBlazorGeneric :: (getTypeNames meta.generics) |> createGenerics |> closeGenerics
                     let builderGenericsWithContraints =
@@ -295,18 +312,32 @@ type {builderName}{builderGenericsWithContraints}() =
             let code =
                 metas
                 |> Seq.map (fun meta ->
-                    let originalGenerics = meta.generics |> getTypeNames |> createGenerics |> closeGenerics
-                    let originalTypeWithGenerics = $"{meta.ty.Namespace}.{getTypeShortName meta.ty}{originalGenerics}"
+                    let originalGenerics =
+                        meta.generics |> getTypeNames |> createGenerics |> closeGenerics
+                    let originalTypeWithGenerics =
+                        $"{meta.ty.Namespace}.{getTypeShortName meta.ty}{originalGenerics}"
                     let builderName = makeBuilderName meta.ty
                     let builderGenerics =
                         originalTypeWithGenerics :: (getTypeNames meta.generics) |> createGenerics |> closeGenerics
 
+                    let typeName = meta.ty |> getTypeShortName
 
-                    $"""    type {meta.ty |> getTypeShortName}'{meta.generics
-                                                                |> getTypeNames
-                                                                |> createGenerics
-                                                                |> appendStr (createConstraint meta.generics)
-                                                                |> closeGenerics}() = inherit {builderName}{builderGenerics}()"""
+                    let genericStr =
+                        meta.generics
+                        |> getTypeNames
+                        |> createGenerics
+                        |> appendStr (createConstraint meta.generics)
+                        |> closeGenerics
+
+                    let linkerGenericStr =
+                        if meta.generics.Length > 0 then
+                            "<" + (meta.generics |> Seq.map (fun _ -> "_") |> String.concat ", ") + ">"
+                        else
+                            ""
+                    let linkerAttrStr =
+                        $"[<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<{typeName}{linkerGenericStr}>)>]"
+
+                    $"""    type {typeName}'{genericStr} {linkerAttrStr} () = inherit {builderName}{builderGenerics}()"""
                 )
                 |> String.concat "\n"
 
@@ -314,7 +345,8 @@ type {builderName}{builderGenericsWithContraints}() =
 
 [<AutoOpen>]
 module DslCE =
-
+  
+    open System.Diagnostics.CodeAnalysis
     open {targetNamespace}.{internalSegment}{ns |> trimNamespace |> addStrIfNotEmpty "."}
 
 {code}

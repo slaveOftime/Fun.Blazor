@@ -4,6 +4,7 @@ module Fun.Blazor.Docs.Wasm.Demos.GiraffeStyleRouter
 open MudBlazor
 open Fun.Blazor
 open Fun.Blazor.Router
+open Fun.Blazor.Docs.Controls
 open Fun.Blazor.Docs.Wasm
 
 

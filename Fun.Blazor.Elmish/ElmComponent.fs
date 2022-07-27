@@ -1,10 +1,11 @@
 ﻿namespace Fun.Blazor
 
+open System.Diagnostics.CodeAnalysis
 open Microsoft.AspNetCore.Components
 open Elmish
 
 
-type ElmComponent<'State, 'Msg when 'State: equality>() as this =
+type ElmComponent<'State, 'Msg when 'State: equality> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<ElmComponent<_, _>>)>] () as this =
     inherit FunBlazorComponent()
 
     let mutable state = ValueNone

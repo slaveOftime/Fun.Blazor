@@ -1,10 +1,11 @@
 ﻿namespace Fun.Blazor
 
+open System.Diagnostics.CodeAnalysis
 open Microsoft.AspNetCore.Components
 open Fun.Blazor.Operators
 
 
-type CascadingValue'<'Value>() =
+type CascadingValue'<'Value> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<CascadingValue<_>>)>] () =
     inherit ComponentWithChildBuilder<CascadingValue<'Value>>()
 
     [<CustomOperation "Name">]

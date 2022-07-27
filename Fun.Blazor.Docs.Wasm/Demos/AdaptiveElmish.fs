@@ -5,6 +5,7 @@ open FSharp.Data.Adaptive
 open MudBlazor
 open Fun.Blazor
 open Elmish
+open Fun.Blazor.Docs.Controls
 open Fun.Blazor.Docs.Wasm
 
 type private Model = { Count1: int; Count2: int }

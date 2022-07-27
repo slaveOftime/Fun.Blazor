@@ -1,13 +1,14 @@
 ﻿namespace Fun.Blazor
 
 open System
+open System.Diagnostics.CodeAnalysis
 open FSharp.Data.Adaptive
 open Microsoft.Extensions.Logging
 open Microsoft.AspNetCore.Components
 open Internal
 
 
-type AdaptiveComponent() as this =
+type AdaptiveComponent [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AdaptiveComponent>)>] () as this =
     inherit FunBlazorComponent()
 
     let mutable fragmentSubscription: IDisposable option = None

@@ -3,6 +3,7 @@
 open System
 open System.Threading.Tasks
 open System.Collections.Generic
+open System.Diagnostics.CodeAnalysis
 open FSharp.Data.Adaptive
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.Logging
@@ -39,10 +40,10 @@ module ServiceProviderExtensions =
 
         /// This will get service from DI container. The service 'T is registered by AddHookService<'T>().
         /// With this we can have better unit testing experience. If you do not want to do UT, you can just create extension method directly on IComponentHook
-        member hook.GetHookService<'T>() = hook.ServiceProvider.GetService<IComponentHook -> 'T>() (hook)
+        member hook.GetHookService<'T>() = hook.ServiceProvider.GetService<IComponentHook -> 'T> () (hook)
 
 
-type DIComponent<'T>() as this =
+type DIComponent<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<DIComponent<_>>)>] () as this =
     inherit FunBlazorComponent()
 
     let mutable node = ValueNone
@@ -154,7 +155,7 @@ type DIComponent<'T>() as this =
 
     override _.OnInitialized() =
         base.OnInitialized()
-        
+
         let depsType, _ = Reflection.FSharpType.GetFunctionElements(this.RenderFn.GetType())
         let services =
             this.Services.GetMultipleServices(depsType, this.HandleNotFoundType) :?> 'T
@@ -163,12 +164,11 @@ type DIComponent<'T>() as this =
 
         if initializedEvent.IsSome then initializedEvent.Value.Trigger()
 
-    override _.OnInitializedAsync() =
-        task {
-            if initializedTasks <> null then
-                for makeTask in initializedTasks do
-                    do! makeTask ()
-        }
+    override _.OnInitializedAsync() = task {
+        if initializedTasks <> null then
+            for makeTask in initializedTasks do
+                do! makeTask ()
+    }
 
 
     override _.OnParametersSet() =
@@ -176,12 +176,11 @@ type DIComponent<'T>() as this =
             // Avoid rerender for static mode
             shouldRerender <- false
 
-    override _.OnParametersSetAsync() =
-        task {
-            if parameterSetTasks <> null then
-                for makeTask in parameterSetTasks do
-                    do! makeTask ()
-        }
+    override _.OnParametersSetAsync() = task {
+        if parameterSetTasks <> null then
+            for makeTask in parameterSetTasks do
+                do! makeTask ()
+    }
 
 
     override _.ShouldRender() =
@@ -195,15 +194,14 @@ type DIComponent<'T>() as this =
         if firstAfterRenderEvent.IsSome && firstRender then
             firstAfterRenderEvent.Value.Trigger()
 
-    override _.OnAfterRenderAsync firstRender =
-        task {
-            if afterRenderTasks <> null then
-                for makeTask in afterRenderTasks do
-                    do! makeTask firstRender
-            if firstRender && firstAfterRenderTasks <> null then
-                for makeTask in firstAfterRenderTasks do
-                    do! makeTask ()
-        }
+    override _.OnAfterRenderAsync firstRender = task {
+        if afterRenderTasks <> null then
+            for makeTask in afterRenderTasks do
+                do! makeTask firstRender
+        if firstRender && firstAfterRenderTasks <> null then
+            for makeTask in firstAfterRenderTasks do
+                do! makeTask ()
+    }
 
 
     interface IDisposable with

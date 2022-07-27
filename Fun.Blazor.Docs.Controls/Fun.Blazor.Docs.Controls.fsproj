@@ -7,12 +7,15 @@
     <IsTrimmable>true</IsTrimmable>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Fun.Blazor.Bindings\Microsoft.AspNetCore.Components.Authorization.fs" />
     <Compile Include="Fun.Blazor.Bindings\Microsoft.AspNetCore.Components.fs" />
     <Compile Include="Fun.Blazor.Bindings\MudBlazor.fs" />
+    <Compile Include="BasicControls.fs" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference FunBlazorStyle="CE" Include="Microsoft.AspNetCore.Components.Authorization" Version="6.0.7" />
     <PackageReference FunBlazorStyle="CE" FunBlazorNamespace="Microsoft.AspNetCore.Components" Include="Microsoft.AspNetCore.Components.Web" Version="6.0.4" />
-    <PackageReference FunBlazorStyle="CE" Include="MudBlazor" Version="6.0.10" />
+    <PackageReference FunBlazorStyle="CE" Include="MudBlazor" Version="6.0.13" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fun.Blazor\Fun.Blazor.fsproj" />

@@ -5,6 +5,7 @@ open FSharp.Data.Adaptive
 open MudBlazor
 open Fun.Blazor
 open Fun.Blazor.Validators
+open Fun.Blazor.Docs.Controls
 open Fun.Blazor.Docs.Wasm
 
 

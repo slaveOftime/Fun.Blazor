@@ -7,6 +7,7 @@ open Fun.Result
 open Fun.Blazor
 open Fun.Blazor.Router
 open MudBlazor
+open Fun.Blazor.Docs.Controls
 open Fun.Blazor.Docs.Wasm
 
 
@@ -112,7 +113,7 @@ let app =
         let drawer =
             adaptiview () {
                 let! binding = isOpen.WithSetter()
-                DocDrawer'() {
+                MudDrawer'() {
                     Open' binding
                     Elevation 25
                     PreserveOpenState true
@@ -164,7 +165,7 @@ let app =
                         paddingBottom 64
                     }
                     isReadyIndicator
-                    routesView
+                    errorBundary routesView
                     MudScrollToTop'() {
                         TopOffset 400
                         MudFab'() {

@@ -7,6 +7,7 @@ open Fun.Result
 open Fun.Blazor
 open Fun.Blazor.Router
 open MudBlazor
+open Fun.Blazor.Docs.Controls
 open Fun.Blazor.Docs.Wasm
 
 
