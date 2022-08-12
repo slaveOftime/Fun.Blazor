@@ -7,6 +7,7 @@ open System.Text.Json
 open System.Text.Json.Serialization
 open FSharp.Data.Adaptive
 open Microsoft.JSInterop
+open Microsoft.AspNetCore.Components
 open Fun.Result
 open Fun.Blazor
 open MudBlazor
@@ -34,6 +35,15 @@ type IShareStore with
 type IComponentHook with
 
     member hook.ShareStore = hook.ServiceProvider.GetMultipleServices<IShareStore>()
+    member hook.GlobalStore = hook.ServiceProvider.GetMultipleServices<IGlobalStore>()
+
+
+    member hook.DocsTree =
+        hook.GlobalStore.CreateCVal(nameof hook.DocsTree, LoadingState<DocTreeNode list>.NotStartYet)
+
+    member _.MakeDocHtmlKey(lang: string, key: string) = "docs-html-" + lang + "-" + key
+
+    member hook.DocHtml(lang: string, key: string) = hook.GlobalStore.CreateCVal(hook.MakeDocHtmlKey(lang, key), LoadingState<string>.NotStartYet)
 
 
     /// This is used for handle server side rendering call or async call if it is not first time rendering on server
@@ -57,8 +67,7 @@ type IComponentHook with
                     return None
                 else
                     return None
-            with
-            | ex ->
+            with ex ->
                 snackbar.Add(ex.Message, Severity.Error) |> ignore
                 return None
         }
@@ -67,38 +76,68 @@ type IComponentHook with
         let snackbar = hook.ServiceProvider.GetMultipleServices<ISnackbar>()
         try
             JsonSerializer.Deserialize<'T>(jsonStr, jsonOptions) |> Some
-        with
-        | ex ->
+        with ex ->
             snackbar.Add(ex.Message, Severity.Error) |> ignore
             None
 
 
+    member hook.GetDataFromPrerenderStore<'T>(key: string) =
+        let persistentStore =
+            hook.ServiceProvider.GetMultipleServices<PersistentComponentState>()
+
+        match persistentStore.TryTakeFromJson<string>(key) with
+        | true, value ->
+            try
+                let result = JsonSerializer.Deserialize<'T>(value, jsonOptions)
+                printfn "Use persisted data successful: %s" key
+                Some result
+            with e ->
+                printfn "Use persisted data failed: %s. Json serialization failed: %s" key e.Message
+                None
+        | _ ->
+            printfn "Use persisted data failed: %s. Not persisted" key
+            None
+
+    member hook.SetDataToPrerenderStore<'T>(key: string, value: 'T) =
+        let persistentStore =
+            hook.ServiceProvider.GetMultipleServices<PersistentComponentState>()
+
+        persistentStore.PersistAsJson(key, JsonSerializer.Serialize(value, jsonOptions))
+
+    member hook.SetPrerenderStore(onPersistence: unit -> unit) =
+        if hook.ShareStore.IsServerSideRendering.Value then
+            let persistentStore =
+                hook.ServiceProvider.GetMultipleServices<PersistentComponentState>()
+
+            hook.OnInitialized.Add(fun _ -> persistentStore.RegisterOnPersisting(fun _ -> task { onPersistence () }) |> ignore)
+
+
     /// Get docs tree json file and save it to global store
     member hook.GetOrLoadDocsTree() =
-        let globalStore = hook.ServiceProvider.GetMultipleServices<IGlobalStore>()
+        let docTreeStore = hook.DocsTree
 
-        let docTreeStore =
-            globalStore.CreateCVal("DocsTree", LoadingState<DocTreeNode list>.NotStartYet)
-
-        if not docTreeStore.Value.IsLoadingNow && docTreeStore.Value.Value.IsNone then
-            docTreeStore.Publish LoadingState.Loading
-            hook.GetHttpString("Docs/index.json")
-            |> hook.RenderCall(Option.bind hook.ParseJson<DocTreeNode list> >> LoadingState.ofOption >> docTreeStore.Publish)
+        match hook.GetDataFromPrerenderStore<LoadingState<DocTreeNode list>> "DocsTree" with
+        | Some data -> docTreeStore.Publish data
+        | _ ->
+            if not docTreeStore.Value.IsLoadingNow && docTreeStore.Value.Value.IsNone then
+                docTreeStore.Publish LoadingState.Loading
+                hook.GetHttpString("Docs/index.json")
+                |> hook.RenderCall(Option.bind hook.ParseJson<DocTreeNode list> >> LoadingState.ofOption >> docTreeStore.Publish)
 
         docTreeStore :> aval<_>
 
 
     /// Get docs segement and save it to global store
     member hook.GetOrLoadDocHtml(lang: string, key: string, query) =
-        let globalStore = hook.ServiceProvider.GetMultipleServices<IGlobalStore>()
+        let htmlStore = hook.DocHtml(lang, key)
 
-        let htmlStore =
-            globalStore.CreateCVal("docs-html-" + lang + "-" + key, LoadingState<string>.NotStartYet)
-
-        if not htmlStore.Value.IsLoadingNow && htmlStore.Value.Value.IsNone then
-            htmlStore.Publish LoadingState.start
-            hook.GetHttpString("Docs/" + key + "?" + query)
-            |> hook.RenderCall(LoadingState.ofOption >> htmlStore.Publish)
+        match hook.GetDataFromPrerenderStore<LoadingState<string>>(hook.MakeDocHtmlKey(lang, key)) with
+        | Some data -> htmlStore.Publish data
+        | _ ->
+            if not htmlStore.Value.IsLoadingNow && htmlStore.Value.Value.IsNone then
+                htmlStore.Publish LoadingState.start
+                hook.GetHttpString("Docs/" + key + "?" + query)
+                |> hook.RenderCall(LoadingState.ofOption >> htmlStore.Publish)
 
         htmlStore :> aval<_>
 

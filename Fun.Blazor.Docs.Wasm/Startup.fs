@@ -38,7 +38,8 @@ type Program =
 #if DEBUG
         builder.AddFunBlazor("#app", html.hotReloadComp (app, "Fun.Blazor.Docs.Wasm.App.app"))
 #else
-        builder.RootComponents.Add<PrerenderApp>("#app")
+        if builder.RootComponents.Count = 0 then
+            builder.RootComponents.Add<PrerenderApp>("#app")
 #endif
 
         Program.ConfigureServices(builder.Services, builder.HostEnvironment.BaseAddress)

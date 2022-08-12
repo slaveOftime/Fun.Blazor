@@ -14,12 +14,12 @@ open Fun.Blazor.Docs.Wasm
 let private isReadyIndicator =
     html.comp (fun (hook: IComponentHook) ->
         let mutable showMessage = true
-    
+
         hook.OnFirstAfterRender.Add(fun _ ->
             showMessage <- false
             hook.StateHasChanged()
         )
-    
+
         div {
             if showMessage then
                 div {
@@ -42,10 +42,12 @@ let private isReadyIndicator =
                 }
         }
     )
-    
+
 
 let app =
     html.inject (fun (hook: IComponentHook, shareStore: IShareStore) ->
+        hook.SetPrerenderStore(fun _ -> hook.SetDataToPrerenderStore(nameof hook.DocsTree, hook.DocsTree.Value))
+
         let isOpen = cval true
 
         let theme =
@@ -129,26 +131,26 @@ let app =
                 | LoadingState.Loading -> MudProgressLinear'.create ()
                 | LoadingState.Loaded docs
                 | LoadingState.Reloading docs ->
-                    let routes = [
-                        docRouting docs
-                        Demos.GiraffeStyleRouter.demoRouting
-                    ]
-                    html.route(docs, [
-                        // For host on slaveoftime.fun server mode
-                        yield! routes
-                        // For host on github-pages WASM mode
-                        subRouteCi "/Fun.Blazor.Docs" routes
-                        routeAny (
-                            docs
-                            |> Seq.tryHead
-                            |> Option.map (
-                                function
-                                | DocTreeNode.Category (doc, _, _)
-                                | DocTreeNode.Doc doc -> docView doc
+                    let routes = [ docRouting docs; Demos.GiraffeStyleRouter.demoRouting ]
+                    html.route (
+                        docs,
+                        [
+                            // For host on slaveoftime.fun server mode
+                            yield! routes
+                            // For host on github-pages WASM mode
+                            subRouteCi "/Fun.Blazor.Docs" routes
+                            routeAny (
+                                docs
+                                |> Seq.tryHead
+                                |> Option.map (
+                                    function
+                                    | DocTreeNode.Category (doc, _, _)
+                                    | DocTreeNode.Doc doc -> docView doc
+                                )
+                                |> Option.defaultValue notFound
                             )
-                            |> Option.defaultValue notFound
-                        )
-                    ])
+                        ]
+                    )
             }
 
 

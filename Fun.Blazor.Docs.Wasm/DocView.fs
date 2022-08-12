@@ -31,6 +31,13 @@ let docView (doc: DocBrief) =
             let docSegmentLoadedCount = cval 0
 
 
+            hook.SetPrerenderStore(fun _ ->
+                for segment in segments do
+                    match segment with
+                    | Segment.Html key -> hook.SetDataToPrerenderStore(hook.MakeDocHtmlKey(langStr, key), hook.DocHtml(langStr, key).Value)
+                    | _ -> ()
+            )
+
             hook.OnFirstAfterRender.Add(fun () ->
                 let mutable isCodeHighlighted = false
                 hook.AddDisposes [
