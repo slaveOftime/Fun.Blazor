@@ -5,7 +5,7 @@
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<TrimMode>link</TrimMode>
 		<IsTrimmable>true</IsTrimmable>
-		<Version>2.1.1</Version>
+		<Version>2.1.2</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
