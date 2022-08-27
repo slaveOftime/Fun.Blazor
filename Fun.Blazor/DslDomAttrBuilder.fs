@@ -293,9 +293,9 @@ type DomAttrBuilder() =
     member inline _.dropzone([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("dropzone" => v)
     [<CustomOperation("enctype")>]
     member inline _.enctype([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("enctype" => v)
-    [<CustomOperation("for")>]
+    [<CustomOperation("for'")>]
     member inline _.for'([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("for" => v)
-    [<CustomOperation("form")>]
+    [<CustomOperation("form'")>]
     member inline _.form([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("form" => v)
     [<CustomOperation("formaction")>]
     member inline _.formaction([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("formaction" => v)
@@ -365,7 +365,7 @@ type DomAttrBuilder() =
     member inline _.name([<InlineIfLambda>] render: AttrRenderFragment, v: string) = render ==> ("name" =>> v)
     [<CustomOperation("novalidate")>]
     member inline _.novalidate([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("novalidate" => v)
-    [<CustomOperation("open")>]
+    [<CustomOperation("open'")>]
     member inline _.open'([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("open" => v)
     [<CustomOperation("optimum")>]
     member inline _.optimum([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("optimum" => v)
