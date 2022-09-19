@@ -4,6 +4,9 @@
 dotnet tool install -g Fun.Blazor.Cli
 ```
 
+- It support generate CE DSL for package or project.
+- It support for simple hot-reload.
+
 Steps:
 
 1. Add any third party blazor components like MudBlazor to your application
@@ -18,6 +21,11 @@ Steps:
     <PackageReference FunBlazor="" Include="MudBlazor" Version="6.0.6" />
     ```
 
+    For project it is similar
+    ```
+    <ProjectReference FunBlazor="" Include="..\CSharpComponents\CSharpComponents.csproj" />
+    ```
+    
     `FunBlazorNamespace`: Give namespace
 
     `FunBlazorAssemblyName`: Sometimes the assembly name is different with the package name, so you can use this to specify it
