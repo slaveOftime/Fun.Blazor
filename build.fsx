@@ -13,9 +13,13 @@ pipeline "Fun.Blazor" {
     stage "Check envs" { run (ignore >> Docs.DocBuilder.build) }
     stage "Test" {
         run "dotnet build"
-        run "dotnet test"
+        run "dotnet test --no-build"
     }
     stage "Publish docs" {
+        whenAll {
+            branch "master"
+            cmdArg "--github-pages"
+        }
         run (fun _ ->
             !!("Fun.Blazor.Docs.Wasm.Release" </> "**" </> "index.html")
             |> Seq.iter (File.applyReplace (fun x -> x.Replace("""<base href="/"/>""", """<base href="/Fun.Blazor.Docs/" /> """)))

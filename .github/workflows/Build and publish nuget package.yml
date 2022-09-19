@@ -20,7 +20,7 @@ jobs:
       with:
         dotnet-version: 6.0.x   
 
-    - name: Publish nuget packages
+    - name: Run build.fsx
       env:
         NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
       run: dotnet fsi build.fsx
