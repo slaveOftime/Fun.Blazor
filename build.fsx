@@ -11,6 +11,11 @@ open Fake.IO.Globbing.Operators
 
 pipeline "Fun.Blazor" {
     stage "Check envs" { run (ignore >> Docs.DocBuilder.build) }
+    stage "Dev docs" {
+        whenCmdArg "--dev-docs"
+        workingDir "./Fun.Blazor.Docs.Wasm"
+        run "dotnet run"
+    }
     stage "Test" {
         run "dotnet build"
         run "dotnet test --no-build"
