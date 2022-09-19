@@ -25,11 +25,11 @@ pipeline "Fun.Blazor" {
             branch "master"
             cmdArg "--github-pages"
         }
+        run "dotnet publish Fun.Blazor.Docs.Wasm/Fun.Blazor.Docs.Wasm.fsproj -c Release -o Fun.Blazor.Docs.Wasm.Release --nologo"
         run (fun _ ->
             !!("Fun.Blazor.Docs.Wasm.Release" </> "**" </> "index.html")
             |> Seq.iter (File.applyReplace (fun x -> x.Replace("""<base href="/"/>""", """<base href="/Fun.Blazor.Docs/" /> """)))
         )
-        run "dotnet publish Fun.Blazor.Docs.Wasm/Fun.Blazor.Docs.Wasm.fsproj -c Release -o Fun.Blazor.Docs.Wasm.Release --nologo"
         run "cp Fun.Blazor.Docs.Wasm.Release/wwwroot/index.html Fun.Blazor.Docs.Wasm.Release/wwwroot/404.html"
         run "touch Fun.Blazor.Docs.Wasm.Release/wwwroot/.nojekyll"
     }
