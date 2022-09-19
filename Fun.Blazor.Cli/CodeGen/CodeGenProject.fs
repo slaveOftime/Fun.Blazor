@@ -10,10 +10,15 @@ open CliWrap
 open Fun.Blazor.Generator
 
 
+[<RequireQualifiedAccess>]
+type Package =
+    | Project of string
+    | Package of {| Name: string; Version: string |}
+
+
 type PackageMeta =
     {
-        Package: string
-        Version: string
+        Package: Package
         SourceAssemblyName: string
         TargetNamespace: string
         Style: Style
@@ -83,11 +88,19 @@ module CodeGenProject =
         for package in packages do
             AnsiConsole.WriteLine()
             AnsiConsole.MarkupLine $"[green]Add package {package.Package}[/]"
-            Cli
-                .Wrap("dotnet")
-                .WithArguments($"add package {package.Package} --version {package.Version}")
-                .WithWorkingDirectory(codeGenFolder)
-                .Run()
+            match package.Package with
+            | Package.Package package ->
+                Cli
+                    .Wrap("dotnet")
+                    .WithArguments($"add package {package.Name} --version {package.Version}")
+                    .WithWorkingDirectory(codeGenFolder)
+                    .Run()
+            | Package.Project project ->
+                Cli
+                    .Wrap("dotnet")
+                    .WithArguments($"add reference \"{project}\"")
+                    .WithWorkingDirectory(codeGenFolder)
+                    .Run()
 
             bootstrapCode.AppendLine
                 $"Fun.Blazor.Generator.CodeGen.createCodeFile @\"{codesDir}\" Fun.Blazor.Generator.Style.{package.Style} \"{package.TargetNamespace}\" \"{package.SourceAssemblyName}\" {package.UseInline.ToString().ToLower()}"

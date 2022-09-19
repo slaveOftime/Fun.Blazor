@@ -29,33 +29,57 @@ let private clean (project: XDocument) (projectFile: string) (codesDirName: stri
         try
             let file = Path.GetDirectoryName projectFile </> x.Attribute(xn "Include").Value
             File.Delete file
-        with
-            | ex -> AnsiConsole.MarkupLine $"[red]Delete file failed: {ex.Message}[/]"
+        with ex ->
+            AnsiConsole.MarkupLine $"[red]Delete file failed: {ex.Message}[/]"
 
         try
             x.Parent.Remove()
-        with
-            | _ -> ()
+        with _ ->
+            ()
     )
 
 
-let private findPackageMetas (project: XDocument) style useInline =
+let private findPackageMetas projectDir (project: XDocument) style useInline =
     project.Element(xn "Project").Elements(xn "ItemGroup")
-    |> Seq.map (fun x -> x.Elements(xn "PackageReference"))
+    |> Seq.map (fun x -> seq {
+        yield! x.Elements(xn "PackageReference")
+        yield! x.Elements(xn "ProjectReference")
+    }
+    )
     |> Seq.concat
     |> Seq.filter (fun x -> x.Attributes() |> Seq.exists (fun x -> x.Name.LocalName.StartsWith FunBlazorPrefix))
     |> Seq.map (fun node ->
-        let package = node.Attribute(xn "Include").Value
+        let includeValue = node.Attribute(xn "Include").Value
+        let isPackageRef = node.Name.LocalName = "PackageReference"
         {
-            Package = package
-            Version = node.Attribute(xn "Version").Value
+            Package =
+                if isPackageRef then
+                    Package.Package
+                        {|
+                            Name = includeValue
+                            Version = node.Attribute(xn "Version").Value
+                        |}
+                else
+                    Package.Project(
+                        if Path.IsPathRooted includeValue then
+                            includeValue
+                        else
+                            Path.Combine(projectDir, includeValue)
+                    )
             SourceAssemblyName =
                 match node.Attribute(xn FunBlazorAssemblyNameAttr) with
-                | null -> package
+                | null when isPackageRef -> includeValue
+                | null -> Path.GetFileNameWithoutExtension includeValue
                 | x -> x.Value
             TargetNamespace =
                 let attr = node.Attribute(xn FunBlazorNamespaceAttr)
-                if attr = null || String.IsNullOrEmpty attr.Value then package else attr.Value
+                if attr = null || String.IsNullOrEmpty attr.Value then
+                    if isPackageRef then
+                        includeValue
+                    else
+                        Path.GetFileNameWithoutExtension includeValue
+                else
+                    attr.Value
             Style =
                 match node.Attribute(xn FunBlazorStyleAttr) with
                 | null -> style
@@ -76,7 +100,8 @@ let private findPackageMetas (project: XDocument) style useInline =
 
 
 let private attachCodeFiles (project: XDocument) (projectFile: string) (codesDirName: string) =
-    let codeFiles = Directory.GetFiles(Path.GetDirectoryName projectFile </> codesDirName)
+    let codeFiles =
+        Directory.GetFiles(Path.GetDirectoryName projectFile </> codesDirName)
     let codeItemGroup = XElement(xn "ItemGroup")
 
     let firstItemGroup = project.Element(xn "Project").Element(xn "ItemGroup")
@@ -104,7 +129,8 @@ let startGenerate (projectFile: string) (codesDirName: string) (style: Style) sd
     let project = XDocument.Load projectFile
 
 
-    let codesDir = Path.Combine(Path.GetDirectoryName(Path.GetFullPath(projectFile)), codesDirName)
+    let codesDir =
+        Path.Combine(Path.GetDirectoryName(Path.GetFullPath(projectFile)), codesDirName)
     if codesDir |> Directory.Exists |> not then
         Directory.CreateDirectory codesDir |> ignore
 
@@ -115,7 +141,8 @@ let startGenerate (projectFile: string) (codesDirName: string) (style: Style) sd
 
     AnsiConsole.WriteLine()
     AnsiConsole.MarkupLine "Find packages and generate codes"
-    findPackageMetas project style useInline |> CodeGenProject.createAndRun projectFile codesDirName sdk generatorVersion
+    findPackageMetas (Path.GetDirectoryName projectFile) project style useInline
+    |> CodeGenProject.createAndRun projectFile codesDirName sdk generatorVersion
 
 
     AnsiConsole.WriteLine()

@@ -19,25 +19,9 @@ jobs:
       with:
         dotnet-version: 6.0.x
 
-    - name: Build artifacts
-      run: |
-        dotnet tool restore
-        dotnet fsi build.fsx -t GenerateDocs
-        dotnet publish Fun.Blazor.Docs.Wasm/Fun.Blazor.Docs.Wasm.fsproj -c Release -o Fun.Blazor.Docs.Wasm.Release --nologo
-    
+    - name: Run build.fsx
+      run: dotnet fsi build.fsx --github-pages
 
-    # changes the base-tag in index.html from '/' to 'Fun.Blazor' to match GitHub Pages repository subdirectory
-    - name: Change base-tag in index.html from / to Fun.Blazor.Docs
-      run: dotnet fsi build.fsx -t ProcessGitHubDocs
-    
-    # copy index.html to 404.html to serve the same file when a file is not found
-    - name: Create 404.html
-      run: cp Fun.Blazor.Docs.Wasm.Release/wwwroot/index.html Fun.Blazor.Docs.Wasm.Release/wwwroot/404.html
-
-    # add .nojekyll file to tell GitHub pages to not treat this as a Jekyll project. (Allow files and folders starting with an underscore)
-    - name: Add .nojekyll file
-      run: touch Fun.Blazor.Docs.Wasm.Release/wwwroot/.nojekyll
-      
     - name: Commit wwwroot to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@v4.2.3
       with:
