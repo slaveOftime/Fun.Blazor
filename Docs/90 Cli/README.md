@@ -4,8 +4,8 @@
 dotnet tool install -g Fun.Blazor.Cli
 ```
 
-- It support generate CE DSL for package or project.
-- It support for simple hot-reload.
+- Generate CE DSL for package or project.
+- Simple hot-reload.
 
 Steps:
 
