@@ -45,6 +45,7 @@ pipeline "Fun.Blazor" {
         run "dotnet pack -c Release Fun.Blazor.Server/Fun.Blazor.Server.fsproj -o ."
         run "dotnet pack -c Release Fun.Blazor.Wasm/Fun.Blazor.Wasm.fsproj -o ."
         run "dotnet pack -c Release Fun.Htmx/Fun.Htmx.fsproj -o ."
+        run "dotnet pack -c Release Fun.Blazor.CustomElements/Fun.Blazor.CustomElements.fsproj -o ."
     }
     stage "Publish to nuget" {
         whenAll {

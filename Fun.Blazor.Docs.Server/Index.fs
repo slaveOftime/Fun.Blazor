@@ -40,6 +40,7 @@ type Index() =
                     root
 
                     script { src "_content/MudBlazor/MudBlazor.min.js" }
+                    script { src "_content/Microsoft.AspNetCore.Components.CustomElements/BlazorCustomElements.js" }
                     script { src "_framework/blazor.server.js" }
 
                     stylesheet "css/google-font.css"

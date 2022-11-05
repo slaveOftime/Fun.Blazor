@@ -15,6 +15,7 @@ let demos =
         "BlazorStyleComp", { View = BlazorStyleComp.entry; Source = "Demos/BlazorStyleComp.html" }
         "Counter", { View = Counter.entry; Source = "Demos/Counter.html" }
         "CssRuleDemo", { View = CssRuleDemo.entry; Source = "Demos/CssRuleDemo.html" }
+        "CustomElementDemo", { View = CustomElementDemo.entry; Source = "Demos/CustomElementDemo.html" }
         "ElmishDemo", { View = ElmishDemo.entry; Source = "Demos/ElmishDemo.html" }
         "GiraffeStyleRouter", { View = GiraffeStyleRouter.entry; Source = "Demos/GiraffeStyleRouter.html" }
         "GlobalStoreDemo", { View = GlobalStoreDemo.entry; Source = "Demos/GlobalStoreDemo.html" }

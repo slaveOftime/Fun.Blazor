@@ -28,6 +28,7 @@
 		<Compile Include="Demos\ElmishDemo.fs" />
 		<Compile Include="Demos\AdaptiveElmish.fs" />
 		<Compile Include="Demos\BlazorStyleComp.fs" />
+		<Compile Include="Demos\CustomElementDemo.fs" />
 		<Compile Include="DemoMaps.fs" />
 		<Compile Include="DemoView.fs" />
 		<Compile Include="DocView.fs" />
@@ -44,6 +45,7 @@
 		<PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
 	</ItemGroup>
 	<ItemGroup>
+		<ProjectReference Include="..\Fun.Blazor.CustomElements\Fun.Blazor.CustomElements.fsproj" />
 		<ProjectReference Include="..\Fun.Blazor.Docs.Controls\Fun.Blazor.Docs.Controls.fsproj" />
 		<ProjectReference Include="..\Fun.Blazor.Elmish\Fun.Blazor.Elmish.fsproj" />
 		<ProjectReference Include="..\Fun.Blazor.HotReload\Fun.Blazor.HotReload.fsproj" />

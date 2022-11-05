@@ -9,6 +9,7 @@ open Microsoft.AspNetCore.Builder
 open Microsoft.Extensions.Hosting
 open Microsoft.Extensions.DependencyInjection
 open MudBlazor.Services
+open Fun.Blazor
 open Fun.Blazor.Docs.Server
 
 
@@ -16,7 +17,8 @@ let builder = WebApplication.CreateBuilder(Environment.GetCommandLineArgs())
 let services = builder.Services
 
 services.AddControllersWithViews()
-services.AddServerSideBlazor().Services.AddFunBlazorServer().AddMudServices()
+services.AddServerSideBlazor(fun options -> options.RootComponents.RegisterForFunBlazor())
+services.AddFunBlazorServer().AddMudServices()
 services.AddScoped<Fun.Blazor.Docs.Wasm.Demos.ScopedDemoService>()
 
 services.AddScoped<HttpClient>(fun (sp) ->
