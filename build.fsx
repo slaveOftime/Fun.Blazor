@@ -22,21 +22,6 @@ let test =
         run "dotnet test --no-build"
     }
 
-let publishDocs =
-    stage "Publish docs" {
-        whenAll {
-            branch "master"
-            cmdArg "--github-pages"
-        }
-        run "dotnet publish Fun.Blazor.Docs.Wasm/Fun.Blazor.Docs.Wasm.fsproj -c Release -o Fun.Blazor.Docs.Wasm.Release --nologo"
-        run (fun _ ->
-            !!("Fun.Blazor.Docs.Wasm.Release" </> "**" </> "index.html")
-            |> Seq.iter (File.applyReplace (fun x -> x.Replace("""<base href="/"/>""", """<base href="/Fun.Blazor.Docs/" /> """)))
-        )
-        run "cp Fun.Blazor.Docs.Wasm.Release/wwwroot/index.html Fun.Blazor.Docs.Wasm.Release/wwwroot/404.html"
-        run "touch Fun.Blazor.Docs.Wasm.Release/wwwroot/.nojekyll"
-    }
-
 let pack =
     stage "Pack" {
         whenBranch "master"
@@ -51,21 +36,6 @@ let pack =
         run "dotnet pack -c Release Fun.Blazor.Wasm/Fun.Blazor.Wasm.fsproj -o ."
         run "dotnet pack -c Release Fun.Htmx/Fun.Htmx.fsproj -o ."
         run "dotnet pack -c Release Fun.Blazor.CustomElements/Fun.Blazor.CustomElements.fsproj -o ."
-    }
-
-let publishToNuget =
-    stage "Publish to nuget" {
-        whenAll {
-            branch "master"
-            whenAny {
-                envVar "NUGET_API_KEY"
-                cmdArg "NUGET_API_KEY"
-            }
-        }
-        run (fun ctx ->
-            let key = ctx.GetCmdArgOrEnvVar "NUGET_API_KEY"
-            cmd $"""dotnet nuget push *.nupkg -s https://api.nuget.org/v3/index.json --skip-duplicate -k {key}"""
-        )
     }
 
 
@@ -93,13 +63,42 @@ pipeline "dev" {
 }
 
 
-pipeline "deploy" {
-    description "Deploy"
+pipeline "docs" {
+    description "Publish docs to github"
     checkEnv
     test
-    publishDocs
+    stage "Publish docs" {
+        whenBranch "master"
+        run "dotnet publish Fun.Blazor.Docs.Wasm/Fun.Blazor.Docs.Wasm.fsproj -c Release -o Fun.Blazor.Docs.Wasm.Release --nologo"
+        run (fun _ ->
+            !!("Fun.Blazor.Docs.Wasm.Release" </> "**" </> "index.html")
+            |> Seq.iter (File.applyReplace (fun x -> x.Replace("""<base href="/"/>""", """<base href="/Fun.Blazor.Docs/" /> """)))
+        )
+        run "cp Fun.Blazor.Docs.Wasm.Release/wwwroot/index.html Fun.Blazor.Docs.Wasm.Release/wwwroot/404.html"
+        run "touch Fun.Blazor.Docs.Wasm.Release/wwwroot/.nojekyll"
+    }
+    runIfOnlySpecified
+}
+
+
+pipeline "deploy" {
+    description "Deploy packages to nuget"
+    checkEnv
+    test
     pack
-    publishToNuget
+    stage "Publish to nuget" {
+        whenAll {
+            branch "master"
+            whenAny {
+                envVar "NUGET_API_KEY"
+                cmdArg "NUGET_API_KEY"
+            }
+        }
+        run (fun ctx ->
+            let key = ctx.GetCmdArgOrEnvVar "NUGET_API_KEY"
+            cmd $"""dotnet nuget push *.nupkg -s https://api.nuget.org/v3/index.json --skip-duplicate -k {key}"""
+        )
+    }
     runIfOnlySpecified false
 }
 
