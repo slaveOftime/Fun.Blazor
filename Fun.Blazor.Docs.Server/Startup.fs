@@ -9,7 +9,6 @@ open Microsoft.AspNetCore.Builder
 open Microsoft.Extensions.Hosting
 open Microsoft.Extensions.DependencyInjection
 open MudBlazor.Services
-open Fun.Blazor
 open Fun.Blazor.Docs.Server
 
 
