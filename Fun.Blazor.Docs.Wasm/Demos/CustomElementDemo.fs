@@ -20,7 +20,7 @@ let private count =
 
 
 let entry = div {
-    p { "Below will render two custome elements which will powered by blazor" }
-    CustomElt.customElt count
-    CustomElt.customElt count
+    p { "Below will render two custome elements which will powered by blazor:" }
+    CustomElement.create count
+    CustomElement.create count
 }

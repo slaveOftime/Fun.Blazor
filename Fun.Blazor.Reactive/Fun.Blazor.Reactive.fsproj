@@ -5,7 +5,7 @@
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<TrimMode>link</TrimMode>
 		<IsTrimmable>true</IsTrimmable>
-		<Version>2.0.0-beta051</Version>
+		<ChangelogFile>CHANGELOG.md</ChangelogFile>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -22,6 +22,11 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\Fun.Blazor\Fun.Blazor.fsproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Condition="'$(Configuration)'=='RELEASE'" Include="Ionide.KeepAChangelog.Tasks" Version="0.1.8" PrivateAssets="all" />
+		<PackageReference Update="FSharp.Core" Version="6.0.0" />
 	</ItemGroup>
 
 </Project>

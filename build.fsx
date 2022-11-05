@@ -1,4 +1,4 @@
-#r "nuget: Fun.Build, 0.1.5"
+#r "nuget: Fun.Build, 0.2.5"
 #r "nuget: Fake.IO.FileSystem, 5.20.4"
 
 #load "docs.fsx"
@@ -9,17 +9,20 @@ open Fake.IO.FileSystemOperators
 open Fake.IO.Globbing.Operators
 
 
-pipeline "Fun.Blazor" {
-    stage "Check envs" { run (ignore >> Docs.DocBuilder.build) }
-    stage "Dev docs" {
-        whenCmdArg "--dev-docs"
-        workingDir "./Fun.Blazor.Docs.Wasm"
-        run "dotnet run"
+let checkEnv =
+    stage "Check envs" {
+        run "dotnet restore"
+        run "dotnet build"
+        run (ignore >> Docs.DocBuilder.build)
     }
+
+let test =
     stage "Test" {
         run "dotnet build"
         run "dotnet test --no-build"
     }
+
+let publishDocs =
     stage "Publish docs" {
         whenAll {
             branch "master"
@@ -33,6 +36,8 @@ pipeline "Fun.Blazor" {
         run "cp Fun.Blazor.Docs.Wasm.Release/wwwroot/index.html Fun.Blazor.Docs.Wasm.Release/wwwroot/404.html"
         run "touch Fun.Blazor.Docs.Wasm.Release/wwwroot/.nojekyll"
     }
+
+let pack =
     stage "Pack" {
         whenBranch "master"
         run "dotnet pack -c Release Fun.Blazor/Fun.Blazor.fsproj -o ."
@@ -47,6 +52,8 @@ pipeline "Fun.Blazor" {
         run "dotnet pack -c Release Fun.Htmx/Fun.Htmx.fsproj -o ."
         run "dotnet pack -c Release Fun.Blazor.CustomElements/Fun.Blazor.CustomElements.fsproj -o ."
     }
+
+let publishToNuget =
     stage "Publish to nuget" {
         whenAll {
             branch "master"
@@ -60,5 +67,41 @@ pipeline "Fun.Blazor" {
             cmd $"""dotnet nuget push *.nupkg -s https://api.nuget.org/v3/index.json --skip-duplicate -k {key}"""
         )
     }
+
+
+pipeline "dev" {
+    description "Start develop with Fun.Blazor.Docs"
+    checkEnv
+    stage "docs" {
+        paralle
+        stage "wasm" {
+            workingDir "./Fun.Blazor.Docs.Wasm"
+            whenCmdArg "--wasm" "" "Run in blazor wasm mode, By default will run in server mode."
+            run "dotnet run"
+        }
+        stage "server" {
+            workingDir "./Fun.Blazor.Docs.Server"
+            whenNot { cmdArg "--wasm" }
+            run "dotnet run"
+        }
+        stage "hot-reload" {
+            workingDir "./Fun.Blazor.Docs.Wasm"
+            run "fun-blazor watch ./Fun.Blazor.Docs.Wasm.fsproj"
+        }
+    }
+    runIfOnlySpecified
+}
+
+
+pipeline "deploy" {
+    description "Deploy"
+    checkEnv
+    test
+    publishDocs
+    pack
+    publishToNuget
     runIfOnlySpecified false
 }
+
+
+tryPrintPipelineCommandHelp ()

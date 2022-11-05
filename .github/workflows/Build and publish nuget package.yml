@@ -1,11 +1,11 @@
 name: Build and publish nuget packages
 
 on:
-  #push:
-  #  branches:
-  #  - master
-  release:
-    types: [published]
+  push:
+   branches:
+   - master
+  # release:
+  #   types: [published]
 
 jobs:
   build:

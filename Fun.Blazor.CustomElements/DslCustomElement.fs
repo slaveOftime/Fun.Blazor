@@ -15,24 +15,24 @@ let mutable jsComponentConfig = Unchecked.defaultof<IJSComponentConfiguration>
 type IJSComponentConfiguration with
 
     /// For example for blazor server: services.AddServerSideBlazor(fun options -> options.RootComponents.RegisterForFunBlazor()).
-    /// When you use this you should use CustomElt.lazyBlazorJs and CustomElt.initBlazorJs accordinly.
+    /// When you use this you should use CustomElement.lazyBlazorJs and CustomElement.initBlazorJs accordinly.
     member this.RegisterForFunBlazor() = jsComponentConfig <- this
 
 
-type CustomElt =
+type CustomElement =
 
     /// Normally blazorJsSrc should something like: _framework/blazor.server.js.
     /// You should add this at the head of your html.
     /// If your application is running in blazor, you should add _content/Microsoft.AspNetCore.Components.CustomElements/BlazorCustomElements.js
-    /// before _framework/blazor.server.js which you use normnally.
+    /// before _framework/blazor.server.js which you use normnally. And this call will not be necessary.
     static member lazyBlazorJs blazorJsSrc =
         js
             $"""
                 window.initBlazor = () => {{
                     if (!window.Blazor) {{
-                        const customEltScript = document.createElement("script")
-                        customEltScript.src = "_content/Microsoft.AspNetCore.Components.CustomElements/BlazorCustomElements.js"
-                        document.body.appendChild(customEltScript)
+                        const CustomElementScript = document.createElement("script")
+                        CustomElementScript.src = "_content/Microsoft.AspNetCore.Components.CustomElements/BlazorCustomElements.js"
+                        document.body.appendChild(CustomElementScript)
 
                         const blazorScript = document.createElement("script")
                         blazorScript.src = "{blazorJsSrc}"
@@ -55,9 +55,9 @@ type CustomElementBuilder<'T when 'T :> IComponent>(name) =
             rootComponstKeys.Add key |> ignore
             jsComponentConfig.RegisterAsCustomElement<'T>(name)
 
-    member _.Run(render: AttrRenderFragment) = html.fragment [ base.Run(render); CustomElt.initBlazorJs ]
+    member _.Run(render: AttrRenderFragment) = html.fragment [ base.Run(render); CustomElement.initBlazorJs ]
 
-    member _.Run(render: NodeRenderFragment) = html.fragment [ base.Run(render); CustomElt.initBlazorJs ]
+    member _.Run(render: NodeRenderFragment) = html.fragment [ base.Run(render); CustomElement.initBlazorJs ]
 
 
 let private customComponentFragemnts =
@@ -88,17 +88,17 @@ type NodeCustomElementBuilder(node: NodeRenderFragment) =
         base.Run(render ==> ("node-render-fragment-key" => nodeKey))
 
 
-type CustomElt with
+type CustomElement with
 
     /// Wrap a NodeRenderFragment into a web custom element.
     /// This is powered by Microsoft.AspNetCore.Components.CustomElements. It will automatically register it.
     /// You will need to call RegisterForFunBlazor.
     /// For example for blazor server: services.AddServerSideBlazor(fun options -> options.RootComponents.RegisterForFunBlazor()).
-    static member inline customElt node = NodeCustomElementBuilder(node) { "funblazor", "true" }
+    static member inline create node = NodeCustomElementBuilder(node) { "funblazor", "true" }
 
     /// Wrap a NodeRenderFragment into a web custom element.
     /// 'Services is a tuple of registered services in DI container.
     /// This is powered by Microsoft.AspNetCore.Components.CustomElements. It will automatically register it.
     /// You will need to call RegisterForFunBlazor.
     /// For example for blazor server: services.AddServerSideBlazor(fun options -> options.RootComponents.RegisterForFunBlazor()).
-    static member inline customElt(fn: 'Services -> NodeRenderFragment) = NodeCustomElementBuilder(html.inject fn) { "funblazor", "true" }
+    static member inline create(fn: 'Services -> NodeRenderFragment) = NodeCustomElementBuilder(html.inject fn) { "funblazor", "true" }

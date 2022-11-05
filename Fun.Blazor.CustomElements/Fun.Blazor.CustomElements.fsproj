@@ -14,14 +14,14 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Components.CustomElements" Version="0.1.0-alpha.22320.2" />
-		<PackageReference Condition="'$(Configuration)'=='RELEASE'" Include="Ionide.KeepAChangelog.Tasks" Version="0.1.8" PrivateAssets="all" />
 	</ItemGroup>
-
+	
 	<ItemGroup>
 		<ProjectReference Include="..\Fun.Blazor\Fun.Blazor.fsproj" />
 	</ItemGroup>
-
+	
 	<ItemGroup>
+		<PackageReference Condition="'$(Configuration)'=='RELEASE'" Include="Ionide.KeepAChangelog.Tasks" Version="0.1.8" PrivateAssets="all" />
 		<PackageReference Update="FSharp.Core" Version="6.0.0" />
 	</ItemGroup>
 
