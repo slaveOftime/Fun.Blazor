@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
+		<TargetFramework>net7.0</TargetFramework>
 		<BlazorWasmPrerenderingMode>WebAssemblyPrerendered</BlazorWasmPrerenderingMode>
 		<BlazorWasmPrerenderingRootComponentType>Fun.Blazor.Docs.Wasm.PrerenderApp</BlazorWasmPrerenderingRootComponentType>
 		<BlazorWasmPrerenderingDeleteLoadingContents>true</BlazorWasmPrerenderingDeleteLoadingContents>
@@ -38,14 +38,13 @@
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="BlazorWasmPreRendering.Build" Version="1.0.0-preview.24.1" />
-		<PackageReference Include="FSharp.SystemTextJson" Version="0.19.13" />
+		<PackageReference Include="FSharp.SystemTextJson" Version="1.0.6" />
 		<PackageReference Include="Majorsoft.Blazor.WebAssembly.Logging.Console" Version="1.5.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.4" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.4" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.0" PrivateAssets="all" />
 		<PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
 	</ItemGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\Fun.Blazor.CustomElements\Fun.Blazor.CustomElements.fsproj" />
 		<ProjectReference Include="..\Fun.Blazor.Docs.Controls\Fun.Blazor.Docs.Controls.fsproj" />
 		<ProjectReference Include="..\Fun.Blazor.Elmish\Fun.Blazor.Elmish.fsproj" />
 		<ProjectReference Condition="'$(Configuration)'=='DEBUG'" Include="..\Fun.Blazor.HotReload\Fun.Blazor.HotReload.fsproj" />
@@ -53,7 +52,6 @@
 		<ProjectReference Include="..\Fun.Blazor.Reactive\Fun.Blazor.Reactive.fsproj" />
 		<ProjectReference Include="..\Fun.Blazor.Wasm\Fun.Blazor.Wasm.fsproj" />
 	</ItemGroup>
-
 	<Target Name="ConfigureTrimming" BeforeTargets="PrepareForILLink">
 		<ItemGroup>
 			<ManagedAssemblyToLink Condition="'%(Filename)' == 'FSharp.Data'">

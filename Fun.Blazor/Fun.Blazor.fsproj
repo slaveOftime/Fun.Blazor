@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net5.0;net6.0</TargetFrameworks>
+		<TargetFrameworks>net7.0</TargetFrameworks>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<TrimMode>link</TrimMode>
 		<IsTrimmable>true</IsTrimmable>
@@ -24,6 +24,7 @@
 		<Compile Include="DslComponentBuilder.fs" />
 		<Compile Include="DslComponents.fs" />
 		<Compile Include="DslInject.fs" />
+		<Compile Include="DslCustomElements.fs" />
 		<Compile Include="DslAdaptiview.fs" />
 		<Compile Include="DslRouting.fs" />
 		<Compile Include="AdaptiveForm.fs" />
@@ -32,17 +33,18 @@
 
 	<ItemGroup>
 		<PackageReference Include="FSharp.Data.Adaptive" Version="1.2.13" />
-		<PackageReference Include="Fun.Css" Version="0.3.1" />
+		<PackageReference Include="Fun.Css" Version="0.3.2" />
 		<PackageReference Include="Fun.Result" Version="2.0.6" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.CustomElements" Version="7.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.13" />
-		<PackageReference Include="Microsoft.Extensions.ObjectPool" Version="6.0.5" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.0" />
+		<PackageReference Include="Microsoft.Extensions.ObjectPool" Version="7.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Condition="'$(Configuration)'=='RELEASE'" Include="Ionide.KeepAChangelog.Tasks" Version="0.1.8" PrivateAssets="all" />
-		<PackageReference Update="FSharp.Core" Version="6.0.0" />
+		<PackageReference Update="FSharp.Core" Version="7.0.0" />
 	</ItemGroup>
 
 </Project>

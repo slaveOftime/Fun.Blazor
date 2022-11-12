@@ -1,6 +1,6 @@
 # Changelog
 
-## [2.1.3] - 2022-11-05
+## [3.0.0-beta001] - 2022-11-12
 
-Use change log
-
+* Support directory for watch
+* Fix code-gen multiple namespace issue

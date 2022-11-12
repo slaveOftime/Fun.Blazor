@@ -22,23 +22,34 @@ type HotReloadHub() =
 type CodeWatcher(scf: IServiceScopeFactory) =
     inherit BackgroundService()
 
-    override _.ExecuteAsync(token) =
-        task {
-            let sp = scf.CreateScope().ServiceProvider
-            let settings = sp.GetService<WatchSettings>()
-            let hotReloadHub = sp.GetService<IHubContext<HotReloadHub>>()
+    override _.ExecuteAsync(token) = task {
+        let sp = scf.CreateScope().ServiceProvider
+        let settings = sp.GetService<WatchSettings>()
+        let hotReloadHub = sp.GetService<IHubContext<HotReloadHub>>()
 
-            let sendCode (x: byte []) = hotReloadHub.Clients.All.SendAsync("CodeChanged", x).Wait()
+        let fsharpProj =
+            if File.Exists settings.Project then
+                settings.Project
+            else if Directory.Exists settings.Project then
+                let projs = Directory.GetFiles(settings.Project, "*.fsproj")
+                if projs.Length = 1 then
+                    projs[0]
+                else
+                    failwith "Found multiple fsharp projects, please specify one."
+            else
+                failwith "No fsharp project found."
 
-            printfn "Start code watcher"
+        let sendCode (x: byte[]) = hotReloadHub.Clients.All.SendAsync("CodeChanged", x).Wait()
 
-            use _ = process' sendCode (Source.FSharpProj settings.Project) []
+        printfn "Start code watcher"
 
-            while not token.IsCancellationRequested do
-                do! Task.Delay 2000
+        use _ = process' sendCode (Source.FSharpProj fsharpProj) []
 
-            printfn "Code watcher exited."
-        }
+        while not token.IsCancellationRequested do
+            do! Task.Delay 2000
+
+        printfn "Code watcher exited."
+    }
 
 
 type StaticAssetsWatcher(scf: IServiceScopeFactory) =
@@ -62,67 +73,66 @@ type StaticAssetsWatcher(scf: IServiceScopeFactory) =
         watcher
 
 
-    override _.ExecuteAsync(token) =
-        task {
-            let sp = scf.CreateScope().ServiceProvider
-            let settings = sp.GetService<WatchSettings>()
-            let hotReloadHub = sp.GetService<IHubContext<HotReloadHub>>()
+    override _.ExecuteAsync(token) = task {
+        let sp = scf.CreateScope().ServiceProvider
+        let settings = sp.GetService<WatchSettings>()
+        let hotReloadHub = sp.GetService<IHubContext<HotReloadHub>>()
 
-            let dir =
-                if String.IsNullOrEmpty settings.StaticAssetsDir then
-                    Path.Combine(Path.GetDirectoryName(Path.GetFullPath(settings.Project)), "wwwroot")
-                else
-                    Path.GetFullPath settings.StaticAssetsDir
-
-            let sendCode (name: string) =
-                printfn "css changed: %s" name
-                use fs =
-                    File.Open(Path.Combine(dir, name), FileMode.Open, FileAccess.Read, FileShare.ReadWrite)
-                use sr = new StreamReader(fs)
-                hotReloadHub.Clients.All.SendAsync("CssChanged", name, sr.ReadToEnd()).Wait()
-                printfn "css changes is sent: %s" name
-
-            let sendEmptyCode (name: string) =
-                printfn "css removed: %s" name
-                hotReloadHub.Clients.All.SendAsync("CssChanged", name, "").Wait()
-
-
-            if Directory.Exists dir then
-                printfn "Start static assests watching %s" dir
-
-                cssWatcher <- ValueSome(makeCssWatcher dir)
-
-                cssWatcher.Value.Changed
-                |> Observable.throttle (TimeSpan.FromMilliseconds 300)
-                |> Observable.subscribe (fun x -> sendCode x.Name)
-
-                cssWatcher.Value.Created
-                |> Observable.throttle (TimeSpan.FromMilliseconds 300)
-                |> Observable.subscribe (fun x -> sendCode x.Name)
-
-                cssWatcher.Value.Created
-                |> Observable.throttle (TimeSpan.FromMilliseconds 300)
-                |> Observable.subscribe (fun x -> sendCode x.Name)
-
-                cssWatcher.Value.Renamed
-                |> Observable.throttle (TimeSpan.FromMilliseconds 300)
-                |> Observable.subscribe (fun x -> sendCode x.Name)
-
-                cssWatcher.Value.Deleted |> Observable.subscribe (fun x -> sendEmptyCode x.Name)
-
+        let dir =
+            if String.IsNullOrEmpty settings.StaticAssetsDir then
+                Path.Combine(Path.GetDirectoryName(Path.GetFullPath(settings.Project)), "wwwroot")
             else
-                printfn "Static assets folder is not exist."
+                Path.GetFullPath settings.StaticAssetsDir
+
+        let sendCode (name: string) =
+            printfn "css changed: %s" name
+            use fs =
+                File.Open(Path.Combine(dir, name), FileMode.Open, FileAccess.Read, FileShare.ReadWrite)
+            use sr = new StreamReader(fs)
+            hotReloadHub.Clients.All.SendAsync("CssChanged", name, sr.ReadToEnd()).Wait()
+            printfn "css changes is sent: %s" name
+
+        let sendEmptyCode (name: string) =
+            printfn "css removed: %s" name
+            hotReloadHub.Clients.All.SendAsync("CssChanged", name, "").Wait()
 
 
-            while not token.IsCancellationRequested && Directory.Exists dir do
-                do! Task.Delay 2000
+        if Directory.Exists dir then
+            printfn "Start static assests watching %s" dir
 
-            match cssWatcher with
-            | ValueSome x -> x.Dispose()
-            | _ -> ()
+            cssWatcher <- ValueSome(makeCssWatcher dir)
 
-            printfn "CSS watcher exited."
-        }
+            cssWatcher.Value.Changed
+            |> Observable.throttle (TimeSpan.FromMilliseconds 300)
+            |> Observable.subscribe (fun x -> sendCode x.Name)
+
+            cssWatcher.Value.Created
+            |> Observable.throttle (TimeSpan.FromMilliseconds 300)
+            |> Observable.subscribe (fun x -> sendCode x.Name)
+
+            cssWatcher.Value.Created
+            |> Observable.throttle (TimeSpan.FromMilliseconds 300)
+            |> Observable.subscribe (fun x -> sendCode x.Name)
+
+            cssWatcher.Value.Renamed
+            |> Observable.throttle (TimeSpan.FromMilliseconds 300)
+            |> Observable.subscribe (fun x -> sendCode x.Name)
+
+            cssWatcher.Value.Deleted |> Observable.subscribe (fun x -> sendEmptyCode x.Name)
+
+        else
+            printfn "Static assets folder is not exist."
+
+
+        while not token.IsCancellationRequested && Directory.Exists dir do
+            do! Task.Delay 2000
+
+        match cssWatcher with
+        | ValueSome x -> x.Dispose()
+        | _ -> ()
+
+        printfn "CSS watcher exited."
+    }
 
 
 let runServer (setting: WatchSettings) =

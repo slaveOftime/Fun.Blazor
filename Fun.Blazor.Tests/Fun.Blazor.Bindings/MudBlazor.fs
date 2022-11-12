@@ -65,11 +65,6 @@ type MudIconButtonBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     [<CustomOperation("Variant")>] member inline _.Variant ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Variant) = render ==> ("Variant" => x)
                 
 
-type MudFileUploaderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit MudBaseButtonBuilder<'FunBlazorGeneric>()
-
-                
-
 type MudDrawerContainerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit MudComponentBaseBuilder<'FunBlazorGeneric>()
 
@@ -98,6 +93,7 @@ type MudNavLinkBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.Asp
     [<CustomOperation("IconColor")>] member inline _.IconColor ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Color) = render ==> ("IconColor" => x)
     [<CustomOperation("Match")>] member inline _.Match ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.AspNetCore.Components.Routing.NavLinkMatch) = render ==> ("Match" => x)
     [<CustomOperation("Target")>] member inline _.Target ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Target" => x)
+    [<CustomOperation("ActiveClass")>] member inline _.ActiveClass ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ActiveClass" => x)
                 
 
 type MudSelectItemBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -172,6 +168,10 @@ type MudTableBaseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.A
     [<CustomOperation("CommitEditIcon")>] member inline _.CommitEditIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("CommitEditIcon" => x)
     [<CustomOperation("CancelEditIcon")>] member inline _.CancelEditIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("CancelEditIcon" => x)
     [<CustomOperation("CanCancelEdit")>] member inline _.CanCancelEdit ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("CanCancelEdit" => x)
+    [<CustomOperation("ApplyButtonPosition")>] member inline _.ApplyButtonPosition ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.TableApplyButtonPosition) = render ==> ("ApplyButtonPosition" => x)
+    [<CustomOperation("EditButtonPosition")>] member inline _.EditButtonPosition ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.TableEditButtonPosition) = render ==> ("EditButtonPosition" => x)
+    [<CustomOperation("EditTrigger")>] member inline _.EditTrigger ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.TableEditTrigger) = render ==> ("EditTrigger" => x)
+    [<CustomOperation("EditButtonContent")>] member inline _.EditButtonContent ([<InlineIfLambda>] render: AttrRenderFragment, fn: MudBlazorFix.EditButtonContext -> NodeRenderFragment) = render ==> html.renderFragment("EditButtonContent", fn)
     [<CustomOperation("RowEditPreview")>] member inline _.RowEditPreview ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("RowEditPreview" => (System.Action<System.Object>fn))
     [<CustomOperation("RowEditCommit")>] member inline _.RowEditCommit ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("RowEditCommit" => (System.Action<System.Object>fn))
     [<CustomOperation("RowEditCancel")>] member inline _.RowEditCancel ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("RowEditCancel" => (System.Action<System.Object>fn))
@@ -211,6 +211,7 @@ type MudTableBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.A
     [<CustomOperation("SelectedItemChanged")>] member inline _.SelectedItemChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<'T>("SelectedItemChanged", fn)
     [<CustomOperation("SelectedItems")>] member inline _.SelectedItems ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.HashSet<'T>) = render ==> ("SelectedItems" => x)
     [<CustomOperation("SelectedItems'")>] member inline _.SelectedItems' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Collections.Generic.HashSet<'T> * (System.Collections.Generic.HashSet<'T> -> unit)) = render ==> html.bind("SelectedItems", valueFn)
+    [<CustomOperation("Comparer")>] member inline _.Comparer ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEqualityComparer<'T>) = render ==> ("Comparer" => x)
     [<CustomOperation("SelectedItemsChanged")>] member inline _.SelectedItemsChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<System.Collections.Generic.HashSet<'T>>("SelectedItemsChanged", fn)
     [<CustomOperation("SelectedItemsChanged")>] member inline _.SelectedItemsChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<System.Collections.Generic.HashSet<'T>>("SelectedItemsChanged", fn)
     [<CustomOperation("GroupBy")>] member inline _.GroupBy ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.TableGroupDefinition<'T>) = render ==> ("GroupBy" => x)
@@ -384,6 +385,7 @@ type MudCarouselBuilder<'FunBlazorGeneric, 'TData when 'FunBlazorGeneric :> Micr
     [<CustomOperation("PreviousButtonTemplate")>] member inline _.PreviousButtonTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("PreviousButtonTemplate", html.text x)
     [<CustomOperation("PreviousButtonTemplate")>] member inline _.PreviousButtonTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("PreviousButtonTemplate", html.text x)
     [<CustomOperation("BulletTemplate")>] member inline _.BulletTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Boolean -> NodeRenderFragment) = render ==> html.renderFragment("BulletTemplate", fn)
+    [<CustomOperation("EnableSwipeGesture")>] member inline _.EnableSwipeGesture ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("EnableSwipeGesture" => x)
     [<CustomOperation("DelimiterTemplate")>] member inline _.DelimiterTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Boolean -> NodeRenderFragment) = render ==> html.renderFragment("DelimiterTemplate", fn)
                 
 
@@ -402,6 +404,7 @@ type MudFormComponentBuilder<'FunBlazorGeneric, 'T, 'U when 'FunBlazorGeneric :>
     [<CustomOperation("RequiredError")>] member inline _.RequiredError ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("RequiredError" => x)
     [<CustomOperation("ErrorText")>] member inline _.ErrorText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ErrorText" => x)
     [<CustomOperation("Error")>] member inline _.Error ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Error" => x)
+    [<CustomOperation("ErrorId")>] member inline _.ErrorId ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ErrorId" => x)
     [<CustomOperation("Converter")>] member inline _.Converter ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Converter<'T, 'U>) = render ==> ("Converter" => x)
     [<CustomOperation("Culture")>] member inline _.Culture ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Globalization.CultureInfo) = render ==> ("Culture" => x)
     [<CustomOperation("Validation")>] member inline _.Validation ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Object) = render ==> ("Validation" => x)
@@ -420,6 +423,7 @@ type MudBaseInputBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microso
     [<CustomOperation("AdornmentIcon")>] member inline _.AdornmentIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("AdornmentIcon" => x)
     [<CustomOperation("AdornmentText")>] member inline _.AdornmentText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("AdornmentText" => x)
     [<CustomOperation("Adornment")>] member inline _.Adornment ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Adornment) = render ==> ("Adornment" => x)
+    [<CustomOperation("OnlyValidateIfDirty")>] member inline _.OnlyValidateIfDirty ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("OnlyValidateIfDirty" => x)
     [<CustomOperation("AdornmentColor")>] member inline _.AdornmentColor ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Color) = render ==> ("AdornmentColor" => x)
     [<CustomOperation("AdornmentAriaLabel")>] member inline _.AdornmentAriaLabel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("AdornmentAriaLabel" => x)
     [<CustomOperation("IconSize")>] member inline _.IconSize ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Size) = render ==> ("IconSize" => x)
@@ -470,6 +474,9 @@ type MudAutocompleteBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Micr
     [<CustomOperation("CloseIcon")>] member inline _.CloseIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("CloseIcon" => x)
     [<CustomOperation("MaxHeight")>] member inline _.MaxHeight ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("MaxHeight" => x)
     [<CustomOperation("ToStringFunc")>] member inline _.ToStringFunc ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("ToStringFunc" => (System.Func<'T, System.String>fn))
+    [<CustomOperation("ShowProgressIndicator")>] member inline _.ShowProgressIndicator ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("ShowProgressIndicator" => x)
+    [<CustomOperation("ProgressIndicatorColor")>] member inline _.ProgressIndicatorColor ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Color) = render ==> ("ProgressIndicatorColor" => x)
+    [<CustomOperation("SearchFuncWithCancel")>] member inline _.SearchFuncWithCancel ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("SearchFuncWithCancel" => (System.Func<System.String, System.Threading.CancellationToken, System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<'T>>>fn))
     [<CustomOperation("SearchFunc")>] member inline _.SearchFunc ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("SearchFunc" => (System.Func<System.String, System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<'T>>>fn))
     [<CustomOperation("MaxItems")>] member inline _.MaxItems ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("MaxItems" => x)
     [<CustomOperation("MinCharacters")>] member inline _.MinCharacters ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("MinCharacters" => x)
@@ -479,6 +486,26 @@ type MudAutocompleteBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Micr
     [<CustomOperation("ItemTemplate")>] member inline _.ItemTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: 'T -> NodeRenderFragment) = render ==> html.renderFragment("ItemTemplate", fn)
     [<CustomOperation("ItemSelectedTemplate")>] member inline _.ItemSelectedTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: 'T -> NodeRenderFragment) = render ==> html.renderFragment("ItemSelectedTemplate", fn)
     [<CustomOperation("ItemDisabledTemplate")>] member inline _.ItemDisabledTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: 'T -> NodeRenderFragment) = render ==> html.renderFragment("ItemDisabledTemplate", fn)
+    [<CustomOperation("MoreItemsTemplate")>] member inline _.MoreItemsTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("MoreItemsTemplate", fragment)
+    [<CustomOperation("MoreItemsTemplate")>] member inline _.MoreItemsTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("MoreItemsTemplate", fragment { yield! fragments })
+    [<CustomOperation("MoreItemsTemplate")>] member inline _.MoreItemsTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("MoreItemsTemplate", html.text x)
+    [<CustomOperation("MoreItemsTemplate")>] member inline _.MoreItemsTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("MoreItemsTemplate", html.text x)
+    [<CustomOperation("MoreItemsTemplate")>] member inline _.MoreItemsTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("MoreItemsTemplate", html.text x)
+    [<CustomOperation("NoItemsTemplate")>] member inline _.NoItemsTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("NoItemsTemplate", fragment)
+    [<CustomOperation("NoItemsTemplate")>] member inline _.NoItemsTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("NoItemsTemplate", fragment { yield! fragments })
+    [<CustomOperation("NoItemsTemplate")>] member inline _.NoItemsTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("NoItemsTemplate", html.text x)
+    [<CustomOperation("NoItemsTemplate")>] member inline _.NoItemsTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("NoItemsTemplate", html.text x)
+    [<CustomOperation("NoItemsTemplate")>] member inline _.NoItemsTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("NoItemsTemplate", html.text x)
+    [<CustomOperation("ProgressIndicatorTemplate")>] member inline _.ProgressIndicatorTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("ProgressIndicatorTemplate", fragment)
+    [<CustomOperation("ProgressIndicatorTemplate")>] member inline _.ProgressIndicatorTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("ProgressIndicatorTemplate", fragment { yield! fragments })
+    [<CustomOperation("ProgressIndicatorTemplate")>] member inline _.ProgressIndicatorTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("ProgressIndicatorTemplate", html.text x)
+    [<CustomOperation("ProgressIndicatorTemplate")>] member inline _.ProgressIndicatorTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("ProgressIndicatorTemplate", html.text x)
+    [<CustomOperation("ProgressIndicatorTemplate")>] member inline _.ProgressIndicatorTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("ProgressIndicatorTemplate", html.text x)
+    [<CustomOperation("ProgressIndicatorInPopoverTemplate")>] member inline _.ProgressIndicatorInPopoverTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("ProgressIndicatorInPopoverTemplate", fragment)
+    [<CustomOperation("ProgressIndicatorInPopoverTemplate")>] member inline _.ProgressIndicatorInPopoverTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("ProgressIndicatorInPopoverTemplate", fragment { yield! fragments })
+    [<CustomOperation("ProgressIndicatorInPopoverTemplate")>] member inline _.ProgressIndicatorInPopoverTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("ProgressIndicatorInPopoverTemplate", html.text x)
+    [<CustomOperation("ProgressIndicatorInPopoverTemplate")>] member inline _.ProgressIndicatorInPopoverTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("ProgressIndicatorInPopoverTemplate", html.text x)
+    [<CustomOperation("ProgressIndicatorInPopoverTemplate")>] member inline _.ProgressIndicatorInPopoverTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("ProgressIndicatorInPopoverTemplate", html.text x)
     [<CustomOperation("CoerceText")>] member inline _.CoerceText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("CoerceText" => x)
     [<CustomOperation("CoerceValue")>] member inline _.CoerceValue ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("CoerceValue" => x)
     [<CustomOperation("ItemDisabledFunc")>] member inline _.ItemDisabledFunc ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("ItemDisabledFunc" => (System.Func<'T, System.Boolean>fn))
@@ -609,6 +636,8 @@ type MudCheckBoxBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsof
     [<CustomOperation("Color")>] member inline _.Color ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Color) = render ==> ("Color" => x)
     [<CustomOperation("UnCheckedColor")>] member inline _.UnCheckedColor ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<MudBlazor.Color>) = render ==> ("UnCheckedColor" => x)
     [<CustomOperation("Label")>] member inline _.Label ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Label" => x)
+    [<CustomOperation("LabelPosition")>] member inline _.LabelPosition ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.LabelPosition) = render ==> ("LabelPosition" => x)
+    [<CustomOperation("KeyboardEnabled")>] member inline _.KeyboardEnabled ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("KeyboardEnabled" => x)
     [<CustomOperation("DisableRipple")>] member inline _.DisableRipple ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("DisableRipple" => x)
     [<CustomOperation("Dense")>] member inline _.Dense ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Dense" => x)
     [<CustomOperation("Size")>] member inline _.Size ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Size) = render ==> ("Size" => x)
@@ -623,9 +652,27 @@ type MudSwitchBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.
     [<CustomOperation("Color")>] member inline _.Color ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Color) = render ==> ("Color" => x)
     [<CustomOperation("UnCheckedColor")>] member inline _.UnCheckedColor ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Color) = render ==> ("UnCheckedColor" => x)
     [<CustomOperation("Label")>] member inline _.Label ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Label" => x)
+    [<CustomOperation("LabelPosition")>] member inline _.LabelPosition ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.LabelPosition) = render ==> ("LabelPosition" => x)
     [<CustomOperation("ThumbIcon")>] member inline _.ThumbIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ThumbIcon" => x)
     [<CustomOperation("ThumbIconColor")>] member inline _.ThumbIconColor ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Color) = render ==> ("ThumbIconColor" => x)
     [<CustomOperation("DisableRipple")>] member inline _.DisableRipple ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("DisableRipple" => x)
+                
+
+type MudFileUploadBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit MudFormComponentBuilder<'FunBlazorGeneric, 'T, System.String>()
+    [<CustomOperation("Files")>] member inline _.Files ([<InlineIfLambda>] render: AttrRenderFragment, x: 'T) = render ==> ("Files" => x)
+    [<CustomOperation("Files'")>] member inline _.Files' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: 'T * ('T -> unit)) = render ==> html.bind("Files", valueFn)
+    [<CustomOperation("FilesChanged")>] member inline _.FilesChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<'T>("FilesChanged", fn)
+    [<CustomOperation("FilesChanged")>] member inline _.FilesChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<'T>("FilesChanged", fn)
+    [<CustomOperation("OnFilesChanged")>] member inline _.OnFilesChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.AspNetCore.Components.Forms.InputFileChangeEventArgs>("OnFilesChanged", fn)
+    [<CustomOperation("OnFilesChanged")>] member inline _.OnFilesChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.AspNetCore.Components.Forms.InputFileChangeEventArgs>("OnFilesChanged", fn)
+    [<CustomOperation("ButtonTemplate")>] member inline _.ButtonTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.String -> NodeRenderFragment) = render ==> html.renderFragment("ButtonTemplate", fn)
+    [<CustomOperation("SelectedTemplate")>] member inline _.SelectedTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: 'T -> NodeRenderFragment) = render ==> html.renderFragment("SelectedTemplate", fn)
+    [<CustomOperation("SuppressOnChangeWhenInvalid")>] member inline _.SuppressOnChangeWhenInvalid ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("SuppressOnChangeWhenInvalid" => x)
+    [<CustomOperation("Accept")>] member inline _.Accept ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Accept" => x)
+    [<CustomOperation("Hidden")>] member inline _.Hidden ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Hidden" => x)
+    [<CustomOperation("InputClass")>] member inline _.InputClass ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("InputClass" => x)
+    [<CustomOperation("InputStyle")>] member inline _.InputStyle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("InputStyle" => x)
                 
 
 type MudPickerBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -645,6 +692,7 @@ type MudPickerBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.
     [<CustomOperation("HelperText")>] member inline _.HelperText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("HelperText" => x)
     [<CustomOperation("HelperTextOnFocus")>] member inline _.HelperTextOnFocus ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("HelperTextOnFocus" => x)
     [<CustomOperation("Label")>] member inline _.Label ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Label" => x)
+    [<CustomOperation("Clearable")>] member inline _.Clearable ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Clearable" => x)
     [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Disabled" => x)
     [<CustomOperation("Editable")>] member inline _.Editable ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Editable" => x)
     [<CustomOperation("DisableToolbar")>] member inline _.DisableToolbar ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("DisableToolbar" => x)
@@ -685,7 +733,9 @@ type MudBaseDatePickerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micros
     [<CustomOperation("StartMonth")>] member inline _.StartMonth ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.DateTime>) = render ==> ("StartMonth" => x)
     [<CustomOperation("ShowWeekNumbers")>] member inline _.ShowWeekNumbers ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("ShowWeekNumbers" => x)
     [<CustomOperation("TitleDateFormat")>] member inline _.TitleDateFormat ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("TitleDateFormat" => x)
+    [<CustomOperation("AutoClose")>] member inline _.AutoClose ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("AutoClose" => x)
     [<CustomOperation("IsDateDisabledFunc")>] member inline _.IsDateDisabledFunc ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("IsDateDisabledFunc" => (System.Func<System.DateTime, System.Boolean>fn))
+    [<CustomOperation("AdditionalDateClassesFunc")>] member inline _.AdditionalDateClassesFunc ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("AdditionalDateClassesFunc" => (System.Func<System.DateTime, System.String>fn))
     [<CustomOperation("PreviousIcon")>] member inline _.PreviousIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("PreviousIcon" => x)
     [<CustomOperation("NextIcon")>] member inline _.NextIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("NextIcon" => x)
     [<CustomOperation("FixYear")>] member inline _.FixYear ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("FixYear" => x)
@@ -699,7 +749,6 @@ type MudDatePickerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     [<CustomOperation("DateChanged")>] member inline _.DateChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<System.Nullable<System.DateTime>>("DateChanged", fn)
     [<CustomOperation("Date")>] member inline _.Date ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.DateTime>) = render ==> ("Date" => x)
     [<CustomOperation("Date'")>] member inline _.Date' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Nullable<System.DateTime> * (System.Nullable<System.DateTime> -> unit)) = render ==> html.bind("Date", valueFn)
-    [<CustomOperation("AutoClose")>] member inline _.AutoClose ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("AutoClose" => x)
                 
 
 type MudDateRangePickerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -750,6 +799,8 @@ type MudTimePickerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
 
 type MudRadioGroupBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit MudFormComponentBuilder<'FunBlazorGeneric, 'T, 'T>()
+    [<CustomOperation("InputClass")>] member inline _.InputClass ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("InputClass" => x)
+    [<CustomOperation("InputStyle")>] member inline _.InputStyle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("InputStyle" => x)
     [<CustomOperation("Name")>] member inline _.Name ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Name" => x)
     [<CustomOperation("SelectedOption")>] member inline _.SelectedOption ([<InlineIfLambda>] render: AttrRenderFragment, x: 'T) = render ==> ("SelectedOption" => x)
     [<CustomOperation("SelectedOption'")>] member inline _.SelectedOption' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: 'T * ('T -> unit)) = render ==> html.bind("SelectedOption", valueFn)
@@ -1002,8 +1053,8 @@ type ColumnBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.Asp
     [<CustomOperation("Value'")>] member inline _.Value' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: 'T * ('T -> unit)) = render ==> html.bind("Value", valueFn)
     [<CustomOperation("ValueChanged")>] member inline _.ValueChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<'T>("ValueChanged", fn)
     [<CustomOperation("ValueChanged")>] member inline _.ValueChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<'T>("ValueChanged", fn)
-    [<CustomOperation("Visible")>] member inline _.Visible ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Visible" => x)
     [<CustomOperation("Field")>] member inline _.Field ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Field" => x)
+    [<CustomOperation("FieldType")>] member inline _.FieldType ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Type) = render ==> ("FieldType" => x)
     [<CustomOperation("Title")>] member inline _.Title ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
     [<CustomOperation("HideSmall")>] member inline _.HideSmall ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("HideSmall" => x)
     [<CustomOperation("FooterColSpan")>] member inline _.FooterColSpan ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("FooterColSpan" => x)
@@ -1018,7 +1069,9 @@ type ColumnBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.Asp
     [<CustomOperation("HeaderStyle")>] member inline _.HeaderStyle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("HeaderStyle" => x)
     [<CustomOperation("HeaderStyleFunc")>] member inline _.HeaderStyleFunc ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("HeaderStyleFunc" => (System.Func<'T, System.String>fn))
     [<CustomOperation("Sortable")>] member inline _.Sortable ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("Sortable" => x)
+    [<CustomOperation("Resizable")>] member inline _.Resizable ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("Resizable" => x)
     [<CustomOperation("Filterable")>] member inline _.Filterable ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("Filterable" => x)
+    [<CustomOperation("ShowFilterIcon")>] member inline _.ShowFilterIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("ShowFilterIcon" => x)
     [<CustomOperation("Hideable")>] member inline _.Hideable ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("Hideable" => x)
     [<CustomOperation("Hidden")>] member inline _.Hidden ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Hidden" => x)
     [<CustomOperation("Hidden'")>] member inline _.Hidden' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Boolean * (System.Boolean -> unit)) = render ==> html.bind("Hidden", valueFn)
@@ -1030,6 +1083,10 @@ type ColumnBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.Asp
     [<CustomOperation("SortIcon")>] member inline _.SortIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("SortIcon" => x)
     [<CustomOperation("Groupable")>] member inline _.Groupable ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("Groupable" => x)
     [<CustomOperation("Grouping")>] member inline _.Grouping ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Grouping" => x)
+    [<CustomOperation("StickyLeft")>] member inline _.StickyLeft ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("StickyLeft" => x)
+    [<CustomOperation("StickyRight")>] member inline _.StickyRight ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("StickyRight" => x)
+    [<CustomOperation("FilterTemplate")>] member inline _.FilterTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: MudBlazor.FilterContext<'T> -> NodeRenderFragment) = render ==> html.renderFragment("FilterTemplate", fn)
+    [<CustomOperation("Culture")>] member inline _.Culture ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Globalization.CultureInfo) = render ==> ("Culture" => x)
     [<CustomOperation("CellClass")>] member inline _.CellClass ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("CellClass" => x)
     [<CustomOperation("CellClassFunc")>] member inline _.CellClassFunc ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("CellClassFunc" => (System.Func<'T, System.String>fn))
     [<CustomOperation("CellStyle")>] member inline _.CellStyle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("CellStyle" => x)
@@ -1044,14 +1101,21 @@ type ColumnBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.Asp
     [<CustomOperation("AggregateDefinition")>] member inline _.AggregateDefinition ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.AggregateDefinition<'T>) = render ==> ("AggregateDefinition" => x)
                 
 
+type FilterHeaderCellBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit MudComponentBaseBuilder<'FunBlazorGeneric>()
+    [<CustomOperation("Column")>] member inline _.Column ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Column<'T>) = render ==> ("Column" => x)
+                
+
 type FooterCellBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit MudComponentBaseBuilder<'FunBlazorGeneric>()
     [<CustomOperation("Column")>] member inline _.Column ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Column<'T>) = render ==> ("Column" => x)
+    [<CustomOperation("CurrentItems")>] member inline _.CurrentItems ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<'T>) = render ==> ("CurrentItems" => x)
                 
 
 type HeaderCellBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit MudComponentBaseBuilder<'FunBlazorGeneric>()
     [<CustomOperation("Column")>] member inline _.Column ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Column<'T>) = render ==> ("Column" => x)
+    [<CustomOperation("SortDirection")>] member inline _.SortDirection ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.SortDirection) = render ==> ("SortDirection" => x)
                 
 
 type MudDataGridBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -1068,7 +1132,9 @@ type MudDataGridBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsof
     [<CustomOperation("CancelledEditingItem")>] member inline _.CancelledEditingItem ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<'T>("CancelledEditingItem", fn)
     [<CustomOperation("CommittedItemChanges")>] member inline _.CommittedItemChanges ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<'T>("CommittedItemChanges", fn)
     [<CustomOperation("CommittedItemChanges")>] member inline _.CommittedItemChanges ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<'T>("CommittedItemChanges", fn)
-    [<CustomOperation("Sortable")>] member inline _.Sortable ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Sortable" => x)
+    [<CustomOperation("FormFieldChanged")>] member inline _.FormFieldChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<MudBlazor.Utilities.FormFieldChangedEventArgs>("FormFieldChanged", fn)
+    [<CustomOperation("FormFieldChanged")>] member inline _.FormFieldChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<MudBlazor.Utilities.FormFieldChangedEventArgs>("FormFieldChanged", fn)
+    [<CustomOperation("SortMode")>] member inline _.SortMode ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.SortMode) = render ==> ("SortMode" => x)
     [<CustomOperation("Filterable")>] member inline _.Filterable ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Filterable" => x)
     [<CustomOperation("Hideable")>] member inline _.Hideable ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Hideable" => x)
     [<CustomOperation("ShowColumnOptions")>] member inline _.ShowColumnOptions ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("ShowColumnOptions" => x)
@@ -1087,8 +1153,14 @@ type MudDataGridBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsof
     [<CustomOperation("Striped")>] member inline _.Striped ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Striped" => x)
     [<CustomOperation("FixedHeader")>] member inline _.FixedHeader ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("FixedHeader" => x)
     [<CustomOperation("FixedFooter")>] member inline _.FixedFooter ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("FixedFooter" => x)
+    [<CustomOperation("ShowFilterIcons")>] member inline _.ShowFilterIcons ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("ShowFilterIcons" => x)
+    [<CustomOperation("FilterMode")>] member inline _.FilterMode ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.DataGridFilterMode) = render ==> ("FilterMode" => x)
+    [<CustomOperation("FilterCaseSensitivity")>] member inline _.FilterCaseSensitivity ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.DataGridFilterCaseSensitivity) = render ==> ("FilterCaseSensitivity" => x)
+    [<CustomOperation("FilterTemplate")>] member inline _.FilterTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Collections.Generic.List<MudBlazor.FilterDefinition<'T>> -> NodeRenderFragment) = render ==> html.renderFragment("FilterTemplate", fn)
     [<CustomOperation("FilterDefinitions")>] member inline _.FilterDefinitions ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.List<MudBlazor.FilterDefinition<'T>>) = render ==> ("FilterDefinitions" => x)
+    [<CustomOperation("SortDefinitions")>] member inline _.SortDefinitions ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.Dictionary<System.String, MudBlazor.SortDefinition<'T>>) = render ==> ("SortDefinitions" => x)
     [<CustomOperation("Virtualize")>] member inline _.Virtualize ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Virtualize" => x)
+    [<CustomOperation("OverscanCount")>] member inline _.OverscanCount ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("OverscanCount" => x)
     [<CustomOperation("RowClass")>] member inline _.RowClass ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("RowClass" => x)
     [<CustomOperation("RowStyle")>] member inline _.RowStyle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("RowStyle" => x)
     [<CustomOperation("RowClassFunc")>] member inline _.RowClassFunc ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("RowClassFunc" => (System.Func<'T, System.Int32, System.String>fn))
@@ -1107,6 +1179,7 @@ type MudDataGridBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsof
     [<CustomOperation("ToolBarContent")>] member inline _.ToolBarContent ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("ToolBarContent", html.text x)
     [<CustomOperation("ToolBarContent")>] member inline _.ToolBarContent ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("ToolBarContent", html.text x)
     [<CustomOperation("HorizontalScrollbar")>] member inline _.HorizontalScrollbar ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("HorizontalScrollbar" => x)
+    [<CustomOperation("ColumnResizeMode")>] member inline _.ColumnResizeMode ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.ResizeMode) = render ==> ("ColumnResizeMode" => x)
     [<CustomOperation("HeaderClass")>] member inline _.HeaderClass ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("HeaderClass" => x)
     [<CustomOperation("Height")>] member inline _.Height ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Height" => x)
     [<CustomOperation("FooterClass")>] member inline _.FooterClass ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("FooterClass" => x)
@@ -1121,7 +1194,8 @@ type MudDataGridBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsof
     [<CustomOperation("Columns")>] member inline _.Columns ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("Columns", html.text x)
     [<CustomOperation("Columns")>] member inline _.Columns ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("Columns", html.text x)
     [<CustomOperation("Columns")>] member inline _.Columns ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("Columns", html.text x)
-    [<CustomOperation("ChildRowContent")>] member inline _.ChildRowContent ([<InlineIfLambda>] render: AttrRenderFragment, fn: 'T -> NodeRenderFragment) = render ==> html.renderFragment("ChildRowContent", fn)
+    [<CustomOperation("Culture")>] member inline _.Culture ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Globalization.CultureInfo) = render ==> ("Culture" => x)
+    [<CustomOperation("ChildRowContent")>] member inline _.ChildRowContent ([<InlineIfLambda>] render: AttrRenderFragment, fn: MudBlazor.CellContext<'T> -> NodeRenderFragment) = render ==> html.renderFragment("ChildRowContent", fn)
     [<CustomOperation("NoRecordsContent")>] member inline _.NoRecordsContent ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("NoRecordsContent", fragment)
     [<CustomOperation("NoRecordsContent")>] member inline _.NoRecordsContent ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("NoRecordsContent", fragment { yield! fragments })
     [<CustomOperation("NoRecordsContent")>] member inline _.NoRecordsContent ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("NoRecordsContent", html.text x)
@@ -1149,11 +1223,13 @@ type MudDataGridBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsof
     [<CustomOperation("GroupExpanded")>] member inline _.GroupExpanded ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("GroupExpanded" => x)
     [<CustomOperation("GroupClass")>] member inline _.GroupClass ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("GroupClass" => x)
     [<CustomOperation("GroupStyle")>] member inline _.GroupStyle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("GroupStyle" => x)
+    [<CustomOperation("ShowMenuIcon")>] member inline _.ShowMenuIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("ShowMenuIcon" => x)
                 
 
 type MudDataGridPagerBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit MudComponentBaseBuilder<'FunBlazorGeneric>()
     [<CustomOperation("DisableRowsPerPage")>] member inline _.DisableRowsPerPage ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("DisableRowsPerPage" => x)
+    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Disabled" => x)
     [<CustomOperation("PageSizeOptions")>] member inline _.PageSizeOptions ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32[]) = render ==> ("PageSizeOptions" => x)
     [<CustomOperation("InfoFormat")>] member inline _.InfoFormat ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("InfoFormat" => x)
     [<CustomOperation("RowsPerPageString")>] member inline _.RowsPerPageString ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("RowsPerPageString" => x)
@@ -1362,6 +1438,8 @@ type MudFormBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNet
     [<CustomOperation("IsValidChanged")>] member inline _.IsValidChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<System.Boolean>("IsValidChanged", fn)
     [<CustomOperation("IsTouchedChanged")>] member inline _.IsTouchedChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<System.Boolean>("IsTouchedChanged", fn)
     [<CustomOperation("IsTouchedChanged")>] member inline _.IsTouchedChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<System.Boolean>("IsTouchedChanged", fn)
+    [<CustomOperation("FieldChanged")>] member inline _.FieldChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<MudBlazor.Utilities.FormFieldChangedEventArgs>("FieldChanged", fn)
+    [<CustomOperation("FieldChanged")>] member inline _.FieldChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<MudBlazor.Utilities.FormFieldChangedEventArgs>("FieldChanged", fn)
     [<CustomOperation("Validation")>] member inline _.Validation ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Object) = render ==> ("Validation" => x)
     [<CustomOperation("OverrideFieldValidation")>] member inline _.OverrideFieldValidation ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("OverrideFieldValidation" => x)
     [<CustomOperation("Errors")>] member inline _.Errors ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String[]) = render ==> ("Errors" => x)
@@ -1379,6 +1457,15 @@ type MudHiddenBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspN
     [<CustomOperation("IsHidden'")>] member inline _.IsHidden' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Boolean * (System.Boolean -> unit)) = render ==> html.bind("IsHidden", valueFn)
     [<CustomOperation("IsHiddenChanged")>] member inline _.IsHiddenChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<System.Boolean>("IsHiddenChanged", fn)
     [<CustomOperation("IsHiddenChanged")>] member inline _.IsHiddenChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<System.Boolean>("IsHiddenChanged", fn)
+                
+
+type MudHighlighterBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit MudComponentBaseBuilder<'FunBlazorGeneric>()
+    [<CustomOperation("Text")>] member inline _.Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Text" => x)
+    [<CustomOperation("HighlightedText")>] member inline _.HighlightedText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("HighlightedText" => x)
+    [<CustomOperation("HighlightedTexts")>] member inline _.HighlightedTexts ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<System.String>) = render ==> ("HighlightedTexts" => x)
+    [<CustomOperation("CaseSensitive")>] member inline _.CaseSensitive ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("CaseSensitive" => x)
+    [<CustomOperation("UntilNextBoundary")>] member inline _.UntilNextBoundary ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("UntilNextBoundary" => x)
                 
 
 type MudIconBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -1413,6 +1500,7 @@ type MudInputControlBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsof
     [<CustomOperation("Required")>] member inline _.Required ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Required" => x)
     [<CustomOperation("Error")>] member inline _.Error ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Error" => x)
     [<CustomOperation("ErrorText")>] member inline _.ErrorText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ErrorText" => x)
+    [<CustomOperation("ErrorId")>] member inline _.ErrorId ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ErrorId" => x)
     [<CustomOperation("HelperText")>] member inline _.HelperText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("HelperText" => x)
     [<CustomOperation("HelperTextOnFocus")>] member inline _.HelperTextOnFocus ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("HelperTextOnFocus" => x)
     [<CustomOperation("CounterText")>] member inline _.CounterText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("CounterText" => x)
@@ -1477,7 +1565,7 @@ type MudListItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.As
     [<CustomOperation("ExpandLessIcon")>] member inline _.ExpandLessIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ExpandLessIcon" => x)
     [<CustomOperation("ExpandMoreIcon")>] member inline _.ExpandMoreIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ExpandMoreIcon" => x)
     [<CustomOperation("Inset")>] member inline _.Inset ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Inset" => x)
-    [<CustomOperation("Dense")>] member inline _.Dense ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Dense" => x)
+    [<CustomOperation("Dense")>] member inline _.Dense ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("Dense" => x)
     [<CustomOperation("DisableGutters")>] member inline _.DisableGutters ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("DisableGutters" => x)
     [<CustomOperation("Expanded")>] member inline _.Expanded ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Expanded" => x)
     [<CustomOperation("Expanded'")>] member inline _.Expanded' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Boolean * (System.Boolean -> unit)) = render ==> html.bind("Expanded", valueFn)
@@ -1537,6 +1625,9 @@ type MudMenuItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.As
     [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Disabled" => x)
     [<CustomOperation("Link")>] member inline _.Link ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Link" => x)
     [<CustomOperation("Href")>] member inline _.Href ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Href" => x)
+    [<CustomOperation("Icon")>] member inline _.Icon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Icon" => x)
+    [<CustomOperation("IconColor")>] member inline _.IconColor ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Color) = render ==> ("IconColor" => x)
+    [<CustomOperation("IconSize")>] member inline _.IconSize ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Size) = render ==> ("IconSize" => x)
     [<CustomOperation("Target")>] member inline _.Target ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Target" => x)
     [<CustomOperation("ForceLoad")>] member inline _.ForceLoad ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("ForceLoad" => x)
     [<CustomOperation("Command")>] member inline _.Command ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Windows.Input.ICommand) = render ==> ("Command" => x)
@@ -1843,6 +1934,8 @@ type MudStackBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNe
 type MudSwipeAreaBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit MudComponentBaseBuilder<'FunBlazorGeneric>()
     [<CustomOperation("OnSwipe")>] member inline _.OnSwipe ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("OnSwipe" => (System.Action<MudBlazor.SwipeDirection>fn))
+    [<CustomOperation("Sensitivity")>] member inline _.Sensitivity ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("Sensitivity" => x)
+    [<CustomOperation("PreventDefault")>] member inline _.PreventDefault ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("PreventDefault" => x)
                 
 
 type MudSimpleTableBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -1942,8 +2035,6 @@ type MudTrBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCo
     [<CustomOperation("IsEditing")>] member inline _.IsEditing ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("IsEditing" => x)
     [<CustomOperation("IsEditSwitchBlocked")>] member inline _.IsEditSwitchBlocked ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("IsEditSwitchBlocked" => x)
     [<CustomOperation("IsExpandable")>] member inline _.IsExpandable ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("IsExpandable" => x)
-    [<CustomOperation("IsHeader")>] member inline _.IsHeader ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("IsHeader" => x)
-    [<CustomOperation("IsFooter")>] member inline _.IsFooter ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("IsFooter" => x)
     [<CustomOperation("IsCheckedChanged")>] member inline _.IsCheckedChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<System.Boolean>("IsCheckedChanged", fn)
     [<CustomOperation("IsCheckedChanged")>] member inline _.IsCheckedChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<System.Boolean>("IsCheckedChanged", fn)
     [<CustomOperation("IsChecked")>] member inline _.IsChecked ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("IsChecked" => x)
@@ -1954,6 +2045,7 @@ type MudTimelineItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsof
     inherit MudComponentBaseBuilder<'FunBlazorGeneric>()
     [<CustomOperation("Icon")>] member inline _.Icon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Icon" => x)
     [<CustomOperation("Variant")>] member inline _.Variant ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Variant) = render ==> ("Variant" => x)
+    [<CustomOperation("DotStyle")>] member inline _.DotStyle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("DotStyle" => x)
     [<CustomOperation("Color")>] member inline _.Color ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Color) = render ==> ("Color" => x)
     [<CustomOperation("Size")>] member inline _.Size ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Size) = render ==> ("Size" => x)
     [<CustomOperation("Elevation")>] member inline _.Elevation ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("Elevation" => x)
@@ -2004,6 +2096,7 @@ type MudTreeViewBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsof
     [<CustomOperation("CheckBoxColor")>] member inline _.CheckBoxColor ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Color) = render ==> ("CheckBoxColor" => x)
     [<CustomOperation("MultiSelection")>] member inline _.MultiSelection ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("MultiSelection" => x)
     [<CustomOperation("ExpandOnClick")>] member inline _.ExpandOnClick ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("ExpandOnClick" => x)
+    [<CustomOperation("ExpandOnDoubleClick")>] member inline _.ExpandOnDoubleClick ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("ExpandOnDoubleClick" => x)
     [<CustomOperation("Hover")>] member inline _.Hover ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Hover" => x)
     [<CustomOperation("Dense")>] member inline _.Dense ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Dense" => x)
     [<CustomOperation("Height")>] member inline _.Height ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Height" => x)
@@ -2061,6 +2154,8 @@ type MudTreeViewItemBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Micr
     [<CustomOperation("SelectedChanged")>] member inline _.SelectedChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<System.Boolean>("SelectedChanged", fn)
     [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs>("OnClick", fn)
     [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.AspNetCore.Components.Web.MouseEventArgs>("OnClick", fn)
+    [<CustomOperation("OnDoubleClick")>] member inline _.OnDoubleClick ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs>("OnDoubleClick", fn)
+    [<CustomOperation("OnDoubleClick")>] member inline _.OnDoubleClick ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.AspNetCore.Components.Web.MouseEventArgs>("OnDoubleClick", fn)
                 
 
 type MudTextBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -2076,6 +2171,14 @@ type MudContainerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.A
     inherit MudComponentBaseBuilder<'FunBlazorGeneric>()
     [<CustomOperation("Fixed")>] member inline _.Fixed ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Fixed" => x)
     [<CustomOperation("MaxWidth")>] member inline _.MaxWidth ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.MaxWidth) = render ==> ("MaxWidth" => x)
+                
+
+type HierarchyColumnBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit MudComponentBaseBuilder<'FunBlazorGeneric>()
+    [<CustomOperation("ClosedIcon")>] member inline _.ClosedIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ClosedIcon" => x)
+    [<CustomOperation("OpenIcon")>] member inline _.OpenIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("OpenIcon" => x)
+    [<CustomOperation("IconSize")>] member inline _.IconSize ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Size) = render ==> ("IconSize" => x)
+    [<CustomOperation("ButtonDisabledFunc")>] member inline _.ButtonDisabledFunc ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("ButtonDisabledFunc" => (System.Func<'T, System.Boolean>fn))
                 
 
 type SelectColumnBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -2114,14 +2217,6 @@ type MudItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNet
     [<CustomOperation("lg")>] member inline _.lg ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("lg" => x)
     [<CustomOperation("xl")>] member inline _.xl ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("xl" => x)
     [<CustomOperation("xxl")>] member inline _.xxl ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("xxl" => x)
-                
-
-type MudHighlighterBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit MudComponentBaseBuilder<'FunBlazorGeneric>()
-    [<CustomOperation("Text")>] member inline _.Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Text" => x)
-    [<CustomOperation("HighlightedText")>] member inline _.HighlightedText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("HighlightedText" => x)
-    [<CustomOperation("CaseSensitive")>] member inline _.CaseSensitive ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("CaseSensitive" => x)
-    [<CustomOperation("UntilNextBoundary")>] member inline _.UntilNextBoundary ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("UntilNextBoundary" => x)
                 
 
 type MudMainContentBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -2221,23 +2316,6 @@ type MudThemeProviderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microso
 
                 
 
-type FilterBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
-    [<CustomOperation("Id")>] member inline _.Id ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Guid) = render ==> ("Id" => x)
-    [<CustomOperation("Field")>] member inline _.Field ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Field" => x)
-    [<CustomOperation("Field'")>] member inline _.Field' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.String * (System.String -> unit)) = render ==> html.bind("Field", valueFn)
-    [<CustomOperation("Operator")>] member inline _.Operator ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Operator" => x)
-    [<CustomOperation("Operator'")>] member inline _.Operator' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.String * (System.String -> unit)) = render ==> html.bind("Operator", valueFn)
-    [<CustomOperation("Value")>] member inline _.Value ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Object) = render ==> ("Value" => x)
-    [<CustomOperation("Value'")>] member inline _.Value' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Object * (System.Object -> unit)) = render ==> html.bind("Value", valueFn)
-    [<CustomOperation("FieldChanged")>] member inline _.FieldChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<System.String>("FieldChanged", fn)
-    [<CustomOperation("FieldChanged")>] member inline _.FieldChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<System.String>("FieldChanged", fn)
-    [<CustomOperation("OperatorChanged")>] member inline _.OperatorChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<System.String>("OperatorChanged", fn)
-    [<CustomOperation("OperatorChanged")>] member inline _.OperatorChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<System.String>("OperatorChanged", fn)
-    [<CustomOperation("ValueChanged")>] member inline _.ValueChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<System.Object>("ValueChanged", fn)
-    [<CustomOperation("ValueChanged")>] member inline _.ValueChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<System.Object>("ValueChanged", fn)
-                
-
 type MudDialogProviderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
     [<CustomOperation("NoHeader")>] member inline _.NoHeader ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("NoHeader" => x)
@@ -2259,6 +2337,7 @@ type MudVirtualizeBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Micros
     [<CustomOperation("IsEnabled")>] member inline _.IsEnabled ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("IsEnabled" => x)
     [<CustomOperation("childContent")>] member inline _.childContent ([<InlineIfLambda>] render: AttrRenderFragment, fn: 'T -> NodeRenderFragment) = render ==> html.renderFragment("ChildContent", fn)
     [<CustomOperation("Items")>] member inline _.Items ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.ICollection<'T>) = render ==> ("Items" => x)
+    [<CustomOperation("OverscanCount")>] member inline _.OverscanCount ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("OverscanCount" => x)
                 
 
 type BreadcrumbLinkBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -2335,6 +2414,28 @@ type MudInputAdornmentBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micros
     [<CustomOperation("AdornmentClick")>] member inline _.AdornmentClick ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.AspNetCore.Components.Web.MouseEventArgs>("AdornmentClick", fn)
                 
             
+namespace rec MudBlazor.DslInternals.Components.Snackbar.InternalComponents
+
+open FSharp.Data.Adaptive
+open Fun.Blazor
+open Fun.Blazor.Operators
+open MudBlazor.DslInternals
+
+
+type SnackbarMessageRenderFragmentBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    [<CustomOperation("Message")>] member inline _.Message ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("Message", fragment)
+    [<CustomOperation("Message")>] member inline _.Message ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("Message", fragment { yield! fragments })
+    [<CustomOperation("Message")>] member inline _.Message ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("Message", html.text x)
+    [<CustomOperation("Message")>] member inline _.Message ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("Message", html.text x)
+    [<CustomOperation("Message")>] member inline _.Message ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("Message", html.text x)
+                
+
+type SnackbarMessageTextBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    [<CustomOperation("Message")>] member inline _.Message ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.AspNetCore.Components.MarkupString) = render ==> ("Message" => x)
+                
+            
 namespace rec MudBlazor.DslInternals.Charts
 
 open FSharp.Data.Adaptive
@@ -2355,184 +2456,199 @@ namespace MudBlazor
 
 [<AutoOpen>]
 module DslCE =
-
+  
+    open System.Diagnostics.CodeAnalysis
     open MudBlazor.DslInternals
 
-    type MudComponentBase'() = inherit MudComponentBaseBuilder<MudBlazor.MudComponentBase>()
-    type MudBaseButton'() = inherit MudBaseButtonBuilder<MudBlazor.MudBaseButton>()
-    type MudButton'() = inherit MudButtonBuilder<MudBlazor.MudButton>()
-    type MudFab'() = inherit MudFabBuilder<MudBlazor.MudFab>()
-    type MudIconButton'() = inherit MudIconButtonBuilder<MudBlazor.MudIconButton>()
-    type MudFileUploader'() = inherit MudFileUploaderBuilder<MudBlazor.MudFileUploader>()
-    type MudDrawerContainer'() = inherit MudDrawerContainerBuilder<MudBlazor.MudDrawerContainer>()
-    type MudLayout'() = inherit MudLayoutBuilder<MudBlazor.MudLayout>()
-    type MudBaseSelectItem'() = inherit MudBaseSelectItemBuilder<MudBlazor.MudBaseSelectItem>()
-    type MudNavLink'() = inherit MudNavLinkBuilder<MudBlazor.MudNavLink>()
-    type MudSelectItem'<'T>() = inherit MudSelectItemBuilder<MudBlazor.MudSelectItem<'T>, 'T>()
-    type MudTableBase'() = inherit MudTableBaseBuilder<MudBlazor.MudTableBase>()
-    type MudTable'<'T>() = inherit MudTableBuilder<MudBlazor.MudTable<'T>, 'T>()
-    type MudTabs'() = inherit MudTabsBuilder<MudBlazor.MudTabs>()
-    type MudDynamicTabs'() = inherit MudDynamicTabsBuilder<MudBlazor.MudDynamicTabs>()
-    type MudChartBase'() = inherit MudChartBaseBuilder<MudBlazor.MudChartBase>()
-    type MudChart'() = inherit MudChartBuilder<MudBlazor.MudChart>()
-    type MudBaseItemsControl'<'TChildComponent when 'TChildComponent :> MudBlazor.MudComponentBase>() = inherit MudBaseItemsControlBuilder<MudBlazor.MudBaseItemsControl<'TChildComponent>, 'TChildComponent>()
-    type MudBaseBindableItemsControl'<'TChildComponent, 'TData when 'TChildComponent :> MudBlazor.MudComponentBase>() = inherit MudBaseBindableItemsControlBuilder<MudBlazor.MudBaseBindableItemsControl<'TChildComponent, 'TData>, 'TChildComponent, 'TData>()
-    type MudCarousel'<'TData>() = inherit MudCarouselBuilder<MudBlazor.MudCarousel<'TData>, 'TData>()
-    type MudTimeline'() = inherit MudTimelineBuilder<MudBlazor.MudTimeline>()
-    type MudFormComponent'<'T, 'U>() = inherit MudFormComponentBuilder<MudBlazor.MudFormComponent<'T, 'U>, 'T, 'U>()
-    type MudBaseInput'<'T>() = inherit MudBaseInputBuilder<MudBlazor.MudBaseInput<'T>, 'T>()
-    type MudAutocomplete'<'T>() = inherit MudAutocompleteBuilder<MudBlazor.MudAutocomplete<'T>, 'T>()
-    type MudDebouncedInput'<'T>() = inherit MudDebouncedInputBuilder<MudBlazor.MudDebouncedInput<'T>, 'T>()
-    type MudNumericField'<'T>() = inherit MudNumericFieldBuilder<MudBlazor.MudNumericField<'T>, 'T>()
-    type MudTextField'<'T>() = inherit MudTextFieldBuilder<MudBlazor.MudTextField<'T>, 'T>()
-    type MudInput'<'T>() = inherit MudInputBuilder<MudBlazor.MudInput<'T>, 'T>()
-    type MudInputString'() = inherit MudInputStringBuilder<MudBlazor.MudInputString>()
-    type MudRangeInput'<'T>() = inherit MudRangeInputBuilder<MudBlazor.MudRangeInput<'T>, 'T>()
-    type MudMask'() = inherit MudMaskBuilder<MudBlazor.MudMask>()
-    type MudSelect'<'T>() = inherit MudSelectBuilder<MudBlazor.MudSelect<'T>, 'T>()
-    type MudBooleanInput'<'T>() = inherit MudBooleanInputBuilder<MudBlazor.MudBooleanInput<'T>, 'T>()
-    type MudCheckBox'<'T>() = inherit MudCheckBoxBuilder<MudBlazor.MudCheckBox<'T>, 'T>()
-    type MudSwitch'<'T>() = inherit MudSwitchBuilder<MudBlazor.MudSwitch<'T>, 'T>()
-    type MudPicker'<'T>() = inherit MudPickerBuilder<MudBlazor.MudPicker<'T>, 'T>()
-    type MudBaseDatePicker'() = inherit MudBaseDatePickerBuilder<MudBlazor.MudBaseDatePicker>()
-    type MudDatePicker'() = inherit MudDatePickerBuilder<MudBlazor.MudDatePicker>()
-    type MudDateRangePicker'() = inherit MudDateRangePickerBuilder<MudBlazor.MudDateRangePicker>()
-    type MudColorPicker'() = inherit MudColorPickerBuilder<MudBlazor.MudColorPicker>()
-    type MudTimePicker'() = inherit MudTimePickerBuilder<MudBlazor.MudTimePicker>()
-    type MudRadioGroup'<'T>() = inherit MudRadioGroupBuilder<MudBlazor.MudRadioGroup<'T>, 'T>()
-    type MudAlert'() = inherit MudAlertBuilder<MudBlazor.MudAlert>()
-    type MudAppBar'() = inherit MudAppBarBuilder<MudBlazor.MudAppBar>()
-    type MudAvatar'() = inherit MudAvatarBuilder<MudBlazor.MudAvatar>()
-    type MudAvatarGroup'() = inherit MudAvatarGroupBuilder<MudBlazor.MudAvatarGroup>()
-    type MudBadge'() = inherit MudBadgeBuilder<MudBlazor.MudBadge>()
-    type MudBreadcrumbs'() = inherit MudBreadcrumbsBuilder<MudBlazor.MudBreadcrumbs>()
-    type MudBreakpointProvider'() = inherit MudBreakpointProviderBuilder<MudBlazor.MudBreakpointProvider>()
-    type MudButtonGroup'() = inherit MudButtonGroupBuilder<MudBlazor.MudButtonGroup>()
-    type MudToggleIconButton'() = inherit MudToggleIconButtonBuilder<MudBlazor.MudToggleIconButton>()
-    type MudCard'() = inherit MudCardBuilder<MudBlazor.MudCard>()
-    type MudCardActions'() = inherit MudCardActionsBuilder<MudBlazor.MudCardActions>()
-    type MudCardContent'() = inherit MudCardContentBuilder<MudBlazor.MudCardContent>()
-    type MudCardHeader'() = inherit MudCardHeaderBuilder<MudBlazor.MudCardHeader>()
-    type MudCardMedia'() = inherit MudCardMediaBuilder<MudBlazor.MudCardMedia>()
-    type MudCarouselItem'() = inherit MudCarouselItemBuilder<MudBlazor.MudCarouselItem>()
-    type MudChipSet'() = inherit MudChipSetBuilder<MudBlazor.MudChipSet>()
-    type MudChip'() = inherit MudChipBuilder<MudBlazor.MudChip>()
-    type MudCollapse'() = inherit MudCollapseBuilder<MudBlazor.MudCollapse>()
-    type Column'<'T>() = inherit ColumnBuilder<MudBlazor.Column<'T>, 'T>()
-    type FooterCell'<'T>() = inherit FooterCellBuilder<MudBlazor.FooterCell<'T>, 'T>()
-    type HeaderCell'<'T>() = inherit HeaderCellBuilder<MudBlazor.HeaderCell<'T>, 'T>()
-    type MudDataGrid'<'T>() = inherit MudDataGridBuilder<MudBlazor.MudDataGrid<'T>, 'T>()
-    type MudDataGridPager'<'T>() = inherit MudDataGridPagerBuilder<MudBlazor.MudDataGridPager<'T>, 'T>()
-    type Row'() = inherit RowBuilder<MudBlazor.Row>()
-    type MudDialog'() = inherit MudDialogBuilder<MudBlazor.MudDialog>()
-    type MudDialogInstance'() = inherit MudDialogInstanceBuilder<MudBlazor.MudDialogInstance>()
-    type MudDrawer'() = inherit MudDrawerBuilder<MudBlazor.MudDrawer>()
-    type MudDropContainer'<'T>() = inherit MudDropContainerBuilder<MudBlazor.MudDropContainer<'T>, 'T>()
-    type MudDropZone'<'T>() = inherit MudDropZoneBuilder<MudBlazor.MudDropZone<'T>, 'T>()
-    type MudDynamicDropItem'<'T>() = inherit MudDynamicDropItemBuilder<MudBlazor.MudDynamicDropItem<'T>, 'T>()
-    type MudElement'() = inherit MudElementBuilder<MudBlazor.MudElement>()
-    type MudExpansionPanel'() = inherit MudExpansionPanelBuilder<MudBlazor.MudExpansionPanel>()
-    type MudExpansionPanels'() = inherit MudExpansionPanelsBuilder<MudBlazor.MudExpansionPanels>()
-    type MudField'() = inherit MudFieldBuilder<MudBlazor.MudField>()
-    type MudFocusTrap'() = inherit MudFocusTrapBuilder<MudBlazor.MudFocusTrap>()
-    type MudForm'() = inherit MudFormBuilder<MudBlazor.MudForm>()
-    type MudHidden'() = inherit MudHiddenBuilder<MudBlazor.MudHidden>()
-    type MudIcon'() = inherit MudIconBuilder<MudBlazor.MudIcon>()
-    type MudImage'() = inherit MudImageBuilder<MudBlazor.MudImage>()
-    type MudInputControl'() = inherit MudInputControlBuilder<MudBlazor.MudInputControl>()
-    type MudInputLabel'() = inherit MudInputLabelBuilder<MudBlazor.MudInputLabel>()
-    type MudLink'() = inherit MudLinkBuilder<MudBlazor.MudLink>()
-    type MudList'() = inherit MudListBuilder<MudBlazor.MudList>()
-    type MudListItem'() = inherit MudListItemBuilder<MudBlazor.MudListItem>()
-    type MudListSubheader'() = inherit MudListSubheaderBuilder<MudBlazor.MudListSubheader>()
-    type MudMenu'() = inherit MudMenuBuilder<MudBlazor.MudMenu>()
-    type MudMenuItem'() = inherit MudMenuItemBuilder<MudBlazor.MudMenuItem>()
-    type MudMessageBox'() = inherit MudMessageBoxBuilder<MudBlazor.MudMessageBox>()
-    type MudNavGroup'() = inherit MudNavGroupBuilder<MudBlazor.MudNavGroup>()
-    type MudNavMenu'() = inherit MudNavMenuBuilder<MudBlazor.MudNavMenu>()
-    type MudOverlay'() = inherit MudOverlayBuilder<MudBlazor.MudOverlay>()
-    type MudPageContentNavigation'() = inherit MudPageContentNavigationBuilder<MudBlazor.MudPageContentNavigation>()
-    type MudPagination'() = inherit MudPaginationBuilder<MudBlazor.MudPagination>()
-    type MudPaper'() = inherit MudPaperBuilder<MudBlazor.MudPaper>()
-    type MudPopover'() = inherit MudPopoverBuilder<MudBlazor.MudPopover>()
-    type MudProgressCircular'() = inherit MudProgressCircularBuilder<MudBlazor.MudProgressCircular>()
-    type MudProgressLinear'() = inherit MudProgressLinearBuilder<MudBlazor.MudProgressLinear>()
-    type MudRadio'<'T>() = inherit MudRadioBuilder<MudBlazor.MudRadio<'T>, 'T>()
-    type MudRating'() = inherit MudRatingBuilder<MudBlazor.MudRating>()
-    type MudRatingItem'() = inherit MudRatingItemBuilder<MudBlazor.MudRatingItem>()
-    type MudRTLProvider'() = inherit MudRTLProviderBuilder<MudBlazor.MudRTLProvider>()
-    type MudScrollToTop'() = inherit MudScrollToTopBuilder<MudBlazor.MudScrollToTop>()
-    type MudSkeleton'() = inherit MudSkeletonBuilder<MudBlazor.MudSkeleton>()
-    type MudSlider'<'T>() = inherit MudSliderBuilder<MudBlazor.MudSlider<'T>, 'T>()
-    type MudSnackbarElement'() = inherit MudSnackbarElementBuilder<MudBlazor.MudSnackbarElement>()
-    type MudSnackbarProvider'() = inherit MudSnackbarProviderBuilder<MudBlazor.MudSnackbarProvider>()
-    type MudStack'() = inherit MudStackBuilder<MudBlazor.MudStack>()
-    type MudSwipeArea'() = inherit MudSwipeAreaBuilder<MudBlazor.MudSwipeArea>()
-    type MudSimpleTable'() = inherit MudSimpleTableBuilder<MudBlazor.MudSimpleTable>()
-    type MudTableGroupRow'<'T>() = inherit MudTableGroupRowBuilder<MudBlazor.MudTableGroupRow<'T>, 'T>()
-    type MudTablePager'() = inherit MudTablePagerBuilder<MudBlazor.MudTablePager>()
-    type MudTableSortLabel'<'T>() = inherit MudTableSortLabelBuilder<MudBlazor.MudTableSortLabel<'T>, 'T>()
-    type MudTd'() = inherit MudTdBuilder<MudBlazor.MudTd>()
-    type MudTFootRow'() = inherit MudTFootRowBuilder<MudBlazor.MudTFootRow>()
-    type MudTh'() = inherit MudThBuilder<MudBlazor.MudTh>()
-    type MudTHeadRow'() = inherit MudTHeadRowBuilder<MudBlazor.MudTHeadRow>()
-    type MudTr'() = inherit MudTrBuilder<MudBlazor.MudTr>()
-    type MudTimelineItem'() = inherit MudTimelineItemBuilder<MudBlazor.MudTimelineItem>()
-    type MudTooltip'() = inherit MudTooltipBuilder<MudBlazor.MudTooltip>()
-    type MudTreeView'<'T>() = inherit MudTreeViewBuilder<MudBlazor.MudTreeView<'T>, 'T>()
-    type MudTreeViewItem'<'T>() = inherit MudTreeViewItemBuilder<MudBlazor.MudTreeViewItem<'T>, 'T>()
-    type MudText'() = inherit MudTextBuilder<MudBlazor.MudText>()
-    type MudContainer'() = inherit MudContainerBuilder<MudBlazor.MudContainer>()
-    type SelectColumn'<'T>() = inherit SelectColumnBuilder<MudBlazor.SelectColumn<'T>, 'T>()
-    type MudDivider'() = inherit MudDividerBuilder<MudBlazor.MudDivider>()
-    type MudDrawerHeader'() = inherit MudDrawerHeaderBuilder<MudBlazor.MudDrawerHeader>()
-    type MudGrid'() = inherit MudGridBuilder<MudBlazor.MudGrid>()
-    type MudItem'() = inherit MudItemBuilder<MudBlazor.MudItem>()
-    type MudHighlighter'() = inherit MudHighlighterBuilder<MudBlazor.MudHighlighter>()
-    type MudMainContent'() = inherit MudMainContentBuilder<MudBlazor.MudMainContent>()
-    type MudSparkLine'() = inherit MudSparkLineBuilder<MudBlazor.MudSparkLine>()
-    type MudTabPanel'() = inherit MudTabPanelBuilder<MudBlazor.MudTabPanel>()
-    type MudToolBar'() = inherit MudToolBarBuilder<MudBlazor.MudToolBar>()
-    type MudBaseColumn'() = inherit MudBaseColumnBuilder<MudBlazor.MudBaseColumn>()
-    type MudColumn'<'T>() = inherit MudColumnBuilder<MudBlazor.MudColumn<'T>, 'T>()
-    type MudSortableColumn'<'T, 'ModelType>() = inherit MudSortableColumnBuilder<MudBlazor.MudSortableColumn<'T, 'ModelType>, 'T, 'ModelType>()
-    type MudAvatarColumn'<'T>() = inherit MudAvatarColumnBuilder<MudBlazor.MudAvatarColumn<'T>, 'T>()
-    type MudTemplateColumn'<'T>() = inherit MudTemplateColumnBuilder<MudBlazor.MudTemplateColumn<'T>, 'T>()
-    type BaseMudThemeProvider'() = inherit BaseMudThemeProviderBuilder<MudBlazor.BaseMudThemeProvider>()
-    type MudThemeProvider'() = inherit MudThemeProviderBuilder<MudBlazor.MudThemeProvider>()
-    type Filter'<'T>() = inherit FilterBuilder<MudBlazor.Filter<'T>, 'T>()
-    type MudDialogProvider'() = inherit MudDialogProviderBuilder<MudBlazor.MudDialogProvider>()
-    type MudPopoverProvider'() = inherit MudPopoverProviderBuilder<MudBlazor.MudPopoverProvider>()
-    type MudVirtualize'<'T>() = inherit MudVirtualizeBuilder<MudBlazor.MudVirtualize<'T>, 'T>()
-    type BreadcrumbLink'() = inherit BreadcrumbLinkBuilder<MudBlazor.BreadcrumbLink>()
-    type BreadcrumbSeparator'() = inherit BreadcrumbSeparatorBuilder<MudBlazor.BreadcrumbSeparator>()
-    type MudPickerContent'() = inherit MudPickerContentBuilder<MudBlazor.MudPickerContent>()
-    type MudPickerToolbar'() = inherit MudPickerToolbarBuilder<MudBlazor.MudPickerToolbar>()
-    type MudRender'() = inherit MudRenderBuilder<MudBlazor.MudRender>()
-    type MudSpacer'() = inherit MudSpacerBuilder<MudBlazor.MudSpacer>()
-    type MudTreeViewItemToggleButton'() = inherit MudTreeViewItemToggleButtonBuilder<MudBlazor.MudTreeViewItemToggleButton>()
-    type _Imports'() = inherit _ImportsBuilder<MudBlazor._Imports>()
+    type MudComponentBase' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudComponentBase>)>] () = inherit MudComponentBaseBuilder<MudBlazor.MudComponentBase>()
+    type MudBaseButton' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBaseButton>)>] () = inherit MudBaseButtonBuilder<MudBlazor.MudBaseButton>()
+    type MudButton' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudButton>)>] () = inherit MudButtonBuilder<MudBlazor.MudButton>()
+    type MudFab' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudFab>)>] () = inherit MudFabBuilder<MudBlazor.MudFab>()
+    type MudIconButton' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudIconButton>)>] () = inherit MudIconButtonBuilder<MudBlazor.MudIconButton>()
+    type MudDrawerContainer' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudDrawerContainer>)>] () = inherit MudDrawerContainerBuilder<MudBlazor.MudDrawerContainer>()
+    type MudLayout' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudLayout>)>] () = inherit MudLayoutBuilder<MudBlazor.MudLayout>()
+    type MudBaseSelectItem' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBaseSelectItem>)>] () = inherit MudBaseSelectItemBuilder<MudBlazor.MudBaseSelectItem>()
+    type MudNavLink' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudNavLink>)>] () = inherit MudNavLinkBuilder<MudBlazor.MudNavLink>()
+    type MudSelectItem'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudSelectItem<_>>)>] () = inherit MudSelectItemBuilder<MudBlazor.MudSelectItem<'T>, 'T>()
+    type MudTableBase' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudTableBase>)>] () = inherit MudTableBaseBuilder<MudBlazor.MudTableBase>()
+    type MudTable'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudTable<_>>)>] () = inherit MudTableBuilder<MudBlazor.MudTable<'T>, 'T>()
+    type MudTabs' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudTabs>)>] () = inherit MudTabsBuilder<MudBlazor.MudTabs>()
+    type MudDynamicTabs' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudDynamicTabs>)>] () = inherit MudDynamicTabsBuilder<MudBlazor.MudDynamicTabs>()
+    type MudChartBase' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudChartBase>)>] () = inherit MudChartBaseBuilder<MudBlazor.MudChartBase>()
+    type MudChart' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudChart>)>] () = inherit MudChartBuilder<MudBlazor.MudChart>()
+    type MudBaseItemsControl'<'TChildComponent when 'TChildComponent :> MudBlazor.MudComponentBase> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBaseItemsControl<_>>)>] () = inherit MudBaseItemsControlBuilder<MudBlazor.MudBaseItemsControl<'TChildComponent>, 'TChildComponent>()
+    type MudBaseBindableItemsControl'<'TChildComponent, 'TData when 'TChildComponent :> MudBlazor.MudComponentBase> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBaseBindableItemsControl<_, _>>)>] () = inherit MudBaseBindableItemsControlBuilder<MudBlazor.MudBaseBindableItemsControl<'TChildComponent, 'TData>, 'TChildComponent, 'TData>()
+    type MudCarousel'<'TData> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudCarousel<_>>)>] () = inherit MudCarouselBuilder<MudBlazor.MudCarousel<'TData>, 'TData>()
+    type MudTimeline' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudTimeline>)>] () = inherit MudTimelineBuilder<MudBlazor.MudTimeline>()
+    type MudFormComponent'<'T, 'U> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudFormComponent<_, _>>)>] () = inherit MudFormComponentBuilder<MudBlazor.MudFormComponent<'T, 'U>, 'T, 'U>()
+    type MudBaseInput'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBaseInput<_>>)>] () = inherit MudBaseInputBuilder<MudBlazor.MudBaseInput<'T>, 'T>()
+    type MudAutocomplete'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudAutocomplete<_>>)>] () = inherit MudAutocompleteBuilder<MudBlazor.MudAutocomplete<'T>, 'T>()
+    type MudDebouncedInput'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudDebouncedInput<_>>)>] () = inherit MudDebouncedInputBuilder<MudBlazor.MudDebouncedInput<'T>, 'T>()
+    type MudNumericField'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudNumericField<_>>)>] () = inherit MudNumericFieldBuilder<MudBlazor.MudNumericField<'T>, 'T>()
+    type MudTextField'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudTextField<_>>)>] () = inherit MudTextFieldBuilder<MudBlazor.MudTextField<'T>, 'T>()
+    type MudInput'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudInput<_>>)>] () = inherit MudInputBuilder<MudBlazor.MudInput<'T>, 'T>()
+    type MudInputString' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudInputString>)>] () = inherit MudInputStringBuilder<MudBlazor.MudInputString>()
+    type MudRangeInput'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudRangeInput<_>>)>] () = inherit MudRangeInputBuilder<MudBlazor.MudRangeInput<'T>, 'T>()
+    type MudMask' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudMask>)>] () = inherit MudMaskBuilder<MudBlazor.MudMask>()
+    type MudSelect'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudSelect<_>>)>] () = inherit MudSelectBuilder<MudBlazor.MudSelect<'T>, 'T>()
+    type MudBooleanInput'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBooleanInput<_>>)>] () = inherit MudBooleanInputBuilder<MudBlazor.MudBooleanInput<'T>, 'T>()
+    type MudCheckBox'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudCheckBox<_>>)>] () = inherit MudCheckBoxBuilder<MudBlazor.MudCheckBox<'T>, 'T>()
+    type MudSwitch'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudSwitch<_>>)>] () = inherit MudSwitchBuilder<MudBlazor.MudSwitch<'T>, 'T>()
+    type MudFileUpload'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudFileUpload<_>>)>] () = inherit MudFileUploadBuilder<MudBlazor.MudFileUpload<'T>, 'T>()
+    type MudPicker'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudPicker<_>>)>] () = inherit MudPickerBuilder<MudBlazor.MudPicker<'T>, 'T>()
+    type MudBaseDatePicker' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBaseDatePicker>)>] () = inherit MudBaseDatePickerBuilder<MudBlazor.MudBaseDatePicker>()
+    type MudDatePicker' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudDatePicker>)>] () = inherit MudDatePickerBuilder<MudBlazor.MudDatePicker>()
+    type MudDateRangePicker' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudDateRangePicker>)>] () = inherit MudDateRangePickerBuilder<MudBlazor.MudDateRangePicker>()
+    type MudColorPicker' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudColorPicker>)>] () = inherit MudColorPickerBuilder<MudBlazor.MudColorPicker>()
+    type MudTimePicker' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudTimePicker>)>] () = inherit MudTimePickerBuilder<MudBlazor.MudTimePicker>()
+    type MudRadioGroup'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudRadioGroup<_>>)>] () = inherit MudRadioGroupBuilder<MudBlazor.MudRadioGroup<'T>, 'T>()
+    type MudAlert' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudAlert>)>] () = inherit MudAlertBuilder<MudBlazor.MudAlert>()
+    type MudAppBar' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudAppBar>)>] () = inherit MudAppBarBuilder<MudBlazor.MudAppBar>()
+    type MudAvatar' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudAvatar>)>] () = inherit MudAvatarBuilder<MudBlazor.MudAvatar>()
+    type MudAvatarGroup' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudAvatarGroup>)>] () = inherit MudAvatarGroupBuilder<MudBlazor.MudAvatarGroup>()
+    type MudBadge' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBadge>)>] () = inherit MudBadgeBuilder<MudBlazor.MudBadge>()
+    type MudBreadcrumbs' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBreadcrumbs>)>] () = inherit MudBreadcrumbsBuilder<MudBlazor.MudBreadcrumbs>()
+    type MudBreakpointProvider' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBreakpointProvider>)>] () = inherit MudBreakpointProviderBuilder<MudBlazor.MudBreakpointProvider>()
+    type MudButtonGroup' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudButtonGroup>)>] () = inherit MudButtonGroupBuilder<MudBlazor.MudButtonGroup>()
+    type MudToggleIconButton' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudToggleIconButton>)>] () = inherit MudToggleIconButtonBuilder<MudBlazor.MudToggleIconButton>()
+    type MudCard' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudCard>)>] () = inherit MudCardBuilder<MudBlazor.MudCard>()
+    type MudCardActions' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudCardActions>)>] () = inherit MudCardActionsBuilder<MudBlazor.MudCardActions>()
+    type MudCardContent' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudCardContent>)>] () = inherit MudCardContentBuilder<MudBlazor.MudCardContent>()
+    type MudCardHeader' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudCardHeader>)>] () = inherit MudCardHeaderBuilder<MudBlazor.MudCardHeader>()
+    type MudCardMedia' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudCardMedia>)>] () = inherit MudCardMediaBuilder<MudBlazor.MudCardMedia>()
+    type MudCarouselItem' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudCarouselItem>)>] () = inherit MudCarouselItemBuilder<MudBlazor.MudCarouselItem>()
+    type MudChipSet' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudChipSet>)>] () = inherit MudChipSetBuilder<MudBlazor.MudChipSet>()
+    type MudChip' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudChip>)>] () = inherit MudChipBuilder<MudBlazor.MudChip>()
+    type MudCollapse' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudCollapse>)>] () = inherit MudCollapseBuilder<MudBlazor.MudCollapse>()
+    type Column'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Column<_>>)>] () = inherit ColumnBuilder<MudBlazor.Column<'T>, 'T>()
+    type FilterHeaderCell'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<FilterHeaderCell<_>>)>] () = inherit FilterHeaderCellBuilder<MudBlazor.FilterHeaderCell<'T>, 'T>()
+    type FooterCell'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<FooterCell<_>>)>] () = inherit FooterCellBuilder<MudBlazor.FooterCell<'T>, 'T>()
+    type HeaderCell'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<HeaderCell<_>>)>] () = inherit HeaderCellBuilder<MudBlazor.HeaderCell<'T>, 'T>()
+    type MudDataGrid'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudDataGrid<_>>)>] () = inherit MudDataGridBuilder<MudBlazor.MudDataGrid<'T>, 'T>()
+    type MudDataGridPager'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudDataGridPager<_>>)>] () = inherit MudDataGridPagerBuilder<MudBlazor.MudDataGridPager<'T>, 'T>()
+    type Row' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Row>)>] () = inherit RowBuilder<MudBlazor.Row>()
+    type MudDialog' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudDialog>)>] () = inherit MudDialogBuilder<MudBlazor.MudDialog>()
+    type MudDialogInstance' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudDialogInstance>)>] () = inherit MudDialogInstanceBuilder<MudBlazor.MudDialogInstance>()
+    type MudDrawer' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudDrawer>)>] () = inherit MudDrawerBuilder<MudBlazor.MudDrawer>()
+    type MudDropContainer'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudDropContainer<_>>)>] () = inherit MudDropContainerBuilder<MudBlazor.MudDropContainer<'T>, 'T>()
+    type MudDropZone'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudDropZone<_>>)>] () = inherit MudDropZoneBuilder<MudBlazor.MudDropZone<'T>, 'T>()
+    type MudDynamicDropItem'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudDynamicDropItem<_>>)>] () = inherit MudDynamicDropItemBuilder<MudBlazor.MudDynamicDropItem<'T>, 'T>()
+    type MudElement' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudElement>)>] () = inherit MudElementBuilder<MudBlazor.MudElement>()
+    type MudExpansionPanel' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudExpansionPanel>)>] () = inherit MudExpansionPanelBuilder<MudBlazor.MudExpansionPanel>()
+    type MudExpansionPanels' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudExpansionPanels>)>] () = inherit MudExpansionPanelsBuilder<MudBlazor.MudExpansionPanels>()
+    type MudField' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudField>)>] () = inherit MudFieldBuilder<MudBlazor.MudField>()
+    type MudFocusTrap' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudFocusTrap>)>] () = inherit MudFocusTrapBuilder<MudBlazor.MudFocusTrap>()
+    type MudForm' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudForm>)>] () = inherit MudFormBuilder<MudBlazor.MudForm>()
+    type MudHidden' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudHidden>)>] () = inherit MudHiddenBuilder<MudBlazor.MudHidden>()
+    type MudHighlighter' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudHighlighter>)>] () = inherit MudHighlighterBuilder<MudBlazor.MudHighlighter>()
+    type MudIcon' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudIcon>)>] () = inherit MudIconBuilder<MudBlazor.MudIcon>()
+    type MudImage' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudImage>)>] () = inherit MudImageBuilder<MudBlazor.MudImage>()
+    type MudInputControl' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudInputControl>)>] () = inherit MudInputControlBuilder<MudBlazor.MudInputControl>()
+    type MudInputLabel' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudInputLabel>)>] () = inherit MudInputLabelBuilder<MudBlazor.MudInputLabel>()
+    type MudLink' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudLink>)>] () = inherit MudLinkBuilder<MudBlazor.MudLink>()
+    type MudList' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudList>)>] () = inherit MudListBuilder<MudBlazor.MudList>()
+    type MudListItem' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudListItem>)>] () = inherit MudListItemBuilder<MudBlazor.MudListItem>()
+    type MudListSubheader' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudListSubheader>)>] () = inherit MudListSubheaderBuilder<MudBlazor.MudListSubheader>()
+    type MudMenu' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudMenu>)>] () = inherit MudMenuBuilder<MudBlazor.MudMenu>()
+    type MudMenuItem' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudMenuItem>)>] () = inherit MudMenuItemBuilder<MudBlazor.MudMenuItem>()
+    type MudMessageBox' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudMessageBox>)>] () = inherit MudMessageBoxBuilder<MudBlazor.MudMessageBox>()
+    type MudNavGroup' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudNavGroup>)>] () = inherit MudNavGroupBuilder<MudBlazor.MudNavGroup>()
+    type MudNavMenu' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudNavMenu>)>] () = inherit MudNavMenuBuilder<MudBlazor.MudNavMenu>()
+    type MudOverlay' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudOverlay>)>] () = inherit MudOverlayBuilder<MudBlazor.MudOverlay>()
+    type MudPageContentNavigation' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudPageContentNavigation>)>] () = inherit MudPageContentNavigationBuilder<MudBlazor.MudPageContentNavigation>()
+    type MudPagination' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudPagination>)>] () = inherit MudPaginationBuilder<MudBlazor.MudPagination>()
+    type MudPaper' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudPaper>)>] () = inherit MudPaperBuilder<MudBlazor.MudPaper>()
+    type MudPopover' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudPopover>)>] () = inherit MudPopoverBuilder<MudBlazor.MudPopover>()
+    type MudProgressCircular' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudProgressCircular>)>] () = inherit MudProgressCircularBuilder<MudBlazor.MudProgressCircular>()
+    type MudProgressLinear' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudProgressLinear>)>] () = inherit MudProgressLinearBuilder<MudBlazor.MudProgressLinear>()
+    type MudRadio'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudRadio<_>>)>] () = inherit MudRadioBuilder<MudBlazor.MudRadio<'T>, 'T>()
+    type MudRating' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudRating>)>] () = inherit MudRatingBuilder<MudBlazor.MudRating>()
+    type MudRatingItem' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudRatingItem>)>] () = inherit MudRatingItemBuilder<MudBlazor.MudRatingItem>()
+    type MudRTLProvider' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudRTLProvider>)>] () = inherit MudRTLProviderBuilder<MudBlazor.MudRTLProvider>()
+    type MudScrollToTop' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudScrollToTop>)>] () = inherit MudScrollToTopBuilder<MudBlazor.MudScrollToTop>()
+    type MudSkeleton' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudSkeleton>)>] () = inherit MudSkeletonBuilder<MudBlazor.MudSkeleton>()
+    type MudSlider'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudSlider<_>>)>] () = inherit MudSliderBuilder<MudBlazor.MudSlider<'T>, 'T>()
+    type MudSnackbarElement' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudSnackbarElement>)>] () = inherit MudSnackbarElementBuilder<MudBlazor.MudSnackbarElement>()
+    type MudSnackbarProvider' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudSnackbarProvider>)>] () = inherit MudSnackbarProviderBuilder<MudBlazor.MudSnackbarProvider>()
+    type MudStack' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudStack>)>] () = inherit MudStackBuilder<MudBlazor.MudStack>()
+    type MudSwipeArea' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudSwipeArea>)>] () = inherit MudSwipeAreaBuilder<MudBlazor.MudSwipeArea>()
+    type MudSimpleTable' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudSimpleTable>)>] () = inherit MudSimpleTableBuilder<MudBlazor.MudSimpleTable>()
+    type MudTableGroupRow'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudTableGroupRow<_>>)>] () = inherit MudTableGroupRowBuilder<MudBlazor.MudTableGroupRow<'T>, 'T>()
+    type MudTablePager' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudTablePager>)>] () = inherit MudTablePagerBuilder<MudBlazor.MudTablePager>()
+    type MudTableSortLabel'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudTableSortLabel<_>>)>] () = inherit MudTableSortLabelBuilder<MudBlazor.MudTableSortLabel<'T>, 'T>()
+    type MudTd' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudTd>)>] () = inherit MudTdBuilder<MudBlazor.MudTd>()
+    type MudTFootRow' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudTFootRow>)>] () = inherit MudTFootRowBuilder<MudBlazor.MudTFootRow>()
+    type MudTh' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudTh>)>] () = inherit MudThBuilder<MudBlazor.MudTh>()
+    type MudTHeadRow' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudTHeadRow>)>] () = inherit MudTHeadRowBuilder<MudBlazor.MudTHeadRow>()
+    type MudTr' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudTr>)>] () = inherit MudTrBuilder<MudBlazor.MudTr>()
+    type MudTimelineItem' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudTimelineItem>)>] () = inherit MudTimelineItemBuilder<MudBlazor.MudTimelineItem>()
+    type MudTooltip' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudTooltip>)>] () = inherit MudTooltipBuilder<MudBlazor.MudTooltip>()
+    type MudTreeView'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudTreeView<_>>)>] () = inherit MudTreeViewBuilder<MudBlazor.MudTreeView<'T>, 'T>()
+    type MudTreeViewItem'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudTreeViewItem<_>>)>] () = inherit MudTreeViewItemBuilder<MudBlazor.MudTreeViewItem<'T>, 'T>()
+    type MudText' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudText>)>] () = inherit MudTextBuilder<MudBlazor.MudText>()
+    type MudContainer' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudContainer>)>] () = inherit MudContainerBuilder<MudBlazor.MudContainer>()
+    type HierarchyColumn'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<HierarchyColumn<_>>)>] () = inherit HierarchyColumnBuilder<MudBlazor.HierarchyColumn<'T>, 'T>()
+    type SelectColumn'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<SelectColumn<_>>)>] () = inherit SelectColumnBuilder<MudBlazor.SelectColumn<'T>, 'T>()
+    type MudDivider' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudDivider>)>] () = inherit MudDividerBuilder<MudBlazor.MudDivider>()
+    type MudDrawerHeader' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudDrawerHeader>)>] () = inherit MudDrawerHeaderBuilder<MudBlazor.MudDrawerHeader>()
+    type MudGrid' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudGrid>)>] () = inherit MudGridBuilder<MudBlazor.MudGrid>()
+    type MudItem' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudItem>)>] () = inherit MudItemBuilder<MudBlazor.MudItem>()
+    type MudMainContent' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudMainContent>)>] () = inherit MudMainContentBuilder<MudBlazor.MudMainContent>()
+    type MudSparkLine' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudSparkLine>)>] () = inherit MudSparkLineBuilder<MudBlazor.MudSparkLine>()
+    type MudTabPanel' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudTabPanel>)>] () = inherit MudTabPanelBuilder<MudBlazor.MudTabPanel>()
+    type MudToolBar' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudToolBar>)>] () = inherit MudToolBarBuilder<MudBlazor.MudToolBar>()
+    type MudBaseColumn' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBaseColumn>)>] () = inherit MudBaseColumnBuilder<MudBlazor.MudBaseColumn>()
+    type MudColumn'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudColumn<_>>)>] () = inherit MudColumnBuilder<MudBlazor.MudColumn<'T>, 'T>()
+    type MudSortableColumn'<'T, 'ModelType> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudSortableColumn<_, _>>)>] () = inherit MudSortableColumnBuilder<MudBlazor.MudSortableColumn<'T, 'ModelType>, 'T, 'ModelType>()
+    type MudAvatarColumn'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudAvatarColumn<_>>)>] () = inherit MudAvatarColumnBuilder<MudBlazor.MudAvatarColumn<'T>, 'T>()
+    type MudTemplateColumn'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudTemplateColumn<_>>)>] () = inherit MudTemplateColumnBuilder<MudBlazor.MudTemplateColumn<'T>, 'T>()
+    type BaseMudThemeProvider' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<BaseMudThemeProvider>)>] () = inherit BaseMudThemeProviderBuilder<MudBlazor.BaseMudThemeProvider>()
+    type MudThemeProvider' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudThemeProvider>)>] () = inherit MudThemeProviderBuilder<MudBlazor.MudThemeProvider>()
+    type MudDialogProvider' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudDialogProvider>)>] () = inherit MudDialogProviderBuilder<MudBlazor.MudDialogProvider>()
+    type MudPopoverProvider' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudPopoverProvider>)>] () = inherit MudPopoverProviderBuilder<MudBlazor.MudPopoverProvider>()
+    type MudVirtualize'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudVirtualize<_>>)>] () = inherit MudVirtualizeBuilder<MudBlazor.MudVirtualize<'T>, 'T>()
+    type BreadcrumbLink' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<BreadcrumbLink>)>] () = inherit BreadcrumbLinkBuilder<MudBlazor.BreadcrumbLink>()
+    type BreadcrumbSeparator' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<BreadcrumbSeparator>)>] () = inherit BreadcrumbSeparatorBuilder<MudBlazor.BreadcrumbSeparator>()
+    type MudPickerContent' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudPickerContent>)>] () = inherit MudPickerContentBuilder<MudBlazor.MudPickerContent>()
+    type MudPickerToolbar' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudPickerToolbar>)>] () = inherit MudPickerToolbarBuilder<MudBlazor.MudPickerToolbar>()
+    type MudRender' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudRender>)>] () = inherit MudRenderBuilder<MudBlazor.MudRender>()
+    type MudSpacer' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudSpacer>)>] () = inherit MudSpacerBuilder<MudBlazor.MudSpacer>()
+    type MudTreeViewItemToggleButton' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudTreeViewItemToggleButton>)>] () = inherit MudTreeViewItemToggleButtonBuilder<MudBlazor.MudTreeViewItemToggleButton>()
+    type _Imports' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<_Imports>)>] () = inherit _ImportsBuilder<MudBlazor._Imports>()
             
 namespace MudBlazor.Charts
 
 [<AutoOpen>]
 module DslCE =
-
+  
+    open System.Diagnostics.CodeAnalysis
     open MudBlazor.DslInternals.Charts
 
-    type Bar'() = inherit BarBuilder<MudBlazor.Charts.Bar>()
-    type Donut'() = inherit DonutBuilder<MudBlazor.Charts.Donut>()
-    type Line'() = inherit LineBuilder<MudBlazor.Charts.Line>()
-    type Pie'() = inherit PieBuilder<MudBlazor.Charts.Pie>()
-    type Legend'() = inherit LegendBuilder<MudBlazor.Charts.Legend>()
-    type Filters'() = inherit FiltersBuilder<MudBlazor.Charts.Filters>()
+    type Bar' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Bar>)>] () = inherit BarBuilder<MudBlazor.Charts.Bar>()
+    type Donut' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Donut>)>] () = inherit DonutBuilder<MudBlazor.Charts.Donut>()
+    type Line' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Line>)>] () = inherit LineBuilder<MudBlazor.Charts.Line>()
+    type Pie' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Pie>)>] () = inherit PieBuilder<MudBlazor.Charts.Pie>()
+    type Legend' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Legend>)>] () = inherit LegendBuilder<MudBlazor.Charts.Legend>()
+    type Filters' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Filters>)>] () = inherit FiltersBuilder<MudBlazor.Charts.Filters>()
             
 namespace MudBlazor.Internal
 
 [<AutoOpen>]
 module DslCE =
-
+  
+    open System.Diagnostics.CodeAnalysis
     open MudBlazor.DslInternals.Internal
 
-    type MudInputAdornment'() = inherit MudInputAdornmentBuilder<MudBlazor.Internal.MudInputAdornment>()
+    type MudInputAdornment' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudInputAdornment>)>] () = inherit MudInputAdornmentBuilder<MudBlazor.Internal.MudInputAdornment>()
+            
+namespace MudBlazor.Components.Snackbar.InternalComponents
+
+[<AutoOpen>]
+module DslCE =
+  
+    open System.Diagnostics.CodeAnalysis
+    open MudBlazor.DslInternals.Components.Snackbar.InternalComponents
+
+    type SnackbarMessageRenderFragment' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<SnackbarMessageRenderFragment>)>] () = inherit SnackbarMessageRenderFragmentBuilder<MudBlazor.Components.Snackbar.InternalComponents.SnackbarMessageRenderFragment>()
+    type SnackbarMessageText' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<SnackbarMessageText>)>] () = inherit SnackbarMessageTextBuilder<MudBlazor.Components.Snackbar.InternalComponents.SnackbarMessageText>()
             

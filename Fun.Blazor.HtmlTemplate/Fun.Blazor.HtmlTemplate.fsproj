@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net5.0;net6.0</TargetFrameworks>
+		<TargetFrameworks>net7.0</TargetFrameworks>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<TrimMode>link</TrimMode>
 		<IsTrimmable>true</IsTrimmable>
@@ -14,7 +14,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="FSharp.Data" Version="4.2.9" />
+	  <PackageReference Include="FSharp.Data" Version="5.0.2" />
 	</ItemGroup>
 	
 	<ItemGroup>
@@ -23,7 +23,7 @@
 
 	<ItemGroup>
 		<PackageReference Condition="'$(Configuration)'=='RELEASE'" Include="Ionide.KeepAChangelog.Tasks" Version="0.1.8" PrivateAssets="all" />
-		<PackageReference Update="FSharp.Core" Version="6.0.0" />
+		<PackageReference Update="FSharp.Core" Version="7.0.0" />
 	</ItemGroup>
 	
 </Project>

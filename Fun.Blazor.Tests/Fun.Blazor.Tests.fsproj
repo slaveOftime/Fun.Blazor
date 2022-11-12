@@ -1,45 +1,45 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <IsPackable>false</IsPackable>
-    <GenerateProgramFile>false</GenerateProgramFile>
-  </PropertyGroup>
-  <ItemGroup>
-    <Compile Include="Fun.Blazor.Bindings\MudBlazor.fs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Utils.fs" />
-    <Compile Include="DITests.fs" />
-    <Compile Include="AdaptiveTests.fs" />
-    <Compile Include="RouterTests.fs" />
-    <Compile Include="I18nTests.fs" />
-    <Compile Include="HookTests.fs" />
-    <Compile Include="DomTests.fs" />
-    <Compile Include="CascadingValueTests.fs" />
-    <Compile Include="ServerTests.fs" />
-    <Compile Include="HtmxTests.fs" />
-    <Compile Include="Program.fs" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="6.0.7" />
-    <PackageReference Include="Moq" Version="4.18.1" />
-    <PackageReference Include="bunit" Version="1.9.8" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
-    <PackageReference Include="xunit" Version="2.4.1" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="coverlet.collector" Version="3.1.2">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference FunBlazorStyle="CE" Include="MudBlazor" Version="6.0.13" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Fun.Blazor.Server\Fun.Blazor.Server.fsproj" />
-    <ProjectReference Include="..\Fun.Blazor\Fun.Blazor.fsproj" />
-    <ProjectReference Include="..\Fun.Htmx\Fun.Htmx.fsproj" />
-  </ItemGroup>
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<IsPackable>false</IsPackable>
+		<GenerateProgramFile>false</GenerateProgramFile>
+	</PropertyGroup>
+	<ItemGroup>
+		<Compile Include="Fun.Blazor.Bindings\MudBlazor.fs" />
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Include="Utils.fs" />
+		<Compile Include="DITests.fs" />
+		<Compile Include="AdaptiveTests.fs" />
+		<Compile Include="RouterTests.fs" />
+		<Compile Include="I18nTests.fs" />
+		<Compile Include="HookTests.fs" />
+		<Compile Include="DomTests.fs" />
+		<Compile Include="CascadingValueTests.fs" />
+		<Compile Include="ServerTests.fs" />
+		<Compile Include="HtmxTests.fs" />
+		<Compile Include="Program.fs" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.TestHost" Version="7.0.0" />
+		<PackageReference Include="Moq" Version="4.18.2" />
+		<PackageReference Include="bunit" Version="1.12.6" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.0" />
+		<PackageReference Include="xunit" Version="2.4.2" />
+		<PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+		<PackageReference Include="coverlet.collector" Version="3.2.0">
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+		<PackageReference FunBlazorStyle="CE" Include="MudBlazor" Version="6.0.18" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Fun.Blazor.Server\Fun.Blazor.Server.fsproj" />
+		<ProjectReference Include="..\Fun.Blazor\Fun.Blazor.fsproj" />
+		<ProjectReference Include="..\Fun.Htmx\Fun.Htmx.fsproj" />
+	</ItemGroup>
 </Project>

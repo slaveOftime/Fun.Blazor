@@ -1,30 +1,30 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net7.0</TargetFramework>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Compile Include="BasicBenchmark\CEComponent.fs" />
-    <Compile Include="BasicBenchmark\TemplateComponent.fs" />
-    <Compile Include="BasicBenchmark\BoleroComponent.fs" />
-    <Compile Include="BasicBenchmark\Benchmarks.fs" />
-    <Compile Include="BlazorInterop\Benchmarks.fs" />
-    <Compile Include="Program.fs" />
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Include="BasicBenchmark\CEComponent.fs" />
+		<Compile Include="BasicBenchmark\TemplateComponent.fs" />
+		<Compile Include="BasicBenchmark\BoleroComponent.fs" />
+		<Compile Include="BasicBenchmark\Benchmarks.fs" />
+		<Compile Include="BlazorInterop\Benchmarks.fs" />
+		<Compile Include="Program.fs" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="BenchmarkDotNet" Version="0.13.1" />
-    <PackageReference Include="Bolero" Version="0.20.18" />
-    <PackageReference Include="MudBlazor" Version="6.0.13" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="BenchmarkDotNet" Version="0.13.2" />
+		<PackageReference Include="Bolero" Version="0.20.18" />
+		<PackageReference Include="MudBlazor" Version="6.0.18" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Fun.Blazor.Docs.Controls\Fun.Blazor.Docs.Controls.fsproj" />
-    <ProjectReference Include="..\..\Fun.Blazor.HtmlTemplate\Fun.Blazor.HtmlTemplate.fsproj" />
-    <ProjectReference Include="..\..\Fun.Blazor\Fun.Blazor.fsproj" />
-    <ProjectReference Include="..\CSharpComponents\CSharpComponents.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\Fun.Blazor.Docs.Controls\Fun.Blazor.Docs.Controls.fsproj" />
+		<ProjectReference Include="..\..\Fun.Blazor.HtmlTemplate\Fun.Blazor.HtmlTemplate.fsproj" />
+		<ProjectReference Include="..\..\Fun.Blazor\Fun.Blazor.fsproj" />
+		<ProjectReference Include="..\CSharpComponents\CSharpComponents.csproj" />
+	</ItemGroup>
 
 </Project>

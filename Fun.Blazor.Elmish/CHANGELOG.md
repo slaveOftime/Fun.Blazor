@@ -1,6 +1,5 @@
 # Changelog
 
-## [2.1.2] - 2022-11-05
+## [3.0.0-beta001] - 2022-11-12
 
-Use change log
-
+Update to dotnet 7
