@@ -1,4 +1,4 @@
-#r "nuget: Fun.Build, 0.2.5"
+#r "nuget: Fun.Build, 0.2.8"
 #r "nuget: Fake.IO.FileSystem, 5.20.4"
 
 #load "docs.fsx"
@@ -35,7 +35,6 @@ let pack =
         run "dotnet pack -c Release Fun.Blazor.Server/Fun.Blazor.Server.fsproj -o ."
         run "dotnet pack -c Release Fun.Blazor.Wasm/Fun.Blazor.Wasm.fsproj -o ."
         run "dotnet pack -c Release Fun.Htmx/Fun.Htmx.fsproj -o ."
-        run "dotnet pack -c Release Fun.Blazor.CustomElements/Fun.Blazor.CustomElements.fsproj -o ."
     }
 
 
