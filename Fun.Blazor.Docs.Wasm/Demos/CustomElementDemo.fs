@@ -21,7 +21,7 @@ let private count =
 
 let entry = div {
     p { "Below will render two custome elements which will powered by blazor:" }
-    CustomElement.create count
+    CustomElement.create (count, div { "pre-render-child" })
     CustomElement.create count
     CustomElement.create (fun (store: IShareStore) ->
         let count = store.CreateCVal("count", 1)

@@ -138,6 +138,9 @@ type DomAttrBuilder() =
     [<CustomOperation("key")>]
     member inline _.key([<InlineIfLambda>] render: AttrRenderFragment, k) = render ==> html.key k
 
+    /// A helper to make CE work without set any real attributes.
+    [<CustomOperation("empty")>]
+    member inline _.empty([<InlineIfLambda>] render: AttrRenderFragment) = render
 
     [<CustomOperation("asAttrRenderFragment")>]
     member inline _.asAttrRenderFragment(render: AttrRenderFragment) = AttrRenderFragmentWrapper render

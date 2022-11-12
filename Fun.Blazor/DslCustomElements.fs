@@ -105,7 +105,7 @@ module CustomElementExtensions =
         /// You will need to call RegisterForFunBlazor.
         /// For example for blazor server: services.AddServerSideBlazor(fun options -> options.RootComponents.RegisterForFunBlazor()).
         /// prerenderNode will put as ChildContent of the current custom element, so when run prerendering it will be used (eg: blazor server).
-        static member inline create(node, ?prerenderNode) = CustomElementFragmentBuilder(node, prerenderNode) { "", "" }
+        static member inline create(node, ?prerenderNode) = CustomElementFragmentBuilder(node, prerenderNode) { empty }
 
         /// Wrap a NodeRenderFragment into a web custom element.
         /// 'Services is a tuple of registered services in DI container.
@@ -114,7 +114,7 @@ module CustomElementExtensions =
         /// For example for blazor server: services.AddServerSideBlazor(fun options -> options.RootComponents.RegisterForFunBlazor()).
         /// prerenderNode will put as ChildContent of the current custom element, so when run prerendering it will be used (eg: blazor server).
         static member inline create(fn: 'Services -> NodeRenderFragment, ?prerenderNode) =
-            CustomElementFragmentBuilder(html.inject fn, prerenderNode) { "", "" }
+            CustomElementFragmentBuilder(html.inject fn, prerenderNode) { empty }
 
 
 namespace Microsoft.Extensions.DependencyInjection
