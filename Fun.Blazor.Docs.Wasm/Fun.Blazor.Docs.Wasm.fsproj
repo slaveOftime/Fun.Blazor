@@ -42,9 +42,9 @@
 		<PackageReference Include="Majorsoft.Blazor.WebAssembly.Logging.Console" Version="1.5.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.0" PrivateAssets="all" />
-		<PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
 	</ItemGroup>
 	<ItemGroup>
+		<ProjectReference Include="..\Fun.Blazor.CustomElements\Fun.Blazor.CustomElements.fsproj" />
 		<ProjectReference Include="..\Fun.Blazor.Docs.Controls\Fun.Blazor.Docs.Controls.fsproj" />
 		<ProjectReference Include="..\Fun.Blazor.Elmish\Fun.Blazor.Elmish.fsproj" />
 		<ProjectReference Condition="'$(Configuration)'=='DEBUG'" Include="..\Fun.Blazor.HotReload\Fun.Blazor.HotReload.fsproj" />

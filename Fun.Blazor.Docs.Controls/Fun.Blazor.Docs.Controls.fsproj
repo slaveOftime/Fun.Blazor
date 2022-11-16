@@ -1,25 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk.Razor">
-	<PropertyGroup>
-		<TargetFramework>net7.0</TargetFramework>
-		<GenerateDocumentationFile>true</GenerateDocumentationFile>
-		<TrimMode>link</TrimMode>
-		<IsTrimmable>true</IsTrimmable>
-	</PropertyGroup>
-	<ItemGroup>
-		<Compile Include="Fun.Blazor.Bindings\Microsoft.AspNetCore.Components.Authorization.fs" />
-		<Compile Include="Fun.Blazor.Bindings\Microsoft.AspNetCore.Components.fs" />
-		<Compile Include="Fun.Blazor.Bindings\MudBlazor.fs" />
-	</ItemGroup>
-	<ItemGroup>
-		<Compile Include="BasicControls.fs" />
-	</ItemGroup>
-	<ItemGroup>
-		<PackageReference FunBlazorStyle="CE" Include="Microsoft.AspNetCore.Components.Authorization" Version="7.0.0" />
-		<PackageReference FunBlazorStyle="CE" FunBlazorNamespace="Microsoft.AspNetCore.Components" Include="Microsoft.AspNetCore.Components.Web" Version="7.0.0" />
-		<PackageReference FunBlazorStyle="CE" Include="MudBlazor" Version="6.0.18" />
-	</ItemGroup>
-	<ItemGroup>
-		<ProjectReference Include="..\Fun.Blazor\Fun.Blazor.fsproj" />
-	</ItemGroup>
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <TrimMode>link</TrimMode>
+    <IsTrimmable>true</IsTrimmable>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Fun.Blazor.Bindings\Microsoft.AspNetCore.Components.Authorization.fs" />
+    <Compile Include="Fun.Blazor.Bindings\Microsoft.AspNetCore.Components.fs" />
+    <Compile Include="Fun.Blazor.Bindings\MudBlazor.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BasicControls.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference FunBlazorStyle="CE" Include="Microsoft.AspNetCore.Components.Authorization" Version="7.0.0" />
+    <PackageReference FunBlazorStyle="CE" FunBlazorNamespace="Microsoft.AspNetCore.Components" Include="Microsoft.AspNetCore.Components.Web" Version="7.0.0" />
+    <PackageReference FunBlazorStyle="CE" Include="MudBlazor" Version="6.1.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Fun.Blazor\Fun.Blazor.fsproj" />
+  </ItemGroup>
 </Project>

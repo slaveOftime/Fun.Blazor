@@ -35,7 +35,7 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<PackageReference FunBlazorStyle="CE" Include="MudBlazor" Version="6.0.18" />
+		<PackageReference FunBlazorStyle="CE" Include="MudBlazor" Version="6.1.2" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Fun.Blazor.Server\Fun.Blazor.Server.fsproj" />
