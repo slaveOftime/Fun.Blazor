@@ -26,6 +26,7 @@ let pack =
     stage "Pack" {
         whenBranch "master"
         run "dotnet pack -c Release Fun.Blazor/Fun.Blazor.fsproj -o ."
+        run "dotnet pack -c Release Fun.Blazor.CustomElements/Fun.Blazor.CustomElements.fsproj -o ."
         run "dotnet pack -c Release Fun.Blazor.Cli/Fun.Blazor.Cli.fsproj -o ."
         run "dotnet pack -c Release Fun.Blazor.Elmish/Fun.Blazor.Elmish.fsproj -o ."
         run "dotnet pack -c Release Fun.Blazor.Generator/Fun.Blazor.Generator.fsproj -o ."
