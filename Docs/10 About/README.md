@@ -10,6 +10,7 @@ This is a project to make F# developer to write blazor easier.
 4. [Adaptive](https://github.com/fsprojects/FSharp.Data.Adaptive) model (adaptiview/AdaptivieForm) (**recommend**), [elmish](https://github.com/elmish/elmish) model (html.elmish)
 5. Giraffe style routing (html.route)
 6. Type safe style (Fun.Css)
+7. Convert html to CE style by [Fun.Dev.Tools](https://slaveoftime.github.io/Fun.DevTools.Docs)
 
 ## Benchmarks
 
