@@ -91,11 +91,26 @@ module CustomElementExtensions =
 
     type CustomElement =
 
+        /// Normally blazorJsSrc should be something like: _framework/blazor.server.js.
+        /// You should add this before you use custom elements.
+        static member lazyBlazorJs(?blazorJsSrc) =
+            js
+                $"""
+                    window.initBlazor = () => {{
+                        if (!window.Blazor) {{
+                            const blazorScript = document.createElement("script")
+                            blazorScript.src = "{defaultArg blazorJsSrc "_framework/blazor.server.js"}"
+                            document.body.appendChild(blazorScript)
+                        }}
+                    }}
+                """
+
         /// This can only be used for a long runing single instance, distribution env is not appropriate. 
         /// Wrap a NodeRenderFragment into a web custom element.
         /// You will need to call RegisterForFunBlazor.
         /// For example for blazor server: services.AddServerSideBlazor(fun options -> options.RootComponents.RegisterForFunBlazor()).
         /// prerenderNode will put as ChildContent of the current custom element, so when run prerendering it will be used (eg: blazor server).
+        /// It is recommend to add CutomElement.lazyBlazorJs() at the html header. 
         static member inline create(node, ?prerenderNode) = CustomElementFragmentBuilder(node, prerenderNode) { empty }
 
         /// This can only be used for a long runing single instance, distribution env is not appropriate. 
@@ -110,7 +125,8 @@ module CustomElementExtensions =
 
     type html with
 
-        /// To use this for a component you will need to call RegisterCustomElementForFunBlazor properly at the start of your program
+        /// To use this for a component you will need to call RegisterCustomElementForFunBlazor properly at the start of your program. 
+        /// It is recommend to add CutomElement.lazyBlazorJs() at the html header. 
         static member customElement<'T when 'T :> IComponent>(?tagName, ?attrs, ?preRender, ?preRenderNode: NodeRenderFragment) =
             let id' = Random.Shared.Next()
             let tagName = tagName |> Option.defaultWith (fun _ -> toSnakeCase typeof<'T>.Name)
