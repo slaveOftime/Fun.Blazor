@@ -244,7 +244,7 @@ type DomAttrBuilder() =
     member inline _.challenge([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("challenge" => v)
     [<CustomOperation("charset")>]
     member inline _.charset([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("charset" =>> v)
-    [<CustomOperation("checked")>]
+    [<CustomOperation("checked'")>]
     member inline _.checked'([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("checked" =>>> v)
     [<CustomOperation("cite")>]
     member inline _.cite([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("cite" => v)
@@ -278,7 +278,7 @@ type DomAttrBuilder() =
     member inline _.datetime([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("datetime" => v)
     [<CustomOperation("decoding")>]
     member inline _.decoding([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("decoding" => v)
-    [<CustomOperation("default")>]
+    [<CustomOperation("default'")>]
     member inline _.default'([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("default" => v)
     [<CustomOperation("defer")>]
     member inline _.defer([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("defer" => v)
@@ -332,7 +332,7 @@ type DomAttrBuilder() =
     member inline _.keytype([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("keytype" => v)
     [<CustomOperation("kind")>]
     member inline _.kind([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("kind" => v)
-    [<CustomOperation("label")>]
+    [<CustomOperation("label'")>]
     member inline _.label([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("label" =>> v)
     [<CustomOperation("lang")>]
     member inline _.lang([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("lang" =>> v)

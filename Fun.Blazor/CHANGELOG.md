@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.0.0-beta002] - 2022-01-13
+
+- Fix attribute name
+
 ## [3.0.0-beta002] - 2022-11-16
 
 Downgrade to dotnet 6
