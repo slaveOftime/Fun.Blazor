@@ -1,10 +1,10 @@
 # Changelog
 
-## [3.0.0-beta004] - 2022-01-13
+## [3.0.0-beta004] - 2023-01-13
 
 Add CustomElement.lazyBlazorJs helper
 
-## [3.0.0-beta003] - 2022-01-13
+## [3.0.0-beta003] - 2023-01-13
 
 Improve custom elements
 

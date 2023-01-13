@@ -43,10 +43,13 @@ module CodeGenProject =
             |> ignore
 
 
-    let createAndRun (projectFile: string) codesDirName sdk generatorVersion packages =
+    let createAndRun keepCodeGenProj (projectFile: string) codesDirName sdk generatorVersion packages =
         AnsiConsole.MarkupLine "[green]Create temp project[/]"
+        
+        let projDir = Path.GetDirectoryName projectFile
+        let codesDir = projDir </> codesDirName
+        let codeGenFolder = projDir </> "bin" </> "FunBlazorCli-" + Guid.NewGuid().ToString()
 
-        let codeGenFolder = Path.GetTempPath() </> "FunBlazorCli-" + Guid.NewGuid().ToString()
         Directory.CreateDirectory codeGenFolder |> ignore
 
         match sdk with
@@ -82,7 +85,6 @@ module CodeGenProject =
 #endif
 
 
-        let codesDir = Path.GetDirectoryName projectFile </> codesDirName
         let bootstrapCode = StringBuilder()
 
         for package in packages do
@@ -116,6 +118,6 @@ module CodeGenProject =
 
         AnsiConsole.MarkupLine $"[green]Clean temp project[/]"
         try
-            Directory.Delete(codeGenFolder, true)
+            if not keepCodeGenProj then Directory.Delete(codeGenFolder, true)
         with
             | _ -> ()

@@ -1,6 +1,6 @@
 # Changelog
 
-## [3.0.0-beta003] - 2022-01-13
+## [3.0.0-beta003] - 2023-01-13
 
 - Fix attribute name
 - Add IFunBlazorBuilder so we can share attributes between element and component

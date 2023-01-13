@@ -46,7 +46,7 @@ type GenerateCommand() =
             AnsiConsole.MarkupLine "[red] project is required[/]"
             -1
         | Some path ->
-            CodeGen.Generate.startGenerate path settings.OutDir settings.Style settings.Sdk settings.GeneratorVersion settings.Inline
+            CodeGen.Generate.startGenerate path settings.OutDir settings.Style settings.Sdk settings.GeneratorVersion settings.Inline settings.KeepCodeGenProj
             0
 
 

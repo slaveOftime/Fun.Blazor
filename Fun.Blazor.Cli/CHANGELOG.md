@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.0.0-beta003] - 2023-01-13
+
+Change code generation folder to target project bin folder
+
 ## [3.0.0-beta002] - 2022-11-16
 
 Downgrade to dotnet 6

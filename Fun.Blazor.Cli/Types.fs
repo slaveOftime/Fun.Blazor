@@ -48,3 +48,8 @@ type CodeGenSettings() =
     [<CommandOption("--inline")>]
     [<DefaultValue true>] // Default value for bool is different
     member val Inline = true with get, set
+
+    [<Description("Keep code generation project, it is under bin folder of the target project")>]
+    [<CommandOption("--keep-code-gen-proj")>]
+    [<DefaultValue false>] // Default value for bool is different
+    member val KeepCodeGenProj = false with get, set
