@@ -36,6 +36,7 @@ type Program =
         let builder = WebAssemblyHostBuilder.CreateDefault(args)
 
         builder.RootComponents.RegisterForFunBlazor()
+        builder.RootComponents.RegisterCustomElementForFunBlazor<Fun.Blazor.Docs.Wasm.Demos.CustomElementDemo.DemoCounter>()
 
 #if DEBUG
         builder.AddFunBlazor("#app", html.hotReloadComp (app, "Fun.Blazor.Docs.Wasm.App.app"))

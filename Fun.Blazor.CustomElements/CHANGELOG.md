@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.0.0-beta003] - 2022-01-13
+
+Improve custom elements
+
 ## [3.0.0-beta002] - 2022-11-16
 
 Update to dotnet 7

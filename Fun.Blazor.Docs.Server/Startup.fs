@@ -16,7 +16,10 @@ let builder = WebApplication.CreateBuilder(Environment.GetCommandLineArgs())
 let services = builder.Services
 
 services.AddControllersWithViews()
-services.AddServerSideBlazor(fun options -> options.RootComponents.RegisterForFunBlazor())
+services.AddServerSideBlazor(fun options -> 
+    options.RootComponents.RegisterForFunBlazor()
+    options.RootComponents.RegisterCustomElementForFunBlazor<Fun.Blazor.Docs.Wasm.Demos.CustomElementDemo.DemoCounter>()
+)
 services.AddFunBlazorServer().AddMudServices()
 services.AddScoped<Fun.Blazor.Docs.Wasm.Demos.ScopedDemoService>()
 

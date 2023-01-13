@@ -19,9 +19,17 @@ let private count =
     )
 
 
+type DemoCounter() =
+    inherit FunBlazorComponent()
+
+    override _.Render() = count
+
+
 let entry = div {
+    p { "Custom elements is supposed to be used when the main app is not in blazor server or WASM mode. And should be used with static html context." }
     p { "Below will render two custome elements which will powered by blazor:" }
-    CustomElement.create (count, div { "pre-render-child" })
+    p { "CustomElement.create can only be used for a long running single instance app, not for distribution env." }
+    //CustomElement.create (count, div { "pre-render-child" }) // prerender is only work when the main app is not in normal blazor mode like server or wasm.
     CustomElement.create count
     CustomElement.create (fun (store: IShareStore) ->
         let count = store.CreateCVal("count", 1)
@@ -36,4 +44,6 @@ let entry = div {
         }
     )
     CustomElement.create (div { "Demo string" })
+    p { "html.customElement behave similar like the default blazor custom elements, which need you to define class based component and register at the begining of your program." }
+    html.customElement<DemoCounter>(preRender = false) // prerender is only work when the main app is not in normal blazor mode like server or wasm.
 }
