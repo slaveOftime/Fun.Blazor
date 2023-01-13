@@ -79,6 +79,7 @@ type KeyFramesBuilder(identifier: string) =
 
 
 type DomAttrBuilder() =
+    interface IFunBlazorBuilder
 
     member inline _.Run(AttrRenderFragmentWrapper x) = x
 

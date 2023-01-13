@@ -6,6 +6,7 @@ open Moq
 open Xunit
 open Bunit
 open Fun.Blazor
+open Fun.Blazor.Operators
 open MudBlazor
 
 
@@ -127,5 +128,30 @@ let ``DOM CE DSL build check`` () =
     CascadingValue'() {
         IsFixed true
         asAttrRenderFragment
+    }
+    |> ignore
+
+
+type IFunBlazorBuilder with
+    [<CustomOperation("demo")>]
+    member inline _.demo([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("demo" => v)
+
+[<Fact>]
+let ``DOM CE attribute share check`` () =
+    let tempAttr =
+        domAttr {
+            demo 123
+            asAttrRenderFragment
+        }
+
+    MudAlert'() {
+        tempAttr
+        demo 123
+    }
+    |> ignore
+
+    div {
+        tempAttr
+        demo 3456
     }
     |> ignore

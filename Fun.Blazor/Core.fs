@@ -62,12 +62,14 @@ module Operators =
         NodeRenderFragment(fun comp builder index -> render2.Invoke(comp, builder, render1.Invoke(comp, builder, index)))
 
 
+type IFunBlazorBuilder = interface end
+
 type IElementBuilder =
+    inherit IFunBlazorBuilder
     abstract member Name: string
 
 type IComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent> =
-    interface
-    end
+    inherit IFunBlazorBuilder
 
 
 [<AbstractClass>]
