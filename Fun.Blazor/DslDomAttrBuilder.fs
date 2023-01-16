@@ -320,26 +320,36 @@ type DomAttrBuilder() =
     member inline _.autocapitalize([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("autocapitalize" => v)
     /// true is for "on", false is for "off"
     [<CustomOperation("autocomplete")>]
-    member inline _.autocomplete([<InlineIfLambda>] render: AttrRenderFragment, v: bool) = render ==> ("autocomplete" => (if v then "on" else "off"))
+    member inline _.autocomplete([<InlineIfLambda>] render: AttrRenderFragment, v: bool) = render ==> ("autocomplete" =>> (if v then "on" else "off"))
+    [<CustomOperation("autocomplete")>]
+    member inline this.autocomplete([<InlineIfLambda>] render: AttrRenderFragment) = this.autocomplete(render, true)
     /// You can use AutoCompleteValues to get available values
     [<CustomOperation("autocomplete")>]
     member inline _.autocomplete([<InlineIfLambda>] render: AttrRenderFragment, v: string) = render ==> ("autocomplete" => v)
     [<CustomOperation("autofocus")>]
     member inline _.autofocus([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("autofocus" =>>> v)
+    [<CustomOperation("autofocus")>]
+    member inline this.autofocus([<InlineIfLambda>] render: AttrRenderFragment) = this.autofocus(render, true)
     [<CustomOperation("autoplay")>]
     member inline _.autoplay([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("autoplay" =>>> v)
+    [<CustomOperation("autoplay")>]
+    member inline this.autoplay([<InlineIfLambda>] render: AttrRenderFragment) = this.autoplay(render, true)
     [<CustomOperation("bgcolor")>]
     member inline _.bgcolor([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("bgcolor" =>> v)
     [<CustomOperation("border")>]
     member inline _.border([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("border" => v)
     [<CustomOperation("buffered")>]
     member inline _.buffered([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("buffered" =>>> v)
+    [<CustomOperation("buffered")>]
+    member inline this.buffered([<InlineIfLambda>] render: AttrRenderFragment) = this.buffered(render, true)
     [<CustomOperation("challenge")>]
     member inline _.challenge([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("challenge" => v)
     [<CustomOperation("charset")>]
     member inline _.charset([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("charset" =>> v)
     [<CustomOperation("checked'")>]
     member inline _.checked'([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("checked" =>>> v)
+    [<CustomOperation("checked'")>]
+    member inline this.checked'([<InlineIfLambda>] render: AttrRenderFragment) = this.checked'(render, true)
     [<CustomOperation("cite")>]
     member inline _.cite([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("cite" => v)
     [<CustomOperation("code")>]
@@ -382,6 +392,8 @@ type DomAttrBuilder() =
     member inline _.dirname([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("dirname" =>> v)
     [<CustomOperation("disabled")>]
     member inline _.disabled([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("disabled" =>>> v)
+    [<CustomOperation("disabled")>]
+    member inline this.disabled([<InlineIfLambda>] render: AttrRenderFragment) = this.disabled(render, true)
     [<CustomOperation("download")>]
     member inline _.download([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("download" => v)
     [<CustomOperation("draggable")>]
@@ -416,6 +428,8 @@ type DomAttrBuilder() =
     member inline _.id([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("id" => v)
     [<CustomOperation("importance")>]
     member inline _.importance([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("importance" =>>> v)
+    [<CustomOperation("importance")>]
+    member inline this.importance([<InlineIfLambda>] render: AttrRenderFragment, v) = this.importance(render, true)
     [<CustomOperation("integrity")>]
     member inline _.integrity([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("integrity" => v)
     [<CustomOperation("ismap")>]
@@ -434,6 +448,8 @@ type DomAttrBuilder() =
     member inline _.language([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("language" =>> v)
     [<CustomOperation("lazyload")>]
     member inline _.lazyload([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("lazyload" =>>> v)
+    [<CustomOperation("lazyload")>]
+    member inline this.lazyload([<InlineIfLambda>] render: AttrRenderFragment) = this.lazyload(render, true)
     [<CustomOperation("list")>]
     member inline _.list([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("list" => v)
     [<CustomOperation("loop")>]
@@ -478,10 +494,14 @@ type DomAttrBuilder() =
     member inline _.preload([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("preload" => v)
     [<CustomOperation("readonly")>]
     member inline _.readonly([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("readonly" =>>> v)
+    [<CustomOperation("readonly")>]
+    member inline this.readonly([<InlineIfLambda>] render: AttrRenderFragment) = this.readonly(render, true)
     [<CustomOperation("rel")>]
     member inline _.rel([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("rel" => v)
     [<CustomOperation("required")>]
     member inline _.required([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("required" =>>> v)
+    [<CustomOperation("required")>]
+    member inline this.required([<InlineIfLambda>] render: AttrRenderFragment) = this.required(render, true)
     [<CustomOperation("reversed")>]
     member inline _.reversed([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("reversed" => v)
     [<CustomOperation("rows")>]
@@ -494,6 +514,8 @@ type DomAttrBuilder() =
     member inline _.scope([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("scope" => v)
     [<CustomOperation("selected")>]
     member inline _.selected([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("selected" =>>> v)
+    [<CustomOperation("selected")>]
+    member inline this.selected([<InlineIfLambda>] render: AttrRenderFragment) = this.selected(render, true)
     [<CustomOperation("shape")>]
     member inline _.shape([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("shape" => v)
     [<CustomOperation("size")>]

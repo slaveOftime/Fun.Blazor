@@ -5,6 +5,7 @@
 - Add InputTypes for type' attribute
 - Fix hidden attribute
 - Improve autocomplete attribute
+- Add default override with true for bool value attributes
 
 ## [3.0.0-beta003] - 2023-01-13
 
