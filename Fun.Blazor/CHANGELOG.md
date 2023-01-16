@@ -4,6 +4,7 @@
 
 - Add InputTypes for type' attribute
 - Fix hidden attribute
+- Improve autocomplete attribute
 
 ## [3.0.0-beta003] - 2023-01-13
 

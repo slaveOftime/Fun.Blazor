@@ -165,7 +165,8 @@ let ``Check some attributes`` () =
         div {
             hidden true
             type' InputTypes.``datetime-local``
+            autocomplete AutoCompleteValues.name.family_name
         }
 
     let result = context.RenderNode demo
-    result.MarkupMatches("""<div hidden="true" type="datetime-local"></div>""")
+    result.MarkupMatches("""<div hidden="true" type="datetime-local" autocomplete="family-name"></div>""")
