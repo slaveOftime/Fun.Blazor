@@ -194,7 +194,7 @@ module DslCE =
     open System.Diagnostics.CodeAnalysis
     open Microsoft.AspNetCore.Components.DslInternals
 
-    type ErrorBoundaryBase' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<ErrorBoundaryBase>)>] () = inherit ErrorBoundaryBaseBuilder<Microsoft.AspNetCore.Components.ErrorBoundaryBase>()
+    type ErrorBoundaryBase' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.ErrorBoundaryBase>)>] () = inherit ErrorBoundaryBaseBuilder<Microsoft.AspNetCore.Components.ErrorBoundaryBase>()
             
 namespace Microsoft.AspNetCore.Components.Web
 
@@ -204,10 +204,10 @@ module DslCE =
     open System.Diagnostics.CodeAnalysis
     open Microsoft.AspNetCore.Components.DslInternals.Web
 
-    type ErrorBoundary' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<ErrorBoundary>)>] () = inherit ErrorBoundaryBuilder<Microsoft.AspNetCore.Components.Web.ErrorBoundary>()
-    type HeadContent' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<HeadContent>)>] () = inherit HeadContentBuilder<Microsoft.AspNetCore.Components.Web.HeadContent>()
-    type HeadOutlet' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<HeadOutlet>)>] () = inherit HeadOutletBuilder<Microsoft.AspNetCore.Components.Web.HeadOutlet>()
-    type PageTitle' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<PageTitle>)>] () = inherit PageTitleBuilder<Microsoft.AspNetCore.Components.Web.PageTitle>()
+    type ErrorBoundary' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Web.ErrorBoundary>)>] () = inherit ErrorBoundaryBuilder<Microsoft.AspNetCore.Components.Web.ErrorBoundary>()
+    type HeadContent' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Web.HeadContent>)>] () = inherit HeadContentBuilder<Microsoft.AspNetCore.Components.Web.HeadContent>()
+    type HeadOutlet' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Web.HeadOutlet>)>] () = inherit HeadOutletBuilder<Microsoft.AspNetCore.Components.Web.HeadOutlet>()
+    type PageTitle' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Web.PageTitle>)>] () = inherit PageTitleBuilder<Microsoft.AspNetCore.Components.Web.PageTitle>()
             
 namespace Microsoft.AspNetCore.Components.Routing
 
@@ -217,8 +217,8 @@ module DslCE =
     open System.Diagnostics.CodeAnalysis
     open Microsoft.AspNetCore.Components.DslInternals.Routing
 
-    type FocusOnNavigate' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<FocusOnNavigate>)>] () = inherit FocusOnNavigateBuilder<Microsoft.AspNetCore.Components.Routing.FocusOnNavigate>()
-    type NavLink' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<NavLink>)>] () = inherit NavLinkBuilder<Microsoft.AspNetCore.Components.Routing.NavLink>()
+    type FocusOnNavigate' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Routing.FocusOnNavigate>)>] () = inherit FocusOnNavigateBuilder<Microsoft.AspNetCore.Components.Routing.FocusOnNavigate>()
+    type NavLink' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Routing.NavLink>)>] () = inherit NavLinkBuilder<Microsoft.AspNetCore.Components.Routing.NavLink>()
             
 namespace Microsoft.AspNetCore.Components.Web.Virtualization
 
@@ -228,7 +228,7 @@ module DslCE =
     open System.Diagnostics.CodeAnalysis
     open Microsoft.AspNetCore.Components.DslInternals.Web.Virtualization
 
-    type Virtualize'<'TItem> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Virtualize<_>>)>] () = inherit VirtualizeBuilder<Microsoft.AspNetCore.Components.Web.Virtualization.Virtualize<'TItem>, 'TItem>()
+    type Virtualize'<'TItem> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Web.Virtualization.Virtualize<_>>)>] () = inherit VirtualizeBuilder<Microsoft.AspNetCore.Components.Web.Virtualization.Virtualize<'TItem>, 'TItem>()
             
 namespace Microsoft.AspNetCore.Components.Forms
 
@@ -238,17 +238,17 @@ module DslCE =
     open System.Diagnostics.CodeAnalysis
     open Microsoft.AspNetCore.Components.DslInternals.Forms
 
-    type EditForm' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<EditForm>)>] () = inherit EditFormBuilder<Microsoft.AspNetCore.Components.Forms.EditForm>()
-    type InputBase'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<InputBase<_>>)>] () = inherit InputBaseBuilder<Microsoft.AspNetCore.Components.Forms.InputBase<'TValue>, 'TValue>()
-    type InputCheckbox' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<InputCheckbox>)>] () = inherit InputCheckboxBuilder<Microsoft.AspNetCore.Components.Forms.InputCheckbox>()
-    type InputDate'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<InputDate<_>>)>] () = inherit InputDateBuilder<Microsoft.AspNetCore.Components.Forms.InputDate<'TValue>, 'TValue>()
-    type InputNumber'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<InputNumber<_>>)>] () = inherit InputNumberBuilder<Microsoft.AspNetCore.Components.Forms.InputNumber<'TValue>, 'TValue>()
-    type InputRadioGroup'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<InputRadioGroup<_>>)>] () = inherit InputRadioGroupBuilder<Microsoft.AspNetCore.Components.Forms.InputRadioGroup<'TValue>, 'TValue>()
-    type InputSelect'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<InputSelect<_>>)>] () = inherit InputSelectBuilder<Microsoft.AspNetCore.Components.Forms.InputSelect<'TValue>, 'TValue>()
-    type InputText' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<InputText>)>] () = inherit InputTextBuilder<Microsoft.AspNetCore.Components.Forms.InputText>()
-    type InputTextArea' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<InputTextArea>)>] () = inherit InputTextAreaBuilder<Microsoft.AspNetCore.Components.Forms.InputTextArea>()
-    type InputFile' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<InputFile>)>] () = inherit InputFileBuilder<Microsoft.AspNetCore.Components.Forms.InputFile>()
-    type InputRadio'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<InputRadio<_>>)>] () = inherit InputRadioBuilder<Microsoft.AspNetCore.Components.Forms.InputRadio<'TValue>, 'TValue>()
-    type ValidationMessage'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<ValidationMessage<_>>)>] () = inherit ValidationMessageBuilder<Microsoft.AspNetCore.Components.Forms.ValidationMessage<'TValue>, 'TValue>()
-    type ValidationSummary' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<ValidationSummary>)>] () = inherit ValidationSummaryBuilder<Microsoft.AspNetCore.Components.Forms.ValidationSummary>()
+    type EditForm' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Forms.EditForm>)>] () = inherit EditFormBuilder<Microsoft.AspNetCore.Components.Forms.EditForm>()
+    type InputBase'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Forms.InputBase<_>>)>] () = inherit InputBaseBuilder<Microsoft.AspNetCore.Components.Forms.InputBase<'TValue>, 'TValue>()
+    type InputCheckbox' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Forms.InputCheckbox>)>] () = inherit InputCheckboxBuilder<Microsoft.AspNetCore.Components.Forms.InputCheckbox>()
+    type InputDate'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Forms.InputDate<_>>)>] () = inherit InputDateBuilder<Microsoft.AspNetCore.Components.Forms.InputDate<'TValue>, 'TValue>()
+    type InputNumber'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Forms.InputNumber<_>>)>] () = inherit InputNumberBuilder<Microsoft.AspNetCore.Components.Forms.InputNumber<'TValue>, 'TValue>()
+    type InputRadioGroup'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Forms.InputRadioGroup<_>>)>] () = inherit InputRadioGroupBuilder<Microsoft.AspNetCore.Components.Forms.InputRadioGroup<'TValue>, 'TValue>()
+    type InputSelect'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Forms.InputSelect<_>>)>] () = inherit InputSelectBuilder<Microsoft.AspNetCore.Components.Forms.InputSelect<'TValue>, 'TValue>()
+    type InputText' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Forms.InputText>)>] () = inherit InputTextBuilder<Microsoft.AspNetCore.Components.Forms.InputText>()
+    type InputTextArea' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Forms.InputTextArea>)>] () = inherit InputTextAreaBuilder<Microsoft.AspNetCore.Components.Forms.InputTextArea>()
+    type InputFile' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Forms.InputFile>)>] () = inherit InputFileBuilder<Microsoft.AspNetCore.Components.Forms.InputFile>()
+    type InputRadio'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Forms.InputRadio<_>>)>] () = inherit InputRadioBuilder<Microsoft.AspNetCore.Components.Forms.InputRadio<'TValue>, 'TValue>()
+    type ValidationMessage'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Forms.ValidationMessage<_>>)>] () = inherit ValidationMessageBuilder<Microsoft.AspNetCore.Components.Forms.ValidationMessage<'TValue>, 'TValue>()
+    type ValidationSummary' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Forms.ValidationSummary>)>] () = inherit ValidationSummaryBuilder<Microsoft.AspNetCore.Components.Forms.ValidationSummary>()
             

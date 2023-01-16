@@ -321,6 +321,7 @@ type {builderName}{builderGenericsWithContraints}() =
                         originalTypeWithGenerics :: (getTypeNames meta.generics) |> createGenerics |> closeGenerics
 
                     let typeName = meta.ty |> getTypeShortName
+                    let typeFullName = meta.ty |> getTypeName |> fun x -> x.Split("<")[0]
 
                     let genericStr =
                         meta.generics
@@ -335,7 +336,7 @@ type {builderName}{builderGenericsWithContraints}() =
                         else
                             ""
                     let linkerAttrStr =
-                        $"[<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<{typeName}{linkerGenericStr}>)>]"
+                        $"[<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<{typeFullName}{linkerGenericStr}>)>]"
 
                     $"""    type {typeName}'{genericStr} {linkerAttrStr} () = inherit {builderName}{builderGenerics}()"""
                 )

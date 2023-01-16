@@ -41,7 +41,7 @@ module DslCE =
     open System.Diagnostics.CodeAnalysis
     open Microsoft.AspNetCore.Components.Authorization.DslInternals
 
-    type AuthorizeViewCore' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AuthorizeViewCore>)>] () = inherit AuthorizeViewCoreBuilder<Microsoft.AspNetCore.Components.Authorization.AuthorizeViewCore>()
-    type AuthorizeView' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AuthorizeView>)>] () = inherit AuthorizeViewBuilder<Microsoft.AspNetCore.Components.Authorization.AuthorizeView>()
-    type CascadingAuthenticationState' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<CascadingAuthenticationState>)>] () = inherit CascadingAuthenticationStateBuilder<Microsoft.AspNetCore.Components.Authorization.CascadingAuthenticationState>()
+    type AuthorizeViewCore' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Authorization.AuthorizeViewCore>)>] () = inherit AuthorizeViewCoreBuilder<Microsoft.AspNetCore.Components.Authorization.AuthorizeViewCore>()
+    type AuthorizeView' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Authorization.AuthorizeView>)>] () = inherit AuthorizeViewBuilder<Microsoft.AspNetCore.Components.Authorization.AuthorizeView>()
+    type CascadingAuthenticationState' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Authorization.CascadingAuthenticationState>)>] () = inherit CascadingAuthenticationStateBuilder<Microsoft.AspNetCore.Components.Authorization.CascadingAuthenticationState>()
             
