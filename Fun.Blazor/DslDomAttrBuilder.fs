@@ -78,6 +78,32 @@ type KeyFramesBuilder(identifier: string) =
     member inline _.Combine([<InlineIfLambda>] kf1: KeyFrame, [<InlineIfLambda>] kf2: KeyFrame) = KeyFrame(fun sb -> kf2.Invoke(kf1.Invoke(sb)))
 
 
+[<RequireQualifiedAccess>]
+type InputTypes =
+    | button
+    | checkbox
+    | color
+    | date
+    | ``datetime-local``
+    | email
+    | file
+    | hidden
+    | image
+    | month
+    | number
+    | password
+    | radio
+    | range
+    | reset
+    | search
+    | submit
+    | tel
+    | text
+    | time
+    | url
+    | week
+
+
 type DomAttrBuilder() =
     interface IFunBlazorBuilder
 
@@ -308,7 +334,7 @@ type DomAttrBuilder() =
     [<CustomOperation("height")>]
     member inline _.height([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("height" => v)
     [<CustomOperation("hidden")>]
-    member inline _.hidden([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("hidden" =>>> v)
+    member inline _.hidden([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("hidden" => (if v then "true" else "false"))
     [<CustomOperation("high")>]
     member inline _.high([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("high" => v)
     [<CustomOperation("href")>]
@@ -437,6 +463,8 @@ type DomAttrBuilder() =
     member inline _.translate([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("translate" => v)
     [<CustomOperation("type'")>]
     member inline _.type'([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("type" => v)
+    [<CustomOperation("type'")>]
+    member inline _.type'([<InlineIfLambda>] render: AttrRenderFragment, v: InputTypes) = render ==> ("type" => v.ToString())
     [<CustomOperation("usemap")>]
     member inline _.usemap([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("usemap" => v)
     [<CustomOperation("value")>]

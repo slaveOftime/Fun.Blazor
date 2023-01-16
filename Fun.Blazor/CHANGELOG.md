@@ -1,5 +1,10 @@
 # Changelog
 
+## [3.0.0-beta004] - 2023-01-16
+
+- Add InputTypes for type' attribute
+- Fix hidden attribute
+
 ## [3.0.0-beta003] - 2023-01-13
 
 - Fix attribute name

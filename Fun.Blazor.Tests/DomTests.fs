@@ -5,9 +5,9 @@ open Microsoft.Extensions.DependencyInjection
 open Moq
 open Xunit
 open Bunit
+open MudBlazor
 open Fun.Blazor
 open Fun.Blazor.Operators
-open MudBlazor
 
 
 let private createTestContext () =
@@ -155,3 +155,17 @@ let ``DOM CE attribute share check`` () =
         demo 3456
     }
     |> ignore
+
+
+[<Fact>]
+let ``Check some attributes`` () =
+    let context = createTestContext ()
+
+    let demo =
+        div {
+            hidden true
+            type' InputTypes.``datetime-local``
+        }
+
+    let result = context.RenderNode demo
+    result.MarkupMatches("""<div hidden="true" type="datetime-local"></div>""")
