@@ -116,7 +116,13 @@ type AdaptiveForm<'T, 'Error>(defaultValue: 'T) as this =
             let! errors = errors.[propName]
             return (unbox<'Prop> value, setter), errors
         }
-
+    
+    member _.UseFieldErrors(propSelector: Expression<Func<'T, 'Prop>>) =
+        let errors = errors.[getExpressionName propSelector]
+        let setter (x: 'Error list) = errors.Publish x
+        errors |> AVal.map (fun x -> x, setter)
+    
+    member _.UseFieldErrorsSetter(propSelector: Expression<Func<'T, 'Prop>>) = fun (v: 'Error list) -> errors.[getExpressionName propSelector].Publish(v)
 
     member _.UseErrors() =
         errors
@@ -136,6 +142,8 @@ type AdaptiveForm<'T, 'Error>(defaultValue: 'T) as this =
 
 
     member _.GetFieldValue propSelector = this.UseFieldValue propSelector |> AVal.force
+    member _.GetFieldErrors propSelector = this.UseFieldErrors propSelector |> AVal.map fst |> AVal.force
+    member _.GetErrors() = this.UseErrors() |> AVal.force
 
 
     interface IDisposable with

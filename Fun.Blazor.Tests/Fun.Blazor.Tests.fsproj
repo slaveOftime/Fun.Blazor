@@ -12,6 +12,7 @@
 		<Compile Include="Utils.fs" />
 		<Compile Include="DITests.fs" />
 		<Compile Include="AdaptiveTests.fs" />
+		<Compile Include="AdaptiveFormTests.fs" />
 		<Compile Include="RouterTests.fs" />
 		<Compile Include="I18nTests.fs" />
 		<Compile Include="HookTests.fs" />
