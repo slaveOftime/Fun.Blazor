@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.0.0-beta006] - 2023-01-17
+
+- Add UseLoader for AdaptiveForm
+
 ## [3.0.0-beta005] - 2023-01-17
 
 - Add default for draggable and hidden attributes

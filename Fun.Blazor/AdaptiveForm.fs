@@ -25,6 +25,7 @@ type AdaptiveForm<'T, 'Error>(defaultValue: 'T) as this =
     let mutable disposes = List<IDisposable>()
     let mutable fields = Dictionary<string, cval<obj>>()
     let mutable errors = Dictionary<string, cval<'Error list>>()
+    let mutable loaders = Dictionary<string, cval<bool>>()
 
     let rec getExpressionName (exp: Expression) =
         match exp.NodeType with
@@ -45,11 +46,12 @@ type AdaptiveForm<'T, 'Error>(defaultValue: 'T) as this =
             |> Dictionary
 
         errors <- props |> Seq.map (fun x -> KeyValuePair(x.Name, cval [])) |> Dictionary
+        loaders <- props |> Seq.map (fun x -> KeyValuePair(x.Name, cval false)) |> Dictionary
 
 
     member _.SetValue(value: 'T) =
         transact (fun _ ->
-            for KeyValue (_, error) in errors do
+            for KeyValue(_, error) in errors do
                 error.Value <- []
             for prop in props do
                 fields.[prop.Name].Value <- prop.GetValue value
@@ -62,7 +64,7 @@ type AdaptiveForm<'T, 'Error>(defaultValue: 'T) as this =
             fields
             |> Seq.map (
                 function
-                | KeyValue (_, x) -> x.Value
+                | KeyValue(_, x) -> x.Value
             )
             |> Seq.toArray
 
@@ -116,34 +118,56 @@ type AdaptiveForm<'T, 'Error>(defaultValue: 'T) as this =
             let! errors = errors.[propName]
             return (unbox<'Prop> value, setter), errors
         }
-    
+
+
+    member _.UseLoaderValue(propSelector: Expression<Func<'T, 'Prop>>) = loaders.[getExpressionName propSelector]
+
+    member _.UseLoaderSetter(propSelector: Expression<Func<'T, 'Prop>>) = fun (v: bool) -> loaders.[getExpressionName propSelector].Publish(v)
+
+    member _.UseLoader(propSelector: Expression<Func<'T, 'Prop>>) =
+        let loader = loaders.[getExpressionName propSelector]
+        let setter (x: bool) = loader.Publish x
+        loader |> AVal.map (fun x -> x, setter)
+
+
     member _.UseFieldErrors(propSelector: Expression<Func<'T, 'Prop>>) =
         let errors = errors.[getExpressionName propSelector]
         let setter (x: 'Error list) = errors.Publish x
         errors |> AVal.map (fun x -> x, setter)
-    
-    member _.UseFieldErrorsSetter(propSelector: Expression<Func<'T, 'Prop>>) = fun (v: 'Error list) -> errors.[getExpressionName propSelector].Publish(v)
+
+    member _.UseFieldErrorsSetter(propSelector: Expression<Func<'T, 'Prop>>) =
+        fun (v: 'Error list) -> errors.[getExpressionName propSelector].Publish(v)
 
     member _.UseErrors() =
         errors
         |> Seq.map (
             function
-            | KeyValue (_, v) -> v
+            | KeyValue(_, v) -> v
         )
         |> Seq.fold
-            (fun state errors ->
-                adaptive {
-                    let! statedErrors = state
-                    let! errors = errors
-                    return statedErrors @ errors
-                }
-            )
+            (fun state errors -> adaptive {
+                let! statedErrors = state
+                let! errors = errors
+                return statedErrors @ errors
+            })
             (AVal.constant [])
 
 
     member _.GetFieldValue propSelector = this.UseFieldValue propSelector |> AVal.force
     member _.GetFieldErrors propSelector = this.UseFieldErrors propSelector |> AVal.map fst |> AVal.force
     member _.GetErrors() = this.UseErrors() |> AVal.force
+
+
+    member _.UseIsLoading() =
+        loaders
+        |> Seq.map (fun x -> x.Value)
+        |> Seq.fold
+            (fun s x -> adaptive {
+                let! s' = s
+                let! x' = x
+                return s' || x'
+            })
+            (AVal.constant false)
 
 
     interface IDisposable with
