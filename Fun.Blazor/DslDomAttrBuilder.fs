@@ -398,6 +398,8 @@ type DomAttrBuilder() =
     member inline _.download([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("download" => v)
     [<CustomOperation("draggable")>]
     member _.draggable(render: AttrRenderFragment, v: bool) = render ==> ("draggable" => (if v then "true" else "false"))
+    [<CustomOperation("draggable")>]
+    member this.draggable(render: AttrRenderFragment) = this.draggable(render, true)
     [<CustomOperation("dropzone")>]
     member inline _.dropzone([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("dropzone" => v)
     [<CustomOperation("enctype")>]
@@ -414,6 +416,8 @@ type DomAttrBuilder() =
     member inline _.height([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("height" => v)
     [<CustomOperation("hidden")>]
     member inline _.hidden([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("hidden" => (if v then "true" else "false"))
+    [<CustomOperation("hidden")>]
+    member inline this.hidden([<InlineIfLambda>] render: AttrRenderFragment) = this.hidden(render, true)
     [<CustomOperation("high")>]
     member inline _.high([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("high" => v)
     [<CustomOperation("href")>]

@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.0.0-beta004] - 2023-01-17
+
+- Add default for draggable and hidden attributes
+
 ## [3.0.0-beta004] - 2023-01-16
 
 - Add InputTypes for type' attribute

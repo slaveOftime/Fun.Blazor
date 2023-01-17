@@ -138,6 +138,8 @@ type IFunBlazorBuilder with
 
 [<Fact>]
 let ``DOM CE attribute share check`` () =
+    let context = createTestContext ()
+
     let tempAttr =
         domAttr {
             demo 123
@@ -150,11 +152,15 @@ let ``DOM CE attribute share check`` () =
     }
     |> ignore
 
-    div {
-        tempAttr
-        demo 3456
-    }
-    |> ignore
+    let demo =
+        div {
+            tempAttr
+            title' "t"
+            demo 3456
+        }
+    let result = context.RenderNode demo
+    result.MarkupMatches("""<div demo="123" title="t"></div>""")
+    Assert.Equal("""<div demo="123" title="t" demo="3456"></div>""", result.Markup)
 
 
 [<Fact>]
