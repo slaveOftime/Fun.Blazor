@@ -1,6 +1,6 @@
 # Changelog
 
-## [3.0.0-beta004] - 2023-01-17
+## [3.0.0-beta005] - 2023-01-17
 
 - Add default for draggable and hidden attributes
 - Add error related method for AdaptiveForm
