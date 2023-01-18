@@ -1,6 +1,6 @@
 # Changelog
 
-## [3.0.0-beta006] - 2023-01-18
+## [3.0.0-beta007] - 2023-01-18
 
 - Improve download attribute
 - Add html.emptyAttr
