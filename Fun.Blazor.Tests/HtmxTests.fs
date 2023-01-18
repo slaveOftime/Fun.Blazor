@@ -48,7 +48,13 @@ let ``TriggerBuilder should work`` () =
                 div {
                     hxPost "/test2"
                     hxTarget_find "#find"
-                    hxSwap_oob_afterend'().FocusScroll(true)
+                    hxSwap_afterend'(OOB).FocusScroll(true)
+                }
+                div {
+                    hxSwap_delete
+                }
+                div {
+                    hxSwap_delete OOB
                 }
             }
         )
@@ -59,5 +65,7 @@ let ``TriggerBuilder should work`` () =
         <div hx-trigger="dblclick once, click, mousemove, mouseover">TEST</div>
         <div hx-trigger="revealed" hx-swap="beforebegin swap:1 settle:2 focus-scroll:true scroll:#target:top show:top"></div>
         <div hx-post="/test2" hx-target="find #find" hx-swap-oob="afterend focus-scroll:true"></div>
+        <div hx-swap="delete"></div>
+        <div hx-swap-oob="delete"></div>
         """
     )
