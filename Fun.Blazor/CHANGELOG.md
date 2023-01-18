@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.0.0-beta006] - 2023-01-18
+
+- Improve download attribute
+
 ## [3.0.0-beta006] - 2023-01-17
 
 - Add UseLoader for AdaptiveForm

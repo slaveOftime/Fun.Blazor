@@ -395,7 +395,7 @@ type DomAttrBuilder() =
     [<CustomOperation("disabled")>]
     member inline this.disabled([<InlineIfLambda>] render: AttrRenderFragment) = this.disabled(render, true)
     [<CustomOperation("download")>]
-    member inline _.download([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("download" => v)
+    member inline _.download([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("download" =>>> v)
     [<CustomOperation("draggable")>]
     member _.draggable(render: AttrRenderFragment, v: bool) = render ==> ("draggable" => (if v then "true" else "false"))
     [<CustomOperation("draggable")>]
