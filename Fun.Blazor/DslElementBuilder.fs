@@ -532,6 +532,13 @@ module Elts =
 
     let inline baseUrl (x: string) = base' { href x }
 
+    let inline viewport (x: string) = meta {
+        name "viewport"
+        content x
+    }
+
+    let chartsetUTF8 = meta { charset "utf-8" }
+
     /// Can be used to build shared dom attributes fragment
     let domAttr = DomAttrBuilder()
 

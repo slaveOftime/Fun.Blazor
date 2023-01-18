@@ -3,6 +3,8 @@
 ## [3.0.0-beta006] - 2023-01-18
 
 - Improve download attribute
+- Add html.emptyAttr
+- Add viewport, chartsetUTF8
 
 ## [3.0.0-beta006] - 2023-01-17
 

@@ -13,6 +13,8 @@ type html() =
 
     static member inline none = emptyNode ()
 
+    static member inline emptyAttr = emptyAttr ()
+
 
     static member mergeAttrs attrs = attrs |> Seq.fold (==>) (emptyAttr ())
     static member mergeNodes nodes = nodes |> Seq.fold (>=>) (emptyNode ())
