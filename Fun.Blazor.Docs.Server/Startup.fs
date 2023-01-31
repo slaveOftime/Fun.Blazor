@@ -19,6 +19,7 @@ services.AddControllersWithViews()
 services.AddServerSideBlazor(fun options -> 
     options.RootComponents.RegisterForFunBlazor()
     options.RootComponents.RegisterCustomElementForFunBlazor<Fun.Blazor.Docs.Wasm.Demos.CustomElementDemo.DemoCounter>()
+    options.RootComponents.RegisterCustomElementForFunBlazor(typeof<Fun.Blazor.Docs.Wasm.Demos.CustomElementDemo.DemoCounter>.Assembly)
 )
 services.AddFunBlazorServer().AddMudServices()
 services.AddScoped<Fun.Blazor.Docs.Wasm.Demos.ScopedDemoService>()

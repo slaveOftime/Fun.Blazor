@@ -8,6 +8,13 @@ open Microsoft.AspNetCore.Components.Web
 open Fun.Blazor.Operators
 
 
+[<AttributeUsage(AttributeTargets.Class)>]
+type FunBlazorCustomElementAttribute() =
+    inherit Attribute()
+
+    member val TagName = "" with get, set
+
+
 [<AutoOpen>]
 module DslCustomElements =
     let private rootComponstKeys = ConcurrentDictionary<string, bool>()
@@ -105,15 +112,15 @@ module CustomElementExtensions =
                     }}
                 """
 
-        /// This can only be used for a long runing single instance, distribution env is not appropriate. 
+        /// This can only be used for a long runing single instance, distribution env is not appropriate.
         /// Wrap a NodeRenderFragment into a web custom element.
         /// You will need to call RegisterForFunBlazor.
         /// For example for blazor server: services.AddServerSideBlazor(fun options -> options.RootComponents.RegisterForFunBlazor()).
         /// prerenderNode will put as ChildContent of the current custom element, so when run prerendering it will be used (eg: blazor server).
-        /// It is recommend to add CutomElement.lazyBlazorJs() at the html header. 
+        /// It is recommend to add CutomElement.lazyBlazorJs() at the html header.
         static member inline create(node, ?prerenderNode) = CustomElementFragmentBuilder(node, prerenderNode) { empty }
 
-        /// This can only be used for a long runing single instance, distribution env is not appropriate. 
+        /// This can only be used for a long runing single instance, distribution env is not appropriate.
         /// Wrap a NodeRenderFragment into a web custom element.
         /// 'Services is a tuple of registered services in DI container.
         /// You will need to call RegisterForFunBlazor.
@@ -125,8 +132,8 @@ module CustomElementExtensions =
 
     type html with
 
-        /// To use this for a component you will need to call RegisterCustomElementForFunBlazor properly at the start of your program. 
-        /// It is recommend to add CutomElement.lazyBlazorJs() at the html header. 
+        /// To use this for a component you will need to call RegisterCustomElementForFunBlazor properly at the start of your program.
+        /// It is recommend to add CutomElement.lazyBlazorJs() at the html header.
         static member customElement<'T when 'T :> IComponent>(?tagName, ?attrs, ?preRender, ?preRenderNode: NodeRenderFragment) =
             let id' = Random.Shared.Next()
             let tagName = tagName |> Option.defaultWith (fun _ -> toSnakeCase typeof<'T>.Name)
@@ -167,21 +174,49 @@ namespace Microsoft.Extensions.DependencyInjection
 
 open System.Runtime.CompilerServices
 open Microsoft.AspNetCore.Components.Web
+open Fun.Result
 open Fun.Blazor
+open System.Reflection
 
 [<Extension>]
 type FunBlazorCustomElementsExtensions =
 
-    /// This can only be used for a long runing single instance, distribution env is not appropriate. 
+    /// This can only be used for a long runing single instance, distribution env is not appropriate.
     /// For example for blazor server: services.AddServerSideBlazor(fun options -> options.RootComponents.RegisterForFunBlazor()).
     /// When you use this you should use CustomElement.lazyBlazorJs and CustomElement.initBlazorJs accordingly.
     [<Extension>]
     static member RegisterForFunBlazor(this: IJSComponentConfiguration) = jsComponentConfig <- this
 
-    /// Please make sure the Component name has at least two upper case like DemoComp, or use tagName with snake style like "demo-comp". 
+    /// Please make sure the Component name has at least two upper case like DemoComp, or use tagName with snake style like "demo-comp".
     /// For example for blazor server: services.AddServerSideBlazor(fun options -> options.RootComponents.RegisterCustomElementForFunBlazor<YourComponent>()).
     /// When you use this you should use CustomElement.lazyBlazorJs and CustomElement.initBlazorJs accordingly.
     [<Extension>]
-    static member RegisterCustomElementForFunBlazor<'Component when 'Component :> Microsoft.AspNetCore.Components.IComponent>(this: IJSComponentConfiguration, ?tagName) =
-        this.RegisterCustomElement<'Component>(tagName |> Option.defaultWith (fun _ -> toSnakeCase(typeof<'Component>.Name)))
+    static member RegisterCustomElementForFunBlazor(this: IJSComponentConfiguration, ty: System.Type, ?tagName) =
+        let identifier = tagName |> Option.defaultWith (fun _ -> toSnakeCase (ty.Name))
+        // https://github.com/dotnet/aspnetcore/blob/main/src/Components/CustomElements/src/JSComponentConfigurationExtensions.cs
+        this.RegisterForJavaScript(ty, identifier, "registerBlazorCustomElement")
 
+    /// Please make sure the Component name has at least two upper case like DemoComp, or use tagName with snake style like "demo-comp".
+    /// For example for blazor server: services.AddServerSideBlazor(fun options -> options.RootComponents.RegisterCustomElementForFunBlazor<YourComponent>()).
+    /// When you use this you should use CustomElement.lazyBlazorJs and CustomElement.initBlazorJs accordingly.
+    [<Extension>]
+    static member RegisterCustomElementForFunBlazor<'Component when 'Component :> Microsoft.AspNetCore.Components.IComponent>
+        (
+            this: IJSComponentConfiguration,
+            ?tagName
+        )
+        =
+        this.RegisterCustomElement<'Component>(tagName |> Option.defaultWith (fun _ -> toSnakeCase (typeof<'Component>.Name)))
+
+    /// You will need to add FunBlazorCustomElementAttribute to the target components. 
+    /// Please make sure the Component name has at least two upper case like DemoComp, or use tagName with snake style like "demo-comp".
+    /// For example for blazor server: services.AddServerSideBlazor(fun options -> options.RootComponents.RegisterCustomElementForFunBlazor<YourComponent>()).
+    /// When you use this you should use CustomElement.lazyBlazorJs and CustomElement.initBlazorJs accordingly.
+    [<Extension>]
+    static member RegisterCustomElementForFunBlazor(this: IJSComponentConfiguration, assembly: Assembly) =
+        for ty in assembly.GetTypes() do
+            let attr = ty.GetCustomAttribute<FunBlazorCustomElementAttribute>()
+            if attr |> box |> isNull |> not then
+                match attr.TagName with
+                | NullOrEmptyString -> this.RegisterCustomElementForFunBlazor(ty)
+                | SafeString tagName -> this.RegisterCustomElementForFunBlazor(ty, tagName)

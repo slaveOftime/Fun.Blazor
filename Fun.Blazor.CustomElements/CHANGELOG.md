@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.0.0-beta005] - 2023-02-01
+
+Add FunBlazorCustomElementAttribute and enable RegisterCustomElementForFunBlazor by assembly
+
 ## [3.0.0-beta004] - 2023-01-13
 
 Add CustomElement.lazyBlazorJs helper
