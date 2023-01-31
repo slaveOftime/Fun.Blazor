@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.0.0-beta006] - 2023-02-01
+
+Fix lazyBlazorJs init for multiple times
+
 ## [3.0.0-beta005] - 2023-02-01
 
 Add FunBlazorCustomElementAttribute and enable RegisterCustomElementForFunBlazor by assembly

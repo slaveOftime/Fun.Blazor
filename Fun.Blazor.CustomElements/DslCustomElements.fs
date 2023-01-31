@@ -104,7 +104,8 @@ module CustomElementExtensions =
             js
                 $"""
                     window.initBlazor = () => {{
-                        if (!window.Blazor) {{
+                        if (!window.isBlazorScriptAdded) {{
+                            window.isBlazorScriptAdded = true
                             const blazorScript = document.createElement("script")
                             blazorScript.src = "{defaultArg blazorJsSrc "_framework/blazor.server.js"}"
                             document.body.appendChild(blazorScript)
