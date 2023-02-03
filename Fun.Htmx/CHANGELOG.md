@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.0.0-beta004] - 2023-02-03
+
+Improve hxPushUrl
+
 ## [3.0.0-beta003] - 2022-11-17
 
 - Update docs

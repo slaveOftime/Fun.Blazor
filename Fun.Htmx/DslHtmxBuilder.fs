@@ -244,6 +244,9 @@ type DomAttrBuilder with
     [<CustomOperation "hxPushUrl">]
     member inline _.hxPushUrl([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("hx-push-url" => if x then "true" else "false")
 
+    /// A URL to be pushed into the location bar. This may be relative or absolute, as per history.pushState()
+    [<CustomOperation "hxPushUrl">]
+    member inline _.hxPushUrl([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> ("hx-push-url" => x)
 
     /// For security, if you don't want a particular part of the DOM to allow for htmx functionality, you can place this on the enclosing element of that area.
     [<CustomOperation "hxDisable">]
