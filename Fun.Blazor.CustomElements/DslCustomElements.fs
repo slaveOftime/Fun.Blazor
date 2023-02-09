@@ -100,15 +100,72 @@ module CustomElementExtensions =
 
         /// Normally blazorJsSrc should be something like: _framework/blazor.server.js.
         /// You should add this before you use custom elements.
-        static member lazyBlazorJs(?blazorJsSrc) =
-            js
-                $"""
+        static member lazyBlazorJs(?blazorJsSrc, ?hasBlazorJs) =
+            let initBlazor =
+                if defaultArg hasBlazorJs false then
+                    """
+                    window.initBlazor = () => {
+                        window.isBlazorScriptAdded = true
+                    }
+                    """
+                else
+                    $"""
                     window.initBlazor = () => {{
                         if (!window.isBlazorScriptAdded) {{
                             window.isBlazorScriptAdded = true
                             const blazorScript = document.createElement("script")
                             blazorScript.src = "{defaultArg blazorJsSrc "_framework/blazor.server.js"}"
                             document.body.appendChild(blazorScript)
+                        }}
+                    }}
+                    """
+            js
+                $"""
+                    {initBlazor}
+
+                    window.initBlazorCustomElement = (tagName, id, delay) => {{
+                         const handler = () => {{
+                            if (window.initBlazor) {{
+                                window.initBlazor()
+                                const e = document.querySelector("#ce-id")
+                                if (e) {{
+                                    const timerId = setInterval(() => {{
+                                        if (e.nextElementSibling.children.length > 0) {{
+                                            e.parentElement.removeChild(e)
+                                            clearInterval(timerId)
+                                        }}
+                                    }}, 50)
+                                }}
+                            }}
+                        }}
+                        
+                        if (!!delay) {{
+                            setTimeout(() => {{
+                                var wns = document.querySelector(tagName + "-" + id);
+                                if (!!wns) {{
+                                    var index;
+                                    var lmn = document.createElement(tagName);
+
+                                    // Copy the children
+                                    while (wns.firstChild) {{
+                                        lmn.appendChild(wns.firstChild); // *Moves* the child
+                                    }}
+
+                                    // Copy the attributes
+                                    for (index = wns.attributes.length - 1; index >= 0; --index) {{
+                                        lmn.attributes.setNamedItem(wns.attributes[index].cloneNode());
+                                    }}
+
+                                    // Replace it
+                                    wns.parentNode.replaceChild(lmn, wns);
+                                
+                                    // Start try to render
+                                    handler();
+                                }}
+                            }}, delay)
+                        }}
+                        else {{
+                            handler()
                         }}
                     }}
                 """
@@ -135,7 +192,7 @@ module CustomElementExtensions =
 
         /// To use this for a component you will need to call RegisterCustomElementForFunBlazor properly at the start of your program.
         /// It is recommend to add CutomElement.lazyBlazorJs() at the html header.
-        static member customElement<'T when 'T :> IComponent>(?tagName, ?attrs, ?preRender, ?preRenderNode: NodeRenderFragment) =
+        static member customElement<'T when 'T :> IComponent>(?tagName, ?attrs, ?preRender, ?preRenderNode: NodeRenderFragment, ?preRenderContainerAttrs, ?delayMs: int) =
             let id' = Random.Shared.Next()
             let tagName = tagName |> Option.defaultWith (fun _ -> toSnakeCase typeof<'T>.Name)
             let preRender = defaultArg preRender false
@@ -144,30 +201,23 @@ module CustomElementExtensions =
                 match preRenderNode with
                 | None when preRender -> div {
                     id $"ce-{id'}"
+                    defaultArg preRenderContainerAttrs html.emptyAttr
                     html.blazor<'T> (defaultArg attrs (AttrRenderFragment(fun _ _ i -> i)))
                   }
                 | Some node -> div {
                     id $"ce-{id'}"
+                    defaultArg preRenderContainerAttrs html.emptyAttr
                     node
                   }
                 | _ -> ()
-                EltBuilder tagName { defaultArg attrs (AttrRenderFragment(fun _ _ i -> i)) }
-                Static.html
-                    $"""
-                    <script>
-                        if (window.initBlazor) {{
-                            window.initBlazor()
-                            const e = document.querySelector("#ce-{id'}")
-                            if (e) {{
-                                const timerId = setInterval(() => {{
-                                    if (e.nextElementSibling.children.length > 0) {{
-                                        e.parentElement.removeChild(e)
-                                        clearInterval(timerId)
-                                    }}
-                                }}, 50)
-                            }}
-                        }}
-                    </script>"""
+                match delayMs with
+                | None ->
+                    EltBuilder tagName { defaultArg attrs html.emptyAttr }
+                    js $"""window.initBlazorCustomElement("{tagName}", {id'})"""
+                | Some delay ->
+                    EltBuilder $"{tagName}-{id'}" { defaultArg attrs html.emptyAttr }
+                    js $"""window.initBlazorCustomElement("{tagName}", {id'}, {delay})"""
+                    
             ]
 
 

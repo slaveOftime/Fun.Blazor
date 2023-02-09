@@ -35,6 +35,7 @@ type Index() =
                     title { "Fun Blazor" }
                     baseUrl "/"
                     stylesheet "_content/MudBlazor/MudBlazor.min.css"
+                    CustomElement.lazyBlazorJs (hasBlazorJs = true)
                 }
                 body {
                     root

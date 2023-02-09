@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.0.0-beta007] - 2023-02-09
+
+- Add preRenderContainerAttrs and delayMs to html.customElement
+
 ## [3.0.0-beta006] - 2023-02-01
 
 Fix lazyBlazorJs init for multiple times
