@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.0.0-beta008] - 2023-02-23
+
+Enable async rendering for html.inject
+
 ## [3.0.0-beta007] - 2023-01-18
 
 - Improve download attribute

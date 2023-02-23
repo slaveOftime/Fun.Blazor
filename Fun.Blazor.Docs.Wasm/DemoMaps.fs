@@ -11,6 +11,7 @@ let demos =
         "AdaptiveForm", { View = AdaptiveForm.entry; Source = "Demos/AdaptiveForm.html" }
         "AdaptiviewDemo", { View = AdaptiviewDemo.entry; Source = "Demos/AdaptiviewDemo.html" }
         "AdaptiviewMathDemo", { View = AdaptiviewMathDemo.entry; Source = "Demos/AdaptiviewMathDemo.html" }
+        "AsyncInjectionDemo", { View = AsyncInjectionDemo.entry; Source = "Demos/AsyncInjectionDemo.html" }
         "BasicHookDemo", { View = BasicHookDemo.entry; Source = "Demos/BasicHookDemo.html" }
         "BlazorStyleComp", { View = BlazorStyleComp.entry; Source = "Demos/BlazorStyleComp.html" }
         "Counter", { View = Counter.entry; Source = "Demos/Counter.html" }

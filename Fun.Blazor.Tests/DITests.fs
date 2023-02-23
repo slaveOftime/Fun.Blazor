@@ -1,5 +1,6 @@
 ﻿module Fun.Blazor.Tests.DITests
 
+open System.Threading.Tasks
 open Microsoft.Extensions.DependencyInjection
 open Xunit
 open Bunit
@@ -45,3 +46,20 @@ let ``html adaptive tests`` () =
 
     let result = context.RenderNode demo
     result.MarkupMatches("""<div>1</div><div>2</div>""")
+
+
+[<Fact>]
+let ``html inject async should work`` () = task {
+    let context = createTestContext ()
+
+    let node =
+        html.inject (fun () -> task {
+            do! Task.Delay 500
+            return div { "hi" }
+        })
+
+    let result = context.RenderNode node
+    result.MarkupMatches("")
+    do! Task.Delay 1000
+    result.MarkupMatches("""<div>hi</div>""")
+}

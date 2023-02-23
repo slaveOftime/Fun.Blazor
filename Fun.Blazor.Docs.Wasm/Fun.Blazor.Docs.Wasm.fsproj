@@ -23,6 +23,7 @@
 		<Compile Include="Demos\CssRuleDemo.fs" />
 		<Compile Include="Demos\KeyFramesDemo.fs" />
 		<Compile Include="Demos\SimpleInjectionDemo.fs" />
+		<Compile Include="Demos\AsyncInjectionDemo.fs" />
 		<Compile Include="Demos\ScopedServiceDemo.fs" />
 		<Compile Include="Demos\BasicHookDemo.fs" />
 		<Compile Include="Demos\ElmishDemo.fs" />

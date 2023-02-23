@@ -2,6 +2,7 @@
 module Fun.Blazor.DslDI
 
 open System
+open System.Threading.Tasks
 open Microsoft.Extensions.DependencyInjection
 open Operators
 
@@ -26,12 +27,32 @@ type html with
     ///   )
     /// </code>
     /// </example>
-    static member inject(render: 'Services -> NodeRenderFragment) =
+    static member inject(render: 'Services -> Task<NodeRenderFragment>) =
         ComponentWithChildBuilder<DIComponent<'Services>>() {
             key ("DIComponent-" + Guid.NewGuid().ToString())
             "RenderFn" => render
             "IsStatic" => false
         }
+
+    /// <summary>
+    /// This function will create a blazor component with a random key.
+    /// In other words, every time you recall this it will create a brand new component.
+    /// So it is not performed well, but it is simple and bug lesser
+    ///
+    /// 'Services should be something you defined in the asp.net core DI or unit
+    /// 'Services must be a tuple like (hook: IComponentHook, sp: IServiceProvider)
+    /// </summary>
+    /// <example>
+    /// <code lang="fsharp">
+    /// let view =
+    ///   html.inject (hook: IComponentHook, jsRuntime: IJsRuntime) =
+    ///      div {
+    ///          ...
+    ///      }
+    ///   )
+    /// </code>
+    /// </example>
+    static member inject(render: 'Services -> NodeRenderFragment) = html.inject(render >> Task.FromResult)
 
 
     /// This function will create a blazor component with a specific key.
@@ -46,12 +67,26 @@ type html with
     ///   html.inject ("demo-key", fun () -> html.text $"externalX = {externalX}")
     /// </code>
     /// </example>
-    static member inject(k, render: 'Services -> NodeRenderFragment) =
+    static member inject(k, render: 'Services -> Task<NodeRenderFragment>) =
         ComponentWithChildBuilder<DIComponent<'Services>>() {
             key k
             "RenderFn" => render
             "IsStatic" => true
         }
+
+    /// This function will create a blazor component with a specific key.
+    /// If the key is not changed its state will not be erased, the render function will not call again.
+    ///
+    /// 'Services should be something you defined in the asp.net core DI.
+    /// 'Services must be a tuple like (hook: IComponentHook, sp: IServiceProvider) or unit
+    /// <example>
+    /// <code lang="fsharp">
+    /// // Below string will never change no matter how you change externalX
+    /// let demo (externalX: int) =
+    ///   html.inject ("demo-key", fun () -> html.text $"externalX = {externalX}")
+    /// </code>
+    /// </example>
+    static member inject(k, render: 'Services -> NodeRenderFragment) = html.inject(k, (render >> Task.FromResult))
 
 
     /// This function will create a blazor component with no key.
@@ -59,11 +94,18 @@ type html with
     ///
     /// 'Services should be something you defined in the asp.net core DI or unit
     /// 'Services must be a tuple like (hook: IComponentHook, sp: IServiceProvider)
-    static member injectWithNoKey(render: 'Services -> NodeRenderFragment) =
+    static member injectWithNoKey(render: 'Services -> Task<NodeRenderFragment>) =
         ComponentWithChildBuilder<DIComponent<'Services>>() {
             "RenderFn" => render
             "IsStatic" => true
         }
+
+    /// This function will create a blazor component with no key.
+    /// It is recommend to add key in `if else` or `looping` code block to tell blazor when to recreate component.
+    ///
+    /// 'Services should be something you defined in the asp.net core DI or unit
+    /// 'Services must be a tuple like (hook: IComponentHook, sp: IServiceProvider)
+    static member injectWithNoKey(render: 'Services -> NodeRenderFragment) = html.injectWithNoKey(render >> Task.FromResult)
 
 
     /// This will create a component.
@@ -72,7 +114,15 @@ type html with
 
     /// This will create a component.
     /// It is same as html.inject, but with different name which may make more sense from different point of view.
+    static member comp(render: 'Services -> Task<NodeRenderFragment>) = html.inject (render)
+
+    /// This will create a component.
+    /// It is same as html.inject, but with different name which may make more sense from different point of view.
     static member comp(key, render: 'Services -> NodeRenderFragment) = html.inject (key, render)
+
+    /// This will create a component.
+    /// It is same as html.inject, but with different name which may make more sense from different point of view.
+    static member comp(key, render: 'Services -> Task<NodeRenderFragment>) = html.inject (key, render)
 
 
     /// This will get a IServiceScopeFactory from container and create a new scope and add it to CascadingValue.

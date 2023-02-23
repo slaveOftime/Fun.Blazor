@@ -1,4 +1,4 @@
-#r "nuget: Fun.Build, 0.2.8"
+#r "nuget: Fun.Build, 0.3.6"
 #r "nuget: Fake.IO.FileSystem, 5.20.4"
 
 #load "docs.fsx"
@@ -44,6 +44,7 @@ pipeline "dev" {
     checkEnv
     stage "docs" {
         paralle
+        noPrefixForStep
         stage "wasm" {
             workingDir "./Fun.Blazor.Docs.Wasm"
             whenCmdArg "--wasm" "" "Run in blazor wasm mode, By default will run in server mode."
@@ -68,6 +69,7 @@ pipeline "docs" {
     checkEnv
     test
     stage "Publish docs" {
+        noPrefixForStep
         whenBranch "master"
         run "dotnet publish Fun.Blazor.Docs.Wasm/Fun.Blazor.Docs.Wasm.fsproj -c Release -o Fun.Blazor.Docs.Wasm.Release --nologo"
         run (fun _ ->
@@ -87,6 +89,7 @@ pipeline "deploy" {
     test
     pack
     stage "Publish to nuget" {
+        failIfIgnored
         whenAll {
             branch "master"
             whenAny {
@@ -96,7 +99,7 @@ pipeline "deploy" {
         }
         run (fun ctx ->
             let key = ctx.GetCmdArgOrEnvVar "NUGET_API_KEY"
-            cmd $"""dotnet nuget push *.nupkg -s https://api.nuget.org/v3/index.json --skip-duplicate -k {key}"""
+            ctx.RunSensitiveCommand $"""dotnet nuget push *.nupkg -s https://api.nuget.org/v3/index.json --skip-duplicate -k {key}"""
         )
     }
     runIfOnlySpecified false

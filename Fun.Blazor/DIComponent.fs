@@ -128,7 +128,7 @@ type DIComponent<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typ
 
 
     [<Parameter>]
-    member val RenderFn: 'T -> NodeRenderFragment = fun _ -> emptyNode () with get, set
+    member val RenderFn: 'T -> Task<NodeRenderFragment> = fun _ -> Task.FromResult(emptyNode ()) with get, set
 
     /// With this we can avoid rerender when parameter reset
     /// If component is not recreated then all the rerender will use the closure state created by the first RenderFn
@@ -153,18 +153,15 @@ type DIComponent<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typ
         )
 
 
-    override _.OnInitialized() =
-        base.OnInitialized()
-
+    override _.OnInitializedAsync() = task {
         let depsType, _ = Reflection.FSharpType.GetFunctionElements(this.RenderFn.GetType())
         let services =
             this.Services.GetMultipleServices(depsType, this.HandleNotFoundType) :?> 'T
-        let newNode = this.RenderFn services
+        let! newNode = this.RenderFn services
         node <- newNode |> ValueSome
 
         if initializedEvent.IsSome then initializedEvent.Value.Trigger()
 
-    override _.OnInitializedAsync() = task {
         if initializedTasks <> null then
             for makeTask in initializedTasks do
                 do! makeTask ()
