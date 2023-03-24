@@ -6,9 +6,17 @@ open System.Collections.Generic
 open Microsoft.AspNetCore.Components
 open Fun.Blazor
 open Fun.Result
+open Namotion.Reflection
 
 open Utils
 
+let private makeSummaryDoc indent (doc: string) =
+    if String.IsNullOrWhiteSpace doc then ""
+    else
+        (let indent = String(' ', indent)
+         doc.Split "\n"
+         |> Array.map (fun i -> $"{indent}/// {i}")
+         |> String.concat "\n") + "\n"
 
 let private getMetaInfo useInline (ty: Type) =
     let getTypeMeta (ty: Type) =
@@ -59,6 +67,7 @@ let private getMetaInfo useInline (ty: Type) =
     let props =
         filteredProps
         |> Seq.map (fun prop ->
+            let comment = makeSummaryDoc 4 <| prop.GetXmlDocsSummary()
             let name = prop.Name
             let name =
                 if
@@ -90,10 +99,12 @@ let private getMetaInfo useInline (ty: Type) =
                 if isBindable prop filteredProps then
                     let bindName = name + "'"
                     [
-                        $"    {customOperation bindName} {memberStart}{bindName} ({contextArg}, valueFn: {propTypeName} * ({propTypeName} -> unit)) = render ==> html.bind(\"{prop.Name}\", valueFn)"
+                        $"{comment}    {customOperation bindName} {memberStart}{bindName} ({contextArg}, valueFn: {propTypeName} * ({propTypeName} -> unit)) = render ==> html.bind(\"{prop.Name}\", valueFn)"
                     ]
                 else
                     []
+
+            let memberHead = $"{comment}    {customOperation name} {memberStart}{name}"
 
             if prop.PropertyType.IsGenericType then
                 if
@@ -101,20 +112,20 @@ let private getMetaInfo useInline (ty: Type) =
                     || prop.PropertyType.Name.StartsWith "Microsoft.AspNetCore.Components.EventCallback"
                 then
                     [
-                        $"    {customOperation name} {memberStart}{name} ({contextArg}, fn) = render ==> html.callback<{getTypeName prop.PropertyType.GenericTypeArguments.[0]}>(\"{prop.Name}\", fn)"
-                        $"    {customOperation name} {memberStart}{name} ({contextArg}, fn) = render ==> html.callbackTask<{getTypeName prop.PropertyType.GenericTypeArguments.[0]}>(\"{prop.Name}\", fn)"
+                        $"{memberHead} ({contextArg}, fn) = render ==> html.callback<{getTypeName prop.PropertyType.GenericTypeArguments.[0]}>(\"{prop.Name}\", fn)"
+                        $"{memberHead} ({contextArg}, fn) = render ==> html.callbackTask<{getTypeName prop.PropertyType.GenericTypeArguments.[0]}>(\"{prop.Name}\", fn)"
                     ]
                 elif prop.PropertyType.Name.StartsWith "RenderFragment`" then
                     let name = formatChildContentName name
                     [
-                        $"    {customOperation name} {memberStart}{name} ({contextArg}, fn: {getTypeName prop.PropertyType.GenericTypeArguments.[0]} -> {nameof NodeRenderFragment}) = render ==> html.renderFragment(\"{prop.Name}\", fn)"
+                        $"{memberHead} ({contextArg}, fn: {getTypeName prop.PropertyType.GenericTypeArguments.[0]} -> {nameof NodeRenderFragment}) = render ==> html.renderFragment(\"{prop.Name}\", fn)"
                     ]
                 elif
                     prop.PropertyType.Namespace = "System"
                     && (prop.PropertyType.Name.StartsWith "Func`" || prop.PropertyType.Name.StartsWith "Action`")
                 then
                     [
-                        $"    {customOperation name} {memberStart}{name} ({contextArg}, fn) = render ==> (\"{prop.Name}\" => ({getTypeName prop.PropertyType}fn))"
+                        $"{memberHead} ({contextArg}, fn) = render ==> (\"{prop.Name}\" => ({getTypeName prop.PropertyType}fn))"
                     ]
                 elif prop.PropertyType.Namespace = "System" && prop.PropertyType.Name.StartsWith "Func`" then
                     let returnType = prop.PropertyType.GenericTypeArguments |> Seq.last
@@ -127,20 +138,20 @@ let private getMetaInfo useInline (ty: Type) =
                             ]
                             |> String.concat " "
                         [
-                            $"    {customOperation name} {memberStart}{name} ({contextArg}, fn) = render ==> AttrRenderFragment(fun comp builder index -> builder.AddAttribute(index, \"{prop.Name}\", box ({getTypeName prop.PropertyType}(fun {parameters} -> Microsoft.AspNetCore.Components.RenderFragment(fun tb -> (fn {parameters}).Invoke(comp, tb, 0) |> ignore)))); index + 1)"
+                            $"{memberHead} ({contextArg}, fn) = render ==> AttrRenderFragment(fun comp builder index -> builder.AddAttribute(index, \"{prop.Name}\", box ({getTypeName prop.PropertyType}(fun {parameters} -> Microsoft.AspNetCore.Components.RenderFragment(fun tb -> (fn {parameters}).Invoke(comp, tb, 0) |> ignore)))); index + 1)"
                         ]
                     else
                         [
-                            $"    {customOperation name} {memberStart}{name} ({contextArg}, fn) = render ==> (\"{prop.Name}\" => ({getTypeName prop.PropertyType}fn))"
+                            $"{memberHead} ({contextArg}, fn) = render ==> (\"{prop.Name}\" => ({getTypeName prop.PropertyType}fn))"
                         ]
                 elif prop.PropertyType.Namespace = "System" && prop.PropertyType.Name.StartsWith "Action`" then
                     [
-                        $"    {customOperation name} {memberStart}{name} ({contextArg}, fn) = render ==> (\"{prop.Name}\" => ({getTypeName prop.PropertyType}fn))"
+                        $"{memberHead} ({contextArg}, fn) = render ==> (\"{prop.Name}\" => ({getTypeName prop.PropertyType}fn))"
                     ]
                 else
                     let propTypeName = getTypeName prop.PropertyType
                     [
-                        $"    {customOperation name} {memberStart}{name} ({contextArg}, x: {propTypeName}) = render ==> (\"{prop.Name}\" => x)"
+                        $"{memberHead} ({contextArg}, x: {propTypeName}) = render ==> (\"{prop.Name}\" => x)"
                         yield! createBindableProps propTypeName
                     ]
 
@@ -149,34 +160,34 @@ let private getMetaInfo useInline (ty: Type) =
                 || prop.PropertyType.Name.StartsWith "Microsoft.AspNetCore.Components.EventCallback"
             then
                 [
-                    $"    {customOperation name} {memberStart}{name} ({contextArg}, fn) = render ==> html.callback(\"{prop.Name}\", fn)"
-                    $"    {customOperation name} {memberStart}{name} ({contextArg}, fn) = render ==> html.callbackTask(\"{prop.Name}\", fn)"
+                    $"{memberHead} ({contextArg}, fn) = render ==> html.callback(\"{prop.Name}\", fn)"
+                    $"{memberHead} ({contextArg}, fn) = render ==> html.callbackTask(\"{prop.Name}\", fn)"
                 ]
 
             elif prop.PropertyType = typeof<RenderFragment> then
                 [
                     if name <> "ChildContent" then
-                        $"    {customOperation name} {memberStart}{name} ({contextArg}, fragment) = render ==> html.renderFragment(\"{prop.Name}\", fragment)"
-                        $"    {customOperation name} {memberStart}{name} ({contextArg}, fragments) = render ==> html.renderFragment(\"{prop.Name}\", fragment {{ yield! fragments }})"
-                        $"    {customOperation name} {memberStart}{name} ({contextArg}, x: string) = render ==> html.renderFragment(\"{prop.Name}\", html.text x)"
-                        $"    {customOperation name} {memberStart}{name} ({contextArg}, x: int) = render ==> html.renderFragment(\"{prop.Name}\", html.text x)"
-                        $"    {customOperation name} {memberStart}{name} ({contextArg}, x: float) = render ==> html.renderFragment(\"{prop.Name}\", html.text x)"
+                        $"{memberHead} ({contextArg}, fragment) = render ==> html.renderFragment(\"{prop.Name}\", fragment)"
+                        $"{memberHead} ({contextArg}, fragments) = render ==> html.renderFragment(\"{prop.Name}\", fragment {{ yield! fragments }})"
+                        $"{memberHead} ({contextArg}, x: string) = render ==> html.renderFragment(\"{prop.Name}\", html.text x)"
+                        $"{memberHead} ({contextArg}, x: int) = render ==> html.renderFragment(\"{prop.Name}\", html.text x)"
+                        $"{memberHead} ({contextArg}, x: float) = render ==> html.renderFragment(\"{prop.Name}\", html.text x)"
                 ]
 
             elif prop.Name = "Class" && prop.PropertyType = typeof<string> then
                 [
-                    $"    [<CustomOperation(\"Classes\")>] {memberStart}Classes ({contextArg}, x: string list) = render ==> html.classes x"
+                    $"{comment}    [<CustomOperation(\"Classes\")>] {memberStart}Classes ({contextArg}, x: string list) = render ==> html.classes x"
                 ]
 
             elif prop.Name = "Style" && prop.PropertyType = typeof<string> then
                 [
-                    $"    [<CustomOperation(\"Styles\")>] {memberStart}Styles ({contextArg}, x: (string * string) list) = render ==> html.styles x"
+                    $"{comment}    [<CustomOperation(\"Styles\")>] {memberStart}Styles ({contextArg}, x: (string * string) list) = render ==> html.styles x"
                 ]
 
             else
                 let propTypeName = getTypeName prop.PropertyType
                 [
-                    $"    {customOperation name} {memberStart}{name} ({contextArg}, x: {propTypeName}) = render ==> (\"{prop.Name}\" => x)"
+                    $"{memberHead} ({contextArg}, x: {propTypeName}) = render ==> (\"{prop.Name}\" => x)"
                     yield! createBindableProps propTypeName
                 ]
         )
@@ -286,12 +297,11 @@ let generateCode (targetNamespace: string) (opens: string) (tys: Type seq) useIn
                             $"inherit {nameof ComponentWithDomAndChildAttrBuilder}<{funBlazorGeneric}>()"
                         | Some (baseTy, generics) ->
                             $"inherit {baseTy.Namespace |> trimNamespace |> appendStrIfNotEmpty (string '.')}{makeBuilderName meta.ty.BaseType}{funBlazorGeneric :: (getTypeNames generics) |> createGenerics |> closeGenerics}()"
-
-                    $"""
-type {builderName}{builderGenericsWithContraints}() =
+                    
+                    $"""{makeSummaryDoc 0 <| meta.ty.GetXmlDocsSummary()}type {builderName}{builderGenericsWithContraints}() =
     {inheirit'}
 {meta.props}
-                """
+"""
                 )
                 |> String.concat "\n"
 
@@ -306,8 +316,8 @@ type {builderName}{builderGenericsWithContraints}() =
 
     let dslCode =
         metaInfos.metas
-        |> Seq.groupBy fst
-        |> Seq.map (fun (Namespace ns, group) ->
+        |> Seq.groupBy (fun (Namespace ns, _) -> ns |> trimNamespace |> addStrIfNotEmpty ".")
+        |> Seq.map (fun (subNamespace, group) ->
             let metas = group |> Seq.map snd |> Seq.concat
             let code =
                 metas
@@ -338,17 +348,18 @@ type {builderName}{builderGenericsWithContraints}() =
                     let linkerAttrStr =
                         $"[<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<{typeFullName}{linkerGenericStr}>)>]"
 
-                    $"""    type {typeName}'{genericStr} {linkerAttrStr} () = inherit {builderName}{builderGenerics}()"""
+                    let comment = meta.ty.GetXmlDocsSummary() |> makeSummaryDoc 8 |> addStrIfNotEmpty "\n" |> appendStrIfNotEmpty (String(' ', 8))
+                    $"""    type {typeName}'{genericStr} {comment}{linkerAttrStr} () = inherit {builderName}{builderGenerics}()"""
                 )
                 |> String.concat "\n"
 
-            $"""namespace {targetNamespace}{ns |> trimNamespace |> addStrIfNotEmpty "."}
+            $"""namespace {targetNamespace}{subNamespace}
 
 [<AutoOpen>]
 module DslCE =
   
     open System.Diagnostics.CodeAnalysis
-    open {targetNamespace}.{internalSegment}{ns |> trimNamespace |> addStrIfNotEmpty "."}
+    open {targetNamespace}.{internalSegment}{subNamespace}
 
 {code}
             """
