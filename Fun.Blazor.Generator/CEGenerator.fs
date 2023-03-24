@@ -348,8 +348,9 @@ let generateCode (targetNamespace: string) (opens: string) (tys: Type seq) useIn
                     let linkerAttrStr =
                         $"[<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<{typeFullName}{linkerGenericStr}>)>]"
 
-                    let comment = meta.ty.GetXmlDocsSummary() |> makeSummaryDoc 8 |> addStrIfNotEmpty "\n" |> appendStrIfNotEmpty (String(' ', 8))
-                    $"""    type {typeName}'{genericStr} {comment}{linkerAttrStr} () = inherit {builderName}{builderGenerics}()"""
+                    let typeComment = meta.ty.GetXmlDocsSummary() |> makeSummaryDoc 4 |> addStrIfNotEmpty "\n"
+                    let constructorComment = meta.ty.GetXmlDocsSummary() |> makeSummaryDoc 8 |> addStrIfNotEmpty "\n" |> appendStrIfNotEmpty (String(' ', 8))
+                    $"""{typeComment}    type {typeName}'{genericStr} {constructorComment}{linkerAttrStr} () = inherit {builderName}{builderGenerics}()"""
                 )
                 |> String.concat "\n"
 
