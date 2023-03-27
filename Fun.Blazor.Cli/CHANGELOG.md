@@ -1,5 +1,10 @@
 # Changelog
 
+## [3.0.0-beta005] - 2023-03-27
+
+- Add comments
+- Fix namespace conflict
+
 ## [3.0.0-beta004] - 2023-01-16
 
 Update dependencies
