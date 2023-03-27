@@ -5,7 +5,8 @@ on:
         branches:
         - master
         paths:
-        - **/CHANGELOG.md
+        - "**/CHANGELOG.md"
+        - ".github/workflows/Build and publish nuget package.yml"
 
 jobs:
   build:
