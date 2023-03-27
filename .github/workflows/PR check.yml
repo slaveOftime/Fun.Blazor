@@ -20,4 +20,4 @@ jobs:
         dotnet-version: 7.0.x
 
     - name: Run build.fsx
-      run: dotnet fsi build.fsx
+      run: dotnet fsi build.fsx -- -p test

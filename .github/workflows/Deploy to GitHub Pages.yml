@@ -20,7 +20,7 @@ jobs:
         dotnet-version: 7.0.x
 
     - name: Run build.fsx
-      run: dotnet fsi build.fsx -p docs
+      run: dotnet fsi build.fsx -- -p docs
 
     - name: Commit wwwroot to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@v4.2.3

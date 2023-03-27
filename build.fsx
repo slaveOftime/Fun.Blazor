@@ -1,4 +1,4 @@
-#r "nuget: Fun.Build, 0.3.6"
+#r "nuget: Fun.Build, 0.3.7"
 #r "nuget: Fake.IO.FileSystem, 5.20.4"
 
 #load "docs.fsx"
@@ -102,7 +102,15 @@ pipeline "deploy" {
             ctx.RunSensitiveCommand $"""dotnet nuget push *.nupkg -s https://api.nuget.org/v3/index.json --skip-duplicate -k {key}"""
         )
     }
-    runIfOnlySpecified false
+    runIfOnlySpecified
+}
+
+
+pipeline "test" {
+    description "Test related functions"
+    checkEnv
+    test
+    runIfOnlySpecified
 }
 
 

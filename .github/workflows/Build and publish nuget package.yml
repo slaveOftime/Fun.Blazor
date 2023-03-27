@@ -1,11 +1,11 @@
 name: Build and publish nuget packages
 
 on:
-  push:
-   branches:
-   - master
-  # release:
-  #   types: [published]
+    push:
+        branches:
+        - master
+        paths:
+        - **/CHANGELOG.md
 
 jobs:
   build:
@@ -23,4 +23,4 @@ jobs:
     - name: Run build.fsx
       env:
         NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
-      run: dotnet fsi build.fsx
+      run: dotnet fsi build.fsx -- -p deploy
