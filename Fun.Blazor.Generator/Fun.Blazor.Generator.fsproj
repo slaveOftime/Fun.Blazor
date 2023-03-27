@@ -20,6 +20,7 @@
 
 	<ItemGroup>
 		<PackageReference Condition="'$(Configuration)'=='RELEASE'" Include="Ionide.KeepAChangelog.Tasks" Version="0.1.8" PrivateAssets="all" />
+		<PackageReference Include="Namotion.Reflection" Version="2.1.1" />
 		<PackageReference Update="FSharp.Core" Version="6.0.0" />
 	</ItemGroup>
 	
