@@ -3,7 +3,7 @@
 The most important thing for **Fun.Blazor** is the DSL to build the DOM. 
 Even before V2, computation expression style DSL is already supported.
 
-It is very easy to build and compose dom:
+It is very easy to build and compose the DOM:
 
 ```fsharp
 
@@ -19,7 +19,7 @@ let composed =
     }
 ```
 
-Also you can build a shared attributes/style fragment to compose:
+Also, you can build a shared attributes/style fragment to compose:
 
 ```fsharp
 let commonStyle =
@@ -44,7 +44,7 @@ let sharedButtonAttrs =
         }
         data 456
         // attribute priority is controlled by blazor core. 
-        // Currently only the first added attribute will be used when you are trying to add same attribute. 
+        // Currently, only the first added attribute will be used when you are trying to add the same attribute. 
         // That is why I put commonAttr lower than "data 456", 
         // so the 456 will be used even in commonAttr "data" is 123.
         commonAttr
@@ -62,9 +62,9 @@ let demo =
     }    
 ```
 
-You can also create extension operation method to create something to reuse. And with this way, it is type safer because it attach to a specific type. It if better to use it for global sharing stuff. As for **asAttrRenderFragment**, it is recommend to use it only locally, because what it generate is just **AttrRenderFragment** which can be combined any where.
+You can also create an extension operation method to create something to reuse. And with this way, it is type safer because it attached to a specific type. It is better to use it for global sharing stuff. As for **asAttrRenderFragment**, it is recommended to use it only locally because what it generates is just **AttrRenderFragment** which can be combined anywhere.
 
-For css you can do:
+For CSS, you can do:
 
 ```fsharp
 type StyleBuilder with
@@ -96,7 +96,7 @@ type StyleBuilder with
 let demo =
     div {
         style { stack; backgroundColor "blue" }
-        div { "header" }
+        div { "Header" }
         div {
             style { strench; backgroundColor "green" }
         }
@@ -128,7 +128,6 @@ type MudTable'<'T> with
             Breakpoint Breakpoint.None
             asAttrRenderFragment // with this feature we can have a better coding experience
         }
-
 
 let demo =
     MudTable'() {

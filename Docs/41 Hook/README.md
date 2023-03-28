@@ -1,17 +1,15 @@
 # Hook
 
-Hook is very important for a component because you can use to access component's lifecycle like: do something after first render etc.
+A Hook is very important for a component because you can use it to access the component's lifecycle, for example, to do something after the first render.
 
-When you use it, it looks like it is from DI container but actually it is not, it is created when you actually consume it and is only available for that specific component.
-
-You can use **html.inject** or **html.comp** to consume it. For example:
+When you use a Hook, it may look like it is from the DI container, but actually, it is not. It is created only when you consume it and is only available for that specific component. You can use **html.inject** to consume it. For example:
 
 {{BasicHookDemo}}
 
 
-## Extend hooks
+## Extend Hooks
 
-If you do not care about unit testing, then you can extend your own functionality like this. But in this way it is not easy to mock the extension methods.
+If you do not care about unit testing, you can extend your own functionality like this. But in this way, it is not easy to mock the extension methods.
 
 ```fsharp
 type IComponentHook with
@@ -23,43 +21,47 @@ type IComponentHook with
         hook.AddFirstAfterRenderTask(fun () ->
             task {
                 hook.DataCanBeShared.Publish LoadingState.start
-                let! result = ... call some api
+                let! result = ... call some API
                 hook.DataCanBeShared.Publish (LoadingState.Loaded data)
             }
         )
 ```
 
+
 If you want to make your component unit testing friendly, you will need to do more stuff:
 
-1. Define an interface
+1. Define an interface.
+
     ```fsharp
     type IMyCompHook =
         abstract member DataCanBeShared: ...
         abstract member LoadDataAfterRender: ...
     ```
 
-2. Implement it like:
+2. Implement it.
+
     ```fsharp
     type MyCompHook (hook: IComponentHook) =
         interface IMyCompHook with
             ...
     ```
 
-3. Add to the DI at the program start
+3. Add it to the DI container at the program start.
+
     ```fsharp
-    // Under the hood, it just register a singleton factory function for consumer to use
+    // Under the hood, it just registers a singleton factory function for the consumer to use.
     services.AddHookService<IMyCompHook>(MyCompHook)
     ```
 
-4. Use it in your component
+4. Use it in your component.
 
     ```fsharp
     let myComp =
         html.comp (fun (hook: IComponentHook) ->
-            // Every time you consume this, it will create a new instance for you
+            // Every time you consume this, it will create a new instance for you.
             let myCompHook = hook.GetHookService<IMyCompHook>()
             ...
         )
     ```
 
-5. Finally when you do your testing, you can use bUnit to moq the interface as usual
+5. Finally, when you do your testing, you can use bUnit to mock the interface as usual.

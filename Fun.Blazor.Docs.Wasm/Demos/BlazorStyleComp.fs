@@ -4,7 +4,7 @@ module Fun.Blazor.Docs.Wasm.Demos.BlazorStyleComp
 open Fun.Blazor
 
 let entry =
-    html.comp (fun (hook: IComponentHook) ->
+    html.inject (fun (hook: IComponentHook) ->
         hook.SetDisableEventTriggerStateHasChanged false
 
         let mutable count = 0

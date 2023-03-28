@@ -1,16 +1,15 @@
-# Css
+# CSS
 
-This is made by [Fun.Css](https://github.com/slaveOftime/Fun.Css). It can be used to build css rules or inline style.
+This was created by [Fun.Css](https://github.com/slaveOftime/Fun.Css). It can be used to build CSS rules or inline styles.
 
-Because it is using computation expression, so you can extend its custom operation:
+Since it uses computation expression, you can customize its operations as well:
 
 {{InlineStyleDemo}}
 
-Also, you can build css rules with it:
+Additionally, you can create CSS rules with it:
 
 {{CssRuleDemo}}
 
-
-You can also build simple keyframes
+Even simple keyframes can be built:
 
 {{KeyFramesDemo}}

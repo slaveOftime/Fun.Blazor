@@ -1,23 +1,30 @@
 # How to Contribute
 
-If you want to contribute to the source code, just make a PR and @ me then I will take a look as soon as possible.
+If you want to contribute to the source code, simply create a PR and mention me with @, then I will review it as soon as possible.
 
-If you want to contribute to documents (very welcomed, because my English is is not very good, so my documentation may not be very readable), there are some conventions:
+If you want to contribute to the documentation (which is very welcome, as my English is not very good, so my documentation may not be very readable), there are some conventions:
 
-- All the docs is under **Docs**. They are just markdown, you can change it accordingly.
-- In the markdown file, the first line should be something like: **# your topic**
-- There is a number before every topic folder, it is used to sort the final menu accordingly
-- Under every folder, there is a **README.md** file. Which is the main entry to the topic.
-- You can make **tree** for your topic, if it has a lot of content. You just create subfolder and create another **README.md** file in it.
-- You can also include some live demos. You just need to add exactly this: **{{the demo name under Fun.Blazor.Docs.Wasm/Demos}}**. Take **Counter** as example
+- All documentation is located under **Docs**. They are just markdown files, so you can make changes accordingly.
+
+- The first line of the markdown file should be something like: **# your topic**.
+
+- There is a number before every topic folder; this is used to sort the final menu accordingly.
+
+- Under every folder, there is a **README.md** file, which is the main entry point to the topic. 
+
+- If your topic has a lot of content, you can create subfolders and another **README.md** file in it to create a **tree** for better content organization.
+
+- You can also include some live demos. To do so, you simply need to add this: **{{the demo name under Fun.Blazor.Docs.Wasm/Demos}}**. Use **Counter** as an example:
 
 {{Counter}}
 
-- You can also test your docs changes locally. 
-        
-        After you changed the docs, then under repo's root folder,  
-        Run: dotnet fsi build.fsx -t GenerateDocs
-        Run: dotnet run --project .\Fun.Blazor.Docs.Server\Fun.Blazor.Docs.Server.fsproj
+- You can also test your documentation locally by:
+
+   a. Changing the docs.
+   
+   b. Under the repo's root folder, Run: dotnet fsi build.fsx -- -p docs.
+   
+   c. Run: dotnet run --project .\Fun.Blazor.Docs.Server\Fun.Blazor.Docs.Server.fsproj.
 
 - To write demo components, you must create something like:
 

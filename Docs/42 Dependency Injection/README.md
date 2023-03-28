@@ -1,18 +1,16 @@
 # Dependency injection (DI)
 
-**html.inject** maybe the <span style="background:orangered">hardest api</span> in Fun.Blazor because its render behavior. (Even we do not have many apis, just a bunch of dsl for building dom). By default, every time you call it you will get a fresh new component. So if you want to keep some state which should not be erased by its caller, you should specify a key as its first parameter.
+**html.inject** may be the <span style="background:orangered">most challenging API</span> in Fun.Blazor due to its render behavior. (Even though we do not have many APIs, just a bunch of DSLs for building the DOM.) By default, every time you call it, you will get a fresh new component. So, if you want to keep some state that should not be erased by its caller, you should specify a key as its first parameter.
 
-Another hard thing is its internal rendering. It requires a function as its parameter, this function is **'Services -> NodeRenderFragment**. 'Services is a tuple of service types you want to inject. NodeRenderFragment is a delegate which compose the dom tree (which can be treat as another function). By default, the dom tree will not change unless you manually trigger it by **hook.StateHasChanged()**, or do things like below:
+Another challenging thing is its internal rendering. It requires a function as its parameter, this function is <code>'Services -> NodeRenderFragment</code>. *'Services* is a tuple of service types you want to inject. NodeRenderFragment is a delegate that composes the DOM tree (which can be treated as another function). By default, the DOM tree will not change unless you manually trigger it by calling **hook.StateHasChanged()**, or by doing things like the example below:
 
 {{BlazorStyleComp}}
 
+**DisableEventTriggerStateHasChanged** is turned on for all components that are inherited from **FunBlazorComponent**. It is just a design decision. If you don't like the pattern like **html.inject/adaptiview**, you can just create your component and get the benefit of the DOM DSL and third-party DSL support like MudBlazor from Fun.Blazor.
 
-    **DisableEventTriggerStateHasChanged** is turn on for all component which inherited from **FunBlazorComponent**. It is just a design decision. If you do not like the pattern like **html.inject/adaptiview** you can just create your own component and get the benefit of dom dsl and third party dsl support like MudBlazor from Fun.Blazor.
+**Dependency injection (DI)** is essential in many software applications. ASP.NET Core has built-in support for it, and it is also helpful for testing and cross-concern solutions. Not only services but also UI components can be powered by **dependency injection**.
 
-
-**Dependency injection** (DI) in a lot of softwares are very important. ASP.NET Core has build in support for that. And it is also good for testing and cross concern solutions. Not just services but also UI components can be powered by **dependency injection**.
-
-**html.inject (they are same but with different name for different context)** is used to inject the service you defined in DI container.
+**html.inject (they are the same but with different names for different contexts)** is used to inject the service you defined in the DI container.
 
 {{SimpleInjectionDemo}}
 
@@ -20,6 +18,6 @@ We also provide **html.scope** which can be used to create another scope, so you
 
 {{ScopedServiceDemo}}
 
-**html.inject** also support async rendering. Because the function you passed in is will be called in **OnInitializedAsync** of the related blazor component, so at this point, we can invoke the task.
+**html.inject** also supports async rendering. Because the function you passed in will be called in **OnInitializedAsync** of the related Blazor component, so at this point, we can invoke the task.
 
 {{AsyncInjectionDemo}}

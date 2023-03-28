@@ -2,15 +2,17 @@
 
 ![image](../assets/fun-blazor%3D.png)
 
-This is a project to make F# developer to write blazor easier.
+This is a project aimed at making it easier for F# developers to write Blazor applications.
 
-1. Use F# ❤️ for blazor
-2. Computation expression (CE) style DSL for internal and third party blazor libraries
-3. Dependency injection (html.inject/html.comp)
-4. [Adaptive](https://github.com/fsprojects/FSharp.Data.Adaptive) model (adaptiview/AdaptivieForm) (**recommend**), [elmish](https://github.com/elmish/elmish) model (html.elmish)
-5. Giraffe style routing (html.route)
-6. Type safe style (Fun.Css)
-7. Convert html to CE style by [Fun.Dev.Tools](https://slaveoftime.github.io/Fun.DevTools.Docs)
+Features include:
+
+1. Allows F# for Blazor development
+2. Use computation expression (CE) style DSL for internal and third-party Blazor libraries
+3. Use dependency injection (html.inject/html.comp)
+4. Leverages the [Adaptive](https://github.com/fsprojects/FSharp.Data.Adaptive) model (adaptiview/AdaptiveForm) (**highly recommended**), or the [elmish](https://github.com/elmish/elmish) model (html.elmish)
+5. Implements Giraffe-style routing (html.route)
+6. Provides type-safe stylesheet creation using Fun.Css
+7. Converts HTML to CE style with [Fun.Dev.Tools](https://slaveoftime.github.io/Fun.DevTools.Docs)
 
 ## Benchmarks
 
@@ -21,23 +23,19 @@ This is a project to make F# developer to write blazor easier.
 |       RenderWithFunBlazorCE |   731.1 ns | 14.07 ns | 21.49 ns | 0.1173 |     736 B |
 | RenderWithFunBlazorTemplate | 2,569.9 ns | 42.22 ns | 39.50 ns | 0.6752 |   4,240 B |
 
-
 ## Simple demo
 
-Below is a very simple counter which is using adaptive model.
+Here is a basic counter that uses an adaptive model:
 
 {{Counter}}
 
-Another demo by by using html.comp.
+Another demo that uses html.inject:
 
 {{BlazorStyleComp}}
 
-
 ## How does this work?
 
-Fun.Blazor's concept is very simple, provide a bunch of delegates to let **blazor** to handle.
-
-When you write things like:
+Fun.Blazor provides a series of delegates for Blazor to handle. For example, when you write:
 
 ```fsharp
 let demo =
@@ -46,11 +44,11 @@ let demo =
     }
 ```
 
-Under the hood, it just becomes:
+This code essentially becomes:
 
 ```fsharp
 let demo =
-    NodeRenderFragment(fun comp builder index ->
+    NodeRenderFragment(fun comp builder index ->  // delegate
         builder.OpenElement(index, "div")
         bulder.AddAttribute(index + 1, "class", "cool")
         builer.CloseElement()
@@ -60,28 +58,27 @@ let demo =
 type NodeRenderFragment = delegate of root: IComponent * builder: RenderTreeBuilder * sequence: int -> int
 ```
 
-So basically, you just created a delegate and finally it will be passed to a component and let the component to manage when to render or build the dom tree. It is similar with what the razor engine will generate in csharp world. 
+In essence, you have created a delegate that will be passed to a component, which will manage the rendering or building of the DOM tree. This approach is similar to what the Razor engine would generate in the C# world.
 
-The component can be created by **adaptiview / html.comp / html.inject** etc. Those components are just normal blazor components which are inherited from ComponentBase.
+Components can be created using `adaptiview`, `html.inject`, etc. These components are normal Blazor components that inherit from `ComponentBase`.
 
+## Considerations before using Fun.Blazor:
 
-## Before you consider to use it:
+There are a few things to keep in mind:
 
-There are some pitfalls which you may keep in mind:
-
-1. FSharp compiler has performance issue on intellisense for some large computation expression (CE). It is better to make single CE block smaller and single file smaller. Or use sequence like seq/list/array with childContent for better intellisense experience:
+1. The F# compiler has performance issues with intellisense for some large computation expressions (CEs). It is better to keep single CE blocks and files small, or use sequences like `seq`, `list`, or `array` with `childContent` for better intellisense:
 
     ```fsharp
     div {
         attributes ...
-        childContent [ // ✅ it is recommended to use this when you got more than one child items
+        childContent [ // ✅ recommended for more than one child item
             div { "hi" }
             ...a lot of child items
         ]
     }
     ```
 
-    Instead of below:
+    instead of:
 
     ```fsharp
     div {
@@ -93,14 +90,11 @@ There are some pitfalls which you may keep in mind:
 
 2. Hot-reload
 
-    Now the default templates contain limited hot-reload support.
-    It is very slow to have too much file to be hot-reloaded, so you need to add **// hot-reload** at the top of the file you want to enable hot-reload.
-    For more detail you can check my blog post [Hot-reload in Fun.Blazor](https://www.slaveoftime.fun/blog/d959e36a-f4fe-4a10-88af-5e738633db0f?title=%20Hot-reload%20in%20Fun.Blazor).  
-    Or check the [document](https://slaveoftime.github.io/Fun.Blazor.Docs/?doc=/Hot%20Reload)
+   The default templates provide limited hot-reload support. Too many files can slow down the hot-reload process, so for best results, add `// hot-reload` at the top of files you want to enable hot-reload for. For more information, see the [Hot-reload in Fun.Blazor](https://www.slaveoftime.fun/blog/d959e36a-f4fe-4a10-88af-5e738633db0f?title=%20Hot-reload%20in%20Fun.Blazor) blog post or [document](https://slaveoftime.github.io/Fun.Blazor.Docs/?doc=/Hot%20Reload).
 
 3. Attribute, items position in CE
 
-    When you want to use ref attribute, you need to put it like below
+    When using a `ref` attribute, you should place it like so:
 
     ```fsharp
     div {
@@ -110,7 +104,7 @@ There are some pitfalls which you may keep in mind:
     }
     ```
 
-    Or
+    Or:
 
     ```fsharp
     div {

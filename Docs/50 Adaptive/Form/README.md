@@ -1,7 +1,11 @@
+Improved document:
+
 # Form
 
-With AdaptiveForm, you can build form and validation very easily and efficiently because of the advantage of adaptive model.
+With AdaptiveForm, you can easily build and efficiently validate forms due to the advantage of adaptive model.
 
-With this, every time you change some fields, they are only effect the UI which are interested on that specific field and will not cause the whole virtual dom be recalculating for diff.
+When you change some fields, it only affects the UI that is specific to that field, not causing the entire virtual DOM to recalculate for the difference.
+
+Please see below:
 
 {{AdaptiveForm}}

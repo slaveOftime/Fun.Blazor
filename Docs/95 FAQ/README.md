@@ -1,19 +1,18 @@
 # FAQ
 
+## Can I use third-party Blazor components?
 
-## Can I use third party blazor components?
-
-Yes. You can just add package reference to the fsharp project and use the cli to generate the Fun.Blazor CE DSL for you. You can check the [cli docs](documents/Cli) for how to do that.
-
-
-## Can I use my existing csharp blazor components?
-
-Yes. You can just add project reference to the fsharp project and use the cli to generate the Fun.Blazor CE DSL for you. You can check the [cli docs](documents/Cli) for how to do that.
+Yes, you can simply add package references to the F# project and use the CLI to generate the Fun.Blazor CE DSL for you. Refer to the [CLI documentation](documents/Cli) for more information. 
 
 
-## Can I use Fun.Blazor to build component for my existing csharp blazor projects?
+## Can I use my existing C# Blazor components?
 
-Yes. It is same as what you can do with csharp. For example:
+Yes, you can just add project references to the F# project and use the CLI to generate the Fun.Blazor CE DSL for you. Refer to the [CLI documentation](documents/Cli) for more information. 
+
+
+## Can I use Fun.Blazor to build components for my existing C# Blazor projects?
+
+Yes, it is the same as what you can do with C#. For example:
 
 ```fsharp
 type Counter() as this =

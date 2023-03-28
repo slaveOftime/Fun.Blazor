@@ -1,15 +1,15 @@
-# Html Template
+# HTML Template
 
-With VSCode plugin and nuget package **Fun.Blazor.HtmlTemplate** we can parse html template nicely at runtime and get intellisense at runtime.
+With the VSCode plugin and NuGet package **Fun.Blazor.HtmlTemplate**, we can nicely parse HTML templates at runtime and get IntelliSense at design-time.
 
-But currently it is not very efficient, so it is not recommend to use it heavily. But it should be ok, because we have adaptive model and runtime cache.
+However, currently, it is not very efficient, so it is not recommended to use heavily. But it should still be ok because we have an adaptive model and runtime cache.
 
-The reason I build this is because for component libraries like shoelacejs, they are web component and it does not have blazor wrapper around it. So to use it, we can auto generate the dom tree at runtime based on the plain string.
+The reason I built this is that for component libraries like shoelacejs, they are web components and do not have a Blazor wrapper around them. So to use them, we can auto-generate the DOM tree at runtime based on the plain string.
 
-Also VSCode has a very cool plugin (Highlight HTML/SQL templates in F#) to make html/js/css language can be embed in fsharp.
+Additionally, VSCode has a very cool plugin (Highlight HTML/SQL templates in F#) that enables HTML/JS/CSS languages to be embedded in F#.
 
-![image](../assets/js-intellisence-in-fsharp.gif)
+![image](../assets/js-intellisense-in-fsharp.gif)
 
-![image](../assets/template-html-intellesence.gif)
+![image](../assets/template-html-intelligence.gif)
 
 {{HtmlTemplateDemo}}
