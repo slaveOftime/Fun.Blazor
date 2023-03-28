@@ -1,5 +1,3 @@
-Improved document:
-
 # Form
 
 With AdaptiveForm, you can easily build and efficiently validate forms due to the advantage of adaptive model.
