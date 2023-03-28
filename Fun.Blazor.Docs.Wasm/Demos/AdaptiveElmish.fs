@@ -6,7 +6,6 @@ open MudBlazor
 open Fun.Blazor
 open Elmish
 open Fun.Blazor.Docs.Controls
-open Fun.Blazor.Docs.Wasm
 
 type private Model = { Count1: int; Count2: int }
 
@@ -16,12 +15,15 @@ type private Msg =
     | IncreaseCount2
 
 let private delayDecrease =
-    Cmd.OfAsync.result (
-        async {
-            do! Async.Sleep 3000
-            return Decrease
-        }
-    )
+    Cmd.OfAsync.perform
+        (fun () ->
+            async {
+                do! Async.Sleep 3000
+                return Decrease
+            }
+        )
+        ()
+        (id)
 
 let private init () = { Count1 = 1; Count2 = 2 }, delayDecrease
 

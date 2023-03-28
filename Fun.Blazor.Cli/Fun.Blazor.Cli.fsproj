@@ -29,13 +29,13 @@
 
 	<ItemGroup>
 		<PackageReference Include="CliWrap" Version="3.5.0" />
-		<PackageReference Include="MessagePack.FSharpExtensions" Version="3.0.0" />
-		<PackageReference Include="Spectre.Console" Version="0.45.0" />
-		<PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.4.0" />
+		<PackageReference Include="MessagePack.FSharpExtensions" Version="4.0.0" />
+		<PackageReference Include="Spectre.Console" Version="0.46.0" />
+		<PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.5.0" />
 		<PackageReference Include="FSharp.Compiler.Service" Version="42.7.101" />
 		<PackageReference Include="FSharp.Control.Reactive" Version="5.0.5" />
 		<PackageReference Include="Dotnet.ProjInfo" Version="0.44.0" />
-		<PackageReference Include="Spectre.Console.Cli" Version="0.45.0" />
+		<PackageReference Include="Spectre.Console.Cli" Version="0.46.0" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -44,7 +44,7 @@
 
 	<ItemGroup>
 		<PackageReference Condition="'$(Configuration)'=='RELEASE'" Include="Ionide.KeepAChangelog.Tasks" Version="0.1.8" PrivateAssets="all" />
-		<PackageReference Update="FSharp.Core" Version="6.0.0" />
+		<PackageReference Update="FSharp.Core" Version="7.0.200" />
 	</ItemGroup>
 
 </Project>

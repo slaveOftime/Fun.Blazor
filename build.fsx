@@ -1,4 +1,4 @@
-#r "nuget: Fun.Build, 0.3.7"
+#r "nuget: Fun.Build, 0.3.8"
 #r "nuget: Fake.IO.FileSystem, 5.20.4"
 
 #load "docs.fsx"

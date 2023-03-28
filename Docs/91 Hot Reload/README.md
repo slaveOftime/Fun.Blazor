@@ -28,6 +28,18 @@ The basic steps:
     #endif
     ```
 
+    > Because of the issue of https://github.com/dotnet/fsharp/issues/14250, we will need to add below target to your project:
+
+    ```xml
+    <Target Name="ShimReferencePathsWhenCommonTargetsDoesNotUnderstandReferenceAssemblies"
+        BeforeTargets="CoreCompile"
+        Condition="'@(ReferencePathWithRefAssemblies)' == ''">
+        <ItemGroup>
+            <ReferencePathWithRefAssemblies Include="@(ReferencePath)" />
+        </ItemGroup>
+    </Target>
+    ```
+
 2. Build your project and run it
 
 3. Open a terminal and run:

@@ -14,7 +14,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="Elmish" Version="3.1.0" />
+	  <PackageReference Include="Elmish" Version="4.0.1" />
 	</ItemGroup>
 
 	<ItemGroup>

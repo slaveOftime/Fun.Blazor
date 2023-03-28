@@ -119,7 +119,7 @@ let ``DOM CE DSL build check`` () =
         MaxItems 100
         Clearable true
         Adornment Adornment.Start
-        AdornmentIcon Icons.Filled.Search
+        AdornmentIcon Icons.Material.Filled.Search
         IconSize Size.Small
         asAttrRenderFragment
     }

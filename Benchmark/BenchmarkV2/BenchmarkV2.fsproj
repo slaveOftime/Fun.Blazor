@@ -15,9 +15,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="BenchmarkDotNet" Version="0.13.2" />
-		<PackageReference Include="Bolero" Version="0.20.18" />
-		<PackageReference Include="MudBlazor" Version="6.1.2" />
+		<PackageReference Include="BenchmarkDotNet" Version="0.13.5" />
+		<PackageReference Include="Bolero" Version="0.21.25" />
+		<PackageReference Include="bunit" Version="1.18.4" />
+		<PackageReference Include="CliWrap" Version="3.6.0" />
+		<PackageReference Include="FSharp.Compiler.Service" Version="43.7.200" />
+		<PackageReference Include="MudBlazor" Version="6.2.0" />
 	</ItemGroup>
 
 	<ItemGroup>

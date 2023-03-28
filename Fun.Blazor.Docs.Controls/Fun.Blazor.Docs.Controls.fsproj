@@ -15,9 +15,9 @@
     <Compile Include="BasicControls.fs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference FunBlazorStyle="CE" Include="Microsoft.AspNetCore.Components.Authorization" Version="7.0.0" />
-    <PackageReference FunBlazorStyle="CE" FunBlazorNamespace="Microsoft.AspNetCore.Components" Include="Microsoft.AspNetCore.Components.Web" Version="7.0.0" />
-    <PackageReference FunBlazorStyle="CE" Include="MudBlazor" Version="6.1.2" />
+    <PackageReference FunBlazorStyle="CE" Include="Microsoft.AspNetCore.Components.Authorization" Version="7.0.4" />
+    <PackageReference FunBlazorStyle="CE" FunBlazorNamespace="Microsoft.AspNetCore.Components" Include="Microsoft.AspNetCore.Components.Web" Version="7.0.4" />
+    <PackageReference FunBlazorStyle="CE" Include="MudBlazor" Version="6.2.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fun.Blazor\Fun.Blazor.fsproj" />

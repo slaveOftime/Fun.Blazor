@@ -58,7 +58,7 @@ let demoView (demo: Demo) =
                         let! showCode, setShowCode = showCode.WithSetter()
                         MudButton'() {
                             OnClick(fun _ -> setShowCode (not showCode))
-                            StartIcon(if showCode then Icons.Filled.HideSource else Icons.Filled.Source)
+                            StartIcon(if showCode then Icons.Material.Filled.HideSource else Icons.Material.Filled.Source)
                             if showCode then "Hide source code" else "Show source code"
                         }
                     }

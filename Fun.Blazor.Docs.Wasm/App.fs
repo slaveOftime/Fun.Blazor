@@ -100,7 +100,7 @@ let app =
                         let! isDark, setIsDark = shareStore.IsDarkMode.WithSetter()
                         MudIconButton'() {
                             Color Color.Inherit
-                            Icon(if isDark then Icons.Filled.Brightness4 else Icons.Filled.Brightness3)
+                            Icon(if isDark then Icons.Material.Filled.Brightness4 else Icons.Material.Filled.Brightness3)
                             OnClick(fun _ -> setIsDark (not isDark))
                         }
                     }

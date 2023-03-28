@@ -16,13 +16,15 @@ type private Msg =
 
 
 let private delayDecrease =
-    Cmd.OfAsync.result (
-        async {
-            do! Async.Sleep 3000
-            return Decrease
-        }
-    )
-
+    Cmd.OfAsync.perform 
+        (fun () ->
+            async {
+                do! Async.Sleep 3000
+                return Decrease
+            }
+        )
+        ()
+        (id)
 
 let private init () = { Count = 0 }, delayDecrease
 
@@ -32,12 +34,15 @@ let private update msg model =
     | Decrease -> { model with Count = model.Count - 1 }, delayDecrease
     | IncreaseTask ->
         model,
-        Cmd.OfTask.result (
-            task {
-                do! Task.Delay 1000
-                return Increase
-            }
-        )
+        Cmd.OfTask.perform 
+            (fun () ->
+                task {
+                    do! Task.Delay 1000
+                    return Increase
+                }
+            )
+            ()
+            (id)
 
 let private view model (dispatch: Msg -> unit) =
     div.create [
