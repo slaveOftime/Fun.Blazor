@@ -97,6 +97,25 @@ let app =
                     }
                     MudSpacer'.create ()
                     adaptiview () {
+                        let! langStr, setLang = hook.Lang.WithSetter()
+                        MudMenu'() {
+                            style { maxWidth 120 }
+                            Label langStr
+                            StartIcon Icons.Material.Filled.Translate
+                            EndIcon Icons.Material.Filled.KeyboardArrowDown
+                            childContent [
+                                MudMenuItem'() {
+                                    OnClick (fun _ -> setLang "en")
+                                    "English"
+                                }
+                                MudMenuItem'() {
+                                    OnClick (fun _ -> setLang "cn")
+                                    "中文"
+                                }
+                            ]
+                        }
+                    }
+                    adaptiview () {
                         let! isDark, setIsDark = shareStore.IsDarkMode.WithSetter()
                         MudIconButton'() {
                             Color Color.Inherit

@@ -20,28 +20,29 @@ let navmenu =
         "navmenu",
         fun (hook: IComponentHook) ->
 
-            let rec buildDocMenuTree path (items: DocTreeNode list) =
+            let rec buildDocMenuTree langStr path (items: DocTreeNode list) =
+                let getDocName (doc: DocBrief) = doc.Names |> Map.tryFind langStr |> Option.defaultValue doc.Name
                 html.fragment [
                     for item in items do
                         match item with
                         | DocTreeNode.Category (indexDoc, docs, childs) ->
                             let path = path + "/" + sanitizeFileName indexDoc.Name
                             MudNavGroup'() {
-                                Title indexDoc.Name
+                                Title (getDocName indexDoc)
                                 childContent
                                     [
                                         for doc in docs do
                                             MudNavLink'() {
                                                 Href(path + "/" + sanitizeFileName doc.Name)
-                                                doc.Name
+                                                getDocName doc
                                             }
-                                        buildDocMenuTree path childs
+                                        buildDocMenuTree langStr path childs
                                     ]
                             }
                         | DocTreeNode.Doc doc ->
                             MudNavLink'() {
                                 Href(path + "/" + sanitizeFileName doc.Name)
-                                doc.Name
+                                getDocName doc
                             }
                 ]
 
@@ -62,9 +63,12 @@ let navmenu =
                         }
                         childContent [
                             adaptiview () {
+                                let! langStr = hook.Lang
                                 let! tree, isLoading = hook.GetOrLoadDocsTree() |> AVal.map (LoadingState.unzip [])
                                 if isLoading then MudProgressLinear'.create ()
-                                MudNavMenu'() { buildDocMenuTree docsSeg tree }
+                                MudNavMenu'() { 
+                                    buildDocMenuTree langStr docsSeg tree
+                                }
                             }
                         ]
                     }

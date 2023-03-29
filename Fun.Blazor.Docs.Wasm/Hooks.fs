@@ -37,6 +37,7 @@ type IComponentHook with
     member hook.ShareStore = hook.ServiceProvider.GetMultipleServices<IShareStore>()
     member hook.GlobalStore = hook.ServiceProvider.GetMultipleServices<IGlobalStore>()
 
+    member hook.Lang = hook.ShareStore.CreateCVal(nameof hook.Lang, "en")
 
     member hook.DocsTree =
         hook.GlobalStore.CreateCVal(nameof hook.DocsTree, LoadingState<DocTreeNode list>.NotStartYet)

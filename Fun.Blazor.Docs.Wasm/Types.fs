@@ -16,6 +16,7 @@ type DocBrief =
     {
         Id: Guid option
         Name: string
+        Names: Map<string, string>
         FolderName: string
         LastModified: DateTime
         LangSegments: Map<string, Segment list>

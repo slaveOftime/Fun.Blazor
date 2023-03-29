@@ -24,6 +24,7 @@ type DocBrief =
     {
         Id: Guid option
         Name: string
+        Names: Map<string, string>
         FolderName: string
         LastModified: DateTime
         LangSegments: Map<string, Segment list>
@@ -35,7 +36,7 @@ type DocTreeNode =
     | Category of index: DocBrief * files: DocBrief list * childNodes: DocTreeNode list
     | Doc of doc: DocBrief
 
-
+// TODO: refactor below messy code
 module internal DocsHelper =
 
     [<Literal>]
@@ -51,8 +52,8 @@ module internal DocsHelper =
         JsonSerializer.Serialize(x, options)
 
 
-    let private isMainFile (file: string) = (Path.GetFileName file).StartsWith(INDEX, StringComparison.OrdinalIgnoreCase)
-    let private isExpectedFile ext (file: string) = file.EndsWith(ext, StringComparison.OrdinalIgnoreCase)
+    let private isMainFile (file: string) = (Path.GetFileName file).Equals(INDEX + ".md", StringComparison.OrdinalIgnoreCase)
+    let private isExpectedFile ext (file: string) = not((Path.GetFileName file).StartsWith(INDEX, StringComparison.OrdinalIgnoreCase)) && file.EndsWith(ext, StringComparison.OrdinalIgnoreCase)
 
     let private formatUrl (url: string) = url.Replace(@"\", @"/")
 
@@ -131,7 +132,7 @@ module internal DocsHelper =
                 | _ -> None
             )
 
-        let docName =
+        let getDocName (file: string) =
             File.ReadLines file
             |> if docId.IsSome then Seq.skip 1 else id
             |> Seq.tryHead
@@ -143,6 +144,12 @@ module internal DocsHelper =
             )
             |> Option.defaultValue ""
 
+        let getLang (file: string) = 
+            file
+            |> Path.GetFileNameWithoutExtension
+            |> Path.GetExtension
+            |> fun x -> if String.IsNullOrEmpty x then DefaultLang else x.Substring(1)
+
         let dir = Path.getDirectory file
         let filename =
             file |> Path.GetFileNameWithoutExtension |> Path.GetFileNameWithoutExtension
@@ -151,18 +158,14 @@ module internal DocsHelper =
 
         {
             Id = docId
-            Name = docName
+            Name = getDocName file
+            Names = files |> Seq.map (fun f -> getLang f, getDocName f) |> Map.ofSeq
             FolderName = file |> Path.GetDirectoryName |> Path.GetFileName
             LastModified = fileInfo.LastWriteTimeUtc
             LangSegments =
                 files
                 |> Seq.map (fun file ->
-                    let lang =
-                        file
-                        |> Path.GetFileNameWithoutExtension
-                        |> Path.GetExtension
-                        |> fun x -> if String.IsNullOrEmpty x then DefaultLang else x.Substring(1)
-                    lang, markdownToSegments baseUrl rootDir file
+                    getLang file, markdownToSegments baseUrl rootDir file
                 )
                 |> Map.ofSeq
         }
@@ -202,6 +205,13 @@ module internal DocsHelper =
                     else main, other
                 )
                 ([], [])
+
+        let otherFiles =
+            otherFiles
+            |> Seq.groupBy (fun x -> x.Split('.')[0])
+            // Just get the default lang file, other lang should be ignored
+            |> Seq.map (fun (_, g) -> g |> Seq.find (fun f -> Path.GetFileName(f).Split('.').Length = 2))
+            |> Seq.toList
 
         match mainFiles, dirs, otherFiles with
         | [], _ :: _, _ -> dirs |> List.map (getDocTree baseUrl rootDir ext) |> List.concat
