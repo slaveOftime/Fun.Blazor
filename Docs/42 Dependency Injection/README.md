@@ -10,7 +10,7 @@ Another challenging thing is its internal rendering. It requires a function as i
 
 **Dependency injection (DI)** is essential in many software applications. ASP.NET Core has built-in support for it, and it is also helpful for testing and cross-concern solutions. Not only services but also UI components can be powered by **dependency injection**.
 
-**html.inject (they are the same but with different names for different contexts)** is used to inject the service you defined in the DI container.
+**html.inject** is used to inject the service you defined in the DI container.
 
 {{SimpleInjectionDemo}}
 

@@ -1,9 +1,8 @@
-# DOM是
+# DOM
 
-**Fun.Blazor**最重要的部分之一，它提供了一种用于构建DOM的领域特定语言(DSL)。
-即使在 V2 之前，就已经支持了计算表达式风格的 DSL。
+对于 Fun.Blazor 来说，最重要的是构建 DOM 的 DSL。在 V2 之前，计算表达式（CE）风格的 DSL 已经得到支持。
 
-这非常容易构建和组合 DOM：
+构建和组合 DOM 非常容易：
 
 ```fsharp
 
@@ -19,7 +18,7 @@ let composed =
     }
 ```
 
-此外，您还可以构建共享属性/样式片段进行组合：
+另外，您可以构建共享的属性/样式片段来组合：
 
 ```fsharp
 let commonStyle =
@@ -38,15 +37,14 @@ let sharedButtonAttrs =
     button {
         style {
             commonStyle
-            // css priority/override is controlled by browser. 
-            // For "color", "red" will be used.
+            // css 优先级/覆盖由浏览器控制。 
+            // 对于 "color"，将使用 "red"。
             color "red" 
         }
         data 456
-        // attribute priority is controlled by blazor core. 
-        // Currently, only the first added attribute will be used when you are trying to add the same attribute. 
-        // That is why I put commonAttr lower than "data 456", 
-        // so the 456 will be used even in commonAttr "data" is 123.
+        // 属性优先级由 blazor 核心控制。
+        // 目前，只有在尝试添加相同属性时，才会使用第一个添加的属性。
+        // 这就是为什么我把 commonAttr 排在 "data 456" 之下的原因，
         commonAttr
         asAttrRenderFragment // Here is the thing to make the magic happen
     }
@@ -59,7 +57,7 @@ let demo =
             sharedButtonAttrs
             "Cool"
         }
-    }    
+    }
 ```
 
 你还可以创建扩展方法以便于重用，这种方式也更加类型安全。而至于**asAttrRenderFragment**，更推荐在局部使用。

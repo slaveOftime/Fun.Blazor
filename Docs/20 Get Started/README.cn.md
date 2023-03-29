@@ -2,11 +2,11 @@
 
 ## 请查看示例以快速开始
 
-本仓库包含了文档站点本身的代码：https://github.com/slaveOftime/Fun.Blazor/tree/master/Fun.Blazor.Docs.Wasm。
+这包含文档网站本身的代码：https://github.com/slaveOftime/Fun.Blazor/tree/master/Fun.Blazor.Docs.Wasm。
 
-我用它来构建我的个人博客：https://github.com/slaveOftime/Slaveoftime.Site。
+我使用它来构建自己简单的个人博客：https://github.com/slaveOftime/Slaveoftime.Site。
 
-这里还包括了 Fun.Blazor 模板的代码，其中还有更多的示例：https://github.com/slaveOftime/Fun.Blazor.Samples。
+这包含 Fun.Blazor 模板的代码，还有更多示例：https://github.com/slaveOftime/Fun.Blazor.Samples。
 
 ## 使用 dotnet 模板：
 
@@ -16,17 +16,17 @@
 dotnet new --install Fun.Blazor.Templates::2.0.0
 ```
 
-使用这个模板，你可以创建带有 [MudBlazor](https://mudblazor.com/) 或 [shoelacejs](https://shoelace.style/) 支持的 server/wasm blazor。
+使用此模板，您可以创建支持 [MudBlazor](https://mudblazor.com/) 或 [shoelacejs](https://shoelace.style/) 的 server/wasm blazor。
 
 ```shell
 dotnet new fb-mix -o CoolMixMode
 ```
 
-## 代码结构示例（只是我的建议）
+## 代码结构示例（只是我的意见）
 
-这个项目支持多种状态管理模式。根据我的经验，不应该在整个项目中使用 Elmish，因为它会影响性能和状态共享。有时候代码也有点冗长。
+该项目支持多个状态管理模式。根据我的经验，不推荐在整个项目中使用 Elmish，因为它会影响性能和状态共享。有时代码会有点冗长。
 
-你可以试试这个结构：
+你可以试试这个：
 
 **Db**  
 **Domain**  
