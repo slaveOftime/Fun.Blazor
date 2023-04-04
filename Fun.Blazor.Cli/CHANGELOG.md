@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.0.0] - 2023-04-04
+
+Release for 3.0.0
+
 ## [3.0.0-beta005] - 2023-03-27
 
 - Add comments
