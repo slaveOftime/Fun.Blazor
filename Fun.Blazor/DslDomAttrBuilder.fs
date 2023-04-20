@@ -369,6 +369,8 @@ type DomAttrBuilder() =
     [<CustomOperation("contextmenu")>]
     member inline _.contextmenu([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("contextmenu" => v)
     [<CustomOperation("controls")>]
+    member inline _.controls([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("controls" =>>> true)
+    [<CustomOperation("controls")>]
     member inline _.controls([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("controls" => v)
     [<CustomOperation("coords")>]
     member inline _.coords([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("coords" => v)
