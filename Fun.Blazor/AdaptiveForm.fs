@@ -4,11 +4,17 @@ open System
 open System.Linq
 open System.Collections.Generic
 open System.Linq.Expressions
-open FSharp.Data.Adaptive
 open System.Runtime.CompilerServices
+open FSharp.Data.Adaptive
 
 
 type Validator<'T, 'Prop, 'Error> = AdaptiveForm<'T, 'Error> -> 'Prop -> 'Error list
+
+
+/// For internal use only
+type internal IAdaptiveForm =
+    abstract member SetValueObj: value: obj -> unit
+    abstract member GetValueObj: unit -> obj
 
 
 type AdaptiveForm<'T, 'Error>(defaultValue: 'T) as this =
@@ -22,10 +28,12 @@ type AdaptiveForm<'T, 'Error>(defaultValue: 'T) as this =
 
 
     let hasChanges = cval false
-    let mutable disposes = List<IDisposable>()
+    let disposes = List<IDisposable>()
     let mutable fields = Dictionary<string, cval<obj>>()
     let mutable errors = Dictionary<string, cval<'Error list>>()
     let mutable loaders = Dictionary<string, cval<bool>>()
+
+    let subForms = Dictionary<string, obj>()
 
     let rec getExpressionName (exp: Expression) =
         match exp.NodeType with
@@ -49,30 +57,9 @@ type AdaptiveForm<'T, 'Error>(defaultValue: 'T) as this =
         loaders <- props |> Seq.map (fun x -> KeyValuePair(x.Name, cval false)) |> Dictionary
 
 
-    member _.SetValue(value: 'T) =
-        transact (fun _ ->
-            for KeyValue(_, error) in errors do
-                error.Value <- []
-            for prop in props do
-                fields.[prop.Name].Value <- prop.GetValue value
-        )
-        hasChanges.Publish false
+    member _.SetValue(value: 'T) = (this :> IAdaptiveForm).SetValueObj(value)
 
-
-    member _.GetValue() =
-        let fields =
-            fields
-            |> Seq.map (
-                function
-                | KeyValue(_, x) -> x.Value
-            )
-            |> Seq.toArray
-
-        if FSharp.Reflection.FSharpType.IsRecord ty then
-            FSharp.Reflection.FSharpValue.MakeRecord(ty, fields)
-        else
-            Activator.CreateInstance(ty, fields)
-        |> unbox<'T>
+    member _.GetValue() = (this :> IAdaptiveForm).GetValueObj() |> unbox<'T>
 
 
     member _.AddValidators(prop: Expression<Func<'T, 'Prop>>, checkAll, validators': Validator<'T, 'Prop, 'Error> list) =
@@ -168,6 +155,63 @@ type AdaptiveForm<'T, 'Error>(defaultValue: 'T) as this =
                 return s' || x'
             })
             (AVal.constant false)
+
+
+    /// Use this to create a sub form for complex type. The loading/errors/changes will sync to the root form. And all the resource will be cleaned together with root form.
+    /// When you use this you should not call UseFieldXXX for the same property, because the sub form is intend to be lazy instead of updating the field every time the sub fields are changed.
+    /// Once you called this, the sub form will be the single truth of the source for this field.
+    member _.GetSubForm(propSelector: Expression<Func<'T, 'Prop>>) =
+        let fieldName = getExpressionName propSelector
+        let field = fields[fieldName]
+
+        if subForms.ContainsKey fieldName |> not then
+            let subForm = new AdaptiveForm<'Prop, 'Error>(unbox<'Prop> field.Value)
+
+            disposes.AddRange [
+                subForm
+                subForm.UseErrors().AddLazyCallback(errors[fieldName].Publish)
+                subForm.UseHasChanges().AddInstantCallback(fun x -> hasChanges.Publish(fun oldX -> oldX || x))
+                subForm.UseIsLoading().AddInstantCallback(fun x -> loaders[fieldName].Publish(fun oldX -> oldX || x))
+            ]
+
+            subForms[fieldName] <- subForm
+            subForm
+
+        else
+            subForms[fieldName] |> unbox
+
+
+    interface IAdaptiveForm with
+
+        member _.SetValueObj(value) =
+            transact (fun _ ->
+                for KeyValue(_, error) in errors do
+                    error.Value <- []
+                for prop in props do
+                    let field = prop.GetValue value
+                    fields.[prop.Name].Value <- field
+                    if subForms.ContainsKey prop.Name then
+                        (subForms[prop.Name] :?> IAdaptiveForm).SetValueObj(field)
+            )
+            hasChanges.Publish false
+
+        member _.GetValueObj() =
+            let fields =
+                fields
+                |> Seq.map (
+                    function
+                    | KeyValue(k, x) ->
+                        if subForms.ContainsKey k then
+                            (subForms[k] :?> IAdaptiveForm).GetValueObj()
+                        else
+                            x.Value
+                )
+                |> Seq.toArray
+
+            if FSharp.Reflection.FSharpType.IsRecord ty then
+                FSharp.Reflection.FSharpValue.MakeRecord(ty, fields)
+            else
+                Activator.CreateInstance(ty, fields)
 
 
     interface IDisposable with
