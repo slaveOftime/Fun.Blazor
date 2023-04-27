@@ -14,6 +14,7 @@ type Model =
         Password: string
         Age: int
         Birthday: DateTime
+        Address: Address
     }
 
     static member DefaultValue =
@@ -22,7 +23,10 @@ type Model =
             Password = ""
             Age = 0
             Birthday = DateTime.Now
+            Address = { Zip = ""; Street = "" }
         }
+
+and Address = { Zip: string; Street: string }
 
 type ModelErrors =
     | NameIsTooShort of int
@@ -35,9 +39,49 @@ type ModelErrors =
     | AgeCannotEqual of int
     | BirthdayIsTooEarly of DateTime
     | BirthdayIsTooOld of DateTime
+    | AddressError of AddressError
+
+and AddressError =
+    | ZipCodeCannotBeEmpty
 
 
 let private simplifyErrors es = es |> Seq.map string |> String.concat ", "
+
+let private errorView errors =
+    if errors |> List.isEmpty |> not then
+        MudText'() {
+            Color Color.Error
+            Typo Typo.caption
+            simplifyErrors errors
+        }
+    else
+        html.none
+
+
+// This is used to demo nest/sub form
+let private addressForm (modelForm: AdaptiveForm<Address, AddressError>) =
+    fragment {
+        adaptiview () {
+            let! binding, errors = modelForm.UseFieldWithErrors(fun x -> x.Zip)
+            MudTextField'() {
+                Label "Zip code"
+                Value' binding
+                Immediate true
+                // We cannot use MudBlazor errors feature by default, because it has its own validation rules.
+                //Error(not errors.IsEmpty)
+                //ErrorText(simplifyErrors errors)
+            }
+            errorView errors
+        }
+        adaptiview () {
+            let! binding = modelForm.UseField(fun x -> x.Street)
+            MudTextField'() {
+                Label "Street"
+                Value' binding
+                Immediate true
+            }
+        }
+    }
 
 
 let entry =
@@ -68,6 +112,11 @@ let entry =
                     ]
                 )
 
+        let addressModelForm =
+            modelForm
+                .GetSubForm((fun x -> x.Address), AddressError)
+                .AddValidators((fun x -> x.Zip), true, [ required ZipCodeCannotBeEmpty ])
+
         MudPaper'() {
             Elevation 10
             style { padding 10 }
@@ -78,10 +127,9 @@ let entry =
                         MudTextField'() {
                             Label "Name"
                             Value' binding
-                            Error(not errors.IsEmpty)
-                            ErrorText(simplifyErrors errors)
                             Immediate true
                         }
+                        errorView errors
                     }
                     adaptiview () {
                         let! binding, errors = modelForm.UseFieldWithErrors(fun x -> x.Password)
@@ -90,9 +138,8 @@ let entry =
                             Value' binding
                             Immediate true
                             InputType InputType.Password
-                            Error(not errors.IsEmpty)
-                            ErrorText(simplifyErrors errors)
                         }
+                        errorView errors
                     }
                     adaptiview () {
                         let! binding, errors = modelForm.UseFieldWithErrors(fun x -> x.Age)
@@ -101,9 +148,8 @@ let entry =
                             Value' binding
                             Immediate true
                             InputType InputType.Number
-                            Error(not errors.IsEmpty)
-                            ErrorText(simplifyErrors errors)
                         }
+                        errorView errors
                     }
                     adaptiview () {
                         let! (value', setValue), errors = modelForm.UseFieldWithErrors(fun x -> x.Birthday)
@@ -111,10 +157,10 @@ let entry =
                             Label "Birthday"
                             Date(Nullable value')
                             DateChanged(Option.ofNullable >> Option.iter setValue)
-                            Error(not errors.IsEmpty)
-                            ErrorText(simplifyErrors errors)
                         }
+                        errorView errors
                     }
+                    addressForm addressModelForm
                 ]
                 spaceV4
                 adaptiview () {

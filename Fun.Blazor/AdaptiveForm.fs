@@ -160,16 +160,18 @@ type AdaptiveForm<'T, 'Error>(defaultValue: 'T) as this =
     /// Use this to create a sub form for complex type. The loading/errors/changes will sync to the root form. And all the resource will be cleaned together with root form.
     /// When you use this you should not call UseFieldXXX for the same property, because the sub form is intend to be lazy instead of updating the field every time the sub fields are changed.
     /// Once you called this, the sub form will be the single truth of the source for this field.
-    member _.GetSubForm(propSelector: Expression<Func<'T, 'Prop>>) =
+    member _.GetSubForm(propSelector: Expression<Func<'T, 'Prop>>, ?mapError: 'SubError -> 'Error) =
+        let mapError = defaultArg mapError unbox<'Error>
+
         let fieldName = getExpressionName propSelector
         let field = fields[fieldName]
 
         if subForms.ContainsKey fieldName |> not then
-            let subForm = new AdaptiveForm<'Prop, 'Error>(unbox<'Prop> field.Value)
+            let subForm = new AdaptiveForm<'Prop, 'SubError>(unbox<'Prop> field.Value)
 
             disposes.AddRange [
                 subForm
-                subForm.UseErrors().AddLazyCallback(errors[fieldName].Publish)
+                subForm.UseErrors().AddLazyCallback(List.map mapError >> errors[fieldName].Publish)
                 subForm.UseHasChanges().AddInstantCallback(fun x -> hasChanges.Publish(fun oldX -> oldX || x))
                 subForm.UseIsLoading().AddInstantCallback(fun x -> loaders[fieldName].Publish(fun oldX -> oldX || x))
             ]
@@ -185,8 +187,9 @@ type AdaptiveForm<'T, 'Error>(defaultValue: 'T) as this =
 
         member _.SetValueObj(value) =
             transact (fun _ ->
-                for KeyValue(_, error) in errors do
-                    error.Value <- []
+                // No need to clean errors, because if the we will set value below, if the value is changed then the error will be re-calculated, if it is not changed then the error should not be touched.
+                //for KeyValue(_, error) in errors do
+                //    error.Value <- []
                 for prop in props do
                     let field = prop.GetValue value
                     fields.[prop.Name].Value <- field

@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.0.2] - 2023-04-27
+
+- Improve error handling for AdaptiveForm
+
 ## [3.0.1] - 2023-04-20
 
 - Add GetSubForm API
