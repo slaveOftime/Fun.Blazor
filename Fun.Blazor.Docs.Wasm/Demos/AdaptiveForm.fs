@@ -6,7 +6,6 @@ open MudBlazor
 open Fun.Blazor
 open Fun.Blazor.Validators
 open Fun.Blazor.Docs.Controls
-open Fun.Blazor.Docs.Wasm
 
 
 type Model =
@@ -77,7 +76,6 @@ let entry =
                     adaptiview () {
                         let! binding, errors = modelForm.UseFieldWithErrors(fun x -> x.Name)
                         MudTextField'() {
-                            key errors
                             Label "Name"
                             Value' binding
                             Error(not errors.IsEmpty)
@@ -88,7 +86,6 @@ let entry =
                     adaptiview () {
                         let! binding, errors = modelForm.UseFieldWithErrors(fun x -> x.Password)
                         MudTextField'() {
-                            key errors
                             Label "Password"
                             Value' binding
                             Immediate true
@@ -100,7 +97,6 @@ let entry =
                     adaptiview () {
                         let! binding, errors = modelForm.UseFieldWithErrors(fun x -> x.Age)
                         MudTextField'() {
-                            key errors
                             Label "Age"
                             Value' binding
                             Immediate true
