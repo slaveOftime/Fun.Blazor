@@ -40,9 +40,16 @@ type FunBlazorServerExtensions =
     [<Extension>]
     static member WriteFunDom(ctx: HttpContext, node: NodeRenderFragment, ?renderMode) =
         task {
-            let! result = ctx.RenderFragment(typeof<FunFragmentComponent>, defaultArg renderMode RenderMode.Static, dict [ "Fragment", box node ])
+            let htmlHelper = ctx.RequestServices.GetService<IHtmlHelper>()
+            (htmlHelper :?> IViewContextAware).Contextualize(ViewContext(HttpContext = ctx))
+
+            let! result =
+                htmlHelper.RenderComponentAsync(typeof<FunFragmentComponent>, defaultArg renderMode RenderMode.Static, dict [ "Fragment", box node ])
+
             ctx.Response.ContentType <- "text/html; charset=UTF-8"
-            do! ctx.Response.WriteAsync result
+
+            use sw = new StreamWriter(ctx.Response.BodyWriter.AsStream(true))
+            result.WriteTo(sw, HtmlEncoder.Default)
         }
         :> Task
 
@@ -55,8 +62,7 @@ type FunBlazorServerExtensions =
             RequestDelegate(fun ctx -> task {
                 let! node = render (ctx.RequestServices.GetMultipleServices<'Services>())
                 do! ctx.WriteFunDom(node, defaultArg renderMode RenderMode.Static)
-            }
-            )
+            })
         )
 
     /// 'Services should be a tuple of registered services or unit
@@ -77,8 +83,7 @@ type FunBlazorServerExtensions =
             RequestDelegate(fun ctx -> task {
                 let! node = render (ctx.RequestServices.GetMultipleServices<'Services>())
                 do! ctx.WriteFunDom(node, defaultArg renderMode RenderMode.Static)
-            }
-            )
+            })
         )
 
     /// 'Services should be a tuple of registered services or unit
@@ -99,8 +104,7 @@ type FunBlazorServerExtensions =
             RequestDelegate(fun ctx -> task {
                 let! node = render (ctx.RequestServices.GetMultipleServices<'Services>())
                 do! ctx.WriteFunDom(node, defaultArg renderMode RenderMode.Static)
-            }
-            )
+            })
         )
 
     /// 'Services should be a tuple of registered services or unit
@@ -122,8 +126,7 @@ type FunBlazorServerExtensions =
             RequestDelegate(fun ctx -> task {
                 let! node = render (ctx.RequestServices.GetMultipleServices<'Services>())
                 do! ctx.WriteFunDom(node, defaultArg renderMode RenderMode.Static)
-            }
-            )
+            })
         )
 
     /// 'Services should be a tuple of registered services or unit
@@ -144,8 +147,7 @@ type FunBlazorServerExtensions =
             RequestDelegate(fun ctx -> task {
                 let! node = render (ctx.RequestServices.GetMultipleServices<'Services>())
                 do! ctx.WriteFunDom(node, defaultArg renderMode RenderMode.Static)
-            }
-            )
+            })
         )
 
     /// 'Services should be a tuple of registered services or unit
@@ -161,16 +163,7 @@ type FunBlazorServerExtensions =
     [<Extension>]
     static member MapFunBlazor(builder: IEndpointRouteBuilder, createFragment: HttpContext -> NodeRenderFragment, ?pattern) =
         let requestDeletegate =
-            Microsoft.AspNetCore.Http.RequestDelegate(fun ctx -> task {
-                let! result = ctx.RenderFragment(typeof<FunFragmentComponent>, RenderMode.Static, dict [ "Fragment", box (createFragment ctx) ])
-
-                if isNull ctx.Response.ContentType then
-                    ctx.Response.ContentType <- "text/html; charset=UTF-8"
-
-                let body = System.Text.Encoding.UTF8.GetBytes result
-                return! ctx.Response.Body.WriteAsync(ReadOnlyMemory body)
-            }
-            )
+            Microsoft.AspNetCore.Http.RequestDelegate(fun ctx -> ctx.WriteFunDom(createFragment ctx))
 
         match pattern with
         | Some x -> builder.MapFallback(x, requestDeletegate)
