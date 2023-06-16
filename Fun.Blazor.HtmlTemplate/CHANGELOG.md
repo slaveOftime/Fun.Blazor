@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.1.0-beta002] - 2023-06-16
+
+Fix SSRTemplate
+
 ## [3.1.0-beta001] - 2023-06-16
 
 Experiment SSRTemplate, so it can be used with htmx easier.

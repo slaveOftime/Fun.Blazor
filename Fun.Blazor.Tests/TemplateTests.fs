@@ -45,6 +45,7 @@ let ``SSRTemplate should work`` () =
     let segment1 = Static.html "<h1>static</h1>"
     let segment2 = Template.html $"<div>{count}</div>"
     let segment3 = SSRTemplate.html $"<div>{count}</div>"
+    let segment4 i = SSRTemplate.html $"<div>{count + i}</div>"
 
     let result =
         context.RenderNode(
@@ -54,6 +55,7 @@ let ``SSRTemplate should work`` () =
                     {segment2}
                     {segment3}
                 </div>
+                {[for i in 1..10 -> segment4 i]}
             """
         )
 
@@ -64,5 +66,15 @@ let ``SSRTemplate should work`` () =
           <div>1</div>
           <div>1</div>
         </div>
+        <div>2</div>
+        <div>3</div>
+        <div>4</div>
+        <div>5</div>
+        <div>6</div>
+        <div>7</div>
+        <div>8</div>
+        <div>9</div>
+        <div>10</div>
+        <div>11</div>
         """
     )

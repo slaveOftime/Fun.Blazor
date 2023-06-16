@@ -26,6 +26,7 @@ type SSRTemplate =
             | :? System.Collections.Generic.IEnumerable<NodeRenderFragment> as nodes ->
                 for node in nodes do
                     sequence <- node.Invoke(comp, builder, sequence)
+            | null -> ()
             | arg ->
                 builder.AddMarkupContent(sequence, arg.ToString())
                 sequence <- sequence + 1
@@ -57,8 +58,8 @@ type SSRTemplate =
                 let mutable templateSpan = html.Format.AsSpan()
                 let dicts = System.Collections.Generic.Dictionary<int, String>()
                 while argIndex < args.Length && not templateSpan.IsEmpty do
-                    let indexer = String.Format("{0}", argIndex)
-                    let index = templateSpan.IndexOf(indexer) - 1
+                    let indexer = String.Format("{{{0}}}", argIndex)
+                    let index = templateSpan.IndexOf(indexer)
                     let partialStr = templateSpan.Slice(0, index).ToString()
 
                     dicts[argIndex] <- partialStr
@@ -66,9 +67,9 @@ type SSRTemplate =
                     builder.AddMarkupContent(sequence, partialStr)
                     sequence <- renderArg argIndex (sequence + 1) comp builder
 
-                    let endIndex = index + indexer.Length + 1
+                    let endIndex = index + indexer.Length
                     if endIndex < templateSpan.Length - 1 then
-                        templateSpan <- templateSpan.Slice(endIndex + 1)
+                        templateSpan <- templateSpan.Slice(endIndex)
                     else
                         templateSpan <- ReadOnlySpan<char>.Empty
 
