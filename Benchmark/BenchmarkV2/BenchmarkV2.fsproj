@@ -8,6 +8,7 @@
 	<ItemGroup>
 		<Compile Include="BasicBenchmark\CEComponent.fs" />
 		<Compile Include="BasicBenchmark\TemplateComponent.fs" />
+		<Compile Include="BasicBenchmark\SSRTemplateComponent.fs" />
 		<Compile Include="BasicBenchmark\BoleroComponent.fs" />
 		<Compile Include="BasicBenchmark\Benchmarks.fs" />
 		<Compile Include="BlazorInterop\Benchmarks.fs" />
@@ -16,8 +17,8 @@
 
 	<ItemGroup>
 		<PackageReference Include="BenchmarkDotNet" Version="0.13.5" />
-		<PackageReference Include="Bolero" Version="0.21.25" />
-		<PackageReference Include="bunit" Version="1.18.4" />
+		<PackageReference Include="Bolero" Version="0.22.44" />
+		<PackageReference Include="bunit" Version="1.20.8" />
 		<PackageReference Include="CliWrap" Version="3.6.0" />
 		<PackageReference Include="FSharp.Compiler.Service" Version="43.7.200" />
 		<PackageReference Include="MudBlazor" Version="6.2.0" />

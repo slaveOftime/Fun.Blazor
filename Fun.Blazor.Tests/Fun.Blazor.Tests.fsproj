@@ -20,6 +20,7 @@
 		<Compile Include="CascadingValueTests.fs" />
 		<Compile Include="ServerTests.fs" />
 		<Compile Include="HtmxTests.fs" />
+		<Compile Include="TemplateTests.fs" />
 		<Compile Include="Program.fs" />
 	</ItemGroup>
 	<ItemGroup>
@@ -39,6 +40,7 @@
 		<PackageReference FunBlazorStyle="CE" Include="MudBlazor" Version="6.2.0" />
 	</ItemGroup>
 	<ItemGroup>
+		<ProjectReference Include="..\Fun.Blazor.HtmlTemplate\Fun.Blazor.HtmlTemplate.fsproj" />
 		<ProjectReference Include="..\Fun.Blazor.Server\Fun.Blazor.Server.fsproj" />
 		<ProjectReference Include="..\Fun.Blazor\Fun.Blazor.fsproj" />
 		<ProjectReference Include="..\Fun.Htmx\Fun.Htmx.fsproj" />
