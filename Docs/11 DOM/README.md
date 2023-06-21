@@ -13,9 +13,13 @@ let composed =
     div {
         style { height 500 }
         p { "This is the way!" }
-        if conditionIsTrue then
-            fragment1
-            p { "E = MCC" }
+        // because below stuff will display something according some conditions, 
+        // so we need use region to isolate it so it will not impact it's parent element/component's sequence numbers for better diff performance. 
+        region {
+            if conditionIsTrue then
+                fragment1
+                p { "E = MCC" }
+        }
     }
 ```
 

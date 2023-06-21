@@ -12,9 +12,13 @@ let composed =
     div {
         style { height 500 }
         p { "This is the way!" }
-        if conditionIsTrue then
-            fragment1
-            p { "E = MCC" }
+        // 因为下面的内容会根据某个条件在运行时动态变化， 
+        // 所以我们需要使用 region 来隔离它，以免它扰乱父元素/组件的序列号，以便能获取更好的 diff 性能。
+        region {
+            if conditionIsTrue then
+                fragment1
+                p { "E = MCC" }
+        }
     }
 ```
 

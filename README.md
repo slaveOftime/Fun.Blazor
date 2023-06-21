@@ -50,30 +50,8 @@ Intel Core i7-1065G7 CPU 1.30GHz, 1 CPU, 8 logical and 4 physical cores
         }
     ```
 
-2. **Fun.Blazor.HtmlTemplate**: help you to convert plain string to dom tree. And with VSCode + Ionide-fsharp + Highlight HTML/SQL templates you can get embeded intellicense. You can check more detail in [shoelacejs + tailwind demo](https://github.com/slaveOftime/Fun.Blazor.Samples/tree/main/templates/MinimalBlazorWASMAppWithShoelaceAndTailwind)
 
-    ```fsharp
-    let staticPart =
-        Static.html """
-            <div style="color: hotpink;">Congratulations! You made it ❤️</div>
-        """
-
-    // The performance will not be good as CE DSL for initial start. Because it need to parse at runtime and cache for next usage.
-    let dynamicPart =
-        adaptiview(){
-            let! count, setCount = FSharp.Data.Adaptive.cval(1).WithSetter()
-            Template.html $"""
-                <div>
-                    {staticPart}
-                    {count}
-                    <button onclick={fun _ -> setCount (count + 1)}></button>
-                </div>
-            """
-        }
-    ```
-
-
-3. **Fun.Blazor.Cli**: support hot-reload and help you to generate CE style binding automatically for any blazor third party libraries.
+2. **Fun.Blazor.Cli**: support hot-reload and help you to generate CE style binding automatically for any blazor third party libraries.
 
     [Docs for how to use it](https://slaveoftime.github.io/Fun.Blazor.Docs/?doc=/Cli)
 
