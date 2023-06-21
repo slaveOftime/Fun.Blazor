@@ -17,14 +17,13 @@ type Model =
         Address: Address
     }
 
-    static member DefaultValue =
-        {
-            Name = ""
-            Password = ""
-            Age = 0
-            Birthday = DateTime.Now
-            Address = { Zip = ""; Street = "" }
-        }
+    static member DefaultValue = {
+        Name = ""
+        Password = ""
+        Age = 0
+        Birthday = DateTime.Now
+        Address = { Zip = ""; Street = "" }
+    }
 
 and Address = { Zip: string; Street: string }
 
@@ -41,47 +40,44 @@ type ModelErrors =
     | BirthdayIsTooOld of DateTime
     | AddressError of AddressError
 
-and AddressError =
-    | ZipCodeCannotBeEmpty
+and AddressError = | ZipCodeCannotBeEmpty
 
 
 let private simplifyErrors es = es |> Seq.map string |> String.concat ", "
 
-let private errorView errors =
+let private errorView errors = fragment {
     if errors |> List.isEmpty |> not then
         MudText'() {
             Color Color.Error
             Typo Typo.caption
             simplifyErrors errors
         }
-    else
-        html.none
+}
 
 
 // This is used to demo nest/sub form
-let private addressForm (modelForm: AdaptiveForm<Address, AddressError>) =
-    fragment {
-        adaptiview () {
-            let! binding, errors = modelForm.UseFieldWithErrors(fun x -> x.Zip)
-            MudTextField'() {
-                Label "Zip code"
-                Value' binding
-                Immediate true
-                // We cannot use MudBlazor errors feature by default, because it has its own validation rules.
-                //Error(not errors.IsEmpty)
-                //ErrorText(simplifyErrors errors)
-            }
-            errorView errors
+let private addressForm (modelForm: AdaptiveForm<Address, AddressError>) = fragment {
+    adaptiview () {
+        let! binding, errors = modelForm.UseFieldWithErrors(fun x -> x.Zip)
+        MudTextField'() {
+            Label "Zip code"
+            Value' binding
+            Immediate true
+        // We cannot use MudBlazor errors feature by default, because it has its own validation rules.
+        //Error(not errors.IsEmpty)
+        //ErrorText(simplifyErrors errors)
         }
-        adaptiview () {
-            let! binding = modelForm.UseField(fun x -> x.Street)
-            MudTextField'() {
-                Label "Street"
-                Value' binding
-                Immediate true
-            }
+        errorView errors
+    }
+    adaptiview () {
+        let! binding = modelForm.UseField(fun x -> x.Street)
+        MudTextField'() {
+            Label "Street"
+            Value' binding
+            Immediate true
         }
     }
+}
 
 
 let entry =

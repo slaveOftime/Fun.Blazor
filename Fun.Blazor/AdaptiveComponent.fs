@@ -29,7 +29,7 @@ type AdaptiveComponent [<DynamicDependency(DynamicallyAccessedMemberTypes.All, t
     member val Logger = Unchecked.defaultof<ILogger<AdaptiveComponent>> with get, set
 
 
-    override _.Render() = this.Logger.LogDebugForPerf(fun _ -> fragment |> AVal.force)
+    override _.Render() = html.region (this.Logger.LogDebugForPerf(fun _ -> fragment |> AVal.force))
 
 
     override _.OnParametersSet() =

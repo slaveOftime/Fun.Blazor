@@ -6,6 +6,9 @@ open Internal
 
 type FragmentBuilder() =
 
+    member _.Run(node: NodeRenderFragment) = html.region (node)
+
+
     member inline _.Yield(x: int) =
         NodeRenderFragment(fun _ builder index ->
             builder.AddContent(index, x)
@@ -44,8 +47,7 @@ type FragmentBuilder() =
 
     member inline _.Combine([<InlineIfLambda>] render1: NodeRenderFragment, [<InlineIfLambda>] render2: NodeRenderFragment) = render1 >=> render2
 
-    //member inline _.For(renders: 'T seq, [<InlineIfLambda>] fn: 'T -> NodeRenderFragment) =
-    //    renders |> Seq.map fn |> Seq.fold (>=>) (emptyNode())
+    member inline _.For(renders: 'T seq, [<InlineIfLambda>] fn: 'T -> NodeRenderFragment) = renders |> Seq.map fn |> Seq.fold (>=>) (emptyNode ())
 
     member inline _.YieldFrom(renders: NodeRenderFragment seq) = renders |> Seq.fold (>=>) (emptyNode ())
 
@@ -57,5 +59,10 @@ type FragmentBuilder() =
 module FragmentBuilderUtils =
 
     /// When child items are not too much, we can use this.
+    /// It will use region under the hood to have better diff perf when its content is dynamic.
+    ///
     /// To handling a lot of items, please use html.fragment for better intellicense performance
     let fragment = FragmentBuilder()
+
+    /// It is alias of fragment but with more explicity meaning for open a region with new sequence numbers.
+    let region = FragmentBuilder()

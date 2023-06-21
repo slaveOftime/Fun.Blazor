@@ -146,10 +146,12 @@ type DIComponent<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typ
 
 
     override _.Render() =
-        this.Logger.LogDebugForPerf(fun () ->
-            match node with
-            | ValueNone -> emptyNode ()
-            | ValueSome node -> node
+        html.region (
+            this.Logger.LogDebugForPerf(fun () ->
+                match node with
+                | ValueNone -> emptyNode ()
+                | ValueSome node -> node
+            )
         )
 
 

@@ -19,7 +19,68 @@ type html() =
     static member mergeAttrs attrs = attrs |> Seq.fold (==>) (emptyAttr ())
     static member mergeNodes nodes = nodes |> Seq.fold (>=>) (emptyNode ())
 
-    static member fragment nodes = html.mergeNodes nodes
+    static member inline fragment(nodes: NodeRenderFragment seq) = html.region nodes
+
+
+    /// You can also use fragment/html.fragment.
+    /// If the input node is dynamic in structure, for example the number of nodes/attributes will change based on some conditions,
+    /// Then use this we can reset the sequence number for the input node, so it will not make the sequence number dynamic/changed at runtime for its caller.
+    ///
+    /// Please check the detail here: https://learn.microsoft.com/en-us/aspnet/core/blazor/advanced-scenarios?view=aspnetcore-7.0#sequence-numbers-relate-to-code-line-numbers-and-not-execution-order
+    ///
+    /// For example, you have an errorView which will display dynamic structure of the childcontent then you can:
+    ///
+    /// ```fsharp
+    /// let private errorView errors =
+    ///     html.region (
+    ///         if errors |> List.isEmpty |> not then
+    ///             MudText'() {
+    ///                 Color Color.Error
+    ///                 Typo Typo.caption
+    ///                 simplifyErrors errors
+    ///             }
+    ///         else
+    ///             html.none
+    ///     )
+    /// ```
+    static member inline region([<InlineIfLambda>] node: NodeRenderFragment) =
+        NodeRenderFragment(fun comp builder sequence ->
+            builder.OpenRegion(sequence)
+
+            node.Invoke(comp, builder, 0) |> ignore
+
+            builder.CloseRegion()
+            sequence + 1
+        )
+
+    /// You can also use fragment/html.fragment.
+    /// If the input node is dynamic in structure, for example the number of nodes/attributes will change based on some conditions,
+    /// Then use this we can reset the sequence number for the input node, so it will not make the sequence number dynamic/changed at runtime for its caller.
+    ///
+    /// Please check the detail here: https://learn.microsoft.com/en-us/aspnet/core/blazor/advanced-scenarios?view=aspnetcore-7.0#sequence-numbers-relate-to-code-line-numbers-and-not-execution-order
+    ///
+    /// For example, you have an errorView which will display dynamic structure of the childcontent then you can:
+    ///
+    /// ```fsharp
+    /// let private errorView errors =
+    ///     html.region [
+    ///         if errors |> List.isEmpty |> not then
+    ///             MudText'() {
+    ///                 Color Color.Error
+    ///                 Typo Typo.caption
+    ///                 simplifyErrors errors
+    ///             }
+    ///     ]
+    /// ```
+    static member region(nodes: NodeRenderFragment seq) =
+        NodeRenderFragment(fun comp builder sequence ->
+            builder.OpenRegion(sequence)
+
+            nodes |> Seq.fold (fun i node -> node.Invoke(comp, builder, i)) 0 |> ignore
+
+            builder.CloseRegion()
+            sequence + 1
+        )
 
 
     static member internal compCache =
@@ -43,8 +104,7 @@ type html() =
             let mutable nextIndex = index + 1
             let instance = fn comp
             let props =
-                html
-                    .compCache
+                html.compCache
                     .Value()
                     .GetOrAdd(
                         typeof<'T>,

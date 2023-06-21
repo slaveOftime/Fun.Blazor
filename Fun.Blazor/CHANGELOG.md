@@ -1,5 +1,14 @@
 # Changelog
 
+## [3.0.3] - 2023-06-21
+
+Add html.region:
+If the input node is dynamic in structure, for example the number of nodes/attributes will change based on some conditions,
+Then use this we can reset the sequence number for the input node, so it will not make the sequence number dynamic/changed at runtime for its caller.
+
+For razor file in csharp, it will generate the sequence number as much as possible at compile time, so the most of the sequence number will not change at run time. 
+But for Fun.Blazor, everything is runtime, so to keep the diff more efficient we should use the region to help to isolate the changed places.
+
 ## [3.0.2] - 2023-04-27
 
 - Improve error handling for AdaptiveForm

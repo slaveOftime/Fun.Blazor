@@ -15,9 +15,9 @@
 		<Compile Include="Store.fs" />
 		<Compile Include="Router.Giraffe.FormatExpressions.fs" />
 		<Compile Include="Router.Giraffe.Dsl.fs" />
+		<Compile Include="DslCore.fs" />
 		<Compile Include="DIComponent.fs" />
 		<Compile Include="AdaptiveComponent.fs" />
-		<Compile Include="DslCore.fs" />
 		<Compile Include="DslFragmentBuilder.fs" />
 		<Compile Include="DslDomAttrBuilder.fs" />
 		<Compile Include="DslElementBuilder.fs" />
