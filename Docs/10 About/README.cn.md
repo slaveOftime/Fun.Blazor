@@ -16,12 +16,21 @@
 
 ## 基准测试
 
+BenchmarkDotNet=v0.13.5, OS=Windows 11 (10.0.22621.1848/22H2/2022Update/SunValley2)
+Intel Core i7-1065G7 CPU 1.30GHz, 1 CPU, 8 logical and 4 physical cores
+.NET SDK=7.0.203
+  [Host]     : .NET 7.0.7 (7.0.723.27404), X64 RyuJIT AVX2 DEBUG
+  DefaultJob : .NET 7.0.7 (7.0.723.27404), X64 RyuJIT AVX2
+
 |               方法          |       均值  |    误差  |   标准差  |  Gen 0 | 内存分配  |
 |---------------------------- |-----------:|---------:|---------:|-------:|----------:|
-|       RenderWithRazorCSharp |   400.3 ns |  6.99 ns |  6.20 ns | 0.0610 |     384 B |
-|            RenderWithBolero |   926.1 ns | 17.49 ns | 17.96 ns | 0.2546 |   1,600 B |
-|       RenderWithFunBlazorCE |   731.1 ns | 14.07 ns | 21.49 ns | 0.1173 |     736 B |
-| RenderWithFunBlazorTemplate | 2,569.9 ns | 42.22 ns | 39.50 ns | 0.6752 |   4,240 B |
+|          RenderWithRazorCSharp |   411.4 ns |  8.22 ns |  11.52 ns | 0.0896 |     376 B |
+|       RenderWithBolero 0.22.44 |   986.7 ns | 19.21 ns |  36.08 ns | 0.3529 |    1480 B |
+|          RenderWithFunBlazorCE |   793.1 ns | 15.77 ns |  32.57 ns | 0.1736 |     728 B |
+|    RenderWithFunBlazorTemplate | 2,901.1 ns | 57.36 ns | 101.96 ns | 1.0109 |    4232 B |
+| RenderWithFunBlazorSSRTemplate | 1,029.7 ns | 20.52 ns |  37.00 ns | 0.1221 |     512 B |
+
+
 
 ## 简单演示
 
