@@ -127,7 +127,7 @@ module CustomElementExtensions =
                          const handler = () => {{
                             if (window.initBlazor) {{
                                 window.initBlazor()
-                                const e = document.querySelector("#ce-id")
+                                const e = document.querySelector("#ce-" + id)
                                 if (e) {{
                                     const timerId = setInterval(() => {{
                                         if (e.nextElementSibling.children.length > 0) {{
