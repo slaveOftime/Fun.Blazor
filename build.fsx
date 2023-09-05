@@ -1,4 +1,4 @@
-#r "nuget: Fun.Build, 0.3.8"
+#r "nuget: Fun.Build, 0.5.1"
 #r "nuget: Fake.IO.FileSystem, 5.20.4"
 
 #load "docs.fsx"
@@ -9,20 +9,26 @@ open Fake.IO.FileSystemOperators
 open Fake.IO.Globbing.Operators
 
 
-let checkEnv =
+let options = {|
+    NUGET_API_KEY = EnvArg.Create("NUGET_API_KEY", description = "NUGET api key")
+    WASM = CmdArg.Create(longName = "--wasm", description = "Run in blazor wasm mode, By default will run in server mode.")
+|}
+
+
+let stage_checkEnv =
     stage "Check envs" {
         run "dotnet restore"
         run "dotnet build"
         run (ignore >> Docs.DocBuilder.build)
     }
 
-let test =
+let stage_test =
     stage "Test" {
         run "dotnet build"
         run "dotnet test --no-build"
     }
 
-let pack =
+let stage_pack =
     stage "Pack" {
         whenBranch "master"
         run "dotnet pack -c Release Fun.Blazor/Fun.Blazor.fsproj -o ."
@@ -41,18 +47,17 @@ let pack =
 
 pipeline "dev" {
     description "Start develop with Fun.Blazor.Docs"
-    checkEnv
+    stage_checkEnv
     stage "docs" {
         paralle
-        noPrefixForStep
         stage "wasm" {
             workingDir "./Fun.Blazor.Docs.Wasm"
-            whenCmdArg "--wasm" "" "Run in blazor wasm mode, By default will run in server mode."
+            whenCmdArg options.WASM
             run "dotnet run"
         }
         stage "server" {
             workingDir "./Fun.Blazor.Docs.Server"
-            whenNot { cmdArg "--wasm" }
+            whenNot { cmdArg options.WASM }
             run "dotnet run"
         }
         stage "hot-reload" {
@@ -66,10 +71,9 @@ pipeline "dev" {
 
 pipeline "docs" {
     description "Publish docs to github"
-    checkEnv
-    test
+    stage_checkEnv
+    stage_test
     stage "Publish docs" {
-        noPrefixForStep
         whenBranch "master"
         run "dotnet publish Fun.Blazor.Docs.Wasm/Fun.Blazor.Docs.Wasm.fsproj -c Release -o Fun.Blazor.Docs.Wasm.Release --nologo"
         run (fun _ ->
@@ -85,20 +89,15 @@ pipeline "docs" {
 
 pipeline "deploy" {
     description "Deploy packages to nuget"
-    checkEnv
-    test
-    pack
+    stage_checkEnv
+    stage_test
+    stage_pack
     stage "Publish to nuget" {
         failIfIgnored
-        whenAll {
-            branch "master"
-            whenAny {
-                envVar "NUGET_API_KEY"
-                cmdArg "NUGET_API_KEY"
-            }
-        }
+        whenBranch "master"
+        whenEnvVar options.NUGET_API_KEY
         run (fun ctx ->
-            let key = ctx.GetCmdArgOrEnvVar "NUGET_API_KEY"
+            let key = ctx.GetEnvVar options.NUGET_API_KEY.Name
             ctx.RunSensitiveCommand $"""dotnet nuget push *.nupkg -s https://api.nuget.org/v3/index.json --skip-duplicate -k {key}"""
         )
     }
@@ -108,8 +107,8 @@ pipeline "deploy" {
 
 pipeline "test" {
     description "Test related functions"
-    checkEnv
-    test
+    stage_checkEnv
+    stage_test
     runIfOnlySpecified
 }
 
