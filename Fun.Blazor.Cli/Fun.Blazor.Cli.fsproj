@@ -2,17 +2,16 @@
 
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
-		<TargetFrameworks>net6.0;net7.0</TargetFrameworks>
-		<ChangelogFile>CHANGELOG.md</ChangelogFile>
+		<TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
 		<PackAsTool>true</PackAsTool>
 		<ToolCommandName>fun-blazor</ToolCommandName>
 		<PackageOutputPath>./nupkg</PackageOutputPath>
 	</PropertyGroup>
-
+	
 	<ItemGroup>
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
 		<Compile Include="Types.fs" />
 		<Compile Include="Watch\ProjectCracker.fs" />
@@ -43,7 +42,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Condition="'$(Configuration)'=='RELEASE'" Include="Ionide.KeepAChangelog.Tasks" Version="0.1.8" PrivateAssets="all" />
 		<PackageReference Update="FSharp.Core" Version="7.0.0" />
 	</ItemGroup>
 

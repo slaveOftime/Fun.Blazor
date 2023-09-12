@@ -1,11 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net7.0</TargetFramework>
+		<TargetFrameworks>net7.0;net8.0</TargetFrameworks>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<OutputType>library</OutputType>
 		<IsPackable>true</IsPackable>
-		<ChangelogFile>CHANGELOG.md</ChangelogFile>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -17,7 +16,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Condition="'$(Configuration)'=='RELEASE'" Include="Ionide.KeepAChangelog.Tasks" Version="0.1.8" PrivateAssets="all" />
 		<ProjectReference Include="..\Fun.Blazor\Fun.Blazor.fsproj" />
 		<PackageReference Update="FSharp.Core" Version="7.0.0" />
 	</ItemGroup>

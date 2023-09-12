@@ -12,7 +12,6 @@ open Fun.Blazor
 /// * Must be defined as a variable and use it later for SSR. Still not know why.
 let rootComp<'T when 'T :> IComponent> (ctx: HttpContext) (renderMode: RenderMode) =
     let result = ctx.RenderFragment(typeof<'T>, renderMode).Result
-
     NodeRenderFragment(fun _ builder index ->
         builder.AddMarkupContent(index, result)
         index + 1

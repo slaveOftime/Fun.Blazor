@@ -170,7 +170,7 @@ type AdaptiveForm<'T, 'Error>(defaultValue: 'T) as this =
             let subForm = new AdaptiveForm<'Prop, 'SubError>(unbox<'Prop> field.Value)
 
             disposes.AddRange [
-                subForm
+                subForm :> IDisposable
                 subForm.UseErrors().AddLazyCallback(List.map mapError >> errors[fieldName].Publish)
                 subForm.UseHasChanges().AddInstantCallback(fun x -> hasChanges.Publish(fun oldX -> oldX || x))
                 subForm.UseIsLoading().AddInstantCallback(fun x -> loaders[fieldName].Publish(fun oldX -> oldX || x))

@@ -2,6 +2,7 @@
 
 open System
 open System.IO
+open System.Collections.Generic
 open System.Threading.Tasks
 open System.Text.Encodings.Web
 open System.Runtime.CompilerServices
@@ -9,6 +10,7 @@ open Microsoft.AspNetCore.Http
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Routing
 open Microsoft.AspNetCore.Mvc.Rendering
+open Microsoft.AspNetCore.Components
 open Microsoft.AspNetCore.Mvc.ViewFeatures
 open Microsoft.Extensions.DependencyInjection
 open Fun.Blazor
@@ -22,17 +24,49 @@ type FunBlazorServerExtensions =
         this.AddHttpContextAccessor().AddScoped<IShareStore, ShareStore>().AddSingleton<IGlobalStore, GlobalStore>()
 
 
+    /// Render razor component to a TextWriter
     [<Extension>]
-    static member RenderFragment(ctx: HttpContext, ty: Type, ?renderMode, ?parameters) = task {
-        let htmlHelper = ctx.RequestServices.GetService<IHtmlHelper>()
-        (htmlHelper :?> IViewContextAware).Contextualize(ViewContext(HttpContext = ctx))
+    static member RenderFragment(ctx: HttpContext, componentType: Type, targetStream: TextWriter, ?parameters: ParameterView, ?renderMode) =
+        task {
+            let renderMode = defaultArg renderMode RenderMode.Static
+            let parameters = defaultArg parameters ParameterView.Empty
 
-        let! result = htmlHelper.RenderComponentAsync(ty, defaultArg renderMode RenderMode.Static, defaultArg parameters null)
+            let htmlHelper = ctx.RequestServices.GetService<IHtmlHelper>()
+            let viewContext = ViewContext(HttpContext = ctx)
 
-        use sw = new StringWriter()
-        result.WriteTo(sw, HtmlEncoder.Default)
-        do! sw.FlushAsync()
-        return sw.ToString()
+            (htmlHelper :?> IViewContextAware).Contextualize(viewContext)
+
+            #if NET8_0
+            let componentPrerenderer = ctx.RequestServices.GetService<Microsoft.AspNetCore.Components.Endpoints.IComponentPrerenderer>()
+            
+            let renderMode =
+                match renderMode with
+                | RenderMode.Static -> null :> IComponentRenderMode
+                | RenderMode.Server -> Web.ServerRenderMode(prerender = false)
+                | RenderMode.ServerPrerendered -> Web.ServerRenderMode(prerender = true)
+                | RenderMode.WebAssembly -> Web.WebAssemblyRenderMode(prerender = false)
+                | RenderMode.WebAssemblyPrerendered -> Web.WebAssemblyRenderMode(prerender = true)
+                | _ -> failwith $"Unsupported render mode {renderMode}"
+
+            let! result = componentPrerenderer.PrerenderComponentAsync(ctx, componentType, renderMode, parameters) 
+            do! result.WriteToAsync(targetStream)
+            
+            #else
+            let! result = htmlHelper.RenderComponentAsync(componentType, renderMode, parameters)
+            result.WriteTo(targetStream, HtmlEncoder.Default)
+            #endif
+        }
+        :> Task
+
+
+    /// Render razor component to string
+    [<Extension>]
+    static member RenderFragment(ctx: HttpContext, ty: Type, ?renderMode: RenderMode, ?parameters: ParameterView) = task {
+        let parameters = defaultArg parameters ParameterView.Empty
+        use stream = new StringWriter()
+        do! ctx.RenderFragment(ty, stream, parameters, defaultArg renderMode RenderMode.Static)
+        do! stream.FlushAsync()
+        return stream.ToString()
     }
 
 
@@ -40,16 +74,14 @@ type FunBlazorServerExtensions =
     [<Extension>]
     static member WriteFunDom(ctx: HttpContext, node: NodeRenderFragment, ?renderMode) =
         task {
-            let htmlHelper = ctx.RequestServices.GetService<IHtmlHelper>()
-            (htmlHelper :?> IViewContextAware).Contextualize(ViewContext(HttpContext = ctx))
-
-            let! result =
-                htmlHelper.RenderComponentAsync(typeof<FunFragmentComponent>, defaultArg renderMode RenderMode.Static, dict [ "Fragment", box node ])
-
+            let renderMode = defaultArg renderMode RenderMode.Static
+            let parameters = ParameterView.FromDictionary (dict [ "Fragment", node ])
+            let componentType = typeof<FunFragmentComponent>
+            
+            use stream = new StreamWriter(ctx.Response.BodyWriter.AsStream(true))
+            
             ctx.Response.ContentType <- "text/html; charset=UTF-8"
-
-            use sw = new StreamWriter(ctx.Response.BodyWriter.AsStream(true))
-            result.WriteTo(sw, HtmlEncoder.Default)
+            do! ctx.RenderFragment(componentType, stream, parameters, renderMode)
         }
         :> Task
 
@@ -162,8 +194,7 @@ type FunBlazorServerExtensions =
 
     [<Extension>]
     static member MapFunBlazor(builder: IEndpointRouteBuilder, createFragment: HttpContext -> NodeRenderFragment, ?pattern) =
-        let requestDeletegate =
-            Microsoft.AspNetCore.Http.RequestDelegate(fun ctx -> ctx.WriteFunDom(createFragment ctx))
+        let requestDeletegate = RequestDelegate(fun ctx -> ctx.WriteFunDom(createFragment ctx))
 
         match pattern with
         | Some x -> builder.MapFallback(x, requestDeletegate)
