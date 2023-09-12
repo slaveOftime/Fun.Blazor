@@ -26,10 +26,10 @@ type FunBlazorServerExtensions =
 
     /// Render razor component to a TextWriter
     [<Extension>]
-    static member RenderFragment(ctx: HttpContext, componentType: Type, targetStream: TextWriter, ?parameters: ParameterView, ?renderMode) =
+    static member RenderFragment(ctx: HttpContext, componentType: Type, targetStream: TextWriter, ?parameters: IDictionary<string, obj>, ?renderMode) =
         task {
             let renderMode = defaultArg renderMode RenderMode.Static
-            let parameters = defaultArg parameters ParameterView.Empty
+            let parameters = defaultArg parameters null
 
             let htmlHelper = ctx.RequestServices.GetService<IHtmlHelper>()
             let viewContext = ViewContext(HttpContext = ctx)
@@ -48,7 +48,7 @@ type FunBlazorServerExtensions =
                 | RenderMode.WebAssemblyPrerendered -> Web.WebAssemblyRenderMode(prerender = true)
                 | _ -> failwith $"Unsupported render mode {renderMode}"
 
-            let! result = componentPrerenderer.PrerenderComponentAsync(ctx, componentType, renderMode, parameters) 
+            let! result = componentPrerenderer.PrerenderComponentAsync(ctx, componentType, renderMode, ParameterView.FromDictionary parameters) 
             do! result.WriteToAsync(targetStream)
             
             #else
@@ -61,8 +61,8 @@ type FunBlazorServerExtensions =
 
     /// Render razor component to string
     [<Extension>]
-    static member RenderFragment(ctx: HttpContext, ty: Type, ?renderMode: RenderMode, ?parameters: ParameterView) = task {
-        let parameters = defaultArg parameters ParameterView.Empty
+    static member RenderFragment(ctx: HttpContext, ty: Type, ?renderMode: RenderMode, ?parameters: IDictionary<string, obj>) = task {
+        let parameters = defaultArg parameters null
         use stream = new StringWriter()
         do! ctx.RenderFragment(ty, stream, parameters, defaultArg renderMode RenderMode.Static)
         do! stream.FlushAsync()
@@ -75,7 +75,7 @@ type FunBlazorServerExtensions =
     static member WriteFunDom(ctx: HttpContext, node: NodeRenderFragment, ?renderMode) =
         task {
             let renderMode = defaultArg renderMode RenderMode.Static
-            let parameters = ParameterView.FromDictionary (dict [ "Fragment", node ])
+            let parameters = dict [ "Fragment", box node ]
             let componentType = typeof<FunFragmentComponent>
             
             use stream = new StreamWriter(ctx.Response.BodyWriter.AsStream(true))
