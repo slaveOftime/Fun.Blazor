@@ -1,27 +1,19 @@
 namespace Fun.Blazor.Docs.Server
 
-open Microsoft.AspNetCore.Http
-open Microsoft.AspNetCore.Mvc.Rendering
+open Microsoft.AspNetCore.Components
 open Fun.Blazor
 open Fun.Blazor.Docs.Wasm
 
 
+[<Route "/">]
 type Index() =
     inherit FunBlazorComponent()
 
-    override _.Render() =
-#if DEBUG
-        html.hotReloadComp (Fun.Blazor.Docs.Wasm.App.app, "Fun.Blazor.Docs.Wasm.App.app")
-#else
-        Fun.Blazor.Docs.Wasm.App.app
-#endif
+    [<Inject>]
+    member val Store = Unchecked.defaultof<IShareStore> with get, set
 
-    static member page(ctx: HttpContext) =
-        let store = ctx.RequestServices.GetMultipleServices<IShareStore>()
-        store.IsServerSideRendering.Publish true
-
-        // Must defined as a variable and use it later for SSR 
-        let root = rootComp<Index> ctx RenderMode.ServerPrerendered
+    override this.Render() =
+        this.Store.IsServerSideRendering.Publish true
 
         fragment {
             doctype "html"
@@ -38,10 +30,10 @@ type Index() =
                     CustomElement.lazyBlazorJs (hasBlazorJs = true)
                 }
                 body {
-                    root
+                    App'() { renderMode_Auto }
 
                     script { src "_content/MudBlazor/MudBlazor.min.js" }
-                    script { src "_framework/blazor.server.js" }
+                    script { src "_framework/blazor.web.js" }
 
                     stylesheet "css/google-font.css"
                     stylesheet "css/github-markdown-dark.css"
@@ -55,4 +47,3 @@ type Index() =
                 }
             }
         }
-

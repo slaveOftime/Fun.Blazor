@@ -105,11 +105,11 @@ let app =
                             EndIcon Icons.Material.Filled.KeyboardArrowDown
                             childContent [
                                 MudMenuItem'() {
-                                    OnClick (fun _ -> setLang "en")
+                                    OnClick(fun _ -> setLang "en")
                                     "English"
                                 }
                                 MudMenuItem'() {
-                                    OnClick (fun _ -> setLang "cn")
+                                    OnClick(fun _ -> setLang "cn")
                                     "中文"
                                 }
                             ]
@@ -119,7 +119,12 @@ let app =
                         let! isDark, setIsDark = shareStore.IsDarkMode.WithSetter()
                         MudIconButton'() {
                             Color Color.Inherit
-                            Icon(if isDark then Icons.Material.Filled.Brightness4 else Icons.Material.Filled.Brightness3)
+                            Icon(
+                                if isDark then
+                                    Icons.Material.Filled.Brightness4
+                                else
+                                    Icons.Material.Filled.Brightness3
+                            )
                             OnClick(fun _ -> setIsDark (not isDark))
                         }
                     }
@@ -163,7 +168,7 @@ let app =
                                 |> Seq.tryHead
                                 |> Option.map (
                                     function
-                                    | DocTreeNode.Category (doc, _, _)
+                                    | DocTreeNode.Category(doc, _, _)
                                     | DocTreeNode.Doc doc -> docView doc
                                 )
                                 |> Option.defaultValue notFound
@@ -200,3 +205,11 @@ let app =
             styleElt { ruleset ".markdown-body li" { listStyleTypeInitial } }
         ]
     )
+
+
+type App() =
+    inherit FunBlazorComponent()
+    override _.Render() = app
+
+type App'() =
+    inherit ComponentBuilder<App>()

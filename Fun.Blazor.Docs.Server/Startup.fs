@@ -16,12 +16,14 @@ let builder = WebApplication.CreateBuilder(Environment.GetCommandLineArgs())
 let services = builder.Services
 
 services.AddControllersWithViews()
-services.AddServerSideBlazor(fun options -> 
+services.AddServerSideBlazor(fun options ->
     options.RootComponents.RegisterForFunBlazor()
     options.RootComponents.RegisterCustomElementForFunBlazor<Fun.Blazor.Docs.Wasm.Demos.CustomElementDemo.DemoCounter>()
     options.RootComponents.RegisterCustomElementForFunBlazor(typeof<Fun.Blazor.Docs.Wasm.Demos.CustomElementDemo.DemoCounter>.Assembly)
 )
-services.AddFunBlazorServer().AddMudServices()
+services.AddRazorComponents().AddServerComponents().AddWebAssemblyComponents()
+services.AddFunBlazorServer()
+services.AddMudServices()
 services.AddScoped<Fun.Blazor.Docs.Wasm.Demos.ScopedDemoService>()
 
 services.AddScoped<HttpClient>(fun (sp) ->
@@ -36,24 +38,8 @@ services.AddScoped<HttpClient>(fun (sp) ->
 
 let app = builder.Build()
 
-
-app.Use(fun (ctx: HttpContext) (nxt: RequestDelegate) ->
-    task {
-        ctx.Response.OnStarting(fun () ->
-            task {
-                if ctx.Response.StatusCode < 400 && ctx.Request.Query.ContainsKey "cacheKey" then
-                    let durationInSeconds = 60 * 60 * 24 * 30
-                    ctx.Response.Headers[ HeaderNames.CacheControl ] <- $"public,max-age={durationInSeconds}"
-            }
-        )
-        do! nxt.Invoke ctx
-    }
-    :> Task
-)
-
 app.UseStaticFiles()
 
-app.MapBlazorHub()
-app.MapFunBlazor(Index.page)
+app.MapRazorComponents<Index>().AddServerRenderMode().AddWebAssemblyRenderMode()
 
 app.Run()

@@ -1,7 +1,6 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 	<PropertyGroup>
-		<TargetFramework>net7.0</TargetFramework>
+		<TargetFramework>net8.0</TargetFramework>
 		<BlazorWasmPrerenderingMode>WebAssemblyPrerendered</BlazorWasmPrerenderingMode>
 		<BlazorWasmPrerenderingRootComponentType>Fun.Blazor.Docs.Wasm.PrerenderApp</BlazorWasmPrerenderingRootComponentType>
 		<BlazorWasmPrerenderingDeleteLoadingContents>true</BlazorWasmPrerenderingDeleteLoadingContents>
@@ -41,8 +40,8 @@
 		<PackageReference Include="BlazorWasmPreRendering.Build" Version="1.0.0-preview.24.1" />
 		<PackageReference Include="FSharp.SystemTextJson" Version="1.1.23" />
 		<PackageReference Include="Majorsoft.Blazor.WebAssembly.Logging.Console" Version="1.5.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.4" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.4" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.0-*" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.0-*" PrivateAssets="all" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Fun.Blazor.CustomElements\Fun.Blazor.CustomElements.fsproj" />
