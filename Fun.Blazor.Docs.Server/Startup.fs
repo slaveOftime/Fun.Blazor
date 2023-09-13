@@ -2,14 +2,14 @@
 
 open System
 open System.Net.Http
-open System.Threading.Tasks
-open Microsoft.Net.Http.Headers
 open Microsoft.AspNetCore.Http
 open Microsoft.AspNetCore.Builder
 open Microsoft.Extensions.Hosting
 open Microsoft.Extensions.DependencyInjection
 open MudBlazor.Services
+open Fun.Blazor
 open Fun.Blazor.Docs.Server
+open Microsoft.AspNetCore.Components.Endpoints
 
 
 let builder = WebApplication.CreateBuilder(Environment.GetCommandLineArgs())
@@ -41,5 +41,7 @@ let app = builder.Build()
 app.UseStaticFiles()
 
 app.MapRazorComponents<Index>().AddServerRenderMode().AddWebAssemblyRenderMode()
+app.MapGet("/demo", Func<_>(fun () -> div { $"{DateTime.Now}" })).AddFunBlazor()
+app.MapFunBlazor(index)
 
 app.Run()

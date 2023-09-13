@@ -98,13 +98,13 @@ type ComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent>(
         )
 
     [<CustomOperation("renderMode_Auto")>]
-    member inline this.renderMode_Auto([<InlineIfLambda>] render: AttrRenderFragment) = this.renderMode(render, RenderMode.Auto)
+    member inline this.renderMode_Auto([<InlineIfLambda>] render: AttrRenderFragment) = this.renderMode (render, RenderMode.Auto)
 
     [<CustomOperation("renderMode_Server")>]
-    member inline this.renderMode_Server([<InlineIfLambda>] render: AttrRenderFragment) = this.renderMode(render, RenderMode.Server)
+    member inline this.renderMode_Server([<InlineIfLambda>] render: AttrRenderFragment) = this.renderMode (render, RenderMode.Server)
 
     [<CustomOperation("renderMode_WebAssembly")>]
-    member inline this.renderMode_WebAssembly([<InlineIfLambda>] render: AttrRenderFragment) = this.renderMode(render, RenderMode.WebAssembly)
+    member inline this.renderMode_WebAssembly([<InlineIfLambda>] render: AttrRenderFragment) = this.renderMode (render, RenderMode.WebAssembly)
 #endif
 
 
@@ -350,6 +350,27 @@ type ComponentWithDomAttrBuilder<'T when 'T :> IComponent>() =
             builder.AddComponentReferenceCapture(nextIndex, (fun x -> fn (unbox<'T> x)))
             nextIndex + 1
         )
+
+
+#if NET8_0
+    [<CustomOperation("renderMode")>]
+    member inline _.renderMode([<InlineIfLambda>] render: AttrRenderFragment, mode: IComponentRenderMode) =
+        render
+        ==> AttrRenderFragment(fun _ builder index ->
+            builder.AddComponentParameter(index, "@rendermode", mode)
+            index + 1
+        )
+
+    [<CustomOperation("renderMode_Auto")>]
+    member inline this.renderMode_Auto([<InlineIfLambda>] render: AttrRenderFragment) = this.renderMode (render, RenderMode.Auto)
+
+    [<CustomOperation("renderMode_Server")>]
+    member inline this.renderMode_Server([<InlineIfLambda>] render: AttrRenderFragment) = this.renderMode (render, RenderMode.Server)
+
+    [<CustomOperation("renderMode_WebAssembly")>]
+    member inline this.renderMode_WebAssembly([<InlineIfLambda>] render: AttrRenderFragment) = this.renderMode (render, RenderMode.WebAssembly)
+#endif
+
 
     member inline _.Delay([<InlineIfLambda>] fn: unit -> RefRenderFragment) = RefRenderFragment(fun c b i -> fn().Invoke(c, b, i))
 
