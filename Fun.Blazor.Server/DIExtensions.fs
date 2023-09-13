@@ -10,7 +10,7 @@ open Microsoft.AspNetCore.Http
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Routing
 open Microsoft.AspNetCore.Mvc.Rendering
-#if NET8_0
+#if !NET6_0
 open Microsoft.AspNetCore.Components
 open Microsoft.AspNetCore.Components.Endpoints
 #endif
@@ -40,7 +40,7 @@ type FunBlazorServerExtensions =
         this.AddHttpContextAccessor().AddScoped<IShareStore, ShareStore>().AddSingleton<IGlobalStore, GlobalStore>()
 
 
-#if NET8_0
+#if !NET6_0
     static member internal MapRenderMode(renderMode) =
         match renderMode with
         | RenderMode.Static -> null :> IComponentRenderMode
@@ -81,7 +81,7 @@ type FunBlazorServerExtensions =
 
             (htmlHelper :?> IViewContextAware).Contextualize(viewContext)
 
-#if NET8_0
+#if !NET6_0
             let componentPrerenderer = ctx.RequestServices.GetService<IComponentPrerenderer>()
             let renderMode = FunBlazorServerExtensions.MapRenderMode renderMode
             let parameters =
@@ -204,25 +204,6 @@ type FunBlazorServerExtensions =
 #endif
 
 
-    /// This will use MapFallback under the hood to capture all the routes for Fun.Blazor to use
-    [<Extension>]
-    static member MapFunBlazor(builder: IEndpointRouteBuilder, createFragment: HttpContext -> NodeRenderFragment, ?pattern) =
-#if !NET6_0
-        match pattern with
-        | Some x -> builder.MapFallback(x, RequestDelegate(fun ctx -> ctx.WriteFunDom(createFragment ctx)))
-        | None -> builder.MapFallback(RequestDelegate(fun ctx -> ctx.WriteFunDom(createFragment ctx)))
-#else
-        match pattern with
-        | Some x -> builder.MapFallback(x, Func<_, _>(createFragment)).AddFunBlazor()
-        | None -> builder.MapFallback(Func<_, _>(createFragment)).AddFunBlazor()
-#endif
-
-    /// This will use MapFallback under the hood to capture all the routes for Fun.Blazor to use
-    [<Extension>]
-    static member MapFunBlazor(builder: IEndpointRouteBuilder, pattern: string, createFragment: HttpContext -> NodeRenderFragment) =
-        builder.MapFunBlazor(createFragment, pattern)
-
-
 #if !NET6_0
     [<Extension>]
     static member AddFunBlazor<'TBuilder when 'TBuilder :> IEndpointConventionBuilder>(builder: 'TBuilder) =
@@ -235,3 +216,22 @@ type FunBlazorServerExtensions =
         | None -> builder.MapFallback(Func<_, _>(fun () -> RazorComponentResult<'Component>()))
         | Some pattern -> builder.MapFallback(pattern, Func<_, _>(fun () -> RazorComponentResult<'Component>()))
 #endif
+
+
+    /// This will use MapFallback under the hood to capture all the routes for Fun.Blazor to use
+    [<Extension>]
+    static member MapFunBlazor(builder: IEndpointRouteBuilder, createFragment: HttpContext -> NodeRenderFragment, ?pattern) =
+#if !NET6_0
+        match pattern with
+        | Some x -> builder.MapFallback(x, Func<_, _>(createFragment)).AddFunBlazor()
+        | None -> builder.MapFallback(Func<_, _>(createFragment)).AddFunBlazor()
+#else
+        match pattern with
+        | Some x -> builder.MapFallback(x, RequestDelegate(fun ctx -> ctx.WriteFunDom(createFragment ctx)))
+        | None -> builder.MapFallback(RequestDelegate(fun ctx -> ctx.WriteFunDom(createFragment ctx)))
+#endif
+
+    /// This will use MapFallback under the hood to capture all the routes for Fun.Blazor to use
+    [<Extension>]
+    static member MapFunBlazor(builder: IEndpointRouteBuilder, pattern: string, createFragment: HttpContext -> NodeRenderFragment) =
+        builder.MapFunBlazor(createFragment, pattern)
