@@ -3,7 +3,6 @@
 module Fun.Blazor.Docs.Wasm.App
 
 open FSharp.Data.Adaptive
-open Microsoft.AspNetCore.Components.Web
 open Fun.Result
 open Fun.Blazor
 open Fun.Blazor.Router
@@ -211,6 +210,3 @@ let app =
 type App() =
     inherit FunBlazorComponent()
     override _.Render() = app
-
-type App'() =
-    inherit ComponentBuilder<App>()
