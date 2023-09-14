@@ -72,16 +72,30 @@ pipeline "dev" {
 pipeline "docs" {
     description "Publish docs to github"
     stage_checkEnv
-    stage_test
     stage "Publish docs" {
-        whenBranch "master"
         run "dotnet publish Fun.Blazor.Docs.Wasm/Fun.Blazor.Docs.Wasm.fsproj -c Release -o Fun.Blazor.Docs.Wasm.Release --nologo"
-        run (fun _ ->
-            !!("Fun.Blazor.Docs.Wasm.Release" </> "**" </> "index.html")
-            |> Seq.iter (File.applyReplace (fun x -> x.Replace("""<base href="/"/>""", """<base href="/Fun.Blazor.Docs/" /> """)))
-        )
-        run "cp Fun.Blazor.Docs.Wasm.Release/wwwroot/index.html Fun.Blazor.Docs.Wasm.Release/wwwroot/404.html"
-        run "touch Fun.Blazor.Docs.Wasm.Release/wwwroot/.nojekyll"
+        stage "Clean HEADOUTLET because it prevent app start" {
+            run (fun _ ->
+                !!("Fun.Blazor.Docs.Wasm.Release" </> "**" </> "index.html")
+                |> Seq.iter (
+                    File.applyReplace (fun x ->
+                        let startIndex = x.IndexOf("<!-- %%-PRERENDERING-HEADOUTLET-BEGIN-%% -->")
+                        let endIndex = x.IndexOf("<!-- %%-PRERENDERING-HEADOUTLET-END-%% -->") + 44
+                        x.Remove(startIndex, endIndex - startIndex)
+                    )
+                )
+            )
+        }
+        stage "Tune" {
+            whenBranch "master"
+            whenEnvVar "GITHUB_ACTION"
+            run (fun _ ->
+                !!("Fun.Blazor.Docs.Wasm.Release" </> "**" </> "index.html")
+                |> Seq.iter (File.applyReplace (fun x -> x.Replace("""<base href="/"/>""", """<base href="/Fun.Blazor.Docs/" /> """)))
+            )
+            run "cp Fun.Blazor.Docs.Wasm.Release/wwwroot/index.html Fun.Blazor.Docs.Wasm.Release/wwwroot/404.html"
+            run "touch Fun.Blazor.Docs.Wasm.Release/wwwroot/.nojekyll"
+        }
     }
     runIfOnlySpecified
 }
