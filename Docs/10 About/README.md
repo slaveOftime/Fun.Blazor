@@ -16,20 +16,12 @@ Features include:
 
 ## Benchmarks
 
-BenchmarkDotNet=v0.13.5, OS=Windows 11 (10.0.22621.1848/22H2/2022Update/SunValley2)
-Intel Core i7-1065G7 CPU 1.30GHz, 1 CPU, 8 logical and 4 physical cores
-.NET SDK=7.0.203
-  [Host]     : .NET 7.0.7 (7.0.723.27404), X64 RyuJIT AVX2 DEBUG
-  DefaultJob : .NET 7.0.7 (7.0.723.27404), X64 RyuJIT AVX2
-
-|                         Method |       Mean |    Error |    StdDev |   Gen0 | Allocated |
-|------------------------------- |-----------:|---------:|----------:|-------:|----------:|
-|          RenderWithRazorCSharp |   411.4 ns |  8.22 ns |  11.52 ns | 0.0896 |     376 B |
-|       RenderWithBolero 0.22.44 |   986.7 ns | 19.21 ns |  36.08 ns | 0.3529 |    1480 B |
-|          RenderWithFunBlazorCE |   793.1 ns | 15.77 ns |  32.57 ns | 0.1736 |     728 B |
-|    RenderWithFunBlazorTemplate | 2,901.1 ns | 57.36 ns | 101.96 ns | 1.0109 |    4232 B |
-| RenderWithFunBlazorSSRTemplate | 1,029.7 ns | 20.52 ns |  37.00 ns | 0.1221 |     512 B |
-
+|                         Method |       Mean |    Error |   StdDev |   Gen0 | Allocated |
+|------------------------------- |-----------:|---------:|---------:|-------:|----------:|
+|          RenderWithRazorCSharp |   244.1 ns |  2.60 ns |  2.30 ns | 0.0324 |     408 B |
+|          RenderWithFunBlazorCE |   449.9 ns |  5.48 ns |  5.13 ns | 0.0606 |     760 B |
+|               RenderWithBolero |   536.0 ns |  5.81 ns |  4.85 ns | 0.1202 |    1512 B |
+| RenderWithFunBlazorSSRTemplate |   618.7 ns |  5.74 ns |  5.37 ns | 0.0429 |     544 B |
 
 
 ## Simple demo
