@@ -83,7 +83,8 @@ type FunBlazorComponent() as this =
     member val FunBlazorDebugKey: obj = null with get, set
 #endif
 
-    override _.BuildRenderTree(builder: RenderTreeBuilder) = this.Render().Invoke(this, builder, 0) |> ignore
+    override _.BuildRenderTree(builder: RenderTreeBuilder) = 
+        this.Render().Invoke(this, builder, 0) |> ignore
 
     override _.OnInitialized() =
 #if DEBUG
@@ -115,7 +116,7 @@ type FunBlazorComponent() as this =
             let shouldAwaitTask =
                 taskResult.Status <> TaskStatus.RanToCompletion && taskResult.Status <> TaskStatus.Canceled
 
-            if not this.DisableEventTriggerStateHasChanged then this.StateHasChanged()
+            if not this.DisableEventTriggerStateHasChanged then this.ForceRerender()
 
             if shouldAwaitTask then
                 task {

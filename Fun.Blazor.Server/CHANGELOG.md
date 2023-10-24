@@ -1,5 +1,10 @@
 # Changelog
 
+## [3.1.0-beta001] - 2023-10-24
+
+- Support dotnet 8
+- Use new service introduced in dotnet 8 for rendering component
+
 ## [3.0.1] - 2023-06-01
 
 Improve performance for WriteFunDom api

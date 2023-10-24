@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.1.0-beta001] - 2023-10-24
+
+- Support dotnet 8
+- Support multiple render mode introduced in dotnet 8
+
+
 ## [3.0.3] - 2023-06-21
 
 Add html.region:

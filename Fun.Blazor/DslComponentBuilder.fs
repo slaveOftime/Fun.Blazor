@@ -88,6 +88,26 @@ type ComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent>(
             index + 1
         )
 
+#if NET8_0
+    [<CustomOperation("renderMode")>]
+    member inline _.renderMode([<InlineIfLambda>] render: AttrRenderFragment, mode: IComponentRenderMode) =
+        render
+        ==> AttrRenderFragment(fun _ builder index ->
+            builder.AddComponentParameter(index, "@rendermode", mode)
+            index + 1
+        )
+
+    [<CustomOperation("interactiveAuto")>]
+    member inline this.interactiveAuto([<InlineIfLambda>] render: AttrRenderFragment) = this.renderMode (render, RenderMode.InteractiveAuto)
+
+    [<CustomOperation("interactiveServer")>]
+    member inline this.interactiveServer([<InlineIfLambda>] render: AttrRenderFragment) = this.renderMode (render, RenderMode.InteractiveServer)
+
+    [<CustomOperation("interactiveWebAssembly")>]
+    member inline this.interactiveWebAssembly([<InlineIfLambda>] render: AttrRenderFragment) = this.renderMode (render, RenderMode.InteractiveWebAssembly)
+#endif
+
+
     [<CustomOperation("callback")>]
     member inline _.callback([<InlineIfLambda>] render: AttrRenderFragment, eventName, [<InlineIfLambda>] callback: 'T -> unit) =
         render
@@ -330,6 +350,27 @@ type ComponentWithDomAttrBuilder<'T when 'T :> IComponent>() =
             builder.AddComponentReferenceCapture(nextIndex, (fun x -> fn (unbox<'T> x)))
             nextIndex + 1
         )
+
+
+#if NET8_0
+    [<CustomOperation("renderMode")>]
+    member inline _.renderMode([<InlineIfLambda>] render: AttrRenderFragment, mode: IComponentRenderMode) =
+        render
+        ==> AttrRenderFragment(fun _ builder index ->
+            builder.AddComponentParameter(index, "@rendermode", mode)
+            index + 1
+        )
+
+    [<CustomOperation("interactiveAuto")>]
+    member inline this.interactiveAuto([<InlineIfLambda>] render: AttrRenderFragment) = this.renderMode (render, RenderMode.InteractiveAuto)
+
+    [<CustomOperation("interactiveServer")>]
+    member inline this.interactiveServer([<InlineIfLambda>] render: AttrRenderFragment) = this.renderMode (render, RenderMode.InteractiveServer)
+
+    [<CustomOperation("interactiveWebAssembly")>]
+    member inline this.interactiveWebAssembly([<InlineIfLambda>] render: AttrRenderFragment) = this.renderMode (render, RenderMode.InteractiveWebAssembly)
+#endif
+
 
     member inline _.Delay([<InlineIfLambda>] fn: unit -> RefRenderFragment) = RefRenderFragment(fun c b i -> fn().Invoke(c, b, i))
 

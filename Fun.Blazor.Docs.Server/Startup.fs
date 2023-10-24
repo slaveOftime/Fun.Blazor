@@ -2,27 +2,31 @@
 
 open System
 open System.Net.Http
-open System.Threading.Tasks
-open Microsoft.Net.Http.Headers
 open Microsoft.AspNetCore.Http
 open Microsoft.AspNetCore.Builder
+open Microsoft.AspNetCore.Components.Web
 open Microsoft.Extensions.Hosting
 open Microsoft.Extensions.DependencyInjection
 open MudBlazor.Services
-open Fun.Blazor.Docs.Server
+open Fun.Blazor
+open Fun.Blazor.Docs.Wasm
 
 
 let builder = WebApplication.CreateBuilder(Environment.GetCommandLineArgs())
 let services = builder.Services
 
 services.AddControllersWithViews()
-services.AddServerSideBlazor(fun options -> 
+services.AddServerSideBlazor(fun options ->
     options.RootComponents.RegisterForFunBlazor()
-    options.RootComponents.RegisterCustomElementForFunBlazor<Fun.Blazor.Docs.Wasm.Demos.CustomElementDemo.DemoCounter>()
-    options.RootComponents.RegisterCustomElementForFunBlazor(typeof<Fun.Blazor.Docs.Wasm.Demos.CustomElementDemo.DemoCounter>.Assembly)
+    options.RootComponents.RegisterCustomElementForFunBlazor<Demos.CustomElementDemo.DemoCounter>()
+    options.RootComponents.RegisterCustomElementForFunBlazor(typeof<Demos.CustomElementDemo.DemoCounter>.Assembly)
 )
-services.AddFunBlazorServer().AddMudServices()
-services.AddScoped<Fun.Blazor.Docs.Wasm.Demos.ScopedDemoService>()
+services.AddRazorComponents()
+    .AddInteractiveServerComponents()
+    .AddInteractiveWebAssemblyComponents()
+services.AddFunBlazorServer()
+services.AddMudServices()
+services.AddScoped<Demos.ScopedDemoService>()
 
 services.AddScoped<HttpClient>(fun (sp) ->
     let httpContext = sp.GetService<IHttpContextAccessor>()
@@ -36,24 +40,49 @@ services.AddScoped<HttpClient>(fun (sp) ->
 
 let app = builder.Build()
 
-
-app.Use(fun (ctx: HttpContext) (nxt: RequestDelegate) ->
-    task {
-        ctx.Response.OnStarting(fun () ->
-            task {
-                if ctx.Response.StatusCode < 400 && ctx.Request.Query.ContainsKey "cacheKey" then
-                    let durationInSeconds = 60 * 60 * 24 * 30
-                    ctx.Response.Headers[ HeaderNames.CacheControl ] <- $"public,max-age={durationInSeconds}"
-            }
-        )
-        do! nxt.Invoke ctx
-    }
-    :> Task
-)
-
 app.UseStaticFiles()
 
-app.MapBlazorHub()
-app.MapFunBlazor(Index.page)
+app.MapRazorComponents()
+    .AddInteractiveServerRenderMode()
+    .AddInteractiveWebAssemblyRenderMode()
+
+app.MapGet("/demo", Func<_>(fun () -> div { $"{DateTime.Now}" })).AddFunBlazor()
+
+app.MapFunBlazor(fun ctx ->
+    let store = ctx.RequestServices.GetService<IShareStore>()
+    store.IsServerSideRendering.Publish true
+
+    fragment {
+        doctype "html"
+        html' {
+            lang "en"
+            head {
+                title { "Fun Blazor" }
+                chartsetUTF8
+                baseUrl "/"
+                viewport "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+                stylesheet "_content/MudBlazor/MudBlazor.min.css"
+                CustomElement.lazyBlazorJs (hasBlazorJs = true)
+            }
+            body {
+                html.blazor<App> RenderMode.InteractiveServer
+
+                script { src "_content/MudBlazor/MudBlazor.min.js" }
+                script { src "_framework/blazor.web.js" }
+
+                stylesheet "css/google-font.css"
+                stylesheet "css/github-markdown-dark.css"
+                stylesheet "css/prism-vsc-dark-plus.css"
+
+                script { src "https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/components/prism-core.min.js" }
+                script { src "https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/plugins/autoloader/prism-autoloader.min.js" }
+
+#if DEBUG
+                html.hotReloadJSInterop
+#endif
+            }
+        }
+    }
+)
 
 app.Run()
