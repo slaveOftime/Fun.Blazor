@@ -87,7 +87,10 @@ pipeline "docs" {
                     File.applyReplace (fun x ->
                         let startIndex = x.IndexOf("<!-- %%-PRERENDERING-HEADOUTLET-BEGIN-%% -->")
                         let endIndex = x.IndexOf("<!-- %%-PRERENDERING-HEADOUTLET-END-%% -->") + 44
-                        x.Remove(startIndex, endIndex - startIndex)
+                        if startIndex > -1 then
+                            x.Remove(startIndex, endIndex - startIndex)
+                        else
+                            x
                     )
                 )
             )
