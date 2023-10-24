@@ -906,22 +906,36 @@ type EvalContext(assemblyName: AssemblyName, ?dyntypes: bool, ?assemblyResolver:
                                 let mutable i = 0
 
                                 while not isDiff && i < ps.Length do
-                                    let name1 =
-                                        ps.[i].ParameterType.FullName
-                                        |> function
-                                            | null -> ps.[i].ParameterType.Name
-                                            | x -> x
-                                    isDiff <-
-                                        match v.ArgTypes.[i] with
-                                        | DVariableType x -> x <> name1
-                                        | _ ->
-                                            let name2 =
-                                                match ps.[i].ParameterType.FullName, paramTysV.[i].FullName with
-                                                | null, null
-                                                | null, _
-                                                | _, null -> paramTysV.[i].Name
-                                                | _, x -> x
-                                            name1 <> name2
+                                    if ps.[i].ParameterType.ToString().StartsWith "Microsoft.FSharp.Core.FSharpFunc`" && paramTysV.[i].ToString().StartsWith("Microsoft.FSharp.Core.FSharpFunc`") then
+                                        let args1 = ps.[i].ParameterType.GenericTypeArguments
+                                        let args2 = paramTysV.[i].GenericTypeArguments
+                                        if args1.Length <> args2.Length then
+                                            isDiff <- true
+                                        else
+                                            isDiff <-
+                                                Seq.zip args1 args2
+                                                |> Seq.exists(fun (a1, a2) ->
+                                                    // May need to futher check the arg type
+                                                    a2 <> typeof<obj> &&
+                                                    a1.ToString() <> a2.ToString()
+                                                )
+                                    else
+                                        let name1 =
+                                            ps.[i].ParameterType.FullName
+                                            |> function
+                                                | null -> ps.[i].ParameterType.Name
+                                                | x -> x
+                                        isDiff <-
+                                            match v.ArgTypes.[i] with
+                                            | DVariableType x -> x <> name1
+                                            | _ ->
+                                                let name2 =
+                                                    match ps.[i].ParameterType.FullName, paramTysV.[i].FullName with
+                                                    | null, null
+                                                    | null, _
+                                                    | _, null -> paramTysV.[i].Name
+                                                    | _, x -> x
+                                                name1 <> name2
                                     i <- i + 1
 
                                 not isDiff

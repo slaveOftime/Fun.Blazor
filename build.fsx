@@ -67,8 +67,8 @@ pipeline "dev" {
             run "dotnet run"
         }
         stage "hot-reload" {
-            workingDir "./Fun.Blazor.Docs.Wasm"
-            run "fun-blazor watch ./Fun.Blazor.Docs.Wasm.fsproj"
+            workingDir "./Fun.Blazor.Cli"
+            run "dotnet run --framework net8.0 -- watch ../Fun.Blazor.Docs.Wasm/Fun.Blazor.Docs.Wasm.fsproj"
         }
     }
     runIfOnlySpecified

@@ -39,7 +39,7 @@
 		<Compile Include="Startup.fs" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="BlazorWasmPreRendering.Build" Version="3.1.0-preview.2" />
+		<PackageReference Include="BlazorWasmPreRendering.Build" Version="3.1.0-preview.4" />
 		<PackageReference Include="FSharp.SystemTextJson" Version="1.1.23" />
 		<PackageReference Include="Majorsoft.Blazor.WebAssembly.Logging.Console" Version="1.5.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.0-*" />
@@ -54,16 +54,13 @@
 		<ProjectReference Include="..\Fun.Blazor.Reactive\Fun.Blazor.Reactive.fsproj" />
 		<ProjectReference Include="..\Fun.Blazor.Wasm\Fun.Blazor.Wasm.fsproj" />
 	</ItemGroup>
-	<Target Name="ConfigureTrimming" BeforeTargets="PrepareForILLink">
-		<ItemGroup>
-			<ManagedAssemblyToLink Condition="'%(Filename)' == 'FSharp.Data'">
-				<TrimMode>link</TrimMode>
-				<IsTrimmable>true</IsTrimmable>
-			</ManagedAssemblyToLink>
-			<ManagedAssemblyToLink Condition="'%(Filename)' == 'FSharp.Control.Reactive'">
-				<TrimMode>link</TrimMode>
-				<IsTrimmable>true</IsTrimmable>
-			</ManagedAssemblyToLink>
-		</ItemGroup>
-	</Target>
+	<!-- In dotnet 7 there is a bug for Fun.Blazor.Cli to do hot reload.
+    Below is the workaround. https://github.com/dotnet/fsharp/issues/14250 -->
+    <Target Name="ShimReferencePathsWhenCommonTargetsDoesNotUnderstandReferenceAssemblies"
+			BeforeTargets="CoreCompile"
+			Condition="'$(Configuration)' == 'DEBUG'">
+        <ItemGroup>
+            <ReferencePathWithRefAssemblies Include="@(ReferencePath)" />
+        </ItemGroup>
+    </Target>
 </Project>

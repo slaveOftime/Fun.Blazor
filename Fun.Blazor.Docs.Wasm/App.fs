@@ -209,4 +209,9 @@ let app =
 
 type App() =
     inherit FunBlazorComponent()
-    override _.Render() = app
+    override _.Render() = 
+        #if DEBUG
+        html.hotReloadComp(app, "Fun.Blazor.Docs.Wasm.App.app")
+        #else
+        app
+        #endif
