@@ -21,7 +21,9 @@ services.AddServerSideBlazor(fun options ->
     options.RootComponents.RegisterCustomElementForFunBlazor<Demos.CustomElementDemo.DemoCounter>()
     options.RootComponents.RegisterCustomElementForFunBlazor(typeof<Demos.CustomElementDemo.DemoCounter>.Assembly)
 )
-services.AddRazorComponents().AddServerComponents().AddWebAssemblyComponents()
+services.AddRazorComponents()
+    .AddInteractiveServerComponents()
+    .AddInteractiveWebAssemblyComponents()
 services.AddFunBlazorServer()
 services.AddMudServices()
 services.AddScoped<Demos.ScopedDemoService>()
@@ -40,7 +42,9 @@ let app = builder.Build()
 
 app.UseStaticFiles()
 
-app.MapRazorComponents().AddServerRenderMode().AddWebAssemblyRenderMode()
+app.MapRazorComponents()
+    .AddInteractiveServerRenderMode()
+    .AddInteractiveWebAssemblyRenderMode()
 
 app.MapGet("/demo", Func<_>(fun () -> div { $"{DateTime.Now}" })).AddFunBlazor()
 
@@ -61,7 +65,7 @@ app.MapFunBlazor(fun ctx ->
                 CustomElement.lazyBlazorJs (hasBlazorJs = true)
             }
             body {
-                html.blazor<App> RenderMode.Server
+                html.blazor<App> RenderMode.InteractiveServer
 
                 script { src "_content/MudBlazor/MudBlazor.min.js" }
                 script { src "_framework/blazor.web.js" }

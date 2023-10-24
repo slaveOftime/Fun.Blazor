@@ -97,14 +97,14 @@ type ComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent>(
             index + 1
         )
 
-    [<CustomOperation("renderMode_Auto")>]
-    member inline this.renderMode_Auto([<InlineIfLambda>] render: AttrRenderFragment) = this.renderMode (render, RenderMode.Auto)
+    [<CustomOperation("interactiveAuto")>]
+    member inline this.interactiveAuto([<InlineIfLambda>] render: AttrRenderFragment) = this.renderMode (render, RenderMode.InteractiveAuto)
 
-    [<CustomOperation("renderMode_Server")>]
-    member inline this.renderMode_Server([<InlineIfLambda>] render: AttrRenderFragment) = this.renderMode (render, RenderMode.Server)
+    [<CustomOperation("interactiveServer")>]
+    member inline this.interactiveServer([<InlineIfLambda>] render: AttrRenderFragment) = this.renderMode (render, RenderMode.InteractiveServer)
 
-    [<CustomOperation("renderMode_WebAssembly")>]
-    member inline this.renderMode_WebAssembly([<InlineIfLambda>] render: AttrRenderFragment) = this.renderMode (render, RenderMode.WebAssembly)
+    [<CustomOperation("interactiveWebAssembly")>]
+    member inline this.interactiveWebAssembly([<InlineIfLambda>] render: AttrRenderFragment) = this.renderMode (render, RenderMode.InteractiveWebAssembly)
 #endif
 
 
@@ -361,14 +361,14 @@ type ComponentWithDomAttrBuilder<'T when 'T :> IComponent>() =
             index + 1
         )
 
-    [<CustomOperation("renderMode_Auto")>]
-    member inline this.renderMode_Auto([<InlineIfLambda>] render: AttrRenderFragment) = this.renderMode (render, RenderMode.Auto)
+    [<CustomOperation("interactiveAuto")>]
+    member inline this.interactiveAuto([<InlineIfLambda>] render: AttrRenderFragment) = this.renderMode (render, RenderMode.InteractiveAuto)
 
-    [<CustomOperation("renderMode_Server")>]
-    member inline this.renderMode_Server([<InlineIfLambda>] render: AttrRenderFragment) = this.renderMode (render, RenderMode.Server)
+    [<CustomOperation("interactiveServer")>]
+    member inline this.interactiveServer([<InlineIfLambda>] render: AttrRenderFragment) = this.renderMode (render, RenderMode.InteractiveServer)
 
-    [<CustomOperation("renderMode_WebAssembly")>]
-    member inline this.renderMode_WebAssembly([<InlineIfLambda>] render: AttrRenderFragment) = this.renderMode (render, RenderMode.WebAssembly)
+    [<CustomOperation("interactiveWebAssembly")>]
+    member inline this.interactiveWebAssembly([<InlineIfLambda>] render: AttrRenderFragment) = this.renderMode (render, RenderMode.InteractiveWebAssembly)
 #endif
 
 

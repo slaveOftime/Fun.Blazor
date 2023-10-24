@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.1.0-beta001] - 2023-10-24
+
+- Support dotnet 8
+
 ## [3.1.0-beta002] - 2023-06-16
 
 Fix SSRTemplate

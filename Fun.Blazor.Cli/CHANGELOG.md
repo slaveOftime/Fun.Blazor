@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.1.0-beta001] - 2023-10-24
+
+- Support dotnet 8
+
 ## [3.0.1] - 2023-04-17
 
 Add target for 7.0

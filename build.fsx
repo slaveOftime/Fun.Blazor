@@ -1,9 +1,10 @@
-#r "nuget: Fun.Build, 0.5.1"
+#r "nuget: Fun.Build, 1.0.1"
 #r "nuget: Fake.IO.FileSystem, 5.20.4"
 
 #load "docs.fsx"
 
 open Fun.Build
+open Fun.Result
 open Fake.IO
 open Fake.IO.FileSystemOperators
 open Fake.IO.Globbing.Operators
@@ -29,19 +30,24 @@ let stage_test =
     }
 
 let stage_pack =
+    let stage_packNuget projDir =
+        let version = Changelog.GetLastVersion(projDir) |> Option.defaultWith (fun _ -> failwith "No version available")
+        stage $"Pack Nuget for {projDir}" {
+            workingDir projDir
+            run $"dotnet pack -c Release -o {__SOURCE_DIRECTORY__} /p:Version={version.Version}"
+        }
     stage "Pack" {
-        whenBranch "master"
-        run "dotnet pack -c Release Fun.Blazor/Fun.Blazor.fsproj -o ."
-        run "dotnet pack -c Release Fun.Blazor.CustomElements/Fun.Blazor.CustomElements.fsproj -o ."
-        run "dotnet pack -c Release Fun.Blazor.Cli/Fun.Blazor.Cli.fsproj -o ."
-        run "dotnet pack -c Release Fun.Blazor.Elmish/Fun.Blazor.Elmish.fsproj -o ."
-        run "dotnet pack -c Release Fun.Blazor.Generator/Fun.Blazor.Generator.fsproj -o ."
-        run "dotnet pack -c Release Fun.Blazor.HotReload/Fun.Blazor.HotReload.fsproj -o ."
-        run "dotnet pack -c Release Fun.Blazor.HtmlTemplate/Fun.Blazor.HtmlTemplate.fsproj -o ."
-        run "dotnet pack -c Release Fun.Blazor.Reactive/Fun.Blazor.Reactive.fsproj -o ."
-        run "dotnet pack -c Release Fun.Blazor.Server/Fun.Blazor.Server.fsproj -o ."
-        run "dotnet pack -c Release Fun.Blazor.Wasm/Fun.Blazor.Wasm.fsproj -o ."
-        run "dotnet pack -c Release Fun.Htmx/Fun.Htmx.fsproj -o ."
+        stage_packNuget "Fun.Blazor"
+        stage_packNuget "Fun.Blazor.CustomElements"
+        stage_packNuget "Fun.Blazor.Cli"
+        stage_packNuget "Fun.Blazor.Elmish"
+        stage_packNuget "Fun.Blazor.Generator"
+        stage_packNuget "Fun.Blazor.HotReload"
+        stage_packNuget "Fun.Blazor.HtmlTemplate"
+        stage_packNuget "Fun.Blazor.Reactive"
+        stage_packNuget "Fun.Blazor.Server"
+        stage_packNuget "Fun.Blazor.Wasm"
+        stage_packNuget "Fun.Htmx"
     }
 
 
@@ -88,7 +94,7 @@ pipeline "docs" {
         }
         stage "Tune" {
             whenBranch "master"
-            whenEnvVar "GITHUB_ACTION"
+            whenEnvVar "GITHUB_ENV"
             run (fun _ ->
                 !!("Fun.Blazor.Docs.Wasm.Release" </> "**" </> "index.html")
                 |> Seq.iter (File.applyReplace (fun x -> x.Replace("""<base href="/"/>""", """<base href="/Fun.Blazor.Docs/" /> """)))
@@ -101,18 +107,19 @@ pipeline "docs" {
 }
 
 
-pipeline "deploy" {
-    description "Deploy packages to nuget"
+pipeline "packages" {
+    description "Push packages to nuget"
     stage_checkEnv
     stage_test
     stage_pack
-    stage "Publish to nuget" {
+    stage "Push to nuget" {
         failIfIgnored
         whenBranch "master"
+        whenEnvVar "GITHUB_ENV"
         whenEnvVar options.NUGET_API_KEY
         run (fun ctx ->
             let key = ctx.GetEnvVar options.NUGET_API_KEY.Name
-            ctx.RunSensitiveCommand $"""dotnet nuget push *.nupkg -s https://api.nuget.org/v3/index.json --skip-duplicate -k {key}"""
+            ctx.RunSensitiveCommand $"dotnet nuget push *.nupkg -s https://api.nuget.org/v3/index.json --skip-duplicate -k {key}"
         )
     }
     runIfOnlySpecified

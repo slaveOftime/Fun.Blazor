@@ -11,6 +11,7 @@ open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Routing
 open Microsoft.AspNetCore.Mvc.Rendering
 #if !NET6_0
+open Microsoft.AspNetCore.Http.HttpResults
 open Microsoft.AspNetCore.Components
 open Microsoft.AspNetCore.Components.Endpoints
 #endif
@@ -44,10 +45,10 @@ type FunBlazorServerExtensions =
     static member internal MapRenderMode(renderMode) =
         match renderMode with
         | RenderMode.Static -> null :> IComponentRenderMode
-        | RenderMode.Server -> Web.ServerRenderMode(prerender = false)
-        | RenderMode.ServerPrerendered -> Web.ServerRenderMode(prerender = true)
-        | RenderMode.WebAssembly -> Web.WebAssemblyRenderMode(prerender = false)
-        | RenderMode.WebAssemblyPrerendered -> Web.WebAssemblyRenderMode(prerender = true)
+        | RenderMode.Server -> Web.InteractiveServerRenderMode(prerender = false)
+        | RenderMode.ServerPrerendered -> Web.InteractiveServerRenderMode(prerender = true)
+        | RenderMode.WebAssembly -> Web.InteractiveWebAssemblyRenderMode(prerender = false)
+        | RenderMode.WebAssemblyPrerendered -> Web.InteractiveWebAssemblyRenderMode(prerender = true)
         | _ -> failwith $"Unsupported render mode {renderMode}"
 #endif
 

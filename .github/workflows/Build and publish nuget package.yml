@@ -19,9 +19,9 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 7.0.x   
+        dotnet-version: 8.0.x   
 
     - name: Run build.fsx
       env:
         NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
-      run: dotnet fsi build.fsx -- -p deploy
+      run: dotnet fsi build.fsx -- -p packages
