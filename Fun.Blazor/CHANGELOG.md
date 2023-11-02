@@ -1,5 +1,9 @@
 # Changelog
 
+## [Unreleased]
+
+- Add blazor defualt routing components
+
 ## [3.1.0-beta001] - 2023-10-24
 
 - Support dotnet 8
