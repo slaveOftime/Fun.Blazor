@@ -111,6 +111,8 @@ type EltWithChildBuilder(name) =
             index + 1
         )
 
+    member inline _.Yield(x: RenderFragment) = html.renderFragment x
+
     member inline _.Yield([<InlineIfLambda>] x: NodeRenderFragment) = x
 
     /// We should only allow merge AttrRenderFragment with NodeRenderFragment.

@@ -222,6 +222,8 @@ type ComponentWithChildBuilder<'T when 'T :> IComponent>() =
             index + 1
         )
 
+    member inline _.Yield(x: RenderFragment) = html.renderFragment x
+    
     member inline _.Yield([<InlineIfLambda>] x: NodeRenderFragment) = x
 
     member inline _.Delay([<InlineIfLambda>] fn: unit -> NodeRenderFragment) = NodeRenderFragment(fun c b i -> fn().Invoke(c, b, i))

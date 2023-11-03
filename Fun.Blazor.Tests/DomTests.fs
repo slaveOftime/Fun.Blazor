@@ -1,5 +1,6 @@
 ﻿module Fun.Blazor.Tests.DomTests
 
+open Microsoft.AspNetCore.Components
 open Microsoft.AspNetCore.Components.Routing
 open Microsoft.Extensions.DependencyInjection
 open Moq
@@ -176,3 +177,27 @@ let ``Check some attributes`` () =
 
     let result = context.RenderNode demo
     result.MarkupMatches("""<div hidden="true" type="datetime-local" autocomplete="family-name"></div>""")
+
+
+[<Fact>]
+let ``Yield RenderFragment directly`` () =
+    let context = createTestContext ()
+
+    let demo =
+        div {
+            RenderFragment(fun builder ->
+                builder.AddContent(0, "foo")
+            )
+            div {
+                childContent [
+                    html.renderFragment (
+                        RenderFragment(fun builder ->
+                            builder.AddContent(0, "foo2")
+                        )
+                    )
+                ]
+            }
+        }
+
+    let result = context.RenderNode demo
+    result.MarkupMatches("<div>foo<div>foo2</div></div>")

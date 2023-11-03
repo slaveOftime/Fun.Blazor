@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+- Enable yield RenderFragment directly
+
 ## [3.1.0-beta002] - 2023-11-03
 
 - Add blazor defualt routing components
