@@ -30,7 +30,7 @@ let stage_checkEnv =
         <Version>{version.Version}</Version>
     </PropertyGroup>
 </Project>"""
-                    |> File.writeString false (Path.getDirectory file </> "Directory.build.props")
+                    |> File.writeString false (Path.getDirectory file </> "Directory.Build.props")
                 )
             )
         }
