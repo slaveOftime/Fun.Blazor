@@ -6,7 +6,7 @@
 
 {{BlazorStyleComp}}
 
-所有从 FunBlazorComponent 继承的组件都开启了 DisableEventTriggerStateHasChanged。这只是一个设计决定。如果你不喜欢像 html.inject/adaptiview 这样的模式，你可以创建自己的组件，并获得 DOM DSL 和第三方 DSL 支持，如 Fun.Blazor.Cli 生成的 MudBlazor 绑定。
+如果你不喜欢像 html.inject/adaptiview 这样的模式，你可以创建自己的组件，并继承 **FunComponent**，并获得 DOM DSL 和第三方 DSL 支持，如 Fun.Blazor.Cli 生成的 MudBlazor 绑定。
 
 依赖注入 (DI) 对于许多软件应用程序都是必不可少的。ASP.NET Core 内置了它的支持，也有助于测试等。不仅服务，UI 组件也可以使用依赖注入。
 

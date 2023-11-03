@@ -5,7 +5,7 @@ open Fun.Blazor
 
 
 type CEComponent() =
-    inherit FunBlazorComponent()
+    inherit FunComponent()
 
     let mutable count = 0
 

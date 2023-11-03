@@ -73,8 +73,18 @@ type IComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent>
 
 
 [<AbstractClass>]
-type FunBlazorComponent() as this =
+type FunComponent() as this =
     inherit ComponentBase()
+
+    override _.BuildRenderTree(builder: RenderTreeBuilder) = 
+        this.Render().Invoke(this, builder, 0) |> ignore
+        
+    abstract Render: unit -> NodeRenderFragment    
+
+    member _.StateHasChanged() = base.StateHasChanged()
+
+    member _.ForceRerender() = this.InvokeAsync(fun () -> this.StateHasChanged()) |> ignore
+
 
 #if DEBUG
     static member val EnablePrintDebugInfo = false with get, set
@@ -83,29 +93,24 @@ type FunBlazorComponent() as this =
     member val FunBlazorDebugKey: obj = null with get, set
 #endif
 
-    override _.BuildRenderTree(builder: RenderTreeBuilder) = 
-        this.Render().Invoke(this, builder, 0) |> ignore
-
     override _.OnInitialized() =
 #if DEBUG
-        if FunBlazorComponent.EnablePrintDebugInfo then
-            printfn "Initialized FunBlazorComponent with key: %A" this.FunBlazorDebugKey
+        if FunComponent.EnablePrintDebugInfo then
+            printfn "Initialized FunComponent with key: %A" this.FunBlazorDebugKey
 #endif
         ()
 
-
-    member _.StateHasChanged() = base.StateHasChanged()
-
-    member _.ForceRerender() = this.InvokeAsync(fun () -> this.StateHasChanged()) |> ignore
+/// This is a helper abstract class which will disable event trigger StateHasChanged, 
+/// because for internal Fun Blazor components they are using adaptive model and will not need event triger re-render.
+[<AbstractClass>]
+type FunBlazorComponent() as this =
+    inherit FunComponent()
 
     /// This is used to override the default implementation in base class to avoid trigger StateHasChanged.
     /// Because in Fun.Blazor everytime should be static by default and UI should be rerender if data is changed.
     /// But if you want to create a component for using in csharp project, then you may want to turn this off to avoid maually trigger StateHasChanged.
     /// Because csharp prefer to rerender the whole component when event hanppened, but in Fun.Blazor that will cost redundant calculation.
     member val DisableEventTriggerStateHasChanged = true with get, set
-
-
-    abstract Render: unit -> NodeRenderFragment
 
 
     interface IHandleEvent with
@@ -130,7 +135,7 @@ type FunBlazorComponent() as this =
 
 
 type FunFragmentComponent() as this =
-    inherit FunBlazorComponent()
+    inherit FunComponent()
 
     override _.Render() = this.Fragment
 

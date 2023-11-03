@@ -6,7 +6,7 @@ Another challenging thing is its internal rendering. It requires a function as i
 
 {{BlazorStyleComp}}
 
-**DisableEventTriggerStateHasChanged** is turned on for all components that are inherited from **FunBlazorComponent**. It is just a design decision. If you don't like the pattern like **html.inject/adaptiview**, you can just create your component and get the benefit of the DOM DSL and third-party DSL support like MudBlazor from Fun.Blazor.
+If you don't like the pattern like **html.inject/adaptiview**, you can just create your component inherit **FunComponent** and get the benefit of the DOM DSL and third-party DSL support like MudBlazor from Fun.Blazor.
 
 **Dependency injection (DI)** is essential in many software applications. ASP.NET Core has built-in support for it, and it is also helpful for testing and cross-concern solutions. Not only services but also UI components can be powered by **dependency injection**.
 

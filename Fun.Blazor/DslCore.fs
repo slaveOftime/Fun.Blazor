@@ -240,6 +240,16 @@ type html() =
         )
 
 
+    /// This will convert normal blazor RenderFragment to Fun Blazor node
+    static member inline renderFragment(fragment: RenderFragment) =
+        NodeRenderFragment(fun _ builder index ->
+            builder.OpenRegion(index)
+            fragment.Invoke(builder)
+            builder.CloseRegion()
+            index + 1
+        )
+
+
     static member inline key k =
         AttrRenderFragment(fun _ builder index ->
             builder.SetKey k

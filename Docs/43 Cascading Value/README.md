@@ -6,7 +6,7 @@ Here's how you can use it in **Fun.Blazor**:
 
 ```fsharp
 type MyContext() =
-    inherit FunBlazorComponent()
+    inherit FunComponent()
 
     // Currently, I have not found any useful APIs to consume CascadingValue directly, and the only way is by attribute. 
     // So, we will first define a class component to consume it.
