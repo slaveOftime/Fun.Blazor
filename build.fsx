@@ -18,6 +18,22 @@ let options = {|
 
 let stage_checkEnv =
     stage "Check envs" {
+        stage "generate Directory.build.props for version control" {
+            run (fun _ ->
+                !! "./*/CHANGELOG.md"
+                |> Seq.iter (fun file ->
+                    printfn "%s %s" file (Path.getDirectory file)
+                    let version = Path.getDirectory file |> Changelog.GetLastVersion |> Option.defaultWith (fun _ -> failwith "No version available")
+                    $"""<!-- Auto generated -->
+<Project>
+    <PropertyGroup>
+        <Version>{version.Version}</Version>
+    </PropertyGroup>
+</Project>"""
+                    |> File.writeString false (Path.getDirectory file </> "Directory.build.props")
+                )
+            )
+        }
         run "dotnet restore"
         run "dotnet build"
         run (ignore >> Docs.DocBuilder.build)
