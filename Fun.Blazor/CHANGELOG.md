@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [3.1.0-beta003] - 2023-11-03
+
 - Enable yield RenderFragment directly
 
 ## [3.1.0-beta002] - 2023-11-03
