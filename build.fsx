@@ -24,7 +24,7 @@ let stage_checkEnv =
                 |> Seq.iter (fun file ->
                     printfn "%s %s" file (Path.getDirectory file)
                     let version = Path.getDirectory file |> Changelog.GetLastVersion |> Option.defaultWith (fun _ -> failwith "No version available")
-                    $"""<!-- Auto generated -->
+                    $"""<!-- auto generated -->
 <Project>
     <PropertyGroup>
         <Version>{version.Version}</Version>
