@@ -5,7 +5,7 @@ open Fun.Blazor
 
 
 type SSRTemplateComponent() =
-    inherit FunBlazorComponent()
+    inherit FunComponent()
     
     let mutable count = 0
 

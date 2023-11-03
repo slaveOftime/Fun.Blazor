@@ -6,7 +6,7 @@
 
 ```fsharp
 type MyContext() =
-    inherit FunBlazorComponent()
+    inherit FunComponent()
 
     // 目前，我没有找到任何有用的 API 来直接使用 CascadingValue，唯一的方法是通过属性。 
     // 因此，我们将首先定义一个类组件来使用它。

@@ -19,7 +19,7 @@ let private createTestContext () =
 
 
 type DemoConsumer() =
-    inherit FunBlazorComponent()
+    inherit FunComponent()
 
     [<CascadingParameter(Name = "test")>]
     member val Test = 0 with get, set

@@ -92,7 +92,7 @@ module private Cache =
 
 
 type HotReloadComponent<'T>() as this =
-    inherit FunBlazorComponent()
+    inherit FunComponent()
 
     let mutable disposes: IDisposable list = []
 

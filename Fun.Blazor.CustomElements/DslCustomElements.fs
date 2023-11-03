@@ -67,7 +67,7 @@ module DslCustomElements =
 
 
     type CustomElementFragment() as this =
-        inherit FunBlazorComponent()
+        inherit FunComponent()
 
         [<Parameter>]
         member val NodeRenderFragmentKey = 0 with get, set

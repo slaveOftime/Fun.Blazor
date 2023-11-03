@@ -16,9 +16,7 @@ Yes, it is the same as what you can do with C#. For example:
 
 ```fsharp
 type Counter() as this =
-    inherit FunBlazorComponent()
-
-    do this.DisableEventTriggerStateHasChanged <- false
+    inherit FunComponent()
 
     [<Parameter>]
     member val Count = 0 with get, set

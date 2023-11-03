@@ -1,5 +1,13 @@
 # Changelog
 
+## [Unreleased]
+
+## [3.1.0-beta002] - 2023-11-03
+
+- Add blazor defualt routing components
+- Add **html.renderFragment** to render blazor **RenderFragment** directly
+- Add **Fun.Component**
+
 ## [3.1.0-beta001] - 2023-10-24
 
 - Support dotnet 8

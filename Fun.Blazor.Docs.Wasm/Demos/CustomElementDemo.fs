@@ -20,13 +20,13 @@ let private count =
 
 
 type DemoCounter() =
-    inherit FunBlazorComponent()
+    inherit FunComponent()
 
     override _.Render() = count
 
 [<FunBlazorCustomElement(TagName = "my-demo-counter2")>]
 type DemoCounter2() =
-    inherit FunBlazorComponent()
+    inherit FunComponent()
 
     override _.Render() = count
 
