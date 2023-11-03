@@ -23,44 +23,35 @@ Check the [WASM Docs](https://slaveoftime.github.io/Fun.Blazor.Docs/) for more ğ
 |               RenderWithBolero |   536.0 ns |  5.81 ns |  4.85 ns | 0.1202 |    1512 B |
 | RenderWithFunBlazorSSRTemplate |   618.7 ns |  5.74 ns |  5.37 ns | 0.0429 |     544 B |
 
+## Start to use
 
-## Main projects
+    dotnet new --install Fun.Blazor.Templates::3.1.0-beta002
+    dotnet new fun-blazor -o FunBlazorDemo1
 
-1. **Fun.Blazor**: help you to use basic dom DSL and state management helpers.
+## Code sample snipts
 
-    ```fsharp
-    let demo =
-        adaptiview(){
-            let! count, setCount = FSharp.Data.Adaptive.cval(1).WithSetter()
-            button {
-                onclick (fun _ -> setCount (count + 1))
-                "Increase"
-            }
-            div {
-                style { color "red" }
-                $"value = {count}"
-            }
+```fsharp
+// Functional style
+let demo (str) = fragment {
+    h2 { $"demo {str}" }
+}
+
+// Class style
+type Foo() =
+    inherit FunComponent()
+
+    let mutable count = 0
+
+    override _.Render() = main {
+        h1 { "foo" }
+        demo $"hi {count}"
+        button {
+            onclick (fun _ -> count <- count + 1)
+            "Click me"
         }
-    ```
+    }
+```
 
+## Use it carefully
 
-2. **Fun.Blazor.Cli**: support hot-reload and help you to generate CE style binding automatically for any blazor third party libraries.
-
-    [Docs for how to use it](https://slaveoftime.github.io/Fun.Blazor.Docs/?doc=/Cli)
-
-    [Docs for hot-reload](https://slaveoftime.github.io/Fun.Blazor.Docs/?doc=/Hot%20Reload)
-    
-    [Samples for using MudBlazor](https://github.com/slaveOftime/Fun.Blazor.Samples/tree/main/templates/BlazorWASMAppWithMudBlazor)
-
-    ```fsharp
-    open Fun.Blazor
-    open MudBlazor
-
-    let alertDemo =
-        MudCard'.create [
-            MudAlert'() {
-                Icon Icons.Filled.AccessAlarm
-                "This is the way"
-            }
-        ]
-    ```
+- There is CE performance [issue](https://github.com/dotnet/fsharp/issues/14429) for large projects.
