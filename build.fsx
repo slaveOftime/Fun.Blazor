@@ -18,7 +18,7 @@ let options = {|
 
 let stage_checkEnv =
     stage "Check envs" {
-        stage "generate Directory.build.props for version control" {
+        stage "generate Directory.Build.props for version control" {
             run (fun _ ->
                 !! "./*/CHANGELOG.md"
                 |> Seq.iter (fun file ->

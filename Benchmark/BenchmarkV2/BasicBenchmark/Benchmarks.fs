@@ -24,8 +24,8 @@ type Benchmarks() =
     [<Benchmark>]
     member _.RenderWithFunBlazorCE() = CEComponent().Build()
 
-    [<Benchmark>]
-    member _.RenderWithFunBlazorTemplate() = TemplateComponent().Build()
+    // [<Benchmark>]
+    // member _.RenderWithFunBlazorTemplate() = TemplateComponent().Build()
 
-    [<Benchmark>]
-    member _.RenderWithFunBlazorSSRTemplate() = SSRTemplateComponent().Build()
+    // [<Benchmark>]
+    // member _.RenderWithFunBlazorSSRTemplate() = SSRTemplateComponent().Build()

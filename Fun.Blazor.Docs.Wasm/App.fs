@@ -85,7 +85,7 @@ let app =
                 childContent [
                     menuBtn
                     a {
-                        href "/"
+                        href ""
                         MudText'() {
                             Typo Typo.h6
                             Color Color.Default
