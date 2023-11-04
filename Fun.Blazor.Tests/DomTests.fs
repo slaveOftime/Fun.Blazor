@@ -25,7 +25,7 @@ let ``Yield key value attributes`` () =
     let context = createTestContext ()
 
     let demo =
-        html.comp (fun (hook: IComponentHook) ->
+        html.inject (fun (hook: IComponentHook) ->
             hook.SetDisableEventTriggerStateHasChanged false
 
             let mutable count = 0
@@ -59,7 +59,7 @@ let ``DOM events simple`` () =
     let context = createTestContext ()
 
     let demo =
-        html.comp (fun (hook: IComponentHook) ->
+        html.inject (fun (hook: IComponentHook) ->
             hook.SetDisableEventTriggerStateHasChanged false
 
             let mutable count = 0

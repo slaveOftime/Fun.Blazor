@@ -57,7 +57,7 @@ If you want to make your component unit testing friendly, you will need to do mo
 
     ```fsharp
     let myComp =
-        html.comp (fun (hook: IComponentHook) ->
+        html.inject (fun (hook: IComponentHook) ->
             // Every time you consume this, it will create a new instance for you.
             let myCompHook = hook.GetHookService<IMyCompHook>()
             ...

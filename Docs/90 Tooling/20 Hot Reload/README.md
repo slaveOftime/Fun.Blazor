@@ -10,7 +10,7 @@ You can install a template to create a project that is set up for hot-reload:
 dotnet new --install Fun.Blazor.Templates::2.0.0
 ```
 
-![image](../assets/site-hot-reload.gif)
+![image](../../assets/site-hot-reload.gif)
 
 ## Basic Steps
 

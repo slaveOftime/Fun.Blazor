@@ -10,7 +10,7 @@
 2. 使用计算表达式 (CE) 风格的 DSL 用于内部和第三方 Blazor 库
 3. 使用依赖注入（html.inject）
 4. 利用 [Adaptive](https://github.com/fsprojects/FSharp.Data.Adaptive) 模型（adaptiview/AdaptiveForm）(**推荐**), 或 [elmish](https://github.com/elmish/elmish) 模型 (html.elmish)
-5. 实现了 Giraffe 风格的路由 (html.route)
+5. 实现了 Giraffe 风格的路由 (html.route/blazor 官方风格)
 6. 提供了使用 Fun.Css，为CSS编辑真假类型安全
 7. 使用 [Fun.Dev.Tools](https://slaveoftime.github.io/Fun.DevTools.Docs) 将 HTML 转换为 CE 风格
 

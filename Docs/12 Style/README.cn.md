@@ -1,4 +1,4 @@
-# CSS
+# 样式
 
 这是由 [Fun.Css](https://github.com/slaveOftime/Fun.Css) 创建的。它可以用来构建 CSS 规则或内联样式。
 

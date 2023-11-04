@@ -1,4 +1,4 @@
-# Region
+# 区域
 
 和 blazor 在 csharp razor 里的使用不同，razor 引擎会使用 source generator 来将 html 模板在编译时转化为 csharp 代码。所以它可以生成静态的序列号来优化 DOM 的 DIFF 计算。更多的信息可以查看 [sequence number and diff performance](https://learn.microsoft.com/en-us/aspnet/core/blazor/advanced-scenarios?view=aspnetcore-7.0#sequence-numbers-relate-to-code-line-numbers-and-not-execution-order).
 

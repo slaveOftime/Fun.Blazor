@@ -1,4 +1,4 @@
-# Cli
+# 代码生成
 
 ```
 dotnet tool install -g Fun.Blazor.Cli

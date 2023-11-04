@@ -4,8 +4,6 @@
 
 这包含文档网站本身的代码：https://github.com/slaveOftime/Fun.Blazor/tree/master/Fun.Blazor.Docs.Wasm。
 
-我使用它来构建自己简单的个人博客：https://github.com/slaveOftime/Slaveoftime.Site。
-
 这包含 Fun.Blazor 模板的代码，还有更多示例：https://github.com/slaveOftime/Fun.Blazor.Samples。
 
 ## 使用 dotnet 模板：
@@ -13,16 +11,13 @@
 [![Nuget](https://img.shields.io/nuget/vpre/Fun.Blazor.Templates)](https://www.nuget.org/packages/Fun.Blazor.Templates)
 
 ```shell
-dotnet new --install Fun.Blazor.Templates::2.0.0
-```
-
-使用此模板，您可以创建支持 [MudBlazor](https://mudblazor.com/) 或 [shoelacejs](https://shoelace.style/) 的 server/wasm blazor。
-
-```shell
-dotnet new fb-mix -o CoolMixMode
+dotnet new --install Fun.Blazor.Templates::3.1.0
+dotnet new fun-blazor -o FunBlazorDemo1
 ```
 
 ## 代码结构示例（只是我的意见）
+
+> 如果你更喜欢 blazor csharp 官方风格，你可以用 fun-blazor 模板
 
 该项目支持多个状态管理模式。根据我的经验，不推荐在整个项目中使用 Elmish，因为它会影响性能和状态共享。有时代码会有点冗长。
 

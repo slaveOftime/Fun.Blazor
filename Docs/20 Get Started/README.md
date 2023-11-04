@@ -4,8 +4,6 @@
 
 This contains the code for the document site itself: https://github.com/slaveOftime/Fun.Blazor/tree/master/Fun.Blazor.Docs.Wasm. 
 
-I use this to build my simple personal blogs: https://github.com/slaveOftime/Slaveoftime.Site.
-
 This contains the code for Fun.Blazor templates, also with more samples in it: https://github.com/slaveOftime/Fun.Blazor.Samples.
 
 ## Use dotnet templates:
@@ -13,16 +11,13 @@ This contains the code for Fun.Blazor templates, also with more samples in it: h
 [![Nuget](https://img.shields.io/nuget/vpre/Fun.Blazor.Templates)](https://www.nuget.org/packages/Fun.Blazor.Templates)
 
 ```shell
-dotnet new --install Fun.Blazor.Templates::2.0.0
-```
-
-With this template, you can create server/wasm blazor with [MudBlazor](https://mudblazor.com/) or [shoelacejs](https://shoelace.style/) supported.
-
-```shell
-dotnet new fb-mix -o CoolMixMode
+dotnet new --install Fun.Blazor.Templates::3.1.0
+dotnet new fun-blazor -o FunBlazorDemo1
 ```
 
 ## Code structure example (just my opinionated way)
+
+> If you prefer blazor csharp official style, you can just use fun-blazor template to get started.
 
 This project supports multiple patterns for state management. From my experience, it is not good to use Elmish for your whole project because of the performance and state share concern. Sometimes, it is a little verbose.  
 

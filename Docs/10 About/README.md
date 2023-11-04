@@ -10,7 +10,7 @@ Features include:
 2. Use computation expression (CE) style DSL for internal and third-party Blazor libraries
 3. Use dependency injection (html.inject/html.comp)
 4. Leverages the [Adaptive](https://github.com/fsprojects/FSharp.Data.Adaptive) model (adaptiview/AdaptiveForm) (**highly recommended**), or the [elmish](https://github.com/elmish/elmish) model (html.elmish)
-5. Implements Giraffe-style routing (html.route)
+5. Implements Giraffe-style routing (html.route/blazor official style)
 6. Provides type-safe stylesheet creation using Fun.Css
 7. Converts HTML to CE style with [Fun.Dev.Tools](https://slaveoftime.github.io/Fun.DevTools.Docs)
 
@@ -21,7 +21,6 @@ Features include:
 |          RenderWithRazorCSharp |   244.1 ns |  2.60 ns |  2.30 ns | 0.0324 |     408 B |
 |          RenderWithFunBlazorCE |   449.9 ns |  5.48 ns |  5.13 ns | 0.0606 |     760 B |
 |               RenderWithBolero |   536.0 ns |  5.81 ns |  4.85 ns | 0.1202 |    1512 B |
-| RenderWithFunBlazorSSRTemplate |   618.7 ns |  5.74 ns |  5.37 ns | 0.0429 |     544 B |
 
 
 ## Simple demo

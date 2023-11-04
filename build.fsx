@@ -1,5 +1,5 @@
-#r "nuget: Fun.Build, 1.0.1"
-#r "nuget: Fake.IO.FileSystem, 5.20.4"
+#r "nuget: Fun.Build, 1.0.2"
+#r "nuget: Fake.IO.FileSystem, 6.0.0"
 
 #load "docs.fsx"
 
@@ -84,6 +84,7 @@ pipeline "dev" {
         }
         stage "hot-reload" {
             workingDir "./Fun.Blazor.Cli"
+            whenCmdArg "--hot-reload"
             run "dotnet run --framework net8.0 -- watch ../Fun.Blazor.Docs.Wasm/Fun.Blazor.Docs.Wasm.fsproj"
         }
     }

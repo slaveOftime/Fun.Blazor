@@ -12,7 +12,7 @@ open Fun.Blazor.Docs.Wasm
 
 
 let private isReadyIndicator =
-    html.comp (fun (hook: IComponentHook) ->
+    html.inject (fun (hook: IComponentHook) ->
         let mutable showMessage = true
 
         hook.OnFirstAfterRender.Add(fun _ ->
@@ -84,10 +84,13 @@ let app =
                 Dense true
                 childContent [
                     menuBtn
-                    MudText'() {
-                        Typo Typo.h6
-                        Color Color.Default
-                        "Fun Blazor"
+                    a {
+                        href "/"
+                        MudText'() {
+                            Typo Typo.h6
+                            Color Color.Default
+                            "Fun Blazor"
+                        }
                     }
                     MudImage'() {
                         style { margin 10 }

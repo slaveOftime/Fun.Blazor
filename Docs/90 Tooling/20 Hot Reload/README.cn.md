@@ -10,7 +10,7 @@ dotnet tool install --global Fun.Blazor.Cli --version 2.0.0
 dotnet new --install Fun.Blazor.Templates::2.0.0
 ```
 
-![image](../assets/site-hot-reload.gif)
+![image](../../assets/site-hot-reload.gif)
 
 ## 基本步骤
 

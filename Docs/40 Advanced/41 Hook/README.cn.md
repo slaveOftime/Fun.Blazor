@@ -55,7 +55,7 @@ type IComponentHook with
 
     ```fsharp
     let myComp =
-        html.comp (fun (hook: IComponentHook) ->
+        html.inject (fun (hook: IComponentHook) ->
             // 每次消费时都会创建一个新的实例
             let myCompHook = hook.GetHookService<IMyCompHook>()
             ...

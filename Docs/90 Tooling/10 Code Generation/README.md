@@ -1,4 +1,4 @@
-# Cli
+# Code Generation
 
 ```
 dotnet tool install -g Fun.Blazor.Cli

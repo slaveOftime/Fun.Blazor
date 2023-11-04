@@ -1,6 +1,6 @@
 # Custom Elements
 
-This is experimental. You will need to install **Fun.Blazor.CustomElements**.
+You will need to install **Fun.Blazor.CustomElements**.
 
 I created this because, for some use cases, I only want ASP.NET Core to use Fun.Blazor to pre-render static content without Blazor server connected. But for some pages or components, I want to connect to Blazor server temporarily. So I can still use Blazor and hide backend API with a single WebSocket for interaction.
 

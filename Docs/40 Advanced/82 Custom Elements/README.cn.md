@@ -1,6 +1,6 @@
 # 自定义元素
 
-这是一个实验性的功能。您需要安装 **Fun.Blazor.CustomElements**。
+您需要安装 **Fun.Blazor.CustomElements**。
 
 我创建了这个功能，因为在某些用例中，我只想让 ASP.NET Core 使用 Fun.Blazor 来预渲染静态内容，而不连接到 Blazor 服务器。但是对于某些页面或组件，我希望临时连接到 Blazor 服务器。因此，我仍然可以使用 Blazor 并使用单个 WebSocket 隐藏后端 API 进行交互。
 
