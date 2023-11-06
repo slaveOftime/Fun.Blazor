@@ -1,13 +1,13 @@
 # Hot Reload
 
 ```sh
-dotnet tool install --global Fun.Blazor.Cli --version 2.0.0
+dotnet tool install --global Fun.Blazor.Cli --version 3.1.0-beta001
 ```
 
 You can install a template to create a project that is set up for hot-reload:
 
 ```sh
-dotnet new --install Fun.Blazor.Templates::2.0.0
+dotnet new --install Fun.Blazor.Templates::3.1.0-beta006
 ```
 
 ![image](../../assets/site-hot-reload.gif)

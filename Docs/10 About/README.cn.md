@@ -31,6 +31,10 @@ Intel Core i7-1065G7 CPU 1.30GHz, 1 CPU, 8 logical and 4 physical cores
 
 ## 简单演示
 
+Class 风格的计数器：
+
+{{CounterClassStyle}}
+
 这是一个使用自适应模型的基本计数器：
 
 {{Counter}}

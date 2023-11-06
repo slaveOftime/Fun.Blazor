@@ -14,6 +14,7 @@
 		<Compile Include="Hooks.fs" />
 		<Compile Include="JsInterop.fs" />
 		<Compile Include="Demos\Counter.fs" />
+		<Compile Include="Demos\CounterClassStyle.fs" />
 		<Compile Include="Demos\GiraffeStyleRouter.fs" />
 		<Compile Include="Demos\AdaptiveForm.fs" />
 		<Compile Include="Demos\AdaptiviewDemo.fs" />

@@ -31,11 +31,15 @@ Intel Core i7-1065G7 CPU 1.30GHz, 1 CPU, 8 logical and 4 physical cores
 
 ## Simple demo
 
-Here is a basic counter that uses an adaptive model:
+Basic counter in class style:
+
+{{CounterClassStyle}}
+
+Basic counter that uses an adaptive model:
 
 {{Counter}}
 
-Another demo that uses html.inject:
+Basic counter that uses html.inject:
 
 {{BlazorStyleComp}}
 

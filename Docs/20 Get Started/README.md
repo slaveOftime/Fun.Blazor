@@ -103,5 +103,3 @@ let app =
 
 |--- Index.fs // if you are using blazor server mode, you need to have this. You can check the template.  
 |--- Startup.fs
-
-You can check the repo https://github.com/slaveOftime/Slaveoftime.Site as a reference for those practical tips.
