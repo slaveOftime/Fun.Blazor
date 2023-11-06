@@ -21,13 +21,18 @@ open Fun.Blazor
 
 
 #if !NET6_0
-type FunBlazorEndpointFilter() =
+type FunBlazorEndpointFilter(preventStreamingRendering: bool, statusCode: int) =
     interface IEndpointFilter with
         member _.InvokeAsync(ctx, next) =
             task {
                 match! next.Invoke(ctx) with
-                | :? NodeRenderFragment as node -> return RazorComponentResult<FunFragmentComponent>(dict [ "Fragment", box node ]) :> obj
-                | x -> return x
+                | :? NodeRenderFragment as node -> 
+                    let result = RazorComponentResult<FunFragmentComponent>(dict [ "Fragment", box node ])
+                    result.PreventStreamingRendering <- preventStreamingRendering
+                    result.StatusCode <- statusCode
+                    return result :> obj
+                | x ->
+                    return x
             }
             |> ValueTask<obj>
 #endif
@@ -207,15 +212,8 @@ type FunBlazorServerExtensions =
 
 #if !NET6_0
     [<Extension>]
-    static member AddFunBlazor<'TBuilder when 'TBuilder :> IEndpointConventionBuilder>(builder: 'TBuilder) =
-        builder.AddEndpointFilter(FunBlazorEndpointFilter())
-
-    /// This will use MapFallback under the hood to capture all the routes for Fun.Blazor to use
-    [<Extension>]
-    static member MapFunBlazor<'Component when 'Component :> IComponent>(builder: IEndpointRouteBuilder, ?pattern: string) =
-        match pattern with
-        | None -> builder.MapFallback(Func<_, _>(fun () -> RazorComponentResult<'Component>()))
-        | Some pattern -> builder.MapFallback(pattern, Func<_, _>(fun () -> RazorComponentResult<'Component>()))
+    static member AddFunBlazor<'TBuilder when 'TBuilder :> IEndpointConventionBuilder>(builder: 'TBuilder, ?preventStreamingRendering: bool, ?statusCode: int) =
+        builder.AddEndpointFilter(FunBlazorEndpointFilter(defaultArg preventStreamingRendering false, defaultArg statusCode 200))
 #endif
 
 

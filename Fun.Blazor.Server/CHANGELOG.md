@@ -1,5 +1,10 @@
 # Changelog
 
+## [3.1.0-beta002] - 2023-11-06
+
+- Enable set preventStreamingRendering and statusCode for FunBlazorEndpointFilter
+- Remove MapFunBlazor<'Component> for dotnet 8
+
 ## [3.1.0-beta001] - 2023-10-24
 
 - Support dotnet 8

@@ -16,7 +16,7 @@ Check the [WASM Docs](https://slaveoftime.github.io/Fun.Blazor.Docs/) for more ð
 
 ## Start to use
 
-    dotnet new --install Fun.Blazor.Templates::3.1.0-beta005
+    dotnet new --install Fun.Blazor.Templates::3.1.0-beta006
     dotnet new fun-blazor -o FunBlazorDemo1
 
 > Requires dotnet 8
