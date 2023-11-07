@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [3.1.0-beta002] - 2023-11-07
+
 ### Added
 
 - hx-history (1.8.5)
