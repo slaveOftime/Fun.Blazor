@@ -265,6 +265,14 @@ type DomAttrBuilder with
     [<CustomOperation "hxDisable">]
     member inline _.hxDisable([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("hx-disable" => if x then "true" else "false")
 
+    /// The hx-disabled-elt attribute allows you to specify elements that will have the disabled attribute added to them for the duration of the request.
+    /// 
+    /// The value of this attribute is a CSS query selector of the element or elements to apply the class to, or the keyword closest, followed by a CSS selector, which will find the closest ancestor element or itself, that matches the given CSS selector (e.g. closest tr), or the keyword this
+    ///
+    /// When a request is in flight, this will cause the button to be marked with the disabled attribute, which will prevent further clicks from occurring.
+    [<CustomOperation "hxDisableElt">]
+    member inline _.hxDisableElt([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> ("hx-disable-elt" => x)
+
     /// For security, if you don't want a particular part of the DOM to allow for htmx functionality, you can place this on the enclosing element of that area.
     [<CustomOperation "hxDataDisable">]
     member inline _.hxDataDisable([<InlineIfLambda>] render: AttrRenderFragment, x: bool) =

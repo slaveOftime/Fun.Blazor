@@ -7,6 +7,7 @@
 - hx-history (1.8.5)
 - hx-on (1.9.0)
 - hxOnHtmx and all htmx events under hxEvt module
+- hx-disable-elt
 
 ## [3.1.0-beta001] - 2023-10-24
 
