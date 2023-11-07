@@ -298,3 +298,12 @@ type DomAttrBuilder with
 
     [<CustomOperation "hxSSE_swap">]
     member inline this.hxSSE_swap([<InlineIfLambda>] render: AttrRenderFragment, x: string) = this.hxSSE (render, "swap:" + x)
+
+
+    /// The hx-on attribute allows you to embed scripts inline to respond to events directly on an element; similar to the onevent properties found in HTML, such as onClick.
+    /// 
+    /// hx-on improves upon onevent by enabling the handling of any event for enhanced Locality of Behaviour (LoB). This also enables you to handle any htmx event.
+    ///
+    /// Notes: hx-on is not inherited, however due to event bubbling, hx-on attributes on parent elements will typically be triggered by events on child elements
+    [<CustomOperation "hxOn">]
+    member inline _.hxOn([<InlineIfLambda>] render: AttrRenderFragment, event: string, script: string) = render ==> ("hx-on:" + event => script)
