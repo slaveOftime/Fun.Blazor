@@ -239,6 +239,19 @@ type DomAttrBuilder with
     [<CustomOperation "hxBoost">]
     member inline _.hxBoost([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("hx-boost" => if x then "true" else "false")
 
+    /// Set the hx-history attribute to false on any element in the current document, or any html fragment loaded into the current document by htmx, to prevent sensitive data being saved to the localStorage cache when htmx takes a snapshot of the page state.
+    /// History navigation will work as expected, but on restoration the URL will be requested from the server instead of the history cache.
+    /// 
+    /// Note: hx-history="false" can be present anywhere in the document to embargo the current page state from the history cache (i.e. even outside the element specified for the history snapshot hx-history-elt).
+    [<CustomOperation "hxHistory">]
+    member inline _.hxHistory([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("hx-history" => if x then "true" else "false")
+
+    /// The hx-history-elt attribute allows you to specify the element that will be used to snapshot and restore page state during navigation. By default, the body tag is used. This is typically good enough for most setups, but you may want to narrow it down to a child element. Just make sure that the element is always visible in your application, or htmx will not be able to restore history navigation properly.
+    /// 
+    /// Notes: hx-history-elt is not inherited, In most cases we don’t recommend narrowing the history snapshot
+    [<CustomOperation "hxHistoryElt">]
+    member inline _.hxHistoryElt([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("hx-history-elt" =>>> true)
+
 
     /// If you want a given element to push its request URL into the browser navigation bar and add the current state of the page to the browser's history
     [<CustomOperation "hxPushUrl">]

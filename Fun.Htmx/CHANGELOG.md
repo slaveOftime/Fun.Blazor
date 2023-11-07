@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+
+- hx-history (1.8.5)
+
 ## [3.1.0-beta001] - 2023-10-24
 
 - Support dotnet 8
