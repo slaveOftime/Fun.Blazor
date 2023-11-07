@@ -15,14 +15,6 @@ type HxQueue =
 [<RequireQualifiedAccess>]
 module hxEvt =
 
-    /// Triggered on load (useful for lazy-loading something)
-    [<Literal>]
-    let load = "load"
-
-    /// Triggered when an element is scrolled into the viewport (also useful for lazy-loading). If you are using overflow in css like overflow-y: scroll you should use intersect once instead of revealed.
-    [<Literal>]
-    let revealed = "revealed"
-
     /// Fires once when an element first intersects the viewport.
     /// This supports two additional options:
     ///
@@ -30,6 +22,180 @@ module hxEvt =
     /// - threshold:<float> - a floating point number between 0.0 and 1.0, indicating what amount of intersection to fire the event on.
     [<Literal>]
     let intersect = "intersect"
+
+    /// Triggered when an element is scrolled into the viewport (also useful for lazy-loading). If you are using overflow in css like overflow-y: scroll you should use intersect once instead of revealed.
+    [<Literal>]
+    let revealed = "revealed"
+
+    /// send this event to an element to abort a request
+    [<Literal>]
+    let abort = "abort"
+
+    /// triggered after an AJAX request has completed processing a successful response
+    [<Literal>]
+    let afterOnLoad = "afterOnLoad"
+
+    /// triggered after htmx has initialized a node
+    [<Literal>]
+    let afterProcessNode = "afterProcessNode"
+
+    /// triggered after an AJAX request has completed
+    [<Literal>]
+    let afterRequest = "afterRequest"
+
+    /// triggered after the DOM has settled
+    [<Literal>]
+    let afterSettle = "afterSettle"
+
+    /// triggered after new content has been swapped in
+    [<Literal>]
+    let afterSwap = "afterSwap"
+
+    /// triggered before htmx disables an element or removes it from the DOM
+    [<Literal>]
+    let beforeCleanupElement = "beforeCleanupElement"
+
+    /// triggered before any response processing occurs
+    [<Literal>]
+    let beforeOnLoad = "beforeOnLoad"
+
+    /// triggered before htmx initializes a node
+    [<Literal>]
+    let beforeProcessNode = "beforeProcessNode"
+
+    /// triggered before an AJAX request is made
+    [<Literal>]
+    let beforeRequest = "beforeRequest"
+
+    /// triggered before a swap is done, allows you to configure the swap
+    [<Literal>]
+    let beforeSwap = "beforeSwap"
+
+    /// triggered just before an ajax request is sent
+    [<Literal>]
+    let beforeSend = "beforeSend"
+
+    /// triggered before the request, allows you to customize parameters, headers
+    [<Literal>]
+    let configRequest = "configRequest"
+
+    /// triggered after a trigger occurs on an element, allows you to cancel (or delay) issuing the AJAX request
+    [<Literal>]
+    let confirm = "confirm"
+
+    /// triggered on an error during cache writing
+    [<Literal>]
+    let historyCacheError = "historyCacheError"
+
+    /// triggered on a cache miss in the history subsystem
+    [<Literal>]
+    let historyCacheMiss = "historyCacheMiss"
+
+    /// triggered on a unsuccessful remote retrieval
+    [<Literal>]
+    let historyCacheMissError = "historyCacheMissError"
+
+    /// triggered on a successful remote retrieval
+    [<Literal>]
+    let historyCacheMissLoad = "historyCacheMissLoad"
+
+    /// triggered when htmx handles a history restoration action
+    [<Literal>]
+    let historyRestore = "historyRestore"
+
+    /// triggered before content is saved to the history cache
+    [<Literal>]
+    let beforeHistorySave = "beforeHistorySave"
+
+    /// triggered when new content is added to the DOM
+    [<Literal>]
+    let load = "load"
+
+    /// triggered when an element refers to a SSE event in its trigger, but no parent SSE source has been defined
+    [<Literal>]
+    let noSSESourceError = "noSSESourceError"
+
+
+    /// triggered when an exception occurs during the onLoad handling in htmx
+    [<Literal>]
+    let onLoadError = "onLoadError"
+
+    /// triggered after an out of band element as been swapped in
+    [<Literal>]
+    let oobAfterSwap = "oobAfterSwap"
+
+    /// triggered before an out of band element swap is done, allows you to configure the swap
+    [<Literal>]
+    let oobBeforeSwap = "oobBeforeSwap"
+
+    /// triggered when an out of band element does not have a matching ID in the current DOM
+    [<Literal>]
+    let oobErrorNoTarget = "oobErrorNoTarget"
+
+    /// triggered after a prompt is shown
+    [<Literal>]
+    let prompt = "prompt"
+
+    /// triggered after an url is pushed into history
+    [<Literal>]
+    let pushedIntoHistory = "pushedIntoHistory"
+
+    /// triggered when an HTTP response error (non-200 or 300 response code) occurs
+    [<Literal>]
+    let responseError = "responseError"
+
+    /// triggered when a network error prevents an HTTP request from happening
+    [<Literal>]
+    let sendError = "sendError"
+
+    /// triggered when an error occurs with a SSE source
+    [<Literal>]
+    let sseError = "sseError"
+
+    /// triggered when a SSE source is opened
+    [<Literal>]
+    let sseOpen = "sseOpen"
+
+    /// triggered when an error occurs during the swap phase
+    [<Literal>]
+    let swapError = "swapError"
+
+    /// triggered when an invalid target is specified
+    [<Literal>]
+    let targetError = "targetError"
+
+    /// triggered when a request timeout occurs
+    [<Literal>]
+    let timeout = "timeout"
+
+    /// triggered before an element is validated
+    [<Literal>]
+    let validation_validate = "validation:validate"
+
+    /// triggered when an element fails validation
+    [<Literal>]
+    let validation_failed = "validation:failed"
+
+    /// triggered when a request is halted due to validation errors
+    [<Literal>]
+    let validation_halted = "validation:halted"
+
+    /// triggered when an ajax request aborts
+    [<Literal>]
+    let xhr_abort = "xhr:abort"
+
+    /// triggered when an ajax request ends
+    [<Literal>]
+    let xhr_loadend = "xhr:loadend"
+
+    /// triggered when an ajax request starts
+    [<Literal>]
+    let xhr_loadstart = "xhr:loadstart"
+
+    /// triggered periodically during an ajax request that supports progress events
+    [<Literal>]
+    let xhr_progress = "xhr:progress"
+
 
 
     module drag =

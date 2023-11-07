@@ -307,3 +307,11 @@ type DomAttrBuilder with
     /// Notes: hx-on is not inherited, however due to event bubbling, hx-on attributes on parent elements will typically be triggered by events on child elements
     [<CustomOperation "hxOn">]
     member inline _.hxOn([<InlineIfLambda>] render: AttrRenderFragment, event: string, script: string) = render ==> ("hx-on:" + event => script)
+
+    /// This enables you to handle any htmx event.
+    /// 
+    /// The hx-on attribute allows you to embed scripts inline to respond to events directly on an element; similar to the onevent properties found in HTML, such as onClick.
+    ///
+    /// Notes: hx-on is not inherited, however due to event bubbling, hx-on attributes on parent elements will typically be triggered by events on child elements
+    [<CustomOperation "hxOnHtmx">]
+    member inline _.hxOnHtmx([<InlineIfLambda>] render: AttrRenderFragment, event: string, script: string) = render ==> ("hx-on::" + event => script)
