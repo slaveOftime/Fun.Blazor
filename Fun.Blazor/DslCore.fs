@@ -202,6 +202,11 @@ type html() =
             builder.CloseComponent()
             nextIndex
         )
+
+    /// This has to be used together with _framework/blazor.web.js. 
+    /// For more information please go to https://learn.microsoft.com/en-us/aspnet/core/blazor/components/rendering?view=aspnetcore-8.0#streaming-rendering
+    static member inline streaming (node: NodeRenderFragment) =
+        html.blazor<FunStreamingComponent>(nameof Unchecked.defaultof<FunStreamingComponent>.Content => node)
 #endif
 
     static member inline fromBuilder<'Comp, 'T when 'Comp :> IComponentBuilder<'T>>(_: 'Comp) =

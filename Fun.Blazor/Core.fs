@@ -143,6 +143,18 @@ type FunFragmentComponent() as this =
     member val Fragment = NodeRenderFragment(fun _ _ i -> i) with get, set
 
 
+#if !NET6_0
+[<StreamRendering>]
+type FunStreamingComponent() =
+    inherit FunComponent()
+
+    [<Parameter>]
+    member val Content: NodeRenderFragment = NodeRenderFragment(fun _ _ i -> i) with get, set
+
+    override this.Render() = this.Content
+#endif
+
+
 type IComponentHook =
     //abstract OnParametersSet: IEvent<unit>
     /// <summary>
