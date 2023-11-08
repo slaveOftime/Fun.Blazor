@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+- Add SectionOutlet' and SectionContent'
+
 ## [3.1.0-beta004] - 2023-11-07
 
 - Add html.streaming

@@ -25,6 +25,7 @@
 		<Compile Include="DslInject.fs" />
 		<Compile Include="DslAdaptiview.fs" />
 		<Compile Include="DslRouting.fs" />
+		<Compile Include="DslSections.fs" />
 		<Compile Include="AdaptiveForm.fs" />
 		<Compile Include="DIExtensions.fs" />
 	</ItemGroup>

@@ -201,3 +201,35 @@ let ``Yield RenderFragment directly`` () =
 
     let result = context.RenderNode demo
     result.MarkupMatches("<div>foo<div>foo2</div></div>")
+
+
+
+[<Fact>]
+let ``Sections should work`` () =
+    let context = createTestContext ()
+
+    let demo =
+        div {
+            SectionOutlet'() { SectionId "by-id" }
+            SectionOutlet'() { SectionName "by-name" }
+            div {
+                "foo"
+                SectionContent'() {
+                    SectionId "by-id"
+                    div { "id" }
+                }
+                SectionContent'() {
+                    SectionName "by-name"
+                    div { "name" }
+                }
+            }
+        }
+
+    let result = context.RenderNode demo
+    result.MarkupMatches("
+        <div>
+            <div>id</div>
+            <div>name</div>
+            <div>foo</div>
+        </div>
+    ")
