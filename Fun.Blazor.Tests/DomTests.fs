@@ -233,3 +233,50 @@ let ``Sections should work`` () =
             <div>foo</div>
         </div>
     ")
+
+
+
+[<Fact>]
+let ``for loop should work for element`` () =
+    let context = createTestContext ()
+
+    let demo =
+        div {
+            for i in 1..3 do
+                if i < 2 then p { i }
+                else span { i }
+        }
+
+    let result = context.RenderNode demo
+    result.MarkupMatches("
+        <div>
+            <p>1</p>
+            <span>2</span>
+            <span>3</span>
+        </div>
+    ")
+
+
+
+
+[<Fact>]
+let ``for loop should work for component`` () =
+    let context = createTestContext ()
+
+    let demo =
+        MudCard'() {
+            for i in 1..3 do
+                if i < 2 then MudButton'() { i }
+                else span { i }
+        }
+
+    let result = context.RenderNode demo
+    result.MarkupMatches("""
+        <div class="mud-paper mud-elevation-1 mud-card" style="">
+            <button  type="button" class="mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple"  >     
+                <span class="mud-button-label">1</span>
+            </button>
+            <span>2</span>
+            <span>3</span>
+        </div>
+    """)

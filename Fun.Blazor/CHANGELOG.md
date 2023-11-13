@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [3.1.0-beta006] - 2023-11-13
+
+- Support for loop for element and component
+
 ## [3.1.0-beta005] - 2023-11-08
 
 - Add SectionOutlet' and SectionContent'
