@@ -104,20 +104,22 @@ let stage_generateBindingProjects name package nsp =
 
 let stage_pack =
     stage "Pack" {
-        stage_packNuget "Fun.Blazor"
-        stage_packNuget "Fun.Blazor.CustomElements"
-        stage_packNuget "Fun.Blazor.Cli"
-        stage_packNuget "Fun.Blazor.Elmish"
-        stage_packNuget "Fun.Blazor.Generator"
-        stage_packNuget "Fun.Blazor.HotReload"
-        stage_packNuget "Fun.Blazor.HtmlTemplate"
-        stage_packNuget "Fun.Blazor.Reactive"
-        stage_packNuget "Fun.Blazor.Server"
-        stage_packNuget "Fun.Blazor.Wasm"
-        stage_packNuget "Fun.Htmx"
-
-        stage "pack for binding projects" {
-            when' false
+        stage "core projects" {
+            whenNot { cmdArg "--bindings" }
+            stage_packNuget "Fun.Blazor"
+            stage_packNuget "Fun.Blazor.CustomElements"
+            stage_packNuget "Fun.Blazor.Cli"
+            stage_packNuget "Fun.Blazor.Elmish"
+            stage_packNuget "Fun.Blazor.Generator"
+            stage_packNuget "Fun.Blazor.HotReload"
+            stage_packNuget "Fun.Blazor.HtmlTemplate"
+            stage_packNuget "Fun.Blazor.Reactive"
+            stage_packNuget "Fun.Blazor.Server"
+            stage_packNuget "Fun.Blazor.Wasm"
+            stage_packNuget "Fun.Htmx"
+        }
+        stage "bindings projects" {
+            whenCmdArg "--bindings"
             run (fun ctx -> asyncResult {
                 let files = 
                     Directory.GetDirectories("Bindings")

@@ -1,0 +1,28 @@
+name: Build and publish nuget packages for bindings
+
+on:
+    push:
+        branches:
+        - master
+        paths:
+        - "Bindings/**/*.*"
+        - ".github/Build and publish nuget package for bindings.yml"
+
+jobs:
+  build:
+
+    runs-on: ubuntu-20.04
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 8.0.x   
+        dotnet-quality: 'preview'
+
+    - name: Run build.fsx
+      env:
+        NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+      run: dotnet fsi build.fsx -- -p packages --bindings
