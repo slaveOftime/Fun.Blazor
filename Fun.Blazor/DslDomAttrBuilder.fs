@@ -282,6 +282,15 @@ type DomAttrBuilder() =
     /// Enhanced navigation is enabled by default, but it can be controlled hierarchically and on a per-link basis using the data-enhance-nav HTML attribute.
     [<CustomOperation("dataEnhanceNav")>]
     member inline this.dataEnhanceNav([<InlineIfLambda>] render: AttrRenderFragment) = this.dataEnhanceNav(render, true)
+
+    /// Blazor's enhanced navigation and form handing may undo dynamic changes to the DOM if the updated content isn't part of the server rendering. To preserve the content of an element, use the data-permanent attribute.
+    [<CustomOperation("dataPermanent")>]
+    member inline _.dataPermanent([<InlineIfLambda>] render: AttrRenderFragment, value: bool) =
+        render ==> ("permanent" => (if value then "true" else "false"))
+
+    /// Blazor's enhanced navigation and form handing may undo dynamic changes to the DOM if the updated content isn't part of the server rendering. To preserve the content of an element, use the data-permanent attribute.
+    [<CustomOperation("dataPermanent")>]
+    member inline this.dataPermanent([<InlineIfLambda>] render: AttrRenderFragment) = this.dataPermanent(render, true)
 #endif
 
     /// <summary>

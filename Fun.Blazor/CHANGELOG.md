@@ -5,6 +5,7 @@
 - Fix rendermode
 - Add data-enhance-nav
 - Add data-enhance for form elt
+- Add data-permanent
 
 ## [3.1.0-beta006] - 2023-11-13
 
