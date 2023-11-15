@@ -25,7 +25,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\Fun.Blazor.Docs.Controls\Fun.Blazor.Docs.Controls.fsproj" />
 		<ProjectReference Include="..\..\Fun.Blazor.HtmlTemplate\Fun.Blazor.HtmlTemplate.fsproj" />
 		<ProjectReference Include="..\..\Fun.Blazor\Fun.Blazor.fsproj" />
 		<ProjectReference Include="..\CSharpComponents\CSharpComponents.csproj" />

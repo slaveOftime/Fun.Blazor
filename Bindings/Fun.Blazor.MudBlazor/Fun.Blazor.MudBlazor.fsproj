@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <TrimMode>link</TrimMode>
+    <IsTrimmable>true</IsTrimmable>
+    <Version>6.11.0</Version>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Fun.Blazor.Bindings\MudBlazor.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference FunBlazor="" FunBlazorNamespace="MudBlazor" Include="MudBlazor" Version="6.11.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Fun.Blazor\Fun.Blazor.fsproj" />
+  </ItemGroup>
+</Project>

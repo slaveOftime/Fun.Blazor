@@ -13,6 +13,7 @@
 		<Compile Include="Theme.fs" />
 		<Compile Include="Hooks.fs" />
 		<Compile Include="JsInterop.fs" />
+		<Compile Include="BasicControls.fs" />
 		<Compile Include="Demos\Counter.fs" />
 		<Compile Include="Demos\CounterClassStyle.fs" />
 		<Compile Include="Demos\GiraffeStyleRouter.fs" />
@@ -47,8 +48,9 @@
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.0" PrivateAssets="all" />
 	</ItemGroup>
 	<ItemGroup>
+		<ProjectReference Include="..\Bindings\Fun.Blazor.Microsoft.Web\Fun.Blazor.Microsoft.Web.fsproj" />
+		<ProjectReference Include="..\Bindings\Fun.Blazor.MudBlazor\Fun.Blazor.MudBlazor.fsproj" />
 		<ProjectReference Include="..\Fun.Blazor.CustomElements\Fun.Blazor.CustomElements.fsproj" />
-		<ProjectReference Include="..\Fun.Blazor.Docs.Controls\Fun.Blazor.Docs.Controls.fsproj" />
 		<ProjectReference Include="..\Fun.Blazor.Elmish\Fun.Blazor.Elmish.fsproj" />
 		<ProjectReference Condition="'$(Configuration)'=='DEBUG'" Include="..\Fun.Blazor.HotReload\Fun.Blazor.HotReload.fsproj" />
 		<ProjectReference Include="..\Fun.Blazor.HtmlTemplate\Fun.Blazor.HtmlTemplate.fsproj" />

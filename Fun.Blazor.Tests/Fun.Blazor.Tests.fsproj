@@ -1,13 +1,9 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
 		<IsPackable>false</IsPackable>
 		<GenerateProgramFile>false</GenerateProgramFile>
 	</PropertyGroup>
-	<ItemGroup>
-		<Compile Include="Fun.Blazor.Bindings\MudBlazor.fs" />
-	</ItemGroup>
 	<ItemGroup>
 		<Compile Include="Utils.fs" />
 		<Compile Include="DITests.fs" />
@@ -40,6 +36,7 @@
 		<PackageReference FunBlazorStyle="CE" Include="MudBlazor" Version="6.11.0" />
 	</ItemGroup>
 	<ItemGroup>
+		<ProjectReference Include="..\Bindings\Fun.Blazor.MudBlazor\Fun.Blazor.MudBlazor.fsproj" />
 		<ProjectReference Include="..\Fun.Blazor.HtmlTemplate\Fun.Blazor.HtmlTemplate.fsproj" />
 		<ProjectReference Include="..\Fun.Blazor.Server\Fun.Blazor.Server.fsproj" />
 		<ProjectReference Include="..\Fun.Blazor\Fun.Blazor.fsproj" />
