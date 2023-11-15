@@ -13,15 +13,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="Elmish" Version="4.0.1" />
+	  <PackageReference Include="Elmish" Version="4.1.0" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\Fun.Blazor\Fun.Blazor.fsproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<PackageReference Update="FSharp.Core" Version="6.0.0" />
 	</ItemGroup>
 
 </Project>

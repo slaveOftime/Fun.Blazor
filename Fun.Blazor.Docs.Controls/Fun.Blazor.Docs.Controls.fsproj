@@ -18,9 +18,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference FunBlazorStyle="CE" Include="Microsoft.AspNetCore.Components.Authorization" Version="8.0.0-*" />
-    <PackageReference FunBlazorStyle="CE" FunBlazorNamespace="Microsoft.AspNetCore.Components" Include="Microsoft.AspNetCore.Components.Web" Version="8.0.0-*" />
-    <PackageReference FunBlazorStyle="CE" Include="MudBlazor" Version="6.2.0" />
+    <PackageReference FunBlazorStyle="CE" Include="Microsoft.AspNetCore.Components.Authorization" Version="8.0.0" />
+    <PackageReference FunBlazorStyle="CE" FunBlazorNamespace="Microsoft.AspNetCore.Components" Include="Microsoft.AspNetCore.Components.Web" Version="8.0.0" />
+    <PackageReference FunBlazorStyle="CE" Include="MudBlazor" Version="6.11.0" />
   </ItemGroup>
 
   <ItemGroup>

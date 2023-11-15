@@ -17,7 +17,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Fun.Blazor\Fun.Blazor.fsproj" />
-		<PackageReference Update="FSharp.Core" Version="7.0.0" />
 	</ItemGroup>
 
 </Project>

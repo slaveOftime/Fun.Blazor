@@ -41,10 +41,10 @@
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="BlazorWasmPreRendering.Build" Version="3.1.0-preview.4" />
-		<PackageReference Include="FSharp.SystemTextJson" Version="1.1.23" />
+		<PackageReference Include="FSharp.SystemTextJson" Version="1.2.42" />
 		<PackageReference Include="Majorsoft.Blazor.WebAssembly.Logging.Console" Version="1.5.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.0-*" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.0-*" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.0" PrivateAssets="all" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Fun.Blazor.CustomElements\Fun.Blazor.CustomElements.fsproj" />
@@ -55,13 +55,11 @@
 		<ProjectReference Include="..\Fun.Blazor.Reactive\Fun.Blazor.Reactive.fsproj" />
 		<ProjectReference Include="..\Fun.Blazor.Wasm\Fun.Blazor.Wasm.fsproj" />
 	</ItemGroup>
-	<!-- In dotnet 7 there is a bug for Fun.Blazor.Cli to do hot reload.
-    Below is the workaround. https://github.com/dotnet/fsharp/issues/14250 -->
-    <Target Name="ShimReferencePathsWhenCommonTargetsDoesNotUnderstandReferenceAssemblies"
-			BeforeTargets="CoreCompile"
-			Condition="'$(Configuration)' == 'DEBUG'">
+	<!-- Above dotnet 7 there is a bug for Fun.Blazor.Cli to do hot reload.
+    Below is the workaround. https://github.com/dotnet/fsharp/issues/14250 --><!--
+    <Target Name="ShimReferencePathsWhenCommonTargetsDoesNotUnderstandReferenceAssemblies" BeforeTargets="CoreCompile" Condition="'$(Configuration)' == 'DEBUG'">
         <ItemGroup>
             <ReferencePathWithRefAssemblies Include="@(ReferencePath)" />
         </ItemGroup>
-    </Target>
+    </Target>-->
 </Project>
