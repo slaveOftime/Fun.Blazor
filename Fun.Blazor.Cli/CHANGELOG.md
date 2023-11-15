@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.1.0-beta007] - 2023-11-15
+
+- Bump version
+
 ## [3.1.0-beta001] - 2023-10-24
 
 - Support dotnet 8

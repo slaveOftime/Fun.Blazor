@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.1.0-beta007] - 2023-11-15
+
+- Bump version
+
 ## [3.1.0-beta002] - 2023-11-06
 
 - Enable set preventStreamingRendering and statusCode for FunBlazorEndpointFilter

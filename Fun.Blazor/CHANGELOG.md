@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [3.1.0-beta007] - 2023-11-15
+
 - Fix rendermode
 - Add data-enhance-nav
 - Add data-enhance for form elt
