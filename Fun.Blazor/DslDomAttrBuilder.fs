@@ -273,6 +273,16 @@ type DomAttrBuilder() =
             index + 1
         )
 
+#if !NET6_0
+    /// Enhanced navigation is enabled by default, but it can be controlled hierarchically and on a per-link basis using the data-enhance-nav HTML attribute.
+    [<CustomOperation("dataEnhanceNav")>]
+    member inline _.dataEnhanceNav([<InlineIfLambda>] render: AttrRenderFragment, value: bool) =
+        render ==> ("data-enhance-nav" => (if value then "true" else "false"))
+
+    /// Enhanced navigation is enabled by default, but it can be controlled hierarchically and on a per-link basis using the data-enhance-nav HTML attribute.
+    [<CustomOperation("dataEnhanceNav")>]
+    member inline this.dataEnhanceNav([<InlineIfLambda>] render: AttrRenderFragment) = this.dataEnhanceNav(render, true)
+#endif
 
     /// <summary>
     /// A list of strings to be applied as classes
