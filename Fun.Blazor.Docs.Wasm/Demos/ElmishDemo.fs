@@ -16,13 +16,11 @@ type private Msg =
 
 
 let private delayDecrease =
-    Cmd.OfAsync.perform 
-        (fun () ->
-            async {
-                do! Async.Sleep 3000
-                return Decrease
-            }
-        )
+    Cmd.OfAsync.perform
+        (fun () -> async {
+            do! Async.Sleep 3000
+            return Decrease
+        })
         ()
         (id)
 
@@ -30,17 +28,15 @@ let private init () = { Count = 0 }, delayDecrease
 
 let private update msg model =
     match msg with
-    | Increase -> { model with Count = model.Count + 1 }, Cmd.none
-    | Decrease -> { model with Count = model.Count - 1 }, delayDecrease
+    | Increase -> { Count = model.Count + 1 }, Cmd.none
+    | Decrease -> { Count = model.Count - 1 }, delayDecrease
     | IncreaseTask ->
         model,
-        Cmd.OfTask.perform 
-            (fun () ->
-                task {
-                    do! Task.Delay 1000
-                    return Increase
-                }
-            )
+        Cmd.OfTask.perform
+            (fun () -> task {
+                do! Task.Delay 1000
+                return Increase
+            })
             ()
             (id)
 
@@ -67,12 +63,10 @@ let private view model (dispatch: Msg -> unit) =
                 MudButton'() {
                     Color Color.Secondary
                     Variant Variant.Outlined
-                    OnClick(fun _ ->
-                        task {
-                            do! System.Threading.Tasks.Task.Delay 1000
-                            Increase |> dispatch
-                        }
-                    )
+                    OnClick(fun _ -> task {
+                        do! System.Threading.Tasks.Task.Delay 1000
+                        Increase |> dispatch
+                    })
                     "Increase (Delay 1s in click event)"
                 }
                 MudButton'() {
