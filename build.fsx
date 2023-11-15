@@ -220,7 +220,6 @@ pipeline "bindings" {
     stage_generateBindingProjects "ApexCharts" "Blazor-ApexCharts" "ApexCharts"
     stage_generateBindingProjects "BlazorMonaco" "BlazorMonaco" "BlazorMonaco"
     stage "pack for binding projects" {
-        when' false
         run (fun _ ->
             let infos =
                 Directory.GetDirectories("Bindings")
