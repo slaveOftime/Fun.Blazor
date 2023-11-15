@@ -192,18 +192,18 @@ type html() =
     static member inline blazor<'T when 'T :> IComponent>(renderMode: IComponentRenderMode, ?attr: AttrRenderFragmentWrapper) =
         NodeRenderFragment(fun comp builder index ->
             builder.OpenComponent<'T>(index)
-            builder.AddComponentRenderMode(renderMode)
 
             let nextIndex =
                 match attr with
                 | Some(AttrRenderFragmentWrapper attr) -> attr.Invoke(comp, builder, index + 1)
                 | None -> index + 1
 
+            builder.AddComponentRenderMode(renderMode)
             builder.CloseComponent()
             nextIndex
         )
 
-    /// This has to be used together with _framework/blazor.web.js. 
+    /// This has to be used together with _framework/blazor.web.js.
     /// For more information please go to https://learn.microsoft.com/en-us/aspnet/core/blazor/components/rendering?view=aspnetcore-8.0#streaming-rendering
     static member inline streaming (node: NodeRenderFragment) =
         html.blazor<FunStreamingComponent>(nameof Unchecked.defaultof<FunStreamingComponent>.Content => node)
