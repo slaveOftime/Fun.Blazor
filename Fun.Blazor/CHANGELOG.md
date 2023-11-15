@@ -4,6 +4,7 @@
 
 - Fix rendermode
 - Add data-enhance-nav
+- Add data-enhance for form elt
 
 ## [3.1.0-beta006] - 2023-11-13
 

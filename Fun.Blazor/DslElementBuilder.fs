@@ -244,6 +244,19 @@ type EltWithChildBuilder(name) =
     [<CustomOperation("childContentRaw")>]
     member inline _.childContentRaw([<InlineIfLambda>] render: AttrRenderFragment, v: string) = render >>> (html.raw v)
 
+type EltFormBuilder() =
+    inherit EltWithChildBuilder("form")
+
+#if !NET6_0
+    /// Enhanced form handling isn't hierarchical and doesn't flow to child forms:
+    [<CustomOperation("dataEnhance")>]
+    member inline _.dataEnhance([<InlineIfLambda>] render: AttrRenderFragment, v: bool) = render ==> ("data-enhance" => (if v then "true" else "false"))
+
+    /// Enhanced form handling isn't hierarchical and doesn't flow to child forms:
+    [<CustomOperation("dataEnhance")>]
+    member inline this.dataEnhance([<InlineIfLambda>] render: AttrRenderFragment) = this.dataEnhance(render, true)
+#endif
+
 
 [<AutoOpen>]
 module Elts =
@@ -340,7 +353,7 @@ module Elts =
 
     let footer = EltWithChildBuilder "footer"
 
-    let form = EltWithChildBuilder "form"
+    let form = EltFormBuilder()
 
     let frame = EltWithChildBuilder "frame"
 
