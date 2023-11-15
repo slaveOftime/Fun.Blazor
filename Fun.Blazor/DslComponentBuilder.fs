@@ -88,13 +88,13 @@ type ComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent>(
             index + 1
         )
 
-#if NET8_0
+#if !NET6_0
     [<CustomOperation("renderMode")>]
     member inline _.renderMode([<InlineIfLambda>] render: AttrRenderFragment, mode: IComponentRenderMode) =
         render
         ==> AttrRenderFragment(fun _ builder index ->
-            builder.AddComponentParameter(index, "@rendermode", mode)
-            index + 1
+            builder.AddComponentRenderMode(mode)
+            index
         )
 
     [<CustomOperation("interactiveAuto")>]
@@ -354,13 +354,13 @@ type ComponentWithDomAttrBuilder<'T when 'T :> IComponent>() =
         )
 
 
-#if NET8_0
+#if !NET6_0
     [<CustomOperation("renderMode")>]
     member inline _.renderMode([<InlineIfLambda>] render: AttrRenderFragment, mode: IComponentRenderMode) =
         render
         ==> AttrRenderFragment(fun _ builder index ->
-            builder.AddComponentParameter(index, "@rendermode", mode)
-            index + 1
+            builder.AddComponentRenderMode(mode)
+            index
         )
 
     [<CustomOperation("interactiveAuto")>]

@@ -192,12 +192,12 @@ type html() =
     static member inline blazor<'T when 'T :> IComponent>(renderMode: IComponentRenderMode, ?attr: AttrRenderFragmentWrapper) =
         NodeRenderFragment(fun comp builder index ->
             builder.OpenComponent<'T>(index)
-            builder.AddComponentParameter(index + 1, "@rendermode", renderMode)
+            builder.AddComponentRenderMode(renderMode)
 
             let nextIndex =
                 match attr with
-                | Some(AttrRenderFragmentWrapper attr) -> attr.Invoke(comp, builder, index + 2)
-                | None -> index + 2
+                | Some(AttrRenderFragmentWrapper attr) -> attr.Invoke(comp, builder, index + 1)
+                | None -> index + 1
 
             builder.CloseComponent()
             nextIndex

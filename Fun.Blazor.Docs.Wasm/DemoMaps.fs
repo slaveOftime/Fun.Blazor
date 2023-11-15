@@ -15,6 +15,7 @@ let demos =
         "BasicHookDemo", { View = BasicHookDemo.entry; Source = "Demos/BasicHookDemo.html" }
         "BlazorStyleComp", { View = BlazorStyleComp.entry; Source = "Demos/BlazorStyleComp.html" }
         "Counter", { View = Counter.entry; Source = "Demos/Counter.html" }
+        "CounterClassStyle", { View = CounterClassStyle.entry; Source = "Demos/CounterClassStyle.html" }
         "CssRuleDemo", { View = CssRuleDemo.entry; Source = "Demos/CssRuleDemo.html" }
         "CustomElementDemo", { View = CustomElementDemo.entry; Source = "Demos/CustomElementDemo.html" }
         "ElmishDemo", { View = ElmishDemo.entry; Source = "Demos/ElmishDemo.html" }

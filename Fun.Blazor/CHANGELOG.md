@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+- Fix rendermode
+
 ## [3.1.0-beta006] - 2023-11-13
 
 - Support for loop for element and component
