@@ -4,9 +4,9 @@ on:
     push:
         branches:
         - master
-        paths:
-        - "Bindings/**/*.*"
-        - ".github/Build and publish nuget package for bindings.yml"
+        # paths:
+        # - "Bindings/**/*.*"
+        # - ".github/Build and publish nuget package for bindings.yml"
 
 jobs:
   build:
