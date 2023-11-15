@@ -152,6 +152,11 @@ type FunStreamingComponent() =
     member val Content: NodeRenderFragment = NodeRenderFragment(fun _ _ i -> i) with get, set
 
     override this.Render() = this.Content
+
+type FunRenderModeAttribute(mode) =
+    inherit RenderModeAttribute()
+
+    override _.Mode = mode
 #endif
 
 

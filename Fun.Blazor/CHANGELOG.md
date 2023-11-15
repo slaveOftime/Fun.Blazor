@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+- Add FunRenderModeAttribute
+
 ## [3.1.0] - 2023-11-15
 
 - Release for dotnet 8
