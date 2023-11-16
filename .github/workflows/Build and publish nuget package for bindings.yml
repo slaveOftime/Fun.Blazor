@@ -6,6 +6,7 @@ on:
         - master
         paths:
         - "Bindings/**/*.*"
+        - "build.fsx"
         - ".github/Build and publish nuget package for bindings.yml"
 
 jobs:

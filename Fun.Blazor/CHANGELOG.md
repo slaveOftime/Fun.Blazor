@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [3.2.0] - 2023-11-16
+
+- Unify version
+
 ## [3.1.3] - 2023-11-16
 
 - Fix CompnentBuilder

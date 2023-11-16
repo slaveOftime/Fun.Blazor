@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.2.0] - 2023-11-16
+
+- Unify version
+
 ## [3.1.1] - 2023-11-16
 
 - Bump version

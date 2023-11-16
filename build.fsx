@@ -4,6 +4,7 @@
 
 #load "docs.fsx"
 
+open System
 open System.IO
 open Fun.Build
 open Fun.Result
@@ -55,7 +56,7 @@ let stage_packNuget projDir =
         run $"dotnet pack -c Release -o {__SOURCE_DIRECTORY__} /p:Version={version.Version}"
     }
 
-let stage_generateBindingProjects name package nsp =
+let stage_generateBindingProjects name package nsp patch =
     let projectName = "Fun.Blazor." + name
     let projectDir = "Bindings" </> projectName
 
@@ -73,6 +74,8 @@ let stage_generateBindingProjects name package nsp =
                 |> Seq.last
 
             printfn $"Found verion {version} for package {package}"
+
+            let version = if String.IsNullOrEmpty patch then version else version + "." + "patch"
 
             Directory.ensure projectDir
             File.write false (projectDir </> projectName + ".fsproj") [
@@ -213,14 +216,14 @@ pipeline "packages" {
 
 pipeline "bindings" {
     description "Generate bindings project"
-    stage_generateBindingProjects "Microsoft.Web" "Microsoft.AspNetCore.Components.Web" "Microsoft.AspNetCore.Components"
-    stage_generateBindingProjects "Microsoft.Authorization" "Microsoft.AspNetCore.Components.Authorization" "Microsoft.AspNetCore.Components.Authorization"
-    stage_generateBindingProjects "Microsoft.FluentUI" "Microsoft.Fast.Components.FluentUI" "Microsoft.Fast.Components.FluentUI"
-    stage_generateBindingProjects "Microsoft.QuickGrid" "Microsoft.AspNetCore.Components.QuickGrid" "Microsoft.AspNetCore.Components.QuickGrid"
-    stage_generateBindingProjects "AntDesign" "AntDesign" "AntDesign"
-    stage_generateBindingProjects "MudBlazor" "MudBlazor" "MudBlazor"
-    stage_generateBindingProjects "ApexCharts" "Blazor-ApexCharts" "ApexCharts"
-    stage_generateBindingProjects "BlazorMonaco" "BlazorMonaco" "BlazorMonaco"
+    stage_generateBindingProjects "Microsoft.Web" "Microsoft.AspNetCore.Components.Web" "Microsoft.AspNetCore.Components" ""
+    stage_generateBindingProjects "Microsoft.Authorization" "Microsoft.AspNetCore.Components.Authorization" "Microsoft.AspNetCore.Components.Authorization" ""
+    stage_generateBindingProjects "Microsoft.FluentUI" "Microsoft.Fast.Components.FluentUI" "Microsoft.Fast.Components.FluentUI" ""
+    stage_generateBindingProjects "Microsoft.QuickGrid" "Microsoft.AspNetCore.Components.QuickGrid" "Microsoft.AspNetCore.Components.QuickGrid" ""
+    stage_generateBindingProjects "AntDesign" "AntDesign" "AntDesign" ""
+    stage_generateBindingProjects "MudBlazor" "MudBlazor" "MudBlazor" ""
+    stage_generateBindingProjects "ApexCharts" "Blazor-ApexCharts" "ApexCharts" ""
+    stage_generateBindingProjects "BlazorMonaco" "BlazorMonaco" "BlazorMonaco" ""
     stage "pack for binding projects" {
         run (fun _ ->
             let infos =

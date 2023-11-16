@@ -1,7 +1,7 @@
 # Code Generation
 
 ```
-dotnet tool install -g Fun.Blazor.Cli --version 3.1.0-beta001
+dotnet tool install -g Fun.Blazor.Cli --version 3.2.0
 ```
 
 - Generate CE DSL for a package or project.
