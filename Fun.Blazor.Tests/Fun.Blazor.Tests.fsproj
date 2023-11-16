@@ -13,6 +13,7 @@
 		<Compile Include="I18nTests.fs" />
 		<Compile Include="HookTests.fs" />
 		<Compile Include="DomTests.fs" />
+		<Compile Include="PostRenderFragmentTests.fs" />
 		<Compile Include="CascadingValueTests.fs" />
 		<Compile Include="ServerTests.fs" />
 		<Compile Include="HtmxTests.fs" />
@@ -36,6 +37,7 @@
 		<PackageReference FunBlazorStyle="CE" Include="MudBlazor" Version="6.11.0" />
 	</ItemGroup>
 	<ItemGroup>
+		<ProjectReference Include="..\Bindings\Fun.Blazor.Microsoft.Web\Fun.Blazor.Microsoft.Web.fsproj" />
 		<ProjectReference Include="..\Bindings\Fun.Blazor.MudBlazor\Fun.Blazor.MudBlazor.fsproj" />
 		<ProjectReference Include="..\Fun.Blazor.HtmlTemplate\Fun.Blazor.HtmlTemplate.fsproj" />
 		<ProjectReference Include="..\Fun.Blazor.Server\Fun.Blazor.Server.fsproj" />

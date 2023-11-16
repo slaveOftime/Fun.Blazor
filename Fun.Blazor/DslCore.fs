@@ -154,28 +154,6 @@ type html() =
             nextIndex
         )
 
-    /// <summary>
-    /// Make a blazor component to a render fragment with a render for attributes
-    /// </summary>
-    /// <example>
-    /// <code lang="fsharp">
-    /// html.blazor (domAttr {
-    ///     "attrName1", attrValue1
-    ///     "attrName2", attrValue2
-    /// })
-    /// </code>
-    /// </example>
-    static member inline blazor<'T when 'T :> IComponent>(attr: AttrRenderFragmentWrapper) =
-        NodeRenderFragment(fun comp builder index ->
-            builder.OpenComponent<'T>(index)
-
-            let nextIndex =
-                match attr with
-                | AttrRenderFragmentWrapper r -> r.Invoke(comp, builder, index + 1)
-
-            builder.CloseComponent()
-            nextIndex
-        )
 
 #if !NET6_0
     /// <summary>
@@ -189,16 +167,16 @@ type html() =
     /// })
     /// </code>
     /// </example>
-    static member inline blazor<'T when 'T :> IComponent>(renderMode: IComponentRenderMode, ?attr: AttrRenderFragmentWrapper) =
+    static member inline blazor<'T when 'T :> IComponent>(renderMode: IComponentRenderMode, ?attr: AttrRenderFragment) =
         NodeRenderFragment(fun comp builder index ->
             builder.OpenComponent<'T>(index)
-            builder.AddComponentRenderMode(renderMode)
 
             let nextIndex =
                 match attr with
-                | Some(AttrRenderFragmentWrapper attr) -> attr.Invoke(comp, builder, index + 1)
+                | Some attr -> attr.Invoke(comp, builder, index + 1)
                 | None -> index + 1
 
+            builder.AddComponentRenderMode(renderMode)
             builder.CloseComponent()
             nextIndex
         )
@@ -267,7 +245,7 @@ type html() =
         )
 
     static member inline ref(fn) =
-        RefRenderFragment(fun _ builder index ->
+        PostRenderFragment(fun _ builder index ->
             builder.AddElementReferenceCapture(index, Action<ElementReference> fn)
             index + 1
         )

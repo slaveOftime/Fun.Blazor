@@ -18,7 +18,7 @@ type AttrRenderFragment = delegate of root: IComponent * builder: RenderTreeBuil
 type NodeRenderFragment = delegate of root: IComponent * builder: RenderTreeBuilder * sequence: int -> int
 
 /// In blazor, we cannot add attribute after add ref, so we need a clear position to seperate them
-type RefRenderFragment = delegate of root: IComponent * builder: RenderTreeBuilder * sequence: int -> int
+type PostRenderFragment = delegate of root: IComponent * builder: RenderTreeBuilder * sequence: int -> int
 
 
 module Operators =
@@ -50,6 +50,10 @@ module Operators =
 
     /// Merge two AttrRenderFragment together
     let inline (==>) ([<InlineIfLambda>] render1: AttrRenderFragment) ([<InlineIfLambda>] render2: AttrRenderFragment) =
+        AttrRenderFragment(fun comp builder index -> render2.Invoke(comp, builder, render1.Invoke(comp, builder, index)))
+
+    /// Merge AttrRenderFragment and PostRenderFragment together
+    let inline (===>) ([<InlineIfLambda>] render1: AttrRenderFragment) ([<InlineIfLambda>] render2: PostRenderFragment) =
         AttrRenderFragment(fun comp builder index -> render2.Invoke(comp, builder, render1.Invoke(comp, builder, index)))
 
     /// Merge two NodeRenderFragment together

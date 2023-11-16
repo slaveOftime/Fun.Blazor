@@ -170,6 +170,7 @@ module AutoCompleteValues =
 type DomAttrBuilder() =
     interface IFunBlazorBuilder
 
+    member inline _.Run([<InlineIfLambda>] x: AttrRenderFragment) = AttrRenderFragment(fun c b i -> x.Invoke(c, b, i))
     member inline _.Run(AttrRenderFragmentWrapper x) = x
 
 

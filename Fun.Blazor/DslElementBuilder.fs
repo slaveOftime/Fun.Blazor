@@ -20,25 +20,35 @@ type EltBuilder(name) =
             nextIndex
         )
 
-    member inline this.Run([<InlineIfLambda>] render: NodeRenderFragment) =
+    member inline this.Run((render1, render2): struct (AttrRenderFragment * PostRenderFragment)) =
         NodeRenderFragment(fun comp builder index ->
             builder.OpenElement(index, (this :> IElementBuilder).Name)
-            let nextIndex = render.Invoke(comp, builder, index + 1)
+            let nextIndex = (render1 ===> render2).Invoke(comp, builder, index + 1)
             builder.CloseElement()
             nextIndex
         )
 
 
     [<CustomOperation("ref")>]
-    member inline _.ref([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ElementReference -> unit) =
-        NodeRenderFragment(fun comp builder index ->
-            let nextIndex = render.Invoke(comp, builder, index)
-            builder.AddElementReferenceCapture(nextIndex, fn)
+    member inline _.ref([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: 'T -> unit) =
+        struct (render, PostRenderFragment(fun _ builder index ->
+            builder.AddElementReferenceCapture(index, (fun x -> fn (unbox<'T> x)))
+            index + 1
+        ))
+
+    [<CustomOperation("ref")>]
+    member inline _.ref((render1, render2): struct (AttrRenderFragment * PostRenderFragment), [<InlineIfLambda>] fn: 'T -> unit) =
+        struct (render1, PostRenderFragment(fun comp builder index ->
+            let nextIndex = render2.Invoke(comp, builder, index)
+            builder.AddElementReferenceCapture(nextIndex, (fun x -> fn (unbox<'T> x)))
             nextIndex + 1
-        )
+        ))
 
 
     member inline _.Delay([<InlineIfLambda>] fn: unit -> NodeRenderFragment) = NodeRenderFragment(fun c b i -> fn().Invoke(c, b, i))
+    
+    member inline _.Delay([<InlineIfLambda>] fn: unit -> struct (AttrRenderFragment * PostRenderFragment)) = fn ()
+    member inline _.Delay([<InlineIfLambda>] fn: unit -> struct (AttrRenderFragment * PostRenderFragment * NodeRenderFragment)) = fn ()
 
     member inline _.For([<InlineIfLambda>] render: NodeRenderFragment, [<InlineIfLambda>] fn: unit -> NodeRenderFragment) = render >=> (fn ())
     
@@ -81,6 +91,24 @@ type EltBuilder(name) =
 
 type EltWithChildBuilder(name) =
     inherit EltBuilder(name)
+
+    member inline this.Run([<InlineIfLambda>] render: NodeRenderFragment) =
+        NodeRenderFragment(fun comp builder index ->
+            builder.OpenElement(index, (this :> IElementBuilder).Name)
+            let nextIndex = render.Invoke(comp, builder, index + 1)
+            builder.CloseElement()
+            nextIndex
+        )
+
+    member inline this.Run((render1, render2, render3): struct (AttrRenderFragment * PostRenderFragment * NodeRenderFragment)) =
+        NodeRenderFragment(fun comp builder index ->
+            builder.OpenElement(index, (this :> IElementBuilder).Name)
+            let nextIndex = index + 1
+            let nextIndex = (render1 ===> render2 >>> render3).Invoke(comp, builder, nextIndex)
+            builder.CloseElement()
+            nextIndex
+        )
+
 
     member inline _.Yield(x: int) =
         NodeRenderFragment(fun _ builder index ->
@@ -126,6 +154,8 @@ type EltWithChildBuilder(name) =
     member inline _.Combine([<InlineIfLambda>] render1: NodeRenderFragment, [<InlineIfLambda>] render2: NodeRenderFragment) = render1 >=> render2
 
     member inline _.For([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> NodeRenderFragment) = render >>> (fn ())
+
+    member inline _.For((render1, render2): struct (AttrRenderFragment * PostRenderFragment), [<InlineIfLambda>] fn: unit -> NodeRenderFragment) = struct (render1, render2, fn())
 
     //member inline _.For(renders: 'T seq, [<InlineIfLambda>] fn: 'T -> NodeRenderFragment) = renders |> Seq.map fn |> Seq.fold (>=>) (emptyNode ())
 
@@ -243,6 +273,33 @@ type EltWithChildBuilder(name) =
     /// </example>
     [<CustomOperation("childContentRaw")>]
     member inline _.childContentRaw([<InlineIfLambda>] render: AttrRenderFragment, v: string) = render >>> (html.raw v)
+
+    
+    [<CustomOperation("childContent")>]
+    member inline _.childContent((render1, render2): struct (AttrRenderFragment * PostRenderFragment), [<InlineIfLambda>] renderChild: NodeRenderFragment) =
+        render1 ===> render2 >>> renderChild
+
+    [<CustomOperation("childContent")>]
+    member inline _.childContent((render1, render2): struct (AttrRenderFragment * PostRenderFragment), renders: NodeRenderFragment seq) =
+        NodeRenderFragment(fun comp builder index ->
+            let mutable index = (render1 ===> render2).Invoke(comp, builder, index)
+            for item in renders do
+                index <- item.Invoke(comp, builder, index)
+            index
+        )
+
+    [<CustomOperation("childContent")>]
+    member inline _.childContent((render1, render2): struct (AttrRenderFragment * PostRenderFragment), v: string) = render1 ===> render2 >>> (html.text v)
+
+    [<CustomOperation("childContent")>]
+    member inline _.childContent((render1, render2): struct (AttrRenderFragment * PostRenderFragment), v: int) = render1 ===> render2 >>> (html.text v)
+
+    [<CustomOperation("childContent")>]
+    member inline _.childContent((render1, render2): struct (AttrRenderFragment * PostRenderFragment), v: float) = render1 ===> render2 >>> (html.text v)
+
+    [<CustomOperation("childContentRaw")>]
+    member inline _.childContentRaw((render1, render2): struct (AttrRenderFragment * PostRenderFragment), v: string) = render1 ===> render2 >>> (html.raw v)
+
 
 type EltFormBuilder() =
     inherit EltWithChildBuilder("form")
