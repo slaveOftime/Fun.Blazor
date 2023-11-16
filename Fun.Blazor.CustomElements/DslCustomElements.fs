@@ -61,8 +61,6 @@ module DslCustomElements =
             |> ignore
 
 
-        member inline _.Run([<InlineIfLambda>] render: AttrRenderFragment) = base.Run(render)
-
         member inline this.Run([<InlineIfLambda>] render: NodeRenderFragment) =
             NodeRenderFragment(fun comp builder index ->
                 builder.OpenElement(index, (this :> IElementBuilder).Name)

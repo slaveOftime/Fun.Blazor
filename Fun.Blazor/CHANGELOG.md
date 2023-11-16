@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [3.1.1] - 2023-11-16
+
 - Add FunRenderModeAttribute
 - Fix renderMode issue
 

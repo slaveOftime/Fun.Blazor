@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.1.1] - 2023-11-16
+
+- Bump version
+
 ## [3.1.0] - 2023-11-15
 
 - Release for dotnet 8
