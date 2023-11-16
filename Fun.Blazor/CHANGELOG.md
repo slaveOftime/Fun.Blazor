@@ -3,6 +3,7 @@
 ## [Unreleased]
 
 - Add FunInteractiveAutoAttribute and FunInteractiveServerAttribute and FunInteractiveWebAssemblyAttribute
+- Add formName
 
 ## [3.1.1] - 2023-11-16
 

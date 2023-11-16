@@ -312,6 +312,22 @@ type EltFormBuilder() =
     /// Enhanced form handling isn't hierarchical and doesn't flow to child forms:
     [<CustomOperation("dataEnhance")>]
     member inline this.dataEnhance([<InlineIfLambda>] render: AttrRenderFragment) = this.dataEnhance(render, true)
+
+
+    [<CustomOperation("formName")>]
+    member inline _.formName([<InlineIfLambda>] render: AttrRenderFragment, value: string) =
+        struct (render, PostRenderFragment(fun _ builder index ->
+            builder.AddNamedEvent("onsubmit", value)
+            index
+        ))
+
+    [<CustomOperation("formName")>]
+    member inline _.formName((render1, render2): struct (AttrRenderFragment * PostRenderFragment), value: string) =
+        struct (render1, PostRenderFragment(fun comp builder index ->
+            let nextIndex = render2.Invoke(comp, builder, index)
+            builder.AddNamedEvent("onsubmit", value)
+            nextIndex
+        ))
 #endif
 
 
