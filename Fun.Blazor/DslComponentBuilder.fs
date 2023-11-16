@@ -296,7 +296,7 @@ type ComponentWithChildBuilder<'T when 'T :> IComponent>() =
 
     member inline _.For([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> struct (AttrRenderFragment * NodeRenderFragment)) =
         let struct (attr, node) = fn ()
-        attr ==> render, node
+        struct (attr ==> render, node)
 
     member inline _.For((render1, render2): struct (AttrRenderFragment * PostRenderFragment), [<InlineIfLambda>] fn: unit -> NodeRenderFragment) = struct (render1, render2, fn())
 
@@ -570,7 +570,7 @@ type ComponentWithDomAndChildAttrBuilder<'T when 'T :> IComponent>() =
 
     member inline _.For([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> struct (AttrRenderFragment * NodeRenderFragment)) =
         let struct (attr, node) = fn ()
-        attr ==> render, node
+        struct (attr ==> render, node)
 
     member inline _.For((render1, render2): struct (AttrRenderFragment * PostRenderFragment), [<InlineIfLambda>] fn: unit -> NodeRenderFragment) = struct (render1, render2, fn())
 

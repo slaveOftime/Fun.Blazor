@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [3.1.3] - 2023-11-16
+
+- Fix CompnentBuilder
+
 ## [3.1.2] - 2023-11-16
 
 - Add FunInteractiveAutoAttribute and FunInteractiveServerAttribute and FunInteractiveWebAssemblyAttribute

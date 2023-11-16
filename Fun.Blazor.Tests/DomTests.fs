@@ -258,6 +258,27 @@ let ``for loop should work for element`` () =
 
 
 
+[<Fact>]
+let ``should work for component`` () =
+    let context = createTestContext ()
+
+    let demo =
+        MudPaper'() {
+            class' "p-2"
+            style {
+                overflowHidden
+                height "100%"
+            }
+            div { "foo" }
+        }
+
+    let result = context.RenderNode demo
+    result.MarkupMatches("""
+        <div class="mud-paper mud-elevation-1 p-2" style="overflow: hidden; height: 100%; ;">
+          <div>foo</div>
+        </div>
+    """)
+
 
 [<Fact>]
 let ``for loop should work for component`` () =
