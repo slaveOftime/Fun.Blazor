@@ -35,7 +35,6 @@ let commonStyle =
 let commonAttr =
     domAttr {
         data 123
-        asAttrRenderFragment
     }
 
 let sharedButtonAttrs =
