@@ -157,10 +157,20 @@ type FunStreamingComponent() =
 
     override this.Render() = this.Content
 
-type FunRenderModeAttribute(mode) =
+type FunInteractiveAutoAttribute() =
     inherit RenderModeAttribute()
 
-    override _.Mode = mode
+    override _.Mode = Web.RenderMode.InteractiveAuto
+
+type FunInteractiveServerAttribute() =
+    inherit RenderModeAttribute()
+
+    override _.Mode = Web.RenderMode.InteractiveServer
+
+type FunInteractiveWebAssemblyAttribute() =
+    inherit RenderModeAttribute()
+
+    override _.Mode = Web.RenderMode.InteractiveWebAssembly
 #endif
 
 

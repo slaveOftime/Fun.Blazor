@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+- Add FunInteractiveAutoAttribute and FunInteractiveServerAttribute and FunInteractiveWebAssemblyAttribute
+
 ## [3.1.1] - 2023-11-16
 
 - Add FunRenderModeAttribute
