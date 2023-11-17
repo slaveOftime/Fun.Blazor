@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [3.2.1] - 2023-11-17
+
 - Fix hidden attribute
 
 ## [3.2.0] - 2023-11-16

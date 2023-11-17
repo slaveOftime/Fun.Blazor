@@ -176,7 +176,7 @@ let ``Check some attributes`` () =
         }
 
     let result = context.RenderNode demo
-    result.MarkupMatches("""<div hidden="true" type="datetime-local" autocomplete="family-name"></div>""")
+    result.MarkupMatches("""<div hidden type="datetime-local" autocomplete="family-name"></div>""")
 
 
 [<Fact>]
