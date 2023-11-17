@@ -62,6 +62,14 @@ let stage_generateBindingProjects name package nsp patch =
 
     stage name {
         workingDir projectDir
+        whenAny {
+            whenNot { cmdArg "--package" }
+            whenCmd {
+                longName "--package"
+                description "Generate when specified"
+                acceptValues [ projectName ]
+            }
+        }
         noStdRedirectForStep
         run (fun _ ->
             printfn "Fetch latest version"
@@ -218,7 +226,7 @@ pipeline "bindings" {
     description "Generate bindings project"
     stage_generateBindingProjects "Microsoft.Web" "Microsoft.AspNetCore.Components.Web" "Microsoft.AspNetCore.Components" ""
     stage_generateBindingProjects "Microsoft.Authorization" "Microsoft.AspNetCore.Components.Authorization" "Microsoft.AspNetCore.Components.Authorization" ""
-    stage_generateBindingProjects "Microsoft.FluentUI" "Microsoft.Fast.Components.FluentUI" "Microsoft.Fast.Components.FluentUI" ""
+    stage_generateBindingProjects "Microsoft.FluentUI" "Microsoft.FluentUI.AspNetCore.Components" "Microsoft.FluentUI.AspNetCore.Components" ""
     stage_generateBindingProjects "Microsoft.QuickGrid" "Microsoft.AspNetCore.Components.QuickGrid" "Microsoft.AspNetCore.Components.QuickGrid" ""
     stage_generateBindingProjects "AntDesign" "AntDesign" "AntDesign" ""
     stage_generateBindingProjects "MudBlazor" "MudBlazor" "MudBlazor" ""

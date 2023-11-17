@@ -224,6 +224,8 @@ type ColumnBuilder<'FunBlazorGeneric, 'TData when 'FunBlazorGeneric :> Microsoft
     [<CustomOperation("OnCell")>] member inline _.OnCell ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("OnCell" => (System.Func<AntDesign.TableModels.CellData, System.Collections.Generic.Dictionary<System.String, System.Object>>fn))
     [<CustomOperation("OnHeaderCell")>] member inline _.OnHeaderCell ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("OnHeaderCell" => (System.Func<System.Collections.Generic.Dictionary<System.String, System.Object>>fn))
     [<CustomOperation("Filterable")>] member inline _.Filterable ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Filterable" => x)
+    [<CustomOperation("Grouping")>] member inline _.Grouping ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Grouping" => x)
+    [<CustomOperation("GroupBy")>] member inline _.GroupBy ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("GroupBy" => (System.Func<'TData, System.Object>fn))
     [<CustomOperation("Filters")>] member inline _.Filters ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<AntDesign.TableFilter<'TData>>) = render ==> ("Filters" => x)
     [<CustomOperation("DefaultFilters")>] member inline _.DefaultFilters ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<AntDesign.TableFilter>) = render ==> ("DefaultFilters" => x)
     [<CustomOperation("FilterMultiple")>] member inline _.FilterMultiple ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("FilterMultiple" => x)
@@ -1242,7 +1244,7 @@ type SimpleSelectBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.A
     inherit SelectBuilder<'FunBlazorGeneric, System.String, System.String>()
 
 
-type TreeSelectBuilder<'FunBlazorGeneric, 'TItem when 'TItem : not struct and 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+type TreeSelectBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit SelectBaseBuilder<'FunBlazorGeneric, System.String, 'TItem>()
     [<CustomOperation("ShowExpand")>] member inline _.ShowExpand ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("ShowExpand" => x)
     [<CustomOperation("Multiple")>] member inline _.Multiple ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Multiple" => x)
@@ -1279,6 +1281,8 @@ type TreeSelectBuilder<'FunBlazorGeneric, 'TItem when 'TItem : not struct and 'F
     [<CustomOperation("IsLeafExpression")>] member inline _.IsLeafExpression ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("IsLeafExpression" => (System.Func<AntDesign.TreeNode<'TItem>, System.Boolean>fn))
     [<CustomOperation("ChildrenExpression")>] member inline _.ChildrenExpression ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("ChildrenExpression" => (System.Func<AntDesign.TreeNode<'TItem>, System.Collections.Generic.IEnumerable<'TItem>>fn))
     [<CustomOperation("DisabledExpression")>] member inline _.DisabledExpression ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("DisabledExpression" => (System.Func<AntDesign.TreeNode<'TItem>, System.Boolean>fn))
+    [<CustomOperation("Value")>] member inline _.Value ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Value" => x)
+    [<CustomOperation("Values")>] member inline _.Values ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<System.String>) = render ==> ("Values" => x)
 
 type SliderBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit AntInputComponentBaseBuilder<'FunBlazorGeneric, 'TValue>()
@@ -2154,7 +2158,7 @@ type StepsBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCo
 
 type TableBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit AntDomComponentBaseBuilder<'FunBlazorGeneric>()
-    [<CustomOperation("RenderMode")>] member inline _.RenderMode ([<InlineIfLambda>] render: AttrRenderFragment, x: AntDesign.RenderMode) = render ==> ("RenderMode" => x)
+    [<CustomOperation("RerenderStrategy")>] member inline _.RerenderStrategy ([<InlineIfLambda>] render: AttrRenderFragment, x: AntDesign.RerenderStrategy) = render ==> ("RerenderStrategy" => x)
     [<CustomOperation("DataSource")>] member inline _.DataSource ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<'TItem>) = render ==> ("DataSource" => x)
     [<CustomOperation("ChildContent")>] member inline _.ChildContent ([<InlineIfLambda>] render: AttrRenderFragment, fn: 'TItem -> NodeRenderFragment) = render ==> html.renderFragment("ChildContent", fn)
     [<CustomOperation("RowTemplate")>] member inline _.RowTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: AntDesign.TableModels.RowData<'TItem> -> NodeRenderFragment) = render ==> html.renderFragment("RowTemplate", fn)
@@ -2164,7 +2168,6 @@ type TableBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> Microsoft.
     [<CustomOperation("DefaultExpandAllRows")>] member inline _.DefaultExpandAllRows ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("DefaultExpandAllRows" => x)
     [<CustomOperation("DefaultExpandMaxLevel")>] member inline _.DefaultExpandMaxLevel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("DefaultExpandMaxLevel" => x)
     [<CustomOperation("RowExpandable")>] member inline _.RowExpandable ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("RowExpandable" => (System.Func<AntDesign.TableModels.RowData<'TItem>, System.Boolean>fn))
-    [<CustomOperation("RowSelectable")>] member inline _.RowSelectable ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("RowSelectable" => (System.Func<'TItem, System.Boolean>fn))
     [<CustomOperation("TreeChildren")>] member inline _.TreeChildren ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("TreeChildren" => (System.Func<'TItem, System.Collections.Generic.IEnumerable<'TItem>>fn))
     [<CustomOperation("OnChange")>] member inline _.OnChange ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<AntDesign.TableModels.QueryModel<'TItem>>("OnChange", fn)
     [<CustomOperation("OnChange")>] member inline _.OnChange ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<AntDesign.TableModels.QueryModel<'TItem>>("OnChange", fn)
@@ -3073,7 +3076,7 @@ module DslCE =
     type Select'<'TItemValue, 'TItem> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Select<_, _>>)>] () = inherit SelectBuilder<AntDesign.Select<'TItemValue, 'TItem>, 'TItemValue, 'TItem>()
     type EnumSelect'<'TEnum> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.EnumSelect<_>>)>] () = inherit EnumSelectBuilder<AntDesign.EnumSelect<'TEnum>, 'TEnum>()
     type SimpleSelect' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.SimpleSelect>)>] () = inherit SimpleSelectBuilder<AntDesign.SimpleSelect>()
-    type TreeSelect'<'TItem when 'TItem : not struct> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.TreeSelect<_>>)>] () = inherit TreeSelectBuilder<AntDesign.TreeSelect<'TItem>, 'TItem>()
+    type TreeSelect'<'TItem> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.TreeSelect<_>>)>] () = inherit TreeSelectBuilder<AntDesign.TreeSelect<'TItem>, 'TItem>()
     type Slider'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Slider<_>>)>] () = inherit SliderBuilder<AntDesign.Slider<'TValue>, 'TValue>()
     type Descriptions' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Descriptions>)>] () = inherit DescriptionsBuilder<AntDesign.Descriptions>()
     type DescriptionsItem' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.DescriptionsItem>)>] () = inherit DescriptionsItemBuilder<AntDesign.DescriptionsItem>()

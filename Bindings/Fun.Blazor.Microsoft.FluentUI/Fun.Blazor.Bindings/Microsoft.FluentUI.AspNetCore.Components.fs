@@ -1,9 +1,9 @@
-namespace rec Microsoft.Fast.Components.FluentUI.DslInternals
+namespace rec Microsoft.FluentUI.AspNetCore.Components.DslInternals
 
 open FSharp.Data.Adaptive
 open Fun.Blazor
 open Fun.Blazor.Operators
-open Microsoft.Fast.Components.FluentUI.DslInternals
+open Microsoft.FluentUI.AspNetCore.Components.DslInternals
 
 type FluentComponentBaseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
@@ -17,7 +17,7 @@ type FluentComponentBaseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micr
     /// Used to attach any user data object to the component.
     [<CustomOperation("Data")>] member inline _.Data ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Object) = render ==> ("Data" => x)
     /// A reference to the enclosing component.
-    [<CustomOperation("ParentReference")>] member inline _.ParentReference ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.Fast.Components.FluentUI.DesignTokens.Reference) = render ==> ("ParentReference" => x)
+    [<CustomOperation("ParentReference")>] member inline _.ParentReference ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Reference) = render ==> ("ParentReference" => x)
     /// Gets or sets a collection of additional attributes that will be applied to the created element.
     [<CustomOperation("AdditionalAttributes")>] member inline _.AdditionalAttributes ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>) = render ==> ("AdditionalAttributes" => x)
 
@@ -34,7 +34,7 @@ type FluentCalendarBaseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micro
     /// If this is not the case, the days are displayed like the others, but cannot be selected.
     [<CustomOperation("DisabledSelectable")>] member inline _.DisabledSelectable ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("DisabledSelectable" => x)
     /// Type style for the day (numeric or 2-digits).
-    [<CustomOperation("DayFormat")>] member inline _.DayFormat ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.Fast.Components.FluentUI.DayFormat>) = render ==> ("DayFormat" => x)
+    [<CustomOperation("DayFormat")>] member inline _.DayFormat ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.DayFormat>) = render ==> ("DayFormat" => x)
     /// Selected date (two-way bindable).
     [<CustomOperation("Value")>] member inline _.Value ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.DateTime>) = render ==> ("Value" => x)
     /// Selected date (two-way bindable).
@@ -65,7 +65,7 @@ type FluentCalendarBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     /// Fired when the display month changes.
     [<CustomOperation("PickerMonthChanged")>] member inline _.PickerMonthChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<System.DateTime>("PickerMonthChanged", fn)
     /// Defines the appearance of a Day cell.
-    [<CustomOperation("DaysTemplate")>] member inline _.DaysTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.Fast.Components.FluentUI.FluentCalendarDay -> NodeRenderFragment) = render ==> html.renderFragment("DaysTemplate", fn)
+    [<CustomOperation("DaysTemplate")>] member inline _.DaysTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentCalendarDay -> NodeRenderFragment) = render ==> html.renderFragment("DaysTemplate", fn)
 
 type FluentDatePickerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentCalendarBaseBuilder<'FunBlazorGeneric>()
@@ -84,10 +84,10 @@ type FluentDatePickerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microso
     /// Text used on aria-label attribute.
     [<CustomOperation("AriaLabel")>] member inline _.AriaLabel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("AriaLabel" => x)
     /// Gets or sets the design of this input.
-    [<CustomOperation("Appearance")>] member inline _.Appearance ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.Fast.Components.FluentUI.FluentInputAppearance) = render ==> ("Appearance" => x)
+    [<CustomOperation("Appearance")>] member inline _.Appearance ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.FluentInputAppearance) = render ==> ("Appearance" => x)
     /// Disables the form control, ensuring it doesn't participate in form submission.
     [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Disabled" => x)
-    /// The name of the element.Allows access by name from the associated form.
+    /// The name of the element. Allows access by name from the associated form.
     [<CustomOperation("Name")>] member inline _.Name ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Name" => x)
     /// Whether the element needs to have a value
     [<CustomOperation("Required")>] member inline _.Required ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Required" => x)
@@ -107,11 +107,11 @@ type FluentNavMenuItemBaseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Mi
     [<CustomOperation("Href")>] member inline _.Href ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Href" => x)
     /// Gets or sets the icon to display with the link
     /// Use a constant value from the FluentIcon`1 class 
-    [<CustomOperation("Icon")>] member inline _.Icon ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.Fast.Components.FluentUI.Icon) = render ==> ("Icon" => x)
+    [<CustomOperation("Icon")>] member inline _.Icon ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Icon) = render ==> ("Icon" => x)
     /// Called when the user attempts to execute the default action of a menu item.
-    [<CustomOperation("OnAction")>] member inline _.OnAction ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.Fast.Components.FluentUI.NavMenuActionArgs>("OnAction", fn)
+    [<CustomOperation("OnAction")>] member inline _.OnAction ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.FluentUI.AspNetCore.Components.NavMenuActionArgs>("OnAction", fn)
     /// Called when the user attempts to execute the default action of a menu item.
-    [<CustomOperation("OnAction")>] member inline _.OnAction ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.Fast.Components.FluentUI.NavMenuActionArgs>("OnAction", fn)
+    [<CustomOperation("OnAction")>] member inline _.OnAction ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.FluentUI.AspNetCore.Components.NavMenuActionArgs>("OnAction", fn)
     /// Gets or sets if the item is selected.
     [<CustomOperation("Selected")>] member inline _.Selected ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Selected" => x)
     /// Gets or sets if the item is selected.
@@ -154,9 +154,9 @@ type FluentNavBaseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     /// Possible values: _blank | _self | _parent | _top.
     [<CustomOperation("Target")>] member inline _.Target ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Target" => x)
     /// Icon to use if set.
-    [<CustomOperation("Icon")>] member inline _.Icon ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.Fast.Components.FluentUI.Icon) = render ==> ("Icon" => x)
+    [<CustomOperation("Icon")>] member inline _.Icon ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Icon) = render ==> ("Icon" => x)
     /// The color of the icon. It supports the theme colors, default value uses the themes drawer icon color.
-    [<CustomOperation("IconColor")>] member inline _.IconColor ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.Fast.Components.FluentUI.Color) = render ==> ("IconColor" => x)
+    [<CustomOperation("IconColor")>] member inline _.IconColor ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Color) = render ==> ("IconColor" => x)
     /// If true, the button will be disabled.
     [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Disabled" => x)
     /// Class names to use to indicate the item is active, separated by space.
@@ -188,7 +188,7 @@ type FluentNavGroupBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     /// Needs to be a valid CSS value.
     [<CustomOperation("Gap")>] member inline _.Gap ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Gap" => x)
     /// If set, overrides the default expand icon.
-    [<CustomOperation("ExpandIcon")>] member inline _.ExpandIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.Fast.Components.FluentUI.Icon) = render ==> ("ExpandIcon" => x)
+    [<CustomOperation("ExpandIcon")>] member inline _.ExpandIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Icon) = render ==> ("ExpandIcon" => x)
     /// Allows for specific markup and styling to be applied for the group title 
     /// When using this, the containded FluentNavLinks and FluentNavGroups need to be placed in a ChildContent tag.
     /// When specifying both Title and TitleTemplate, both will be rendered.
@@ -222,7 +222,7 @@ type FluentAccordionBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsof
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
     /// Controls the expand mode of the Accordion, either allowing
     /// single or multiple item expansion. .
-    [<CustomOperation("ExpandMode")>] member inline _.ExpandMode ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.Fast.Components.FluentUI.AccordionExpandMode>) = render ==> ("ExpandMode" => x)
+    [<CustomOperation("ExpandMode")>] member inline _.ExpandMode ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.AccordionExpandMode>) = render ==> ("ExpandMode" => x)
     /// Gets or sets the id of the active accordion item
     [<CustomOperation("ActiveId")>] member inline _.ActiveId ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ActiveId" => x)
     /// Gets or sets the id of the active accordion item
@@ -232,14 +232,36 @@ type FluentAccordionBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsof
     /// Gets or sets a callback that updates the bound value.
     [<CustomOperation("ActiveIdChanged")>] member inline _.ActiveIdChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<System.String>("ActiveIdChanged", fn)
     /// Gets or sets a callback when a accordion item is changed .
-    [<CustomOperation("OnAccordionItemChange")>] member inline _.OnAccordionItemChange ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.Fast.Components.FluentUI.FluentAccordionItem>("OnAccordionItemChange", fn)
+    [<CustomOperation("OnAccordionItemChange")>] member inline _.OnAccordionItemChange ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.FluentUI.AspNetCore.Components.FluentAccordionItem>("OnAccordionItemChange", fn)
     /// Gets or sets a callback when a accordion item is changed .
-    [<CustomOperation("OnAccordionItemChange")>] member inline _.OnAccordionItemChange ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.Fast.Components.FluentUI.FluentAccordionItem>("OnAccordionItemChange", fn)
+    [<CustomOperation("OnAccordionItemChange")>] member inline _.OnAccordionItemChange ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.FluentUI.AspNetCore.Components.FluentAccordionItem>("OnAccordionItemChange", fn)
 
 type FluentAccordionItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
     /// Gets or sets the heading of the accordion item.
+    /// Use either this or the HeadingTemplate parameter."/>
+    /// If both are set, this parameter will be used.
     [<CustomOperation("Heading")>] member inline _.Heading ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Heading" => x)
+    /// Gets or sets the heading content of the accordion item.
+    /// Use either this or the Heading parameter."/>
+    /// If both are set, this parameter will not be used.
+    [<CustomOperation("HeadingTemplate")>] member inline _.HeadingTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("HeadingTemplate", fragment)
+    /// Gets or sets the heading content of the accordion item.
+    /// Use either this or the Heading parameter."/>
+    /// If both are set, this parameter will not be used.
+    [<CustomOperation("HeadingTemplate")>] member inline _.HeadingTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("HeadingTemplate", fragment { yield! fragments })
+    /// Gets or sets the heading content of the accordion item.
+    /// Use either this or the Heading parameter."/>
+    /// If both are set, this parameter will not be used.
+    [<CustomOperation("HeadingTemplate")>] member inline _.HeadingTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("HeadingTemplate", html.text x)
+    /// Gets or sets the heading content of the accordion item.
+    /// Use either this or the Heading parameter."/>
+    /// If both are set, this parameter will not be used.
+    [<CustomOperation("HeadingTemplate")>] member inline _.HeadingTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("HeadingTemplate", html.text x)
+    /// Gets or sets the heading content of the accordion item.
+    /// Use either this or the Heading parameter."/>
+    /// If both are set, this parameter will not be used.
+    [<CustomOperation("HeadingTemplate")>] member inline _.HeadingTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("HeadingTemplate", html.text x)
     /// Expands or collapses the item.
     [<CustomOperation("Expanded")>] member inline _.Expanded ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("Expanded" => x)
     /// Configures the level of the
@@ -260,10 +282,10 @@ type FluentAnchoredRegionBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Mic
     /// Dynamic decides placement based on available space
     /// Uncontrolled (default) does not control placement on the horizontal axis
     /// See 
-    [<CustomOperation("HorizontalPositioningMode")>] member inline _.HorizontalPositioningMode ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.Fast.Components.FluentUI.AxisPositioningMode>) = render ==> ("HorizontalPositioningMode" => x)
+    [<CustomOperation("HorizontalPositioningMode")>] member inline _.HorizontalPositioningMode ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.AxisPositioningMode>) = render ==> ("HorizontalPositioningMode" => x)
     /// The default horizontal position of the region relative to the anchor element
     /// Default is unset. See 
-    [<CustomOperation("HorizontalDefaultPosition")>] member inline _.HorizontalDefaultPosition ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.Fast.Components.FluentUI.HorizontalPosition>) = render ==> ("HorizontalDefaultPosition" => x)
+    [<CustomOperation("HorizontalDefaultPosition")>] member inline _.HorizontalDefaultPosition ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.HorizontalPosition>) = render ==> ("HorizontalDefaultPosition" => x)
     /// Whether the region remains in the viewport (ie. detaches from the anchor) on the horizontal axis
     [<CustomOperation("HorizontalViewportLock")>] member inline _.HorizontalViewportLock ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("HorizontalViewportLock" => x)
     /// Whether the region overlaps the anchor on the horizontal axis. Default is false which places the region adjacent to the anchor element.
@@ -273,16 +295,16 @@ type FluentAnchoredRegionBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Mic
     [<CustomOperation("HorizontalThreshold")>] member inline _.HorizontalThreshold ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("HorizontalThreshold" => x)
     /// Defines how the width of the region is calculated
     /// Default is "Content". See 
-    [<CustomOperation("HorizontalScaling")>] member inline _.HorizontalScaling ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.Fast.Components.FluentUI.AxisScalingMode>) = render ==> ("HorizontalScaling" => x)
+    [<CustomOperation("HorizontalScaling")>] member inline _.HorizontalScaling ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.AxisScalingMode>) = render ==> ("HorizontalScaling" => x)
     /// Sets what logic the component uses to determine vertical placement.
     /// Locktodefault forces the default position
     /// Dynamic decides placement based on available space
     /// Uncontrolled (default) does not control placement on the vertical axis
     /// See 
-    [<CustomOperation("VerticalPositioningMode")>] member inline _.VerticalPositioningMode ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.Fast.Components.FluentUI.AxisPositioningMode>) = render ==> ("VerticalPositioningMode" => x)
+    [<CustomOperation("VerticalPositioningMode")>] member inline _.VerticalPositioningMode ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.AxisPositioningMode>) = render ==> ("VerticalPositioningMode" => x)
     /// The default vertical position of the region relative to the anchor element
     /// Default is "Unset".See 
-    [<CustomOperation("VerticalDefaultPosition")>] member inline _.VerticalDefaultPosition ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.Fast.Components.FluentUI.VerticalPosition>) = render ==> ("VerticalDefaultPosition" => x)
+    [<CustomOperation("VerticalDefaultPosition")>] member inline _.VerticalDefaultPosition ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.VerticalPosition>) = render ==> ("VerticalDefaultPosition" => x)
     /// Whether the region remains in the viewport (ie. detaches from the anchor) on the vertical axis
     [<CustomOperation("VerticalViewportLock")>] member inline _.VerticalViewportLock ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("VerticalViewportLock" => x)
     /// Whether the region overlaps the anchor on the vertical axis
@@ -293,15 +315,15 @@ type FluentAnchoredRegionBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Mic
     [<CustomOperation("VerticalThreshold")>] member inline _.VerticalThreshold ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("VerticalThreshold" => x)
     /// Defines how the height of the region is calculated
     /// Default is "Content". See 
-    [<CustomOperation("VerticalScaling")>] member inline _.VerticalScaling ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.Fast.Components.FluentUI.AxisScalingMode>) = render ==> ("VerticalScaling" => x)
+    [<CustomOperation("VerticalScaling")>] member inline _.VerticalScaling ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.AxisScalingMode>) = render ==> ("VerticalScaling" => x)
     /// Whether the region is positioned using css "position: fixed".
     /// Otherwise the region uses "position: absolute".
     /// Fixed placement allows the region to break out of parent containers,
     [<CustomOperation("FixedPlacement")>] member inline _.FixedPlacement ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("FixedPlacement" => x)
     /// Defines what triggers the anchored region to revaluate positioning
     /// Default is "Anchor". In 'anchor' mode only anchor resizes and attribute changes will provoke an update. In 'auto' mode the component also updates because of - any scroll event on the document, window resizes and viewport resizes. See 
-    [<CustomOperation("AutoUpdateMode")>] member inline _.AutoUpdateMode ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.Fast.Components.FluentUI.AutoUpdateMode>) = render ==> ("AutoUpdateMode" => x)
-    [<CustomOperation("Shadow")>] member inline _.Shadow ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.Fast.Components.FluentUI.ElevationShadow) = render ==> ("Shadow" => x)
+    [<CustomOperation("AutoUpdateMode")>] member inline _.AutoUpdateMode ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.AutoUpdateMode>) = render ==> ("AutoUpdateMode" => x)
+    [<CustomOperation("Shadow")>] member inline _.Shadow ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.ElevationShadow) = render ==> ("Shadow" => x)
 
 type FluentAnchorBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -325,11 +347,11 @@ type FluentAnchorBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.A
     [<CustomOperation("Type")>] member inline _.Type ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Type" => x)
     /// Gets or sets the visual appearance. See 
     /// Defaults to 
-    [<CustomOperation("Appearance")>] member inline _.Appearance ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.Fast.Components.FluentUI.Appearance>) = render ==> ("Appearance" => x)
+    [<CustomOperation("Appearance")>] member inline _.Appearance ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.Appearance>) = render ==> ("Appearance" => x)
     /// Icon displayed at the start of anchor content.
-    [<CustomOperation("IconStart")>] member inline _.IconStart ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.Fast.Components.FluentUI.Icon) = render ==> ("IconStart" => x)
+    [<CustomOperation("IconStart")>] member inline _.IconStart ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Icon) = render ==> ("IconStart" => x)
     /// Icon displayed at the end of anchor content.
-    [<CustomOperation("IconEnd")>] member inline _.IconEnd ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.Fast.Components.FluentUI.Icon) = render ==> ("IconEnd" => x)
+    [<CustomOperation("IconEnd")>] member inline _.IconEnd ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Icon) = render ==> ("IconEnd" => x)
 
 type FluentBadgeBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -343,7 +365,7 @@ type FluentBadgeBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.As
     [<CustomOperation("Circular")>] member inline _.Circular ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Circular" => x)
     /// Gets or sets the visual appearance. See 
     /// Possible values are Accent, Neutral (default) or Lightweight
-    [<CustomOperation("Appearance")>] member inline _.Appearance ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.Fast.Components.FluentUI.Appearance>) = render ==> ("Appearance" => x)
+    [<CustomOperation("Appearance")>] member inline _.Appearance ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.Appearance>) = render ==> ("Appearance" => x)
     /// Gets or sets the width of the component.
     [<CustomOperation("Width")>] member inline _.Width ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Width" => x)
     /// Gets or sets the height of the component.
@@ -352,7 +374,7 @@ type FluentBadgeBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.As
     [<CustomOperation("DismissTitle")>] member inline _.DismissTitle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("DismissTitle" => x)
     /// Gets or sets the icon to be displayed when the badge is cancellable.
     /// By default, a small cross icon is displayed.
-    [<CustomOperation("DismissIcon")>] member inline _.DismissIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.Fast.Components.FluentUI.Icon) = render ==> ("DismissIcon" => x)
+    [<CustomOperation("DismissIcon")>] member inline _.DismissIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Icon) = render ==> ("DismissIcon" => x)
     /// Event callback for when the badge is clicked.
     [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs>("OnClick", fn)
     /// Event callback for when the badge is clicked.
@@ -404,14 +426,6 @@ type FluentInputBaseBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :>
     [<CustomOperation("DisplayName")>] member inline _.DisplayName ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("DisplayName" => x)
     /// Determines if the element should receive document focus on page load.
     [<CustomOperation("Autofocus")>] member inline _.Autofocus ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Autofocus" => x)
-    /// An event that is called after the Value property has been changed
-    /// through data binding. This is equivalent to @bind-Value:after which is supported
-    /// from .Net 7, but not available in .Net 6.
-    [<CustomOperation("AfterBindValue")>] member inline _.AfterBindValue ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<'TValue>("AfterBindValue", fn)
-    /// An event that is called after the Value property has been changed
-    /// through data binding. This is equivalent to @bind-Value:after which is supported
-    /// from .Net 7, but not available in .Net 6.
-    [<CustomOperation("AfterBindValue")>] member inline _.AfterBindValue ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<'TValue>("AfterBindValue", fn)
     /// The short hint displayed in the input before the user enters a value.
     [<CustomOperation("Placeholder")>] member inline _.Placeholder ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Placeholder" => x)
     /// Change the content of this input field when the user write text (based on 'OnInput' HTML event).
@@ -426,7 +440,7 @@ type FluentCheckboxBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
 type FluentTimePickerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentInputBaseBuilder<'FunBlazorGeneric, System.Nullable<System.DateTime>>()
     /// Gets or sets the design of this input.
-    [<CustomOperation("Appearance")>] member inline _.Appearance ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.Fast.Components.FluentUI.FluentInputAppearance) = render ==> ("Appearance" => x)
+    [<CustomOperation("Appearance")>] member inline _.Appearance ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.FluentInputAppearance) = render ==> ("Appearance" => x)
 
 type FluentNumberFieldBuilder<'FunBlazorGeneric, 'TValue when 'TValue : (new : unit -> 'TValue) and 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentInputBaseBuilder<'FunBlazorGeneric, 'TValue>()
@@ -447,7 +461,7 @@ type FluentNumberFieldBuilder<'FunBlazorGeneric, 'TValue when 'TValue : (new : u
     /// Gets or sets the minimum value
     [<CustomOperation("Min")>] member inline _.Min ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Min" => x)
     /// Gets or sets the Appearance
-    [<CustomOperation("Appearance")>] member inline _.Appearance ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.Fast.Components.FluentUI.FluentInputAppearance) = render ==> ("Appearance" => x)
+    [<CustomOperation("Appearance")>] member inline _.Appearance ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.FluentInputAppearance) = render ==> ("Appearance" => x)
     /// Gets or sets the error message to show when the field can not be parsed
     [<CustomOperation("ParsingErrorMessage")>] member inline _.ParsingErrorMessage ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ParsingErrorMessage" => x)
 
@@ -455,7 +469,7 @@ type FluentNumberFieldBuilder<'FunBlazorGeneric, 'TValue when 'TValue : (new : u
 type FluentRadioGroupBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentInputBaseBuilder<'FunBlazorGeneric, 'TValue>()
     /// Gets or sets the orientation of the group. See Orientation
-    [<CustomOperation("Orientation")>] member inline _.Orientation ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.Fast.Components.FluentUI.Orientation>) = render ==> ("Orientation" => x)
+    [<CustomOperation("Orientation")>] member inline _.Orientation ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.Orientation>) = render ==> ("Orientation" => x)
 
 type FluentSearchBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentInputBaseBuilder<'FunBlazorGeneric, System.String>()
@@ -472,7 +486,7 @@ type FluentSearchBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.A
     /// Gets or sets the if spellcheck should be used
     [<CustomOperation("Spellcheck")>] member inline _.Spellcheck ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("Spellcheck" => x)
     /// Gets or sets the visual appearance. See Appearance
-    [<CustomOperation("Appearance")>] member inline _.Appearance ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.Fast.Components.FluentUI.FluentInputAppearance) = render ==> ("Appearance" => x)
+    [<CustomOperation("Appearance")>] member inline _.Appearance ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.FluentInputAppearance) = render ==> ("Appearance" => x)
 
 type FluentSliderBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentInputBaseBuilder<'FunBlazorGeneric, 'TValue>()
@@ -483,9 +497,9 @@ type FluentSliderBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Mi
     /// Gets or sets the slider's step value
     [<CustomOperation("Step")>] member inline _.Step ([<InlineIfLambda>] render: AttrRenderFragment, x: 'TValue) = render ==> ("Step" => x)
     /// Gets or sets the orentation of the slider. See Orientation
-    [<CustomOperation("Orientation")>] member inline _.Orientation ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.Fast.Components.FluentUI.Orientation>) = render ==> ("Orientation" => x)
+    [<CustomOperation("Orientation")>] member inline _.Orientation ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.Orientation>) = render ==> ("Orientation" => x)
     /// The selection mode.
-    [<CustomOperation("Mode")>] member inline _.Mode ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.Fast.Components.FluentUI.SliderMode>) = render ==> ("Mode" => x)
+    [<CustomOperation("Mode")>] member inline _.Mode ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.SliderMode>) = render ==> ("Mode" => x)
 
 type FluentSwitchBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentInputBaseBuilder<'FunBlazorGeneric, System.Boolean>()
@@ -497,7 +511,7 @@ type FluentSwitchBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.A
 type FluentTextAreaBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentInputBaseBuilder<'FunBlazorGeneric, System.String>()
     /// Gets or sets if the text area is resizeable. See TextAreaResize
-    [<CustomOperation("Resize")>] member inline _.Resize ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.Fast.Components.FluentUI.TextAreaResize>) = render ==> ("Resize" => x)
+    [<CustomOperation("Resize")>] member inline _.Resize ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.TextAreaResize>) = render ==> ("Resize" => x)
     /// The id the form the element is associated to
     [<CustomOperation("Form")>] member inline _.Form ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Form" => x)
     /// Allows associating a datalist to the element by id.
@@ -514,12 +528,12 @@ type FluentTextAreaBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     /// but the UA.
     [<CustomOperation("Spellcheck")>] member inline _.Spellcheck ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("Spellcheck" => x)
     /// Gets or sets the visual appearance. See FluentInputAppearance
-    [<CustomOperation("Appearance")>] member inline _.Appearance ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.Fast.Components.FluentUI.FluentInputAppearance) = render ==> ("Appearance" => x)
+    [<CustomOperation("Appearance")>] member inline _.Appearance ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.FluentInputAppearance) = render ==> ("Appearance" => x)
 
 type FluentTextFieldBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentInputBaseBuilder<'FunBlazorGeneric, System.String>()
     /// Gets or sets the text filed type. See TextFieldType
-    [<CustomOperation("TextFieldType")>] member inline _.TextFieldType ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.Fast.Components.FluentUI.TextFieldType>) = render ==> ("TextFieldType" => x)
+    [<CustomOperation("TextFieldType")>] member inline _.TextFieldType ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.TextFieldType>) = render ==> ("TextFieldType" => x)
     /// Allows associating a datalist to the element by id.
     [<CustomOperation("DataList")>] member inline _.DataList ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("DataList" => x)
     /// Gets or sets the maximum length
@@ -533,7 +547,7 @@ type FluentTextFieldBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsof
     /// Gets or sets the if spellcheck should be used
     [<CustomOperation("Spellcheck")>] member inline _.Spellcheck ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("Spellcheck" => x)
     /// Gets or sets the visual appearance. See FluentInputAppearance
-    [<CustomOperation("Appearance")>] member inline _.Appearance ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.Fast.Components.FluentUI.FluentInputAppearance) = render ==> ("Appearance" => x)
+    [<CustomOperation("Appearance")>] member inline _.Appearance ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.FluentInputAppearance) = render ==> ("Appearance" => x)
     /// Specifies whether a form or an input field should have autocomplete "on" or "off" or another value.
     /// An Id value must be set to use this property.
     [<CustomOperation("AutoComplete")>] member inline _.AutoComplete ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("AutoComplete" => x)
@@ -568,7 +582,7 @@ type FluentBreadcrumbItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Mic
     /// See a element for more information.
     [<CustomOperation("Type")>] member inline _.Type ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Type" => x)
     /// Gets or sets the visual appearance. See 
-    [<CustomOperation("Appearance")>] member inline _.Appearance ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.Fast.Components.FluentUI.Appearance>) = render ==> ("Appearance" => x)
+    [<CustomOperation("Appearance")>] member inline _.Appearance ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.Appearance>) = render ==> ("Appearance" => x)
 
 type FluentButtonBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -589,20 +603,20 @@ type FluentButtonBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.A
     [<CustomOperation("Target")>] member inline _.Target ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Target" => x)
     /// The button type. See ButtonType for more details.
     /// Default is ButtonType.Button"
-    [<CustomOperation("Type")>] member inline _.Type ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.Fast.Components.FluentUI.ButtonType>) = render ==> ("Type" => x)
+    [<CustomOperation("Type")>] member inline _.Type ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.ButtonType>) = render ==> ("Type" => x)
     /// The value of the element
     [<CustomOperation("Value")>] member inline _.Value ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Value" => x)
     /// The element's current value 
     [<CustomOperation("CurrentValue")>] member inline _.CurrentValue ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("CurrentValue" => x)
     /// Disables the form control, ensuring it doesn't participate in form submission
     [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Disabled" => x)
-    /// The name of the element.Allows access by name from the associated form.
+    /// The name of the element. Allows access by name from the associated form.
     [<CustomOperation("Name")>] member inline _.Name ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Name" => x)
     /// The element needs to have a value
     [<CustomOperation("Required")>] member inline _.Required ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Required" => x)
     /// Gets or sets the visual appearance. See 
     /// Defaults to 
-    [<CustomOperation("Appearance")>] member inline _.Appearance ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.Fast.Components.FluentUI.Appearance>) = render ==> ("Appearance" => x)
+    [<CustomOperation("Appearance")>] member inline _.Appearance ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.Appearance>) = render ==> ("Appearance" => x)
     /// Background color of this button (overrides the Appearance property).
     /// Set the value "rgba(0, 0, 0, 0)" to display a transparent button.
     [<CustomOperation("BackgroundColor")>] member inline _.BackgroundColor ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("BackgroundColor" => x)
@@ -611,9 +625,9 @@ type FluentButtonBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.A
     /// Display a progress ring and disable the button.
     [<CustomOperation("Loading")>] member inline _.Loading ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Loading" => x)
     /// Icon displayed at the start of button content.
-    [<CustomOperation("IconStart")>] member inline _.IconStart ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.Fast.Components.FluentUI.Icon) = render ==> ("IconStart" => x)
+    [<CustomOperation("IconStart")>] member inline _.IconStart ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Icon) = render ==> ("IconStart" => x)
     /// Icon displayed at the end of button content.
-    [<CustomOperation("IconEnd")>] member inline _.IconEnd ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.Fast.Components.FluentUI.Icon) = render ==> ("IconEnd" => x)
+    [<CustomOperation("IconEnd")>] member inline _.IconEnd ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Icon) = render ==> ("IconEnd" => x)
     /// Title of the button: the text usually displayed in a 'tooltip' popup when the mouse is over the button.
     [<CustomOperation("Title")>] member inline _.Title ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
     /// Command executed when the user clicks on the button.
@@ -630,25 +644,6 @@ type FluentCardBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.Asp
     [<CustomOperation("Width")>] member inline _.Width ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Width" => x)
     /// Specifies the height of the card. Must be a valid CSS measurement.
     [<CustomOperation("Height")>] member inline _.Height ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Height" => x)
-
-type FluentCodeEditorBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
-    /// Language used by the editor: csharp, javascript, ...
-    [<CustomOperation("Language")>] member inline _.Language ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Language" => x)
-    /// Height of this component.
-    [<CustomOperation("Height")>] member inline _.Height ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Height" => x)
-    /// Width of this component.
-    [<CustomOperation("Width")>] member inline _.Width ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Width" => x)
-    /// Theme of the editor (Light or Dark).
-    [<CustomOperation("IsDarkMode")>] member inline _.IsDarkMode ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("IsDarkMode" => x)
-    /// Gets or sets the value of the input. This should be used with two-way binding.
-    [<CustomOperation("Value")>] member inline _.Value ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Value" => x)
-    /// Gets or sets the value of the input. This should be used with two-way binding.
-    [<CustomOperation("Value'")>] member inline _.Value' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.String * (System.String -> unit)) = render ==> html.bind("Value", valueFn)
-    /// Gets or sets a callback that updates the bound value.
-    [<CustomOperation("ValueChanged")>] member inline _.ValueChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<System.String>("ValueChanged", fn)
-    /// Gets or sets a callback that updates the bound value.
-    [<CustomOperation("ValueChanged")>] member inline _.ValueChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<System.String>("ValueChanged", fn)
 
 type FluentCollapsibleRegionBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -688,11 +683,11 @@ type FluentCounterBadgeBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micro
     /// By default, this value is 50 to center the badge.
     [<CustomOperation("BottomPosition")>] member inline _.BottomPosition ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("BottomPosition" => x)
     /// Default design of this badge using colors from theme.
-    [<CustomOperation("Appearance")>] member inline _.Appearance ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.Fast.Components.FluentUI.Appearance>) = render ==> ("Appearance" => x)
+    [<CustomOperation("Appearance")>] member inline _.Appearance ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.Appearance>) = render ==> ("Appearance" => x)
     /// Background color to replace the color inferred from property.
-    [<CustomOperation("BackgroundColor")>] member inline _.BackgroundColor ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.Fast.Components.FluentUI.Color>) = render ==> ("BackgroundColor" => x)
+    [<CustomOperation("BackgroundColor")>] member inline _.BackgroundColor ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.Color>) = render ==> ("BackgroundColor" => x)
     /// Font color to replace the color inferred from property.
-    [<CustomOperation("Color")>] member inline _.Color ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.Fast.Components.FluentUI.Color>) = render ==> ("Color" => x)
+    [<CustomOperation("Color")>] member inline _.Color ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.Color>) = render ==> ("Color" => x)
     /// If the counter badge should be displayed when the count is zero.
     /// Defaults to false.
     ///             
@@ -716,7 +711,7 @@ type FluentDataGridBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric 
     /// A callback that supplies data for the rid.
     ///             
     /// You should supply either Items or ItemsProvider, but not both.
-    [<CustomOperation("ItemsProvider")>] member inline _.ItemsProvider ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.Fast.Components.FluentUI.GridItemsProvider<'TGridItem>) = render ==> ("ItemsProvider" => x)
+    [<CustomOperation("ItemsProvider")>] member inline _.ItemsProvider ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.GridItemsProvider<'TGridItem>) = render ==> ("ItemsProvider" => x)
     /// If true, the grid will be rendered with virtualization. This is normally used in conjunction with
     /// scrolling and causes the grid to fetch and render only the data around the current scroll viewport.
     /// This can greatly improve the performance when scrolling through large data sets.
@@ -748,22 +743,22 @@ type FluentDataGridBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric 
     ///             
     /// This is normally used in conjunction with a FluentPaginator component or some other UI logic
     /// that displays and updates the supplied PaginationState instance.
-    [<CustomOperation("Pagination")>] member inline _.Pagination ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.Fast.Components.FluentUI.PaginationState) = render ==> ("Pagination" => x)
+    [<CustomOperation("Pagination")>] member inline _.Pagination ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.PaginationState) = render ==> ("Pagination" => x)
     /// When true the component will not add itself to the tab queue. Default is false.
     [<CustomOperation("NoTabbing")>] member inline _.NoTabbing ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("NoTabbing" => x)
     /// Whether the grid should automatically generate a header row and its type
     /// See GenerateHeaderOption
-    [<CustomOperation("GenerateHeader")>] member inline _.GenerateHeader ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.Fast.Components.FluentUI.GenerateHeaderOption>) = render ==> ("GenerateHeader" => x)
+    [<CustomOperation("GenerateHeader")>] member inline _.GenerateHeader ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.GenerateHeaderOption>) = render ==> ("GenerateHeader" => x)
     /// Gets or sets the value that gets applied to the css gridTemplateColumns attribute of child rows
     [<CustomOperation("GridTemplateColumns")>] member inline _.GridTemplateColumns ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("GridTemplateColumns" => x)
     /// Gets or sets a callback when a row is focused
-    [<CustomOperation("OnRowFocus")>] member inline _.OnRowFocus ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.Fast.Components.FluentUI.FluentDataGridRow<'TGridItem>>("OnRowFocus", fn)
+    [<CustomOperation("OnRowFocus")>] member inline _.OnRowFocus ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.FluentUI.AspNetCore.Components.FluentDataGridRow<'TGridItem>>("OnRowFocus", fn)
     /// Gets or sets a callback when a row is focused
-    [<CustomOperation("OnRowFocus")>] member inline _.OnRowFocus ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.Fast.Components.FluentUI.FluentDataGridRow<'TGridItem>>("OnRowFocus", fn)
+    [<CustomOperation("OnRowFocus")>] member inline _.OnRowFocus ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.FluentUI.AspNetCore.Components.FluentDataGridRow<'TGridItem>>("OnRowFocus", fn)
     /// Gets or sets a callback when a row is focused
-    [<CustomOperation("OnCellFocus")>] member inline _.OnCellFocus ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.Fast.Components.FluentUI.FluentDataGridCell<'TGridItem>>("OnCellFocus", fn)
+    [<CustomOperation("OnCellFocus")>] member inline _.OnCellFocus ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.FluentUI.AspNetCore.Components.FluentDataGridCell<'TGridItem>>("OnCellFocus", fn)
     /// Gets or sets a callback when a row is focused
-    [<CustomOperation("OnCellFocus")>] member inline _.OnCellFocus ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.Fast.Components.FluentUI.FluentDataGridCell<'TGridItem>>("OnCellFocus", fn)
+    [<CustomOperation("OnCellFocus")>] member inline _.OnCellFocus ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.FluentUI.AspNetCore.Components.FluentDataGridCell<'TGridItem>>("OnCellFocus", fn)
     /// Optionally defines a class to be applied to a rendered row. 
     [<CustomOperation("RowClass")>] member inline _.RowClass ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("RowClass" => (System.Func<'TGridItem, System.String>fn))
     /// Optionally defines a style to be applied to a rendered row. 
@@ -784,7 +779,7 @@ type FluentDataGridCellBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGene
     /// Gets or sets the reference to the item that holds this cell's values
     [<CustomOperation("Item")>] member inline _.Item ([<InlineIfLambda>] render: AttrRenderFragment, x: 'TGridItem) = render ==> ("Item" => x)
     /// Gets or sets the cell type. See DataGridCellType
-    [<CustomOperation("CellType")>] member inline _.CellType ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.Fast.Components.FluentUI.DataGridCellType>) = render ==> ("CellType" => x)
+    [<CustomOperation("CellType")>] member inline _.CellType ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.DataGridCellType>) = render ==> ("CellType" => x)
     /// The column index of the cell.
     /// This will be applied to the css grid-column-index value
     /// applied to the cell
@@ -800,9 +795,9 @@ type FluentDataGridRowBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGener
     /// String that gets applied to the css gridTemplateColumns attribute for the row
     [<CustomOperation("GridTemplateColumns")>] member inline _.GridTemplateColumns ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("GridTemplateColumns" => x)
     /// Gets or sets the type of row. See DataGridRowType
-    [<CustomOperation("RowType")>] member inline _.RowType ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.Fast.Components.FluentUI.DataGridRowType>) = render ==> ("RowType" => x)
-    [<CustomOperation("OnCellFocus")>] member inline _.OnCellFocus ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.Fast.Components.FluentUI.FluentDataGridCell<'TGridItem>>("OnCellFocus", fn)
-    [<CustomOperation("OnCellFocus")>] member inline _.OnCellFocus ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.Fast.Components.FluentUI.FluentDataGridCell<'TGridItem>>("OnCellFocus", fn)
+    [<CustomOperation("RowType")>] member inline _.RowType ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.DataGridRowType>) = render ==> ("RowType" => x)
+    [<CustomOperation("OnCellFocus")>] member inline _.OnCellFocus ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.FluentUI.AspNetCore.Components.FluentDataGridCell<'TGridItem>>("OnCellFocus", fn)
+    [<CustomOperation("OnCellFocus")>] member inline _.OnCellFocus ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.FluentUI.AspNetCore.Components.FluentDataGridCell<'TGridItem>>("OnCellFocus", fn)
 
 type FluentDesignSystemProviderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -812,7 +807,7 @@ type FluentDesignSystemProviderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric 
     [<CustomOperation("NeutralBaseColor")>] member inline _.NeutralBaseColor ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("NeutralBaseColor" => x)
     [<CustomOperation("Density")>] member inline _.Density ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("Density" => x)
     [<CustomOperation("DesignUnit")>] member inline _.DesignUnit ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("DesignUnit" => x)
-    [<CustomOperation("Direction")>] member inline _.Direction ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.Fast.Components.FluentUI.LocalizationDirection>) = render ==> ("Direction" => x)
+    [<CustomOperation("Direction")>] member inline _.Direction ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.LocalizationDirection>) = render ==> ("Direction" => x)
     [<CustomOperation("BaseHeightMultiplier")>] member inline _.BaseHeightMultiplier ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("BaseHeightMultiplier" => x)
     [<CustomOperation("BaseHorizontalSpacingMultiplier")>] member inline _.BaseHorizontalSpacingMultiplier ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("BaseHorizontalSpacingMultiplier" => x)
     [<CustomOperation("ControlCornerRadius")>] member inline _.ControlCornerRadius ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("ControlCornerRadius" => x)
@@ -893,11 +888,11 @@ type FluentDialogBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.A
     /// The label surfaced to assistive technologies.
     [<CustomOperation("AriaLabel")>] member inline _.AriaLabel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("AriaLabel" => x)
     /// The instance containing the programmatic API for the dialog.
-    [<CustomOperation("Instance")>] member inline _.Instance ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.Fast.Components.FluentUI.DialogInstance) = render ==> ("Instance" => x)
+    [<CustomOperation("Instance")>] member inline _.Instance ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.DialogInstance) = render ==> ("Instance" => x)
     /// The event callback invoked to return the dialog result.
-    [<CustomOperation("OnDialogResult")>] member inline _.OnDialogResult ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.Fast.Components.FluentUI.DialogResult>("OnDialogResult", fn)
+    [<CustomOperation("OnDialogResult")>] member inline _.OnDialogResult ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.FluentUI.AspNetCore.Components.DialogResult>("OnDialogResult", fn)
     /// The event callback invoked to return the dialog result.
-    [<CustomOperation("OnDialogResult")>] member inline _.OnDialogResult ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.Fast.Components.FluentUI.DialogResult>("OnDialogResult", fn)
+    [<CustomOperation("OnDialogResult")>] member inline _.OnDialogResult ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.FluentUI.AspNetCore.Components.DialogResult>("OnDialogResult", fn)
 
 type FluentDialogBodyBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -921,22 +916,22 @@ type FluentDialogHeaderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micro
 type FluentDividerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
     /// The role of the element.
-    [<CustomOperation("Role")>] member inline _.Role ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.Fast.Components.FluentUI.DividerRole>) = render ==> ("Role" => x)
+    [<CustomOperation("Role")>] member inline _.Role ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.DividerRole>) = render ==> ("Role" => x)
     /// The orientation of the divider.
-    [<CustomOperation("Orientation")>] member inline _.Orientation ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.Fast.Components.FluentUI.Orientation>) = render ==> ("Orientation" => x)
+    [<CustomOperation("Orientation")>] member inline _.Orientation ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.Orientation>) = render ==> ("Orientation" => x)
 
 type FluentDragContainerBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
     /// This event is fired when the user starts dragging an element.
-    [<CustomOperation("OnDragStart")>] member inline _.OnDragStart ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("OnDragStart" => (System.Action<Microsoft.Fast.Components.FluentUI.FluentDragEventArgs<'TItem>>fn))
+    [<CustomOperation("OnDragStart")>] member inline _.OnDragStart ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("OnDragStart" => (System.Action<Microsoft.FluentUI.AspNetCore.Components.FluentDragEventArgs<'TItem>>fn))
     /// This event is fired when a dragged element enters a valid drop target.
-    [<CustomOperation("OnDragEnter")>] member inline _.OnDragEnter ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("OnDragEnter" => (System.Action<Microsoft.Fast.Components.FluentUI.FluentDragEventArgs<'TItem>>fn))
+    [<CustomOperation("OnDragEnter")>] member inline _.OnDragEnter ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("OnDragEnter" => (System.Action<Microsoft.FluentUI.AspNetCore.Components.FluentDragEventArgs<'TItem>>fn))
     /// This event is fired when an element is being dragged over a valid drop target.
-    [<CustomOperation("OnDragOver")>] member inline _.OnDragOver ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("OnDragOver" => (System.Action<Microsoft.Fast.Components.FluentUI.FluentDragEventArgs<'TItem>>fn))
+    [<CustomOperation("OnDragOver")>] member inline _.OnDragOver ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("OnDragOver" => (System.Action<Microsoft.FluentUI.AspNetCore.Components.FluentDragEventArgs<'TItem>>fn))
     /// This event is fired when a dragged element leaves a valid drop target.
-    [<CustomOperation("OnDragLeave")>] member inline _.OnDragLeave ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("OnDragLeave" => (System.Action<Microsoft.Fast.Components.FluentUI.FluentDragEventArgs<'TItem>>fn))
+    [<CustomOperation("OnDragLeave")>] member inline _.OnDragLeave ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("OnDragLeave" => (System.Action<Microsoft.FluentUI.AspNetCore.Components.FluentDragEventArgs<'TItem>>fn))
     /// This event is fired when an element is dropped on a valid drop target.
-    [<CustomOperation("OnDropEnd")>] member inline _.OnDropEnd ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("OnDropEnd" => (System.Action<Microsoft.Fast.Components.FluentUI.FluentDragEventArgs<'TItem>>fn))
+    [<CustomOperation("OnDropEnd")>] member inline _.OnDropEnd ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("OnDropEnd" => (System.Action<Microsoft.FluentUI.AspNetCore.Components.FluentDragEventArgs<'TItem>>fn))
 
 type FluentDropZoneBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -947,18 +942,18 @@ type FluentDropZoneBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> M
     /// Indicates whether the element can be dragged.
     [<CustomOperation("Draggable")>] member inline _.Draggable ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Draggable" => x)
     /// This event is fired when the user starts dragging an element.
-    [<CustomOperation("OnDragStart")>] member inline _.OnDragStart ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("OnDragStart" => (System.Action<Microsoft.Fast.Components.FluentUI.FluentDragEventArgs<'TItem>>fn))
+    [<CustomOperation("OnDragStart")>] member inline _.OnDragStart ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("OnDragStart" => (System.Action<Microsoft.FluentUI.AspNetCore.Components.FluentDragEventArgs<'TItem>>fn))
     /// This event is fired when a dragged element enters a valid drop target.
-    [<CustomOperation("OnDragEnter")>] member inline _.OnDragEnter ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("OnDragEnter" => (System.Action<Microsoft.Fast.Components.FluentUI.FluentDragEventArgs<'TItem>>fn))
+    [<CustomOperation("OnDragEnter")>] member inline _.OnDragEnter ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("OnDragEnter" => (System.Action<Microsoft.FluentUI.AspNetCore.Components.FluentDragEventArgs<'TItem>>fn))
     /// This event is fired when an element is being dragged over a valid drop target.
-    [<CustomOperation("OnDragOver")>] member inline _.OnDragOver ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("OnDragOver" => (System.Action<Microsoft.Fast.Components.FluentUI.FluentDragEventArgs<'TItem>>fn))
+    [<CustomOperation("OnDragOver")>] member inline _.OnDragOver ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("OnDragOver" => (System.Action<Microsoft.FluentUI.AspNetCore.Components.FluentDragEventArgs<'TItem>>fn))
     /// This event is fired when a dragged element leaves a valid drop target.
-    [<CustomOperation("OnDragLeave")>] member inline _.OnDragLeave ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("OnDragLeave" => (System.Action<Microsoft.Fast.Components.FluentUI.FluentDragEventArgs<'TItem>>fn))
+    [<CustomOperation("OnDragLeave")>] member inline _.OnDragLeave ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("OnDragLeave" => (System.Action<Microsoft.FluentUI.AspNetCore.Components.FluentDragEventArgs<'TItem>>fn))
     /// This event is fired when an element is dropped on a valid drop target.
-    [<CustomOperation("OnDropEnd")>] member inline _.OnDropEnd ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("OnDropEnd" => (System.Action<Microsoft.Fast.Components.FluentUI.FluentDragEventArgs<'TItem>>fn))
+    [<CustomOperation("OnDropEnd")>] member inline _.OnDropEnd ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("OnDropEnd" => (System.Action<Microsoft.FluentUI.AspNetCore.Components.FluentDragEventArgs<'TItem>>fn))
 
 /// FluentEmoji is a component that renders an emoji from the Microsoft FluentUI emoji set.
-type FluentEmojiBuilder<'FunBlazorGeneric, 'Emoji when 'Emoji : (new : unit -> 'Emoji) and 'Emoji :> Microsoft.Fast.Components.FluentUI.Emoji and 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+type FluentEmojiBuilder<'FunBlazorGeneric, 'Emoji when 'Emoji : (new : unit -> 'Emoji) and 'Emoji :> Microsoft.FluentUI.AspNetCore.Components.Emoji and 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
     /// Gets or sets the slot where the emoji is displayed in
     [<CustomOperation("Slot")>] member inline _.Slot ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Slot" => x)
@@ -981,7 +976,7 @@ type FluentFlipperBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     /// Indicates the flipper should be hidden from assistive technology. Because flippers are often supplementary navigation, they are often hidden from assistive technology.
     [<CustomOperation("AriaHidden")>] member inline _.AriaHidden ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("AriaHidden" => x)
     /// Gets or sets the direction. See FlipperDirection
-    [<CustomOperation("Direction")>] member inline _.Direction ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.Fast.Components.FluentUI.FlipperDirection>) = render ==> ("Direction" => x)
+    [<CustomOperation("Direction")>] member inline _.Direction ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.FlipperDirection>) = render ==> ("Direction" => x)
 
 type FluentFooterBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -996,7 +991,7 @@ type FluentGridBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.Asp
     /// Only values from 0 to 10 are possible.
     [<CustomOperation("Spacing")>] member inline _.Spacing ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("Spacing" => x)
     /// Defines how the browser distributes space between and around content items.
-    [<CustomOperation("Justify")>] member inline _.Justify ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.Fast.Components.FluentUI.JustifyContent) = render ==> ("Justify" => x)
+    [<CustomOperation("Justify")>] member inline _.Justify ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.JustifyContent) = render ==> ("Justify" => x)
 
 type FluentGridItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -1007,7 +1002,7 @@ type FluentGridItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     [<CustomOperation("xl")>] member inline _.xl ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("xl" => x)
     [<CustomOperation("xxl")>] member inline _.xxl ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("xxl" => x)
     /// Defines how the browser distributes space between and around content items.
-    [<CustomOperation("Justify")>] member inline _.Justify ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.Fast.Components.FluentUI.JustifyContent>) = render ==> ("Justify" => x)
+    [<CustomOperation("Justify")>] member inline _.Justify ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.JustifyContent>) = render ==> ("Justify" => x)
     /// Defines the gaps (gutters) between rows and columns.
     /// See https://developer.mozilla.org/en-US/docs/Web/CSS/gap
     [<CustomOperation("Gap")>] member inline _.Gap ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Gap" => x)
@@ -1037,14 +1032,14 @@ type FluentHorizontalScrollBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> M
     /// The CSS time value for the scroll transition duration. Overrides the `speed` attribute.
     [<CustomOperation("Duration")>] member inline _.Duration ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Duration" => x)
     /// Attribute used for easing, defaults to ease-in-out
-    [<CustomOperation("Easing")>] member inline _.Easing ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.Fast.Components.FluentUI.ScrollEasing>) = render ==> ("Easing" => x)
+    [<CustomOperation("Easing")>] member inline _.Easing ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.ScrollEasing>) = render ==> ("Easing" => x)
     /// Attribute to hide flippers from assistive technology
     [<CustomOperation("FlippersHiddenFromAt")>] member inline _.FlippersHiddenFromAt ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("FlippersHiddenFromAt" => x)
     /// View: default | mobile
-    [<CustomOperation("View")>] member inline _.View ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.Fast.Components.FluentUI.HorizontalScrollView>) = render ==> ("View" => x)
+    [<CustomOperation("View")>] member inline _.View ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.HorizontalScrollView>) = render ==> ("View" => x)
 
 /// FluentIcon is a component that renders an icon from the Fluent System icon set.
-type FluentIconBuilder<'FunBlazorGeneric, 'Icon when 'Icon : (new : unit -> 'Icon) and 'Icon :> Microsoft.Fast.Components.FluentUI.Icon and 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+type FluentIconBuilder<'FunBlazorGeneric, 'Icon when 'Icon : (new : unit -> 'Icon) and 'Icon :> Microsoft.FluentUI.AspNetCore.Components.Icon and 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
     /// Gets or sets the slot where the icon is displayed in
     [<CustomOperation("Slot")>] member inline _.Slot ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Slot" => x)
@@ -1052,7 +1047,7 @@ type FluentIconBuilder<'FunBlazorGeneric, 'Icon when 'Icon : (new : unit -> 'Ico
     [<CustomOperation("Title")>] member inline _.Title ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
     /// Gets or sets the icon drawing and fill color. 
     /// Value comes from the Color enumeration. Defaults to Accent.
-    [<CustomOperation("Color")>] member inline _.Color ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.Fast.Components.FluentUI.Color>) = render ==> ("Color" => x)
+    [<CustomOperation("Color")>] member inline _.Color ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.Color>) = render ==> ("Color" => x)
     /// Gets or sets the icon drawing and fill color to a custom value.
     /// Needs to be formatted as an HTML hex color string (#rrggbb or #rgb) or CSS variable.
     /// ⚠️ Only available when Color is set to Color.Custom.
@@ -1089,7 +1084,7 @@ type FluentInputFileBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsof
     /// Type of file reading.
     /// For SaveToTemporaryFolder, use LocalFile to retrieve the file.
     /// For Buffer, use Buffer to retrieve bytes.
-    [<CustomOperation("Mode")>] member inline _.Mode ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.Fast.Components.FluentUI.InputFileMode) = render ==> ("Mode" => x)
+    [<CustomOperation("Mode")>] member inline _.Mode ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.InputFileMode) = render ==> ("Mode" => x)
     /// Drag/Drop zone visible or not. Default is true.
     /// You can.
     [<CustomOperation("DragDropZoneVisible")>] member inline _.DragDropZoneVisible ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("DragDropZoneVisible" => x)
@@ -1100,41 +1095,41 @@ type FluentInputFileBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsof
     /// If you use this event, the OnFileUploaded will never be raised.
     [<CustomOperation("OnInputFileChange")>] member inline _.OnInputFileChange ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.AspNetCore.Components.Forms.InputFileChangeEventArgs>("OnInputFileChange", fn)
     /// Raise when a file is completely uploaded.
-    [<CustomOperation("OnFileUploaded")>] member inline _.OnFileUploaded ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.Fast.Components.FluentUI.FluentInputFileEventArgs>("OnFileUploaded", fn)
+    [<CustomOperation("OnFileUploaded")>] member inline _.OnFileUploaded ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.FluentUI.AspNetCore.Components.FluentInputFileEventArgs>("OnFileUploaded", fn)
     /// Raise when a file is completely uploaded.
-    [<CustomOperation("OnFileUploaded")>] member inline _.OnFileUploaded ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.Fast.Components.FluentUI.FluentInputFileEventArgs>("OnFileUploaded", fn)
+    [<CustomOperation("OnFileUploaded")>] member inline _.OnFileUploaded ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.FluentUI.AspNetCore.Components.FluentInputFileEventArgs>("OnFileUploaded", fn)
     /// Raise when a progression step is updated.
     /// You can use ProgressPercent and ProgressTitle to have more detail on the progression.
-    [<CustomOperation("OnProgressChange")>] member inline _.OnProgressChange ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.Fast.Components.FluentUI.FluentInputFileEventArgs>("OnProgressChange", fn)
+    [<CustomOperation("OnProgressChange")>] member inline _.OnProgressChange ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.FluentUI.AspNetCore.Components.FluentInputFileEventArgs>("OnProgressChange", fn)
     /// Raise when a progression step is updated.
     /// You can use ProgressPercent and ProgressTitle to have more detail on the progression.
-    [<CustomOperation("OnProgressChange")>] member inline _.OnProgressChange ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.Fast.Components.FluentUI.FluentInputFileEventArgs>("OnProgressChange", fn)
+    [<CustomOperation("OnProgressChange")>] member inline _.OnProgressChange ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.FluentUI.AspNetCore.Components.FluentInputFileEventArgs>("OnProgressChange", fn)
     /// Raise when a file raised an error.
-    [<CustomOperation("OnFileError")>] member inline _.OnFileError ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.Fast.Components.FluentUI.FluentInputFileEventArgs>("OnFileError", fn)
+    [<CustomOperation("OnFileError")>] member inline _.OnFileError ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.FluentUI.AspNetCore.Components.FluentInputFileEventArgs>("OnFileError", fn)
     /// Raise when a file raised an error.
-    [<CustomOperation("OnFileError")>] member inline _.OnFileError ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.Fast.Components.FluentUI.FluentInputFileEventArgs>("OnFileError", fn)
+    [<CustomOperation("OnFileError")>] member inline _.OnFileError ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.FluentUI.AspNetCore.Components.FluentInputFileEventArgs>("OnFileError", fn)
     /// Raise when all files are completely uploaded.
-    [<CustomOperation("OnCompleted")>] member inline _.OnCompleted ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<System.Collections.Generic.IEnumerable<Microsoft.Fast.Components.FluentUI.FluentInputFileEventArgs>>("OnCompleted", fn)
+    [<CustomOperation("OnCompleted")>] member inline _.OnCompleted ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<System.Collections.Generic.IEnumerable<Microsoft.FluentUI.AspNetCore.Components.FluentInputFileEventArgs>>("OnCompleted", fn)
     /// Raise when all files are completely uploaded.
-    [<CustomOperation("OnCompleted")>] member inline _.OnCompleted ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<System.Collections.Generic.IEnumerable<Microsoft.Fast.Components.FluentUI.FluentInputFileEventArgs>>("OnCompleted", fn)
+    [<CustomOperation("OnCompleted")>] member inline _.OnCompleted ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<System.Collections.Generic.IEnumerable<Microsoft.FluentUI.AspNetCore.Components.FluentInputFileEventArgs>>("OnCompleted", fn)
     /// Identifier of the source component clickable by the end user.
     [<CustomOperation("AnchorId")>] member inline _.AnchorId ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("AnchorId" => x)
 
 type FluentLabelBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
     /// Applies the theme typography styles.
-    [<CustomOperation("Typo")>] member inline _.Typo ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.Fast.Components.FluentUI.Typography) = render ==> ("Typo" => x)
+    [<CustomOperation("Typo")>] member inline _.Typo ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Typography) = render ==> ("Typo" => x)
     /// Activates or deactivates the component (changes the color).
     [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Disabled" => x)
     /// Set the text-align on the component.
-    [<CustomOperation("Alignment")>] member inline _.Alignment ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.Fast.Components.FluentUI.HorizontalAlignment>) = render ==> ("Alignment" => x)
+    [<CustomOperation("Alignment")>] member inline _.Alignment ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.HorizontalAlignment>) = render ==> ("Alignment" => x)
     /// The color of the component. It supports the theme colors.
-    [<CustomOperation("Color")>] member inline _.Color ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.Fast.Components.FluentUI.Color>) = render ==> ("Color" => x)
+    [<CustomOperation("Color")>] member inline _.Color ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.Color>) = render ==> ("Color" => x)
     /// 7
     ///             The front weight of the component:
     ///             Normal (400), Bold (600) or Bolder (800).
     ///             
-    [<CustomOperation("Weight")>] member inline _.Weight ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.Fast.Components.FluentUI.FontWeight) = render ==> ("Weight" => x)
+    [<CustomOperation("Weight")>] member inline _.Weight ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.FontWeight) = render ==> ("Weight" => x)
     /// "default" to use the margin-block prefefined by browser.
     /// If not set, the MarginBlock will be 0px.
     [<CustomOperation("MarginBlock")>] member inline _.MarginBlock ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("MarginBlock" => x)
@@ -1175,12 +1170,12 @@ type FluentPersonaBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     /// Gets or sets the size of the image.
     [<CustomOperation("ImageSize")>] member inline _.ImageSize ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ImageSize" => x)
     /// The status to show. See PresenceStatus for options.
-    [<CustomOperation("Status")>] member inline _.Status ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.Fast.Components.FluentUI.PresenceStatus>) = render ==> ("Status" => x)
+    [<CustomOperation("Status")>] member inline _.Status ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.PresenceStatus>) = render ==> ("Status" => x)
     /// The title to show on hover. If not provided, the status will be used.
     [<CustomOperation("StatusTitle")>] member inline _.StatusTitle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("StatusTitle" => x)
     /// Gets or sets the Status size to use.
     /// Default is ExtraSmall.
-    [<CustomOperation("StatusSize")>] member inline _.StatusSize ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.Fast.Components.FluentUI.PresenceBadgeSize) = render ==> ("StatusSize" => x)
+    [<CustomOperation("StatusSize")>] member inline _.StatusSize ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.PresenceBadgeSize) = render ==> ("StatusSize" => x)
     /// Gets or sets the event raised when the user clicks on the dismiss button.
     [<CustomOperation("OnDismissClick")>] member inline _.OnDismissClick ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback("OnDismissClick", fn)
     /// Gets or sets the event raised when the user clicks on the dismiss button.
@@ -1269,11 +1264,11 @@ type FluentAutocompleteBuilder<'FunBlazorGeneric, 'TOption when 'FunBlazorGeneri
     /// Sets the placeholder value of the element, generally used to provide a hint to the user.
     [<CustomOperation("Placeholder")>] member inline _.Placeholder ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Placeholder" => x)
     /// Gets or sets the visual appearance. See 
-    [<CustomOperation("Appearance")>] member inline _.Appearance ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.Fast.Components.FluentUI.Appearance>) = render ==> ("Appearance" => x)
+    [<CustomOperation("Appearance")>] member inline _.Appearance ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.Appearance>) = render ==> ("Appearance" => x)
     /// Filter the list of options (items), using the text encoded by the user.
-    [<CustomOperation("OnOptionsSearch")>] member inline _.OnOptionsSearch ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.Fast.Components.FluentUI.OptionsSearchEventArgs<'TOption>>("OnOptionsSearch", fn)
+    [<CustomOperation("OnOptionsSearch")>] member inline _.OnOptionsSearch ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.FluentUI.AspNetCore.Components.OptionsSearchEventArgs<'TOption>>("OnOptionsSearch", fn)
     /// Filter the list of options (items), using the text encoded by the user.
-    [<CustomOperation("OnOptionsSearch")>] member inline _.OnOptionsSearch ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.Fast.Components.FluentUI.OptionsSearchEventArgs<'TOption>>("OnOptionsSearch", fn)
+    [<CustomOperation("OnOptionsSearch")>] member inline _.OnOptionsSearch ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.FluentUI.AspNetCore.Components.OptionsSearchEventArgs<'TOption>>("OnOptionsSearch", fn)
     /// Gets or sets the style applied to all FluentOption`1 of the component.
     [<CustomOperation("OptionStyle")>] member inline _.OptionStyle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("OptionStyle" => x)
     /// Gets or sets the css class applied to all FluentOption`1 of the component.
@@ -1311,16 +1306,16 @@ type FluentAutocompleteBuilder<'FunBlazorGeneric, 'TOption when 'FunBlazorGeneri
 type FluentComboboxBuilder<'FunBlazorGeneric, 'TOption when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ListComponentBaseBuilder<'FunBlazorGeneric, 'TOption>()
     /// Gets or sets if the element is auto completes. See 
-    [<CustomOperation("Autocomplete")>] member inline _.Autocomplete ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.Fast.Components.FluentUI.ComboboxAutocomplete>) = render ==> ("Autocomplete" => x)
+    [<CustomOperation("Autocomplete")>] member inline _.Autocomplete ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.ComboboxAutocomplete>) = render ==> ("Autocomplete" => x)
     /// The open attribute.
     [<CustomOperation("Open")>] member inline _.Open ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("Open" => x)
     /// Sets the placeholder value of the element, generally used to provide a hint to the user.
     [<CustomOperation("Placeholder")>] member inline _.Placeholder ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Placeholder" => x)
     /// The placement for the listbox when the combobox is open.
     /// See 
-    [<CustomOperation("Position")>] member inline _.Position ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.Fast.Components.FluentUI.SelectPosition>) = render ==> ("Position" => x)
+    [<CustomOperation("Position")>] member inline _.Position ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.SelectPosition>) = render ==> ("Position" => x)
     /// Gets or sets the visual appearance. See 
-    [<CustomOperation("Appearance")>] member inline _.Appearance ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.Fast.Components.FluentUI.Appearance>) = render ==> ("Appearance" => x)
+    [<CustomOperation("Appearance")>] member inline _.Appearance ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.Appearance>) = render ==> ("Appearance" => x)
 
 type FluentListboxBuilder<'FunBlazorGeneric, 'TOption when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ListComponentBaseBuilder<'FunBlazorGeneric, 'TOption>()
@@ -1333,9 +1328,9 @@ type FluentSelectBuilder<'FunBlazorGeneric, 'TOption when 'FunBlazorGeneric :> M
     [<CustomOperation("Open")>] member inline _.Open ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("Open" => x)
     /// Reflects the placement for the listbox when the select is open.
     /// See SelectPosition
-    [<CustomOperation("Position")>] member inline _.Position ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.Fast.Components.FluentUI.SelectPosition>) = render ==> ("Position" => x)
+    [<CustomOperation("Position")>] member inline _.Position ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.SelectPosition>) = render ==> ("Position" => x)
     /// Gets or sets the visual appearance. See 
-    [<CustomOperation("Appearance")>] member inline _.Appearance ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.Fast.Components.FluentUI.Appearance>) = render ==> ("Appearance" => x)
+    [<CustomOperation("Appearance")>] member inline _.Appearance ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.Appearance>) = render ==> ("Appearance" => x)
 
 type FluentMainLayoutBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -1361,7 +1356,7 @@ type FluentMainLayoutBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microso
     [<CustomOperation("SubHeader")>] member inline _.SubHeader ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("SubHeader", html.text x)
     /// Gets or sets the height of the header (in pixels).
     [<CustomOperation("HeaderHeight")>] member inline _.HeaderHeight ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("HeaderHeight" => x)
-    /// Gets or set the tite of the navigation menu
+    /// Gets or sets the tite of the navigation menu
     [<CustomOperation("NavMenuTitle")>] member inline _.NavMenuTitle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("NavMenuTitle" => x)
     /// Gets or sets the content of the navigation menu
     [<CustomOperation("NavMenuContent")>] member inline _.NavMenuContent ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("NavMenuContent", fragment)
@@ -1391,14 +1386,14 @@ type FluentMainBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.Asp
 
 type FluentMenuButtonBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
-    [<CustomOperation("Button")>] member inline _.Button ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.Fast.Components.FluentUI.FluentButton) = render ==> ("Button" => x)
-    [<CustomOperation("Menu")>] member inline _.Menu ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.Fast.Components.FluentUI.FluentMenu) = render ==> ("Menu" => x)
+    [<CustomOperation("Button")>] member inline _.Button ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.FluentButton) = render ==> ("Button" => x)
+    [<CustomOperation("Menu")>] member inline _.Menu ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.FluentMenu) = render ==> ("Menu" => x)
     [<CustomOperation("Text")>] member inline _.Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Text" => x)
     [<CustomOperation("ButtonStyle")>] member inline _.ButtonStyle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ButtonStyle" => x)
     [<CustomOperation("MenuStyle")>] member inline _.MenuStyle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("MenuStyle" => x)
     [<CustomOperation("Items")>] member inline _.Items ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.Dictionary<System.String, System.String>) = render ==> ("Items" => x)
-    [<CustomOperation("OnMenuChanged")>] member inline _.OnMenuChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.Fast.Components.FluentUI.MenuChangeEventArgs>("OnMenuChanged", fn)
-    [<CustomOperation("OnMenuChanged")>] member inline _.OnMenuChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.Fast.Components.FluentUI.MenuChangeEventArgs>("OnMenuChanged", fn)
+    [<CustomOperation("OnMenuChanged")>] member inline _.OnMenuChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.FluentUI.AspNetCore.Components.MenuChangeEventArgs>("OnMenuChanged", fn)
+    [<CustomOperation("OnMenuChanged")>] member inline _.OnMenuChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.FluentUI.AspNetCore.Components.MenuChangeEventArgs>("OnMenuChanged", fn)
 
 type FluentMenuBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -1406,13 +1401,13 @@ type FluentMenuBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.Asp
     [<CustomOperation("Anchor")>] member inline _.Anchor ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Anchor" => x)
     /// Gets or sets the automatic trigger. See 
     /// Possible values are None (default), Left, Middle, Right, Back, Forward 
-    [<CustomOperation("Trigger")>] member inline _.Trigger ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.Fast.Components.FluentUI.MouseButton) = render ==> ("Trigger" => x)
+    [<CustomOperation("Trigger")>] member inline _.Trigger ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.MouseButton) = render ==> ("Trigger" => x)
     /// Gets or sets the Menu status.
     [<CustomOperation("Open")>] member inline _.Open ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Open" => x)
     /// Gets or sets the Menu status.
     [<CustomOperation("Open'")>] member inline _.Open' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Boolean * (System.Boolean -> unit)) = render ==> html.bind("Open", valueFn)
     /// Menu position (left or right).
-    [<CustomOperation("HorizontalPosition")>] member inline _.HorizontalPosition ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.Fast.Components.FluentUI.HorizontalPosition) = render ==> ("HorizontalPosition" => x)
+    [<CustomOperation("HorizontalPosition")>] member inline _.HorizontalPosition ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.HorizontalPosition) = render ==> ("HorizontalPosition" => x)
     /// Width of this menu.
     [<CustomOperation("Width")>] member inline _.Width ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Width" => x)
     /// Raised when the Open property changed.
@@ -1432,7 +1427,7 @@ type FluentMenuItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     /// The expanded state of the element.
     [<CustomOperation("Expanded")>] member inline _.Expanded ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Expanded" => x)
     /// The role of the element.
-    [<CustomOperation("Role")>] member inline _.Role ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.Fast.Components.FluentUI.MenuItemRole>) = render ==> ("Role" => x)
+    [<CustomOperation("Role")>] member inline _.Role ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.MenuItemRole>) = render ==> ("Role" => x)
     /// Gets or sets if the element is checked.
     [<CustomOperation("Checked")>] member inline _.Checked ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Checked" => x)
     /// List of sub-menu items.
@@ -1453,13 +1448,13 @@ type FluentMenuItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
 type FluentMessageBarBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
     /// The type of message bar. Default is MessageType.MessageBar. See MessageType for more details.
-    [<CustomOperation("Type")>] member inline _.Type ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.Fast.Components.FluentUI.MessageType) = render ==> ("Type" => x)
+    [<CustomOperation("Type")>] member inline _.Type ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.MessageType) = render ==> ("Type" => x)
     /// The actual message instance shown in the message bar.
-    [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.Fast.Components.FluentUI.Message) = render ==> ("Content" => x)
+    [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Message) = render ==> ("Content" => x)
     /// Intent of the message bar. Default is MessageIntent.Info. See MessageIntent for more details.
-    [<CustomOperation("Intent")>] member inline _.Intent ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.Fast.Components.FluentUI.MessageIntent>) = render ==> ("Intent" => x)
+    [<CustomOperation("Intent")>] member inline _.Intent ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.MessageIntent>) = render ==> ("Intent" => x)
     /// Icon to show in the message bar based on the intent of the message. See Icon for more details.
-    [<CustomOperation("Icon")>] member inline _.Icon ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.Fast.Components.FluentUI.Icon) = render ==> ("Icon" => x)
+    [<CustomOperation("Icon")>] member inline _.Icon ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Icon) = render ==> ("Icon" => x)
     /// Visibility of the message bar. Default is true.
     [<CustomOperation("Visible")>] member inline _.Visible ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Visible" => x)
     /// Most important info to be shown in the message bar.
@@ -1468,15 +1463,15 @@ type FluentMessageBarBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microso
     [<CustomOperation("Timestamp")>] member inline _.Timestamp ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.DateTime>) = render ==> ("Timestamp" => x)
     /// The color of the icon. Only applied when intent is MessageBarIntent.Custom
     /// Default is Color.Accent
-    [<CustomOperation("IconColor")>] member inline _.IconColor ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.Fast.Components.FluentUI.Color>) = render ==> ("IconColor" => x)
+    [<CustomOperation("IconColor")>] member inline _.IconColor ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.Color>) = render ==> ("IconColor" => x)
 
-type FluentMessageBarContainerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+type FluentMessageBarProviderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
     /// Display only messages for this section.
     [<CustomOperation("Section")>] member inline _.Section ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Section" => x)
     /// Displays messages as a single line (with the message only)
     /// or as a card (with the detailed message).
-    [<CustomOperation("Type")>] member inline _.Type ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.Fast.Components.FluentUI.MessageType) = render ==> ("Type" => x)
+    [<CustomOperation("Type")>] member inline _.Type ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.MessageType) = render ==> ("Type" => x)
     /// Maximum number of messages displayed. Rest is stored in memory to be displayed when an shown message is closed.
     /// Default value is 5
     /// Set a value equal to or less than zero, to display all messages for this Section (or all categories if not set).
@@ -1526,9 +1521,9 @@ type FluentNavMenuTreeBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micros
     /// Event callback for when the Expanded property changes.
     [<CustomOperation("ExpandedChanged")>] member inline _.ExpandedChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<System.Boolean>("ExpandedChanged", fn)
     /// Called when the user attempts to execute the default action of a menu item.
-    [<CustomOperation("OnAction")>] member inline _.OnAction ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.Fast.Components.FluentUI.NavMenuActionArgs>("OnAction", fn)
+    [<CustomOperation("OnAction")>] member inline _.OnAction ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.FluentUI.AspNetCore.Components.NavMenuActionArgs>("OnAction", fn)
     /// Called when the user attempts to execute the default action of a menu item.
-    [<CustomOperation("OnAction")>] member inline _.OnAction ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.Fast.Components.FluentUI.NavMenuActionArgs>("OnAction", fn)
+    [<CustomOperation("OnAction")>] member inline _.OnAction ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.FluentUI.AspNetCore.Components.NavMenuActionArgs>("OnAction", fn)
     /// If set to true then the tree will
     /// expand when it is created.
     [<CustomOperation("InitiallyExpanded")>] member inline _.InitiallyExpanded ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("InitiallyExpanded" => x)
@@ -1577,15 +1572,15 @@ type FluentNavMenuBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
 type FluentOverflowBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
     /// Template to display ItemsOverflow elements.
-    [<CustomOperation("OverflowTemplate")>] member inline _.OverflowTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.Fast.Components.FluentUI.FluentOverflow -> NodeRenderFragment) = render ==> html.renderFragment("OverflowTemplate", fn)
+    [<CustomOperation("OverflowTemplate")>] member inline _.OverflowTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentOverflow -> NodeRenderFragment) = render ==> html.renderFragment("OverflowTemplate", fn)
     /// Template to display the More button.
-    [<CustomOperation("MoreButtonTemplate")>] member inline _.MoreButtonTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.Fast.Components.FluentUI.FluentOverflow -> NodeRenderFragment) = render ==> html.renderFragment("MoreButtonTemplate", fn)
+    [<CustomOperation("MoreButtonTemplate")>] member inline _.MoreButtonTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentOverflow -> NodeRenderFragment) = render ==> html.renderFragment("MoreButtonTemplate", fn)
     /// Gets or sets the orientation of the items flow.
-    [<CustomOperation("Orientation")>] member inline _.Orientation ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.Fast.Components.FluentUI.Orientation) = render ==> ("Orientation" => x)
+    [<CustomOperation("Orientation")>] member inline _.Orientation ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Orientation) = render ==> ("Orientation" => x)
     /// Event raised when a FluentOverflowItem enter or leave the current panel.
-    [<CustomOperation("OnOverflowRaised")>] member inline _.OnOverflowRaised ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<System.Collections.Generic.IEnumerable<Microsoft.Fast.Components.FluentUI.FluentOverflowItem>>("OnOverflowRaised", fn)
+    [<CustomOperation("OnOverflowRaised")>] member inline _.OnOverflowRaised ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<System.Collections.Generic.IEnumerable<Microsoft.FluentUI.AspNetCore.Components.FluentOverflowItem>>("OnOverflowRaised", fn)
     /// Event raised when a FluentOverflowItem enter or leave the current panel.
-    [<CustomOperation("OnOverflowRaised")>] member inline _.OnOverflowRaised ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<System.Collections.Generic.IEnumerable<Microsoft.Fast.Components.FluentUI.FluentOverflowItem>>("OnOverflowRaised", fn)
+    [<CustomOperation("OnOverflowRaised")>] member inline _.OnOverflowRaised ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<System.Collections.Generic.IEnumerable<Microsoft.FluentUI.AspNetCore.Components.FluentOverflowItem>>("OnOverflowRaised", fn)
 
 type FluentOverflowItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -1597,7 +1592,7 @@ type FluentPaginatorBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsof
     [<CustomOperation("CurrentPageIndexChanged")>] member inline _.CurrentPageIndexChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<System.Int32>("CurrentPageIndexChanged", fn)
     [<CustomOperation("CurrentPageIndexChanged")>] member inline _.CurrentPageIndexChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<System.Int32>("CurrentPageIndexChanged", fn)
     /// Specifies the associated PaginationState. This parameter is required.
-    [<CustomOperation("State")>] member inline _.State ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.Fast.Components.FluentUI.PaginationState) = render ==> ("State" => x)
+    [<CustomOperation("State")>] member inline _.State ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.PaginationState) = render ==> ("State" => x)
     /// Optionally supplies a template for rendering the page count summary.
     [<CustomOperation("SummaryTemplate")>] member inline _.SummaryTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("SummaryTemplate", fragment)
     /// Optionally supplies a template for rendering the page count summary.
@@ -1615,7 +1610,7 @@ type FluentPopoverBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     [<CustomOperation("AnchorId")>] member inline _.AnchorId ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("AnchorId" => x)
     /// The default horizontal position of the region relative to the anchor element
     /// Default is unset. See 
-    [<CustomOperation("HorizontalPosition")>] member inline _.HorizontalPosition ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.Fast.Components.FluentUI.HorizontalPosition>) = render ==> ("HorizontalPosition" => x)
+    [<CustomOperation("HorizontalPosition")>] member inline _.HorizontalPosition ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.HorizontalPosition>) = render ==> ("HorizontalPosition" => x)
     /// Gets or sets popover opened state
     [<CustomOperation("Open")>] member inline _.Open ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Open" => x)
     /// Gets or sets popover opened state
@@ -1662,7 +1657,7 @@ type FluentPresenceBadgeBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micr
     /// If not provided, the StatusTitle will be used.
     [<CustomOperation("Title")>] member inline _.Title ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
     /// The status to show. See PresenceStatus for options.
-    [<CustomOperation("Status")>] member inline _.Status ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.Fast.Components.FluentUI.PresenceStatus>) = render ==> ("Status" => x)
+    [<CustomOperation("Status")>] member inline _.Status ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.PresenceStatus>) = render ==> ("Status" => x)
     /// The title to show on hover the status. If not provided, the status will be used.
     [<CustomOperation("StatusTitle")>] member inline _.StatusTitle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("StatusTitle" => x)
     /// Modifies the display to indicate that the user is out of office. 
@@ -1670,7 +1665,7 @@ type FluentPresenceBadgeBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micr
     [<CustomOperation("OutOfOffice")>] member inline _.OutOfOffice ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("OutOfOffice" => x)
     /// Gets or sets the Status size to use.
     /// Default is Small.
-    [<CustomOperation("Size")>] member inline _.Size ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.Fast.Components.FluentUI.PresenceBadgeSize) = render ==> ("Size" => x)
+    [<CustomOperation("Size")>] member inline _.Size ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.PresenceBadgeSize) = render ==> ("Size" => x)
 
 type FluentProgressBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -1730,7 +1725,7 @@ type FluentSkeletonBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     /// Indicates the Skeleton should have a filled style.
     [<CustomOperation("Fill")>] member inline _.Fill ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Fill" => x)
     /// Gets or sets the shape of the skeleton. See SkeletonShape
-    [<CustomOperation("Shape")>] member inline _.Shape ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.Fast.Components.FluentUI.SkeletonShape>) = render ==> ("Shape" => x)
+    [<CustomOperation("Shape")>] member inline _.Shape ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.SkeletonShape>) = render ==> ("Shape" => x)
     /// Gets or sets the skeleton pattern
     [<CustomOperation("Pattern")>] member inline _.Pattern ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Pattern" => x)
     /// Gets or sets if the skeleton is shimmered
@@ -1755,7 +1750,7 @@ type FluentSplitterBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
     /// Gets or sets the orientation.
     /// Default is horizontal (i.e a vertical splitter bar)
-    [<CustomOperation("Orientation")>] member inline _.Orientation ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.Fast.Components.FluentUI.Orientation) = render ==> ("Orientation" => x)
+    [<CustomOperation("Orientation")>] member inline _.Orientation ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Orientation) = render ==> ("Orientation" => x)
     /// Content for the top/left panel
     [<CustomOperation("Panel1")>] member inline _.Panel1 ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("Panel1", fragment)
     /// Content for the top/left panel
@@ -1783,15 +1778,24 @@ type FluentSplitterBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     /// Uses grid-template-rows/columns with max-content to determine end width. 
     /// See mdn web docs for more information 
     [<CustomOperation("Panel2Size")>] member inline _.Panel2Size ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Panel2Size" => x)
+    /// Gets or sets a value indicating whether the splitter is collapsed.
+    /// If set to true, Panel1 will take up all the space and Panel2 as well as the splitter bar will be hidden.
+    [<CustomOperation("Collapsed")>] member inline _.Collapsed ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Collapsed" => x)
+    [<CustomOperation("OnCollapsed")>] member inline _.OnCollapsed ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<System.Boolean>("OnCollapsed", fn)
+    [<CustomOperation("OnCollapsed")>] member inline _.OnCollapsed ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<System.Boolean>("OnCollapsed", fn)
+    [<CustomOperation("OnExpanded")>] member inline _.OnExpanded ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<System.Boolean>("OnExpanded", fn)
+    [<CustomOperation("OnExpanded")>] member inline _.OnExpanded ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<System.Boolean>("OnExpanded", fn)
+    [<CustomOperation("OnResized")>] member inline _.OnResized ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.FluentUI.AspNetCore.Components.SplitterResizedEventArgs>("OnResized", fn)
+    [<CustomOperation("OnResized")>] member inline _.OnResized ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.FluentUI.AspNetCore.Components.SplitterResizedEventArgs>("OnResized", fn)
 
 type FluentStackBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
     /// The horizontal alignment of the components in the stack. 
-    [<CustomOperation("HorizontalAlignment")>] member inline _.HorizontalAlignment ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.Fast.Components.FluentUI.HorizontalAlignment) = render ==> ("HorizontalAlignment" => x)
+    [<CustomOperation("HorizontalAlignment")>] member inline _.HorizontalAlignment ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.HorizontalAlignment) = render ==> ("HorizontalAlignment" => x)
     /// The vertical alignment of the components in the stack.
-    [<CustomOperation("VerticalAlignment")>] member inline _.VerticalAlignment ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.Fast.Components.FluentUI.VerticalAlignment) = render ==> ("VerticalAlignment" => x)
-    /// Gets or set the orientation of the stacked components. 
-    [<CustomOperation("Orientation")>] member inline _.Orientation ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.Fast.Components.FluentUI.Orientation) = render ==> ("Orientation" => x)
+    [<CustomOperation("VerticalAlignment")>] member inline _.VerticalAlignment ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.VerticalAlignment) = render ==> ("VerticalAlignment" => x)
+    /// Gets or sets the orientation of the stacked components. 
+    [<CustomOperation("Orientation")>] member inline _.Orientation ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Orientation) = render ==> ("Orientation" => x)
     /// The width of the stack as a percentage string (default = 100%).
     [<CustomOperation("Width")>] member inline _.Width ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Width" => x)
     /// Gets or sets if the stack wraps.
@@ -1830,7 +1834,7 @@ type FluentTabBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspN
     /// Customized content of the header.
     [<CustomOperation("Header")>] member inline _.Header ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("Header", html.text x)
     /// Gets or sets the icon to display in front of the tab
-    [<CustomOperation("Icon")>] member inline _.Icon ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.Fast.Components.FluentUI.Icon) = render ==> ("Icon" => x)
+    [<CustomOperation("Icon")>] member inline _.Icon ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Icon) = render ==> ("Icon" => x)
     /// True to let the user edit the Label property.
     [<CustomOperation("LabelEditable")>] member inline _.LabelEditable ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("LabelEditable" => x)
     /// Render the tab content only when the tab is selected.
@@ -1849,20 +1853,20 @@ type FluentTabBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspN
 type FluentTabsBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
     /// Gets or sets the tab's orentation. See Orientation
-    [<CustomOperation("Orientation")>] member inline _.Orientation ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.Fast.Components.FluentUI.Orientation) = render ==> ("Orientation" => x)
+    [<CustomOperation("Orientation")>] member inline _.Orientation ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Orientation) = render ==> ("Orientation" => x)
     /// Raised when a tab is selected.
-    [<CustomOperation("OnTabSelect")>] member inline _.OnTabSelect ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.Fast.Components.FluentUI.FluentTab>("OnTabSelect", fn)
+    [<CustomOperation("OnTabSelect")>] member inline _.OnTabSelect ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.FluentUI.AspNetCore.Components.FluentTab>("OnTabSelect", fn)
     /// Raised when a tab is selected.
-    [<CustomOperation("OnTabSelect")>] member inline _.OnTabSelect ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.Fast.Components.FluentUI.FluentTab>("OnTabSelect", fn)
+    [<CustomOperation("OnTabSelect")>] member inline _.OnTabSelect ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.FluentUI.AspNetCore.Components.FluentTab>("OnTabSelect", fn)
     /// Raised when a tab is closed.
-    [<CustomOperation("OnTabClose")>] member inline _.OnTabClose ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.Fast.Components.FluentUI.FluentTab>("OnTabClose", fn)
+    [<CustomOperation("OnTabClose")>] member inline _.OnTabClose ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.FluentUI.AspNetCore.Components.FluentTab>("OnTabClose", fn)
     /// Raised when a tab is closed.
-    [<CustomOperation("OnTabClose")>] member inline _.OnTabClose ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.Fast.Components.FluentUI.FluentTab>("OnTabClose", fn)
+    [<CustomOperation("OnTabClose")>] member inline _.OnTabClose ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.FluentUI.AspNetCore.Components.FluentTab>("OnTabClose", fn)
     /// Determines if a dismiss icon is shown.
     /// When clicked the OnTabClose event is raised to remove this tab from the list.
     [<CustomOperation("ShowClose")>] member inline _.ShowClose ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("ShowClose" => x)
     /// Width of the tab items.
-    [<CustomOperation("Size")>] member inline _.Size ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.Fast.Components.FluentUI.TabSize>) = render ==> ("Size" => x)
+    [<CustomOperation("Size")>] member inline _.Size ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.TabSize>) = render ==> ("Size" => x)
     /// Width of the tabs component.
     /// Needs to be a valid CSS value (e.g. 100px, 50%).
     [<CustomOperation("Width")>] member inline _.Width ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Width" => x)
@@ -1878,19 +1882,19 @@ type FluentTabsBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.Asp
     /// Whether or not to show the active indicator 
     [<CustomOperation("ShowActiveIndicator")>] member inline _.ShowActiveIndicator ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("ShowActiveIndicator" => x)
     /// Gets or sets a callback when a tab is changed .
-    [<CustomOperation("OnTabChange")>] member inline _.OnTabChange ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.Fast.Components.FluentUI.FluentTab>("OnTabChange", fn)
+    [<CustomOperation("OnTabChange")>] member inline _.OnTabChange ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.FluentUI.AspNetCore.Components.FluentTab>("OnTabChange", fn)
     /// Gets or sets a callback when a tab is changed .
-    [<CustomOperation("OnTabChange")>] member inline _.OnTabChange ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.Fast.Components.FluentUI.FluentTab>("OnTabChange", fn)
+    [<CustomOperation("OnTabChange")>] member inline _.OnTabChange ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.FluentUI.AspNetCore.Components.FluentTab>("OnTabChange", fn)
 
 type FluentToastBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
     /// The instance containing the programmatic API for the toast.
-    [<CustomOperation("Instance")>] member inline _.Instance ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.Fast.Components.FluentUI.ToastInstance) = render ==> ("Instance" => x)
+    [<CustomOperation("Instance")>] member inline _.Instance ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.ToastInstance) = render ==> ("Instance" => x)
 
 type FluentToolbarBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
     /// Gets or sets the toolbar's orentation. See Orientation
-    [<CustomOperation("Orientation")>] member inline _.Orientation ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.Fast.Components.FluentUI.Orientation>) = render ==> ("Orientation" => x)
+    [<CustomOperation("Orientation")>] member inline _.Orientation ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.Orientation>) = render ==> ("Orientation" => x)
 
 type FluentTooltipBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -1906,13 +1910,13 @@ type FluentTooltipBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     [<CustomOperation("Delay'")>] member inline _.Delay' ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("Delay" => x)
     /// Gets or sets the tooltip's position. See TooltipPosition.
     /// Don't set this if you want the tooltip to use the best position.
-    [<CustomOperation("Position")>] member inline _.Position ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.Fast.Components.FluentUI.TooltipPosition>) = render ==> ("Position" => x)
+    [<CustomOperation("Position")>] member inline _.Position ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.TooltipPosition>) = render ==> ("Position" => x)
     /// Gets or sets the maximum width of tooltip panel.
     [<CustomOperation("MaxWidth")>] member inline _.MaxWidth ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("MaxWidth" => x)
     /// Controls when the tooltip updates its position, default is anchor which only updates when
     /// the anchor is resized.  auto will update on scroll/resize events.
     /// Corresponds to anchored-region auto-update-mode.
-    [<CustomOperation("AutoUpdateMode")>] member inline _.AutoUpdateMode ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.Fast.Components.FluentUI.AutoUpdateMode>) = render ==> ("AutoUpdateMode" => x)
+    [<CustomOperation("AutoUpdateMode")>] member inline _.AutoUpdateMode ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.AutoUpdateMode>) = render ==> ("AutoUpdateMode" => x)
     /// Gets or sets whether the horizontal viewport is locked
     [<CustomOperation("HorizontalViewportLock")>] member inline _.HorizontalViewportLock ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("HorizontalViewportLock" => x)
     /// Gets or sets whether the vertical viewport is locked
@@ -1963,33 +1967,33 @@ type FluentTreeViewBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     /// Defaults to false
     [<CustomOperation("RenderCollapsedNodes")>] member inline _.RenderCollapsedNodes ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("RenderCollapsedNodes" => x)
     /// Gets or sets the currently selected tree item
-    [<CustomOperation("CurrentSelected")>] member inline _.CurrentSelected ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.Fast.Components.FluentUI.FluentTreeItem) = render ==> ("CurrentSelected" => x)
+    [<CustomOperation("CurrentSelected")>] member inline _.CurrentSelected ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.FluentTreeItem) = render ==> ("CurrentSelected" => x)
     /// Gets or sets the currently selected tree item
-    [<CustomOperation("CurrentSelected'")>] member inline _.CurrentSelected' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: Microsoft.Fast.Components.FluentUI.FluentTreeItem * (Microsoft.Fast.Components.FluentUI.FluentTreeItem -> unit)) = render ==> html.bind("CurrentSelected", valueFn)
+    [<CustomOperation("CurrentSelected'")>] member inline _.CurrentSelected' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: Microsoft.FluentUI.AspNetCore.Components.FluentTreeItem * (Microsoft.FluentUI.AspNetCore.Components.FluentTreeItem -> unit)) = render ==> html.bind("CurrentSelected", valueFn)
     /// Called when CurrentSelected changes.
-    [<CustomOperation("CurrentSelectedChanged")>] member inline _.CurrentSelectedChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.Fast.Components.FluentUI.FluentTreeItem>("CurrentSelectedChanged", fn)
+    [<CustomOperation("CurrentSelectedChanged")>] member inline _.CurrentSelectedChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.FluentUI.AspNetCore.Components.FluentTreeItem>("CurrentSelectedChanged", fn)
     /// Called when CurrentSelected changes.
-    [<CustomOperation("CurrentSelectedChanged")>] member inline _.CurrentSelectedChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.Fast.Components.FluentUI.FluentTreeItem>("CurrentSelectedChanged", fn)
+    [<CustomOperation("CurrentSelectedChanged")>] member inline _.CurrentSelectedChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.FluentUI.AspNetCore.Components.FluentTreeItem>("CurrentSelectedChanged", fn)
     /// Called whenever Selected changes on an
     /// item within the tree.
-    [<CustomOperation("OnSelectedChange")>] member inline _.OnSelectedChange ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.Fast.Components.FluentUI.FluentTreeItem>("OnSelectedChange", fn)
+    [<CustomOperation("OnSelectedChange")>] member inline _.OnSelectedChange ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.FluentUI.AspNetCore.Components.FluentTreeItem>("OnSelectedChange", fn)
     /// Called whenever Selected changes on an
     /// item within the tree.
-    [<CustomOperation("OnSelectedChange")>] member inline _.OnSelectedChange ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.Fast.Components.FluentUI.FluentTreeItem>("OnSelectedChange", fn)
+    [<CustomOperation("OnSelectedChange")>] member inline _.OnSelectedChange ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.FluentUI.AspNetCore.Components.FluentTreeItem>("OnSelectedChange", fn)
     /// Called whenever Expanded changes on an
     /// item within the tree.
-    [<CustomOperation("OnExpandedChange")>] member inline _.OnExpandedChange ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.Fast.Components.FluentUI.FluentTreeItem>("OnExpandedChange", fn)
+    [<CustomOperation("OnExpandedChange")>] member inline _.OnExpandedChange ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.FluentUI.AspNetCore.Components.FluentTreeItem>("OnExpandedChange", fn)
     /// Called whenever Expanded changes on an
     /// item within the tree.
-    [<CustomOperation("OnExpandedChange")>] member inline _.OnExpandedChange ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.Fast.Components.FluentUI.FluentTreeItem>("OnExpandedChange", fn)
+    [<CustomOperation("OnExpandedChange")>] member inline _.OnExpandedChange ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.FluentUI.AspNetCore.Components.FluentTreeItem>("OnExpandedChange", fn)
 
             
-namespace rec Microsoft.Fast.Components.FluentUI.DslInternals
+namespace rec Microsoft.FluentUI.AspNetCore.Components.DslInternals
 
 open FSharp.Data.Adaptive
 open Fun.Blazor
 open Fun.Blazor.Operators
-open Microsoft.Fast.Components.FluentUI.DslInternals
+open Microsoft.FluentUI.AspNetCore.Components.DslInternals
 
 /// Displays a list of validation messages from a cascaded EditContext.
 type ValidationSummaryBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -2001,12 +2005,12 @@ type ValidationSummaryBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micros
     [<CustomOperation("AdditionalAttributes")>] member inline _.AdditionalAttributes ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>) = render ==> ("AdditionalAttributes" => x)
 
             
-namespace rec Microsoft.Fast.Components.FluentUI.DslInternals
+namespace rec Microsoft.FluentUI.AspNetCore.Components.DslInternals
 
 open FSharp.Data.Adaptive
 open Fun.Blazor
 open Fun.Blazor.Operators
-open Microsoft.Fast.Components.FluentUI.DslInternals
+open Microsoft.FluentUI.AspNetCore.Components.DslInternals
 
 type FluentValidationSummaryBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ValidationSummaryBuilder<'FunBlazorGeneric>()
@@ -2024,14 +2028,14 @@ type ColumnBaseBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric :> M
     /// for this column.
     [<CustomOperation("Styles")>] member inline _.Styles ([<InlineIfLambda>] render: AttrRenderFragment, x: (string * string) list) = render ==> html.styles x
     /// If specified, controls the justification of header and grid cells for this column.
-    [<CustomOperation("Align")>] member inline _.Align ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.Fast.Components.FluentUI.Align) = render ==> ("Align" => x)
+    [<CustomOperation("Align")>] member inline _.Align ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Align) = render ==> ("Align" => x)
     /// If true, generate a title and aria-label attribute for the cell contents
     [<CustomOperation("Tooltip")>] member inline _.Tooltip ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Tooltip" => x)
     /// Defines the value to be used as the tooltip and aria-label in this column's cells
     [<CustomOperation("TooltipText")>] member inline _.TooltipText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Linq.Expressions.Expression<System.Func<'TGridItem, System.String>>) = render ==> ("TooltipText" => x)
     /// An optional template for this column's header cell. If not specified, the default header template
     /// includes the Title along with any applicable sort indicators and options buttons.
-    [<CustomOperation("HeaderCellItemTemplate")>] member inline _.HeaderCellItemTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.Fast.Components.FluentUI.ColumnBase<'TGridItem> -> NodeRenderFragment) = render ==> html.renderFragment("HeaderCellItemTemplate", fn)
+    [<CustomOperation("HeaderCellItemTemplate")>] member inline _.HeaderCellItemTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.ColumnBase<'TGridItem> -> NodeRenderFragment) = render ==> html.renderFragment("HeaderCellItemTemplate", fn)
     /// If specified, indicates that this column has this associated options UI. A button to display this
     /// UI will be included in the header cell by default.
     ///             
@@ -2069,7 +2073,7 @@ type ColumnBaseBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric :> M
     [<CustomOperation("Sortable")>] member inline _.Sortable ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("Sortable" => x)
     /// Indicates which direction to sort in
     /// if IsDefaultSortColumn is true.
-    [<CustomOperation("InitialSortDirection")>] member inline _.InitialSortDirection ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.Fast.Components.FluentUI.SortDirection) = render ==> ("InitialSortDirection" => x)
+    [<CustomOperation("InitialSortDirection")>] member inline _.InitialSortDirection ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.SortDirection) = render ==> ("InitialSortDirection" => x)
     /// Indicates whether this column should be sorted by default.
     [<CustomOperation("IsDefaultSortColumn")>] member inline _.IsDefaultSortColumn ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("IsDefaultSortColumn" => x)
     /// If specified, virtualized grids will use this template to render cells whose data has not yet been loaded.
@@ -2094,15 +2098,15 @@ type TemplateColumnBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric 
     inherit ColumnBaseBuilder<'FunBlazorGeneric, 'TGridItem>()
     /// Specifies the content to be rendered for each row in the table.
     [<CustomOperation("ChildContent")>] member inline _.ChildContent ([<InlineIfLambda>] render: AttrRenderFragment, fn: 'TGridItem -> NodeRenderFragment) = render ==> html.renderFragment("ChildContent", fn)
-    [<CustomOperation("SortBy")>] member inline _.SortBy ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.Fast.Components.FluentUI.GridSort<'TGridItem>) = render ==> ("SortBy" => x)
+    [<CustomOperation("SortBy")>] member inline _.SortBy ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.GridSort<'TGridItem>) = render ==> ("SortBy" => x)
 
 type FluentSplashScreenBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
-    [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.Fast.Components.FluentUI.SplashScreenContent) = render ==> ("Content" => x)
+    [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.SplashScreenContent) = render ==> ("Content" => x)
 
 type MessageBoxBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
-    [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.Fast.Components.FluentUI.MessageBoxContent) = render ==> ("Content" => x)
+    [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.MessageBoxContent) = render ==> ("Content" => x)
 
 type FluentDialogProviderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
@@ -2141,10 +2145,10 @@ type FluentOverlayBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     [<CustomOperation("Opacity")>] member inline _.Opacity ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Double>) = render ==> ("Opacity" => x)
     /// Gets or sets the alignment of the content to a Align value.
     /// Defaults to Align.Center.
-    [<CustomOperation("Alignment")>] member inline _.Alignment ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.Fast.Components.FluentUI.Align) = render ==> ("Alignment" => x)
+    [<CustomOperation("Alignment")>] member inline _.Alignment ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Align) = render ==> ("Alignment" => x)
     /// Gets or sets the justification of the content to a JustifyContent value.
     /// Defaults to JustifyContent.Center.
-    [<CustomOperation("Justification")>] member inline _.Justification ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.Fast.Components.FluentUI.JustifyContent) = render ==> ("Justification" => x)
+    [<CustomOperation("Justification")>] member inline _.Justification ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.JustifyContent) = render ==> ("Justification" => x)
     /// Gets or sets if the overlay is shown full screen or bound to the containing element.
     [<CustomOperation("FullScreen")>] member inline _.FullScreen ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("FullScreen" => x)
     [<CustomOperation("Dismissable")>] member inline _.Dismissable ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Dismissable" => x)
@@ -2161,18 +2165,18 @@ type FluentSpacerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.A
 
 type CommunicationToastBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
-    [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.Fast.Components.FluentUI.CommunicationToastContent) = render ==> ("Content" => x)
+    [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.CommunicationToastContent) = render ==> ("Content" => x)
 
 type ProgressToastBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
-    [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.Fast.Components.FluentUI.ProgressToastContent) = render ==> ("Content" => x)
+    [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.ProgressToastContent) = render ==> ("Content" => x)
 
-type FluentToastContainerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+type FluentToastProviderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
     /// Gets or sets the position on screen where the toasts are shown. See ToastPosition
     /// Default is ToastPosition.TopRight
-    [<CustomOperation("Position")>] member inline _.Position ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.Fast.Components.FluentUI.ToastPosition) = render ==> ("Position" => x)
-    /// Gets or sets the number of seconds a toast remains visible. Default is 7 seconds.
+    [<CustomOperation("Position")>] member inline _.Position ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.ToastPosition) = render ==> ("Position" => x)
+    /// Gets or sets the number of milliseconds a toast remains visible. Default is 7000 (7 seconds).
     [<CustomOperation("Timeout")>] member inline _.Timeout ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("Timeout" => x)
     /// Gets or sets the maximum number of toasts that can be shown at once. Default is 4.
     [<CustomOperation("MaxToastCount")>] member inline _.MaxToastCount ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("MaxToastCount" => x)
@@ -2190,19 +2194,19 @@ type _ImportsBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNe
 
 
             
-namespace rec Microsoft.Fast.Components.FluentUI.DslInternals.DesignTokens
+namespace rec Microsoft.FluentUI.AspNetCore.Components.DslInternals.DesignTokens
 
 open FSharp.Data.Adaptive
 open Fun.Blazor
 open Fun.Blazor.Operators
-open Microsoft.Fast.Components.FluentUI.DslInternals
+open Microsoft.FluentUI.AspNetCore.Components.DslInternals
 
 type DesignTokenBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
     /// Gets or sets the value of the design token
     [<CustomOperation("Value")>] member inline _.Value ([<InlineIfLambda>] render: AttrRenderFragment, x: 'T) = render ==> ("Value" => x)
     /// Gets or sets the content to apply this design token on
-    [<CustomOperation("ChildContent")>] member inline _.ChildContent ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.Fast.Components.FluentUI.DesignTokens.Reference -> NodeRenderFragment) = render ==> html.renderFragment("ChildContent", fn)
+    [<CustomOperation("ChildContent")>] member inline _.ChildContent ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Reference -> NodeRenderFragment) = render ==> html.renderFragment("ChildContent", fn)
 
 /// The Direction design token
 type DirectionBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -2611,411 +2615,411 @@ type NeutralStrokeStrongFocusDeltaBuilder<'FunBlazorGeneric when 'FunBlazorGener
 
 /// The NeutralBaseColor design token
 type NeutralBaseColorBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The AccentBaseColor design token
 type AccentBaseColorBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralLayerCardContainer design token
 type NeutralLayerCardContainerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralLayerFloating design token
 type NeutralLayerFloatingBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralLayer1 design token
 type NeutralLayer1Builder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralLayer2 design token
 type NeutralLayer2Builder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralLayer3 design token
 type NeutralLayer3Builder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralLayer4 design token
 type NeutralLayer4Builder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The FillColor design token
 type FillColorBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The AccentFillRest design token
 type AccentFillRestBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The AccentFillHover design token
 type AccentFillHoverBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The AccentFillActive design token
 type AccentFillActiveBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The AccentFillFocus design token
 type AccentFillFocusBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The ForegroundOnAccentRest design token
 type ForegroundOnAccentRestBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The ForegroundOnAccentHover design token
 type ForegroundOnAccentHoverBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The ForegroundOnAccentActive design token
 type ForegroundOnAccentActiveBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The ForegroundOnAccentFocus design token
 type ForegroundOnAccentFocusBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The AccentForegroundRest design token
 type AccentForegroundRestBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The AccentForegroundHover design token
 type AccentForegroundHoverBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The AccentForegroundActive design token
 type AccentForegroundActiveBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The AccentForegroundFocus design token
 type AccentForegroundFocusBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The AccentStrokeControlRest design token
 type AccentStrokeControlRestBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The AccentStrokeControlHover design token
 type AccentStrokeControlHoverBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The AccentStrokeControlActive design token
 type AccentStrokeControlActiveBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The AccentStrokeControlFocus design token
 type AccentStrokeControlFocusBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralFillRest design token
 type NeutralFillRestBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralFillHover design token
 type NeutralFillHoverBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralFillActive design token
 type NeutralFillActiveBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralFillFocus design token
 type NeutralFillFocusBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralFillInputRest design token
 type NeutralFillInputRestBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralFillInputHover design token
 type NeutralFillInputHoverBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralFillInputActive design token
 type NeutralFillInputActiveBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralFillInputFocus design token
 type NeutralFillInputFocusBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralFillInputAltRest design token
 type NeutralFillInputAltRestBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralFillInputAltHover design token
 type NeutralFillInputAltHoverBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralFillInputAltActive design token
 type NeutralFillInputAltActiveBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralFillInputAltFocus design token
 type NeutralFillInputAltFocusBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralFillLayerRest design token
 type NeutralFillLayerRestBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralFillLayerHover design token
 type NeutralFillLayerHoverBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralFillLayerActive design token
 type NeutralFillLayerActiveBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralFillLayerAltRest design token
 type NeutralFillLayerAltRestBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralFillSecondaryRest design token
 type NeutralFillSecondaryRestBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralFillSecondaryHover design token
 type NeutralFillSecondaryHoverBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralFillSecondaryActive design token
 type NeutralFillSecondaryActiveBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralFillSecondaryFocus design token
 type NeutralFillSecondaryFocusBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralFillStealthRest design token
 type NeutralFillStealthRestBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralFillStealthHover design token
 type NeutralFillStealthHoverBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralFillStealthActive design token
 type NeutralFillStealthActiveBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralFillStealthFocus design token
 type NeutralFillStealthFocusBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralFillStrongRest design token
 type NeutralFillStrongRestBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralFillStrongHover design token
 type NeutralFillStrongHoverBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralFillStrongActive design token
 type NeutralFillStrongActiveBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralFillStrongFocus design token
 type NeutralFillStrongFocusBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralForegroundRest design token
 type NeutralForegroundRestBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralForegroundHover design token
 type NeutralForegroundHoverBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralForegroundActive design token
 type NeutralForegroundActiveBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralForegroundFocus design token
 type NeutralForegroundFocusBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralForegroundHint design token
 type NeutralForegroundHintBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralStrokeRest design token
 type NeutralStrokeRestBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralStrokeHover design token
 type NeutralStrokeHoverBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralStrokeActive design token
 type NeutralStrokeActiveBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralStrokeFocus design token
 type NeutralStrokeFocusBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralStrokeControlRest design token
 type NeutralStrokeControlRestBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralStrokeControlHover design token
 type NeutralStrokeControlHoverBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralStrokeControlActive design token
 type NeutralStrokeControlActiveBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralStrokeControlFocus design token
 type NeutralStrokeControlFocusBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralStrokeDividerRest design token
 type NeutralStrokeDividerRestBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralStrokeInputRest design token
 type NeutralStrokeInputRestBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralStrokeInputHover design token
 type NeutralStrokeInputHoverBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralStrokeInputActive design token
 type NeutralStrokeInputActiveBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralStrokeInputFocus design token
 type NeutralStrokeInputFocusBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralStrokeLayerRest design token
 type NeutralStrokeLayerRestBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralStrokeLayerHover design token
 type NeutralStrokeLayerHoverBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralStrokeLayerActive design token
 type NeutralStrokeLayerActiveBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralStrokeStrongRest design token
 type NeutralStrokeStrongRestBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralStrokeStrongHover design token
 type NeutralStrokeStrongHoverBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralStrokeStrongActive design token
 type NeutralStrokeStrongActiveBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The NeutralStrokeStrongFocus design token
 type NeutralStrokeStrongFocusBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The FocusStrokeOuter design token
 type FocusStrokeOuterBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
 /// The FocusStrokeInner design token
 type FocusStrokeInnerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.Fast.Components.FluentUI.DesignTokens.Swatch>()
+    inherit DesignTokens.DesignTokenBuilder<'FunBlazorGeneric, Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Swatch>()
 
 
             
-namespace rec Microsoft.Fast.Components.FluentUI.DslInternals.DataGrid.Infrastructure
+namespace rec Microsoft.FluentUI.AspNetCore.Components.DslInternals.DataGrid.Infrastructure
 
 open FSharp.Data.Adaptive
 open Fun.Blazor
 open Fun.Blazor.Operators
-open Microsoft.Fast.Components.FluentUI.DslInternals
+open Microsoft.FluentUI.AspNetCore.Components.DslInternals
 
 /// For internal use only. Do not use.
 type DeferBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -3026,43 +3030,43 @@ type DeferBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCo
 
 // =======================================================================================================================
 
-namespace Microsoft.Fast.Components.FluentUI
+namespace Microsoft.FluentUI.AspNetCore.Components
 
 [<AutoOpen>]
 module DslCE =
   
     open System.Diagnostics.CodeAnalysis
-    open Microsoft.Fast.Components.FluentUI.DslInternals
+    open Microsoft.FluentUI.AspNetCore.Components.DslInternals
 
-    type FluentComponentBase' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentComponentBase>)>] () = inherit FluentComponentBaseBuilder<Microsoft.Fast.Components.FluentUI.FluentComponentBase>()
-    type FluentCalendarBase' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentCalendarBase>)>] () = inherit FluentCalendarBaseBuilder<Microsoft.Fast.Components.FluentUI.FluentCalendarBase>()
+    type FluentComponentBase' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentComponentBase>)>] () = inherit FluentComponentBaseBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentComponentBase>()
+    type FluentCalendarBase' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentCalendarBase>)>] () = inherit FluentCalendarBaseBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentCalendarBase>()
 
     /// Fluent Calendar based on
     /// https://github.com/microsoft/fluentui/blob/master/packages/web-components/src/calendar/.
     type FluentCalendar' 
         /// Fluent Calendar based on
         /// https://github.com/microsoft/fluentui/blob/master/packages/web-components/src/calendar/.
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentCalendar>)>] () = inherit FluentCalendarBuilder<Microsoft.Fast.Components.FluentUI.FluentCalendar>()
-    type FluentDatePicker' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentDatePicker>)>] () = inherit FluentDatePickerBuilder<Microsoft.Fast.Components.FluentUI.FluentDatePicker>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentCalendar>)>] () = inherit FluentCalendarBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentCalendar>()
+    type FluentDatePicker' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentDatePicker>)>] () = inherit FluentDatePickerBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentDatePicker>()
 
     /// Base class for FluentNavMenuGroup and FluentNavMenuItemBase.
     type FluentNavMenuItemBase' 
         /// Base class for FluentNavMenuGroup and FluentNavMenuItemBase.
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentNavMenuItemBase>)>] () = inherit FluentNavMenuItemBaseBuilder<Microsoft.Fast.Components.FluentUI.FluentNavMenuItemBase>()
-    type FluentNavMenuGroup' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentNavMenuGroup>)>] () = inherit FluentNavMenuGroupBuilder<Microsoft.Fast.Components.FluentUI.FluentNavMenuGroup>()
-    type FluentNavMenuLink' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentNavMenuLink>)>] () = inherit FluentNavMenuLinkBuilder<Microsoft.Fast.Components.FluentUI.FluentNavMenuLink>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentNavMenuItemBase>)>] () = inherit FluentNavMenuItemBaseBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentNavMenuItemBase>()
+    type FluentNavMenuGroup' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentNavMenuGroup>)>] () = inherit FluentNavMenuGroupBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentNavMenuGroup>()
+    type FluentNavMenuLink' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentNavMenuLink>)>] () = inherit FluentNavMenuLinkBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentNavMenuLink>()
 
     /// Base class for FluentNavGroup and FluentNavLink.
     type FluentNavBase' 
         /// Base class for FluentNavGroup and FluentNavLink.
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentNavBase>)>] () = inherit FluentNavBaseBuilder<Microsoft.Fast.Components.FluentUI.FluentNavBase>()
-    type FluentNavGroup' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentNavGroup>)>] () = inherit FluentNavGroupBuilder<Microsoft.Fast.Components.FluentUI.FluentNavGroup>()
-    type FluentNavLink' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentNavLink>)>] () = inherit FluentNavLinkBuilder<Microsoft.Fast.Components.FluentUI.FluentNavLink>()
-    type FluentAccordion' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentAccordion>)>] () = inherit FluentAccordionBuilder<Microsoft.Fast.Components.FluentUI.FluentAccordion>()
-    type FluentAccordionItem' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentAccordionItem>)>] () = inherit FluentAccordionItemBuilder<Microsoft.Fast.Components.FluentUI.FluentAccordionItem>()
-    type FluentAnchoredRegion' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentAnchoredRegion>)>] () = inherit FluentAnchoredRegionBuilder<Microsoft.Fast.Components.FluentUI.FluentAnchoredRegion>()
-    type FluentAnchor' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentAnchor>)>] () = inherit FluentAnchorBuilder<Microsoft.Fast.Components.FluentUI.FluentAnchor>()
-    type FluentBadge' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentBadge>)>] () = inherit FluentBadgeBuilder<Microsoft.Fast.Components.FluentUI.FluentBadge>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentNavBase>)>] () = inherit FluentNavBaseBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentNavBase>()
+    type FluentNavGroup' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentNavGroup>)>] () = inherit FluentNavGroupBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentNavGroup>()
+    type FluentNavLink' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentNavLink>)>] () = inherit FluentNavLinkBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentNavLink>()
+    type FluentAccordion' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentAccordion>)>] () = inherit FluentAccordionBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentAccordion>()
+    type FluentAccordionItem' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentAccordionItem>)>] () = inherit FluentAccordionItemBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentAccordionItem>()
+    type FluentAnchoredRegion' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentAnchoredRegion>)>] () = inherit FluentAnchoredRegionBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentAnchoredRegion>()
+    type FluentAnchor' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentAnchor>)>] () = inherit FluentAnchorBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentAnchor>()
+    type FluentBadge' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentBadge>)>] () = inherit FluentBadgeBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentBadge>()
 
     /// A base class for fluent ui form input components. This base class automatically
     /// integrates with an EditContext, which must be supplied
@@ -3071,51 +3075,50 @@ module DslCE =
         /// A base class for fluent ui form input components. This base class automatically
         /// integrates with an EditContext, which must be supplied
         /// as a cascading parameter.
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentInputBase<_>>)>] () = inherit FluentInputBaseBuilder<Microsoft.Fast.Components.FluentUI.FluentInputBase<'TValue>, 'TValue>()
-    type FluentCheckbox' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentCheckbox>)>] () = inherit FluentCheckboxBuilder<Microsoft.Fast.Components.FluentUI.FluentCheckbox>()
-    type FluentTimePicker' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentTimePicker>)>] () = inherit FluentTimePickerBuilder<Microsoft.Fast.Components.FluentUI.FluentTimePicker>()
-    type FluentNumberField'<'TValue when 'TValue : (new : unit -> 'TValue)> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentNumberField<_>>)>] () = inherit FluentNumberFieldBuilder<Microsoft.Fast.Components.FluentUI.FluentNumberField<'TValue>, 'TValue>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentInputBase<_>>)>] () = inherit FluentInputBaseBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentInputBase<'TValue>, 'TValue>()
+    type FluentCheckbox' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentCheckbox>)>] () = inherit FluentCheckboxBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentCheckbox>()
+    type FluentTimePicker' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentTimePicker>)>] () = inherit FluentTimePickerBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentTimePicker>()
+    type FluentNumberField'<'TValue when 'TValue : (new : unit -> 'TValue)> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentNumberField<_>>)>] () = inherit FluentNumberFieldBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentNumberField<'TValue>, 'TValue>()
 
     /// Groups child FluentRadio`1 components. 
     type FluentRadioGroup'<'TValue> 
         /// Groups child FluentRadio`1 components. 
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentRadioGroup<_>>)>] () = inherit FluentRadioGroupBuilder<Microsoft.Fast.Components.FluentUI.FluentRadioGroup<'TValue>, 'TValue>()
-    type FluentSearch' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentSearch>)>] () = inherit FluentSearchBuilder<Microsoft.Fast.Components.FluentUI.FluentSearch>()
-    type FluentSliderInt' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentSlider<int>>)>] () = inherit FluentSliderBuilder<Microsoft.Fast.Components.FluentUI.FluentSlider<int>, int>()
-    type FluentSliderFloat' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentSlider<float>>)>] () = inherit FluentSliderBuilder<Microsoft.Fast.Components.FluentUI.FluentSlider<float>, float>()
-    type FluentSwitch' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentSwitch>)>] () = inherit FluentSwitchBuilder<Microsoft.Fast.Components.FluentUI.FluentSwitch>()
-    type FluentTextArea' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentTextArea>)>] () = inherit FluentTextAreaBuilder<Microsoft.Fast.Components.FluentUI.FluentTextArea>()
-    type FluentTextField' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentTextField>)>] () = inherit FluentTextFieldBuilder<Microsoft.Fast.Components.FluentUI.FluentTextField>()
-    type FluentBodyContent' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentBodyContent>)>] () = inherit FluentBodyContentBuilder<Microsoft.Fast.Components.FluentUI.FluentBodyContent>()
-    type FluentBreadcrumb' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentBreadcrumb>)>] () = inherit FluentBreadcrumbBuilder<Microsoft.Fast.Components.FluentUI.FluentBreadcrumb>()
-    type FluentBreadcrumbItem' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentBreadcrumbItem>)>] () = inherit FluentBreadcrumbItemBuilder<Microsoft.Fast.Components.FluentUI.FluentBreadcrumbItem>()
-    type FluentButton' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentButton>)>] () = inherit FluentButtonBuilder<Microsoft.Fast.Components.FluentUI.FluentButton>()
-    type FluentCard' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentCard>)>] () = inherit FluentCardBuilder<Microsoft.Fast.Components.FluentUI.FluentCard>()
-    type FluentCodeEditor' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentCodeEditor>)>] () = inherit FluentCodeEditorBuilder<Microsoft.Fast.Components.FluentUI.FluentCodeEditor>()
-    type FluentCollapsibleRegion' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentCollapsibleRegion>)>] () = inherit FluentCollapsibleRegionBuilder<Microsoft.Fast.Components.FluentUI.FluentCollapsibleRegion>()
-    type FluentCounterBadge' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentCounterBadge>)>] () = inherit FluentCounterBadgeBuilder<Microsoft.Fast.Components.FluentUI.FluentCounterBadge>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentRadioGroup<_>>)>] () = inherit FluentRadioGroupBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentRadioGroup<'TValue>, 'TValue>()
+    type FluentSearch' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentSearch>)>] () = inherit FluentSearchBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentSearch>()
+    type FluentSliderInt' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentSlider<int>>)>] () = inherit FluentSliderBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentSlider<int>, int>()
+    type FluentSliderFloat' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentSlider<float>>)>] () = inherit FluentSliderBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentSlider<float>, float>()
+    type FluentSwitch' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentSwitch>)>] () = inherit FluentSwitchBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentSwitch>()
+    type FluentTextArea' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentTextArea>)>] () = inherit FluentTextAreaBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentTextArea>()
+    type FluentTextField' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentTextField>)>] () = inherit FluentTextFieldBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentTextField>()
+    type FluentBodyContent' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentBodyContent>)>] () = inherit FluentBodyContentBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentBodyContent>()
+    type FluentBreadcrumb' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentBreadcrumb>)>] () = inherit FluentBreadcrumbBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentBreadcrumb>()
+    type FluentBreadcrumbItem' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentBreadcrumbItem>)>] () = inherit FluentBreadcrumbItemBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentBreadcrumbItem>()
+    type FluentButton' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentButton>)>] () = inherit FluentButtonBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentButton>()
+    type FluentCard' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentCard>)>] () = inherit FluentCardBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentCard>()
+    type FluentCollapsibleRegion' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentCollapsibleRegion>)>] () = inherit FluentCollapsibleRegionBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentCollapsibleRegion>()
+    type FluentCounterBadge' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentCounterBadge>)>] () = inherit FluentCounterBadgeBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentCounterBadge>()
 
     /// A component that displays a grid.
     type FluentDataGrid'<'TGridItem> 
         /// A component that displays a grid.
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentDataGrid<_>>)>] () = inherit FluentDataGridBuilder<Microsoft.Fast.Components.FluentUI.FluentDataGrid<'TGridItem>, 'TGridItem>()
-    type FluentDataGridCell'<'TGridItem> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentDataGridCell<_>>)>] () = inherit FluentDataGridCellBuilder<Microsoft.Fast.Components.FluentUI.FluentDataGridCell<'TGridItem>, 'TGridItem>()
-    type FluentDataGridRow'<'TGridItem> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentDataGridRow<_>>)>] () = inherit FluentDataGridRowBuilder<Microsoft.Fast.Components.FluentUI.FluentDataGridRow<'TGridItem>, 'TGridItem>()
-    type FluentDesignSystemProvider' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentDesignSystemProvider>)>] () = inherit FluentDesignSystemProviderBuilder<Microsoft.Fast.Components.FluentUI.FluentDesignSystemProvider>()
-    type FluentDialog' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentDialog>)>] () = inherit FluentDialogBuilder<Microsoft.Fast.Components.FluentUI.FluentDialog>()
-    type FluentDialogBody' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentDialogBody>)>] () = inherit FluentDialogBodyBuilder<Microsoft.Fast.Components.FluentUI.FluentDialogBody>()
-    type FluentDialogFooter' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentDialogFooter>)>] () = inherit FluentDialogFooterBuilder<Microsoft.Fast.Components.FluentUI.FluentDialogFooter>()
-    type FluentDialogHeader' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentDialogHeader>)>] () = inherit FluentDialogHeaderBuilder<Microsoft.Fast.Components.FluentUI.FluentDialogHeader>()
-    type FluentDivider' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentDivider>)>] () = inherit FluentDividerBuilder<Microsoft.Fast.Components.FluentUI.FluentDivider>()
-    type FluentDragContainer'<'TItem> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentDragContainer<_>>)>] () = inherit FluentDragContainerBuilder<Microsoft.Fast.Components.FluentUI.FluentDragContainer<'TItem>, 'TItem>()
-    type FluentDropZone'<'TItem> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentDropZone<_>>)>] () = inherit FluentDropZoneBuilder<Microsoft.Fast.Components.FluentUI.FluentDropZone<'TItem>, 'TItem>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentDataGrid<_>>)>] () = inherit FluentDataGridBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentDataGrid<'TGridItem>, 'TGridItem>()
+    type FluentDataGridCell'<'TGridItem> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentDataGridCell<_>>)>] () = inherit FluentDataGridCellBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentDataGridCell<'TGridItem>, 'TGridItem>()
+    type FluentDataGridRow'<'TGridItem> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentDataGridRow<_>>)>] () = inherit FluentDataGridRowBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentDataGridRow<'TGridItem>, 'TGridItem>()
+    type FluentDesignSystemProvider' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentDesignSystemProvider>)>] () = inherit FluentDesignSystemProviderBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentDesignSystemProvider>()
+    type FluentDialog' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentDialog>)>] () = inherit FluentDialogBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentDialog>()
+    type FluentDialogBody' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentDialogBody>)>] () = inherit FluentDialogBodyBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentDialogBody>()
+    type FluentDialogFooter' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentDialogFooter>)>] () = inherit FluentDialogFooterBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentDialogFooter>()
+    type FluentDialogHeader' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentDialogHeader>)>] () = inherit FluentDialogHeaderBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentDialogHeader>()
+    type FluentDivider' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentDivider>)>] () = inherit FluentDividerBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentDivider>()
+    type FluentDragContainer'<'TItem> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentDragContainer<_>>)>] () = inherit FluentDragContainerBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentDragContainer<'TItem>, 'TItem>()
+    type FluentDropZone'<'TItem> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentDropZone<_>>)>] () = inherit FluentDropZoneBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentDropZone<'TItem>, 'TItem>()
 
     /// FluentEmoji is a component that renders an emoji from the Microsoft FluentUI emoji set.
-    type FluentEmoji'<'Emoji when 'Emoji : (new : unit -> 'Emoji) and 'Emoji :> Microsoft.Fast.Components.FluentUI.Emoji> 
+    type FluentEmoji'<'Emoji when 'Emoji : (new : unit -> 'Emoji) and 'Emoji :> Microsoft.FluentUI.AspNetCore.Components.Emoji> 
         /// FluentEmoji is a component that renders an emoji from the Microsoft FluentUI emoji set.
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentEmoji<_>>)>] () = inherit FluentEmojiBuilder<Microsoft.Fast.Components.FluentUI.FluentEmoji<'Emoji>, 'Emoji>()
-    type FluentFlipper' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentFlipper>)>] () = inherit FluentFlipperBuilder<Microsoft.Fast.Components.FluentUI.FluentFlipper>()
-    type FluentFooter' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentFooter>)>] () = inherit FluentFooterBuilder<Microsoft.Fast.Components.FluentUI.FluentFooter>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentEmoji<_>>)>] () = inherit FluentEmojiBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentEmoji<'Emoji>, 'Emoji>()
+    type FluentFlipper' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentFlipper>)>] () = inherit FluentFlipperBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentFlipper>()
+    type FluentFooter' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentFooter>)>] () = inherit FluentFooterBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentFooter>()
 
     /// The grid component helps keeping layout consistent across various screen resolutions and sizes.
     /// PowerGrid comes with a 12-point grid system and contains 5 types of breakpoints
@@ -3124,930 +3127,930 @@ module DslCE =
         /// The grid component helps keeping layout consistent across various screen resolutions and sizes.
         /// PowerGrid comes with a 12-point grid system and contains 5 types of breakpoints
         /// that are used for specific screen sizes.
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentGrid>)>] () = inherit FluentGridBuilder<Microsoft.Fast.Components.FluentUI.FluentGrid>()
-    type FluentGridItem' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentGridItem>)>] () = inherit FluentGridItemBuilder<Microsoft.Fast.Components.FluentUI.FluentGridItem>()
-    type FluentHeader' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentHeader>)>] () = inherit FluentHeaderBuilder<Microsoft.Fast.Components.FluentUI.FluentHeader>()
-    type FluentHighlighter' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentHighlighter>)>] () = inherit FluentHighlighterBuilder<Microsoft.Fast.Components.FluentUI.FluentHighlighter>()
-    type FluentHorizontalScroll' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentHorizontalScroll>)>] () = inherit FluentHorizontalScrollBuilder<Microsoft.Fast.Components.FluentUI.FluentHorizontalScroll>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentGrid>)>] () = inherit FluentGridBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentGrid>()
+    type FluentGridItem' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentGridItem>)>] () = inherit FluentGridItemBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentGridItem>()
+    type FluentHeader' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentHeader>)>] () = inherit FluentHeaderBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentHeader>()
+    type FluentHighlighter' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentHighlighter>)>] () = inherit FluentHighlighterBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentHighlighter>()
+    type FluentHorizontalScroll' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentHorizontalScroll>)>] () = inherit FluentHorizontalScrollBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentHorizontalScroll>()
 
     /// FluentIcon is a component that renders an icon from the Fluent System icon set.
-    type FluentIcon'<'Icon when 'Icon : (new : unit -> 'Icon) and 'Icon :> Microsoft.Fast.Components.FluentUI.Icon> 
+    type FluentIcon'<'Icon when 'Icon : (new : unit -> 'Icon) and 'Icon :> Microsoft.FluentUI.AspNetCore.Components.Icon> 
         /// FluentIcon is a component that renders an icon from the Fluent System icon set.
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentIcon<_>>)>] () = inherit FluentIconBuilder<Microsoft.Fast.Components.FluentUI.FluentIcon<'Icon>, 'Icon>()
-    type FluentInputFile' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentInputFile>)>] () = inherit FluentInputFileBuilder<Microsoft.Fast.Components.FluentUI.FluentInputFile>()
-    type FluentLabel' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentLabel>)>] () = inherit FluentLabelBuilder<Microsoft.Fast.Components.FluentUI.FluentLabel>()
-    type FluentLayout' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentLayout>)>] () = inherit FluentLayoutBuilder<Microsoft.Fast.Components.FluentUI.FluentLayout>()
-    type FluentOption'<'TOption> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentOption<_>>)>] () = inherit FluentOptionBuilder<Microsoft.Fast.Components.FluentUI.FluentOption<'TOption>, 'TOption>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentIcon<_>>)>] () = inherit FluentIconBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentIcon<'Icon>, 'Icon>()
+    type FluentInputFile' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentInputFile>)>] () = inherit FluentInputFileBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentInputFile>()
+    type FluentLabel' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentLabel>)>] () = inherit FluentLabelBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentLabel>()
+    type FluentLayout' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentLayout>)>] () = inherit FluentLayoutBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentLayout>()
+    type FluentOption'<'TOption> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentOption<_>>)>] () = inherit FluentOptionBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentOption<'TOption>, 'TOption>()
 
     /// People picker option component.
     type FluentPersona' 
         /// People picker option component.
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentPersona>)>] () = inherit FluentPersonaBuilder<Microsoft.Fast.Components.FluentUI.FluentPersona>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentPersona>)>] () = inherit FluentPersonaBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentPersona>()
 
     /// Component that provides a list of options.
     type ListComponentBase'<'TOption> 
         /// Component that provides a list of options.
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.ListComponentBase<_>>)>] () = inherit ListComponentBaseBuilder<Microsoft.Fast.Components.FluentUI.ListComponentBase<'TOption>, 'TOption>()
-    type FluentAutocomplete'<'TOption> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentAutocomplete<_>>)>] () = inherit FluentAutocompleteBuilder<Microsoft.Fast.Components.FluentUI.FluentAutocomplete<'TOption>, 'TOption>()
-    type FluentCombobox'<'TOption> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentCombobox<_>>)>] () = inherit FluentComboboxBuilder<Microsoft.Fast.Components.FluentUI.FluentCombobox<'TOption>, 'TOption>()
-    type FluentListbox'<'TOption> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentListbox<_>>)>] () = inherit FluentListboxBuilder<Microsoft.Fast.Components.FluentUI.FluentListbox<'TOption>, 'TOption>()
-    type FluentSelect'<'TOption> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentSelect<_>>)>] () = inherit FluentSelectBuilder<Microsoft.Fast.Components.FluentUI.FluentSelect<'TOption>, 'TOption>()
-    type FluentMainLayout' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentMainLayout>)>] () = inherit FluentMainLayoutBuilder<Microsoft.Fast.Components.FluentUI.FluentMainLayout>()
-    type FluentMain' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentMain>)>] () = inherit FluentMainBuilder<Microsoft.Fast.Components.FluentUI.FluentMain>()
-    type FluentMenuButton' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentMenuButton>)>] () = inherit FluentMenuButtonBuilder<Microsoft.Fast.Components.FluentUI.FluentMenuButton>()
-    type FluentMenu' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentMenu>)>] () = inherit FluentMenuBuilder<Microsoft.Fast.Components.FluentUI.FluentMenu>()
-    type FluentMenuItem' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentMenuItem>)>] () = inherit FluentMenuItemBuilder<Microsoft.Fast.Components.FluentUI.FluentMenuItem>()
-    type FluentMessageBar' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentMessageBar>)>] () = inherit FluentMessageBarBuilder<Microsoft.Fast.Components.FluentUI.FluentMessageBar>()
-    type FluentMessageBarContainer' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentMessageBarContainer>)>] () = inherit FluentMessageBarContainerBuilder<Microsoft.Fast.Components.FluentUI.FluentMessageBarContainer>()
-    type FluentNavMenuTree' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentNavMenuTree>)>] () = inherit FluentNavMenuTreeBuilder<Microsoft.Fast.Components.FluentUI.FluentNavMenuTree>()
-    type FluentNavMenu' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentNavMenu>)>] () = inherit FluentNavMenuBuilder<Microsoft.Fast.Components.FluentUI.FluentNavMenu>()
-    type FluentOverflow' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentOverflow>)>] () = inherit FluentOverflowBuilder<Microsoft.Fast.Components.FluentUI.FluentOverflow>()
-    type FluentOverflowItem' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentOverflowItem>)>] () = inherit FluentOverflowItemBuilder<Microsoft.Fast.Components.FluentUI.FluentOverflowItem>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.ListComponentBase<_>>)>] () = inherit ListComponentBaseBuilder<Microsoft.FluentUI.AspNetCore.Components.ListComponentBase<'TOption>, 'TOption>()
+    type FluentAutocomplete'<'TOption> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentAutocomplete<_>>)>] () = inherit FluentAutocompleteBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentAutocomplete<'TOption>, 'TOption>()
+    type FluentCombobox'<'TOption> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentCombobox<_>>)>] () = inherit FluentComboboxBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentCombobox<'TOption>, 'TOption>()
+    type FluentListbox'<'TOption> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentListbox<_>>)>] () = inherit FluentListboxBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentListbox<'TOption>, 'TOption>()
+    type FluentSelect'<'TOption> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentSelect<_>>)>] () = inherit FluentSelectBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentSelect<'TOption>, 'TOption>()
+    type FluentMainLayout' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentMainLayout>)>] () = inherit FluentMainLayoutBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentMainLayout>()
+    type FluentMain' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentMain>)>] () = inherit FluentMainBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentMain>()
+    type FluentMenuButton' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentMenuButton>)>] () = inherit FluentMenuButtonBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentMenuButton>()
+    type FluentMenu' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentMenu>)>] () = inherit FluentMenuBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentMenu>()
+    type FluentMenuItem' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentMenuItem>)>] () = inherit FluentMenuItemBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentMenuItem>()
+    type FluentMessageBar' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentMessageBar>)>] () = inherit FluentMessageBarBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentMessageBar>()
+    type FluentMessageBarProvider' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentMessageBarProvider>)>] () = inherit FluentMessageBarProviderBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentMessageBarProvider>()
+    type FluentNavMenuTree' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentNavMenuTree>)>] () = inherit FluentNavMenuTreeBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentNavMenuTree>()
+    type FluentNavMenu' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentNavMenu>)>] () = inherit FluentNavMenuBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentNavMenu>()
+    type FluentOverflow' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentOverflow>)>] () = inherit FluentOverflowBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentOverflow>()
+    type FluentOverflowItem' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentOverflowItem>)>] () = inherit FluentOverflowItemBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentOverflowItem>()
 
     /// A component that provides a user interface for PaginationState.
     type FluentPaginator' 
         /// A component that provides a user interface for PaginationState.
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentPaginator>)>] () = inherit FluentPaginatorBuilder<Microsoft.Fast.Components.FluentUI.FluentPaginator>()
-    type FluentPopover' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentPopover>)>] () = inherit FluentPopoverBuilder<Microsoft.Fast.Components.FluentUI.FluentPopover>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentPaginator>)>] () = inherit FluentPaginatorBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentPaginator>()
+    type FluentPopover' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentPopover>)>] () = inherit FluentPopoverBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentPopover>()
 
     /// A presence badge is a badge that displays a status indicator such as available, away, or busy.
     type FluentPresenceBadge' 
         /// A presence badge is a badge that displays a status indicator such as available, away, or busy.
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentPresenceBadge>)>] () = inherit FluentPresenceBadgeBuilder<Microsoft.Fast.Components.FluentUI.FluentPresenceBadge>()
-    type FluentProgress' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentProgress>)>] () = inherit FluentProgressBuilder<Microsoft.Fast.Components.FluentUI.FluentProgress>()
-    type FluentProgressRing' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentProgressRing>)>] () = inherit FluentProgressRingBuilder<Microsoft.Fast.Components.FluentUI.FluentProgressRing>()
-    type FluentRadio'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentRadio<_>>)>] () = inherit FluentRadioBuilder<Microsoft.Fast.Components.FluentUI.FluentRadio<'TValue>, 'TValue>()
-    type FluentSkeleton' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentSkeleton>)>] () = inherit FluentSkeletonBuilder<Microsoft.Fast.Components.FluentUI.FluentSkeleton>()
-    type FluentSliderLabel'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentSliderLabel<_>>)>] () = inherit FluentSliderLabelBuilder<Microsoft.Fast.Components.FluentUI.FluentSliderLabel<'TValue>, 'TValue>()
-    type FluentSplitter' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentSplitter>)>] () = inherit FluentSplitterBuilder<Microsoft.Fast.Components.FluentUI.FluentSplitter>()
-    type FluentStack' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentStack>)>] () = inherit FluentStackBuilder<Microsoft.Fast.Components.FluentUI.FluentStack>()
-    type FluentTab' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentTab>)>] () = inherit FluentTabBuilder<Microsoft.Fast.Components.FluentUI.FluentTab>()
-    type FluentTabs' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentTabs>)>] () = inherit FluentTabsBuilder<Microsoft.Fast.Components.FluentUI.FluentTabs>()
-    type FluentToast' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentToast>)>] () = inherit FluentToastBuilder<Microsoft.Fast.Components.FluentUI.FluentToast>()
-    type FluentToolbar' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentToolbar>)>] () = inherit FluentToolbarBuilder<Microsoft.Fast.Components.FluentUI.FluentToolbar>()
-    type FluentTooltip' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentTooltip>)>] () = inherit FluentTooltipBuilder<Microsoft.Fast.Components.FluentUI.FluentTooltip>()
-    type FluentTooltipProvider' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentTooltipProvider>)>] () = inherit FluentTooltipProviderBuilder<Microsoft.Fast.Components.FluentUI.FluentTooltipProvider>()
-    type FluentTreeItem' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentTreeItem>)>] () = inherit FluentTreeItemBuilder<Microsoft.Fast.Components.FluentUI.FluentTreeItem>()
-    type FluentTreeView' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentTreeView>)>] () = inherit FluentTreeViewBuilder<Microsoft.Fast.Components.FluentUI.FluentTreeView>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentPresenceBadge>)>] () = inherit FluentPresenceBadgeBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentPresenceBadge>()
+    type FluentProgress' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentProgress>)>] () = inherit FluentProgressBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentProgress>()
+    type FluentProgressRing' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentProgressRing>)>] () = inherit FluentProgressRingBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentProgressRing>()
+    type FluentRadio'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentRadio<_>>)>] () = inherit FluentRadioBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentRadio<'TValue>, 'TValue>()
+    type FluentSkeleton' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentSkeleton>)>] () = inherit FluentSkeletonBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentSkeleton>()
+    type FluentSliderLabel'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentSliderLabel<_>>)>] () = inherit FluentSliderLabelBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentSliderLabel<'TValue>, 'TValue>()
+    type FluentSplitter' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentSplitter>)>] () = inherit FluentSplitterBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentSplitter>()
+    type FluentStack' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentStack>)>] () = inherit FluentStackBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentStack>()
+    type FluentTab' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentTab>)>] () = inherit FluentTabBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentTab>()
+    type FluentTabs' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentTabs>)>] () = inherit FluentTabsBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentTabs>()
+    type FluentToast' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentToast>)>] () = inherit FluentToastBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentToast>()
+    type FluentToolbar' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentToolbar>)>] () = inherit FluentToolbarBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentToolbar>()
+    type FluentTooltip' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentTooltip>)>] () = inherit FluentTooltipBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentTooltip>()
+    type FluentTooltipProvider' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentTooltipProvider>)>] () = inherit FluentTooltipProviderBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentTooltipProvider>()
+    type FluentTreeItem' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentTreeItem>)>] () = inherit FluentTreeItemBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentTreeItem>()
+    type FluentTreeView' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentTreeView>)>] () = inherit FluentTreeViewBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentTreeView>()
 
     /// Displays a list of validation messages from a cascaded EditContext.
     type ValidationSummary' 
         /// Displays a list of validation messages from a cascaded EditContext.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Forms.ValidationSummary>)>] () = inherit ValidationSummaryBuilder<Microsoft.AspNetCore.Components.Forms.ValidationSummary>()
-    type FluentValidationSummary' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentValidationSummary>)>] () = inherit FluentValidationSummaryBuilder<Microsoft.Fast.Components.FluentUI.FluentValidationSummary>()
+    type FluentValidationSummary' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentValidationSummary>)>] () = inherit FluentValidationSummaryBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentValidationSummary>()
 
     /// An abstract base class for columns in a FluentDataGrid`1.
     type ColumnBase'<'TGridItem> 
         /// An abstract base class for columns in a FluentDataGrid`1.
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.ColumnBase<_>>)>] () = inherit ColumnBaseBuilder<Microsoft.Fast.Components.FluentUI.ColumnBase<'TGridItem>, 'TGridItem>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.ColumnBase<_>>)>] () = inherit ColumnBaseBuilder<Microsoft.FluentUI.AspNetCore.Components.ColumnBase<'TGridItem>, 'TGridItem>()
 
     /// Represents a FluentDataGrid`1 column whose cells display a single value.
     type PropertyColumn'<'TGridItem, 'TProp> 
         /// Represents a FluentDataGrid`1 column whose cells display a single value.
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.PropertyColumn<_, _>>)>] () = inherit PropertyColumnBuilder<Microsoft.Fast.Components.FluentUI.PropertyColumn<'TGridItem, 'TProp>, 'TGridItem, 'TProp>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.PropertyColumn<_, _>>)>] () = inherit PropertyColumnBuilder<Microsoft.FluentUI.AspNetCore.Components.PropertyColumn<'TGridItem, 'TProp>, 'TGridItem, 'TProp>()
 
     /// Represents a FluentDataGrid`1 column whose cells render a supplied template.
     type TemplateColumn'<'TGridItem> 
         /// Represents a FluentDataGrid`1 column whose cells render a supplied template.
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.TemplateColumn<_>>)>] () = inherit TemplateColumnBuilder<Microsoft.Fast.Components.FluentUI.TemplateColumn<'TGridItem>, 'TGridItem>()
-    type FluentSplashScreen' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentSplashScreen>)>] () = inherit FluentSplashScreenBuilder<Microsoft.Fast.Components.FluentUI.FluentSplashScreen>()
-    type MessageBox' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.MessageBox>)>] () = inherit MessageBoxBuilder<Microsoft.Fast.Components.FluentUI.MessageBox>()
-    type FluentDialogProvider' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentDialogProvider>)>] () = inherit FluentDialogProviderBuilder<Microsoft.Fast.Components.FluentUI.FluentDialogProvider>()
-    type FluentInputLabel' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentInputLabel>)>] () = inherit FluentInputLabelBuilder<Microsoft.Fast.Components.FluentUI.FluentInputLabel>()
-    type FluentOverlay' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentOverlay>)>] () = inherit FluentOverlayBuilder<Microsoft.Fast.Components.FluentUI.FluentOverlay>()
-    type FluentSpacer' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentSpacer>)>] () = inherit FluentSpacerBuilder<Microsoft.Fast.Components.FluentUI.FluentSpacer>()
-    type CommunicationToast' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.CommunicationToast>)>] () = inherit CommunicationToastBuilder<Microsoft.Fast.Components.FluentUI.CommunicationToast>()
-    type ProgressToast' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.ProgressToast>)>] () = inherit ProgressToastBuilder<Microsoft.Fast.Components.FluentUI.ProgressToast>()
-    type FluentToastContainer' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.FluentToastContainer>)>] () = inherit FluentToastContainerBuilder<Microsoft.Fast.Components.FluentUI.FluentToastContainer>()
-    type ConfirmationToast' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.ConfirmationToast>)>] () = inherit ConfirmationToastBuilder<Microsoft.Fast.Components.FluentUI.ConfirmationToast>()
-    type _Imports' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI._Imports>)>] () = inherit _ImportsBuilder<Microsoft.Fast.Components.FluentUI._Imports>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.TemplateColumn<_>>)>] () = inherit TemplateColumnBuilder<Microsoft.FluentUI.AspNetCore.Components.TemplateColumn<'TGridItem>, 'TGridItem>()
+    type FluentSplashScreen' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentSplashScreen>)>] () = inherit FluentSplashScreenBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentSplashScreen>()
+    type MessageBox' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.MessageBox>)>] () = inherit MessageBoxBuilder<Microsoft.FluentUI.AspNetCore.Components.MessageBox>()
+    type FluentDialogProvider' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentDialogProvider>)>] () = inherit FluentDialogProviderBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentDialogProvider>()
+    type FluentInputLabel' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentInputLabel>)>] () = inherit FluentInputLabelBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentInputLabel>()
+    type FluentOverlay' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentOverlay>)>] () = inherit FluentOverlayBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentOverlay>()
+    type FluentSpacer' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentSpacer>)>] () = inherit FluentSpacerBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentSpacer>()
+    type CommunicationToast' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.CommunicationToast>)>] () = inherit CommunicationToastBuilder<Microsoft.FluentUI.AspNetCore.Components.CommunicationToast>()
+    type ProgressToast' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.ProgressToast>)>] () = inherit ProgressToastBuilder<Microsoft.FluentUI.AspNetCore.Components.ProgressToast>()
+    type FluentToastProvider' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentToastProvider>)>] () = inherit FluentToastProviderBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentToastProvider>()
+    type ConfirmationToast' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.ConfirmationToast>)>] () = inherit ConfirmationToastBuilder<Microsoft.FluentUI.AspNetCore.Components.ConfirmationToast>()
+    type _Imports' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components._Imports>)>] () = inherit _ImportsBuilder<Microsoft.FluentUI.AspNetCore.Components._Imports>()
             
-namespace Microsoft.Fast.Components.FluentUI.DesignTokens
+namespace Microsoft.FluentUI.AspNetCore.Components.DesignTokens
 
 [<AutoOpen>]
 module DslCE =
   
     open System.Diagnostics.CodeAnalysis
-    open Microsoft.Fast.Components.FluentUI.DslInternals.DesignTokens
+    open Microsoft.FluentUI.AspNetCore.Components.DslInternals.DesignTokens
 
-    type DesignToken'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.DesignToken<_>>)>] () = inherit DesignTokenBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.DesignToken<'T>, 'T>()
+    type DesignToken'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.DesignToken<_>>)>] () = inherit DesignTokenBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.DesignToken<'T>, 'T>()
 
     /// The Direction design token
     type Direction' 
         /// The Direction design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.Direction>)>] () = inherit DirectionBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.Direction>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Direction>)>] () = inherit DirectionBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Direction>()
 
     /// The DisabledOpacity design token
     type DisabledOpacity' 
         /// The DisabledOpacity design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.DisabledOpacity>)>] () = inherit DisabledOpacityBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.DisabledOpacity>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.DisabledOpacity>)>] () = inherit DisabledOpacityBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.DisabledOpacity>()
 
     /// The BaseHeightMultiplier design token
     type BaseHeightMultiplier' 
         /// The BaseHeightMultiplier design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.BaseHeightMultiplier>)>] () = inherit BaseHeightMultiplierBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.BaseHeightMultiplier>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.BaseHeightMultiplier>)>] () = inherit BaseHeightMultiplierBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.BaseHeightMultiplier>()
 
     /// The BaseHorizontalSpacingMultiplier design token
     type BaseHorizontalSpacingMultiplier' 
         /// The BaseHorizontalSpacingMultiplier design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.BaseHorizontalSpacingMultiplier>)>] () = inherit BaseHorizontalSpacingMultiplierBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.BaseHorizontalSpacingMultiplier>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.BaseHorizontalSpacingMultiplier>)>] () = inherit BaseHorizontalSpacingMultiplierBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.BaseHorizontalSpacingMultiplier>()
 
     /// The Density design token
     type Density' 
         /// The Density design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.Density>)>] () = inherit DensityBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.Density>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Density>)>] () = inherit DensityBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Density>()
 
     /// The DesignUnit design token
     type DesignUnit' 
         /// The DesignUnit design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.DesignUnit>)>] () = inherit DesignUnitBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.DesignUnit>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.DesignUnit>)>] () = inherit DesignUnitBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.DesignUnit>()
 
     /// The ControlCornerRadius design token
     type ControlCornerRadius' 
         /// The ControlCornerRadius design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.ControlCornerRadius>)>] () = inherit ControlCornerRadiusBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.ControlCornerRadius>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.ControlCornerRadius>)>] () = inherit ControlCornerRadiusBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.ControlCornerRadius>()
 
     /// The LayerCornerRadius design token
     type LayerCornerRadius' 
         /// The LayerCornerRadius design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.LayerCornerRadius>)>] () = inherit LayerCornerRadiusBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.LayerCornerRadius>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.LayerCornerRadius>)>] () = inherit LayerCornerRadiusBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.LayerCornerRadius>()
 
     /// The StrokeWidth design token
     type StrokeWidth' 
         /// The StrokeWidth design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.StrokeWidth>)>] () = inherit StrokeWidthBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.StrokeWidth>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.StrokeWidth>)>] () = inherit StrokeWidthBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.StrokeWidth>()
 
     /// The FocusStrokeWidth design token
     type FocusStrokeWidth' 
         /// The FocusStrokeWidth design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.FocusStrokeWidth>)>] () = inherit FocusStrokeWidthBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.FocusStrokeWidth>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.FocusStrokeWidth>)>] () = inherit FocusStrokeWidthBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.FocusStrokeWidth>()
 
     /// The BodyFont design token
     type BodyFont' 
         /// The BodyFont design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.BodyFont>)>] () = inherit BodyFontBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.BodyFont>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.BodyFont>)>] () = inherit BodyFontBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.BodyFont>()
 
     /// The TypeRampBaseFontSize design token
     type TypeRampBaseFontSize' 
         /// The TypeRampBaseFontSize design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.TypeRampBaseFontSize>)>] () = inherit TypeRampBaseFontSizeBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.TypeRampBaseFontSize>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.TypeRampBaseFontSize>)>] () = inherit TypeRampBaseFontSizeBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.TypeRampBaseFontSize>()
 
     /// The TypeRampBaseLineHeight design token
     type TypeRampBaseLineHeight' 
         /// The TypeRampBaseLineHeight design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.TypeRampBaseLineHeight>)>] () = inherit TypeRampBaseLineHeightBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.TypeRampBaseLineHeight>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.TypeRampBaseLineHeight>)>] () = inherit TypeRampBaseLineHeightBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.TypeRampBaseLineHeight>()
 
     /// The TypeRampMinus1FontSize design token
     type TypeRampMinus1FontSize' 
         /// The TypeRampMinus1FontSize design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.TypeRampMinus1FontSize>)>] () = inherit TypeRampMinus1FontSizeBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.TypeRampMinus1FontSize>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.TypeRampMinus1FontSize>)>] () = inherit TypeRampMinus1FontSizeBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.TypeRampMinus1FontSize>()
 
     /// The TypeRampMinus1LineHeight design token
     type TypeRampMinus1LineHeight' 
         /// The TypeRampMinus1LineHeight design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.TypeRampMinus1LineHeight>)>] () = inherit TypeRampMinus1LineHeightBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.TypeRampMinus1LineHeight>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.TypeRampMinus1LineHeight>)>] () = inherit TypeRampMinus1LineHeightBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.TypeRampMinus1LineHeight>()
 
     /// The TypeRampMinus2FontSize design token
     type TypeRampMinus2FontSize' 
         /// The TypeRampMinus2FontSize design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.TypeRampMinus2FontSize>)>] () = inherit TypeRampMinus2FontSizeBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.TypeRampMinus2FontSize>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.TypeRampMinus2FontSize>)>] () = inherit TypeRampMinus2FontSizeBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.TypeRampMinus2FontSize>()
 
     /// The TypeRampMinus2LineHeight design token
     type TypeRampMinus2LineHeight' 
         /// The TypeRampMinus2LineHeight design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.TypeRampMinus2LineHeight>)>] () = inherit TypeRampMinus2LineHeightBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.TypeRampMinus2LineHeight>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.TypeRampMinus2LineHeight>)>] () = inherit TypeRampMinus2LineHeightBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.TypeRampMinus2LineHeight>()
 
     /// The TypeRampPlus1FontSize design token
     type TypeRampPlus1FontSize' 
         /// The TypeRampPlus1FontSize design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.TypeRampPlus1FontSize>)>] () = inherit TypeRampPlus1FontSizeBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.TypeRampPlus1FontSize>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.TypeRampPlus1FontSize>)>] () = inherit TypeRampPlus1FontSizeBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.TypeRampPlus1FontSize>()
 
     /// The TypeRampPlus1LineHeight design token
     type TypeRampPlus1LineHeight' 
         /// The TypeRampPlus1LineHeight design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.TypeRampPlus1LineHeight>)>] () = inherit TypeRampPlus1LineHeightBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.TypeRampPlus1LineHeight>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.TypeRampPlus1LineHeight>)>] () = inherit TypeRampPlus1LineHeightBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.TypeRampPlus1LineHeight>()
 
     /// The TypeRampPlus2FontSize design token
     type TypeRampPlus2FontSize' 
         /// The TypeRampPlus2FontSize design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.TypeRampPlus2FontSize>)>] () = inherit TypeRampPlus2FontSizeBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.TypeRampPlus2FontSize>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.TypeRampPlus2FontSize>)>] () = inherit TypeRampPlus2FontSizeBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.TypeRampPlus2FontSize>()
 
     /// The TypeRampPlus2LineHeight design token
     type TypeRampPlus2LineHeight' 
         /// The TypeRampPlus2LineHeight design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.TypeRampPlus2LineHeight>)>] () = inherit TypeRampPlus2LineHeightBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.TypeRampPlus2LineHeight>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.TypeRampPlus2LineHeight>)>] () = inherit TypeRampPlus2LineHeightBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.TypeRampPlus2LineHeight>()
 
     /// The TypeRampPlus3FontSize design token
     type TypeRampPlus3FontSize' 
         /// The TypeRampPlus3FontSize design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.TypeRampPlus3FontSize>)>] () = inherit TypeRampPlus3FontSizeBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.TypeRampPlus3FontSize>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.TypeRampPlus3FontSize>)>] () = inherit TypeRampPlus3FontSizeBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.TypeRampPlus3FontSize>()
 
     /// The TypeRampPlus3LineHeight design token
     type TypeRampPlus3LineHeight' 
         /// The TypeRampPlus3LineHeight design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.TypeRampPlus3LineHeight>)>] () = inherit TypeRampPlus3LineHeightBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.TypeRampPlus3LineHeight>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.TypeRampPlus3LineHeight>)>] () = inherit TypeRampPlus3LineHeightBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.TypeRampPlus3LineHeight>()
 
     /// The TypeRampPlus4FontSize design token
     type TypeRampPlus4FontSize' 
         /// The TypeRampPlus4FontSize design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.TypeRampPlus4FontSize>)>] () = inherit TypeRampPlus4FontSizeBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.TypeRampPlus4FontSize>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.TypeRampPlus4FontSize>)>] () = inherit TypeRampPlus4FontSizeBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.TypeRampPlus4FontSize>()
 
     /// The TypeRampPlus4LineHeight design token
     type TypeRampPlus4LineHeight' 
         /// The TypeRampPlus4LineHeight design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.TypeRampPlus4LineHeight>)>] () = inherit TypeRampPlus4LineHeightBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.TypeRampPlus4LineHeight>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.TypeRampPlus4LineHeight>)>] () = inherit TypeRampPlus4LineHeightBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.TypeRampPlus4LineHeight>()
 
     /// The TypeRampPlus5FontSize design token
     type TypeRampPlus5FontSize' 
         /// The TypeRampPlus5FontSize design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.TypeRampPlus5FontSize>)>] () = inherit TypeRampPlus5FontSizeBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.TypeRampPlus5FontSize>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.TypeRampPlus5FontSize>)>] () = inherit TypeRampPlus5FontSizeBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.TypeRampPlus5FontSize>()
 
     /// The TypeRampPlus5LineHeight design token
     type TypeRampPlus5LineHeight' 
         /// The TypeRampPlus5LineHeight design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.TypeRampPlus5LineHeight>)>] () = inherit TypeRampPlus5LineHeightBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.TypeRampPlus5LineHeight>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.TypeRampPlus5LineHeight>)>] () = inherit TypeRampPlus5LineHeightBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.TypeRampPlus5LineHeight>()
 
     /// The TypeRampPlus6FontSize design token
     type TypeRampPlus6FontSize' 
         /// The TypeRampPlus6FontSize design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.TypeRampPlus6FontSize>)>] () = inherit TypeRampPlus6FontSizeBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.TypeRampPlus6FontSize>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.TypeRampPlus6FontSize>)>] () = inherit TypeRampPlus6FontSizeBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.TypeRampPlus6FontSize>()
 
     /// The TypeRampPlus6LineHeight design token
     type TypeRampPlus6LineHeight' 
         /// The TypeRampPlus6LineHeight design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.TypeRampPlus6LineHeight>)>] () = inherit TypeRampPlus6LineHeightBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.TypeRampPlus6LineHeight>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.TypeRampPlus6LineHeight>)>] () = inherit TypeRampPlus6LineHeightBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.TypeRampPlus6LineHeight>()
 
     /// The BaseLayerLuminance design token
     type BaseLayerLuminance' 
         /// The BaseLayerLuminance design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.BaseLayerLuminance>)>] () = inherit BaseLayerLuminanceBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.BaseLayerLuminance>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.BaseLayerLuminance>)>] () = inherit BaseLayerLuminanceBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.BaseLayerLuminance>()
 
     /// The AccentFillRestDelta design token
     type AccentFillRestDelta' 
         /// The AccentFillRestDelta design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.AccentFillRestDelta>)>] () = inherit AccentFillRestDeltaBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.AccentFillRestDelta>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.AccentFillRestDelta>)>] () = inherit AccentFillRestDeltaBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.AccentFillRestDelta>()
 
     /// The AccentFillHoverDelta design token
     type AccentFillHoverDelta' 
         /// The AccentFillHoverDelta design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.AccentFillHoverDelta>)>] () = inherit AccentFillHoverDeltaBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.AccentFillHoverDelta>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.AccentFillHoverDelta>)>] () = inherit AccentFillHoverDeltaBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.AccentFillHoverDelta>()
 
     /// The AccentFillActiveDelta design token
     type AccentFillActiveDelta' 
         /// The AccentFillActiveDelta design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.AccentFillActiveDelta>)>] () = inherit AccentFillActiveDeltaBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.AccentFillActiveDelta>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.AccentFillActiveDelta>)>] () = inherit AccentFillActiveDeltaBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.AccentFillActiveDelta>()
 
     /// The AccentFillFocusDelta design token
     type AccentFillFocusDelta' 
         /// The AccentFillFocusDelta design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.AccentFillFocusDelta>)>] () = inherit AccentFillFocusDeltaBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.AccentFillFocusDelta>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.AccentFillFocusDelta>)>] () = inherit AccentFillFocusDeltaBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.AccentFillFocusDelta>()
 
     /// The AccentForegroundRestDelta design token
     type AccentForegroundRestDelta' 
         /// The AccentForegroundRestDelta design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.AccentForegroundRestDelta>)>] () = inherit AccentForegroundRestDeltaBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.AccentForegroundRestDelta>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.AccentForegroundRestDelta>)>] () = inherit AccentForegroundRestDeltaBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.AccentForegroundRestDelta>()
 
     /// The AccentForegroundHoverDelta design token
     type AccentForegroundHoverDelta' 
         /// The AccentForegroundHoverDelta design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.AccentForegroundHoverDelta>)>] () = inherit AccentForegroundHoverDeltaBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.AccentForegroundHoverDelta>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.AccentForegroundHoverDelta>)>] () = inherit AccentForegroundHoverDeltaBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.AccentForegroundHoverDelta>()
 
     /// The AccentForegroundActiveDelta design token
     type AccentForegroundActiveDelta' 
         /// The AccentForegroundActiveDelta design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.AccentForegroundActiveDelta>)>] () = inherit AccentForegroundActiveDeltaBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.AccentForegroundActiveDelta>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.AccentForegroundActiveDelta>)>] () = inherit AccentForegroundActiveDeltaBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.AccentForegroundActiveDelta>()
 
     /// The AccentForegroundFocusDelta design token
     type AccentForegroundFocusDelta' 
         /// The AccentForegroundFocusDelta design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.AccentForegroundFocusDelta>)>] () = inherit AccentForegroundFocusDeltaBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.AccentForegroundFocusDelta>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.AccentForegroundFocusDelta>)>] () = inherit AccentForegroundFocusDeltaBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.AccentForegroundFocusDelta>()
 
     /// The NeutralFillRestDelta design token
     type NeutralFillRestDelta' 
         /// The NeutralFillRestDelta design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillRestDelta>)>] () = inherit NeutralFillRestDeltaBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillRestDelta>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillRestDelta>)>] () = inherit NeutralFillRestDeltaBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillRestDelta>()
 
     /// The NeutralFillHoverDelta design token
     type NeutralFillHoverDelta' 
         /// The NeutralFillHoverDelta design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillHoverDelta>)>] () = inherit NeutralFillHoverDeltaBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillHoverDelta>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillHoverDelta>)>] () = inherit NeutralFillHoverDeltaBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillHoverDelta>()
 
     /// The NeutralFillActiveDelta design token
     type NeutralFillActiveDelta' 
         /// The NeutralFillActiveDelta design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillActiveDelta>)>] () = inherit NeutralFillActiveDeltaBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillActiveDelta>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillActiveDelta>)>] () = inherit NeutralFillActiveDeltaBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillActiveDelta>()
 
     /// The NeutralFillFocusDelta design token
     type NeutralFillFocusDelta' 
         /// The NeutralFillFocusDelta design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillFocusDelta>)>] () = inherit NeutralFillFocusDeltaBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillFocusDelta>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillFocusDelta>)>] () = inherit NeutralFillFocusDeltaBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillFocusDelta>()
 
     /// The NeutralFillInputRestDelta design token
     type NeutralFillInputRestDelta' 
         /// The NeutralFillInputRestDelta design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillInputRestDelta>)>] () = inherit NeutralFillInputRestDeltaBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillInputRestDelta>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillInputRestDelta>)>] () = inherit NeutralFillInputRestDeltaBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillInputRestDelta>()
 
     /// The NeutralFillInputHoverDelta design token
     type NeutralFillInputHoverDelta' 
         /// The NeutralFillInputHoverDelta design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillInputHoverDelta>)>] () = inherit NeutralFillInputHoverDeltaBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillInputHoverDelta>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillInputHoverDelta>)>] () = inherit NeutralFillInputHoverDeltaBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillInputHoverDelta>()
 
     /// The NeutralFillInputActiveDelta design token
     type NeutralFillInputActiveDelta' 
         /// The NeutralFillInputActiveDelta design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillInputActiveDelta>)>] () = inherit NeutralFillInputActiveDeltaBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillInputActiveDelta>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillInputActiveDelta>)>] () = inherit NeutralFillInputActiveDeltaBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillInputActiveDelta>()
 
     /// The NeutralFillInputFocusDelta design token
     type NeutralFillInputFocusDelta' 
         /// The NeutralFillInputFocusDelta design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillInputFocusDelta>)>] () = inherit NeutralFillInputFocusDeltaBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillInputFocusDelta>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillInputFocusDelta>)>] () = inherit NeutralFillInputFocusDeltaBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillInputFocusDelta>()
 
     /// The NeutralFillInputAltRestDelta design token
     type NeutralFillInputAltRestDelta' 
         /// The NeutralFillInputAltRestDelta design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillInputAltRestDelta>)>] () = inherit NeutralFillInputAltRestDeltaBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillInputAltRestDelta>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillInputAltRestDelta>)>] () = inherit NeutralFillInputAltRestDeltaBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillInputAltRestDelta>()
 
     /// The NeutralFillInputAltHoverDelta design token
     type NeutralFillInputAltHoverDelta' 
         /// The NeutralFillInputAltHoverDelta design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillInputAltHoverDelta>)>] () = inherit NeutralFillInputAltHoverDeltaBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillInputAltHoverDelta>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillInputAltHoverDelta>)>] () = inherit NeutralFillInputAltHoverDeltaBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillInputAltHoverDelta>()
 
     /// The NeutralFillInputAltActiveDelta design token
     type NeutralFillInputAltActiveDelta' 
         /// The NeutralFillInputAltActiveDelta design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillInputAltActiveDelta>)>] () = inherit NeutralFillInputAltActiveDeltaBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillInputAltActiveDelta>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillInputAltActiveDelta>)>] () = inherit NeutralFillInputAltActiveDeltaBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillInputAltActiveDelta>()
 
     /// The NeutralFillInputAltFocusDelta design token
     type NeutralFillInputAltFocusDelta' 
         /// The NeutralFillInputAltFocusDelta design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillInputAltFocusDelta>)>] () = inherit NeutralFillInputAltFocusDeltaBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillInputAltFocusDelta>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillInputAltFocusDelta>)>] () = inherit NeutralFillInputAltFocusDeltaBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillInputAltFocusDelta>()
 
     /// The NeutralFillLayerRestDelta design token
     type NeutralFillLayerRestDelta' 
         /// The NeutralFillLayerRestDelta design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillLayerRestDelta>)>] () = inherit NeutralFillLayerRestDeltaBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillLayerRestDelta>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillLayerRestDelta>)>] () = inherit NeutralFillLayerRestDeltaBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillLayerRestDelta>()
 
     /// The NeutralFillLayerHoverDelta design token
     type NeutralFillLayerHoverDelta' 
         /// The NeutralFillLayerHoverDelta design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillLayerHoverDelta>)>] () = inherit NeutralFillLayerHoverDeltaBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillLayerHoverDelta>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillLayerHoverDelta>)>] () = inherit NeutralFillLayerHoverDeltaBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillLayerHoverDelta>()
 
     /// The NeutralFillLayerActiveDelta design token
     type NeutralFillLayerActiveDelta' 
         /// The NeutralFillLayerActiveDelta design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillLayerActiveDelta>)>] () = inherit NeutralFillLayerActiveDeltaBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillLayerActiveDelta>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillLayerActiveDelta>)>] () = inherit NeutralFillLayerActiveDeltaBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillLayerActiveDelta>()
 
     /// The NeutralFillLayerAltRestDelta design token
     type NeutralFillLayerAltRestDelta' 
         /// The NeutralFillLayerAltRestDelta design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillLayerAltRestDelta>)>] () = inherit NeutralFillLayerAltRestDeltaBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillLayerAltRestDelta>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillLayerAltRestDelta>)>] () = inherit NeutralFillLayerAltRestDeltaBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillLayerAltRestDelta>()
 
     /// The NeutralFillSecondaryRestDelta design token
     type NeutralFillSecondaryRestDelta' 
         /// The NeutralFillSecondaryRestDelta design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillSecondaryRestDelta>)>] () = inherit NeutralFillSecondaryRestDeltaBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillSecondaryRestDelta>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillSecondaryRestDelta>)>] () = inherit NeutralFillSecondaryRestDeltaBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillSecondaryRestDelta>()
 
     /// The NeutralFillSecondaryHoverDelta design token
     type NeutralFillSecondaryHoverDelta' 
         /// The NeutralFillSecondaryHoverDelta design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillSecondaryHoverDelta>)>] () = inherit NeutralFillSecondaryHoverDeltaBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillSecondaryHoverDelta>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillSecondaryHoverDelta>)>] () = inherit NeutralFillSecondaryHoverDeltaBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillSecondaryHoverDelta>()
 
     /// The NeutralFillSecondaryActiveDelta design token
     type NeutralFillSecondaryActiveDelta' 
         /// The NeutralFillSecondaryActiveDelta design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillSecondaryActiveDelta>)>] () = inherit NeutralFillSecondaryActiveDeltaBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillSecondaryActiveDelta>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillSecondaryActiveDelta>)>] () = inherit NeutralFillSecondaryActiveDeltaBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillSecondaryActiveDelta>()
 
     /// The NeutralFillSecondaryFocusDelta design token
     type NeutralFillSecondaryFocusDelta' 
         /// The NeutralFillSecondaryFocusDelta design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillSecondaryFocusDelta>)>] () = inherit NeutralFillSecondaryFocusDeltaBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillSecondaryFocusDelta>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillSecondaryFocusDelta>)>] () = inherit NeutralFillSecondaryFocusDeltaBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillSecondaryFocusDelta>()
 
     /// The NeutralFillStealthRestDelta design token
     type NeutralFillStealthRestDelta' 
         /// The NeutralFillStealthRestDelta design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillStealthRestDelta>)>] () = inherit NeutralFillStealthRestDeltaBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillStealthRestDelta>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillStealthRestDelta>)>] () = inherit NeutralFillStealthRestDeltaBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillStealthRestDelta>()
 
     /// The NeutralFillStealthHoverDelta design token
     type NeutralFillStealthHoverDelta' 
         /// The NeutralFillStealthHoverDelta design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillStealthHoverDelta>)>] () = inherit NeutralFillStealthHoverDeltaBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillStealthHoverDelta>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillStealthHoverDelta>)>] () = inherit NeutralFillStealthHoverDeltaBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillStealthHoverDelta>()
 
     /// The NeutralFillStealthActiveDelta design token
     type NeutralFillStealthActiveDelta' 
         /// The NeutralFillStealthActiveDelta design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillStealthActiveDelta>)>] () = inherit NeutralFillStealthActiveDeltaBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillStealthActiveDelta>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillStealthActiveDelta>)>] () = inherit NeutralFillStealthActiveDeltaBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillStealthActiveDelta>()
 
     /// The NeutralFillStealthFocusDelta design token
     type NeutralFillStealthFocusDelta' 
         /// The NeutralFillStealthFocusDelta design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillStealthFocusDelta>)>] () = inherit NeutralFillStealthFocusDeltaBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillStealthFocusDelta>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillStealthFocusDelta>)>] () = inherit NeutralFillStealthFocusDeltaBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillStealthFocusDelta>()
 
     /// The NeutralFillStrongRestDelta design token
     type NeutralFillStrongRestDelta' 
         /// The NeutralFillStrongRestDelta design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillStrongRestDelta>)>] () = inherit NeutralFillStrongRestDeltaBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillStrongRestDelta>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillStrongRestDelta>)>] () = inherit NeutralFillStrongRestDeltaBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillStrongRestDelta>()
 
     /// The NeutralFillStrongHoverDelta design token
     type NeutralFillStrongHoverDelta' 
         /// The NeutralFillStrongHoverDelta design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillStrongHoverDelta>)>] () = inherit NeutralFillStrongHoverDeltaBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillStrongHoverDelta>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillStrongHoverDelta>)>] () = inherit NeutralFillStrongHoverDeltaBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillStrongHoverDelta>()
 
     /// The NeutralFillStrongActiveDelta design token
     type NeutralFillStrongActiveDelta' 
         /// The NeutralFillStrongActiveDelta design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillStrongActiveDelta>)>] () = inherit NeutralFillStrongActiveDeltaBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillStrongActiveDelta>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillStrongActiveDelta>)>] () = inherit NeutralFillStrongActiveDeltaBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillStrongActiveDelta>()
 
     /// The NeutralFillStrongFocusDelta design token
     type NeutralFillStrongFocusDelta' 
         /// The NeutralFillStrongFocusDelta design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillStrongFocusDelta>)>] () = inherit NeutralFillStrongFocusDeltaBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillStrongFocusDelta>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillStrongFocusDelta>)>] () = inherit NeutralFillStrongFocusDeltaBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillStrongFocusDelta>()
 
     /// The NeutralStrokeRestDelta design token
     type NeutralStrokeRestDelta' 
         /// The NeutralStrokeRestDelta design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeRestDelta>)>] () = inherit NeutralStrokeRestDeltaBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeRestDelta>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeRestDelta>)>] () = inherit NeutralStrokeRestDeltaBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeRestDelta>()
 
     /// The NeutralStrokeHoverDelta design token
     type NeutralStrokeHoverDelta' 
         /// The NeutralStrokeHoverDelta design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeHoverDelta>)>] () = inherit NeutralStrokeHoverDeltaBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeHoverDelta>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeHoverDelta>)>] () = inherit NeutralStrokeHoverDeltaBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeHoverDelta>()
 
     /// The NeutralStrokeActiveDelta design token
     type NeutralStrokeActiveDelta' 
         /// The NeutralStrokeActiveDelta design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeActiveDelta>)>] () = inherit NeutralStrokeActiveDeltaBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeActiveDelta>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeActiveDelta>)>] () = inherit NeutralStrokeActiveDeltaBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeActiveDelta>()
 
     /// The NeutralStrokeFocusDelta design token
     type NeutralStrokeFocusDelta' 
         /// The NeutralStrokeFocusDelta design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeFocusDelta>)>] () = inherit NeutralStrokeFocusDeltaBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeFocusDelta>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeFocusDelta>)>] () = inherit NeutralStrokeFocusDeltaBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeFocusDelta>()
 
     /// The NeutralStrokeControlRestDelta design token
     type NeutralStrokeControlRestDelta' 
         /// The NeutralStrokeControlRestDelta design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeControlRestDelta>)>] () = inherit NeutralStrokeControlRestDeltaBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeControlRestDelta>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeControlRestDelta>)>] () = inherit NeutralStrokeControlRestDeltaBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeControlRestDelta>()
 
     /// The NeutralStrokeControlHoverDelta design token
     type NeutralStrokeControlHoverDelta' 
         /// The NeutralStrokeControlHoverDelta design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeControlHoverDelta>)>] () = inherit NeutralStrokeControlHoverDeltaBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeControlHoverDelta>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeControlHoverDelta>)>] () = inherit NeutralStrokeControlHoverDeltaBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeControlHoverDelta>()
 
     /// The NeutralStrokeControlActiveDelta design token
     type NeutralStrokeControlActiveDelta' 
         /// The NeutralStrokeControlActiveDelta design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeControlActiveDelta>)>] () = inherit NeutralStrokeControlActiveDeltaBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeControlActiveDelta>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeControlActiveDelta>)>] () = inherit NeutralStrokeControlActiveDeltaBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeControlActiveDelta>()
 
     /// The NeutralStrokeControlFocusDelta design token
     type NeutralStrokeControlFocusDelta' 
         /// The NeutralStrokeControlFocusDelta design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeControlFocusDelta>)>] () = inherit NeutralStrokeControlFocusDeltaBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeControlFocusDelta>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeControlFocusDelta>)>] () = inherit NeutralStrokeControlFocusDeltaBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeControlFocusDelta>()
 
     /// The NeutralStrokeDividerRestDelta design token
     type NeutralStrokeDividerRestDelta' 
         /// The NeutralStrokeDividerRestDelta design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeDividerRestDelta>)>] () = inherit NeutralStrokeDividerRestDeltaBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeDividerRestDelta>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeDividerRestDelta>)>] () = inherit NeutralStrokeDividerRestDeltaBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeDividerRestDelta>()
 
     /// The NeutralStrokeLayerRestDelta design token
     type NeutralStrokeLayerRestDelta' 
         /// The NeutralStrokeLayerRestDelta design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeLayerRestDelta>)>] () = inherit NeutralStrokeLayerRestDeltaBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeLayerRestDelta>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeLayerRestDelta>)>] () = inherit NeutralStrokeLayerRestDeltaBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeLayerRestDelta>()
 
     /// The NeutralStrokeLayerHoverDelta design token
     type NeutralStrokeLayerHoverDelta' 
         /// The NeutralStrokeLayerHoverDelta design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeLayerHoverDelta>)>] () = inherit NeutralStrokeLayerHoverDeltaBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeLayerHoverDelta>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeLayerHoverDelta>)>] () = inherit NeutralStrokeLayerHoverDeltaBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeLayerHoverDelta>()
 
     /// The NeutralStrokeLayerActiveDelta design token
     type NeutralStrokeLayerActiveDelta' 
         /// The NeutralStrokeLayerActiveDelta design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeLayerActiveDelta>)>] () = inherit NeutralStrokeLayerActiveDeltaBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeLayerActiveDelta>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeLayerActiveDelta>)>] () = inherit NeutralStrokeLayerActiveDeltaBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeLayerActiveDelta>()
 
     /// The NeutralStrokeStrongHoverDelta design token
     type NeutralStrokeStrongHoverDelta' 
         /// The NeutralStrokeStrongHoverDelta design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeStrongHoverDelta>)>] () = inherit NeutralStrokeStrongHoverDeltaBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeStrongHoverDelta>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeStrongHoverDelta>)>] () = inherit NeutralStrokeStrongHoverDeltaBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeStrongHoverDelta>()
 
     /// The NeutralStrokeStrongActiveDelta design token
     type NeutralStrokeStrongActiveDelta' 
         /// The NeutralStrokeStrongActiveDelta design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeStrongActiveDelta>)>] () = inherit NeutralStrokeStrongActiveDeltaBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeStrongActiveDelta>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeStrongActiveDelta>)>] () = inherit NeutralStrokeStrongActiveDeltaBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeStrongActiveDelta>()
 
     /// The NeutralStrokeStrongFocusDelta design token
     type NeutralStrokeStrongFocusDelta' 
         /// The NeutralStrokeStrongFocusDelta design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeStrongFocusDelta>)>] () = inherit NeutralStrokeStrongFocusDeltaBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeStrongFocusDelta>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeStrongFocusDelta>)>] () = inherit NeutralStrokeStrongFocusDeltaBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeStrongFocusDelta>()
 
     /// The NeutralBaseColor design token
     type NeutralBaseColor' 
         /// The NeutralBaseColor design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralBaseColor>)>] () = inherit NeutralBaseColorBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralBaseColor>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralBaseColor>)>] () = inherit NeutralBaseColorBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralBaseColor>()
 
     /// The AccentBaseColor design token
     type AccentBaseColor' 
         /// The AccentBaseColor design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.AccentBaseColor>)>] () = inherit AccentBaseColorBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.AccentBaseColor>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.AccentBaseColor>)>] () = inherit AccentBaseColorBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.AccentBaseColor>()
 
     /// The NeutralLayerCardContainer design token
     type NeutralLayerCardContainer' 
         /// The NeutralLayerCardContainer design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralLayerCardContainer>)>] () = inherit NeutralLayerCardContainerBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralLayerCardContainer>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralLayerCardContainer>)>] () = inherit NeutralLayerCardContainerBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralLayerCardContainer>()
 
     /// The NeutralLayerFloating design token
     type NeutralLayerFloating' 
         /// The NeutralLayerFloating design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralLayerFloating>)>] () = inherit NeutralLayerFloatingBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralLayerFloating>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralLayerFloating>)>] () = inherit NeutralLayerFloatingBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralLayerFloating>()
 
     /// The NeutralLayer1 design token
     type NeutralLayer1' 
         /// The NeutralLayer1 design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralLayer1>)>] () = inherit NeutralLayer1Builder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralLayer1>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralLayer1>)>] () = inherit NeutralLayer1Builder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralLayer1>()
 
     /// The NeutralLayer2 design token
     type NeutralLayer2' 
         /// The NeutralLayer2 design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralLayer2>)>] () = inherit NeutralLayer2Builder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralLayer2>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralLayer2>)>] () = inherit NeutralLayer2Builder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralLayer2>()
 
     /// The NeutralLayer3 design token
     type NeutralLayer3' 
         /// The NeutralLayer3 design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralLayer3>)>] () = inherit NeutralLayer3Builder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralLayer3>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralLayer3>)>] () = inherit NeutralLayer3Builder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralLayer3>()
 
     /// The NeutralLayer4 design token
     type NeutralLayer4' 
         /// The NeutralLayer4 design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralLayer4>)>] () = inherit NeutralLayer4Builder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralLayer4>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralLayer4>)>] () = inherit NeutralLayer4Builder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralLayer4>()
 
     /// The FillColor design token
     type FillColor' 
         /// The FillColor design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.FillColor>)>] () = inherit FillColorBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.FillColor>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.FillColor>)>] () = inherit FillColorBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.FillColor>()
 
     /// The AccentFillRest design token
     type AccentFillRest' 
         /// The AccentFillRest design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.AccentFillRest>)>] () = inherit AccentFillRestBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.AccentFillRest>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.AccentFillRest>)>] () = inherit AccentFillRestBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.AccentFillRest>()
 
     /// The AccentFillHover design token
     type AccentFillHover' 
         /// The AccentFillHover design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.AccentFillHover>)>] () = inherit AccentFillHoverBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.AccentFillHover>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.AccentFillHover>)>] () = inherit AccentFillHoverBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.AccentFillHover>()
 
     /// The AccentFillActive design token
     type AccentFillActive' 
         /// The AccentFillActive design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.AccentFillActive>)>] () = inherit AccentFillActiveBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.AccentFillActive>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.AccentFillActive>)>] () = inherit AccentFillActiveBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.AccentFillActive>()
 
     /// The AccentFillFocus design token
     type AccentFillFocus' 
         /// The AccentFillFocus design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.AccentFillFocus>)>] () = inherit AccentFillFocusBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.AccentFillFocus>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.AccentFillFocus>)>] () = inherit AccentFillFocusBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.AccentFillFocus>()
 
     /// The ForegroundOnAccentRest design token
     type ForegroundOnAccentRest' 
         /// The ForegroundOnAccentRest design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.ForegroundOnAccentRest>)>] () = inherit ForegroundOnAccentRestBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.ForegroundOnAccentRest>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.ForegroundOnAccentRest>)>] () = inherit ForegroundOnAccentRestBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.ForegroundOnAccentRest>()
 
     /// The ForegroundOnAccentHover design token
     type ForegroundOnAccentHover' 
         /// The ForegroundOnAccentHover design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.ForegroundOnAccentHover>)>] () = inherit ForegroundOnAccentHoverBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.ForegroundOnAccentHover>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.ForegroundOnAccentHover>)>] () = inherit ForegroundOnAccentHoverBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.ForegroundOnAccentHover>()
 
     /// The ForegroundOnAccentActive design token
     type ForegroundOnAccentActive' 
         /// The ForegroundOnAccentActive design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.ForegroundOnAccentActive>)>] () = inherit ForegroundOnAccentActiveBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.ForegroundOnAccentActive>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.ForegroundOnAccentActive>)>] () = inherit ForegroundOnAccentActiveBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.ForegroundOnAccentActive>()
 
     /// The ForegroundOnAccentFocus design token
     type ForegroundOnAccentFocus' 
         /// The ForegroundOnAccentFocus design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.ForegroundOnAccentFocus>)>] () = inherit ForegroundOnAccentFocusBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.ForegroundOnAccentFocus>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.ForegroundOnAccentFocus>)>] () = inherit ForegroundOnAccentFocusBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.ForegroundOnAccentFocus>()
 
     /// The AccentForegroundRest design token
     type AccentForegroundRest' 
         /// The AccentForegroundRest design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.AccentForegroundRest>)>] () = inherit AccentForegroundRestBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.AccentForegroundRest>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.AccentForegroundRest>)>] () = inherit AccentForegroundRestBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.AccentForegroundRest>()
 
     /// The AccentForegroundHover design token
     type AccentForegroundHover' 
         /// The AccentForegroundHover design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.AccentForegroundHover>)>] () = inherit AccentForegroundHoverBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.AccentForegroundHover>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.AccentForegroundHover>)>] () = inherit AccentForegroundHoverBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.AccentForegroundHover>()
 
     /// The AccentForegroundActive design token
     type AccentForegroundActive' 
         /// The AccentForegroundActive design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.AccentForegroundActive>)>] () = inherit AccentForegroundActiveBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.AccentForegroundActive>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.AccentForegroundActive>)>] () = inherit AccentForegroundActiveBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.AccentForegroundActive>()
 
     /// The AccentForegroundFocus design token
     type AccentForegroundFocus' 
         /// The AccentForegroundFocus design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.AccentForegroundFocus>)>] () = inherit AccentForegroundFocusBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.AccentForegroundFocus>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.AccentForegroundFocus>)>] () = inherit AccentForegroundFocusBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.AccentForegroundFocus>()
 
     /// The AccentStrokeControlRest design token
     type AccentStrokeControlRest' 
         /// The AccentStrokeControlRest design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.AccentStrokeControlRest>)>] () = inherit AccentStrokeControlRestBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.AccentStrokeControlRest>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.AccentStrokeControlRest>)>] () = inherit AccentStrokeControlRestBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.AccentStrokeControlRest>()
 
     /// The AccentStrokeControlHover design token
     type AccentStrokeControlHover' 
         /// The AccentStrokeControlHover design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.AccentStrokeControlHover>)>] () = inherit AccentStrokeControlHoverBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.AccentStrokeControlHover>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.AccentStrokeControlHover>)>] () = inherit AccentStrokeControlHoverBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.AccentStrokeControlHover>()
 
     /// The AccentStrokeControlActive design token
     type AccentStrokeControlActive' 
         /// The AccentStrokeControlActive design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.AccentStrokeControlActive>)>] () = inherit AccentStrokeControlActiveBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.AccentStrokeControlActive>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.AccentStrokeControlActive>)>] () = inherit AccentStrokeControlActiveBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.AccentStrokeControlActive>()
 
     /// The AccentStrokeControlFocus design token
     type AccentStrokeControlFocus' 
         /// The AccentStrokeControlFocus design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.AccentStrokeControlFocus>)>] () = inherit AccentStrokeControlFocusBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.AccentStrokeControlFocus>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.AccentStrokeControlFocus>)>] () = inherit AccentStrokeControlFocusBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.AccentStrokeControlFocus>()
 
     /// The NeutralFillRest design token
     type NeutralFillRest' 
         /// The NeutralFillRest design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillRest>)>] () = inherit NeutralFillRestBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillRest>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillRest>)>] () = inherit NeutralFillRestBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillRest>()
 
     /// The NeutralFillHover design token
     type NeutralFillHover' 
         /// The NeutralFillHover design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillHover>)>] () = inherit NeutralFillHoverBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillHover>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillHover>)>] () = inherit NeutralFillHoverBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillHover>()
 
     /// The NeutralFillActive design token
     type NeutralFillActive' 
         /// The NeutralFillActive design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillActive>)>] () = inherit NeutralFillActiveBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillActive>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillActive>)>] () = inherit NeutralFillActiveBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillActive>()
 
     /// The NeutralFillFocus design token
     type NeutralFillFocus' 
         /// The NeutralFillFocus design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillFocus>)>] () = inherit NeutralFillFocusBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillFocus>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillFocus>)>] () = inherit NeutralFillFocusBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillFocus>()
 
     /// The NeutralFillInputRest design token
     type NeutralFillInputRest' 
         /// The NeutralFillInputRest design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillInputRest>)>] () = inherit NeutralFillInputRestBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillInputRest>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillInputRest>)>] () = inherit NeutralFillInputRestBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillInputRest>()
 
     /// The NeutralFillInputHover design token
     type NeutralFillInputHover' 
         /// The NeutralFillInputHover design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillInputHover>)>] () = inherit NeutralFillInputHoverBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillInputHover>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillInputHover>)>] () = inherit NeutralFillInputHoverBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillInputHover>()
 
     /// The NeutralFillInputActive design token
     type NeutralFillInputActive' 
         /// The NeutralFillInputActive design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillInputActive>)>] () = inherit NeutralFillInputActiveBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillInputActive>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillInputActive>)>] () = inherit NeutralFillInputActiveBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillInputActive>()
 
     /// The NeutralFillInputFocus design token
     type NeutralFillInputFocus' 
         /// The NeutralFillInputFocus design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillInputFocus>)>] () = inherit NeutralFillInputFocusBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillInputFocus>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillInputFocus>)>] () = inherit NeutralFillInputFocusBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillInputFocus>()
 
     /// The NeutralFillInputAltRest design token
     type NeutralFillInputAltRest' 
         /// The NeutralFillInputAltRest design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillInputAltRest>)>] () = inherit NeutralFillInputAltRestBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillInputAltRest>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillInputAltRest>)>] () = inherit NeutralFillInputAltRestBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillInputAltRest>()
 
     /// The NeutralFillInputAltHover design token
     type NeutralFillInputAltHover' 
         /// The NeutralFillInputAltHover design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillInputAltHover>)>] () = inherit NeutralFillInputAltHoverBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillInputAltHover>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillInputAltHover>)>] () = inherit NeutralFillInputAltHoverBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillInputAltHover>()
 
     /// The NeutralFillInputAltActive design token
     type NeutralFillInputAltActive' 
         /// The NeutralFillInputAltActive design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillInputAltActive>)>] () = inherit NeutralFillInputAltActiveBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillInputAltActive>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillInputAltActive>)>] () = inherit NeutralFillInputAltActiveBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillInputAltActive>()
 
     /// The NeutralFillInputAltFocus design token
     type NeutralFillInputAltFocus' 
         /// The NeutralFillInputAltFocus design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillInputAltFocus>)>] () = inherit NeutralFillInputAltFocusBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillInputAltFocus>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillInputAltFocus>)>] () = inherit NeutralFillInputAltFocusBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillInputAltFocus>()
 
     /// The NeutralFillLayerRest design token
     type NeutralFillLayerRest' 
         /// The NeutralFillLayerRest design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillLayerRest>)>] () = inherit NeutralFillLayerRestBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillLayerRest>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillLayerRest>)>] () = inherit NeutralFillLayerRestBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillLayerRest>()
 
     /// The NeutralFillLayerHover design token
     type NeutralFillLayerHover' 
         /// The NeutralFillLayerHover design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillLayerHover>)>] () = inherit NeutralFillLayerHoverBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillLayerHover>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillLayerHover>)>] () = inherit NeutralFillLayerHoverBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillLayerHover>()
 
     /// The NeutralFillLayerActive design token
     type NeutralFillLayerActive' 
         /// The NeutralFillLayerActive design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillLayerActive>)>] () = inherit NeutralFillLayerActiveBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillLayerActive>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillLayerActive>)>] () = inherit NeutralFillLayerActiveBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillLayerActive>()
 
     /// The NeutralFillLayerAltRest design token
     type NeutralFillLayerAltRest' 
         /// The NeutralFillLayerAltRest design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillLayerAltRest>)>] () = inherit NeutralFillLayerAltRestBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillLayerAltRest>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillLayerAltRest>)>] () = inherit NeutralFillLayerAltRestBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillLayerAltRest>()
 
     /// The NeutralFillSecondaryRest design token
     type NeutralFillSecondaryRest' 
         /// The NeutralFillSecondaryRest design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillSecondaryRest>)>] () = inherit NeutralFillSecondaryRestBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillSecondaryRest>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillSecondaryRest>)>] () = inherit NeutralFillSecondaryRestBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillSecondaryRest>()
 
     /// The NeutralFillSecondaryHover design token
     type NeutralFillSecondaryHover' 
         /// The NeutralFillSecondaryHover design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillSecondaryHover>)>] () = inherit NeutralFillSecondaryHoverBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillSecondaryHover>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillSecondaryHover>)>] () = inherit NeutralFillSecondaryHoverBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillSecondaryHover>()
 
     /// The NeutralFillSecondaryActive design token
     type NeutralFillSecondaryActive' 
         /// The NeutralFillSecondaryActive design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillSecondaryActive>)>] () = inherit NeutralFillSecondaryActiveBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillSecondaryActive>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillSecondaryActive>)>] () = inherit NeutralFillSecondaryActiveBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillSecondaryActive>()
 
     /// The NeutralFillSecondaryFocus design token
     type NeutralFillSecondaryFocus' 
         /// The NeutralFillSecondaryFocus design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillSecondaryFocus>)>] () = inherit NeutralFillSecondaryFocusBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillSecondaryFocus>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillSecondaryFocus>)>] () = inherit NeutralFillSecondaryFocusBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillSecondaryFocus>()
 
     /// The NeutralFillStealthRest design token
     type NeutralFillStealthRest' 
         /// The NeutralFillStealthRest design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillStealthRest>)>] () = inherit NeutralFillStealthRestBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillStealthRest>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillStealthRest>)>] () = inherit NeutralFillStealthRestBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillStealthRest>()
 
     /// The NeutralFillStealthHover design token
     type NeutralFillStealthHover' 
         /// The NeutralFillStealthHover design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillStealthHover>)>] () = inherit NeutralFillStealthHoverBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillStealthHover>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillStealthHover>)>] () = inherit NeutralFillStealthHoverBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillStealthHover>()
 
     /// The NeutralFillStealthActive design token
     type NeutralFillStealthActive' 
         /// The NeutralFillStealthActive design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillStealthActive>)>] () = inherit NeutralFillStealthActiveBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillStealthActive>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillStealthActive>)>] () = inherit NeutralFillStealthActiveBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillStealthActive>()
 
     /// The NeutralFillStealthFocus design token
     type NeutralFillStealthFocus' 
         /// The NeutralFillStealthFocus design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillStealthFocus>)>] () = inherit NeutralFillStealthFocusBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillStealthFocus>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillStealthFocus>)>] () = inherit NeutralFillStealthFocusBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillStealthFocus>()
 
     /// The NeutralFillStrongRest design token
     type NeutralFillStrongRest' 
         /// The NeutralFillStrongRest design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillStrongRest>)>] () = inherit NeutralFillStrongRestBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillStrongRest>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillStrongRest>)>] () = inherit NeutralFillStrongRestBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillStrongRest>()
 
     /// The NeutralFillStrongHover design token
     type NeutralFillStrongHover' 
         /// The NeutralFillStrongHover design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillStrongHover>)>] () = inherit NeutralFillStrongHoverBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillStrongHover>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillStrongHover>)>] () = inherit NeutralFillStrongHoverBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillStrongHover>()
 
     /// The NeutralFillStrongActive design token
     type NeutralFillStrongActive' 
         /// The NeutralFillStrongActive design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillStrongActive>)>] () = inherit NeutralFillStrongActiveBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillStrongActive>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillStrongActive>)>] () = inherit NeutralFillStrongActiveBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillStrongActive>()
 
     /// The NeutralFillStrongFocus design token
     type NeutralFillStrongFocus' 
         /// The NeutralFillStrongFocus design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillStrongFocus>)>] () = inherit NeutralFillStrongFocusBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralFillStrongFocus>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillStrongFocus>)>] () = inherit NeutralFillStrongFocusBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralFillStrongFocus>()
 
     /// The NeutralForegroundRest design token
     type NeutralForegroundRest' 
         /// The NeutralForegroundRest design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralForegroundRest>)>] () = inherit NeutralForegroundRestBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralForegroundRest>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralForegroundRest>)>] () = inherit NeutralForegroundRestBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralForegroundRest>()
 
     /// The NeutralForegroundHover design token
     type NeutralForegroundHover' 
         /// The NeutralForegroundHover design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralForegroundHover>)>] () = inherit NeutralForegroundHoverBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralForegroundHover>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralForegroundHover>)>] () = inherit NeutralForegroundHoverBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralForegroundHover>()
 
     /// The NeutralForegroundActive design token
     type NeutralForegroundActive' 
         /// The NeutralForegroundActive design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralForegroundActive>)>] () = inherit NeutralForegroundActiveBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralForegroundActive>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralForegroundActive>)>] () = inherit NeutralForegroundActiveBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralForegroundActive>()
 
     /// The NeutralForegroundFocus design token
     type NeutralForegroundFocus' 
         /// The NeutralForegroundFocus design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralForegroundFocus>)>] () = inherit NeutralForegroundFocusBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralForegroundFocus>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralForegroundFocus>)>] () = inherit NeutralForegroundFocusBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralForegroundFocus>()
 
     /// The NeutralForegroundHint design token
     type NeutralForegroundHint' 
         /// The NeutralForegroundHint design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralForegroundHint>)>] () = inherit NeutralForegroundHintBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralForegroundHint>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralForegroundHint>)>] () = inherit NeutralForegroundHintBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralForegroundHint>()
 
     /// The NeutralStrokeRest design token
     type NeutralStrokeRest' 
         /// The NeutralStrokeRest design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeRest>)>] () = inherit NeutralStrokeRestBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeRest>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeRest>)>] () = inherit NeutralStrokeRestBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeRest>()
 
     /// The NeutralStrokeHover design token
     type NeutralStrokeHover' 
         /// The NeutralStrokeHover design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeHover>)>] () = inherit NeutralStrokeHoverBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeHover>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeHover>)>] () = inherit NeutralStrokeHoverBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeHover>()
 
     /// The NeutralStrokeActive design token
     type NeutralStrokeActive' 
         /// The NeutralStrokeActive design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeActive>)>] () = inherit NeutralStrokeActiveBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeActive>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeActive>)>] () = inherit NeutralStrokeActiveBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeActive>()
 
     /// The NeutralStrokeFocus design token
     type NeutralStrokeFocus' 
         /// The NeutralStrokeFocus design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeFocus>)>] () = inherit NeutralStrokeFocusBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeFocus>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeFocus>)>] () = inherit NeutralStrokeFocusBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeFocus>()
 
     /// The NeutralStrokeControlRest design token
     type NeutralStrokeControlRest' 
         /// The NeutralStrokeControlRest design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeControlRest>)>] () = inherit NeutralStrokeControlRestBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeControlRest>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeControlRest>)>] () = inherit NeutralStrokeControlRestBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeControlRest>()
 
     /// The NeutralStrokeControlHover design token
     type NeutralStrokeControlHover' 
         /// The NeutralStrokeControlHover design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeControlHover>)>] () = inherit NeutralStrokeControlHoverBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeControlHover>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeControlHover>)>] () = inherit NeutralStrokeControlHoverBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeControlHover>()
 
     /// The NeutralStrokeControlActive design token
     type NeutralStrokeControlActive' 
         /// The NeutralStrokeControlActive design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeControlActive>)>] () = inherit NeutralStrokeControlActiveBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeControlActive>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeControlActive>)>] () = inherit NeutralStrokeControlActiveBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeControlActive>()
 
     /// The NeutralStrokeControlFocus design token
     type NeutralStrokeControlFocus' 
         /// The NeutralStrokeControlFocus design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeControlFocus>)>] () = inherit NeutralStrokeControlFocusBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeControlFocus>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeControlFocus>)>] () = inherit NeutralStrokeControlFocusBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeControlFocus>()
 
     /// The NeutralStrokeDividerRest design token
     type NeutralStrokeDividerRest' 
         /// The NeutralStrokeDividerRest design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeDividerRest>)>] () = inherit NeutralStrokeDividerRestBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeDividerRest>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeDividerRest>)>] () = inherit NeutralStrokeDividerRestBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeDividerRest>()
 
     /// The NeutralStrokeInputRest design token
     type NeutralStrokeInputRest' 
         /// The NeutralStrokeInputRest design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeInputRest>)>] () = inherit NeutralStrokeInputRestBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeInputRest>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeInputRest>)>] () = inherit NeutralStrokeInputRestBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeInputRest>()
 
     /// The NeutralStrokeInputHover design token
     type NeutralStrokeInputHover' 
         /// The NeutralStrokeInputHover design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeInputHover>)>] () = inherit NeutralStrokeInputHoverBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeInputHover>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeInputHover>)>] () = inherit NeutralStrokeInputHoverBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeInputHover>()
 
     /// The NeutralStrokeInputActive design token
     type NeutralStrokeInputActive' 
         /// The NeutralStrokeInputActive design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeInputActive>)>] () = inherit NeutralStrokeInputActiveBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeInputActive>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeInputActive>)>] () = inherit NeutralStrokeInputActiveBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeInputActive>()
 
     /// The NeutralStrokeInputFocus design token
     type NeutralStrokeInputFocus' 
         /// The NeutralStrokeInputFocus design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeInputFocus>)>] () = inherit NeutralStrokeInputFocusBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeInputFocus>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeInputFocus>)>] () = inherit NeutralStrokeInputFocusBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeInputFocus>()
 
     /// The NeutralStrokeLayerRest design token
     type NeutralStrokeLayerRest' 
         /// The NeutralStrokeLayerRest design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeLayerRest>)>] () = inherit NeutralStrokeLayerRestBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeLayerRest>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeLayerRest>)>] () = inherit NeutralStrokeLayerRestBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeLayerRest>()
 
     /// The NeutralStrokeLayerHover design token
     type NeutralStrokeLayerHover' 
         /// The NeutralStrokeLayerHover design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeLayerHover>)>] () = inherit NeutralStrokeLayerHoverBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeLayerHover>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeLayerHover>)>] () = inherit NeutralStrokeLayerHoverBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeLayerHover>()
 
     /// The NeutralStrokeLayerActive design token
     type NeutralStrokeLayerActive' 
         /// The NeutralStrokeLayerActive design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeLayerActive>)>] () = inherit NeutralStrokeLayerActiveBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeLayerActive>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeLayerActive>)>] () = inherit NeutralStrokeLayerActiveBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeLayerActive>()
 
     /// The NeutralStrokeStrongRest design token
     type NeutralStrokeStrongRest' 
         /// The NeutralStrokeStrongRest design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeStrongRest>)>] () = inherit NeutralStrokeStrongRestBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeStrongRest>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeStrongRest>)>] () = inherit NeutralStrokeStrongRestBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeStrongRest>()
 
     /// The NeutralStrokeStrongHover design token
     type NeutralStrokeStrongHover' 
         /// The NeutralStrokeStrongHover design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeStrongHover>)>] () = inherit NeutralStrokeStrongHoverBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeStrongHover>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeStrongHover>)>] () = inherit NeutralStrokeStrongHoverBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeStrongHover>()
 
     /// The NeutralStrokeStrongActive design token
     type NeutralStrokeStrongActive' 
         /// The NeutralStrokeStrongActive design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeStrongActive>)>] () = inherit NeutralStrokeStrongActiveBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeStrongActive>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeStrongActive>)>] () = inherit NeutralStrokeStrongActiveBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeStrongActive>()
 
     /// The NeutralStrokeStrongFocus design token
     type NeutralStrokeStrongFocus' 
         /// The NeutralStrokeStrongFocus design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeStrongFocus>)>] () = inherit NeutralStrokeStrongFocusBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.NeutralStrokeStrongFocus>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeStrongFocus>)>] () = inherit NeutralStrokeStrongFocusBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.NeutralStrokeStrongFocus>()
 
     /// The FocusStrokeOuter design token
     type FocusStrokeOuter' 
         /// The FocusStrokeOuter design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.FocusStrokeOuter>)>] () = inherit FocusStrokeOuterBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.FocusStrokeOuter>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.FocusStrokeOuter>)>] () = inherit FocusStrokeOuterBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.FocusStrokeOuter>()
 
     /// The FocusStrokeInner design token
     type FocusStrokeInner' 
         /// The FocusStrokeInner design token
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DesignTokens.FocusStrokeInner>)>] () = inherit FocusStrokeInnerBuilder<Microsoft.Fast.Components.FluentUI.DesignTokens.FocusStrokeInner>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.FocusStrokeInner>)>] () = inherit FocusStrokeInnerBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.FocusStrokeInner>()
             
-namespace Microsoft.Fast.Components.FluentUI.DataGrid.Infrastructure
+namespace Microsoft.FluentUI.AspNetCore.Components.DataGrid.Infrastructure
 
 [<AutoOpen>]
 module DslCE =
   
     open System.Diagnostics.CodeAnalysis
-    open Microsoft.Fast.Components.FluentUI.DslInternals.DataGrid.Infrastructure
+    open Microsoft.FluentUI.AspNetCore.Components.DslInternals.DataGrid.Infrastructure
 
 
     /// For internal use only. Do not use.
     type Defer' 
         /// For internal use only. Do not use.
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.Fast.Components.FluentUI.DataGrid.Infrastructure.Defer>)>] () = inherit DeferBuilder<Microsoft.Fast.Components.FluentUI.DataGrid.Infrastructure.Defer>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DataGrid.Infrastructure.Defer>)>] () = inherit DeferBuilder<Microsoft.FluentUI.AspNetCore.Components.DataGrid.Infrastructure.Defer>()
             
