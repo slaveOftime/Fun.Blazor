@@ -1,6 +1,6 @@
 # Bindings
 
-Below is auto generated bindings
+Below is auto generated bindings, if the version does not match your requirements you can use the Fun.Blazor.Cli to generate your own.
 
 ```bash
 dotnet add package Fun.Blazor.AntDesign --version 0.16.2

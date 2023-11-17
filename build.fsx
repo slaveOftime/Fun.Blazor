@@ -20,6 +20,34 @@ let options = {|
 |}
 
 
+let getBindingInfos () =
+    Directory.GetDirectories("Bindings")
+    |> Seq.map (fun x -> x </> Path.GetFileName x + ".fsproj")
+    |> Seq.filter File.exists
+    |> Seq.map (fun file ->
+        let fileContent = File.readAsString file 
+        let version =
+            let startIndex = fileContent.IndexOf("Version=") + 9
+            let endIndex = fileContent.IndexOf("\"", startIndex)
+            fileContent.Substring(startIndex, endIndex - startIndex)
+        let package =
+            let endIndex = fileContent.IndexOf("Version=") - 2
+            let startIndex = fileContent.LastIndexOf("Include=", endIndex) + 9
+            fileContent.Substring(startIndex, endIndex - startIndex)
+        {| name = Path.GetFileNameWithoutExtension file; package = package; version = version |}
+    )
+
+
+let getNugetPackageLatestVersion package =
+    printfn "Fetch latest version"
+    http { GET $"https://api.nuget.org/v3-flatcontainer/{package}/index.json" }
+    |> Request.send
+    |> Response.deserializeJson<{| versions: string list |}>
+    |> fun x -> x.versions
+    |> Seq.filter (Seq.exists (fun c -> c >= 'a' && c <= 'z') >> not)
+    |> Seq.last
+
+
 let stage_checkEnv =
     stage "Check envs" {
         stage "generate Directory.Build.props for version control" {
@@ -72,15 +100,7 @@ let stage_generateBindingProjects name package nsp patch =
         }
         noStdRedirectForStep
         run (fun _ ->
-            printfn "Fetch latest version"
-            let version =
-                http { GET $"https://api.nuget.org/v3-flatcontainer/{package}/index.json" }
-                |> Request.send
-                |> Response.deserializeJson<{| versions: string list |}>
-                |> fun x -> x.versions
-                |> Seq.filter (Seq.exists (fun c -> c >= 'a' && c <= 'z') >> not)
-                |> Seq.last
-
+            let version = getNugetPackageLatestVersion()
             printfn $"Found verion {version} for package {package}"
 
             let version = if String.IsNullOrEmpty patch then version else version + "." + "patch"
@@ -234,30 +254,37 @@ pipeline "bindings" {
     stage_generateBindingProjects "BlazorMonaco" "BlazorMonaco" "BlazorMonaco" ""
     stage "pack for binding projects" {
         run (fun _ ->
-            let infos =
-                Directory.GetDirectories("Bindings")
-                |> Seq.map (fun x -> x </> Path.GetFileName x + ".fsproj")
-                |> Seq.filter File.exists
-                |> Seq.map (fun file ->
-                    let version =
-                        let x = File.readAsString file 
-                        let startIndex = x.IndexOf("Version=") + 9
-                        let endIndex = x.IndexOf("\"", startIndex)
-                        x.Substring(startIndex, endIndex - startIndex)
-                    {| name = Path.GetFileNameWithoutExtension file; version = version |}
-                )
-                
             printfn "Update binding docs"
             File.write false ("Docs" </> "17 Bindings" </> "README.md") [
                 "# Bindings"
                 ""
-                "Below is auto generated bindings"
+                "Below is auto generated bindings, if the version does not match your requirements you can use the Fun.Blazor.Cli to generate your own."
                 ""
                 "```bash"
-                for info in infos do
+                for info in getBindingInfos() do
                     $"dotnet add package {info.name} --version {info.version}"
                 "```"
             ]
+        )
+    }
+    runIfOnlySpecified
+}
+
+
+pipeline "bindings-check" {
+    description "Check if there is new version for the binding project"
+    stage "check" {
+        run (fun _ ->
+            getBindingInfos()
+            |> Seq.choose (fun info ->
+                let latestVersion = getNugetPackageLatestVersion info.package
+                if latestVersion <> info.version then Some $"Package {info.package} should be updated from {info.version} to {latestVersion}"
+                else None
+            )
+            |> String.concat "\n"
+            |> function
+                | SafeString x -> Error x
+                | _ -> Ok()
         )
     }
     runIfOnlySpecified

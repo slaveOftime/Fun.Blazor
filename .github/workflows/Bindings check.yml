@@ -1,0 +1,21 @@
+name: Bindings check
+
+on:
+    schedule:
+      - cron: '0 0 * * 1-5'
+
+jobs:
+  bindings-check:
+
+    runs-on: ubuntu-20.04
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 8.0.x   
+
+    - name: Run build.fsx
+      run: dotnet fsi build.fsx -- -p bindings-check
