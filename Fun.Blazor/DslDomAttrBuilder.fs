@@ -437,7 +437,7 @@ type DomAttrBuilder() =
     [<CustomOperation("height")>]
     member inline _.height([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("height" => v)
     [<CustomOperation("hidden")>]
-    member inline _.hidden([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("hidden" => (if v then "true" else "false"))
+    member inline _.hidden([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("hidden" =>>> v)
     [<CustomOperation("hidden")>]
     member inline this.hidden([<InlineIfLambda>] render: AttrRenderFragment) = this.hidden(render, true)
     [<CustomOperation("high")>]

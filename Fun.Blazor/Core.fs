@@ -43,9 +43,8 @@ module Operators =
         AttrRenderFragment(fun _ builder index ->
             if value then
                 builder.AddAttribute(index, name)
-                index + 1
-            else
-                index
+            // Always increase this number to reduce dynamic changes
+            index + 1
         )
 
     /// Merge two AttrRenderFragment together
