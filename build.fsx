@@ -38,7 +38,7 @@ let getBindingInfos () =
     )
 
 
-let getNugetPackageLatestVersion package =
+let getNugetPackageLatestVersion (package: string) =
     printfn "Fetch latest version"
     http { GET $"https://api.nuget.org/v3-flatcontainer/{package}/index.json" }
     |> Request.send
@@ -100,7 +100,7 @@ let stage_generateBindingProjects name package nsp patch =
         }
         noStdRedirectForStep
         run (fun _ ->
-            let version = getNugetPackageLatestVersion()
+            let version = getNugetPackageLatestVersion package
             printfn $"Found verion {version} for package {package}"
 
             let version = if String.IsNullOrEmpty patch then version else version + "." + "patch"
