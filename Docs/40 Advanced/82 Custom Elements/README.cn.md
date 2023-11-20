@@ -6,6 +6,55 @@
 
 它是由 **Microsoft.AspNetCore.Components.CustomElements** 驱动的，这在 .NET 7 中得到了官方支持。
 
+## 如何使用
+
+注册组件：
+
+```fsharp
+services.AddServerSideBlazor(fun options -> options.RootComponents.RegisterCustomElementForFunBlazor(Assembly.GetExecutingAssembly()))
+```
+
+在 html head 中配置帮助脚本：
+
+```fsharp
+html {
+    head {
+        ...
+        CustomElement.lazyBlazorJs ()
+    }
+    body {
+        ...
+    }
+}
+```
+
+定义你的组件：
+
+```fsharp
+
+[<FunBlazorCustomElement>]
+type PostLikesSurvey() =
+    inherit FunComponent()
+
+    [<Parameter>]
+    member val post_id = "" with get, set
+
+    override this.Render() = fragment {
+        ...
+    }
+```
+
+使用你的组件：
+
+```fsharp
+html.customElement<PostLikesSurvey> (
+    delayMs = 5_000, 
+    attrs = (nameof Unchecked.defaultof<PostLikesSurvey>.post_id => post.Id.ToString())
+)
+```
+
+## 示例
+
 下面有一些计数器，但它们共享同一个 `IShareStore`。所以在 Blazor 服务器模式下，当您单击一个按钮时，另一个按钮也会自动增加，这意味着它们共享同一个 WebSocket 连接。
 
 {{CustomElementDemo}}
