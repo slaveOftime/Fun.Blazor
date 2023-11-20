@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.2.2] - 2023-11-20
+
+- Improve sequence number usage
+
 ## [3.2.0] - 2023-11-16
 
 - Unify version

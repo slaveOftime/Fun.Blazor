@@ -44,17 +44,7 @@ type EltBuilder(name) =
             nextIndex + 1
         ))
 
-
-    member inline _.Delay([<InlineIfLambda>] fn: unit -> NodeRenderFragment) = NodeRenderFragment(fun c b i -> fn().Invoke(c, b, i))
-    
     member inline _.Delay([<InlineIfLambda>] fn: unit -> struct (AttrRenderFragment * PostRenderFragment)) = fn ()
-    member inline _.Delay([<InlineIfLambda>] fn: unit -> struct (AttrRenderFragment * PostRenderFragment * NodeRenderFragment)) = fn ()
-
-    member inline _.For([<InlineIfLambda>] render: NodeRenderFragment, [<InlineIfLambda>] fn: unit -> NodeRenderFragment) = render >=> (fn ())
-    
-    member inline _.For(renders: 'Data seq, [<InlineIfLambda>] fn: 'Data -> NodeRenderFragment) =
-       renders |> Seq.map fn |> Seq.fold (>=>) (emptyNode ())
-
 
     /// Create empty element
     member inline this.create() =
@@ -153,13 +143,24 @@ type EltWithChildBuilder(name) =
 
     member inline _.Combine([<InlineIfLambda>] render1: NodeRenderFragment, [<InlineIfLambda>] render2: NodeRenderFragment) = render1 >=> render2
 
+
+    member inline _.Delay([<InlineIfLambda>] fn: unit -> NodeRenderFragment) = NodeRenderFragment(fun c b i -> fn().Invoke(c, b, i))
+
+    member inline _.Delay([<InlineIfLambda>] fn: unit -> struct (AttrRenderFragment * PostRenderFragment * NodeRenderFragment)) = fn ()
+    
+
     member inline _.For([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> NodeRenderFragment) = render >>> (fn ())
 
-    member inline _.For((render1, render2): struct (AttrRenderFragment * PostRenderFragment), [<InlineIfLambda>] fn: unit -> NodeRenderFragment) = struct (render1, render2, fn())
+    member inline _.For([<InlineIfLambda>] render: NodeRenderFragment, [<InlineIfLambda>] fn: unit -> NodeRenderFragment) = render >=> (fn ())
 
-    //member inline _.For(renders: 'T seq, [<InlineIfLambda>] fn: 'T -> NodeRenderFragment) = renders |> Seq.map fn |> Seq.fold (>=>) (emptyNode ())
+    member inline _.For((render1, render2): struct (AttrRenderFragment * PostRenderFragment), [<InlineIfLambda>] fn: unit -> NodeRenderFragment) =
+        struct (render1, render2, fn())
 
-    member inline _.YieldFrom(renders: NodeRenderFragment seq) = renders |> Seq.fold (>=>) (emptyNode ())
+    member inline _.For(renders: 'Data seq, [<InlineIfLambda>] fn: 'Data -> NodeRenderFragment) =
+       renders |> Seq.map fn |> Seq.fold (>=>) (emptyNode ()) |> html.region
+
+    member inline _.YieldFrom(renders: NodeRenderFragment seq) =
+        renders |> Seq.fold (>=>) (emptyNode ()) |> html.region
 
     member inline _.Zero() = emptyNode ()
 
@@ -201,12 +202,7 @@ type EltWithChildBuilder(name) =
     /// </example>
     [<CustomOperation("childContent")>]
     member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, renders: NodeRenderFragment seq) =
-        NodeRenderFragment(fun comp builder index ->
-            let mutable index = render.Invoke(comp, builder, index)
-            for item in renders do
-                index <- item.Invoke(comp, builder, index)
-            index
-        )
+        render >>> html.region(renders)
 
     /// <summary>
     /// Single child node to be added into the element's children
@@ -281,12 +277,7 @@ type EltWithChildBuilder(name) =
 
     [<CustomOperation("childContent")>]
     member inline _.childContent((render1, render2): struct (AttrRenderFragment * PostRenderFragment), renders: NodeRenderFragment seq) =
-        NodeRenderFragment(fun comp builder index ->
-            let mutable index = (render1 ===> render2).Invoke(comp, builder, index)
-            for item in renders do
-                index <- item.Invoke(comp, builder, index)
-            index
-        )
+        struct (render1, render2, html.region renders)
 
     [<CustomOperation("childContent")>]
     member inline _.childContent((render1, render2): struct (AttrRenderFragment * PostRenderFragment), v: string) = render1 ===> render2 >>> (html.text v)

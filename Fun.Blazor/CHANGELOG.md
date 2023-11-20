@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [3.2.2] - 2023-11-20
+
+- Improve sequence number usage
+
 ## [3.2.1] - 2023-11-17
 
 - Fix hidden attribute

@@ -73,7 +73,7 @@ type html with
     /// </code>
     /// </example>
     static member watch(store: IStore<'T>, render: 'T -> NodeRenderFragment list) =
-        html.watch (store.Observable, render >> html.mergeNodes, store.Current)
+        html.watch (store.Observable, render >> html.region, store.Current)
     /// <summary>
     /// Renders Nodes dynamically based on what is emitted by the store
     /// </summary>
@@ -116,7 +116,7 @@ type html with
     /// </code>
     /// </example>
     static member watch(key, store: IStore<'T>, render: 'T -> NodeRenderFragment list) =
-        html.watch (store.Observable, render >> html.mergeNodes, store.Current, k = key)
+        html.watch (store.Observable, render >> html.region, store.Current, k = key)
 
     /// <summary>
     /// Renders Nodes dynamically based on what is emitted by the stores
@@ -152,7 +152,7 @@ type html with
     /// </code>
     /// </example>
     static member watch2(store1: IStore<'T1>, store2: IStore<'T2>, render: 'T1 -> 'T2 -> NodeRenderFragment list) =
-        html.watch2 (store1, store2, (fun s1 s2 -> html.mergeNodes (render s1 s2)))
+        html.watch2 (store1, store2, (fun s1 s2 -> html.region (render s1 s2)))
 
     /// <summary>
     /// Renders Nodes dynamically based on what is emitted by the stores

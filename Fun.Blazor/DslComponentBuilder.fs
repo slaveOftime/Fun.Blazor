@@ -300,10 +300,9 @@ type ComponentWithChildBuilder<'T when 'T :> IComponent>() =
 
     member inline _.For((render1, render2): struct (AttrRenderFragment * PostRenderFragment), [<InlineIfLambda>] fn: unit -> NodeRenderFragment) = struct (render1, render2, fn())
 
-    member inline _.For(renders: 'Data seq, [<InlineIfLambda>] fn: 'Data -> NodeRenderFragment) =
-       renders |> Seq.map fn |> Seq.fold (>=>) (emptyNode ())
+    member inline _.For(renders: 'Data seq, [<InlineIfLambda>] fn: 'Data -> NodeRenderFragment) = renders |> Seq.map fn |> Seq.fold (>=>) (emptyNode ()) |> html.region
 
-    member inline _.YieldFrom(renders: NodeRenderFragment seq) = renders |> Seq.fold (>=>) (emptyNode ())
+    member inline _.YieldFrom(renders: NodeRenderFragment seq) = renders |> Seq.fold (>=>) (emptyNode ()) |> html.region
 
     member inline _.Zero() = emptyNode ()
 
@@ -315,7 +314,7 @@ type ComponentWithChildBuilder<'T when 'T :> IComponent>() =
     [<CustomOperation("childContent")>]
     [<Obsolete "This is not recommend, please use fragment or remove childContent and yield your content directly.">]
     member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, renders: NodeRenderFragment seq) =
-        render ==> html.renderFragment ("ChildContent", html.mergeNodes renders)
+        render ==> html.renderFragment ("ChildContent", html.region renders)
 
     [<CustomOperation("childContent")>]
     member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, v: string) =
@@ -336,7 +335,7 @@ type ComponentWithChildBuilder<'T when 'T :> IComponent>() =
 
     [<CustomOperation("childContent")>]
     member inline _.childContent((render1, render2): struct (AttrRenderFragment * PostRenderFragment), renders: NodeRenderFragment seq) =
-        struct (render1, render2, html.mergeNodes renders)
+        struct (render1, render2, html.region renders)
 
     [<CustomOperation("childContent")>]
     member inline _.childContent((render1, render2): struct (AttrRenderFragment * PostRenderFragment), v: string) =
@@ -574,10 +573,9 @@ type ComponentWithDomAndChildAttrBuilder<'T when 'T :> IComponent>() =
 
     member inline _.For((render1, render2): struct (AttrRenderFragment * PostRenderFragment), [<InlineIfLambda>] fn: unit -> NodeRenderFragment) = struct (render1, render2, fn())
 
-    member inline _.For(renders: 'Data seq, [<InlineIfLambda>] fn: 'Data -> NodeRenderFragment) =
-       renders |> Seq.map fn |> Seq.fold (>=>) (emptyNode ())
+    member inline _.For(renders: 'Data seq, [<InlineIfLambda>] fn: 'Data -> NodeRenderFragment) = renders |> Seq.map fn |> Seq.fold (>=>) (emptyNode ()) |> html.region
 
-    member inline _.YieldFrom(renders: NodeRenderFragment seq) = renders |> Seq.fold (>=>) (emptyNode ())
+    member inline _.YieldFrom(renders: NodeRenderFragment seq) = renders |> Seq.fold (>=>) (emptyNode ()) |> html.region
 
     member inline _.Zero() = emptyNode ()
 
@@ -588,7 +586,7 @@ type ComponentWithDomAndChildAttrBuilder<'T when 'T :> IComponent>() =
 
     [<CustomOperation("childContent")>]
     member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, renders: NodeRenderFragment seq) =
-        render ==> html.renderFragment ("ChildContent", html.mergeNodes renders)
+        render ==> html.renderFragment ("ChildContent", html.region renders)
 
     [<CustomOperation("childContent")>]
     member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, v: string) =
@@ -609,7 +607,7 @@ type ComponentWithDomAndChildAttrBuilder<'T when 'T :> IComponent>() =
 
     [<CustomOperation("childContent")>]
     member inline _.childContent((render1, render2): struct (AttrRenderFragment * PostRenderFragment), renders: NodeRenderFragment seq) =
-        struct (render1, render2, html.mergeNodes renders)
+        struct (render1, render2, html.region renders)
 
     [<CustomOperation("childContent")>]
     member inline _.childContent((render1, render2): struct (AttrRenderFragment * PostRenderFragment), v: string) =
