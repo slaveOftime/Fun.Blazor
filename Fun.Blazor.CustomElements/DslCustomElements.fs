@@ -17,6 +17,22 @@ type FunBlazorCustomElementAttribute() =
 
 [<AutoOpen>]
 module DslCustomElements =
+
+    [<RequireQualifiedAccess>]
+    type RenderAfter =
+        /// Render after timeout in ms
+        | Delay of int
+        /// Render after prerender container received click event
+        | Clicked
+        /// Render after prerender container received click event or timeout in ms
+        | ClickedOrDelay of int
+        /// Render after element is in viewport
+        | InViewport
+        /// Render after element is in viewport or timeout in ms
+        | InViewportOrDelay of int
+        /// Render after element is in viewport, and delay for some time in ms
+        | InViewportAndDelay of int
+
     let private rootComponstKeys = ConcurrentDictionary<string, bool>()
 
     let private customElementFragemnts = ConcurrentDictionary<int, NodeRenderFragment>()
@@ -43,6 +59,7 @@ module DslCustomElements =
 
 
     /// This is used to register blazor component as web custom element
+    [<Obsolete "Please use html.customElement instead">]
     type CustomElementBuilder<'T when 'T :> IComponent>(name) =
         inherit EltBuilder(name)
 
@@ -71,6 +88,7 @@ module DslCustomElements =
             )
 
 
+    [<Obsolete "Please use html.customElement instead">]
     type CustomElementFragment() as this =
         inherit FunComponent()
 
@@ -85,7 +103,7 @@ module DslCustomElements =
         interface IDisposable with
             member _.Dispose() = customElementFragemnts.TryRemove(this.NodeRenderFragmentKey) |> ignore
 
-
+    [<Obsolete "Please use html.customElement instead">]
     type CustomElementFragmentBuilder(node: NodeRenderFragment, prerenderNode) =
         inherit CustomElementBuilder<CustomElementFragment>("fun-node-custom-element")
 
@@ -126,53 +144,94 @@ module CustomElementExtensions =
                     """
             js
                 $"""
-                    {initBlazor}
+                {initBlazor}
 
-                    window.initBlazorCustomElement = (tagName, id, delay) => {{
-                         const handler = () => {{
-                            if (window.initBlazor) {{
-                                window.initBlazor()
-                                const e = document.querySelector("#ce-" + id)
-                                if (e) {{
-                                    const timerId = setInterval(() => {{
-                                        if (e.nextElementSibling.children.length > 0) {{
-                                            e.parentElement.removeChild(e)
-                                            clearInterval(timerId)
-                                        }}
-                                    }}, 50)
+                window.initBlazorCustomElement = (id) => {{
+                    // Ensure the blazor js is executed, so it can monitor the custom element tag
+                    if (window.initBlazor) {{
+                        window.initBlazor()
+                        // Remove related prerender node
+                        const e = document.querySelector("#ce-prerender-" + id)
+                        if (e) {{
+                            const timerId = setInterval(() => {{
+                                if (!e.nextElementSibling || e.nextElementSibling.children.length > 0) {{
+                                    e.parentElement.removeChild(e)
+                                    clearInterval(timerId)
                                 }}
-                            }}
-                        }}
-                        
-                        if (!!delay) {{
-                            setTimeout(() => {{
-                                var wns = document.querySelector(tagName + "-" + id);
-                                if (!!wns) {{
-                                    var index;
-                                    var lmn = document.createElement(tagName);
-
-                                    // Copy the children
-                                    while (wns.firstChild) {{
-                                        lmn.appendChild(wns.firstChild); // *Moves* the child
-                                    }}
-
-                                    // Copy the attributes
-                                    for (index = wns.attributes.length - 1; index >= 0; --index) {{
-                                        lmn.attributes.setNamedItem(wns.attributes[index].cloneNode());
-                                    }}
-
-                                    // Replace it
-                                    wns.parentNode.replaceChild(lmn, wns);
-                                
-                                    // Start try to render
-                                    handler();
-                                }}
-                            }}, delay)
-                        }}
-                        else {{
-                            handler()
+                            }}, 50)
                         }}
                     }}
+                }}
+
+                window.initBlazorCustomElementLazy = (tagName, id) => {{
+                    // find custom element lazy placeholder and create target custom element based on it
+                    var wns = document.querySelector(tagName + "-lazy-" + id);
+                    if (!!wns) {{
+                        var index;
+                        var lmn = document.createElement(tagName);
+
+                        // Copy the children
+                        while (wns.firstChild) {{
+                            lmn.appendChild(wns.firstChild); // *Moves* the child
+                        }}
+
+                        // Copy the attributes
+                        for (index = wns.attributes.length - 1; index >= 0; --index) {{
+                            lmn.attributes.setNamedItem(wns.attributes[index].cloneNode());
+                        }}
+
+                        // Replace it
+                        wns.parentNode.replaceChild(lmn, wns);
+                    }}
+                    window.initBlazorCustomElement(id);
+                }}
+
+                window.initBlazorCustomElementInDelay = (tagName, id, delay) => {{
+                    setTimeout(() => {{
+                        window.initBlazorCustomElementLazy(tagName, id);
+                    }}, delay)
+                }}
+
+                window.initBlazorCustomElementWhenPreNodeClicked = (tagName, id) => {{
+                    const elt = document.querySelector("#ce-prerender-" + id);
+                    if (elt) {{
+                        elt.addEventListener("click", () => {{
+                            window.initBlazorCustomElementLazy(tagName, id);
+                        }});
+                    }}
+                }};
+
+                window.initBlazorCustomElementWhenInViewport = (tagName, id, delay) => {{
+                    const elt = document.querySelector("#ce-prerender-" + id);
+                    if (elt) {{
+                        const handler = () => {{
+                            const rect = elt.getBoundingClientRect();
+                            const isEltVisible =
+                                rect.top >= 0 &&
+                                rect.left >= 0 &&
+                                rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) && /* or $(window).height() */
+                                rect.right <= (window.innerWidth || document.documentElement.clientWidth) /* or $(window).width() */
+                                ;
+                            if (isEltVisible) {{
+                                window.removeEventListener('DOMContentLoaded', handler, false);
+                                window.removeEventListener('load', handler, false);
+                                window.removeEventListener('scroll', handler, false);
+                                window.removeEventListener('resize', handler, false);
+                                if (!!delay) {{
+                                    window.initBlazorCustomElementInDelay(tagName, id, delay);
+                                }}
+                                else {{
+                                    window.initBlazorCustomElementLazy(tagName, id);
+                                }}
+                            }}
+                        }};
+                        window.addEventListener('DOMContentLoaded', handler, false);
+                        window.addEventListener('load', handler, false);
+                        window.addEventListener('scroll', handler, false);
+                        window.addEventListener('resize', handler, false);
+                        handler();
+                    }}
+                }};
                 """
 
         /// This can only be used for a long runing single instance, distribution env is not appropriate.
@@ -181,6 +240,7 @@ module CustomElementExtensions =
         /// For example for blazor server: services.AddServerSideBlazor(fun options -> options.RootComponents.RegisterForFunBlazor()).
         /// prerenderNode will put as ChildContent of the current custom element, so when run prerendering it will be used (eg: blazor server).
         /// It is recommend to add CutomElement.lazyBlazorJs() at the html header.
+        [<Obsolete("Please use html.customElement instead")>]
         static member inline create(node, ?prerenderNode) = CustomElementFragmentBuilder(node, prerenderNode) { empty }
 
         /// This can only be used for a long runing single instance, distribution env is not appropriate.
@@ -189,45 +249,81 @@ module CustomElementExtensions =
         /// You will need to call RegisterForFunBlazor.
         /// For example for blazor server: services.AddServerSideBlazor(fun options -> options.RootComponents.RegisterForFunBlazor()).
         /// prerenderNode will put as ChildContent of the current custom element, so when run prerendering it will be used (eg: blazor server).
+        [<Obsolete("Please use html.customElement instead")>]
         static member inline create(fn: 'Services -> NodeRenderFragment, ?prerenderNode) =
             CustomElementFragmentBuilder(html.inject fn, prerenderNode) { empty }
 
 
     type html with
 
-        /// To use this for a component you will need to call RegisterCustomElementForFunBlazor properly at the start of your program.
+        /// <summary>
+        /// To use this for a component you will need to call services.AddServerSideBlazor(fun options -> options.RootComponents.RegisterCustomElementForFunBlazor(Assembly.GetExecutingAssembly())) at the start of your program.
         /// It is recommend to add CutomElement.lazyBlazorJs() at the html header.
-        static member customElement<'T when 'T :> IComponent>(?tagName, ?attrs, ?preRender, ?preRenderNode: NodeRenderFragment, ?preRenderContainerAttrs, ?delayMs: int) =
+        /// </summary>
+        /// <param name="tagName">By default it try to use the class name itself</param>
+        /// <param name="attrs">Specify the attributes for the custom element</param>
+        /// <param name="preRender">Enable prerender, will prerender the custom element itself</param>
+        /// <param name="preRenderNode">When this is specified, preRender is not necessary and the this node will be used as the prerender stuff instead of using the custome element itself</param>
+        /// <param name="preRenderContainerAttrs">Set attributes for prerender container node</param>
+        /// <param name="preRenderContainerTagName">Set attributes for prerender container's tag name, default is div</param>
+        /// <param name="delayMs">Start render after some delay</param>
+        /// <param name="renderAfter">Start render after some condition, this has higher priority than delayMs</param>
+        static member customElement<'T when 'T :> IComponent>(?tagName, ?attrs, ?preRender, ?preRenderNode: NodeRenderFragment, ?preRenderContainerAttrs, ?preRenderContainerTagName, ?delayMs: int, ?renderAfter: RenderAfter) =
             let id' = Random.Shared.Next()
             let tagName = tagName |> Option.defaultWith (fun _ -> toSnakeCase typeof<'T>.Name)
-            let preRender = defaultArg preRender false
+            let lazyTagName = $"{tagName}-lazy-{id'}"
 
-            html.fragment [
-                match preRenderNode with
-                | None when preRender -> div {
-                    id $"ce-{id'}"
-                    defaultArg preRenderContainerAttrs html.emptyAttr
-                    html.blazor<'T> (defaultArg attrs (AttrRenderFragment(fun _ _ i -> i)))
-                  }
-                | Some node -> div {
-                    id $"ce-{id'}"
-                    defaultArg preRenderContainerAttrs html.emptyAttr
-                    node
-                  }
-                | _ -> ()
-                match delayMs with
+            let renderAfter =
+                match renderAfter, delayMs with
+                | Some x, _ -> Some x
+                | None, Some x -> Some(RenderAfter.Delay x)
+                | None, None -> None 
+
+            let preRender = defaultArg preRender false
+            let preRenderNodeId = $"ce-prerender-{id'}"
+            let preRenderContainerTagName = defaultArg preRenderContainerTagName "div"
+
+            let ceAttrs = defaultArg attrs html.emptyAttr
+
+            let preRenderNode =
+                if not preRender then
+                    html.none
+                else
+                    EltWithChildBuilder preRenderContainerTagName {
+                        id preRenderNodeId
+                        defaultArg preRenderContainerAttrs html.emptyAttr
+                        defaultArg preRenderNode (html.blazor<'T>(ceAttrs))
+                    }
+
+            fragment {
+                match renderAfter with
                 | None ->
-                    EltBuilder tagName { defaultArg attrs html.emptyAttr }
-                    js $"""window.initBlazorCustomElement("{tagName}", {id'})"""
-                | Some delay ->
-                    EltBuilder $"{tagName}-{id'}" { defaultArg attrs html.emptyAttr }
-                    js $"""window.initBlazorCustomElement("{tagName}", {id'}, {delay})"""
-                    
-            ]
+                    EltBuilder tagName { ceAttrs }
+                    js $"""window.initBlazorCustomElement({id'})"""
+
+                | Some renderAfter ->
+                    preRenderNode
+                    EltBuilder lazyTagName { ceAttrs }
+                    match renderAfter with
+                    | RenderAfter.Delay delay ->
+                        js $"""window.initBlazorCustomElementInDelay("{tagName}", {id'}, {delay})"""
+                    | RenderAfter.Clicked ->
+                        js $"""window.initBlazorCustomElementWhenPreNodeClicked("{tagName}", {id'})"""
+                    | RenderAfter.ClickedOrDelay delay -> 
+                        js $"""window.initBlazorCustomElementInDelay("{tagName}", {id'}, {delay})"""
+                        js $"""window.initBlazorCustomElementWhenPreNodeClicked("{tagName}", {id'}, {delay})"""
+                    | RenderAfter.InViewport -> js $"""window.initBlazorCustomElementWhenInViewport("{tagName}", {id'})"""
+                    | RenderAfter.InViewportOrDelay delay -> 
+                        js $"""window.initBlazorCustomElementInDelay("{tagName}", {id'}, {delay})"""
+                        js $"""window.initBlazorCustomElementWhenInViewport("{tagName}", {id'})"""
+                    | RenderAfter.InViewportAndDelay delay ->
+                        js $"""window.initBlazorCustomElementWhenInViewport("{tagName}", {id'}, {delay})"""
+            }
 
 
 namespace Microsoft.Extensions.DependencyInjection
 
+open System
 open System.Runtime.CompilerServices
 open Microsoft.AspNetCore.Components.Web
 open Fun.Result
@@ -241,6 +337,7 @@ type FunBlazorCustomElementsExtensions =
     /// For example for blazor server: services.AddServerSideBlazor(fun options -> options.RootComponents.RegisterForFunBlazor()).
     /// When you use this you should use CustomElement.lazyBlazorJs and CustomElement.initBlazorJs accordingly.
     [<Extension>]
+    [<Obsolete>]
     static member RegisterForFunBlazor(this: IJSComponentConfiguration) = jsComponentConfig <- this
 
     /// Please make sure the Component name has at least two upper case like DemoComp, or use tagName with snake style like "demo-comp".

@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+## [3.2.2] - 2023-11-21
+
+- Obsolete CustomElement.create 
+- Improve html.customElement to support render after delay, click in prerender container, or in viewport
+
 ## [3.2.0] - 2023-11-16
 
 - Unify version

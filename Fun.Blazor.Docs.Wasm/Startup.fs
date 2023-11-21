@@ -29,7 +29,6 @@ type Program =
     static member Main(args: string[]) =
         let builder = WebAssemblyHostBuilder.CreateDefault(args)
 
-        builder.RootComponents.RegisterForFunBlazor()
         builder.RootComponents.RegisterCustomElementForFunBlazor<Demos.CustomElementDemo.DemoCounter>()
 
 #if DEBUG

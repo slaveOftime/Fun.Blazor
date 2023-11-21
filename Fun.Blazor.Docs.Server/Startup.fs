@@ -2,6 +2,7 @@
 
 open System
 open System.Net.Http
+open System.Reflection
 open Microsoft.AspNetCore.Http
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Components.Web
@@ -9,7 +10,9 @@ open Microsoft.Extensions.Hosting
 open Microsoft.Extensions.DependencyInjection
 open MudBlazor.Services
 open Fun.Blazor
+open Fun.Blazor.Router
 open Fun.Blazor.Docs.Wasm
+open Fun.Blazor.Docs.Server
 
 
 let builder = WebApplication.CreateBuilder(Environment.GetCommandLineArgs())
@@ -17,9 +20,9 @@ let services = builder.Services
 
 services.AddControllersWithViews()
 services.AddServerSideBlazor(fun options ->
-    options.RootComponents.RegisterForFunBlazor()
     options.RootComponents.RegisterCustomElementForFunBlazor<Demos.CustomElementDemo.DemoCounter>()
     options.RootComponents.RegisterCustomElementForFunBlazor(typeof<Demos.CustomElementDemo.DemoCounter>.Assembly)
+    options.RootComponents.RegisterCustomElementForFunBlazor(Assembly.GetExecutingAssembly())
 )
 services.AddRazorComponents()
     .AddInteractiveServerComponents()
@@ -65,10 +68,13 @@ app.MapFunBlazor(fun ctx ->
                 CustomElement.lazyBlazorJs (hasBlazorJs = true)
             }
             body {
-                html.blazor<App> RenderMode.InteractiveServer
+                html.route [
+                    routeCi "/custom-elements-demo" (CustomElementsDemo.Create())
+                    routeAny (html.blazor<App> RenderMode.InteractiveServer)
+                ]
 
                 script { src "_content/MudBlazor/MudBlazor.min.js" }
-                script { src "_framework/blazor.web.js" }
+                script { src "_framework/blazor.server.js" }
 
                 stylesheet "css/google-font.css"
                 stylesheet "css/github-markdown-dark.css"
