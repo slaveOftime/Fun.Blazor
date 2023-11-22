@@ -134,25 +134,41 @@ type html() =
     /// </summary>
     /// <example>
     /// <code lang="fsharp">
-    /// html.blazor (
-    ///     ("attrName1" => attrValue1)
-    ///     ==> ("attrName2" => attrValue2)
-    ///     ==> ("attrName3" => attrValue3)
-    /// )
+    /// html.blazor (domAttr {
+    ///     "attrName1", attrValue1
+    ///     "attrName2", attrValue2
+    ///     "attrName3", attrValue3
+    /// })
     /// </code>
     /// </example>
-    static member inline blazor<'T when 'T :> IComponent>(?render: AttrRenderFragment) =
+    static member inline blazor(componentType: Type, ?attr: AttrRenderFragment) =
         NodeRenderFragment(fun comp builder index ->
-            builder.OpenComponent<'T>(index)
+            builder.OpenComponent(index, componentType)
 
             let nextIndex =
-                match render with
+                match attr with
                 | None -> index + 1
                 | Some r -> r.Invoke(comp, builder, index + 1)
 
             builder.CloseComponent()
             nextIndex
         )
+
+    /// <summary>
+    /// Make a blazor component to a render fragment with a render for attributes
+    /// You can open Fun.Blazor.Operators to build attribute very easily:
+    /// </summary>
+    /// <example>
+    /// <code lang="fsharp">
+    /// html.blazor (domAttr {
+    ///     "attrName1", attrValue1
+    ///     "attrName2", attrValue2
+    ///     "attrName3", attrValue3
+    /// })
+    /// </code>
+    /// </example>
+    static member inline blazor<'T when 'T :> IComponent>(?render: AttrRenderFragment) =
+        html.blazor(typeof<'T>, attr = defaultArg render (emptyAttr()))
 
 
 #if !NET6_0
@@ -167,9 +183,9 @@ type html() =
     /// })
     /// </code>
     /// </example>
-    static member inline blazor<'T when 'T :> IComponent>(renderMode: IComponentRenderMode, ?attr: AttrRenderFragment) =
+    static member inline blazor(componentType: Type, renderMode: IComponentRenderMode, ?attr: AttrRenderFragment) =
         NodeRenderFragment(fun comp builder index ->
-            builder.OpenComponent<'T>(index)
+            builder.OpenComponent(index, componentType)
 
             let nextIndex =
                 match attr with
@@ -180,6 +196,20 @@ type html() =
             builder.CloseComponent()
             nextIndex
         )
+
+    /// <summary>
+    /// Make a blazor component to a render fragment with a render for attributes
+    /// </summary>
+    /// <example>
+    /// <code lang="fsharp">
+    /// html.blazor (RenderModeServer, domAttr {
+    ///     "attrName1", attrValue1
+    ///     "attrName2", attrValue2
+    /// })
+    /// </code>
+    /// </example>
+    static member inline blazor<'T when 'T :> IComponent>(renderMode: IComponentRenderMode, ?attr: AttrRenderFragment) =
+        html.blazor(typeof<'T>, renderMode, attr = defaultArg attr (emptyAttr()))
 
     /// This has to be used together with _framework/blazor.web.js. 
     /// For more information please go to https://learn.microsoft.com/en-us/aspnet/core/blazor/components/rendering?view=aspnetcore-8.0#streaming-rendering

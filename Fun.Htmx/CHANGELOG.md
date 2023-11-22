@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+## [3.2.3] - 2023-11-22
+
+- Add hxRequestBlazorSSR
+- Add hxRequestCustomElement
+
 ## [3.2.0] - 2023-11-16
 
 - Unify version

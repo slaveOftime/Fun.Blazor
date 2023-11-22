@@ -50,6 +50,9 @@ app.MapRazorComponents()
     .AddInteractiveWebAssemblyRenderMode()
 
 app.MapGet("/demo", Func<_>(fun () -> div { $"{DateTime.Now}" })).AddFunBlazor()
+app.MapBlazorSSRComponents(Assembly.GetExecutingAssembly(), notFoundNode = div { "ERROR: not found" })
+app.MapFunBlazorCustomElements(Assembly.GetExecutingAssembly(), notFoundNode = div { "ERROR: not found" })
+
 
 app.MapFunBlazor(fun ctx ->
     let store = ctx.RequestServices.GetService<IShareStore>()
@@ -75,6 +78,7 @@ app.MapFunBlazor(fun ctx ->
 
                 script { src "_content/MudBlazor/MudBlazor.min.js" }
                 script { src "_framework/blazor.server.js" }
+                script { src "https://unpkg.com/htmx.org@1.9.9" }
 
                 stylesheet "css/google-font.css"
                 stylesheet "css/github-markdown-dark.css"

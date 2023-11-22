@@ -15,5 +15,9 @@
 	<ItemGroup>
 		<ProjectReference Include="..\Fun.Blazor\Fun.Blazor.fsproj" />
 	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)'!='net6.0'">
+		<ProjectReference Include="..\Fun.Blazor.CustomElements\Fun.Blazor.CustomElements.fsproj" />
+	</ItemGroup>
 	
 </Project>

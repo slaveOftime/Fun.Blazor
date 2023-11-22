@@ -1,6 +1,7 @@
 namespace Fun.Blazor.Docs.Server
 
 open Fun.Blazor
+open Fun.Htmx
 
 [<FunBlazorCustomElement>]
 type ServerDemoCounter() =
@@ -52,5 +53,27 @@ type CustomElementsDemo =
                 html.customElement<ServerDemoCounter> (preRender = true, renderAfter = RenderAfter.InViewportAndDelay 3000, preRenderNode = div { "viewport" })
                 p { "Custom element with lazy load defer in viewport or delay 10s" }
                 html.customElement<ServerDemoCounter> (preRender = true, renderAfter = RenderAfter.InViewportOrDelay 10000, preRenderNode = div { "viewport" })
+            ]
+            section [
+                p { "Integrate with htmx" }
+                button {
+                    hxTrigger' hxEvt.mouse.click
+                    hxRequestCustomElement typeof<ServerDemoCounter> [
+                        "hi", "123"
+                    ]
+                    hxSwap_afterend
+                    "Htmx click to add counter"
+                }
+            ]
+            section [
+                p { "Integrate SSR with htmx (the counter is not interactive)" }
+                button {
+                    hxTrigger' hxEvt.mouse.click
+                    hxRequestBlazorSSR typeof<ServerDemoCounter> [
+                        "hi", "123"
+                    ]
+                    hxSwap_afterend
+                    "Htmx click to add counter"
+                }
             ]
         }

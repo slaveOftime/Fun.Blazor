@@ -26,6 +26,23 @@ type DomAttrBuilder with
             index + 1
         )
 
+#if !NET6_0
+    /// Issues a request to get the blazor component and reader as static dom
+    [<CustomOperation "hxRequestBlazorSSR">]
+    member inline _.hxRequestBlazorSSR([<InlineIfLambda>] render: AttrRenderFragment, x: System.Type, ?queries: (string * string) seq) =
+        let query = System.Web.HttpUtility.ParseQueryString("")
+        queries |> Option.iter (Seq.iter (fun (k, v) -> query.Add(k, v)))
+        render ==> ("hx-post" => $"/fun-blazor-server-side-render-components/{x.FullName}?{query.ToString()}")
+
+    /// Issues a request to get the blazor custom element as the return dom, 
+    /// and it will open a websocket for the component's interactivity
+    [<CustomOperation "hxRequestCustomElement">]
+    member inline _.hxRequestCustomElement([<InlineIfLambda>] render: AttrRenderFragment, x: System.Type, ?queries: (string * string) seq) =
+        let query = System.Web.HttpUtility.ParseQueryString("")
+        queries |> Option.iter (Seq.iter (fun (k, v) -> query.Add(k, v)))
+        render ==> ("hx-post" => $"/fun-blazor-custom-elements/{x.FullName}?{query.ToString()}")
+#endif
+
 
     /// Issues a GET request to the given URL
     [<CustomOperation "hxGet">]

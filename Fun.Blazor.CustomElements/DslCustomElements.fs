@@ -260,26 +260,19 @@ module CustomElementExtensions =
         /// To use this for a component you will need to call services.AddServerSideBlazor(fun options -> options.RootComponents.RegisterCustomElementForFunBlazor(Assembly.GetExecutingAssembly())) at the start of your program.
         /// It is recommend to add CutomElement.lazyBlazorJs() at the html header.
         /// </summary>
+        /// <param name="componentType">Component type</param>
         /// <param name="tagName">By default it try to use the class name itself</param>
         /// <param name="attrs">Specify the attributes for the custom element</param>
         /// <param name="preRender">Enable prerender, will prerender the custom element itself</param>
         /// <param name="preRenderNode">When this is specified, preRender is not necessary and the this node will be used as the prerender stuff instead of using the custome element itself</param>
         /// <param name="preRenderContainerAttrs">Set attributes for prerender container node</param>
         /// <param name="preRenderContainerTagName">Set attributes for prerender container's tag name, default is div</param>
-        /// <param name="delayMs">Start render after some delay</param>
         /// <param name="renderAfter">Start render after some condition, this has higher priority than delayMs</param>
-        static member customElement<'T when 'T :> IComponent>(?tagName, ?attrs, ?preRender, ?preRenderNode: NodeRenderFragment, ?preRenderContainerAttrs, ?preRenderContainerTagName, ?delayMs: int, ?renderAfter: RenderAfter) =
+        static member customElement(componentType: Type, tagName: string option, attrs: AttrRenderFragment option, preRender: bool, preRenderNode: NodeRenderFragment option, preRenderContainerAttrs: AttrRenderFragment option, preRenderContainerTagName: string option, renderAfter: RenderAfter option) =
             let id' = Random.Shared.Next()
-            let tagName = tagName |> Option.defaultWith (fun _ -> toSnakeCase typeof<'T>.Name)
+            let tagName = tagName |> Option.defaultWith (fun _ -> toSnakeCase componentType.Name)
             let lazyTagName = $"{tagName}-lazy-{id'}"
 
-            let renderAfter =
-                match renderAfter, delayMs with
-                | Some x, _ -> Some x
-                | None, Some x -> Some(RenderAfter.Delay x)
-                | None, None -> None 
-
-            let preRender = defaultArg preRender false
             let preRenderNodeId = $"ce-prerender-{id'}"
             let preRenderContainerTagName = defaultArg preRenderContainerTagName "div"
 
@@ -292,7 +285,14 @@ module CustomElementExtensions =
                     EltWithChildBuilder preRenderContainerTagName {
                         id preRenderNodeId
                         defaultArg preRenderContainerAttrs html.emptyAttr
-                        defaultArg preRenderNode (html.blazor<'T>(ceAttrs))
+                        defaultArg preRenderNode (
+                            NodeRenderFragment(fun comp builder index ->
+                                builder.OpenComponent(index, componentType)
+                                let nextIndex = ceAttrs.Invoke(comp, builder, index + 1)
+                                builder.CloseComponent()
+                                nextIndex
+                            )
+                        )
                     }
 
             fragment {
@@ -320,6 +320,43 @@ module CustomElementExtensions =
                         js $"""window.initBlazorCustomElementWhenInViewport("{tagName}", {id'}, {delay})"""
             }
 
+        /// <summary>
+        /// To use this for a component you will need to call services.AddServerSideBlazor(fun options -> options.RootComponents.RegisterCustomElementForFunBlazor(Assembly.GetExecutingAssembly())) at the start of your program.
+        /// It is recommend to add CutomElement.lazyBlazorJs() at the html header.
+        /// </summary>
+        /// <param name="componentType">Component type</param>
+        /// <param name="tagName">By default it try to use the class name itself</param>
+        /// <param name="attrs">Specify the attributes for the custom element</param>
+        /// <param name="preRender">Enable prerender, will prerender the custom element itself</param>
+        /// <param name="preRenderNode">When this is specified, preRender is not necessary and the this node will be used as the prerender stuff instead of using the custome element itself</param>
+        /// <param name="preRenderContainerAttrs">Set attributes for prerender container node</param>
+        /// <param name="preRenderContainerTagName">Set attributes for prerender container's tag name, default is div</param>
+        /// <param name="renderAfter">Start render after some condition, this has higher priority than delayMs</param>
+        static member customElement(componentType: Type, ?tagName: string, ?attrs, ?preRender, ?preRenderNode: NodeRenderFragment, ?preRenderContainerAttrs, ?preRenderContainerTagName, ?renderAfter: RenderAfter) =
+            html.customElement(componentType, tagName, attrs, defaultArg preRender false, preRenderNode, preRenderContainerAttrs, preRenderContainerTagName, renderAfter)
+            
+        
+        /// <summary>
+        /// To use this for a component you will need to call services.AddServerSideBlazor(fun options -> options.RootComponents.RegisterCustomElementForFunBlazor(Assembly.GetExecutingAssembly())) at the start of your program.
+        /// It is recommend to add CutomElement.lazyBlazorJs() at the html header.
+        /// </summary>
+        /// <param name="tagName">By default it try to use the class name itself</param>
+        /// <param name="attrs">Specify the attributes for the custom element</param>
+        /// <param name="preRender">Enable prerender, will prerender the custom element itself</param>
+        /// <param name="preRenderNode">When this is specified, preRender is not necessary and the this node will be used as the prerender stuff instead of using the custome element itself</param>
+        /// <param name="preRenderContainerAttrs">Set attributes for prerender container node</param>
+        /// <param name="preRenderContainerTagName">Set attributes for prerender container's tag name, default is div</param>
+        /// <param name="delayMs">Start render after some delay</param>
+        /// <param name="renderAfter">Start render after some condition, this has higher priority than delayMs</param>
+        static member customElement<'T when 'T :> IComponent>(?tagName: string, ?attrs, ?preRender, ?preRenderNode: NodeRenderFragment, ?preRenderContainerAttrs, ?preRenderContainerTagName, ?delayMs: int, ?renderAfter: RenderAfter) =
+            let renderAfter =
+                match renderAfter, delayMs with
+                | Some x, _ -> Some x
+                | None, Some x -> Some(RenderAfter.Delay x)
+                | None, None -> None 
+
+            html.customElement(typeof<'T>, tagName, attrs, defaultArg preRender false, preRenderNode, preRenderContainerAttrs, preRenderContainerTagName, renderAfter)
+            
 
 namespace Microsoft.Extensions.DependencyInjection
 

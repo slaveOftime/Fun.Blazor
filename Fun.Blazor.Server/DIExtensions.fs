@@ -5,6 +5,7 @@ open System.IO
 open System.Collections.Generic
 open System.Threading.Tasks
 open System.Text.Encodings.Web
+open System.Reflection
 open System.Runtime.CompilerServices
 open Microsoft.AspNetCore.Http
 open Microsoft.AspNetCore.Builder
@@ -17,6 +18,7 @@ open Microsoft.AspNetCore.Components.Endpoints
 #endif
 open Microsoft.AspNetCore.Mvc.ViewFeatures
 open Microsoft.Extensions.DependencyInjection
+open Fun.Result
 open Fun.Blazor
 
 
@@ -214,6 +216,47 @@ type FunBlazorServerExtensions =
     [<Extension>]
     static member AddFunBlazor<'TBuilder when 'TBuilder :> IEndpointConventionBuilder>(builder: 'TBuilder, ?preventStreamingRendering: bool, ?statusCode: int) =
         builder.AddEndpointFilter(FunBlazorEndpointFilter(defaultArg preventStreamingRendering false, defaultArg statusCode 200))
+
+    /// This will serve all blazor components (inherit from ComponentBase) in the target assembly for server side rendering
+    /// route pattern: /fun-blazor-server-side-render-components/{componentType}
+    [<Extension>]
+    static member MapBlazorSSRComponents(builder: IEndpointRouteBuilder, assembly: Assembly, ?notFoundNode: NodeRenderFragment) =
+        let components =
+            assembly.GetTypes()
+            |> Seq.filter (fun x -> x.IsAssignableTo(typeof<ComponentBase>))
+            |> Seq.map (fun x -> x.FullName, x)
+            |> Map.ofSeq
+        builder
+            .Map("/fun-blazor-server-side-render-components/{componentType}", Func<_, _>(fun (componentType: string) ->
+                match Map.tryFind componentType components with
+                | Some ty -> html.blazor(ty)
+                | None -> defaultArg notFoundNode html.none
+            ))
+            .AddFunBlazor()
+    
+    /// This will serve all components which is marked as FunBlazorCustomElementAttribute in the target assembly, 
+    /// route pattern: /fun-blazor-custom-elements/{componentType}
+    [<Extension>]
+    static member MapFunBlazorCustomElements(builder: IEndpointRouteBuilder, assembly: Assembly, ?notFoundNode: NodeRenderFragment) =
+        let components =
+            [
+                for ty in assembly.GetTypes() do
+                    let attr = ty.GetCustomAttribute<FunBlazorCustomElementAttribute>()
+                    if attr |> box |> isNull |> not then
+                        match attr.TagName with
+                        | NullOrEmptyString -> ty.FullName, (ty, None)
+                        | SafeString tagName -> ty.FullName, (ty, Some tagName)
+            ]
+            |> Map.ofSeq
+
+        builder
+            .Map("/fun-blazor-custom-elements/{componentType}", Func<_, _>(fun (componentType: string) ->
+                match Map.tryFind componentType components with
+                | Some (ty, None) -> html.customElement(ty)
+                | Some (ty, Some tagName) -> html.customElement(ty, tagName = tagName)
+                | None -> defaultArg notFoundNode html.none
+            ))
+            .AddFunBlazor()
 #endif
 
 
