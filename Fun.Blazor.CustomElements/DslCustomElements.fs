@@ -356,6 +356,20 @@ module CustomElementExtensions =
                 | None, None -> None 
 
             html.customElement(typeof<'T>, tagName, attrs, defaultArg preRender false, preRenderNode, preRenderContainerAttrs, preRenderContainerTagName, renderAfter)
+
+        /// <summary>
+        /// To use this for a component you will need to call services.AddServerSideBlazor(fun options -> options.RootComponents.RegisterCustomElementForFunBlazor(Assembly.GetExecutingAssembly())) at the start of your program.
+        /// It is recommend to add CutomElement.lazyBlazorJs() at the html header.
+        /// </summary>
+        /// <param name="componentAttrBuilder"></param>
+        /// <param name="tagName">By default it try to use the class name itself</param>
+        /// <param name="preRender">Enable prerender, will prerender the custom element itself</param>
+        /// <param name="preRenderNode">When this is specified, preRender is not necessary and the this node will be used as the prerender stuff instead of using the custome element itself</param>
+        /// <param name="preRenderContainerAttrs">Set attributes for prerender container node</param>
+        /// <param name="preRenderContainerTagName">Set attributes for prerender container's tag name, default is div</param>
+        /// <param name="renderAfter">Start render after some condition, this has higher priority than delayMs</param>
+        static member customElement<'T when 'T :> IComponent>(componentAttrBuilder: ComponentAttrBuilder<'T>, ?tagName: string, ?preRender, ?preRenderNode: NodeRenderFragment, ?preRenderContainerAttrs, ?preRenderContainerTagName, ?renderAfter: RenderAfter) =
+            html.customElement(typeof<'T>, tagName, Some(componentAttrBuilder.Build()), defaultArg preRender false, preRenderNode, preRenderContainerAttrs, preRenderContainerTagName, renderAfter)
             
 
 namespace Microsoft.Extensions.DependencyInjection

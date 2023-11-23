@@ -1,4 +1,4 @@
-#r "nuget: Fun.Build, 1.0.2"
+#r "nuget: Fun.Build, 1.0.5"
 #r "nuget: Fake.IO.FileSystem, 6.0.0"
 #r "nuget: FsHttp, 12.0.0"
 
@@ -46,6 +46,14 @@ let getNugetPackageLatestVersion (package: string) =
     |> fun x -> x.versions
     |> Seq.filter (Seq.exists (fun c -> c >= 'a' && c <= 'z') >> not)
     |> Seq.last
+
+
+type PipelineBuilder with
+
+    [<CustomOperation "collapseGithubActionLogs">]
+    member inline this.collapseGithubActionLogs(build: Internal.BuildPipeline) =
+        let build = this.runBeforeEachStage(build, fun ctx -> if ctx.GetStageLevel() = 0 then printfn $"::group::{ctx.Name}")
+        this.runAfterEachStage(build, fun ctx -> if ctx.GetStageLevel() = 0 then printfn "::endgroup::")
 
 
 let stage_checkEnv =
@@ -190,6 +198,7 @@ pipeline "dev" {
 
 pipeline "docs" {
     description "Publish docs to github"
+    collapseGithubActionLogs
     stage_checkEnv
     stage "Publish docs" {
         run "dotnet publish Fun.Blazor.Docs.Wasm/Fun.Blazor.Docs.Wasm.fsproj -c Release -o Fun.Blazor.Docs.Wasm.Release --nologo"
@@ -225,6 +234,7 @@ pipeline "docs" {
 
 pipeline "packages" {
     description "Push packages to nuget"
+    collapseGithubActionLogs
     stage_checkEnv
     stage_test
     stage_pack
@@ -244,6 +254,7 @@ pipeline "packages" {
 
 pipeline "bindings" {
     description "Generate bindings project"
+    collapseGithubActionLogs
     stage_generateBindingProjects "Microsoft.Web" "Microsoft.AspNetCore.Components.Web" "Microsoft.AspNetCore.Components" ""
     stage_generateBindingProjects "Microsoft.Authorization" "Microsoft.AspNetCore.Components.Authorization" "Microsoft.AspNetCore.Components.Authorization" ""
     stage_generateBindingProjects "Microsoft.FluentUI" "Microsoft.FluentUI.AspNetCore.Components" "Microsoft.FluentUI.AspNetCore.Components" ""
@@ -273,6 +284,7 @@ pipeline "bindings" {
 
 pipeline "bindings-check" {
     description "Check if there is new version for the binding project"
+    collapseGithubActionLogs
     stage "check" {
         run (fun _ ->
             getBindingInfos()
@@ -293,6 +305,7 @@ pipeline "bindings-check" {
 
 pipeline "test" {
     description "Test related functions"
+    collapseGithubActionLogs
     stage_checkEnv
     stage_test
     runIfOnlySpecified

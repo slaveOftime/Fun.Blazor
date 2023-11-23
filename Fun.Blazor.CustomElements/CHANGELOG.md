@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [3.2.4] - 2023-11-23
+
+- Add more overloads for html.customElement
+
 ## [3.2.3] - 2023-11-22
 
 - Add more overloads for html.customElement
