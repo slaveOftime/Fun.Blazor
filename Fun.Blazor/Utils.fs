@@ -71,7 +71,7 @@ type ComponentAttrBuilder<'T when 'T :> IComponent>() =
         | ExpressionType.Convert -> getExpressionName (exp :?> UnaryExpression).Operand
         | _ -> failwith "Unsupported expression"
 
-    member this.Add(expression: Expression<Func<'T, 'Prop>>, value) =
+    member this.Add<'Prop>(expression: Expression<Func<'T, 'Prop>>, value: 'Prop) =
         attr <- attr ==> (getExpressionName expression => value)
         this
 
@@ -88,8 +88,8 @@ type QueryBuilder<'T>() =
         | ExpressionType.Convert -> getExpressionName (exp :?> UnaryExpression).Operand
         | _ -> failwith "Unsupported expression"
 
-    member this.Add(expression: Expression<Func<'T, 'Prop>>, value: obj) =
-        query.Add(getExpressionName expression, if isNull value then "" else value.ToString())
+    member this.Add<'Prop>(expression: Expression<Func<'T, 'Prop>>, value: 'Prop) =
+        query.Add(getExpressionName expression, value.ToString())
         this
 
     override _.ToString() = query.ToString()

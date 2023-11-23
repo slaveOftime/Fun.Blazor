@@ -230,14 +230,16 @@ type FunBlazorServerExtensions =
             |> Map.ofSeq
 
         let parseValue (name: string) (v: string) (ty: Type) = 
-            ty.GetMethods(BindingFlags.Public ||| BindingFlags.Static)
-            |> Seq.tryFind (fun x -> 
-                let ps = x.GetParameters()
-                x.Name = "Parse" && ps.Length = 1 && ps[0].ParameterType = typeof<string>
-            )
-            |> function
-                | Some x -> x.Invoke(null, [| v |])
-                | None -> failwith $"Parameter {name} should has a static Parse method for string"
+            if ty = typeof<string> then box v
+            else
+                ty.GetMethods(BindingFlags.Public ||| BindingFlags.Static)
+                |> Seq.tryFind (fun x -> 
+                    let ps = x.GetParameters()
+                    x.Name = "Parse" && ps.Length = 1 && ps[0].ParameterType = typeof<string>
+                )
+                |> function
+                    | Some x -> x.Invoke(null, [| v |])
+                    | None -> failwith $"Parameter {name} should has a static Parse method for string"
 
         fun (ctx: HttpContext) ->
             paramsInfo

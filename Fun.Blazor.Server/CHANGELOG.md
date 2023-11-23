@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+## [3.2.5] - 2023-11-24
+
+- Improve MapBlazorSSRComponents
+- Improve MapFunBlazorCustomElements
+
 ## [3.2.4] - 2023-11-23
 
 - Automatically set parameters from form or query for MapBlazorSSRComponents and MapFunBlazorCustomElements

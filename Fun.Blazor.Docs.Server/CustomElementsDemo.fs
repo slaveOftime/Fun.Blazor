@@ -1,5 +1,6 @@
 namespace Fun.Blazor.Docs.Server
 
+open System
 open Microsoft.AspNetCore.Components
 open Fun.Blazor
 open Fun.Htmx
@@ -14,10 +15,16 @@ type ServerDemoCounter() as this =
     member val count_from_query = 0 with get, set
 
     [<Parameter>]
-    member val count_from_form = 0 with get, set
+    member val count_from_form = "" with get, set
+    
+    [<Parameter>]
+    member val is_loading = false with get, set
+
+    [<Parameter>]
+    member val time = DateTime.Now with get, set
 
     override _.Render() = div {
-        p { $"count = {count}; q {this.count_from_query}; f {this.count_from_form}" }
+        p { $"count = {count}; count_from_query {this.count_from_query}; count_from_form {this.count_from_form}; is_loading {this.is_loading}; time {this.time}" }
         button {
             onclick (fun _ -> count <- count + 1)
             "Click me"
@@ -67,7 +74,9 @@ type CustomElementsDemo =
                     hxTrigger' hxEvt.mouse.click
                     hxRequestCustomElement (QueryBuilder<ServerDemoCounter>()
                         .Add((fun x -> x.count_from_query), 1)
-                        .Add((fun x -> x.count_from_form), 2)
+                        .Add((fun x -> x.count_from_form), "hi")
+                        .Add((fun x -> x.is_loading), true)
+                        .Add((fun x -> x.time), DateTime.Now.AddYears(1))
                     )
                     hxSwap_afterend
                     "Htmx click to add counter"
@@ -78,9 +87,11 @@ type CustomElementsDemo =
                 button {
                     hxTrigger' hxEvt.mouse.click
                     name (nameof Unchecked.defaultof<ServerDemoCounter>.count_from_form)
-                    value 3453453
+                    value "hi-form"
                     hxRequestBlazorSSR "post" (QueryBuilder<ServerDemoCounter>()
                         .Add((fun x -> x.count_from_query), 3)
+                        .Add((fun x -> x.is_loading), true)
+                        .Add((fun x -> x.time), DateTime.Now.AddYears(1))
                     )
                     hxSwap_afterend
                     "Htmx click to add counter"
