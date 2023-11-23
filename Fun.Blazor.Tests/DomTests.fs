@@ -301,3 +301,18 @@ let ``for loop should work for component`` () =
             <span>3</span>
         </div>
     """)
+
+
+[<Fact>]
+let ``html blazor should work with ComponentAttrBuilder`` () =
+    let context = createTestContext ()
+
+    let demo =
+        html.blazor (ComponentAttrBuilder<MudPaper>()
+            .Add((fun x -> x.Elevation), 10)    
+        )
+
+    let result = context.RenderNode demo
+    result.MarkupMatches("""
+        <div class="mud-paper mud-elevation-10" style=""></div>
+    """)

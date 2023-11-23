@@ -97,6 +97,7 @@ type html() =
     ///         )
     ///     )
     /// ```
+    [<Obsolete>]
     static member blazor<'T when 'T :> IComponent>(fn: IComponent -> 'T, ?render: AttrRenderFragment) =
         NodeRenderFragment(fun comp builder index ->
             builder.OpenComponent<'T>(index)
@@ -134,7 +135,7 @@ type html() =
     /// </summary>
     /// <example>
     /// <code lang="fsharp">
-    /// html.blazor (domAttr {
+    /// html.blazor<DemoComp> (domAttr {
     ///     "attrName1", attrValue1
     ///     "attrName2", attrValue2
     ///     "attrName3", attrValue3
@@ -160,7 +161,7 @@ type html() =
     /// </summary>
     /// <example>
     /// <code lang="fsharp">
-    /// html.blazor (domAttr {
+    /// html.blazor<DemoComp> (domAttr {
     ///     "attrName1", attrValue1
     ///     "attrName2", attrValue2
     ///     "attrName3", attrValue3
@@ -170,6 +171,21 @@ type html() =
     static member inline blazor<'T when 'T :> IComponent>(?render: AttrRenderFragment) =
         html.blazor(typeof<'T>, attr = defaultArg render (emptyAttr()))
 
+    /// <summary>
+    /// Make a blazor component to a render fragment with a render for attributes
+    /// You can open Fun.Blazor.Operators to build attribute very easily:
+    /// </summary>
+    /// <example>
+    /// <code lang="fsharp">
+    /// html.blazor (ComponentAttrBuilder<DemoComp>()
+    ///     .Add((fun x -> x.Prop1), value1)
+    ///     .Add((fun x -> x.Prop2), value2)
+    /// )
+    /// </code>
+    /// </example>
+    static member inline blazor<'T when 'T :> IComponent>(attrBuilder: ComponentAttrBuilder<'T>) =
+        html.blazor(typeof<'T>, attr = attrBuilder.Build())
+
 
 #if !NET6_0
     /// <summary>
@@ -177,7 +193,7 @@ type html() =
     /// </summary>
     /// <example>
     /// <code lang="fsharp">
-    /// html.blazor (RenderModeServer, domAttr {
+    /// html.blazor<DemoComp> (RenderModeServer, domAttr {
     ///     "attrName1", attrValue1
     ///     "attrName2", attrValue2
     /// })
@@ -202,7 +218,7 @@ type html() =
     /// </summary>
     /// <example>
     /// <code lang="fsharp">
-    /// html.blazor (RenderModeServer, domAttr {
+    /// html.blazor<DemoComp> (RenderModeServer, domAttr {
     ///     "attrName1", attrValue1
     ///     "attrName2", attrValue2
     /// })
@@ -210,6 +226,21 @@ type html() =
     /// </example>
     static member inline blazor<'T when 'T :> IComponent>(renderMode: IComponentRenderMode, ?attr: AttrRenderFragment) =
         html.blazor(typeof<'T>, renderMode, attr = defaultArg attr (emptyAttr()))
+
+    /// <summary>
+    /// Make a blazor component to a render fragment with a render for attributes
+    /// </summary>
+    /// <example>
+    /// <code lang="fsharp">
+    /// html.blazor (RenderModeServer, ComponentAttrBuilder<DemoComp>()
+    ///     .Add((fun x -> x.Prop1), value1)
+    ///     .Add((fun x -> x.Prop2), value2)
+    /// )
+    /// </code>
+    /// </example>
+    static member inline blazor<'T when 'T :> IComponent>(renderMode: IComponentRenderMode, attrBuilder: ComponentAttrBuilder<'T>) =
+        html.blazor(typeof<'T>, renderMode, attr = attrBuilder.Build())
+
 
     /// This has to be used together with _framework/blazor.web.js. 
     /// For more information please go to https://learn.microsoft.com/en-us/aspnet/core/blazor/components/rendering?view=aspnetcore-8.0#streaming-rendering

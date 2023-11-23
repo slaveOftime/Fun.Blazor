@@ -20,6 +20,7 @@ open Microsoft.AspNetCore.Mvc.ViewFeatures
 open Microsoft.Extensions.DependencyInjection
 open Fun.Result
 open Fun.Blazor
+open Fun.Blazor.Operators
 
 
 #if !NET6_0
@@ -217,19 +218,57 @@ type FunBlazorServerExtensions =
     static member AddFunBlazor<'TBuilder when 'TBuilder :> IEndpointConventionBuilder>(builder: 'TBuilder, ?preventStreamingRendering: bool, ?statusCode: int) =
         builder.AddEndpointFilter(FunBlazorEndpointFilter(defaultArg preventStreamingRendering false, defaultArg statusCode 200))
 
+
+    static member private MakeCreateAttrFn(ty: Type) =
+        let paramsInfo =
+            ty.GetProperties()
+            |> Seq.choose (fun p -> 
+                let attr = p.GetCustomAttribute<ParameterAttribute>()
+                if isNull attr then None
+                else Some (p.Name, p.PropertyType)
+            )
+            |> Map.ofSeq
+
+        let parseValue (name: string) (v: string) (ty: Type) = 
+            ty.GetMethods(BindingFlags.Public ||| BindingFlags.Static)
+            |> Seq.tryFind (fun x -> 
+                let ps = x.GetParameters()
+                x.Name = "Parse" && ps.Length = 1 && ps[0].ParameterType = typeof<string>
+            )
+            |> function
+                | Some x -> x.Invoke(null, [| v |])
+                | None -> failwith $"Parameter {name} should has a static Parse method for string"
+
+        fun (ctx: HttpContext) ->
+            paramsInfo
+            |> Seq.choose (fun p ->
+                let matchQuery() =
+                    match ctx.Request.Query.TryGetValue p.Key with
+                    | true, v -> Some (p.Key => parseValue p.Key (v.ToString()) p.Value)
+                    | _ -> None
+                if ctx.Request.Method.Equals(HttpMethods.Post, StringComparison.OrdinalIgnoreCase) then
+                    match ctx.Request.Form.TryGetValue(p.Key) with
+                    | true, v -> Some (p.Key => parseValue p.Key (v.ToString()) p.Value)
+                    | _ -> matchQuery()
+                else
+                    matchQuery()
+            )
+            |> Seq.fold (==>) html.emptyAttr
+
+
     /// This will serve all blazor components (inherit from ComponentBase) in the target assembly for server side rendering
     /// route pattern: /fun-blazor-server-side-render-components/{componentType}
     [<Extension>]
     static member MapBlazorSSRComponents(builder: IEndpointRouteBuilder, assembly: Assembly, ?notFoundNode: NodeRenderFragment) =
         let components =
             assembly.GetTypes()
-            |> Seq.filter (fun x -> x.IsAssignableTo(typeof<ComponentBase>))
-            |> Seq.map (fun x -> x.FullName, x)
+            |> Seq.filter (fun x -> x.IsAssignableTo(typeof<IComponent>))
+            |> Seq.map (fun x -> x.FullName, {| Type = x; CreateAttr = FunBlazorServerExtensions.MakeCreateAttrFn x |})
             |> Map.ofSeq
         builder
-            .Map("/fun-blazor-server-side-render-components/{componentType}", Func<_, _>(fun (componentType: string) ->
+            .Map("/fun-blazor-server-side-render-components/{componentType}", Func<_, _, _>(fun (componentType: string) (ctx: HttpContext) ->
                 match Map.tryFind componentType components with
-                | Some ty -> html.blazor(ty)
+                | Some comp -> html.blazor(comp.Type, attr = comp.CreateAttr ctx)
                 | None -> defaultArg notFoundNode html.none
             ))
             .AddFunBlazor()
@@ -243,17 +282,21 @@ type FunBlazorServerExtensions =
                 for ty in assembly.GetTypes() do
                     let attr = ty.GetCustomAttribute<FunBlazorCustomElementAttribute>()
                     if attr |> box |> isNull |> not then
-                        match attr.TagName with
-                        | NullOrEmptyString -> ty.FullName, (ty, None)
-                        | SafeString tagName -> ty.FullName, (ty, Some tagName)
+                        let tagName =
+                            match attr.TagName with
+                            | NullOrEmptyString -> None
+                            | SafeString tagName -> Some tagName
+                        ty.FullName, {| Type = ty; CreateAttr = FunBlazorServerExtensions.MakeCreateAttrFn ty; TagName = tagName |}
             ]
             |> Map.ofSeq
-
         builder
-            .Map("/fun-blazor-custom-elements/{componentType}", Func<_, _>(fun (componentType: string) ->
+            .Map("/fun-blazor-custom-elements/{componentType}", Func<_, _, _>(fun (componentType: string) (ctx: HttpContext) ->
                 match Map.tryFind componentType components with
-                | Some (ty, None) -> html.customElement(ty)
-                | Some (ty, Some tagName) -> html.customElement(ty, tagName = tagName)
+                | Some comp ->
+                    let attrs = comp.CreateAttr ctx
+                    match comp.TagName with
+                    | None -> html.customElement(comp.Type, attrs = attrs)
+                    | Some tagName -> html.customElement(comp.Type, attrs = attrs, tagName = tagName)
                 | None -> defaultArg notFoundNode html.none
             ))
             .AddFunBlazor()

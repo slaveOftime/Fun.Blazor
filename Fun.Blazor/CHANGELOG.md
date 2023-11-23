@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## [3.2.4] - 2023-11-23
+
+- Add more overloads for html.blazor
+- Add ComponentAttrBuilder
+- Add QueryBuilder
+
 ## [3.2.3] - 2023-11-22
 
 - Add more overloads for html.blazor

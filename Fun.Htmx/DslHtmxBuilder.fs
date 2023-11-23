@@ -29,18 +29,43 @@ type DomAttrBuilder with
 #if !NET6_0
     /// Issues a request to get the blazor component and reader as static dom
     [<CustomOperation "hxRequestBlazorSSR">]
-    member inline _.hxRequestBlazorSSR([<InlineIfLambda>] render: AttrRenderFragment, x: System.Type, ?queries: (string * string) seq) =
+    member inline _.hxRequestBlazorSSR([<InlineIfLambda>] render: AttrRenderFragment, compTy: System.Type, ?queries: (string * obj) seq, ?method: string) =
+        let method = defaultArg method "get"
         let query = System.Web.HttpUtility.ParseQueryString("")
-        queries |> Option.iter (Seq.iter (fun (k, v) -> query.Add(k, v)))
-        render ==> ("hx-post" => $"/fun-blazor-server-side-render-components/{x.FullName}?{query.ToString()}")
+        queries |> Option.iter (Seq.iter (fun (k, v) -> query.Add(k, if isNull v then "" else string v)))
+        render ==> ("hx-" + method.ToLower() => $"/fun-blazor-server-side-render-components/{compTy.FullName}?{query.ToString()}")
+
+    /// Issues a request to get the blazor component and reader as static dom
+    [<CustomOperation "hxRequestBlazorSSR">]
+    member inline _.hxRequestBlazorSSR<'T>([<InlineIfLambda>] render: AttrRenderFragment, method: string, queryBuilder: QueryBuilder<'T>) =
+        render ==> ("hx-" + method.ToLower() => $"/fun-blazor-server-side-render-components/{typeof<'T>.FullName}?{queryBuilder.ToString()}")
+
+    /// Issues a request to get the blazor component and reader as static dom
+    [<CustomOperation "hxRequestBlazorSSR">]
+    member inline _.hxRequestBlazorSSR<'T>([<InlineIfLambda>] render: AttrRenderFragment, queryBuilder: QueryBuilder<'T>) =
+        render ==> ("hx-get" => $"/fun-blazor-server-side-render-components/{typeof<'T>.FullName}?{queryBuilder.ToString()}")
+
 
     /// Issues a request to get the blazor custom element as the return dom, 
     /// and it will open a websocket for the component's interactivity
     [<CustomOperation "hxRequestCustomElement">]
-    member inline _.hxRequestCustomElement([<InlineIfLambda>] render: AttrRenderFragment, x: System.Type, ?queries: (string * string) seq) =
+    member inline _.hxRequestCustomElement([<InlineIfLambda>] render: AttrRenderFragment, compTy: System.Type, ?queries: (string * obj) seq, ?method: string) =
+        let method = defaultArg method "get"
         let query = System.Web.HttpUtility.ParseQueryString("")
-        queries |> Option.iter (Seq.iter (fun (k, v) -> query.Add(k, v)))
-        render ==> ("hx-post" => $"/fun-blazor-custom-elements/{x.FullName}?{query.ToString()}")
+        queries |> Option.iter (Seq.iter (fun (k, v) -> query.Add(k, if isNull v then "" else string v)))
+        render ==> ("hx-" + method.ToLower() => $"/fun-blazor-custom-elements/{compTy.FullName}?{query.ToString()}")
+
+    /// Issues a request to get the blazor custom element as the return dom, 
+    /// and it will open a websocket for the component's interactivity
+    [<CustomOperation "hxRequestCustomElement">]
+    member inline _.hxRequestCustomElement<'T>([<InlineIfLambda>] render: AttrRenderFragment, method: string, queryBuilder: QueryBuilder<'T>) =
+        render ==> ("hx-" + method.ToLower() => $"/fun-blazor-custom-elements/{typeof<'T>.FullName}?{queryBuilder.ToString()}")
+
+    /// Issues a request to get the blazor custom element as the return dom, 
+    /// and it will open a websocket for the component's interactivity
+    [<CustomOperation "hxRequestCustomElement">]
+    member inline _.hxRequestCustomElement<'T>([<InlineIfLambda>] render: AttrRenderFragment, queryBuilder: QueryBuilder<'T>) =
+        render ==> ("hx-get" => $"/fun-blazor-custom-elements/{typeof<'T>.FullName}?{queryBuilder.ToString()}")
 #endif
 
 

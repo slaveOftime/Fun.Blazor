@@ -4,6 +4,7 @@ open Xunit
 open Fun.Htmx
 open Fun.Blazor
 open Bunit
+open Microsoft.AspNetCore.Components
 
 
 [<Fact>]
@@ -50,12 +51,8 @@ let ``TriggerBuilder should work`` () =
                     hxTarget_find "#find"
                     hxSwap_afterend'(OOB).FocusScroll(true)
                 }
-                div {
-                    hxSwap_delete
-                }
-                div {
-                    hxSwap_delete OOB
-                }
+                div { hxSwap_delete }
+                div { hxSwap_delete OOB }
             }
         )
 
@@ -67,5 +64,46 @@ let ``TriggerBuilder should work`` () =
         <div hx-post="/test2" hx-target="find #find" hx-swap-oob="afterend focus-scroll:true"></div>
         <div hx-swap="delete"></div>
         <div hx-swap-oob="delete"></div>
+        """
+    )
+
+
+type DemoComp() =
+    inherit FunComponent()
+
+    [<Parameter>]
+    member val Count = 0 with get, set
+
+    override _.Render() = html.none
+
+
+[<Fact>]
+let ``hxRequestxxx should work`` () =
+    let context = new TestContext()
+
+    let result =
+        context.RenderNode(
+            fragment {
+                div { hxRequestBlazorSSR (QueryBuilder<DemoComp>().Add((fun x -> x.Count), 1)) }
+                div { hxRequestBlazorSSR "post" (QueryBuilder<DemoComp>().Add((fun x -> x.Count), 2)) }
+                div { hxRequestBlazorSSR typeof<DemoComp> [ "Count", box 3 ] }
+                div { hxRequestBlazorSSR typeof<DemoComp> [ "Count", box 4 ] "post" }
+                div { hxRequestCustomElement (QueryBuilder<DemoComp>().Add((fun x -> x.Count), 1)) }
+                div { hxRequestCustomElement "post" (QueryBuilder<DemoComp>().Add((fun x -> x.Count), 2)) }
+                div { hxRequestCustomElement typeof<DemoComp> [ "Count", box 3 ] }
+                div { hxRequestCustomElement typeof<DemoComp> [ "Count", box 4 ] "post" }
+            }
+        )
+
+    result.MarkupMatches(
+        """
+        <div hx-get="/fun-blazor-server-side-render-components/Fun.Blazor.Tests.HtmxTests+DemoComp?Count=1"></div>
+        <div hx-post="/fun-blazor-server-side-render-components/Fun.Blazor.Tests.HtmxTests+DemoComp?Count=2"></div>
+        <div hx-get="/fun-blazor-server-side-render-components/Fun.Blazor.Tests.HtmxTests+DemoComp?Count=3"></div>
+        <div hx-post="/fun-blazor-server-side-render-components/Fun.Blazor.Tests.HtmxTests+DemoComp?Count=4"></div>
+        <div hx-get="/fun-blazor-custom-elements/Fun.Blazor.Tests.HtmxTests+DemoComp?Count=1"></div>
+        <div hx-post="/fun-blazor-custom-elements/Fun.Blazor.Tests.HtmxTests+DemoComp?Count=2"></div>
+        <div hx-get="/fun-blazor-custom-elements/Fun.Blazor.Tests.HtmxTests+DemoComp?Count=3"></div>
+        <div hx-post="/fun-blazor-custom-elements/Fun.Blazor.Tests.HtmxTests+DemoComp?Count=4"></div>
         """
     )

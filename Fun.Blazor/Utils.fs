@@ -7,6 +7,8 @@ open System.Threading.Tasks
 open Microsoft.Extensions.Logging
 open Microsoft.AspNetCore.Components
 open Microsoft.Extensions.ObjectPool
+open System.Linq.Expressions
+open Fun.Blazor.Operators
 
 
 module Internal =
@@ -57,3 +59,37 @@ type IComponent with
 
     member comp.Callback<'T>(fn: 'T -> unit) = EventCallback.Factory.Create<'T>(comp, fn)
     member comp.Callback<'T>(fn: 'T -> Task) = EventCallback.Factory.Create<'T>(comp, fn)
+
+
+type ComponentAttrBuilder<'T when 'T :> IComponent>() =
+    let mutable attr = Internal.emptyAttr()
+
+    let rec getExpressionName (exp: Expression) =
+        match exp.NodeType with
+        | ExpressionType.MemberAccess -> (exp :?> MemberExpression).Member.Name
+        | ExpressionType.Lambda -> ((exp :?> LambdaExpression).Body :?> MemberExpression).Member.Name
+        | ExpressionType.Convert -> getExpressionName (exp :?> UnaryExpression).Operand
+        | _ -> failwith "Unsupported expression"
+
+    member this.Add(expression: Expression<Func<'T, 'Prop>>, value) =
+        attr <- attr ==> (getExpressionName expression => value)
+        this
+
+    member _.Build() = attr
+
+
+type QueryBuilder<'T>() =
+    let query = System.Web.HttpUtility.ParseQueryString("")
+
+    let rec getExpressionName (exp: Expression) =
+        match exp.NodeType with
+        | ExpressionType.MemberAccess -> (exp :?> MemberExpression).Member.Name
+        | ExpressionType.Lambda -> ((exp :?> LambdaExpression).Body :?> MemberExpression).Member.Name
+        | ExpressionType.Convert -> getExpressionName (exp :?> UnaryExpression).Operand
+        | _ -> failwith "Unsupported expression"
+
+    member this.Add(expression: Expression<Func<'T, 'Prop>>, value: obj) =
+        query.Add(getExpressionName expression, if isNull value then "" else value.ToString())
+        this
+
+    override _.ToString() = query.ToString()

@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [3.2.4] - 2023-11-23
+
+- Add more overloads for hxRequestBlazorSSR and hxRequestCustomElement
+
 ## [3.2.3] - 2023-11-22
 
 - Add hxRequestBlazorSSR
