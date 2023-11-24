@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [3.2.6] - 2023-11-24
+
+- Improve MapBlazorSSRComponents and MapFunBlazorCustomElements to support nullable
+
 ## [3.2.5] - 2023-11-24
 
 - Improve MapBlazorSSRComponents
