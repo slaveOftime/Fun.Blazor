@@ -264,7 +264,7 @@ module CustomElementExtensions =
         /// <param name="tagName">By default it try to use the class name itself</param>
         /// <param name="attrs">Specify the attributes for the custom element</param>
         /// <param name="preRender">Enable prerender, will prerender the custom element itself</param>
-        /// <param name="preRenderNode">When this is specified, preRender is not necessary and the this node will be used as the prerender stuff instead of using the custome element itself</param>
+        /// <param name="preRenderNode">When this is specified, this node will be used as the prerender stuff instead of using the custome element itself</param>
         /// <param name="preRenderContainerAttrs">Set attributes for prerender container node</param>
         /// <param name="preRenderContainerTagName">Set attributes for prerender container's tag name, default is div</param>
         /// <param name="renderAfter">Start render after some condition, this has higher priority than delayMs</param>
@@ -279,11 +279,9 @@ module CustomElementExtensions =
             let ceAttrs = defaultArg attrs html.emptyAttr
 
             let preRenderNode =
-                if not preRender then
-                    html.none
-                else
-                    EltWithChildBuilder preRenderContainerTagName {
-                        id preRenderNodeId
+                EltWithChildBuilder preRenderContainerTagName {
+                    id preRenderNodeId
+                    if preRender then
                         defaultArg preRenderContainerAttrs html.emptyAttr
                         defaultArg preRenderNode (
                             NodeRenderFragment(fun comp builder index ->
@@ -293,7 +291,7 @@ module CustomElementExtensions =
                                 nextIndex
                             )
                         )
-                    }
+                }
 
             fragment {
                 match renderAfter with
@@ -328,7 +326,7 @@ module CustomElementExtensions =
         /// <param name="tagName">By default it try to use the class name itself</param>
         /// <param name="attrs">Specify the attributes for the custom element</param>
         /// <param name="preRender">Enable prerender, will prerender the custom element itself</param>
-        /// <param name="preRenderNode">When this is specified, preRender is not necessary and the this node will be used as the prerender stuff instead of using the custome element itself</param>
+        /// <param name="preRenderNode">When this is specified, this node will be used as the prerender stuff instead of using the custome element itself</param>
         /// <param name="preRenderContainerAttrs">Set attributes for prerender container node</param>
         /// <param name="preRenderContainerTagName">Set attributes for prerender container's tag name, default is div</param>
         /// <param name="renderAfter">Start render after some condition, this has higher priority than delayMs</param>
@@ -343,7 +341,7 @@ module CustomElementExtensions =
         /// <param name="tagName">By default it try to use the class name itself</param>
         /// <param name="attrs">Specify the attributes for the custom element</param>
         /// <param name="preRender">Enable prerender, will prerender the custom element itself</param>
-        /// <param name="preRenderNode">When this is specified, preRender is not necessary and the this node will be used as the prerender stuff instead of using the custome element itself</param>
+        /// <param name="preRenderNode">When this is specified, this node will be used as the prerender stuff instead of using the custome element itself</param>
         /// <param name="preRenderContainerAttrs">Set attributes for prerender container node</param>
         /// <param name="preRenderContainerTagName">Set attributes for prerender container's tag name, default is div</param>
         /// <param name="delayMs">Start render after some delay</param>
@@ -364,7 +362,7 @@ module CustomElementExtensions =
         /// <param name="componentAttrBuilder"></param>
         /// <param name="tagName">By default it try to use the class name itself</param>
         /// <param name="preRender">Enable prerender, will prerender the custom element itself</param>
-        /// <param name="preRenderNode">When this is specified, preRender is not necessary and the this node will be used as the prerender stuff instead of using the custome element itself</param>
+        /// <param name="preRenderNode">When this is specified, this node will be used as the prerender stuff instead of using the custome element itself</param>
         /// <param name="preRenderContainerAttrs">Set attributes for prerender container node</param>
         /// <param name="preRenderContainerTagName">Set attributes for prerender container's tag name, default is div</param>
         /// <param name="renderAfter">Start render after some condition, this has higher priority than delayMs</param>
