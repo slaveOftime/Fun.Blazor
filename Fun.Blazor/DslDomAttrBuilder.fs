@@ -582,8 +582,11 @@ type DomAttrBuilder() =
     member inline _.type'([<InlineIfLambda>] render: AttrRenderFragment, v: InputTypes) = render ==> ("type" => v.ToString())
     [<CustomOperation("usemap")>]
     member inline _.usemap([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("usemap" => v)
+    
     [<CustomOperation("value")>]
-    member inline _.value([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("value" => v)
+    member inline _.value<'T>([<InlineIfLambda>] render: AttrRenderFragment, v: 'T) =
+        render ==> ("value" => (if typeof<'T> = typeof<bool> then box (string v) else box v))
+
     [<CustomOperation("width")>]
     member inline _.width([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("width" => v)
     [<CustomOperation("wrap")>]

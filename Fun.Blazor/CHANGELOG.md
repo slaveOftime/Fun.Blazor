@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+- Fix value for DomAttrBuilder
+
 ## [3.2.6] - 2023-11-24
 
 - Improve ComponentAttrBuilder
