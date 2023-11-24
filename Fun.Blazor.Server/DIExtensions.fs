@@ -12,6 +12,7 @@ open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Routing
 open Microsoft.AspNetCore.Mvc.Rendering
 #if !NET6_0
+open Microsoft.AspNetCore.Antiforgery
 open Microsoft.AspNetCore.Http.HttpResults
 open Microsoft.AspNetCore.Components
 open Microsoft.AspNetCore.Components.Endpoints
@@ -21,6 +22,7 @@ open Microsoft.Extensions.DependencyInjection
 open Fun.Result
 open Fun.Blazor
 open Fun.Blazor.Operators
+
 
 
 #if !NET6_0
@@ -38,6 +40,11 @@ type FunBlazorEndpointFilter(preventStreamingRendering: bool, statusCode: int) =
                     return x
             }
             |> ValueTask<obj>
+
+
+type internal RequiresAntiforgeryMetadata(?requires) =
+    interface IAntiforgeryMetadata with
+        member _.RequiresValidation = defaultArg requires true
 #endif
 
 
@@ -264,24 +271,37 @@ type FunBlazorServerExtensions =
     /// This will serve all blazor components (inherit from ComponentBase) in the target assembly for server side rendering
     /// route pattern: /fun-blazor-server-side-render-components/{componentType}
     [<Extension>]
-    static member MapBlazorSSRComponents(builder: IEndpointRouteBuilder, assembly: Assembly, ?notFoundNode: NodeRenderFragment) =
+    static member MapBlazorSSRComponents(builder: IEndpointRouteBuilder, assembly: Assembly, ?notFoundNode: NodeRenderFragment, ?enableAntiforgery: bool) =
+        let enableAntiforgery = defaultArg enableAntiforgery false
         let components =
             assembly.GetTypes()
             |> Seq.filter (fun x -> x.IsAssignableTo(typeof<IComponent>))
             |> Seq.map (fun x -> x.FullName, {| Type = x; CreateAttr = FunBlazorServerExtensions.MakeCreateAttrFn x |})
             |> Map.ofSeq
-        builder
-            .Map("/fun-blazor-server-side-render-components/{componentType}", Func<_, _, _>(fun (componentType: string) (ctx: HttpContext) ->
-                match Map.tryFind componentType components with
-                | Some comp -> html.blazor(comp.Type, attr = comp.CreateAttr ctx)
-                | None -> defaultArg notFoundNode html.none
-            ))
-            .AddFunBlazor()
-    
+        let builder =
+            builder
+                .Map("/fun-blazor-server-side-render-components/{componentType}", Func<_, _, _>(fun (componentType: string) (ctx: HttpContext) ->
+                    match Map.tryFind componentType components with
+                    | Some comp -> 
+                        let antiforgeryValidationFeature = ctx.Features.Get<IAntiforgeryValidationFeature>()
+                        if enableAntiforgery && "post".Equals(ctx.Request.Method, StringComparison.OrdinalIgnoreCase) && antiforgeryValidationFeature <> null && not antiforgeryValidationFeature.IsValid then
+                            box (Results.BadRequest("Antiforgery validation failed"))
+                        else
+                            box (html.blazor(comp.Type, attr = comp.CreateAttr ctx))
+                    | None ->
+                        box (defaultArg notFoundNode html.none)
+                ))
+                .AddFunBlazor()
+        if enableAntiforgery then
+            builder.WithMetadata(RequiresAntiforgeryMetadata())
+        else
+            builder
+
     /// This will serve all components which is marked as FunBlazorCustomElementAttribute in the target assembly, 
     /// route pattern: /fun-blazor-custom-elements/{componentType}
     [<Extension>]
-    static member MapFunBlazorCustomElements(builder: IEndpointRouteBuilder, assembly: Assembly, ?notFoundNode: NodeRenderFragment) =
+    static member MapFunBlazorCustomElements(builder: IEndpointRouteBuilder, assembly: Assembly, ?notFoundNode: NodeRenderFragment, ?enableAntiforgery: bool) =
+        let enableAntiforgery = defaultArg enableAntiforgery false
         let components =
             [
                 for ty in assembly.GetTypes() do
@@ -294,17 +314,28 @@ type FunBlazorServerExtensions =
                         ty.FullName, {| Type = ty; CreateAttr = FunBlazorServerExtensions.MakeCreateAttrFn ty; TagName = tagName |}
             ]
             |> Map.ofSeq
-        builder
-            .Map("/fun-blazor-custom-elements/{componentType}", Func<_, _, _>(fun (componentType: string) (ctx: HttpContext) ->
-                match Map.tryFind componentType components with
-                | Some comp ->
-                    let attrs = comp.CreateAttr ctx
-                    match comp.TagName with
-                    | None -> html.customElement(comp.Type, attrs = attrs)
-                    | Some tagName -> html.customElement(comp.Type, attrs = attrs, tagName = tagName)
-                | None -> defaultArg notFoundNode html.none
-            ))
-            .AddFunBlazor()
+        let builder =
+            builder
+                .Map("/fun-blazor-custom-elements/{componentType}", Func<_, _, _>(fun (componentType: string) (ctx: HttpContext) ->
+                    match Map.tryFind componentType components with
+                    | Some comp ->
+                        let antiforgeryValidationFeature = ctx.Features.Get<IAntiforgeryValidationFeature>()
+                        if "post".Equals(ctx.Request.Method, StringComparison.OrdinalIgnoreCase) && antiforgeryValidationFeature <> null && not antiforgeryValidationFeature.IsValid then
+                            box (Results.BadRequest("Antiforgery validation failed"))
+                        else
+                            let attrs = comp.CreateAttr ctx
+                            match comp.TagName with
+                            | None -> html.customElement(comp.Type, attrs = attrs)
+                            | Some tagName -> html.customElement(comp.Type, attrs = attrs, tagName = tagName)
+                            |> box
+                    | None -> 
+                        box (defaultArg notFoundNode html.none)
+                ))
+                .AddFunBlazor()
+        if enableAntiforgery then
+            builder.WithMetadata(RequiresAntiforgeryMetadata())
+        else
+            builder
 #endif
 
 

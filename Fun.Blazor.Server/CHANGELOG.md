@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [3.2.7] - 2023-11-24
+
+- Enable antiforgery for MapBlazorSSRComponents and MapFunBlazorCustomElements
+
 ## [3.2.6] - 2023-11-24
 
 - Improve MapBlazorSSRComponents and MapFunBlazorCustomElements to support nullable
