@@ -23,6 +23,9 @@ type ServerDemoCounter() as this =
     member val count = 0 with get, set
 
     [<Parameter>]
+    member val count2 = Nullable(0) with get, set
+
+    [<Parameter>]
     member val query = "" with get, set
 
     [<Parameter>]
@@ -159,6 +162,7 @@ module ServerTests =
             """<server-demo-counter count="1" guid="8da005a9-4b2c-4308-b026-707fbb02f7c6" is_loading query="hi"></server-demo-counter>""",
             actual
         )
+
         let! response = http.PostAsync($"/fun-blazor-custom-elements/{typeof<ServerDemoCounter>.FullName}?{query}", formContent)
         let! actual = response.Content.ReadAsStringAsync()
         Assert.StartsWith(
@@ -176,6 +180,32 @@ module ServerTests =
         let! actual = response.Content.ReadAsStringAsync()
         Assert.Equal(
             """<div><p>count = 2</p><p>query = hi</p><p>is_loading = True</p><p>guid = 8da005a9-4b2c-4308-b026-707fbb02f7c6</p></div>""",
+            actual
+        )
+
+        let query =
+            QueryBuilder<ServerDemoCounter>()
+                .Add((fun x -> x.count), 1)
+                .Add((fun x -> x.count), 2)
+                .ToString()
+
+        let! actual = http.GetStringAsync($"/fun-blazor-custom-elements/{typeof<ServerDemoCounter>.FullName}?{query}")
+        Assert.StartsWith(
+            """<server-demo-counter count="2"></server-demo-counter>""",
+            actual
+        )
+
+        let query =
+            QueryBuilder<ServerDemoCounter>()
+                .Add((fun x -> x.count), 1)
+                .Add(ServerDemoCounter(count = 2))
+                .Add((fun x -> x.count), 3)
+                .Add((fun x -> x.count2), Nullable 4)
+                .ToString()
+
+        let! actual = http.GetStringAsync($"/fun-blazor-custom-elements/{typeof<ServerDemoCounter>.FullName}?{query}")
+        Assert.StartsWith(
+            """<server-demo-counter count="3" count2="4" guid="00000000-0000-0000-0000-000000000000" query=""></server-demo-counter>""",
             actual
         )
     }
