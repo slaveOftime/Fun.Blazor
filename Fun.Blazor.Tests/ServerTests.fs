@@ -29,16 +29,12 @@ type ServerDemoCounter() as this =
     member val is_loading = false with get, set
 
     [<Parameter>]
-    member val time = DateTime.Now with get, set
-
-    [<Parameter>]
     member val guid = Guid.Empty with get, set
 
     override _.Render() = div {
         p { $"{nameof this.count} = {this.count}" }
         p { $"{nameof this.query} = {this.query}" }
         p { $"{nameof this.is_loading} = {this.is_loading}" }
-        p { $"{nameof this.time} = {this.time}" }
         p { $"{nameof this.guid} = {this.guid}" }
     }
 
@@ -148,33 +144,38 @@ module ServerTests =
             )
 
         use http = server.CreateClient()
+        use formContent = new FormUrlEncodedContent([ KeyValuePair("count", "2") ])
 
         let query =
             QueryBuilder<ServerDemoCounter>()
                 .Add((fun x -> x.count), 1)
                 .Add((fun x -> x.query), "hi")
                 .Add((fun x -> x.is_loading), true)
-                .Add((fun x -> x.time), DateTime.Parse("2020-1-1"))
                 .Add((fun x -> x.guid), Guid.Parse("8da005a9-4b2c-4308-b026-707fbb02f7c6"))
                 .ToString()
 
         let! actual = http.GetStringAsync($"/fun-blazor-custom-elements/{typeof<ServerDemoCounter>.FullName}?{query}")
         Assert.StartsWith(
-            """<server-demo-counter count="1" guid="8da005a9-4b2c-4308-b026-707fbb02f7c6" is_loading query="hi" time="1/1/2020 12:00:00 AM"></server-demo-counter>""",
+            """<server-demo-counter count="1" guid="8da005a9-4b2c-4308-b026-707fbb02f7c6" is_loading query="hi"></server-demo-counter>""",
+            actual
+        )
+        let! response = http.PostAsync($"/fun-blazor-custom-elements/{typeof<ServerDemoCounter>.FullName}?{query}", formContent)
+        let! actual = response.Content.ReadAsStringAsync()
+        Assert.StartsWith(
+            """<server-demo-counter count="2" guid="8da005a9-4b2c-4308-b026-707fbb02f7c6" is_loading query="hi"></server-demo-counter>""",
             actual
         )
 
         let! actual = http.GetStringAsync($"/fun-blazor-server-side-render-components/{typeof<ServerDemoCounter>.FullName}?{query}")
         Assert.Equal(
-            """<div><p>count = 1</p><p>query = hi</p><p>is_loading = True</p><p>time = 1/1/2020 12:00:00 AM</p><p>guid = 8da005a9-4b2c-4308-b026-707fbb02f7c6</p></div>""",
+            """<div><p>count = 1</p><p>query = hi</p><p>is_loading = True</p><p>guid = 8da005a9-4b2c-4308-b026-707fbb02f7c6</p></div>""",
             actual
         )
 
-        use formContent = new FormUrlEncodedContent([ KeyValuePair("count", "2") ])
         let! response = http.PostAsync($"/fun-blazor-server-side-render-components/{typeof<ServerDemoCounter>.FullName}?{query}", formContent)
         let! actual = response.Content.ReadAsStringAsync()
         Assert.Equal(
-            """<div><p>count = 2</p><p>query = hi</p><p>is_loading = True</p><p>time = 1/1/2020 12:00:00 AM</p><p>guid = 8da005a9-4b2c-4308-b026-707fbb02f7c6</p></div>""",
+            """<div><p>count = 2</p><p>query = hi</p><p>is_loading = True</p><p>guid = 8da005a9-4b2c-4308-b026-707fbb02f7c6</p></div>""",
             actual
         )
     }
