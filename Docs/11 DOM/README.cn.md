@@ -106,6 +106,18 @@ let demo =
 
 对于DOM元素/组件，你可以：
 
+没有 binding 时你可以：
+
+```fsharp
+let demo =
+    html.blazor (ComponentAttrBuilder<MudPaper>()
+        .Add((fun x -> x.Elevation), 10)    
+        .Add((fun x -> x.Outlined), true)    
+    )
+```
+
+使用自动生成的 binding 时：
+
 ```fsharp
 open Fun.Blazor
 open Fun.Blazor.Operators

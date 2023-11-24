@@ -310,9 +310,10 @@ let ``html blazor should work with ComponentAttrBuilder`` () =
     let demo =
         html.blazor (ComponentAttrBuilder<MudPaper>()
             .Add((fun x -> x.Elevation), 10)    
+            .Add((fun x -> x.Outlined), true)    
         )
 
     let result = context.RenderNode demo
     result.MarkupMatches("""
-        <div class="mud-paper mud-elevation-10" style=""></div>
+        <div class="mud-paper mud-paper-outlined" style=""></div>
     """)
