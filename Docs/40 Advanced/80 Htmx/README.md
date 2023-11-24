@@ -1,10 +1,10 @@
-## Htmx
+# Htmx
 
 For what is htmx please check their [doc](https://htmx.org/), here in Fun.Blazor we use it for pull down blazor content by its request and inject into somewhere.
 
 It is recommend to use it together with custom element, so we can get real time interactive with websocket which has full power of blazor.
 
-### How to use
+## How to use
 
 
 Register the components:
