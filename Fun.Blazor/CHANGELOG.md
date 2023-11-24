@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [3.2.7] - 2023-11-25
+
 - Fix value for DomAttrBuilder
 
 ## [3.2.6] - 2023-11-24

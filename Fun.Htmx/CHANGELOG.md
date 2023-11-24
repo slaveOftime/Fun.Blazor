@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [3.2.7] - 2023-11-25
+
 - Add hxGetComponent, hxPostComponent, hxGetCustomElement, hxPostCustomElement
 
 ## [3.2.4] - 2023-11-23
