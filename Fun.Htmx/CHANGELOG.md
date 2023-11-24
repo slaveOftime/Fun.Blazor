@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+- Add hxGetComponent, hxPostComponent, hxGetCustomElement, hxPostCustomElement
+
 ## [3.2.4] - 2023-11-23
 
 - Add more overloads for hxRequestBlazorSSR and hxRequestCustomElement
