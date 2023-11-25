@@ -271,12 +271,16 @@ type FunBlazorServerExtensions =
     /// This will serve all blazor components (inherit from ComponentBase) in the target assembly for server side rendering
     /// route pattern: /fun-blazor-server-side-render-components/{componentType}
     [<Extension>]
-    static member MapBlazorSSRComponents(builder: IEndpointRouteBuilder, assembly: Assembly, ?notFoundNode: NodeRenderFragment, ?enableAntiforgery: bool) =
+    static member MapBlazorSSRComponents(builder: IEndpointRouteBuilder, assemblies: Assembly seq, ?notFoundNode: NodeRenderFragment, ?enableAntiforgery: bool) =
         let enableAntiforgery = defaultArg enableAntiforgery false
         let components =
-            assembly.GetTypes()
-            |> Seq.filter (fun x -> x.IsAssignableTo(typeof<IComponent>))
-            |> Seq.map (fun x -> x.FullName, {| Type = x; CreateAttr = FunBlazorServerExtensions.MakeCreateAttrFn x |})
+            assemblies
+            |> Seq.map (fun assembly ->
+                assembly.GetTypes()
+                |> Seq.filter (fun x -> x.IsAssignableTo(typeof<IComponent>))
+                |> Seq.map (fun x -> x.FullName, {| Type = x; CreateAttr = FunBlazorServerExtensions.MakeCreateAttrFn x |})
+            )
+            |> Seq.concat
             |> Map.ofSeq
         let builder =
             builder
@@ -297,13 +301,20 @@ type FunBlazorServerExtensions =
         else
             builder
 
+    /// This will serve all blazor components (inherit from ComponentBase) in the target assembly for server side rendering
+    /// route pattern: /fun-blazor-server-side-render-components/{componentType}
+    [<Extension>]
+    static member MapBlazorSSRComponents(builder: IEndpointRouteBuilder, assembly: Assembly, ?notFoundNode: NodeRenderFragment, ?enableAntiforgery: bool) =
+        builder.MapBlazorSSRComponents([assembly], notFoundNode = defaultArg notFoundNode html.none, enableAntiforgery = defaultArg enableAntiforgery false)
+
     /// This will serve all components which is marked as FunBlazorCustomElementAttribute in the target assembly, 
     /// route pattern: /fun-blazor-custom-elements/{componentType}
     [<Extension>]
-    static member MapFunBlazorCustomElements(builder: IEndpointRouteBuilder, assembly: Assembly, ?notFoundNode: NodeRenderFragment, ?enableAntiforgery: bool) =
+    static member MapFunBlazorCustomElements(builder: IEndpointRouteBuilder, assemblies: Assembly seq, ?notFoundNode: NodeRenderFragment, ?enableAntiforgery: bool) =
         let enableAntiforgery = defaultArg enableAntiforgery false
         let components =
-            [
+            assemblies
+            |> Seq.map (fun assembly -> [
                 for ty in assembly.GetTypes() do
                     let attr = ty.GetCustomAttribute<FunBlazorCustomElementAttribute>()
                     if attr |> box |> isNull |> not then
@@ -312,7 +323,8 @@ type FunBlazorServerExtensions =
                             | NullOrEmptyString -> None
                             | SafeString tagName -> Some tagName
                         ty.FullName, {| Type = ty; CreateAttr = FunBlazorServerExtensions.MakeCreateAttrFn ty; TagName = tagName |}
-            ]
+            ])
+            |> Seq.concat
             |> Map.ofSeq
         let builder =
             builder
@@ -336,6 +348,12 @@ type FunBlazorServerExtensions =
             builder.WithMetadata(RequiresAntiforgeryMetadata())
         else
             builder
+
+    /// This will serve all components which is marked as FunBlazorCustomElementAttribute in the target assembly, 
+    /// route pattern: /fun-blazor-custom-elements/{componentType}
+    [<Extension>]
+    static member MapFunBlazorCustomElements(builder: IEndpointRouteBuilder, assembly: Assembly, ?notFoundNode: NodeRenderFragment, ?enableAntiforgery: bool) =
+        builder.MapFunBlazorCustomElements([assembly], notFoundNode = defaultArg notFoundNode html.none, enableAntiforgery = defaultArg enableAntiforgery false)
 #endif
 
 

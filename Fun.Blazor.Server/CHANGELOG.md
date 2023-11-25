@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+- Add overloads for MapFunBlazorCustomElements and MapBlazorSSRComponents
+
 ## [3.2.7] - 2023-11-24
 
 - Enable antiforgery for MapBlazorSSRComponents and MapFunBlazorCustomElements
