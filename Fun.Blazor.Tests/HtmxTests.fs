@@ -104,6 +104,7 @@ let ``hxRequestxxx should work`` () =
                         .Add((fun x -> x.Count), 2)
                         .Add((fun x -> x.Count), 3, append = true)
                     ) 
+                    html.hiddenInputs (DemoComp(Count = 1))
                 }
             }
         )
@@ -119,6 +120,8 @@ let ``hxRequestxxx should work`` () =
         <div hx-get="/fun-blazor-custom-elements/Fun.Blazor.Tests.HtmxTests+DemoComp?Count=3"></div>
         <div hx-post="/fun-blazor-custom-elements/Fun.Blazor.Tests.HtmxTests+DemoComp?Count=4"></div>
         <div hx-get="/fun-blazor-custom-elements/Fun.Blazor.Tests.HtmxTests+DemoComp?Count=4"></div>
-        <div hx-get="/fun-blazor-custom-elements/Fun.Blazor.Tests.HtmxTests+DemoComp?Count=2&Count=3"></div>
+        <div hx-get="/fun-blazor-custom-elements/Fun.Blazor.Tests.HtmxTests+DemoComp?Count=2&amp;Count=3">
+            <input hidden="" name="Count" value="1">
+        </div>
         """
     )

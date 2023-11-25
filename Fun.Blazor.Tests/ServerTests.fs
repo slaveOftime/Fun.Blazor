@@ -147,7 +147,7 @@ module ServerTests =
             )
 
         use http = server.CreateClient()
-        use formContent = new FormUrlEncodedContent([ KeyValuePair("count", "2") ])
+        use formContent = new FormUrlEncodedContent([ KeyValuePair("count", "-2"); KeyValuePair("count", "2") ])
 
         let query =
             QueryBuilder<ServerDemoCounter>()
@@ -200,7 +200,8 @@ module ServerTests =
                 .Add((fun x -> x.count), 1)
                 .Add(ServerDemoCounter(count = 2))
                 .Add((fun x -> x.count), 3)
-                .Add((fun x -> x.count2), Nullable 4)
+                .Add((fun x -> x.count2), Nullable 5)
+                .Add((fun x -> x.count2), Nullable 4, append = true)
                 .ToString()
 
         let! actual = http.GetStringAsync($"/fun-blazor-custom-elements/{typeof<ServerDemoCounter>.FullName}?{query}")
