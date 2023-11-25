@@ -228,7 +228,7 @@ type FunBlazorServerExtensions =
 
     static member private MakeCreateAttrFn(ty: Type) =
         let paramsInfo =
-            ty.GetProperties()
+            ty.GetProperties(BindingFlags.Instance ||| BindingFlags.Public)
             |> Seq.choose (fun p -> 
                 let attr = p.GetCustomAttribute<ParameterAttribute>()
                 if isNull attr then None
@@ -256,11 +256,11 @@ type FunBlazorServerExtensions =
             |> Seq.choose (fun p ->
                 let matchQuery() =
                     match ctx.Request.Query.TryGetValue p.Key with
-                    | true, v -> Some (p.Key => parseValue p.Key (v.ToString()) p.Value)
+                    | true, v when v.Count > 0 -> Some (p.Key => parseValue p.Key (v.Item(v.Count - 1).ToString()) p.Value)
                     | _ -> None
                 if ctx.Request.Method.Equals(HttpMethods.Post, StringComparison.OrdinalIgnoreCase) then
                     match ctx.Request.Form.TryGetValue(p.Key) with
-                    | true, v -> Some (p.Key => parseValue p.Key (v.ToString()) p.Value)
+                    | true, v when v.Count > 0 -> Some (p.Key => parseValue p.Key (v.Item(v.Count - 1).ToString()) p.Value)
                     | _ -> matchQuery()
                 else
                     matchQuery()
@@ -269,7 +269,8 @@ type FunBlazorServerExtensions =
 
 
     /// This will serve all blazor components (inherit from ComponentBase) in the target assembly for server side rendering
-    /// route pattern: /fun-blazor-server-side-render-components/{componentType}
+    /// route pattern: /fun-blazor-server-side-render-components/{componentType}. 
+    /// Value can be passed by query or form for component property, form will have higher priority. Only the last value will be take when found same keys.
     [<Extension>]
     static member MapBlazorSSRComponents(builder: IEndpointRouteBuilder, assemblies: Assembly seq, ?notFoundNode: NodeRenderFragment, ?enableAntiforgery: bool) =
         let enableAntiforgery = defaultArg enableAntiforgery false
@@ -302,13 +303,15 @@ type FunBlazorServerExtensions =
             builder
 
     /// This will serve all blazor components (inherit from ComponentBase) in the target assembly for server side rendering
-    /// route pattern: /fun-blazor-server-side-render-components/{componentType}
+    /// route pattern: /fun-blazor-server-side-render-components/{componentType}. 
+    /// Value can be passed by query or form for component property, form will have higher priority. Only the last value will be take when found same keys.
     [<Extension>]
     static member MapBlazorSSRComponents(builder: IEndpointRouteBuilder, assembly: Assembly, ?notFoundNode: NodeRenderFragment, ?enableAntiforgery: bool) =
         builder.MapBlazorSSRComponents([assembly], notFoundNode = defaultArg notFoundNode html.none, enableAntiforgery = defaultArg enableAntiforgery false)
 
     /// This will serve all components which is marked as FunBlazorCustomElementAttribute in the target assembly, 
-    /// route pattern: /fun-blazor-custom-elements/{componentType}
+    /// route pattern: /fun-blazor-custom-elements/{componentType}. 
+    /// Value can be passed by query or form for component property, form will have higher priority. Only the last value will be take when found same keys.
     [<Extension>]
     static member MapFunBlazorCustomElements(builder: IEndpointRouteBuilder, assemblies: Assembly seq, ?notFoundNode: NodeRenderFragment, ?enableAntiforgery: bool) =
         let enableAntiforgery = defaultArg enableAntiforgery false
@@ -350,7 +353,8 @@ type FunBlazorServerExtensions =
             builder
 
     /// This will serve all components which is marked as FunBlazorCustomElementAttribute in the target assembly, 
-    /// route pattern: /fun-blazor-custom-elements/{componentType}
+    /// route pattern: /fun-blazor-custom-elements/{componentType}. 
+    /// Value can be passed by query or form for component property, form will have higher priority. Only the last value will be take when found same keys.
     [<Extension>]
     static member MapFunBlazorCustomElements(builder: IEndpointRouteBuilder, assembly: Assembly, ?notFoundNode: NodeRenderFragment, ?enableAntiforgery: bool) =
         builder.MapFunBlazorCustomElements([assembly], notFoundNode = defaultArg notFoundNode html.none, enableAntiforgery = defaultArg enableAntiforgery false)
