@@ -1,6 +1,7 @@
 ﻿[<AutoOpen>]
 module Fun.Htmx.DslHtmxBuilder
 
+open System
 open System.Text
 open Microsoft.AspNetCore.Http
 open Fun.Result
@@ -48,6 +49,11 @@ type DomAttrBuilder with
 
     /// Issues a get request to get the blazor component and reader as static dom
     [<CustomOperation "hxGetComponent">]
+    member inline this.hxGetComponent([<InlineIfLambda>] render: AttrRenderFragment, compType: Type) =
+        this.hxRequestBlazorSSR(render, compType, method = HttpMethods.Get)
+
+    /// Issues a get request to get the blazor component and reader as static dom
+    [<CustomOperation "hxGetComponent">]
     member inline this.hxGetComponent<'T>([<InlineIfLambda>] render: AttrRenderFragment, queryBuilder: QueryBuilder<'T>) =
         this.hxRequestBlazorSSR(render, HttpMethods.Get, queryBuilder)
     
@@ -77,13 +83,19 @@ type DomAttrBuilder with
     [<CustomOperation "hxRequestCustomElement">]
     member inline _.hxRequestCustomElement<'T>([<InlineIfLambda>] render: AttrRenderFragment, queryBuilder: QueryBuilder<'T>) =
         render ==> ("hx-get" => $"/fun-blazor-custom-elements/{typeof<'T>.FullName}?{queryBuilder.ToString()}")
+        
+    /// Issues a get request to get the blazor custom element as the return dom, 
+    /// and it will open a websocket for the component's interactivity
+    [<CustomOperation "hxGetCustomElement">]
+    member inline this.hxGetCustomElement([<InlineIfLambda>] render: AttrRenderFragment, compType: Type) =
+        this.hxRequestCustomElement(render, compType, method = HttpMethods.Get)
 
     /// Issues a get request to get the blazor custom element as the return dom, 
     /// and it will open a websocket for the component's interactivity
     [<CustomOperation "hxGetCustomElement">]
     member inline this.hxGetCustomElement<'T>([<InlineIfLambda>] render: AttrRenderFragment, queryBuilder: QueryBuilder<'T>) =
         this.hxRequestCustomElement(render, HttpMethods.Get, queryBuilder)
-        
+
     /// Issues a post request to get the blazor custom element as the return dom, 
     /// and it will open a websocket for the component's interactivity
     [<CustomOperation "hxPostCustomElement">]
