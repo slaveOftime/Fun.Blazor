@@ -533,8 +533,6 @@ module Elts =
 
     let strong = EltWithChildBuilder "strong"
 
-    let styleElt = EltWithChildBuilder "style"
-
     let sub = EltWithChildBuilder "sub"
 
     let summary = EltWithChildBuilder "summary"
@@ -606,12 +604,6 @@ module Elts =
             index + 1
         )
 
-    let inline stylesheet (x: string) =
-        link {
-            rel "stylesheet"
-            href x
-        }
-
     let inline baseUrl (x: string) = base' { href x }
 
     let inline viewport (x: string) = meta {
@@ -623,38 +615,3 @@ module Elts =
 
     /// Can be used to build shared dom attributes fragment
     let domAttr = DomAttrBuilder()
-
-    let styleBuilder = StyleBuilder()
-    let cssBuilder = Fun.Css.CssBuilder()
-    let ruleset ruleName = RulesetBuilder ruleName
-    
-    let inline keyframes identifier = KeyFramesBuilder identifier
-    let inline keyframe (x: int) = KeyFrameBuilder(sprintf "%d%%" x)
-    let keyframeFrom = KeyFrameBuilder "from"
-    let keyframeTo = KeyFrameBuilder "to"
-
-
-    /// Build a style string
-    let styleStr = StyleStrBuilder()
-
-    /// Short name for StyleBuilder
-    let style = styleBuilder
-
-    /// <summary>
-    /// Short name for cssBuilder
-    /// You can use it as build block when you have complex logic for style
-    /// </summary>
-    /// <example>
-    /// <code lang="fsharp">
-    /// div {
-    ///     style {
-    ///         color "red"
-    ///         if true then
-    ///             css {
-    ///                 backgroundColor "green"
-    ///             }
-    ///     }
-    /// }
-    /// </code>
-    /// </example>
-    let css = cssBuilder

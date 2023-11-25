@@ -13,6 +13,7 @@
 		<Compile Include="I18nTests.fs" />
 		<Compile Include="HookTests.fs" />
 		<Compile Include="DomTests.fs" />
+		<Compile Include="StyleTests.fs" />
 		<Compile Include="PostRenderFragmentTests.fs" />
 		<Compile Include="CascadingValueTests.fs" />
 		<Compile Include="ServerTests.fs" />

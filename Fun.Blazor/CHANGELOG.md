@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+- Refactor style dsl
+
 ## [3.2.7] - 2023-11-25
 
 - Fix value for DomAttrBuilder
