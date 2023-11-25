@@ -81,7 +81,7 @@ type ComponentAttrBuilder<'T when 'T :> IComponent>() =
 
     member this.Add(state: 'T) =
         attr <-
-            typeof<'T>.GetProperties()
+            typeof<'T>.GetProperties(BindingFlags.Instance ||| BindingFlags.Public)
             |> Seq.choose (fun p ->
                 let attr = p.GetCustomAttribute<ParameterAttribute>()
                 if isNull attr then None else Some p
@@ -114,7 +114,7 @@ type QueryBuilder<'T>() =
     /// Null property will be ignored
     member this.Add(state: obj) =
         let ty = state.GetType()
-        state.GetType().GetProperties()
+        state.GetType().GetProperties(BindingFlags.Instance ||| BindingFlags.Public)
         |> Seq.choose (fun p ->
             if ty = typeof<IComponent> then
                 let attr = p.GetCustomAttribute<ParameterAttribute>()

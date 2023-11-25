@@ -1,5 +1,6 @@
 ﻿namespace Fun.Blazor
 
+open System.Reflection
 open Microsoft.AspNetCore.Components
 open Operators
 open Internal
@@ -615,3 +616,30 @@ module Elts =
 
     /// Can be used to build shared dom attributes fragment
     let domAttr = DomAttrBuilder()
+
+
+    type html with
+
+        /// Build hidden inputs for a given state's public properties. 
+        /// If the type is IComponent, only the property with attribute ParameterAttribute will be taken
+        static member hiddenInputs<'T> (data: 'T) =
+            let ty = typeof<'T>
+
+            data.GetType().GetProperties(BindingFlags.Instance ||| BindingFlags.Public)
+            |> Seq.choose (fun p ->
+                if ty = typeof<IComponent> then
+                    let attr = p.GetCustomAttribute<ParameterAttribute>()
+                    if isNull attr then None else Some p
+                else
+                    Some p
+            )
+            |> Seq.map (fun p ->
+                match p.GetValue data with
+                | null -> html.none
+                | x -> input {
+                    hidden
+                    name p.Name
+                    value x
+                  }
+            )
+            |> html.fragment
