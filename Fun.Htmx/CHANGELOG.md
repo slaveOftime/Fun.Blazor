@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+- Update htmx events convention
+
 ## [3.2.9] - 2023-11-26
 
 - Add hxPostCustomElement overload
