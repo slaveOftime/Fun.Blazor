@@ -637,7 +637,7 @@ module Elts =
                 match p.GetValue data with
                 | null -> html.none
                 | x -> input {
-                    hidden
+                    type' InputTypes.hidden
                     name p.Name
                     value x
                   }

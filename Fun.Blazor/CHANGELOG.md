@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [3.2.9] - 2023-11-26
+
+- Improve html.createHiddenInputs
+
 ## [3.2.8] - 2023-11-26
 
 - Refactor style dsl
