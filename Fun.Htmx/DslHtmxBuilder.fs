@@ -59,6 +59,11 @@ type DomAttrBuilder with
     
     /// Issues a post request to get the blazor component and reader as static dom
     [<CustomOperation "hxPostComponent">]
+    member inline this.hxPostComponent([<InlineIfLambda>] render: AttrRenderFragment, compType: Type) =
+        this.hxRequestBlazorSSR(render, compType, method = HttpMethods.Post)
+
+    /// Issues a post request to get the blazor component and reader as static dom
+    [<CustomOperation "hxPostComponent">]
     member inline this.hxPostComponent<'T>([<InlineIfLambda>] render: AttrRenderFragment, queryBuilder: QueryBuilder<'T>) =
         this.hxRequestBlazorSSR(render, HttpMethods.Post, queryBuilder)
 
@@ -95,6 +100,12 @@ type DomAttrBuilder with
     [<CustomOperation "hxGetCustomElement">]
     member inline this.hxGetCustomElement<'T>([<InlineIfLambda>] render: AttrRenderFragment, queryBuilder: QueryBuilder<'T>) =
         this.hxRequestCustomElement(render, HttpMethods.Get, queryBuilder)
+
+    /// Issues a post request to get the blazor custom element as the return dom, 
+    /// and it will open a websocket for the component's interactivity
+    [<CustomOperation "hxPostCustomElement">]
+    member inline this.hxPostCustomElement([<InlineIfLambda>] render: AttrRenderFragment, compType: Type) =
+        this.hxRequestCustomElement(render, compType, method =  HttpMethods.Post)
 
     /// Issues a post request to get the blazor custom element as the return dom, 
     /// and it will open a websocket for the component's interactivity
