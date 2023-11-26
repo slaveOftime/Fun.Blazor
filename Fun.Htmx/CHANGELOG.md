@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [3.2.8] - 2023-11-26
+
 - Add more overloads for hxGetComponent, hxPostComponent, hxGetCustomElement, hxPostCustomElement
 
 ## [3.2.7] - 2023-11-25

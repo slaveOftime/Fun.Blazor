@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [3.2.8] - 2023-11-26
+
 - Add overloads for MapFunBlazorCustomElements and MapBlazorSSRComponents
 - Only take the last value when query or form got same keys in MapFunBlazorCustomElements and MapBlazorSSRComponents
 

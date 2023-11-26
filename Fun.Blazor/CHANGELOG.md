@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [3.2.8] - 2023-11-26
+
 - Refactor style dsl
 - Add html.hiddenInputs helper
 
