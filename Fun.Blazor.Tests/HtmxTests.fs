@@ -121,7 +121,7 @@ let ``hxRequestxxx should work`` () =
         <div hx-post="/fun-blazor-custom-elements/Fun.Blazor.Tests.HtmxTests+DemoComp?Count=4"></div>
         <div hx-get="/fun-blazor-custom-elements/Fun.Blazor.Tests.HtmxTests+DemoComp?Count=4"></div>
         <div hx-get="/fun-blazor-custom-elements/Fun.Blazor.Tests.HtmxTests+DemoComp?Count=2&amp;Count=3">
-            <input hidden="" name="Count" value="1">
+            <input type="hidden" name="Count" value="1">
         </div>
         """
     )
