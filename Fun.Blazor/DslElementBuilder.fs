@@ -622,7 +622,7 @@ module Elts =
 
         /// Build hidden inputs for a given state's public properties. 
         /// If the type is IComponent, only the property with attribute ParameterAttribute will be taken
-        static member hiddenInputs<'T> (data: 'T) =
+        static member createHiddenInputs<'T> (data: 'T) =
             let ty = typeof<'T>
 
             data.GetType().GetProperties(BindingFlags.Instance ||| BindingFlags.Public)

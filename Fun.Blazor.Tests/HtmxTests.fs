@@ -104,7 +104,7 @@ let ``hxRequestxxx should work`` () =
                         .Add((fun x -> x.Count), 2)
                         .Add((fun x -> x.Count), 3, append = true)
                     ) 
-                    html.hiddenInputs (DemoComp(Count = 1))
+                    html.createHiddenInputs (DemoComp(Count = 1))
                 }
             }
         )
