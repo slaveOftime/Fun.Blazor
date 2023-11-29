@@ -1,5 +1,7 @@
 [Adaptive Data]: https://github.com/fsprojects/FSharp.Data.Adaptive
 [Working With Blazor]: ./Advanced-features/Working-With-Blazor
+[Fun.Blazor.Reactive]: https://github.com/slaveOftime/Fun.Blazor
+[FSharp.Control.Reactive]: http://fsprojects.github.io/FSharp.Control.Reactive/index.html
 
 # Interactive Nodes
 
@@ -11,7 +13,7 @@ While much of a website content is static, there are times where you have to mat
 
 ## Adaptive Data
 
-Fun.Blazor's way to deal with this is by using [Adaptive Data]. Adaptive values behave a lot like excel cells, where a change propagates through the rest of the connected cells.
+Fun.Blazor's way to deal with this is by using [Adaptive Data] which is included out of the box. Adaptive values behave a lot like excel cells, where a change propagates through the rest of the connected cells.
 
 This concept has also been used within the javascript ecosystem in recent times often named `signals`.
 
