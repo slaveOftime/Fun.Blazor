@@ -104,16 +104,16 @@ handlers can be async or sync depending on your usage but they're often defined 
 
 ```fsharp
 button {
-  "Click Me"
   onclick(fun e -> printfn "clicked")
+  "Click Me"
 }
 
 button {
-  "Click Me Task"
   onclick(fun e -> task {
     do! Async.Sleep 1000
     printfn "clicked"
   })
+  "Click Me Task"
 }
 ```
 
@@ -159,7 +159,7 @@ module DynamicViews =
   open FSharp.Data.Adaptive
   open Fun.Blazor
 
-  let adaptiveNode initialAge =
+  let adaptiveNode =
     adaptiview () {
       let! age, setAge = cval(10).WithSetter()
 
@@ -218,7 +218,6 @@ module ReactiveViews =
       html.watch(store, (fun num -> fragment { $"Store: {num}" }))
 
     article {
-      html.bind("data-current", store)
       p { storeNode }
     }
 ```
