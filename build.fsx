@@ -128,7 +128,7 @@ let stage_generateBindingProjects name package nsp patch =
     <PackageReference FunBlazor="" FunBlazorNamespace="{nsp}" Include="{package}" Version="{version}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Fun.Blazor\Fun.Blazor.fsproj" />
+	<PackageReference Include="Fun.Blazor" Version="3.2.0" />
   </ItemGroup>
 </Project>"""
             ]

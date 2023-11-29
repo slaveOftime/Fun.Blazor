@@ -14,6 +14,6 @@
     <PackageReference FunBlazor="" FunBlazorNamespace="AntDesign" Include="AntDesign" Version="0.16.2" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Fun.Blazor\Fun.Blazor.fsproj" />
+    <PackageReference Include="Fun.Blazor" Version="3.2.0" />
   </ItemGroup>
 </Project>
