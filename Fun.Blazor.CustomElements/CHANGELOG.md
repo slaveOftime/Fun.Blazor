@@ -4,6 +4,8 @@
 
 ## [3.3.0-beta001] - 2023-11-29
 
+- INIT
+
 ## [3.2.5] - 2023-11-24
 
 - Improve html.customElement

@@ -95,7 +95,7 @@ type CustomElementsDemo =
                 button {
                     hxTrigger' hxEvt.mouse.click
                     hxRequestCustomElement (
-                        QueryBuilder<ServerDemoCounter>().Add((fun x -> x.count_from_query), 1).Add((fun x -> x.count_from_form), 2)
+                        QueryBuilder<ServerDemoCounter>().Add((fun x -> x.count_from_query), 1).Add((fun x -> x.count_from_form), "2")
                     )
                     hxSwap_afterend
                     "Htmx click to add counter"

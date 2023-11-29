@@ -4,6 +4,9 @@
 
 ## [3.3.0-beta001] - 2023-11-29
 
+- Rename MapFunBlazorCustomElements to MapCustomElementsForSSR
+- Rename MapBlazorSSRComponents to MapRazorComponentsForSSR
+
 ## [3.2.8] - 2023-11-26
 
 - Add overloads for MapFunBlazorCustomElements and MapBlazorSSRComponents

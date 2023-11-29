@@ -4,6 +4,8 @@
 
 ## [3.3.0-beta001] - 2023-11-29
 
+- Remove obsolete html.blazor overloads
+
 ## [3.2.9] - 2023-11-26
 
 - Improve html.createHiddenInputs

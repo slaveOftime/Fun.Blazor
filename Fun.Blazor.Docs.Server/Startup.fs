@@ -45,6 +45,7 @@ app.UseStaticFiles()
 app.MapRazorComponents().AddInteractiveServerRenderMode().AddInteractiveWebAssemblyRenderMode()
 app.MapRazorComponentsForSSR(Assembly.GetExecutingAssembly(), notFoundNode = div { "ERROR: not found" })
 app.MapCustomElementsForSSR(Assembly.GetExecutingAssembly(), notFoundNode = div { "ERROR: not found" })
+app.MapCustomElementsForSSR(Assembly.GetExecutingAssembly(), notFoundNode = div { "ERROR: not found" })
 
 
 app.MapFunBlazor(fun ctx ->

@@ -42,6 +42,16 @@ type ServerDemoCounter() as this =
     }
 
 
+[<FunBlazorCustomElement>]
+type Wrongcounter() as this =
+    inherit FunComponent()
+
+    [<Parameter>]
+    member val Count = 0 with get, set
+
+    override _.Render() = div { this.Count }
+
+
 module ServerTests =
     let makeTestServer (setRoute: IEndpointRouteBuilder -> unit) =
         let builder =
@@ -136,18 +146,19 @@ module ServerTests =
 
 
     [<Fact>]
-    let ``MapBlazorSSRComponents and MapFunBlazorCustomElements should work with`` () = task {
+    let ``MapRazorComponentsForSSR and MapCustomElementsForSSR should work`` () = task {
         let notFoundNode = div { "not found" }
 
         use server =
             makeTestServer (fun route ->
                 route.MapRazorComponents() |> ignore
-                route.MapBlazorSSRComponents(typeof<ServerDemoCounter>.Assembly, notFoundNode) |> ignore
-                route.MapFunBlazorCustomElements(typeof<ServerDemoCounter>.Assembly, notFoundNode) |> ignore
+                route.MapRazorComponentsForSSR(typeof<ServerDemoCounter>.Assembly, notFoundNode) |> ignore
+                route.MapCustomElementsForSSR([ typeof<ServerDemoCounter> ], notFoundNode) |> ignore
             )
 
         use http = server.CreateClient()
-        use formContent = new FormUrlEncodedContent([ KeyValuePair("count", "-2"); KeyValuePair("count", "2") ])
+        use formContent =
+            new FormUrlEncodedContent([ KeyValuePair("count", "-2"); KeyValuePair("count", "2") ])
 
         let query =
             QueryBuilder<ServerDemoCounter>()
@@ -184,16 +195,10 @@ module ServerTests =
         )
 
         let query =
-            QueryBuilder<ServerDemoCounter>()
-                .Add((fun x -> x.count), 1)
-                .Add((fun x -> x.count), 2)
-                .ToString()
+            QueryBuilder<ServerDemoCounter>().Add((fun x -> x.count), 1).Add((fun x -> x.count), 2).ToString()
 
         let! actual = http.GetStringAsync($"/fun-blazor-custom-elements/{typeof<ServerDemoCounter>.FullName}?{query}")
-        Assert.StartsWith(
-            """<server-demo-counter count="2"></server-demo-counter>""",
-            actual
-        )
+        Assert.StartsWith("""<server-demo-counter count="2"></server-demo-counter>""", actual)
 
         let query =
             QueryBuilder<ServerDemoCounter>()
@@ -209,4 +214,62 @@ module ServerTests =
             """<server-demo-counter count="3" count2="4" guid="00000000-0000-0000-0000-000000000000" query=""></server-demo-counter>""",
             actual
         )
+    }
+
+
+    [<Fact>]
+    let ``MapCustomElementsForSSR should not work for wrong convention`` () = task {
+        let notFoundNode = div { "not found" }
+
+        try
+            Server.CircuitOptions().RootComponents.RegisterCustomElementForFunBlazor<Wrongcounter>()
+            Assert.Fail "should throw error"
+        with ex ->
+            Assert.StartsWith("Blazor custom element's tag name must be snake name", ex.Message)
+
+        let builder =
+            WebHostBuilder()
+                .ConfigureServices(fun services ->
+                    services.AddRouting() |> ignore
+
+                    services.AddServerSideBlazor(fun options ->
+                        try
+                            options.RootComponents.RegisterCustomElementForFunBlazor<Wrongcounter>()
+                            Assert.Fail "should throw error"
+                        with ex ->
+                            Assert.StartsWith("Blazor custom element's tag name must be snake name", ex.Message)
+                    )
+                    |> ignore
+
+                    services.AddRazorComponents() |> ignore
+                    services.AddFunBlazorServer() |> ignore
+                )
+                .Configure(fun builder ->
+                    builder
+                        .UseRouting()
+                        .UseEndpoints(fun route ->
+                            try
+                                route.MapRazorComponents() |> ignore
+                                route.MapCustomElementsForSSR([ typeof<Wrongcounter> ], notFoundNode) |> ignore
+                                Assert.Fail "should throw exception"
+                            with ex ->
+                                let x = ex.Message
+                                Assert.StartsWith(
+                                    "Parameter name (Count) for custom element component Fun.Blazor.Tests.Wrongcounter must be lowercase name with low dash for multiple words",
+                                    ex.Message
+                                )
+
+                        )
+                    |> ignore
+                )
+
+        use server = new TestServer(builder)
+
+        use http = server.CreateClient()
+
+        let query = QueryBuilder<Wrongcounter>().Add((fun x -> x.Count), 1).ToString()
+
+        let! _ = http.GetAsync($"/fun-blazor-custom-elements/{typeof<Wrongcounter>.FullName}?{query}")
+
+        ()
     }

@@ -17,7 +17,8 @@ type FunBlazorCustomElementsExtensions =
     [<Extension>]
     static member RegisterCustomElementForFunBlazor(this: IJSComponentConfiguration, ty: System.Type, identifier: string) =
         if identifier.Contains "-" |> not then
-            failwith $"Blazor custom element's tag name must be snake name with at least two words, like xxx-xxx. Current tag name is {identifier} for type {ty.FullName}."
+            failwith
+                $"Blazor custom element's tag name must be snake name with at least two words, like xxx-xxx. Current tag name is {identifier} for type {ty.FullName}."
         // https://github.com/dotnet/aspnetcore/blob/main/src/Components/CustomElements/src/JSComponentConfigurationExtensions.cs
         this.RegisterForJavaScript(ty, identifier, "registerBlazorCustomElement")
 
@@ -31,10 +32,10 @@ type FunBlazorCustomElementsExtensions =
             ?tagName
         )
         =
-        this.RegisterCustomElement<'Component>(
+        let tagName =
             tagName
             |> Option.defaultWith (fun _ -> Utils.GetTagNameForType(typeof<'Component>, failIfWithoutFunBlazorCustomElementAttribute = false))
-        )
+        this.RegisterCustomElementForFunBlazor(typeof<'Component>, tagName)
 
     /// You will need to add FunBlazorCustomElementAttribute to the target components.
     /// Please make sure the Component name has at least two upper case like DemoComp, or use tagName with snake style like "demo-comp".

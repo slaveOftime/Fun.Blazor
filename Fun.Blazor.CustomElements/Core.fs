@@ -3,6 +3,8 @@
 open System
 
 
+/// The tag name must be lowercase snake name with at least two words, like xxx-xxx. 
+/// Also all the fields of the component paranemter name must be lowercase name with low dash for multiple words to santisfy blazor custom elements conventions.
 [<AttributeUsage(AttributeTargets.Class)>]
 type FunBlazorCustomElementAttribute() =
     inherit Attribute()
