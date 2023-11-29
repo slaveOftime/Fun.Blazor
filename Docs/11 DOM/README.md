@@ -26,6 +26,8 @@ Calling that function would produce a markup like
 
 > Some html attributes are reserved keywords in F#, and that's why `'` is added at the end of those names, in this case `class'` instead of `class`
 
+> Note: Attributes must be placed before any other elements, like strings or other nodes
+
 ## Control Flow
 
 Since you're using F# for your markup code, you have all of the F# arsenal at your disposal that includes `match`, `if`, `function` and even lists of elements but to avoid having problems with mismatch between content in the element rendering you should use `fragment` or `region` these are containerless builders that isolate blazor's node count which can be useful for performance as well as keeping the content concistent.
