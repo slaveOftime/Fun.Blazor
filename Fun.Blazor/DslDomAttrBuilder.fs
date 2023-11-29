@@ -1,81 +1,11 @@
 ﻿namespace Fun.Blazor
 
 open System
-open System.Text
 open System.Threading.Tasks
 open Microsoft.AspNetCore.Components
 open Microsoft.AspNetCore.Components.Web
 open Operators
 open Internal
-
-
-type StyleBuilder() =
-    inherit Fun.Css.CssBuilder()
-
-    member inline _.Run([<InlineIfLambda>] combine: Fun.Css.Internal.CombineKeyValue) =
-        AttrRenderFragment(fun _ builder index ->
-            let sb = stringBuilderPool.Get()
-            builder.AddAttribute(index, "style", combine.Invoke(sb).ToString())
-            stringBuilderPool.Return sb
-            index + 1
-        )
-
-
-type StyleStrBuilder() =
-    inherit Fun.Css.CssBuilder()
-
-    member inline _.Run([<InlineIfLambda>] combine: Fun.Css.Internal.CombineKeyValue) =
-        let sb = stringBuilderPool.Get()
-        let str = combine.Invoke(sb).ToString()
-        stringBuilderPool.Return sb
-        str
-
-
-type RulesetBuilder(ruleName: string) =
-    inherit Fun.Css.CssBuilder()
-
-    member _.Run(combine: Fun.Css.Internal.CombineKeyValue) =
-        let sb = stringBuilderPool.Get()
-        sb.Append(ruleName).AppendLine(" {") |> ignore
-        sb.Append("    ") |> ignore
-        combine.Invoke(sb) |> ignore
-        sb.AppendLine().AppendLine("}") |> ignore
-        let str = sb.ToString()
-        stringBuilderPool.Return sb
-        str
-
-
-type KeyFrame = delegate of StringBuilder -> StringBuilder
-
-type KeyFrameBuilder(percentage: string) =
-    inherit Fun.Css.CssBuilder()
-
-    member _.Run(combine: Fun.Css.Internal.CombineKeyValue) =
-        KeyFrame(fun sb ->
-            sb.Append("  ").Append(percentage).AppendLine(" {") |> ignore
-            sb.Append("    ") |> ignore
-            let sb = combine.Invoke(sb).AppendLine()
-            sb.AppendLine("  } ")
-        )
-
-type KeyFramesBuilder(identifier: string) =
-
-    member _.Run(kf: KeyFrame) =
-        let sb = stringBuilderPool.Get()
-
-        sb.Append("@keyframes ").Append(identifier).AppendLine(" {") |> ignore
-        kf.Invoke(sb) |> ignore
-        sb.AppendLine("}") |> ignore
-
-        let result = sb.ToString()
-        stringBuilderPool.Return sb
-        result
-
-    member inline _.Yield([<InlineIfLambda>] kf: KeyFrame) = kf
-
-    member inline _.Delay([<InlineIfLambda>] fn: unit -> KeyFrame) = KeyFrame(fun x -> fn().Invoke(x))
-
-    member inline _.Combine([<InlineIfLambda>] kf1: KeyFrame, [<InlineIfLambda>] kf2: KeyFrame) = KeyFrame(fun sb -> kf2.Invoke(kf1.Invoke(sb)))
 
 
 [<RequireQualifiedAccess>]
@@ -582,8 +512,11 @@ type DomAttrBuilder() =
     member inline _.type'([<InlineIfLambda>] render: AttrRenderFragment, v: InputTypes) = render ==> ("type" => v.ToString())
     [<CustomOperation("usemap")>]
     member inline _.usemap([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("usemap" => v)
+    
     [<CustomOperation("value")>]
-    member inline _.value([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("value" => v)
+    member inline _.value<'T>([<InlineIfLambda>] render: AttrRenderFragment, v: 'T) =
+        render ==> ("value" => (if typeof<'T> = typeof<bool> then box (string v) else box v))
+
     [<CustomOperation("width")>]
     member inline _.width([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("width" => v)
     [<CustomOperation("wrap")>]

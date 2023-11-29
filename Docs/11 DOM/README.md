@@ -108,6 +108,18 @@ let demo =
 
 For DOM element/component, you can do:
 
+Without any bindings you can:
+
+```fsharp
+let demo =
+    html.blazor (ComponentAttrBuilder<MudPaper>()
+        .Add((fun x -> x.Elevation), 10)    
+        .Add((fun x -> x.Outlined), true)    
+    )
+```
+
+With auto generated bindings:
+
 ```fsharp
 open Fun.Blazor
 open Fun.Blazor.Operators

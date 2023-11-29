@@ -18,7 +18,6 @@ open Fun.Blazor.Docs.Server
 let builder = WebApplication.CreateBuilder(Environment.GetCommandLineArgs())
 let services = builder.Services
 
-services.AddControllersWithViews()
 services.AddServerSideBlazor(fun options ->
     //options.RootComponents.RegisterCustomElementForFunBlazor<Demos.CustomElementDemo.DemoCounter>()
     //options.RootComponents.RegisterCustomElementForFunBlazor(typeof<Demos.CustomElementDemo.DemoCounter>.Assembly)

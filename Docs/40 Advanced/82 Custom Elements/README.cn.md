@@ -11,7 +11,9 @@
 注册组件：
 
 ```fsharp
+...
 services.AddServerSideBlazor(fun options -> options.RootComponents.RegisterCustomElementForFunBlazor(Assembly.GetExecutingAssembly()))
+...
 ```
 
 在 html head 中配置帮助脚本：
@@ -47,9 +49,9 @@ type PostLikesSurvey() =
 使用你的组件：
 
 ```fsharp
-html.customElement<PostLikesSurvey> (
-    delayMs = 5_000, 
-    attrs = (nameof Unchecked.defaultof<PostLikesSurvey>.post_id => post.Id.ToString())
+html.customElement (
+    ComponentAttrBuilder<PostLikesSurvey>().Add((fun x -> x.post_id), post.Id.ToString()),
+    renderAfter = RenderAfter.InViewport
 )
 ```
 

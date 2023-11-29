@@ -33,51 +33,51 @@ module hxEvt =
 
     /// triggered after an AJAX request has completed processing a successful response
     [<Literal>]
-    let afterOnLoad = "afterOnLoad"
+    let afterOnLoad = "after-on-load"
 
     /// triggered after htmx has initialized a node
     [<Literal>]
-    let afterProcessNode = "afterProcessNode"
+    let afterProcessNode = "after-process-node"
 
     /// triggered after an AJAX request has completed
     [<Literal>]
-    let afterRequest = "afterRequest"
+    let afterRequest = "after-request"
 
     /// triggered after the DOM has settled
     [<Literal>]
-    let afterSettle = "afterSettle"
+    let afterSettle = "after-settle"
 
     /// triggered after new content has been swapped in
     [<Literal>]
-    let afterSwap = "afterSwap"
+    let afterSwap = "after-swap"
 
     /// triggered before htmx disables an element or removes it from the DOM
     [<Literal>]
-    let beforeCleanupElement = "beforeCleanupElement"
+    let beforeCleanupElement = "before-cleanup-element"
 
     /// triggered before any response processing occurs
     [<Literal>]
-    let beforeOnLoad = "beforeOnLoad"
+    let beforeOnLoad = "before-on-load"
 
     /// triggered before htmx initializes a node
     [<Literal>]
-    let beforeProcessNode = "beforeProcessNode"
+    let beforeProcessNode = "before-process-node"
 
     /// triggered before an AJAX request is made
     [<Literal>]
-    let beforeRequest = "beforeRequest"
+    let beforeRequest = "before-request"
 
     /// triggered before a swap is done, allows you to configure the swap
     [<Literal>]
-    let beforeSwap = "beforeSwap"
+    let beforeSwap = "before-swap"
 
     /// triggered just before an ajax request is sent
     [<Literal>]
-    let beforeSend = "beforeSend"
+    let beforeSend = "before-send"
 
     /// triggered before the request, allows you to customize parameters, headers
     [<Literal>]
-    let configRequest = "configRequest"
+    let configRequest = "config-request"
 
     /// triggered after a trigger occurs on an element, allows you to cancel (or delay) issuing the AJAX request
     [<Literal>]
@@ -85,27 +85,27 @@ module hxEvt =
 
     /// triggered on an error during cache writing
     [<Literal>]
-    let historyCacheError = "historyCacheError"
+    let historyCacheError = "history-cache-error"
 
     /// triggered on a cache miss in the history subsystem
     [<Literal>]
-    let historyCacheMiss = "historyCacheMiss"
+    let historyCacheMiss = "history-cache-miss"
 
     /// triggered on a unsuccessful remote retrieval
     [<Literal>]
-    let historyCacheMissError = "historyCacheMissError"
+    let historyCacheMissError = "history-cache-miss-error"
 
     /// triggered on a successful remote retrieval
     [<Literal>]
-    let historyCacheMissLoad = "historyCacheMissLoad"
+    let historyCacheMissLoad = "history-cache-miss-load"
 
     /// triggered when htmx handles a history restoration action
     [<Literal>]
-    let historyRestore = "historyRestore"
+    let historyRestore = "history-restore"
 
     /// triggered before content is saved to the history cache
     [<Literal>]
-    let beforeHistorySave = "beforeHistorySave"
+    let beforeHistorySave = "before-history-save"
 
     /// triggered when new content is added to the DOM
     [<Literal>]
@@ -113,24 +113,23 @@ module hxEvt =
 
     /// triggered when an element refers to a SSE event in its trigger, but no parent SSE source has been defined
     [<Literal>]
-    let noSSESourceError = "noSSESourceError"
-
+    let noSSESourceError = "no-s-s-e-source-error"
 
     /// triggered when an exception occurs during the onLoad handling in htmx
     [<Literal>]
-    let onLoadError = "onLoadError"
+    let onLoadError = "on-load-error"
 
     /// triggered after an out of band element as been swapped in
     [<Literal>]
-    let oobAfterSwap = "oobAfterSwap"
+    let oobAfterSwap = "oob-after-swap"
 
     /// triggered before an out of band element swap is done, allows you to configure the swap
     [<Literal>]
-    let oobBeforeSwap = "oobBeforeSwap"
+    let oobBeforeSwap = "oob-before-swap"
 
     /// triggered when an out of band element does not have a matching ID in the current DOM
     [<Literal>]
-    let oobErrorNoTarget = "oobErrorNoTarget"
+    let oobErrorNoTarget = "oob-error-no-target"
 
     /// triggered after a prompt is shown
     [<Literal>]
@@ -138,31 +137,31 @@ module hxEvt =
 
     /// triggered after an url is pushed into history
     [<Literal>]
-    let pushedIntoHistory = "pushedIntoHistory"
+    let pushedIntoHistory = "pushed-into-history"
 
     /// triggered when an HTTP response error (non-200 or 300 response code) occurs
     [<Literal>]
-    let responseError = "responseError"
+    let responseError = "response-error"
 
     /// triggered when a network error prevents an HTTP request from happening
     [<Literal>]
-    let sendError = "sendError"
+    let sendError = "send-error"
 
     /// triggered when an error occurs with a SSE source
     [<Literal>]
-    let sseError = "sseError"
+    let sseError = "sse-error"
 
     /// triggered when a SSE source is opened
     [<Literal>]
-    let sseOpen = "sseOpen"
+    let sseOpen = "sse-open"
 
     /// triggered when an error occurs during the swap phase
     [<Literal>]
-    let swapError = "swapError"
+    let swapError = "swap-error"
 
     /// triggered when an invalid target is specified
     [<Literal>]
-    let targetError = "targetError"
+    let targetError = "target-error"
 
     /// triggered when a request timeout occurs
     [<Literal>]

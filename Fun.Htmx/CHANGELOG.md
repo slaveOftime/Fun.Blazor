@@ -4,6 +4,20 @@
 
 ## [3.3.0-beta001] - 2023-11-29
 
+- Update htmx events convention
+
+## [3.2.9] - 2023-11-26
+
+- Add hxPostCustomElement overload
+
+## [3.2.8] - 2023-11-26
+
+- Add more overloads for hxGetComponent, hxPostComponent, hxGetCustomElement, hxPostCustomElement
+
+## [3.2.7] - 2023-11-25
+
+- Add hxGetComponent, hxPostComponent, hxGetCustomElement, hxPostCustomElement
+
 ## [3.2.4] - 2023-11-23
 
 - Add more overloads for hxRequestBlazorSSR and hxRequestCustomElement

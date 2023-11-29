@@ -11,7 +11,9 @@ It is powered by **Microsoft.AspNetCore.Components.CustomElements** which is off
 Register the components:
 
 ```fsharp
+...
 services.AddServerSideBlazor(fun options -> options.RootComponents.RegisterCustomElementForFunBlazor(Assembly.GetExecutingAssembly()))
+...
 ```
 
 Set the helper script, for example you can put it at the head of your html page:
@@ -31,7 +33,6 @@ html {
 Define your custom component
 
 ```fsharp
-
 [<FunBlazorCustomElement>]
 type PostLikesSurvey() =
     inherit FunComponent()
@@ -47,9 +48,9 @@ type PostLikesSurvey() =
 Consume it
 
 ```fsharp
-html.customElement<PostLikesSurvey> (
-    delayMs = 5_000, 
-    attrs = (nameof Unchecked.defaultof<PostLikesSurvey>.post_id => post.Id.ToString())
+html.customElement (
+    ComponentAttrBuilder<PostLikesSurvey>().Add((fun x -> x.post_id), post.Id.ToString()),
+    renderAfter = RenderAfter.InViewport
 )
 ```
 

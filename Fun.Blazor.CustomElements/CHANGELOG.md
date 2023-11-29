@@ -4,6 +4,10 @@
 
 ## [3.3.0-beta001] - 2023-11-29
 
+## [3.2.5] - 2023-11-24
+
+- Improve html.customElement
+
 ## [3.2.4] - 2023-11-23
 
 - Add more overloads for html.customElement

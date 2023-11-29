@@ -20,6 +20,7 @@
 		<Compile Include="DslFragmentBuilder.fs" />
 		<Compile Include="DslDomAttrBuilder.fs" />
 		<Compile Include="DslElementBuilder.fs" />
+		<Compile Include="DslStyleBuilder.fs" />
 		<Compile Include="DslComponentBuilder.fs" />
 		<Compile Include="DslComponents.fs" />
 		<Compile Include="DslInject.fs" />

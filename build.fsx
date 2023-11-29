@@ -89,7 +89,7 @@ let stage_packNuget projDir =
     let version = Changelog.GetLastVersion(projDir) |> Option.defaultWith (fun _ -> failwith "No version available")
     stage $"Pack Nuget for {projDir}" {
         workingDir projDir
-        run $"dotnet pack -c Release -o {__SOURCE_DIRECTORY__} /p:Version={version.Version}"
+        run $"dotnet pack -c Release -o {__SOURCE_DIRECTORY__}"
     }
 
 let stage_generateBindingProjects name package nsp patch =

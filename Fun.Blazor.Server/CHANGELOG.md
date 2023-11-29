@@ -4,6 +4,24 @@
 
 ## [3.3.0-beta001] - 2023-11-29
 
+## [3.2.8] - 2023-11-26
+
+- Add overloads for MapFunBlazorCustomElements and MapBlazorSSRComponents
+- Only take the last value when query or form got same keys in MapFunBlazorCustomElements and MapBlazorSSRComponents
+
+## [3.2.7] - 2023-11-24
+
+- Enable antiforgery for MapBlazorSSRComponents and MapFunBlazorCustomElements
+
+## [3.2.6] - 2023-11-24
+
+- Improve MapBlazorSSRComponents and MapFunBlazorCustomElements to support nullable
+
+## [3.2.5] - 2023-11-24
+
+- Improve MapBlazorSSRComponents
+- Improve MapFunBlazorCustomElements
+
 ## [3.2.4] - 2023-11-23
 
 - Automatically set parameters from form or query for MapBlazorSSRComponents and MapFunBlazorCustomElements

@@ -171,12 +171,13 @@ let ``Check some attributes`` () =
     let demo =
         div {
             hidden true
+            value true
             type' InputTypes.``datetime-local``
             autocomplete AutoCompleteValues.name.family_name
         }
 
     let result = context.RenderNode demo
-    result.MarkupMatches("""<div hidden type="datetime-local" autocomplete="family-name"></div>""")
+    result.MarkupMatches("""<div hidden value="True" type="datetime-local" autocomplete="family-name"></div>""")
 
 
 [<Fact>]
@@ -310,9 +311,10 @@ let ``html blazor should work with ComponentAttrBuilder`` () =
     let demo =
         html.blazor (ComponentAttrBuilder<MudPaper>()
             .Add((fun x -> x.Elevation), 10)    
+            .Add((fun x -> x.Outlined), true)    
         )
 
     let result = context.RenderNode demo
     result.MarkupMatches("""
-        <div class="mud-paper mud-elevation-10" style=""></div>
+        <div class="mud-paper mud-paper-outlined" style=""></div>
     """)

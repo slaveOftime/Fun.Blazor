@@ -92,6 +92,20 @@ let ``hxRequestxxx should work`` () =
                 div { hxRequestCustomElement "post" (QueryBuilder<DemoComp>().Add((fun x -> x.Count), 2)) }
                 div { hxRequestCustomElement typeof<DemoComp> [ "Count", box 3 ] }
                 div { hxRequestCustomElement typeof<DemoComp> [ "Count", box 4 ] "post" }
+                div { 
+                    hxRequestCustomElement (QueryBuilder<DemoComp>()
+                        .Add((fun x -> x.Count), 2)
+                        .Add((fun x -> x.Count), 3)
+                        .Add(DemoComp(Count = 4))
+                    ) 
+                }
+                div { 
+                    hxRequestCustomElement (QueryBuilder<DemoComp>()
+                        .Add((fun x -> x.Count), 2)
+                        .Add((fun x -> x.Count), 3, append = true)
+                    ) 
+                    html.createHiddenInputs (DemoComp(Count = 1))
+                }
             }
         )
 
@@ -105,5 +119,9 @@ let ``hxRequestxxx should work`` () =
         <div hx-post="/fun-blazor-custom-elements/Fun.Blazor.Tests.HtmxTests+DemoComp?Count=2"></div>
         <div hx-get="/fun-blazor-custom-elements/Fun.Blazor.Tests.HtmxTests+DemoComp?Count=3"></div>
         <div hx-post="/fun-blazor-custom-elements/Fun.Blazor.Tests.HtmxTests+DemoComp?Count=4"></div>
+        <div hx-get="/fun-blazor-custom-elements/Fun.Blazor.Tests.HtmxTests+DemoComp?Count=4"></div>
+        <div hx-get="/fun-blazor-custom-elements/Fun.Blazor.Tests.HtmxTests+DemoComp?Count=2&amp;Count=3">
+            <input type="hidden" name="Count" value="1">
+        </div>
         """
     )

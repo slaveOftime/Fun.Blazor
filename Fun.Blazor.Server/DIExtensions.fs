@@ -12,6 +12,7 @@ open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Routing
 open Microsoft.AspNetCore.Mvc.Rendering
 #if !NET6_0
+open Microsoft.AspNetCore.Antiforgery
 open Microsoft.AspNetCore.Http.HttpResults
 open Microsoft.AspNetCore.Components
 open Microsoft.AspNetCore.Components.Endpoints
@@ -21,6 +22,7 @@ open Microsoft.Extensions.DependencyInjection
 open Fun.Result
 open Fun.Blazor
 open Fun.Blazor.Operators
+
 
 
 #if !NET6_0
@@ -57,6 +59,10 @@ module internal Utils =
                 CreateAttr: HttpContext -> AttrRenderFragment
             |}>
                 ())
+
+type internal RequiresAntiforgeryMetadata(?requires) =
+    interface IAntiforgeryMetadata with
+        member _.RequiresValidation = defaultArg requires true
 #endif
 
 
@@ -246,34 +252,39 @@ type FunBlazorServerExtensions =
 
     static member private MakeCreateAttrFn(ty: Type) =
         let paramsInfo =
-            ty.GetProperties()
-            |> Seq.choose (fun p ->
+            ty.GetProperties(BindingFlags.Instance ||| BindingFlags.Public)
+            |> Seq.choose (fun p -> 
                 let attr = p.GetCustomAttribute<ParameterAttribute>()
                 if isNull attr then None else Some(p.Name, p.PropertyType)
             )
             |> Map.ofSeq
 
-        let parseValue (name: string) (v: string) (ty: Type) =
-            ty.GetMethods(BindingFlags.Public ||| BindingFlags.Static)
-            |> Seq.tryFind (fun x ->
-                let ps = x.GetParameters()
-                x.Name = "Parse" && ps.Length = 1 && ps[0].ParameterType = typeof<string>
-            )
-            |> function
-                | Some x -> x.Invoke(null, [| v |])
-                | None -> failwith $"Parameter {name} should has a static Parse method for string"
+        let parseValue (name: string) (v: string) (ty: Type) = 
+            if ty = typeof<string> then box v
+            else
+                let ty =
+                    if ty.Name.StartsWith("Nullable`") then ty.GetGenericArguments()[0]
+                    else ty
+                ty.GetMethods(BindingFlags.Public ||| BindingFlags.Static)
+                |> Seq.tryFind (fun x -> 
+                    let ps = x.GetParameters()
+                    x.Name = "Parse" && ps.Length = 1 && ps[0].ParameterType = typeof<string>
+                )
+                |> function
+                    | Some x -> x.Invoke(null, [| v |])
+                    | None -> failwith $"Parameter {name} should has a static Parse method for string"
 
         fun (ctx: HttpContext) ->
             paramsInfo
             |> Seq.choose (fun p ->
                 let matchQuery () =
                     match ctx.Request.Query.TryGetValue p.Key with
-                    | true, v -> Some(p.Key => parseValue p.Key (v.ToString()) p.Value)
+                    | true, v when v.Count > 0 -> Some (p.Key => parseValue p.Key (v.Item(v.Count - 1).ToString()) p.Value)
                     | _ -> None
                 if ctx.Request.Method.Equals(HttpMethods.Post, StringComparison.OrdinalIgnoreCase) then
                     match ctx.Request.Form.TryGetValue(p.Key) with
-                    | true, v -> Some(p.Key => parseValue p.Key (v.ToString()) p.Value)
-                    | _ -> matchQuery ()
+                    | true, v when v.Count > 0 -> Some (p.Key => parseValue p.Key (v.Item(v.Count - 1).ToString()) p.Value)
+                    | _ -> matchQuery()
                 else
                     matchQuery ()
             )
@@ -308,7 +319,8 @@ type FunBlazorServerExtensions =
             |> ignore
 
     /// This will serve all blazor components (inherit from ComponentBase) in the target assembly for server side rendering
-    /// route pattern: /fun-blazor-server-side-render-components/{componentType}
+    /// route pattern: /fun-blazor-server-side-render-components/{componentType}. 
+    /// Value can be passed by query or form for component property, form will have higher priority. Only the last value will be take when found same keys.
     [<Extension>]
     static member MapRazorComponentsForSSR(builder: IEndpointRouteBuilder, assembly: Assembly, ?notFoundNode: NodeRenderFragment) =
         builder.MapRazorComponentsForSSR(

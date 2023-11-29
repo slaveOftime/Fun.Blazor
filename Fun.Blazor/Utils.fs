@@ -1,9 +1,11 @@
-﻿[<AutoOpen>]
+﻿
+[<AutoOpen>]
 module Fun.Blazor.Utils
 
 open System
 open System.Diagnostics
 open System.Threading.Tasks
+open System.Reflection
 open Microsoft.Extensions.Logging
 open Microsoft.AspNetCore.Components
 open Microsoft.Extensions.ObjectPool
@@ -35,7 +37,7 @@ module Internal =
 
     /// Please do not depend on this type, it maybe renamed in the future
     [<Struct>]
-    type AttrRenderFragmentWrapper = AttrRenderFragmentWrapper of AttrRenderFragment
+    type AttrRenderFragmentWrapper = | AttrRenderFragmentWrapper of AttrRenderFragment
 
 
     type ILogger with
@@ -62,7 +64,7 @@ type IComponent with
 
 
 type ComponentAttrBuilder<'T when 'T :> IComponent>() =
-    let mutable attr = Internal.emptyAttr()
+    let mutable attr = Internal.emptyAttr ()
 
     let rec getExpressionName (exp: Expression) =
         match exp.NodeType with
@@ -71,8 +73,22 @@ type ComponentAttrBuilder<'T when 'T :> IComponent>() =
         | ExpressionType.Convert -> getExpressionName (exp :?> UnaryExpression).Operand
         | _ -> failwith "Unsupported expression"
 
-    member this.Add(expression: Expression<Func<'T, 'Prop>>, value) =
-        attr <- attr ==> (getExpressionName expression => value)
+    /// The last Add will take effect for the final attribute been used
+    member this.Add<'Prop>(expression: Expression<Func<'T, 'Prop>>, value: 'Prop) =
+        // We should always put the latest added value to first, so blazor can take it as the final attribute
+        attr <- (getExpressionName expression => value) ==> attr
+        this
+
+    member this.Add(state: 'T) =
+        attr <-
+            typeof<'T>.GetProperties(BindingFlags.Instance ||| BindingFlags.Public)
+            |> Seq.choose (fun p ->
+                let attr = p.GetCustomAttribute<ParameterAttribute>()
+                if isNull attr then None else Some p
+            )
+            |> Seq.map (fun p -> p.Name => p.GetValue(state))
+            // We should always put the latest added value to first, so blazor can take it as the final attribute
+            |> Seq.fold (fun x y -> y ==> x) attr
         this
 
     member _.Build() = attr
@@ -88,8 +104,30 @@ type QueryBuilder<'T>() =
         | ExpressionType.Convert -> getExpressionName (exp :?> UnaryExpression).Operand
         | _ -> failwith "Unsupported expression"
 
-    member this.Add(expression: Expression<Func<'T, 'Prop>>, value: obj) =
-        query.Add(getExpressionName expression, if isNull value then "" else value.ToString())
+    /// By default will always create or override existing query value
+    member this.Add<'Prop>(expression: Expression<Func<'T, 'Prop>>, value: 'Prop, ?append: bool) =
+        match append with
+        | Some true -> query.Add(getExpressionName expression, value.ToString())
+        | _ -> query.Set(getExpressionName expression, value.ToString())
+        this
+
+    /// Null property will be ignored
+    member this.Add(state: obj) =
+        let ty = state.GetType()
+        state.GetType().GetProperties(BindingFlags.Instance ||| BindingFlags.Public)
+        |> Seq.choose (fun p ->
+            if ty = typeof<IComponent> then
+                let attr = p.GetCustomAttribute<ParameterAttribute>()
+                if isNull attr then None else Some p
+            else
+                Some p
+        )
+        |> Seq.iter (fun p ->
+            match p.GetValue state with
+            | null -> ()
+            | x -> query.Set(p.Name, x.ToString())
+        )
+
         this
 
     override _.ToString() = query.ToString()

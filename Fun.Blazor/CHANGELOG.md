@@ -4,6 +4,28 @@
 
 ## [3.3.0-beta001] - 2023-11-29
 
+## [3.2.9] - 2023-11-26
+
+- Improve html.createHiddenInputs
+
+## [3.2.8] - 2023-11-26
+
+- Refactor style dsl
+- Add html.hiddenInputs helper
+
+## [3.2.7] - 2023-11-25
+
+- Fix value for DomAttrBuilder
+
+## [3.2.6] - 2023-11-24
+
+- Improve ComponentAttrBuilder
+- Improve QueryBuilder
+
+## [3.2.5] - 2023-11-24
+
+- Improve ComponentAttrBuilder
+- Improve QueryBuilder
 
 ## [3.2.4] - 2023-11-23
 
