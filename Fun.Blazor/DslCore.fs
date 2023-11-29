@@ -1,7 +1,6 @@
 ﻿namespace Fun.Blazor
 
 open System
-open System.Collections.Concurrent
 open System.Threading.Tasks
 open FSharp.Data.Adaptive
 open Microsoft.AspNetCore.Components
@@ -80,52 +79,6 @@ type html() =
 
             builder.CloseRegion()
             sequence + 1
-        )
-
-
-    static member internal compCache =
-        lazy (fun () -> ConcurrentDictionary<Type, Reflection.PropertyInfo[]>())
-
-    /// With this we can init a blazor component easier without always write string for binding paratemters.
-    /// But it will use reflection so you will pay for the performance cost so we should use it carefully.
-    /// Only property with attribute ParameterAttribute will be passed through.
-    /// ```fsharp
-    ///     html.blazor (fun _ ->
-    ///         SomeComp(
-    ///             Param1 = ...,
-    ///             Param2 = ...,
-    ///         )
-    ///     )
-    /// ```
-    [<Obsolete>]
-    static member blazor<'T when 'T :> IComponent>(fn: IComponent -> 'T, ?render: AttrRenderFragment) =
-        NodeRenderFragment(fun comp builder index ->
-            builder.OpenComponent<'T>(index)
-
-            let mutable nextIndex = index + 1
-            let instance = fn comp
-            let props =
-                html.compCache
-                    .Value()
-                    .GetOrAdd(
-                        typeof<'T>,
-                        fun _ ->
-                            instance.GetType().GetProperties()
-                            |> Array.filter (fun prop -> prop.CustomAttributes |> Seq.exists (fun x -> x.AttributeType = typeof<ParameterAttribute>))
-                    )
-
-            for prop in props do
-                let value = prop.GetValue(instance)
-                builder.AddAttribute(nextIndex, prop.Name, value)
-                nextIndex <- nextIndex + 1
-
-            nextIndex <-
-                match render with
-                | None -> nextIndex
-                | Some r -> r.Invoke(comp, builder, nextIndex)
-
-            builder.CloseComponent()
-            nextIndex
         )
 
 

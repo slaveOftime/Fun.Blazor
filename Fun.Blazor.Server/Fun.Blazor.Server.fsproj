@@ -9,7 +9,6 @@
 
 	<ItemGroup>
 		<Compile Include="DIExtensions.fs" />
-		<Compile Include="Dsl.fs" />
 	</ItemGroup>
 
 	<ItemGroup>

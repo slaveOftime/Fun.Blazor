@@ -20,13 +20,11 @@ let services = builder.Services
 
 services.AddControllersWithViews()
 services.AddServerSideBlazor(fun options ->
-    options.RootComponents.RegisterCustomElementForFunBlazor<Demos.CustomElementDemo.DemoCounter>()
-    options.RootComponents.RegisterCustomElementForFunBlazor(typeof<Demos.CustomElementDemo.DemoCounter>.Assembly)
+    //options.RootComponents.RegisterCustomElementForFunBlazor<Demos.CustomElementDemo.DemoCounter>()
+    //options.RootComponents.RegisterCustomElementForFunBlazor(typeof<Demos.CustomElementDemo.DemoCounter>.Assembly)
     options.RootComponents.RegisterCustomElementForFunBlazor(Assembly.GetExecutingAssembly())
 )
-services.AddRazorComponents()
-    .AddInteractiveServerComponents()
-    .AddInteractiveWebAssemblyComponents()
+services.AddRazorComponents().AddInteractiveServerComponents().AddInteractiveWebAssemblyComponents()
 services.AddFunBlazorServer()
 services.AddMudServices()
 services.AddScoped<Demos.ScopedDemoService>()
@@ -45,13 +43,11 @@ let app = builder.Build()
 
 app.UseStaticFiles()
 
-app.MapRazorComponents()
-    .AddInteractiveServerRenderMode()
-    .AddInteractiveWebAssemblyRenderMode()
+app.MapRazorComponents().AddInteractiveServerRenderMode().AddInteractiveWebAssemblyRenderMode()
 
 app.MapGet("/demo", Func<_>(fun () -> div { $"{DateTime.Now}" })).AddFunBlazor()
-app.MapBlazorSSRComponents(Assembly.GetExecutingAssembly(), notFoundNode = div { "ERROR: not found" })
-app.MapFunBlazorCustomElements(Assembly.GetExecutingAssembly(), notFoundNode = div { "ERROR: not found" })
+app.MapBlazorComponentsForSSR([ Assembly.GetExecutingAssembly() ], notFoundNode = div { "ERROR: not found" })
+app.MapFunBlazorCustomElementsForSSR([ Assembly.GetExecutingAssembly() ], notFoundNode = div { "ERROR: not found" })
 
 
 app.MapFunBlazor(fun ctx ->

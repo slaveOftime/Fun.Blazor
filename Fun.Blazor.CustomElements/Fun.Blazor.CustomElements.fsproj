@@ -8,7 +8,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Compile Include="DslCustomElements.fs" />
+		<Compile Include="Core.fs" />
+		<Compile Include="Utils.fs" />
+		<Compile Include="Dsl.fs" />
+		<Compile Include="DIExtensions.fs" />
 	</ItemGroup>
 	
 	<ItemGroup>

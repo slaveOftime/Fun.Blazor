@@ -259,9 +259,11 @@ type FunBlazorServerExtensions =
     /// This will serve all blazor components (inherit from ComponentBase) in the target assembly for server side rendering
     /// route pattern: /fun-blazor-server-side-render-components/{componentType}
     [<Extension>]
-    static member MapBlazorSSRComponents(builder: IEndpointRouteBuilder, assembly: Assembly, ?notFoundNode: NodeRenderFragment) =
+    static member MapBlazorComponentsForSSR(builder: IEndpointRouteBuilder, assemblies: Assembly seq, ?notFoundNode: NodeRenderFragment) =
         let components =
-            assembly.GetTypes()
+            assemblies
+            |> Seq.map (fun x -> x.GetTypes())
+            |> Seq.concat
             |> Seq.filter (fun x -> x.IsAssignableTo(typeof<IComponent>))
             |> Seq.map (fun x -> x.FullName, {| Type = x; CreateAttr = FunBlazorServerExtensions.MakeCreateAttrFn x |})
             |> Map.ofSeq
@@ -276,17 +278,17 @@ type FunBlazorServerExtensions =
     /// This will serve all components which is marked as FunBlazorCustomElementAttribute in the target assembly, 
     /// route pattern: /fun-blazor-custom-elements/{componentType}
     [<Extension>]
-    static member MapFunBlazorCustomElements(builder: IEndpointRouteBuilder, assembly: Assembly, ?notFoundNode: NodeRenderFragment) =
+    static member MapFunBlazorCustomElementsForSSR(builder: IEndpointRouteBuilder, assemblies: Assembly seq, ?notFoundNode: NodeRenderFragment) =
+        let types =
+            assemblies
+            |> Seq.map (fun x -> x.GetTypes())
+            |> Seq.concat
         let components =
             [
-                for ty in assembly.GetTypes() do
+                for ty in types do
                     let attr = ty.GetCustomAttribute<FunBlazorCustomElementAttribute>()
                     if attr |> box |> isNull |> not then
-                        let tagName =
-                            match attr.TagName with
-                            | NullOrEmptyString -> None
-                            | SafeString tagName -> Some tagName
-                        ty.FullName, {| Type = ty; CreateAttr = FunBlazorServerExtensions.MakeCreateAttrFn ty; TagName = tagName |}
+                        ty.FullName, {| Type = ty; CreateAttr = FunBlazorServerExtensions.MakeCreateAttrFn ty |}
             ]
             |> Map.ofSeq
         builder
@@ -294,9 +296,7 @@ type FunBlazorServerExtensions =
                 match Map.tryFind componentType components with
                 | Some comp ->
                     let attrs = comp.CreateAttr ctx
-                    match comp.TagName with
-                    | None -> html.customElement(comp.Type, attrs = attrs)
-                    | Some tagName -> html.customElement(comp.Type, attrs = attrs, tagName = tagName)
+                    html.customElement(comp.Type, attrs = attrs)
                 | None -> defaultArg notFoundNode html.none
             ))
             .AddFunBlazor()
