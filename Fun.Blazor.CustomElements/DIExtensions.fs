@@ -17,7 +17,7 @@ type FunBlazorCustomElementsExtensions =
     [<Extension>]
     static member RegisterCustomElementForFunBlazor(this: IJSComponentConfiguration, ty: System.Type, identifier: string) =
         if identifier.Contains "-" |> not then
-            failwith $"Blazor custom element's tag name must be snake name with at least two words, like xxx-xxx"
+            failwith $"Blazor custom element's tag name must be snake name with at least two words, like xxx-xxx. Current tag name is {identifier} for type {ty.FullName}."
         // https://github.com/dotnet/aspnetcore/blob/main/src/Components/CustomElements/src/JSComponentConfigurationExtensions.cs
         this.RegisterForJavaScript(ty, identifier, "registerBlazorCustomElement")
 

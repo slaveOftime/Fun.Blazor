@@ -44,10 +44,8 @@ let app = builder.Build()
 app.UseStaticFiles()
 
 app.MapRazorComponents().AddInteractiveServerRenderMode().AddInteractiveWebAssemblyRenderMode()
-
-app.MapGet("/demo", Func<_>(fun () -> div { $"{DateTime.Now}" })).AddFunBlazor()
-app.MapBlazorComponentsForSSR([ Assembly.GetExecutingAssembly() ], notFoundNode = div { "ERROR: not found" })
-app.MapFunBlazorCustomElementsForSSR([ Assembly.GetExecutingAssembly() ], notFoundNode = div { "ERROR: not found" })
+app.MapRazorComponentsForSSR(Assembly.GetExecutingAssembly(), notFoundNode = div { "ERROR: not found" })
+app.MapCustomElementsForSSR(Assembly.GetExecutingAssembly(), notFoundNode = div { "ERROR: not found" })
 
 
 app.MapFunBlazor(fun ctx ->

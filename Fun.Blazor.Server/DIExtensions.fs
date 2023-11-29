@@ -29,15 +29,34 @@ type FunBlazorEndpointFilter(preventStreamingRendering: bool, statusCode: int) =
         member _.InvokeAsync(ctx, next) =
             task {
                 match! next.Invoke(ctx) with
-                | :? NodeRenderFragment as node -> 
-                    let result = RazorComponentResult<FunFragmentComponent>(dict [ "Fragment", box node ])
+                | :? NodeRenderFragment as node ->
+                    let result =
+                        RazorComponentResult<FunFragmentComponent>(dict [ "Fragment", box node ])
                     result.PreventStreamingRendering <- preventStreamingRendering
                     result.StatusCode <- statusCode
                     return result :> obj
-                | x ->
-                    return x
+                | x -> return x
             }
             |> ValueTask<obj>
+
+module internal Utils =
+    let mutable isRazorComponentsForSSRMapped = false
+    let razorComponentsForSSRTypes =
+        lazy
+            (System.Collections.Generic.Dictionary<string, {|
+                Type: Type
+                CreateAttr: HttpContext -> AttrRenderFragment
+            |}>
+                ())
+
+    let mutable isFunBlazorCustomElementsForSSRMapped = false
+    let funBlazorCustomElementsForSSRTypes =
+        lazy
+            (System.Collections.Generic.Dictionary<string, {|
+                Type: Type
+                CreateAttr: HttpContext -> AttrRenderFragment
+            |}>
+                ())
 #endif
 
 
@@ -215,23 +234,28 @@ type FunBlazorServerExtensions =
 
 #if !NET6_0
     [<Extension>]
-    static member AddFunBlazor<'TBuilder when 'TBuilder :> IEndpointConventionBuilder>(builder: 'TBuilder, ?preventStreamingRendering: bool, ?statusCode: int) =
+    static member AddFunBlazor<'TBuilder when 'TBuilder :> IEndpointConventionBuilder>
+        (
+            builder: 'TBuilder,
+            ?preventStreamingRendering: bool,
+            ?statusCode: int
+        )
+        =
         builder.AddEndpointFilter(FunBlazorEndpointFilter(defaultArg preventStreamingRendering false, defaultArg statusCode 200))
 
 
     static member private MakeCreateAttrFn(ty: Type) =
         let paramsInfo =
             ty.GetProperties()
-            |> Seq.choose (fun p -> 
+            |> Seq.choose (fun p ->
                 let attr = p.GetCustomAttribute<ParameterAttribute>()
-                if isNull attr then None
-                else Some (p.Name, p.PropertyType)
+                if isNull attr then None else Some(p.Name, p.PropertyType)
             )
             |> Map.ofSeq
 
-        let parseValue (name: string) (v: string) (ty: Type) = 
+        let parseValue (name: string) (v: string) (ty: Type) =
             ty.GetMethods(BindingFlags.Public ||| BindingFlags.Static)
-            |> Seq.tryFind (fun x -> 
+            |> Seq.tryFind (fun x ->
                 let ps = x.GetParameters()
                 x.Name = "Parse" && ps.Length = 1 && ps[0].ParameterType = typeof<string>
             )
@@ -242,64 +266,96 @@ type FunBlazorServerExtensions =
         fun (ctx: HttpContext) ->
             paramsInfo
             |> Seq.choose (fun p ->
-                let matchQuery() =
+                let matchQuery () =
                     match ctx.Request.Query.TryGetValue p.Key with
-                    | true, v -> Some (p.Key => parseValue p.Key (v.ToString()) p.Value)
+                    | true, v -> Some(p.Key => parseValue p.Key (v.ToString()) p.Value)
                     | _ -> None
                 if ctx.Request.Method.Equals(HttpMethods.Post, StringComparison.OrdinalIgnoreCase) then
                     match ctx.Request.Form.TryGetValue(p.Key) with
-                    | true, v -> Some (p.Key => parseValue p.Key (v.ToString()) p.Value)
-                    | _ -> matchQuery()
+                    | true, v -> Some(p.Key => parseValue p.Key (v.ToString()) p.Value)
+                    | _ -> matchQuery ()
                 else
-                    matchQuery()
+                    matchQuery ()
             )
             |> Seq.fold (==>) html.emptyAttr
 
 
+    /// This will serve all the razor components (implement IComponent interface) for server side rendering,
+    /// route pattern: /fun-blazor-server-side-render-components/{componentType}
+    [<Extension>]
+    static member MapRazorComponentsForSSR(builder: IEndpointRouteBuilder, types: Type seq, ?notFoundNode: NodeRenderFragment) =
+        types
+        |> Seq.iter (fun x ->
+            Utils.razorComponentsForSSRTypes.Value[x.FullName] <-
+                {|
+                    Type = x
+                    CreateAttr = FunBlazorServerExtensions.MakeCreateAttrFn x
+                |}
+        )
+
+        if not Utils.isRazorComponentsForSSRMapped then
+            Utils.isRazorComponentsForSSRMapped <- true
+            builder
+                .Map(
+                    "/fun-blazor-server-side-render-components/{componentType}",
+                    Func<_, _, _>(fun (componentType: string) (ctx: HttpContext) ->
+                        match Utils.razorComponentsForSSRTypes.Value.TryGetValue(componentType) with
+                        | true, comp -> html.blazor (comp.Type, attr = comp.CreateAttr ctx)
+                        | _ -> defaultArg notFoundNode html.none
+                    )
+                )
+                .AddFunBlazor()
+            |> ignore
+
     /// This will serve all blazor components (inherit from ComponentBase) in the target assembly for server side rendering
     /// route pattern: /fun-blazor-server-side-render-components/{componentType}
     [<Extension>]
-    static member MapBlazorComponentsForSSR(builder: IEndpointRouteBuilder, assemblies: Assembly seq, ?notFoundNode: NodeRenderFragment) =
-        let components =
-            assemblies
-            |> Seq.map (fun x -> x.GetTypes())
-            |> Seq.concat
-            |> Seq.filter (fun x -> x.IsAssignableTo(typeof<IComponent>))
-            |> Seq.map (fun x -> x.FullName, {| Type = x; CreateAttr = FunBlazorServerExtensions.MakeCreateAttrFn x |})
-            |> Map.ofSeq
-        builder
-            .Map("/fun-blazor-server-side-render-components/{componentType}", Func<_, _, _>(fun (componentType: string) (ctx: HttpContext) ->
-                match Map.tryFind componentType components with
-                | Some comp -> html.blazor(comp.Type, attr = comp.CreateAttr ctx)
-                | None -> defaultArg notFoundNode html.none
-            ))
-            .AddFunBlazor()
-    
-    /// This will serve all components which is marked as FunBlazorCustomElementAttribute in the target assembly, 
+    static member MapRazorComponentsForSSR(builder: IEndpointRouteBuilder, assembly: Assembly, ?notFoundNode: NodeRenderFragment) =
+        builder.MapRazorComponentsForSSR(
+            assembly.GetTypes() |> Seq.filter (fun x -> x.IsAssignableTo(typeof<IComponent>)),
+            defaultArg notFoundNode html.none
+        )
+
+
+    /// This will serve all components for server side rendering with custom element enabled.
+    /// You should use it with: services.AddServerSideBlazor(fun options -> options.RootComponents.RegisterCustomElementForFunBlazor<YourComponent>()),
     /// route pattern: /fun-blazor-custom-elements/{componentType}
     [<Extension>]
-    static member MapFunBlazorCustomElementsForSSR(builder: IEndpointRouteBuilder, assemblies: Assembly seq, ?notFoundNode: NodeRenderFragment) =
+    static member MapCustomElementsForSSR(builder: IEndpointRouteBuilder, types: Type seq, ?notFoundNode: NodeRenderFragment) =
+        types
+        |> Seq.iter (fun ty ->
+            Utils.funBlazorCustomElementsForSSRTypes.Value[ty.FullName] <-
+                {|
+                    Type = ty
+                    CreateAttr = FunBlazorServerExtensions.MakeCreateAttrFn ty
+                |}
+        )
+
+        if not Utils.isFunBlazorCustomElementsForSSRMapped then
+            Utils.isFunBlazorCustomElementsForSSRMapped <- true
+            builder
+                .Map(
+                    "/fun-blazor-custom-elements/{componentType}",
+                    Func<_, _, _>(fun (componentType: string) (ctx: HttpContext) ->
+                        match Utils.funBlazorCustomElementsForSSRTypes.Value.TryGetValue(componentType) with
+                        | true, comp ->
+                            let attrs = comp.CreateAttr ctx
+                            html.customElement (comp.Type, attrs = attrs)
+                        | _ -> defaultArg notFoundNode html.none
+                    )
+                )
+                .AddFunBlazor()
+            |> ignore
+
+    /// This will serve all components which is marked as FunBlazorCustomElementAttribute in the target assembly for server side rendering with custom element enabled,
+    /// You should use it with: services.AddServerSideBlazor(fun options -> options.RootComponents.RegisterCustomElementForFunBlazor<YourComponent>()),
+    /// route pattern: /fun-blazor-custom-elements/{componentType}
+    [<Extension>]
+    static member MapCustomElementsForSSR(builder: IEndpointRouteBuilder, assembly: Assembly, ?notFoundNode: NodeRenderFragment) =
         let types =
-            assemblies
-            |> Seq.map (fun x -> x.GetTypes())
-            |> Seq.concat
-        let components =
-            [
-                for ty in types do
-                    let attr = ty.GetCustomAttribute<FunBlazorCustomElementAttribute>()
-                    if attr |> box |> isNull |> not then
-                        ty.FullName, {| Type = ty; CreateAttr = FunBlazorServerExtensions.MakeCreateAttrFn ty |}
-            ]
-            |> Map.ofSeq
-        builder
-            .Map("/fun-blazor-custom-elements/{componentType}", Func<_, _, _>(fun (componentType: string) (ctx: HttpContext) ->
-                match Map.tryFind componentType components with
-                | Some comp ->
-                    let attrs = comp.CreateAttr ctx
-                    html.customElement(comp.Type, attrs = attrs)
-                | None -> defaultArg notFoundNode html.none
-            ))
-            .AddFunBlazor()
+            assembly.GetTypes()
+            |> Seq.filter (fun ty -> ty.GetCustomAttribute<FunBlazorCustomElementAttribute>() |> box |> isNull |> not)
+        builder.MapCustomElementsForSSR(types, defaultArg notFoundNode html.none)
 #endif
 
 

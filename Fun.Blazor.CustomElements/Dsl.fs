@@ -155,7 +155,7 @@ type html with
             |> Option.defaultWith (fun _ -> Utils.GetTagNameForType(componentType, failIfWithoutFunBlazorCustomElementAttribute = false))
 
         if tagName.Contains "-" |> not then
-            failwith $"Blazor custom element's tag name must be snake name with at least two words, like xxx-xxx."
+            failwith $"Blazor custom element's tag name must be snake name with at least two words, like xxx-xxx. Current tag name is {tagName} for type {componentType.FullName}."
 
         let lazyTagName = $"{tagName}-lazy-{id'}"
 
