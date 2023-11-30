@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+- enableAntiforgery
+
 ## [3.3.0-beta001] - 2023-11-29
 
 - Rename MapFunBlazorCustomElements to MapCustomElementsForSSR

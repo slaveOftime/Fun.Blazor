@@ -301,7 +301,9 @@ type FunBlazorServerExtensions =
     /// This will serve all the razor components (implement IComponent interface) for server side rendering,
     /// route pattern: /fun-blazor-server-side-render-components/{componentType}
     [<Extension>]
-    static member MapRazorComponentsForSSR(builder: IEndpointRouteBuilder, types: Type seq, ?notFoundNode: NodeRenderFragment) =
+    static member MapRazorComponentsForSSR(builder: IEndpointRouteBuilder, types: Type seq, ?notFoundNode: NodeRenderFragment, ?enableAntiforgery: bool) =
+        let enableAntiforgery = defaultArg enableAntiforgery false
+        
         types
         |> Seq.iter (fun x ->
             Utils.razorComponentsForSSRTypes.Value[x.FullName] <-
@@ -311,26 +313,30 @@ type FunBlazorServerExtensions =
                 |}
         )
 
-        builder
-            .Map(
-                "/fun-blazor-server-side-render-components/{componentType}",
-                Func<_, _, _>(fun (componentType: string) (ctx: HttpContext) ->
-                    match Utils.razorComponentsForSSRTypes.Value.TryGetValue(componentType) with
-                    | true, comp -> html.blazor (comp.Type, attr = comp.CreateAttr ctx)
-                    | _ -> defaultArg notFoundNode html.none
+        let builder =
+            builder
+                .Map(
+                    "/fun-blazor-server-side-render-components/{componentType}",
+                    Func<_, _, _>(fun (componentType: string) (ctx: HttpContext) ->
+                        match Utils.razorComponentsForSSRTypes.Value.TryGetValue(componentType) with
+                        | true, comp -> html.blazor (comp.Type, attr = comp.CreateAttr ctx)
+                        | _ -> defaultArg notFoundNode html.none
+                    )
                 )
-            )
-            .AddFunBlazor()
-        |> ignore
+                .AddFunBlazor()
+
+        if enableAntiforgery then
+            builder.WithMetadata(RequiresAntiforgeryMetadata()) |> ignore
 
     /// This will serve all blazor components (inherit from ComponentBase) in the target assembly for server side rendering
     /// route pattern: /fun-blazor-server-side-render-components/{componentType}.
     /// Value can be passed by query or form for component property, form will have higher priority. Only the last value will be take when found same keys.
     [<Extension>]
-    static member MapRazorComponentsForSSR(builder: IEndpointRouteBuilder, assembly: Assembly, ?notFoundNode: NodeRenderFragment) =
+    static member MapRazorComponentsForSSR(builder: IEndpointRouteBuilder, assembly: Assembly, ?notFoundNode: NodeRenderFragment, ?enableAntiforgery: bool) =
         builder.MapRazorComponentsForSSR(
             assembly.GetTypes() |> Seq.filter (fun x -> x.IsAssignableTo(typeof<IComponent>)),
-            defaultArg notFoundNode html.none
+            defaultArg notFoundNode html.none,
+            defaultArg enableAntiforgery false
         )
 
 
@@ -338,7 +344,9 @@ type FunBlazorServerExtensions =
     /// You should use it with: services.AddServerSideBlazor(fun options -> options.RootComponents.RegisterCustomElementForFunBlazor<YourComponent>()),
     /// route pattern: /fun-blazor-custom-elements/{componentType}
     [<Extension>]
-    static member MapCustomElementsForSSR(builder: IEndpointRouteBuilder, types: Type seq, ?notFoundNode: NodeRenderFragment) =
+    static member MapCustomElementsForSSR(builder: IEndpointRouteBuilder, types: Type seq, ?notFoundNode: NodeRenderFragment, ?enableAntiforgery) =
+        let enableAntiforgery = defaultArg enableAntiforgery false
+
         types
         |> Seq.iter (fun ty ->
             Utils.funBlazorCustomElementsForSSRTypes.Value[ty.FullName] <-
@@ -348,29 +356,32 @@ type FunBlazorServerExtensions =
                 |}
         )
 
-        builder
-            .Map(
-                "/fun-blazor-custom-elements/{componentType}",
-                Func<_, _, _>(fun (componentType: string) (ctx: HttpContext) ->
-                    match Utils.funBlazorCustomElementsForSSRTypes.Value.TryGetValue(componentType) with
-                    | true, comp ->
-                        let attrs = comp.CreateAttr ctx
-                        html.customElement (comp.Type, attrs = attrs)
-                    | _ -> defaultArg notFoundNode html.none
+        let builder =
+            builder
+                .Map(
+                    "/fun-blazor-custom-elements/{componentType}",
+                    Func<_, _, _>(fun (componentType: string) (ctx: HttpContext) ->
+                        match Utils.funBlazorCustomElementsForSSRTypes.Value.TryGetValue(componentType) with
+                        | true, comp ->
+                            let attrs = comp.CreateAttr ctx
+                            html.customElement (comp.Type, attrs = attrs)
+                        | _ -> defaultArg notFoundNode html.none
+                    )
                 )
-            )
-            .AddFunBlazor()
-        |> ignore
+                .AddFunBlazor()
+        
+        if enableAntiforgery then
+            builder.WithMetadata(RequiresAntiforgeryMetadata()) |> ignore
 
     /// This will serve all components which is marked as FunBlazorCustomElementAttribute in the target assembly for server side rendering with custom element enabled,
     /// You should use it with: services.AddServerSideBlazor(fun options -> options.RootComponents.RegisterCustomElementForFunBlazor<YourComponent>()),
     /// route pattern: /fun-blazor-custom-elements/{componentType}
     [<Extension>]
-    static member MapCustomElementsForSSR(builder: IEndpointRouteBuilder, assembly: Assembly, ?notFoundNode: NodeRenderFragment) =
+    static member MapCustomElementsForSSR(builder: IEndpointRouteBuilder, assembly: Assembly, ?notFoundNode: NodeRenderFragment, ?enableAntiforgery: bool) =
         let types =
             assembly.GetTypes()
             |> Seq.filter (fun ty -> ty.GetCustomAttribute<FunBlazorCustomElementAttribute>() |> box |> isNull |> not)
-        builder.MapCustomElementsForSSR(types, defaultArg notFoundNode html.none)
+        builder.MapCustomElementsForSSR(types, defaultArg notFoundNode html.none, defaultArg enableAntiforgery false)
 #endif
 
 
