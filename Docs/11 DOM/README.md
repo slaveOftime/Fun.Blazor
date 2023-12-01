@@ -72,8 +72,15 @@ ul {
         $"Item: {item}"
     }
 
-  // or also if you have an existing list of nodes
+}
 
+```
+
+Or also if you have an existing list of nodes you can use the `childContent` operation.
+
+```fsharp
+ul {
+  childContent listOfNodes
 }
 ```
 
