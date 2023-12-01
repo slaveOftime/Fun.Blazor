@@ -14,7 +14,10 @@ open Fun.Blazor.Operators
 
 
 module Internal =
+    /// Helper method to create an empty AttrRenderFragment
     let inline emptyAttr () = AttrRenderFragment(fun _ _ i -> i + 1)
+    
+    /// Helper method to create an empty NodeRenderFragment
     let inline emptyNode () = NodeRenderFragment(fun _ _ i -> i + 1)
 
     [<Literal>]
@@ -63,6 +66,7 @@ type IComponent with
     member comp.Callback<'T>(fn: 'T -> Task) = EventCallback.Factory.Create<'T>(comp, fn)
 
 
+/// Create AttrRenderFragment for compponent with type safety
 type ComponentAttrBuilder<'T when 'T :> IComponent>() =
     let mutable attr = Internal.emptyAttr ()
 
@@ -111,7 +115,8 @@ type QueryBuilder<'T>() =
         | _ -> query.Set(getExpressionName expression, value.ToString())
         this
 
-    /// Null property will be ignored
+    /// Null property will be ignored. If typpe is IComponent then only property which is annotated with ParameterAttribute will be taken. 
+    /// This will override existing query values. 
     member this.Add(state: obj) =
         let ty = state.GetType()
         state.GetType().GetProperties(BindingFlags.Instance ||| BindingFlags.Public)

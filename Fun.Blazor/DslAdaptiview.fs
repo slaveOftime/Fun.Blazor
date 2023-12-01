@@ -67,17 +67,21 @@ type AdaptiviewBuilder(?key: obj, ?isStatic: bool, ?disableEventTriggerStateHasC
 
 type IAdaptiveValue<'T> with
 
+    /// Evaluates the given adaptive value and returns its current value. This should not be used inside the adaptive evaluation of other AdaptiveObjects since it does not track dependencies. 
     member this.Value = AVal.force this
 
 
 [<Extension>]
 type Extensions =
+    /// Change the value in a transact
     [<Extension>]
     static member Publish(this: cval<'T>, x: 'T) = transact (fun () -> this.Value <- x)
 
+    /// Change the value in a transact
     [<Extension>]
     static member Publish(this: cval<'T>, fn: 'T -> 'T) = transact (fun () -> this.Value <- fn this.Value)
 
+    /// Make a tuple: (value, setValue)
     [<Extension>]
     static member WithSetter(this: cval<'T>) =
         let setValue x = transact (fun () -> this.Value <- x)

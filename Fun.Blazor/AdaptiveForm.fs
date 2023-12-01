@@ -8,6 +8,7 @@ open System.Runtime.CompilerServices
 open FSharp.Data.Adaptive
 
 
+/// Adaptive form's validator
 type Validator<'T, 'Prop, 'Error> = AdaptiveForm<'T, 'Error> -> 'Prop -> 'Error list
 
 
@@ -223,6 +224,7 @@ type AdaptiveForm<'T, 'Error>(defaultValue: 'T) as this =
 
 [<Extension>]
 type AdaptiveFormExtensions =
+    /// Create an adaptive form with default value, and dispose it after the component is disposed.
     [<Extension>]
     static member UseAdaptiveForm<'T, 'Error>(this: IComponentHook, defaultValue) =
         let form = new AdaptiveForm<'T, 'Error>(defaultValue)

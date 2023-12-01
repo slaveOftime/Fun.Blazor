@@ -10,14 +10,16 @@ open Internal
 
 type html() =
 
+    /// Helper method to create an empty node
     static member inline none = emptyNode ()
 
+    /// Helper method to create an empty attribute
     static member inline emptyAttr = emptyAttr ()
-
 
     static member mergeAttrs attrs = attrs |> Seq.fold (==>) (emptyAttr ())
     static member mergeNodes nodes = nodes |> Seq.fold (>=>) (emptyNode ())
 
+    /// Helper method to make put multiple nodes into a fragment node
     static member inline fragment(nodes: NodeRenderFragment seq) = html.region nodes
 
 
@@ -201,6 +203,7 @@ type html() =
         html.blazor<FunStreamingComponent>(nameof Unchecked.defaultof<FunStreamingComponent>.Content => node)
 #endif
 
+    /// Helper method to use 'Comp type to create an empty node for component
     static member inline fromBuilder<'Comp, 'T when 'Comp :> IComponentBuilder<'T>>(_: 'Comp) =
         NodeRenderFragment(fun _ builder index ->
             builder.OpenComponent<'T>(index)
@@ -208,6 +211,7 @@ type html() =
             index + 1
         )
 
+    /// Helper method to use elt's name to create an empty node for element
     static member inline fromBuilder<'Elt when 'Elt :> IElementBuilder>(elt: 'Elt) =
         NodeRenderFragment(fun _ builder index ->
             builder.OpenElement(index, elt.Name)
@@ -216,6 +220,7 @@ type html() =
         )
 
 
+    /// Helper method for create attribute for convert NodeRenderFragment to Microsoft.AspNetCore.Components.RenderFragment
     static member inline renderFragment<'TItem>(name: string, [<InlineIfLambda>] render: 'TItem -> NodeRenderFragment) =
         AttrRenderFragment(fun comp builder index ->
             builder.AddAttribute(
@@ -230,6 +235,7 @@ type html() =
             index + 1
         )
 
+    /// Helper method for create attribute for convert NodeRenderFragment to Microsoft.AspNetCore.Components.RenderFragment
     static member inline renderFragment(name: string, fragment: NodeRenderFragment) =
         AttrRenderFragment(fun comp builder index ->
             builder.AddAttribute(index, name, box (Microsoft.AspNetCore.Components.RenderFragment(fun tb -> fragment.Invoke(comp, tb, 0) |> ignore)))
@@ -247,6 +253,7 @@ type html() =
         )
 
 
+    /// Helper method for create key attribute
     static member inline key k =
         AttrRenderFragment(fun _ builder index ->
             builder.SetKey k
@@ -258,6 +265,7 @@ type html() =
 #endif
         )
 
+    /// Helper method for create ref attribute
     static member inline ref(fn) =
         PostRenderFragment(fun _ builder index ->
             builder.AddElementReferenceCapture(index, Action<ElementReference> fn)
@@ -289,24 +297,28 @@ type html() =
         )
 
 
+    /// Helper method for create callback attribute
     static member inline callback<'T>(eventName, fn: 'T -> unit) =
         AttrRenderFragment(fun comp builder index ->
             builder.AddAttribute(index, eventName, EventCallback.Factory.Create(comp, Action<'T> fn))
             index + 1
         )
 
+    /// Helper method for create callback attribute
     static member inline callback(eventName, fn: unit -> unit) =
         AttrRenderFragment(fun comp builder index ->
             builder.AddAttribute(index, eventName, EventCallback.Factory.Create(comp, Action fn))
             index + 1
         )
 
+    /// Helper method for create callback attribute
     static member inline callbackTask<'T>(eventName, fn: 'T -> Task<unit>) =
         AttrRenderFragment(fun comp builder index ->
             builder.AddAttribute(index, eventName, EventCallback.Factory.Create(comp, Func<'T, Task>(fun x -> fn x :> Task)))
             index + 1
         )
 
+    /// Helper method for create callback attribute
     static member inline callbackTask(eventName, fn: unit -> Task<unit>) =
         AttrRenderFragment(fun comp builder index ->
             builder.AddAttribute(index, eventName, EventCallback.Factory.Create(comp, Func<Task>(fun () -> fn () :> Task)))

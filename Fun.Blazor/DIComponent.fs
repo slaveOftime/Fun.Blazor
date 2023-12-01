@@ -16,9 +16,9 @@ module ServiceProviderExtensions =
     type IServiceProvider with
 
         member sp.GetMultipleServices(depsType: Type, handleNotFoundType) =
-            let getSvc x =
-                let svc = sp.GetService(x)
-                if svc = null then handleNotFoundType x else svc
+            let inline getSvc ty =
+                let svc = sp.GetService(ty)
+                if svc = null then handleNotFoundType ty else svc
 
             if depsType = typeof<unit> then
                 box ()

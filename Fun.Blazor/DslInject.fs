@@ -16,7 +16,6 @@ type html with
     ///
     /// 'Services should be something you defined in the asp.net core DI or unit
     /// 'Services must be a tuple like (hook: IComponentHook, sp: IServiceProvider)
-    /// </summary>
     /// <example>
     /// <code lang="fsharp">
     /// let view =
@@ -27,6 +26,7 @@ type html with
     ///   )
     /// </code>
     /// </example>
+    /// </summary>
     static member inject(render: 'Services -> Task<NodeRenderFragment>) =
         ComponentWithChildBuilder<DIComponent<'Services>>() {
             key ("DIComponent-" + Guid.NewGuid().ToString())

@@ -83,7 +83,8 @@ type FocusOnNavigate' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, ty
 
 type html with
 
-    /// By default we will set key for this component.
+    /// By default we will set key (fun-blazor-routers) for this component. So it can keep it's state when its parent rerender. 
+    /// And only rerender when location is changed.
     static member route(routes: Router<NodeRenderFragment> list, ?key: obj) =
         html.inject (
             defaultArg key "fun-blazor-routers",

@@ -17,7 +17,7 @@ type AttrRenderFragment = delegate of root: IComponent * builder: RenderTreeBuil
 /// Return int should be the next useable sequence
 type NodeRenderFragment = delegate of root: IComponent * builder: RenderTreeBuilder * sequence: int -> int
 
-/// In blazor, we cannot add attribute after add ref, so we need a clear position to seperate them
+/// In blazor, we cannot add attribute after add ref or rendemode etc., so we need a clear position to seperate them
 type PostRenderFragment = delegate of root: IComponent * builder: RenderTreeBuilder * sequence: int -> int
 
 
@@ -104,7 +104,9 @@ type FunComponent() as this =
         ()
 
 /// This is a helper abstract class which will disable event trigger StateHasChanged, 
-/// because for internal Fun Blazor components they are using adaptive model and will not need event triger re-render.
+/// because for internal Fun Blazor components they are using adaptive model and will not need event triger re-render. 
+/// And event trigger re-render may cause unnecessary cost. 
+/// When you use adaptive, elmish, reative models etc., and also want to use component style, you can use this one.
 [<AbstractClass>]
 type FunBlazorComponent() as this =
     inherit FunComponent()
@@ -137,6 +139,7 @@ type FunBlazorComponent() as this =
                 Task.CompletedTask
 
 
+/// This is a helper class for places which need to component and need a NodeRenderFragment as the parameter to be passed in
 type FunFragmentComponent() as this =
     inherit FunComponent()
 
@@ -147,6 +150,7 @@ type FunFragmentComponent() as this =
 
 
 #if !NET6_0
+/// Wrapper class to make a function style component to be streamable
 [<StreamRendering>]
 type FunStreamingComponent() =
     inherit FunComponent()
@@ -156,16 +160,19 @@ type FunStreamingComponent() =
 
     override this.Render() = this.Content
 
+/// Mark a component as InteractiveAuto
 type FunInteractiveAutoAttribute() =
     inherit RenderModeAttribute()
 
     override _.Mode = Web.RenderMode.InteractiveAuto
 
+/// Mark a component as InteractiveServer
 type FunInteractiveServerAttribute() =
     inherit RenderModeAttribute()
 
     override _.Mode = Web.RenderMode.InteractiveServer
 
+/// Mark a component as InteractiveWebAssembly
 type FunInteractiveWebAssemblyAttribute() =
     inherit RenderModeAttribute()
 
@@ -256,19 +263,23 @@ type IComponentHook =
 
 type IStoreManager =
 
-    /// Create an adaptive value and share between components and dispose it after session disposed
-    /// This is recommend way because you can use it with adaptiview easier
+    /// Create an adaptive value and share between components. 
+    /// This is recommend way because you can use it with adaptiview easier. 
     abstract CreateCVal: string * 'T -> cval<'T>
 
+    /// Create an adaptive value and share between components. 
+    /// This is recommend way because you can use it with adaptiview easier. 
     abstract CreateCVal: string * defautValue: 'T * init: (unit -> aval<'T>) -> cval<'T>
 
+    /// Create an adaptive value and share between components. 
+    /// This is recommend way because you can use it with adaptiview easier. 
     abstract CreateCVal: string * defautValue: 'T * init: (unit -> Task<'T>) -> cval<'T>
 
     // Help us to access DI container
     abstract ServiceProvider: IServiceProvider
 
     /// This is for library authors.
-    /// For example, with this we can abstract the FSharp.Control.Reactive out to a separate pacakges to consume to help reduce the WASM size. If users do not want to use it.
+    /// For example, with this we can abstract the FSharp.Control.Reactive out to a separate pacakges to consume.
     abstract GetOrAddDisposableStore: string * (unit -> IDisposable) -> IDisposable
 
     /// This is for library authors.
@@ -276,11 +287,11 @@ type IStoreManager =
     abstract AddDispose: IDisposable -> unit
 
 
-// Will serve as a scoped service
+// You can consume it from a DI container, and it is served as a scoped service
 type IShareStore =
     inherit IStoreManager
 
-// Will serve as a singleton service
-// * Note this is not distributable
+// You can consume it from a DI container, and it is served as a singleton service
+// * Note this is not distributable, and only works for long runing single instance of web service. 
 type IGlobalStore =
     inherit IStoreManager
