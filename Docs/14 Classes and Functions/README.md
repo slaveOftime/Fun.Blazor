@@ -109,7 +109,36 @@ type Counter() =
 
 In this case we didn't add any dynamic values like Adaptive data, Stores or Observables and our counter is re-rendered and works as expected, blazor applies a diffing algorithm to know that it only needs to re-render the `h1` tag. you can also however use dynamic data if required.
 
+### Using adaptive data
+
+If you would like to avoid re-rendering your components at event handlers, you can opt out of it by using `FunBlazorComponent` this base class turns off re-renders for event triggers.
+
+```fsharp
+type Demo() =
+    // Note this is not the same as *inherit FunComponent()*
+    inherit FunBlazorComponent()
+
+    let data = cval 0
+
+    override _.Render() = fragment {
+        h1 { "Static text" }
+        adaptiview() {
+            let! data = data
+            // only this part will need to be used for computate for diff when data is changed
+            p { $"x = {data}" }
+        }
+        button {
+            onclick (fun _ -> data.Publish(fun value -> value + 1))
+            "Increase"
+        }
+    }
+```
+
+This has the added benefit that updates are more localized and you don't accidentally re-render on event handlers, most of the time it should not be an issue, but if you require to have more control of it, then this is the ideal way to do it.
+
 ### Benefits and drawbacks
+
+In general classes are good to use within Fun.Blazor and are a safe choice if your project needs them.
 
 The benefits are:
 
@@ -120,11 +149,10 @@ The benefits are:
 
 The drawbacks are:
 
-- Re-rendering requires diffing which can be expensive if you're not using dynamic data
 - They require manual bindings to play well with the Fun.Blazor DSL
 - Verbose
 
-In general, classes can be used to orchestrate dependency injection, to use plain blazor features seamlessly and in general to keep as close as blazor as possible.
+In general, classes can be used to orchestrate dependency injection, to use plain blazor features seamlessly, and to keep as close as blazor as possible.
 
 Functions most of the time can overcome the benefits of classes when you use `html.comp` functions (also called `html.inject`) which you can read more about in [Hooks] and [Dependency Injection](<./Advanced-features/Dependency-injection-(DI)>)
 
