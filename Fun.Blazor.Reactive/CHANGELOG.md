@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.3.0-beta001] - 2023-11-29
+
+- INIT
+
 ## [3.2.2] - 2023-11-20
 
 - Improve sequence number usage
