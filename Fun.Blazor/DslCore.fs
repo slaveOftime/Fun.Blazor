@@ -265,6 +265,9 @@ type html() =
         )
 
 
+    /// This is a helper method for create attributes for blazor bindable attribute which normally has two attributes, xxx and xxxChanged by convention. 
+    /// Be careful, the store change will not trigger the attribute to be re-render. This is used to update the store when the attribute is changed.
+    /// This is normally used as a helper method for generated DSL.
     static member bind<'T>(name: string, store: cval<'T>) =
         AttrRenderFragment(fun comp builder index ->
             builder.AddAttribute(index, name, store.Value)
@@ -276,6 +279,8 @@ type html() =
             index + 2
         )
 
+    /// This is a helper method for create attributes for blazor bindable attribute which normally has two attributes, xxx and xxxChanged by convention.
+    /// This is normally used as a helper method for generated DSL.
     static member bind<'T>(name: string, (value: 'T, fn: 'T -> unit)) =
         AttrRenderFragment(fun comp builder index ->
             builder.AddAttribute(index, name, value)
