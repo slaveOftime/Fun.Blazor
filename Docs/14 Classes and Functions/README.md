@@ -1,6 +1,3 @@
-[Interactive Nodes]: ./Interactive-Nodes
-[Hooks]: ./Advanced-features/Hook
-
 # Classes vs Functions
 
 Fun.Blazor is very flexible and allows you to choose between classes and functions as you need.
@@ -29,6 +26,7 @@ let staticGreeting()=
 ```
 
 This is because the change detection mechanics happen at the component level, that means class inheriting ComponentBase which in the case of Fun.Blazor is `FunComponent`.
+However If change the declaration from a function (`let staticGreeting () =`) to a let bound value (`let staticGreeting =`) , and use it in a context which its parent component has re-render triggers (like event handlers in `FunComponent`s, see the below section on classes.), the count will increase and updated.
 
 However if you want to work with dynamic data in your functions, you can use `Adaptive` values, `Stores`, or `Observables` which you can read further in [Interactive Nodes]. A brief example with adaptive values would be:
 
@@ -101,7 +99,7 @@ type Counter() =
             button {
                 onclick (fun _ ->
                     let newCount = counter + 1
-                    Logger.LogDebug("Old Value: {count} - New Value: {newCount}", counter, newCount)
+                    this.Logger.LogDebug("Old Value: {count} - New Value: {newCount}", counter, newCount)
                     counter <- newCount
                 )
                 "Increment"
@@ -129,3 +127,6 @@ The drawbacks are:
 In general, classes can be used to orchestrate dependency injection, to use plain blazor features seamlessly and in general to keep as close as blazor as possible.
 
 Functions most of the time can overcome the benefits of classes when you use `html.comp` functions (also called `html.inject`) which you can read more about in [Hooks] and [Dependency Injection](<./Advanced-features/Dependency-injection-(DI)>)
+
+[Interactive Nodes]: ./Interactive-Nodes
+[Hooks]: ./Advanced-features/Hook

@@ -1,6 +1,3 @@
-[Fun.Css]: https://github.com/slaveOftime/Fun.Css
-[rule's Specificity]: https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity
-
 # Styling
 
 Adding styles is common in every web application, Fun.Blazor provides out of the box support for inline css and also there's the [Fun.Css] package that provides support for style tags (using classes and rulesets).
@@ -194,3 +191,6 @@ Using CSS rules:
 Using keyframes:
 
 {{KeyFramesDemo}}
+
+[Fun.Css]: https://github.com/slaveOftime/Fun.Css
+[rule's Specificity]: https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity

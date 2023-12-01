@@ -1,9 +1,4 @@
-[F# Computation Expressions]: https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/computation-expressions
-[Adaptive Data]: https://github.com/fsprojects/FSharp.Data.Adaptive
-[Working With Blazor]: ./Advanced-features/Working-With-Blazor
-[Adaptive Forms]: ./Advanced-features/Adaptive/Form
-
-# DOM Elements
+# DOM
 
 Fun.Blazor provides a friendly way to write HTML for web applications. It uses [F# Computation Expressions] to generate a simple yet performant DSL.
 
@@ -66,37 +61,58 @@ let element kind =
 
 ### Lists
 
-To render lists you can use `fragment` with any seq-like object, for example you can use list/seq comprehentions to render items.
-you can also of course prepare the node fragments beforehand and pass the seq to the html.fragment api.
+To render lists you can use `for item in items do`
 
 ```fsharp
-html.fragment ([
+ul {
+  h3 { "Some title." }
   for item in 0..10 do
     li {
         key item
         $"Item: {item}"
     }
-])
 
-html.fragment (seq {
-  for item in 0..10 do
-    li {
-        key item
-        $"Item: {item}"
-    }
-})
+  // or also if you have an existing list of nodes
+
+}
 ```
 
 > Note: Please note that `key` is very useful to preserve list order between re-renders otherwise you might have unexpected changes in the view when you add/remove items from a list.
 
 ## Attributes
 
-Fun.Blazor provides out of the box most if not all of the existing HTML attributes in the spec however if you need to set a custom attribute in an element then you can use the `domAttr`` builder that can be used as the following
+Fun.Blazor provides out of the box most if not all of the existing HTML attributes in the spec however if you need to set a custom attribute in an element then you can provide the builder with a string tuple.
 
 ```fsharp
 section {
-  domAttr { "my-attribute", "value" }
+  "my-attribute", "value"
 }
+```
+
+### Shared attributes
+
+If you'd like to share attributes between different elements you can use the `domAttr`
+
+```fsharp
+module SharedAttrs =
+  let classAndData =
+    domAttr {
+      class' "has-data"
+      data("my-data", "123")
+    }
+
+let someNode() =
+  div {
+    SharedAttrs.classAndData
+    "Some Node"
+  }
+
+let otherNode() =
+  div {
+    SharedAttrs.classAndData
+    "Other Node"
+  }
+
 ```
 
 ## Events
@@ -139,3 +155,8 @@ input {
 ```
 
 > Note: If you're realing with forms you should check out [Adaptive Forms] instead. They can work with more structured objects like records and provide validation abilities.
+
+[F# Computation Expressions]: https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/computation-expressions
+[Adaptive Data]: https://github.com/fsprojects/FSharp.Data.Adaptive
+[Working With Blazor]: ./Advanced-features/Working-With-Blazor
+[Adaptive Forms]: ./Advanced-features/Adaptive/Form

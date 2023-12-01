@@ -1,8 +1,3 @@
-[Adaptive Data]: https://github.com/fsprojects/FSharp.Data.Adaptive
-[Working With Blazor]: ./Advanced-features/Working-With-Blazor
-[Fun.Blazor.Reactive]: https://github.com/slaveOftime/Fun.Blazor
-[FSharp.Control.Reactive]: http://fsprojects.github.io/FSharp.Control.Reactive/index.html
-
 # Interactive Nodes
 
 > Note: Blazor by default renders the content as static so if you're rendering from the server you won't have any dynamic behavior, for that you need to set server interactivity for the component or use client side blazor (WASM).
@@ -121,7 +116,7 @@ module AdaptiveViews =
 
 ## Rendering
 
-Dynamic views re-render when one of the dependencies change and that means the whole node is rendered so you have to keep in mind that whenver you use `html.watch`, `html.bind` or `adaptiview` any of its dependencies may cause a re-render avoid having large trees of information in those places and stay static when possible for performance.
+Dynamic views re-render when one of the dependencies change and that means the whole node is rendered so you have to keep in mind that whenver you use `html.watch`, or `adaptiview` any of its dependencies may cause a re-render avoid having large trees of information in those places and stay static when possible for performance.
 
 ### Adaptive
 
@@ -199,3 +194,8 @@ fragment {
   }
 }
 ```
+
+[Adaptive Data]: https://github.com/fsprojects/FSharp.Data.Adaptive
+[Working With Blazor]: ./Advanced-features/Working-With-Blazor
+[Fun.Blazor.Reactive]: https://github.com/slaveOftime/Fun.Blazor
+[FSharp.Control.Reactive]: http://fsprojects.github.io/FSharp.Control.Reactive/index.html
