@@ -1,7 +1,3 @@
-[Fun.Blazor.Cli]: ./Tooling/Code-Generation
-[Code Generation]: ./Tooling/Code-Generation
-[Blazor Rendering Modes]: https://learn.microsoft.com/en-us/aspnet/core/blazor/components/render-modes?view=aspnetcore-8.0
-
 # Working with Blazor
 
 Using Blazor features with almost "raw" blazor elements is possible in Fun.Blazor
@@ -130,3 +126,7 @@ module Home =
 ```
 
 This can be a tedious process however [Fun.Blazor.Cli] provides an automated tool to generate these, please visit the [Code Generation] section for more information on how to generate new bindings.
+
+[Fun.Blazor.Cli]: ./Tooling/Code-Generation
+[Code Generation]: ./Tooling/Code-Generation
+[Blazor Rendering Modes]: https://learn.microsoft.com/en-us/aspnet/core/blazor/components/render-modes?view=aspnetcore-8.0
