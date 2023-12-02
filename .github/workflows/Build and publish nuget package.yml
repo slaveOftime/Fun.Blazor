@@ -4,9 +4,9 @@ on:
     push:
         branches:
         - master
-        # paths:
-        # - "**/CHANGELOG.md"
-        # - ".github/workflows/Build and publish nuget package.yml"
+        paths:
+        - "**/CHANGELOG.md"
+        - ".github/workflows/Build and publish nuget package.yml"
 
 jobs:
   build:
