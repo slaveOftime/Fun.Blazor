@@ -50,6 +50,9 @@ type Foo() =
 
 - There is CE performance [issue](https://github.com/dotnet/fsharp/issues/14429) for large projects.
 
+## Local development
+
+You can run **dotnet fsi build.fsx -- -h** to check what is available to help you get started.
 
 ## Benchmark
 

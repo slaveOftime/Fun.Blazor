@@ -11,7 +11,7 @@ open Fun.Blazor.Docs.Controls
 open Fun.Blazor.Docs.Wasm
 
 
-let private docsSeg = "documents"
+let private docsSeg = "docs"
 let private docsSegUrl = docsSeg + "/"
 
 
