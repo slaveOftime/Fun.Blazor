@@ -2,6 +2,7 @@
 [<AutoOpen>]
 module Fun.Blazor.Docs.Wasm.Nav
 
+open System
 open FSharp.Data.Adaptive
 open MudBlazor
 open Fun.Result
@@ -70,7 +71,7 @@ let navmenu =
 
 let docRouting (docs: DocTreeNode list) : Router<NodeRenderFragment> =
     fun url ->
-        let startIndex = url.IndexOf docsSegUrl
+        let startIndex = url.IndexOf(docsSegUrl, StringComparison.OrdinalIgnoreCase)
 
         if startIndex < 0 then
             None
