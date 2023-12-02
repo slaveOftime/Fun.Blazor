@@ -12,7 +12,7 @@ To add attributes to a blazor component you can use the `domAttr` builder
 html.blazor<MyComponent> (
   domAttr {
     class' "my-component"
-    data ("some-dalue", initialValue)
+    "some-dalue", initialValue
   }
 )
 ```
@@ -64,22 +64,19 @@ type MyComponent() =
     [<Parameter>]
     member val OnValueChangeCb: EventCallback<string> = Unchecked.defaultof<_> with get, set
 
-    override this.Render() =
-        div {
-            $"Hello {this.Value}!"
+    override this.Render() = div {
+      $"Hello {this.Value}!"
 
-            textarea {
-                type' "text"
-                value this.Value
-
-                oninput
-                  (fun e ->
-                    let value = unbox<string> e.Value
-                    this.Logger.LogDebug("Value Changed: {OldValue} -> {NewValue}", this.Value, value)
-                    this.OnValueChangeCb.InvokeAsync value
-                  )
-            }
-        }
+      textarea {
+          type' "text"
+          value this.Value
+          oninput (fun e ->
+            let value = unbox<string> e.Value
+            this.Logger.LogDebug("Value Changed: {OldValue} -> {NewValue}", this.Value, value)
+            this.OnValueChangeCb.InvokeAsync value
+          )
+      }
+   }
 ```
 
 You can define `Parameters`, `CascadingParameters`, `EventCallbacks`, also use attributes like `Inject`, `Route`, `StreamRendering`, and most if not all of what you'd expect in your blazor components in the C# counterpart.

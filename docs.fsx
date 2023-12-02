@@ -1,6 +1,6 @@
 #r "nuget: Fake.IO.FileSystem, 5.20.4"
 #r "nuget: FSharp.SystemTextJson, 0.17.4"
-#r "nuget: Markdig, 0.30.2"
+#r "nuget: Markdig, 0.33.0"
 
 open System
 open System.IO
@@ -260,7 +260,7 @@ module DocBuilder =
     let wwwroot = wasm </> "wwwroot"
     let demos = "Demos"
     let docs = "Docs"
-    let baseUrl = "Docs/"
+    let baseUrl = "documents/"
 
 
     let build () =

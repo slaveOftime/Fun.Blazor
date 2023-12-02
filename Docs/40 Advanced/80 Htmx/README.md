@@ -20,8 +20,8 @@ services.AddFunBlazorServer()
 
 ...
 app.MapRazorComponents()
-app.MapBlazorSSRComponents(Assembly.GetExecutingAssembly(), enableAntiforgery = true)
-app.MapFunBlazorCustomElements(Assembly.GetExecutingAssembly(), enableAntiforgery = true)
+app.MapRazorComponentsForSSR(Assembly.GetExecutingAssembly(), enableAntiforgery = true)
+app.MapCustomElementsForSSR(Assembly.GetExecutingAssembly(), enableAntiforgery = true)
 ```
 
 The simple way to serve a page

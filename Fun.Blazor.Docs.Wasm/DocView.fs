@@ -19,9 +19,9 @@ let docView (doc: DocBrief) =
             adaptiview () {
                 let! lang = hook.Lang
 
-                let segments = 
-                    doc.LangSegments 
-                    |> Map.tryFind lang 
+                let segments =
+                    doc.LangSegments
+                    |> Map.tryFind lang
                     |> function
                         | None -> doc.LangSegments |> Map.tryFind "en"
                         | Some x -> Some x
@@ -67,28 +67,26 @@ let docView (doc: DocBrief) =
 
 
                 MudContainer'() {
-                    childContent [
-                        for segment in segments do
-                            match segment with
-                            | Segment.Demo key -> demos |> Map.tryFind key |> Option.map demoView |> Option.defaultValue notFound
+                    for segment in segments do
+                        match segment with
+                        | Segment.Demo key -> demos |> Map.tryFind key |> Option.map demoView |> Option.defaultValue notFound
 
-                            | Segment.Html key ->
-                                adaptiview () {
-                                    match! hook.GetOrLoadDocHtml(langStr, key, "cacheKey=" + string doc.LastModified.Ticks) with
-                                    | LoadingState.NotStartYet -> notFound
-                                    | LoadingState.Loading -> linearProgress
-                                    | LoadingState.Loaded docHtml
-                                    | LoadingState.Reloading docHtml ->
-                                        docSegmentLoadedCount.Publish((+) 1)
-                                        div {
-                                            article {
-                                                class' "markdown-body"
-                                                html.raw docHtml
-                                            }
+                        | Segment.Html key ->
+                            adaptiview () {
+                                match! hook.GetOrLoadDocHtml(langStr, key, "cacheKey=" + string doc.LastModified.Ticks) with
+                                | LoadingState.NotStartYet -> notFound
+                                | LoadingState.Loading -> linearProgress
+                                | LoadingState.Loaded docHtml
+                                | LoadingState.Reloading docHtml ->
+                                    docSegmentLoadedCount.Publish((+) 1)
+                                    div {
+                                        article {
+                                            class' "markdown-body"
+                                            html.raw docHtml
                                         }
-                                }
-                            spaceV4
-                    ]
+                                    }
+                            }
+                        spaceV4
                 }
             }
     )

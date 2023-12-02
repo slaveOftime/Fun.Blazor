@@ -8,7 +8,7 @@ This contains the code for Fun.Blazor templates, also with more samples in it: h
 
 ## Use dotnet templates:
 
-[![Nuget](https://img.shields.io/nuget/vpre/Fun.Blazor.Templates)](https://www.nuget.org/packages/Fun.Blazor.Templates)
+[![Nuget](https://img.shields.io/nuget/vpre/Fun.Blazor.Templates)](https://www.nuget.org/packages/Fun.Blazor.Templates) 👈 always try to use the latest one.
 
 ```shell
 dotnet new --install Fun.Blazor.Templates::3.2.0
@@ -41,10 +41,9 @@ type IGlobalStore with // Singleton store, shared for all. Used in server-side b
 
 ```fsharp
 type IComponentHook with
-    member hook.TryLoadPosts(page) =
-        task {
-            ...
-        }
+    member hook.TryLoadPosts(page) = task {
+        ...
+    }
 
     member hook.UseSettingsForm() =
         hook
@@ -72,11 +71,9 @@ let private fragment3 = html.elmish (init, update, view)
 let comp1 =
     html.inject (fun (svc1, shareStore: IShareStore, ...) ->
         div {
-            childContent [
-                fragment1
-                fragment2 shareStore
-                fragment3
-            ]
+            fragment1
+            fragment2 shareStore
+            fragment3
         }
     )
 ```

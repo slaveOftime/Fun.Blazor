@@ -271,6 +271,8 @@ pipeline "bindings" {
                 ""
                 "Below is auto generated bindings, if the version does not match your requirements you can use the Fun.Blazor.Cli to generate your own."
                 ""
+                "The bindings will be updated every week."
+                ""
                 "```bash"
                 for info in getBindingInfos() do
                     $"dotnet add package {info.name} --version {info.version}"

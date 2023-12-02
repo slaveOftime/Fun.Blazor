@@ -1,6 +1,11 @@
 # Interactive Nodes
 
-> Note: Blazor by default renders the content as static so if you're rendering from the server you won't have any dynamic behavior, for that you need to set server interactivity for the component or use client side blazor (WASM).
+[Adaptive Data]: https://github.com/fsprojects/FSharp.Data.Adaptive
+[Working With Blazor]: ./Advanced-features/Working-With-Blazor
+[Fun.Blazor.Reactive]: https://github.com/slaveOftime/Fun.Blazor
+[FSharp.Control.Reactive]: http://fsprojects.github.io/FSharp.Control.Reactive/index.html
+
+> Note: Blazor by default renders the content as static from dotnet 8, so if you're rendering from the server you won't have any dynamic behavior, for that you need to set server interactivity for the component or use client side blazor (WASM).
 > If your project was created with the `fun-wasm` template then you don't have to do anything else for this to work.
 > For server interactivity and more information please check the [Working With Blazor] section.
 
@@ -55,7 +60,6 @@ module ReactiveViews =
   let obs = Observable.interval (TimeSpan.FromSeconds(1.))
 
   article {
-
     h1 { "My View" }
     p {
       html.watch(obs, (fun num -> fragment { $"Number: {num}" }), 0)
@@ -108,7 +112,6 @@ module AdaptiveViews =
 
       button {
         onclick (fun _ -> store.Publish(store.Current + 10))
-
         "Update Store"
       }
   }
@@ -194,8 +197,3 @@ fragment {
   }
 }
 ```
-
-[Adaptive Data]: https://github.com/fsprojects/FSharp.Data.Adaptive
-[Working With Blazor]: ./Advanced-features/Working-With-Blazor
-[Fun.Blazor.Reactive]: https://github.com/slaveOftime/Fun.Blazor
-[FSharp.Control.Reactive]: http://fsprojects.github.io/FSharp.Control.Reactive/index.html

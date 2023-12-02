@@ -1,5 +1,10 @@
 # DOM
 
+[F# Computation Expressions]: https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/computation-expressions
+[Adaptive Data]: https://github.com/fsprojects/FSharp.Data.Adaptive
+[Working With Blazor]: ./Advanced-features/Working-With-Blazor
+[Adaptive Forms]: ./Advanced-features/Adaptive/Form
+
 Fun.Blazor provides a friendly way to write HTML for web applications. It uses [F# Computation Expressions] to generate a simple yet performant DSL.
 
 ```fsharp
@@ -25,7 +30,7 @@ Calling that function would produce a markup like
 
 ## Control Flow
 
-Since you're using F# for your markup code, you have all of the F# arsenal at your disposal that includes `match`, `if`, `function` and even lists of elements but to avoid having problems with mismatch between content in the element rendering you should use `fragment` or `region` these are containerless builders that isolate blazor's node count which can be useful for performance as well as keeping the content concistent.
+Since you're using F# for your markup code, you have all of the F# arsenal at your disposal that includes `match`, `if`, `function` and even lists of elements but to avoid having problems with mismatch between content in the element rendering you should use `fragment` or `region` these are containerless builders that isolate blazor's node count which can be useful for performance as well as keeping the content consistent.
 
 ### If/Else
 
@@ -34,7 +39,7 @@ Since you're using F# for your markup code, you have all of the F# arsenal at yo
 let element isVisible =
   div {
     $"The element is: "
-    region {
+    region { // good for diff performance and sematic for dynamic part, but if you do not use region to wrap it, it is still ok for most of the cases
       if isVisible then
         "Visible"
       else
@@ -50,7 +55,7 @@ let element isVisible =
 let element kind =
   div {
     $"The element is: "
-    region {
+    region { // good for diff performance and sematic for dynamic part, but if you do not use region to wrap it, it is still ok for most of the cases
       match kind with
       | Fantastic -> "Fantastic"
       | Average -> "Average"
@@ -64,16 +69,16 @@ let element kind =
 To render lists you can use `for item in items do`
 
 ```fsharp
-ul {
+div {
   h3 { "Some title." }
-  for item in 0..10 do
-    li {
-        key item
-        $"Item: {item}"
-    }
-
+  ul {
+    for item in 0..10 do
+      li {
+          key item
+          $"Item: {item}"
+      }
+  }
 }
-
 ```
 
 Or also if you have an existing list of nodes you can use the `childContent` operation.
@@ -81,6 +86,14 @@ Or also if you have an existing list of nodes you can use the `childContent` ope
 ```fsharp
 ul {
   childContent listOfNodes
+}
+```
+
+Or yield directly:
+
+```fsharp
+ul {
+  yield! listOfNodes
 }
 ```
 
@@ -105,21 +118,20 @@ module SharedAttrs =
   let classAndData =
     domAttr {
       class' "has-data"
-      data("my-data", "123")
+      "my-data", "123"
     }
 
-let someNode() =
+let someNode =
   div {
     SharedAttrs.classAndData
     "Some Node"
   }
 
-let otherNode() =
+let otherNode =
   div {
     SharedAttrs.classAndData
     "Other Node"
   }
-
 ```
 
 ## Events
@@ -155,6 +167,7 @@ input {
 input {
   type' "number"
   placeholder "Change Number"
+  type' InputTypes.number
   oninput(fun e ->
     unbox<string> e.Value |> int |> printfn "New Value: '%i'"
   )
@@ -162,8 +175,3 @@ input {
 ```
 
 > Note: If you're realing with forms you should check out [Adaptive Forms] instead. They can work with more structured objects like records and provide validation abilities.
-
-[F# Computation Expressions]: https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/computation-expressions
-[Adaptive Data]: https://github.com/fsprojects/FSharp.Data.Adaptive
-[Working With Blazor]: ./Advanced-features/Working-With-Blazor
-[Adaptive Forms]: ./Advanced-features/Adaptive/Form

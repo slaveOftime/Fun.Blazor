@@ -25,19 +25,16 @@ let navmenu =
                 html.fragment [
                     for item in items do
                         match item with
-                        | DocTreeNode.Category (indexDoc, docs, childs) ->
+                        | DocTreeNode.Category(indexDoc, docs, childs) ->
                             let path = path + "/" + sanitizeFileName indexDoc.Name
                             MudNavGroup'() {
-                                Title (getDocName indexDoc)
-                                childContent
-                                    [
-                                        for doc in docs do
-                                            MudNavLink'() {
-                                                Href(path + "/" + sanitizeFileName doc.Name)
-                                                getDocName doc
-                                            }
-                                        buildDocMenuTree langStr path childs
-                                    ]
+                                Title(getDocName indexDoc)
+                                for doc in docs do
+                                    MudNavLink'() {
+                                        Href(path + "/" + sanitizeFileName doc.Name)
+                                        getDocName doc
+                                    }
+                                buildDocMenuTree langStr path childs
                             }
                         | DocTreeNode.Doc doc ->
                             MudNavLink'() {
@@ -54,25 +51,19 @@ let navmenu =
                     flexDirectionColumn
                     overflowHidden
                 }
-                childContent [
-                    spaceV3
-                    div {
-                        style {
-                            flexGrow 1
-                            overflowAuto
-                        }
-                        childContent [
-                            adaptiview () {
-                                let! langStr = hook.Lang
-                                let! tree, isLoading = hook.GetOrLoadDocsTree() |> AVal.map (LoadingState.unzip [])
-                                if isLoading then MudProgressLinear'.create ()
-                                MudNavMenu'() { 
-                                    buildDocMenuTree langStr docsSeg tree
-                                }
-                            }
-                        ]
+                spaceV3
+                div {
+                    style {
+                        flexGrow 1
+                        overflowAuto
                     }
-                ]
+                    adaptiview () {
+                        let! langStr = hook.Lang
+                        let! tree, isLoading = hook.GetOrLoadDocsTree() |> AVal.map (LoadingState.unzip [])
+                        if isLoading then MudProgressLinear'.create ()
+                        MudNavMenu'() { buildDocMenuTree langStr docsSeg tree }
+                    }
+                }
             }
     )
 

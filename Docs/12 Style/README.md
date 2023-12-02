@@ -1,5 +1,8 @@
 # Styling
 
+[Fun.Css]: https://github.com/slaveOftime/Fun.Css
+[rule's Specificity]: https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity
+
 Adding styles is common in every web application, Fun.Blazor provides out of the box support for inline css and also there's the [Fun.Css] package that provides support for style tags (using classes and rulesets).
 
 ## Inline Styles
@@ -46,7 +49,7 @@ let styledDiv =
 To create style tags you can use the `ruleset` builder, this will produce a css rule that can be applied to any element within the scope of the style tag (e.g. when it loads)
 
 ```fsharp
-module Shared =
+module SharedClasses =
   let Page =
     ruleset ".page" {
       margin 0
@@ -82,9 +85,9 @@ let HomePage =
         fontSize "medium"
         boxShadow "5px 5px 0.5em rgba(0, 0, 0, 0.5)"
       }
-      Shared.Page
-      Shared.Title
-      Shared.Text
+      SharedClasses.Page
+      SharedClasses.Title
+      SharedClasses.Text
     }
   }
 ```
@@ -120,7 +123,7 @@ That would produce something like
 </article>
 ```
 
-> Note: Keep in mind that these styles are loaded in style tags along their declaring elements, so if you have styles already loaded you could have rules clashing and overriding depending on the [rule's specificity].
+> Note: Keep in mind that these styles are loaded in style tags along their declaring elements, so if you have styles already loaded you could have rules clashing and overriding depending on the [rule's specificity]
 
 ## Sharing Inline Styles Globally
 
@@ -191,6 +194,3 @@ Using CSS rules:
 Using keyframes:
 
 {{KeyFramesDemo}}
-
-[Fun.Css]: https://github.com/slaveOftime/Fun.Css
-[rule's Specificity]: https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity

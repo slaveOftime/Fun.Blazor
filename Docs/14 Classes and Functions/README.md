@@ -1,5 +1,9 @@
 # Classes vs Functions
 
+[Interactive Nodes]: ./Interactive-Nodes
+[Hooks]: ./Advanced-features/Hook
+[Dependency Injection]: ./Advanced-features/Dependency-injection-(DI)
+
 Fun.Blazor is very flexible and allows you to choose between classes and functions as you need.
 
 For the most part you can use functions as much as you'd like but there are situations wher classes may come in handy (like writing blazor components for other teams).
@@ -89,8 +93,9 @@ type Counter() =
     inherit FunComponent()
 
     let mutable counter = 0
+
     [<Inject>]
-    member val Logger: ILogger<Counter> = Unchecked.defaultof<_>
+    member val Logger: ILogger<Counter> = Unchecked.defaultof<_> with get, set
 
     override this.Render() =
         fragment {
@@ -154,7 +159,4 @@ The drawbacks are:
 
 In general, classes can be used to orchestrate dependency injection, to use plain blazor features seamlessly, and to keep as close as blazor as possible.
 
-Functions most of the time can overcome the benefits of classes when you use `html.comp` functions (also called `html.inject`) which you can read more about in [Hooks] and [Dependency Injection](<./Advanced-features/Dependency-injection-(DI)>)
-
-[Interactive Nodes]: ./Interactive-Nodes
-[Hooks]: ./Advanced-features/Hook
+Functions most of the time can overcome the benefits of classes when you use `html.inject` which you can read more about in [Hooks] and [Dependency Injection].

@@ -36,7 +36,7 @@ let entry =
                     spaceV3
                     div { "extenalX = %d{extenalX}" }
                     spaceV2
-                    div.create $"Count = {count}"
+                    div { $"Count = {count}" }
                 ]
             }
     )
