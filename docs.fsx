@@ -260,7 +260,7 @@ module DocBuilder =
     let wwwroot = wasm </> "wwwroot"
     let demos = "Demos"
     let docs = "Docs"
-    let baseUrl = "docs/"
+    let baseUrl = "Docs/"
 
 
     let build () =
