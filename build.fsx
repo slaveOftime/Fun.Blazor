@@ -1,17 +1,22 @@
 #r "nuget: Fun.Build, 1.0.5"
 #r "nuget: Fake.IO.FileSystem, 6.0.0"
-#r "nuget: FsHttp, 12.0.0"
+#r "nuget: NuGet.Packaging"
+#r "nuget: NuGet.Protocol"
 
 #load "docs.fsx"
 
 open System
 open System.IO
+open System.Threading
 open Fun.Build
 open Fun.Result
 open Fake.IO
 open Fake.IO.FileSystemOperators
 open Fake.IO.Globbing.Operators
-open FsHttp
+open NuGet.Common
+open NuGet.Protocol
+open NuGet.Protocol.Core.Types
+
 
 
 let options = {|
@@ -25,7 +30,7 @@ let getBindingInfos () =
     |> Seq.map (fun x -> x </> Path.GetFileName x + ".fsproj")
     |> Seq.filter File.exists
     |> Seq.map (fun file ->
-        let fileContent = File.readAsString file 
+        let fileContent = File.readAsString file
         let version =
             let startIndex = fileContent.IndexOf("Version=") + 9
             let endIndex = fileContent.IndexOf("\"", startIndex)
@@ -34,26 +39,36 @@ let getBindingInfos () =
             let endIndex = fileContent.IndexOf("Version=") - 2
             let startIndex = fileContent.LastIndexOf("Include=", endIndex) + 9
             fileContent.Substring(startIndex, endIndex - startIndex)
-        {| name = Path.GetFileNameWithoutExtension file; package = package; version = version |}
+        {|
+            name = Path.GetFileNameWithoutExtension file
+            package = package
+            version = version
+        |}
     )
 
 
-let getNugetPackageLatestVersion (package: string) =
-    printfn "Fetch latest version"
-    http { GET $"https://api.nuget.org/v3-flatcontainer/{package}/index.json" }
-    |> Request.send
-    |> Response.deserializeJson<{| versions: string list |}>
-    |> fun x -> x.versions
-    |> Seq.filter (Seq.exists (fun c -> c >= 'a' && c <= 'z') >> not)
-    |> Seq.last
+let getNugetPackageLatestVersion (package: string) = task {
+    let logger = NullLogger.Instance
+    let cancellationToken = CancellationToken.None
+    use cache = new SourceCacheContext()
+    let repository = Repository.Factory.GetCoreV3("https://api.nuget.org/v3/index.json")
+    let! resource = repository.GetResourceAsync<FindPackageByIdResource>()
+    let! versions = resource.GetAllVersionsAsync(package, cache, logger, cancellationToken)
+    return
+        versions
+        |> Seq.filter (fun x -> not x.IsPrerelease)
+        |> Seq.tryLast
+        |> Option.defaultWith (fun _ -> failwith $"No version found for {package}")
+}
 
 
 type PipelineBuilder with
 
     [<CustomOperation "collapseGithubActionLogs">]
     member inline this.collapseGithubActionLogs(build: Internal.BuildPipeline) =
-        let build = this.runBeforeEachStage(build, fun ctx -> if ctx.GetStageLevel() = 0 then printfn $"::group::{ctx.Name}")
-        this.runAfterEachStage(build, fun ctx -> if ctx.GetStageLevel() = 0 then printfn "::endgroup::")
+        let build =
+            this.runBeforeEachStage (build, (fun ctx -> if ctx.GetStageLevel() = 0 then printfn $"::group::{ctx.Name}"))
+        this.runAfterEachStage (build, (fun ctx -> if ctx.GetStageLevel() = 0 then printfn "::endgroup::"))
 
 
 let stage_checkEnv =
@@ -63,7 +78,10 @@ let stage_checkEnv =
                 !! "./*/CHANGELOG.md"
                 |> Seq.iter (fun file ->
                     printfn "%s %s" file (Path.getDirectory file)
-                    let version = Path.getDirectory file |> Changelog.GetLastVersion |> Option.defaultWith (fun _ -> failwith "No version available")
+                    let version =
+                        Path.getDirectory file
+                        |> Changelog.GetLastVersion
+                        |> Option.defaultWith (fun _ -> failwith "No version available")
                     $"""<!-- auto generated -->
 <Project>
     <PropertyGroup>
@@ -86,7 +104,6 @@ let stage_test =
     }
 
 let stage_packNuget projDir =
-    let version = Changelog.GetLastVersion(projDir) |> Option.defaultWith (fun _ -> failwith "No version available")
     stage $"Pack Nuget for {projDir}" {
         workingDir projDir
         run $"dotnet pack -c Release -o {__SOURCE_DIRECTORY__}"
@@ -107,11 +124,13 @@ let stage_generateBindingProjects name package nsp patch =
             }
         }
         noStdRedirectForStep
-        run (fun _ ->
-            let version = getNugetPackageLatestVersion package
+        run (fun _ -> task {
+            let! nugetVersion = getNugetPackageLatestVersion package
+            let version = nugetVersion.OriginalVersion
             printfn $"Found verion {version} for package {package}"
 
-            let version = if String.IsNullOrEmpty patch then version else version + "." + "patch"
+            let version =
+                if String.IsNullOrEmpty patch then version else version + "." + "patch"
 
             Directory.ensure projectDir
             File.write false (projectDir </> projectName + ".fsproj") [
@@ -132,11 +151,13 @@ let stage_generateBindingProjects name package nsp patch =
   </ItemGroup>
 </Project>"""
             ]
-        )
+        })
         run $"dotnet run --project ../../Fun.Blazor.Cli/Fun.Blazor.Cli.fsproj --framework net8.0 -- generate {projectName}.fsproj"
         run (fun ctx -> async {
             let! result = ctx.RunCommand "dotnet build"
-            result |> Result.mapError (sprintf "[red]build failed %s[/]" >> Spectre.Console.AnsiConsole.MarkupLine) |> ignore
+            result
+            |> Result.mapError (sprintf "[red]build failed %s[/]" >> Spectre.Console.AnsiConsole.MarkupLine)
+            |> ignore
             return Ok()
         })
     }
@@ -160,7 +181,7 @@ let stage_pack =
         stage "bindings projects" {
             whenCmdArg "--bindings"
             run (fun ctx -> asyncResult {
-                let files = 
+                let files =
                     Directory.GetDirectories("Bindings")
                     |> Seq.map (fun x -> x </> Path.GetFileName x + ".fsproj")
                     |> Seq.filter File.exists
@@ -209,10 +230,7 @@ pipeline "docs" {
                     File.applyReplace (fun x ->
                         let startIndex = x.IndexOf("<!-- %%-PRERENDERING-HEADOUTLET-BEGIN-%% -->")
                         let endIndex = x.IndexOf("<!-- %%-PRERENDERING-HEADOUTLET-END-%% -->") + 44
-                        if startIndex > -1 then
-                            x.Remove(startIndex, endIndex - startIndex)
-                        else
-                            x
+                        if startIndex > -1 then x.Remove(startIndex, endIndex - startIndex) else x
                     )
                 )
             )
@@ -256,7 +274,11 @@ pipeline "bindings" {
     description "Generate bindings project"
     collapseGithubActionLogs
     stage_generateBindingProjects "Microsoft.Web" "Microsoft.AspNetCore.Components.Web" "Microsoft.AspNetCore.Components" ""
-    stage_generateBindingProjects "Microsoft.Authorization" "Microsoft.AspNetCore.Components.Authorization" "Microsoft.AspNetCore.Components.Authorization" ""
+    stage_generateBindingProjects
+        "Microsoft.Authorization"
+        "Microsoft.AspNetCore.Components.Authorization"
+        "Microsoft.AspNetCore.Components.Authorization"
+        ""
     stage_generateBindingProjects "Microsoft.FluentUI" "Microsoft.FluentUI.AspNetCore.Components" "Microsoft.FluentUI.AspNetCore.Components" ""
     stage_generateBindingProjects "Microsoft.QuickGrid" "Microsoft.AspNetCore.Components.QuickGrid" "Microsoft.AspNetCore.Components.QuickGrid" ""
     stage_generateBindingProjects "AntDesign" "AntDesign" "AntDesign" ""
@@ -274,7 +296,7 @@ pipeline "bindings" {
                 "The bindings will be updated every week."
                 ""
                 "```bash"
-                for info in getBindingInfos() do
+                for info in getBindingInfos () do
                     $"dotnet add package {info.name} --version {info.version}"
                 "```"
             ]
@@ -288,18 +310,20 @@ pipeline "bindings-check" {
     description "Check if there is new version for the binding project"
     collapseGithubActionLogs
     stage "check" {
-        run (fun _ ->
-            getBindingInfos()
-            |> Seq.choose (fun info ->
-                let latestVersion = getNugetPackageLatestVersion info.package
-                if latestVersion <> info.version then Some $"Package {info.package} should be updated from {info.version} to {latestVersion}"
-                else None
-            )
-            |> String.concat "\n"
-            |> function
-                | SafeString x -> Error x
-                | _ -> Ok()
-        )
+        run (fun _ -> task {
+            let errors = Collections.Generic.List<string>()
+
+            for info in getBindingInfos () do
+                let! nugetVersion = getNugetPackageLatestVersion info.package
+                let latestVersion = nugetVersion.OriginalVersion
+                if latestVersion <> info.version then
+                    errors.Add $"Package {info.package} should be updated from {info.version} to {latestVersion}"
+
+            if errors.Count > 0 then
+                return Error(String.concat "\n" errors)
+            else
+                return Ok()
+        })
     }
     runIfOnlySpecified
 }

@@ -170,6 +170,9 @@ type FluentNavBaseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     /// Gets or sets how the link should be matched. 
     /// Defaults to Prefix.
     [<CustomOperation("Match")>] member inline _.Match ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.AspNetCore.Components.Routing.NavLinkMatch) = render ==> ("Match" => x)
+    /// Gets or sets the tooltip to display when the mouse is placed over the item.
+    /// For  FluentNavGroup the Title is used as fallback.
+    [<CustomOperation("Tooltip")>] member inline _.Tooltip ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Tooltip" => x)
     /// The callback to invoke when the item is clicked.
     [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.AspNetCore.Components.Web.MouseEventArgs>("OnClick", fn)
     /// The callback to invoke when the item is clicked.
@@ -453,7 +456,9 @@ type FluentCheckboxBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     [<CustomOperation("CheckState")>] member inline _.CheckState ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("CheckState" => x)
     /// Gets or sets the state of the CheckBox: true, false or null.
     [<CustomOperation("CheckState'")>] member inline _.CheckState' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Nullable<System.Boolean> * (System.Nullable<System.Boolean> -> unit)) = render ==> html.bind("CheckState", valueFn)
+    /// Gets or sets a callback that updates the CheckState.
     [<CustomOperation("CheckStateChanged")>] member inline _.CheckStateChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<System.Nullable<System.Boolean>>("CheckStateChanged", fn)
+    /// Gets or sets a callback that updates the CheckState.
     [<CustomOperation("CheckStateChanged")>] member inline _.CheckStateChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<System.Nullable<System.Boolean>>("CheckStateChanged", fn)
 
 type FluentTimePickerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -1110,6 +1115,8 @@ type FluentInputFileBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsof
     /// Gets or sets a value indicating whether the Drag/Drop zone is visible. 
     /// Default is true.
     [<CustomOperation("DragDropZoneVisible")>] member inline _.DragDropZoneVisible ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("DragDropZoneVisible" => x)
+    /// Gets or sets the progress content of the component.
+    [<CustomOperation("ProgressTemplate")>] member inline _.ProgressTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.ProgressFileDetails -> NodeRenderFragment) = render ==> html.renderFragment("ProgressTemplate", fn)
     /// Use the native event raised by the InputFile component.
     /// If you use this event, the OnFileUploaded will never be raised.
     [<CustomOperation("OnInputFileChange")>] member inline _.OnInputFileChange ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.AspNetCore.Components.Forms.InputFileChangeEventArgs>("OnInputFileChange", fn)
@@ -1126,9 +1133,9 @@ type FluentInputFileBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsof
     /// Raise when a progression step is updated.
     /// You can use ProgressPercent and ProgressTitle to have more detail on the progression.
     [<CustomOperation("OnProgressChange")>] member inline _.OnProgressChange ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.FluentUI.AspNetCore.Components.FluentInputFileEventArgs>("OnProgressChange", fn)
-    /// Raise when a file raised an error.
+    /// Raise when a file raised an error. Not yet used.
     [<CustomOperation("OnFileError")>] member inline _.OnFileError ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.FluentUI.AspNetCore.Components.FluentInputFileEventArgs>("OnFileError", fn)
-    /// Raise when a file raised an error.
+    /// Raise when a file raised an error. Not yet used.
     [<CustomOperation("OnFileError")>] member inline _.OnFileError ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.FluentUI.AspNetCore.Components.FluentInputFileEventArgs>("OnFileError", fn)
     /// Raise when all files are completely uploaded.
     [<CustomOperation("OnCompleted")>] member inline _.OnCompleted ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<System.Collections.Generic.IEnumerable<Microsoft.FluentUI.AspNetCore.Components.FluentInputFileEventArgs>>("OnCompleted", fn)
@@ -1136,6 +1143,14 @@ type FluentInputFileBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsof
     [<CustomOperation("OnCompleted")>] member inline _.OnCompleted ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<System.Collections.Generic.IEnumerable<Microsoft.FluentUI.AspNetCore.Components.FluentInputFileEventArgs>>("OnCompleted", fn)
     /// Gets or sets the identifier of the source component clickable by the end user.
     [<CustomOperation("AnchorId")>] member inline _.AnchorId ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("AnchorId" => x)
+    /// Gets or sets the current global value of the percentage of a current upload.
+    [<CustomOperation("ProgressPercent")>] member inline _.ProgressPercent ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("ProgressPercent" => x)
+    /// Gets or sets the current global value of the percentage of a current upload.
+    [<CustomOperation("ProgressPercent'")>] member inline _.ProgressPercent' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Int32 * (System.Int32 -> unit)) = render ==> html.bind("ProgressPercent", valueFn)
+    /// Gets or sets a callback that updates the ProgressPercent.
+    [<CustomOperation("ProgressPercentChanged")>] member inline _.ProgressPercentChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<System.Int32>("ProgressPercentChanged", fn)
+    /// Gets or sets a callback that updates the ProgressPercent.
+    [<CustomOperation("ProgressPercentChanged")>] member inline _.ProgressPercentChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<System.Int32>("ProgressPercentChanged", fn)
 
 type FluentLabelBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -1267,6 +1282,8 @@ type ListComponentBaseBuilder<'FunBlazorGeneric, 'TOption when 'FunBlazorGeneric
     /// If true, the user can select multiple elements.
     /// ⚠️ Only available for the FluentSelect and FluentListbox components.
     [<CustomOperation("Multiple")>] member inline _.Multiple ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Multiple" => x)
+    /// Gets or sets the template for the Items items.
+    [<CustomOperation("OptionTemplate")>] member inline _.OptionTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: 'TOption -> NodeRenderFragment) = render ==> html.renderFragment("OptionTemplate", fn)
     /// Gets or sets all selected items.
     /// ⚠️ Only available when Multiple = true.
     [<CustomOperation("SelectedOptions")>] member inline _.SelectedOptions ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<'TOption>) = render ==> ("SelectedOptions" => x)
@@ -1311,8 +1328,6 @@ type FluentAutocompleteBuilder<'FunBlazorGeneric, 'TOption when 'FunBlazorGeneri
     [<CustomOperation("MaximumSelectedOptionsMessage")>] member inline _.MaximumSelectedOptionsMessage ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("MaximumSelectedOptionsMessage", html.text x)
     /// Gets or sets the message displayed when the MaximumSelectedOptions is reached.
     [<CustomOperation("MaximumSelectedOptionsMessage")>] member inline _.MaximumSelectedOptionsMessage ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("MaximumSelectedOptionsMessage", html.text x)
-    /// Gets or sets the template for the Items items.
-    [<CustomOperation("OptionTemplate")>] member inline _.OptionTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: 'TOption -> NodeRenderFragment) = render ==> html.renderFragment("OptionTemplate", fn)
     /// Gets or sets the template for the SelectedOptions items.
     [<CustomOperation("SelectedOptionTemplate")>] member inline _.SelectedOptionTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: 'TOption -> NodeRenderFragment) = render ==> html.renderFragment("SelectedOptionTemplate", fn)
     /// Gets or sets the header content, placed at the top of the popup panel.
