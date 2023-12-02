@@ -4,8 +4,7 @@
 dotnet tool install -g Fun.Blazor.Cli --version 3.2.0
 ```
 
-- 为一个包或项目生成 CE DSL。
-- 简单的热重新加载。
+为一个**包**或**项目**生成 CE DSL。
 
 ## 步骤：
 
@@ -33,7 +32,7 @@ dotnet tool install -g Fun.Blazor.Cli --version 3.2.0
     
     有时程序集名称不同于包名称，因此您可以使用此名称指定程序集名称。
 
-    ### `FunBlazorInline`
+    `FunBlazorInline`
     
     内联以提高性能，但可能会增加包大小，它默认开启。这也将覆盖命令行中的设置。
 
@@ -46,8 +45,6 @@ dotnet tool install -g Fun.Blazor.Cli --version 3.2.0
     默认情况下，代码将生成在 `Fun.Blazor.Bindings` 文件夹中。
 
     `-o|--outDir`: 自定义生成的文件夹名称。
-
-    `-s|--style`: 自定义样式 (CE)。
 
 
 3. 尽情使用吧。

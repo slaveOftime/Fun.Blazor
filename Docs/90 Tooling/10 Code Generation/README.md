@@ -4,8 +4,7 @@
 dotnet tool install -g Fun.Blazor.Cli --version 3.2.0
 ```
 
-- Generate CE DSL for a package or project.
-- Simple hot-reload.
+Generate CE DSL for a **package** or **project**.
 
 ## Steps:
 
@@ -33,7 +32,7 @@ dotnet tool install -g Fun.Blazor.Cli --version 3.2.0
     
     Sometimes the assembly name is different from the package name, so you can use this to specify it.
 
-    ### `FunBlazorInline`
+    `FunBlazorInline`
     
     Inline to improve performance but may increase bundle size, turned on by default. This will also override the settings in the command line.
    
@@ -47,8 +46,6 @@ dotnet tool install -g Fun.Blazor.Cli --version 3.2.0
     By default, code will be generated in the `Fun.Blazor.Bindings` folder.
 
     `-o|--outDir`: Customize the generated folder name.
-
-    `-s|--style`: Customize the style (CE).
 
 
 3. Enjoy it.
