@@ -3,15 +3,15 @@
 module Fun.Blazor.Docs.Wasm.Nav
 
 open FSharp.Data.Adaptive
+open MudBlazor
 open Fun.Result
 open Fun.Blazor
 open Fun.Blazor.Router
-open MudBlazor
 open Fun.Blazor.Docs.Controls
 open Fun.Blazor.Docs.Wasm
 
 
-let private docsSeg = "docs"
+let private docsSeg = "Docs"
 let private docsSegUrl = docsSeg + "/"
 
 
