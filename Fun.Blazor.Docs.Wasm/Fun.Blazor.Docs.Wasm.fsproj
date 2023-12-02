@@ -18,8 +18,10 @@
 		<Compile Include="Demos\CounterClassStyle.fs" />
 		<Compile Include="Demos\GiraffeStyleRouter.fs" />
 		<Compile Include="Demos\AdaptiveForm.fs" />
+		<Compile Include="Demos\AdaptiveElmish.fs" />
 		<Compile Include="Demos\AdaptiviewDemo.fs" />
 		<Compile Include="Demos\AdaptiviewMathDemo.fs" />
+		<Compile Include="Demos\AdaptiviewMixDemo.fs" />
 		<Compile Include="Demos\HtmlTemplateDemo.fs" />
 		<Compile Include="Demos\GlobalStoreDemo.fs" />
 		<Compile Include="Demos\InlineStyleDemo.fs" />
@@ -30,7 +32,6 @@
 		<Compile Include="Demos\ScopedServiceDemo.fs" />
 		<Compile Include="Demos\BasicHookDemo.fs" />
 		<Compile Include="Demos\ElmishDemo.fs" />
-		<Compile Include="Demos\AdaptiveElmish.fs" />
 		<Compile Include="Demos\BlazorStyleComp.fs" />
 		<Compile Include="Demos\CustomElementDemo.fs" />
 		<Compile Include="DemoMaps.fs" />

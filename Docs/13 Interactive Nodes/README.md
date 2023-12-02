@@ -5,7 +5,7 @@
 [Fun.Blazor.Reactive]: https://github.com/slaveOftime/Fun.Blazor
 [FSharp.Control.Reactive]: http://fsprojects.github.io/FSharp.Control.Reactive/index.html
 
-> Note: Blazor by default renders the content as static from dotnet 8, so if you're rendering from the server you won't have any dynamic behavior, for that you need to set server interactivity for the component or use client side blazor (WASM).
+> Note: Blazor by default renders the content as static from dotnet 8 with **blazor.web.js**, so if you're rendering from the server you won't have any dynamic behavior, for that you need to set server interactivity for the component or use client side blazor (WASM).
 > If your project was created with the `fun-wasm` template then you don't have to do anything else for this to work.
 > For server interactivity and more information please check the [Working With Blazor] section.
 
@@ -31,7 +31,6 @@ module DynamicViews =
       section {
         $"Age: {age}"
         br
-
         input {
           type' "number"
           value age
@@ -88,34 +87,7 @@ module ReactiveViews =
 
 Both Observables and Stores can be converted into adaptive values to have a uniform data interface to work with
 
-```fsharp
-
-module AdaptiveViews =
-  open System
-  open Fun.Blazor
-  open FSharp.Control.Reactive
-  open FSharp.Data.Adaptive
-
-  let observe = Observable.interval (TimeSpan.FromSeconds(1.))
-  let store: IStore<int> = new Store<int>(0)
-
-  let adaptiveObs = AVal.ofObservable 0L ignore observe
-  let adaptiveStore = AVal.ofObservable 0 ignore store.Observable
-
-  let view() =
-    fragment {
-      adaptiview () {
-        let! fromObs = adaptiveObs
-        let! fromStore = adaptiveStore
-        fragment { $"Observable: {fromObs} - Store: {fromStore}" }
-      }
-
-      button {
-        onclick (fun _ -> store.Publish(store.Current + 10))
-        "Update Store"
-      }
-  }
-```
+{{AdaptiviewMixDemo}}
 
 ## Rendering
 
