@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [3.3.0-beta003] - 2023-12-10
+
+- Improve script CE
+
 ## [3.3.0-beta002] - 2023-12-10
 
 - Yield string as raw content for script

@@ -339,6 +339,8 @@ type EltScriptBuilder() =
             builder.AddMarkupContent(index, x)
             index + 1
         )
+    
+    member inline _.Delay([<InlineIfLambda>] fn: unit -> NodeRenderFragment) = NodeRenderFragment(fun c b i -> fn().Invoke(c, b, i))
 
 
 [<AutoOpen>]

@@ -176,10 +176,15 @@ let ``Check some attributes`` () =
             value true
             type' InputTypes.``datetime-local``
             autocomplete AutoCompleteValues.name.family_name
+            script { "let x = 123;" }
         }
 
     let result = context.RenderNode demo
-    result.MarkupMatches("""<div hidden value="True" type="datetime-local" autocomplete="family-name"></div>""")
+    result.MarkupMatches("""
+        <div hidden value="True" type="datetime-local" autocomplete="family-name">
+            <script>let x = 123;</script>
+        </div>
+    """)
 
 
 [<Fact>]
