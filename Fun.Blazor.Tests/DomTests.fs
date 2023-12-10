@@ -31,6 +31,8 @@ let ``Yield key value attributes`` () =
             let mutable count = 0
 
             div {
+                data 1
+                data "theme" "dark"
                 "style", "color: red"
                 "width", 10
                 "height", 100.1
@@ -44,13 +46,13 @@ let ``Yield key value attributes`` () =
 
     task {
         let result = context.RenderNode demo
-        result.MarkupMatches("""<div style="color: red" width="10" height="100.1" hidden1="" >count=0</div>""")
+        result.MarkupMatches("""<div data="1" data-theme="dark" style="color: red" width="10" height="100.1" hidden1="" >count=0</div>""")
 
         do! result.Find("div").ClickAsync(null)
-        result.MarkupMatches("""<div style="color: red" width="10" height="100.1" hidden1="" >count=1</div>""")
+        result.MarkupMatches("""<div data="1" data-theme="dark" style="color: red" width="10" height="100.1" hidden1="" >count=1</div>""")
 
         result.Find("div").Change(null)
-        result.MarkupMatches("""<div style="color: red" width="10" height="100.1" hidden1="" >count=2</div>""")
+        result.MarkupMatches("""<div data="1" data-theme="dark" style="color: red" width="10" height="100.1" hidden1="" >count=2</div>""")
     }
 
 

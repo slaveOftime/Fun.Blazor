@@ -330,6 +330,8 @@ type DomAttrBuilder() =
     member inline _.csp([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("csp" => v)
     [<CustomOperation("data")>]
     member inline _.data([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("data" => v)
+    [<CustomOperation("data")>]
+    member inline _.data([<InlineIfLambda>] render: AttrRenderFragment, key: string, v) = render ==> ("data-" + key => v)
     [<CustomOperation("datetime")>]
     member inline _.datetime([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("datetime" => v)
     [<CustomOperation("decoding")>]

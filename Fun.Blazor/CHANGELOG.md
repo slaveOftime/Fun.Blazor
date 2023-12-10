@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+- Yield string as raw content for script
+- Support "**data key value**" for domAttr
+
 ## [3.3.0-beta001] - 2023-11-29
 
 - Remove obsolete html.blazor overloads
