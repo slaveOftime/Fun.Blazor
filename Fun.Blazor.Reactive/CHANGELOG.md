@@ -1,5 +1,7 @@
 # Changelog
 
+- Improve trim
+
 ## [3.3.0-beta001] - 2023-11-29
 
 - INIT

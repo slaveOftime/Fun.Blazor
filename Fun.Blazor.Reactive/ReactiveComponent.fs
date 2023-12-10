@@ -1,12 +1,13 @@
 ﻿namespace Fun.Blazor
 
 open System
+open System.Diagnostics.CodeAnalysis
 open Microsoft.Extensions.Logging
 open Microsoft.AspNetCore.Components
 open Internal
 
 
-type ReactiveComponent<'T>() as this =
+type ReactiveComponent<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<ReactiveComponent<_>>)>] () as this =
     inherit FunBlazorComponent()
 
     let mutable subscription = null
@@ -21,16 +22,14 @@ type ReactiveComponent<'T>() as this =
     member val Store = Unchecked.defaultof<IObservable<'T>> with get, set
 
     [<Parameter>]
-    member val RenderFn: 'T -> NodeRenderFragment = fun _ -> emptyNode() with get, set
+    member val RenderFn: 'T -> NodeRenderFragment = fun _ -> emptyNode () with get, set
 
     [<Inject>]
     member val Logger = Unchecked.defaultof<ILogger<ReactiveComponent<'T>>> with get, set
 
 
     override _.Render() =
-        this.Logger.LogDebugForPerf(fun () ->
-            if not isValueSet && box value = null then emptyNode() else this.RenderFn value
-        )
+        this.Logger.LogDebugForPerf(fun () -> if not isValueSet && box value = null then emptyNode () else this.RenderFn value)
 
 
     override _.OnInitialized() =
@@ -46,5 +45,4 @@ type ReactiveComponent<'T>() as this =
 
 
     interface IDisposable with
-        member _.Dispose() =
-            if subscription <> null then subscription.Dispose()
+        member _.Dispose() = if subscription <> null then subscription.Dispose()
