@@ -4,6 +4,7 @@
 
 - Yield string as raw content for script
 - Support "**data key value**" for domAttr
+- Support aria-xxx
 
 ## [3.3.0-beta001] - 2023-11-29
 
