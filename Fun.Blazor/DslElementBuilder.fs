@@ -323,6 +323,24 @@ type EltFormBuilder() =
 #endif
 
 
+type EltScriptBuilder() =
+    inherit EltBuilder("script")
+        
+    member inline this.Run([<InlineIfLambda>] render: NodeRenderFragment) =
+        NodeRenderFragment(fun comp builder index ->
+            builder.OpenElement(index, (this :> IElementBuilder).Name)
+            let nextIndex = render.Invoke(comp, builder, index + 1)
+            builder.CloseElement()
+            nextIndex
+        )
+
+    member inline _.Yield(x: string) =
+        NodeRenderFragment(fun _ builder index ->
+            builder.AddMarkupContent(index, x)
+            index + 1
+        )
+
+
 [<AutoOpen>]
 module Elts =
 
@@ -514,7 +532,8 @@ module Elts =
 
     let samp = EltWithChildBuilder "samp"
 
-    let script = EltWithChildBuilder "script"
+    // Yield string directly will be treated as raw script
+    let script = EltScriptBuilder()
 
     let section = EltWithChildBuilder "section"
 
