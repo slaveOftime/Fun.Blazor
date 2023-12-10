@@ -1,5 +1,7 @@
 # Changelog
 
+## [3.3.0-beta002] - 2023-12-10
+
 - Improve trim
 
 ## [3.3.0-beta001] - 2023-11-29

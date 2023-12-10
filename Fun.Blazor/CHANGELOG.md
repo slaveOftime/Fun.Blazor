@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [3.3.0-beta002] - 2023-12-10
+
 - Yield string as raw content for script
 - Support "**data key value**" for domAttr
 - Support aria-xxx

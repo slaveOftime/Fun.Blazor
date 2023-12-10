@@ -93,7 +93,7 @@ module AutoCompleteValues =
     let url = "url"
     let photo = "photo"
 
-type DomAttrBuilder =
+type DomAttrBuilder with
 
     [<CustomOperation("type'")>]
     member inline _.type'([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("type" => v)
