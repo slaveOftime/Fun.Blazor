@@ -44,10 +44,17 @@ let ``Should work for adding, appending and removing`` () =
     QueryBuilder()
         .Add({| Age = 1; Name = "foo"; Page = Nullable() |})
         .Remove("Age")
-        .Add("year", 2021)
+        .Add("year", Nullable<int>())
+        .Add("year", Nullable 2021)
         .Add("year", 2022, append = true)
         .ToString()
     |> should equal "Name=foo&year=2021&year=2022"
 
     QueryBuilder().Add((fun (x: QueryDemo) -> x.Age), [ 1; 2; 3 ]).Add("year", [ 2021; 2022 ]).ToString()
     |> should equal "Age=1&Age=2&Age=3&year=2021&year=2022"
+
+    QueryBuilder()
+        .Add("year", Nullable 2021)
+        .Add("year", Nullable<int>())
+        .ToString()
+    |> should equal ""

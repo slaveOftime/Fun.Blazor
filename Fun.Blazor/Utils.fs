@@ -137,18 +137,14 @@ type QueryBuilder<'T>() =
 
 
     /// By default will always create or override existing query value
-    member this.Add(key: string, value, ?append: bool) =
-        match append with
-        | Some true -> query.Add(key, string value)
-        | _ -> query.Set(key, string value)
-        this
-
-    /// By default will always create or override existing query value. When null, query will be removed.
-    member this.Add(key: string, value: Nullable<_>, ?append: bool) =
-        if value.HasValue then
-            this.Add(key, value.Value, defaultArg append false) |> ignore
-        else
-            query.Remove(key)
+    member this.Add(key: string, value: obj, ?append: bool) =
+        match value with
+        | null -> query.Remove(key)
+        | _ when value.GetType().FullName.StartsWith("System.Nullable`") -> query.Remove(key)
+        | _ ->
+            match append with
+            | Some true -> query.Add(key, string value)
+            | _ -> query.Set(key, string value)
         this
 
     /// Append multiple key value pairs
