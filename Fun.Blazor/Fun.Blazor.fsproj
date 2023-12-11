@@ -19,6 +19,7 @@
 		<Compile Include="AdaptiveComponent.fs" />
 		<Compile Include="DslFragmentBuilder.fs" />
 		<Compile Include="DslDomAttrBuilder.fs" />
+		<Compile Include="DslDomEventAttr.fs" />
 		<Compile Include="DslDomInputAttr.fs" />
 		<Compile Include="DslDomAriaAttr.fs" />
 		<Compile Include="DslElementBuilder.fs" />

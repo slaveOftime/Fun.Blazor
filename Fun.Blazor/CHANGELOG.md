@@ -3,6 +3,7 @@
 ## [Unreleased]
 
 - Improve QueryBuilder
+- Add unsafe events (can be used for simple SSR)
 
 ## [3.3.0-beta003] - 2023-12-10
 

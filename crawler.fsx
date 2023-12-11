@@ -7,6 +7,7 @@ open Fun.Build
 
 type HtmxReference = HtmlProvider<"https://htmx.org/reference/">
 type HtmlAriaAttributes = HtmlProvider<"https://developer.mozilla.org/docs/Web/Accessibility/ARIA/Attributes">
+type HtmlEvents = HtmlProvider<"https://developer.mozilla.org/en-US/docs/Web/Events">
 
 
 pipeline "htmx" {
@@ -57,6 +58,24 @@ pipeline "aria" {
                     let name = key.Replace("-", "_").Substring(5)
                     printfn $"    let inline {name} x = \"{key}\", string x"
             )
+        )
+    }
+}
+
+pipeline "event" {
+    stage "" {
+        run (fun _ ->
+            let lists = System.Collections.Generic.HashSet<string>()
+            for value in HtmlEvents.GetSample().Lists.``Event listing``.Values do
+                let index = value.LastIndexOf " event"
+                if index > 0 then
+                    let name = value.Substring(0, index)
+                    if lists.Contains name |> not then
+                        lists.Add name |> ignore
+                        printfn
+                            $"""        [<CustomOperation("on{name}")>]
+        member inline _.on{name}([<InlineIfLambda>] render: AttrRenderFragment, js: string) = render ==> ("on{name}" => js)
+                        """
         )
     }
 }
