@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+- Improve QueryBuilder
+
 ## [3.3.0-beta005] - 2023-12-11
 
 - Improve QueryBuilder

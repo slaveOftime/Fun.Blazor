@@ -109,9 +109,14 @@ type QueryBuilder<'T>() =
 
     /// By default will always create or override existing query value
     member this.Add<'Prop>(expression: Expression<Func<'T, 'Prop>>, value: 'Prop, ?append: bool) =
+        let key = getExpressionName expression
+
         match append with
-        | Some true -> query.Add(getExpressionName expression, value.ToString())
+        | Some true when isNull (box value) -> ()
+        | Some true -> query.Add(key, value.ToString())
+        | _ when isNull (box value) -> query.Remove(key)
         | _ -> query.Set(getExpressionName expression, value.ToString())
+
         this
 
     /// By default will always create or override existing query value. When null, query will be removed.
@@ -153,6 +158,16 @@ type QueryBuilder<'T>() =
             query.Add(key, string value)
         this
 
+    /// Append multiple key value pairs
+    member this.Add(key: string, value: string, ?append: bool) =
+        if String.IsNullOrEmpty value then
+            query.Remove(key)
+        else
+            match append with
+            | Some true -> query.Add(key, value)
+            | _ -> query.Set(key, value)
+        this
+
 
     /// Remove query by key
     member this.Remove(key: string) =
@@ -168,9 +183,11 @@ type QueryBuilder<'T>() =
     /// This will override existing query values.
     member this.Add(state: obj) =
         let ty = state.GetType()
+        let isComponent = ty.IsAssignableTo(typeof<IComponent>)
+
         state.GetType().GetProperties(BindingFlags.Instance ||| BindingFlags.Public)
         |> Seq.choose (fun p ->
-            if ty = typeof<IComponent> then
+            if isComponent then
                 let attr = p.GetCustomAttribute<ParameterAttribute>()
                 if isNull attr then None else Some p
             else

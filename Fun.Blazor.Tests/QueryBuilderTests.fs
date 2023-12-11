@@ -53,8 +53,17 @@ let ``Should work for adding, appending and removing`` () =
     QueryBuilder().Add((fun (x: QueryDemo) -> x.Age), [ 1; 2; 3 ]).Add("year", [ 2021; 2022 ]).ToString()
     |> should equal "Age=1&Age=2&Age=3&year=2021&year=2022"
 
-    QueryBuilder()
-        .Add("year", Nullable 2021)
-        .Add("year", Nullable<int>())
+    QueryBuilder().Add("year", Nullable 2021).Add("year", Nullable<int>()).Add("label", "demo").Add("label2", "").ToString()
+    |> should equal "label=demo"
+
+    QueryBuilder<QueryDemo>()
+        .Add({ Age = 1; Name = "foo"; Page = Nullable(2) })
+        .Add((fun x -> x.Page), Nullable())
         .ToString()
-    |> should equal ""
+    |> should equal "Age=1&Name=foo"
+
+    QueryBuilder<QueryDemo>()
+        .Add({ Age = 1; Name = "foo"; Page = Nullable(2) })
+        .Add((fun x -> x.Page), Nullable(), append = true)
+        .ToString()
+    |> should equal "Age=1&Name=foo&Page=2"
