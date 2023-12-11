@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+- Improve QueryBuilder
+
 ## [3.3.0-beta003] - 2023-12-10
 
 - Improve script CE

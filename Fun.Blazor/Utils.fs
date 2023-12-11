@@ -1,5 +1,4 @@
-﻿
-[<AutoOpen>]
+﻿[<AutoOpen>]
 module Fun.Blazor.Utils
 
 open System
@@ -16,7 +15,7 @@ open Fun.Blazor.Operators
 module Internal =
     /// Helper method to create an empty AttrRenderFragment
     let inline emptyAttr () = AttrRenderFragment(fun _ _ i -> i + 1)
-    
+
     /// Helper method to create an empty NodeRenderFragment
     let inline emptyNode () = NodeRenderFragment(fun _ _ i -> i + 1)
 
@@ -115,8 +114,62 @@ type QueryBuilder<'T>() =
         | _ -> query.Set(getExpressionName expression, value.ToString())
         this
 
-    /// Null property will be ignored. If typpe is IComponent then only property which is annotated with ParameterAttribute will be taken. 
-    /// This will override existing query values. 
+    /// By default will always create or override existing query value. When null, query will be removed.
+    member this.Add<'Prop when 'Prop: (new: unit -> 'Prop) and 'Prop: struct and 'Prop :> ValueType>
+        (
+            expression: Expression<Func<'T, 'Prop>>,
+            value: Nullable<'Prop>,
+            ?append: bool
+        )
+        =
+        if value.HasValue then
+            this.Add(expression, value.Value, defaultArg append false) |> ignore
+        else
+            query.Remove(getExpressionName expression)
+        this
+
+    /// Append multiple key value pairs
+    member this.Add<'Prop>(expression: Expression<Func<'T, 'Prop>>, values: 'Prop seq) =
+        let name = getExpressionName expression
+        for value in values do
+            query.Add(name, string value)
+        this
+
+
+    /// By default will always create or override existing query value
+    member this.Add(key: string, value, ?append: bool) =
+        match append with
+        | Some true -> query.Add(key, string value)
+        | _ -> query.Set(key, string value)
+        this
+
+    /// By default will always create or override existing query value. When null, query will be removed.
+    member this.Add(key: string, value: Nullable<_>, ?append: bool) =
+        if value.HasValue then
+            this.Add(key, value.Value, defaultArg append false) |> ignore
+        else
+            query.Remove(key)
+        this
+
+    /// Append multiple key value pairs
+    member this.Add<'Prop>(key: string, values: 'Prop seq) =
+        for value in values do
+            query.Add(key, string value)
+        this
+
+
+    /// Remove query by key
+    member this.Remove(key: string) =
+        query.Remove(key)
+        this
+
+    /// Remove query by expression name
+    member this.Remove(expression: Expression<Func<'T, 'Prop>>) =
+        query.Remove(getExpressionName expression)
+        this
+
+    /// Null property will be ignored. If typpe is IComponent then only property which is annotated with ParameterAttribute will be taken.
+    /// This will override existing query values.
     member this.Add(state: obj) =
         let ty = state.GetType()
         state.GetType().GetProperties(BindingFlags.Instance ||| BindingFlags.Public)
