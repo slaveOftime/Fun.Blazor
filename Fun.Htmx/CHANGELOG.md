@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+- Add Js type with multiple helper methods to call native js directly
+- Add hxAddQueriesToHtmxParams to add or overwirte htmx current request with current browser's query parameters
+
 ## [3.3.0-beta001] - 2023-11-29
 
 - Update htmx events convention

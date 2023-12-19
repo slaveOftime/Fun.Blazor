@@ -411,3 +411,9 @@ type DomAttrBuilder with
     /// Notes: hx-on is not inherited, however due to event bubbling, hx-on attributes on parent elements will typically be triggered by events on child elements
     [<CustomOperation "hxOnHtmx">]
     member inline _.hxOnHtmx([<InlineIfLambda>] render: AttrRenderFragment, event: string, script: string) = render ==> ("hx-on::" + event => script)
+
+
+    /// This will use hx-on for configRequest event, and add or overwrite parameters with browser's current query parameters
+    [<CustomOperation "hxAddQueriesToHtmxParams">]
+    member inline this.hxAddQueriesToHtmxParams([<InlineIfLambda>] render: AttrRenderFragment, ?overwrite: bool) = 
+        this.hxOnHtmx(render, hxEvt.configRequest, Js.AddQueriesToHtmxParams(overwrite = defaultArg overwrite false))

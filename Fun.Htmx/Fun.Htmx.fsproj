@@ -9,6 +9,7 @@
 
 	<ItemGroup>
 		<Compile Include="Core.fs" />
+		<Compile Include="NativeJs.fs" />
 		<Compile Include="DslHtmxBuilder.fs" />
 	</ItemGroup>
 
