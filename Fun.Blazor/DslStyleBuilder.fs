@@ -85,6 +85,53 @@ type StyleEltBuilder() =
 namespace Fun.Blazor
 
 open Internal
+open FSharp.Data.Adaptive
+
+
+type ICssRules =
+    /// All the consumed style classes
+    abstract member Styles: aval<Map<string, Fun.Css.Internal.CombineKeyValue>>
+    /// All the consumed keyframes
+    abstract member KeyFrames: aval<Map<string, Fun.Blazor.Internal.KeyFrame>>
+    /// Add or override a style class
+    abstract member IncludeStyle: struct (string * Fun.Css.Internal.CombineKeyValue) -> unit
+    /// Add or override a style class
+    abstract member IncludeStyle: struct (string * Fun.Css.Internal.CombineKeyValue) seq -> unit
+    /// Add or override keyframe
+    abstract member IncludeKeyFrame: struct (string * Fun.Blazor.Internal.KeyFrame) -> unit
+    /// Add or override keyframe
+    abstract member IncludeKeyFrame: struct (string * Fun.Blazor.Internal.KeyFrame) seq -> unit
+
+/// Implementation for IInlineStyles
+type CssRules() as this =
+    let styles = cval (Map.empty<string, Fun.Css.Internal.CombineKeyValue>)
+    let keyFrames = cval (Map.empty<string, Fun.Blazor.Internal.KeyFrame>)
+
+    interface ICssRules with
+        member _.Styles = styles :> aval<_>
+        member _.KeyFrames = keyFrames :> aval<_>
+
+        member _.IncludeStyle((k, f): struct (string * Fun.Css.Internal.CombineKeyValue)) =
+            transact (fun () -> styles.Value <- Map.add k f styles.Value)
+
+        member _.IncludeStyle(styles: struct (string * Fun.Css.Internal.CombineKeyValue) seq) = styles |> Seq.iter (this :> ICssRules).IncludeStyle
+
+        member _.IncludeKeyFrame((k, f): struct (string * Fun.Blazor.Internal.KeyFrame)) =
+            transact (fun () -> keyFrames.Value <- Map.add k f keyFrames.Value)
+
+        member _.IncludeKeyFrame(keyframes: struct (string * Fun.Blazor.Internal.KeyFrame) seq) =
+            keyframes |> Seq.iter ((this :> ICssRules).IncludeKeyFrame)
+
+
+/// This is already registered as a scope service by AddFunBlazorXXX, you can consume it directly.
+/// You will also need to add html.scopedCssRules to the head of your page, so it can inject the consumed styles for you.
+type IScopedCssRules =
+    inherit ICssRules
+
+type ScopedCssRules() =
+    inherit CssRules()
+    interface IScopedCssRules
+
 
 [<AutoOpen>]
 module DslStyle =
@@ -92,12 +139,11 @@ module DslStyle =
     let styleElt = StyleEltBuilder()
 
     /// Build a link stylesheet node
-    let inline stylesheet (x: string) =
-        link {
-            rel "stylesheet"
-            href x
-        }
-    
+    let inline stylesheet (x: string) = link {
+        rel "stylesheet"
+        href x
+    }
+
     /// Build a style string
     let styleStr = StyleStrBuilder()
 
@@ -140,12 +186,40 @@ module DslStyle =
 
     /// Only used for styleElt
     let inline keyframes identifier = KeyFramesBuilder identifier
-    
+
     /// Only used for styleElt
     let inline keyframe (x: int) = KeyFrameBuilder(sprintf "%d%%" x)
-    
+
     /// Only used for keyframe
     let keyframeFrom = KeyFrameBuilder "from"
 
     /// Only used for keyframe
     let keyframeTo = KeyFrameBuilder "to"
+
+
+    type html with
+
+        /// This will add all the consumed styles or keyframes from IScopedInlineStyles
+        static member scopedCssRules =
+            html.inject (fun (scopedCssRules: IScopedCssRules) -> fragment {
+                adaptiview () {
+                    let! styles' = scopedCssRules.Styles
+                    if styles'.IsEmpty then
+                        html.none
+                    else
+                        styleElt {
+                            for KeyValue(k, v) in styles' do
+                                struct (k, v)
+                        }
+                }
+                adaptiview () {
+                    let! keyframes = scopedCssRules.KeyFrames
+                    if keyframes.IsEmpty then
+                        html.none
+                    else
+                        styleElt {
+                            for KeyValue(k, v) in keyframes do
+                                struct (k, v)
+                        }
+                }
+            })

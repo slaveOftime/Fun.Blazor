@@ -3,6 +3,7 @@
 open System
 open System.Net.Http
 open System.Threading.Tasks
+open System.Collections.Generic
 open Microsoft.AspNetCore.Hosting
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.TestHost
@@ -12,7 +13,6 @@ open Microsoft.Extensions.Configuration
 open Microsoft.Extensions.DependencyInjection
 open Fun.Blazor
 open Xunit
-open System.Collections.Generic
 
 
 [<FunBlazorCustomElement>]
@@ -272,4 +272,45 @@ module ServerTests =
         let! _ = http.GetAsync($"/fun-blazor-custom-elements/{typeof<Wrongcounter>.FullName}?{query}")
 
         ()
+    }
+
+
+    type DemoCssRule =
+        static member ClassName = "demo"
+        static member RuleName = $"body .{DemoCssRule.ClassName}"
+        static member Rule = ruleset DemoCssRule.RuleName { color "red" }
+
+    type IScopedCssRules with
+
+        member this.Demo =
+            this.IncludeStyle(DemoCssRule.Rule)
+            DemoCssRule.ClassName
+
+
+    [<Fact>]
+    let ``scoped style sheets should work`` () = task {
+        use server =
+            makeTestServer (fun route ->
+                let route = route.MapGroup("").AddFunBlazor()
+                route.MapGet(
+                    "/demo",
+                    Func<_>(fun () -> html' {
+                        head { html.scopedCssRules }
+                        body { html.inject (fun (cssRules: IScopedCssRules) -> div { classes [ cssRules.Demo ] }) }
+                    })
+                )
+                |> ignore
+            )
+
+        use http = server.CreateClient()
+
+
+        let! actual = http.GetStringAsync("/demo")
+        Assert.Equal(
+            """<html><head><style>body .demo {
+    color: red; 
+}
+</style></head><body><div class="demo"></div></body></html>""",
+            actual
+        )
     }

@@ -23,13 +23,13 @@
 		<Compile Include="DslDomInputAttr.fs" />
 		<Compile Include="DslDomAriaAttr.fs" />
 		<Compile Include="DslElementBuilder.fs" />
-		<Compile Include="DslStyleBuilder.fs" />
 		<Compile Include="DslComponentBuilder.fs" />
 		<Compile Include="DslComponents.fs" />
 		<Compile Include="DslInject.fs" />
 		<Compile Include="DslAdaptiview.fs" />
 		<Compile Include="DslRouting.fs" />
 		<Compile Include="DslSections.fs" />
+		<Compile Include="DslStyleBuilder.fs" />
 		<Compile Include="AdaptiveForm.fs" />
 		<Compile Include="DIExtensions.fs" />
 	</ItemGroup>

@@ -71,7 +71,10 @@ type FunBlazorServerExtensions =
 
     [<Extension>]
     static member AddFunBlazorServer(this: IServiceCollection) =
-        this.AddHttpContextAccessor().AddScoped<IShareStore, ShareStore>().AddSingleton<IGlobalStore, GlobalStore>()
+        this.AddHttpContextAccessor()
+            .AddScoped<IShareStore, ShareStore>()
+            .AddScoped<IScopedCssRules, ScopedCssRules>()
+            .AddSingleton<IGlobalStore, GlobalStore>()
 
 
 #if !NET6_0

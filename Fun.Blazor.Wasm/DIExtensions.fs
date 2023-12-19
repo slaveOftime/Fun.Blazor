@@ -12,6 +12,7 @@ type FunBlazorWasmExtensions =
     [<Extension>]
     static member AddFunBlazorWasm(this: IServiceCollection) =
         this.AddScoped<IShareStore, ShareStore>()
+            .AddScoped<IScopedCssRules, ScopedCssRules>()
             .AddSingleton<IGlobalStore, GlobalStore>()
 
 
