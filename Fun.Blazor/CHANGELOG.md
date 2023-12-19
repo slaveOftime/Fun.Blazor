@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [3.3.0-beta007] - 2023-12-19
+
 - Improve script tag
 - Add more helpers for html.renderFragment
 - Add IScopedCssRules
