@@ -220,25 +220,26 @@ type html() =
         )
 
 
+    /// Helper method to create blazor RednerFragment
+    static member inline renderFragment([<InlineIfLambda>] render: NodeRenderFragment, ?comp: IComponent) =
+        Microsoft.AspNetCore.Components.RenderFragment(fun tb -> render.Invoke(defaultArg comp null, tb, 0) |> ignore)
+
+    /// Helper method to create blazor RednerFragment<'Item>
+    static member inline renderFragment<'TItem>([<InlineIfLambda>] render: 'TItem -> NodeRenderFragment, ?comp: IComponent) =
+        Microsoft.AspNetCore.Components.RenderFragment<'TItem>(fun x -> html.renderFragment(render x, comp = defaultArg comp null))
+
+
     /// Helper method for create attribute for convert NodeRenderFragment to Microsoft.AspNetCore.Components.RenderFragment
     static member inline renderFragment<'TItem>(name: string, [<InlineIfLambda>] render: 'TItem -> NodeRenderFragment) =
         AttrRenderFragment(fun comp builder index ->
-            builder.AddAttribute(
-                index,
-                name,
-                box (
-                    Microsoft.AspNetCore.Components.RenderFragment<'TItem>(fun x ->
-                        Microsoft.AspNetCore.Components.RenderFragment(fun tb -> render(x).Invoke(comp, tb, 0) |> ignore)
-                    )
-                )
-            )
+            builder.AddAttribute(index, name, box (html.renderFragment(render, comp)))
             index + 1
         )
 
     /// Helper method for create attribute for convert NodeRenderFragment to Microsoft.AspNetCore.Components.RenderFragment
     static member inline renderFragment(name: string, fragment: NodeRenderFragment) =
         AttrRenderFragment(fun comp builder index ->
-            builder.AddAttribute(index, name, box (Microsoft.AspNetCore.Components.RenderFragment(fun tb -> fragment.Invoke(comp, tb, 0) |> ignore)))
+            builder.AddAttribute(index, name, box (html.renderFragment(fragment, comp)))
             index + 1
         )
 

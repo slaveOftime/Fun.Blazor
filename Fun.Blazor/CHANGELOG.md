@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+- Add more helpers for html.renderFragment
+
 ## [3.3.0-beta006] - 2023-12-11
 
 - Improve QueryBuilder
