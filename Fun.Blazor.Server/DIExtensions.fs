@@ -270,6 +270,8 @@ type FunBlazorServerExtensions =
         let parseValue (name: string) (v: string) (ty: Type) =
             if ty = typeof<string> then
                 box v
+            else if ty.Name.StartsWith("Nullable`") && String.IsNullOrEmpty v then
+                box null
             else
                 let ty = if ty.Name.StartsWith("Nullable`") then ty.GetGenericArguments()[0] else ty
                 ty.GetMethods(BindingFlags.Public ||| BindingFlags.Static)

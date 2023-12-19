@@ -416,4 +416,4 @@ type DomAttrBuilder with
     /// This will use hx-on for configRequest event, and add or overwrite parameters with browser's current query parameters
     [<CustomOperation "hxAddQueriesToHtmxParams">]
     member inline this.hxAddQueriesToHtmxParams([<InlineIfLambda>] render: AttrRenderFragment, ?overwrite: bool) = 
-        this.hxOnHtmx(render, hxEvt.configRequest, Js.AddQueriesToHtmxParams(overwrite = defaultArg overwrite false))
+        this.hxOnHtmx(render, hxEvt.configRequest, NativeJs.AddQueriesToHtmxParams(overwrite = defaultArg overwrite false))

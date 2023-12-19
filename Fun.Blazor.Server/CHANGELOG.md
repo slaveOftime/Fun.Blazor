@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+- Improve null parsing
+
 ## [3.3.0-beta002] - 2023-12-10
 
 - enableAntiforgery
