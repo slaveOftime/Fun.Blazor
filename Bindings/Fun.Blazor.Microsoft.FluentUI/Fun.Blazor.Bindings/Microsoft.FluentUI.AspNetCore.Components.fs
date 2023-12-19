@@ -448,6 +448,10 @@ type FluentCheckboxBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     inherit FluentInputBaseBuilder<'FunBlazorGeneric, System.Boolean>()
     /// Gets or sets a value indicating whether the CheckBox will allow three check states rather than two.
     [<CustomOperation("ThreeState")>] member inline _.ThreeState ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("ThreeState" => x)
+    /// Gets or sets a value indicating the order of the three states of the CheckBox.
+    /// False (by default), the order is Unchecked -> Checked -> Intermediate.
+    /// True: the order is Unchecked -> Intermediate -> Checked.
+    [<CustomOperation("ThreeStateOrderUncheckToIntermediate")>] member inline _.ThreeStateOrderUncheckToIntermediate ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("ThreeStateOrderUncheckToIntermediate" => x)
     /// Gets or sets a value indicating whether the user can display the indeterminate state by clicking the CheckBox.
     /// If this is not the case, the checkbox can be started in the indeterminate state, but the user cannot activate it with the mouse.
     /// Default is true.
@@ -1009,6 +1013,12 @@ type FluentFooterBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.A
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
 
 
+/// Displays a list of validation messages for a specified field within a cascaded EditContext.
+type FluentValidationMessageBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
+    /// Specifies the field for which validation messages should be displayed.
+    [<CustomOperation("For'")>] member inline _.For' ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Linq.Expressions.Expression<System.Func<'TValue>>) = render ==> ("For" => x)
+
 /// The grid component helps keeping layout consistent across various screen resolutions and sizes.
 /// PowerGrid comes with a 12-point grid system and contains 5 types of breakpoints
 /// that are used for specific screen sizes.
@@ -1019,6 +1029,10 @@ type FluentGridBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.Asp
     [<CustomOperation("Spacing")>] member inline _.Spacing ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("Spacing" => x)
     /// Defines how the browser distributes space between and around content items.
     [<CustomOperation("Justify")>] member inline _.Justify ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.JustifyContent) = render ==> ("Justify" => x)
+    /// when page size falls within a specific size range (xs, sm, md, lg, xl, xxl).
+    [<CustomOperation("OnBreakpointEnter")>] member inline _.OnBreakpointEnter ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.FluentUI.AspNetCore.Components.GridItemSize>("OnBreakpointEnter", fn)
+    /// when page size falls within a specific size range (xs, sm, md, lg, xl, xxl).
+    [<CustomOperation("OnBreakpointEnter")>] member inline _.OnBreakpointEnter ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.FluentUI.AspNetCore.Components.GridItemSize>("OnBreakpointEnter", fn)
 
 type FluentGridItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -1033,6 +1047,8 @@ type FluentGridItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     /// Gets or sets the gaps (gutters) between rows and columns.
     /// See https://developer.mozilla.org/en-US/docs/Web/CSS/gap
     [<CustomOperation("Gap")>] member inline _.Gap ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Gap" => x)
+    /// Hide the item on the specified sizes (you can combine multiple values: GridItemHidden.Sm | GridItemHidden.Xl).
+    [<CustomOperation("HiddenWhen")>] member inline _.HiddenWhen ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.GridItemHidden>) = render ==> ("HiddenWhen" => x)
 
 type FluentHeaderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -1240,6 +1256,8 @@ type ListComponentBaseBuilder<'FunBlazorGeneric, 'TOption when 'FunBlazorGeneric
     [<CustomOperation("LabelTemplate")>] member inline _.LabelTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("LabelTemplate", html.text x)
     /// Gets or sets the text used on aria-label attribute.
     [<CustomOperation("AriaLabel")>] member inline _.AriaLabel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("AriaLabel" => x)
+    /// Gets or sets if an indicator is showed that this input is required.
+    [<CustomOperation("Required")>] member inline _.Required ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Required" => x)
     /// Gets or sets the text used on aria-label attribute.
     [<CustomOperation("Title")>] member inline _.Title ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
     /// If true, will disable the list of items.
@@ -1302,7 +1320,10 @@ type FluentAutocompleteBuilder<'FunBlazorGeneric, 'TOption when 'FunBlazorGeneri
     /// Gets or sets the placeholder value of the element, generally used to provide a hint to the user.
     [<CustomOperation("Placeholder")>] member inline _.Placeholder ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Placeholder" => x)
     /// Gets or sets the visual appearance. See 
-    [<CustomOperation("Appearance")>] member inline _.Appearance ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.Appearance>) = render ==> ("Appearance" => x)
+    [<CustomOperation("Appearance")>] member inline _.Appearance ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.FluentInputAppearance) = render ==> ("Appearance" => x)
+    /// Specifies whether a form or an input field should have autocomplete "on" or "off" or another value.
+    /// An Id value must be set to use this property.
+    [<CustomOperation("AutoComplete")>] member inline _.AutoComplete ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("AutoComplete" => x)
     /// Filter the list of options (items), using the text encoded by the user.
     [<CustomOperation("OnOptionsSearch")>] member inline _.OnOptionsSearch ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.FluentUI.AspNetCore.Components.OptionsSearchEventArgs<'TOption>>("OnOptionsSearch", fn)
     /// Filter the list of options (items), using the text encoded by the user.
@@ -1625,15 +1646,50 @@ type FluentPaginatorBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsof
     /// Gets or sets the associated PaginationState. This parameter is required.
     [<CustomOperation("State")>] member inline _.State ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.PaginationState) = render ==> ("State" => x)
     /// Optionally supplies a template for rendering the page count summary.
+    /// The following values can be included:
+    /// {your State parameter name}.TotalItemCount (for the total number of items)
     [<CustomOperation("SummaryTemplate")>] member inline _.SummaryTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("SummaryTemplate", fragment)
     /// Optionally supplies a template for rendering the page count summary.
+    /// The following values can be included:
+    /// {your State parameter name}.TotalItemCount (for the total number of items)
     [<CustomOperation("SummaryTemplate")>] member inline _.SummaryTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("SummaryTemplate", fragment { yield! fragments })
     /// Optionally supplies a template for rendering the page count summary.
+    /// The following values can be included:
+    /// {your State parameter name}.TotalItemCount (for the total number of items)
     [<CustomOperation("SummaryTemplate")>] member inline _.SummaryTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("SummaryTemplate", html.text x)
     /// Optionally supplies a template for rendering the page count summary.
+    /// The following values can be included:
+    /// {your State parameter name}.TotalItemCount (for the total number of items)
     [<CustomOperation("SummaryTemplate")>] member inline _.SummaryTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("SummaryTemplate", html.text x)
     /// Optionally supplies a template for rendering the page count summary.
+    /// The following values can be included:
+    /// {your State parameter name}.TotalItemCount (for the total number of items)
     [<CustomOperation("SummaryTemplate")>] member inline _.SummaryTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("SummaryTemplate", html.text x)
+    /// Optionally supplies a template for rendering the pagination summary.
+    /// The following values can be included:
+    /// {your State parameter name}.CurrentPageIndex (zero-basedd, so +1 for the current page number)
+    /// {your State parameter name}.LastPageIndex (zero-based, so +1 for the total number of pages)
+    [<CustomOperation("PaginationTextTemplate")>] member inline _.PaginationTextTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("PaginationTextTemplate", fragment)
+    /// Optionally supplies a template for rendering the pagination summary.
+    /// The following values can be included:
+    /// {your State parameter name}.CurrentPageIndex (zero-basedd, so +1 for the current page number)
+    /// {your State parameter name}.LastPageIndex (zero-based, so +1 for the total number of pages)
+    [<CustomOperation("PaginationTextTemplate")>] member inline _.PaginationTextTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("PaginationTextTemplate", fragment { yield! fragments })
+    /// Optionally supplies a template for rendering the pagination summary.
+    /// The following values can be included:
+    /// {your State parameter name}.CurrentPageIndex (zero-basedd, so +1 for the current page number)
+    /// {your State parameter name}.LastPageIndex (zero-based, so +1 for the total number of pages)
+    [<CustomOperation("PaginationTextTemplate")>] member inline _.PaginationTextTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("PaginationTextTemplate", html.text x)
+    /// Optionally supplies a template for rendering the pagination summary.
+    /// The following values can be included:
+    /// {your State parameter name}.CurrentPageIndex (zero-basedd, so +1 for the current page number)
+    /// {your State parameter name}.LastPageIndex (zero-based, so +1 for the total number of pages)
+    [<CustomOperation("PaginationTextTemplate")>] member inline _.PaginationTextTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("PaginationTextTemplate", html.text x)
+    /// Optionally supplies a template for rendering the pagination summary.
+    /// The following values can be included:
+    /// {your State parameter name}.CurrentPageIndex (zero-basedd, so +1 for the current page number)
+    /// {your State parameter name}.LastPageIndex (zero-based, so +1 for the total number of pages)
+    [<CustomOperation("PaginationTextTemplate")>] member inline _.PaginationTextTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("PaginationTextTemplate", html.text x)
 
 type FluentPopoverBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -2145,6 +2201,43 @@ type TemplateColumnBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric 
     [<CustomOperation("ChildContent")>] member inline _.ChildContent ([<InlineIfLambda>] render: AttrRenderFragment, fn: 'TGridItem -> NodeRenderFragment) = render ==> html.renderFragment("ChildContent", fn)
     [<CustomOperation("SortBy")>] member inline _.SortBy ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.GridSort<'TGridItem>) = render ==> ("SortBy" => x)
 
+type FluentDesignThemeBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    /// Gets or sets the identifier for the component.
+    [<CustomOperation("Id")>] member inline _.Id ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Id" => x)
+    /// Gets or sets the Theme mode: Dark, Light, or browser System theme.
+    [<CustomOperation("Mode")>] member inline _.Mode ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.DesignThemeModes) = render ==> ("Mode" => x)
+    /// Gets or sets the Theme mode: Dark, Light, or browser System theme.
+    [<CustomOperation("Mode'")>] member inline _.Mode' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: Microsoft.FluentUI.AspNetCore.Components.DesignThemeModes * (Microsoft.FluentUI.AspNetCore.Components.DesignThemeModes -> unit)) = render ==> html.bind("Mode", valueFn)
+    /// Gets or sets a callback that updates the Mode.
+    [<CustomOperation("ModeChanged")>] member inline _.ModeChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.FluentUI.AspNetCore.Components.DesignThemeModes>("ModeChanged", fn)
+    /// Gets or sets a callback that updates the Mode.
+    [<CustomOperation("ModeChanged")>] member inline _.ModeChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.FluentUI.AspNetCore.Components.DesignThemeModes>("ModeChanged", fn)
+    /// Gets or sets the Accent base color.
+    [<CustomOperation("CustomColor")>] member inline _.CustomColor ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("CustomColor" => x)
+    /// Gets or sets the Accent base color.
+    [<CustomOperation("CustomColor'")>] member inline _.CustomColor' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.String * (System.String -> unit)) = render ==> html.bind("CustomColor", valueFn)
+    /// Gets or sets a callback that updates the CustomColor.
+    [<CustomOperation("CustomColorChanged")>] member inline _.CustomColorChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<System.String>("CustomColorChanged", fn)
+    /// Gets or sets a callback that updates the CustomColor.
+    [<CustomOperation("CustomColorChanged")>] member inline _.CustomColorChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<System.String>("CustomColorChanged", fn)
+    /// Gets or sets the application to defined the Accent base color.
+    [<CustomOperation("OfficeColor")>] member inline _.OfficeColor ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.OfficeColor>) = render ==> ("OfficeColor" => x)
+    /// Gets or sets the application to defined the Accent base color.
+    [<CustomOperation("OfficeColor'")>] member inline _.OfficeColor' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.OfficeColor> * (System.Nullable<Microsoft.FluentUI.AspNetCore.Components.OfficeColor> -> unit)) = render ==> html.bind("OfficeColor", valueFn)
+    /// Gets or sets a callback that updates the OfficeColor.
+    [<CustomOperation("OfficeColorChanged")>] member inline _.OfficeColorChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<System.Nullable<Microsoft.FluentUI.AspNetCore.Components.OfficeColor>>("OfficeColorChanged", fn)
+    /// Gets or sets a callback that updates the OfficeColor.
+    [<CustomOperation("OfficeColorChanged")>] member inline _.OfficeColorChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<System.Nullable<Microsoft.FluentUI.AspNetCore.Components.OfficeColor>>("OfficeColorChanged", fn)
+    /// Gets or sets the local storage name to save and retrieve the Mode and the OfficeColor / CustomColor.
+    [<CustomOperation("StorageName")>] member inline _.StorageName ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("StorageName" => x)
+    /// Gets or sets the body.dir value.
+    [<CustomOperation("Direction")>] member inline _.Direction ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Direction" => x)
+    /// Callback raised when the Dark/Light luminance changes.
+    [<CustomOperation("OnLuminanceChanged")>] member inline _.OnLuminanceChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.FluentUI.AspNetCore.Components.LuminanceChangedEventArgs>("OnLuminanceChanged", fn)
+    /// Callback raised when the Dark/Light luminance changes.
+    [<CustomOperation("OnLuminanceChanged")>] member inline _.OnLuminanceChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.FluentUI.AspNetCore.Components.LuminanceChangedEventArgs>("OnLuminanceChanged", fn)
+
 type FluentSplashScreenBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
     [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.SplashScreenContent) = render ==> ("Content" => x)
@@ -2164,6 +2257,8 @@ type FluentInputLabelBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microso
     [<CustomOperation("ForId")>] member inline _.ForId ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ForId" => x)
     /// Gets or sets the text to be displayed as a label, just above the component.
     [<CustomOperation("Label")>] member inline _.Label ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Label" => x)
+    /// Gets or sets if an indicator is showed that this input is required.
+    [<CustomOperation("Required")>] member inline _.Required ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Required" => x)
     /// Gets or sets the text to be used as the `aria-label` attribute of the input.
     /// If not set, the Label will be used.
     [<CustomOperation("AriaLabel")>] member inline _.AriaLabel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("AriaLabel" => x)
@@ -3165,6 +3260,11 @@ module DslCE =
     type FluentFlipper' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentFlipper>)>] () = inherit FluentFlipperBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentFlipper>()
     type FluentFooter' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentFooter>)>] () = inherit FluentFooterBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentFooter>()
 
+    /// Displays a list of validation messages for a specified field within a cascaded EditContext.
+    type FluentValidationMessage'<'TValue> 
+        /// Displays a list of validation messages for a specified field within a cascaded EditContext.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentValidationMessage<_>>)>] () = inherit FluentValidationMessageBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentValidationMessage<'TValue>, 'TValue>()
+
     /// The grid component helps keeping layout consistent across various screen resolutions and sizes.
     /// PowerGrid comes with a 12-point grid system and contains 5 types of breakpoints
     /// that are used for specific screen sizes.
@@ -3258,6 +3358,7 @@ module DslCE =
     type TemplateColumn'<'TGridItem> 
         /// Represents a FluentDataGrid`1 column whose cells render a supplied template.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.TemplateColumn<_>>)>] () = inherit TemplateColumnBuilder<Microsoft.FluentUI.AspNetCore.Components.TemplateColumn<'TGridItem>, 'TGridItem>()
+    type FluentDesignTheme' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentDesignTheme>)>] () = inherit FluentDesignThemeBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentDesignTheme>()
     type FluentSplashScreen' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentSplashScreen>)>] () = inherit FluentSplashScreenBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentSplashScreen>()
     type MessageBox' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.MessageBox>)>] () = inherit MessageBoxBuilder<Microsoft.FluentUI.AspNetCore.Components.MessageBox>()
     type FluentDialogProvider' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentDialogProvider>)>] () = inherit FluentDialogProviderBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentDialogProvider>()
