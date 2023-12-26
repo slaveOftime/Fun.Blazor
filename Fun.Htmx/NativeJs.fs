@@ -28,7 +28,7 @@ type NativeJs =
                 {{queriesToDelete}}
                 {{queriesToAdd}}
                 const queryStr = query.toString();
-                window.history.replaceState(null, null, !!queryStr ? ('?' + queryStr) : '');
+                window.history.replaceState(null, null, !!queryStr ? ('?' + queryStr) : '/');
             })()"""
 
     /// Native script directly for updating queries
@@ -37,7 +37,7 @@ type NativeJs =
             $$"""
             (function(){
                 const queryStr = '{{query}}';
-                window.history.replaceState(null, null, !!queryStr ? ('?' + queryStr) : '');
+                window.history.replaceState(null, null, !!queryStr ? ('?' + queryStr) : '/');
             })()"""
 
     /// Native script directly for updating queries

@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [3.3.0-beta003] - 2023-12-27
+
+- Fix NativeJs UpdateQueries browser compatibility
+
 ## [3.3.0-beta002] - 2023-12-19
 
 - Add Js type with multiple helper methods to call native js directly
