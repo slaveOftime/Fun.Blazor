@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [3.3.0-beta008] - 2023-12-30
+
 - Improve some bool dom attributes
 
 ## [3.3.0-beta007] - 2023-12-19

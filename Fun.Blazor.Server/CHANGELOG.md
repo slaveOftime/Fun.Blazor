@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [3.3.0-beta004] - 2023-12-30
+
 - Add Parsable<'T> to support better ssr dev experience
 
 ## [3.3.0-beta003] - 2023-12-19
