@@ -405,6 +405,7 @@ type FluentInputBaseBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :>
     [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Disabled" => x)
     /// Gets or sets the name of the element.
     /// Allows access by name from the associated form.
+    /// ⚠️ This value needs to be set manually for SSR scenarios to work correctly.
     [<CustomOperation("Name")>] member inline _.Name ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Name" => x)
     /// Gets or sets the text displayed just above the component.
     [<CustomOperation("Label")>] member inline _.Label ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Label" => x)
@@ -1036,10 +1037,20 @@ type FluentGridBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.Asp
 
 type FluentGridItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
+    /// The number of columns the item should span in the 12-column grid system.
+    /// Extra Small (xs) devices (portrait phones, less than 600px wide)
     [<CustomOperation("xs")>] member inline _.xs ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("xs" => x)
+    /// The number of columns the item should span in the 12-column grid system.
+    /// Small (sm) devices (landscape phones, less than 960px wide)
     [<CustomOperation("sm")>] member inline _.sm ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("sm" => x)
+    /// The number of columns the item should span in the 12-column grid system.
+    /// Medium (md) devices (tablets, less than 1280px wide)
     [<CustomOperation("md")>] member inline _.md ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("md" => x)
+    /// The number of columns the item should span in the 12-column grid system.
+    /// Large (lg) devices (desktops, less than 1920px wide)
     [<CustomOperation("lg")>] member inline _.lg ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("lg" => x)
+    /// The number of columns the item should span in the 12-column grid system.
+    /// Extra large (xl) devices (large desktops, less than 2560px wide)
     [<CustomOperation("xl")>] member inline _.xl ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("xl" => x)
     [<CustomOperation("xxl")>] member inline _.xxl ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("xxl" => x)
     /// Defines how the browser distributes space between and around content items.
@@ -1272,6 +1283,7 @@ type ListComponentBaseBuilder<'FunBlazorGeneric, 'TOption when 'FunBlazorGeneric
     /// Gets or sets the function used to determine if an option is initially selected.
     [<CustomOperation("OptionSelected")>] member inline _.OptionSelected ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("OptionSelected" => (System.Func<'TOption, System.Boolean>fn))
     /// Gets or sets the content source of all items to display in this list.
+    /// Each item must be instantiated (cannot be null).
     [<CustomOperation("Items")>] member inline _.Items ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<'TOption>) = render ==> ("Items" => x)
     /// Gets or sets the selected item.
     /// ⚠️ Only available when Multiple = false.
@@ -1762,9 +1774,18 @@ type FluentProgressBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     [<CustomOperation("Max")>] member inline _.Max ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("Max" => x)
     /// Gets or sets the current value.
     [<CustomOperation("Value")>] member inline _.Value ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("Value" => x)
+    /// Gets or sets the visibility of the component
     [<CustomOperation("Visible")>] member inline _.Visible ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Visible" => x)
+    /// Gets or sets the component width.
+    [<CustomOperation("Width")>] member inline _.Width ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Width" => x)
     /// Gets or sets a value indicating whether the progress element is paused.
     [<CustomOperation("Paused")>] member inline _.Paused ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("Paused" => x)
+    /// Gets or sets the stroke width of the progress bar. If not set, the default theme stroke width is used.
+    [<CustomOperation("Stroke")>] member inline _.Stroke ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.ProgressStroke) = render ==> ("Stroke" => x)
+    /// Gets or sets the color to be used for the progress bar. If not set, the default theme color is used.
+    [<CustomOperation("Color")>] member inline _.Color ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Color" => x)
+    /// Gets or sets the color to be used for the background. If not set, the default theme color is used.
+    [<CustomOperation("BackgroundColor")>] member inline _.BackgroundColor ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("BackgroundColor" => x)
 
 type FluentProgressRingBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -1777,6 +1798,12 @@ type FluentProgressRingBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micro
     [<CustomOperation("Visible")>] member inline _.Visible ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Visible" => x)
     /// Gets or sets a value indicating whether the progress element is paused.
     [<CustomOperation("Paused")>] member inline _.Paused ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("Paused" => x)
+    /// Gets or sets the component width and height.
+    [<CustomOperation("Width")>] member inline _.Width ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Width" => x)
+    /// Gets or sets the stroke width of the progress ring. If not set, the default theme stroke width is used.
+    [<CustomOperation("Stroke")>] member inline _.Stroke ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.ProgressStroke) = render ==> ("Stroke" => x)
+    /// Gets or sets the color to be used for the progress ring. If not set, the default theme color is used.
+    [<CustomOperation("Color")>] member inline _.Color ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Color" => x)
 
 type FluentRadioBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -1908,6 +1935,8 @@ type FluentTabBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspN
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
     /// When true, the control will be immutable by user interaction. See disabled HTML attribute for more information.
     [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Disabled" => x)
+    /// Gets or sets the visability of a tab
+    [<CustomOperation("Visible")>] member inline _.Visible ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Visible" => x)
     /// Gets or sets the label of the tab.
     [<CustomOperation("Label")>] member inline _.Label ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Label" => x)
     /// Gets or sets the label of the tab.
@@ -2232,11 +2261,15 @@ type FluentDesignThemeBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micros
     /// Gets or sets the local storage name to save and retrieve the Mode and the OfficeColor / CustomColor.
     [<CustomOperation("StorageName")>] member inline _.StorageName ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("StorageName" => x)
     /// Gets or sets the body.dir value.
-    [<CustomOperation("Direction")>] member inline _.Direction ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Direction" => x)
+    [<CustomOperation("Direction")>] member inline _.Direction ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.LocalizationDirection>) = render ==> ("Direction" => x)
     /// Callback raised when the Dark/Light luminance changes.
     [<CustomOperation("OnLuminanceChanged")>] member inline _.OnLuminanceChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.FluentUI.AspNetCore.Components.LuminanceChangedEventArgs>("OnLuminanceChanged", fn)
     /// Callback raised when the Dark/Light luminance changes.
     [<CustomOperation("OnLuminanceChanged")>] member inline _.OnLuminanceChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.FluentUI.AspNetCore.Components.LuminanceChangedEventArgs>("OnLuminanceChanged", fn)
+    /// Callback raised when the component is rendered for the first time.
+    [<CustomOperation("OnLoaded")>] member inline _.OnLoaded ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.FluentUI.AspNetCore.Components.LoadedEventArgs>("OnLoaded", fn)
+    /// Callback raised when the component is rendered for the first time.
+    [<CustomOperation("OnLoaded")>] member inline _.OnLoaded ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.FluentUI.AspNetCore.Components.LoadedEventArgs>("OnLoaded", fn)
 
 type FluentSplashScreenBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
@@ -2324,6 +2357,10 @@ type FluentToastProviderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micr
     [<CustomOperation("RemoveToastsOnNavigation")>] member inline _.RemoveToastsOnNavigation ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("RemoveToastsOnNavigation" => x)
     /// Gets or sets whether to show a close button on a toast. Default is true.
     [<CustomOperation("ShowCloseButton")>] member inline _.ShowCloseButton ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("ShowCloseButton" => x)
+
+type PageScriptBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    [<CustomOperation("Src")>] member inline _.Src ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Src" => x)
 
 type ConfirmationToastBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
@@ -3368,6 +3405,7 @@ module DslCE =
     type CommunicationToast' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.CommunicationToast>)>] () = inherit CommunicationToastBuilder<Microsoft.FluentUI.AspNetCore.Components.CommunicationToast>()
     type ProgressToast' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.ProgressToast>)>] () = inherit ProgressToastBuilder<Microsoft.FluentUI.AspNetCore.Components.ProgressToast>()
     type FluentToastProvider' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentToastProvider>)>] () = inherit FluentToastProviderBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentToastProvider>()
+    type PageScript' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.PageScript>)>] () = inherit PageScriptBuilder<Microsoft.FluentUI.AspNetCore.Components.PageScript>()
     type ConfirmationToast' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.ConfirmationToast>)>] () = inherit ConfirmationToastBuilder<Microsoft.FluentUI.AspNetCore.Components.ConfirmationToast>()
     type _Imports' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components._Imports>)>] () = inherit _ImportsBuilder<Microsoft.FluentUI.AspNetCore.Components._Imports>()
             
