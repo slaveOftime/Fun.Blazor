@@ -316,13 +316,11 @@ type DomAttrBuilder() =
     [<CustomOperation("language")>]
     member inline _.language([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("language" =>> v)
     [<CustomOperation("lazyload")>]
-    member inline _.lazyload([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("lazyload" =>>> v)
-    [<CustomOperation("lazyload")>]
-    member inline this.lazyload([<InlineIfLambda>] render: AttrRenderFragment) = this.lazyload(render, true)
+    member inline _.lazyload([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("lazyload" =>>> defaultArg v true)
     [<CustomOperation("list")>]
     member inline _.list([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("list" => v)
     [<CustomOperation("loop")>]
-    member inline _.loop([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("loop" => v)
+    member inline _.loop([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("loop" =>>> defaultArg v true)
     [<CustomOperation("low")>]
     member inline _.low([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("low" => v)
     [<CustomOperation("manifest")>]
@@ -340,15 +338,15 @@ type DomAttrBuilder() =
     [<CustomOperation("minlength")>]
     member inline _.minlength([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("minlength" => v)
     [<CustomOperation("multiple")>]
-    member inline _.multiple([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("multiple" => v)
+    member inline _.multiple([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("multiple" =>>> defaultArg v true)
     [<CustomOperation("muted")>]
-    member inline _.muted([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("muted" => v)
+    member inline _.muted([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("muted" =>>> defaultArg v true)
     [<CustomOperation("name")>]
     member inline _.name([<InlineIfLambda>] render: AttrRenderFragment, v: string) = render ==> ("name" =>> v)
     [<CustomOperation("novalidate")>]
-    member inline _.novalidate([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("novalidate" => v)
+    member inline _.novalidate([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("novalidate" =>>> defaultArg v true)
     [<CustomOperation("open'")>]
-    member inline _.open'([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("open" => v)
+    member inline _.open'([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("open" =>>> defaultArg v true)
     [<CustomOperation("optimum")>]
     member inline _.optimum([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("optimum" => v)
     [<CustomOperation("pattern")>]
@@ -372,7 +370,7 @@ type DomAttrBuilder() =
     [<CustomOperation("required")>]
     member inline this.required([<InlineIfLambda>] render: AttrRenderFragment) = this.required(render, true)
     [<CustomOperation("reversed")>]
-    member inline _.reversed([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("reversed" => v)
+    member inline _.reversed([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("reversed" =>>> defaultArg v true)
     [<CustomOperation("rows")>]
     member inline _.rows([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("rows" => v)
     [<CustomOperation("rowspan")>]
