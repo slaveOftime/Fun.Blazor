@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+- Add Parsable<'T> to support better ssr dev experience
+
 ## [3.3.0-beta003] - 2023-12-19
 
 - Improve null parsing

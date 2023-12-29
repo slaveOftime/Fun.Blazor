@@ -8,9 +8,14 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<Compile Include="Parsable.fs" />
 		<Compile Include="DIExtensions.fs" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<PackageReference Include="FSharp.SystemTextJson" Version="1.2.42" />
+	</ItemGroup>
+	
 	<ItemGroup>
 		<ProjectReference Include="..\Fun.Blazor\Fun.Blazor.fsproj" />
 	</ItemGroup>

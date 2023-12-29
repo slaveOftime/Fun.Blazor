@@ -52,6 +52,23 @@ type Wrongcounter() as this =
     override _.Render() = div { this.Count }
 
 
+type ParsableDemoComp() as this =
+    inherit FunComponent()
+
+    [<Parameter>]
+    member val P1 = Parsable(Some {| Age = 10 |}) with get, set
+    [<Parameter>]
+    member val P2 = Parsable([ 1; 2; 3; 2; 1 ]) with get, set
+    [<Parameter>]
+    member val P3 = Parsable([ {| Age = 10 |} ]) with get, set
+
+    override _.Render() = div {
+        div { string this.P1.Value }
+        div { string this.P2.Value }
+        div { string this.P3.Value }
+    }
+
+
 module ServerTests =
     let makeTestServer (setRoute: IEndpointRouteBuilder -> unit) =
         let builder =
@@ -311,6 +328,31 @@ module ServerTests =
     color: red; 
 }
 </style></head><body><div class="demo"></div></body></html>""",
+            actual
+        )
+    }
+
+
+    [<Fact>]
+    let ``Parsable parameters should work`` () = task {
+        use server =
+            makeTestServer (fun route ->
+                route.MapRazorComponents() |> ignore
+                route.MapRazorComponentsForSSR([ typeof<ParsableDemoComp> ]) |> ignore
+            )
+
+        use http = server.CreateClient()
+
+        let query =
+            QueryBuilder<ParsableDemoComp>()
+                .Add((fun x -> x.P1), Parsable(Some {| Age = 30 |}))
+                .Add((fun x -> x.P2), Parsable [ 7; 8 ])
+                .Add((fun x -> x.P3), Parsable [ {| Age = 34 |} ])
+                .ToString()
+
+        let! actual = http.GetStringAsync($"/fun-blazor-server-side-render-components/{typeof<ParsableDemoComp>.FullName}?{query}")
+        Assert.StartsWith(
+            """<div><div>Some({ Age = 30 })</div><div>[7; 8]</div><div>[{ Age = 34 }]</div></div>""",
             actual
         )
     }
