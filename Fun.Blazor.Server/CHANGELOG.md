@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [3.3.0-beta005] - 2024-01-10
+
+- Add ComponentResponseCacheAttribute for MapRazorComponentsForSSR or MapCustomElementsForSSR to support cache
+
 ## [3.3.0-beta004] - 2023-12-30
 
 - Add Parsable<'T> to support better ssr dev experience

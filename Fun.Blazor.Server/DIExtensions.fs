@@ -7,6 +7,7 @@ open System.Threading.Tasks
 open System.Text.Encodings.Web
 open System.Reflection
 open System.Runtime.CompilerServices
+open Microsoft.Net.Http.Headers
 open Microsoft.AspNetCore.Http
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Routing
@@ -63,6 +64,14 @@ module internal Utils =
 type internal RequiresAntiforgeryMetadata(?requires) =
     interface IAntiforgeryMetadata with
         member _.RequiresValidation = defaultArg requires true
+
+/// This can be used for any blazor component which is served by MapRazorComponentsForSSR or MapCustomElementsForSSR
+[<AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)>]
+type ComponentResponseCacheAttribute() =
+    inherit Attribute()
+    member val Vary = "" with get, set
+    member val Pragma = "" with get, set
+    member val CacheControl = "" with get, set
 #endif
 
 
@@ -71,7 +80,8 @@ type FunBlazorServerExtensions =
 
     [<Extension>]
     static member AddFunBlazorServer(this: IServiceCollection) =
-        this.AddHttpContextAccessor()
+        this
+            .AddHttpContextAccessor()
             .AddScoped<IShareStore, ShareStore>()
             .AddScoped<IScopedCssRules, ScopedCssRules>()
             .AddSingleton<IGlobalStore, GlobalStore>()
@@ -256,6 +266,9 @@ type FunBlazorServerExtensions =
     static member private MakeCreateAttrFn(ty: Type, ?forCustomElement) =
         let forCustomElement = defaultArg forCustomElement false
 
+        let componentResponseCache =
+            ty.GetCustomAttribute<ComponentResponseCacheAttribute>()
+
         let paramsInfo =
             ty.GetProperties(BindingFlags.Instance ||| BindingFlags.Public)
             |> Seq.choose (fun p ->
@@ -287,6 +300,17 @@ type FunBlazorServerExtensions =
                     | None -> failwith $"Parameter {name} should has a static Parse method for string"
 
         fun (ctx: HttpContext) ->
+            if box componentResponseCache <> null then
+                if String.IsNullOrEmpty componentResponseCache.Vary |> not then
+                    ctx.Response.Headers.Remove(HeaderNames.Vary) |> ignore
+                    ctx.Response.Headers.Vary <- componentResponseCache.Vary
+                if String.IsNullOrEmpty componentResponseCache.Pragma |> not then
+                    ctx.Response.Headers.Remove(HeaderNames.Pragma) |> ignore
+                    ctx.Response.Headers.Pragma <- componentResponseCache.Pragma
+                if String.IsNullOrEmpty componentResponseCache.CacheControl |> not then
+                    ctx.Response.Headers.Remove(HeaderNames.CacheControl) |> ignore
+                    ctx.Response.Headers.CacheControl <- componentResponseCache.CacheControl
+
             paramsInfo
             |> Seq.choose (fun p ->
                 let matchQuery () =
@@ -306,9 +330,16 @@ type FunBlazorServerExtensions =
     /// This will serve all the razor components (implement IComponent interface) for server side rendering,
     /// route pattern: /fun-blazor-server-side-render-components/{componentType}
     [<Extension>]
-    static member MapRazorComponentsForSSR(builder: IEndpointRouteBuilder, types: Type seq, ?notFoundNode: NodeRenderFragment, ?enableAntiforgery: bool) =
+    static member MapRazorComponentsForSSR
+        (
+            builder: IEndpointRouteBuilder,
+            types: Type seq,
+            ?notFoundNode: NodeRenderFragment,
+            ?enableAntiforgery: bool
+        )
+        =
         let enableAntiforgery = defaultArg enableAntiforgery false
-        
+
         types
         |> Seq.iter (fun x ->
             Utils.razorComponentsForSSRTypes.Value[x.FullName] <-
@@ -337,7 +368,14 @@ type FunBlazorServerExtensions =
     /// route pattern: /fun-blazor-server-side-render-components/{componentType}.
     /// Value can be passed by query or form for component property, form will have higher priority. Only the last value will be take when found same keys.
     [<Extension>]
-    static member MapRazorComponentsForSSR(builder: IEndpointRouteBuilder, assembly: Assembly, ?notFoundNode: NodeRenderFragment, ?enableAntiforgery: bool) =
+    static member MapRazorComponentsForSSR
+        (
+            builder: IEndpointRouteBuilder,
+            assembly: Assembly,
+            ?notFoundNode: NodeRenderFragment,
+            ?enableAntiforgery: bool
+        )
+        =
         builder.MapRazorComponentsForSSR(
             assembly.GetTypes() |> Seq.filter (fun x -> x.IsAssignableTo(typeof<IComponent>)),
             defaultArg notFoundNode html.none,
@@ -374,7 +412,7 @@ type FunBlazorServerExtensions =
                     )
                 )
                 .AddFunBlazor()
-        
+
         if enableAntiforgery then
             builder.WithMetadata(RequiresAntiforgeryMetadata()) |> ignore
 
@@ -382,7 +420,14 @@ type FunBlazorServerExtensions =
     /// You should use it with: services.AddServerSideBlazor(fun options -> options.RootComponents.RegisterCustomElementForFunBlazor<YourComponent>()),
     /// route pattern: /fun-blazor-custom-elements/{componentType}
     [<Extension>]
-    static member MapCustomElementsForSSR(builder: IEndpointRouteBuilder, assembly: Assembly, ?notFoundNode: NodeRenderFragment, ?enableAntiforgery: bool) =
+    static member MapCustomElementsForSSR
+        (
+            builder: IEndpointRouteBuilder,
+            assembly: Assembly,
+            ?notFoundNode: NodeRenderFragment,
+            ?enableAntiforgery: bool
+        )
+        =
         let types =
             assembly.GetTypes()
             |> Seq.filter (fun ty -> ty.GetCustomAttribute<FunBlazorCustomElementAttribute>() |> box |> isNull |> not)

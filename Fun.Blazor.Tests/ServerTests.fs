@@ -15,7 +15,7 @@ open Fun.Blazor
 open Xunit
 
 
-[<FunBlazorCustomElement>]
+[<FunBlazorCustomElement; ComponentResponseCache(Vary = "v", Pragma = "p", CacheControl = "c")>]
 type ServerDemoCounter() as this =
     inherit FunComponent()
 
@@ -185,7 +185,13 @@ module ServerTests =
                 .Add((fun x -> x.guid), Guid.Parse("8da005a9-4b2c-4308-b026-707fbb02f7c6"))
                 .ToString()
 
-        let! actual = http.GetStringAsync($"/fun-blazor-custom-elements/{typeof<ServerDemoCounter>.FullName}?{query}")
+        let! response = http.GetAsync($"/fun-blazor-custom-elements/{typeof<ServerDemoCounter>.FullName}?{query}")
+
+        Assert.Equal("v", response.Headers.Vary.ToString())
+        Assert.Equal("p", response.Headers.Pragma.ToString())
+        Assert.Equal("c", response.Headers.CacheControl.ToString())
+
+        let! actual = response.Content.ReadAsStringAsync()
         Assert.StartsWith(
             """<server-demo-counter count="1" guid="8da005a9-4b2c-4308-b026-707fbb02f7c6" is_loading query="hi"></server-demo-counter>""",
             actual
