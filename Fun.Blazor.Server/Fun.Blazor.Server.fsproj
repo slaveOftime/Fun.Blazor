@@ -9,6 +9,7 @@
 
 	<ItemGroup>
 		<Compile Include="Parsable.fs" />
+		<Compile Include="CacheControl.fs" />
 		<Compile Include="DIExtensions.fs" />
 	</ItemGroup>
 

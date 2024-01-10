@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [3.3.0-beta006] - 2024-01-10
+
+- Move ComponentResponseCacheAttribute to Fun.Blazor namespace
+
 ## [3.3.0-beta005] - 2024-01-10
 
 - Add ComponentResponseCacheAttribute for MapRazorComponentsForSSR or MapCustomElementsForSSR to support cache
