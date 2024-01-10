@@ -21,88 +21,6 @@ type FluentComponentBaseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micr
     /// Gets or sets a collection of additional attributes that will be applied to the created element.
     [<CustomOperation("AdditionalAttributes")>] member inline _.AdditionalAttributes ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>) = render ==> ("AdditionalAttributes" => x)
 
-type FluentCalendarBaseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
-    /// Gets or sets a value indicating whether the calendar is readonly.
-    [<CustomOperation("ReadOnly")>] member inline _.ReadOnly ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("ReadOnly" => x)
-    /// Gets or sets the culture of the component.
-    /// By default CurrentCulture to display using the OS culture.
-    [<CustomOperation("Culture")>] member inline _.Culture ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Globalization.CultureInfo) = render ==> ("Culture" => x)
-    /// Function to know if a specific day must be disabled.
-    [<CustomOperation("DisabledDateFunc")>] member inline _.DisabledDateFunc ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("DisabledDateFunc" => (System.Func<System.DateTime, System.Boolean>fn))
-    /// Apply the disabled style to the DisabledDateFunc days.
-    /// If this is not the case, the days are displayed like the others, but cannot be selected.
-    [<CustomOperation("DisabledSelectable")>] member inline _.DisabledSelectable ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("DisabledSelectable" => x)
-    /// Gets or sets the Type style for the day (numeric or 2-digits).
-    [<CustomOperation("DayFormat")>] member inline _.DayFormat ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.DayFormat>) = render ==> ("DayFormat" => x)
-    /// Gets or sets the selected date (two-way bindable).
-    [<CustomOperation("Value")>] member inline _.Value ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.DateTime>) = render ==> ("Value" => x)
-    /// Gets or sets the selected date (two-way bindable).
-    [<CustomOperation("Value'")>] member inline _.Value' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Nullable<System.DateTime> * (System.Nullable<System.DateTime> -> unit)) = render ==> html.bind("Value", valueFn)
-    /// Fired when the display month changes.
-    [<CustomOperation("ValueChanged")>] member inline _.ValueChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<System.Nullable<System.DateTime>>("ValueChanged", fn)
-    /// Fired when the display month changes.
-    [<CustomOperation("ValueChanged")>] member inline _.ValueChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<System.Nullable<System.DateTime>>("ValueChanged", fn)
-
-/// Fluent Calendar based on
-/// https://github.com/microsoft/fluentui/blob/master/packages/web-components/src/calendar/.
-type FluentCalendarBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit FluentCalendarBaseBuilder<'FunBlazorGeneric>()
-    /// Gets or sets the current month of the date picker (two-way bindable).
-    /// This changes when the user browses through the calendar.
-    /// The month is represented as a DateTime which is always the first day of that month.
-    /// You can also set this to determine which month is displayed first.
-    /// If not set, the current month is displayed.
-    [<CustomOperation("PickerMonth")>] member inline _.PickerMonth ([<InlineIfLambda>] render: AttrRenderFragment, x: System.DateTime) = render ==> ("PickerMonth" => x)
-    /// Gets or sets the current month of the date picker (two-way bindable).
-    /// This changes when the user browses through the calendar.
-    /// The month is represented as a DateTime which is always the first day of that month.
-    /// You can also set this to determine which month is displayed first.
-    /// If not set, the current month is displayed.
-    [<CustomOperation("PickerMonth'")>] member inline _.PickerMonth' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.DateTime * (System.DateTime -> unit)) = render ==> html.bind("PickerMonth", valueFn)
-    /// Fired when the display month changes.
-    [<CustomOperation("PickerMonthChanged")>] member inline _.PickerMonthChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<System.DateTime>("PickerMonthChanged", fn)
-    /// Fired when the display month changes.
-    [<CustomOperation("PickerMonthChanged")>] member inline _.PickerMonthChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<System.DateTime>("PickerMonthChanged", fn)
-    /// Defines the appearance of a Day cell.
-    [<CustomOperation("DaysTemplate")>] member inline _.DaysTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentCalendarDay -> NodeRenderFragment) = render ==> html.renderFragment("DaysTemplate", fn)
-    /// Defines the appearance of the FluentCalendar component.
-    [<CustomOperation("View")>] member inline _.View ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.CalendarViews) = render ==> ("View" => x)
-    /// Gets ot sets if the calendar items are animated during a period change.
-    /// By default, the animation is enabled for Months views, but disabled for Days and Years view.
-    [<CustomOperation("AnimatePeriodChanges")>] member inline _.AnimatePeriodChanges ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("AnimatePeriodChanges" => x)
-
-type FluentDatePickerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit FluentCalendarBaseBuilder<'FunBlazorGeneric>()
-    /// Text displayed just above the component
-    [<CustomOperation("Label")>] member inline _.Label ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Label" => x)
-    /// Content displayed just above the component
-    [<CustomOperation("LabelTemplate")>] member inline _.LabelTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("LabelTemplate", fragment)
-    /// Content displayed just above the component
-    [<CustomOperation("LabelTemplate")>] member inline _.LabelTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("LabelTemplate", fragment { yield! fragments })
-    /// Content displayed just above the component
-    [<CustomOperation("LabelTemplate")>] member inline _.LabelTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("LabelTemplate", html.text x)
-    /// Content displayed just above the component
-    [<CustomOperation("LabelTemplate")>] member inline _.LabelTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("LabelTemplate", html.text x)
-    /// Content displayed just above the component
-    [<CustomOperation("LabelTemplate")>] member inline _.LabelTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("LabelTemplate", html.text x)
-    /// Text used on aria-label attribute.
-    [<CustomOperation("AriaLabel")>] member inline _.AriaLabel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("AriaLabel" => x)
-    /// Gets or sets the design of this input.
-    [<CustomOperation("Appearance")>] member inline _.Appearance ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.FluentInputAppearance) = render ==> ("Appearance" => x)
-    /// Disables the form control, ensuring it doesn't participate in form submission.
-    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Disabled" => x)
-    /// Gets or sets the name of the element. Allows access by name from the associated form.
-    [<CustomOperation("Name")>] member inline _.Name ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Name" => x)
-    /// Gets or sets a value indicating whether the element needs to have a value.
-    [<CustomOperation("Required")>] member inline _.Required ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Required" => x)
-    /// Determines if the element should receive document focus on page load.
-    [<CustomOperation("Autofocus")>] member inline _.Autofocus ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Autofocus" => x)
-    /// Gets or sets the short hint displayed in the input before the user enters a value.
-    [<CustomOperation("Placeholder")>] member inline _.Placeholder ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Placeholder" => x)
-    [<CustomOperation("OnCalendarOpen")>] member inline _.OnCalendarOpen ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<System.Boolean>("OnCalendarOpen", fn)
-    [<CustomOperation("OnCalendarOpen")>] member inline _.OnCalendarOpen ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<System.Boolean>("OnCalendarOpen", fn)
-
 /// Base class for FluentNavMenuGroup and FluentNavMenuItemBase.
 type FluentNavMenuItemBaseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -407,17 +325,23 @@ type FluentInputBaseBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :>
     /// Allows access by name from the associated form.
     /// ⚠️ This value needs to be set manually for SSR scenarios to work correctly.
     [<CustomOperation("Name")>] member inline _.Name ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Name" => x)
-    /// Gets or sets the text displayed just above the component.
+    /// Gets or sets the text to label the input.
+    /// This is usually displayed just above the input
     [<CustomOperation("Label")>] member inline _.Label ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Label" => x)
-    /// Gets or sets the content displayed just above the component.
+    /// Gets or sets the content to label the input component.
+    /// This is usually displayed just above the input
     [<CustomOperation("LabelTemplate")>] member inline _.LabelTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("LabelTemplate", fragment)
-    /// Gets or sets the content displayed just above the component.
+    /// Gets or sets the content to label the input component.
+    /// This is usually displayed just above the input
     [<CustomOperation("LabelTemplate")>] member inline _.LabelTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("LabelTemplate", fragment { yield! fragments })
-    /// Gets or sets the content displayed just above the component.
+    /// Gets or sets the content to label the input component.
+    /// This is usually displayed just above the input
     [<CustomOperation("LabelTemplate")>] member inline _.LabelTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("LabelTemplate", html.text x)
-    /// Gets or sets the content displayed just above the component.
+    /// Gets or sets the content to label the input component.
+    /// This is usually displayed just above the input
     [<CustomOperation("LabelTemplate")>] member inline _.LabelTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("LabelTemplate", html.text x)
-    /// Gets or sets the content displayed just above the component.
+    /// Gets or sets the content to label the input component.
+    /// This is usually displayed just above the input
     [<CustomOperation("LabelTemplate")>] member inline _.LabelTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("LabelTemplate", html.text x)
     /// Gets or sets the text used on aria-label attribute.
     [<CustomOperation("AriaLabel")>] member inline _.AriaLabel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("AriaLabel" => x)
@@ -444,6 +368,56 @@ type FluentInputBaseBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :>
     [<CustomOperation("Immediate")>] member inline _.Immediate ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Immediate" => x)
     /// Gets or sets the delay, in milliseconds, before to raise the ValueChanged event.
     [<CustomOperation("ImmediateDelay")>] member inline _.ImmediateDelay ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("ImmediateDelay" => x)
+
+type FluentCalendarBaseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit FluentInputBaseBuilder<'FunBlazorGeneric, System.Nullable<System.DateTime>>()
+    /// Gets or sets the culture of the component.
+    /// By default CurrentCulture to display using the OS culture.
+    [<CustomOperation("Culture")>] member inline _.Culture ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Globalization.CultureInfo) = render ==> ("Culture" => x)
+    /// Function to know if a specific day must be disabled.
+    [<CustomOperation("DisabledDateFunc")>] member inline _.DisabledDateFunc ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("DisabledDateFunc" => (System.Func<System.DateTime, System.Boolean>fn))
+    /// Apply the disabled style to the DisabledDateFunc days.
+    /// If this is not the case, the days are displayed like the others, but cannot be selected.
+    [<CustomOperation("DisabledSelectable")>] member inline _.DisabledSelectable ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("DisabledSelectable" => x)
+    /// Gets or sets the Type style for the day (numeric or 2-digits).
+    [<CustomOperation("DayFormat")>] member inline _.DayFormat ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.DayFormat>) = render ==> ("DayFormat" => x)
+    /// Gets or sets the selected date (two-way bindable).
+    [<CustomOperation("Value")>] member inline _.Value ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.DateTime>) = render ==> ("Value" => x)
+
+/// Fluent Calendar based on
+/// https://github.com/microsoft/fluentui/blob/master/packages/web-components/src/calendar/.
+type FluentCalendarBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit FluentCalendarBaseBuilder<'FunBlazorGeneric>()
+    /// Gets or sets the current month of the date picker (two-way bindable).
+    /// This changes when the user browses through the calendar.
+    /// The month is represented as a DateTime which is always the first day of that month.
+    /// You can also set this to determine which month is displayed first.
+    /// If not set, the current month is displayed.
+    [<CustomOperation("PickerMonth")>] member inline _.PickerMonth ([<InlineIfLambda>] render: AttrRenderFragment, x: System.DateTime) = render ==> ("PickerMonth" => x)
+    /// Gets or sets the current month of the date picker (two-way bindable).
+    /// This changes when the user browses through the calendar.
+    /// The month is represented as a DateTime which is always the first day of that month.
+    /// You can also set this to determine which month is displayed first.
+    /// If not set, the current month is displayed.
+    [<CustomOperation("PickerMonth'")>] member inline _.PickerMonth' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.DateTime * (System.DateTime -> unit)) = render ==> html.bind("PickerMonth", valueFn)
+    /// Fired when the display month changes.
+    [<CustomOperation("PickerMonthChanged")>] member inline _.PickerMonthChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<System.DateTime>("PickerMonthChanged", fn)
+    /// Fired when the display month changes.
+    [<CustomOperation("PickerMonthChanged")>] member inline _.PickerMonthChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<System.DateTime>("PickerMonthChanged", fn)
+    /// Defines the appearance of a Day cell.
+    [<CustomOperation("DaysTemplate")>] member inline _.DaysTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentCalendarDay -> NodeRenderFragment) = render ==> html.renderFragment("DaysTemplate", fn)
+    /// Defines the appearance of the FluentCalendar component.
+    [<CustomOperation("View")>] member inline _.View ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.CalendarViews) = render ==> ("View" => x)
+    /// Gets ot sets if the calendar items are animated during a period change.
+    /// By default, the animation is enabled for Months views, but disabled for Days and Years view.
+    [<CustomOperation("AnimatePeriodChanges")>] member inline _.AnimatePeriodChanges ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("AnimatePeriodChanges" => x)
+
+type FluentDatePickerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit FluentCalendarBaseBuilder<'FunBlazorGeneric>()
+    /// Gets or sets the design of this input.
+    [<CustomOperation("Appearance")>] member inline _.Appearance ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.FluentInputAppearance) = render ==> ("Appearance" => x)
+    [<CustomOperation("OnCalendarOpen")>] member inline _.OnCalendarOpen ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<System.Boolean>("OnCalendarOpen", fn)
+    [<CustomOperation("OnCalendarOpen")>] member inline _.OnCalendarOpen ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<System.Boolean>("OnCalendarOpen", fn)
 
 type FluentCheckboxBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentInputBaseBuilder<'FunBlazorGeneric, System.Boolean>()
@@ -794,6 +768,7 @@ type FluentDataGridBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric 
     /// Optionally defines a class to be applied to a rendered row. 
     [<CustomOperation("RowClass")>] member inline _.RowClass ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("RowClass" => (System.Func<'TGridItem, System.String>fn))
     /// Optionally defines a style to be applied to a rendered row. 
+    /// Do not use to dynamically update a row style after rendering as this will interfere with the script that use this attribute. Use RowClass instead.
     [<CustomOperation("RowStyle")>] member inline _.RowStyle ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("RowStyle" => (System.Func<'TGridItem, System.String>fn))
     /// If specified, grids render this fragment when there is no content.
     [<CustomOperation("EmptyContent")>] member inline _.EmptyContent ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("EmptyContent", fragment)
@@ -1052,6 +1027,8 @@ type FluentGridItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     /// The number of columns the item should span in the 12-column grid system.
     /// Extra large (xl) devices (large desktops, less than 2560px wide)
     [<CustomOperation("xl")>] member inline _.xl ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("xl" => x)
+    /// The number of columns the item should span in the 12-column grid system.
+    /// Extra extra large (xxl) devices (larger desktops, more than 2560px wide)
     [<CustomOperation("xxl")>] member inline _.xxl ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("xxl" => x)
     /// Defines how the browser distributes space between and around content items.
     [<CustomOperation("Justify")>] member inline _.Justify ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.JustifyContent>) = render ==> ("Justify" => x)
@@ -1413,20 +1390,22 @@ type FluentMainLayoutBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microso
     [<CustomOperation("Header")>] member inline _.Header ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("Header", html.text x)
     /// Gets or sets the header content.
     [<CustomOperation("Header")>] member inline _.Header ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("Header", html.text x)
-    /// Gets or sets the subheader content.
+    /// Gets or sets the sub header content.
     [<CustomOperation("SubHeader")>] member inline _.SubHeader ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("SubHeader", fragment)
-    /// Gets or sets the subheader content.
+    /// Gets or sets the sub header content.
     [<CustomOperation("SubHeader")>] member inline _.SubHeader ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("SubHeader", fragment { yield! fragments })
-    /// Gets or sets the subheader content.
+    /// Gets or sets the sub header content.
     [<CustomOperation("SubHeader")>] member inline _.SubHeader ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("SubHeader", html.text x)
-    /// Gets or sets the subheader content.
+    /// Gets or sets the sub header content.
     [<CustomOperation("SubHeader")>] member inline _.SubHeader ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("SubHeader", html.text x)
-    /// Gets or sets the subheader content.
+    /// Gets or sets the sub header content.
     [<CustomOperation("SubHeader")>] member inline _.SubHeader ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("SubHeader", html.text x)
     /// Gets or sets the height of the header (in pixels).
     [<CustomOperation("HeaderHeight")>] member inline _.HeaderHeight ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("HeaderHeight" => x)
-    /// Gets or sets the tite of the navigation menu.
+    /// Gets or sets the title of the navigation menu.
     [<CustomOperation("NavMenuTitle")>] member inline _.NavMenuTitle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("NavMenuTitle" => x)
+    /// Gets or sets the width of the navigation menu.
+    [<CustomOperation("NavMenuWidth")>] member inline _.NavMenuWidth ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("NavMenuWidth" => x)
     /// Gets or sets the content of the navigation menu.
     [<CustomOperation("NavMenuContent")>] member inline _.NavMenuContent ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("NavMenuContent", fragment)
     /// Gets or sets the content of the navigation menu.
@@ -1935,7 +1914,7 @@ type FluentTabBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspN
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
     /// When true, the control will be immutable by user interaction. See disabled HTML attribute for more information.
     [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Disabled" => x)
-    /// Gets or sets the visability of a tab
+    /// Gets or sets the visibility of a tab
     [<CustomOperation("Visible")>] member inline _.Visible ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Visible" => x)
     /// Gets or sets the label of the tab.
     [<CustomOperation("Label")>] member inline _.Label ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Label" => x)
@@ -1965,15 +1944,15 @@ type FluentTabBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspN
     [<CustomOperation("LabelEditable")>] member inline _.LabelEditable ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("LabelEditable" => x)
     /// Render the tab content only when the tab is selected.
     [<CustomOperation("DeferredLoading")>] member inline _.DeferredLoading ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("DeferredLoading" => x)
-    /// CGets or sets the cstomized content of this tab panel.
+    /// Gets or sets the customized content of this tab panel.
     [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("Content", fragment)
-    /// CGets or sets the cstomized content of this tab panel.
+    /// Gets or sets the customized content of this tab panel.
     [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("Content", fragment { yield! fragments })
-    /// CGets or sets the cstomized content of this tab panel.
+    /// Gets or sets the customized content of this tab panel.
     [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("Content", html.text x)
-    /// CGets or sets the cstomized content of this tab panel.
+    /// Gets or sets the customized content of this tab panel.
     [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("Content", html.text x)
-    /// CGets or sets the cstomized content of this tab panel.
+    /// Gets or sets the customized content of this tab panel.
     [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("Content", html.text x)
 
 type FluentTabsBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -2113,6 +2092,87 @@ type FluentTreeViewBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     /// Called whenever Expanded changes on an
     /// item within the tree.
     [<CustomOperation("OnExpandedChange")>] member inline _.OnExpandedChange ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.FluentUI.AspNetCore.Components.FluentTreeItem>("OnExpandedChange", fn)
+
+type FluentWizardBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
+    /// Gets or sets the height of the wizard.
+    [<CustomOperation("Height")>] member inline _.Height ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Height" => x)
+    /// Gets or sets the width of the wizard.
+    [<CustomOperation("Width")>] member inline _.Width ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Width" => x)
+    /// Triggers when the done button is clicked.
+    [<CustomOperation("OnFinish")>] member inline _.OnFinish ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback("OnFinish", fn)
+    /// Triggers when the done button is clicked.
+    [<CustomOperation("OnFinish")>] member inline _.OnFinish ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask("OnFinish", fn)
+    /// Gets or sets the stepper position in the wizard (Top or Left).
+    [<CustomOperation("StepperPosition")>] member inline _.StepperPosition ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.StepperPosition) = render ==> ("StepperPosition" => x)
+    /// Gets or sets the stepper width (if position is Left)
+    /// or the stepper height (if position is Top).
+    [<CustomOperation("StepperSize")>] member inline _.StepperSize ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("StepperSize" => x)
+    /// Gets or sets the space between two bullets (ex. 120px).
+    [<CustomOperation("StepperBulletSpace")>] member inline _.StepperBulletSpace ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("StepperBulletSpace" => x)
+    /// Display a border of the Wizard.
+    [<CustomOperation("Border")>] member inline _.Border ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.WizardBorder) = render ==> ("Border" => x)
+    /// Display a number on each step icon. Can be overridden by the step DisplayStepNumber property.
+    [<CustomOperation("DisplayStepNumber")>] member inline _.DisplayStepNumber ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.WizardStepStatus) = render ==> ("DisplayStepNumber" => x)
+    /// Gets or sets the step index of the current step.
+    /// This value is bindable.
+    [<CustomOperation("Value")>] member inline _.Value ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("Value" => x)
+    /// Gets or sets the step index of the current step.
+    /// This value is bindable.
+    [<CustomOperation("Value'")>] member inline _.Value' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Int32 * (System.Int32 -> unit)) = render ==> html.bind("Value", valueFn)
+    /// Triggers when the value has changed.
+    [<CustomOperation("ValueChanged")>] member inline _.ValueChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<System.Int32>("ValueChanged", fn)
+    /// Triggers when the value has changed.
+    [<CustomOperation("ValueChanged")>] member inline _.ValueChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<System.Int32>("ValueChanged", fn)
+    /// Gets or sets the buttons section of the wizard.
+    /// This configuration overrides the whole rendering of the bottom-right section of the Wizard,
+    /// including the built-in buttons and thus provides a full control over it.
+    /// Custom Wizard buttons do not trigger the component OnChange and OnFinish events.
+    [<CustomOperation("ButtonTemplate")>] member inline _.ButtonTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Int32 -> NodeRenderFragment) = render ==> html.renderFragment("ButtonTemplate", fn)
+    /// Gets or sets the wizard steps. Add WizardStep tags inside this tag.
+    [<CustomOperation("Steps")>] member inline _.Steps ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("Steps", fragment)
+    /// Gets or sets the wizard steps. Add WizardStep tags inside this tag.
+    [<CustomOperation("Steps")>] member inline _.Steps ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("Steps", fragment { yield! fragments })
+    /// Gets or sets the wizard steps. Add WizardStep tags inside this tag.
+    [<CustomOperation("Steps")>] member inline _.Steps ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("Steps", html.text x)
+    /// Gets or sets the wizard steps. Add WizardStep tags inside this tag.
+    [<CustomOperation("Steps")>] member inline _.Steps ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("Steps", html.text x)
+    /// Gets or sets the wizard steps. Add WizardStep tags inside this tag.
+    [<CustomOperation("Steps")>] member inline _.Steps ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("Steps", html.text x)
+    /// Hide step titles and summaries on specified sizes (you can combine several values: GridItemHidden.Sm | GridItemHidden.Xl).
+    /// The default value is XsAndDown to adapt to mobile devices.
+    [<CustomOperation("StepTitleHiddenWhen")>] member inline _.StepTitleHiddenWhen ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.GridItemHidden>) = render ==> ("StepTitleHiddenWhen" => x)
+
+type FluentWizardStepBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
+    /// Gets or sets the template of the step icon.
+    [<CustomOperation("StepTemplate")>] member inline _.StepTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentWizardStepArgs -> NodeRenderFragment) = render ==> html.renderFragment("StepTemplate", fn)
+    /// Gets or sets whether the step is disabled.
+    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Disabled" => x)
+    /// Render the Wizard Step content only when the Step is selected.
+    [<CustomOperation("DeferredLoading")>] member inline _.DeferredLoading ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("DeferredLoading" => x)
+    /// Gets or sets the label of the step.
+    [<CustomOperation("Label")>] member inline _.Label ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Label" => x)
+    /// Display a number the step icon.
+    /// By default, this is the DisplayStepNumber value.
+    [<CustomOperation("DisplayStepNumber")>] member inline _.DisplayStepNumber ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("DisplayStepNumber" => x)
+    /// The OnChange event fires before the current step has changed.
+    /// The EventArgs contains a field of the targeted new step and a field to cancel the build-in action.
+    [<CustomOperation("OnChange")>] member inline _.OnChange ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.FluentUI.AspNetCore.Components.FluentWizardStepChangeEventArgs>("OnChange", fn)
+    /// The OnChange event fires before the current step has changed.
+    /// The EventArgs contains a field of the targeted new step and a field to cancel the build-in action.
+    [<CustomOperation("OnChange")>] member inline _.OnChange ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.FluentUI.AspNetCore.Components.FluentWizardStepChangeEventArgs>("OnChange", fn)
+    /// Gets or sets the summary of the step, to diplay near the label.
+    [<CustomOperation("Summary")>] member inline _.Summary ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Summary" => x)
+    /// Gets or sets the icon to display for the past/previous step.
+    /// By default, it is a checkmark circle.
+    [<CustomOperation("IconPrevious")>] member inline _.IconPrevious ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Icon) = render ==> ("IconPrevious" => x)
+    /// Gets or sets the icon to display for the current/active step.
+    /// By default, it is a checkmark circle.
+    [<CustomOperation("IconCurrent")>] member inline _.IconCurrent ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Icon) = render ==> ("IconCurrent" => x)
+    /// Gets or sets the icon to display for the future/next step.
+    /// By default, it is a checkmark circle.
+    [<CustomOperation("IconNext")>] member inline _.IconNext ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Icon) = render ==> ("IconNext" => x)
 
             
 namespace rec Microsoft.FluentUI.AspNetCore.Components.DslInternals
@@ -2288,7 +2348,8 @@ type FluentInputLabelBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microso
     /// Gets or sets the HTML label `for` attribute.
     /// See https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/for
     [<CustomOperation("ForId")>] member inline _.ForId ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ForId" => x)
-    /// Gets or sets the text to be displayed as a label, just above the component.
+    /// Gets or sets the text to label the input.
+    /// This is usually displayd just above the component.
     [<CustomOperation("Label")>] member inline _.Label ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Label" => x)
     /// Gets or sets if an indicator is showed that this input is required.
     [<CustomOperation("Required")>] member inline _.Required ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Required" => x)
@@ -3216,15 +3277,6 @@ module DslCE =
     open Microsoft.FluentUI.AspNetCore.Components.DslInternals
 
     type FluentComponentBase' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentComponentBase>)>] () = inherit FluentComponentBaseBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentComponentBase>()
-    type FluentCalendarBase' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentCalendarBase>)>] () = inherit FluentCalendarBaseBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentCalendarBase>()
-
-    /// Fluent Calendar based on
-    /// https://github.com/microsoft/fluentui/blob/master/packages/web-components/src/calendar/.
-    type FluentCalendar' 
-        /// Fluent Calendar based on
-        /// https://github.com/microsoft/fluentui/blob/master/packages/web-components/src/calendar/.
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentCalendar>)>] () = inherit FluentCalendarBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentCalendar>()
-    type FluentDatePicker' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentDatePicker>)>] () = inherit FluentDatePickerBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentDatePicker>()
 
     /// Base class for FluentNavMenuGroup and FluentNavMenuItemBase.
     type FluentNavMenuItemBase' 
@@ -3253,6 +3305,15 @@ module DslCE =
         /// integrates with an EditContext, which must be supplied
         /// as a cascading parameter.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentInputBase<_>>)>] () = inherit FluentInputBaseBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentInputBase<'TValue>, 'TValue>()
+    type FluentCalendarBase' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentCalendarBase>)>] () = inherit FluentCalendarBaseBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentCalendarBase>()
+
+    /// Fluent Calendar based on
+    /// https://github.com/microsoft/fluentui/blob/master/packages/web-components/src/calendar/.
+    type FluentCalendar' 
+        /// Fluent Calendar based on
+        /// https://github.com/microsoft/fluentui/blob/master/packages/web-components/src/calendar/.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentCalendar>)>] () = inherit FluentCalendarBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentCalendar>()
+    type FluentDatePicker' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentDatePicker>)>] () = inherit FluentDatePickerBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentDatePicker>()
     type FluentCheckbox' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentCheckbox>)>] () = inherit FluentCheckboxBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentCheckbox>()
     type FluentTimePicker' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentTimePicker>)>] () = inherit FluentTimePickerBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentTimePicker>()
     type FluentNumberField'<'TValue when 'TValue : (new : unit -> 'TValue)> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentNumberField<_>>)>] () = inherit FluentNumberFieldBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentNumberField<'TValue>, 'TValue>()
@@ -3374,6 +3435,8 @@ module DslCE =
     type FluentTooltipProvider' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentTooltipProvider>)>] () = inherit FluentTooltipProviderBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentTooltipProvider>()
     type FluentTreeItem' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentTreeItem>)>] () = inherit FluentTreeItemBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentTreeItem>()
     type FluentTreeView' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentTreeView>)>] () = inherit FluentTreeViewBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentTreeView>()
+    type FluentWizard' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentWizard>)>] () = inherit FluentWizardBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentWizard>()
+    type FluentWizardStep' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentWizardStep>)>] () = inherit FluentWizardStepBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentWizardStep>()
 
     /// Displays a list of validation messages from a cascaded EditContext.
     type ValidationSummary' 
