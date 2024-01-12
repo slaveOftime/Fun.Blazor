@@ -3,98 +3,7 @@ namespace Fun.Blazor
 [<AutoOpen>]
 module DslElementsBuilder_global =
 
-    open Fun.Blazor
     open Operators
-
-    type EltWithChildBuilder with
-                                     
-        /// Keyboard shortcut to activate or add focus to the element.
-        [<CustomOperation("accesskey")>]
-        member inline _.accesskey([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("accesskey" => v)
-
-        /// Sets whether input is automatically capitalized when entered by user
-        [<CustomOperation("autocapitalize")>]
-        member inline _.autocapitalize([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("autocapitalize" =>>> v)
-
-        /// Sets whether input is automatically capitalized when entered by user
-        [<CustomOperation("autocapitalize")>]
-        member inline this.autocapitalize([<InlineIfLambda>] render: AttrRenderFragment) = this.autocapitalize(render, true)
-
-        /// Indicates whether the element's content is editable.
-        [<CustomOperation("contenteditable")>]
-        member inline _.contenteditable([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("contenteditable" =>>> v)
-
-        /// Indicates whether the element's content is editable.
-        [<CustomOperation("contenteditable")>]
-        member inline this.contenteditable([<InlineIfLambda>] render: AttrRenderFragment) = this.contenteditable(render, true)
-
-        /// Lets you attach custom attributes to an HTML element.
-        [<CustomOperation("data")>]
-        member inline _.data([<InlineIfLambda>] render: AttrRenderFragment, k, v) = render ==> ("data-" + k => v)
-
-        /// Lets you attach custom attributes to an HTML element.
-        [<CustomOperation("data")>]
-        member inline _.data([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("data" => v)
-
-        /// Defines the text direction. Allowed values are ltr (Left-To-Right) or rtl (Right-To-Left)
-        [<CustomOperation("dir")>]
-        member inline _.dir([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("dir" => v)
-
-        /// Defines whether the element can be dragged.
-        [<CustomOperation("draggable")>]
-        member inline _.draggable([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("draggable" =>>> v)
-
-        /// Defines whether the element can be dragged.
-        [<CustomOperation("draggable")>]
-        member inline this.draggable([<InlineIfLambda>] render: AttrRenderFragment) = this.draggable(render, true)
-
-        /// Prevents rendering of given element, while keeping child elements, e.g. script elements, active.
-        [<CustomOperation("hidden")>]
-        member inline _.hidden([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("hidden" => v)
-
-        /// Often used with CSS to style a specific element. The value of this attribute must be unique.
-        [<CustomOperation("id")>]
-        member inline _.id([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("id" => v)
-
-        
-        [<CustomOperation("itemprop")>]
-        member inline _.itemprop([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("itemprop" => v)
-
-        /// Defines the language used in the element.
-        [<CustomOperation("lang")>]
-        member inline _.lang([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("lang" => v)
-
-        /// Defines an explicit role for an element for use by assistive technologies.
-        [<CustomOperation("role")>]
-        member inline _.role([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("role" => v)
-
-        /// Assigns a slot in a shadow DOM shadow tree to an element.
-        [<CustomOperation("slot")>]
-        member inline _.slot([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("slot" => v)
-
-        /// Indicates whether spell checking is allowed for the element.
-        [<CustomOperation("spellcheck")>]
-        member inline _.spellcheck([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("spellcheck" =>>> v)
-
-        /// Indicates whether spell checking is allowed for the element.
-        [<CustomOperation("spellcheck")>]
-        member inline this.spellcheck([<InlineIfLambda>] render: AttrRenderFragment) = this.spellcheck(render, true)
-
-        /// Overrides the browser's default tab order and follows the one specified instead.
-        [<CustomOperation("tabindex")>]
-        member inline _.tabindex([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("tabindex" => v)
-
-        /// Text to be displayed in a tooltip when hovering over the element.
-        [<CustomOperation("title'")>]
-        member inline _.title'([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("title" => v)
-
-        /// Specify whether an element's attribute values and the values of its Text node children are to be translated when the page is localized, or whether to leave them unchanged.
-        [<CustomOperation("translate")>]
-        member inline _.translate([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("translate" =>>> v)
-
-        /// Specify whether an element's attribute values and the values of its Text node children are to be translated when the page is localized, or whether to leave them unchanged.
-        [<CustomOperation("translate")>]
-        member inline this.translate([<InlineIfLambda>] render: AttrRenderFragment) = this.translate(render, true)
 
     type EltBuilder_script with
 
@@ -108,11 +17,7 @@ module DslElementsBuilder_global =
 
         /// Indicates that the script should be executed after the page has been parsed.
         [<CustomOperation("defer")>]
-        member inline _.defer([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("defer" =>>> v)
-
-        /// Indicates that the script should be executed after the page has been parsed.
-        [<CustomOperation("defer")>]
-        member inline this.defer([<InlineIfLambda>] render: AttrRenderFragment) = this.defer(render, true)
+        member inline _.defer([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("defer" =>>> defaultArg v true)
 
         /// Specifies a Subresource Integrity value that allows browsers to verify what they fetch.
         [<CustomOperation("integrity")>]
@@ -133,7 +38,6 @@ module DslElementsBuilder_global =
 
 module DslElementBuilder_generated =
 
-    open Fun.Blazor
     open Operators
 
     type EltBuilder_a() =
@@ -141,11 +45,7 @@ module DslElementBuilder_generated =
 
         /// Indicates that the hyperlink is to be used for downloading a resource.
         [<CustomOperation("download")>]
-        member inline _.download([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("download" =>>> v)
-
-        /// Indicates that the hyperlink is to be used for downloading a resource.
-        [<CustomOperation("download")>]
-        member inline this.download([<InlineIfLambda>] render: AttrRenderFragment) = this.download(render, true)
+        member inline _.download([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("download" =>>> defaultArg v true)
 
         /// The URL of a linked resource.
         [<CustomOperation("href")>]
@@ -192,11 +92,7 @@ module DslElementBuilder_generated =
 
         /// Indicates that the hyperlink is to be used for downloading a resource.
         [<CustomOperation("download")>]
-        member inline _.download([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("download" =>>> v)
-
-        /// Indicates that the hyperlink is to be used for downloading a resource.
-        [<CustomOperation("download")>]
-        member inline this.download([<InlineIfLambda>] render: AttrRenderFragment) = this.download(render, true)
+        member inline _.download([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("download" =>>> defaultArg v true)
 
         /// The URL of a linked resource.
         [<CustomOperation("href")>]
@@ -231,11 +127,7 @@ module DslElementBuilder_generated =
 
         /// The audio or video should play as soon as possible.
         [<CustomOperation("autoplay")>]
-        member inline _.autoplay([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("autoplay" =>>> v)
-
-        /// The audio or video should play as soon as possible.
-        [<CustomOperation("autoplay")>]
-        member inline this.autoplay([<InlineIfLambda>] render: AttrRenderFragment) = this.autoplay(render, true)
+        member inline _.autoplay([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("autoplay" =>>> defaultArg v true)
 
         /// Contains the time range of already buffered media.
         [<CustomOperation("buffered")>]
@@ -243,11 +135,7 @@ module DslElementBuilder_generated =
 
         /// Indicates whether the browser should show playback controls to the user.
         [<CustomOperation("controls")>]
-        member inline _.controls([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("controls" =>>> v)
-
-        /// Indicates whether the browser should show playback controls to the user.
-        [<CustomOperation("controls")>]
-        member inline this.controls([<InlineIfLambda>] render: AttrRenderFragment) = this.controls(render, true)
+        member inline _.controls([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("controls" =>>> defaultArg v true)
 
         /// How the element handles cross-origin requests
         [<CustomOperation("crossorigin")>]
@@ -255,27 +143,15 @@ module DslElementBuilder_generated =
 
         /// Indicates whether the media should start playing from the start when it's finished.
         [<CustomOperation("loop")>]
-        member inline _.loop([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("loop" =>>> v)
-
-        /// Indicates whether the media should start playing from the start when it's finished.
-        [<CustomOperation("loop")>]
-        member inline this.loop([<InlineIfLambda>] render: AttrRenderFragment) = this.loop(render, true)
+        member inline _.loop([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("loop" =>>> defaultArg v true)
 
         /// Indicates whether the audio will be initially silenced on page load.
         [<CustomOperation("muted")>]
-        member inline _.muted([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("muted" =>>> v)
-
-        /// Indicates whether the audio will be initially silenced on page load.
-        [<CustomOperation("muted")>]
-        member inline this.muted([<InlineIfLambda>] render: AttrRenderFragment) = this.muted(render, true)
+        member inline _.muted([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("muted" =>>> defaultArg v true)
 
         /// Indicates whether the whole resource, parts of it or nothing should be preloaded.
         [<CustomOperation("preload")>]
-        member inline _.preload([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("preload" =>>> v)
-
-        /// Indicates whether the whole resource, parts of it or nothing should be preloaded.
-        [<CustomOperation("preload")>]
-        member inline this.preload([<InlineIfLambda>] render: AttrRenderFragment) = this.preload(render, true)
+        member inline _.preload([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("preload" =>>> defaultArg v true)
 
         /// The URL of the embeddable content.
         [<CustomOperation("src")>]
@@ -315,27 +191,15 @@ module DslElementBuilder_generated =
 
         /// Indicates whether the user can interact with the element.
         [<CustomOperation("disabled")>]
-        member inline _.disabled([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("disabled" =>>> v)
-
-        /// Indicates whether the user can interact with the element.
-        [<CustomOperation("disabled")>]
-        member inline this.disabled([<InlineIfLambda>] render: AttrRenderFragment) = this.disabled(render, true)
+        member inline _.disabled([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("disabled" =>>> defaultArg v true)
 
         /// Indicates the form that is the owner of the element.
         [<CustomOperation("form")>]
-        member inline _.form([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("form" =>>> v)
-
-        /// Indicates the form that is the owner of the element.
-        [<CustomOperation("form")>]
-        member inline this.form([<InlineIfLambda>] render: AttrRenderFragment) = this.form(render, true)
+        member inline _.form([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("form" =>>> defaultArg v true)
 
         /// Indicates the action of the element, overriding the action defined in the <form>.
         [<CustomOperation("formaction")>]
-        member inline _.formaction([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("formaction" => v)
-
-        /// Indicates the action of the element, overriding the action defined in the <form>.
-        [<CustomOperation("formaction")>]
-        member inline this.formaction([<InlineIfLambda>] render: AttrRenderFragment) = this.formaction(render, true)
+        member inline _.formaction([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("formaction" => v)
 
         /// If the button/input is a submit button (e.g. type="submit"), this attribute sets the encoding type to use during form submission. If this attribute is specified, it overrides the enctype attribute of the button's form owner.
         [<CustomOperation("formenctype")>]
@@ -420,33 +284,21 @@ module DslElementBuilder_generated =
 
         /// Indicates the date and time associated with the element.
         [<CustomOperation("datetime")>]
-        member inline _.datetime([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("datetime" =>>> v)
-
-        /// Indicates the date and time associated with the element.
-        [<CustomOperation("datetime")>]
-        member inline this.datetime([<InlineIfLambda>] render: AttrRenderFragment) = this.datetime(render, true)
+        member inline _.datetime([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("datetime" =>>> defaultArg v true)
 
     type EltBuilder_details() =
         inherit EltWithChildBuilder("details")
 
         /// Indicates whether the contents are currently visible (in the case of a <details> element) or whether the dialog is active and can be interacted with (in the case of a <dialog> element).
         [<CustomOperation("open'")>]
-        member inline _.open'([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("open" =>>> v)
-
-        /// Indicates whether the contents are currently visible (in the case of a <details> element) or whether the dialog is active and can be interacted with (in the case of a <dialog> element).
-        [<CustomOperation("open'")>]
-        member inline this.open'([<InlineIfLambda>] render: AttrRenderFragment) = this.open'(render, true)
+        member inline _.open'([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("open" =>>> defaultArg v true)
 
     type EltBuilder_dialog() =
         inherit EltWithChildBuilder("dialog")
 
         /// Indicates whether the contents are currently visible (in the case of a <details> element) or whether the dialog is active and can be interacted with (in the case of a <dialog> element).
         [<CustomOperation("open'")>]
-        member inline _.open'([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("open" =>>> v)
-
-        /// Indicates whether the contents are currently visible (in the case of a <details> element) or whether the dialog is active and can be interacted with (in the case of a <dialog> element).
-        [<CustomOperation("open'")>]
-        member inline this.open'([<InlineIfLambda>] render: AttrRenderFragment) = this.open'(render, true)
+        member inline _.open'([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("open" =>>> defaultArg v true)
 
     type EltBuilder_embed() =
         inherit EltWithChildBuilder("embed")
@@ -472,19 +324,11 @@ module DslElementBuilder_generated =
 
         /// Indicates whether the user can interact with the element.
         [<CustomOperation("disabled")>]
-        member inline _.disabled([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("disabled" =>>> v)
-
-        /// Indicates whether the user can interact with the element.
-        [<CustomOperation("disabled")>]
-        member inline this.disabled([<InlineIfLambda>] render: AttrRenderFragment) = this.disabled(render, true)
+        member inline _.disabled([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("disabled" =>>> defaultArg v true)
 
         /// Indicates the form that is the owner of the element.
         [<CustomOperation("form")>]
-        member inline _.form([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("form" =>>> v)
-
-        /// Indicates the form that is the owner of the element.
-        [<CustomOperation("form")>]
-        member inline this.form([<InlineIfLambda>] render: AttrRenderFragment) = this.form(render, true)
+        member inline _.form([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("form" =>>> defaultArg v true)
 
         /// Name of the element. For example used by the server to identify the fields in form submits.
         [<CustomOperation("name")>]
@@ -514,11 +358,7 @@ module DslElementBuilder_generated =
 
         /// Indicates whether controls in this form can by default have their values automatically completed by the browser.
         [<CustomOperation("autocomplete")>]
-        member inline _.autocomplete([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("autocomplete" =>> (if v then "on" else "off"))
-
-        /// Indicates whether controls in this form can by default have their values automatically completed by the browser.
-        [<CustomOperation("autocomplete")>]
-        member inline this.autocomplete([<InlineIfLambda>] render: AttrRenderFragment) = this.autocomplete(render, true)
+        member inline _.autocomplete([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("autocomplete" =>> (if defaultArg v true then "on" else "off"))
 
         /// Defines the content type of the form data when the method is POST.
         [<CustomOperation("enctype")>]
@@ -534,11 +374,7 @@ module DslElementBuilder_generated =
 
         /// This attribute indicates that the form shouldn't be validated when submitted.
         [<CustomOperation("novalidate")>]
-        member inline _.novalidate([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("novalidate" =>>> v)
-
-        /// This attribute indicates that the form shouldn't be validated when submitted.
-        [<CustomOperation("novalidate")>]
-        member inline this.novalidate([<InlineIfLambda>] render: AttrRenderFragment) = this.novalidate(render, true)
+        member inline _.novalidate([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("novalidate" =>>> defaultArg v true)
 
         /// Specifies where to open the linked document (in the case of an <a> element) or where to display the response received (in the case of a <form> element)
         [<CustomOperation("target")>]
@@ -571,11 +407,7 @@ module DslElementBuilder_generated =
 
         /// Indicates if the element should be loaded lazily (loading="lazy") or loaded immediately (loading="eager").
         [<CustomOperation("loadingExperimental")>]
-        member inline _.loadingExperimental([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("loadingExperimental" =>>> v)
-
-        /// Indicates if the element should be loaded lazily (loading="lazy") or loaded immediately (loading="eager").
-        [<CustomOperation("loadingExperimental")>]
-        member inline this.loadingExperimental([<InlineIfLambda>] render: AttrRenderFragment) = this.loadingExperimental(render, true)
+        member inline _.loadingExperimental([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("loadingExperimental" =>>> defaultArg v true)
 
         /// Name of the element. For example used by the server to identify the fields in form submits.
         [<CustomOperation("name")>]
@@ -618,11 +450,7 @@ module DslElementBuilder_generated =
 
         /// Indicates the preferred method to decode the image.
         [<CustomOperation("decoding")>]
-        member inline _.decoding([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("decoding" =>>> v)
-
-        /// Indicates the preferred method to decode the image.
-        [<CustomOperation("decoding")>]
-        member inline this.decoding([<InlineIfLambda>] render: AttrRenderFragment) = this.decoding(render, true)
+        member inline _.decoding([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("decoding" =>>> defaultArg v true)
 
         /// Specifies the height of elements listed here. For all other elements, use the CSS height property. Note: In some instances, such as <div>, this is a legacy attribute, in which case the CSS height property should be used instead.
         [<CustomOperation("height")>]
@@ -630,19 +458,11 @@ module DslElementBuilder_generated =
 
         /// Indicates that the image is part of a server-side image map.
         [<CustomOperation("ismap")>]
-        member inline _.ismap([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("ismap" =>>> v)
-
-        /// Indicates that the image is part of a server-side image map.
-        [<CustomOperation("ismap")>]
-        member inline this.ismap([<InlineIfLambda>] render: AttrRenderFragment) = this.ismap(render, true)
+        member inline _.ismap([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("ismap" =>>> defaultArg v true)
 
         /// Indicates if the element should be loaded lazily (loading="lazy") or loaded immediately (loading="eager").
         [<CustomOperation("loadingExperimental")>]
-        member inline _.loadingExperimental([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("loadingExperimental" =>>> v)
-
-        /// Indicates if the element should be loaded lazily (loading="lazy") or loaded immediately (loading="eager").
-        [<CustomOperation("loadingExperimental")>]
-        member inline this.loadingExperimental([<InlineIfLambda>] render: AttrRenderFragment) = this.loadingExperimental(render, true)
+        member inline _.loadingExperimental([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("loadingExperimental" =>>> defaultArg v true)
 
         /// Specifies which referrer is sent when fetching the resource.
         [<CustomOperation("referrerpolicy")>]
@@ -681,11 +501,7 @@ module DslElementBuilder_generated =
 
         /// Indicates whether controls in this form can by default have their values automatically completed by the browser.
         [<CustomOperation("autocomplete")>]
-        member inline _.autocomplete([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("autocomplete" =>> (if v then "on" else "off"))
-
-        /// Indicates whether controls in this form can by default have their values automatically completed by the browser.
-        [<CustomOperation("autocomplete")>]
-        member inline this.autocomplete([<InlineIfLambda>] render: AttrRenderFragment) = this.autocomplete(render, true)
+        member inline _.autocomplete([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("autocomplete" =>> (if defaultArg v true then "on" else "off"))
 
         /// From the Media Capture specification, specifies a new file can be captured.
         [<CustomOperation("capture")>]
@@ -693,11 +509,7 @@ module DslElementBuilder_generated =
 
         /// Indicates whether the element should be checked on page load.
         [<CustomOperation("checked'")>]
-        member inline _.checked'([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("checked" =>>> v)
-
-        /// Indicates whether the element should be checked on page load.
-        [<CustomOperation("checked'")>]
-        member inline this.checked'([<InlineIfLambda>] render: AttrRenderFragment) = this.checked'(render, true)
+        member inline _.checked'([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("checked" =>>> defaultArg v true)
 
         
         [<CustomOperation("dirname")>]
@@ -705,27 +517,15 @@ module DslElementBuilder_generated =
 
         /// Indicates whether the user can interact with the element.
         [<CustomOperation("disabled")>]
-        member inline _.disabled([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("disabled" =>>> v)
-
-        /// Indicates whether the user can interact with the element.
-        [<CustomOperation("disabled")>]
-        member inline this.disabled([<InlineIfLambda>] render: AttrRenderFragment) = this.disabled(render, true)
+        member inline _.disabled([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("disabled" =>>> defaultArg v true)
 
         /// Indicates the form that is the owner of the element.
         [<CustomOperation("form")>]
-        member inline _.form([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("form" =>>> v)
-
-        /// Indicates the form that is the owner of the element.
-        [<CustomOperation("form")>]
-        member inline this.form([<InlineIfLambda>] render: AttrRenderFragment) = this.form(render, true)
+        member inline _.form([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("form" =>>> defaultArg v true)
 
         /// Indicates the action of the element, overriding the action defined in the <form>.
         [<CustomOperation("formaction")>]
-        member inline _.formaction([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("formaction" => v)
-
-        /// Indicates the action of the element, overriding the action defined in the <form>.
-        [<CustomOperation("formaction")>]
-        member inline this.formaction([<InlineIfLambda>] render: AttrRenderFragment) = this.formaction(render, true)
+        member inline _.formaction([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("formaction" => v)
 
         /// If the button/input is a submit button (e.g. type="submit"), this attribute sets the encoding type to use during form submission. If this attribute is specified, it overrides the enctype attribute of the button's form owner.
         [<CustomOperation("formenctype")>]
@@ -753,11 +553,7 @@ module DslElementBuilder_generated =
 
         /// Indicates the maximum value allowed.
         [<CustomOperation("max")>]
-        member inline _.max([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("max" => v)
-
-        /// Indicates the maximum value allowed.
-        [<CustomOperation("max")>]
-        member inline this.max([<InlineIfLambda>] render: AttrRenderFragment) = this.max(render, true)
+        member inline _.max([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("max" => v)
 
         /// Defines the maximum number of characters allowed in the element.
         [<CustomOperation("maxlength")>]
@@ -765,11 +561,7 @@ module DslElementBuilder_generated =
 
         /// Indicates the minimum value allowed.
         [<CustomOperation("min")>]
-        member inline _.min([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("min" => v)
-
-        /// Indicates the minimum value allowed.
-        [<CustomOperation("min")>]
-        member inline this.min([<InlineIfLambda>] render: AttrRenderFragment) = this.min(render, true)
+        member inline _.min([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("min" => v)
 
         /// Defines the minimum number of characters allowed in the element.
         [<CustomOperation("minlength")>]
@@ -777,11 +569,7 @@ module DslElementBuilder_generated =
 
         /// Indicates whether multiple values can be entered in an input of the type email or file.
         [<CustomOperation("multiple")>]
-        member inline _.multiple([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("multiple" =>>> v)
-
-        /// Indicates whether multiple values can be entered in an input of the type email or file.
-        [<CustomOperation("multiple")>]
-        member inline this.multiple([<InlineIfLambda>] render: AttrRenderFragment) = this.multiple(render, true)
+        member inline _.multiple([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("multiple" =>>> defaultArg v true)
 
         /// Name of the element. For example used by the server to identify the fields in form submits.
         [<CustomOperation("name")>]
@@ -797,19 +585,11 @@ module DslElementBuilder_generated =
 
         /// Indicates whether the element can be edited.
         [<CustomOperation("readonly")>]
-        member inline _.readonly([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("readonly" =>>> v)
-
-        /// Indicates whether the element can be edited.
-        [<CustomOperation("readonly")>]
-        member inline this.readonly([<InlineIfLambda>] render: AttrRenderFragment) = this.readonly(render, true)
+        member inline _.readonly([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("readonly" =>>> defaultArg v true)
 
         /// Indicates whether this element is required to fill out or not.
         [<CustomOperation("required")>]
-        member inline _.required([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("required" =>>> v)
-
-        /// Indicates whether this element is required to fill out or not.
-        [<CustomOperation("required")>]
-        member inline this.required([<InlineIfLambda>] render: AttrRenderFragment) = this.required(render, true)
+        member inline _.required([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("required" =>>> defaultArg v true)
 
         /// Defines the width of the element (in pixels). If the element's type attribute is text or password then it's the number of characters.
         [<CustomOperation("size")>]
@@ -847,11 +627,7 @@ module DslElementBuilder_generated =
 
         /// Indicates the date and time associated with the element.
         [<CustomOperation("datetime")>]
-        member inline _.datetime([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("datetime" =>>> v)
-
-        /// Indicates the date and time associated with the element.
-        [<CustomOperation("datetime")>]
-        member inline this.datetime([<InlineIfLambda>] render: AttrRenderFragment) = this.datetime(render, true)
+        member inline _.datetime([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("datetime" =>>> defaultArg v true)
 
     type EltBuilder_label() =
         inherit EltWithChildBuilder("label")
@@ -862,11 +638,7 @@ module DslElementBuilder_generated =
 
         /// Indicates the form that is the owner of the element.
         [<CustomOperation("form")>]
-        member inline _.form([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("form" =>>> v)
-
-        /// Indicates the form that is the owner of the element.
-        [<CustomOperation("form")>]
-        member inline this.form([<InlineIfLambda>] render: AttrRenderFragment) = this.form(render, true)
+        member inline _.form([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("form" =>>> defaultArg v true)
 
     type EltBuilder_li() =
         inherit EltWithChildBuilder("li")
@@ -926,11 +698,7 @@ module DslElementBuilder_generated =
 
         /// Indicates whether the media should start playing from the start when it's finished.
         [<CustomOperation("loop")>]
-        member inline _.loop([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("loop" =>>> v)
-
-        /// Indicates whether the media should start playing from the start when it's finished.
-        [<CustomOperation("loop")>]
-        member inline this.loop([<InlineIfLambda>] render: AttrRenderFragment) = this.loop(render, true)
+        member inline _.loop([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("loop" =>>> defaultArg v true)
 
     type EltBuilder_menu() =
         inherit EltWithChildBuilder("menu")
@@ -963,51 +731,27 @@ module DslElementBuilder_generated =
 
         /// Indicates the form that is the owner of the element.
         [<CustomOperation("form")>]
-        member inline _.form([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("form" =>>> v)
-
-        /// Indicates the form that is the owner of the element.
-        [<CustomOperation("form")>]
-        member inline this.form([<InlineIfLambda>] render: AttrRenderFragment) = this.form(render, true)
+        member inline _.form([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("form" =>>> defaultArg v true)
 
         /// Indicates the lower bound of the upper range.
         [<CustomOperation("high")>]
-        member inline _.high([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("high" =>>> v)
-
-        /// Indicates the lower bound of the upper range.
-        [<CustomOperation("high")>]
-        member inline this.high([<InlineIfLambda>] render: AttrRenderFragment) = this.high(render, true)
+        member inline _.high([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("high" =>>> defaultArg v true)
 
         /// Indicates the upper bound of the lower range.
         [<CustomOperation("low")>]
-        member inline _.low([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("low" =>>> v)
-
-        /// Indicates the upper bound of the lower range.
-        [<CustomOperation("low")>]
-        member inline this.low([<InlineIfLambda>] render: AttrRenderFragment) = this.low(render, true)
+        member inline _.low([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("low" =>>> defaultArg v true)
 
         /// Indicates the maximum value allowed.
         [<CustomOperation("max")>]
-        member inline _.max([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("max" => v)
-
-        /// Indicates the maximum value allowed.
-        [<CustomOperation("max")>]
-        member inline this.max([<InlineIfLambda>] render: AttrRenderFragment) = this.max(render, true)
+        member inline _.max([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("max" => v)
 
         /// Indicates the minimum value allowed.
         [<CustomOperation("min")>]
-        member inline _.min([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("min" => v)
-
-        /// Indicates the minimum value allowed.
-        [<CustomOperation("min")>]
-        member inline this.min([<InlineIfLambda>] render: AttrRenderFragment) = this.min(render, true)
+        member inline _.min([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("min" => v)
 
         /// Indicates the optimal numeric value.
         [<CustomOperation("optimum")>]
-        member inline _.optimum([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("optimum" =>>> v)
-
-        /// Indicates the optimal numeric value.
-        [<CustomOperation("optimum")>]
-        member inline this.optimum([<InlineIfLambda>] render: AttrRenderFragment) = this.optimum(render, true)
+        member inline _.optimum([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("optimum" =>>> defaultArg v true)
 
     type EltBuilder_object() =
         inherit EltWithChildBuilder("object")
@@ -1022,11 +766,7 @@ module DslElementBuilder_generated =
 
         /// Indicates the form that is the owner of the element.
         [<CustomOperation("form")>]
-        member inline _.form([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("form" =>>> v)
-
-        /// Indicates the form that is the owner of the element.
-        [<CustomOperation("form")>]
-        member inline this.form([<InlineIfLambda>] render: AttrRenderFragment) = this.form(render, true)
+        member inline _.form([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("form" =>>> defaultArg v true)
 
         /// Specifies the height of elements listed here. For all other elements, use the CSS height property. Note: In some instances, such as <div>, this is a legacy attribute, in which case the CSS height property should be used instead.
         [<CustomOperation("height")>]
@@ -1053,11 +793,7 @@ module DslElementBuilder_generated =
 
         /// Indicates whether the list should be displayed in a descending order instead of an ascending order.
         [<CustomOperation("reversed")>]
-        member inline _.reversed([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("reversed" =>>> v)
-
-        /// Indicates whether the list should be displayed in a descending order instead of an ascending order.
-        [<CustomOperation("reversed")>]
-        member inline this.reversed([<InlineIfLambda>] render: AttrRenderFragment) = this.reversed(render, true)
+        member inline _.reversed([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("reversed" =>>> defaultArg v true)
 
         /// Defines the first number if other than 1.
         [<CustomOperation("start")>]
@@ -1072,11 +808,7 @@ module DslElementBuilder_generated =
 
         /// Indicates whether the user can interact with the element.
         [<CustomOperation("disabled")>]
-        member inline _.disabled([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("disabled" =>>> v)
-
-        /// Indicates whether the user can interact with the element.
-        [<CustomOperation("disabled")>]
-        member inline this.disabled([<InlineIfLambda>] render: AttrRenderFragment) = this.disabled(render, true)
+        member inline _.disabled([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("disabled" =>>> defaultArg v true)
 
         /// Specifies a user-readable title of the element.
         [<CustomOperation("label")>]
@@ -1087,11 +819,7 @@ module DslElementBuilder_generated =
 
         /// Indicates whether the user can interact with the element.
         [<CustomOperation("disabled")>]
-        member inline _.disabled([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("disabled" =>>> v)
-
-        /// Indicates whether the user can interact with the element.
-        [<CustomOperation("disabled")>]
-        member inline this.disabled([<InlineIfLambda>] render: AttrRenderFragment) = this.disabled(render, true)
+        member inline _.disabled([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("disabled" =>>> defaultArg v true)
 
         /// Specifies a user-readable title of the element.
         [<CustomOperation("label")>]
@@ -1110,11 +838,7 @@ module DslElementBuilder_generated =
 
         /// Indicates the form that is the owner of the element.
         [<CustomOperation("form")>]
-        member inline _.form([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("form" =>>> v)
-
-        /// Indicates the form that is the owner of the element.
-        [<CustomOperation("form")>]
-        member inline this.form([<InlineIfLambda>] render: AttrRenderFragment) = this.form(render, true)
+        member inline _.form([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("form" =>>> defaultArg v true)
 
         /// Name of the element. For example used by the server to identify the fields in form submits.
         [<CustomOperation("name")>]
@@ -1132,19 +856,11 @@ module DslElementBuilder_generated =
 
         /// Indicates the form that is the owner of the element.
         [<CustomOperation("form")>]
-        member inline _.form([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("form" =>>> v)
-
-        /// Indicates the form that is the owner of the element.
-        [<CustomOperation("form")>]
-        member inline this.form([<InlineIfLambda>] render: AttrRenderFragment) = this.form(render, true)
+        member inline _.form([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("form" =>>> defaultArg v true)
 
         /// Indicates the maximum value allowed.
         [<CustomOperation("max")>]
-        member inline _.max([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("max" => v)
-
-        /// Indicates the maximum value allowed.
-        [<CustomOperation("max")>]
-        member inline this.max([<InlineIfLambda>] render: AttrRenderFragment) = this.max(render, true)
+        member inline _.max([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("max" => v)
 
     type EltBuilder_q() =
         inherit EltWithChildBuilder("q")
@@ -1158,35 +874,19 @@ module DslElementBuilder_generated =
 
         /// Indicates whether controls in this form can by default have their values automatically completed by the browser.
         [<CustomOperation("autocomplete")>]
-        member inline _.autocomplete([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("autocomplete" =>> (if v then "on" else "off"))
-
-        /// Indicates whether controls in this form can by default have their values automatically completed by the browser.
-        [<CustomOperation("autocomplete")>]
-        member inline this.autocomplete([<InlineIfLambda>] render: AttrRenderFragment) = this.autocomplete(render, true)
+        member inline _.autocomplete([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("autocomplete" =>> (if defaultArg v true then "on" else "off"))
 
         /// Indicates whether the user can interact with the element.
         [<CustomOperation("disabled")>]
-        member inline _.disabled([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("disabled" =>>> v)
-
-        /// Indicates whether the user can interact with the element.
-        [<CustomOperation("disabled")>]
-        member inline this.disabled([<InlineIfLambda>] render: AttrRenderFragment) = this.disabled(render, true)
+        member inline _.disabled([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("disabled" =>>> defaultArg v true)
 
         /// Indicates the form that is the owner of the element.
         [<CustomOperation("form")>]
-        member inline _.form([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("form" =>>> v)
-
-        /// Indicates the form that is the owner of the element.
-        [<CustomOperation("form")>]
-        member inline this.form([<InlineIfLambda>] render: AttrRenderFragment) = this.form(render, true)
+        member inline _.form([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("form" =>>> defaultArg v true)
 
         /// Indicates whether multiple values can be entered in an input of the type email or file.
         [<CustomOperation("multiple")>]
-        member inline _.multiple([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("multiple" =>>> v)
-
-        /// Indicates whether multiple values can be entered in an input of the type email or file.
-        [<CustomOperation("multiple")>]
-        member inline this.multiple([<InlineIfLambda>] render: AttrRenderFragment) = this.multiple(render, true)
+        member inline _.multiple([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("multiple" =>>> defaultArg v true)
 
         /// Name of the element. For example used by the server to identify the fields in form submits.
         [<CustomOperation("name")>]
@@ -1194,11 +894,7 @@ module DslElementBuilder_generated =
 
         /// Indicates whether this element is required to fill out or not.
         [<CustomOperation("required")>]
-        member inline _.required([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("required" =>>> v)
-
-        /// Indicates whether this element is required to fill out or not.
-        [<CustomOperation("required")>]
-        member inline this.required([<InlineIfLambda>] render: AttrRenderFragment) = this.required(render, true)
+        member inline _.required([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("required" =>>> defaultArg v true)
 
         /// Defines the width of the element (in pixels). If the element's type attribute is text or password then it's the number of characters.
         [<CustomOperation("size")>]
@@ -1288,11 +984,7 @@ module DslElementBuilder_generated =
 
         /// Indicates whether controls in this form can by default have their values automatically completed by the browser.
         [<CustomOperation("autocomplete")>]
-        member inline _.autocomplete([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("autocomplete" =>> (if v then "on" else "off"))
-
-        /// Indicates whether controls in this form can by default have their values automatically completed by the browser.
-        [<CustomOperation("autocomplete")>]
-        member inline this.autocomplete([<InlineIfLambda>] render: AttrRenderFragment) = this.autocomplete(render, true)
+        member inline _.autocomplete([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("autocomplete" =>> (if defaultArg v true then "on" else "off"))
 
         /// Defines the number of columns in a textarea.
         [<CustomOperation("cols")>]
@@ -1304,11 +996,7 @@ module DslElementBuilder_generated =
 
         /// Indicates whether the user can interact with the element.
         [<CustomOperation("disabled")>]
-        member inline _.disabled([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("disabled" =>>> v)
-
-        /// Indicates whether the user can interact with the element.
-        [<CustomOperation("disabled")>]
-        member inline this.disabled([<InlineIfLambda>] render: AttrRenderFragment) = this.disabled(render, true)
+        member inline _.disabled([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("disabled" =>>> defaultArg v true)
 
         /// The enterkeyhint specifies what action label (or icon) to present for the enter key on virtual keyboards. The attribute can be used with form controls (such as the value of textarea elements), or in elements in an editing host (e.g., using contenteditable attribute).
         [<CustomOperation("enterkeyhintExperimental")>]
@@ -1316,11 +1004,7 @@ module DslElementBuilder_generated =
 
         /// Indicates the form that is the owner of the element.
         [<CustomOperation("form")>]
-        member inline _.form([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("form" =>>> v)
-
-        /// Indicates the form that is the owner of the element.
-        [<CustomOperation("form")>]
-        member inline this.form([<InlineIfLambda>] render: AttrRenderFragment) = this.form(render, true)
+        member inline _.form([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("form" =>>> defaultArg v true)
 
         /// Provides a hint as to the type of data that might be entered by the user while editing the element or its contents. The attribute can be used with form controls (such as the value of textarea elements), or in elements in an editing host (e.g., using contenteditable attribute).
         [<CustomOperation("inputmode")>]
@@ -1344,19 +1028,11 @@ module DslElementBuilder_generated =
 
         /// Indicates whether the element can be edited.
         [<CustomOperation("readonly")>]
-        member inline _.readonly([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("readonly" =>>> v)
-
-        /// Indicates whether the element can be edited.
-        [<CustomOperation("readonly")>]
-        member inline this.readonly([<InlineIfLambda>] render: AttrRenderFragment) = this.readonly(render, true)
+        member inline _.readonly([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("readonly" =>>> defaultArg v true)
 
         /// Indicates whether this element is required to fill out or not.
         [<CustomOperation("required")>]
-        member inline _.required([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("required" =>>> v)
-
-        /// Indicates whether this element is required to fill out or not.
-        [<CustomOperation("required")>]
-        member inline this.required([<InlineIfLambda>] render: AttrRenderFragment) = this.required(render, true)
+        member inline _.required([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("required" =>>> defaultArg v true)
 
         /// Defines the number of rows in a text area.
         [<CustomOperation("rows")>]
@@ -1364,11 +1040,7 @@ module DslElementBuilder_generated =
 
         /// Indicates whether the text should be wrapped.
         [<CustomOperation("wrap")>]
-        member inline _.wrap([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("wrap" =>>> v)
-
-        /// Indicates whether the text should be wrapped.
-        [<CustomOperation("wrap")>]
-        member inline this.wrap([<InlineIfLambda>] render: AttrRenderFragment) = this.wrap(render, true)
+        member inline _.wrap([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("wrap" =>>> defaultArg v true)
 
     type EltBuilder_tfoot() =
         inherit EltWithChildBuilder("tfoot")
@@ -1412,11 +1084,7 @@ module DslElementBuilder_generated =
 
         /// Indicates the date and time associated with the element.
         [<CustomOperation("datetime")>]
-        member inline _.datetime([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("datetime" =>>> v)
-
-        /// Indicates the date and time associated with the element.
-        [<CustomOperation("datetime")>]
-        member inline this.datetime([<InlineIfLambda>] render: AttrRenderFragment) = this.datetime(render, true)
+        member inline _.datetime([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("datetime" =>>> defaultArg v true)
 
     type EltBuilder_tr() =
         inherit EltWithChildBuilder("tr")
@@ -1430,11 +1098,7 @@ module DslElementBuilder_generated =
 
         /// Indicates that the track should be enabled unless the user's preferences indicate something different.
         [<CustomOperation("default'")>]
-        member inline _.default'([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("default" =>>> v)
-
-        /// Indicates that the track should be enabled unless the user's preferences indicate something different.
-        [<CustomOperation("default'")>]
-        member inline this.default'([<InlineIfLambda>] render: AttrRenderFragment) = this.default'(render, true)
+        member inline _.default'([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("default" =>>> defaultArg v true)
 
         /// Specifies the kind of text track.
         [<CustomOperation("kind")>]
@@ -1457,11 +1121,7 @@ module DslElementBuilder_generated =
 
         /// The audio or video should play as soon as possible.
         [<CustomOperation("autoplay")>]
-        member inline _.autoplay([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("autoplay" =>>> v)
-
-        /// The audio or video should play as soon as possible.
-        [<CustomOperation("autoplay")>]
-        member inline this.autoplay([<InlineIfLambda>] render: AttrRenderFragment) = this.autoplay(render, true)
+        member inline _.autoplay([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("autoplay" =>>> defaultArg v true)
 
         /// Contains the time range of already buffered media.
         [<CustomOperation("buffered")>]
@@ -1469,11 +1129,7 @@ module DslElementBuilder_generated =
 
         /// Indicates whether the browser should show playback controls to the user.
         [<CustomOperation("controls")>]
-        member inline _.controls([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("controls" =>>> v)
-
-        /// Indicates whether the browser should show playback controls to the user.
-        [<CustomOperation("controls")>]
-        member inline this.controls([<InlineIfLambda>] render: AttrRenderFragment) = this.controls(render, true)
+        member inline _.controls([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("controls" =>>> defaultArg v true)
 
         /// How the element handles cross-origin requests
         [<CustomOperation("crossorigin")>]
@@ -1485,19 +1141,11 @@ module DslElementBuilder_generated =
 
         /// Indicates whether the media should start playing from the start when it's finished.
         [<CustomOperation("loop")>]
-        member inline _.loop([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("loop" =>>> v)
-
-        /// Indicates whether the media should start playing from the start when it's finished.
-        [<CustomOperation("loop")>]
-        member inline this.loop([<InlineIfLambda>] render: AttrRenderFragment) = this.loop(render, true)
+        member inline _.loop([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("loop" =>>> defaultArg v true)
 
         /// Indicates whether the audio will be initially silenced on page load.
         [<CustomOperation("muted")>]
-        member inline _.muted([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("muted" =>>> v)
-
-        /// Indicates whether the audio will be initially silenced on page load.
-        [<CustomOperation("muted")>]
-        member inline this.muted([<InlineIfLambda>] render: AttrRenderFragment) = this.muted(render, true)
+        member inline _.muted([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("muted" =>>> defaultArg v true)
 
         /// A Boolean attribute indicating that the video is to be played "inline"; that is, within the element's playback area. Note that the absence of this attribute does not imply that the video will always be played in fullscreen.
         [<CustomOperation("playsinline")>]
@@ -1509,11 +1157,7 @@ module DslElementBuilder_generated =
 
         /// Indicates whether the whole resource, parts of it or nothing should be preloaded.
         [<CustomOperation("preload")>]
-        member inline _.preload([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("preload" =>>> v)
-
-        /// Indicates whether the whole resource, parts of it or nothing should be preloaded.
-        [<CustomOperation("preload")>]
-        member inline this.preload([<InlineIfLambda>] render: AttrRenderFragment) = this.preload(render, true)
+        member inline _.preload([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("preload" =>>> defaultArg v true)
 
         /// The URL of the embeddable content.
         [<CustomOperation("src")>]

@@ -9,6 +9,7 @@ type HtmxReference = HtmlProvider<"https://htmx.org/reference/">
 type HtmlAriaAttributes = HtmlProvider<"https://developer.mozilla.org/docs/Web/Accessibility/ARIA/Attributes">
 type HtmlEvents = HtmlProvider<"https://developer.mozilla.org/en-US/docs/Web/Events">
 type HtmlAttributes = HtmlProvider<"https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes">
+type HtmlGlobalAttributes = HtmlProvider<"https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes">
 type HtmlElements = HtmlProvider<"https://developer.mozilla.org/en-US/docs/Web/HTML/Element">
 
 
@@ -160,17 +161,13 @@ pipeline "elements" {
             globalAttrsSb.AppendLine "[<AutoOpen>]
 module DslElementsBuilder_global =
 
-    open Fun.Blazor
     open Operators
-
-    type EltWithChildBuilder with
-                                     "
+"
             |> ignore
 
             appendForElementBuilder
                 "module DslElementBuilder_generated =
 
-    open Fun.Blazor
     open Operators
 "
 
@@ -214,33 +211,25 @@ module DslElements_generated =
                             else
                                 attr.Name
                         let isBool = attr.IsBool || attr.Name = "autoplay"
+                        let optionPrefix = if isBool || attr.Name = "autocomplete" then "?" else ""
                         let value =
-                            if attr.Name = "autocomplete" then """=>> (if v then "on" else "off")"""
+                            if attr.Name = "autocomplete" then """=>> (if defaultArg v true then "on" else "off")"""
                             else if List.contains attr.Name [ "min"; "max"; "formaction" ] then "=> v"
-                            else if isBool then "=>>> v"
+                            else if isBool then "=>>> defaultArg v true"
                             else "=> v"
                         appendLine
                             $"""        {comment}
         [<CustomOperation("{name}")>]
-        member inline _.{name}([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("{attr.Name}" {value})
+        member inline _.{name}([<InlineIfLambda>] render: AttrRenderFragment, {optionPrefix}v) = render ==> ("{attr.Name}" {value})
 """
-                        if isBool || attr.Name = "autocomplete" then
-                            appendLine
-                                $"""        {comment}
-        [<CustomOperation("{name}")>]
-        member inline this.{name}([<InlineIfLambda>] render: AttrRenderFragment) = this.{name}(render, true)
-"""
-
-            let groupedBundles =
-                bundles 
-                |> Seq.groupBy (fun x -> x.Key.Contains("global", StringComparison.OrdinalIgnoreCase))
 
             
-            for bundle in groupedBundles |> Seq.collect (fun (x, y) -> if x then y else []) do
-                processAttrs (globalAttrsSb.AppendLine >> ignore) bundle.Value
+            let filteredBundles =
+                bundles 
+                |> Seq.filter (fun x -> x.Key.Contains("global", StringComparison.OrdinalIgnoreCase) |> not) 
+                |> Seq.sortBy (fun x -> x.Key)
 
-
-            for bundle in groupedBundles |> Seq.collect (fun (x, y) -> if not x then y else []) |> Seq.sortBy (fun x -> x.Key) do
+            for bundle in filteredBundles do
                 generatedElements.Add bundle.Key |> ignore
 
                 if bundle.Key = "script" then
