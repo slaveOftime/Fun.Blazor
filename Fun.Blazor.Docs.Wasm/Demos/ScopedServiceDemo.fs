@@ -22,7 +22,7 @@ module ScopedServiceDemo =
 
                     div {
                         button {
-                            onclick (fun _ -> setCount (count + 1))
+                            on.click (fun _ -> setCount (count + 1))
                             "Increase"
                         }
                         div { $"{msg}: {count}" }

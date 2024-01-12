@@ -15,8 +15,8 @@ let ``TriggerBuilder should work`` () =
         context.RenderNode(
             fragment {
                 div {
-                    hxGet "/test"
-                    hxTrigger (
+                    hx.Get "/test"
+                    hx.Trigger(
                         HxTrigger(
                             hxEvt.load,
                             sse = true,
@@ -36,23 +36,23 @@ let ``TriggerBuilder should work`` () =
                     )
                 }
                 div {
-                    hxTrigger'(hxEvt.mouse.dblclick, once = true)
+                    hx.Trigger(hxEvt.mouse.dblclick, once = true)
                         .AddTrigger(hxEvt.mouse.click)
                         .AddTrigger(hxEvt.mouse.mousemove)
                         .AddTrigger(hxEvt.mouse.mouseover)
                     "TEST"
                 }
                 div {
-                    hxTrigger hxEvt.revealed
-                    hxSwap_beforebegin'().Swap(1).Settle(2).FocusScroll(true).ScrollTop("#target").ShowTop()
+                    hx.Trigger hxEvt.revealed
+                    hx.Swap_beforebegin().Swap(1).Settle(2).FocusScroll(true).ScrollTop("#target").ShowTop()
                 }
                 div {
-                    hxPost "/test2"
-                    hxTarget_find "#find"
-                    hxSwap_afterend'(OOB).FocusScroll(true)
+                    hx.Post "/test2"
+                    hx.Target_find "#find"
+                    hx.Swap_afterend(OOB).FocusScroll(true)
                 }
-                div { hxSwap_delete }
-                div { hxSwap_delete OOB }
+                div { hx.Swap_delete() }
+                div { hx.Swap_delete OOB }
             }
         )
 
@@ -84,26 +84,19 @@ let ``hxRequestxxx should work`` () =
     let result =
         context.RenderNode(
             fragment {
-                div { hxRequestBlazorSSR (QueryBuilder<DemoComp>().Add((fun x -> x.Count), 1)) }
-                div { hxRequestBlazorSSR "post" (QueryBuilder<DemoComp>().Add((fun x -> x.Count), 2)) }
-                div { hxRequestBlazorSSR typeof<DemoComp> [ "Count", box 3 ] }
-                div { hxRequestBlazorSSR typeof<DemoComp> [ "Count", box 4 ] "post" }
-                div { hxRequestCustomElement (QueryBuilder<DemoComp>().Add((fun x -> x.Count), 1)) }
-                div { hxRequestCustomElement "post" (QueryBuilder<DemoComp>().Add((fun x -> x.Count), 2)) }
-                div { hxRequestCustomElement typeof<DemoComp> [ "Count", box 3 ] }
-                div { hxRequestCustomElement typeof<DemoComp> [ "Count", box 4 ] "post" }
-                div { 
-                    hxRequestCustomElement (QueryBuilder<DemoComp>()
-                        .Add((fun x -> x.Count), 2)
-                        .Add((fun x -> x.Count), 3)
-                        .Add(DemoComp(Count = 4))
-                    ) 
+                div { hx.RequestBlazorSSR(QueryBuilder<DemoComp>().Add((fun x -> x.Count), 1)) }
+                div { hx.RequestBlazorSSR("post", (QueryBuilder<DemoComp>().Add((fun x -> x.Count), 2))) }
+                div { hx.RequestBlazorSSR(typeof<DemoComp>, [ "Count", box 3 ]) }
+                div { hx.RequestBlazorSSR(typeof<DemoComp>, [ "Count", box 4 ], "post") }
+                div { hx.RequestCustomElement(QueryBuilder<DemoComp>().Add((fun x -> x.Count), 1)) }
+                div { hx.RequestCustomElement("post", (QueryBuilder<DemoComp>().Add((fun x -> x.Count), 2))) }
+                div { hx.RequestCustomElement(typeof<DemoComp>, [ "Count", box 3 ]) }
+                div { hx.RequestCustomElement(typeof<DemoComp>, [ "Count", box 4 ], "post") }
+                div {
+                    hx.RequestCustomElement(QueryBuilder<DemoComp>().Add((fun x -> x.Count), 2).Add((fun x -> x.Count), 3).Add(DemoComp(Count = 4)))
                 }
-                div { 
-                    hxRequestCustomElement (QueryBuilder<DemoComp>()
-                        .Add((fun x -> x.Count), 2)
-                        .Add((fun x -> x.Count), 3, append = true)
-                    ) 
+                div {
+                    hx.RequestCustomElement(QueryBuilder<DemoComp>().Add((fun x -> x.Count), 2).Add((fun x -> x.Count), 3, append = true))
                     html.createHiddenInputs (DemoComp(Count = 1))
                 }
             }

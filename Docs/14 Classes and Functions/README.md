@@ -24,7 +24,7 @@ let staticGreeting()=
     let mutable counter = 0
 
     button {
-        onclick (fun _ -> counter <- counter + 1)
+        on.click (fun _ -> counter <- counter + 1)
         $"Click Me: {counter}"
     }
 ```
@@ -39,7 +39,7 @@ However if you want to work with dynamic data in your functions, you can use `Ad
 let staticChild name (currentName: string cval) =
     button {
         // trigger currentName changes
-        onclick(fun _ -> currentname.Publish name)
+        on.click(fun _ -> currentname.Publish name)
         $"Click {name}!"
     }
 
@@ -102,7 +102,7 @@ type Counter() =
             h1 { $"Count: {counter}" }
 
             button {
-                onclick (fun _ ->
+                on.click (fun _ ->
                     let newCount = counter + 1
                     this.Logger.LogDebug("Old Value: {count} - New Value: {newCount}", counter, newCount)
                     counter <- newCount
@@ -133,7 +133,7 @@ type Demo() =
             p { $"x = {data}" }
         }
         button {
-            onclick (fun _ -> data.Publish(fun value -> value + 1))
+            on.click (fun _ -> data.Publish(fun value -> value + 1))
             "Increase"
         }
     }

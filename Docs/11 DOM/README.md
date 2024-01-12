@@ -141,12 +141,12 @@ handlers can be async or sync depending on your usage but they're often defined 
 
 ```fsharp
 button {
-  onclick(fun e -> printfn "clicked")
+  on.click(fun e -> printfn "clicked")
   "Click Me"
 }
 
 button {
-  onclick(fun e -> task {
+  on.click(fun e -> task {
     do! Async.Sleep 1000
     printfn "clicked"
   })

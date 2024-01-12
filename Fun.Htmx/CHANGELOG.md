@@ -2,6 +2,14 @@
 
 ## [Unreleased]
 
+## [4.0.0-beta001] - 2024-01-12
+
+Beaking changes:
+
+- Move all events from ce custom operations to **on** type to improve CE build performance
+- Auto generate standard elements and attributes instead of using one big base element to include all the attributes to improve CE build performance
+- Move all the htmx attributes to **hx** type to improve CE build performance
+
 ## [3.3.0-beta003] - 2023-12-27
 
 - Fix NativeJs UpdateQueries browser compatibility

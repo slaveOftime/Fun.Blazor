@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+## [4.0.0-beta001] - 2024-01-12
+
+Beaking changes:
+
+- Move all events from ce custom operations to **on** type to improve CE build performance
+- Auto generate standard elements and attributes instead of using one big base element to include all the attributes to improve CE build performance
+
 ## [3.3.0-beta008] - 2023-12-30
 
 - Improve some bool dom attributes

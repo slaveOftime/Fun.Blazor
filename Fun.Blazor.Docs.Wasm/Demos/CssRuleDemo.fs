@@ -12,11 +12,11 @@ let entry =
         div {
             class' "style-elt-demo"
             button {
-                onclick (fun _ -> setCount (count + 1))
+                on.click (fun _ -> setCount (count + 1))
                 "Increase"
             }
             button {
-                onclick (fun _ -> setCount (count - 1))
+                on.click (fun _ -> setCount (count - 1))
                 "Decrease"
             }
             div {

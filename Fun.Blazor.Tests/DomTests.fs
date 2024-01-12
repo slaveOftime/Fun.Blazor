@@ -67,8 +67,8 @@ let ``DOM events simple`` () =
             let mutable count = 0
 
             div {
-                onclick (fun _ -> task { count <- count + 1 })
-                onchange (fun _ -> count <- count + 1)
+                on.click (fun _ -> task { count <- count + 1 })
+                on.change (fun _ -> count <- count + 1)
                 $"count={count}"
             }
         )
@@ -93,19 +93,19 @@ let ``DOM events simple`` () =
 let ``DOM share attrs`` () =
     let context = createTestContext ()
 
-    let sharedImgAttr = img {
+    let sharedImgAttr = input {
         style { width 10 }
         readonly true
         asAttrRenderFragment
     }
 
-    let demo = img {
+    let demo = input {
         src "test"
         sharedImgAttr
     }
 
     let result = context.RenderNode demo
-    result.MarkupMatches("""<img src="test" style="width: 10px; " readonly=""></img>""")
+    result.MarkupMatches("""<input src="test" style="width: 10px; " readonly="">""")
 
 
 [<Fact>]
@@ -171,7 +171,7 @@ let ``Check some attributes`` () =
     let context = createTestContext ()
 
     let demo =
-        div {
+        input {
             hidden true
             value true
             type' InputTypes.``datetime-local``
@@ -180,8 +180,8 @@ let ``Check some attributes`` () =
 
     let result = context.RenderNode demo
     result.MarkupMatches("""
-        <div hidden value="True" type="datetime-local" autocomplete="family-name">
-        </div>
+        <input hidden value="True" type="datetime-local" autocomplete="family-name">
+        </input>
     """)
 
 
@@ -201,13 +201,12 @@ let ``script tag should work`` () =
 
     let demo =
         script { 
-            id 1
             "let x = 123;"
         }
 
     let result = context.RenderNode demo
     result.MarkupMatches("""
-        <script id="1">let x = 123;</script>
+        <script>let x = 123;</script>
     """)
 
     let demo =

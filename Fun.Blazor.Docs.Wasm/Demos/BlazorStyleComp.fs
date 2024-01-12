@@ -15,7 +15,7 @@ let entry =
         div {
             div { $"Here is the count {count}" }
             button {
-                onclick (fun _ -> count <- count + 1)
+                on.click (fun _ -> count <- count + 1)
                 "Increase"
             }
         }

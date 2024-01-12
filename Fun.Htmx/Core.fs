@@ -602,10 +602,6 @@ type HxTrigger(event: string, ?sse, ?once, ?filter, ?changed, ?delayMs, ?throttl
 
     override _.ToString() = sb.ToString()
 
-/// This will build a trigger.
-/// You can yield this in your html CE builder like: div { hxTrigger'(hxEvt.load) }. 
-type hxTrigger' = HxTrigger
-
 
 /// Allows you to specify that some content in a response should be swapped into the DOM somewhere other than the target, that is "Out of Band". This allows you to piggy back updates to other element updates on a response
 type OOB = 
@@ -700,44 +696,3 @@ type HxSwapAndModifier(ty: string, ?oob: OOB) =
             if sb.Length > 0 then sb.Append(" ") |> ignore
             sb.Append(k).Append(":").Append(v) |> ignore
         sb.ToString()
-
-
-/// It will build a swap value.
-/// You can yield this in the target html CE builder like: div { hxSwap_innerHTML'() }
-type hxSwap_innerHTML'(?oob) =
-    inherit HxSwapAndModifier("innerHTML", defaultArg oob NONE_OOB)
-
-/// It will build a swap value.
-/// You can yield this in the target html CE builder like: div { hxSwap_outerHTML'() }
-type hxSwap_outerHTML'(?oob) =
-    inherit HxSwapAndModifier("outerHTML", defaultArg oob NONE_OOB)
-
-/// It will build a swap value.
-/// You can yield this in the target html CE builder like: div { hxSwap_afterbegin'() }
-type hxSwap_afterbegin'(?oob) =
-    inherit HxSwapAndModifier("afterbegin", defaultArg oob NONE_OOB)
-
-/// It will build a swap value.
-/// You can yield this in the target html CE builder like: div { hxSwap_beforebegin'() }
-type hxSwap_beforebegin'(?oob) =
-    inherit HxSwapAndModifier("beforebegin", defaultArg oob NONE_OOB)
-
-/// It will build a swap value.
-/// You can yield this in the target html CE builder like: div { hxSwap_beforeend'() }
-type hxSwap_beforeend'(?oob) =
-    inherit HxSwapAndModifier("beforeend", defaultArg oob NONE_OOB)
-
-/// It will build a swap value.
-/// You can yield this in the target html CE builder like: div { hxSwap_afterend'() }
-type hxSwap_afterend'(?oob) =
-    inherit HxSwapAndModifier("afterend", defaultArg oob NONE_OOB)
-
-/// It will build a swap value.
-/// You can yield this in the target html CE builder like: div { hxSwap_delete'() }
-type hxSwap_delete'(?oob) =
-    inherit HxSwapAndModifier("delete", defaultArg oob NONE_OOB)
-
-/// It will build a swap value.
-/// You can yield this in the target html CE builder like: div { hxSwap_none'() }
-type hxSwap_none'(?oob) =
-    inherit HxSwapAndModifier("none", defaultArg oob NONE_OOB)

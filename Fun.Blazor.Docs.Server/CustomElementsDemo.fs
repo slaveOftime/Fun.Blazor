@@ -16,7 +16,7 @@ type ServerDemoCounter() as this =
 
     [<Parameter>]
     member val count_from_form = "" with get, set
-    
+
     [<Parameter>]
     member val is_loading = false with get, set
 
@@ -24,9 +24,11 @@ type ServerDemoCounter() as this =
     member val time = DateTime.Now with get, set
 
     override _.Render() = div {
-        p { $"count = {count}; count_from_query {this.count_from_query}; count_from_form {this.count_from_form}; is_loading {this.is_loading}; time {this.time}" }
+        p {
+            $"count = {count}; count_from_query {this.count_from_query}; count_from_form {this.count_from_form}; is_loading {this.is_loading}; time {this.time}"
+        }
         button {
-            onclick (fun _ -> count <- count + 1)
+            on.click (fun _ -> count <- count + 1)
             "Click me"
         }
     }
@@ -93,11 +95,11 @@ type CustomElementsDemo =
             section [
                 p { "Integrate with htmx" }
                 button {
-                    hxTrigger' hxEvt.mouse.click
-                    hxRequestCustomElement (
+                    hx.Trigger hxEvt.mouse.click
+                    hx.RequestCustomElement(
                         QueryBuilder<ServerDemoCounter>().Add((fun x -> x.count_from_query), 1).Add((fun x -> x.count_from_form), "2")
                     )
-                    hxSwap_afterend
+                    hx.Swap_afterend()
                     "Htmx click to add counter"
                 }
             ]
@@ -110,11 +112,11 @@ type CustomElementsDemo =
                     }
                 }
                 button {
-                    hxTrigger' hxEvt.mouse.click
+                    hx.Trigger hxEvt.mouse.click
                     name (nameof Unchecked.defaultof<ServerDemoCounter>.count_from_form)
                     value 3453453
-                    hxRequestBlazorSSR "post" (QueryBuilder<ServerDemoCounter>().Add((fun x -> x.count_from_query), 3))
-                    hxSwap_afterend
+                    hx.RequestBlazorSSR("post", (QueryBuilder<ServerDemoCounter>().Add((fun x -> x.count_from_query), 3)))
+                    hx.Swap_afterend()
                     "Htmx click to add counter"
                 }
             ]

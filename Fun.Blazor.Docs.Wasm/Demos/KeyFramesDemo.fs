@@ -10,7 +10,7 @@ let entry =
     div {
         class' "keyframes-demo"
         button {
-            onclick (fun _ -> isAnimated.Publish not)
+            on.click (fun _ -> isAnimated.Publish not)
             "Start/Stop"
         }
         img { src "fun-blazor.png" }

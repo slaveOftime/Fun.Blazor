@@ -56,7 +56,7 @@ let demo =
     div {
         p { "Below we will have a cool button" }
         button {
-            onclick ignore
+            on.click ignore
             sharedButtonAttrs
             "Cool"
         }

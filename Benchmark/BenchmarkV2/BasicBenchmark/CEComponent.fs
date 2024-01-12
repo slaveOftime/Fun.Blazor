@@ -51,7 +51,7 @@ type CEComponent() =
                     $"Count = {count}"
                 }
                 button {
-                    onclick (fun _ -> increase ())
+                    on.click (fun _ -> increase ())
                     "Increase"
                 }
             }

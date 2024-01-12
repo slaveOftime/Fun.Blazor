@@ -23,6 +23,8 @@
 		<Compile Include="DslDomInputAttr.fs" />
 		<Compile Include="DslDomAriaAttr.fs" />
 		<Compile Include="DslElementBuilder.fs" />
+		<Compile Include="DslElementBuilder.generated.fs" />
+		<Compile Include="DslElementBuilder.extentions.fs" />
 		<Compile Include="DslComponentBuilder.fs" />
 		<Compile Include="DslComponents.fs" />
 		<Compile Include="DslInject.fs" />
@@ -33,6 +35,8 @@
 		<Compile Include="AdaptiveForm.fs" />
 		<Compile Include="DIExtensions.fs" />
 	</ItemGroup>
+
+	<ItemGroup />
 
 	<ItemGroup>
 		<PackageReference Include="FSharp.Data.Adaptive" Version="1.2.14" />

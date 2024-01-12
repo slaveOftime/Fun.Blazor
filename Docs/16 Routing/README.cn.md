@@ -42,7 +42,7 @@ type Counter() =
         PageTitle'() { "Counter" }
         p { $"Current count: {count}" }
         button {
-            onclick (fun _ -> count <- count + 1)
+            on.click (fun _ -> count <- count + 1)
             "Click me"
         }
     }

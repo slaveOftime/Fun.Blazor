@@ -10,7 +10,7 @@ let entry =
         div {
             h6 { $"Count1={count1}" }
             button {
-                onclick (fun _ -> setCount1 (count1 + 1))
+                on.click (fun _ -> setCount1 (count1 + 1))
                 "Increase count 1"
             }
         }
