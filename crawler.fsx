@@ -172,14 +172,14 @@ module DslElementsBuilder_global =
 
     open Fun.Blazor
     open Operators
-                "
+"
 
             appendForElements
                 "[<AutoOpen>]
 module DslElements_generated =
 
     open DslElementBuilder_generated
-                "
+"
 
                         
             let processAttrs appendLine (bundles: Bundle seq) =
@@ -202,7 +202,7 @@ module DslElements_generated =
         {comment}
         [<CustomOperation("data")>]
         member inline _.data([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("data" => v)
-                            """
+"""
                     else
                         let name =
                             if List.contains attr.Name [ "class"; "open"; "for"; "type"; "default"; "checked"; "title" ] then
@@ -213,22 +213,23 @@ module DslElements_generated =
                                 "httpEquiv"
                             else
                                 attr.Name
+                        let isBool = attr.IsBool || attr.Name = "autoplay"
                         let value =
                             if attr.Name = "autocomplete" then """=>> (if v then "on" else "off")"""
                             else if List.contains attr.Name [ "min"; "max"; "formaction" ] then "=> v"
-                            else if attr.IsBool then "=>>> v"
+                            else if isBool then "=>>> v"
                             else "=> v"
                         appendLine
                             $"""        {comment}
         [<CustomOperation("{name}")>]
         member inline _.{name}([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("{attr.Name}" {value})
-                            """
-                        if attr.IsBool || attr.Name = "autocomplete" then
+"""
+                        if isBool || attr.Name = "autocomplete" then
                             appendLine
                                 $"""        {comment}
         [<CustomOperation("{name}")>]
         member inline this.{name}([<InlineIfLambda>] render: AttrRenderFragment) = this.{name}(render, true)
-                            """
+"""
 
             let groupedBundles =
                 bundles 
@@ -244,21 +245,21 @@ module DslElements_generated =
 
                 if bundle.Key = "script" then
                     globalAttrsSb.AppendLine $"    type EltBuilder_script with
-                                             "
+"
                     |> ignore
                     processAttrs (globalAttrsSb.AppendLine >> ignore) bundle.Value
 
                 else
                     appendForElementBuilder $"""    type EltBuilder_{bundle.Key}() =
         inherit EltWithChildBuilder("{bundle.Key}")
-                                            """
+"""
 
                     processAttrs appendForElementBuilder bundle.Value
 
                     if bundle.Key = "input" then
                         appendForElementBuilder """        [<CustomOperation("autocomplete")>]
         member inline _.autocomplete([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("autocomplete" =>> v)
-                                                """
+"""
 
 
             for element in elements |> Seq.sortBy (fun x -> x.Name) do
@@ -271,11 +272,11 @@ module DslElements_generated =
                 if generatedElements.Contains element.Name then
                     appendForElements $"    /// {element.Description}
     let {elementName} = EltBuilder_{element.Name}()
-                        "
+"
                 else
                     appendForElements $"    /// {element.Description}
     let {elementName} = EltWithChildBuilder(\"{element.Name}\")
-                        "
+"
 
             System.IO.File.WriteAllText("./Fun.Blazor/DslElementBuilder.generated.fs", 
                 "namespace Fun.Blazor"
