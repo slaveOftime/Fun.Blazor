@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [4.0.0-beta004] - 2024-01-12
+
+- Move global attrs to DomAttrBuilder
+
 ## [4.0.0-beta003] - 2024-01-12
 
 - Control global attributes manually, so some can be set as manual open to improve ce performance 
