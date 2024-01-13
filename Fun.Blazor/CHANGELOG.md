@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [4.0.0-beta005] - 2024-01-14
+
+- Auto open GlobalAttrs
+
 ## [4.0.0-beta004] - 2024-01-12
 
 - Move global attrs to DomAttrBuilder

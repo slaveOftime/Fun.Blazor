@@ -205,94 +205,89 @@ type DomAttrBuilder() =
     member inline _.title'([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("title" => v)
 
 
-/// Some attributes are not used very often, there is no need to auto open it which may reduce CE performance
-module GlobalAttrs =
+    /// Keyboard shortcut to activate or add focus to the element.
+    [<CustomOperation("accesskey")>]
+    member inline _.accesskey([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("accesskey" => v)
 
-    type DomAttrBuilder with
+    /// Sets whether input is automatically capitalized when entered by user
+    [<CustomOperation("autocapitalize")>]
+    member inline _.autocapitalize([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("autocapitalize" =>>> defaultArg v true)
 
-        /// Keyboard shortcut to activate or add focus to the element.
-        [<CustomOperation("accesskey")>]
-        member inline _.accesskey([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("accesskey" => v)
+    /// Indicates whether the element's content is editable.
+    [<CustomOperation("contenteditable")>]
+    member inline _.contenteditable([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("contenteditable" =>>> defaultArg v true)
 
-        /// Sets whether input is automatically capitalized when entered by user
-        [<CustomOperation("autocapitalize")>]
-        member inline _.autocapitalize([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("autocapitalize" =>>> defaultArg v true)
+    /// Defines the text direction. Allowed values are ltr (Left-To-Right) or rtl (Right-To-Left)
+    [<CustomOperation("dir_ltr")>]
+    member inline _.dir_ltr([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("dir" => "ltr")
 
-        /// Indicates whether the element's content is editable.
-        [<CustomOperation("contenteditable")>]
-        member inline _.contenteditable([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("contenteditable" =>>> defaultArg v true)
-
-        /// Defines the text direction. Allowed values are ltr (Left-To-Right) or rtl (Right-To-Left)
-        [<CustomOperation("dir_ltr")>]
-        member inline _.dir_ltr([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("dir" => "ltr")
-
-        /// Defines the text direction. Allowed values are ltr (Left-To-Right) or rtl (Right-To-Left)
-        [<CustomOperation("dir_rtl")>]
-        member inline _.dir_rtl([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("dir" => "rtl")
+    /// Defines the text direction. Allowed values are ltr (Left-To-Right) or rtl (Right-To-Left)
+    [<CustomOperation("dir_rtl")>]
+    member inline _.dir_rtl([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("dir" => "rtl")
 
 
-        /// Defining what action label (or icon) to present for the enter key on virtual keyboards.
-        [<CustomOperation("enterkeyhint")>]
-        member inline _.enterkeyhint([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("enterkeyhint" => v)
+    /// Defining what action label (or icon) to present for the enter key on virtual keyboards.
+    [<CustomOperation("enterkeyhint")>]
+    member inline _.enterkeyhint([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("enterkeyhint" => v)
 
-        /// Allows you to select and style elements existing in nested shadow trees, by exporting their part names.
-        [<CustomOperation("exportparts")>]
-        member inline _.exportparts([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("exportparts" => v)
+    /// Allows you to select and style elements existing in nested shadow trees, by exporting their part names.
+    [<CustomOperation("exportparts")>]
+    member inline _.exportparts([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("exportparts" => v)
 
-        /// Indicating that the browser will ignore the element. With the inert attribute, all of the element's flat tree descendants (such as modal <dialog>s) that don't otherwise escape inertness are ignored. The inert attribute also makes the browser ignore input events sent by the user, including focus-related events and events from assistive technologies.
-        [<CustomOperation("inert")>]
-        member inline _.inert([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("inert" =>>> defaultArg v true)
+    /// Indicating that the browser will ignore the element. With the inert attribute, all of the element's flat tree descendants (such as modal <dialog>s) that don't otherwise escape inertness are ignored. The inert attribute also makes the browser ignore input events sent by the user, including focus-related events and events from assistive technologies.
+    [<CustomOperation("inert")>]
+    member inline _.inert([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("inert" =>>> defaultArg v true)
 
-        /// Hints at the type of data that might be entered by the user while editing the element or its contents. This allows a browser to display an appropriate virtual keyboard.
-        [<CustomOperation("inputmode")>]
-        member inline _.inputmode([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("inputmode" => v)
+    /// Hints at the type of data that might be entered by the user while editing the element or its contents. This allows a browser to display an appropriate virtual keyboard.
+    [<CustomOperation("inputmode")>]
+    member inline _.inputmode([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("inputmode" => v)
 
-        /// Specify that a standard HTML element should behave like a defined custom built-in element (see Using custom elements for more details).
-        [<CustomOperation("is")>]
-        member inline _.is([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("is" =>> v)
-
-
-        /// Provides microdata in the form of a unique, global identifier of an item
-        [<CustomOperation("itemid")>]
-        member inline _.itemid([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("itemid" => v)
-
-        /// Used to add properties to an item. Every HTML element can have an itemprop attribute specified, and an itemprop consists of a name-value pair. Each name-value pair is called a property, and a group of one or more properties forms an item. Property values are either a string or a URL and can be associated with a very wide range of elements including <audio>, <embed>, <iframe>, <img>, <link>, <object>, <source>, <track>, and <video>.
-        [<CustomOperation("itemprop")>]
-        member inline _.itemprop([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("itemprop" => v)
-
-        /// Provides a list of element IDs (not itemids) elsewhere in the document, with additional properties
-        [<CustomOperation("itemref")>]
-        member inline _.itemref([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("itemref" => v)
-
-        /// Defines the scope of associated metadata. Specifying the itemscope attribute for an element creates a new item, which results in a number of name-value pairs that are associated with the element.
-        [<CustomOperation("itemscope")>]
-        member inline _.itemscope([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("itemscope" => v)
-
-        /// Used to set the scope of where in the data structure the vocabulary set by itemtype will be active.
-        [<CustomOperation("itemtype")>]
-        member inline _.itemtype([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("itemtype" => v)
+    /// Specify that a standard HTML element should behave like a defined custom built-in element (see Using custom elements for more details).
+    [<CustomOperation("is")>]
+    member inline _.is([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("is" =>> v)
 
 
-        /// Contains a space-separated list of the part names of the element. Part names allows CSS to select and style specific elements in a shadow tree via the ::part pseudo-element.
-        [<CustomOperation("part")>]
-        member inline _.part([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("part" => v)
+    /// Provides microdata in the form of a unique, global identifier of an item
+    [<CustomOperation("itemid")>]
+    member inline _.itemid([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("itemid" => v)
 
-        /// Assigns a slot in a shadow DOM shadow tree to an element.
-        [<CustomOperation("slot")>]
-        member inline _.slot([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("slot" => v)
+    /// Used to add properties to an item. Every HTML element can have an itemprop attribute specified, and an itemprop consists of a name-value pair. Each name-value pair is called a property, and a group of one or more properties forms an item. Property values are either a string or a URL and can be associated with a very wide range of elements including <audio>, <embed>, <iframe>, <img>, <link>, <object>, <source>, <track>, and <video>.
+    [<CustomOperation("itemprop")>]
+    member inline _.itemprop([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("itemprop" => v)
 
-        /// Indicates whether spell checking is allowed for the element.
-        [<CustomOperation("spellcheck")>]
-        member inline _.spellcheck([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("spellcheck" =>>> defaultArg v true)
+    /// Provides a list of element IDs (not itemids) elsewhere in the document, with additional properties
+    [<CustomOperation("itemref")>]
+    member inline _.itemref([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("itemref" => v)
 
-        /// Specify whether an element's attribute values and the values of its Text node children are to be translated when the page is localized, or whether to leave them unchanged.
-        [<CustomOperation("translate")>]
-        member inline _.translate([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("translate" =>>> defaultArg v true)
+    /// Defines the scope of associated metadata. Specifying the itemscope attribute for an element creates a new item, which results in a number of name-value pairs that are associated with the element.
+    [<CustomOperation("itemscope")>]
+    member inline _.itemscope([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("itemscope" => v)
 
-        /// Defining a cryptographic nonce ("number used once") which can be used by Content Security Policy to determine whether or not a given fetch will be allowed to proceed for a given element.
-        [<CustomOperation("nonce")>]
-        member inline _.nonce([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("nonce" => v)
+    /// Used to set the scope of where in the data structure the vocabulary set by itemtype will be active.
+    [<CustomOperation("itemtype")>]
+    member inline _.itemtype([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("itemtype" => v)
 
-        /// Used to designate an element as a popover element
-        [<CustomOperation("popover")>]
-        member inline _.popover([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("popover" => v)
+
+    /// Contains a space-separated list of the part names of the element. Part names allows CSS to select and style specific elements in a shadow tree via the ::part pseudo-element.
+    [<CustomOperation("part")>]
+    member inline _.part([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("part" => v)
+
+    /// Assigns a slot in a shadow DOM shadow tree to an element.
+    [<CustomOperation("slot")>]
+    member inline _.slot([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("slot" => v)
+
+    /// Indicates whether spell checking is allowed for the element.
+    [<CustomOperation("spellcheck")>]
+    member inline _.spellcheck([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("spellcheck" =>>> defaultArg v true)
+
+    /// Specify whether an element's attribute values and the values of its Text node children are to be translated when the page is localized, or whether to leave them unchanged.
+    [<CustomOperation("translate")>]
+    member inline _.translate([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("translate" =>>> defaultArg v true)
+
+    /// Defining a cryptographic nonce ("number used once") which can be used by Content Security Policy to determine whether or not a given fetch will be allowed to proceed for a given element.
+    [<CustomOperation("nonce")>]
+    member inline _.nonce([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("nonce" => v)
+
+    /// Used to designate an element as a popover element
+    [<CustomOperation("popover")>]
+    member inline _.popover([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("popover" => v)
