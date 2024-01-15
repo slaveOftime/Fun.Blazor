@@ -45,7 +45,7 @@ type NativeJs =
 
     
     /// Native script directly  for updating queries. 
-    /// This should be used together with hx.OnHtmx like: hx.OnHtmx(hxEvt.configRequest, Js.AddQueriesToHtmxParams())
+    /// This should be used together with hxOnHtmx like: hxOnHtmx hxEvt.configRequest (Js.AddQueriesToHtmxParams())
     static member AddQueriesToHtmxParams(?overwrite: bool) =
         let overwrite = defaultArg overwrite false
         js

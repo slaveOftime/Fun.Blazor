@@ -16,7 +16,7 @@ type ServerDemoCounter() as this =
 
     [<Parameter>]
     member val count_from_form = "" with get, set
-
+    
     [<Parameter>]
     member val is_loading = false with get, set
 
@@ -24,9 +24,7 @@ type ServerDemoCounter() as this =
     member val time = DateTime.Now with get, set
 
     override _.Render() = div {
-        p {
-            $"count = {count}; count_from_query {this.count_from_query}; count_from_form {this.count_from_form}; is_loading {this.is_loading}; time {this.time}"
-        }
+        p { $"count = {count}; count_from_query {this.count_from_query}; count_from_form {this.count_from_form}; is_loading {this.is_loading}; time {this.time}" }
         button {
             on.click (fun _ -> count <- count + 1)
             "Click me"
@@ -95,11 +93,11 @@ type CustomElementsDemo =
             section [
                 p { "Integrate with htmx" }
                 button {
-                    hx.Trigger hxEvt.mouse.click
-                    hx.RequestCustomElement(
+                    hxTrigger' hxEvt.mouse.click
+                    hxRequestCustomElement (
                         QueryBuilder<ServerDemoCounter>().Add((fun x -> x.count_from_query), 1).Add((fun x -> x.count_from_form), "2")
                     )
-                    hx.Swap_afterend()
+                    hxSwap_afterend
                     "Htmx click to add counter"
                 }
             ]
@@ -112,11 +110,11 @@ type CustomElementsDemo =
                     }
                 }
                 button {
-                    hx.Trigger hxEvt.mouse.click
+                    hxTrigger' hxEvt.mouse.click
                     name (nameof Unchecked.defaultof<ServerDemoCounter>.count_from_form)
                     value 3453453
-                    hx.RequestBlazorSSR("post", (QueryBuilder<ServerDemoCounter>().Add((fun x -> x.count_from_query), 3)))
-                    hx.Swap_afterend()
+                    hxRequestBlazorSSR "post" (QueryBuilder<ServerDemoCounter>().Add((fun x -> x.count_from_query), 3))
+                    hxSwap_afterend
                     "Htmx click to add counter"
                 }
             ]

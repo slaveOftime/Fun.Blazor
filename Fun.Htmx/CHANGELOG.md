@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [4.0.0-beta002] - 2024-01-15
+
+- Revert htmx changes because it does not improve CE performance, instead it may slow it down
+
 ## [4.0.0-beta001] - 2024-01-12
 
 Beaking changes:
