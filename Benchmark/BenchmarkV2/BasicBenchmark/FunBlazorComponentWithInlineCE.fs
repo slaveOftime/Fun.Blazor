@@ -4,7 +4,7 @@ open Microsoft.AspNetCore.Components.Rendering
 open Fun.Blazor
 
 
-type CEComponent() =
+type FunBlazorComponentWithInlineCE() =
     inherit FunComponent()
 
     let mutable count = 0

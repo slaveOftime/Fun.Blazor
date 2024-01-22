@@ -6,7 +6,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Compile Include="BasicBenchmark\CEComponent.fs" />
+		<Compile Include="BasicBenchmark\FunBlazorComponentWithArray.fs" />
+		<Compile Include="BasicBenchmark\FunBlazorComponentWithInlineCE.fs" />
 		<Compile Include="BasicBenchmark\TemplateComponent.fs" />
 		<Compile Include="BasicBenchmark\SSRTemplateComponent.fs" />
 		<Compile Include="BasicBenchmark\BoleroComponent.fs" />
@@ -16,15 +17,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="BenchmarkDotNet" Version="0.13.10" />
-		<PackageReference Include="Bolero" Version="0.22.44" />
-		<PackageReference Include="bunit" Version="1.25.3" />
-		<PackageReference Include="CliWrap" Version="3.6.4" />
-		<PackageReference Include="FSharp.Compiler.Service" Version="43.8.100" />
-		<PackageReference Include="MudBlazor" Version="6.11.0" />
+		<PackageReference Include="BenchmarkDotNet" Version="0.13.12" />
+		<PackageReference Include="Bolero" Version="0.23.52" />
+		<PackageReference Include="bunit" Version="1.26.64" />
+		<PackageReference Include="CliWrap" Version="3.6.6" />
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\Bindings\Fun.Blazor.MudBlazor\Fun.Blazor.MudBlazor.fsproj" />
 		<ProjectReference Include="..\..\Fun.Blazor.HtmlTemplate\Fun.Blazor.HtmlTemplate.fsproj" />
 		<ProjectReference Include="..\..\Fun.Blazor\Fun.Blazor.fsproj" />
 		<ProjectReference Include="..\CSharpComponents\CSharpComponents.csproj" />

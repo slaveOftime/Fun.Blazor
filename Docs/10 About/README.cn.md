@@ -61,25 +61,69 @@ type NodeRenderFragment = delegate of root: IComponent * builder: RenderTreeBuil
 
 1. F# 编译器在某些大型计算表达式 (CE) 的智能提示方面存在性能问题。最好减小单个 CE 块或文件，或使用 `seq`、`list` 或 `array` 与 `childContent` 以获得更好的智能提示效果：
 
-    ```fsharp
-    div {
-        attributes ...
-        childContent [ // ✅ 建议对于多个子元素时使用
-            div { "hi" }
-            ...a lot of child items
-        ]
-    }
-    ```
+    There are some tests in [here](https://github.com/albertwoo/CEPerfDemo), in summary, below are some recommend ways for better build time performance (but it can reduce runtime performance because we cannot inline and need to allocate memory on head for creating array or list)
 
-    而不是以下格式：
+    - The best result is **list-with-local-vars** for multiple child items
 
-    ```fsharp
-    div {
-        attributes ...
-        div { "hi" }
-        ...很多子项 ❌
-    }
-    ```
+        ```fsharp
+        let demo1 = div {
+            class' "font-bold"
+            "demo1"
+        }
+
+        let demo2 = div {
+            class' "font-bold"
+            "demo2"
+        }
+
+        let comp = div {
+            style { color "red" }
+            childContent [| // 👌✅
+                demo1
+                demo2
+            |]
+        }
+        ```
+
+    - **nested-one** is ok
+
+        ```fsharp
+        let comp = div {
+            class' "font-bold"
+            div { // 👌✅
+                class' "font-bold"
+                div { "demo1" }
+            }
+        }
+        ```
+
+    - **nested-one-one** is not ok (bad for build perf)
+
+        ```fsharp
+        let comp = div {
+            class' "font-bold"
+            div {
+                class' "font-bold"
+                div { // ⛔🙅
+                    class' "font-bold"
+                    div { "demo1" }
+                }
+            }
+        }
+        ```
+
+    - inline local vars is not ok (bad for build perf)
+
+        ```fsharp
+        let comp = div {
+            class' "font-bold"
+            let temp = div { // ⛔🙅
+                class' "font-bold"
+                "demo1"
+            }
+            temp
+        }
+        ```
 
 2. 热重载
 
@@ -108,14 +152,16 @@ type NodeRenderFragment = delegate of root: IComponent * builder: RenderTreeBuil
 
 ## 基准测试
 
-BenchmarkDotNet v0.13.10, Windows 11 (10.0.22621.2428/22H2/2022Update/SunValley2)
-Intel Core i7-1065G7 CPU 1.30GHz, 1 CPU, 8 logical and 4 physical cores
-.NET SDK 8.0.100-rc.2.23502.2
-  [Host]     : .NET 8.0.0 (8.0.23.47906), X64 RyuJIT AVX2 DEBUG
-  DefaultJob : .NET 8.0.0 (8.0.23.47906), X64 RyuJIT AVX2
+BenchmarkDotNet v0.13.12, Windows 11 (10.0.22631.3007/23H2/2023Update/SunValley3)
+12th Gen Intel Core i7-12700H, 1 CPU, 20 logical and 14 physical cores
+.NET SDK 8.0.100
+  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2 DEBUG
+  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
 
-| Method                | Mean     | Error    | StdDev    | Median   | Gen0   | Allocated |
-|---------------------- |---------:|---------:|----------:|---------:|-------:|----------:|
-| RenderWithRazorCSharp | 580.4 ns | 24.14 ns |  70.41 ns | 566.4 ns | 0.0935 |     392 B |
-| RenderWithFunBlazorCE | 677.9 ns | 11.49 ns |  18.23 ns | 675.5 ns | 0.1774 |     744 B |
-| RenderWithBolero      | 905.4 ns | 34.92 ns | 102.95 ns | 872.0 ns | 0.3567 |    1496 B |
+
+| Method                      | Mean     | Error    | StdDev   | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
+|---------------------------- |---------:|---------:|---------:|------:|--------:|-------:|----------:|------------:|
+| RenderWithRazorCSharp       | 235.1 ns |  3.50 ns |  3.27 ns |  1.00 |    0.00 | 0.0296 |     376 B |        1.00 |
+| RenderWithBolero            | 533.4 ns |  8.54 ns |  7.57 ns |  2.27 |    0.05 | 0.1173 |    1480 B |        3.94 |
+| RenderWithFunBlazorInlineCE | 426.7 ns |  5.13 ns |  4.80 ns |  1.82 |    0.04 | 0.0577 |     728 B |        1.94 |
+| RenderWithFunBlazorArray    | 650.6 ns | 12.18 ns | 11.39 ns |  2.77 |    0.08 | 0.1478 |    1856 B |        4.94 |

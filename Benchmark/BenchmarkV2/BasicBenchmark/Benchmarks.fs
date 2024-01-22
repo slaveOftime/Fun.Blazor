@@ -11,18 +11,22 @@ type Benchmarks() =
         //Warming up
         CSharpComponent().Build()
         BoleroComponent().Build()
-        CEComponent().Build()
+        FunBlazorComponentWithInlineCE().Build()
+        FunBlazorComponentWithArray().Build()
         TemplateComponent().Build()
         SSRTemplateComponent().Build()
 
-    [<Benchmark>]
+    [<Benchmark(Baseline = true)>]
     member _.RenderWithRazorCSharp() = CSharpComponent().Build()
 
     [<Benchmark>]
     member _.RenderWithBolero() = BoleroComponent().Build()
+    
+    [<Benchmark>]
+    member _.RenderWithFunBlazorInlineCE() = FunBlazorComponentWithInlineCE().Build()
 
     [<Benchmark>]
-    member _.RenderWithFunBlazorCE() = CEComponent().Build()
+    member _.RenderWithFunBlazorArray() = FunBlazorComponentWithArray().Build()
 
     // [<Benchmark>]
     // member _.RenderWithFunBlazorTemplate() = TemplateComponent().Build()
