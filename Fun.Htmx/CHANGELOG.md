@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [4.0.0-beta003] - 2024-01-22
+
+- Use struct to improve perf
+
 ## [4.0.0-beta002] - 2024-01-15
 
 - Revert htmx changes because it does not improve CE performance, instead it may slow it down

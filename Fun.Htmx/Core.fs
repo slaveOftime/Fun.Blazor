@@ -4,7 +4,7 @@ open System.Text
 open Fun.Result
 
 
-[<RequireQualifiedAccess>]
+[<RequireQualifiedAccess; Struct>]
 type HxQueue =
     | First
     | Last
@@ -608,6 +608,7 @@ type hxTrigger' = HxTrigger
 
 
 /// Allows you to specify that some content in a response should be swapped into the DOM somewhere other than the target, that is "Out of Band". This allows you to piggy back updates to other element updates on a response
+[<Struct>]
 type OOB = 
     /// Allows you to specify that some content in a response should be swapped into the DOM somewhere other than the target, that is "Out of Band". This allows you to piggy back updates to other element updates on a response
     | OOB

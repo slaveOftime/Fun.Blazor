@@ -12,17 +12,17 @@ type FunBlazorCustomElementAttribute() =
     member val TagName = "" with get, set
 
 
-[<RequireQualifiedAccess>]
+[<RequireQualifiedAccess; Struct>]
 type RenderAfter =
     /// Render after timeout in ms
-    | Delay of int
+    | Delay of delay: int
     /// Render after prerender container received click event
     | Clicked
     /// Render after prerender container received click event or timeout in ms
-    | ClickedOrDelay of int
+    | ClickedOrDelay of clickedOrDelay: int
     /// Render after element is in viewport
     | InViewport
     /// Render after element is in viewport or timeout in ms
-    | InViewportOrDelay of int
+    | InViewportOrDelay of inViewportOrDelay: int
     /// Render after element is in viewport, and delay for some time in ms
-    | InViewportAndDelay of int
+    | InViewportAndDelay of inViewportAndDelay: int

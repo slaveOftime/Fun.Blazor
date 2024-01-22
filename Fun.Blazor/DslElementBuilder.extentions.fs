@@ -5,7 +5,6 @@ open System.Reflection
 open Microsoft.AspNetCore.Components
 open Fun.Blazor
 open Fun.Blazor.Operators
-open Fun.Blazor.DslElementBuilder_generated
 
 
 #if !NET6_0

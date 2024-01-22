@@ -6,7 +6,7 @@ open System.Text.RegularExpressions
 open Microsoft.FSharp.Reflection
 open FSharp.Core
 
-open type System.Net.WebUtility
+open type Net.WebUtility
 
 
 // ---------------------------
@@ -43,12 +43,14 @@ let private formatStringMap =
         'O', (guidPattern, parseGuid >> box) // Guid
     ]
 
+[<Struct>]
 type MatchMode =
     | Exact // Will try to match entire string from start to end.
     | StartsWith // Will try to match a substring. Subject string should start with test case.
     | EndsWith // Will try to match a substring. Subject string should end with test case.
     | Contains // Will try to match a substring. Subject string should contain test case.
 
+[<Struct>]
 type MatchOptions =
     {
         IgnoreCase: bool

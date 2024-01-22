@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [4.0.0-beta001] - 2024-01-22
+
+- Use struct to improve perf
+
 ## [4.0.0-beta001] - 2024-01-12
 
 Beaking changes:

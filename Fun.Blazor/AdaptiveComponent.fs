@@ -11,7 +11,7 @@ open Internal
 type AdaptiveComponent [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AdaptiveComponent>)>] () as this =
     inherit FunBlazorComponent()
 
-    let mutable fragmentSubscription: IDisposable option = None
+    let mutable fragmentSubscription: IDisposable voption = ValueNone
     let mutable fragment = AVal.constant (emptyNode ())
     let mutable shouldRerender = true
 
@@ -40,9 +40,9 @@ type AdaptiveComponent [<DynamicDependency(DynamicallyAccessedMemberTypes.All, t
             shouldRerender <- false
         else
             shouldRerender <- true
-            fragmentSubscription |> Option.iter (fun x -> x.Dispose())
+            fragmentSubscription |> ValueOption.iter (fun x -> x.Dispose())
             fragment <- this.Fragment
-            fragmentSubscription <- Some(fragment.AddCallback(fun _ -> this.ForceRerender()))
+            fragmentSubscription <- ValueSome(fragment.AddCallback(fun _ -> this.ForceRerender()))
 
     override _.ShouldRender() =
         let result = shouldRerender
@@ -51,4 +51,4 @@ type AdaptiveComponent [<DynamicDependency(DynamicallyAccessedMemberTypes.All, t
 
 
     interface IDisposable with
-        member _.Dispose() = fragmentSubscription |> Option.iter (fun x -> x.Dispose())
+        member _.Dispose() = fragmentSubscription |> ValueOption.iter (fun x -> x.Dispose())

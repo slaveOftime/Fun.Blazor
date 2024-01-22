@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [4.0.0-beta002] - 2024-01-22
+
+- Clean old stuff
+
 ## [4.0.0-beta001] - 2024-01-12
 
 Beaking changes:
