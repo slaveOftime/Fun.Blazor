@@ -2689,7 +2689,6 @@ type SelectContentBuilder<'FunBlazorGeneric, 'TItemValue, 'TItem when 'FunBlazor
     [<CustomOperation("Prefix")>] member inline _.Prefix ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Prefix" => x)
     [<CustomOperation("Placeholder")>] member inline _.Placeholder ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Placeholder" => x)
     [<CustomOperation("IsOverlayShow")>] member inline _.IsOverlayShow ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("IsOverlayShow" => x)
-    [<CustomOperation("ShowPlaceholder")>] member inline _.ShowPlaceholder ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("ShowPlaceholder" => x)
     [<CustomOperation("MaxTagCount")>] member inline _.MaxTagCount ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("MaxTagCount" => x)
     [<CustomOperation("OnInput")>] member inline _.OnInput ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.AspNetCore.Components.ChangeEventArgs>("OnInput", fn)
     [<CustomOperation("OnInput")>] member inline _.OnInput ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.AspNetCore.Components.ChangeEventArgs>("OnInput", fn)

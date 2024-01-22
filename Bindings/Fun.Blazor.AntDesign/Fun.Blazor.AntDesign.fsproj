@@ -5,13 +5,13 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <TrimMode>link</TrimMode>
     <IsTrimmable>true</IsTrimmable>
-    <Version>0.17.2</Version>
+    <Version>0.17.3.1</Version>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Fun.Blazor.Bindings\AntDesign.fs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference FunBlazor="" FunBlazorNamespace="AntDesign" Include="AntDesign" Version="0.17.2" />
+    <PackageReference FunBlazor="" FunBlazorNamespace="AntDesign" Include="AntDesign" Version="0.17.3.1" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Fun.Blazor" Version="3.2.0" />

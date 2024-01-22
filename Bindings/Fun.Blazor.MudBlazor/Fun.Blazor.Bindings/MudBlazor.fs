@@ -438,6 +438,14 @@ type MudTableBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.A
     [<CustomOperation("OnRowClick")>] member inline _.OnRowClick ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<MudBlazor.TableRowClickEventArgs<'T>>("OnRowClick", fn)
     /// Row click event.
     [<CustomOperation("OnRowClick")>] member inline _.OnRowClick ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<MudBlazor.TableRowClickEventArgs<'T>>("OnRowClick", fn)
+    /// Row hover start event.
+    [<CustomOperation("OnRowMouseEnter")>] member inline _.OnRowMouseEnter ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<MudBlazor.TableRowHoverEventArgs<'T>>("OnRowMouseEnter", fn)
+    /// Row hover start event.
+    [<CustomOperation("OnRowMouseEnter")>] member inline _.OnRowMouseEnter ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<MudBlazor.TableRowHoverEventArgs<'T>>("OnRowMouseEnter", fn)
+    /// Row hover stop event.
+    [<CustomOperation("OnRowMouseLeave")>] member inline _.OnRowMouseLeave ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<MudBlazor.TableRowHoverEventArgs<'T>>("OnRowMouseLeave", fn)
+    /// Row hover stop event.
+    [<CustomOperation("OnRowMouseLeave")>] member inline _.OnRowMouseLeave ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<MudBlazor.TableRowHoverEventArgs<'T>>("OnRowMouseLeave", fn)
     /// Returns the class that will get joined with RowClass. Takes the current item and row index.
     [<CustomOperation("RowClassFunc")>] member inline _.RowClassFunc ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("RowClassFunc" => (System.Func<'T, System.Int32, System.String>fn))
     /// Returns the style that will get joined with RowStyle. Takes the current item and row index.
@@ -2352,6 +2360,13 @@ type MudDataGridBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsof
     /// If the table has more items than this number, it will break the rows into pages of said size.
     /// Note: requires a MudTablePager in PagerContent.
     [<CustomOperation("RowsPerPage")>] member inline _.RowsPerPage ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("RowsPerPage" => x)
+    /// If the table has more items than this number, it will break the rows into pages of said size.
+    /// Note: requires a MudTablePager in PagerContent.
+    [<CustomOperation("RowsPerPage'")>] member inline _.RowsPerPage' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Int32 * (System.Int32 -> unit)) = render ==> html.bind("RowsPerPage", valueFn)
+    /// Rows Per Page two-way bindable parameter
+    [<CustomOperation("RowsPerPageChanged")>] member inline _.RowsPerPageChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<System.Int32>("RowsPerPageChanged", fn)
+    /// Rows Per Page two-way bindable parameter
+    [<CustomOperation("RowsPerPageChanged")>] member inline _.RowsPerPageChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<System.Int32>("RowsPerPageChanged", fn)
     /// The page index of the currently displayed page (Zero based). Usually called by MudTablePager.
     /// Note: requires a MudTablePager in PagerContent.
     [<CustomOperation("CurrentPage")>] member inline _.CurrentPage ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("CurrentPage" => x)
@@ -3777,45 +3792,45 @@ type MudTimelineItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsof
 
 type MudToggleGroupBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit MudComponentBaseBuilder<'FunBlazorGeneric>()
-    /// The generic value for the component.
+    /// The selected value in single- and toggle-selection mode.
     [<CustomOperation("Value")>] member inline _.Value ([<InlineIfLambda>] render: AttrRenderFragment, x: 'T) = render ==> ("Value" => x)
-    /// The generic value for the component.
+    /// The selected value in single- and toggle-selection mode.
     [<CustomOperation("Value'")>] member inline _.Value' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: 'T * ('T -> unit)) = render ==> html.bind("Value", valueFn)
-    /// Fires when value changed.
+    /// Fires when Value changes.
     [<CustomOperation("ValueChanged")>] member inline _.ValueChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<'T>("ValueChanged", fn)
-    /// Fires when value changed.
+    /// Fires when Value changes.
     [<CustomOperation("ValueChanged")>] member inline _.ValueChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<'T>("ValueChanged", fn)
-    /// Selected values that stored for multiselection mode.
-    [<CustomOperation("SelectedValues")>] member inline _.SelectedValues ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<'T>) = render ==> ("SelectedValues" => x)
-    /// Selected values that stored for multiselection mode.
-    [<CustomOperation("SelectedValues'")>] member inline _.SelectedValues' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Collections.Generic.IEnumerable<'T> * (System.Collections.Generic.IEnumerable<'T> -> unit)) = render ==> html.bind("SelectedValues", valueFn)
-    /// Fires when SelectedValues changed.
-    [<CustomOperation("SelectedValuesChanged")>] member inline _.SelectedValuesChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<System.Collections.Generic.IEnumerable<'T>>("SelectedValuesChanged", fn)
-    /// Fires when SelectedValues changed.
-    [<CustomOperation("SelectedValuesChanged")>] member inline _.SelectedValuesChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<System.Collections.Generic.IEnumerable<'T>>("SelectedValuesChanged", fn)
-    /// Classnames only applied selected item, sepereated by space.
+    /// The selected values for multi-selection mode.
+    [<CustomOperation("Values")>] member inline _.Values ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<'T>) = render ==> ("Values" => x)
+    /// The selected values for multi-selection mode.
+    [<CustomOperation("Values'")>] member inline _.Values' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Collections.Generic.IEnumerable<'T> * (System.Collections.Generic.IEnumerable<'T> -> unit)) = render ==> html.bind("Values", valueFn)
+    /// Fires when Values change.
+    [<CustomOperation("ValuesChanged")>] member inline _.ValuesChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<System.Collections.Generic.IEnumerable<'T>>("ValuesChanged", fn)
+    /// Fires when Values change.
+    [<CustomOperation("ValuesChanged")>] member inline _.ValuesChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<System.Collections.Generic.IEnumerable<'T>>("ValuesChanged", fn)
+    /// Classes (separated by space) to be applied to the selected items only.
     [<CustomOperation("SelectedClass")>] member inline _.SelectedClass ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("SelectedClass" => x)
-    /// Class for toggle item text.
+    /// Classes (separated by space) to be applied to the text of all toggle items.
     [<CustomOperation("TextClass")>] member inline _.TextClass ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("TextClass" => x)
-    /// Class for toggle item icon.
+    /// Classes (separated by space) to be applied to SelectedIcon/UnselectedIcon of the items (if CheckMark is true).
     [<CustomOperation("CheckMarkClass")>] member inline _.CheckMarkClass ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("CheckMarkClass" => x)
-    /// If true, items ordered vertically.
+    /// If true, use vertical layout.
     [<CustomOperation("Vertical")>] member inline _.Vertical ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Vertical" => x)
-    /// If true, first and last item will be rounded.
+    /// If true, the first and last item will be rounded.
     [<CustomOperation("Rounded")>] member inline _.Rounded ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Rounded" => x)
-    /// If true, outline border will show. Default is true.
+    /// If true, show an outline border. Default is true.
     [<CustomOperation("Outline")>] member inline _.Outline ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Outline" => x)
-    /// If true, the line delimiter between items will show. Default is true.
+    /// If true, show a line delimiter between items. Default is true.
     [<CustomOperation("Delimiters")>] member inline _.Delimiters ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Delimiters" => x)
     /// If true, disables the ripple effect.
     [<CustomOperation("DisableRipple")>] member inline _.DisableRipple ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("DisableRipple" => x)
-    /// If true, component's margin and padding will reduce.
+    /// If true, the component's padding is reduced so it takes up less space.
     [<CustomOperation("Dense")>] member inline _.Dense ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Dense" => x)
     /// The selection behavior of the group. SingleSelection (the default) is a radio-button like exclusive collection. 
     /// MultiSelection behaves like a group of check boxes. ToggleSelection is an exclusive single selection where
     /// you can also select nothing by toggling off the current choice.
     [<CustomOperation("SelectionMode")>] member inline _.SelectionMode ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.SelectionMode) = render ==> ("SelectionMode" => x)
-    /// The color of the component. Affect borders and selection color. Default is primary.
+    /// The color of the component. Affects borders and selection color. Default is Colors.Primary.
     [<CustomOperation("Color")>] member inline _.Color ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Color) = render ==> ("Color" => x)
     /// If true, the items show a check mark next to the text or render fragment. Customize the check mark by setting
     /// SelectedIcon and UnselectedIcon 
@@ -3827,10 +3842,17 @@ type MudToggleGroupBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Micro
 type MudToggleItemBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit MudComponentBaseBuilder<'FunBlazorGeneric>()
     [<CustomOperation("Value")>] member inline _.Value ([<InlineIfLambda>] render: AttrRenderFragment, x: 'T) = render ==> ("Value" => x)
+    /// Icon to show if the item is not selected (if CheckMark is true on the parent group)
+    /// Leave null to show no check mark (default).
     [<CustomOperation("UnselectedIcon")>] member inline _.UnselectedIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("UnselectedIcon" => x)
+    /// Icon to show if the item is selected (if CheckMark is true on the parent group)
+    /// By default this is set to a check mark icon.
     [<CustomOperation("SelectedIcon")>] member inline _.SelectedIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("SelectedIcon" => x)
+    /// The text to show. You need to set this only if you want a text that differs from the Value. If null,
+    /// show Value?.ToString().
+    /// Note: the Text is only shown if you haven't defined your own child content
     [<CustomOperation("Text")>] member inline _.Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Text" => x)
-    /// Define custom content. The boolean parameter conveys whether or not the item is selected. 
+    /// Custom child content which overrides the text. The boolean parameter conveys whether or not the item is selected. 
     [<CustomOperation("ChildContent")>] member inline _.ChildContent ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Boolean -> NodeRenderFragment) = render ==> html.renderFragment("ChildContent", fn)
 
 type MudTooltipBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =

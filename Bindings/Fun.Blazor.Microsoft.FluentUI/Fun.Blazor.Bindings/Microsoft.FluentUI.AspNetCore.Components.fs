@@ -1881,6 +1881,9 @@ type FluentSplitterBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     /// Gets or sets the size of the splitter bar in pixels.
     /// Default is 8.
     [<CustomOperation("BarSize")>] member inline _.BarSize ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("BarSize" => x)
+    /// Gets or sets a value indicating whether the splitter bar handle is visible.
+    /// Default is true.
+    [<CustomOperation("BarHandle")>] member inline _.BarHandle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("BarHandle" => x)
     /// Gets or sets a value indicating whether the splitter is collapsed.
     /// If set to true, Panel1 will take up all the space and Panel2 as well as the splitter bar will be hidden.
     [<CustomOperation("Collapsed")>] member inline _.Collapsed ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Collapsed" => x)
