@@ -1,5 +1,6 @@
 ﻿namespace Fun.Blazor
 
+open System
 open Microsoft.AspNetCore.Components
 open Operators
 open Internal
@@ -143,6 +144,7 @@ type EltWithChildBuilder(name) =
     /// Also it is clear for the DSL
     member inline _.Combine([<InlineIfLambda>] render1: AttrRenderFragment, [<InlineIfLambda>] render2: NodeRenderFragment) = render1 >>> render2
 
+    [<Obsolete("Please use childContent [| ... |] for multiple child items for better CE build performance", DiagnosticId = "FB2001")>]
     member inline _.Combine([<InlineIfLambda>] render1: NodeRenderFragment, [<InlineIfLambda>] render2: NodeRenderFragment) = render1 >=> render2
 
 

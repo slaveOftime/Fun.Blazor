@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [4.0.0-beta006] - 2024-01-22
+
+- Add warning to allow user to avoid CE abuse for better build time performance utill fsharp core team fix/improve this
+
 ## [4.0.0-beta005] - 2024-01-14
 
 - Auto open GlobalAttrs

@@ -25,7 +25,7 @@ let private getQuery (url: string) =
 
 
 /// Find the first matched router in the list
-let choose<'View> (routes: Router<'View> list) : Router<'View> = fun url -> routes |> List.tryPick (fun router -> router url)
+let choose<'View> (routes: Router<'View> seq) : Router<'View> = fun url -> routes |> Seq.tryPick (fun router -> router url)
 
 
 /// Check the start of the url for the parttern and ignore case sensitive

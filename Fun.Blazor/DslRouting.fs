@@ -85,7 +85,7 @@ type html with
 
     /// By default we will set key (fun-blazor-routers) for this component. So it can keep it's state when its parent rerender. 
     /// And only rerender when location is changed.
-    static member route(routes: Router<NodeRenderFragment> list, ?key: obj) =
+    static member route(routes: Router<NodeRenderFragment> seq, ?key: obj) =
         html.inject (
             defaultArg key "fun-blazor-routers",
             fun (hook: IComponentHook, nav: NavigationManager, interception: INavigationInterception) ->
@@ -108,4 +108,4 @@ type html with
                 }
         )
 
-    static member route(key: obj, routes: Router<NodeRenderFragment> list) = html.route (routes, key = key)
+    static member route(key: obj, routes: Router<NodeRenderFragment> seq) = html.route (routes, key = key)

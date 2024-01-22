@@ -66,7 +66,7 @@ let docView (doc: DocBrief) =
                 )
 
 
-                MudContainer'() {
+                MudContainer'.create [|
                     for segment in segments do
                         match segment with
                         | Segment.Demo key -> demos |> Map.tryFind key |> Option.map demoView |> Option.defaultValue notFound
@@ -87,6 +87,6 @@ let docView (doc: DocBrief) =
                                     }
                             }
                         spaceV4
-                }
+                |]
             }
     )

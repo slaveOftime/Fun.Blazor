@@ -23,13 +23,13 @@ type ServerDemoCounter() as this =
     [<Parameter>]
     member val time = DateTime.Now with get, set
 
-    override _.Render() = div {
+    override _.Render() = div.create [|
         p { $"count = {count}; count_from_query {this.count_from_query}; count_from_form {this.count_from_form}; is_loading {this.is_loading}; time {this.time}" }
         button {
             on.click (fun _ -> count <- count + 1)
             "Click me"
         }
-    }
+    |]
 
 type CustomElementsDemo =
     static member Create() =
@@ -41,16 +41,16 @@ type CustomElementsDemo =
             }
             yield! nodes
         }
-        div {
-            section [
+        div.create [|
+            section [|
                 p { "Custom element without prerender" }
                 html.customElement<ServerDemoCounter> ()
-            ]
-            section [
+            |]
+            section [|
                 p { "Custom element with prerender section as container" }
                 html.customElement<ServerDemoCounter> (preRender = true, preRenderContainerTagName = "section")
-            ]
-            section [
+            |]
+            section [|
                 p { "Custom element with lazy load in 3s" }
                 html.customElement<ServerDemoCounter> (
                     preRender = true,
@@ -59,8 +59,8 @@ type CustomElementsDemo =
                 )
                 p { "Custom element with lazy load in 3s and a prerender node" }
                 html.customElement<ServerDemoCounter> (preRender = true, delayMs = 3000, preRenderNode = progress.create ())
-            ]
-            section [
+            |]
+            section [|
                 p { "Custom element with lazy load by click" }
                 html.customElement<ServerDemoCounter> (
                     preRender = true,
@@ -73,7 +73,7 @@ type CustomElementsDemo =
                     renderAfter = RenderAfter.ClickedOrDelay 5000,
                     preRenderNode = button { "click me to show" }
                 )
-            ]
+            |]
             section [
                 p { "Custom element with lazy load defer in viewport" }
                 html.customElement<ServerDemoCounter> (preRender = true, renderAfter = RenderAfter.InViewport)
@@ -90,7 +90,7 @@ type CustomElementsDemo =
                     preRenderNode = div { "viewport" }
                 )
             ]
-            section [
+            section [|
                 p { "Integrate with htmx" }
                 button {
                     hxTrigger' hxEvt.mouse.click
@@ -100,15 +100,15 @@ type CustomElementsDemo =
                     hxSwap_afterend
                     "Htmx click to add counter"
                 }
-            ]
-            section [
-                p {
-                    "Integrate SSR with htmx"
+            |]
+            section [|
+                p.create [|
+                    span { "Integrate SSR with htmx" }
                     span {
                         style { color "red" }
                         "(the counter is not interactive)"
                     }
-                }
+                |]
                 button {
                     hxTrigger' hxEvt.mouse.click
                     name (nameof Unchecked.defaultof<ServerDemoCounter>.count_from_form)
@@ -117,5 +117,5 @@ type CustomElementsDemo =
                     hxSwap_afterend
                     "Htmx click to add counter"
                 }
-            ]
-        }
+            |]
+        |]

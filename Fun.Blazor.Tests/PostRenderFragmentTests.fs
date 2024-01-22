@@ -42,8 +42,10 @@ let ``ref should work for element`` () =
         class' "demo"
         style { color "green" }
         ref (fun _ -> i <- 3)
-        "foo1"
-        "foo2"
+        childContent [|
+            html.text "foo1"
+            html.text "foo2"
+        |]
     }
 
     let result = context.RenderNode demo

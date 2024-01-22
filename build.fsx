@@ -338,4 +338,14 @@ pipeline "test" {
 }
 
 
+pipeline "benchmark" {
+    description "Benchmark rendering performance"
+    stage "run" {
+        workingDir "Benchmark/BenchmarkV2"
+        run "dotnet run -c Release"
+    }
+    runIfOnlySpecified
+}
+
+
 tryPrintPipelineCommandHelp ()

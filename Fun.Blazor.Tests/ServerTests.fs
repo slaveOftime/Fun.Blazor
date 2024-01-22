@@ -34,12 +34,12 @@ type ServerDemoCounter() as this =
     [<Parameter>]
     member val guid = Guid.Empty with get, set
 
-    override _.Render() = div {
+    override _.Render() = div.create [|
         p { $"{nameof this.count} = {this.count}" }
         p { $"{nameof this.query} = {this.query}" }
         p { $"{nameof this.is_loading} = {this.is_loading}" }
         p { $"{nameof this.guid} = {this.guid}" }
-    }
+    |]
 
 
 [<FunBlazorCustomElement>]
@@ -62,11 +62,11 @@ type ParsableDemoComp() as this =
     [<Parameter>]
     member val P3 = Parsable([ {| Age = 10 |} ]) with get, set
 
-    override _.Render() = div {
+    override _.Render() = div.create [|
         div { string this.P1.Value }
         div { string this.P2.Value }
         div { string this.P3.Value }
-    }
+    |]
 
 
 module ServerTests =
@@ -317,10 +317,10 @@ module ServerTests =
                 let route = route.MapGroup("").AddFunBlazor()
                 route.MapGet(
                     "/demo",
-                    Func<_>(fun () -> html' {
+                    Func<_>(fun () -> html'.create [|
                         head { html.scopedCssRules }
                         body { html.inject (fun (cssRules: IScopedCssRules) -> div { classes [ cssRules.Demo ] }) }
-                    })
+                    |])
                 )
                 |> ignore
             )

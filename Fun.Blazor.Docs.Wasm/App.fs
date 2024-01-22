@@ -24,21 +24,23 @@ let private isReadyIndicator =
             if showMessage then
                 div {
                     style { margin -40 10 40 10 }
-                    MudProgressLinear'() {
-                        Color Color.Warning
-                        Indeterminate true
-                    }
-                    spaceV2
-                    MudText'() {
-                        Color Color.Warning
-                        Typo Typo.subtitle2
-                        ".NET WASM is still loading. You can interact in this page after it's fully loaded."
-                    }
-                    MudText'() {
-                        Color Color.Info
-                        Typo Typo.body2
-                        "Current page is prerendered."
-                    }
+                    childContent [|
+                        MudProgressLinear'() {
+                            Color Color.Warning
+                            Indeterminate true
+                        }
+                        spaceV2
+                        MudText'() {
+                            Color Color.Warning
+                            Typo Typo.subtitle2
+                            ".NET WASM is still loading. You can interact in this page after it's fully loaded."
+                        }
+                        MudText'() {
+                            Color Color.Info
+                            Typo Typo.body2
+                            "Current page is prerendered."
+                        }
+                    |]
                 }
         }
     )
@@ -193,15 +195,17 @@ let app =
                         paddingTop 100
                         paddingBottom 64
                     }
-                    isReadyIndicator
-                    errorBundary routesView
-                    MudScrollToTop'() {
-                        TopOffset 400
-                        MudFab'() {
-                            Icon Icons.Material.Filled.KeyboardArrowUp
-                            Color Color.Primary
+                    childContent [|
+                        isReadyIndicator
+                        errorBundary routesView
+                        MudScrollToTop'() {
+                            TopOffset 400
+                            MudFab'() {
+                                Icon Icons.Material.Filled.KeyboardArrowUp
+                                Color Color.Primary
+                            }
                         }
-                    }
+                    |]
                 }
             ]
             interopScript

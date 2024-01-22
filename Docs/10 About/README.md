@@ -63,27 +63,71 @@ Components can be created using `adaptiview`, `html.inject`, etc. These componen
 
 There are a few things to keep in mind:
 
-1. The F# compiler has performance issues with intellisense for some large computation expressions (CEs). It is better to keep single CE blocks and files small, or use sequences like `seq`, `list`, or `array` with `childContent` for better intellisense:
+1. The F# compiler has performance issues with intellisense for some large computation expressions (CEs). It is better to keep single CE blocks and files small, or use sequences like `seq`, `list`, or `array` with `childContent` for better intellisense. [issue tracked in fsharp repo](https://github.com/dotnet/fsharp/issues/14429).
 
-    ```fsharp
-    div {
-        attributes ...
-        childContent [ // ✅ recommended for more than one child item
-            div { "hi" }
-            ...a lot of child items
-        ]
-    }
-    ```
+    There are some tests in [here](https://github.com/albertwoo/CEPerfDemo), in summary, below are some recommend ways for better build time performance (but it can reduce runtime performance because we cannot inline and need to allocate memory on head for creating array or list)
 
-    instead of:
+    - The best result is **list-with-local-vars** for multiple child items
 
-    ```fsharp
-    div {
-        attributes ...
-        div { "hi" }
-        ...a lot of child items  ❌
-    }
-    ```
+        ```fsharp
+        let demo1 = div {
+            class' "font-bold"
+            "demo1"
+        }
+
+        let demo2 = div {
+            class' "font-bold"
+            "demo2"
+        }
+
+        let comp = div {
+            style { color "red" }
+            childContent [| // 👌✅
+                demo1
+                demo2
+            |]
+        }
+        ```
+
+    - **nested-one** is ok
+
+        ```fsharp
+        let comp = div {
+            class' "font-bold"
+            div { // 👌✅
+                class' "font-bold"
+                div { "demo1" }
+            }
+        }
+        ```
+
+    - **nested-one-one** is not ok (bad for build perf)
+
+        ```fsharp
+        let comp = div {
+            class' "font-bold"
+            div {
+                class' "font-bold"
+                div { // ⛔🙅
+                    class' "font-bold"
+                    div { "demo1" }
+                }
+            }
+        }
+        ```
+
+    - inline local vars is not ok (bad for build perf)
+
+        ```fsharp
+        let comp = div {
+            class' "font-bold"
+            let temp = div { // ⛔🙅
+                class' "font-bold"
+                "demo1"
+            }
+            temp
+        }
+        ```
 
 2. Hot-reload
 
@@ -97,7 +141,7 @@ There are a few things to keep in mind:
     div {
         attributes ...
         ref (fun x -> ()) // ✅
-        childContent [ ... ]
+        childContent [| ... |]
     }
     ```
 
@@ -108,8 +152,6 @@ There are a few things to keep in mind:
         attributes ...
         ref (fun x -> ()) // ✅
         div { 1 }
-        div { 1 }
-        // ...
     }
     ```
 

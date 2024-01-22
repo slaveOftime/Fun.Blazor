@@ -46,16 +46,18 @@ let errorBundary (views: NodeRenderFragment) =
                     margin 20
                 }
                 Elevation 10
-                MudText'() {
-                    Color Color.Error
-                    Typo Typo.subtitle1
-                    "Some error hanppened, you can try to refresh."
-                }
-                spaceV4
-                MudAlert'() {
-                    Severity Severity.Error
-                    ex.Message
-                }
+                childContent [|
+                    MudText'() {
+                        Color Color.Error
+                        Typo Typo.subtitle1
+                        "Some error hanppened, you can try to refresh."
+                    }
+                    spaceV4
+                    MudAlert'() {
+                        Severity Severity.Error
+                        ex.Message
+                    }
+                |]
             }
         )
         views

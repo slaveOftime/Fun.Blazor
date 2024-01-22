@@ -2,6 +2,7 @@ namespace Fun.Blazor.Internal
 
 open System.Text
 open Fun.Blazor
+open Fun.Blazor.Operators
 open Fun.Blazor.Utils.Internal
 
 
@@ -80,6 +81,8 @@ type StyleEltBuilder() =
         let str = sb.ToString()
         stringBuilderPool.Return sb
         html.raw str
+
+    member inline _.Combine([<InlineIfLambda>] render1: NodeRenderFragment, [<InlineIfLambda>] render2: NodeRenderFragment) = render1 >=> render2
 
 
 namespace Fun.Blazor

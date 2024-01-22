@@ -22,42 +22,44 @@ let entry =
                 positionRelative
                 height 300
             }
-            adaptiview () {
-                let! y =
-                    xaxis
-                    |> AVal.map (
-                        function
-                        | LessEqual 100 -> 100
-                        | Between 100 200 -> 150
-                        | _ -> 200
-                    )
-                div {
-                    style {
-                        positionAbsolute
-                        top y
-                        left 0
-                        right 0
-                        height 2
-                        backgroundColor "hotpink"
+            childContent [|
+                adaptiview () {
+                    let! y =
+                        xaxis
+                        |> AVal.map (
+                            function
+                            | LessEqual 100 -> 100
+                            | Between 100 200 -> 150
+                            | _ -> 200
+                        )
+                    div {
+                        style {
+                            positionAbsolute
+                            top y
+                            left 0
+                            right 0
+                            height 2
+                            backgroundColor "hotpink"
+                        }
+                        DateTime.Now.ToString()
                     }
-                    DateTime.Now.ToString()
                 }
-            }
-            adaptiview () {
-                let! x = xaxis
-                let y = 150. + Math.Sin(float x) * 100. |> int
-                div {
-                    style {
-                        positionAbsolute
-                        top y
-                        left x
-                        height 40
-                        width 100
-                        backgroundColor "blue"
-                        color "white"
+                adaptiview () {
+                    let! x = xaxis
+                    let y = 150. + Math.Sin(float x) * 100. |> int
+                    div {
+                        style {
+                            positionAbsolute
+                            top y
+                            left x
+                            height 40
+                            width 100
+                            backgroundColor "blue"
+                            color "white"
+                        }
+                        DateTime.Now.ToString()
                     }
-                    DateTime.Now.ToString()
                 }
-            }
+            |]
         }
     )

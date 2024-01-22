@@ -46,9 +46,73 @@ type Foo() =
     }
 ```
 
-## Use it carefully
+## CE build performance
 
-- There is CE performance [issue](https://github.com/dotnet/fsharp/issues/14429) for large projects.
+- There is CE performance [issue](https://github.com/dotnet/fsharp/issues/14429) for inline or nest too much CE block.
+
+There are some tests in [here](https://github.com/albertwoo/CEPerfDemo), in summary, below are some recommend ways for better build time performance (but it can reduce runtime performance because we cannot inline and need to allocate memory on head for creating array or list)
+
+- The best result is **list-with-local-vars** for multiple child items
+
+```fsharp
+let demo1 = div {
+    class' "font-bold"
+    "demo1"
+}
+
+let demo2 = div {
+    class' "font-bold"
+    "demo2"
+}
+
+let comp = div {
+    style { color "red" }
+    childContent [| // 👌✅
+        demo1
+        demo2
+    |]
+}
+```
+
+- **nested-one** is ok
+
+```fsharp
+let comp = div {
+    class' "font-bold"
+    div { // 👌✅
+        class' "font-bold"
+        div { "demo1" }
+    }
+}
+```
+
+- **nested-one-one** is not ok (bad for build perf)
+
+```fsharp
+let comp = div {
+    class' "font-bold"
+    div {
+        class' "font-bold"
+        div { // ⛔🙅
+            class' "font-bold"
+            div { "demo1" }
+        }
+    }
+}
+```
+
+- inline local vars is not ok (bad for build perf)
+
+```fsharp
+let comp = div {
+    class' "font-bold"
+    let temp = div { // ⛔🙅
+        class' "font-bold"
+        "demo1"
+    }
+    temp
+}
+```
 
 ## Local development
 

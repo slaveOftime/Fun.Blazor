@@ -46,40 +46,42 @@ let demoView (demo: Demo) =
             MudPaper'() {
                 style { padding 20 }
                 Elevation 5
-                demo.View
-                spaceV2
-                div {
-                    style {
-                        displayFlex
-                        alignItemsCenter
-                        justifyContentCenter
-                    }
-                    adaptiview () {
-                        let! showCode, setShowCode = showCode.WithSetter()
-                        MudButton'() {
-                            OnClick(fun _ -> setShowCode (not showCode))
-                            StartIcon(if showCode then Icons.Material.Filled.HideSource else Icons.Material.Filled.Source)
-                            if showCode then "Hide source code" else "Show source code"
+                childContent [|
+                    demo.View
+                    spaceV2
+                    div {
+                        style {
+                            displayFlex
+                            alignItemsCenter
+                            justifyContentCenter
+                        }
+                        adaptiview () {
+                            let! showCode, setShowCode = showCode.WithSetter()
+                            MudButton'() {
+                                OnClick(fun _ -> setShowCode (not showCode))
+                                StartIcon(if showCode then Icons.Material.Filled.HideSource else Icons.Material.Filled.Source)
+                                if showCode then "Hide source code" else "Show source code"
+                            }
                         }
                     }
-                }
-                adaptiview () {
-                    match! showCode with
-                    | false -> ()
-                    | true ->
-                        match! codeHtml with
-                        | LoadingState.NotStartYet -> notFound
-                        | LoadingState.Loading -> linearProgress
-                        | LoadingState.Loaded sourceCode
-                        | LoadingState.Reloading sourceCode ->
-                            spaceV2
-                            div {
-                                style {
-                                    backgroundColor "#151522"
-                                    padding 5
+                    adaptiview () {
+                        match! showCode with
+                        | false -> ()
+                        | true ->
+                            match! codeHtml with
+                            | LoadingState.NotStartYet -> notFound
+                            | LoadingState.Loading -> linearProgress
+                            | LoadingState.Loaded sourceCode
+                            | LoadingState.Reloading sourceCode ->
+                                spaceV2
+                                div {
+                                    style {
+                                        backgroundColor "#151522"
+                                        padding 5
+                                    }
+                                    article { html.raw sourceCode }
                                 }
-                                article { html.raw sourceCode }
-                            }
-                }
+                    }
+                |]
             }
     )

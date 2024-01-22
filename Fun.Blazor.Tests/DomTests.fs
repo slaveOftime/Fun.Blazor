@@ -236,10 +236,12 @@ let ``Yield RenderFragment directly`` () =
     let context = createTestContext ()
 
     let demo =
-        div {
-            RenderFragment(fun builder ->
-                builder.AddContent(0, "foo")
-            )
+        div.create [|
+            div {
+                RenderFragment(fun builder ->
+                    builder.AddContent(0, "foo")
+                )
+            }
             div {
                 childContent [
                     html.renderFragment (
@@ -249,10 +251,10 @@ let ``Yield RenderFragment directly`` () =
                     )
                 ]
             }
-        }
+        |]
 
     let result = context.RenderNode demo
-    result.MarkupMatches("<div>foo<div>foo2</div></div>")
+    result.MarkupMatches("<div><div>foo</div><div>foo2</div></div>")
 
 
 
@@ -261,11 +263,11 @@ let ``Sections should work`` () =
     let context = createTestContext ()
 
     let demo =
-        div {
+        div.create [|
             SectionOutlet'() { SectionId "by-id" }
             SectionOutlet'() { SectionName "by-name" }
-            div {
-                "foo"
+            div.create [|
+                html.text "foo"
                 SectionContent'() {
                     SectionId "by-id"
                     div { "id" }
@@ -274,8 +276,8 @@ let ``Sections should work`` () =
                     SectionName "by-name"
                     div { "name" }
                 }
-            }
-        }
+            |]
+        |]
 
     let result = context.RenderNode demo
     result.MarkupMatches("
