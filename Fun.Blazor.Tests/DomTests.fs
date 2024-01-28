@@ -40,19 +40,47 @@ let ``Yield key value attributes`` () =
                 "hidden2", false
                 "onclick", (fun () -> task { count <- count + 1 })
                 "onchange", (fun () -> count <- count + 1)
-                $"count={count}"
+                childContent [
+                    html.text $"count={count}"
+                    MudButton'() {
+                        "att1", 1
+                        "att2", true
+                        "Hi"
+                    }
+                ]
             }
         )
 
     task {
         let result = context.RenderNode demo
-        result.MarkupMatches("""<div data="1" data-theme="dark" style="color: red" width="10" height="100.1" hidden1="" >count=0</div>""")
+        result.MarkupMatches("""
+            <div data="1" data-theme="dark" style="color: red" width="10" height="100.1" hidden1=""  >
+                count=0
+                <button att1="1" att2=""  type="button" class="mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple"  >
+                    <span class="mud-button-label">Hi</span>
+                </button>
+            </div>
+        """)
 
         do! result.Find("div").ClickAsync(null)
-        result.MarkupMatches("""<div data="1" data-theme="dark" style="color: red" width="10" height="100.1" hidden1="" >count=1</div>""")
+        result.MarkupMatches("""
+            <div data="1" data-theme="dark" style="color: red" width="10" height="100.1" hidden1=""  >
+                count=1
+                <button att1="1" att2=""  type="button" class="mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple"  >
+                    <span class="mud-button-label">Hi</span>
+                </button>
+            </div>
+        """)
 
         result.Find("div").Change(null)
-        result.MarkupMatches("""<div data="1" data-theme="dark" style="color: red" width="10" height="100.1" hidden1="" >count=2</div>""")
+        result.MarkupMatches("""
+            <div data="1" data-theme="dark" style="color: red" width="10" height="100.1" hidden1=""  >
+                count=2
+                <button att1="1" att2=""  type="button" class="mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple"  >
+                    <span class="mud-button-label">Hi</span>
+                </button>
+            </div>
+        """)
     }
 
 

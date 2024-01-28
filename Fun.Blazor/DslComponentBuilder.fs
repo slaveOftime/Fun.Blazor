@@ -20,7 +20,7 @@ type ComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent>(
             builder.CloseComponent()
             nextIndex
         )
-    
+
 
     member inline _.Run((render1, render2): struct (AttrRenderFragment * PostRenderFragment)) =
         NodeRenderFragment(fun comp builder index ->
@@ -93,27 +93,30 @@ type ComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent>(
 
     [<CustomOperation("ref")>]
     member inline _.ref([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: 'T -> unit) =
-        struct (render, PostRenderFragment(fun _ builder index ->
-            builder.AddComponentReferenceCapture(index, (fun x -> fn (unbox<'T> x)))
-            index + 1
-        ))
+        struct (render,
+                PostRenderFragment(fun _ builder index ->
+                    builder.AddComponentReferenceCapture(index, (fun x -> fn (unbox<'T> x)))
+                    index + 1
+                ))
 
     [<CustomOperation("ref")>]
     member inline _.ref((render1, render2): struct (AttrRenderFragment * PostRenderFragment), [<InlineIfLambda>] fn: 'T -> unit) =
-        struct (render1, PostRenderFragment(fun comp builder index ->
-            let nextIndex = render2.Invoke(comp, builder, index)
-            builder.AddComponentReferenceCapture(nextIndex, (fun x -> fn (unbox<'T> x)))
-            nextIndex + 1
-        ))
+        struct (render1,
+                PostRenderFragment(fun comp builder index ->
+                    let nextIndex = render2.Invoke(comp, builder, index)
+                    builder.AddComponentReferenceCapture(nextIndex, (fun x -> fn (unbox<'T> x)))
+                    nextIndex + 1
+                ))
 
 
 #if !NET6_0
     [<CustomOperation("renderMode")>]
     member inline _.renderMode([<InlineIfLambda>] render: AttrRenderFragment, mode: IComponentRenderMode) =
-        struct (render, PostRenderFragment(fun _ builder index ->
-            builder.AddComponentRenderMode(mode)
-            index
-        ))
+        struct (render,
+                PostRenderFragment(fun _ builder index ->
+                    builder.AddComponentRenderMode(mode)
+                    index
+                ))
 
     [<CustomOperation("interactiveAuto")>]
     member inline this.interactiveAuto([<InlineIfLambda>] render: AttrRenderFragment) = this.renderMode (render, RenderMode.InteractiveAuto)
@@ -122,25 +125,30 @@ type ComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent>(
     member inline this.interactiveServer([<InlineIfLambda>] render: AttrRenderFragment) = this.renderMode (render, RenderMode.InteractiveServer)
 
     [<CustomOperation("interactiveWebAssembly")>]
-    member inline this.interactiveWebAssembly([<InlineIfLambda>] render: AttrRenderFragment) = this.renderMode (render, RenderMode.InteractiveWebAssembly)
+    member inline this.interactiveWebAssembly([<InlineIfLambda>] render: AttrRenderFragment) =
+        this.renderMode (render, RenderMode.InteractiveWebAssembly)
 
 
     [<CustomOperation("renderMode")>]
     member inline _.renderMode((render1, render2): struct (AttrRenderFragment * PostRenderFragment), mode: IComponentRenderMode) =
-        struct (render1, PostRenderFragment(fun comp builder index ->
-            let nextIndex = render2.Invoke(comp, builder, index)
-            builder.AddComponentRenderMode(mode)
-            nextIndex
-        ))
+        struct (render1,
+                PostRenderFragment(fun comp builder index ->
+                    let nextIndex = render2.Invoke(comp, builder, index)
+                    builder.AddComponentRenderMode(mode)
+                    nextIndex
+                ))
 
     [<CustomOperation("interactiveAuto")>]
-    member inline this.interactiveAuto(renders: struct (AttrRenderFragment * PostRenderFragment)) = this.renderMode (renders, RenderMode.InteractiveAuto)
+    member inline this.interactiveAuto(renders: struct (AttrRenderFragment * PostRenderFragment)) =
+        this.renderMode (renders, RenderMode.InteractiveAuto)
 
     [<CustomOperation("interactiveServer")>]
-    member inline this.interactiveServer(renders: struct (AttrRenderFragment * PostRenderFragment)) = this.renderMode (renders, RenderMode.InteractiveServer)
+    member inline this.interactiveServer(renders: struct (AttrRenderFragment * PostRenderFragment)) =
+        this.renderMode (renders, RenderMode.InteractiveServer)
 
     [<CustomOperation("interactiveWebAssembly")>]
-    member inline this.interactiveWebAssembly(renders: struct (AttrRenderFragment * PostRenderFragment)) = this.renderMode (renders, RenderMode.InteractiveWebAssembly)
+    member inline this.interactiveWebAssembly(renders: struct (AttrRenderFragment * PostRenderFragment)) =
+        this.renderMode (renders, RenderMode.InteractiveWebAssembly)
 
 
     /// Enhanced navigation is enabled by default, but it can be controlled hierarchically and on a per-link basis using the data-enhance-nav HTML attribute.
@@ -150,7 +158,7 @@ type ComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent>(
 
     /// Enhanced navigation is enabled by default, but it can be controlled hierarchically and on a per-link basis using the data-enhance-nav HTML attribute.
     [<CustomOperation("dataEnhanceNav")>]
-    member inline this.dataEnhanceNav([<InlineIfLambda>] render: AttrRenderFragment) = this.dataEnhanceNav(render, true)
+    member inline this.dataEnhanceNav([<InlineIfLambda>] render: AttrRenderFragment) = this.dataEnhanceNav (render, true)
 
     /// Blazor's enhanced navigation and form handing may undo dynamic changes to the DOM if the updated content isn't part of the server rendering. To preserve the content of an element, use the data-permanent attribute.
     [<CustomOperation("dataPermanent")>]
@@ -159,7 +167,7 @@ type ComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent>(
 
     /// Blazor's enhanced navigation and form handing may undo dynamic changes to the DOM if the updated content isn't part of the server rendering. To preserve the content of an element, use the data-permanent attribute.
     [<CustomOperation("dataPermanent")>]
-    member inline this.dataPermanent([<InlineIfLambda>] render: AttrRenderFragment) = this.dataPermanent(render, true)
+    member inline this.dataPermanent([<InlineIfLambda>] render: AttrRenderFragment) = this.dataPermanent (render, true)
 #endif
 
 
@@ -278,7 +286,7 @@ type ComponentWithChildBuilder<'T when 'T :> IComponent>() =
         )
 
     member inline _.Yield(x: RenderFragment) = html.renderFragment x
-    
+
     member inline _.Yield([<InlineIfLambda>] x: NodeRenderFragment) = x
 
     member inline _.Delay([<InlineIfLambda>] fn: unit -> NodeRenderFragment) = NodeRenderFragment(fun c b i -> fn().Invoke(c, b, i))
@@ -288,20 +296,28 @@ type ComponentWithChildBuilder<'T when 'T :> IComponent>() =
     /// We should only allow merge AttrRenderFragment with NodeRenderFragment.
     /// Instead of merge NodeRenderFragment with AttrRenderFragment because blazor only allow add attribute then child.
     /// Also it is clear for the DSL
-    member inline _.Combine([<InlineIfLambda>] render1: AttrRenderFragment, [<InlineIfLambda>] render2: NodeRenderFragment) = struct (render1, render2)
+    member inline _.Combine([<InlineIfLambda>] render1: AttrRenderFragment, [<InlineIfLambda>] render2: NodeRenderFragment) =
+        struct (render1, render2)
 
     [<Obsolete("Please use childContent [| ... |] for multiple child items for better CE build performance", DiagnosticId = "FB0044")>]
     member inline _.Combine([<InlineIfLambda>] render1: NodeRenderFragment, [<InlineIfLambda>] render2: NodeRenderFragment) = render1 >=> render2
 
     member inline _.For([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> NodeRenderFragment) = struct (render, fn ())
 
-    member inline _.For([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> struct (AttrRenderFragment * NodeRenderFragment)) =
+    member inline _.For
+        (
+            [<InlineIfLambda>] render: AttrRenderFragment,
+            [<InlineIfLambda>] fn: unit -> struct (AttrRenderFragment * NodeRenderFragment)
+        )
+        =
         let struct (attr, node) = fn ()
         struct (attr ==> render, node)
 
-    member inline _.For((render1, render2): struct (AttrRenderFragment * PostRenderFragment), [<InlineIfLambda>] fn: unit -> NodeRenderFragment) = struct (render1, render2, fn())
+    member inline _.For((render1, render2): struct (AttrRenderFragment * PostRenderFragment), [<InlineIfLambda>] fn: unit -> NodeRenderFragment) =
+        struct (render1, render2, fn ())
 
-    member inline _.For(renders: 'Data seq, [<InlineIfLambda>] fn: 'Data -> NodeRenderFragment) = renders |> Seq.map fn |> Seq.fold (>=>) (emptyNode ()) |> html.region
+    member inline _.For(renders: 'Data seq, [<InlineIfLambda>] fn: 'Data -> NodeRenderFragment) =
+        renders |> Seq.map fn |> Seq.fold (>=>) (emptyNode ()) |> html.region
 
     member inline _.YieldFrom(renders: NodeRenderFragment seq) = renders |> Seq.fold (>=>) (emptyNode ()) |> html.region
 
@@ -317,8 +333,7 @@ type ComponentWithChildBuilder<'T when 'T :> IComponent>() =
         render ==> html.renderFragment ("ChildContent", html.text v)
 
     [<CustomOperation("childContent")>]
-    member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, v: int) =
-        render ==> html.renderFragment ("ChildContent", html.text v)
+    member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, v: int) = render ==> html.renderFragment ("ChildContent", html.text v)
 
     [<CustomOperation("childContent")>]
     member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, v: float) =
@@ -326,7 +341,12 @@ type ComponentWithChildBuilder<'T when 'T :> IComponent>() =
 
 
     [<CustomOperation("childContent")>]
-    member inline _.childContent((render1, render2): struct (AttrRenderFragment * PostRenderFragment), [<InlineIfLambda>] renderChild: NodeRenderFragment) =
+    member inline _.childContent
+        (
+            (render1, render2): struct (AttrRenderFragment * PostRenderFragment),
+            [<InlineIfLambda>] renderChild: NodeRenderFragment
+        )
+        =
         struct (render1, render2, renderChild)
 
     [<CustomOperation("childContent")>]
@@ -405,7 +425,7 @@ type ComponentWithDomAttrBuilder<'T when 'T :> IComponent>() =
             builder.CloseComponent()
             nextIndex
         )
-    
+
     member inline _.Run((render1, render2): struct (AttrRenderFragment * PostRenderFragment)) =
         NodeRenderFragment(fun comp builder index ->
             builder.OpenComponent<'T>(index)
@@ -415,29 +435,41 @@ type ComponentWithDomAttrBuilder<'T when 'T :> IComponent>() =
         )
 
 
+    member inline _.Combine
+        (
+            [<InlineIfLambda>] render1: AttrRenderFragment,
+            (attrRender, nodeRender): struct (AttrRenderFragment * NodeRenderFragment)
+        )
+        =
+        struct (render1 ==> attrRender, nodeRender)
+
+
     [<CustomOperation("ref")>]
     member inline _.ref([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: 'T -> unit) =
-        struct (render, PostRenderFragment(fun _ builder index ->
-            builder.AddComponentReferenceCapture(index, (fun x -> fn (unbox<'T> x)))
-            index + 1
-        ))
+        struct (render,
+                PostRenderFragment(fun _ builder index ->
+                    builder.AddComponentReferenceCapture(index, (fun x -> fn (unbox<'T> x)))
+                    index + 1
+                ))
 
     [<CustomOperation("ref")>]
     member inline _.ref((render1, render2): struct (AttrRenderFragment * PostRenderFragment), [<InlineIfLambda>] fn: 'T -> unit) =
-        struct (render1, PostRenderFragment(fun comp builder index ->
-            let nextIndex = render2.Invoke(comp, builder, index)
-            builder.AddComponentReferenceCapture(nextIndex, (fun x -> fn (unbox<'T> x)))
-            nextIndex + 1
-        ))
+        struct (render1,
+                PostRenderFragment(fun comp builder index ->
+                    let nextIndex = render2.Invoke(comp, builder, index)
+                    builder.AddComponentReferenceCapture(nextIndex, (fun x -> fn (unbox<'T> x)))
+                    nextIndex + 1
+                ))
 
 
 #if !NET6_0
     [<CustomOperation("renderMode")>]
     member inline _.renderMode([<InlineIfLambda>] render: AttrRenderFragment, mode: IComponentRenderMode) =
-        struct (render, PostRenderFragment(fun _ builder index ->
-            builder.AddComponentRenderMode(mode)
-            index
-        ))
+        struct (render,
+                PostRenderFragment(fun _ builder index ->
+                    builder.AddComponentRenderMode(mode)
+                    index
+                ))
 
     [<CustomOperation("interactiveAuto")>]
     member inline this.interactiveAuto([<InlineIfLambda>] render: AttrRenderFragment) = this.renderMode (render, RenderMode.InteractiveAuto)
@@ -446,25 +478,30 @@ type ComponentWithDomAttrBuilder<'T when 'T :> IComponent>() =
     member inline this.interactiveServer([<InlineIfLambda>] render: AttrRenderFragment) = this.renderMode (render, RenderMode.InteractiveServer)
 
     [<CustomOperation("interactiveWebAssembly")>]
-    member inline this.interactiveWebAssembly([<InlineIfLambda>] render: AttrRenderFragment) = this.renderMode (render, RenderMode.InteractiveWebAssembly)
+    member inline this.interactiveWebAssembly([<InlineIfLambda>] render: AttrRenderFragment) =
+        this.renderMode (render, RenderMode.InteractiveWebAssembly)
 
 
     [<CustomOperation("renderMode")>]
     member inline _.renderMode((render1, render2): struct (AttrRenderFragment * PostRenderFragment), mode: IComponentRenderMode) =
-        struct (render1, PostRenderFragment(fun comp builder index ->
-            let nextIndex = render2.Invoke(comp, builder, index)
-            builder.AddComponentRenderMode(mode)
-            nextIndex
-        ))
+        struct (render1,
+                PostRenderFragment(fun comp builder index ->
+                    let nextIndex = render2.Invoke(comp, builder, index)
+                    builder.AddComponentRenderMode(mode)
+                    nextIndex
+                ))
 
     [<CustomOperation("interactiveAuto")>]
-    member inline this.interactiveAuto(renders: struct (AttrRenderFragment * PostRenderFragment)) = this.renderMode (renders, RenderMode.InteractiveAuto)
+    member inline this.interactiveAuto(renders: struct (AttrRenderFragment * PostRenderFragment)) =
+        this.renderMode (renders, RenderMode.InteractiveAuto)
 
     [<CustomOperation("interactiveServer")>]
-    member inline this.interactiveServer(renders: struct (AttrRenderFragment * PostRenderFragment)) = this.renderMode (renders, RenderMode.InteractiveServer)
+    member inline this.interactiveServer(renders: struct (AttrRenderFragment * PostRenderFragment)) =
+        this.renderMode (renders, RenderMode.InteractiveServer)
 
     [<CustomOperation("interactiveWebAssembly")>]
-    member inline this.interactiveWebAssembly(renders: struct (AttrRenderFragment * PostRenderFragment)) = this.renderMode (renders, RenderMode.InteractiveWebAssembly)
+    member inline this.interactiveWebAssembly(renders: struct (AttrRenderFragment * PostRenderFragment)) =
+        this.renderMode (renders, RenderMode.InteractiveWebAssembly)
 #endif
 
 
@@ -557,20 +594,28 @@ type ComponentWithDomAndChildAttrBuilder<'T when 'T :> IComponent>() =
     /// We should only allow merge AttrRenderFragment with NodeRenderFragment.
     /// Instead of merge NodeRenderFragment with AttrRenderFragment because blazor only allow add attribute then child.
     /// Also it is clear for the DSL
-    member inline _.Combine([<InlineIfLambda>] render1: AttrRenderFragment, [<InlineIfLambda>] render2: NodeRenderFragment) = struct (render1, render2)
-    
+    member inline _.Combine([<InlineIfLambda>] render1: AttrRenderFragment, [<InlineIfLambda>] render2: NodeRenderFragment) =
+        struct (render1, render2)
+
     [<Obsolete("Please use childContent [| ... |] for multiple child items for better CE build performance", DiagnosticId = "FB0044")>]
     member inline _.Combine([<InlineIfLambda>] render1: NodeRenderFragment, [<InlineIfLambda>] render2: NodeRenderFragment) = render1 >=> render2
 
     member inline _.For([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> NodeRenderFragment) = struct (render, fn ())
 
-    member inline _.For([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> struct (AttrRenderFragment * NodeRenderFragment)) =
+    member inline _.For
+        (
+            [<InlineIfLambda>] render: AttrRenderFragment,
+            [<InlineIfLambda>] fn: unit -> struct (AttrRenderFragment * NodeRenderFragment)
+        )
+        =
         let struct (attr, node) = fn ()
         struct (attr ==> render, node)
 
-    member inline _.For((render1, render2): struct (AttrRenderFragment * PostRenderFragment), [<InlineIfLambda>] fn: unit -> NodeRenderFragment) = struct (render1, render2, fn())
+    member inline _.For((render1, render2): struct (AttrRenderFragment * PostRenderFragment), [<InlineIfLambda>] fn: unit -> NodeRenderFragment) =
+        struct (render1, render2, fn ())
 
-    member inline _.For(renders: 'Data seq, [<InlineIfLambda>] fn: 'Data -> NodeRenderFragment) = renders |> Seq.map fn |> Seq.fold (>=>) (emptyNode ()) |> html.region
+    member inline _.For(renders: 'Data seq, [<InlineIfLambda>] fn: 'Data -> NodeRenderFragment) =
+        renders |> Seq.map fn |> Seq.fold (>=>) (emptyNode ()) |> html.region
 
     member inline _.YieldFrom(renders: NodeRenderFragment seq) = renders |> Seq.fold (>=>) (emptyNode ()) |> html.region
 
@@ -590,8 +635,7 @@ type ComponentWithDomAndChildAttrBuilder<'T when 'T :> IComponent>() =
         render ==> html.renderFragment ("ChildContent", html.text v)
 
     [<CustomOperation("childContent")>]
-    member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, v: int) =
-        render ==> html.renderFragment ("ChildContent", html.text v)
+    member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, v: int) = render ==> html.renderFragment ("ChildContent", html.text v)
 
     [<CustomOperation("childContent")>]
     member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, v: float) =
@@ -599,7 +643,12 @@ type ComponentWithDomAndChildAttrBuilder<'T when 'T :> IComponent>() =
 
 
     [<CustomOperation("childContent")>]
-    member inline _.childContent((render1, render2): struct (AttrRenderFragment * PostRenderFragment), [<InlineIfLambda>] renderChild: NodeRenderFragment) =
+    member inline _.childContent
+        (
+            (render1, render2): struct (AttrRenderFragment * PostRenderFragment),
+            [<InlineIfLambda>] renderChild: NodeRenderFragment
+        )
+        =
         struct (render1, render2, renderChild)
 
     [<CustomOperation("childContent")>]

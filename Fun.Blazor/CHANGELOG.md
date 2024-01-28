@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [4.0.0-beta006] - 2024-01-28
+
+- Enable combine key value pair for component builder
+
 ## [4.0.0-beta006] - 2024-01-22
 
 - Use struct to improve perf
