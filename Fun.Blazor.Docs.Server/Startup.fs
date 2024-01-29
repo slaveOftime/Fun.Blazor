@@ -56,36 +56,34 @@ app.MapFunBlazor(fun ctx ->
         doctype "html"
         html' {
             lang "en"
-            childContent [|
-                head.create [|
-                    title { "Fun Blazor" }
-                    chartsetUTF8
-                    baseUrl "/"
-                    viewport "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-                    stylesheet "_content/MudBlazor/MudBlazor.min.css"
-                    CustomElement.lazyBlazorJs (hasBlazorJs = true)
+            head.create [|
+                title { "Fun Blazor" }
+                chartsetUTF8
+                baseUrl "/"
+                viewport "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+                stylesheet "_content/MudBlazor/MudBlazor.min.css"
+                CustomElement.lazyBlazorJs (hasBlazorJs = true)
+            |]
+            body.create [|
+                html.route [|
+                    routeCi "/custom-elements-demo" (CustomElementsDemo.Create())
+                    routeAny (html.blazor<App> RenderMode.InteractiveServer)
                 |]
-                body.create [|
-                    html.route [|
-                        routeCi "/custom-elements-demo" (CustomElementsDemo.Create())
-                        routeAny (html.blazor<App> RenderMode.InteractiveServer)
-                    |]
 
-                    script { src "_content/MudBlazor/MudBlazor.min.js" }
-                    script { src "_framework/blazor.server.js" }
-                    script { src "https://unpkg.com/htmx.org@1.9.9" }
+                script { src "_content/MudBlazor/MudBlazor.min.js" }
+                script { src "_framework/blazor.server.js" }
+                script { src "https://unpkg.com/htmx.org@1.9.9" }
 
-                    stylesheet "css/google-font.css"
-                    stylesheet "css/github-markdown-dark.css"
-                    stylesheet "css/prism-vsc-dark-plus.css"
+                stylesheet "css/google-font.css"
+                stylesheet "css/github-markdown-dark.css"
+                stylesheet "css/prism-vsc-dark-plus.css"
 
-                    script { src "https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/components/prism-core.min.js" }
-                    script { src "https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/plugins/autoloader/prism-autoloader.min.js" }
+                script { src "https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/components/prism-core.min.js" }
+                script { src "https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/plugins/autoloader/prism-autoloader.min.js" }
 
 #if DEBUG
-                    html.hotReloadJSInterop
+                html.hotReloadJSInterop
 #endif
-                |]
             |]
         }
     |]

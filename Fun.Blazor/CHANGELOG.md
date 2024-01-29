@@ -3,6 +3,7 @@
 ## [Unreleased]
 
 - Fix EltBuilder_form
+- Remove combine warning for EltBuilder_html, EltBuilder_body, EltBuilder_script for better view
 
 ## [4.0.0-beta007] - 2024-01-29
 

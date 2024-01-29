@@ -8,31 +8,48 @@ open Fun.Blazor.Operators
 open Fun.Blazor.DslElementBuilder_generated
 
 
+type EltBuilder_html with
+
+    member inline _.Combine([<InlineIfLambda>] render1: NodeRenderFragment, [<InlineIfLambda>] render2: NodeRenderFragment) = render1 >=> render2
+
+type EltBuilder_body with
+
+    member inline _.Combine([<InlineIfLambda>] render1: NodeRenderFragment, [<InlineIfLambda>] render2: NodeRenderFragment) = render1 >=> render2
+
+type EltBuilder_script with
+
+    member inline _.Combine([<InlineIfLambda>] render1: NodeRenderFragment, [<InlineIfLambda>] render2: NodeRenderFragment) = render1 >=> render2
+
+
 #if !NET6_0
 type EltBuilder_form with
-    /// Enhanced form handling isn't hierarchical and doesn't flow to child forms:
-    [<CustomOperation("dataEnhance")>]
-    member inline _.dataEnhance([<InlineIfLambda>] render: AttrRenderFragment, v: bool) = render ==> ("data-enhance" => (if v then "true" else "false"))
 
     /// Enhanced form handling isn't hierarchical and doesn't flow to child forms:
     [<CustomOperation("dataEnhance")>]
-    member inline this.dataEnhance([<InlineIfLambda>] render: AttrRenderFragment) = this.dataEnhance(render, true)
+    member inline _.dataEnhance([<InlineIfLambda>] render: AttrRenderFragment, v: bool) =
+        render ==> ("data-enhance" => (if v then "true" else "false"))
+
+    /// Enhanced form handling isn't hierarchical and doesn't flow to child forms:
+    [<CustomOperation("dataEnhance")>]
+    member inline this.dataEnhance([<InlineIfLambda>] render: AttrRenderFragment) = this.dataEnhance (render, true)
 
 
     [<CustomOperation("formName")>]
     member inline _.formName([<InlineIfLambda>] render: AttrRenderFragment, value: string) =
-        struct (render, PostRenderFragment(fun _ builder index ->
-            builder.AddNamedEvent("onsubmit", value)
-            index
-        ))
+        struct (render,
+                PostRenderFragment(fun _ builder index ->
+                    builder.AddNamedEvent("onsubmit", value)
+                    index
+                ))
 
     [<CustomOperation("formName")>]
     member inline _.formName((render1, render2): struct (AttrRenderFragment * PostRenderFragment), value: string) =
-        struct (render1, PostRenderFragment(fun comp builder index ->
-            let nextIndex = render2.Invoke(comp, builder, index)
-            builder.AddNamedEvent("onsubmit", value)
-            nextIndex
-        ))
+        struct (render1,
+                PostRenderFragment(fun comp builder index ->
+                    let nextIndex = render2.Invoke(comp, builder, index)
+                    builder.AddNamedEvent("onsubmit", value)
+                    nextIndex
+                ))
 #endif
 
 
@@ -67,9 +84,9 @@ let domAttr = DomAttrBuilder()
 
 type html with
 
-    /// Build hidden inputs for a given state's public properties. 
+    /// Build hidden inputs for a given state's public properties.
     /// If the type is IComponent, only the property with attribute ParameterAttribute will be taken
-    static member createHiddenInputs<'T> (data: 'T) =
+    static member createHiddenInputs<'T>(data: 'T) =
         let ty = typeof<'T>
 
         data.GetType().GetProperties(BindingFlags.Instance ||| BindingFlags.Public)
@@ -87,6 +104,6 @@ type html with
                 type' InputTypes.hidden
                 name p.Name
                 value x
-                }
+              }
         )
         |> html.fragment
