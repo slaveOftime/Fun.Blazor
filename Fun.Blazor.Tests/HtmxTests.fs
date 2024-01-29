@@ -13,7 +13,7 @@ let ``TriggerBuilder should work`` () =
 
     let result =
         context.RenderNode(
-            fragment {
+            html.fragment [|
                 div {
                     hxGet "/test"
                     hxTrigger (
@@ -53,7 +53,7 @@ let ``TriggerBuilder should work`` () =
                 }
                 div { hxSwap_delete }
                 div { hxSwap_delete OOB }
-            }
+            |]
         )
 
     result.MarkupMatches(
@@ -83,7 +83,7 @@ let ``hxRequestxxx should work`` () =
 
     let result =
         context.RenderNode(
-            fragment {
+            html.fragment [|
                 div { hxRequestBlazorSSR (QueryBuilder<DemoComp>().Add((fun x -> x.Count), 1)) }
                 div { hxRequestBlazorSSR "post" (QueryBuilder<DemoComp>().Add((fun x -> x.Count), 2)) }
                 div { hxRequestBlazorSSR typeof<DemoComp> [ "Count", box 3 ] }
@@ -106,7 +106,7 @@ let ``hxRequestxxx should work`` () =
                     ) 
                     html.createHiddenInputs (DemoComp(Count = 1))
                 }
-            }
+            |]
         )
 
     result.MarkupMatches(

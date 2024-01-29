@@ -8,14 +8,13 @@ open Fun.Blazor.Validators
 open Fun.Blazor.Docs.Controls
 
 
-type Model =
-    {
-        Name: string
-        Password: string
-        Age: int
-        Birthday: DateTime
-        Address: Address
-    }
+type Model = {
+    Name: string
+    Password: string
+    Age: int
+    Birthday: DateTime
+    Address: Address
+} with
 
     static member DefaultValue = {
         Name = ""
@@ -63,11 +62,9 @@ let private addressForm (modelForm: AdaptiveForm<Address, AddressError>) = fragm
             Label "Zip code"
             Value' binding
             Immediate true
-        // We cannot use MudBlazor errors feature by default, because it has its own validation rules.
-        //Error(not errors.IsEmpty)
-        //ErrorText(simplifyErrors errors)
+            Error(not errors.IsEmpty)
+            ErrorText(simplifyErrors errors)
         }
-        errorView errors
     }
     adaptiview () {
         let! binding = modelForm.UseField(fun x -> x.Street)
