@@ -12,5 +12,5 @@ dotnet add package Fun.Blazor.Microsoft.Authorization --version 8.0.1
 dotnet add package Fun.Blazor.Microsoft.FluentUI --version 4.3.1
 dotnet add package Fun.Blazor.Microsoft.QuickGrid --version 8.0.1
 dotnet add package Fun.Blazor.Microsoft.Web --version 8.0.1
-dotnet add package Fun.Blazor.MudBlazor --version 6.13.0
+dotnet add package Fun.Blazor.MudBlazor --version 6.14.0
 ```
