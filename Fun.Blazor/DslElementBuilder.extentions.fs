@@ -8,19 +8,6 @@ open Fun.Blazor.Operators
 open Fun.Blazor.DslElementBuilder_generated
 
 
-type EltBuilder_html with
-
-    member inline _.Combine([<InlineIfLambda>] render1: NodeRenderFragment, [<InlineIfLambda>] render2: NodeRenderFragment) = render1 >=> render2
-
-type EltBuilder_body with
-
-    member inline _.Combine([<InlineIfLambda>] render1: NodeRenderFragment, [<InlineIfLambda>] render2: NodeRenderFragment) = render1 >=> render2
-
-type EltBuilder_script with
-
-    member inline _.Combine([<InlineIfLambda>] render1: NodeRenderFragment, [<InlineIfLambda>] render2: NodeRenderFragment) = render1 >=> render2
-
-
 #if !NET6_0
 type EltBuilder_form with
 
