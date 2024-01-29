@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+- Remove html.comp to make the reduce confusion
+- Refactor and clean code
+
 ## [4.0.0-beta006] - 2024-01-28
 
 - Enable combine key value pair for component builder

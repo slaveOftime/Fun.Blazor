@@ -207,9 +207,7 @@ module DslStyle =
             html.inject (fun (scopedCssRules: IScopedCssRules) -> fragment {
                 adaptiview () {
                     let! styles' = scopedCssRules.Styles
-                    if styles'.IsEmpty then
-                        html.none
-                    else
+                    if not styles'.IsEmpty then
                         styleElt {
                             for KeyValue(k, v) in styles' do
                                 struct (k, v)
@@ -217,9 +215,7 @@ module DslStyle =
                 }
                 adaptiview () {
                     let! keyframes = scopedCssRules.KeyFrames
-                    if keyframes.IsEmpty then
-                        html.none
-                    else
+                    if not keyframes.IsEmpty then
                         styleElt {
                             for KeyValue(k, v) in keyframes do
                                 struct (k, v)

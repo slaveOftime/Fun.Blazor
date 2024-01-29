@@ -4,6 +4,7 @@ module Fun.Blazor.DslAdaptive
 open System
 open System.Threading.Tasks
 open System.Runtime.CompilerServices
+open System.Diagnostics.CodeAnalysis
 open FSharp.Data.Adaptive
 open Fun.Result
 open Fun.Blazor
@@ -11,23 +12,25 @@ open Operators
 open Internal
 
 
-type AdaptiviewBuilder(?key: obj, ?isStatic: bool, ?disableEventTriggerStateHasChanged) =
+type AdaptiviewBuilder
+    [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AdaptiviewBuilder>)>]
+    (?key: obj, ?isStatic: bool, ?disableEventTriggerStateHasChanged)
+    =
     inherit AValBuilder()
 
     member _.Key = key
     member _.IsStatic = isStatic
 
-    member this.Run(x: aval<NodeRenderFragment>) =
-        ComponentWithChildBuilder<AdaptiveComponent>() {
-            "Fragment" => x
-            "DisableEventTriggerStateHasChangedParam" => defaultArg disableEventTriggerStateHasChanged true
-            match this.IsStatic with
-            | Some true -> "IsStatic" => true
-            | _ -> emptyAttr ()
-            match this.Key with
-            | Some k -> html.key k
-            | None -> emptyAttr ()
-        }
+    member this.Run(x: aval<NodeRenderFragment>) = ComponentWithChildBuilder<AdaptiveComponent>() {
+        "Fragment" => x
+        "DisableEventTriggerStateHasChangedParam" => defaultArg disableEventTriggerStateHasChanged true
+        match this.IsStatic with
+        | Some true -> "IsStatic" => true
+        | _ -> emptyAttr ()
+        match this.Key with
+        | Some k -> html.key k
+        | None -> emptyAttr ()
+    }
 
     member inline _.Yield([<InlineIfLambda>] x: NodeRenderFragment) = AVal.constant x
 
@@ -52,12 +55,11 @@ type AdaptiviewBuilder(?key: obj, ?isStatic: bool, ?disableEventTriggerStateHasC
 
     member inline _.Delay([<InlineIfLambda>] fn: unit -> aval<NodeRenderFragment>) = fn ()
 
-    member inline _.Combine(val1: aval<NodeRenderFragment>, val2: aval<NodeRenderFragment>) =
-        adaptive {
-            let! render1 = val1
-            let! render2 = val2
-            return render1 >=> render2
-        }
+    member inline _.Combine(val1: aval<NodeRenderFragment>, val2: aval<NodeRenderFragment>) = adaptive {
+        let! render1 = val1
+        let! render2 = val2
+        return render1 >=> render2
+    }
 
     member inline _.Zero() = AVal.constant (emptyNode ())
 
@@ -67,7 +69,7 @@ type AdaptiviewBuilder(?key: obj, ?isStatic: bool, ?disableEventTriggerStateHasC
 
 type IAdaptiveValue<'T> with
 
-    /// Evaluates the given adaptive value and returns its current value. This should not be used inside the adaptive evaluation of other AdaptiveObjects since it does not track dependencies. 
+    /// Evaluates the given adaptive value and returns its current value. This should not be used inside the adaptive evaluation of other AdaptiveObjects since it does not track dependencies.
     member this.Value = AVal.force this
 
 

@@ -1,11 +1,10 @@
 ﻿[<AutoOpen>]
-module Fun.Blazor.DslDomInputAttr
+module Fun.Blazor.DslElementBuilder_type
 
 open Fun.Blazor
 open Operators
 
-
-[<RequireQualifiedAccess>]
+[<RequireQualifiedAccess; Struct>]
 type InputTypes =
     | button
     | checkbox
@@ -92,6 +91,7 @@ module AutoCompleteValues =
     let impp = "impp"
     let url = "url"
     let photo = "photo"
+
 
 type DomAttrBuilder with
 

@@ -20,10 +20,10 @@
 		<Compile Include="DslFragmentBuilder.fs" />
 		<Compile Include="DslDomAttrBuilder.fs" />
 		<Compile Include="DslDomEventAttr.fs" />
-		<Compile Include="DslDomInputAttr.fs" />
 		<Compile Include="DslDomAriaAttr.fs" />
 		<Compile Include="DslElementBuilder.fs" />
 		<Compile Include="DslElementBuilder.generated.fs" />
+		<Compile Include="DslElementBuilder.type.fs" />
 		<Compile Include="DslElementBuilder.extentions.fs" />
 		<Compile Include="DslComponentBuilder.fs" />
 		<Compile Include="DslComponents.fs" />
