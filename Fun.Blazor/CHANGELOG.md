@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+- Fix EltBuilder_form
+
 ## [4.0.0-beta007] - 2024-01-29
 
 - Remove html.comp to make the reduce confusion

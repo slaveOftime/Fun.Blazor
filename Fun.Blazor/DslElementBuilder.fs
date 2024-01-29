@@ -303,10 +303,6 @@ type EltWithChildBuilder(name) =
         render1 ===> render2 >>> (html.raw v)
 
 
-type EltBuilder_form() =
-    inherit EltBuilder("form")
-
-
 type EltBuilder_script() =
     inherit EltBuilder("script")
 

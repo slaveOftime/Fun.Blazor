@@ -5,11 +5,11 @@ open System.Reflection
 open Microsoft.AspNetCore.Components
 open Fun.Blazor
 open Fun.Blazor.Operators
+open Fun.Blazor.DslElementBuilder_generated
 
 
 #if !NET6_0
 type EltBuilder_form with
-
     /// Enhanced form handling isn't hierarchical and doesn't flow to child forms:
     [<CustomOperation("dataEnhance")>]
     member inline _.dataEnhance([<InlineIfLambda>] render: AttrRenderFragment, v: bool) = render ==> ("data-enhance" => (if v then "true" else "false"))
