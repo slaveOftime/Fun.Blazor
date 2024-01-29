@@ -163,6 +163,7 @@ type FunBlazorServerExtensions =
 
 
 #if !NET6_0
+    /// So we can handle NodeRenderFragment which returned from pipeline result
     [<Extension>]
     static member AddFunBlazor<'TBuilder when 'TBuilder :> IEndpointConventionBuilder>
         (

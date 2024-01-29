@@ -1,5 +1,9 @@
 # Changelog
 
+## [4.0.0-beta007] - 2024-01-29
+
+- Update packages
+
 ## [4.0.0-beta001] - 2024-01-12
 
 Beaking changes:

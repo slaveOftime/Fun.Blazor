@@ -1,4 +1,4 @@
-#r "nuget: Fun.Build, 1.0.5"
+#r "nuget: Fun.Build"
 #r "nuget: Fake.IO.FileSystem, 6.0.0"
 #r "nuget: NuGet.Packaging"
 #r "nuget: NuGet.Protocol"

@@ -1,4 +1,4 @@
-#r "nuget: Fake.IO.FileSystem, 5.20.4"
+#r "nuget: Fake.IO.FileSystem, 6.0.0"
 #r "nuget: FSharp.SystemTextJson, 0.17.4"
 #r "nuget: Markdig, 0.33.0"
 
