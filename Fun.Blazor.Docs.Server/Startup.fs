@@ -52,7 +52,7 @@ app.MapFunBlazor(fun ctx ->
     let store = ctx.RequestServices.GetService<IShareStore>()
     store.IsServerSideRendering.Publish true
 
-    fragment {
+    html.fragment [|
         doctype "html"
         html' {
             lang "en"
@@ -88,7 +88,7 @@ app.MapFunBlazor(fun ctx ->
                 |]
             |]
         }
-    }
+    |]
 )
 
 app.Run()

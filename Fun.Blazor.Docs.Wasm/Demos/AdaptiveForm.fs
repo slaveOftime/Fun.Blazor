@@ -55,7 +55,7 @@ let private errorView errors = fragment {
 
 
 // This is used to demo nest/sub form
-let private addressForm (modelForm: AdaptiveForm<Address, AddressError>) = fragment {
+let private addressForm (modelForm: AdaptiveForm<Address, AddressError>) = html.fragment [|
     adaptiview () {
         let! binding, errors = modelForm.UseFieldWithErrors(fun x -> x.Zip)
         MudTextField'() {
@@ -74,7 +74,7 @@ let private addressForm (modelForm: AdaptiveForm<Address, AddressError>) = fragm
             Immediate true
         }
     }
-}
+|]
 
 
 let entry =

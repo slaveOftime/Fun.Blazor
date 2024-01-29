@@ -8,12 +8,12 @@ type Counter() =
 
     let mutable count = 0
 
-    override _.Render() = fragment {
+    override _.Render() = html.fragment [|
         p { $"Current count: {count}" }
         button {
             on.click (fun _ -> count <- count + 1)
             "Click me"
         }
-    }
+    |]
 
 let entry = html.blazor<Counter>()

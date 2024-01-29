@@ -57,6 +57,7 @@
 		<ProjectReference Include="..\Fun.Blazor.HtmlTemplate\Fun.Blazor.HtmlTemplate.fsproj" />
 		<ProjectReference Include="..\Fun.Blazor.Reactive\Fun.Blazor.Reactive.fsproj" />
 		<ProjectReference Include="..\Fun.Blazor.Wasm\Fun.Blazor.Wasm.fsproj" />
+		<ProjectReference Include="..\Fun.Blazor\Fun.Blazor.fsproj" />
 	</ItemGroup>
 	<!-- Above dotnet 7 there is a bug for Fun.Blazor.Cli to do hot reload.
     Below is the workaround. https://github.com/dotnet/fsharp/issues/14250 --><!--
