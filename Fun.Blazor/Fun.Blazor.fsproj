@@ -40,7 +40,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="FSharp.Data.Adaptive" Version="1.2.14" />
-		<PackageReference Include="Fun.Css" Version="0.3.2" />
+		<PackageReference Include="Fun.Css" Version="0.3.*" />
 		<PackageReference Include="Fun.Result" Version="2.0.9" />
 		<PackageReference Include="Microsoft.Extensions.ObjectPool" Version="8.0.*" />
 	</ItemGroup>

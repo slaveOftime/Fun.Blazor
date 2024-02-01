@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [4.0.0-beta010] - 2024-02-01
+
+- Update Fun.Css version
+
 ## [4.0.0-beta009] - 2024-01-29
 
 - Remove warning for combine, let user decide instead of annoying them
