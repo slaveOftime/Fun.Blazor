@@ -139,6 +139,8 @@ type EltWithChildBuilder(name) =
 
     member inline _.Yield([<InlineIfLambda>] x: NodeRenderFragment) = x
 
+    member inline _.Yield(x: NodeRenderFragment seq) = html.region x
+
     /// We should only allow merge AttrRenderFragment with NodeRenderFragment.
     /// Instead of merge NodeRenderFragment with AttrRenderFragment because blazor only allow add attribute then child.
     /// Also it is clear for the DSL

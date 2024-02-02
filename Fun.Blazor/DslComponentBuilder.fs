@@ -289,6 +289,8 @@ type ComponentWithChildBuilder<'T when 'T :> IComponent>() =
 
     member inline _.Yield([<InlineIfLambda>] x: NodeRenderFragment) = x
 
+    member inline _.Yield(x: NodeRenderFragment seq) = html.region x
+
     member inline _.Delay([<InlineIfLambda>] fn: unit -> NodeRenderFragment) = NodeRenderFragment(fun c b i -> fn().Invoke(c, b, i))
     member inline _.Delay([<InlineIfLambda>] fn: unit -> struct (AttrRenderFragment * NodeRenderFragment)) = fn ()
     member inline _.Delay([<InlineIfLambda>] fn: unit -> struct (AttrRenderFragment * PostRenderFragment * NodeRenderFragment)) = fn ()
@@ -586,6 +588,8 @@ type ComponentWithDomAndChildAttrBuilder<'T when 'T :> IComponent>() =
         )
 
     member inline _.Yield([<InlineIfLambda>] x: NodeRenderFragment) = x
+
+    member inline _.Yield(x: NodeRenderFragment seq) = html.region x
 
     member inline _.Delay([<InlineIfLambda>] fn: unit -> NodeRenderFragment) = NodeRenderFragment(fun c b i -> fn().Invoke(c, b, i))
     member inline _.Delay([<InlineIfLambda>] fn: unit -> struct (AttrRenderFragment * NodeRenderFragment)) = fn ()

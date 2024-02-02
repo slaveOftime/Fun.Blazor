@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [4.0.0-beta011] - 2024-02-03
+
+- Support yield seq
+
 ## [4.0.0-beta010] - 2024-02-01
 
 - Update Fun.Css version
