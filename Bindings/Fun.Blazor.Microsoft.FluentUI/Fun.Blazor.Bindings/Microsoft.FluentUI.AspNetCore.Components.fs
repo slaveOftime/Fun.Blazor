@@ -268,7 +268,7 @@ type FluentAnchorBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.A
     [<CustomOperation("Referrerpolicy")>] member inline _.Referrerpolicy ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Referrerpolicy" => x)
     /// See a element for more information.
     [<CustomOperation("Rel")>] member inline _.Rel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Rel" => x)
-    /// Gets or sets the target attribute that specifies where to open the link, if Href is specified. 
+    /// Gets or sets the target attribute that specifies where to open the link, if Href is specified.
     /// Possible values: _blank | _self | _parent | _top.
     [<CustomOperation("Target")>] member inline _.Target ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Target" => x)
     /// See a element for more information.
@@ -280,6 +280,8 @@ type FluentAnchorBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.A
     [<CustomOperation("IconStart")>] member inline _.IconStart ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Icon) = render ==> ("IconStart" => x)
     /// Gets or sets the Icon displayed at the end of anchor content.
     [<CustomOperation("IconEnd")>] member inline _.IconEnd ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Icon) = render ==> ("IconEnd" => x)
+    [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback("OnClick", fn)
+    [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask("OnClick", fn)
 
 type FluentBadgeBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -364,6 +366,9 @@ type FluentInputBaseBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :>
     [<CustomOperation("Autofocus")>] member inline _.Autofocus ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Autofocus" => x)
     /// Gets or sets the short hint displayed in the input before the user enters a value.
     [<CustomOperation("Placeholder")>] member inline _.Placeholder ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Placeholder" => x)
+    /// Gets or sets if the derived component is embedded in another component. 
+    /// If true, the ClassValue property will not include the EditContext's FieldCssClass.
+    [<CustomOperation("Embedded")>] member inline _.Embedded ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Embedded" => x)
     /// Change the content of this input field when the user write text (based on 'OnInput' HTML event).
     [<CustomOperation("Immediate")>] member inline _.Immediate ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Immediate" => x)
     /// Gets or sets the delay, in milliseconds, before to raise the ValueChanged event.
@@ -554,6 +559,8 @@ type FluentTextFieldBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsof
     /// Specifies whether a form or an input field should have autocomplete "on" or "off" or another value.
     /// An Id value must be set to use this property.
     [<CustomOperation("AutoComplete")>] member inline _.AutoComplete ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("AutoComplete" => x)
+    /// Gets or sets the type of data that can be entered by the user when editing the element or its content. This allows a browser to display an appropriate virtual keyboard. Not supported by Safari.
+    [<CustomOperation("InputMode")>] member inline _.InputMode ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.InputMode>) = render ==> ("InputMode" => x)
 
 type FluentBodyContentBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -780,6 +787,23 @@ type FluentDataGridBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric 
     [<CustomOperation("EmptyContent")>] member inline _.EmptyContent ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("EmptyContent", html.text x)
     /// If specified, grids render this fragment when there is no content.
     [<CustomOperation("EmptyContent")>] member inline _.EmptyContent ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("EmptyContent", html.text x)
+    /// Gets or sets a value indicating whether the grid is in a loading data state.
+    [<CustomOperation("Loading")>] member inline _.Loading ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Loading" => x)
+    /// Gets or sets the content to render when Loading is true.
+    /// A default fragment is used if loading content is not specified.
+    [<CustomOperation("LoadingContent")>] member inline _.LoadingContent ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("LoadingContent", fragment)
+    /// Gets or sets the content to render when Loading is true.
+    /// A default fragment is used if loading content is not specified.
+    [<CustomOperation("LoadingContent")>] member inline _.LoadingContent ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("LoadingContent", fragment { yield! fragments })
+    /// Gets or sets the content to render when Loading is true.
+    /// A default fragment is used if loading content is not specified.
+    [<CustomOperation("LoadingContent")>] member inline _.LoadingContent ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("LoadingContent", html.text x)
+    /// Gets or sets the content to render when Loading is true.
+    /// A default fragment is used if loading content is not specified.
+    [<CustomOperation("LoadingContent")>] member inline _.LoadingContent ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("LoadingContent", html.text x)
+    /// Gets or sets the content to render when Loading is true.
+    /// A default fragment is used if loading content is not specified.
+    [<CustomOperation("LoadingContent")>] member inline _.LoadingContent ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("LoadingContent", html.text x)
 
 type FluentDataGridCellBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -1112,11 +1136,13 @@ type FluentInputFileBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsof
     /// See https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/accept
     /// for more information.
     [<CustomOperation("Accept")>] member inline _.Accept ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Accept" => x)
+    /// Disables the form control, ensuring it doesn't participate in form submission.
+    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Disabled" => x)
     /// Gets or sets the type of file reading.
     /// For SaveToTemporaryFolder, use LocalFile to retrieve the file.
     /// For Buffer, use Buffer to retrieve bytes.
     [<CustomOperation("Mode")>] member inline _.Mode ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.InputFileMode) = render ==> ("Mode" => x)
-    /// Gets or sets a value indicating whether the Drag/Drop zone is visible. 
+    /// Gets or sets a value indicating whether the Drag/Drop zone is visible.
     /// Default is true.
     [<CustomOperation("DragDropZoneVisible")>] member inline _.DragDropZoneVisible ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("DragDropZoneVisible" => x)
     /// Gets or sets the progress content of the component.
@@ -1689,6 +1715,10 @@ type FluentPopoverBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     /// Gets or sets the default horizontal position of the region relative to the anchor element.
     /// Default is unset. See 
     [<CustomOperation("HorizontalPosition")>] member inline _.HorizontalPosition ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.HorizontalPosition>) = render ==> ("HorizontalPosition" => x)
+    /// How short the space allocated to the default position has to be before the tallest area is selected for layout.
+    [<CustomOperation("VerticalThreshold")>] member inline _.VerticalThreshold ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("VerticalThreshold" => x)
+    /// How narrow the space allocated to the default position has to be before the widest area is selected for layout.
+    [<CustomOperation("HorizontalThreshold")>] member inline _.HorizontalThreshold ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("HorizontalThreshold" => x)
     /// Gets or sets popover opened state.
     [<CustomOperation("Open")>] member inline _.Open ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Open" => x)
     /// Gets or sets popover opened state.
@@ -1838,6 +1868,81 @@ type FluentSliderLabelBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric 
     [<CustomOperation("HideMark")>] member inline _.HideMark ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("HideMark" => x)
     /// Gets or sets disabled state of the label. This is generally controlled by the parent.
     [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("Disabled" => x)
+
+type FluentSortableListBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
+    /// Gets or sets the template to be used to define each sortable item in the list.
+    /// Use the @context parameter to access the item and its properties.
+    [<CustomOperation("ItemTemplate")>] member inline _.ItemTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: 'TItem -> NodeRenderFragment) = render ==> html.renderFragment("ItemTemplate", fn)
+    /// Gets or sets the list of items to be displayed in a sortable list.
+    [<CustomOperation("Items")>] member inline _.Items ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<'TItem>) = render ==> ("Items" => x)
+    /// Event callback for when the list is updated.
+    [<CustomOperation("OnUpdate")>] member inline _.OnUpdate ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.FluentUI.AspNetCore.Components.FluentSortableListEventArgs>("OnUpdate", fn)
+    /// Event callback for when the list is updated.
+    [<CustomOperation("OnUpdate")>] member inline _.OnUpdate ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.FluentUI.AspNetCore.Components.FluentSortableListEventArgs>("OnUpdate", fn)
+    /// Event callback for when an item is removed from the list.
+    [<CustomOperation("OnRemove")>] member inline _.OnRemove ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.FluentUI.AspNetCore.Components.FluentSortableListEventArgs>("OnRemove", fn)
+    /// Event callback for when an item is removed from the list.
+    [<CustomOperation("OnRemove")>] member inline _.OnRemove ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.FluentUI.AspNetCore.Components.FluentSortableListEventArgs>("OnRemove", fn)
+    /// Gets or sets the name of the Group used for dragging between lists. Set the group to the same value on both lists to enable.
+    /// You can only have 1 group with 2 lists.
+    [<CustomOperation("Group")>] member inline _.Group ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Group" => x)
+    /// Gets or sets whether elements are cloned instead of moved. Set Pull to "clone" to enable this.
+    [<CustomOperation("Clone")>] member inline _.Clone ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Clone" => x)
+    /// Gets or sets wether it is possible to drop items into the current list from another list in the same group. 
+    /// Set to false to disable dropping from another list onto the current list.
+    [<CustomOperation("Drop")>] member inline _.Drop ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Drop" => x)
+    /// Gets or sets whether the list is sortable.
+    /// Default is true
+    /// Disable sorting within a list by setting to false.
+    [<CustomOperation("Sort")>] member inline _.Sort ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Sort" => x)
+    /// Gets or sets whether the whole item acts as drag handle.
+    /// Set to true to use an element with classname `.sortable-grab` as the handle.
+    [<CustomOperation("Handle")>] member inline _.Handle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Handle" => x)
+    /// Gets or sets the function to filter out elements that cannot be sorted or moved.
+    [<CustomOperation("ItemFilter")>] member inline _.ItemFilter ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("ItemFilter" => (System.Func<'TItem, System.Boolean>fn))
+    /// Gets or sets wether ro ignore the HTML5 DnD behaviour and force the fallback to kick in
+    [<CustomOperation("Fallback")>] member inline _.Fallback ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Fallback" => x)
+
+/// This component is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+/// Add this line to suppress de compilation error: `@{ #pragma warning disable FluentMultiSplitter }`
+type FluentMultiSplitterBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
+    /// Gets or sets the collapse callback.
+    [<CustomOperation("OnCollapse")>] member inline _.OnCollapse ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.FluentUI.AspNetCore.Components.FluentMultiSplitterEventArgs>("OnCollapse", fn)
+    /// Gets or sets the collapse callback.
+    [<CustomOperation("OnCollapse")>] member inline _.OnCollapse ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.FluentUI.AspNetCore.Components.FluentMultiSplitterEventArgs>("OnCollapse", fn)
+    /// Gets or sets the expand callback.
+    [<CustomOperation("OnExpand")>] member inline _.OnExpand ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.FluentUI.AspNetCore.Components.FluentMultiSplitterEventArgs>("OnExpand", fn)
+    /// Gets or sets the expand callback.
+    [<CustomOperation("OnExpand")>] member inline _.OnExpand ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.FluentUI.AspNetCore.Components.FluentMultiSplitterEventArgs>("OnExpand", fn)
+    /// Gets or sets the resize callback.
+    [<CustomOperation("OnResize")>] member inline _.OnResize ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.FluentUI.AspNetCore.Components.FluentMultiSplitterResizeEventArgs>("OnResize", fn)
+    /// Gets or sets the resize callback.
+    [<CustomOperation("OnResize")>] member inline _.OnResize ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.FluentUI.AspNetCore.Components.FluentMultiSplitterResizeEventArgs>("OnResize", fn)
+    /// Gets or sets the size of the splitter bar in pixels. Default is 8
+    [<CustomOperation("BarSize")>] member inline _.BarSize ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("BarSize" => x)
+    /// Gets or sets the orientation.
+    [<CustomOperation("Orientation")>] member inline _.Orientation ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Orientation) = render ==> ("Orientation" => x)
+    /// Gets or sets the width of the container.
+    [<CustomOperation("Width")>] member inline _.Width ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Width" => x)
+    /// Gets or sets the height of the container.
+    [<CustomOperation("Height")>] member inline _.Height ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Height" => x)
+
+type FluentMultiSplitterPaneBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
+    /// Gets or sets a value indicating whether this FluentMultiSplitterPane is collapsed.
+    [<CustomOperation("Collapsed")>] member inline _.Collapsed ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Collapsed" => x)
+    /// Gets or sets a value indicating whether this FluentMultiSplitterPane is collapsible.
+    [<CustomOperation("Collapsible")>] member inline _.Collapsible ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Collapsible" => x)
+    /// Determines the maximum value.
+    [<CustomOperation("Max")>] member inline _.Max ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Max" => x)
+    /// Determines the minimum value.
+    [<CustomOperation("Min")>] member inline _.Min ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Min" => x)
+    /// Gets or sets a value indicating whether this FluentMultiSplitterPane is resizable.
+    [<CustomOperation("Resizable")>] member inline _.Resizable ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Resizable" => x)
+    /// Gets or sets the size.
+    [<CustomOperation("Size")>] member inline _.Size ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Size" => x)
 
 type FluentSplitterBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -2185,13 +2290,9 @@ open Fun.Blazor
 open Fun.Blazor.Operators
 open Microsoft.FluentUI.AspNetCore.Components.DslInternals
 
-/// Displays a list of validation messages from a cascaded EditContext.
 type ValidationSummaryBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
-    /// Gets or sets the model to produce the list of validation messages for.
-    /// When specified, this lists all errors that are associated with the model instance.
     [<CustomOperation("Model")>] member inline _.Model ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Object) = render ==> ("Model" => x)
-    /// Gets or sets a collection of additional attributes that will be applied to the created ul element.
     [<CustomOperation("AdditionalAttributes")>] member inline _.AdditionalAttributes ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>) = render ==> ("AdditionalAttributes" => x)
 
             
@@ -2205,6 +2306,36 @@ open Microsoft.FluentUI.AspNetCore.Components.DslInternals
 type FluentValidationSummaryBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ValidationSummaryBuilder<'FunBlazorGeneric>()
 
+
+/// The status message will be read by screen readers.
+/// This component must be loaded when the page is rendered (it cannot be displayed or hidden using conditions).
+type FluentAccessibilityStatusBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    /// Gets or sets the status message to be read by screen readers.
+    [<CustomOperation("Message")>] member inline _.Message ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Message" => x)
+    /// In Debug mode, you can set this to true to display the status message on the page (on right, in yellow).
+    [<CustomOperation("DebugDisplay")>] member inline _.DebugDisplay ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("DebugDisplay" => x)
+
+/// Extends the OnKeyDown blazor event to provide a more fluent way to evaluate the key code.
+/// The anchor must refer to the ID of an element (or sub-element) accepting the focus.
+type FluentKeyCodeBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    /// Required. Gets or sets the control identifier associated with the KeyCode engine.
+    [<CustomOperation("Anchor")>] member inline _.Anchor ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Anchor" => x)
+    /// Event triggered when a KeyDown event is raised.
+    [<CustomOperation("OnKeyDown")>] member inline _.OnKeyDown ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.FluentUI.AspNetCore.Components.FluentKeyCodeEventArgs>("OnKeyDown", fn)
+    /// Event triggered when a KeyDown event is raised.
+    [<CustomOperation("OnKeyDown")>] member inline _.OnKeyDown ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.FluentUI.AspNetCore.Components.FluentKeyCodeEventArgs>("OnKeyDown", fn)
+    /// Ignore modifier keys (Shift, Alt, Ctrl, Meta) when evaluating the key code.
+    [<CustomOperation("IgnoreModifier")>] member inline _.IgnoreModifier ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("IgnoreModifier" => x)
+    /// Gets or sets the list of KeyCode to accept, and only this list, when evaluating the key code.
+    [<CustomOperation("Only")>] member inline _.Only ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.KeyCode[]) = render ==> ("Only" => x)
+    /// Gets or sets the list of KeyCode to ignore when evaluating the key code.
+    [<CustomOperation("Ignore")>] member inline _.Ignore ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.KeyCode[]) = render ==> ("Ignore" => x)
+    /// Gets or sets a way to prevent further propagation of the current event in the capturing and bubbling phases.
+    [<CustomOperation("StopPropagation")>] member inline _.StopPropagation ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("StopPropagation" => x)
+    /// Gets or sets a way to tells the user agent that if the event does not get explicitly handled, its default action should not be taken as it normally would be.
+    [<CustomOperation("PreventDefault")>] member inline _.PreventDefault ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("PreventDefault" => x)
 
 /// An abstract base class for columns in a FluentDataGrid`1.
 type ColumnBaseBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -2422,7 +2553,7 @@ type FluentToastProviderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micr
     /// Gets or sets whether to show a close button on a toast. Default is true.
     [<CustomOperation("ShowCloseButton")>] member inline _.ShowCloseButton ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("ShowCloseButton" => x)
 
-type PageScriptBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+type FluentPageScriptBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
     [<CustomOperation("Src")>] member inline _.Src ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Src" => x)
 
@@ -3326,8 +3457,7 @@ module DslCE =
         /// Groups child FluentRadio`1 components. 
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentRadioGroup<_>>)>] () = inherit FluentRadioGroupBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentRadioGroup<'TValue>, 'TValue>()
     type FluentSearch' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentSearch>)>] () = inherit FluentSearchBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentSearch>()
-    type FluentSliderInt' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentSlider<int>>)>] () = inherit FluentSliderBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentSlider<int>, int>()
-    type FluentSliderFloat' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentSlider<float>>)>] () = inherit FluentSliderBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentSlider<float>, float>()
+    type FluentSlider'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentSlider<_>>)>] () = inherit FluentSliderBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentSlider<'TValue>, 'TValue>()
     type FluentSwitch' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentSwitch>)>] () = inherit FluentSwitchBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentSwitch>()
     type FluentTextArea' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentTextArea>)>] () = inherit FluentTextAreaBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentTextArea>()
     type FluentTextField' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentTextField>)>] () = inherit FluentTextFieldBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentTextField>()
@@ -3428,6 +3558,15 @@ module DslCE =
     type FluentRadio'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentRadio<_>>)>] () = inherit FluentRadioBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentRadio<'TValue>, 'TValue>()
     type FluentSkeleton' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentSkeleton>)>] () = inherit FluentSkeletonBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentSkeleton>()
     type FluentSliderLabel'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentSliderLabel<_>>)>] () = inherit FluentSliderLabelBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentSliderLabel<'TValue>, 'TValue>()
+    type FluentSortableList'<'TItem> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentSortableList<_>>)>] () = inherit FluentSortableListBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentSortableList<'TItem>, 'TItem>()
+
+    /// This component is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+    /// Add this line to suppress de compilation error: `@{ #pragma warning disable FluentMultiSplitter }`
+    type FluentMultiSplitter' 
+        /// This component is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+        /// Add this line to suppress de compilation error: `@{ #pragma warning disable FluentMultiSplitter }`
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentMultiSplitter>)>] () = inherit FluentMultiSplitterBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentMultiSplitter>()
+    type FluentMultiSplitterPane' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentMultiSplitterPane>)>] () = inherit FluentMultiSplitterPaneBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentMultiSplitterPane>()
     type FluentSplitter' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentSplitter>)>] () = inherit FluentSplitterBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentSplitter>()
     type FluentStack' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentStack>)>] () = inherit FluentStackBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentStack>()
     type FluentTab' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentTab>)>] () = inherit FluentTabBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentTab>()
@@ -3440,12 +3579,22 @@ module DslCE =
     type FluentTreeView' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentTreeView>)>] () = inherit FluentTreeViewBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentTreeView>()
     type FluentWizard' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentWizard>)>] () = inherit FluentWizardBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentWizard>()
     type FluentWizardStep' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentWizardStep>)>] () = inherit FluentWizardStepBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentWizardStep>()
-
-    /// Displays a list of validation messages from a cascaded EditContext.
-    type ValidationSummary' 
-        /// Displays a list of validation messages from a cascaded EditContext.
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Forms.ValidationSummary>)>] () = inherit ValidationSummaryBuilder<Microsoft.AspNetCore.Components.Forms.ValidationSummary>()
+    type ValidationSummary' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Forms.ValidationSummary>)>] () = inherit ValidationSummaryBuilder<Microsoft.AspNetCore.Components.Forms.ValidationSummary>()
     type FluentValidationSummary' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentValidationSummary>)>] () = inherit FluentValidationSummaryBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentValidationSummary>()
+
+    /// The status message will be read by screen readers.
+    /// This component must be loaded when the page is rendered (it cannot be displayed or hidden using conditions).
+    type FluentAccessibilityStatus' 
+        /// The status message will be read by screen readers.
+        /// This component must be loaded when the page is rendered (it cannot be displayed or hidden using conditions).
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentAccessibilityStatus>)>] () = inherit FluentAccessibilityStatusBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentAccessibilityStatus>()
+
+    /// Extends the OnKeyDown blazor event to provide a more fluent way to evaluate the key code.
+    /// The anchor must refer to the ID of an element (or sub-element) accepting the focus.
+    type FluentKeyCode' 
+        /// Extends the OnKeyDown blazor event to provide a more fluent way to evaluate the key code.
+        /// The anchor must refer to the ID of an element (or sub-element) accepting the focus.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentKeyCode>)>] () = inherit FluentKeyCodeBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentKeyCode>()
 
     /// An abstract base class for columns in a FluentDataGrid`1.
     type ColumnBase'<'TGridItem> 
@@ -3471,7 +3620,7 @@ module DslCE =
     type CommunicationToast' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.CommunicationToast>)>] () = inherit CommunicationToastBuilder<Microsoft.FluentUI.AspNetCore.Components.CommunicationToast>()
     type ProgressToast' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.ProgressToast>)>] () = inherit ProgressToastBuilder<Microsoft.FluentUI.AspNetCore.Components.ProgressToast>()
     type FluentToastProvider' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentToastProvider>)>] () = inherit FluentToastProviderBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentToastProvider>()
-    type PageScript' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.PageScript>)>] () = inherit PageScriptBuilder<Microsoft.FluentUI.AspNetCore.Components.PageScript>()
+    type FluentPageScript' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentPageScript>)>] () = inherit FluentPageScriptBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentPageScript>()
     type ConfirmationToast' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.ConfirmationToast>)>] () = inherit ConfirmationToastBuilder<Microsoft.FluentUI.AspNetCore.Components.ConfirmationToast>()
     type _Imports' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components._Imports>)>] () = inherit _ImportsBuilder<Microsoft.FluentUI.AspNetCore.Components._Imports>()
             

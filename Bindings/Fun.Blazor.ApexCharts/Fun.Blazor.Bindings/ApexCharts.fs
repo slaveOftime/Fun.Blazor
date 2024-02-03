@@ -115,6 +115,30 @@ type ApexChartBuilder<'FunBlazorGeneric, 'TItem when 'TItem : not struct and 'Fu
     [<CustomOperation("OnRendered")>] member inline _.OnRendered ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback("OnRendered", fn)
     /// Fires when RenderAsync completes
     [<CustomOperation("OnRendered")>] member inline _.OnRendered ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask("OnRendered", fn)
+    /// Fires when user click an annotation label.
+    [<CustomOperation("OnAnnotationLabelClick")>] member inline _.OnAnnotationLabelClick ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<ApexCharts.AnnotationEvent<'TItem>>("OnAnnotationLabelClick", fn)
+    /// Fires when user click an annotation label.
+    [<CustomOperation("OnAnnotationLabelClick")>] member inline _.OnAnnotationLabelClick ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<ApexCharts.AnnotationEvent<'TItem>>("OnAnnotationLabelClick", fn)
+    /// Fires when user mouse enters an annotation label.
+    [<CustomOperation("OnAnnotationLabelMouseEnter")>] member inline _.OnAnnotationLabelMouseEnter ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<ApexCharts.AnnotationEvent<'TItem>>("OnAnnotationLabelMouseEnter", fn)
+    /// Fires when user mouse enters an annotation label.
+    [<CustomOperation("OnAnnotationLabelMouseEnter")>] member inline _.OnAnnotationLabelMouseEnter ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<ApexCharts.AnnotationEvent<'TItem>>("OnAnnotationLabelMouseEnter", fn)
+    /// Fires when user mouse leaves an annotation label.
+    [<CustomOperation("OnAnnotationLabelMouseLeave")>] member inline _.OnAnnotationLabelMouseLeave ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<ApexCharts.AnnotationEvent<'TItem>>("OnAnnotationLabelMouseLeave", fn)
+    /// Fires when user mouse leaves an annotation label.
+    [<CustomOperation("OnAnnotationLabelMouseLeave")>] member inline _.OnAnnotationLabelMouseLeave ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<ApexCharts.AnnotationEvent<'TItem>>("OnAnnotationLabelMouseLeave", fn)
+    /// Fires when user click an annotation point.
+    [<CustomOperation("OnAnnotationPointClick")>] member inline _.OnAnnotationPointClick ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<ApexCharts.AnnotationEvent<'TItem>>("OnAnnotationPointClick", fn)
+    /// Fires when user click an annotation point.
+    [<CustomOperation("OnAnnotationPointClick")>] member inline _.OnAnnotationPointClick ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<ApexCharts.AnnotationEvent<'TItem>>("OnAnnotationPointClick", fn)
+    /// Fires when user mouse enters an annotation point.
+    [<CustomOperation("OnAnnotationPointMouseEnter")>] member inline _.OnAnnotationPointMouseEnter ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<ApexCharts.AnnotationEvent<'TItem>>("OnAnnotationPointMouseEnter", fn)
+    /// Fires when user mouse enters an annotation point.
+    [<CustomOperation("OnAnnotationPointMouseEnter")>] member inline _.OnAnnotationPointMouseEnter ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<ApexCharts.AnnotationEvent<'TItem>>("OnAnnotationPointMouseEnter", fn)
+    /// Fires when user mouse leaves an annotation point.
+    [<CustomOperation("OnAnnotationPointMouseLeave")>] member inline _.OnAnnotationPointMouseLeave ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<ApexCharts.AnnotationEvent<'TItem>>("OnAnnotationPointMouseLeave", fn)
+    /// Fires when user mouse leaves an annotation point.
+    [<CustomOperation("OnAnnotationPointMouseLeave")>] member inline _.OnAnnotationPointMouseLeave ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<ApexCharts.AnnotationEvent<'TItem>>("OnAnnotationPointMouseLeave", fn)
     /// A custom function to execute for generating Y-axis labels. Only supported in Blazor WebAssembly!
     [<CustomOperation("FormatYAxisLabel")>] member inline _.FormatYAxisLabel ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("FormatYAxisLabel" => (System.Func<System.Decimal, System.String>fn))
     /// Enables merging multiple data points into a single item in the chart
