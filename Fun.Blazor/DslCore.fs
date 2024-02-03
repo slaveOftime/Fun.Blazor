@@ -3,7 +3,10 @@
 open System
 open System.Threading.Tasks
 open FSharp.Data.Adaptive
+open Microsoft.Extensions.Logging
+open Microsoft.Extensions.DependencyInjection
 open Microsoft.AspNetCore.Components
+open Microsoft.AspNetCore.Components.Web
 open Operators
 open Internal
 
@@ -124,7 +127,7 @@ type html() =
     /// </code>
     /// </example>
     static member inline blazor<'T when 'T :> IComponent>(?render: AttrRenderFragment) =
-        html.blazor(typeof<'T>, attr = defaultArg render (emptyAttr()))
+        html.blazor (typeof<'T>, attr = defaultArg render (emptyAttr ()))
 
     /// <summary>
     /// Make a blazor component to a render fragment with a render for attributes
@@ -139,7 +142,7 @@ type html() =
     /// </code>
     /// </example>
     static member inline blazor<'T when 'T :> IComponent>(attrBuilder: ComponentAttrBuilder<'T>) =
-        html.blazor(typeof<'T>, attr = attrBuilder.Build())
+        html.blazor (typeof<'T>, attr = attrBuilder.Build())
 
 
 #if !NET6_0
@@ -180,7 +183,7 @@ type html() =
     /// </code>
     /// </example>
     static member inline blazor<'T when 'T :> IComponent>(renderMode: IComponentRenderMode, ?attr: AttrRenderFragment) =
-        html.blazor(typeof<'T>, renderMode, attr = defaultArg attr (emptyAttr()))
+        html.blazor (typeof<'T>, renderMode, attr = defaultArg attr (emptyAttr ()))
 
     /// <summary>
     /// Make a blazor component to a render fragment with a render for attributes
@@ -194,13 +197,13 @@ type html() =
     /// </code>
     /// </example>
     static member inline blazor<'T when 'T :> IComponent>(renderMode: IComponentRenderMode, attrBuilder: ComponentAttrBuilder<'T>) =
-        html.blazor(typeof<'T>, renderMode, attr = attrBuilder.Build())
+        html.blazor (typeof<'T>, renderMode, attr = attrBuilder.Build())
 
 
-    /// This has to be used together with _framework/blazor.web.js. 
+    /// This has to be used together with _framework/blazor.web.js.
     /// For more information please go to https://learn.microsoft.com/en-us/aspnet/core/blazor/components/rendering?view=aspnetcore-8.0#streaming-rendering
-    static member inline streaming (node: NodeRenderFragment) =
-        html.blazor<FunStreamingComponent>(nameof Unchecked.defaultof<FunStreamingComponent>.Content => node)
+    static member inline streaming(node: NodeRenderFragment) =
+        html.blazor<FunStreamingComponent> (nameof Unchecked.defaultof<FunStreamingComponent>.Content => node)
 #endif
 
     /// Helper method to use 'Comp type to create an empty node for component
@@ -226,20 +229,20 @@ type html() =
 
     /// Helper method to create blazor RednerFragment<'Item>
     static member inline renderFragment<'TItem>([<InlineIfLambda>] render: 'TItem -> NodeRenderFragment, ?comp: IComponent) =
-        Microsoft.AspNetCore.Components.RenderFragment<'TItem>(fun x -> html.renderFragment(render x, comp = defaultArg comp null))
+        Microsoft.AspNetCore.Components.RenderFragment<'TItem>(fun x -> html.renderFragment (render x, comp = defaultArg comp null))
 
 
     /// Helper method for create attribute for convert NodeRenderFragment to Microsoft.AspNetCore.Components.RenderFragment
     static member inline renderFragment<'TItem>(name: string, [<InlineIfLambda>] render: 'TItem -> NodeRenderFragment) =
         AttrRenderFragment(fun comp builder index ->
-            builder.AddAttribute(index, name, box (html.renderFragment(render, comp)))
+            builder.AddAttribute(index, name, box (html.renderFragment (render, comp)))
             index + 1
         )
 
     /// Helper method for create attribute for convert NodeRenderFragment to Microsoft.AspNetCore.Components.RenderFragment
     static member inline renderFragment(name: string, fragment: NodeRenderFragment) =
         AttrRenderFragment(fun comp builder index ->
-            builder.AddAttribute(index, name, box (html.renderFragment(fragment, comp)))
+            builder.AddAttribute(index, name, box (html.renderFragment (fragment, comp)))
             index + 1
         )
 
@@ -274,7 +277,7 @@ type html() =
         )
 
 
-    /// This is a helper method for create attributes for blazor bindable attribute which normally has two attributes, xxx and xxxChanged by convention. 
+    /// This is a helper method for create attributes for blazor bindable attribute which normally has two attributes, xxx and xxxChanged by convention.
     /// Be careful, the store change will not trigger the attribute to be re-render. This is used to update the store when the attribute is changed.
     /// This is normally used as a helper method for generated DSL.
     static member bind<'T>(name: string, store: cval<'T>) =
@@ -385,6 +388,24 @@ type html() =
     static member inline class'(x: string) = "class" =>> x
     static member inline classes(x: string seq) = "class" =>> (String.concat " " x)
 
+#if !NET6_0
+    /// Render a node as string, logging must be registered in the service collection
+    static member renderAsString (serviceProvider: IServiceProvider) (node: NodeRenderFragment) = task {
+        let loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>()
+        use htmlRenderer = new HtmlRenderer(serviceProvider, loggerFactory)
+        return!
+            htmlRenderer.Dispatcher.InvokeAsync<string>(fun () -> task {
+                let dict = Internal.dictionaryPool.Get()
+                try
+                    dict["Fragment"] <- node
+                    let parameters = ParameterView.FromDictionary(dict)
+                    let! output = htmlRenderer.RenderComponentAsync<FunFragmentComponent>(parameters)
+                    return output.ToHtmlString()
+                finally
+                    Internal.dictionaryPool.Return dict
+            })
+    }
+#endif
 
 type Static =
 

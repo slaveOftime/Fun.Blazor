@@ -12,8 +12,10 @@ type StyleBuilder() =
     member inline _.Run([<InlineIfLambda>] combine: Fun.Css.Internal.CombineKeyValue) =
         AttrRenderFragment(fun _ builder index ->
             let sb = stringBuilderPool.Get()
-            builder.AddAttribute(index, "style", combine.Invoke(sb).ToString())
-            stringBuilderPool.Return sb
+            try
+                builder.AddAttribute(index, "style", combine.Invoke(sb).ToString())
+            finally
+                stringBuilderPool.Return sb
             index + 1
         )
 
@@ -21,11 +23,12 @@ type StyleBuilder() =
 type StyleStrBuilder() =
     inherit Fun.Css.CssBuilder()
 
-    member inline _.Run([<InlineIfLambda>] combine: Fun.Css.Internal.CombineKeyValue) =
+    member inline _.Run([<InlineIfLambda>] combine: Fun.Css.Internal.CombineKeyValue) : string =
         let sb = stringBuilderPool.Get()
-        let str = combine.Invoke(sb).ToString()
-        stringBuilderPool.Return sb
-        str
+        try
+            combine.Invoke(sb).ToString()
+        finally
+            stringBuilderPool.Return sb
 
 
 type RulesetBuilder(ruleName: string) =
@@ -63,24 +66,26 @@ type StyleEltBuilder() =
 
     member inline _.Yield((identifier, kf): struct (string * KeyFrame)) =
         let sb = stringBuilderPool.Get()
+        try
+            sb.Append("@keyframes ").Append(identifier).AppendLine(" {") |> ignore
+            kf.Invoke(sb) |> ignore
+            sb.AppendLine("}") |> ignore
+            html.raw (sb.ToString())
+        finally
+            stringBuilderPool.Return sb
 
-        sb.Append("@keyframes ").Append(identifier).AppendLine(" {") |> ignore
-        kf.Invoke(sb) |> ignore
-        sb.AppendLine("}") |> ignore
-
-        let result = sb.ToString()
-        stringBuilderPool.Return sb
-        html.raw result
 
     member inline _.Yield((ruleName, combine): struct (string * Fun.Css.Internal.CombineKeyValue)) =
         let sb = stringBuilderPool.Get()
-        sb.Append(ruleName).AppendLine(" {") |> ignore
-        sb.Append("    ") |> ignore
-        combine.Invoke(sb) |> ignore
-        sb.AppendLine().AppendLine("}") |> ignore
-        let str = sb.ToString()
-        stringBuilderPool.Return sb
-        html.raw str
+        try
+            sb.Append(ruleName).AppendLine(" {") |> ignore
+            sb.Append("    ") |> ignore
+            combine.Invoke(sb) |> ignore
+            sb.AppendLine().AppendLine("}") |> ignore
+            html.raw (sb.ToString())
+        finally
+            stringBuilderPool.Return sb
+
 
     member inline _.Combine([<InlineIfLambda>] render1: NodeRenderFragment, [<InlineIfLambda>] render2: NodeRenderFragment) = render1 >=> render2
 

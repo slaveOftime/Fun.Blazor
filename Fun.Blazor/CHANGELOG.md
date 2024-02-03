@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [4.0.0-beta012] - 2024-02-03
+
+- html.renderAsString
+
 ## [4.0.0-beta011] - 2024-02-03
 
 - Support yield seq

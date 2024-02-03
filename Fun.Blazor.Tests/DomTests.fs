@@ -53,34 +53,40 @@ let ``Yield key value attributes`` () =
 
     task {
         let result = context.RenderNode demo
-        result.MarkupMatches("""
+        result.MarkupMatches(
+            """
             <div data="1" data-theme="dark" style="color: red" width="10" height="100.1" hidden1=""  >
                 count=0
                 <button att1="1" att2=""  type="button" class="mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple"  >
                     <span class="mud-button-label">Hi</span>
                 </button>
             </div>
-        """)
+        """
+        )
 
         do! result.Find("div").ClickAsync(null)
-        result.MarkupMatches("""
+        result.MarkupMatches(
+            """
             <div data="1" data-theme="dark" style="color: red" width="10" height="100.1" hidden1=""  >
                 count=1
                 <button att1="1" att2=""  type="button" class="mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple"  >
                     <span class="mud-button-label">Hi</span>
                 </button>
             </div>
-        """)
+        """
+        )
 
         result.Find("div").Change(null)
-        result.MarkupMatches("""
+        result.MarkupMatches(
+            """
             <div data="1" data-theme="dark" style="color: red" width="10" height="100.1" hidden1=""  >
                 count=2
                 <button att1="1" att2=""  type="button" class="mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple"  >
                     <span class="mud-button-label">Hi</span>
                 </button>
             </div>
-        """)
+        """
+        )
     }
 
 
@@ -164,6 +170,7 @@ let ``DOM CE DSL build check`` () =
 
 
 type IFunBlazorBuilder with
+
     [<CustomOperation("demo")>]
     member inline _.demo([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("demo" => v)
 
@@ -171,11 +178,10 @@ type IFunBlazorBuilder with
 let ``DOM CE attribute share check`` () =
     let context = createTestContext ()
 
-    let tempAttr =
-        domAttr {
-            demo 123
-            asAttrRenderFragment
-        }
+    let tempAttr = domAttr {
+        demo 123
+        asAttrRenderFragment
+    }
 
     MudAlert'() {
         tempAttr
@@ -183,12 +189,11 @@ let ``DOM CE attribute share check`` () =
     }
     |> ignore
 
-    let demo =
-        div {
-            tempAttr
-            title' "t"
-            demo 3456
-        }
+    let demo = div {
+        tempAttr
+        title' "t"
+        demo 3456
+    }
     let result = context.RenderNode demo
     result.MarkupMatches("""<div demo="123" title="t"></div>""")
     Assert.Equal("""<div demo="123" title="t" demo="3456"></div>""", result.Markup)
@@ -198,65 +203,64 @@ let ``DOM CE attribute share check`` () =
 let ``Check some attributes`` () =
     let context = createTestContext ()
 
-    let demo =
-        input {
-            hidden true
-            value true
-            type' InputTypes.``datetime-local``
-            autocomplete AutoCompleteValues.name.family_name
-        }
+    let demo = input {
+        hidden true
+        value true
+        type' InputTypes.``datetime-local``
+        autocomplete AutoCompleteValues.name.family_name
+    }
 
     let result = context.RenderNode demo
-    result.MarkupMatches("""
+    result.MarkupMatches(
+        """
         <input hidden value="True" type="datetime-local" autocomplete="family-name">
         </input>
-    """)
+    """
+    )
 
 
 [<Fact>]
 let ``script tag should work`` () =
     let context = createTestContext ()
 
-    let demo =
-        script { 
-            src "demo"
-        }
+    let demo = script { src "demo" }
 
     let result = context.RenderNode demo
-    result.MarkupMatches("""
+    result.MarkupMatches(
+        """
         <script src="demo"></script>
-    """)
+    """
+    )
 
-    let demo =
-        script { 
-            "let x = 123;"
-        }
+    let demo = script { "let x = 123;" }
 
     let result = context.RenderNode demo
-    result.MarkupMatches("""
+    result.MarkupMatches(
+        """
         <script>let x = 123;</script>
-    """)
+    """
+    )
 
-    let demo =
-        script { 
-            "let x = 123;"
-        }
+    let demo = script { "let x = 123;" }
 
     let result = context.RenderNode demo
-    result.MarkupMatches("""
+    result.MarkupMatches(
+        """
         <script>let x = 123;</script>
-    """)
+    """
+    )
 
-    let demo =
-        script { 
-            "let x = 123;"
-            "let y = 456;"
-        }
+    let demo = script {
+        "let x = 123;"
+        "let y = 456;"
+    }
 
     let result = context.RenderNode demo
-    result.MarkupMatches("""
+    result.MarkupMatches(
+        """
         <script>let x = 123;let y = 456;</script>
-    """)
+    """
+    )
 
 
 [<Fact>]
@@ -265,18 +269,10 @@ let ``Yield RenderFragment directly`` () =
 
     let demo =
         div.create [|
-            div {
-                RenderFragment(fun builder ->
-                    builder.AddContent(0, "foo")
-                )
-            }
+            div { RenderFragment(fun builder -> builder.AddContent(0, "foo")) }
             div {
                 childContent [
-                    html.renderFragment (
-                        RenderFragment(fun builder ->
-                            builder.AddContent(0, "foo2")
-                        )
-                    )
+                    html.renderFragment (RenderFragment(fun builder -> builder.AddContent(0, "foo2")))
                 ]
             }
         |]
@@ -308,13 +304,15 @@ let ``Sections should work`` () =
         |]
 
     let result = context.RenderNode demo
-    result.MarkupMatches("
+    result.MarkupMatches(
+        "
         <div>
             <div>id</div>
             <div>name</div>
             <div>foo</div>
         </div>
-    ")
+    "
+    )
 
 
 
@@ -322,21 +320,21 @@ let ``Sections should work`` () =
 let ``for loop should work for element`` () =
     let context = createTestContext ()
 
-    let demo =
-        div {
-            for i in 1..3 do
-                if i < 2 then p { i }
-                else span { i }
-        }
+    let demo = div {
+        for i in 1..3 do
+            if i < 2 then p { i } else span { i }
+    }
 
     let result = context.RenderNode demo
-    result.MarkupMatches("
+    result.MarkupMatches(
+        "
         <div>
             <p>1</p>
             <span>2</span>
             <span>3</span>
         </div>
-    ")
+    "
+    )
 
 
 [<Fact>]
@@ -354,11 +352,13 @@ let ``should work for component`` () =
         }
 
     let result = context.RenderNode demo
-    result.MarkupMatches("""
+    result.MarkupMatches(
+        """
         <div class="mud-paper mud-elevation-1 p-2" style="overflow: hidden; height: 100%; ;">
           <div>foo</div>
         </div>
-    """)
+    """
+    )
 
 
 [<Fact>]
@@ -368,12 +368,12 @@ let ``for loop should work for component`` () =
     let demo =
         MudCard'() {
             for i in 1..3 do
-                if i < 2 then MudButton'() { i }
-                else span { i }
+                if i < 2 then MudButton'() { i } else span { i }
         }
 
     let result = context.RenderNode demo
-    result.MarkupMatches("""
+    result.MarkupMatches(
+        """
         <div class="mud-paper mud-elevation-1 mud-card" style="">
             <button  type="button" class="mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple"  >     
                 <span class="mud-button-label">1</span>
@@ -381,7 +381,8 @@ let ``for loop should work for component`` () =
             <span>2</span>
             <span>3</span>
         </div>
-    """)
+    """
+    )
 
 
 [<Fact>]
@@ -389,50 +390,49 @@ let ``html blazor should work with ComponentAttrBuilder`` () =
     let context = createTestContext ()
 
     let demo =
-        html.blazor (ComponentAttrBuilder<MudPaper>()
-            .Add((fun x -> x.Elevation), 10)    
-            .Add((fun x -> x.Outlined), true)    
-        )
+        html.blazor (ComponentAttrBuilder<MudPaper>().Add((fun x -> x.Elevation), 10).Add((fun x -> x.Outlined), true))
 
     let result = context.RenderNode demo
-    result.MarkupMatches("""
+    result.MarkupMatches(
+        """
         <div class="mud-paper mud-paper-outlined" style=""></div>
-    """)
+    """
+    )
 
 
 [<Fact>]
 let ``support yield seq`` () =
     let context = createTestContext ()
 
-    let demo =
-        div {
-            [|
-                for i in 1..3 do
-                    if i < 2 then p { i }
-                    else span { i }
-            |]
-        }
+    let demo = div {
+        [|
+            for i in 1..3 do
+                if i < 2 then p { i } else span { i }
+        |]
+    }
 
     let result = context.RenderNode demo
-    result.MarkupMatches("
+    result.MarkupMatches(
+        "
         <div>
             <p>1</p>
             <span>2</span>
             <span>3</span>
         </div>
-    ")
+    "
+    )
 
     let demo =
         MudCard'() {
             [|
                 for i in 1..3 do
-                    if i < 2 then MudButton'() { i }
-                    else span { i }
+                    if i < 2 then MudButton'() { i } else span { i }
             |]
         }
 
     let result = context.RenderNode demo
-    result.MarkupMatches("""
+    result.MarkupMatches(
+        """
         <div class="mud-paper mud-elevation-1 mud-card" style="">
             <button  type="button" class="mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple"  >     
                 <span class="mud-button-label">1</span>
@@ -440,4 +440,14 @@ let ``support yield seq`` () =
             <span>2</span>
             <span>3</span>
         </div>
-    """)
+    """
+    )
+
+
+[<Fact>]
+let ``renderAsString should work`` () = task {
+    let services = ServiceCollection().AddLogging()
+    let serviceProvider = services.BuildServiceProvider()
+    let! actual = div { "hi" } |> html.renderAsString serviceProvider
+    Assert.Equal("<div>hi</div>", actual)
+}

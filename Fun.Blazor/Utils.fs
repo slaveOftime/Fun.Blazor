@@ -25,6 +25,7 @@ module Internal =
 
     let objectPoolProvider = DefaultObjectPoolProvider()
     let stringBuilderPool = objectPoolProvider.CreateStringBuilderPool()
+    let dictionaryPool = objectPoolProvider.Create<Collections.Generic.Dictionary<string, obj>>()
 
 
     let makeStyles (rules: (string * string) seq) =
