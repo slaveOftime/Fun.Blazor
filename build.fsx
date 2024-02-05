@@ -153,13 +153,7 @@ let stage_generateBindingProjects name package nsp patch =
             ]
         })
         run $"dotnet run --project ../../Fun.Blazor.Cli/Fun.Blazor.Cli.fsproj --framework net8.0 -- generate {projectName}.fsproj"
-        run (fun ctx -> async {
-            let! result = ctx.RunCommand "dotnet build"
-            result
-            |> Result.mapError (sprintf "[red]build failed %s[/]" >> Spectre.Console.AnsiConsole.MarkupLine)
-            |> ignore
-            return Ok()
-        })
+        run "dotnet build"
     }
 
 let stage_pack =
@@ -273,18 +267,22 @@ pipeline "packages" {
 pipeline "bindings" {
     description "Generate bindings project"
     collapseGithubActionLogs
-    stage_generateBindingProjects "Microsoft.Web" "Microsoft.AspNetCore.Components.Web" "Microsoft.AspNetCore.Components" ""
-    stage_generateBindingProjects
-        "Microsoft.Authorization"
-        "Microsoft.AspNetCore.Components.Authorization"
-        "Microsoft.AspNetCore.Components.Authorization"
-        ""
-    stage_generateBindingProjects "Microsoft.FluentUI" "Microsoft.FluentUI.AspNetCore.Components" "Microsoft.FluentUI.AspNetCore.Components" ""
-    stage_generateBindingProjects "Microsoft.QuickGrid" "Microsoft.AspNetCore.Components.QuickGrid" "Microsoft.AspNetCore.Components.QuickGrid" ""
-    stage_generateBindingProjects "AntDesign" "AntDesign" "AntDesign" ""
-    stage_generateBindingProjects "MudBlazor" "MudBlazor" "MudBlazor" ""
-    stage_generateBindingProjects "ApexCharts" "Blazor-ApexCharts" "ApexCharts" ""
-    stage_generateBindingProjects "BlazorMonaco" "BlazorMonaco" "BlazorMonaco" ""
+    stage "generate" {
+        paralle
+        continueOnStepFailure
+        stage_generateBindingProjects "Microsoft.Web" "Microsoft.AspNetCore.Components.Web" "Microsoft.AspNetCore.Components" ""
+        stage_generateBindingProjects
+            "Microsoft.Authorization"
+            "Microsoft.AspNetCore.Components.Authorization"
+            "Microsoft.AspNetCore.Components.Authorization"
+            ""
+        stage_generateBindingProjects "Microsoft.FluentUI" "Microsoft.FluentUI.AspNetCore.Components" "Microsoft.FluentUI.AspNetCore.Components" ""
+        stage_generateBindingProjects "Microsoft.QuickGrid" "Microsoft.AspNetCore.Components.QuickGrid" "Microsoft.AspNetCore.Components.QuickGrid" ""
+        stage_generateBindingProjects "AntDesign" "AntDesign" "AntDesign" ""
+        stage_generateBindingProjects "MudBlazor" "MudBlazor" "MudBlazor" ""
+        stage_generateBindingProjects "ApexCharts" "Blazor-ApexCharts" "ApexCharts" ""
+        stage_generateBindingProjects "BlazorMonaco" "BlazorMonaco" "BlazorMonaco" ""
+    }
     stage "pack for binding projects" {
         run (fun _ ->
             printfn "Update binding docs"
