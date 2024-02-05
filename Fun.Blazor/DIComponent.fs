@@ -206,4 +206,6 @@ type DIComponent<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typ
     interface IDisposable with
         member _.Dispose() =
             if disposeEvent.IsSome then disposeEvent.Value.Trigger()
-            if disposes <> null then disposes |> Seq.iter (fun x -> x.Dispose())
+            if disposes <> null then
+                for dispose in disposes do
+                    dispose.Dispose()

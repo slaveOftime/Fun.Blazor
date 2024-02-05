@@ -49,7 +49,8 @@ type FunBlazorComponentWithArray() =
                     }
                     p {
                         class' "class"
-                        $"Count = {count}"
+                        "Count = "
+                        count
                     }
                     button {
                         on.click (fun _ -> increase ())
