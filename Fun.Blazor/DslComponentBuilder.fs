@@ -81,7 +81,13 @@ type ComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent>(
     //member inline _.For(renders: 'T seq, [<InlineIfLambda>] fn: 'T -> AttrRenderFragment) =
     //    renders |> Seq.map fn |> Seq.fold (==>) (emptyAttr ())
 
-    member inline _.YieldFrom(renders: AttrRenderFragment seq) = renders |> Seq.fold (==>) (emptyAttr ())
+    member inline _.YieldFrom(renders: AttrRenderFragment seq) =
+        AttrRenderFragment(fun comp builder i ->
+            let mutable i = i
+            for attr in renders do
+                i <- attr.Invoke(comp, builder, i)
+            i
+        )
 
 
     member inline _.Zero() = emptyAttr ()
@@ -318,10 +324,29 @@ type ComponentWithChildBuilder<'T when 'T :> IComponent>() =
     member inline _.For((render1, render2): struct (AttrRenderFragment * PostRenderFragment), [<InlineIfLambda>] fn: unit -> NodeRenderFragment) =
         struct (render1, render2, fn ())
 
-    member inline _.For(renders: 'Data seq, [<InlineIfLambda>] fn: 'Data -> NodeRenderFragment) =
-        renders |> Seq.map fn |> Seq.fold (>=>) (emptyNode ()) |> html.region
+    member inline _.For(items: 'Data seq, [<InlineIfLambda>] fn: 'Data -> NodeRenderFragment) =
+        NodeRenderFragment(fun comp builder sequence ->
+            builder.OpenRegion(sequence)
 
-    member inline _.YieldFrom(renders: NodeRenderFragment seq) = renders |> Seq.fold (>=>) (emptyNode ()) |> html.region
+            let mutable i = 0
+            for item in items do
+                i <- fn(item).Invoke(comp, builder, i)
+
+            builder.CloseRegion()
+            sequence + 1
+        )
+
+    member inline _.YieldFrom(renders: NodeRenderFragment seq) =
+        NodeRenderFragment(fun comp builder sequence ->
+            builder.OpenRegion(sequence)
+
+            let mutable i = 0
+            for node in renders do
+                i <- node.Invoke(comp, builder, i)
+
+            builder.CloseRegion()
+            sequence + 1
+        )
 
     member inline _.Zero() = emptyNode ()
 
@@ -353,7 +378,7 @@ type ComponentWithChildBuilder<'T when 'T :> IComponent>() =
 
     [<CustomOperation("childContent")>]
     member inline _.childContent((render1, render2): struct (AttrRenderFragment * PostRenderFragment), renders: NodeRenderFragment seq) =
-        struct (render1, render2, html.region renders)
+        struct (render1, render2, makeRegion renders)
 
     [<CustomOperation("childContent")>]
     member inline _.childContent((render1, render2): struct (AttrRenderFragment * PostRenderFragment), v: string) =
@@ -618,10 +643,30 @@ type ComponentWithDomAndChildAttrBuilder<'T when 'T :> IComponent>() =
     member inline _.For((render1, render2): struct (AttrRenderFragment * PostRenderFragment), [<InlineIfLambda>] fn: unit -> NodeRenderFragment) =
         struct (render1, render2, fn ())
 
-    member inline _.For(renders: 'Data seq, [<InlineIfLambda>] fn: 'Data -> NodeRenderFragment) =
-        renders |> Seq.map fn |> Seq.fold (>=>) (emptyNode ()) |> html.region
+    member inline _.For(items: 'Data seq, [<InlineIfLambda>] fn: 'Data -> NodeRenderFragment) =
+        NodeRenderFragment(fun comp builder sequence ->
+            builder.OpenRegion(sequence)
 
-    member inline _.YieldFrom(renders: NodeRenderFragment seq) = renders |> Seq.fold (>=>) (emptyNode ()) |> html.region
+            let mutable i = 0
+            for item in items do
+                i <- fn(item).Invoke(comp, builder, i)
+
+            builder.CloseRegion()
+            sequence + 1
+        )
+
+
+    member inline _.YieldFrom(renders: NodeRenderFragment seq) =
+        NodeRenderFragment(fun comp builder sequence ->
+            builder.OpenRegion(sequence)
+
+            let mutable i = 0
+            for node in renders do
+                i <- node.Invoke(comp, builder, i)
+
+            builder.CloseRegion()
+            sequence + 1
+        )
 
     member inline _.Zero() = emptyNode ()
 
@@ -632,7 +677,7 @@ type ComponentWithDomAndChildAttrBuilder<'T when 'T :> IComponent>() =
 
     [<CustomOperation("childContent")>]
     member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, renders: NodeRenderFragment seq) =
-        render ==> html.renderFragment ("ChildContent", html.region renders)
+        render ==> html.renderFragment ("ChildContent", makeRegion renders)
 
     [<CustomOperation("childContent")>]
     member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, v: string) =
@@ -657,7 +702,7 @@ type ComponentWithDomAndChildAttrBuilder<'T when 'T :> IComponent>() =
 
     [<CustomOperation("childContent")>]
     member inline _.childContent((render1, render2): struct (AttrRenderFragment * PostRenderFragment), renders: NodeRenderFragment seq) =
-        struct (render1, render2, html.region renders)
+        struct (render1, render2, makeRegion renders)
 
     [<CustomOperation("childContent")>]
     member inline _.childContent((render1, render2): struct (AttrRenderFragment * PostRenderFragment), v: string) =

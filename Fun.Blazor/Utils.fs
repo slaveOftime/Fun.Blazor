@@ -19,6 +19,18 @@ module Internal =
     /// Helper method to create an empty NodeRenderFragment
     let inline emptyNode () = NodeRenderFragment(fun _ _ i -> i + 1)
 
+    let inline makeRegion (nodes: NodeRenderFragment seq) =
+        NodeRenderFragment(fun comp builder sequence ->
+            builder.OpenRegion(sequence)
+
+            let mutable i = 0
+            for node in nodes do
+                i <- node.Invoke(comp, builder, i)
+
+            builder.CloseRegion()
+            sequence + 1
+        )
+
     [<Literal>]
     let FunBlazorScopedServicesName = "fun-blazor-scoped-services"
 

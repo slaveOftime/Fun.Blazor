@@ -60,8 +60,17 @@ type DomAttrBuilder() =
     //member inline _.For(renders: 'T seq, [<InlineIfLambda>] fn: 'T -> AttrRenderFragment) =
     //    renders |> Seq.map fn |> Seq.fold (==>) (emptyAttr ())
 
-    member inline _.YieldFrom(renders: AttrRenderFragment seq) = renders |> Seq.fold (==>) (emptyAttr ())
+    member inline _.YieldFrom(renders: AttrRenderFragment seq) =
+        AttrRenderFragment(fun comp builder sequence ->
+            builder.OpenRegion(sequence)
 
+            let mutable i = 0
+            for attr in renders do
+                i <- attr.Invoke(comp, builder, i)
+
+            builder.CloseRegion()
+            sequence + 1
+        )
 
     member inline _.Zero() = emptyAttr ()
 

@@ -58,11 +58,17 @@ type EltBuilder(name) =
         )
 
     member inline this.create(childItems: NodeRenderFragment seq) =
-        NodeRenderFragment(fun comp builder index ->
-            builder.OpenElement(index, (this :> IElementBuilder).Name)
-            let nextIndex = html.fragment(childItems).Invoke(comp, builder, index + 1)
+        NodeRenderFragment(fun comp builder sequence ->
+            builder.OpenElement(sequence, (this :> IElementBuilder).Name)
+            builder.OpenRegion(sequence + 1)
+
+            let mutable i = 0
+            for node in childItems do
+                i <- node.Invoke(comp, builder, i)
+
+            builder.CloseRegion()
             builder.CloseElement()
-            nextIndex
+            sequence + 2
         )
 
     member inline this.create(x: string) =
@@ -162,10 +168,29 @@ type EltWithChildBuilder(name) =
     member inline _.For((render1, render2): struct (AttrRenderFragment * PostRenderFragment), [<InlineIfLambda>] fn: unit -> NodeRenderFragment) =
         struct (render1, render2, fn ())
 
-    member inline _.For(renders: 'Data seq, [<InlineIfLambda>] fn: 'Data -> NodeRenderFragment) =
-        renders |> Seq.map fn |> Seq.fold (>=>) (emptyNode ()) |> html.region
+    member inline _.For(items: 'Data seq, [<InlineIfLambda>] fn: 'Data -> NodeRenderFragment) =
+        NodeRenderFragment(fun comp builder sequence ->
+            builder.OpenRegion(sequence)
 
-    member inline _.YieldFrom(renders: NodeRenderFragment seq) = renders |> Seq.fold (>=>) (emptyNode ()) |> html.region
+            let mutable i = 0
+            for item in items do
+                i <- fn(item).Invoke(comp, builder, i)
+
+            builder.CloseRegion()
+            sequence + 1
+        )
+
+    member inline _.YieldFrom(renders: NodeRenderFragment seq) =
+        NodeRenderFragment(fun comp builder sequence ->
+            builder.OpenRegion(sequence)
+
+            let mutable i = 0
+            for node in renders do
+                i <- node.Invoke(comp, builder, i)
+
+            builder.CloseRegion()
+            sequence + 1
+        )
 
     member inline _.Zero() = emptyNode ()
 
@@ -206,7 +231,7 @@ type EltWithChildBuilder(name) =
     /// </code>
     /// </example>
     [<CustomOperation("childContent")>]
-    member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, renders: NodeRenderFragment seq) = render >>> html.region (renders)
+    member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, renders: NodeRenderFragment seq) = render >>> makeRegion renders
 
     /// <summary>
     /// Single child node to be added into the element's children
@@ -286,7 +311,7 @@ type EltWithChildBuilder(name) =
 
     [<CustomOperation("childContent")>]
     member inline _.childContent((render1, render2): struct (AttrRenderFragment * PostRenderFragment), renders: NodeRenderFragment seq) =
-        struct (render1, render2, html.region renders)
+        struct (render1, render2, makeRegion renders)
 
     [<CustomOperation("childContent")>]
     member inline _.childContent((render1, render2): struct (AttrRenderFragment * PostRenderFragment), v: string) =
@@ -324,7 +349,7 @@ type EltBuilder_script() =
 
 
     member inline _.Combine([<InlineIfLambda>] render1: AttrRenderFragment, [<InlineIfLambda>] render2: NodeRenderFragment) = render1 >>> render2
-    
+
     //[<Obsolete("Please use childContent [| ... |] for multiple child items for better CE build performance", DiagnosticId = "FB0044")>]
     member inline _.Combine([<InlineIfLambda>] render1: NodeRenderFragment, [<InlineIfLambda>] render2: NodeRenderFragment) = render1 >=> render2
 

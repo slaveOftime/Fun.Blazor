@@ -63,8 +63,10 @@ type AdaptiviewBuilder
 
     member inline _.Zero() = AVal.constant (emptyNode ())
 
-    member inline _.For(ls: 'T seq, [<InlineIfLambda>] fn: 'T -> aval<NodeRenderFragment>) =
-        ls |> Seq.map fn |> Seq.fold (AVal.map2 (>=>)) (AVal.constant (emptyNode ()))
+    member inline _.For(items: 'T seq, [<InlineIfLambda>] fn: 'T -> aval<NodeRenderFragment>) =
+        let mutable state = AVal.constant (emptyNode ())
+        for item in items do
+            state <- AVal.map2 (fun x y -> x >=> y) state (fn item)
 
 
 type IAdaptiveValue<'T> with

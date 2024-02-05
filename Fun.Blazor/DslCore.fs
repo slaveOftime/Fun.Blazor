@@ -19,11 +19,24 @@ type html() =
     /// Helper method to create an empty attribute
     static member inline emptyAttr = emptyAttr ()
 
-    static member mergeAttrs attrs = attrs |> Seq.fold (==>) (emptyAttr ())
-    static member mergeNodes nodes = nodes |> Seq.fold (>=>) (emptyNode ())
+    static member inline mergeAttrs(attrs: AttrRenderFragment seq) =
+        AttrRenderFragment(fun comp builder i ->
+            let mutable i = i
+            for attr in attrs do
+                i <- attr.Invoke(comp, builder, i)
+            i
+        )
+
+    static member inline mergeNodes(nodes: NodeRenderFragment seq) =
+        NodeRenderFragment(fun comp builder i ->
+            let mutable i = i
+            for node in nodes do
+                i <- node.Invoke(comp, builder, i)
+            i
+        )
 
     /// Helper method to make put multiple nodes into a fragment node
-    static member inline fragment(nodes: NodeRenderFragment seq) = html.region nodes
+    static member inline fragment(nodes: NodeRenderFragment seq) = makeRegion nodes
 
 
     /// You can also use fragment/html.fragment.
@@ -76,15 +89,7 @@ type html() =
     ///             }
     ///     ]
     /// ```
-    static member region(nodes: NodeRenderFragment seq) =
-        NodeRenderFragment(fun comp builder sequence ->
-            builder.OpenRegion(sequence)
-
-            nodes |> Seq.fold (fun i node -> node.Invoke(comp, builder, i)) 0 |> ignore
-
-            builder.CloseRegion()
-            sequence + 1
-        )
+    static member inline region(nodes: NodeRenderFragment seq) = makeRegion nodes
 
 
     /// <summary>

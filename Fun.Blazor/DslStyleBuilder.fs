@@ -122,13 +122,16 @@ type CssRules() as this =
         member _.IncludeStyle((k, f): struct (string * Fun.Css.Internal.CombineKeyValue)) =
             transact (fun () -> styles.Value <- Map.add k f styles.Value)
 
-        member _.IncludeStyle(styles: struct (string * Fun.Css.Internal.CombineKeyValue) seq) = styles |> Seq.iter (this :> ICssRules).IncludeStyle
+        member _.IncludeStyle(styles: struct (string * Fun.Css.Internal.CombineKeyValue) seq) =
+            for style in styles do
+                (this :> ICssRules).IncludeStyle(style)
 
         member _.IncludeKeyFrame((k, f): struct (string * Fun.Blazor.Internal.KeyFrame)) =
             transact (fun () -> keyFrames.Value <- Map.add k f keyFrames.Value)
 
         member _.IncludeKeyFrame(keyframes: struct (string * Fun.Blazor.Internal.KeyFrame) seq) =
-            keyframes |> Seq.iter ((this :> ICssRules).IncludeKeyFrame)
+            for keyframe in keyframes do
+                (this :> ICssRules).IncludeKeyFrame(keyframe)
 
 
 /// This is already registered as a scope service by AddFunBlazorXXX, you can consume it directly.

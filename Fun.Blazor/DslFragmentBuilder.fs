@@ -49,9 +49,21 @@ type FragmentBuilder() =
     //[<Obsolete("Please use html.fragment [| ... |] for multiple child items for better CE build performance", DiagnosticId = "FB0044")>]
     member inline _.Combine([<InlineIfLambda>] render1: NodeRenderFragment, [<InlineIfLambda>] render2: NodeRenderFragment) = render1 >=> render2
 
-    member inline _.For(renders: 'T seq, [<InlineIfLambda>] fn: 'T -> NodeRenderFragment) = renders |> Seq.map fn |> Seq.fold (>=>) (emptyNode ())
+    member inline _.For(items: 'T seq, [<InlineIfLambda>] fn: 'T -> NodeRenderFragment) =
+        NodeRenderFragment(fun comp builder i ->
+            let mutable i = i
+            for item in items do
+                i <- fn(item).Invoke(comp, builder, i)
+            i
+        )
 
-    member inline _.YieldFrom(renders: NodeRenderFragment seq) = renders |> Seq.fold (>=>) (emptyNode ())
+    member inline _.YieldFrom(renders: NodeRenderFragment seq) =
+        NodeRenderFragment(fun comp builder i ->
+            let mutable i = i
+            for node in renders do
+                i <- node.Invoke(comp, builder, i)
+            i
+        )
 
 
     member inline _.Zero() = emptyNode ()
