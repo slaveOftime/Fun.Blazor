@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [4.0.0-beta013] - 2024-02-05
+
+- Improve performance
+
 ## [4.0.0-beta012] - 2024-02-03
 
 - html.renderAsString
