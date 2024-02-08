@@ -23,20 +23,20 @@ type EltBuilder_form with
 
     [<CustomOperation("formName")>]
     member inline _.formName([<InlineIfLambda>] render: AttrRenderFragment, value: string) =
-        struct (render,
-                PostRenderFragment(fun _ builder index ->
-                    builder.AddNamedEvent("onsubmit", value)
-                    index
-                ))
+        (render,
+         PostRenderFragment(fun _ builder index ->
+             builder.AddNamedEvent("onsubmit", value)
+             index
+         ))
 
     [<CustomOperation("formName")>]
-    member inline _.formName((render1, render2): struct (AttrRenderFragment * PostRenderFragment), value: string) =
-        struct (render1,
-                PostRenderFragment(fun comp builder index ->
-                    let nextIndex = render2.Invoke(comp, builder, index)
-                    builder.AddNamedEvent("onsubmit", value)
-                    nextIndex
-                ))
+    member inline _.formName((render1, render2): (AttrRenderFragment * PostRenderFragment), value: string) =
+        (render1,
+         PostRenderFragment(fun comp builder index ->
+             let nextIndex = render2.Invoke(comp, builder, index)
+             builder.AddNamedEvent("onsubmit", value)
+             nextIndex
+         ))
 #endif
 
 

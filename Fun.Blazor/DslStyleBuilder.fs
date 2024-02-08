@@ -34,7 +34,9 @@ type StyleStrBuilder() =
 type RulesetBuilder(ruleName: string) =
     inherit Fun.Css.CssBuilder()
 
-    member _.Run(combine: Fun.Css.Internal.CombineKeyValue) = struct (ruleName, combine)
+    member _.RuleName = ruleName
+
+    member inline this.Run(combine: Fun.Css.Internal.CombineKeyValue) = (this.RuleName, combine)
 
 
 type KeyFrame = delegate of StringBuilder -> StringBuilder
@@ -52,7 +54,9 @@ type KeyFrameBuilder(percentage: string) =
 
 type KeyFramesBuilder(identifier: string) =
 
-    member _.Run(kf: KeyFrame) = struct (identifier, kf)
+    member _.Identifier = identifier
+
+    member inline this.Run([<InlineIfLambda>] kf: KeyFrame) = (this.Identifier, kf)
 
     member inline _.Yield([<InlineIfLambda>] kf: KeyFrame) = kf
 
@@ -64,7 +68,7 @@ type KeyFramesBuilder(identifier: string) =
 type StyleEltBuilder() =
     inherit EltWithChildBuilder "style"
 
-    member inline _.Yield((identifier, kf): struct (string * KeyFrame)) =
+    member inline _.Yield((identifier, kf): (string * KeyFrame)) =
         let sb = stringBuilderPool.Get()
         try
             sb.Append("@keyframes ").Append(identifier).AppendLine(" {") |> ignore
@@ -75,7 +79,7 @@ type StyleEltBuilder() =
             stringBuilderPool.Return sb
 
 
-    member inline _.Yield((ruleName, combine): struct (string * Fun.Css.Internal.CombineKeyValue)) =
+    member inline _.Yield((ruleName, combine): (string * Fun.Css.Internal.CombineKeyValue)) =
         let sb = stringBuilderPool.Get()
         try
             sb.Append(ruleName).AppendLine(" {") |> ignore
@@ -102,13 +106,13 @@ type ICssRules =
     /// All the consumed keyframes
     abstract member KeyFrames: aval<Map<string, Fun.Blazor.Internal.KeyFrame>>
     /// Add or override a style class
-    abstract member IncludeStyle: struct (string * Fun.Css.Internal.CombineKeyValue) -> unit
+    abstract member IncludeStyle: (string * Fun.Css.Internal.CombineKeyValue) -> unit
     /// Add or override a style class
-    abstract member IncludeStyle: struct (string * Fun.Css.Internal.CombineKeyValue) seq -> unit
+    abstract member IncludeStyle: (string * Fun.Css.Internal.CombineKeyValue) seq -> unit
     /// Add or override keyframe
-    abstract member IncludeKeyFrame: struct (string * Fun.Blazor.Internal.KeyFrame) -> unit
+    abstract member IncludeKeyFrame: (string * Fun.Blazor.Internal.KeyFrame) -> unit
     /// Add or override keyframe
-    abstract member IncludeKeyFrame: struct (string * Fun.Blazor.Internal.KeyFrame) seq -> unit
+    abstract member IncludeKeyFrame: (string * Fun.Blazor.Internal.KeyFrame) seq -> unit
 
 /// Implementation for IInlineStyles
 type CssRules() as this =
@@ -119,17 +123,16 @@ type CssRules() as this =
         member _.Styles = styles :> aval<_>
         member _.KeyFrames = keyFrames :> aval<_>
 
-        member _.IncludeStyle((k, f): struct (string * Fun.Css.Internal.CombineKeyValue)) =
-            transact (fun () -> styles.Value <- Map.add k f styles.Value)
+        member _.IncludeStyle((k, f): (string * Fun.Css.Internal.CombineKeyValue)) = transact (fun () -> styles.Value <- Map.add k f styles.Value)
 
-        member _.IncludeStyle(styles: struct (string * Fun.Css.Internal.CombineKeyValue) seq) =
+        member _.IncludeStyle(styles: (string * Fun.Css.Internal.CombineKeyValue) seq) =
             for style in styles do
                 (this :> ICssRules).IncludeStyle(style)
 
-        member _.IncludeKeyFrame((k, f): struct (string * Fun.Blazor.Internal.KeyFrame)) =
+        member _.IncludeKeyFrame((k, f): (string * Fun.Blazor.Internal.KeyFrame)) =
             transact (fun () -> keyFrames.Value <- Map.add k f keyFrames.Value)
 
-        member _.IncludeKeyFrame(keyframes: struct (string * Fun.Blazor.Internal.KeyFrame) seq) =
+        member _.IncludeKeyFrame(keyframes: (string * Fun.Blazor.Internal.KeyFrame) seq) =
             for keyframe in keyframes do
                 (this :> ICssRules).IncludeKeyFrame(keyframe)
 
@@ -218,7 +221,7 @@ module DslStyle =
                     if not styles'.IsEmpty then
                         styleElt {
                             for KeyValue(k, v) in styles' do
-                                struct (k, v)
+                                k, v
                         }
                 }
                 adaptiview () {
@@ -226,7 +229,7 @@ module DslStyle =
                     if not keyframes.IsEmpty then
                         styleElt {
                             for KeyValue(k, v) in keyframes do
-                                struct (k, v)
+                                k, v
                         }
                 }
             })
