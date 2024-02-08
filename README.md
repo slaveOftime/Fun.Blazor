@@ -16,7 +16,7 @@ Check the [WASM Docs](https://slaveoftime.github.io/Fun.Blazor.Docs/) for more �
 
 ## Start to use
 
-    dotnet new install Fun.Blazor.Templates::3.2.0
+    dotnet new install Fun.Blazor.Templates::4.0.0
     dotnet new fun-blazor -o FunBlazorDemo1
 
 > Requires dotnet 8
@@ -54,65 +54,100 @@ There are some tests in [here](https://github.com/albertwoo/CEPerfDemo), in summ
 
 - The best result is **list-with-local-vars** for multiple child items
 
-```fsharp
-let demo1 = div {
-    class' "font-bold"
-    "demo1"
-}
-
-let demo2 = div {
-    class' "font-bold"
-    "demo2"
-}
-
-let comp = div {
-    style { color "red" }
-    childContent [| // 👌✅
-        demo1
-        demo2
-    |]
-}
-```
-
-- **nested-one** is ok
-
-```fsharp
-let comp = div {
-    class' "font-bold"
-    div { // 👌✅
-        class' "font-bold"
-        div { "demo1" }
-    }
-}
-```
-
-- **nested-one-one** is not ok (bad for build perf)
-
-```fsharp
-let comp = div {
-    class' "font-bold"
-    div {
-        class' "font-bold"
-        div { // ⛔🙅
-            class' "font-bold"
-            div { "demo1" }
-        }
-    }
-}
-```
-
-- inline local vars is not ok (bad for build perf)
-
-```fsharp
-let comp = div {
-    class' "font-bold"
-    let temp = div { // ⛔🙅
+    ```fsharp
+    let demo1 = div {
         class' "font-bold"
         "demo1"
     }
-    temp
-}
-```
+
+    let demo2 = div {
+        class' "font-bold"
+        "demo2"
+    }
+
+    let comp = div {
+        style { color "red" }
+        childContent [| // 👌✅
+            demo1
+            demo2
+        |]
+    }
+    ```
+
+    But you can also write like below even it will not **build** as fast as the above:
+
+    ```fsharp
+    let comp = div {
+        style { color "red" }
+        childContent [| // 👌✅
+            div {
+                class' "font-bold"
+                "demo1"
+            }
+            div {
+                class' "font-bold"
+                "demo2"
+            }
+        |]
+    }
+    ```
+
+- **nested-one** is ok
+
+    ```fsharp
+    let comp = div {
+        class' "font-bold"
+        div { // 👌✅
+            class' "font-bold"
+            "demo1"
+        }
+    }
+    ```
+
+- **nested-one-one** is not ok (bad for build perf)
+
+    ```fsharp
+    let comp = div {
+        class' "font-bold"
+        div {
+            class' "font-bold"
+            div { // ⛔🙅
+                class' "font-bold"
+                "demo1"
+            }
+        }
+    }
+    ```
+
+    Write like below:
+
+    ```fsharp
+    let comp = div {
+        class' "font-bold"
+        div {
+            class' "font-bold"
+            childContent [|  // 👌✅
+                div {
+                    class' "font-bold"
+                    "demo1"
+                }
+            |]
+        }
+    }
+    ```
+
+- inline local vars is not ok (bad for build perf)
+
+    ```fsharp
+    let comp = div {
+        class' "font-bold"
+        let temp = div { // ⛔🙅
+            class' "font-bold"
+            "demo1"
+        }
+        temp
+    }
+    ```
 
 ## Local development
 

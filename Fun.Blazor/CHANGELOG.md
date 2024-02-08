@@ -2,6 +2,18 @@
 
 ## [Unreleased]
 
+## [4.0.0] - 2024-02-08
+
+- Improve performance
+- html.renderAsString
+- Support yield seq
+- Enable combine key value pair for component builder
+
+Beaking changes:
+
+- Move all events from ce custom operations to **on** type to improve CE build performance
+- Auto generate standard elements and attributes instead of using one big base element to include all the attributes to improve CE build performance
+
 ## [4.0.0-beta014] - 2024-02-06
 
 - Fix AdaptiviewBuilder for loop

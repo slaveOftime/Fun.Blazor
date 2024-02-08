@@ -63,7 +63,7 @@ Components can be created using `adaptiview`, `html.inject`, etc. These componen
 
 There are a few things to keep in mind:
 
-1. The F# compiler has performance issues with intellisense for some large computation expressions (CEs). It is better to keep single CE blocks and files small, or use sequences like `seq`, `list`, or `array` with `childContent` for better intellisense. [issue tracked in fsharp repo](https://github.com/dotnet/fsharp/issues/14429).
+1. The F# compiler has performance issues with intellisense for some large computation expressions (CEs). It is better to keep single CE blocks, or use sequences like `array` with `childContent` for better intellisense. [issue tracked in fsharp repo](https://github.com/dotnet/fsharp/issues/14429).
 
     There are some tests in [here](https://github.com/albertwoo/CEPerfDemo), in summary, below are some recommend ways for better build time performance (but it can reduce runtime performance because we cannot inline and need to allocate memory on head for creating array or list)
 
@@ -89,6 +89,24 @@ There are a few things to keep in mind:
         }
         ```
 
+        But you can also write like below even it will not **build** as fast as the above:
+
+        ```fsharp
+        let comp = div {
+            style { color "red" }
+            childContent [| // 👌✅
+                div {
+                    class' "font-bold"
+                    "demo1"
+                }
+                div {
+                    class' "font-bold"
+                    "demo2"
+                }
+            |]
+        }
+        ```
+
     - **nested-one** is ok
 
         ```fsharp
@@ -96,7 +114,7 @@ There are a few things to keep in mind:
             class' "font-bold"
             div { // 👌✅
                 class' "font-bold"
-                div { "demo1" }
+                "demo1"
             }
         }
         ```
@@ -110,8 +128,25 @@ There are a few things to keep in mind:
                 class' "font-bold"
                 div { // ⛔🙅
                     class' "font-bold"
-                    div { "demo1" }
+                    "demo1"
                 }
+            }
+        }
+        ```
+
+        Write like below:
+
+        ```fsharp
+        let comp = div {
+            class' "font-bold"
+            div {
+                class' "font-bold"
+                childContent [| // 👌✅
+                    div { 
+                        class' "font-bold"
+                        "demo1"
+                    }
+                |]
             }
         }
         ```
@@ -164,9 +199,9 @@ BenchmarkDotNet v0.13.12, Windows 11 (10.0.22631.3007/23H2/2023Update/SunValley3
   [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2 DEBUG
   DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
 
-| Method                      | Mean     | Error   | StdDev   | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
-|---------------------------- |---------:|--------:|---------:|------:|--------:|-------:|----------:|------------:|
-| RenderWithRazorCSharp       | 234.1 ns | 3.59 ns |  3.36 ns |  1.00 |    0.00 | 0.0298 |     376 B |        1.00 |
-| RenderWithFunBlazorInlineCE | 363.5 ns | 4.14 ns |  3.67 ns |  1.55 |    0.03 | 0.0443 |     560 B |        1.49 |
-| RenderWithFunBlazorArray    | 499.0 ns | 9.82 ns | 10.91 ns |  2.14 |    0.05 | 0.1154 |    1448 B |        3.85 |
-| RenderWithBolero            | 507.9 ns | 9.74 ns | 11.21 ns |  2.17 |    0.07 | 0.1173 |    1480 B |        3.94 |
+| Method                      | Mean     | Error    | StdDev   | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
+|---------------------------- |---------:|---------:|---------:|------:|--------:|-------:|----------:|------------:|
+| RenderWithRazorCSharp       | 237.0 ns |  4.62 ns |  7.46 ns |  1.00 |    0.00 | 0.0296 |     376 B |        1.00 |
+| RenderWithFunBlazorInlineCE | 372.5 ns |  7.26 ns |  9.94 ns |  1.58 |    0.07 | 0.0443 |     560 B |        1.49 |
+| RenderWithFunBlazorArray    | 518.8 ns | 10.21 ns | 14.64 ns |  2.20 |    0.07 | 0.1154 |    1448 B |        3.85 |
+| RenderWithBolero            | 538.5 ns | 10.59 ns | 19.89 ns |  2.27 |    0.10 | 0.1173 |    1480 B |        3.94 |

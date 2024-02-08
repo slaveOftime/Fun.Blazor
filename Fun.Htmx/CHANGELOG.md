@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [4.0.0] - 2024-02-08
+
+- Bump version
+
 ## [4.0.0-beta007] - 2024-01-29
 
 - Update packages
