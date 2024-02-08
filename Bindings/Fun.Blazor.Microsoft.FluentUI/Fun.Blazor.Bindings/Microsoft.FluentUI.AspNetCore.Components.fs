@@ -756,7 +756,7 @@ type FluentDataGridBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric 
     /// This is normally used in conjunction with a FluentPaginator component or some other UI logic
     /// that displays and updates the supplied PaginationState instance.
     [<CustomOperation("Pagination")>] member inline _.Pagination ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.PaginationState) = render ==> ("Pagination" => x)
-    /// Gets or sets a value indicating whether the component will not add itself to the tab queue. 
+    /// Gets or sets a value indicating whether the component will not add itself to the tab queue.
     /// Default is false.
     [<CustomOperation("NoTabbing")>] member inline _.NoTabbing ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("NoTabbing" => x)
     /// Gets or sets a value indicating whether the grid should automatically generate a header row and its type.
@@ -772,9 +772,9 @@ type FluentDataGridBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric 
     [<CustomOperation("OnCellFocus")>] member inline _.OnCellFocus ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callback<Microsoft.FluentUI.AspNetCore.Components.FluentDataGridCell<'TGridItem>>("OnCellFocus", fn)
     /// Gets or sets a callback when a row is focused.
     [<CustomOperation("OnCellFocus")>] member inline _.OnCellFocus ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> html.callbackTask<Microsoft.FluentUI.AspNetCore.Components.FluentDataGridCell<'TGridItem>>("OnCellFocus", fn)
-    /// Optionally defines a class to be applied to a rendered row. 
+    /// Optionally defines a class to be applied to a rendered row.
     [<CustomOperation("RowClass")>] member inline _.RowClass ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("RowClass" => (System.Func<'TGridItem, System.String>fn))
-    /// Optionally defines a style to be applied to a rendered row. 
+    /// Optionally defines a style to be applied to a rendered row.
     /// Do not use to dynamically update a row style after rendering as this will interfere with the script that use this attribute. Use RowClass instead.
     [<CustomOperation("RowStyle")>] member inline _.RowStyle ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("RowStyle" => (System.Func<'TGridItem, System.String>fn))
     /// If specified, grids render this fragment when there is no content.
