@@ -67,6 +67,7 @@ type AdaptiviewBuilder
         let mutable state = AVal.constant (emptyNode ())
         for item in items do
             state <- AVal.map2 (fun x y -> x >=> y) state (fn item)
+        state
 
 
 type IAdaptiveValue<'T> with

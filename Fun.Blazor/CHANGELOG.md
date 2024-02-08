@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [4.0.0-beta014] - 2024-02-06
+
+- Fix AdaptiviewBuilder for loop
+
 ## [4.0.0-beta013] - 2024-02-05
 
 - Improve performance
