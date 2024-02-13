@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [4.0.1] - 2024-02-13
+
+- Fix valueless issue for component
+
 ## [4.0.0] - 2024-02-08
 
 - Improve performance

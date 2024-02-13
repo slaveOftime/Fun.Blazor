@@ -1,6 +1,7 @@
 ﻿module Fun.Blazor.Tests.DomTests
 
 open Microsoft.AspNetCore.Components
+open Microsoft.AspNetCore.Components.Forms
 open Microsoft.AspNetCore.Components.Routing
 open Microsoft.Extensions.DependencyInjection
 open Moq
@@ -215,7 +216,19 @@ let ``Check some attributes`` () =
         """
         <input hidden value="True" type="datetime-local" autocomplete="family-name">
         </input>
-    """
+        """
+    )
+
+    let demo = InputFile'() {
+        hidden true
+        value true
+    }
+
+    let result = context.RenderNode demo
+    result.MarkupMatches(
+        """
+        <input hidden value="True" type="file" >
+        """
     )
 
 

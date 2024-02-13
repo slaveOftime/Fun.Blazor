@@ -41,9 +41,7 @@ module Operators =
     /// If true then add the name to attribute else do nothing
     let inline (=>>>) (name: string) (value: bool) =
         AttrRenderFragment(fun _ builder index ->
-            if value then
-                builder.AddAttribute(index, name)
-            // Always increase this number to reduce dynamic changes
+            builder.AddAttribute(index, name, value)
             index + 1
         )
 
