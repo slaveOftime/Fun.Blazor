@@ -16,11 +16,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Update="FSharp.Core" Version="6.0.0" />
 		<PackageReference Include="FSharp.Control.Reactive" Version="5.0.5" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Fun.Blazor\Fun.Blazor.fsproj" />
+		<ProjectReference Include="..\Fun.Blazor\Fun.Blazor.fsproj" />
 	</ItemGroup>
 
 </Project>

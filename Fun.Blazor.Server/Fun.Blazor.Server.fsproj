@@ -14,9 +14,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Update="FSharp.Core" Version="6.0.0" />
 		<PackageReference Include="FSharp.SystemTextJson" Version="1.2.42" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
 		<ProjectReference Include="..\Fun.Blazor\Fun.Blazor.fsproj" />
 	</ItemGroup>
@@ -24,5 +25,5 @@
 	<ItemGroup Condition="'$(TargetFramework)'!='net6.0'">
 		<ProjectReference Include="..\Fun.Blazor.CustomElements\Fun.Blazor.CustomElements.fsproj" />
 	</ItemGroup>
-	
+
 </Project>

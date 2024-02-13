@@ -16,12 +16,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Update="FSharp.Core" Version="7.0.200" />
 		<PackageReference Include="MessagePack.FSharpExtensions" Version="4.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.*" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Fun.Blazor\Fun.Blazor.fsproj" />
+		<ProjectReference Include="..\Fun.Blazor\Fun.Blazor.fsproj" />
 	</ItemGroup>
-	
+
 </Project>
