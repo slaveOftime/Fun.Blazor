@@ -253,12 +253,12 @@ type html with
     /// <param name="renderAfter">Start render after some condition, this has higher priority than delayMs</param>
     static member customElement<'T when 'T :> IComponent>
         (
-            ?tagName,
-            ?attrs,
-            ?preRender,
+            ?tagName: string,
+            ?attrs: AttrRenderFragment,
+            ?preRender: bool,
             ?preRenderNode: NodeRenderFragment,
-            ?preRenderContainerAttrs,
-            ?preRenderContainerTagName,
+            ?preRenderContainerAttrs: AttrRenderFragment,
+            ?preRenderContainerTagName: string,
             ?delayMs: int,
             ?renderAfter: RenderAfter
         )
@@ -271,8 +271,8 @@ type html with
 
         html.customElement (
             typeof<'T>,
-            attrs,
             tagName,
+            attrs,
             defaultArg preRender false,
             preRenderNode,
             preRenderContainerAttrs,
@@ -295,10 +295,10 @@ type html with
         (
             componentAttrBuilder: ComponentAttrBuilder<'T>,
             ?tagName: string,
-            ?preRender,
+            ?preRender: bool,
             ?preRenderNode: NodeRenderFragment,
-            ?preRenderContainerAttrs,
-            ?preRenderContainerTagName,
+            ?preRenderContainerAttrs: AttrRenderFragment,
+            ?preRenderContainerTagName: string,
             ?renderAfter: RenderAfter
         )
         =

@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [4.0.1] - 2024-02-13
+
+- Fix html.customElement parameter type
+
 ## [4.0.0] - 2024-02-08
 
 - Bump version
