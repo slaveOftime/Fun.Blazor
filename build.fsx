@@ -147,7 +147,8 @@ let stage_generateBindingProjects name package nsp patch =
     <PackageReference FunBlazor="" FunBlazorNamespace="{nsp}" Include="{package}" Version="{version}" />
   </ItemGroup>
   <ItemGroup>
-	<PackageReference Include="Fun.Blazor" Version="3.2.0" />
+    <PackageReference Update="FSharp.Core" Version="6.0.0" />
+    <PackageReference Include="Fun.Blazor" Version="4.0.*" />
   </ItemGroup>
 </Project>"""
             ]
@@ -268,7 +269,7 @@ pipeline "bindings" {
     description "Generate bindings project"
     collapseGithubActionLogs
     stage "generate" {
-        paralle
+        // paralle
         continueOnStepFailure
         stage_generateBindingProjects "Microsoft.Web" "Microsoft.AspNetCore.Components.Web" "Microsoft.AspNetCore.Components" ""
         stage_generateBindingProjects
