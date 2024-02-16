@@ -140,7 +140,7 @@ let stage_generateBindingProjects name package nsp patch =
   </ItemGroup>
   <ItemGroup>
     <PackageReference Update="FSharp.Core" Version="6.0.0" />
-    <PackageReference Include="Fun.Blazor" Version="3.2.*" />
+    <PackageReference Include="Fun.Blazor" Version="4.0.*" />
   </ItemGroup>
 </Project>"""
             ]
@@ -262,7 +262,7 @@ pipeline "bindings" {
     collapseGithubActionLogs
     stage "generate" {
         paralle
-        continueOnStepFailure
+        continueStepsOnFailure
         stage_generateBindingProjects "Microsoft.Web" "Microsoft.AspNetCore.Components.Web" "Microsoft.AspNetCore.Components" ""
         stage_generateBindingProjects
             "Microsoft.Authorization"
@@ -305,15 +305,14 @@ pipeline "bindings-check" {
             let errors = Collections.Generic.List<string>()
 
             for info in getBindingInfos () do
+                printfn $"Check for {info.package}, current version: {info.version}"
                 let! nugetVersion = getNugetPackageLatestVersion info.package
                 let latestVersion = nugetVersion.OriginalVersion
                 if latestVersion <> info.version then
                     errors.Add $"Package {info.package} should be updated from {info.version} to {latestVersion}"
 
             if errors.Count > 0 then
-                return Error(String.concat "\n" errors)
-            else
-                return Ok()
+                raise (PipelineFailedException("Errors: " + String.concat "\n" errors))
         })
     }
     runIfOnlySpecified
