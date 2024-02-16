@@ -12,190 +12,190 @@ module DslDomEventAttr =
     type on =
 
         static member inline focus([<InlineIfLambda>] callback: FocusEventArgs -> unit) = html.callback ("onfocus", callback)
-        static member inline focus([<InlineIfLambda>] callback: FocusEventArgs -> Task) = html.callback ("onfocus", callback)
-        static member inline focus([<InlineIfLambda>] callback: FocusEventArgs -> Task<unit>) = html.callback ("onfocus", callback)
+        static member inline focus([<InlineIfLambda>] callback: FocusEventArgs -> Task) = html.callbackTask ("onfocus", callback)
+        static member inline focus([<InlineIfLambda>] callback: FocusEventArgs -> Task<unit>) = html.callbackTask ("onfocus", callback)
 
         static member inline blur([<InlineIfLambda>] callback: FocusEventArgs -> unit) = html.callback ("onblur", callback)
-        static member inline blur([<InlineIfLambda>] callback: FocusEventArgs -> Task) = html.callback ("onblur", callback)
-        static member inline blur([<InlineIfLambda>] callback: FocusEventArgs -> Task<unit>) = html.callback ("onblur", callback)
+        static member inline blur([<InlineIfLambda>] callback: FocusEventArgs -> Task) = html.callbackTask ("onblur", callback)
+        static member inline blur([<InlineIfLambda>] callback: FocusEventArgs -> Task<unit>) = html.callbackTask ("onblur", callback)
 
         static member inline focusin([<InlineIfLambda>] callback: FocusEventArgs -> unit) = html.callback ("onfocusin", callback)
-        static member inline focusin([<InlineIfLambda>] callback: FocusEventArgs -> Task) = html.callback ("onfocusin", callback)
-        static member inline focusin([<InlineIfLambda>] callback: FocusEventArgs -> Task<unit>) = html.callback ("onfocusin", callback)
+        static member inline focusin([<InlineIfLambda>] callback: FocusEventArgs -> Task) = html.callbackTask ("onfocusin", callback)
+        static member inline focusin([<InlineIfLambda>] callback: FocusEventArgs -> Task<unit>) = html.callbackTask ("onfocusin", callback)
 
         static member inline focusout([<InlineIfLambda>] callback: FocusEventArgs -> unit) = html.callback ("onfocusout", callback)
-        static member inline focusout([<InlineIfLambda>] callback: FocusEventArgs -> Task) = html.callback ("onfocusout", callback)
-        static member inline focusout([<InlineIfLambda>] callback: FocusEventArgs -> Task<unit>) = html.callback ("onfocusout", callback)
+        static member inline focusout([<InlineIfLambda>] callback: FocusEventArgs -> Task) = html.callbackTask ("onfocusout", callback)
+        static member inline focusout([<InlineIfLambda>] callback: FocusEventArgs -> Task<unit>) = html.callbackTask ("onfocusout", callback)
 
         static member inline mouseover([<InlineIfLambda>] callback: MouseEventArgs -> unit) = html.callback ("onmouseover", callback)
-        static member inline mouseover([<InlineIfLambda>] callback: MouseEventArgs -> Task) = html.callback ("onmouseover", callback)
-        static member inline mouseover([<InlineIfLambda>] callback: MouseEventArgs -> Task<unit>) = html.callback ("onmouseover", callback)
+        static member inline mouseover([<InlineIfLambda>] callback: MouseEventArgs -> Task) = html.callbackTask ("onmouseover", callback)
+        static member inline mouseover([<InlineIfLambda>] callback: MouseEventArgs -> Task<unit>) = html.callbackTask ("onmouseover", callback)
 
         static member inline mouseout([<InlineIfLambda>] callback: MouseEventArgs -> unit) = html.callback ("onmouseout", callback)
-        static member inline mouseout([<InlineIfLambda>] callback: MouseEventArgs -> Task) = html.callback ("onmouseout", callback)
-        static member inline mouseout([<InlineIfLambda>] callback: MouseEventArgs -> Task<unit>) = html.callback ("onmouseout", callback)
+        static member inline mouseout([<InlineIfLambda>] callback: MouseEventArgs -> Task) = html.callbackTask ("onmouseout", callback)
+        static member inline mouseout([<InlineIfLambda>] callback: MouseEventArgs -> Task<unit>) = html.callbackTask ("onmouseout", callback)
 
         static member inline mousemove([<InlineIfLambda>] callback: MouseEventArgs -> unit) = html.callback ("onmousemove", callback)
-        static member inline mousemove([<InlineIfLambda>] callback: MouseEventArgs -> Task) = html.callback ("onmousemove", callback)
-        static member inline mousemove([<InlineIfLambda>] callback: MouseEventArgs -> Task<unit>) = html.callback ("onmousemove", callback)
+        static member inline mousemove([<InlineIfLambda>] callback: MouseEventArgs -> Task) = html.callbackTask ("onmousemove", callback)
+        static member inline mousemove([<InlineIfLambda>] callback: MouseEventArgs -> Task<unit>) = html.callbackTask ("onmousemove", callback)
 
         static member inline mousedown([<InlineIfLambda>] callback: MouseEventArgs -> unit) = html.callback ("onmousedown", callback)
-        static member inline mousedown([<InlineIfLambda>] callback: MouseEventArgs -> Task) = html.callback ("onmousedown", callback)
-        static member inline mousedown([<InlineIfLambda>] callback: MouseEventArgs -> Task<unit>) = html.callback ("onmousedown", callback)
+        static member inline mousedown([<InlineIfLambda>] callback: MouseEventArgs -> Task) = html.callbackTask ("onmousedown", callback)
+        static member inline mousedown([<InlineIfLambda>] callback: MouseEventArgs -> Task<unit>) = html.callbackTask ("onmousedown", callback)
 
         static member inline mouseup([<InlineIfLambda>] callback: MouseEventArgs -> unit) = html.callback ("onmouseup", callback)
-        static member inline mouseup([<InlineIfLambda>] callback: MouseEventArgs -> Task) = html.callback ("onmouseup", callback)
-        static member inline mouseup([<InlineIfLambda>] callback: MouseEventArgs -> Task<unit>) = html.callback ("onmouseup", callback)
+        static member inline mouseup([<InlineIfLambda>] callback: MouseEventArgs -> Task) = html.callbackTask ("onmouseup", callback)
+        static member inline mouseup([<InlineIfLambda>] callback: MouseEventArgs -> Task<unit>) = html.callbackTask ("onmouseup", callback)
 
         static member inline click([<InlineIfLambda>] callback: MouseEventArgs -> unit) = html.callback ("onclick", callback)
-        static member inline click([<InlineIfLambda>] callback: MouseEventArgs -> Task) = html.callback ("onclick", callback)
-        static member inline click([<InlineIfLambda>] callback: MouseEventArgs -> Task<unit>) = html.callback ("onclick", callback)
+        static member inline click([<InlineIfLambda>] callback: MouseEventArgs -> Task) = html.callbackTask ("onclick", callback)
+        static member inline click([<InlineIfLambda>] callback: MouseEventArgs -> Task<unit>) = html.callbackTask ("onclick", callback)
 
         static member inline dblclick([<InlineIfLambda>] callback: MouseEventArgs -> unit) = html.callback ("ondblclick", callback)
-        static member inline dblclick([<InlineIfLambda>] callback: MouseEventArgs -> Task) = html.callback ("ondblclick", callback)
-        static member inline dblclick([<InlineIfLambda>] callback: MouseEventArgs -> Task<unit>) = html.callback ("ondblclick", callback)
+        static member inline dblclick([<InlineIfLambda>] callback: MouseEventArgs -> Task) = html.callbackTask ("ondblclick", callback)
+        static member inline dblclick([<InlineIfLambda>] callback: MouseEventArgs -> Task<unit>) = html.callbackTask ("ondblclick", callback)
 
         static member inline wheel([<InlineIfLambda>] callback: MouseEventArgs -> unit) = html.callback ("onwheel", callback)
-        static member inline wheel([<InlineIfLambda>] callback: MouseEventArgs -> Task) = html.callback ("onwheel", callback)
-        static member inline wheel([<InlineIfLambda>] callback: MouseEventArgs -> Task<unit>) = html.callback ("onwheel", callback)
+        static member inline wheel([<InlineIfLambda>] callback: MouseEventArgs -> Task) = html.callbackTask ("onwheel", callback)
+        static member inline wheel([<InlineIfLambda>] callback: MouseEventArgs -> Task<unit>) = html.callbackTask ("onwheel", callback)
 
         static member inline mousewheel([<InlineIfLambda>] callback: MouseEventArgs -> unit) = html.callback ("onmousewheel", callback)
-        static member inline mousewheel([<InlineIfLambda>] callback: MouseEventArgs -> Task) = html.callback ("onmousewheel", callback)
-        static member inline mousewheel([<InlineIfLambda>] callback: MouseEventArgs -> Task<unit>) = html.callback ("onmousewheel", callback)
+        static member inline mousewheel([<InlineIfLambda>] callback: MouseEventArgs -> Task) = html.callbackTask ("onmousewheel", callback)
+        static member inline mousewheel([<InlineIfLambda>] callback: MouseEventArgs -> Task<unit>) = html.callbackTask ("onmousewheel", callback)
 
         static member inline contextmenu([<InlineIfLambda>] callback: MouseEventArgs -> unit) = html.callback ("oncontextmenu", callback)
-        static member inline contextmenu([<InlineIfLambda>] callback: MouseEventArgs -> Task) = html.callback ("oncontextmenu", callback)
-        static member inline contextmenu([<InlineIfLambda>] callback: MouseEventArgs -> Task<unit>) = html.callback ("oncontextmenu", callback)
+        static member inline contextmenu([<InlineIfLambda>] callback: MouseEventArgs -> Task) = html.callbackTask ("oncontextmenu", callback)
+        static member inline contextmenu([<InlineIfLambda>] callback: MouseEventArgs -> Task<unit>) = html.callbackTask ("oncontextmenu", callback)
 
         static member inline drag([<InlineIfLambda>] callback: DragEventArgs -> unit) = html.callback ("ondrag", callback)
-        static member inline drag([<InlineIfLambda>] callback: DragEventArgs -> Task) = html.callback ("ondrag", callback)
-        static member inline drag([<InlineIfLambda>] callback: DragEventArgs -> Task<unit>) = html.callback ("ondrag", callback)
+        static member inline drag([<InlineIfLambda>] callback: DragEventArgs -> Task) = html.callbackTask ("ondrag", callback)
+        static member inline drag([<InlineIfLambda>] callback: DragEventArgs -> Task<unit>) = html.callbackTask ("ondrag", callback)
 
         static member inline dragend([<InlineIfLambda>] callback: DragEventArgs -> unit) = html.callback ("ondragend", callback)
-        static member inline dragend([<InlineIfLambda>] callback: DragEventArgs -> Task) = html.callback ("ondragend", callback)
-        static member inline dragend([<InlineIfLambda>] callback: DragEventArgs -> Task<unit>) = html.callback ("ondragend", callback)
+        static member inline dragend([<InlineIfLambda>] callback: DragEventArgs -> Task) = html.callbackTask ("ondragend", callback)
+        static member inline dragend([<InlineIfLambda>] callback: DragEventArgs -> Task<unit>) = html.callbackTask ("ondragend", callback)
 
         static member inline dragenter([<InlineIfLambda>] callback: DragEventArgs -> unit) = html.callback ("ondragenter", callback)
-        static member inline dragenter([<InlineIfLambda>] callback: DragEventArgs -> Task) = html.callback ("ondragenter", callback)
-        static member inline dragenter([<InlineIfLambda>] callback: DragEventArgs -> Task<unit>) = html.callback ("ondragenter", callback)
+        static member inline dragenter([<InlineIfLambda>] callback: DragEventArgs -> Task) = html.callbackTask ("ondragenter", callback)
+        static member inline dragenter([<InlineIfLambda>] callback: DragEventArgs -> Task<unit>) = html.callbackTask ("ondragenter", callback)
 
         static member inline dragleave([<InlineIfLambda>] callback: DragEventArgs -> unit) = html.callback ("ondragleave", callback)
-        static member inline dragleave([<InlineIfLambda>] callback: DragEventArgs -> Task) = html.callback ("ondragleave", callback)
-        static member inline dragleave([<InlineIfLambda>] callback: DragEventArgs -> Task<unit>) = html.callback ("ondragleave", callback)
+        static member inline dragleave([<InlineIfLambda>] callback: DragEventArgs -> Task) = html.callbackTask ("ondragleave", callback)
+        static member inline dragleave([<InlineIfLambda>] callback: DragEventArgs -> Task<unit>) = html.callbackTask ("ondragleave", callback)
 
         static member inline dragover([<InlineIfLambda>] callback: DragEventArgs -> unit) = html.callback ("ondragover", callback)
-        static member inline dragover([<InlineIfLambda>] callback: DragEventArgs -> Task) = html.callback ("ondragover", callback)
-        static member inline dragover([<InlineIfLambda>] callback: DragEventArgs -> Task<unit>) = html.callback ("ondragover", callback)
+        static member inline dragover([<InlineIfLambda>] callback: DragEventArgs -> Task) = html.callbackTask ("ondragover", callback)
+        static member inline dragover([<InlineIfLambda>] callback: DragEventArgs -> Task<unit>) = html.callbackTask ("ondragover", callback)
 
         static member inline dragstart([<InlineIfLambda>] callback: DragEventArgs -> unit) = html.callback ("ondragstart", callback)
-        static member inline dragstart([<InlineIfLambda>] callback: DragEventArgs -> Task) = html.callback ("ondragstart", callback)
-        static member inline dragstart([<InlineIfLambda>] callback: DragEventArgs -> Task<unit>) = html.callback ("ondragstart", callback)
+        static member inline dragstart([<InlineIfLambda>] callback: DragEventArgs -> Task) = html.callbackTask ("ondragstart", callback)
+        static member inline dragstart([<InlineIfLambda>] callback: DragEventArgs -> Task<unit>) = html.callbackTask ("ondragstart", callback)
 
         static member inline drop([<InlineIfLambda>] callback: DragEventArgs -> unit) = html.callback ("ondrop", callback)
-        static member inline drop([<InlineIfLambda>] callback: DragEventArgs -> Task) = html.callback ("ondrop", callback)
-        static member inline drop([<InlineIfLambda>] callback: DragEventArgs -> Task<unit>) = html.callback ("ondrop", callback)
+        static member inline drop([<InlineIfLambda>] callback: DragEventArgs -> Task) = html.callbackTask ("ondrop", callback)
+        static member inline drop([<InlineIfLambda>] callback: DragEventArgs -> Task<unit>) = html.callbackTask ("ondrop", callback)
 
         static member inline keydown([<InlineIfLambda>] callback: KeyboardEventArgs -> unit) = html.callback ("onkeydown", callback)
-        static member inline keydown([<InlineIfLambda>] callback: KeyboardEventArgs -> Task) = html.callback ("onkeydown", callback)
-        static member inline keydown([<InlineIfLambda>] callback: KeyboardEventArgs -> Task<unit>) = html.callback ("onkeydown", callback)
+        static member inline keydown([<InlineIfLambda>] callback: KeyboardEventArgs -> Task) = html.callbackTask ("onkeydown", callback)
+        static member inline keydown([<InlineIfLambda>] callback: KeyboardEventArgs -> Task<unit>) = html.callbackTask ("onkeydown", callback)
 
         static member inline keyup([<InlineIfLambda>] callback: KeyboardEventArgs -> unit) = html.callback ("onkeyup", callback)
-        static member inline keyup([<InlineIfLambda>] callback: KeyboardEventArgs -> Task) = html.callback ("onkeyup", callback)
-        static member inline keyup([<InlineIfLambda>] callback: KeyboardEventArgs -> Task<unit>) = html.callback ("onkeyup", callback)
+        static member inline keyup([<InlineIfLambda>] callback: KeyboardEventArgs -> Task) = html.callbackTask ("onkeyup", callback)
+        static member inline keyup([<InlineIfLambda>] callback: KeyboardEventArgs -> Task<unit>) = html.callbackTask ("onkeyup", callback)
 
         static member inline keypress([<InlineIfLambda>] callback: KeyboardEventArgs -> unit) = html.callback ("onkeypress", callback)
-        static member inline keypress([<InlineIfLambda>] callback: KeyboardEventArgs -> Task) = html.callback ("onkeypress", callback)
-        static member inline keypress([<InlineIfLambda>] callback: KeyboardEventArgs -> Task<unit>) = html.callback ("onkeypress", callback)
+        static member inline keypress([<InlineIfLambda>] callback: KeyboardEventArgs -> Task) = html.callbackTask ("onkeypress", callback)
+        static member inline keypress([<InlineIfLambda>] callback: KeyboardEventArgs -> Task<unit>) = html.callbackTask ("onkeypress", callback)
 
         static member inline change([<InlineIfLambda>] callback: ChangeEventArgs -> unit) = html.callback ("onchange", callback)
-        static member inline change([<InlineIfLambda>] callback: ChangeEventArgs -> Task) = html.callback ("onchange", callback)
-        static member inline change([<InlineIfLambda>] callback: ChangeEventArgs -> Task<unit>) = html.callback ("onchange", callback)
+        static member inline change([<InlineIfLambda>] callback: ChangeEventArgs -> Task) = html.callbackTask ("onchange", callback)
+        static member inline change([<InlineIfLambda>] callback: ChangeEventArgs -> Task<unit>) = html.callbackTask ("onchange", callback)
 
         static member inline input([<InlineIfLambda>] callback: ChangeEventArgs -> unit) = html.callback ("oninput", callback)
-        static member inline input([<InlineIfLambda>] callback: ChangeEventArgs -> Task) = html.callback ("oninput", callback)
-        static member inline input([<InlineIfLambda>] callback: ChangeEventArgs -> Task<unit>) = html.callback ("oninput", callback)
+        static member inline input([<InlineIfLambda>] callback: ChangeEventArgs -> Task) = html.callbackTask ("oninput", callback)
+        static member inline input([<InlineIfLambda>] callback: ChangeEventArgs -> Task<unit>) = html.callbackTask ("oninput", callback)
 
         static member inline invalid([<InlineIfLambda>] callback: EventArgs -> unit) = html.callback ("oninvalid", callback)
-        static member inline invalid([<InlineIfLambda>] callback: EventArgs -> Task) = html.callback ("oninvalid", callback)
-        static member inline invalid([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callback ("oninvalid", callback)
+        static member inline invalid([<InlineIfLambda>] callback: EventArgs -> Task) = html.callbackTask ("oninvalid", callback)
+        static member inline invalid([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callbackTask ("oninvalid", callback)
 
         static member inline reset([<InlineIfLambda>] callback: EventArgs -> unit) = html.callback ("onreset", callback)
-        static member inline reset([<InlineIfLambda>] callback: EventArgs -> Task) = html.callback ("onreset", callback)
-        static member inline reset([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callback ("onreset", callback)
+        static member inline reset([<InlineIfLambda>] callback: EventArgs -> Task) = html.callbackTask ("onreset", callback)
+        static member inline reset([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callbackTask ("onreset", callback)
 
         static member inline select([<InlineIfLambda>] callback: EventArgs -> unit) = html.callback ("onselect", callback)
-        static member inline select([<InlineIfLambda>] callback: EventArgs -> Task) = html.callback ("onselect", callback)
-        static member inline select([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callback ("onselect", callback)
+        static member inline select([<InlineIfLambda>] callback: EventArgs -> Task) = html.callbackTask ("onselect", callback)
+        static member inline select([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callbackTask ("onselect", callback)
 
         static member inline selectstart([<InlineIfLambda>] callback: EventArgs -> unit) = html.callback ("onselectstart", callback)
-        static member inline selectstart([<InlineIfLambda>] callback: EventArgs -> Task) = html.callback ("onselectstart", callback)
-        static member inline selectstart([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callback ("onselectstart", callback)
+        static member inline selectstart([<InlineIfLambda>] callback: EventArgs -> Task) = html.callbackTask ("onselectstart", callback)
+        static member inline selectstart([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callbackTask ("onselectstart", callback)
 
         static member inline selectionchange([<InlineIfLambda>] callback: EventArgs -> unit) = html.callback ("onselectionchange", callback)
-        static member inline selectionchange([<InlineIfLambda>] callback: EventArgs -> Task) = html.callback ("onselectionchange", callback)
-        static member inline selectionchange([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callback ("onselectionchange", callback)
+        static member inline selectionchange([<InlineIfLambda>] callback: EventArgs -> Task) = html.callbackTask ("onselectionchange", callback)
+        static member inline selectionchange([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callbackTask ("onselectionchange", callback)
 
         static member inline submit([<InlineIfLambda>] callback: EventArgs -> unit) = html.callback ("onsubmit", callback)
-        static member inline submit([<InlineIfLambda>] callback: EventArgs -> Task) = html.callback ("onsubmit", callback)
-        static member inline submit([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callback ("onsubmit", callback)
+        static member inline submit([<InlineIfLambda>] callback: EventArgs -> Task) = html.callbackTask ("onsubmit", callback)
+        static member inline submit([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callbackTask ("onsubmit", callback)
 
         static member inline beforecopy([<InlineIfLambda>] callback: EventArgs -> unit) = html.callback ("onbeforecopy", callback)
-        static member inline beforecopy([<InlineIfLambda>] callback: EventArgs -> Task) = html.callback ("onbeforecopy", callback)
-        static member inline beforecopy([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callback ("onbeforecopy", callback)
+        static member inline beforecopy([<InlineIfLambda>] callback: EventArgs -> Task) = html.callbackTask ("onbeforecopy", callback)
+        static member inline beforecopy([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callbackTask ("onbeforecopy", callback)
 
         static member inline beforecut([<InlineIfLambda>] callback: EventArgs -> unit) = html.callback ("onbeforecut", callback)
-        static member inline beforecut([<InlineIfLambda>] callback: EventArgs -> Task) = html.callback ("onbeforecut", callback)
-        static member inline beforecut([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callback ("onbeforecut", callback)
+        static member inline beforecut([<InlineIfLambda>] callback: EventArgs -> Task) = html.callbackTask ("onbeforecut", callback)
+        static member inline beforecut([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callbackTask ("onbeforecut", callback)
 
         static member inline beforepaste([<InlineIfLambda>] callback: EventArgs -> unit) = html.callback ("onbeforepaste", callback)
-        static member inline beforepaste([<InlineIfLambda>] callback: EventArgs -> Task) = html.callback ("onbeforepaste", callback)
-        static member inline beforepaste([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callback ("onbeforepaste", callback)
+        static member inline beforepaste([<InlineIfLambda>] callback: EventArgs -> Task) = html.callbackTask ("onbeforepaste", callback)
+        static member inline beforepaste([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callbackTask ("onbeforepaste", callback)
 
         static member inline copy([<InlineIfLambda>] callback: ClipboardEventArgs -> unit) = html.callback ("oncopy", callback)
-        static member inline copy([<InlineIfLambda>] callback: ClipboardEventArgs -> Task) = html.callback ("oncopy", callback)
-        static member inline copy([<InlineIfLambda>] callback: ClipboardEventArgs -> Task<unit>) = html.callback ("oncopy", callback)
+        static member inline copy([<InlineIfLambda>] callback: ClipboardEventArgs -> Task) = html.callbackTask ("oncopy", callback)
+        static member inline copy([<InlineIfLambda>] callback: ClipboardEventArgs -> Task<unit>) = html.callbackTask ("oncopy", callback)
 
         static member inline cut([<InlineIfLambda>] callback: ClipboardEventArgs -> unit) = html.callback ("oncut", callback)
-        static member inline cut([<InlineIfLambda>] callback: ClipboardEventArgs -> Task) = html.callback ("oncut", callback)
-        static member inline cut([<InlineIfLambda>] callback: ClipboardEventArgs -> Task<unit>) = html.callback ("oncut", callback)
+        static member inline cut([<InlineIfLambda>] callback: ClipboardEventArgs -> Task) = html.callbackTask ("oncut", callback)
+        static member inline cut([<InlineIfLambda>] callback: ClipboardEventArgs -> Task<unit>) = html.callbackTask ("oncut", callback)
 
         static member inline paste([<InlineIfLambda>] callback: ClipboardEventArgs -> unit) = html.callback ("onpaste", callback)
-        static member inline paste([<InlineIfLambda>] callback: ClipboardEventArgs -> Task) = html.callback ("onpaste", callback)
-        static member inline paste([<InlineIfLambda>] callback: ClipboardEventArgs -> Task<unit>) = html.callback ("onpaste", callback)
+        static member inline paste([<InlineIfLambda>] callback: ClipboardEventArgs -> Task) = html.callbackTask ("onpaste", callback)
+        static member inline paste([<InlineIfLambda>] callback: ClipboardEventArgs -> Task<unit>) = html.callbackTask ("onpaste", callback)
 
         static member inline touchcancel([<InlineIfLambda>] callback: TouchEventArgs -> unit) = html.callback ("ontouchcancel", callback)
-        static member inline touchcancel([<InlineIfLambda>] callback: TouchEventArgs -> Task) = html.callback ("ontouchcancel", callback)
-        static member inline touchcancel([<InlineIfLambda>] callback: TouchEventArgs -> Task<unit>) = html.callback ("ontouchcancel", callback)
+        static member inline touchcancel([<InlineIfLambda>] callback: TouchEventArgs -> Task) = html.callbackTask ("ontouchcancel", callback)
+        static member inline touchcancel([<InlineIfLambda>] callback: TouchEventArgs -> Task<unit>) = html.callbackTask ("ontouchcancel", callback)
 
         static member inline touchend([<InlineIfLambda>] callback: TouchEventArgs -> unit) = html.callback ("ontouchend", callback)
-        static member inline touchend([<InlineIfLambda>] callback: TouchEventArgs -> Task) = html.callback ("ontouchend", callback)
-        static member inline touchend([<InlineIfLambda>] callback: TouchEventArgs -> Task<unit>) = html.callback ("ontouchend", callback)
+        static member inline touchend([<InlineIfLambda>] callback: TouchEventArgs -> Task) = html.callbackTask ("ontouchend", callback)
+        static member inline touchend([<InlineIfLambda>] callback: TouchEventArgs -> Task<unit>) = html.callbackTask ("ontouchend", callback)
 
         static member inline touchmove([<InlineIfLambda>] callback: TouchEventArgs -> unit) = html.callback ("ontouchmove", callback)
-        static member inline touchmove([<InlineIfLambda>] callback: TouchEventArgs -> Task) = html.callback ("ontouchmove", callback)
-        static member inline touchmove([<InlineIfLambda>] callback: TouchEventArgs -> Task<unit>) = html.callback ("ontouchmove", callback)
+        static member inline touchmove([<InlineIfLambda>] callback: TouchEventArgs -> Task) = html.callbackTask ("ontouchmove", callback)
+        static member inline touchmove([<InlineIfLambda>] callback: TouchEventArgs -> Task<unit>) = html.callbackTask ("ontouchmove", callback)
 
         static member inline touchstart([<InlineIfLambda>] callback: TouchEventArgs -> unit) = html.callback ("ontouchstart", callback)
-        static member inline touchstart([<InlineIfLambda>] callback: TouchEventArgs -> Task) = html.callback ("ontouchstart", callback)
-        static member inline touchstart([<InlineIfLambda>] callback: TouchEventArgs -> Task<unit>) = html.callback ("ontouchstart", callback)
+        static member inline touchstart([<InlineIfLambda>] callback: TouchEventArgs -> Task) = html.callbackTask ("ontouchstart", callback)
+        static member inline touchstart([<InlineIfLambda>] callback: TouchEventArgs -> Task<unit>) = html.callbackTask ("ontouchstart", callback)
 
         static member inline touchenter([<InlineIfLambda>] callback: TouchEventArgs -> unit) = html.callback ("ontouchenter", callback)
-        static member inline touchenter([<InlineIfLambda>] callback: TouchEventArgs -> Task) = html.callback ("ontouchenter", callback)
-        static member inline touchenter([<InlineIfLambda>] callback: TouchEventArgs -> Task<unit>) = html.callback ("ontouchenter", callback)
+        static member inline touchenter([<InlineIfLambda>] callback: TouchEventArgs -> Task) = html.callbackTask ("ontouchenter", callback)
+        static member inline touchenter([<InlineIfLambda>] callback: TouchEventArgs -> Task<unit>) = html.callbackTask ("ontouchenter", callback)
 
         static member inline touchleave([<InlineIfLambda>] callback: TouchEventArgs -> unit) = html.callback ("ontouchleave", callback)
-        static member inline touchleave([<InlineIfLambda>] callback: TouchEventArgs -> Task) = html.callback ("ontouchleave", callback)
-        static member inline touchleave([<InlineIfLambda>] callback: TouchEventArgs -> Task<unit>) = html.callback ("ontouchleave", callback)
+        static member inline touchleave([<InlineIfLambda>] callback: TouchEventArgs -> Task) = html.callbackTask ("ontouchleave", callback)
+        static member inline touchleave([<InlineIfLambda>] callback: TouchEventArgs -> Task<unit>) = html.callbackTask ("ontouchleave", callback)
 
         static member inline pointercapture([<InlineIfLambda>] callback: PointerEventArgs -> unit) = html.callback ("onpointercapture", callback)
-        static member inline pointercapture([<InlineIfLambda>] callback: PointerEventArgs -> Task) = html.callback ("onpointercapture", callback)
+        static member inline pointercapture([<InlineIfLambda>] callback: PointerEventArgs -> Task) = html.callbackTask ("onpointercapture", callback)
         static member inline pointercapture
             (
                 [<InlineIfLambda>] render: AttrRenderFragment,
                 [<InlineIfLambda>] callback: PointerEventArgs -> Task<unit>
             )
             =
-            html.callback ("onpointercapture", callback)
+            html.callbackTask ("onpointercapture", callback)
 
         static member inline lostpointercapture
             (
@@ -210,212 +210,217 @@ module DslDomEventAttr =
                 [<InlineIfLambda>] callback: PointerEventArgs -> Task
             )
             =
-            html.callback ("onlostpointercapture", callback)
+            html.callbackTask ("onlostpointercapture", callback)
         static member inline lostpointercapture
             (
                 [<InlineIfLambda>] render: AttrRenderFragment,
                 [<InlineIfLambda>] callback: PointerEventArgs -> Task<unit>
             )
             =
-            html.callback ("onlostpointercapture", callback)
+            html.callbackTask ("onlostpointercapture", callback)
 
         static member inline pointercancel([<InlineIfLambda>] callback: PointerEventArgs -> unit) = html.callback ("onpointercancel", callback)
-        static member inline pointercancel([<InlineIfLambda>] callback: PointerEventArgs -> Task) = html.callback ("onpointercancel", callback)
+        static member inline pointercancel([<InlineIfLambda>] callback: PointerEventArgs -> Task) = html.callbackTask ("onpointercancel", callback)
         static member inline pointercancel
             (
                 [<InlineIfLambda>] render: AttrRenderFragment,
                 [<InlineIfLambda>] callback: PointerEventArgs -> Task<unit>
             )
             =
-            html.callback ("onpointercancel", callback)
+            html.callbackTask ("onpointercancel", callback)
 
         static member inline pointerdown([<InlineIfLambda>] callback: PointerEventArgs -> unit) = html.callback ("onpointerdown", callback)
-        static member inline pointerdown([<InlineIfLambda>] callback: PointerEventArgs -> Task) = html.callback ("onpointerdown", callback)
-        static member inline pointerdown([<InlineIfLambda>] callback: PointerEventArgs -> Task<unit>) = html.callback ("onpointerdown", callback)
+        static member inline pointerdown([<InlineIfLambda>] callback: PointerEventArgs -> Task) = html.callbackTask ("onpointerdown", callback)
+        static member inline pointerdown([<InlineIfLambda>] callback: PointerEventArgs -> Task<unit>) = html.callbackTask ("onpointerdown", callback)
 
         static member inline pointerenter([<InlineIfLambda>] callback: PointerEventArgs -> unit) = html.callback ("onpointerenter", callback)
-        static member inline pointerenter([<InlineIfLambda>] callback: PointerEventArgs -> Task) = html.callback ("onpointerenter", callback)
+        static member inline pointerenter([<InlineIfLambda>] callback: PointerEventArgs -> Task) = html.callbackTask ("onpointerenter", callback)
         static member inline pointerenter
             (
                 [<InlineIfLambda>] render: AttrRenderFragment,
                 [<InlineIfLambda>] callback: PointerEventArgs -> Task<unit>
             )
             =
-            html.callback ("onpointerenter", callback)
+            html.callbackTask ("onpointerenter", callback)
 
         static member inline pointerleave([<InlineIfLambda>] callback: PointerEventArgs -> unit) = html.callback ("onpointerleave", callback)
-        static member inline pointerleave([<InlineIfLambda>] callback: PointerEventArgs -> Task) = html.callback ("onpointerleave", callback)
+        static member inline pointerleave([<InlineIfLambda>] callback: PointerEventArgs -> Task) = html.callbackTask ("onpointerleave", callback)
         static member inline pointerleave
             (
                 [<InlineIfLambda>] render: AttrRenderFragment,
                 [<InlineIfLambda>] callback: PointerEventArgs -> Task<unit>
             )
             =
-            html.callback ("onpointerleave", callback)
+            html.callbackTask ("onpointerleave", callback)
 
         static member inline pointermove([<InlineIfLambda>] callback: PointerEventArgs -> unit) = html.callback ("onpointermove", callback)
-        static member inline pointermove([<InlineIfLambda>] callback: PointerEventArgs -> Task) = html.callback ("onpointermove", callback)
-        static member inline pointermove([<InlineIfLambda>] callback: PointerEventArgs -> Task<unit>) = html.callback ("onpointermove", callback)
+        static member inline pointermove([<InlineIfLambda>] callback: PointerEventArgs -> Task) = html.callbackTask ("onpointermove", callback)
+        static member inline pointermove([<InlineIfLambda>] callback: PointerEventArgs -> Task<unit>) = html.callbackTask ("onpointermove", callback)
 
         static member inline pointerout([<InlineIfLambda>] callback: PointerEventArgs -> unit) = html.callback ("onpointerout", callback)
-        static member inline pointerout([<InlineIfLambda>] callback: PointerEventArgs -> Task) = html.callback ("onpointerout", callback)
-        static member inline pointerout([<InlineIfLambda>] callback: PointerEventArgs -> Task<unit>) = html.callback ("onpointerout", callback)
+        static member inline pointerout([<InlineIfLambda>] callback: PointerEventArgs -> Task) = html.callbackTask ("onpointerout", callback)
+        static member inline pointerout([<InlineIfLambda>] callback: PointerEventArgs -> Task<unit>) = html.callbackTask ("onpointerout", callback)
 
         static member inline pointerover([<InlineIfLambda>] callback: PointerEventArgs -> unit) = html.callback ("onpointerover", callback)
-        static member inline pointerover([<InlineIfLambda>] callback: PointerEventArgs -> Task) = html.callback ("onpointerover", callback)
-        static member inline pointerover([<InlineIfLambda>] callback: PointerEventArgs -> Task<unit>) = html.callback ("onpointerover", callback)
+        static member inline pointerover([<InlineIfLambda>] callback: PointerEventArgs -> Task) = html.callbackTask ("onpointerover", callback)
+        static member inline pointerover([<InlineIfLambda>] callback: PointerEventArgs -> Task<unit>) = html.callbackTask ("onpointerover", callback)
 
         static member inline pointerup([<InlineIfLambda>] callback: PointerEventArgs -> unit) = html.callback ("onpointerup", callback)
-        static member inline pointerup([<InlineIfLambda>] callback: PointerEventArgs -> Task) = html.callback ("onpointerup", callback)
-        static member inline pointerup([<InlineIfLambda>] callback: PointerEventArgs -> Task<unit>) = html.callback ("onpointerup", callback)
+        static member inline pointerup([<InlineIfLambda>] callback: PointerEventArgs -> Task) = html.callbackTask ("onpointerup", callback)
+        static member inline pointerup([<InlineIfLambda>] callback: PointerEventArgs -> Task<unit>) = html.callbackTask ("onpointerup", callback)
 
         static member inline canplay([<InlineIfLambda>] callback: EventArgs -> unit) = html.callback ("oncanplay", callback)
-        static member inline canplay([<InlineIfLambda>] callback: EventArgs -> Task) = html.callback ("oncanplay", callback)
-        static member inline canplay([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callback ("oncanplay", callback)
+        static member inline canplay([<InlineIfLambda>] callback: EventArgs -> Task) = html.callbackTask ("oncanplay", callback)
+        static member inline canplay([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callbackTask ("oncanplay", callback)
 
         static member inline canplaythrough([<InlineIfLambda>] callback: EventArgs -> unit) = html.callback ("oncanplaythrough", callback)
-        static member inline canplaythrough([<InlineIfLambda>] callback: EventArgs -> Task) = html.callback ("oncanplaythrough", callback)
-        static member inline canplaythrough([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callback ("oncanplaythrough", callback)
+        static member inline canplaythrough([<InlineIfLambda>] callback: EventArgs -> Task) = html.callbackTask ("oncanplaythrough", callback)
+        static member inline canplaythrough([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callbackTask ("oncanplaythrough", callback)
 
         static member inline cuechange([<InlineIfLambda>] callback: EventArgs -> unit) = html.callback ("oncuechange", callback)
-        static member inline cuechange([<InlineIfLambda>] callback: EventArgs -> Task) = html.callback ("oncuechange", callback)
-        static member inline cuechange([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callback ("oncuechange", callback)
+        static member inline cuechange([<InlineIfLambda>] callback: EventArgs -> Task) = html.callbackTask ("oncuechange", callback)
+        static member inline cuechange([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callbackTask ("oncuechange", callback)
 
         static member inline durationchange([<InlineIfLambda>] callback: EventArgs -> unit) = html.callback ("ondurationchange", callback)
-        static member inline durationchange([<InlineIfLambda>] callback: EventArgs -> Task) = html.callback ("ondurationchange", callback)
-        static member inline durationchange([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callback ("ondurationchange", callback)
+        static member inline durationchange([<InlineIfLambda>] callback: EventArgs -> Task) = html.callbackTask ("ondurationchange", callback)
+        static member inline durationchange([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callbackTask ("ondurationchange", callback)
 
         static member inline emptied([<InlineIfLambda>] callback: EventArgs -> unit) = html.callback ("onemptied", callback)
-        static member inline emptied([<InlineIfLambda>] callback: EventArgs -> Task) = html.callback ("onemptied", callback)
-        static member inline emptied([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callback ("onemptied", callback)
+        static member inline emptied([<InlineIfLambda>] callback: EventArgs -> Task) = html.callbackTask ("onemptied", callback)
+        static member inline emptied([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callbackTask ("onemptied", callback)
 
         static member inline pause([<InlineIfLambda>] callback: EventArgs -> unit) = html.callback ("onpause", callback)
-        static member inline pause([<InlineIfLambda>] callback: EventArgs -> Task) = html.callback ("onpause", callback)
-        static member inline pause([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callback ("onpause", callback)
+        static member inline pause([<InlineIfLambda>] callback: EventArgs -> Task) = html.callbackTask ("onpause", callback)
+        static member inline pause([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callbackTask ("onpause", callback)
 
         static member inline play([<InlineIfLambda>] callback: EventArgs -> unit) = html.callback ("onplay", callback)
-        static member inline play([<InlineIfLambda>] callback: EventArgs -> Task) = html.callback ("onplay", callback)
-        static member inline play([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callback ("onplay", callback)
+        static member inline play([<InlineIfLambda>] callback: EventArgs -> Task) = html.callbackTask ("onplay", callback)
+        static member inline play([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callbackTask ("onplay", callback)
 
         static member inline playing([<InlineIfLambda>] callback: EventArgs -> unit) = html.callback ("onplaying", callback)
-        static member inline playing([<InlineIfLambda>] callback: EventArgs -> Task) = html.callback ("onplaying", callback)
-        static member inline playing([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callback ("onplaying", callback)
+        static member inline playing([<InlineIfLambda>] callback: EventArgs -> Task) = html.callbackTask ("onplaying", callback)
+        static member inline playing([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callbackTask ("onplaying", callback)
 
         static member inline ratechange([<InlineIfLambda>] callback: EventArgs -> unit) = html.callback ("onratechange", callback)
-        static member inline ratechange([<InlineIfLambda>] callback: EventArgs -> Task) = html.callback ("onratechange", callback)
-        static member inline ratechange([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callback ("onratechange", callback)
+        static member inline ratechange([<InlineIfLambda>] callback: EventArgs -> Task) = html.callbackTask ("onratechange", callback)
+        static member inline ratechange([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callbackTask ("onratechange", callback)
 
         static member inline seeked([<InlineIfLambda>] callback: EventArgs -> unit) = html.callback ("onseeked", callback)
-        static member inline seeked([<InlineIfLambda>] callback: EventArgs -> Task) = html.callback ("onseeked", callback)
-        static member inline seeked([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callback ("onseeked", callback)
+        static member inline seeked([<InlineIfLambda>] callback: EventArgs -> Task) = html.callbackTask ("onseeked", callback)
+        static member inline seeked([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callbackTask ("onseeked", callback)
 
         static member inline seeking([<InlineIfLambda>] callback: EventArgs -> unit) = html.callback ("onseeking", callback)
-        static member inline seeking([<InlineIfLambda>] callback: EventArgs -> Task) = html.callback ("onseeking", callback)
-        static member inline seeking([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callback ("onseeking", callback)
+        static member inline seeking([<InlineIfLambda>] callback: EventArgs -> Task) = html.callbackTask ("onseeking", callback)
+        static member inline seeking([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callbackTask ("onseeking", callback)
 
         static member inline stalled([<InlineIfLambda>] callback: EventArgs -> unit) = html.callback ("onstalled", callback)
-        static member inline stalled([<InlineIfLambda>] callback: EventArgs -> Task) = html.callback ("onstalled", callback)
-        static member inline stalled([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callback ("onstalled", callback)
+        static member inline stalled([<InlineIfLambda>] callback: EventArgs -> Task) = html.callbackTask ("onstalled", callback)
+        static member inline stalled([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callbackTask ("onstalled", callback)
 
         static member inline stop([<InlineIfLambda>] callback: EventArgs -> unit) = html.callback ("onstop", callback)
-        static member inline stop([<InlineIfLambda>] callback: EventArgs -> Task) = html.callback ("onstop", callback)
-        static member inline stop([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callback ("onstop", callback)
+        static member inline stop([<InlineIfLambda>] callback: EventArgs -> Task) = html.callbackTask ("onstop", callback)
+        static member inline stop([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callbackTask ("onstop", callback)
 
         static member inline suspend([<InlineIfLambda>] callback: EventArgs -> unit) = html.callback ("onsuspend", callback)
-        static member inline suspend([<InlineIfLambda>] callback: EventArgs -> Task) = html.callback ("onsuspend", callback)
-        static member inline suspend([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callback ("onsuspend", callback)
+        static member inline suspend([<InlineIfLambda>] callback: EventArgs -> Task) = html.callbackTask ("onsuspend", callback)
+        static member inline suspend([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callbackTask ("onsuspend", callback)
 
         static member inline timeupdate([<InlineIfLambda>] callback: EventArgs -> unit) = html.callback ("ontimeupdate", callback)
-        static member inline timeupdate([<InlineIfLambda>] callback: EventArgs -> Task) = html.callback ("ontimeupdate", callback)
-        static member inline timeupdate([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callback ("ontimeupdate", callback)
+        static member inline timeupdate([<InlineIfLambda>] callback: EventArgs -> Task) = html.callbackTask ("ontimeupdate", callback)
+        static member inline timeupdate([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callbackTask ("ontimeupdate", callback)
 
         static member inline volumechange([<InlineIfLambda>] callback: EventArgs -> unit) = html.callback ("onvolumechange", callback)
-        static member inline volumechange([<InlineIfLambda>] callback: EventArgs -> Task) = html.callback ("onvolumechange", callback)
-        static member inline volumechange([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callback ("onvolumechange", callback)
+        static member inline volumechange([<InlineIfLambda>] callback: EventArgs -> Task) = html.callbackTask ("onvolumechange", callback)
+        static member inline volumechange([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callbackTask ("onvolumechange", callback)
 
         static member inline waiting([<InlineIfLambda>] callback: EventArgs -> unit) = html.callback ("onwaiting", callback)
-        static member inline waiting([<InlineIfLambda>] callback: EventArgs -> Task) = html.callback ("onwaiting", callback)
-        static member inline waiting([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callback ("onwaiting", callback)
+        static member inline waiting([<InlineIfLambda>] callback: EventArgs -> Task) = html.callbackTask ("onwaiting", callback)
+        static member inline waiting([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callbackTask ("onwaiting", callback)
 
         static member inline loadstart([<InlineIfLambda>] callback: ProgressEventArgs -> unit) = html.callback ("onloadstart", callback)
-        static member inline loadstart([<InlineIfLambda>] callback: ProgressEventArgs -> Task) = html.callback ("onloadstart", callback)
-        static member inline loadstart([<InlineIfLambda>] callback: ProgressEventArgs -> Task<unit>) = html.callback ("onloadstart", callback)
+        static member inline loadstart([<InlineIfLambda>] callback: ProgressEventArgs -> Task) = html.callbackTask ("onloadstart", callback)
+        static member inline loadstart([<InlineIfLambda>] callback: ProgressEventArgs -> Task<unit>) = html.callbackTask ("onloadstart", callback)
 
         static member inline timeout([<InlineIfLambda>] callback: ProgressEventArgs -> unit) = html.callback ("ontimeout", callback)
-        static member inline timeout([<InlineIfLambda>] callback: ProgressEventArgs -> Task) = html.callback ("ontimeout", callback)
-        static member inline timeout([<InlineIfLambda>] callback: ProgressEventArgs -> Task<unit>) = html.callback ("ontimeout", callback)
+        static member inline timeout([<InlineIfLambda>] callback: ProgressEventArgs -> Task) = html.callbackTask ("ontimeout", callback)
+        static member inline timeout([<InlineIfLambda>] callback: ProgressEventArgs -> Task<unit>) = html.callbackTask ("ontimeout", callback)
 
         static member inline abort([<InlineIfLambda>] callback: ProgressEventArgs -> unit) = html.callback ("onabort", callback)
-        static member inline abort([<InlineIfLambda>] callback: ProgressEventArgs -> Task) = html.callback ("onabort", callback)
-        static member inline abort([<InlineIfLambda>] callback: ProgressEventArgs -> Task<unit>) = html.callback ("onabort", callback)
+        static member inline abort([<InlineIfLambda>] callback: ProgressEventArgs -> Task) = html.callbackTask ("onabort", callback)
+        static member inline abort([<InlineIfLambda>] callback: ProgressEventArgs -> Task<unit>) = html.callbackTask ("onabort", callback)
 
         static member inline load([<InlineIfLambda>] callback: ProgressEventArgs -> unit) = html.callback ("onload", callback)
-        static member inline load([<InlineIfLambda>] callback: ProgressEventArgs -> Task) = html.callback ("onload", callback)
-        static member inline load([<InlineIfLambda>] callback: ProgressEventArgs -> Task<unit>) = html.callback ("onload", callback)
+        static member inline load([<InlineIfLambda>] callback: ProgressEventArgs -> Task) = html.callbackTask ("onload", callback)
+        static member inline load([<InlineIfLambda>] callback: ProgressEventArgs -> Task<unit>) = html.callbackTask ("onload", callback)
 
         static member inline loadend([<InlineIfLambda>] callback: ProgressEventArgs -> unit) = html.callback ("onloadend", callback)
-        static member inline loadend([<InlineIfLambda>] callback: ProgressEventArgs -> Task) = html.callback ("onloadend", callback)
-        static member inline loadend([<InlineIfLambda>] callback: ProgressEventArgs -> Task<unit>) = html.callback ("onloadend", callback)
+        static member inline loadend([<InlineIfLambda>] callback: ProgressEventArgs -> Task) = html.callbackTask ("onloadend", callback)
+        static member inline loadend([<InlineIfLambda>] callback: ProgressEventArgs -> Task<unit>) = html.callbackTask ("onloadend", callback)
 
         static member inline progress([<InlineIfLambda>] callback: ProgressEventArgs -> unit) = html.callback ("onprogress", callback)
-        static member inline progress([<InlineIfLambda>] callback: ProgressEventArgs -> Task) = html.callback ("onprogress", callback)
-        static member inline progress([<InlineIfLambda>] callback: ProgressEventArgs -> Task<unit>) = html.callback ("onprogress", callback)
+        static member inline progress([<InlineIfLambda>] callback: ProgressEventArgs -> Task) = html.callbackTask ("onprogress", callback)
+        static member inline progress([<InlineIfLambda>] callback: ProgressEventArgs -> Task<unit>) = html.callbackTask ("onprogress", callback)
 
         static member inline error([<InlineIfLambda>] callback: ErrorEventArgs -> unit) = html.callback ("onerror", callback)
-        static member inline error([<InlineIfLambda>] callback: ErrorEventArgs -> Task) = html.callback ("onerror", callback)
-        static member inline error([<InlineIfLambda>] callback: ErrorEventArgs -> Task<unit>) = html.callback ("onerror", callback)
+        static member inline error([<InlineIfLambda>] callback: ErrorEventArgs -> Task) = html.callbackTask ("onerror", callback)
+        static member inline error([<InlineIfLambda>] callback: ErrorEventArgs -> Task<unit>) = html.callbackTask ("onerror", callback)
 
         static member inline activate([<InlineIfLambda>] callback: EventArgs -> unit) = html.callback ("onactivate", callback)
-        static member inline activate([<InlineIfLambda>] callback: EventArgs -> Task) = html.callback ("onactivate", callback)
-        static member inline activate([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callback ("onactivate", callback)
+        static member inline activate([<InlineIfLambda>] callback: EventArgs -> Task) = html.callbackTask ("onactivate", callback)
+        static member inline activate([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callbackTask ("onactivate", callback)
 
         static member inline beforeactivate([<InlineIfLambda>] callback: EventArgs -> unit) = html.callback ("onbeforeactivate", callback)
-        static member inline beforeactivate([<InlineIfLambda>] callback: EventArgs -> Task) = html.callback ("onbeforeactivate", callback)
-        static member inline beforeactivate([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callback ("onbeforeactivate", callback)
+        static member inline beforeactivate([<InlineIfLambda>] callback: EventArgs -> Task) = html.callbackTask ("onbeforeactivate", callback)
+        static member inline beforeactivate([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callbackTask ("onbeforeactivate", callback)
 
         static member inline beforedeactivate([<InlineIfLambda>] callback: EventArgs -> unit) = html.callback ("onbeforedeactivate", callback)
-        static member inline beforedeactivate([<InlineIfLambda>] callback: EventArgs -> Task) = html.callback ("onbeforedeactivate", callback)
-        static member inline beforedeactivate([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callback ("onbeforedeactivate", callback)
+        static member inline beforedeactivate([<InlineIfLambda>] callback: EventArgs -> Task) = html.callbackTask ("onbeforedeactivate", callback)
+        static member inline beforedeactivate([<InlineIfLambda>] callback: EventArgs -> Task<unit>) =
+            html.callbackTask ("onbeforedeactivate", callback)
 
         static member inline deactivate([<InlineIfLambda>] callback: EventArgs -> unit) = html.callback ("ondeactivate", callback)
-        static member inline deactivate([<InlineIfLambda>] callback: EventArgs -> Task) = html.callback ("ondeactivate", callback)
-        static member inline deactivate([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callback ("ondeactivate", callback)
+        static member inline deactivate([<InlineIfLambda>] callback: EventArgs -> Task) = html.callbackTask ("ondeactivate", callback)
+        static member inline deactivate([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callbackTask ("ondeactivate", callback)
 
         static member inline ended([<InlineIfLambda>] callback: EventArgs -> unit) = html.callback ("onended", callback)
-        static member inline ended([<InlineIfLambda>] callback: EventArgs -> Task) = html.callback ("onended", callback)
-        static member inline ended([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callback ("onended", callback)
+        static member inline ended([<InlineIfLambda>] callback: EventArgs -> Task) = html.callbackTask ("onended", callback)
+        static member inline ended([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callbackTask ("onended", callback)
 
         static member inline fullscreenchange([<InlineIfLambda>] callback: EventArgs -> unit) = html.callback ("onfullscreenchange", callback)
-        static member inline fullscreenchange([<InlineIfLambda>] callback: EventArgs -> Task) = html.callback ("onfullscreenchange", callback)
-        static member inline fullscreenchange([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callback ("onfullscreenchange", callback)
+        static member inline fullscreenchange([<InlineIfLambda>] callback: EventArgs -> Task) = html.callbackTask ("onfullscreenchange", callback)
+        static member inline fullscreenchange([<InlineIfLambda>] callback: EventArgs -> Task<unit>) =
+            html.callbackTask ("onfullscreenchange", callback)
 
         static member inline fullscreenerror([<InlineIfLambda>] callback: EventArgs -> unit) = html.callback ("onfullscreenerror", callback)
-        static member inline fullscreenerror([<InlineIfLambda>] callback: EventArgs -> Task) = html.callback ("onfullscreenerror", callback)
-        static member inline fullscreenerror([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callback ("onfullscreenerror", callback)
+        static member inline fullscreenerror([<InlineIfLambda>] callback: EventArgs -> Task) = html.callbackTask ("onfullscreenerror", callback)
+        static member inline fullscreenerror([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callbackTask ("onfullscreenerror", callback)
 
         static member inline loadeddata([<InlineIfLambda>] callback: EventArgs -> unit) = html.callback ("onloadeddata", callback)
-        static member inline loadeddata([<InlineIfLambda>] callback: EventArgs -> Task) = html.callback ("onloadeddata", callback)
-        static member inline loadeddata([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callback ("onloadeddata", callback)
+        static member inline loadeddata([<InlineIfLambda>] callback: EventArgs -> Task) = html.callbackTask ("onloadeddata", callback)
+        static member inline loadeddata([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callbackTask ("onloadeddata", callback)
 
         static member inline loadedmetadata([<InlineIfLambda>] callback: EventArgs -> unit) = html.callback ("onloadedmetadata", callback)
-        static member inline loadedmetadata([<InlineIfLambda>] callback: EventArgs -> Task) = html.callback ("onloadedmetadata", callback)
-        static member inline loadedmetadata([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callback ("onloadedmetadata", callback)
+        static member inline loadedmetadata([<InlineIfLambda>] callback: EventArgs -> Task) = html.callbackTask ("onloadedmetadata", callback)
+        static member inline loadedmetadata([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callbackTask ("onloadedmetadata", callback)
 
         static member inline pointerlockchange([<InlineIfLambda>] callback: EventArgs -> unit) = html.callback ("onpointerlockchange", callback)
-        static member inline pointerlockchange([<InlineIfLambda>] callback: EventArgs -> Task) = html.callback ("onpointerlockchange", callback)
-        static member inline pointerlockchange([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callback ("onpointerlockchange", callback)
+        static member inline pointerlockchange([<InlineIfLambda>] callback: EventArgs -> Task) = html.callbackTask ("onpointerlockchange", callback)
+        static member inline pointerlockchange([<InlineIfLambda>] callback: EventArgs -> Task<unit>) =
+            html.callbackTask ("onpointerlockchange", callback)
 
         static member inline pointerlockerror([<InlineIfLambda>] callback: EventArgs -> unit) = html.callback ("onpointerlockerror", callback)
-        static member inline pointerlockerror([<InlineIfLambda>] callback: EventArgs -> Task) = html.callback ("onpointerlockerror", callback)
-        static member inline pointerlockerror([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callback ("onpointerlockerror", callback)
+        static member inline pointerlockerror([<InlineIfLambda>] callback: EventArgs -> Task) = html.callbackTask ("onpointerlockerror", callback)
+        static member inline pointerlockerror([<InlineIfLambda>] callback: EventArgs -> Task<unit>) =
+            html.callbackTask ("onpointerlockerror", callback)
 
         static member inline readystatechange([<InlineIfLambda>] callback: EventArgs -> unit) = html.callback ("onreadystatechange", callback)
-        static member inline readystatechange([<InlineIfLambda>] callback: EventArgs -> Task) = html.callback ("onreadystatechange", callback)
-        static member inline readystatechange([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callback ("onreadystatechange", callback)
+        static member inline readystatechange([<InlineIfLambda>] callback: EventArgs -> Task) = html.callbackTask ("onreadystatechange", callback)
+        static member inline readystatechange([<InlineIfLambda>] callback: EventArgs -> Task<unit>) =
+            html.callbackTask ("onreadystatechange", callback)
 
         static member inline scroll([<InlineIfLambda>] callback: EventArgs -> unit) = html.callback ("onscroll", callback)
-        static member inline scroll([<InlineIfLambda>] callback: EventArgs -> Task) = html.callback ("onscroll", callback)
-        static member inline scroll([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callback ("onscroll", callback)
+        static member inline scroll([<InlineIfLambda>] callback: EventArgs -> Task) = html.callbackTask ("onscroll", callback)
+        static member inline scroll([<InlineIfLambda>] callback: EventArgs -> Task<unit>) = html.callbackTask ("onscroll", callback)
 
 
         static member inline abort(js: string) = ("onabort" => js)
