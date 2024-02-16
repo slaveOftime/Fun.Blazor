@@ -9,6 +9,7 @@ open System
 open System.IO
 open System.Threading
 open Fun.Build
+open Fun.Build.Github
 open Fun.Result
 open Fake.IO
 open Fake.IO.FileSystemOperators
@@ -60,15 +61,6 @@ let getNugetPackageLatestVersion (package: string) = task {
         |> Seq.tryLast
         |> Option.defaultWith (fun _ -> failwith $"No version found for {package}")
 }
-
-
-type PipelineBuilder with
-
-    [<CustomOperation "collapseGithubActionLogs">]
-    member inline this.collapseGithubActionLogs(build: Internal.BuildPipeline) =
-        let build =
-            this.runBeforeEachStage (build, (fun ctx -> if ctx.GetStageLevel() = 0 then printfn $"::group::{ctx.Name}"))
-        this.runAfterEachStage (build, (fun ctx -> if ctx.GetStageLevel() = 0 then printfn "::endgroup::"))
 
 
 let stage_checkEnv =
@@ -148,7 +140,7 @@ let stage_generateBindingProjects name package nsp patch =
   </ItemGroup>
   <ItemGroup>
     <PackageReference Update="FSharp.Core" Version="6.0.0" />
-    <PackageReference Include="Fun.Blazor" Version="4.0.*" />
+    <PackageReference Include="Fun.Blazor" Version="3.2.*" />
   </ItemGroup>
 </Project>"""
             ]
@@ -254,7 +246,7 @@ pipeline "packages" {
     stage "Push to nuget" {
         failIfIgnored
         whenBranch "master"
-        whenEnvVar "GITHUB_ENV"
+        whenGithubAction
         whenEnvVar options.NUGET_API_KEY
         run (fun ctx ->
             let key = ctx.GetEnvVar options.NUGET_API_KEY.Name
