@@ -589,6 +589,8 @@ type ComponentWithDomAndChildAttrBuilder<'T when 'T :> IComponent>() =
             index + 1
         )
 
+    member inline _.Yield(x: RenderFragment) = html.renderFragment x
+
     member inline _.Yield([<InlineIfLambda>] x: NodeRenderFragment) = x
 
     member inline _.Yield(x: NodeRenderFragment seq) = html.region x

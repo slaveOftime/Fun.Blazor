@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [4.0.4] - 2024-02-17
+
+- Support yield RenderFragment for ComponentWithDomAndChildAttrBuilder
+
 ## [4.0.3] - 2024-02-16
 
 - Simplify html.callback
