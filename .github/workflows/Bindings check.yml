@@ -2,7 +2,7 @@ name: Bindings check
 
 on:
     schedule:
-      - cron: '0 0 * * 1,5'
+      - cron: '0 0 * * 5'
 
 jobs:
   bindings-check:

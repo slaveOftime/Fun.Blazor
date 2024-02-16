@@ -7,6 +7,7 @@ on:
         paths:
         - "**/CHANGELOG.md"
         - ".github/workflows/Build and publish nuget package.yml"
+        - "build.fsx"
 
 jobs:
   build:
