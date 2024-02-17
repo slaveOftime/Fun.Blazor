@@ -40,15 +40,15 @@ app.MapFunBlazor(fun _ -> html {
         )
         // For more complex cases, we can use htmx to fetch customElement and then connect to server with websocket
         div {
-            hx.Trigger hxEvt.intersect
-            hx.GetCustomElement (QueryBuilder<PostLikesSurvey>().Add((fun x -> x.post_id), post.Id))
-            hx.Swap_outerHTML()
+            hxTrigger hxEvt.intersect
+            hxGetCustomElement (QueryBuilder<PostLikesSurvey>().Add((fun x -> x.post_id), post.Id))
+            hxSwap_outerHTML
         }
         // We can also just request any blazor component as a static dom content and inject at some point based on htmx
         div {
-            hx.Trigger hxEvt.intersect
-            hx.GetComponent (QueryBuilder<PostComment>().Add((fun x -> x.PostId), post.Id))
-            hx.Swap_outerHTML()
+            hxTrigger hxEvt.intersect
+            hxGetComponent (QueryBuilder<PostComment>().Add((fun x -> x.PostId), post.Id))
+            hxSwap_outerHTML
         }
         // Or prerender directly and later on the PostComment itself will have htmx integration
         html.blazor (ComponentAttrBuilder<PostComment>().Add((fun x -> x.PostId), post.Id))
@@ -80,8 +80,8 @@ type PostComment() as this =
     member val Comment = "" with get, set
 
     override _.Render() = form {
-        hx.Swap_outerHTML()
-        hx.PostComponent typeof<PostComment>
+        hxSwap_outerHTML
+        hxPostComponent typeof<PostComment>
         // You can use below method to save the current state in the form, so the browser will always have the latest state
         // And later you can override it, because server will only take the last value for the same key
         html.createHiddenInputs this

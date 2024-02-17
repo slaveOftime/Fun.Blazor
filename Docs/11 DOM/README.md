@@ -159,7 +159,7 @@ For inputs remember that events provide values as strings, so you have to unbox 
 ```fsharp
 input {
   placeholder "Write Something"
-  oninput(fun e ->
+  on.input(fun e ->
     unbox<string> e.Value |> printfn "New Value: '%s'"
   )
 }
@@ -168,7 +168,7 @@ input {
   type' "number"
   placeholder "Change Number"
   type' InputTypes.number
-  oninput(fun e ->
+  on.input(fun e ->
     unbox<string> e.Value |> int |> printfn "New Value: '%i'"
   )
 }
