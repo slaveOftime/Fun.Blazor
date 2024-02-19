@@ -75,7 +75,6 @@ app.MapFunBlazor(fun ctx ->
                 script { src "https://unpkg.com/htmx.org@1.9.9" }
 
                 stylesheet "css/google-font.css"
-                stylesheet "css/github-markdown-dark.css"
                 stylesheet "css/prism-vsc-dark-plus.css"
 
                 script { src "https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/components/prism-core.min.js" }

@@ -6,6 +6,23 @@ Another challenging thing is its internal rendering. It requires a function as i
 
 {{BlazorStyleComp}}
 
+Normally you should consider using **html.injectWithNoKey**, because it performance better, but sometimes you may have below situation:
+
+```fsharp
+let comp1 = html.injectWithNoKey(...)
+let comp2 = html.injectWithNoKey(...)
+
+let comp =
+    div {
+        if some conditions then comp1
+        else comp2
+    }
+```
+
+In above situation you will get unexpected behavior, because blazor will consider **comp1** and **comp2** as the same component, and will not re-create related component for you. and the consumer **comp** may not know if comp1 or comp2 has specified key or not, even the key is specified, the key maybe the same.
+
+So the nicer api is give to the inject with ramdom key which is **html.inject**. But as it will re-create component everytime when you call html.inject, so it also may lead other situation, like infinite re-render. But do not be afraid, it is rare, I only face this issue once when using **MudBlazor**'s **MudLayout** and **MudDrawer** together, for this case, I use **html.injectWithNoKey** to solve it. I can also use **html.inject (key, ...)** to solve it too.
+
 If you don't like the pattern like **html.inject/adaptiview**, you can just create your component inherit **FunComponent** and get the benefit of the DOM DSL and third-party DSL support like MudBlazor from Fun.Blazor.
 
 **Dependency injection (DI)** is essential in many software applications. ASP.NET Core has built-in support for it, and it is also helpful for testing and cross-concern solutions. Not only services but also UI components can be powered by **dependency injection**.

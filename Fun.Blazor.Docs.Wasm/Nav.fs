@@ -23,7 +23,7 @@ let navmenu =
 
             let rec buildDocMenuTree langStr path (items: DocTreeNode list) =
                 let getDocName (doc: DocBrief) = doc.Names |> Map.tryFind langStr |> Option.defaultValue doc.Name
-                html.fragment [
+                fragment {
                     for item in items do
                         match item with
                         | DocTreeNode.Category(indexDoc, docs, childs) ->
@@ -40,11 +40,21 @@ let navmenu =
                                 |]
                             }
                         | DocTreeNode.Doc doc ->
+                            let docName = getDocName doc
                             MudNavLink'() {
                                 Href(path + "/" + sanitizeFileName doc.Name)
-                                getDocName doc
+                                MudText'() {
+                                    Typo Typo.``inherit``
+                                    Color(
+                                        if docName = "Get Started" || docName = "入门指南" then
+                                            Color.Success
+                                        else
+                                            Color.Default
+                                    )
+                                    docName
+                                }
                             }
-                ]
+                }
 
 
             div {
