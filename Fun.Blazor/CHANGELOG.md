@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [4.0.5] - 2024-02-20
+
+- Should alwasys do refresh render for html.route views when location changed
+
 ## [4.0.4] - 2024-02-17
 
 - Support yield RenderFragment for ComponentWithDomAndChildAttrBuilder

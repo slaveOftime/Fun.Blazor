@@ -16,3 +16,10 @@ type CascadingValue'<'Value> [<DynamicDependency(DynamicallyAccessedMemberTypes.
 
     [<CustomOperation "IsFixed">]
     member inline _.IsFixed([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("IsFixed" => x)
+
+
+type FunFragment'<'Value> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<FunFragmentComponent>)>] () =
+    inherit ComponentBuilder<FunFragmentComponent>()
+
+    [<CustomOperation "Fragment">]
+    member inline _.Fragment([<InlineIfLambda>] render: AttrRenderFragment, x: NodeRenderFragment) = render ==> ("Fragment" => x)

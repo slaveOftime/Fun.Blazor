@@ -29,13 +29,11 @@ let ``Giraffe style routes normal cases`` () =
             routeCi "/r1" (html.text "/r1")
             routeCif "/r1/%i" (fun x -> html.text $"/r1/{x}")
             routeCif "/r1/r2/%s" (fun x -> html.text $"/r1/r2/{x}")
-            subRouteCi
-                "/r2"
-                [
-                    routeCi "/r3" (html.text "/r2/r3")
-                    routeCif "/r3/%i" (fun x -> html.text $"/r2/r3/{x}")
-                    routeCif "/r3/r4/%s" (fun x -> html.text $"/r2/r3/r4/{x}")
-                ]
+            subRouteCi "/r2" [
+                routeCi "/r3" (html.text "/r2/r3")
+                routeCif "/r3/%i" (fun x -> html.text $"/r2/r3/{x}")
+                routeCif "/r3/r4/%s" (fun x -> html.text $"/r2/r3/r4/{x}")
+            ]
             routeCiWithQueries "/r3" (fun x -> html.text $"/r3?{formatQueries x}")
             routeCifWithQueries "/r3/%i" (fun x q -> html.text $"/r3/{x}?{formatQueries q}")
 
@@ -77,3 +75,57 @@ let ``Giraffe style routes normal cases`` () =
     testRoute "/application/greate%20test2"
     testRoute "/tail/1/tail"
     testRoute "/tail2/2/tail2"
+
+
+[<Fact>]
+let ``Giraffe style routes should work with no key pages`` () =
+    let withNoKey1 = html.injectWithNoKey (fun () -> html.text "/withNoKey1")
+
+    let withNoKey2 = html.injectWithNoKey (fun () -> html.text "/withNoKey2")
+
+    let node = div {
+        html.route [ routeCi "/withNoKey1" withNoKey1; routeCi "/withNoKey2" withNoKey2 ]
+        html.inject (fun (nav: NavigationManager) -> fragment {
+            button {
+                id "withNoKey1"
+                on.click (fun _ -> nav.NavigateTo("/withNoKey1"))
+            }
+            button {
+                id "withNoKey2"
+                on.click (fun _ -> nav.NavigateTo("/withNoKey2"))
+            }
+        })
+    }
+
+    use testContext = createTestContext ()
+    let result = testContext.RenderNode node
+
+    result.Find("#withNoKey1").Click()
+    result.MarkupMatches
+        """
+        <div>
+            /withNoKey1
+            <button id="withNoKey1" ></button>
+            <button id="withNoKey2" ></button>
+        </div>
+        """
+
+    result.Find("#withNoKey2").Click()
+    result.MarkupMatches
+        """
+        <div>
+            /withNoKey2
+            <button id="withNoKey1" ></button>
+            <button id="withNoKey2" ></button>
+        </div>
+        """
+
+    result.Find("#withNoKey1").Click()
+    result.MarkupMatches
+        """
+        <div>
+            /withNoKey1
+            <button id="withNoKey1" ></button>
+            <button id="withNoKey2" ></button>
+        </div>
+        """

@@ -83,7 +83,7 @@ type FocusOnNavigate' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, ty
 
 type html with
 
-    /// By default we will set key (fun-blazor-routers) for this component. So it can keep it's state when its parent rerender. 
+    /// By default we will set key (fun-blazor-routers) for this component. So it can keep it's state when its parent rerender.
     /// And only rerender when location is changed.
     static member route(routes: Router<NodeRenderFragment> seq, ?key: obj) =
         html.inject (
@@ -96,15 +96,18 @@ type html with
                     nav.LocationChanged.Subscribe(fun e ->
                         try
                             location.Publish (Uri e.Location).PathAndQuery
-                        with
-                        | _ -> ()
+                        with _ ->
+                            ()
                     )
                     |> hook.AddDispose
                 )
 
                 adaptiview () {
                     let! location = location
-                    choose routes location |> Option.defaultWith emptyNode
+                    FunFragment'() {
+                        key location
+                        Fragment(choose routes location |> Option.defaultWith emptyNode)
+                    }
                 }
         )
 
