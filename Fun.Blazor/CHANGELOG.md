@@ -8,6 +8,8 @@
 
 - Center all standard dom attrs for easier consume for component and it does not affect build speed 
 
+- Obsolete some helper methods
+
 ## [4.0.6] - 2024-02-20
 
 - We should not use location as component key to for choosed page, because it make nested html.route not as power as it can be, because the nested routed page cannot keep it's state because of the key change.

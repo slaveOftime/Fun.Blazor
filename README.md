@@ -92,7 +92,7 @@ There are some tests in [here](https://github.com/albertwoo/CEPerfDemo), in summ
     }
     ```
 
-- **nested-one** is ok
+- **nested-one** is kind of ok
 
     ```fsharp
     let comp = div {
@@ -101,6 +101,18 @@ There are some tests in [here](https://github.com/albertwoo/CEPerfDemo), in summ
             class' "font-bold"
             "demo1"
         }
+    }
+    ```
+
+    But still prefer childContent:
+
+     ```fsharp
+    let comp = div {
+        class' "font-bold"
+        childContent (div { // 👌✅✅
+            class' "font-bold"
+            "demo1"
+        })
     }
     ```
 

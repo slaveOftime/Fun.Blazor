@@ -107,7 +107,7 @@ There are a few things to keep in mind:
         }
         ```
 
-    - **nested-one** is ok
+    - **nested-one** is kind of ok
 
         ```fsharp
         let comp = div {
@@ -118,6 +118,19 @@ There are a few things to keep in mind:
             }
         }
         ```
+
+        but still prefer childContent:
+
+        ```fsharp
+        let comp = div {
+            class' "font-bold"
+            childContet (div { // 👌✅✅
+                class' "font-bold"
+                "demo1"
+            })
+        }
+        ```
+
 
     - **nested-one-one** is not ok (bad for build perf)
 

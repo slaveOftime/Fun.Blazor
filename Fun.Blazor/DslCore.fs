@@ -230,11 +230,11 @@ type html() =
 
     /// Helper method to create blazor RednerFragment
     static member inline renderFragment([<InlineIfLambda>] render: NodeRenderFragment, ?comp: IComponent) =
-        Microsoft.AspNetCore.Components.RenderFragment(fun tb -> render.Invoke(defaultArg comp null, tb, 0) |> ignore)
+        RenderFragment(fun tb -> render.Invoke(defaultArg comp null, tb, 0) |> ignore)
 
     /// Helper method to create blazor RednerFragment<'Item>
     static member inline renderFragment<'TItem>([<InlineIfLambda>] render: 'TItem -> NodeRenderFragment, ?comp: IComponent) =
-        Microsoft.AspNetCore.Components.RenderFragment<'TItem>(fun x -> html.renderFragment (render x, comp = defaultArg comp null))
+        RenderFragment<'TItem>(fun x -> html.renderFragment (render x, comp = defaultArg comp null))
 
 
     /// Helper method for create attribute for convert NodeRenderFragment to Microsoft.AspNetCore.Components.RenderFragment
@@ -374,9 +374,13 @@ type html() =
         )
 
 
+    [<Obsolete>]
     static member inline style(x: string) = "style" =>> x
+    [<Obsolete>]
     static member inline styles(x) = "style" =>> makeStyles x
+    [<Obsolete>]
     static member inline class'(x: string) = "class" =>> x
+    [<Obsolete>]
     static member inline classes(x: string seq) = "class" =>> (String.concat " " x)
 
 #if !NET6_0

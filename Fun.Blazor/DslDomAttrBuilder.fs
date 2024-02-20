@@ -155,16 +155,16 @@ type DomAttrBuilder() =
     /// </code>
     /// </example>
     [<CustomOperation("classes")>]
-    member inline _.classes([<InlineIfLambda>] render: AttrRenderFragment, v: string list) = render ==> (html.class' (String.concat " " v))
+    member inline _.classes([<InlineIfLambda>] render: AttrRenderFragment, v: string list) = render ==> ("class" =>> (String.concat " " v))
 
     [<CustomOperation("class'")>]
-    member inline _.class'([<InlineIfLambda>] render: AttrRenderFragment, v: string) = render ==> (html.class' v)
+    member inline _.class'([<InlineIfLambda>] render: AttrRenderFragment, v: string) = render ==> ("class" =>> v)
 
     [<CustomOperation("style'")>]
-    member inline _.style([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.style x
+    member inline _.style([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> ("style" =>> x)
 
     [<CustomOperation("styles")>]
-    member _.styles(render: AttrRenderFragment, v: (string * string) seq) = render ==> html.style (makeStyles v)
+    member _.styles(render: AttrRenderFragment, v: (string * string) seq) = render ==> ("style" =>> (makeStyles v))
 
     [<CustomOperation("key'")>]
     member inline _.key'([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("key" => v)
