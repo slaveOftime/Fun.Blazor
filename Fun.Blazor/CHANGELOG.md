@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+- Add all events as extensions for DomAttrBuilder and obsolete on.xxx, because it builds faster
+
+  Before we think the number of custom operations on a ce will affect the speed, but it turns out that the yield or combination etc. is the cause.
+
 ## [4.0.6] - 2024-02-20
 
 - We should not use location as component key to for choosed page, because it make nested html.route not as power as it can be, because the nested routed page cannot keep it's state because of the key change.
