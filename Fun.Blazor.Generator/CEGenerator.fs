@@ -112,8 +112,8 @@ let private getMetaInfo useInline (ty: Type) =
                     || prop.PropertyType.Name.StartsWith "Microsoft.AspNetCore.Components.EventCallback"
                 then
                     [
-                        $"{memberHead} ({contextArg}, fn) = render ==> html.callback<{getTypeName prop.PropertyType.GenericTypeArguments.[0]}>(\"{prop.Name}\", fn)"
-                        $"{memberHead} ({contextArg}, fn) = render ==> html.callbackTask<{getTypeName prop.PropertyType.GenericTypeArguments.[0]}>(\"{prop.Name}\", fn)"
+                        $"{memberHead} ({contextArg}, fn: {getTypeName prop.PropertyType.GenericTypeArguments.[0]} -> unit) = render ==> html.callback(\"{prop.Name}\", fn)"
+                        $"{memberHead} ({contextArg}, fn: {getTypeName prop.PropertyType.GenericTypeArguments.[0]} -> Task<unit>) = render ==> html.callbackTask(\"{prop.Name}\", fn)"
                     ]
                 elif prop.PropertyType.Name.StartsWith "RenderFragment`" then
                     let name = formatChildContentName name
@@ -160,8 +160,8 @@ let private getMetaInfo useInline (ty: Type) =
                 || prop.PropertyType.Name.StartsWith "Microsoft.AspNetCore.Components.EventCallback"
             then
                 [
-                    $"{memberHead} ({contextArg}, fn) = render ==> html.callback(\"{prop.Name}\", fn)"
-                    $"{memberHead} ({contextArg}, fn) = render ==> html.callbackTask(\"{prop.Name}\", fn)"
+                    $"{memberHead} ({contextArg}, fn: unit -> unit) = render ==> html.callback(\"{prop.Name}\", fn)"
+                    $"{memberHead} ({contextArg}, fn: unit -> Task<unit>) = render ==> html.callbackTask(\"{prop.Name}\", fn)"
                 ]
 
             elif prop.PropertyType = typeof<RenderFragment> then
@@ -187,7 +187,10 @@ let private getMetaInfo useInline (ty: Type) =
             else
                 let propTypeName = getTypeName prop.PropertyType
                 [
-                    $"{memberHead} ({contextArg}, x: {propTypeName}) = render ==> (\"{prop.Name}\" => x)"
+                    if prop.PropertyType = typeof<bool> then
+                        $"{memberHead} ({contextArg}, ?x: bool) = render ==> (\"{prop.Name}\" => (defaultArg x true))"
+                    else
+                        $"{memberHead} ({contextArg}, x: {propTypeName}) = render ==> (\"{prop.Name}\" => x)"
                     yield! createBindableProps propTypeName
                 ]
         )

@@ -1,5 +1,9 @@
 # Changelog
 
+## [4.0.1] - 2024-02-20
+
+- Update code generation packages
+
 ## [4.0.0] - 2024-02-08
 
 - Bump version

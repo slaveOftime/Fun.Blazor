@@ -1,5 +1,10 @@
 # Changelog
 
+## [4.0.2] - 2024-02-20
+
+- Support optional for bool property
+- Improve callback generation
+
 ## [4.0.2] - 2024-02-13
 
 - Pin FSharp.Core version to remove build warning

@@ -21,7 +21,8 @@ module CodeGen =
 
         try
             let opens =
-                $"""open FSharp.Data.Adaptive
+                $"""open System.Threading.Tasks
+open FSharp.Data.Adaptive
 open Fun.Blazor
 open Fun.Blazor.Operators
 open {targetNamespace}.{Utils.internalSegment}"""
