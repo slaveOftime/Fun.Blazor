@@ -200,9 +200,9 @@ module DslElements_generated =
         [<CustomOperation("data")>]
         member inline _.data([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("data" => v)
 """
-                    else
+                    else if attr.Name <> "data" then
                         let name =
-                            if List.contains attr.Name [ "class"; "open"; "for"; "type"; "default"; "checked"; "title" ] then
+                            if List.contains attr.Name [ "class"; "open"; "for"; "type"; "default"; "checked"; "title"; "as"; "span" ] then
                                 attr.Name + "'"
                             else if attr.Name = "accept-charset" then
                                 "acceptCharset"
@@ -229,26 +229,44 @@ module DslElements_generated =
                 |> Seq.filter (fun x -> x.Key.Contains("global", StringComparison.OrdinalIgnoreCase) |> not) 
                 |> Seq.sortBy (fun x -> x.Key)
 
+            let allAttrs =
+                bundles 
+                |> Seq.map (fun x -> x.Value)
+                |> Seq.concat
+                |> Seq.distinctBy (fun x -> x.Name)
+                |> Seq.sortBy (fun x -> x.Name)
+
+            globalAttrsSb.AppendLine $"    type DomAttrBuilder with
+"
+            |> ignore
+
+            processAttrs (globalAttrsSb.AppendLine >> ignore) allAttrs
+            globalAttrsSb.AppendLine """        [<CustomOperation("autocomplete")>]
+        member inline _.autocomplete([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("autocomplete" =>> v)
+"""
+            |> ignore
+
             for bundle in filteredBundles do
                 generatedElements.Add bundle.Key |> ignore
 
                 if bundle.Key = "script" then
-                    globalAttrsSb.AppendLine $"    type EltBuilder_script with
-"
-                    |> ignore
-                    processAttrs (globalAttrsSb.AppendLine >> ignore) bundle.Value
+//                     globalAttrsSb.AppendLine $"    type EltBuilder_script with
+// "
+//                     |> ignore
+//                     processAttrs (globalAttrsSb.AppendLine >> ignore) bundle.Value
+                    ()
 
                 else
                     appendForElementBuilder $"""    type EltBuilder_{bundle.Key}() =
         inherit EltWithChildBuilder("{bundle.Key}")
 """
 
-                    processAttrs appendForElementBuilder bundle.Value
+//                     processAttrs appendForElementBuilder bundle.Value
 
-                    if bundle.Key = "input" then
-                        appendForElementBuilder """        [<CustomOperation("autocomplete")>]
-        member inline _.autocomplete([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("autocomplete" =>> v)
-"""
+//                     if bundle.Key = "input" then
+//                         appendForElementBuilder """        [<CustomOperation("autocomplete")>]
+//         member inline _.autocomplete([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("autocomplete" =>> v)
+// """
 
 
             for element in elements |> Seq.sortBy (fun x -> x.Name) do

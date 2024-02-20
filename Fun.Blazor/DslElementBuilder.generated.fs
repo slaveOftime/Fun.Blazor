@@ -5,344 +5,7 @@ module DslElementsBuilder_global =
 
     open Operators
 
-    type EltBuilder_script with
-
-        /// Executes the script asynchronously.
-        [<CustomOperation("async")>]
-        member inline _.async([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("async" => v)
-
-        /// How the element handles cross-origin requests
-        [<CustomOperation("crossorigin")>]
-        member inline _.crossorigin([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("crossorigin" => v)
-
-        /// Indicates that the script should be executed after the page has been parsed.
-        [<CustomOperation("defer")>]
-        member inline _.defer([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("defer" =>>> defaultArg v true)
-
-        /// Specifies a Subresource Integrity value that allows browsers to verify what they fetch.
-        [<CustomOperation("integrity")>]
-        member inline _.integrity([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("integrity" => v)
-
-        /// Specifies which referrer is sent when fetching the resource.
-        [<CustomOperation("referrerpolicy")>]
-        member inline _.referrerpolicy([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("referrerpolicy" => v)
-
-        /// The URL of the embeddable content.
-        [<CustomOperation("src")>]
-        member inline _.src([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("src" => v)
-
-        /// Defines the type of the element.
-        [<CustomOperation("type'")>]
-        member inline _.type'([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("type" => v)
-
-
-module DslElementBuilder_generated =
-
-    open Operators
-
-    type EltBuilder_a() =
-        inherit EltWithChildBuilder("a")
-
-        /// Indicates that the hyperlink is to be used for downloading a resource.
-        [<CustomOperation("download")>]
-        member inline _.download([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("download" =>>> defaultArg v true)
-
-        /// The URL of a linked resource.
-        [<CustomOperation("href")>]
-        member inline _.href([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("href" => v)
-
-        /// Specifies the language of the linked resource.
-        [<CustomOperation("hreflang")>]
-        member inline _.hreflang([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("hreflang" => v)
-
-        /// Specifies a hint of the media for which the linked resource was designed.
-        [<CustomOperation("media")>]
-        member inline _.media([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("media" => v)
-
-        /// The ping attribute specifies a space-separated list of URLs to be notified if a user follows the hyperlink.
-        [<CustomOperation("ping")>]
-        member inline _.ping([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("ping" => v)
-
-        /// Specifies which referrer is sent when fetching the resource.
-        [<CustomOperation("referrerpolicy")>]
-        member inline _.referrerpolicy([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("referrerpolicy" => v)
-
-        /// Specifies the relationship of the target object to the link object.
-        [<CustomOperation("rel")>]
-        member inline _.rel([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("rel" => v)
-
-        
-        [<CustomOperation("shape")>]
-        member inline _.shape([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("shape" => v)
-
-        /// Specifies where to open the linked document (in the case of an <a> element) or where to display the response received (in the case of a <form> element)
-        [<CustomOperation("target")>]
-        member inline _.target([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("target" => v)
-
-    type EltBuilder_area() =
-        inherit EltWithChildBuilder("area")
-
-        /// Alternative text in case an image can't be displayed.
-        [<CustomOperation("alt")>]
-        member inline _.alt([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("alt" => v)
-
-        /// A set of values specifying the coordinates of the hot-spot region.
-        [<CustomOperation("coords")>]
-        member inline _.coords([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("coords" => v)
-
-        /// Indicates that the hyperlink is to be used for downloading a resource.
-        [<CustomOperation("download")>]
-        member inline _.download([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("download" =>>> defaultArg v true)
-
-        /// The URL of a linked resource.
-        [<CustomOperation("href")>]
-        member inline _.href([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("href" => v)
-
-        /// Specifies a hint of the media for which the linked resource was designed.
-        [<CustomOperation("media")>]
-        member inline _.media([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("media" => v)
-
-        /// The ping attribute specifies a space-separated list of URLs to be notified if a user follows the hyperlink.
-        [<CustomOperation("ping")>]
-        member inline _.ping([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("ping" => v)
-
-        /// Specifies which referrer is sent when fetching the resource.
-        [<CustomOperation("referrerpolicy")>]
-        member inline _.referrerpolicy([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("referrerpolicy" => v)
-
-        /// Specifies the relationship of the target object to the link object.
-        [<CustomOperation("rel")>]
-        member inline _.rel([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("rel" => v)
-
-        
-        [<CustomOperation("shape")>]
-        member inline _.shape([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("shape" => v)
-
-        /// Specifies where to open the linked document (in the case of an <a> element) or where to display the response received (in the case of a <form> element)
-        [<CustomOperation("target")>]
-        member inline _.target([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("target" => v)
-
-    type EltBuilder_audio() =
-        inherit EltWithChildBuilder("audio")
-
-        /// The audio or video should play as soon as possible.
-        [<CustomOperation("autoplay")>]
-        member inline _.autoplay([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("autoplay" =>>> defaultArg v true)
-
-        /// Contains the time range of already buffered media.
-        [<CustomOperation("buffered")>]
-        member inline _.buffered([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("buffered" => v)
-
-        /// Indicates whether the browser should show playback controls to the user.
-        [<CustomOperation("controls")>]
-        member inline _.controls([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("controls" =>>> defaultArg v true)
-
-        /// How the element handles cross-origin requests
-        [<CustomOperation("crossorigin")>]
-        member inline _.crossorigin([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("crossorigin" => v)
-
-        /// Indicates whether the media should start playing from the start when it's finished.
-        [<CustomOperation("loop")>]
-        member inline _.loop([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("loop" =>>> defaultArg v true)
-
-        /// Indicates whether the audio will be initially silenced on page load.
-        [<CustomOperation("muted")>]
-        member inline _.muted([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("muted" =>>> defaultArg v true)
-
-        /// Indicates whether the whole resource, parts of it or nothing should be preloaded.
-        [<CustomOperation("preload")>]
-        member inline _.preload([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("preload" =>>> defaultArg v true)
-
-        /// The URL of the embeddable content.
-        [<CustomOperation("src")>]
-        member inline _.src([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("src" => v)
-
-    type EltBuilder_base() =
-        inherit EltWithChildBuilder("base")
-
-        /// The URL of a linked resource.
-        [<CustomOperation("href")>]
-        member inline _.href([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("href" => v)
-
-        /// Specifies where to open the linked document (in the case of an <a> element) or where to display the response received (in the case of a <form> element)
-        [<CustomOperation("target")>]
-        member inline _.target([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("target" => v)
-
-    type EltBuilder_blockquote() =
-        inherit EltWithChildBuilder("blockquote")
-
-        /// Contains a URI which points to the source of the quote or change.
-        [<CustomOperation("cite")>]
-        member inline _.cite([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("cite" => v)
-
-    type EltBuilder_body() =
-        inherit EltWithChildBuilder("body")
-
-        /// Specifies the URL of an image file. Note: Although browsers and email clients may still support this attribute, it is obsolete. Use CSS background-image instead.
-        [<CustomOperation("background")>]
-        member inline _.background([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("background" => v)
-
-        /// Background color of the element.Note: This is a legacy attribute. Please use the CSS background-color property instead.
-        [<CustomOperation("bgcolor")>]
-        member inline _.bgcolor([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("bgcolor" => v)
-
-    type EltBuilder_button() =
-        inherit EltWithChildBuilder("button")
-
-        /// Indicates whether the user can interact with the element.
-        [<CustomOperation("disabled")>]
-        member inline _.disabled([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("disabled" =>>> defaultArg v true)
-
-        /// Indicates the form that is the owner of the element.
-        [<CustomOperation("form")>]
-        member inline _.form([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("form" =>>> defaultArg v true)
-
-        /// Indicates the action of the element, overriding the action defined in the <form>.
-        [<CustomOperation("formaction")>]
-        member inline _.formaction([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("formaction" => v)
-
-        /// If the button/input is a submit button (e.g. type="submit"), this attribute sets the encoding type to use during form submission. If this attribute is specified, it overrides the enctype attribute of the button's form owner.
-        [<CustomOperation("formenctype")>]
-        member inline _.formenctype([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("formenctype" => v)
-
-        /// If the button/input is a submit button (e.g. type="submit"), this attribute sets the submission method to use during form submission (GET, POST, etc.). If this attribute is specified, it overrides the method attribute of the button's form owner.
-        [<CustomOperation("formmethod")>]
-        member inline _.formmethod([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("formmethod" => v)
-
-        /// If the button/input is a submit button (e.g. type="submit"), this boolean attribute specifies that the form is not to be validated when it is submitted. If this attribute is specified, it overrides the novalidate attribute of the button's form owner.
-        [<CustomOperation("formnovalidate")>]
-        member inline _.formnovalidate([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("formnovalidate" => v)
-
-        /// If the button/input is a submit button (e.g. type="submit"), this attribute specifies the browsing context (for example, tab, window, or inline frame) in which to display the response that is received after submitting the form. If this attribute is specified, it overrides the target attribute of the button's form owner.
-        [<CustomOperation("formtarget")>]
-        member inline _.formtarget([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("formtarget" => v)
-
-        /// Name of the element. For example used by the server to identify the fields in form submits.
-        [<CustomOperation("name")>]
-        member inline _.name([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("name" => v)
-
-        /// Defines the type of the element.
-        [<CustomOperation("type'")>]
-        member inline _.type'([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("type" => v)
-
-    type EltBuilder_canvas() =
-        inherit EltWithChildBuilder("canvas")
-
-        /// Specifies the height of elements listed here. For all other elements, use the CSS height property. Note: In some instances, such as <div>, this is a legacy attribute, in which case the CSS height property should be used instead.
-        [<CustomOperation("height")>]
-        member inline _.height([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("height" => v)
-
-        /// For the elements listed here, this establishes the element's width.Note: For all other instances, such as <div>, this is a legacy attribute, in which case the CSS width property should be used instead.
-        [<CustomOperation("width")>]
-        member inline _.width([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("width" => v)
-
-    type EltBuilder_caption() =
-        inherit EltWithChildBuilder("caption")
-
-    type EltBuilder_col() =
-        inherit EltWithChildBuilder("col")
-
-        /// Background color of the element.Note: This is a legacy attribute. Please use the CSS background-color property instead.
-        [<CustomOperation("bgcolor")>]
-        member inline _.bgcolor([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("bgcolor" => v)
-
-        
-        [<CustomOperation("span")>]
-        member inline _.span([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("span" => v)
-
-    type EltBuilder_colgroup() =
-        inherit EltWithChildBuilder("colgroup")
-
-        /// Background color of the element.Note: This is a legacy attribute. Please use the CSS background-color property instead.
-        [<CustomOperation("bgcolor")>]
-        member inline _.bgcolor([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("bgcolor" => v)
-
-        
-        [<CustomOperation("span")>]
-        member inline _.span([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("span" => v)
-
-    type EltBuilder_contenteditable() =
-        inherit EltWithChildBuilder("contenteditable")
-
-        /// The enterkeyhint specifies what action label (or icon) to present for the enter key on virtual keyboards. The attribute can be used with form controls (such as the value of textarea elements), or in elements in an editing host (e.g., using contenteditable attribute).
-        [<CustomOperation("enterkeyhintExperimental")>]
-        member inline _.enterkeyhintExperimental([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("enterkeyhintExperimental" => v)
-
-        /// Provides a hint as to the type of data that might be entered by the user while editing the element or its contents. The attribute can be used with form controls (such as the value of textarea elements), or in elements in an editing host (e.g., using contenteditable attribute).
-        [<CustomOperation("inputmode")>]
-        member inline _.inputmode([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("inputmode" => v)
-
-    type EltBuilder_data() =
-        inherit EltWithChildBuilder("data")
-
-    type EltBuilder_del() =
-        inherit EltWithChildBuilder("del")
-
-        /// Contains a URI which points to the source of the quote or change.
-        [<CustomOperation("cite")>]
-        member inline _.cite([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("cite" => v)
-
-        /// Indicates the date and time associated with the element.
-        [<CustomOperation("datetime")>]
-        member inline _.datetime([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("datetime" =>>> defaultArg v true)
-
-    type EltBuilder_details() =
-        inherit EltWithChildBuilder("details")
-
-        /// Indicates whether the contents are currently visible (in the case of a <details> element) or whether the dialog is active and can be interacted with (in the case of a <dialog> element).
-        [<CustomOperation("open'")>]
-        member inline _.open'([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("open" =>>> defaultArg v true)
-
-    type EltBuilder_dialog() =
-        inherit EltWithChildBuilder("dialog")
-
-        /// Indicates whether the contents are currently visible (in the case of a <details> element) or whether the dialog is active and can be interacted with (in the case of a <dialog> element).
-        [<CustomOperation("open'")>]
-        member inline _.open'([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("open" =>>> defaultArg v true)
-
-    type EltBuilder_embed() =
-        inherit EltWithChildBuilder("embed")
-
-        /// Specifies the height of elements listed here. For all other elements, use the CSS height property. Note: In some instances, such as <div>, this is a legacy attribute, in which case the CSS height property should be used instead.
-        [<CustomOperation("height")>]
-        member inline _.height([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("height" => v)
-
-        /// The URL of the embeddable content.
-        [<CustomOperation("src")>]
-        member inline _.src([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("src" => v)
-
-        /// Defines the type of the element.
-        [<CustomOperation("type'")>]
-        member inline _.type'([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("type" => v)
-
-        /// For the elements listed here, this establishes the element's width.Note: For all other instances, such as <div>, this is a legacy attribute, in which case the CSS width property should be used instead.
-        [<CustomOperation("width")>]
-        member inline _.width([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("width" => v)
-
-    type EltBuilder_fieldset() =
-        inherit EltWithChildBuilder("fieldset")
-
-        /// Indicates whether the user can interact with the element.
-        [<CustomOperation("disabled")>]
-        member inline _.disabled([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("disabled" =>>> defaultArg v true)
-
-        /// Indicates the form that is the owner of the element.
-        [<CustomOperation("form")>]
-        member inline _.form([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("form" =>>> defaultArg v true)
-
-        /// Name of the element. For example used by the server to identify the fields in form submits.
-        [<CustomOperation("name")>]
-        member inline _.name([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("name" => v)
-
-    type EltBuilder_font() =
-        inherit EltWithChildBuilder("font")
-
-        /// This attribute sets the text color using either a named color or a color specified in the hexadecimal #RRGGBB format. Note: This is a legacy attribute. Please use the CSS color property instead.
-        [<CustomOperation("color")>]
-        member inline _.color([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("color" => v)
-
-    type EltBuilder_form() =
-        inherit EltWithChildBuilder("form")
+    type DomAttrBuilder with
 
         /// List of types the server accepts, typically a file type.
         [<CustomOperation("accept")>]
@@ -352,164 +15,133 @@ module DslElementBuilder_generated =
         [<CustomOperation("acceptCharset")>]
         member inline _.acceptCharset([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("accept-charset" => v)
 
+        /// Keyboard shortcut to activate or add focus to the element.
+        [<CustomOperation("accesskey")>]
+        member inline _.accesskey([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("accesskey" => v)
+
         /// The URI of a program that processes the information submitted via the form.
         [<CustomOperation("action")>]
         member inline _.action([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("action" => v)
-
-        /// Indicates whether controls in this form can by default have their values automatically completed by the browser.
-        [<CustomOperation("autocomplete")>]
-        member inline _.autocomplete([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("autocomplete" =>> (if defaultArg v true then "on" else "off"))
-
-        /// Defines the content type of the form data when the method is POST.
-        [<CustomOperation("enctype")>]
-        member inline _.enctype([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("enctype" => v)
-
-        /// Defines which HTTP method to use when submitting the form. Can be GET (default) or POST.
-        [<CustomOperation("method")>]
-        member inline _.method([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("method" => v)
-
-        /// Name of the element. For example used by the server to identify the fields in form submits.
-        [<CustomOperation("name")>]
-        member inline _.name([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("name" => v)
-
-        /// This attribute indicates that the form shouldn't be validated when submitted.
-        [<CustomOperation("novalidate")>]
-        member inline _.novalidate([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("novalidate" =>>> defaultArg v true)
-
-        /// Specifies where to open the linked document (in the case of an <a> element) or where to display the response received (in the case of a <form> element)
-        [<CustomOperation("target")>]
-        member inline _.target([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("target" => v)
-
-    type EltBuilder_hr() =
-        inherit EltWithChildBuilder("hr")
-
-        /// This attribute sets the text color using either a named color or a color specified in the hexadecimal #RRGGBB format. Note: This is a legacy attribute. Please use the CSS color property instead.
-        [<CustomOperation("color")>]
-        member inline _.color([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("color" => v)
-
-    type EltBuilder_html() =
-        inherit EltWithChildBuilder("html")
-
-    type EltBuilder_iframe() =
-        inherit EltWithChildBuilder("iframe")
 
         /// Specifies a feature-policy for the iframe.
         [<CustomOperation("allow")>]
         member inline _.allow([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("allow" => v)
 
-        /// Specifies the Content Security Policy that an embedded document must agree to enforce upon itself.
-        [<CustomOperation("cspExperimental")>]
-        member inline _.cspExperimental([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("cspExperimental" => v)
-
-        /// Specifies the height of elements listed here. For all other elements, use the CSS height property. Note: In some instances, such as <div>, this is a legacy attribute, in which case the CSS height property should be used instead.
-        [<CustomOperation("height")>]
-        member inline _.height([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("height" => v)
-
-        /// Indicates if the element should be loaded lazily (loading="lazy") or loaded immediately (loading="eager").
-        [<CustomOperation("loadingExperimental")>]
-        member inline _.loadingExperimental([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("loadingExperimental" =>>> defaultArg v true)
-
-        /// Name of the element. For example used by the server to identify the fields in form submits.
-        [<CustomOperation("name")>]
-        member inline _.name([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("name" => v)
-
-        /// Specifies which referrer is sent when fetching the resource.
-        [<CustomOperation("referrerpolicy")>]
-        member inline _.referrerpolicy([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("referrerpolicy" => v)
-
-        /// Stops a document loaded in an iframe from using certain features (such as submitting forms or opening new windows).
-        [<CustomOperation("sandbox")>]
-        member inline _.sandbox([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("sandbox" => v)
-
-        /// The URL of the embeddable content.
-        [<CustomOperation("src")>]
-        member inline _.src([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("src" => v)
-
-        
-        [<CustomOperation("srcdoc")>]
-        member inline _.srcdoc([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("srcdoc" => v)
-
-        /// For the elements listed here, this establishes the element's width.Note: For all other instances, such as <div>, this is a legacy attribute, in which case the CSS width property should be used instead.
-        [<CustomOperation("width")>]
-        member inline _.width([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("width" => v)
-
-    type EltBuilder_img() =
-        inherit EltWithChildBuilder("img")
-
         /// Alternative text in case an image can't be displayed.
         [<CustomOperation("alt")>]
         member inline _.alt([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("alt" => v)
 
-        /// The border width.Note: This is a legacy attribute. Please use the CSS border property instead.
-        [<CustomOperation("border")>]
-        member inline _.border([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("border" => v)
+        /// Specifies the type of content being loaded by the link.
+        [<CustomOperation("as'")>]
+        member inline _.as'([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("as" => v)
 
-        /// How the element handles cross-origin requests
-        [<CustomOperation("crossorigin")>]
-        member inline _.crossorigin([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("crossorigin" => v)
+        /// Executes the script asynchronously.
+        [<CustomOperation("async")>]
+        member inline _.async([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("async" => v)
 
-        /// Indicates the preferred method to decode the image.
-        [<CustomOperation("decoding")>]
-        member inline _.decoding([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("decoding" =>>> defaultArg v true)
-
-        /// Specifies the height of elements listed here. For all other elements, use the CSS height property. Note: In some instances, such as <div>, this is a legacy attribute, in which case the CSS height property should be used instead.
-        [<CustomOperation("height")>]
-        member inline _.height([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("height" => v)
-
-        /// Indicates that the image is part of a server-side image map.
-        [<CustomOperation("ismap")>]
-        member inline _.ismap([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("ismap" =>>> defaultArg v true)
-
-        /// Indicates if the element should be loaded lazily (loading="lazy") or loaded immediately (loading="eager").
-        [<CustomOperation("loadingExperimental")>]
-        member inline _.loadingExperimental([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("loadingExperimental" =>>> defaultArg v true)
-
-        /// Specifies which referrer is sent when fetching the resource.
-        [<CustomOperation("referrerpolicy")>]
-        member inline _.referrerpolicy([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("referrerpolicy" => v)
-
-        
-        [<CustomOperation("sizes")>]
-        member inline _.sizes([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("sizes" => v)
-
-        /// The URL of the embeddable content.
-        [<CustomOperation("src")>]
-        member inline _.src([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("src" => v)
-
-        /// One or more responsive image candidates.
-        [<CustomOperation("srcset")>]
-        member inline _.srcset([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("srcset" => v)
-
-        
-        [<CustomOperation("usemap")>]
-        member inline _.usemap([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("usemap" => v)
-
-        /// For the elements listed here, this establishes the element's width.Note: For all other instances, such as <div>, this is a legacy attribute, in which case the CSS width property should be used instead.
-        [<CustomOperation("width")>]
-        member inline _.width([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("width" => v)
-
-    type EltBuilder_input() =
-        inherit EltWithChildBuilder("input")
-
-        /// List of types the server accepts, typically a file type.
-        [<CustomOperation("accept")>]
-        member inline _.accept([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("accept" => v)
-
-        /// Alternative text in case an image can't be displayed.
-        [<CustomOperation("alt")>]
-        member inline _.alt([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("alt" => v)
+        /// Sets whether input is automatically capitalized when entered by user
+        [<CustomOperation("autocapitalize")>]
+        member inline _.autocapitalize([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("autocapitalize" =>>> defaultArg v true)
 
         /// Indicates whether controls in this form can by default have their values automatically completed by the browser.
         [<CustomOperation("autocomplete")>]
         member inline _.autocomplete([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("autocomplete" =>> (if defaultArg v true then "on" else "off"))
 
+        /// The audio or video should play as soon as possible.
+        [<CustomOperation("autoplay")>]
+        member inline _.autoplay([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("autoplay" =>>> defaultArg v true)
+
+        /// Specifies the URL of an image file. Note: Although browsers and email clients may still support this attribute, it is obsolete. Use CSS background-image instead.
+        [<CustomOperation("background")>]
+        member inline _.background([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("background" => v)
+
+        /// Background color of the element.Note: This is a legacy attribute. Please use the CSS background-color property instead.
+        [<CustomOperation("bgcolor")>]
+        member inline _.bgcolor([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("bgcolor" => v)
+
+        /// The border width.Note: This is a legacy attribute. Please use the CSS border property instead.
+        [<CustomOperation("border")>]
+        member inline _.border([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("border" => v)
+
         /// From the Media Capture specification, specifies a new file can be captured.
         [<CustomOperation("capture")>]
         member inline _.capture([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("capture" => v)
 
+        /// Declares the character encoding of the page or script.
+        [<CustomOperation("charset")>]
+        member inline _.charset([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("charset" => v)
+
         /// Indicates whether the element should be checked on page load.
         [<CustomOperation("checked'")>]
         member inline _.checked'([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("checked" =>>> defaultArg v true)
+
+        /// Contains a URI which points to the source of the quote or change.
+        [<CustomOperation("cite")>]
+        member inline _.cite([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("cite" => v)
+
+        /// This attribute sets the text color using either a named color or a color specified in the hexadecimal #RRGGBB format. Note: This is a legacy attribute. Please use the CSS color property instead.
+        [<CustomOperation("color")>]
+        member inline _.color([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("color" => v)
+
+        /// Defines the number of columns in a textarea.
+        [<CustomOperation("cols")>]
+        member inline _.cols([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("cols" => v)
+
+        /// The colspan attribute defines the number of columns a cell should span.
+        [<CustomOperation("colspan")>]
+        member inline _.colspan([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("colspan" => v)
+
+        /// A value associated with http-equiv or name depending on the context.
+        [<CustomOperation("content")>]
+        member inline _.content([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("content" => v)
+
+        /// Indicates whether the element's content is editable.
+        [<CustomOperation("contenteditable")>]
+        member inline _.contenteditable([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("contenteditable" =>>> defaultArg v true)
+
+        /// Indicates whether the browser should show playback controls to the user.
+        [<CustomOperation("controls")>]
+        member inline _.controls([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("controls" =>>> defaultArg v true)
+
+        /// A set of values specifying the coordinates of the hot-spot region.
+        [<CustomOperation("coords")>]
+        member inline _.coords([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("coords" => v)
+
+        /// How the element handles cross-origin requests
+        [<CustomOperation("crossorigin")>]
+        member inline _.crossorigin([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("crossorigin" => v)
+
+        /// Specifies the Content Security Policy that an embedded document must agree to enforce upon itself.
+        [<CustomOperation("cspExperimental")>]
+        member inline _.cspExperimental([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("cspExperimental" => v)
+
+        /// Specifies the URL of the resource.
+        [<CustomOperation("data")>]
+        member inline _.data([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("data" => v)
+
+        /// Lets you attach custom attributes to an HTML element.
+        [<CustomOperation("data")>]
+        member inline _.data([<InlineIfLambda>] render: AttrRenderFragment, k, v) = render ==> ("data-" + k => v)
+
+        /// Indicates the date and time associated with the element.
+        [<CustomOperation("datetime")>]
+        member inline _.datetime([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("datetime" =>>> defaultArg v true)
+
+        /// Indicates the preferred method to decode the image.
+        [<CustomOperation("decoding")>]
+        member inline _.decoding([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("decoding" =>>> defaultArg v true)
+
+        /// Indicates that the track should be enabled unless the user's preferences indicate something different.
+        [<CustomOperation("default'")>]
+        member inline _.default'([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("default" =>>> defaultArg v true)
+
+        /// Indicates that the script should be executed after the page has been parsed.
+        [<CustomOperation("defer")>]
+        member inline _.defer([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("defer" =>>> defaultArg v true)
+
+        /// Defines the text direction. Allowed values are ltr (Left-To-Right) or rtl (Right-To-Left)
+        [<CustomOperation("dir")>]
+        member inline _.dir([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("dir" => v)
 
         
         [<CustomOperation("dirname")>]
@@ -518,6 +150,26 @@ module DslElementBuilder_generated =
         /// Indicates whether the user can interact with the element.
         [<CustomOperation("disabled")>]
         member inline _.disabled([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("disabled" =>>> defaultArg v true)
+
+        /// Indicates that the hyperlink is to be used for downloading a resource.
+        [<CustomOperation("download")>]
+        member inline _.download([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("download" =>>> defaultArg v true)
+
+        /// Defines whether the element can be dragged.
+        [<CustomOperation("draggable")>]
+        member inline _.draggable([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("draggable" =>>> defaultArg v true)
+
+        /// Defines the content type of the form data when the method is POST.
+        [<CustomOperation("enctype")>]
+        member inline _.enctype([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("enctype" => v)
+
+        /// The enterkeyhint specifies what action label (or icon) to present for the enter key on virtual keyboards. The attribute can be used with form controls (such as the value of textarea elements), or in elements in an editing host (e.g., using contenteditable attribute).
+        [<CustomOperation("enterkeyhintExperimental")>]
+        member inline _.enterkeyhintExperimental([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("enterkeyhintExperimental" => v)
+
+        /// Describes elements which belongs to this one.
+        [<CustomOperation("for'")>]
+        member inline _.for'([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("for" => v)
 
         /// Indicates the form that is the owner of the element.
         [<CustomOperation("form")>]
@@ -543,112 +195,21 @@ module DslElementBuilder_generated =
         [<CustomOperation("formtarget")>]
         member inline _.formtarget([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("formtarget" => v)
 
+        /// IDs of the <th> elements which applies to this element.
+        [<CustomOperation("headers")>]
+        member inline _.headers([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("headers" => v)
+
         /// Specifies the height of elements listed here. For all other elements, use the CSS height property. Note: In some instances, such as <div>, this is a legacy attribute, in which case the CSS height property should be used instead.
         [<CustomOperation("height")>]
         member inline _.height([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("height" => v)
 
-        /// Identifies a list of pre-defined options to suggest to the user.
-        [<CustomOperation("list")>]
-        member inline _.list([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("list" => v)
+        /// Prevents rendering of given element, while keeping child elements, e.g. script elements, active.
+        [<CustomOperation("hidden")>]
+        member inline _.hidden([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("hidden" => v)
 
-        /// Indicates the maximum value allowed.
-        [<CustomOperation("max")>]
-        member inline _.max([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("max" => v)
-
-        /// Defines the maximum number of characters allowed in the element.
-        [<CustomOperation("maxlength")>]
-        member inline _.maxlength([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("maxlength" => v)
-
-        /// Indicates the minimum value allowed.
-        [<CustomOperation("min")>]
-        member inline _.min([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("min" => v)
-
-        /// Defines the minimum number of characters allowed in the element.
-        [<CustomOperation("minlength")>]
-        member inline _.minlength([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("minlength" => v)
-
-        /// Indicates whether multiple values can be entered in an input of the type email or file.
-        [<CustomOperation("multiple")>]
-        member inline _.multiple([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("multiple" =>>> defaultArg v true)
-
-        /// Name of the element. For example used by the server to identify the fields in form submits.
-        [<CustomOperation("name")>]
-        member inline _.name([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("name" => v)
-
-        /// Defines a regular expression which the element's value will be validated against.
-        [<CustomOperation("pattern")>]
-        member inline _.pattern([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("pattern" => v)
-
-        /// Provides a hint to the user of what can be entered in the field.
-        [<CustomOperation("placeholder")>]
-        member inline _.placeholder([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("placeholder" => v)
-
-        /// Indicates whether the element can be edited.
-        [<CustomOperation("readonly")>]
-        member inline _.readonly([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("readonly" =>>> defaultArg v true)
-
-        /// Indicates whether this element is required to fill out or not.
-        [<CustomOperation("required")>]
-        member inline _.required([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("required" =>>> defaultArg v true)
-
-        /// Defines the width of the element (in pixels). If the element's type attribute is text or password then it's the number of characters.
-        [<CustomOperation("size")>]
-        member inline _.size([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("size" => v)
-
-        /// The URL of the embeddable content.
-        [<CustomOperation("src")>]
-        member inline _.src([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("src" => v)
-
-        
-        [<CustomOperation("step")>]
-        member inline _.step([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("step" => v)
-
-        /// Defines the type of the element.
-        [<CustomOperation("type'")>]
-        member inline _.type'([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("type" => v)
-
-        
-        [<CustomOperation("usemap")>]
-        member inline _.usemap([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("usemap" => v)
-
-        /// For the elements listed here, this establishes the element's width.Note: For all other instances, such as <div>, this is a legacy attribute, in which case the CSS width property should be used instead.
-        [<CustomOperation("width")>]
-        member inline _.width([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("width" => v)
-
-        [<CustomOperation("autocomplete")>]
-        member inline _.autocomplete([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("autocomplete" =>> v)
-
-    type EltBuilder_ins() =
-        inherit EltWithChildBuilder("ins")
-
-        /// Contains a URI which points to the source of the quote or change.
-        [<CustomOperation("cite")>]
-        member inline _.cite([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("cite" => v)
-
-        /// Indicates the date and time associated with the element.
-        [<CustomOperation("datetime")>]
-        member inline _.datetime([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("datetime" =>>> defaultArg v true)
-
-    type EltBuilder_label() =
-        inherit EltWithChildBuilder("label")
-
-        /// Describes elements which belongs to this one.
-        [<CustomOperation("for'")>]
-        member inline _.for'([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("for" => v)
-
-        /// Indicates the form that is the owner of the element.
-        [<CustomOperation("form")>]
-        member inline _.form([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("form" =>>> defaultArg v true)
-
-    type EltBuilder_li() =
-        inherit EltWithChildBuilder("li")
-
-    type EltBuilder_link() =
-        inherit EltWithChildBuilder("link")
-
-        /// How the element handles cross-origin requests
-        [<CustomOperation("crossorigin")>]
-        member inline _.crossorigin([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("crossorigin" => v)
+        /// Indicates the lower bound of the upper range.
+        [<CustomOperation("high")>]
+        member inline _.high([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("high" =>>> defaultArg v true)
 
         /// The URL of a linked resource.
         [<CustomOperation("href")>]
@@ -658,447 +219,29 @@ module DslElementBuilder_generated =
         [<CustomOperation("hreflang")>]
         member inline _.hreflang([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("hreflang" => v)
 
-        /// Specifies a Subresource Integrity value that allows browsers to verify what they fetch.
-        [<CustomOperation("integrity")>]
-        member inline _.integrity([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("integrity" => v)
-
-        /// Specifies a hint of the media for which the linked resource was designed.
-        [<CustomOperation("media")>]
-        member inline _.media([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("media" => v)
-
-        /// Specifies which referrer is sent when fetching the resource.
-        [<CustomOperation("referrerpolicy")>]
-        member inline _.referrerpolicy([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("referrerpolicy" => v)
-
-        /// Specifies the relationship of the target object to the link object.
-        [<CustomOperation("rel")>]
-        member inline _.rel([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("rel" => v)
-
-        
-        [<CustomOperation("sizes")>]
-        member inline _.sizes([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("sizes" => v)
-
-        /// Defines the type of the element.
-        [<CustomOperation("type'")>]
-        member inline _.type'([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("type" => v)
-
-    type EltBuilder_map() =
-        inherit EltWithChildBuilder("map")
-
-        /// Name of the element. For example used by the server to identify the fields in form submits.
-        [<CustomOperation("name")>]
-        member inline _.name([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("name" => v)
-
-    type EltBuilder_marquee() =
-        inherit EltWithChildBuilder("marquee")
-
-        /// Background color of the element.Note: This is a legacy attribute. Please use the CSS background-color property instead.
-        [<CustomOperation("bgcolor")>]
-        member inline _.bgcolor([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("bgcolor" => v)
-
-        /// Indicates whether the media should start playing from the start when it's finished.
-        [<CustomOperation("loop")>]
-        member inline _.loop([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("loop" =>>> defaultArg v true)
-
-    type EltBuilder_menu() =
-        inherit EltWithChildBuilder("menu")
-
-        /// Defines the type of the element.
-        [<CustomOperation("type'")>]
-        member inline _.type'([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("type" => v)
-
-    type EltBuilder_meta() =
-        inherit EltWithChildBuilder("meta")
-
-        /// Declares the character encoding of the page or script.
-        [<CustomOperation("charset")>]
-        member inline _.charset([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("charset" => v)
-
-        /// A value associated with http-equiv or name depending on the context.
-        [<CustomOperation("content")>]
-        member inline _.content([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("content" => v)
-
         /// Defines a pragma directive.
         [<CustomOperation("httpEquiv")>]
         member inline _.httpEquiv([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("http-equiv" => v)
 
-        /// Name of the element. For example used by the server to identify the fields in form submits.
-        [<CustomOperation("name")>]
-        member inline _.name([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("name" => v)
-
-    type EltBuilder_meter() =
-        inherit EltWithChildBuilder("meter")
-
-        /// Indicates the form that is the owner of the element.
-        [<CustomOperation("form")>]
-        member inline _.form([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("form" =>>> defaultArg v true)
-
-        /// Indicates the lower bound of the upper range.
-        [<CustomOperation("high")>]
-        member inline _.high([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("high" =>>> defaultArg v true)
-
-        /// Indicates the upper bound of the lower range.
-        [<CustomOperation("low")>]
-        member inline _.low([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("low" =>>> defaultArg v true)
-
-        /// Indicates the maximum value allowed.
-        [<CustomOperation("max")>]
-        member inline _.max([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("max" => v)
-
-        /// Indicates the minimum value allowed.
-        [<CustomOperation("min")>]
-        member inline _.min([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("min" => v)
-
-        /// Indicates the optimal numeric value.
-        [<CustomOperation("optimum")>]
-        member inline _.optimum([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("optimum" =>>> defaultArg v true)
-
-    type EltBuilder_object() =
-        inherit EltWithChildBuilder("object")
-
-        /// The border width.Note: This is a legacy attribute. Please use the CSS border property instead.
-        [<CustomOperation("border")>]
-        member inline _.border([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("border" => v)
-
-        /// Specifies the URL of the resource.
-        [<CustomOperation("data")>]
-        member inline _.data([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("data" => v)
-
-        /// Indicates the form that is the owner of the element.
-        [<CustomOperation("form")>]
-        member inline _.form([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("form" =>>> defaultArg v true)
-
-        /// Specifies the height of elements listed here. For all other elements, use the CSS height property. Note: In some instances, such as <div>, this is a legacy attribute, in which case the CSS height property should be used instead.
-        [<CustomOperation("height")>]
-        member inline _.height([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("height" => v)
-
-        /// Name of the element. For example used by the server to identify the fields in form submits.
-        [<CustomOperation("name")>]
-        member inline _.name([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("name" => v)
-
-        /// Defines the type of the element.
-        [<CustomOperation("type'")>]
-        member inline _.type'([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("type" => v)
-
-        
-        [<CustomOperation("usemap")>]
-        member inline _.usemap([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("usemap" => v)
-
-        /// For the elements listed here, this establishes the element's width.Note: For all other instances, such as <div>, this is a legacy attribute, in which case the CSS width property should be used instead.
-        [<CustomOperation("width")>]
-        member inline _.width([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("width" => v)
-
-    type EltBuilder_ol() =
-        inherit EltWithChildBuilder("ol")
-
-        /// Indicates whether the list should be displayed in a descending order instead of an ascending order.
-        [<CustomOperation("reversed")>]
-        member inline _.reversed([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("reversed" =>>> defaultArg v true)
-
-        /// Defines the first number if other than 1.
-        [<CustomOperation("start")>]
-        member inline _.start([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("start" => v)
-
-        /// Defines the type of the element.
-        [<CustomOperation("type'")>]
-        member inline _.type'([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("type" => v)
-
-    type EltBuilder_optgroup() =
-        inherit EltWithChildBuilder("optgroup")
-
-        /// Indicates whether the user can interact with the element.
-        [<CustomOperation("disabled")>]
-        member inline _.disabled([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("disabled" =>>> defaultArg v true)
-
-        /// Specifies a user-readable title of the element.
-        [<CustomOperation("label")>]
-        member inline _.label([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("label" => v)
-
-    type EltBuilder_option() =
-        inherit EltWithChildBuilder("option")
-
-        /// Indicates whether the user can interact with the element.
-        [<CustomOperation("disabled")>]
-        member inline _.disabled([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("disabled" =>>> defaultArg v true)
-
-        /// Specifies a user-readable title of the element.
-        [<CustomOperation("label")>]
-        member inline _.label([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("label" => v)
-
-        /// Defines a value which will be selected on page load.
-        [<CustomOperation("selected")>]
-        member inline _.selected([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("selected" => v)
-
-    type EltBuilder_output() =
-        inherit EltWithChildBuilder("output")
-
-        /// Describes elements which belongs to this one.
-        [<CustomOperation("for'")>]
-        member inline _.for'([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("for" => v)
-
-        /// Indicates the form that is the owner of the element.
-        [<CustomOperation("form")>]
-        member inline _.form([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("form" =>>> defaultArg v true)
-
-        /// Name of the element. For example used by the server to identify the fields in form submits.
-        [<CustomOperation("name")>]
-        member inline _.name([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("name" => v)
-
-    type EltBuilder_param() =
-        inherit EltWithChildBuilder("param")
-
-        /// Name of the element. For example used by the server to identify the fields in form submits.
-        [<CustomOperation("name")>]
-        member inline _.name([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("name" => v)
-
-    type EltBuilder_progress() =
-        inherit EltWithChildBuilder("progress")
-
-        /// Indicates the form that is the owner of the element.
-        [<CustomOperation("form")>]
-        member inline _.form([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("form" =>>> defaultArg v true)
-
-        /// Indicates the maximum value allowed.
-        [<CustomOperation("max")>]
-        member inline _.max([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("max" => v)
-
-    type EltBuilder_q() =
-        inherit EltWithChildBuilder("q")
-
-        /// Contains a URI which points to the source of the quote or change.
-        [<CustomOperation("cite")>]
-        member inline _.cite([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("cite" => v)
-
-    type EltBuilder_select() =
-        inherit EltWithChildBuilder("select")
-
-        /// Indicates whether controls in this form can by default have their values automatically completed by the browser.
-        [<CustomOperation("autocomplete")>]
-        member inline _.autocomplete([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("autocomplete" =>> (if defaultArg v true then "on" else "off"))
-
-        /// Indicates whether the user can interact with the element.
-        [<CustomOperation("disabled")>]
-        member inline _.disabled([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("disabled" =>>> defaultArg v true)
-
-        /// Indicates the form that is the owner of the element.
-        [<CustomOperation("form")>]
-        member inline _.form([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("form" =>>> defaultArg v true)
-
-        /// Indicates whether multiple values can be entered in an input of the type email or file.
-        [<CustomOperation("multiple")>]
-        member inline _.multiple([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("multiple" =>>> defaultArg v true)
-
-        /// Name of the element. For example used by the server to identify the fields in form submits.
-        [<CustomOperation("name")>]
-        member inline _.name([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("name" => v)
-
-        /// Indicates whether this element is required to fill out or not.
-        [<CustomOperation("required")>]
-        member inline _.required([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("required" =>>> defaultArg v true)
-
-        /// Defines the width of the element (in pixels). If the element's type attribute is text or password then it's the number of characters.
-        [<CustomOperation("size")>]
-        member inline _.size([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("size" => v)
-
-    type EltBuilder_source() =
-        inherit EltWithChildBuilder("source")
-
-        /// Specifies a hint of the media for which the linked resource was designed.
-        [<CustomOperation("media")>]
-        member inline _.media([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("media" => v)
-
-        
-        [<CustomOperation("sizes")>]
-        member inline _.sizes([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("sizes" => v)
-
-        /// The URL of the embeddable content.
-        [<CustomOperation("src")>]
-        member inline _.src([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("src" => v)
-
-        /// One or more responsive image candidates.
-        [<CustomOperation("srcset")>]
-        member inline _.srcset([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("srcset" => v)
-
-        /// Defines the type of the element.
-        [<CustomOperation("type'")>]
-        member inline _.type'([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("type" => v)
-
-    type EltBuilder_style() =
-        inherit EltWithChildBuilder("style")
-
-        /// Specifies a hint of the media for which the linked resource was designed.
-        [<CustomOperation("media")>]
-        member inline _.media([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("media" => v)
-
-        /// Defines the type of the element.
-        [<CustomOperation("type'")>]
-        member inline _.type'([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("type" => v)
-
-    type EltBuilder_table() =
-        inherit EltWithChildBuilder("table")
-
-        /// Specifies the URL of an image file. Note: Although browsers and email clients may still support this attribute, it is obsolete. Use CSS background-image instead.
-        [<CustomOperation("background")>]
-        member inline _.background([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("background" => v)
-
-        /// Background color of the element.Note: This is a legacy attribute. Please use the CSS background-color property instead.
-        [<CustomOperation("bgcolor")>]
-        member inline _.bgcolor([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("bgcolor" => v)
-
-        /// The border width.Note: This is a legacy attribute. Please use the CSS border property instead.
-        [<CustomOperation("border")>]
-        member inline _.border([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("border" => v)
-
-    type EltBuilder_tbody() =
-        inherit EltWithChildBuilder("tbody")
-
-        /// Background color of the element.Note: This is a legacy attribute. Please use the CSS background-color property instead.
-        [<CustomOperation("bgcolor")>]
-        member inline _.bgcolor([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("bgcolor" => v)
-
-    type EltBuilder_td() =
-        inherit EltWithChildBuilder("td")
-
-        /// Specifies the URL of an image file. Note: Although browsers and email clients may still support this attribute, it is obsolete. Use CSS background-image instead.
-        [<CustomOperation("background")>]
-        member inline _.background([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("background" => v)
-
-        /// Background color of the element.Note: This is a legacy attribute. Please use the CSS background-color property instead.
-        [<CustomOperation("bgcolor")>]
-        member inline _.bgcolor([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("bgcolor" => v)
-
-        /// The colspan attribute defines the number of columns a cell should span.
-        [<CustomOperation("colspan")>]
-        member inline _.colspan([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("colspan" => v)
-
-        /// IDs of the <th> elements which applies to this element.
-        [<CustomOperation("headers")>]
-        member inline _.headers([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("headers" => v)
-
-        /// Defines the number of rows a table cell should span over.
-        [<CustomOperation("rowspan")>]
-        member inline _.rowspan([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("rowspan" => v)
-
-    type EltBuilder_textarea() =
-        inherit EltWithChildBuilder("textarea")
-
-        /// Indicates whether controls in this form can by default have their values automatically completed by the browser.
-        [<CustomOperation("autocomplete")>]
-        member inline _.autocomplete([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("autocomplete" =>> (if defaultArg v true then "on" else "off"))
-
-        /// Defines the number of columns in a textarea.
-        [<CustomOperation("cols")>]
-        member inline _.cols([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("cols" => v)
-
-        
-        [<CustomOperation("dirname")>]
-        member inline _.dirname([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("dirname" => v)
-
-        /// Indicates whether the user can interact with the element.
-        [<CustomOperation("disabled")>]
-        member inline _.disabled([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("disabled" =>>> defaultArg v true)
-
-        /// The enterkeyhint specifies what action label (or icon) to present for the enter key on virtual keyboards. The attribute can be used with form controls (such as the value of textarea elements), or in elements in an editing host (e.g., using contenteditable attribute).
-        [<CustomOperation("enterkeyhintExperimental")>]
-        member inline _.enterkeyhintExperimental([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("enterkeyhintExperimental" => v)
-
-        /// Indicates the form that is the owner of the element.
-        [<CustomOperation("form")>]
-        member inline _.form([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("form" =>>> defaultArg v true)
+        /// Often used with CSS to style a specific element. The value of this attribute must be unique.
+        [<CustomOperation("id")>]
+        member inline _.id([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("id" => v)
 
         /// Provides a hint as to the type of data that might be entered by the user while editing the element or its contents. The attribute can be used with form controls (such as the value of textarea elements), or in elements in an editing host (e.g., using contenteditable attribute).
         [<CustomOperation("inputmode")>]
         member inline _.inputmode([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("inputmode" => v)
 
-        /// Defines the maximum number of characters allowed in the element.
-        [<CustomOperation("maxlength")>]
-        member inline _.maxlength([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("maxlength" => v)
+        /// Specifies a Subresource Integrity value that allows browsers to verify what they fetch.
+        [<CustomOperation("integrity")>]
+        member inline _.integrity([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("integrity" => v)
 
-        /// Defines the minimum number of characters allowed in the element.
-        [<CustomOperation("minlength")>]
-        member inline _.minlength([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("minlength" => v)
+        /// Indicates that the image is part of a server-side image map.
+        [<CustomOperation("ismap")>]
+        member inline _.ismap([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("ismap" =>>> defaultArg v true)
 
-        /// Name of the element. For example used by the server to identify the fields in form submits.
-        [<CustomOperation("name")>]
-        member inline _.name([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("name" => v)
-
-        /// Provides a hint to the user of what can be entered in the field.
-        [<CustomOperation("placeholder")>]
-        member inline _.placeholder([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("placeholder" => v)
-
-        /// Indicates whether the element can be edited.
-        [<CustomOperation("readonly")>]
-        member inline _.readonly([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("readonly" =>>> defaultArg v true)
-
-        /// Indicates whether this element is required to fill out or not.
-        [<CustomOperation("required")>]
-        member inline _.required([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("required" =>>> defaultArg v true)
-
-        /// Defines the number of rows in a text area.
-        [<CustomOperation("rows")>]
-        member inline _.rows([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("rows" => v)
-
-        /// Indicates whether the text should be wrapped.
-        [<CustomOperation("wrap")>]
-        member inline _.wrap([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("wrap" =>>> defaultArg v true)
-
-    type EltBuilder_tfoot() =
-        inherit EltWithChildBuilder("tfoot")
-
-        /// Background color of the element.Note: This is a legacy attribute. Please use the CSS background-color property instead.
-        [<CustomOperation("bgcolor")>]
-        member inline _.bgcolor([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("bgcolor" => v)
-
-    type EltBuilder_th() =
-        inherit EltWithChildBuilder("th")
-
-        /// Specifies the URL of an image file. Note: Although browsers and email clients may still support this attribute, it is obsolete. Use CSS background-image instead.
-        [<CustomOperation("background")>]
-        member inline _.background([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("background" => v)
-
-        /// Background color of the element.Note: This is a legacy attribute. Please use the CSS background-color property instead.
-        [<CustomOperation("bgcolor")>]
-        member inline _.bgcolor([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("bgcolor" => v)
-
-        /// The colspan attribute defines the number of columns a cell should span.
-        [<CustomOperation("colspan")>]
-        member inline _.colspan([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("colspan" => v)
-
-        /// IDs of the <th> elements which applies to this element.
-        [<CustomOperation("headers")>]
-        member inline _.headers([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("headers" => v)
-
-        /// Defines the number of rows a table cell should span over.
-        [<CustomOperation("rowspan")>]
-        member inline _.rowspan([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("rowspan" => v)
-
-        /// Defines the cells that the header test (defined in the th element) relates to.
-        [<CustomOperation("scope")>]
-        member inline _.scope([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("scope" => v)
-
-    type EltBuilder_thead() =
-        inherit EltWithChildBuilder("thead")
-
-    type EltBuilder_time() =
-        inherit EltWithChildBuilder("time")
-
-        /// Indicates the date and time associated with the element.
-        [<CustomOperation("datetime")>]
-        member inline _.datetime([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("datetime" =>>> defaultArg v true)
-
-    type EltBuilder_tr() =
-        inherit EltWithChildBuilder("tr")
-
-        /// Background color of the element.Note: This is a legacy attribute. Please use the CSS background-color property instead.
-        [<CustomOperation("bgcolor")>]
-        member inline _.bgcolor([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("bgcolor" => v)
-
-    type EltBuilder_track() =
-        inherit EltWithChildBuilder("track")
-
-        /// Indicates that the track should be enabled unless the user's preferences indicate something different.
-        [<CustomOperation("default'")>]
-        member inline _.default'([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("default" =>>> defaultArg v true)
+        
+        [<CustomOperation("itemprop")>]
+        member inline _.itemprop([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("itemprop" => v)
 
         /// Specifies the kind of text track.
         [<CustomOperation("kind")>]
@@ -1108,44 +251,85 @@ module DslElementBuilder_generated =
         [<CustomOperation("label")>]
         member inline _.label([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("label" => v)
 
-        /// The URL of the embeddable content.
-        [<CustomOperation("src")>]
-        member inline _.src([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("src" => v)
+        /// Defines the language used in the element.
+        [<CustomOperation("lang")>]
+        member inline _.lang([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("lang" => v)
 
-        
-        [<CustomOperation("srclang")>]
-        member inline _.srclang([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("srclang" => v)
+        /// Identifies a list of pre-defined options to suggest to the user.
+        [<CustomOperation("list")>]
+        member inline _.list([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("list" => v)
 
-    type EltBuilder_video() =
-        inherit EltWithChildBuilder("video")
-
-        /// The audio or video should play as soon as possible.
-        [<CustomOperation("autoplay")>]
-        member inline _.autoplay([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("autoplay" =>>> defaultArg v true)
-
-        /// Contains the time range of already buffered media.
-        [<CustomOperation("buffered")>]
-        member inline _.buffered([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("buffered" => v)
-
-        /// Indicates whether the browser should show playback controls to the user.
-        [<CustomOperation("controls")>]
-        member inline _.controls([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("controls" =>>> defaultArg v true)
-
-        /// How the element handles cross-origin requests
-        [<CustomOperation("crossorigin")>]
-        member inline _.crossorigin([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("crossorigin" => v)
-
-        /// Specifies the height of elements listed here. For all other elements, use the CSS height property. Note: In some instances, such as <div>, this is a legacy attribute, in which case the CSS height property should be used instead.
-        [<CustomOperation("height")>]
-        member inline _.height([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("height" => v)
+        /// Indicates if the element should be loaded lazily (loading="lazy") or loaded immediately (loading="eager").
+        [<CustomOperation("loadingExperimental")>]
+        member inline _.loadingExperimental([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("loadingExperimental" =>>> defaultArg v true)
 
         /// Indicates whether the media should start playing from the start when it's finished.
         [<CustomOperation("loop")>]
         member inline _.loop([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("loop" =>>> defaultArg v true)
 
+        /// Indicates the upper bound of the lower range.
+        [<CustomOperation("low")>]
+        member inline _.low([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("low" =>>> defaultArg v true)
+
+        /// Indicates the maximum value allowed.
+        [<CustomOperation("max")>]
+        member inline _.max([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("max" => v)
+
+        /// Defines the maximum number of characters allowed in the element.
+        [<CustomOperation("maxlength")>]
+        member inline _.maxlength([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("maxlength" => v)
+
+        /// Specifies a hint of the media for which the linked resource was designed.
+        [<CustomOperation("media")>]
+        member inline _.media([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("media" => v)
+
+        /// Defines which HTTP method to use when submitting the form. Can be GET (default) or POST.
+        [<CustomOperation("method")>]
+        member inline _.method([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("method" => v)
+
+        /// Indicates the minimum value allowed.
+        [<CustomOperation("min")>]
+        member inline _.min([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("min" => v)
+
+        /// Defines the minimum number of characters allowed in the element.
+        [<CustomOperation("minlength")>]
+        member inline _.minlength([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("minlength" => v)
+
+        /// Indicates whether multiple values can be entered in an input of the type email or file.
+        [<CustomOperation("multiple")>]
+        member inline _.multiple([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("multiple" =>>> defaultArg v true)
+
         /// Indicates whether the audio will be initially silenced on page load.
         [<CustomOperation("muted")>]
         member inline _.muted([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("muted" =>>> defaultArg v true)
+
+        /// Name of the element. For example used by the server to identify the fields in form submits.
+        [<CustomOperation("name")>]
+        member inline _.name([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("name" => v)
+
+        /// This attribute indicates that the form shouldn't be validated when submitted.
+        [<CustomOperation("novalidate")>]
+        member inline _.novalidate([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("novalidate" =>>> defaultArg v true)
+
+        /// Indicates whether the contents are currently visible (in the case of a <details> element) or whether the dialog is active and can be interacted with (in the case of a <dialog> element).
+        [<CustomOperation("open'")>]
+        member inline _.open'([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("open" =>>> defaultArg v true)
+
+        /// Indicates the optimal numeric value.
+        [<CustomOperation("optimum")>]
+        member inline _.optimum([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("optimum" =>>> defaultArg v true)
+
+        /// Defines a regular expression which the element's value will be validated against.
+        [<CustomOperation("pattern")>]
+        member inline _.pattern([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("pattern" => v)
+
+        /// The ping attribute specifies a space-separated list of URLs to be notified if a user follows the hyperlink.
+        [<CustomOperation("ping")>]
+        member inline _.ping([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("ping" => v)
+
+        /// Provides a hint to the user of what can be entered in the field.
+        [<CustomOperation("placeholder")>]
+        member inline _.placeholder([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("placeholder" => v)
 
         /// A Boolean attribute indicating that the video is to be played "inline"; that is, within the element's playback area. Note that the absence of this attribute does not imply that the video will always be played in fullscreen.
         [<CustomOperation("playsinline")>]
@@ -1159,13 +343,305 @@ module DslElementBuilder_generated =
         [<CustomOperation("preload")>]
         member inline _.preload([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("preload" =>>> defaultArg v true)
 
+        /// Indicates whether the element can be edited.
+        [<CustomOperation("readonly")>]
+        member inline _.readonly([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("readonly" =>>> defaultArg v true)
+
+        /// Specifies which referrer is sent when fetching the resource.
+        [<CustomOperation("referrerpolicy")>]
+        member inline _.referrerpolicy([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("referrerpolicy" => v)
+
+        /// Specifies the relationship of the target object to the link object.
+        [<CustomOperation("rel")>]
+        member inline _.rel([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("rel" => v)
+
+        /// Indicates whether this element is required to fill out or not.
+        [<CustomOperation("required")>]
+        member inline _.required([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("required" =>>> defaultArg v true)
+
+        /// Indicates whether the list should be displayed in a descending order instead of an ascending order.
+        [<CustomOperation("reversed")>]
+        member inline _.reversed([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("reversed" =>>> defaultArg v true)
+
+        /// Defines an explicit role for an element for use by assistive technologies.
+        [<CustomOperation("role")>]
+        member inline _.role([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("role" => v)
+
+        /// Defines the number of rows in a text area.
+        [<CustomOperation("rows")>]
+        member inline _.rows([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("rows" => v)
+
+        /// Defines the number of rows a table cell should span over.
+        [<CustomOperation("rowspan")>]
+        member inline _.rowspan([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("rowspan" => v)
+
+        /// Stops a document loaded in an iframe from using certain features (such as submitting forms or opening new windows).
+        [<CustomOperation("sandbox")>]
+        member inline _.sandbox([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("sandbox" => v)
+
+        /// Defines the cells that the header test (defined in the th element) relates to.
+        [<CustomOperation("scope")>]
+        member inline _.scope([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("scope" => v)
+
+        /// Defines a value which will be selected on page load.
+        [<CustomOperation("selected")>]
+        member inline _.selected([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("selected" => v)
+
+        
+        [<CustomOperation("shape")>]
+        member inline _.shape([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("shape" => v)
+
+        /// Defines the width of the element (in pixels). If the element's type attribute is text or password then it's the number of characters.
+        [<CustomOperation("size")>]
+        member inline _.size([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("size" => v)
+
+        
+        [<CustomOperation("sizes")>]
+        member inline _.sizes([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("sizes" => v)
+
+        /// Assigns a slot in a shadow DOM shadow tree to an element.
+        [<CustomOperation("slot")>]
+        member inline _.slot([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("slot" => v)
+
+        
+        [<CustomOperation("span'")>]
+        member inline _.span'([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("span" => v)
+
+        /// Indicates whether spell checking is allowed for the element.
+        [<CustomOperation("spellcheck")>]
+        member inline _.spellcheck([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("spellcheck" =>>> defaultArg v true)
+
         /// The URL of the embeddable content.
         [<CustomOperation("src")>]
         member inline _.src([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("src" => v)
 
+        
+        [<CustomOperation("srcdoc")>]
+        member inline _.srcdoc([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("srcdoc" => v)
+
+        
+        [<CustomOperation("srclang")>]
+        member inline _.srclang([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("srclang" => v)
+
+        /// One or more responsive image candidates.
+        [<CustomOperation("srcset")>]
+        member inline _.srcset([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("srcset" => v)
+
+        /// Defines the first number if other than 1.
+        [<CustomOperation("start")>]
+        member inline _.start([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("start" => v)
+
+        
+        [<CustomOperation("step")>]
+        member inline _.step([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("step" => v)
+
+        /// Overrides the browser's default tab order and follows the one specified instead.
+        [<CustomOperation("tabindex")>]
+        member inline _.tabindex([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("tabindex" => v)
+
+        /// Specifies where to open the linked document (in the case of an <a> element) or where to display the response received (in the case of a <form> element)
+        [<CustomOperation("target")>]
+        member inline _.target([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("target" => v)
+
+        /// Text to be displayed in a tooltip when hovering over the element.
+        [<CustomOperation("title'")>]
+        member inline _.title'([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("title" => v)
+
+        /// Specify whether an element's attribute values and the values of its Text node children are to be translated when the page is localized, or whether to leave them unchanged.
+        [<CustomOperation("translate")>]
+        member inline _.translate([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("translate" =>>> defaultArg v true)
+
+        /// Defines the type of the element.
+        [<CustomOperation("type'")>]
+        member inline _.type'([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("type" => v)
+
+        
+        [<CustomOperation("usemap")>]
+        member inline _.usemap([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("usemap" => v)
+
         /// For the elements listed here, this establishes the element's width.Note: For all other instances, such as <div>, this is a legacy attribute, in which case the CSS width property should be used instead.
         [<CustomOperation("width")>]
         member inline _.width([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("width" => v)
+
+        /// Indicates whether the text should be wrapped.
+        [<CustomOperation("wrap")>]
+        member inline _.wrap([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("wrap" =>>> defaultArg v true)
+
+        [<CustomOperation("autocomplete")>]
+        member inline _.autocomplete([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("autocomplete" =>> v)
+
+
+module DslElementBuilder_generated =
+
+    open Operators
+
+    type EltBuilder_a() =
+        inherit EltWithChildBuilder("a")
+
+    type EltBuilder_area() =
+        inherit EltWithChildBuilder("area")
+
+    type EltBuilder_audio() =
+        inherit EltWithChildBuilder("audio")
+
+    type EltBuilder_base() =
+        inherit EltWithChildBuilder("base")
+
+    type EltBuilder_blockquote() =
+        inherit EltWithChildBuilder("blockquote")
+
+    type EltBuilder_body() =
+        inherit EltWithChildBuilder("body")
+
+    type EltBuilder_button() =
+        inherit EltWithChildBuilder("button")
+
+    type EltBuilder_canvas() =
+        inherit EltWithChildBuilder("canvas")
+
+    type EltBuilder_caption() =
+        inherit EltWithChildBuilder("caption")
+
+    type EltBuilder_col() =
+        inherit EltWithChildBuilder("col")
+
+    type EltBuilder_colgroup() =
+        inherit EltWithChildBuilder("colgroup")
+
+    type EltBuilder_contenteditable() =
+        inherit EltWithChildBuilder("contenteditable")
+
+    type EltBuilder_data() =
+        inherit EltWithChildBuilder("data")
+
+    type EltBuilder_del() =
+        inherit EltWithChildBuilder("del")
+
+    type EltBuilder_details() =
+        inherit EltWithChildBuilder("details")
+
+    type EltBuilder_dialog() =
+        inherit EltWithChildBuilder("dialog")
+
+    type EltBuilder_embed() =
+        inherit EltWithChildBuilder("embed")
+
+    type EltBuilder_fieldset() =
+        inherit EltWithChildBuilder("fieldset")
+
+    type EltBuilder_font() =
+        inherit EltWithChildBuilder("font")
+
+    type EltBuilder_form() =
+        inherit EltWithChildBuilder("form")
+
+    type EltBuilder_hr() =
+        inherit EltWithChildBuilder("hr")
+
+    type EltBuilder_html() =
+        inherit EltWithChildBuilder("html")
+
+    type EltBuilder_iframe() =
+        inherit EltWithChildBuilder("iframe")
+
+    type EltBuilder_img() =
+        inherit EltWithChildBuilder("img")
+
+    type EltBuilder_input() =
+        inherit EltWithChildBuilder("input")
+
+    type EltBuilder_ins() =
+        inherit EltWithChildBuilder("ins")
+
+    type EltBuilder_label() =
+        inherit EltWithChildBuilder("label")
+
+    type EltBuilder_li() =
+        inherit EltWithChildBuilder("li")
+
+    type EltBuilder_link() =
+        inherit EltWithChildBuilder("link")
+
+    type EltBuilder_map() =
+        inherit EltWithChildBuilder("map")
+
+    type EltBuilder_marquee() =
+        inherit EltWithChildBuilder("marquee")
+
+    type EltBuilder_menu() =
+        inherit EltWithChildBuilder("menu")
+
+    type EltBuilder_meta() =
+        inherit EltWithChildBuilder("meta")
+
+    type EltBuilder_meter() =
+        inherit EltWithChildBuilder("meter")
+
+    type EltBuilder_object() =
+        inherit EltWithChildBuilder("object")
+
+    type EltBuilder_ol() =
+        inherit EltWithChildBuilder("ol")
+
+    type EltBuilder_optgroup() =
+        inherit EltWithChildBuilder("optgroup")
+
+    type EltBuilder_option() =
+        inherit EltWithChildBuilder("option")
+
+    type EltBuilder_output() =
+        inherit EltWithChildBuilder("output")
+
+    type EltBuilder_param() =
+        inherit EltWithChildBuilder("param")
+
+    type EltBuilder_progress() =
+        inherit EltWithChildBuilder("progress")
+
+    type EltBuilder_q() =
+        inherit EltWithChildBuilder("q")
+
+    type EltBuilder_select() =
+        inherit EltWithChildBuilder("select")
+
+    type EltBuilder_source() =
+        inherit EltWithChildBuilder("source")
+
+    type EltBuilder_style() =
+        inherit EltWithChildBuilder("style")
+
+    type EltBuilder_table() =
+        inherit EltWithChildBuilder("table")
+
+    type EltBuilder_tbody() =
+        inherit EltWithChildBuilder("tbody")
+
+    type EltBuilder_td() =
+        inherit EltWithChildBuilder("td")
+
+    type EltBuilder_textarea() =
+        inherit EltWithChildBuilder("textarea")
+
+    type EltBuilder_tfoot() =
+        inherit EltWithChildBuilder("tfoot")
+
+    type EltBuilder_th() =
+        inherit EltWithChildBuilder("th")
+
+    type EltBuilder_thead() =
+        inherit EltWithChildBuilder("thead")
+
+    type EltBuilder_time() =
+        inherit EltWithChildBuilder("time")
+
+    type EltBuilder_tr() =
+        inherit EltWithChildBuilder("tr")
+
+    type EltBuilder_track() =
+        inherit EltWithChildBuilder("track")
+
+    type EltBuilder_video() =
+        inherit EltWithChildBuilder("video")
 
 
 [<AutoOpen>]
@@ -1230,7 +706,7 @@ module DslElements_generated =
     /// Displays its contents styled in a fashion intended to indicate that the text is a short fragment of computer code. By default, the content text is displayed using the user agent's default monospace font.
     let code = EltWithChildBuilder("code")
 
-    /// Defines a column within a table and is used for defining common semantics on all common cells. It is generally found within a <colgroup> element.
+    /// Defines one or more columns in a column group represented by its implicit or explicit parent <colgroup> element. The <col> element is only valid as a child of a <colgroup> element that has no span attribute defined.
     let col = EltBuilder_col()
 
     /// Defines a group of columns within a table.
@@ -1458,13 +934,13 @@ module DslElements_generated =
     /// Specifies inline text which is to be displayed as superscript for solely typographical reasons. Superscripts are usually rendered with a raised baseline using smaller text.
     let sup = EltWithChildBuilder("sup")
 
-    /// Represents tabular data â that is, information presented in a two-dimensional table comprised of rows and columns of cells containing data.
+    /// Represents tabular dataâthat is, information presented in a two-dimensional table comprised of rows and columns of cells containing data.
     let table = EltBuilder_table()
 
-    /// Encapsulates a set of table rows (<tr> elements), indicating that they comprise the body of the table (<table>).
+    /// Encapsulates a set of table rows (<tr> elements), indicating that they comprise the body of a table's (main) data.
     let tbody = EltBuilder_tbody()
 
-    /// Defines a cell of a table that contains data. It participates in the table model.
+    /// A child of the <tr> element, it defines a cell of a table that contains data.
     let td = EltBuilder_td()
 
     /// A mechanism for holding HTML that is not to be rendered immediately when a page is loaded but may be instantiated subsequently during runtime using JavaScript.
@@ -1473,13 +949,13 @@ module DslElements_generated =
     /// Represents a multi-line plain-text editing control, useful when you want to allow users to enter a sizeable amount of free-form text, for example, a comment on a review or feedback form.
     let textarea = EltBuilder_textarea()
 
-    /// Defines a set of rows summarizing the columns of the table.
+    /// Encapsulates a set of table rows (<tr> elements), indicating that they comprise the foot of a table with information about the table's columns. This is usually a summary of the columns, e.g., a sum of the given numbers in a column.
     let tfoot = EltBuilder_tfoot()
 
-    /// Defines a cell as a header of a group of table cells. The exact nature of this group is defined by the scope and headers attributes.
+    /// A child of the <tr> element, it defines a cell as the header of a group of table cells. The nature of this group can be explicitly defined by the scope and headers attributes.
     let th = EltBuilder_th()
 
-    /// Defines a set of rows defining the head of the columns of the table.
+    /// Encapsulates a set of table rows (<tr> elements), indicating that they comprise the head of a table with information about the table's columns. This is usually in the form of column headers (<th> elements).
     let thead = EltBuilder_thead()
 
     /// Represents a specific period in time. It may include the datetime attribute to translate dates into machine-readable format, allowing for better search engine results or custom features such as reminders.
