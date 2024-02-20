@@ -78,21 +78,31 @@ let ``Giraffe style routes normal cases`` () =
 
 
 [<Fact>]
-let ``Giraffe style routes should work with no key pages`` () =
-    let withNoKey1 = html.injectWithNoKey (fun () -> html.text "/withNoKey1")
+let ``Giraffe style routes should work for nested route`` () =
+    let mutable count = 0
 
-    let withNoKey2 = html.injectWithNoKey (fun () -> html.text "/withNoKey2")
+    let nestedRoute =
+        html.injectWithNoKey (fun () ->
+            count <- count + 1
+            html.fragment [|
+                div {
+                    "count="
+                    count
+                }
+                div { html.route [| routeCi "/demo1" (html.text "demo1"); routeCi "/demo2" (html.text "demo2") |] }
+            |]
+        )
 
     let node = div {
-        html.route [ routeCi "/withNoKey1" withNoKey1; routeCi "/withNoKey2" withNoKey2 ]
+        html.route [| routeAny nestedRoute |]
         html.inject (fun (nav: NavigationManager) -> fragment {
             button {
-                id "withNoKey1"
-                on.click (fun _ -> nav.NavigateTo("/withNoKey1"))
+                id "demo1"
+                on.click (fun _ -> nav.NavigateTo("/demo1"))
             }
             button {
-                id "withNoKey2"
-                on.click (fun _ -> nav.NavigateTo("/withNoKey2"))
+                id "demo2"
+                on.click (fun _ -> nav.NavigateTo("/demo2"))
             }
         })
     }
@@ -100,32 +110,35 @@ let ``Giraffe style routes should work with no key pages`` () =
     use testContext = createTestContext ()
     let result = testContext.RenderNode node
 
-    result.Find("#withNoKey1").Click()
+    result.Find("#demo1").Click()
     result.MarkupMatches
         """
         <div>
-            /withNoKey1
-            <button id="withNoKey1" ></button>
-            <button id="withNoKey2" ></button>
+            <div>count=1</div>
+            <div>demo1</div>
+            <button id="demo1" ></button>
+            <button id="demo2" ></button>
         </div>
         """
 
-    result.Find("#withNoKey2").Click()
+    result.Find("#demo2").Click()
     result.MarkupMatches
         """
         <div>
-            /withNoKey2
-            <button id="withNoKey1" ></button>
-            <button id="withNoKey2" ></button>
+            <div>count=1</div>
+            <div>demo2</div>
+            <button id="demo1" ></button>
+            <button id="demo2" ></button>
         </div>
         """
 
-    result.Find("#withNoKey1").Click()
+    result.Find("#demo1").Click()
     result.MarkupMatches
         """
-        <div>
-            /withNoKey1
-            <button id="withNoKey1" ></button>
-            <button id="withNoKey2" ></button>
+         <div>
+            <div>count=1</div>
+            <div>demo1</div>
+            <button id="demo1" ></button>
+            <button id="demo2" ></button>
         </div>
         """

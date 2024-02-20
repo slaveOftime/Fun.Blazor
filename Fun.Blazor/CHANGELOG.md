@@ -6,7 +6,7 @@
 
 - We should not use location as component key to for choosed page, because it make nested html.route not as power as it can be, because the nested routed page cannot keep it's state because of the key change.
 
-	Use should use key by themself to control if related route page should re-create or not.
+  Use should use key by themself to control if related route page should re-create or not.
 
 ## [4.0.5] - 2024-02-20
 
