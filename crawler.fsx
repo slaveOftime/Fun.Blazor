@@ -202,7 +202,9 @@ module DslElements_generated =
 """
                     else if attr.Name <> "data" then
                         let name =
-                            if List.contains attr.Name [ "class"; "open"; "for"; "type"; "default"; "checked"; "title"; "as"; "span" ] then
+                            if List.contains attr.Name [ "class"; "open"; "for"; "type"; "default"; "checked"; "title"; "as" ] 
+                                || elements |> Seq.exists (fun x -> x.Name = attr.Name)
+                            then
                                 attr.Name + "'"
                             else if attr.Name = "accept-charset" then
                                 "acceptCharset"

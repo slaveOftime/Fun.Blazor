@@ -76,8 +76,8 @@ module DslElementsBuilder_global =
         member inline _.checked'([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("checked" =>>> defaultArg v true)
 
         /// Contains a URI which points to the source of the quote or change.
-        [<CustomOperation("cite")>]
-        member inline _.cite([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("cite" => v)
+        [<CustomOperation("cite'")>]
+        member inline _.cite'([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("cite" => v)
 
         /// This attribute sets the text color using either a named color or a color specified in the hexadecimal #RRGGBB format. Note: This is a legacy attribute. Please use the CSS color property instead.
         [<CustomOperation("color")>]
@@ -115,13 +115,13 @@ module DslElementsBuilder_global =
         [<CustomOperation("cspExperimental")>]
         member inline _.cspExperimental([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("cspExperimental" => v)
 
-        /// Specifies the URL of the resource.
-        [<CustomOperation("data")>]
-        member inline _.data([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("data" => v)
-
         /// Lets you attach custom attributes to an HTML element.
         [<CustomOperation("data")>]
         member inline _.data([<InlineIfLambda>] render: AttrRenderFragment, k, v) = render ==> ("data-" + k => v)
+
+        /// Lets you attach custom attributes to an HTML element.
+        [<CustomOperation("data")>]
+        member inline _.data([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("data" => v)
 
         /// Indicates the date and time associated with the element.
         [<CustomOperation("datetime")>]
@@ -172,8 +172,8 @@ module DslElementsBuilder_global =
         member inline _.for'([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("for" => v)
 
         /// Indicates the form that is the owner of the element.
-        [<CustomOperation("form")>]
-        member inline _.form([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("form" =>>> defaultArg v true)
+        [<CustomOperation("form'")>]
+        member inline _.form'([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("form" =>>> defaultArg v true)
 
         /// Indicates the action of the element, overriding the action defined in the <form>.
         [<CustomOperation("formaction")>]
@@ -248,8 +248,8 @@ module DslElementsBuilder_global =
         member inline _.kind([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("kind" => v)
 
         /// Specifies a user-readable title of the element.
-        [<CustomOperation("label")>]
-        member inline _.label([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("label" => v)
+        [<CustomOperation("label'")>]
+        member inline _.label'([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("label" => v)
 
         /// Defines the language used in the element.
         [<CustomOperation("lang")>]
@@ -400,8 +400,8 @@ module DslElementsBuilder_global =
         member inline _.sizes([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("sizes" => v)
 
         /// Assigns a slot in a shadow DOM shadow tree to an element.
-        [<CustomOperation("slot")>]
-        member inline _.slot([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("slot" => v)
+        [<CustomOperation("slot'")>]
+        member inline _.slot'([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("slot" => v)
 
         
         [<CustomOperation("span'")>]

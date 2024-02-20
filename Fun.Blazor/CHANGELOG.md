@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [4.0.8] - 2024-02-21
+
+- Avoid some elements name and attributes name confliction
+
 ## [4.0.7] - 2024-02-21
 
 - Add all events as extensions for DomAttrBuilder and obsolete on.xxx, because it builds faster
