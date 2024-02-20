@@ -27,7 +27,7 @@ let private isReadyIndicator =
                     childContent [|
                         MudProgressLinear'() {
                             Color Color.Warning
-                            Indeterminate true
+                            Indeterminate
                         }
                         spaceV2
                         MudText'() {
@@ -83,7 +83,7 @@ let app =
                 color Theme.primaryColor
             }
             Elevation 3
-            Dense true
+            Dense
             childContent [|
                 menuBtn
                 a {
@@ -146,7 +146,7 @@ let app =
             MudDrawer'() {
                 Open' binding
                 Elevation 25
-                PreserveOpenState true
+                PreserveOpenState
                 ClipMode DrawerClipMode.Always
                 navmenu
             }
