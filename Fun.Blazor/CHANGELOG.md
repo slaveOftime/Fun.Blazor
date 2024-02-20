@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [4.0.7] - 2024-02-21
+
 - Add all events as extensions for DomAttrBuilder and obsolete on.xxx, because it builds faster
 
   Before we think the number of custom operations on a ce will affect the speed, but it turns out that the yield or combination etc. is the cause.
