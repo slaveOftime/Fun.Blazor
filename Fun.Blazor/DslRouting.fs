@@ -84,7 +84,9 @@ type FocusOnNavigate' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, ty
 type html with
 
     /// By default we will set key (fun-blazor-routers) for this component. So it can keep it's state when its parent rerender.
-    /// And only rerender when location is changed.
+    /// And only rerender when location is changed. 
+    /// You should open Fun.Blazor.Router to use routeCi etc. 
+    /// For example: html.route [ routeCi "/demo" (html.text "demo") ] 
     static member route(routes: Router<NodeRenderFragment> seq, ?key: obj) =
         html.inject (
             defaultArg key "fun-blazor-routers",
@@ -104,10 +106,8 @@ type html with
 
                 adaptiview () {
                     let! location = location
-                    FunFragment'() {
-                        key location
-                        Fragment(choose routes location |> Option.defaultWith emptyNode)
-                    }
+                    // We should not use location as component key to for choosed page, because it make nested html.route not as power as it can be
+                    choose routes location |> Option.defaultWith emptyNode
                 }
         )
 
