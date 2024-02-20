@@ -102,8 +102,8 @@ let ``DOM events simple`` () =
             let mutable count = 0
 
             div {
-                on.click (fun _ -> task { count <- count + 1 })
-                on.change (fun _ -> count <- count + 1)
+                onclick (fun _ -> task { count <- count + 1 })
+                onchange (fun _ -> count <- count + 1)
                 $"count={count}"
             }
         )

@@ -53,7 +53,7 @@ type FunBlazorComponentWithArray() =
                         count
                     }
                     button {
-                        on.click (fun _ -> increase ())
+                        onclick (fun _ -> increase ())
                         "Increase"
                     }
                 |]

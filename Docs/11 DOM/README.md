@@ -141,12 +141,12 @@ handlers can be async or sync depending on your usage but they're often defined 
 
 ```fsharp
 button {
-  on.click(fun e -> printfn "clicked")
+  onclick(fun e -> printfn "clicked")
   "Click Me"
 }
 
 button {
-  on.click(fun e -> task {
+  onclick(fun e -> task {
     do! Async.Sleep 1000
     printfn "clicked"
   })
@@ -159,7 +159,7 @@ For inputs remember that events provide values as strings, so you have to unbox 
 ```fsharp
 input {
   placeholder "Write Something"
-  on.input(fun e ->
+  oninput(fun e ->
     unbox<string> e.Value |> printfn "New Value: '%s'"
   )
 }
@@ -168,7 +168,7 @@ input {
   type' "number"
   placeholder "Change Number"
   type' InputTypes.number
-  on.input(fun e ->
+  oninput(fun e ->
     unbox<string> e.Value |> int |> printfn "New Value: '%i'"
   )
 }

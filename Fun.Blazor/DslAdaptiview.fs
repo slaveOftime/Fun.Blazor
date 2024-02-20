@@ -158,11 +158,11 @@ module AVal =
 ///        let! count2, setCount2 = cval(2).WithSetter()
 ///        div {
 ///            button {
-///                on.click (fun _ -> setCount1 (count1 + 1))
+///                onclick (fun _ -> setCount1 (count1 + 1))
 ///                "Increase count1 will casuse count2 be reset"
 ///            }
 ///            button {
-///                on.click (fun _ -> setCount2 (count2 + 1))
+///                onclick (fun _ -> setCount2 (count2 + 1))
 ///                "Increase count2"
 ///            }
 ///         }
@@ -177,11 +177,11 @@ module AVal =
 ///        let! count2, setCount2 = count2.WithSetter()
 ///        div {
 ///            button {
-///                on.click (fun _ -> setCount1 (count1 + 1))
+///                onclick (fun _ -> setCount1 (count1 + 1))
 ///                "Increase count1 will casuse count2 be reset"
 ///            }
 ///            button {
-///                on.click (fun _ -> setCount2 (count2 + 1))
+///                onclick (fun _ -> setCount2 (count2 + 1))
 ///                "Increase count2"
 ///            }
 ///         }

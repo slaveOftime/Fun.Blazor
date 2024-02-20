@@ -40,7 +40,7 @@ type Foo() =
         h1 { "foo" }
         demo $"hi {count}"
         button {
-            on.click (fun _ -> count <- count + 1)
+            onclick (fun _ -> count <- count + 1)
             "Click me"
         }
     }

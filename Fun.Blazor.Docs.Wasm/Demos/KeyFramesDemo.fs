@@ -11,7 +11,7 @@ let entry =
         class' "keyframes-demo"
         childContent [|
             button {
-                on.click (fun _ -> isAnimated.Publish not)
+                onclick (fun _ -> isAnimated.Publish not)
                 "Start/Stop"
             }
             img { src "fun-blazor.png" }

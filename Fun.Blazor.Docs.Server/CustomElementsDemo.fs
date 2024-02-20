@@ -26,7 +26,7 @@ type ServerDemoCounter() as this =
     override _.Render() = div.create [|
         p { $"count = {count}; count_from_query {this.count_from_query}; count_from_form {this.count_from_form}; is_loading {this.is_loading}; time {this.time}" }
         button {
-            on.click (fun _ -> count <- count + 1)
+            onclick (fun _ -> count <- count + 1)
             "Click me"
         }
     |]

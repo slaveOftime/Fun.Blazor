@@ -98,11 +98,11 @@ let ``Giraffe style routes should work for nested route`` () =
         html.inject (fun (nav: NavigationManager) -> fragment {
             button {
                 id "demo1"
-                on.click (fun _ -> nav.NavigateTo("/demo1"))
+                onclick (fun _ -> nav.NavigateTo("/demo1"))
             }
             button {
                 id "demo2"
-                on.click (fun _ -> nav.NavigateTo("/demo2"))
+                onclick (fun _ -> nav.NavigateTo("/demo2"))
             }
         })
     }
