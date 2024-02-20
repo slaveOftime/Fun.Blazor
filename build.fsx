@@ -140,7 +140,7 @@ let stage_generateBindingProjects name package nsp patch =
   </ItemGroup>
   <ItemGroup>
     <PackageReference Update="FSharp.Core" Version="6.0.0" />
-    <PackageReference Include="Fun.Blazor" Version="4.0.*" />
+    <PackageReference Include="Fun.Blazor" Version="4.0.0" />
   </ItemGroup>
 </Project>"""
             ]
