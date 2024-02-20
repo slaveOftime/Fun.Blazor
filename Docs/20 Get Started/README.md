@@ -11,7 +11,7 @@ This contains the code for Fun.Blazor templates, also with more samples in it: h
 [![Nuget](https://img.shields.io/nuget/vpre/Fun.Blazor.Templates)](https://www.nuget.org/packages/Fun.Blazor.Templates) 👈 always try to use the latest one.
 
 ```shell
-dotnet new --install Fun.Blazor.Templates::4.0.0
+dotnet new --install Fun.Blazor.Templates::4.0.2
 dotnet new fun-blazor -o FunBlazorDemo1
 ```
 

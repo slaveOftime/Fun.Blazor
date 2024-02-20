@@ -11,7 +11,7 @@
 [![Nuget](https://img.shields.io/nuget/vpre/Fun.Blazor.Templates)](https://www.nuget.org/packages/Fun.Blazor.Templates)
 
 ```shell
-dotnet new --install Fun.Blazor.Templates::4.0.0
+dotnet new --install Fun.Blazor.Templates::4.0.2
 dotnet new fun-blazor -o FunBlazorDemo1
 ```
 

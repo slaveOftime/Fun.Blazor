@@ -7,7 +7,7 @@ dotnet tool install --global Fun.Blazor.Cli --version 4.0.0
 You can install a template to create a project that is set up for hot-reload:
 
 ```sh
-dotnet new --install Fun.Blazor.Templates::4.0.0
+dotnet new --install Fun.Blazor.Templates::4.0.2
 ```
 
 ![image](../../assets/site-hot-reload.gif)

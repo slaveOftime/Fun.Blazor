@@ -7,7 +7,7 @@ dotnet tool install --global Fun.Blazor.Cli --version 4.0.0
 您可以安装一个模板来创建一个配置了热重载的项目：
 
 ```sh
-dotnet new --install Fun.Blazor.Templates::4.0.0
+dotnet new --install Fun.Blazor.Templates::4.0.2
 ```
 
 ![image](../../assets/site-hot-reload.gif)
