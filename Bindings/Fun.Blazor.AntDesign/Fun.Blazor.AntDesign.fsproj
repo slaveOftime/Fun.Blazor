@@ -5,16 +5,16 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <TrimMode>link</TrimMode>
     <IsTrimmable>true</IsTrimmable>
-    <Version>0.17.4</Version>
+    <Version>0.18.0</Version>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Fun.Blazor.Bindings\AntDesign.fs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference FunBlazor="" FunBlazorNamespace="AntDesign" Include="AntDesign" Version="0.17.4" />
+    <PackageReference FunBlazor="" FunBlazorNamespace="AntDesign" Include="AntDesign" Version="0.18.0" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Update="FSharp.Core" Version="6.0.0" />
-    <PackageReference Include="Fun.Blazor" Version="3.2.*" />
+    <PackageReference Include="Fun.Blazor" Version="4.0.0" />
   </ItemGroup>
 </Project>
