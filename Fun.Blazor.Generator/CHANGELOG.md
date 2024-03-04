@@ -1,6 +1,6 @@
 # Changelog
 
-## [4.0.2] - 2024-02-20
+## [4.0.3] - 2024-02-20
 
 - Support optional for bool property
 - Improve callback generation

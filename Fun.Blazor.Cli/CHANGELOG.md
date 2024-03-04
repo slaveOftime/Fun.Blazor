@@ -1,5 +1,9 @@
 # Changelog
 
+## [4.0.2] - 2024-02-20
+
+- Update generator versions
+
 ## [4.0.1] - 2024-02-20
 
 - Update code generation packages
