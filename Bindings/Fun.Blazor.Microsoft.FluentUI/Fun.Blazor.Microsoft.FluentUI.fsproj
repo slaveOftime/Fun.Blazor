@@ -1,20 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk.Razor">
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFrameworks>net8.0</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <TrimMode>link</TrimMode>
     <IsTrimmable>true</IsTrimmable>
-    <Version>4.4.1</Version>
+    <Version>4.5.0</Version>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Fun.Blazor.Bindings\Microsoft.FluentUI.AspNetCore.Components.fs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference FunBlazor="" FunBlazorNamespace="Microsoft.FluentUI.AspNetCore.Components" Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.4.1" />
+    <PackageReference FunBlazor="" FunBlazorNamespace="Microsoft.FluentUI.AspNetCore.Components" Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.5.0" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Update="FSharp.Core" Version="6.0.0" />
-    <PackageReference Include="Fun.Blazor" Version="3.2.*" />
+    <PackageReference Include="Fun.Blazor" Version="4.0.0" />
   </ItemGroup>
 </Project>

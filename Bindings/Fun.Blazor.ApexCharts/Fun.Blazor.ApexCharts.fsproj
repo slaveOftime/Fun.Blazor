@@ -1,20 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk.Razor">
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFrameworks>net6.0;net8.0</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <TrimMode>link</TrimMode>
     <IsTrimmable>true</IsTrimmable>
-    <Version>2.3.3</Version>
+    <Version>3.1.0</Version>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Fun.Blazor.Bindings\ApexCharts.fs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference FunBlazor="" FunBlazorNamespace="ApexCharts" Include="Blazor-ApexCharts" Version="2.3.3" />
+    <PackageReference FunBlazor="" FunBlazorNamespace="ApexCharts" Include="Blazor-ApexCharts" Version="3.1.0" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Update="FSharp.Core" Version="6.0.0" />
-    <PackageReference Include="Fun.Blazor" Version="3.2.*" />
+    <PackageReference Include="Fun.Blazor" Version="4.0.0" />
   </ItemGroup>
 </Project>

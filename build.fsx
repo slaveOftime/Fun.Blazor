@@ -101,7 +101,7 @@ let stage_packNuget projDir =
         run $"dotnet pack -c Release -o {__SOURCE_DIRECTORY__}"
     }
 
-let stage_generateBindingProjects name package nsp patch =
+let stage_generateBindingProjects name package nsp patch targets =
     let projectName = "Fun.Blazor." + name
     let projectDir = "Bindings" </> projectName
 
@@ -129,7 +129,7 @@ let stage_generateBindingProjects name package nsp patch =
                 $"""
 <Project Sdk="Microsoft.NET.Sdk.Razor">
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFrameworks>{targets}</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <TrimMode>link</TrimMode>
     <IsTrimmable>true</IsTrimmable>
@@ -263,18 +263,20 @@ pipeline "bindings" {
     stage "generate" {
         paralle
         continueStepsOnFailure
-        stage_generateBindingProjects "Microsoft.Web" "Microsoft.AspNetCore.Components.Web" "Microsoft.AspNetCore.Components" ""
+        continueStageOnFailure
+        stage_generateBindingProjects "Microsoft.Web" "Microsoft.AspNetCore.Components.Web" "Microsoft.AspNetCore.Components" "" "net8.0"
         stage_generateBindingProjects
             "Microsoft.Authorization"
             "Microsoft.AspNetCore.Components.Authorization"
             "Microsoft.AspNetCore.Components.Authorization"
             ""
-        stage_generateBindingProjects "Microsoft.FluentUI" "Microsoft.FluentUI.AspNetCore.Components" "Microsoft.FluentUI.AspNetCore.Components" ""
-        stage_generateBindingProjects "Microsoft.QuickGrid" "Microsoft.AspNetCore.Components.QuickGrid" "Microsoft.AspNetCore.Components.QuickGrid" ""
-        stage_generateBindingProjects "AntDesign" "AntDesign" "AntDesign" ""
-        stage_generateBindingProjects "MudBlazor" "MudBlazor" "MudBlazor" ""
-        stage_generateBindingProjects "ApexCharts" "Blazor-ApexCharts" "ApexCharts" ""
-        stage_generateBindingProjects "BlazorMonaco" "BlazorMonaco" "BlazorMonaco" ""
+            "net8.0"
+        stage_generateBindingProjects "Microsoft.FluentUI" "Microsoft.FluentUI.AspNetCore.Components" "Microsoft.FluentUI.AspNetCore.Components" "" "net8.0"
+        stage_generateBindingProjects "Microsoft.QuickGrid" "Microsoft.AspNetCore.Components.QuickGrid" "Microsoft.AspNetCore.Components.QuickGrid" "" "net8.0"
+        stage_generateBindingProjects "AntDesign" "AntDesign" "AntDesign" "" "net6.0;net8.0"
+        stage_generateBindingProjects "MudBlazor" "MudBlazor" "MudBlazor" "" "net6.0;net8.0"
+        stage_generateBindingProjects "ApexCharts" "Blazor-ApexCharts" "ApexCharts" "" "net6.0;net8.0"
+        stage_generateBindingProjects "BlazorMonaco" "BlazorMonaco" "BlazorMonaco" "" "net6.0;net8.0"
     }
     stage "pack for binding projects" {
         run (fun _ ->
