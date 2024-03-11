@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [4.0.3] - 2024-03-11
+
+- Upgrade dependencies
+
 ## [4.0.2] - 2024-02-13
 
 - Pin FSharp.Core version to remove build warning
