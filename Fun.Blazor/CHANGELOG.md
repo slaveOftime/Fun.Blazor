@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+## [4.0.9] - 2024-03-12
+
+- Add exception for GetMultipleServices when using 6 items, so when use it or use html.inject, developer can get notification about it:
+	Because there is a wasm runtime issue for fsharp to call FSharpValue.MakeTuple with 6 items.
+
 ## [4.0.8] - 2024-02-21
 
 - Avoid some elements name and attributes name confliction

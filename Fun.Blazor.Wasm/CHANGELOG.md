@@ -1,5 +1,9 @@
 # Changelog
 
+## [4.0.4] - 2024-03-12
+
+- Upgrade dependencies
+
 ## [4.0.3] - 2024-03-11
 
 - Upgrade dependencies

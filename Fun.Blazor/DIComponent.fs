@@ -24,6 +24,9 @@ module ServiceProviderExtensions =
                 box ()
             elif Reflection.FSharpType.IsTuple depsType then
                 let svcs = depsType |> Reflection.FSharpType.GetTupleElements |> Array.map getSvc
+                if svcs.Length = 6 then
+                    failwith
+                        "Find or inject 6 services will throw exception in production release, please avoid this for now, there is trim issue for dotnet wasm runtime."
                 Reflection.FSharpValue.MakeTuple(svcs, depsType)
             else
                 getSvc depsType
