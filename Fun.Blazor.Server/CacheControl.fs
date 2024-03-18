@@ -1,7 +1,5 @@
 ﻿namespace Fun.Blazor
 
-#if !NET6_0
-
 open System
 
 /// This can be used for any blazor component which is served by MapRazorComponentsForSSR or MapCustomElementsForSSR
@@ -11,5 +9,3 @@ type ComponentResponseCacheAttribute() =
     member val Vary = "" with get, set
     member val Pragma = "" with get, set
     member val CacheControl = "" with get, set
-
-#endif

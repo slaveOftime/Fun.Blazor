@@ -28,7 +28,6 @@ type DomAttrBuilder with
             index + 1
         )
 
-#if !NET6_0
     /// Issues a request to get the blazor component and reader as static dom
     [<CustomOperation "hxRequestBlazorSSR">]
     member inline _.hxRequestBlazorSSR([<InlineIfLambda>] render: AttrRenderFragment, compTy: System.Type, ?queries: (string * obj) seq, ?method: string) =
@@ -68,6 +67,7 @@ type DomAttrBuilder with
         this.hxRequestBlazorSSR(render, HttpMethods.Post, queryBuilder)
 
 
+#if !NET6_0
     /// Issues a request to get the blazor custom element as the return dom, 
     /// and it will open a websocket for the component's interactivity
     [<CustomOperation "hxRequestCustomElement">]

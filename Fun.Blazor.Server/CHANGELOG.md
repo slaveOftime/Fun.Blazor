@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [4.0.5] - 2024-03-14
+
+- Support MapRazorComponentsForSSR for dotnet6.0
+
 ## [4.0.4] - 2024-03-12
 
 - Upgrade dependencies
