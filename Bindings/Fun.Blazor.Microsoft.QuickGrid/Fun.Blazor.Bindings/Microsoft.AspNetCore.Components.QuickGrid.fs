@@ -1,5 +1,6 @@
 namespace rec Microsoft.AspNetCore.Components.QuickGrid.DslInternals
 
+open System.Threading.Tasks
 open FSharp.Data.Adaptive
 open Fun.Blazor
 open Fun.Blazor.Operators
@@ -57,7 +58,7 @@ type ColumnBaseBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric :> M
     /// if IsDefaultSortColumn is true.
     [<CustomOperation("InitialSortDirection")>] member inline _.InitialSortDirection ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.AspNetCore.Components.QuickGrid.SortDirection) = render ==> ("InitialSortDirection" => x)
     /// Indicates whether this column should be sorted by default.
-    [<CustomOperation("IsDefaultSortColumn")>] member inline _.IsDefaultSortColumn ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("IsDefaultSortColumn" => x)
+    [<CustomOperation("IsDefaultSortColumn")>] member inline _.IsDefaultSortColumn ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("IsDefaultSortColumn" => (defaultArg x true))
     /// If specified, virtualized grids will use this template to render cells whose data has not yet been loaded.
     [<CustomOperation("PlaceholderTemplate")>] member inline _.PlaceholderTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.AspNetCore.Components.Web.Virtualization.PlaceholderContext -> NodeRenderFragment) = render ==> html.renderFragment("PlaceholderTemplate", fn)
 
@@ -122,7 +123,7 @@ type QuickGridBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric :> Mi
     ///             
     /// Generally it's preferable not to use Virtualize if the amount of data being rendered
     /// is small or if you are using pagination.
-    [<CustomOperation("Virtualize")>] member inline _.Virtualize ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Boolean) = render ==> ("Virtualize" => x)
+    [<CustomOperation("Virtualize")>] member inline _.Virtualize ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Virtualize" => (defaultArg x true))
     /// This is applicable only when using Virtualize. It defines an expected height in pixels for
     /// each row, allowing the virtualization mechanism to fetch the correct number of items to match the display
     /// size and to ensure accurate scrolling.
@@ -148,6 +149,7 @@ type QuickGridBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric :> Mi
             
 namespace rec Microsoft.AspNetCore.Components.QuickGrid.DslInternals.Infrastructure
 
+open System.Threading.Tasks
 open FSharp.Data.Adaptive
 open Fun.Blazor
 open Fun.Blazor.Operators

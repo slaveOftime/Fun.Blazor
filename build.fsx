@@ -261,7 +261,7 @@ pipeline "bindings" {
     description "Generate bindings project"
     collapseGithubActionLogs
     stage "generate" {
-        paralle
+        // paralle
         continueStepsOnFailure
         continueStageOnFailure
         stage_generateBindingProjects "Microsoft.Web" "Microsoft.AspNetCore.Components.Web" "Microsoft.AspNetCore.Components" "" "net8.0"
