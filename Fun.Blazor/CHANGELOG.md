@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [4.0.10] - 2024-03-19
+
+- When i18n tran with arguments but failed with exception, we should fallback to something useful instead of throw or only return key
+
 ## [4.0.9] - 2024-03-12
 
 - Add exception for GetMultipleServices when using 6 items, so when use it or use html.inject, developer can get notification about it:

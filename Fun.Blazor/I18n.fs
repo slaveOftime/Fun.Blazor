@@ -58,12 +58,25 @@ type I18n(?newJson: string, ?defaultTrans: Dictionary<string, string>) =
     member _.MergeToNew(newJson: string) = I18n(newJson, trans.Value)
 
     /// Translate a key, if it does not exist then return the key it self.
-    member _.tran(key: string, [<ParamArray>] args) =
-        match trans.Value.TryGetValue(key) with
-        | true, x -> String.Format(x, args)
-        | _ -> key
+    member _.tran(key: string, [<ParamArray>] args: obj[]) =
+        let makeKeyWithArgs () = key + (if args.Length > 0 then ": " + String.Join(", ", args) else "")
 
-    member _.tryTran(key: string, [<ParamArray>] args) =
         match trans.Value.TryGetValue(key) with
-        | true, x -> Some(String.Format(x, args))
+        | true, x ->
+            try
+                String.Format(x, args)
+            with ex ->
+                printfn "Translate failed: %A" ex
+                makeKeyWithArgs ()
+
+        | _ -> makeKeyWithArgs ()
+
+    member _.tryTran(key: string, [<ParamArray>] args: obj[]) =
+        match trans.Value.TryGetValue(key) with
+        | true, x ->
+            try
+                String.Format(x, args) |> Some
+            with ex ->
+                printfn "Translate failed: %A" ex
+                None
         | _ -> None
