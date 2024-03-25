@@ -1455,6 +1455,7 @@ type FormBuilder<'FunBlazorGeneric, 'TModel when 'FunBlazorGeneric :> Microsoft.
     [<CustomOperation("ValidateOnChange")>] member inline _.ValidateOnChange ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("ValidateOnChange" => (defaultArg x true))
     [<CustomOperation("ValidateMode")>] member inline _.ValidateMode ([<InlineIfLambda>] render: AttrRenderFragment, x: AntDesign.FormValidateMode) = render ==> ("ValidateMode" => x)
     [<CustomOperation("ValidateMessages")>] member inline _.ValidateMessages ([<InlineIfLambda>] render: AttrRenderFragment, x: AntDesign.FormValidateErrorMessages) = render ==> ("ValidateMessages" => x)
+    [<CustomOperation("Enhance")>] member inline _.Enhance ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Enhance" => (defaultArg x true))
 
 type FormItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit AntDomComponentBaseBuilder<'FunBlazorGeneric>()
@@ -1760,6 +1761,11 @@ type ModalBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCo
     [<CustomOperation("CloseIcon")>] member inline _.CloseIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("CloseIcon", html.text x)
     [<CustomOperation("ConfirmLoading")>] member inline _.ConfirmLoading ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("ConfirmLoading" => (defaultArg x true))
     [<CustomOperation("DestroyOnClose")>] member inline _.DestroyOnClose ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("DestroyOnClose" => (defaultArg x true))
+    [<CustomOperation("Header")>] member inline _.Header ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("Header", fragment)
+    [<CustomOperation("Header")>] member inline _.Header ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("Header", fragment { yield! fragments })
+    [<CustomOperation("Header")>] member inline _.Header ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("Header", html.text x)
+    [<CustomOperation("Header")>] member inline _.Header ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("Header", html.text x)
+    [<CustomOperation("Header")>] member inline _.Header ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("Header", html.text x)
     [<CustomOperation("Footer")>] member inline _.Footer ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<OneOf.OneOf<System.String, Microsoft.AspNetCore.Components.RenderFragment>>) = render ==> ("Footer" => x)
     [<CustomOperation("GetContainer")>] member inline _.GetContainer ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.AspNetCore.Components.ElementReference>) = render ==> ("GetContainer" => x)
     [<CustomOperation("Keyboard")>] member inline _.Keyboard ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Keyboard" => (defaultArg x true))
@@ -3056,6 +3062,19 @@ type TableRowWrapperBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> 
     [<CustomOperation("RowData")>] member inline _.RowData ([<InlineIfLambda>] render: AttrRenderFragment, x: AntDesign.TableModels.RowData<'TItem>) = render ==> ("RowData" => x)
 
             
+namespace rec AntDesign.DslInternals.Internal.ModalDialog
+
+open System.Threading.Tasks
+open FSharp.Data.Adaptive
+open Fun.Blazor
+open Fun.Blazor.Operators
+open AntDesign.DslInternals
+
+type ModalHeaderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+
+
+            
 
 // =======================================================================================================================
 
@@ -3346,4 +3365,14 @@ module DslCE =
     open AntDesign.DslInternals.core
 
     type _Imports' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.core._Imports>)>] () = inherit _ImportsBuilder<AntDesign.core._Imports>()
+            
+namespace AntDesign.Internal.ModalDialog
+
+[<AutoOpen>]
+module DslCE =
+  
+    open System.Diagnostics.CodeAnalysis
+    open AntDesign.DslInternals.Internal.ModalDialog
+
+    type ModalHeader' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Internal.ModalDialog.ModalHeader>)>] () = inherit ModalHeaderBuilder<AntDesign.Internal.ModalDialog.ModalHeader>()
             
