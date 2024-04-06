@@ -80,3 +80,6 @@ type I18n(?newJson: string, ?defaultTrans: Dictionary<string, string>) =
                 printfn "Translate failed: %A" ex
                 None
         | _ -> None
+
+
+    member _.KeyValues: IEnumerable<KeyValuePair<string, string>> = trans.Value
