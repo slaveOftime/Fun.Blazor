@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [4.0.11] - 2024-04-06
+
+- Expose KeyValues for i18n
+
 ## [4.0.10] - 2024-03-19
 
 - When i18n tran with arguments but failed with exception, we should fallback to something useful instead of throw or only return key
