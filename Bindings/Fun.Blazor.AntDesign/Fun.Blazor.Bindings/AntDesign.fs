@@ -1456,6 +1456,7 @@ type FormBuilder<'FunBlazorGeneric, 'TModel when 'FunBlazorGeneric :> Microsoft.
     [<CustomOperation("ValidateMode")>] member inline _.ValidateMode ([<InlineIfLambda>] render: AttrRenderFragment, x: AntDesign.FormValidateMode) = render ==> ("ValidateMode" => x)
     [<CustomOperation("ValidateMessages")>] member inline _.ValidateMessages ([<InlineIfLambda>] render: AttrRenderFragment, x: AntDesign.FormValidateErrorMessages) = render ==> ("ValidateMessages" => x)
     [<CustomOperation("Enhance")>] member inline _.Enhance ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Enhance" => (defaultArg x true))
+    [<CustomOperation("Autocomplete")>] member inline _.Autocomplete ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Autocomplete" => x)
 
 type FormItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit AntDomComponentBaseBuilder<'FunBlazorGeneric>()
