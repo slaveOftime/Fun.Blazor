@@ -8,7 +8,7 @@ open Microsoft.FluentUI.AspNetCore.Components.DslInternals
 
 type FluentComponentBaseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
-    /// Gets or sets the unique identifier. If not provided, a random value will be generated.
+    /// Gets or sets the unique identifier.
     /// The value will be used as the HTML global id attribute.
     [<CustomOperation("Id")>] member inline _.Id ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Id" => x)
     /// Optional CSS class names. If given, these will be included in the class attribute of the component.
@@ -259,6 +259,8 @@ type FluentAnchoredRegionBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Mic
     /// In 'auto' mode the component also updates because of - any scroll event on the document, window resizes and viewport resizes. See 
     [<CustomOperation("AutoUpdateMode")>] member inline _.AutoUpdateMode ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.AutoUpdateMode>) = render ==> ("AutoUpdateMode" => x)
     [<CustomOperation("Shadow")>] member inline _.Shadow ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.ElevationShadow) = render ==> ("Shadow" => x)
+    /// Gets or sets whether the element should receive the focus when the component is loaded.
+    [<CustomOperation("AutoFocus")>] member inline _.AutoFocus ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("AutoFocus" => (defaultArg x true))
 
 type FluentAnchorBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -314,6 +316,8 @@ type FluentAppBarItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microso
     [<CustomOperation("Text")>] member inline _.Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Text" => x)
     /// Gets or sets the tooltip to show when the item is hovered.
     [<CustomOperation("Tooltip")>] member inline _.Tooltip ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Tooltip" => x)
+    /// Gets or sets the count to show on the item with a FluentCounterBadge.
+    [<CustomOperation("Count")>] member inline _.Count ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("Count" => x)
     /// The callback to invoke when the item is clicked.
     [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentAppBarItem -> unit) = render ==> html.callback("OnClick", fn)
     /// The callback to invoke when the item is clicked.
@@ -725,25 +729,41 @@ type FluentCounterBadgeBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micro
     [<CustomOperation("BadgeContent")>] member inline _.BadgeContent ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("BadgeContent", html.text x)
     /// Gets or sets the content you want inside the badge, to customize the badge content.
     [<CustomOperation("BadgeContent")>] member inline _.BadgeContent ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("BadgeContent", html.text x)
+    /// Gets or sets the content you want inside the badge, to customize the badge content.
+    [<CustomOperation("BadgeTemplate")>] member inline _.BadgeTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Nullable<System.Int32> -> NodeRenderFragment) = render ==> html.renderFragment("BadgeTemplate", fn)
     /// Gets or sets the maximum number that can be displayed inside the badge.
     /// Default is 99.
     [<CustomOperation("Max")>] member inline _.Max ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("Max" => x)
-    /// Gets or sets the left position of the badge in percentage.
-    /// By default, this value is 50 to center the badge.
-    [<CustomOperation("HorizontalPosition")>] member inline _.HorizontalPosition ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("HorizontalPosition" => x)
+    /// Gets or sets the horizontal position of the badge in percentage in relation to the left of the container (right in RTL).
+    /// Default value is 60 (80 when Dot=true).
+    [<CustomOperation("HorizontalPosition")>] member inline _.HorizontalPosition ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("HorizontalPosition" => x)
     /// Gets or sets the bottom position of the badge in percentage.
-    /// By default, this value is 50 to center the badge.
-    [<CustomOperation("BottomPosition")>] member inline _.BottomPosition ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("BottomPosition" => x)
+    /// [Obsolete] This parameter will be removed in a future version. Use VerticalPosition instead.
+    /// Default value is 60 (80 when Dot=true).
+    [<CustomOperation("BottomPosition")>] member inline _.BottomPosition ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("BottomPosition" => x)
+    /// Gets or sets the vertical position of the badge in percentage in relation to the bottom of the container.
+    /// Default value is 60 (80 when Dot=true).
+    [<CustomOperation("VerticalPosition")>] member inline _.VerticalPosition ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("VerticalPosition" => x)
     /// Gets or sets the default design of this badge using colors from theme.
     [<CustomOperation("Appearance")>] member inline _.Appearance ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.Appearance>) = render ==> ("Appearance" => x)
     /// Gets or sets the background color to replace the color inferred from property.
     [<CustomOperation("BackgroundColor")>] member inline _.BackgroundColor ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.Color>) = render ==> ("BackgroundColor" => x)
     /// Gets or sets the font color to replace the color inferred from property.
     [<CustomOperation("Color")>] member inline _.Color ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.Color>) = render ==> ("Color" => x)
-    /// If the counter badge should be displayed when the count is zero.
+    /// Gets or sets if just a dot should be displayed. Count will be ignored if this is set to true.
     /// Defaults to false.
     ///             
+    [<CustomOperation("Dot")>] member inline _.Dot ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Dot" => (defaultArg x true))
+    /// If the counter badge should be displayed when the count is zero.
+    /// Defaults to false.
+    /// [Obsolete] This parameter will be removed in a future version. Use ShowWhen with a lambda expression instead
+    /// For getting the same behavior as before, you can use ShowWhen="@(Count => Count >= 0)"
+    ///             
     [<CustomOperation("ShowZero")>] member inline _.ShowZero ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("ShowZero" => (defaultArg x true))
+    /// Gets or sets if the counter badge is displayed based on the specified lambda expression.
+    /// For example to show the badge when the count greater than 4, use ShowWhen=@(Count => Count > 4)
+    /// Default the badge shows when the count is greater than 0.
+    [<CustomOperation("ShowWhen")>] member inline _.ShowWhen ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("ShowWhen" => (System.Func<System.Nullable<System.Int32>, System.Boolean>fn))
     /// If an plus sign should be displayed when the Count is greater than Max.
     /// Defaults to true.
     ///             
@@ -1278,6 +1298,9 @@ type FluentPersonaBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     [<CustomOperation("Image")>] member inline _.Image ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Image" => x)
     /// Gets or sets the size of the image.
     [<CustomOperation("ImageSize")>] member inline _.ImageSize ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ImageSize" => x)
+    /// Gets or sets the TextPosition of the text.
+    /// Default is End.
+    [<CustomOperation("TextPosition")>] member inline _.TextPosition ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.TextPosition) = render ==> ("TextPosition" => x)
     /// Gets or sets the status to show. See PresenceStatus for options.
     [<CustomOperation("Status")>] member inline _.Status ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.PresenceStatus>) = render ==> ("Status" => x)
     /// Gets or sets the title to show on hover. If not provided, the status will be used.
@@ -1568,8 +1591,15 @@ type FluentMenuBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.Asp
     [<CustomOperation("Open")>] member inline _.Open ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Open" => (defaultArg x true))
     /// Gets or sets the Menu status.
     [<CustomOperation("Open'")>] member inline _.Open' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Boolean * (System.Boolean -> unit)) = render ==> html.bind("Open", valueFn)
-    /// Gets or sets the menu position (left or right).
+    /// Gets or sets the horizontal menu position.
     [<CustomOperation("HorizontalPosition")>] member inline _.HorizontalPosition ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.HorizontalPosition) = render ==> ("HorizontalPosition" => x)
+    /// Gets or sets a value indicating whether the region overlaps the anchor on the horizontal axis. 
+    /// Default is false which places the region adjacent to the anchor element.
+    [<CustomOperation("HorizontalInset")>] member inline _.HorizontalInset ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("HorizontalInset" => (defaultArg x true))
+    /// Gets or sets the vertical menu position.
+    [<CustomOperation("VerticalPosition")>] member inline _.VerticalPosition ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.VerticalPosition) = render ==> ("VerticalPosition" => x)
+    /// Gets or sets a value indicating whether the region overlaps the anchor on the vertical axis.
+    [<CustomOperation("VerticalInset")>] member inline _.VerticalInset ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("VerticalInset" => (defaultArg x true))
     /// Gets or sets the width of this menu.
     [<CustomOperation("Width")>] member inline _.Width ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Width" => x)
     /// Raised when the Open property changed.
@@ -1607,9 +1637,9 @@ type FluentMenuItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     /// Gets or sets the list of sub-menu items.
     [<CustomOperation("MenuItems")>] member inline _.MenuItems ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("MenuItems", html.text x)
     /// Event raised when the user click on this item.
-    [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: unit -> unit) = render ==> html.callback("OnClick", fn)
+    [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> unit) = render ==> html.callback("OnClick", fn)
     /// Event raised when the user click on this item.
-    [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: unit -> Task<unit>) = render ==> html.callbackTask("OnClick", fn)
+    [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> Task<unit>) = render ==> html.callbackTask("OnClick", fn)
 
 type FluentMessageBarBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -1724,6 +1754,8 @@ type FluentNavMenuBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     [<CustomOperation("Width")>] member inline _.Width ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("Width" => x)
     /// Gets or sets whether or not the menu can be collapsed.
     [<CustomOperation("Collapsible")>] member inline _.Collapsible ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Collapsible" => (defaultArg x true))
+    /// Gets or sets whether a menu with all child links is shown for FluentNavGroups when the navigation menu is collapsed.
+    [<CustomOperation("CollapsedChildNavigation")>] member inline _.CollapsedChildNavigation ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("CollapsedChildNavigation" => (defaultArg x true))
     [<CustomOperation("Expanded")>] member inline _.Expanded ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Expanded" => (defaultArg x true))
     [<CustomOperation("Expanded'")>] member inline _.Expanded' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Boolean * (System.Boolean -> unit)) = render ==> html.bind("Expanded", valueFn)
     /// Event callback for when the Expanded property changes.
@@ -1862,6 +1894,13 @@ type FluentPopoverBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     [<CustomOperation("Footer")>] member inline _.Footer ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("Footer", html.text x)
     /// Gets or sets the content of the footer part of the popover.
     [<CustomOperation("Footer")>] member inline _.Footer ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("Footer", html.text x)
+    /// Gets or sets whether the element should receive the focus when the component is loaded.
+    /// If this is the case, the user cannot navigate to other elements of the page while the Popup is open.
+    /// Default is true.
+    [<CustomOperation("AutoFocus")>] member inline _.AutoFocus ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("AutoFocus" => (defaultArg x true))
+    /// Gets or sets the keys that can be used to close the popover.
+    /// By default, Escape
+    [<CustomOperation("CloseKeys")>] member inline _.CloseKeys ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.KeyCode[]) = render ==> ("CloseKeys" => x)
 
 /// A presence badge is a badge that displays a status indicator such as available, away, or busy.
 type FluentPresenceBadgeBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -1882,6 +1921,8 @@ type FluentPresenceBadgeBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micr
 
 type FluentProfileMenuBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
+    /// Gets or sets whether popover should be forced to top right or top left (RTL).
+    [<CustomOperation("TopCorner")>] member inline _.TopCorner ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("TopCorner" => (defaultArg x true))
     /// Gets or sets the content to be displayed in the header section of the popover.
     /// Using this property will override the HeaderLabel and HeaderButton properties.
     [<CustomOperation("HeaderTemplate")>] member inline _.HeaderTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("HeaderTemplate", fragment)
