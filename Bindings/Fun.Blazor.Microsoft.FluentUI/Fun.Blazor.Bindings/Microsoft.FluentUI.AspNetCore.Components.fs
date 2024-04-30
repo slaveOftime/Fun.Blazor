@@ -429,6 +429,8 @@ type FluentCalendarBaseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micro
     /// Gets or sets the verification to do when the selected value has changed.
     /// By default, ValueChanged is called only if the selected value has changed.
     [<CustomOperation("CheckIfSelectedValueHasChanged")>] member inline _.CheckIfSelectedValueHasChanged ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("CheckIfSelectedValueHasChanged" => (defaultArg x true))
+    /// Defines the appearance of the FluentCalendar component.
+    [<CustomOperation("View")>] member inline _.View ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.CalendarViews) = render ==> ("View" => x)
     /// Gets or sets the selected date (two-way bindable).
     [<CustomOperation("Value")>] member inline _.Value ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.DateTime>) = render ==> ("Value" => x)
 
@@ -454,8 +456,6 @@ type FluentCalendarBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     [<CustomOperation("PickerMonthChanged")>] member inline _.PickerMonthChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.DateTime -> Task<unit>) = render ==> html.callbackTask("PickerMonthChanged", fn)
     /// Defines the appearance of a Day cell.
     [<CustomOperation("DaysTemplate")>] member inline _.DaysTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentCalendarDay -> NodeRenderFragment) = render ==> html.renderFragment("DaysTemplate", fn)
-    /// Defines the appearance of the FluentCalendar component.
-    [<CustomOperation("View")>] member inline _.View ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.CalendarViews) = render ==> ("View" => x)
     /// Gets ot sets if the calendar items are animated during a period change.
     /// By default, the animation is enabled for Months views, but disabled for Days and Years view.
     [<CustomOperation("AnimatePeriodChanges")>] member inline _.AnimatePeriodChanges ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("AnimatePeriodChanges" => x)
@@ -823,6 +823,8 @@ type FluentDataGridBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric 
     /// See GenerateHeaderOption
     [<CustomOperation("GenerateHeader")>] member inline _.GenerateHeader ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.GenerateHeaderOption>) = render ==> ("GenerateHeader" => x)
     /// Gets or sets the value that gets applied to the css gridTemplateColumns attribute of child rows.
+    /// Can be specified here or on the column level with the Width parameter but not both.
+    /// Needs to be a valid CSS string of space-separated values, such as "auto 1fr 2fr 100px".
     [<CustomOperation("GridTemplateColumns")>] member inline _.GridTemplateColumns ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("GridTemplateColumns" => x)
     /// Gets or sets a callback when a row is focused.
     [<CustomOperation("OnRowFocus")>] member inline _.OnRowFocus ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentDataGridRow<'TGridItem> -> unit) = render ==> html.callback("OnRowFocus", fn)
@@ -1092,6 +1094,9 @@ type FluentGridBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.Asp
     [<CustomOperation("Spacing")>] member inline _.Spacing ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("Spacing" => x)
     /// Defines how the browser distributes space between and around content items.
     [<CustomOperation("Justify")>] member inline _.Justify ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.JustifyContent) = render ==> ("Justify" => x)
+    /// Gets or sets the adaptive rendering, which not render the HTML code when the item is hidden (true) or only hide the item by CSS (false).
+    /// Default is false.
+    [<CustomOperation("AdaptiveRendering")>] member inline _.AdaptiveRendering ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("AdaptiveRendering" => (defaultArg x true))
     /// when page size falls within a specific size range (xs, sm, md, lg, xl, xxl).
     [<CustomOperation("OnBreakpointEnter")>] member inline _.OnBreakpointEnter ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.GridItemSize -> unit) = render ==> html.callback("OnBreakpointEnter", fn)
     /// when page size falls within a specific size range (xs, sm, md, lg, xl, xxl).
@@ -1122,6 +1127,9 @@ type FluentGridItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     /// Gets or sets the gaps (gutters) between rows and columns.
     /// See https://developer.mozilla.org/en-US/docs/Web/CSS/gap
     [<CustomOperation("Gap")>] member inline _.Gap ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Gap" => x)
+    /// Gets or sets the adaptive rendering, which not render the HTML code when the item is hidden (true) or only hide the item by CSS (false).
+    /// Default is false.
+    [<CustomOperation("AdaptiveRendering")>] member inline _.AdaptiveRendering ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("AdaptiveRendering" => x)
     /// Hide the item on the specified sizes (you can combine multiple values: GridItemHidden.Sm | GridItemHidden.Xl).
     [<CustomOperation("HiddenWhen")>] member inline _.HiddenWhen ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.GridItemHidden>) = render ==> ("HiddenWhen" => x)
 
@@ -1815,27 +1823,27 @@ type FluentPaginatorBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsof
     [<CustomOperation("SummaryTemplate")>] member inline _.SummaryTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("SummaryTemplate", html.text x)
     /// Optionally supplies a template for rendering the pagination summary.
     /// The following values can be included:
-    /// {your State parameter name}.CurrentPageIndex (zero-basedd, so +1 for the current page number)
+    /// {your State parameter name}.CurrentPageIndex (zero-based, so +1 for the current page number)
     /// {your State parameter name}.LastPageIndex (zero-based, so +1 for the total number of pages)
     [<CustomOperation("PaginationTextTemplate")>] member inline _.PaginationTextTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("PaginationTextTemplate", fragment)
     /// Optionally supplies a template for rendering the pagination summary.
     /// The following values can be included:
-    /// {your State parameter name}.CurrentPageIndex (zero-basedd, so +1 for the current page number)
+    /// {your State parameter name}.CurrentPageIndex (zero-based, so +1 for the current page number)
     /// {your State parameter name}.LastPageIndex (zero-based, so +1 for the total number of pages)
     [<CustomOperation("PaginationTextTemplate")>] member inline _.PaginationTextTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("PaginationTextTemplate", fragment { yield! fragments })
     /// Optionally supplies a template for rendering the pagination summary.
     /// The following values can be included:
-    /// {your State parameter name}.CurrentPageIndex (zero-basedd, so +1 for the current page number)
+    /// {your State parameter name}.CurrentPageIndex (zero-based, so +1 for the current page number)
     /// {your State parameter name}.LastPageIndex (zero-based, so +1 for the total number of pages)
     [<CustomOperation("PaginationTextTemplate")>] member inline _.PaginationTextTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("PaginationTextTemplate", html.text x)
     /// Optionally supplies a template for rendering the pagination summary.
     /// The following values can be included:
-    /// {your State parameter name}.CurrentPageIndex (zero-basedd, so +1 for the current page number)
+    /// {your State parameter name}.CurrentPageIndex (zero-based, so +1 for the current page number)
     /// {your State parameter name}.LastPageIndex (zero-based, so +1 for the total number of pages)
     [<CustomOperation("PaginationTextTemplate")>] member inline _.PaginationTextTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("PaginationTextTemplate", html.text x)
     /// Optionally supplies a template for rendering the pagination summary.
     /// The following values can be included:
-    /// {your State parameter name}.CurrentPageIndex (zero-basedd, so +1 for the current page number)
+    /// {your State parameter name}.CurrentPageIndex (zero-based, so +1 for the current page number)
     /// {your State parameter name}.LastPageIndex (zero-based, so +1 for the total number of pages)
     [<CustomOperation("PaginationTextTemplate")>] member inline _.PaginationTextTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("PaginationTextTemplate", html.text x)
 
@@ -1856,6 +1864,10 @@ type FluentPopoverBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     [<CustomOperation("VerticalThreshold")>] member inline _.VerticalThreshold ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("VerticalThreshold" => x)
     /// How narrow the space allocated to the default position has to be before the widest area is selected for layout.
     [<CustomOperation("HorizontalThreshold")>] member inline _.HorizontalThreshold ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("HorizontalThreshold" => x)
+    /// Gets or sets a value indicating whether the region is positioned using css "position: fixed".
+    /// Otherwise the region uses "position: absolute".
+    /// Fixed placement allows the region to break out of parent containers.
+    [<CustomOperation("FixedPlacement")>] member inline _.FixedPlacement ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("FixedPlacement" => x)
     /// Gets or sets popover opened state.
     [<CustomOperation("Open")>] member inline _.Open ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Open" => (defaultArg x true))
     /// Gets or sets popover opened state.
@@ -2097,6 +2109,8 @@ type FluentPullToRefreshBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micr
     /// Gets or sets the amount of time (in milliseconds) a status update message will be displayed.
     /// Default is 750
     [<CustomOperation("StatusUpdateMessageTimeout")>] member inline _.StatusUpdateMessageTimeout ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("StatusUpdateMessageTimeout" => x)
+    /// Gets or sets the threshold distance the ChildContent needs to be pulled (in pixels) to start the tip pull action.
+    [<CustomOperation("DragThreshold")>] member inline _.DragThreshold ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("DragThreshold" => x)
 
 type FluentRadioBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -2548,6 +2562,9 @@ type FluentWizardBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.A
     /// Hide step titles and summaries on specified sizes (you can combine several values: GridItemHidden.Sm | GridItemHidden.Xl).
     /// The default value is XsAndDown to adapt to mobile devices.
     [<CustomOperation("StepTitleHiddenWhen")>] member inline _.StepTitleHiddenWhen ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.GridItemHidden>) = render ==> ("StepTitleHiddenWhen" => x)
+    /// Gets or sets the way to navigate in the Wizard Steps.
+    /// Default is Linear.
+    [<CustomOperation("StepSequence")>] member inline _.StepSequence ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.WizardStepSequence) = render ==> ("StepSequence" => x)
 
 type FluentWizardStepBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -2656,14 +2673,14 @@ type FluentAccessibilityStatusBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :
 /// An abstract base class for columns in a FluentDataGrid`1.
 type ColumnBaseBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
-    /// Gets or sets the title text for the column. 
+    /// Gets or sets the title text for the column.
     /// This is rendered automatically if HeaderCellItemTemplate is not used.
     [<CustomOperation("Title")>] member inline _.Title ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
-    /// Gets or sets the an optional CSS class name. 
+    /// Gets or sets the an optional CSS class name.
     /// If specified, this is included in the class attribute of header and grid cells
     /// for this column.
     [<CustomOperation("Classes")>] member inline _.Classes ([<InlineIfLambda>] render: AttrRenderFragment, x: string list) = render ==> html.classes x
-    /// Gets or sets an optional CSS style specification. 
+    /// Gets or sets an optional CSS style specification.
     /// If specified, this is included in the style attribute of header and grid cells
     /// for this column.
     [<CustomOperation("Styles")>] member inline _.Styles ([<InlineIfLambda>] render: AttrRenderFragment, x: (string * string) list) = render ==> html.styles x
@@ -2673,7 +2690,7 @@ type ColumnBaseBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric :> M
     [<CustomOperation("Tooltip")>] member inline _.Tooltip ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Tooltip" => (defaultArg x true))
     /// Gets or sets the value to be used as the tooltip and aria-label in this column's cells
     [<CustomOperation("TooltipText")>] member inline _.TooltipText ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("TooltipText" => (System.Func<'TGridItem, System.String>fn))
-    /// Gets or sets an optional template for this column's header cell. 
+    /// Gets or sets an optional template for this column's header cell.
     /// If not specified, the default header template includes the Title along with any applicable sort indicators and options buttons.
     [<CustomOperation("HeaderCellItemTemplate")>] member inline _.HeaderCellItemTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.ColumnBase<'TGridItem> -> NodeRenderFragment) = render ==> html.renderFragment("HeaderCellItemTemplate", fn)
     /// If specified, indicates that this column has this associated options UI. A button to display this
@@ -2709,7 +2726,8 @@ type ColumnBaseBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric :> M
     /// Gets or sets a value indicating whether the data should be sortable by this column.
     ///             
     /// The default value may vary according to the column type (for example, a TemplateColumn`1
-    /// is sortable by default if any SortBy parameter is specified).
+    /// or PropertyColumn`2 is sortable by default if anySortBy
+    /// or SortBy parameter is specified).
     [<CustomOperation("Sortable")>] member inline _.Sortable ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("Sortable" => x)
     /// Gets or sets a value indicating whether the data is currently filtered by this column.
     ///             
@@ -2722,6 +2740,10 @@ type ColumnBaseBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric :> M
     [<CustomOperation("IsDefaultSortColumn")>] member inline _.IsDefaultSortColumn ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("IsDefaultSortColumn" => (defaultArg x true))
     /// If specified, virtualized grids will use this template to render cells whose data has not yet been loaded.
     [<CustomOperation("PlaceholderTemplate")>] member inline _.PlaceholderTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.AspNetCore.Components.Web.Virtualization.PlaceholderContext -> NodeRenderFragment) = render ==> html.renderFragment("PlaceholderTemplate", fn)
+    /// Gets or sets the width of the column.
+    /// Use either this or the FluentDataGrid`1 GridTemplateColumns parameter but not both.
+    /// Needs to be a valid CSS width value like '100px', '10%' or '0.5fr'.
+    [<CustomOperation("Width")>] member inline _.Width ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Width" => x)
 
 /// Represents a FluentDataGrid`1 column whose cells display a single value.
 type PropertyColumnBuilder<'FunBlazorGeneric, 'TGridItem, 'TProp when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -2733,9 +2755,10 @@ type PropertyColumnBuilder<'FunBlazorGeneric, 'TGridItem, 'TProp when 'FunBlazor
     /// Using this requires the  type to implement IFormattable.
     [<CustomOperation("Format")>] member inline _.Format ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Format" => x)
     /// Optionally specifies how to compare values in this column when sorting.
-    /// 
+    ///             
     /// Using this requires the  type to implement IComparable`1.
     [<CustomOperation("Comparer")>] member inline _.Comparer ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IComparer<'TProp>) = render ==> ("Comparer" => x)
+    [<CustomOperation("SortBy")>] member inline _.SortBy ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.GridSort<'TGridItem>) = render ==> ("SortBy" => x)
 
 /// Represents a FluentDataGrid`1 column whose cells render a supplied template.
 type TemplateColumnBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
