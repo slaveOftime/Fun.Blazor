@@ -834,11 +834,21 @@ type FluentDataGridBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric 
     [<CustomOperation("OnCellFocus")>] member inline _.OnCellFocus ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentDataGridCell<'TGridItem> -> unit) = render ==> html.callback("OnCellFocus", fn)
     /// Gets or sets a callback when a row is focused.
     [<CustomOperation("OnCellFocus")>] member inline _.OnCellFocus ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentDataGridCell<'TGridItem> -> Task<unit>) = render ==> html.callbackTask("OnCellFocus", fn)
+    /// Gets or sets a callback when a row is clicked.
+    [<CustomOperation("OnRowClick")>] member inline _.OnRowClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentDataGridRow<'TGridItem> -> unit) = render ==> html.callback("OnRowClick", fn)
+    /// Gets or sets a callback when a row is clicked.
+    [<CustomOperation("OnRowClick")>] member inline _.OnRowClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentDataGridRow<'TGridItem> -> Task<unit>) = render ==> html.callbackTask("OnRowClick", fn)
+    /// Gets or sets a callback when a row is double-clicked.
+    [<CustomOperation("OnRowDoubleClick")>] member inline _.OnRowDoubleClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentDataGridRow<'TGridItem> -> unit) = render ==> html.callback("OnRowDoubleClick", fn)
+    /// Gets or sets a callback when a row is double-clicked.
+    [<CustomOperation("OnRowDoubleClick")>] member inline _.OnRowDoubleClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentDataGridRow<'TGridItem> -> Task<unit>) = render ==> html.callbackTask("OnRowDoubleClick", fn)
     /// Optionally defines a class to be applied to a rendered row.
     [<CustomOperation("RowClass")>] member inline _.RowClass ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("RowClass" => (System.Func<'TGridItem, System.String>fn))
     /// Optionally defines a style to be applied to a rendered row.
     /// Do not use to dynamically update a row style after rendering as this will interfere with the script that use this attribute. Use RowClass instead.
     [<CustomOperation("RowStyle")>] member inline _.RowStyle ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("RowStyle" => (System.Func<'TGridItem, System.String>fn))
+    /// Gets or sets a value indicating whether the grid should show a hover effect on rows.
+    [<CustomOperation("ShowHover")>] member inline _.ShowHover ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("ShowHover" => (defaultArg x true))
     /// If specified, grids render this fragment when there is no content.
     [<CustomOperation("EmptyContent")>] member inline _.EmptyContent ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("EmptyContent", fragment)
     /// If specified, grids render this fragment when there is no content.
@@ -2760,6 +2770,67 @@ type PropertyColumnBuilder<'FunBlazorGeneric, 'TGridItem, 'TProp when 'FunBlazor
     [<CustomOperation("Comparer")>] member inline _.Comparer ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IComparer<'TProp>) = render ==> ("Comparer" => x)
     [<CustomOperation("SortBy")>] member inline _.SortBy ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.GridSort<'TGridItem>) = render ==> ("SortBy" => x)
 
+/// Represents a FluentDataGrid`1 column whose cells render a selected checkbox updated when the user click on a row.
+type SelectColumnBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit ColumnBaseBuilder<'FunBlazorGeneric, 'TGridItem>()
+    /// Gets or sets the content to be rendered for each row in the table.
+    [<CustomOperation("ChildContent")>] member inline _.ChildContent ([<InlineIfLambda>] render: AttrRenderFragment, fn: 'TGridItem -> NodeRenderFragment) = render ==> html.renderFragment("ChildContent", fn)
+    /// Gets or sets the list of selected items.
+    [<CustomOperation("SelectedItems")>] member inline _.SelectedItems ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<'TGridItem>) = render ==> ("SelectedItems" => x)
+    /// Gets or sets the list of selected items.
+    [<CustomOperation("SelectedItems'")>] member inline _.SelectedItems' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Collections.Generic.IEnumerable<'TGridItem> * (System.Collections.Generic.IEnumerable<'TGridItem> -> unit)) = render ==> html.bind("SelectedItems", valueFn)
+    /// Gets or sets a callback when list of selected items changed.
+    [<CustomOperation("SelectedItemsChanged")>] member inline _.SelectedItemsChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Collections.Generic.IEnumerable<'TGridItem> -> unit) = render ==> html.callback("SelectedItemsChanged", fn)
+    /// Gets or sets a callback when list of selected items changed.
+    [<CustomOperation("SelectedItemsChanged")>] member inline _.SelectedItemsChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Collections.Generic.IEnumerable<'TGridItem> -> Task<unit>) = render ==> html.callbackTask("SelectedItemsChanged", fn)
+    /// Gets or sets the selection mode (Single or Multiple).
+    [<CustomOperation("SelectMode")>] member inline _.SelectMode ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.DataGridSelectMode) = render ==> ("SelectMode" => x)
+    /// Gets or sets the Icon to be rendered when the row is non selected.
+    [<CustomOperation("IconUnchecked")>] member inline _.IconUnchecked ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Icon) = render ==> ("IconUnchecked" => x)
+    /// Gets or sets the Icon title display as a tooltip and used with Accessibility.
+    /// The default text is "Row unselected".
+    [<CustomOperation("TitleUnchecked")>] member inline _.TitleUnchecked ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("TitleUnchecked" => x)
+    /// Gets or sets the Icon to be rendered when the row is selected.
+    [<CustomOperation("IconChecked")>] member inline _.IconChecked ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Icon) = render ==> ("IconChecked" => x)
+    /// Gets or sets the Icon title display as a tooltip and used with Accessibility.
+    /// The default text is "Row selected".
+    [<CustomOperation("TitleChecked")>] member inline _.TitleChecked ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("TitleChecked" => x)
+    /// Gets or sets the Icon to be rendered when some but not all rows are selected.
+    /// Only when SelectMode is Multiple.
+    [<CustomOperation("IconIndeterminate")>] member inline _.IconIndeterminate ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Icon) = render ==> ("IconIndeterminate" => x)
+    /// Gets or sets the Icon title display as a tooltip and used with Accessibility.
+    /// The default text is "All rows are selected.".
+    [<CustomOperation("TitleAllChecked")>] member inline _.TitleAllChecked ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("TitleAllChecked" => x)
+    /// Gets or sets the Icon title display as a tooltip and used with Accessibility.
+    /// The default text is "No rows are selected.".
+    [<CustomOperation("TitleAllUnchecked")>] member inline _.TitleAllUnchecked ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("TitleAllUnchecked" => x)
+    /// Gets or sets the Icon title display as a tooltip and used with Accessibility.
+    /// The default text is "Some rows are selected.".
+    [<CustomOperation("TitleAllIndeterminate")>] member inline _.TitleAllIndeterminate ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("TitleAllIndeterminate" => x)
+    /// Gets or sets the action to be executed when the row is selected or unselected.
+    /// This action is required to update you data model.
+    [<CustomOperation("OnSelect")>] member inline _.OnSelect ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.ValueTuple<'TGridItem, System.Boolean> -> unit) = render ==> html.callback("OnSelect", fn)
+    /// Gets or sets the action to be executed when the row is selected or unselected.
+    /// This action is required to update you data model.
+    [<CustomOperation("OnSelect")>] member inline _.OnSelect ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.ValueTuple<'TGridItem, System.Boolean> -> Task<unit>) = render ==> html.callbackTask("OnSelect", fn)
+    /// Gets or sets the value indicating whether the [All] checkbox is selected.
+    /// Null is undefined.
+    [<CustomOperation("SelectAll")>] member inline _.SelectAll ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("SelectAll" => x)
+    /// Gets or sets the value indicating whether the [All] checkbox is selected.
+    /// Null is undefined.
+    [<CustomOperation("SelectAll'")>] member inline _.SelectAll' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Nullable<System.Boolean> * (System.Nullable<System.Boolean> -> unit)) = render ==> html.bind("SelectAll", valueFn)
+    /// Gets or sets the action to be executed when the [All] checkbox is clicked.
+    /// When this action is defined, the [All] checkbox is displayed.
+    /// This action is required to update you data model.
+    [<CustomOperation("SelectAllChanged")>] member inline _.SelectAllChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Nullable<System.Boolean> -> unit) = render ==> html.callback("SelectAllChanged", fn)
+    /// Gets or sets the action to be executed when the [All] checkbox is clicked.
+    /// When this action is defined, the [All] checkbox is displayed.
+    /// This action is required to update you data model.
+    [<CustomOperation("SelectAllChanged")>] member inline _.SelectAllChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Nullable<System.Boolean> -> Task<unit>) = render ==> html.callbackTask("SelectAllChanged", fn)
+    /// Gets or sets the function to be executed to display the checked/unchecked icon, depending of you data model.
+    [<CustomOperation("Property")>] member inline _.Property ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("Property" => (System.Func<'TGridItem, System.Boolean>fn))
+    [<CustomOperation("SortBy")>] member inline _.SortBy ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.GridSort<'TGridItem>) = render ==> ("SortBy" => x)
+
 /// Represents a FluentDataGrid`1 column whose cells render a supplied template.
 type TemplateColumnBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ColumnBaseBuilder<'FunBlazorGeneric, 'TGridItem>()
@@ -2868,6 +2939,10 @@ type FluentInputLabelBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microso
     /// Gets or sets the text to be used as the `aria-label` attribute of the input.
     /// If not set, the Label will be used.
     [<CustomOperation("AriaLabel")>] member inline _.AriaLabel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("AriaLabel" => x)
+    /// Gets or sets the orientation of the label with respect to the input.
+    /// horizontal: label is displayed to the left of the input.
+    /// vertical: label is displayed above the input.
+    [<CustomOperation("Orientation")>] member inline _.Orientation ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Orientation) = render ==> ("Orientation" => x)
     /// Gets or sets a collection of additional attributes that will be applied to the created element.
     [<CustomOperation("AdditionalAttributes")>] member inline _.AdditionalAttributes ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>) = render ==> ("AdditionalAttributes" => x)
 
@@ -4002,6 +4077,11 @@ module DslCE =
     type PropertyColumn'<'TGridItem, 'TProp> 
         /// Represents a FluentDataGrid`1 column whose cells display a single value.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.PropertyColumn<_, _>>)>] () = inherit PropertyColumnBuilder<Microsoft.FluentUI.AspNetCore.Components.PropertyColumn<'TGridItem, 'TProp>, 'TGridItem, 'TProp>()
+
+    /// Represents a FluentDataGrid`1 column whose cells render a selected checkbox updated when the user click on a row.
+    type SelectColumn'<'TGridItem> 
+        /// Represents a FluentDataGrid`1 column whose cells render a selected checkbox updated when the user click on a row.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.SelectColumn<_>>)>] () = inherit SelectColumnBuilder<Microsoft.FluentUI.AspNetCore.Components.SelectColumn<'TGridItem>, 'TGridItem>()
 
     /// Represents a FluentDataGrid`1 column whose cells render a supplied template.
     type TemplateColumn'<'TGridItem> 
