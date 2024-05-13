@@ -929,13 +929,17 @@ type CascaderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNe
     [<CustomOperation("SelectedNodesChanged")>] member inline _.SelectedNodesChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: AntDesign.CascaderNode[] -> Task<unit>) = render ==> html.callbackTask("SelectedNodesChanged", fn)
     [<CustomOperation("Options")>] member inline _.Options ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<AntDesign.CascaderNode>) = render ==> ("Options" => x)
 
-type CheckboxGroupBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit AntInputComponentBaseBuilder<'FunBlazorGeneric, System.String[]>()
-    [<CustomOperation("Options")>] member inline _.Options ([<InlineIfLambda>] render: AttrRenderFragment, x: OneOf.OneOf<AntDesign.CheckboxOption[], System.String[]>) = render ==> ("Options" => x)
+type CheckboxGroupBuilder<'FunBlazorGeneric, 'TValue[], 'TValue when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit AntInputComponentBaseBuilder<'FunBlazorGeneric, 'TValue[]>()
+    [<CustomOperation("Options")>] member inline _.Options ([<InlineIfLambda>] render: AttrRenderFragment, x: OneOf.OneOf<AntDesign.CheckboxOption<'TValue>[], 'TValue[]>) = render ==> ("Options" => x)
     [<CustomOperation("MixedMode")>] member inline _.MixedMode ([<InlineIfLambda>] render: AttrRenderFragment, x: AntDesign.CheckboxGroupMixedMode) = render ==> ("MixedMode" => x)
-    [<CustomOperation("OnChange")>] member inline _.OnChange ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.String[] -> unit) = render ==> html.callback("OnChange", fn)
-    [<CustomOperation("OnChange")>] member inline _.OnChange ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.String[] -> Task<unit>) = render ==> html.callbackTask("OnChange", fn)
+    [<CustomOperation("OnChange")>] member inline _.OnChange ([<InlineIfLambda>] render: AttrRenderFragment, fn: 'TValue[] -> unit) = render ==> html.callback("OnChange", fn)
+    [<CustomOperation("OnChange")>] member inline _.OnChange ([<InlineIfLambda>] render: AttrRenderFragment, fn: 'TValue[] -> Task<unit>) = render ==> html.callbackTask("OnChange", fn)
     [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Disabled" => (defaultArg x true))
+
+type EnumCheckboxGroupBuilder<'FunBlazorGeneric, 'TEnum when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit CheckboxGroupBuilder<'FunBlazorGeneric, 'TEnum>()
+
 
 type DatePickerBaseBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit AntInputComponentBaseBuilder<'FunBlazorGeneric, 'TValue>()
@@ -1204,6 +1208,10 @@ type SelectBaseBuilder<'FunBlazorGeneric, 'TItemValue, 'TItem when 'FunBlazorGen
     [<CustomOperation("LabelInValue")>] member inline _.LabelInValue ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("LabelInValue" => (defaultArg x true))
     [<CustomOperation("MaxTagCount")>] member inline _.MaxTagCount ([<InlineIfLambda>] render: AttrRenderFragment, x: OneOf.OneOf<System.Int32, AntDesign.Select.ResponsiveTag>) = render ==> ("MaxTagCount" => x)
     [<CustomOperation("ValueOnClear")>] member inline _.ValueOnClear ([<InlineIfLambda>] render: AttrRenderFragment, x: 'TItemValue) = render ==> ("ValueOnClear" => x)
+    [<CustomOperation("ItemLabel")>] member inline _.ItemLabel ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("ItemLabel" => (System.Func<'TItem, System.String>fn))
+    [<CustomOperation("ItemValue")>] member inline _.ItemValue ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("ItemValue" => (System.Func<'TItem, 'TItemValue>fn))
+    [<CustomOperation("LabelName")>] member inline _.LabelName ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("LabelName" => x)
+    [<CustomOperation("ValueName")>] member inline _.ValueName ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ValueName" => x)
 
 type SelectBuilder<'FunBlazorGeneric, 'TItemValue, 'TItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit SelectBaseBuilder<'FunBlazorGeneric, 'TItemValue, 'TItem>()
@@ -1219,7 +1227,6 @@ type SelectBuilder<'FunBlazorGeneric, 'TItemValue, 'TItem when 'FunBlazorGeneric
     [<CustomOperation("GroupName")>] member inline _.GroupName ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("GroupName" => x)
     [<CustomOperation("IgnoreItemChanges")>] member inline _.IgnoreItemChanges ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("IgnoreItemChanges" => (defaultArg x true))
     [<CustomOperation("ItemTemplate")>] member inline _.ItemTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: 'TItem -> NodeRenderFragment) = render ==> html.renderFragment("ItemTemplate", fn)
-    [<CustomOperation("LabelName")>] member inline _.LabelName ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("LabelName" => x)
     [<CustomOperation("LabelTemplate")>] member inline _.LabelTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: 'TItem -> NodeRenderFragment) = render ==> html.renderFragment("LabelTemplate", fn)
     [<CustomOperation("MaxTagPlaceholder")>] member inline _.MaxTagPlaceholder ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Collections.Generic.IEnumerable<'TItem> -> NodeRenderFragment) = render ==> html.renderFragment("MaxTagPlaceholder", fn)
     [<CustomOperation("NotFoundContent")>] member inline _.NotFoundContent ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("NotFoundContent", fragment)
@@ -1242,7 +1249,6 @@ type SelectBuilder<'FunBlazorGeneric, 'TItemValue, 'TItem when 'FunBlazorGeneric
     [<CustomOperation("TokenSeparators")>] member inline _.TokenSeparators ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Char[]) = render ==> ("TokenSeparators" => x)
     [<CustomOperation("ValueChanged")>] member inline _.ValueChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: 'TItemValue -> unit) = render ==> html.callback("ValueChanged", fn)
     [<CustomOperation("ValueChanged")>] member inline _.ValueChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: 'TItemValue -> Task<unit>) = render ==> html.callbackTask("ValueChanged", fn)
-    [<CustomOperation("ValueName")>] member inline _.ValueName ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ValueName" => x)
     [<CustomOperation("Value")>] member inline _.Value ([<InlineIfLambda>] render: AttrRenderFragment, x: 'TItemValue) = render ==> ("Value" => x)
     [<CustomOperation("Value'")>] member inline _.Value' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: 'TItemValue * ('TItemValue -> unit)) = render ==> html.bind("Value", valueFn)
     [<CustomOperation("LabelProperty")>] member inline _.LabelProperty ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("LabelProperty" => (System.Func<'TItem, System.String>fn))
@@ -1253,14 +1259,15 @@ type SelectBuilder<'FunBlazorGeneric, 'TItemValue, 'TItem when 'FunBlazorGeneric
 
 type EnumSelectBuilder<'FunBlazorGeneric, 'TEnum when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit SelectBuilder<'FunBlazorGeneric, 'TEnum, 'TEnum>()
-
+    [<CustomOperation("Value")>] member inline _.Value ([<InlineIfLambda>] render: AttrRenderFragment, x: 'TEnum) = render ==> ("Value" => x)
+    [<CustomOperation("Values")>] member inline _.Values ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<'TEnum>) = render ==> ("Values" => x)
 
 type SimpleSelectBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit SelectBuilder<'FunBlazorGeneric, System.String, System.String>()
 
 
-type TreeSelectBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit SelectBaseBuilder<'FunBlazorGeneric, System.String, 'TItem>()
+type TreeSelectBuilder<'FunBlazorGeneric, 'TItemValue, 'TItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit SelectBaseBuilder<'FunBlazorGeneric, 'TItemValue, 'TItem>()
     [<CustomOperation("ShowExpand")>] member inline _.ShowExpand ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("ShowExpand" => (defaultArg x true))
     [<CustomOperation("Multiple")>] member inline _.Multiple ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Multiple" => (defaultArg x true))
     [<CustomOperation("TreeCheckable")>] member inline _.TreeCheckable ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("TreeCheckable" => (defaultArg x true))
@@ -1270,6 +1277,7 @@ type TreeSelectBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> Micro
     [<CustomOperation("OnBlur")>] member inline _.OnBlur ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Action) = render ==> ("OnBlur" => x)
     [<CustomOperation("LabelTemplate")>] member inline _.LabelTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: 'TItem -> NodeRenderFragment) = render ==> html.renderFragment("LabelTemplate", fn)
     [<CustomOperation("TitleTemplate")>] member inline _.TitleTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: AntDesign.TreeNode<'TItem> -> NodeRenderFragment) = render ==> html.renderFragment("TitleTemplate", fn)
+    [<CustomOperation("TitleIconTemplate")>] member inline _.TitleIconTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: AntDesign.TreeNode<'TItem> -> NodeRenderFragment) = render ==> html.renderFragment("TitleIconTemplate", fn)
     [<CustomOperation("ShowSearchIcon")>] member inline _.ShowSearchIcon ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("ShowSearchIcon" => (defaultArg x true))
     [<CustomOperation("ShowArrowIcon")>] member inline _.ShowArrowIcon ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("ShowArrowIcon" => (defaultArg x true))
     [<CustomOperation("Nodes")>] member inline _.Nodes ([<InlineIfLambda>] render: AttrRenderFragment, x: AntDesign.TreeNode<'TItem>[]) = render ==> ("Nodes" => x)
@@ -1286,6 +1294,7 @@ type TreeSelectBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> Micro
     [<CustomOperation("PopupContainerMaxHeight")>] member inline _.PopupContainerMaxHeight ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("PopupContainerMaxHeight" => x)
     [<CustomOperation("DropdownStyle")>] member inline _.DropdownStyle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("DropdownStyle" => x)
     [<CustomOperation("ShowTreeLine")>] member inline _.ShowTreeLine ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("ShowTreeLine" => (defaultArg x true))
+    [<CustomOperation("ShowIcon")>] member inline _.ShowIcon ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("ShowIcon" => (defaultArg x true))
     [<CustomOperation("ShowLeafIcon")>] member inline _.ShowLeafIcon ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("ShowLeafIcon" => (defaultArg x true))
     [<CustomOperation("TreeAttributes")>] member inline _.TreeAttributes ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IDictionary<System.String, System.Object>) = render ==> ("TreeAttributes" => x)
     [<CustomOperation("OnNodeLoadDelayAsync")>] member inline _.OnNodeLoadDelayAsync ([<InlineIfLambda>] render: AttrRenderFragment, fn: AntDesign.TreeEventArgs<'TItem> -> unit) = render ==> html.callback("OnNodeLoadDelayAsync", fn)
@@ -1296,8 +1305,9 @@ type TreeSelectBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> Micro
     [<CustomOperation("IsLeafExpression")>] member inline _.IsLeafExpression ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("IsLeafExpression" => (System.Func<AntDesign.TreeNode<'TItem>, System.Boolean>fn))
     [<CustomOperation("ChildrenExpression")>] member inline _.ChildrenExpression ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("ChildrenExpression" => (System.Func<AntDesign.TreeNode<'TItem>, System.Collections.Generic.IEnumerable<'TItem>>fn))
     [<CustomOperation("DisabledExpression")>] member inline _.DisabledExpression ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("DisabledExpression" => (System.Func<AntDesign.TreeNode<'TItem>, System.Boolean>fn))
-    [<CustomOperation("Value")>] member inline _.Value ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Value" => x)
-    [<CustomOperation("Values")>] member inline _.Values ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<System.String>) = render ==> ("Values" => x)
+    [<CustomOperation("ExpandedKeys")>] member inline _.ExpandedKeys ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String[]) = render ==> ("ExpandedKeys" => x)
+    [<CustomOperation("Value")>] member inline _.Value ([<InlineIfLambda>] render: AttrRenderFragment, x: 'TItemValue) = render ==> ("Value" => x)
+    [<CustomOperation("Values")>] member inline _.Values ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<'TItemValue>) = render ==> ("Values" => x)
 
 type SliderBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit AntInputComponentBaseBuilder<'FunBlazorGeneric, 'TValue>()
@@ -2561,6 +2571,9 @@ type UploadBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetC
     [<CustomOperation("Multiple")>] member inline _.Multiple ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Multiple" => (defaultArg x true))
     [<CustomOperation("Accept")>] member inline _.Accept ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Accept" => x)
     [<CustomOperation("ShowUploadList")>] member inline _.ShowUploadList ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("ShowUploadList" => (defaultArg x true))
+    [<CustomOperation("ShowDownloadIcon")>] member inline _.ShowDownloadIcon ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("ShowDownloadIcon" => (defaultArg x true))
+    [<CustomOperation("ShowPreviewIcon")>] member inline _.ShowPreviewIcon ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("ShowPreviewIcon" => (defaultArg x true))
+    [<CustomOperation("ShowRemoveIcon")>] member inline _.ShowRemoveIcon ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("ShowRemoveIcon" => (defaultArg x true))
     [<CustomOperation("FileList")>] member inline _.FileList ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.List<AntDesign.UploadFileItem>) = render ==> ("FileList" => x)
     [<CustomOperation("FileList'")>] member inline _.FileList' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Collections.Generic.List<AntDesign.UploadFileItem> * (System.Collections.Generic.List<AntDesign.UploadFileItem> -> unit)) = render ==> html.bind("FileList", valueFn)
     [<CustomOperation("Locale")>] member inline _.Locale ([<InlineIfLambda>] render: AttrRenderFragment, x: AntDesign.UploadLocale) = render ==> ("Locale" => x)
@@ -3150,7 +3163,8 @@ module DslCE =
     type Switch' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Switch>)>] () = inherit SwitchBuilder<AntDesign.Switch>()
     type AutoComplete'<'TOption> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.AutoComplete<_>>)>] () = inherit AutoCompleteBuilder<AntDesign.AutoComplete<'TOption>, 'TOption>()
     type Cascader' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Cascader>)>] () = inherit CascaderBuilder<AntDesign.Cascader>()
-    type CheckboxGroup' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.CheckboxGroup>)>] () = inherit CheckboxGroupBuilder<AntDesign.CheckboxGroup>()
+    type CheckboxGroup'<'TValue[], 'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.CheckboxGroup<_, _>>)>] () = inherit CheckboxGroupBuilder<AntDesign.CheckboxGroup<'TValue[], 'TValue>, 'TValue[], 'TValue>()
+    type EnumCheckboxGroup'<'TEnum> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.EnumCheckboxGroup<_>>)>] () = inherit EnumCheckboxGroupBuilder<AntDesign.EnumCheckboxGroup<'TEnum>, 'TEnum>()
     type DatePickerBase'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.DatePickerBase<_>>)>] () = inherit DatePickerBaseBuilder<AntDesign.DatePickerBase<'TValue>, 'TValue>()
     type DatePicker'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.DatePicker<_>>)>] () = inherit DatePickerBuilder<AntDesign.DatePicker<'TValue>, 'TValue>()
     type MonthPicker'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.MonthPicker<_>>)>] () = inherit MonthPickerBuilder<AntDesign.MonthPicker<'TValue>, 'TValue>()
@@ -3172,7 +3186,7 @@ module DslCE =
     type Select'<'TItemValue, 'TItem> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Select<_, _>>)>] () = inherit SelectBuilder<AntDesign.Select<'TItemValue, 'TItem>, 'TItemValue, 'TItem>()
     type EnumSelect'<'TEnum> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.EnumSelect<_>>)>] () = inherit EnumSelectBuilder<AntDesign.EnumSelect<'TEnum>, 'TEnum>()
     type SimpleSelect' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.SimpleSelect>)>] () = inherit SimpleSelectBuilder<AntDesign.SimpleSelect>()
-    type TreeSelect'<'TItem> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.TreeSelect<_>>)>] () = inherit TreeSelectBuilder<AntDesign.TreeSelect<'TItem>, 'TItem>()
+    type TreeSelect'<'TItemValue, 'TItem> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.TreeSelect<_, _>>)>] () = inherit TreeSelectBuilder<AntDesign.TreeSelect<'TItemValue, 'TItem>, 'TItemValue, 'TItem>()
     type Slider'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Slider<_>>)>] () = inherit SliderBuilder<AntDesign.Slider<'TValue>, 'TValue>()
     type Descriptions' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Descriptions>)>] () = inherit DescriptionsBuilder<AntDesign.Descriptions>()
     type DescriptionsItem' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.DescriptionsItem>)>] () = inherit DescriptionsItemBuilder<AntDesign.DescriptionsItem>()
