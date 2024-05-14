@@ -929,7 +929,7 @@ type CascaderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNe
     [<CustomOperation("SelectedNodesChanged")>] member inline _.SelectedNodesChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: AntDesign.CascaderNode[] -> Task<unit>) = render ==> html.callbackTask("SelectedNodesChanged", fn)
     [<CustomOperation("Options")>] member inline _.Options ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<AntDesign.CascaderNode>) = render ==> ("Options" => x)
 
-type CheckboxGroupBuilder<'FunBlazorGeneric, 'TValue[], 'TValue when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+type CheckboxGroupBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit AntInputComponentBaseBuilder<'FunBlazorGeneric, 'TValue[]>()
     [<CustomOperation("Options")>] member inline _.Options ([<InlineIfLambda>] render: AttrRenderFragment, x: OneOf.OneOf<AntDesign.CheckboxOption<'TValue>[], 'TValue[]>) = render ==> ("Options" => x)
     [<CustomOperation("MixedMode")>] member inline _.MixedMode ([<InlineIfLambda>] render: AttrRenderFragment, x: AntDesign.CheckboxGroupMixedMode) = render ==> ("MixedMode" => x)
@@ -3163,7 +3163,7 @@ module DslCE =
     type Switch' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Switch>)>] () = inherit SwitchBuilder<AntDesign.Switch>()
     type AutoComplete'<'TOption> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.AutoComplete<_>>)>] () = inherit AutoCompleteBuilder<AntDesign.AutoComplete<'TOption>, 'TOption>()
     type Cascader' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Cascader>)>] () = inherit CascaderBuilder<AntDesign.Cascader>()
-    type CheckboxGroup'<'TValue[], 'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.CheckboxGroup<_, _>>)>] () = inherit CheckboxGroupBuilder<AntDesign.CheckboxGroup<'TValue[], 'TValue>, 'TValue[], 'TValue>()
+    type CheckboxGroup'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.CheckboxGroup<_>>)>] () = inherit CheckboxGroupBuilder<AntDesign.CheckboxGroup<'TValue>, 'TValue>()
     type EnumCheckboxGroup'<'TEnum> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.EnumCheckboxGroup<_>>)>] () = inherit EnumCheckboxGroupBuilder<AntDesign.EnumCheckboxGroup<'TEnum>, 'TEnum>()
     type DatePickerBase'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.DatePickerBase<_>>)>] () = inherit DatePickerBaseBuilder<AntDesign.DatePickerBase<'TValue>, 'TValue>()
     type DatePicker'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.DatePicker<_>>)>] () = inherit DatePickerBuilder<AntDesign.DatePicker<'TValue>, 'TValue>()
