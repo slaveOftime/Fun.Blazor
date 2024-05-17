@@ -5,13 +5,13 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <TrimMode>link</TrimMode>
     <IsTrimmable>true</IsTrimmable>
-    <Version>8.0.4</Version>
+    <Version>8.0.5</Version>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Fun.Blazor.Bindings\Microsoft.AspNetCore.Components.QuickGrid.fs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference FunBlazor="" FunBlazorNamespace="Microsoft.AspNetCore.Components.QuickGrid" Include="Microsoft.AspNetCore.Components.QuickGrid" Version="8.0.4" />
+    <PackageReference FunBlazor="" FunBlazorNamespace="Microsoft.AspNetCore.Components.QuickGrid" Include="Microsoft.AspNetCore.Components.QuickGrid" Version="8.0.5" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Update="FSharp.Core" Version="6.0.0" />

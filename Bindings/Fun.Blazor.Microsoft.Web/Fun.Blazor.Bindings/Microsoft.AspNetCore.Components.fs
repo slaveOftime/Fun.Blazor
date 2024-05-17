@@ -75,7 +75,7 @@ open Fun.Blazor.Operators
 open Microsoft.AspNetCore.Components.DslInternals
 
 type VirtualizeBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
     [<CustomOperation("ChildContent")>] member inline _.ChildContent ([<InlineIfLambda>] render: AttrRenderFragment, fn: 'TItem -> NodeRenderFragment) = render ==> html.renderFragment("ChildContent", fn)
     [<CustomOperation("ItemContent")>] member inline _.ItemContent ([<InlineIfLambda>] render: AttrRenderFragment, fn: 'TItem -> NodeRenderFragment) = render ==> html.renderFragment("ItemContent", fn)
     [<CustomOperation("Placeholder")>] member inline _.Placeholder ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.AspNetCore.Components.Web.Virtualization.PlaceholderContext -> NodeRenderFragment) = render ==> html.renderFragment("Placeholder", fn)
@@ -100,7 +100,7 @@ open Fun.Blazor.Operators
 open Microsoft.AspNetCore.Components.DslInternals
 
 type EditFormBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
     [<CustomOperation("AdditionalAttributes")>] member inline _.AdditionalAttributes ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>) = render ==> ("AdditionalAttributes" => x)
     [<CustomOperation("EditContext")>] member inline _.EditContext ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.AspNetCore.Components.Forms.EditContext) = render ==> ("EditContext" => x)
     [<CustomOperation("Enhance")>] member inline _.Enhance ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Enhance" => (defaultArg x true))

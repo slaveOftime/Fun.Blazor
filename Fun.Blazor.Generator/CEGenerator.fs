@@ -11,12 +11,11 @@ open Namotion.Reflection
 open Utils
 
 let private makeSummaryDoc indent (doc: string) =
-    if String.IsNullOrWhiteSpace doc then ""
+    if String.IsNullOrWhiteSpace doc then
+        ""
     else
-        (let indent = String(' ', indent)
-         doc.Split "\n"
-         |> Array.map (fun i -> $"{indent}/// {i}")
-         |> String.concat "\n") + "\n"
+        let indent = String(' ', indent)
+        (doc.Split "\n" |> Array.map (fun i -> $"{indent}/// {i}") |> String.concat "\n") + "\n"
 
 let private getMetaInfo useInline (ty: Type) =
     let getTypeMeta (ty: Type) =
@@ -37,20 +36,11 @@ let private getMetaInfo useInline (ty: Type) =
         else
             None
 
-    let name, generics, inheritInfo =
+    let _, generics, inheritInfo =
         match getTypeMeta ty, inherits with
-        | (ty, generics), Some (baseTy, baseGenerics) ->
-            let generics =
-                List.append baseGenerics generics
-                |> List.distinctBy (fun x -> x.Name)
-                |> List.filter (fun x -> (getTypeName x).StartsWith "'")
-            ty, generics, Some(baseTy, baseGenerics)
-
+        | (ty, generics), Some(baseTy, baseGenerics) -> ty, generics, Some(baseTy, baseGenerics)
         | (name, generics), None -> name, generics, None
 
-    let originalGenerics = generics |> getTypeNames |> createGenerics |> closeGenerics
-    let originalTypeWithGenerics =
-        $"{ty.Namespace}.{getTypeShortName ty}{originalGenerics}"
     let customOperation name = $"[<CustomOperation(\"{name}\")>]"
     let memberStart = if useInline then "member inline _." else "member _."
     let contextArg =
@@ -61,8 +51,6 @@ let private getMetaInfo useInline (ty: Type) =
 
     let rawProps = ty.GetProperties()
     let filteredProps = getValidBlazorProps ty rawProps
-
-    let formatChildContentName x = if x = "ChildContent" then lowerFirstCase x else x
 
     let props =
         filteredProps
@@ -116,7 +104,6 @@ let private getMetaInfo useInline (ty: Type) =
                         $"{memberHead} ({contextArg}, fn: {getTypeName prop.PropertyType.GenericTypeArguments.[0]} -> Task<unit>) = render ==> html.callbackTask(\"{prop.Name}\", fn)"
                     ]
                 elif prop.PropertyType.Name.StartsWith "RenderFragment`" then
-                    let name = formatChildContentName name
                     [
                         $"{memberHead} ({contextArg}, fn: {getTypeName prop.PropertyType.GenericTypeArguments.[0]} -> {nameof NodeRenderFragment}) = render ==> html.renderFragment(\"{prop.Name}\", fn)"
                     ]
@@ -272,15 +259,11 @@ let generateCode (targetNamespace: string) (opens: string) (tys: Type seq) useIn
             let code =
                 metas
                 |> Seq.map (fun meta ->
-                    let originalGenerics =
-                        meta.generics |> getTypeNames |> createGenerics |> closeGenerics
-                    let originalTypeWithGenerics =
-                        $"{meta.ty.Namespace}.{getTypeShortName meta.ty}{originalGenerics}"
                     let builderName = makeBuilderName meta.ty
+
                     let funBlazorGenericConstraint =
                         $"{funBlazorGeneric} :> Microsoft.AspNetCore.Components.IComponent"
-                    let builderGenerics =
-                        funBlazorGeneric :: (getTypeNames meta.generics) |> createGenerics |> closeGenerics
+
                     let builderGenericsWithContraints =
                         funBlazorGeneric :: (getTypeNames meta.generics)
                         |> createGenerics
@@ -288,8 +271,9 @@ let generateCode (targetNamespace: string) (opens: string) (tys: Type seq) useIn
                         |> closeGenerics
 
                     let inheirit' =
-                        //$"inherit {if meta.addBasicDomAttrs then nameof FunBlazorContextWithAttrs else nameof FunBlazorContext}<{funBlazorGeneric}>()"
                         match meta.inheritInfo with
+                        | None when meta.props.Contains("CustomOperation(\"ChildContent\")") ->
+                            $"inherit {nameof ComponentWithDomAttrBuilder}<{funBlazorGeneric}>()"
                         | None ->
                             // Use ComponentWithDomAndChildAttrBuilder because we cannot do multi inheritance and will endup of a lot of duplication
                             //$"inherit {match meta.hasChildren, meta.addBasicDomAttrs with
@@ -298,9 +282,9 @@ let generateCode (targetNamespace: string) (opens: string) (tys: Type seq) useIn
                             //           | false, false -> nameof ComponentBuilder
                             //           | false, true -> nameof ComponentWithDomAttrBuilder}<{funBlazorGeneric}>()"
                             $"inherit {nameof ComponentWithDomAndChildAttrBuilder}<{funBlazorGeneric}>()"
-                        | Some (baseTy, generics) ->
+                        | Some(baseTy, generics) ->
                             $"inherit {baseTy.Namespace |> trimNamespace |> appendStrIfNotEmpty (string '.')}{makeBuilderName meta.ty.BaseType}{funBlazorGeneric :: (getTypeNames generics) |> createGenerics |> closeGenerics}()"
-                    
+
                     $"""{makeSummaryDoc 0 <| meta.ty.GetXmlDocsSummary()}type {builderName}{builderGenericsWithContraints}() =
     {inheirit'}
 {meta.props}
@@ -334,7 +318,7 @@ let generateCode (targetNamespace: string) (opens: string) (tys: Type seq) useIn
                         originalTypeWithGenerics :: (getTypeNames meta.generics) |> createGenerics |> closeGenerics
 
                     let typeName = meta.ty |> getTypeShortName
-                    let typeFullName = meta.ty |> getTypeName |> fun x -> x.Split("<")[0]
+                    let typeFullName = meta.ty |> getTypeName |> (fun x -> x.Split("<")[0])
 
                     let genericStr =
                         meta.generics
@@ -351,8 +335,13 @@ let generateCode (targetNamespace: string) (opens: string) (tys: Type seq) useIn
                     let linkerAttrStr =
                         $"[<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<{typeFullName}{linkerGenericStr}>)>]"
 
-                    let typeComment = meta.ty.GetXmlDocsSummary() |> makeSummaryDoc 4 |> addStrIfNotEmpty "\n"
-                    let constructorComment = meta.ty.GetXmlDocsSummary() |> makeSummaryDoc 8 |> addStrIfNotEmpty "\n" |> appendStrIfNotEmpty (String(' ', 8))
+                    let typeComment =
+                        meta.ty.GetXmlDocsSummary() |> makeSummaryDoc 4 |> addStrIfNotEmpty "\n"
+                    let constructorComment =
+                        meta.ty.GetXmlDocsSummary()
+                        |> makeSummaryDoc 8
+                        |> addStrIfNotEmpty "\n"
+                        |> appendStrIfNotEmpty (String(' ', 8))
                     $"""{typeComment}    type {typeName}'{genericStr} {constructorComment}{linkerAttrStr} () = inherit {builderName}{builderGenerics}()"""
                 )
                 |> String.concat "\n"

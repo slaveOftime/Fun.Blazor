@@ -1,5 +1,10 @@
 # Changelog
 
+## [4.0.4] - 2024-05-17
+
+- Fix generic case: CheckboxGroup<TValue> : AntInputComponentBase<TValue[]>
+- When a ChildContent is a RenderFragment<'T> we should not inherit ComponentWithDomAndChildAttrBuilder 
+
 ## [4.0.3] - 2024-02-20
 
 - Support optional for bool property
