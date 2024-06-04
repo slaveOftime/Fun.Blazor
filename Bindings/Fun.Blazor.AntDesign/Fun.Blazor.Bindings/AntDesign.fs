@@ -238,7 +238,7 @@ type ColumnBuilder<'FunBlazorGeneric, 'TData when 'FunBlazorGeneric :> Microsoft
     [<CustomOperation("OnFilter")>] member inline _.OnFilter ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Linq.Expressions.Expression<System.Func<'TData, 'TData, System.Boolean>>) = render ==> ("OnFilter" => x)
     [<CustomOperation("CellRender")>] member inline _.CellRender ([<InlineIfLambda>] render: AttrRenderFragment, fn: AntDesign.TableModels.CellData<'TData> -> NodeRenderFragment) = render ==> html.renderFragment("CellRender", fn)
 
-type PropertyColumnBuilder<'FunBlazorGeneric, 'TProp, 'TItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+type PropertyColumnBuilder<'FunBlazorGeneric, 'TItem, 'TProp when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ColumnBuilder<'FunBlazorGeneric, 'TProp>()
     [<CustomOperation("Property")>] member inline _.Property ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Linq.Expressions.Expression<System.Func<'TItem, 'TProp>>) = render ==> ("Property" => x)
 
@@ -2926,7 +2926,7 @@ type ComponentBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspN
     [<CustomOperation("Parameters")>] member inline _.Parameters ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IDictionary<System.String, System.Object>) = render ==> ("Parameters" => x)
 
 type ForeachLoopBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
     [<CustomOperation("Items")>] member inline _.Items ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<'TItem>) = render ==> ("Items" => x)
     [<CustomOperation("ChildContent")>] member inline _.ChildContent ([<InlineIfLambda>] render: AttrRenderFragment, fn: 'TItem -> NodeRenderFragment) = render ==> html.renderFragment("ChildContent", fn)
 
@@ -2944,6 +2944,7 @@ type ImagePreviewGroupBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micros
 type GenerateColumnsBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
     [<CustomOperation("Range")>] member inline _.Range ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Range>) = render ==> ("Range" => x)
+    [<CustomOperation("HideColumnsByName")>] member inline _.HideColumnsByName ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<System.String>) = render ==> ("HideColumnsByName" => x)
     [<CustomOperation("Definitions")>] member inline _.Definitions ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("Definitions" => (System.Action<System.String, System.Object>fn))
 
 type TreeIndentBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -3113,7 +3114,7 @@ module DslCE =
     type TableCell' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.TableCell>)>] () = inherit TableCellBuilder<AntDesign.TableCell>()
     type SimpleTableHeader' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.SimpleTableHeader>)>] () = inherit SimpleTableHeaderBuilder<AntDesign.SimpleTableHeader>()
     type Column'<'TData> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Column<_>>)>] () = inherit ColumnBuilder<AntDesign.Column<'TData>, 'TData>()
-    type PropertyColumn'<'TProp, 'TItem> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.PropertyColumn<_, _>>)>] () = inherit PropertyColumnBuilder<AntDesign.PropertyColumn<'TProp, 'TItem>, 'TProp, 'TItem>()
+    type PropertyColumn'<'TItem, 'TProp> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.PropertyColumn<_, _>>)>] () = inherit PropertyColumnBuilder<AntDesign.PropertyColumn<'TItem, 'TProp>, 'TItem, 'TProp>()
     type TableHeader'<'TData> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.TableHeader<_>>)>] () = inherit TableHeaderBuilder<AntDesign.TableHeader<'TData>, 'TData>()
     type Selection' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Selection>)>] () = inherit SelectionBuilder<AntDesign.Selection>()
     type SummaryCell' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.SummaryCell>)>] () = inherit SummaryCellBuilder<AntDesign.SummaryCell>()
