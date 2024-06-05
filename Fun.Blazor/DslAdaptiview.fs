@@ -69,6 +69,10 @@ type AdaptiviewBuilder
             state <- AVal.map2 (fun x y -> x >=> y) state (fn item)
         state
 
+    member inline _.Bind(value: alist<_>, fn: _ -> aval<_>) : aval<_> = AList.toAVal value |> AVal.bind fn
+
+    member inline _.Bind(value: aset<_>, fn: _ -> aval<_>) : aval<_> = ASet.toAVal value |> AVal.bind fn
+
 
 type IAdaptiveValue<'T> with
 

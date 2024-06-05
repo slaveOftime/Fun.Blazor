@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+## [4.0.12] - 2024-06-05
+
+- Update packages
+- Support bind alist, aset in adaptiview
+
 ## [4.0.11] - 2024-04-06
 
 - Expose KeyValues for i18n
