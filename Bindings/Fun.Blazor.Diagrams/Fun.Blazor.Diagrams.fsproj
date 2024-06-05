@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+  <PropertyGroup>
+    <TargetFrameworks>net6.0;net8.0</TargetFrameworks>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <TrimMode>link</TrimMode>
+    <IsTrimmable>true</IsTrimmable>
+    <Version>3.0.2</Version>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Fun.Blazor.Bindings\Blazor.Diagrams.fs" />
+    <Compile Include="Fun.Blazor.Bindings\Z.Blazor.Diagrams.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference FunBlazor="" FunBlazorNamespace="Blazor.Diagrams" FunBlazorAssemblyName="Blazor.Diagrams" Include="Z.Blazor.Diagrams" Version="3.0.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Update="FSharp.Core" Version="6.0.0" />
+    <PackageReference Include="Fun.Blazor" Version="4.0.0" />
+  </ItemGroup>
+</Project>
