@@ -9,7 +9,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Fun.Blazor.Bindings\Blazor.Diagrams.fs" />
-    <Compile Include="Fun.Blazor.Bindings\Z.Blazor.Diagrams.fs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference FunBlazor="" FunBlazorNamespace="Blazor.Diagrams" FunBlazorAssemblyName="Blazor.Diagrams" Include="Z.Blazor.Diagrams" Version="3.0.2" />

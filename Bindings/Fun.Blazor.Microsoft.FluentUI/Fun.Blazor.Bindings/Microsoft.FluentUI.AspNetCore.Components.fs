@@ -74,19 +74,23 @@ type FluentNavBaseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
     /// Gets or sets the URL for the group.
     [<CustomOperation("Href")>] member inline _.Href ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Href" => x)
-    /// Gets or sets the target attribute that specifies where to open the group, if Href is specified. 
+    /// Gets or sets the target attribute that specifies where to open the group, if Href is specified.
     /// Possible values: _blank | _self | _parent | _top.
     [<CustomOperation("Target")>] member inline _.Target ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Target" => x)
     /// Gets or sets the Icon to use if set.
     [<CustomOperation("Icon")>] member inline _.Icon ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Icon) = render ==> ("Icon" => x)
-    /// Gets or sets the color of the icon. 
+    /// Gets or sets the color of the icon.
     /// It supports the theme colors, default value uses the themes drawer icon color.
     [<CustomOperation("IconColor")>] member inline _.IconColor ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Color) = render ==> ("IconColor" => x)
+    /// Gets or sets the icon drawing and fill color to a custom value.
+    /// Needs to be formatted as an HTML hex color string (#rrggbb or #rgb) or CSS variable.
+    /// ⚠️ Only available when Color is set to Color.Custom.
+    [<CustomOperation("CustomColor")>] member inline _.CustomColor ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("CustomColor" => x)
     /// If true, the button will be disabled.
     [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Disabled" => (defaultArg x true))
     /// Gets or sets the class names to use to indicate the item is active, separated by space.
     [<CustomOperation("ActiveClass")>] member inline _.ActiveClass ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ActiveClass" => x)
-    /// Gets or sets how the link should be matched. 
+    /// Gets or sets how the link should be matched.
     /// Defaults to Prefix.
     [<CustomOperation("Match")>] member inline _.Match ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.AspNetCore.Components.Routing.NavLinkMatch) = render ==> ("Match" => x)
     /// Gets or sets the tooltip to display when the mouse is placed over the item.
@@ -98,44 +102,47 @@ type FluentNavBaseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> Task<unit>) = render ==> html.callbackTask("OnClick", fn)
     /// If true, force browser to redirect outside component router-space.
     [<CustomOperation("ForceLoad")>] member inline _.ForceLoad ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("ForceLoad" => (defaultArg x true))
+    /// Gets or sets the id of the custom toggle element
+    /// Defaults to navmenu-toggle
+    [<CustomOperation("CustomToggleId")>] member inline _.CustomToggleId ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("CustomToggleId" => x)
 
 type FluentNavGroupBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentNavBaseBuilder<'FunBlazorGeneric>()
     /// Gets or sets the text to display for the group.
     [<CustomOperation("Title")>] member inline _.Title ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
-    /// If true, expands the nav group, otherwise collapse it. 
+    /// If true, expands the nav group, otherwise collapse it.
     /// Two-way bindable
     [<CustomOperation("Expanded")>] member inline _.Expanded ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Expanded" => (defaultArg x true))
-    /// If true, expands the nav group, otherwise collapse it. 
+    /// If true, expands the nav group, otherwise collapse it.
     /// Two-way bindable
     [<CustomOperation("Expanded'")>] member inline _.Expanded' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Boolean * (System.Boolean -> unit)) = render ==> html.bind("Expanded", valueFn)
     /// If true, hides expand button at the end of the NavGroup.
     [<CustomOperation("HideExpander")>] member inline _.HideExpander ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("HideExpander" => (defaultArg x true))
     /// Explicitly sets the height for the Collapse element to override the css default.
     [<CustomOperation("MaxHeight")>] member inline _.MaxHeight ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("MaxHeight" => x)
-    /// Defines the vertical spacing between the NavGroup and adjecent items. 
+    /// Defines the vertical spacing between the NavGroup and adjacent items.
     /// Needs to be a valid CSS value.
     [<CustomOperation("Gap")>] member inline _.Gap ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Gap" => x)
     /// If set, overrides the default expand icon.
     [<CustomOperation("ExpandIcon")>] member inline _.ExpandIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Icon) = render ==> ("ExpandIcon" => x)
-    /// Allows for specific markup and styling to be applied for the group title 
-    /// When using this, the containded FluentNavLinks and FluentNavGroups need to be placed in a ChildContent tag.
+    /// Allows for specific markup and styling to be applied for the group title
+    /// When using this, the contained FluentNavLinks and FluentNavGroups need to be placed in a ChildContent tag.
     /// When specifying both Title and TitleTemplate, both will be rendered.
     [<CustomOperation("TitleTemplate")>] member inline _.TitleTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("TitleTemplate", fragment)
-    /// Allows for specific markup and styling to be applied for the group title 
-    /// When using this, the containded FluentNavLinks and FluentNavGroups need to be placed in a ChildContent tag.
+    /// Allows for specific markup and styling to be applied for the group title
+    /// When using this, the contained FluentNavLinks and FluentNavGroups need to be placed in a ChildContent tag.
     /// When specifying both Title and TitleTemplate, both will be rendered.
     [<CustomOperation("TitleTemplate")>] member inline _.TitleTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("TitleTemplate", fragment { yield! fragments })
-    /// Allows for specific markup and styling to be applied for the group title 
-    /// When using this, the containded FluentNavLinks and FluentNavGroups need to be placed in a ChildContent tag.
+    /// Allows for specific markup and styling to be applied for the group title
+    /// When using this, the contained FluentNavLinks and FluentNavGroups need to be placed in a ChildContent tag.
     /// When specifying both Title and TitleTemplate, both will be rendered.
     [<CustomOperation("TitleTemplate")>] member inline _.TitleTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("TitleTemplate", html.text x)
-    /// Allows for specific markup and styling to be applied for the group title 
-    /// When using this, the containded FluentNavLinks and FluentNavGroups need to be placed in a ChildContent tag.
+    /// Allows for specific markup and styling to be applied for the group title
+    /// When using this, the contained FluentNavLinks and FluentNavGroups need to be placed in a ChildContent tag.
     /// When specifying both Title and TitleTemplate, both will be rendered.
     [<CustomOperation("TitleTemplate")>] member inline _.TitleTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("TitleTemplate", html.text x)
-    /// Allows for specific markup and styling to be applied for the group title 
-    /// When using this, the containded FluentNavLinks and FluentNavGroups need to be placed in a ChildContent tag.
+    /// Allows for specific markup and styling to be applied for the group title
+    /// When using this, the contained FluentNavLinks and FluentNavGroups need to be placed in a ChildContent tag.
     /// When specifying both Title and TitleTemplate, both will be rendered.
     [<CustomOperation("TitleTemplate")>] member inline _.TitleTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("TitleTemplate", html.text x)
     /// Gets or sets a callback that is triggered whenever Expanded changes.
@@ -300,6 +307,9 @@ type FluentAppBarBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.A
     [<CustomOperation("PopoverVisibilityChanged")>] member inline _.PopoverVisibilityChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Boolean -> unit) = render ==> html.callback("PopoverVisibilityChanged", fn)
     /// Event to be called when the visibility of the popover changes.
     [<CustomOperation("PopoverVisibilityChanged")>] member inline _.PopoverVisibilityChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("PopoverVisibilityChanged", fn)
+    /// Gets or sets the collections of app bar items.
+    /// Use eiter this or ChildContent to define the content of the app bar.
+    [<CustomOperation("Items")>] member inline _.Items ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<Microsoft.FluentUI.AspNetCore.Components.IAppBarItem>) = render ==> ("Items" => x)
 
 type FluentAppBarItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -317,11 +327,11 @@ type FluentAppBarItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microso
     /// Gets or sets the tooltip to show when the item is hovered.
     [<CustomOperation("Tooltip")>] member inline _.Tooltip ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Tooltip" => x)
     /// Gets or sets the count to show on the item with a FluentCounterBadge.
-    [<CustomOperation("Count")>] member inline _.Count ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("Count" => x)
+    [<CustomOperation("Count")>] member inline _.Count ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("Count" => x)
     /// The callback to invoke when the item is clicked.
-    [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentAppBarItem -> unit) = render ==> html.callback("OnClick", fn)
+    [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.IAppBarItem -> unit) = render ==> html.callback("OnClick", fn)
     /// The callback to invoke when the item is clicked.
-    [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentAppBarItem -> Task<unit>) = render ==> html.callbackTask("OnClick", fn)
+    [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.IAppBarItem -> Task<unit>) = render ==> html.callbackTask("OnClick", fn)
 
 type FluentBadgeBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -399,6 +409,9 @@ type FluentInputBaseBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :>
     [<CustomOperation("ValueChanged")>] member inline _.ValueChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: 'TValue -> Task<unit>) = render ==> html.callbackTask("ValueChanged", fn)
     /// Gets or sets an expression that identifies the bound value.
     [<CustomOperation("ValueExpression")>] member inline _.ValueExpression ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Linq.Expressions.Expression<System.Func<'TValue>>) = render ==> ("ValueExpression" => x)
+    /// Gets or sets the FieldIdentifier that identifies the bound value.
+    /// If set, this parameter takes precedence over ValueExpression.
+    [<CustomOperation("Field")>] member inline _.Field ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.AspNetCore.Components.Forms.FieldIdentifier>) = render ==> ("Field" => x)
     /// Gets or sets the display name for this field.
     /// This value is used when generating error messages when the input value fails to parse correctly.
     [<CustomOperation("DisplayName")>] member inline _.DisplayName ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("DisplayName" => x)
@@ -406,7 +419,7 @@ type FluentInputBaseBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :>
     [<CustomOperation("Autofocus")>] member inline _.Autofocus ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Autofocus" => (defaultArg x true))
     /// Gets or sets the short hint displayed in the input before the user enters a value.
     [<CustomOperation("Placeholder")>] member inline _.Placeholder ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Placeholder" => x)
-    /// Gets or sets if the derived component is embedded in another component. 
+    /// Gets or sets if the derived component is embedded in another component.
     /// If true, the ClassValue property will not include the EditContext's FieldCssClass.
     [<CustomOperation("Embedded")>] member inline _.Embedded ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Embedded" => (defaultArg x true))
     /// Change the content of this input field when the user write text (based on 'OnInput' HTML event).
@@ -431,8 +444,6 @@ type FluentCalendarBaseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micro
     [<CustomOperation("CheckIfSelectedValueHasChanged")>] member inline _.CheckIfSelectedValueHasChanged ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("CheckIfSelectedValueHasChanged" => (defaultArg x true))
     /// Defines the appearance of the FluentCalendar component.
     [<CustomOperation("View")>] member inline _.View ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.CalendarViews) = render ==> ("View" => x)
-    /// Gets or sets the selected date (two-way bindable).
-    [<CustomOperation("Value")>] member inline _.Value ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.DateTime>) = render ==> ("Value" => x)
 
 /// Fluent Calendar based on
 /// https://github.com/microsoft/fluentui/blob/master/packages/web-components/src/calendar/.
@@ -459,6 +470,18 @@ type FluentCalendarBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     /// Gets ot sets if the calendar items are animated during a period change.
     /// By default, the animation is enabled for Months views, but disabled for Days and Years view.
     [<CustomOperation("AnimatePeriodChanges")>] member inline _.AnimatePeriodChanges ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("AnimatePeriodChanges" => x)
+    /// Gets or sets the way the user can select one or more dates
+    [<CustomOperation("SelectMode")>] member inline _.SelectMode ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.CalendarSelectMode) = render ==> ("SelectMode" => x)
+    /// Gets or sets the list of all selected dates, only when SelectMode is set to Range or Multiple.
+    [<CustomOperation("SelectedDates")>] member inline _.SelectedDates ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<System.DateTime>) = render ==> ("SelectedDates" => x)
+    /// Gets or sets the list of all selected dates, only when SelectMode is set to Range or Multiple.
+    [<CustomOperation("SelectedDates'")>] member inline _.SelectedDates' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Collections.Generic.IEnumerable<System.DateTime> * (System.Collections.Generic.IEnumerable<System.DateTime> -> unit)) = render ==> html.bind("SelectedDates", valueFn)
+    /// Fired when the selected dates change.
+    [<CustomOperation("SelectedDatesChanged")>] member inline _.SelectedDatesChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Collections.Generic.IEnumerable<System.DateTime> -> unit) = render ==> html.callback("SelectedDatesChanged", fn)
+    /// Fired when the selected dates change.
+    [<CustomOperation("SelectedDatesChanged")>] member inline _.SelectedDatesChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Collections.Generic.IEnumerable<System.DateTime> -> Task<unit>) = render ==> html.callbackTask("SelectedDatesChanged", fn)
+    /// Fired when the selected mouse over change, to display the future range of dates.
+    [<CustomOperation("SelectDatesHover")>] member inline _.SelectDatesHover ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("SelectDatesHover" => (System.Func<System.DateTime, System.Collections.Generic.IEnumerable<System.DateTime>>fn))
 
 type FluentDatePickerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentCalendarBaseBuilder<'FunBlazorGeneric>()
@@ -492,6 +515,162 @@ type FluentTimePickerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microso
     inherit FluentInputBaseBuilder<'FunBlazorGeneric, System.Nullable<System.DateTime>>()
     /// Gets or sets the design of this input.
     [<CustomOperation("Appearance")>] member inline _.Appearance ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.FluentInputAppearance) = render ==> ("Appearance" => x)
+
+/// Component that provides a list of options.
+type ListComponentBaseBuilder<'FunBlazorGeneric, 'TOption when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit FluentInputBaseBuilder<'FunBlazorGeneric, System.String>()
+    /// Gets or sets the width of the component.
+    [<CustomOperation("Width")>] member inline _.Width ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Width" => x)
+    /// Gets or sets the height of the component or of the popup panel.
+    [<CustomOperation("Height")>] member inline _.Height ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Height" => x)
+    /// Gets or sets the text used on aria-label attribute.
+    [<CustomOperation("Title")>] member inline _.Title ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
+    /// Gets or sets the function used to determine which text to display for each option.
+    [<CustomOperation("OptionText")>] member inline _.OptionText ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("OptionText" => (System.Func<'TOption, System.String>fn))
+    /// Gets or sets the function used to determine which value to return for the selected item.
+    /// Only for FluentListbox`1 and FluentSelect`1 components.
+    [<CustomOperation("OptionValue")>] member inline _.OptionValue ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("OptionValue" => (System.Func<'TOption, System.String>fn))
+    /// Gets or sets the function used to determine if an option is disabled.
+    [<CustomOperation("OptionDisabled")>] member inline _.OptionDisabled ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("OptionDisabled" => (System.Func<'TOption, System.Boolean>fn))
+    /// Gets or sets the function used to determine if an option is initially selected.
+    [<CustomOperation("OptionSelected")>] member inline _.OptionSelected ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("OptionSelected" => (System.Func<'TOption, System.Boolean>fn))
+    /// Gets or sets the content source of all items to display in this list.
+    /// Each item must be instantiated (cannot be null).
+    [<CustomOperation("Items")>] member inline _.Items ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<'TOption>) = render ==> ("Items" => x)
+    /// Gets or sets the selected item.
+    /// ⚠️ Only available when Multiple = false.
+    [<CustomOperation("SelectedOption")>] member inline _.SelectedOption ([<InlineIfLambda>] render: AttrRenderFragment, x: 'TOption) = render ==> ("SelectedOption" => x)
+    /// Gets or sets the selected item.
+    /// ⚠️ Only available when Multiple = false.
+    [<CustomOperation("SelectedOption'")>] member inline _.SelectedOption' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: 'TOption * ('TOption -> unit)) = render ==> html.bind("SelectedOption", valueFn)
+    /// Called whenever the selection changed.
+    /// ⚠️ Only available when Multiple = false.
+    [<CustomOperation("SelectedOptionChanged")>] member inline _.SelectedOptionChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: 'TOption -> unit) = render ==> html.callback("SelectedOptionChanged", fn)
+    /// Called whenever the selection changed.
+    /// ⚠️ Only available when Multiple = false.
+    [<CustomOperation("SelectedOptionChanged")>] member inline _.SelectedOptionChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: 'TOption -> Task<unit>) = render ==> html.callbackTask("SelectedOptionChanged", fn)
+    /// If true, the user can select multiple elements.
+    /// ⚠️ Only available for the FluentSelect and FluentListbox components.
+    [<CustomOperation("Multiple")>] member inline _.Multiple ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Multiple" => (defaultArg x true))
+    /// Gets or sets the template for the Items items.
+    [<CustomOperation("OptionTemplate")>] member inline _.OptionTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: 'TOption -> NodeRenderFragment) = render ==> html.renderFragment("OptionTemplate", fn)
+    /// Gets or sets all selected items.
+    /// ⚠️ Only available when Multiple = true.
+    [<CustomOperation("SelectedOptions")>] member inline _.SelectedOptions ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<'TOption>) = render ==> ("SelectedOptions" => x)
+    /// Gets or sets all selected items.
+    /// ⚠️ Only available when Multiple = true.
+    [<CustomOperation("SelectedOptions'")>] member inline _.SelectedOptions' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Collections.Generic.IEnumerable<'TOption> * (System.Collections.Generic.IEnumerable<'TOption> -> unit)) = render ==> html.bind("SelectedOptions", valueFn)
+    /// Called whenever the selection changed.
+    /// ⚠️ Only available when Multiple = true.
+    [<CustomOperation("SelectedOptionsChanged")>] member inline _.SelectedOptionsChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Collections.Generic.IEnumerable<'TOption> -> unit) = render ==> html.callback("SelectedOptionsChanged", fn)
+    /// Called whenever the selection changed.
+    /// ⚠️ Only available when Multiple = true.
+    [<CustomOperation("SelectedOptionsChanged")>] member inline _.SelectedOptionsChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Collections.Generic.IEnumerable<'TOption> -> Task<unit>) = render ==> html.callbackTask("SelectedOptionsChanged", fn)
+
+type FluentAutocompleteBuilder<'FunBlazorGeneric, 'TOption when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit ListComponentBaseBuilder<'FunBlazorGeneric, 'TOption>()
+    /// Gets or sets the text field value.
+    [<CustomOperation("ValueText")>] member inline _.ValueText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ValueText" => x)
+    /// Gets or sets the text field value.
+    [<CustomOperation("ValueText'")>] member inline _.ValueText' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.String * (System.String -> unit)) = render ==> html.bind("ValueText", valueFn)
+    /// Gets or sets the callback that is invoked when the text field value changes.
+    [<CustomOperation("ValueTextChanged")>] member inline _.ValueTextChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.String -> unit) = render ==> html.callback("ValueTextChanged", fn)
+    /// Gets or sets the callback that is invoked when the text field value changes.
+    [<CustomOperation("ValueTextChanged")>] member inline _.ValueTextChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.String -> Task<unit>) = render ==> html.callbackTask("ValueTextChanged", fn)
+    /// Gets or sets the value of the input. This should be used with two-way binding.
+    /// For the FluentAutocomplete component, use the ValueText property instead.
+    [<CustomOperation("Value")>] member inline _.Value ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Value" => x)
+    /// Gets or sets the visual appearance. See 
+    [<CustomOperation("Appearance")>] member inline _.Appearance ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.FluentInputAppearance) = render ==> ("Appearance" => x)
+    /// Specifies whether a form or an input field should have autocomplete "on" or "off" or another value.
+    /// An Id value must be set to use this property.
+    [<CustomOperation("AutoComplete")>] member inline _.AutoComplete ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("AutoComplete" => x)
+    /// Filter the list of options (items), using the text encoded by the user.
+    [<CustomOperation("OnOptionsSearch")>] member inline _.OnOptionsSearch ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.OptionsSearchEventArgs<'TOption> -> unit) = render ==> html.callback("OnOptionsSearch", fn)
+    /// Filter the list of options (items), using the text encoded by the user.
+    [<CustomOperation("OnOptionsSearch")>] member inline _.OnOptionsSearch ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.OptionsSearchEventArgs<'TOption> -> Task<unit>) = render ==> html.callbackTask("OnOptionsSearch", fn)
+    /// Gets or sets the style applied to all FluentOption`1 of the component.
+    [<CustomOperation("OptionStyle")>] member inline _.OptionStyle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("OptionStyle" => x)
+    /// Gets or sets the css class applied to all FluentOption`1 of the component.
+    [<CustomOperation("OptionClass")>] member inline _.OptionClass ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("OptionClass" => x)
+    /// Gets or sets the number of maximum options (items) returned by OnOptionsSearch.
+    /// Default value is 9.
+    [<CustomOperation("MaximumOptionsSearch")>] member inline _.MaximumOptionsSearch ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("MaximumOptionsSearch" => x)
+    /// Gets or sets the maximum number of options (items) selected.
+    /// Exceeding this value requires the user to delete some elements in order to select new ones.
+    /// See the MaximumSelectedOptionsMessage.
+    [<CustomOperation("MaximumSelectedOptions")>] member inline _.MaximumSelectedOptions ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("MaximumSelectedOptions" => x)
+    /// Gets or sets the message displayed when the MaximumSelectedOptions is reached.
+    [<CustomOperation("MaximumSelectedOptionsMessage")>] member inline _.MaximumSelectedOptionsMessage ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("MaximumSelectedOptionsMessage", fragment)
+    /// Gets or sets the message displayed when the MaximumSelectedOptions is reached.
+    [<CustomOperation("MaximumSelectedOptionsMessage")>] member inline _.MaximumSelectedOptionsMessage ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("MaximumSelectedOptionsMessage", fragment { yield! fragments })
+    /// Gets or sets the message displayed when the MaximumSelectedOptions is reached.
+    [<CustomOperation("MaximumSelectedOptionsMessage")>] member inline _.MaximumSelectedOptionsMessage ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("MaximumSelectedOptionsMessage", html.text x)
+    /// Gets or sets the message displayed when the MaximumSelectedOptions is reached.
+    [<CustomOperation("MaximumSelectedOptionsMessage")>] member inline _.MaximumSelectedOptionsMessage ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("MaximumSelectedOptionsMessage", html.text x)
+    /// Gets or sets the message displayed when the MaximumSelectedOptions is reached.
+    [<CustomOperation("MaximumSelectedOptionsMessage")>] member inline _.MaximumSelectedOptionsMessage ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("MaximumSelectedOptionsMessage", html.text x)
+    /// Gets or sets the template for the SelectedOptions items.
+    [<CustomOperation("SelectedOptionTemplate")>] member inline _.SelectedOptionTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: 'TOption -> NodeRenderFragment) = render ==> html.renderFragment("SelectedOptionTemplate", fn)
+    /// Gets or sets the header content, placed at the top of the popup panel.
+    [<CustomOperation("HeaderContent")>] member inline _.HeaderContent ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Collections.Generic.IEnumerable<'TOption> -> NodeRenderFragment) = render ==> html.renderFragment("HeaderContent", fn)
+    /// Gets or sets the footer content, placed at the bottom of the popup panel.
+    [<CustomOperation("FooterContent")>] member inline _.FooterContent ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Collections.Generic.IEnumerable<'TOption> -> NodeRenderFragment) = render ==> html.renderFragment("FooterContent", fn)
+    /// Gets or sets the title and Aria-Label for the Scroll to previous button.
+    [<CustomOperation("TitleScrollToPrevious")>] member inline _.TitleScrollToPrevious ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("TitleScrollToPrevious" => x)
+    /// Gets or sets the title and Aria-Label for the Scroll to next button.
+    [<CustomOperation("TitleScrollToNext")>] member inline _.TitleScrollToNext ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("TitleScrollToNext" => x)
+    /// Gets or sets the icon used for the Clear button. By default: Dismiss icon.
+    [<CustomOperation("IconDismiss")>] member inline _.IconDismiss ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Icon) = render ==> ("IconDismiss" => x)
+    /// Gets or sets the icon used for the Search button. By default: Search icon.
+    [<CustomOperation("IconSearch")>] member inline _.IconSearch ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Icon) = render ==> ("IconSearch" => x)
+    /// Gets or sets whether the dropdown is shown when there are no items.
+    [<CustomOperation("ShowOverlayOnEmptyResults")>] member inline _.ShowOverlayOnEmptyResults ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("ShowOverlayOnEmptyResults" => (defaultArg x true))
+    /// If true, the options list will be rendered with virtualization. This is normally used in conjunction with
+    /// scrolling and causes the option list to fetch and render only the data around the current scroll viewport.
+    /// This can greatly improve the performance when scrolling through large data sets.
+    ///             
+    /// If you use Virtualize, you should supply a value for ItemSize and must
+    /// ensure that every row renders with the same constant height.
+    ///             
+    /// Generally it's preferable not to use Virtualize if the amount of data being rendered is small.
+    [<CustomOperation("Virtualize")>] member inline _.Virtualize ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Virtualize" => (defaultArg x true))
+    /// This is applicable only when using Virtualize. It defines an expected height in pixels for
+    /// each row, allowing the virtualization mechanism to fetch the correct number of items to match the display
+    /// size and to ensure accurate scrolling.
+    [<CustomOperation("ItemSize")>] member inline _.ItemSize ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Single) = render ==> ("ItemSize" => x)
+    /// Gets or sets the maximum height of the field to adjust its height in relation to selected elements.
+    [<CustomOperation("MaxAutoHeight")>] member inline _.MaxAutoHeight ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("MaxAutoHeight" => x)
+    /// Gets or sets whether the currently selected item from the drop-down (if it is open) is selected.
+    /// Default is false.
+    [<CustomOperation("SelectValueOnTab")>] member inline _.SelectValueOnTab ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("SelectValueOnTab" => (defaultArg x true))
+
+type FluentComboboxBuilder<'FunBlazorGeneric, 'TOption when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit ListComponentBaseBuilder<'FunBlazorGeneric, 'TOption>()
+    /// Gets or sets a value indicating whether the element auto completes. See 
+    [<CustomOperation("Autocomplete")>] member inline _.Autocomplete ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.ComboboxAutocomplete>) = render ==> ("Autocomplete" => x)
+    /// Gets or sets the open attribute.
+    [<CustomOperation("Open")>] member inline _.Open ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("Open" => x)
+    /// Gets or sets the placement for the listbox when the combobox is open.
+    /// See 
+    [<CustomOperation("Position")>] member inline _.Position ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.SelectPosition>) = render ==> ("Position" => x)
+    /// Gets or sets the visual appearance. See 
+    [<CustomOperation("Appearance")>] member inline _.Appearance ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.Appearance>) = render ==> ("Appearance" => x)
+
+type FluentListboxBuilder<'FunBlazorGeneric, 'TOption when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit ListComponentBaseBuilder<'FunBlazorGeneric, 'TOption>()
+    /// Gets or sets the maximum number of options that should be visible in the listbox scroll area.
+    [<CustomOperation("Size")>] member inline _.Size ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("Size" => x)
+
+type FluentSelectBuilder<'FunBlazorGeneric, 'TOption when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit ListComponentBaseBuilder<'FunBlazorGeneric, 'TOption>()
+    /// Gets or sets the open attribute.
+    [<CustomOperation("Open")>] member inline _.Open ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("Open" => x)
+    /// Reflects the placement for the listbox when the select is open.
+    /// See SelectPosition
+    [<CustomOperation("Position")>] member inline _.Position ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.SelectPosition>) = render ==> ("Position" => x)
+    /// Gets or sets the visual appearance. See 
+    [<CustomOperation("Appearance")>] member inline _.Appearance ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.Appearance>) = render ==> ("Appearance" => x)
 
 type FluentNumberFieldBuilder<'FunBlazorGeneric, 'TValue when 'TValue : (new : unit -> 'TValue) and 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentInputBaseBuilder<'FunBlazorGeneric, 'TValue>()
@@ -692,7 +871,7 @@ type FluentButtonBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.A
 
 type FluentCardBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
-    /// By default, content in the card is restricted to the area of the card itself. 
+    /// By default, content in the card is restricted to the area of the card itself.
     /// If you want content to be able to overflow the card, set this property to false.
     [<CustomOperation("AreaRestricted")>] member inline _.AreaRestricted ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("AreaRestricted" => (defaultArg x true))
     /// Gets or sets the width of the card. Must be a valid CSS measurement.
@@ -1283,7 +1462,8 @@ type FluentLabelBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.As
 
 type FluentLayoutBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
-
+    /// Gets or sets the orientation of the stacked components.
+    [<CustomOperation("Orientation")>] member inline _.Orientation ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Orientation) = render ==> ("Orientation" => x)
 
 type FluentOptionBuilder<'FunBlazorGeneric, 'TOption when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -1336,192 +1516,6 @@ type FluentPersonaBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     [<CustomOperation("OnDismissClick")>] member inline _.OnDismissClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: unit -> Task<unit>) = render ==> html.callbackTask("OnDismissClick", fn)
     /// Gets or sets the title of the dismiss button.
     [<CustomOperation("DismissTitle")>] member inline _.DismissTitle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("DismissTitle" => x)
-
-/// Component that provides a list of options.
-type ListComponentBaseBuilder<'FunBlazorGeneric, 'TOption when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
-    /// Gets or sets the width of the component.
-    [<CustomOperation("Width")>] member inline _.Width ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Width" => x)
-    /// Gets or sets the height of the component or of the popup panel.
-    [<CustomOperation("Height")>] member inline _.Height ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Height" => x)
-    /// Gets or sets the text displayed just above the component.
-    [<CustomOperation("Label")>] member inline _.Label ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Label" => x)
-    /// Gets or sets the content displayed just above the component.
-    [<CustomOperation("LabelTemplate")>] member inline _.LabelTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("LabelTemplate", fragment)
-    /// Gets or sets the content displayed just above the component.
-    [<CustomOperation("LabelTemplate")>] member inline _.LabelTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("LabelTemplate", fragment { yield! fragments })
-    /// Gets or sets the content displayed just above the component.
-    [<CustomOperation("LabelTemplate")>] member inline _.LabelTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("LabelTemplate", html.text x)
-    /// Gets or sets the content displayed just above the component.
-    [<CustomOperation("LabelTemplate")>] member inline _.LabelTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("LabelTemplate", html.text x)
-    /// Gets or sets the content displayed just above the component.
-    [<CustomOperation("LabelTemplate")>] member inline _.LabelTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("LabelTemplate", html.text x)
-    /// Gets or sets the text used on aria-label attribute.
-    [<CustomOperation("AriaLabel")>] member inline _.AriaLabel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("AriaLabel" => x)
-    /// Gets or sets if an indicator is showed that this input is required.
-    [<CustomOperation("Required")>] member inline _.Required ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Required" => (defaultArg x true))
-    /// Gets or sets the text used on aria-label attribute.
-    [<CustomOperation("Title")>] member inline _.Title ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
-    /// If true, will disable the list of items.
-    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Disabled" => (defaultArg x true))
-    /// Gets or sets the function used to determine which text to display for each option.
-    [<CustomOperation("OptionText")>] member inline _.OptionText ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("OptionText" => (System.Func<'TOption, System.String>fn))
-    /// Gets or sets the function used to determine which value to return for the selected item.
-    /// Only for FluentListbox`1 and FluentSelect`1 components.
-    [<CustomOperation("OptionValue")>] member inline _.OptionValue ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("OptionValue" => (System.Func<'TOption, System.String>fn))
-    /// Gets or sets the function used to determine if an option is disabled.
-    [<CustomOperation("OptionDisabled")>] member inline _.OptionDisabled ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("OptionDisabled" => (System.Func<'TOption, System.Boolean>fn))
-    /// Gets or sets the function used to determine if an option is initially selected.
-    [<CustomOperation("OptionSelected")>] member inline _.OptionSelected ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("OptionSelected" => (System.Func<'TOption, System.Boolean>fn))
-    /// Gets or sets the content source of all items to display in this list.
-    /// Each item must be instantiated (cannot be null).
-    [<CustomOperation("Items")>] member inline _.Items ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<'TOption>) = render ==> ("Items" => x)
-    /// Gets or sets the selected item.
-    /// ⚠️ Only available when Multiple = false.
-    [<CustomOperation("SelectedOption")>] member inline _.SelectedOption ([<InlineIfLambda>] render: AttrRenderFragment, x: 'TOption) = render ==> ("SelectedOption" => x)
-    /// Gets or sets the selected item.
-    /// ⚠️ Only available when Multiple = false.
-    [<CustomOperation("SelectedOption'")>] member inline _.SelectedOption' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: 'TOption * ('TOption -> unit)) = render ==> html.bind("SelectedOption", valueFn)
-    /// Called whenever the selection changed.
-    /// ⚠️ Only available when Multiple = false.
-    [<CustomOperation("SelectedOptionChanged")>] member inline _.SelectedOptionChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: 'TOption -> unit) = render ==> html.callback("SelectedOptionChanged", fn)
-    /// Called whenever the selection changed.
-    /// ⚠️ Only available when Multiple = false.
-    [<CustomOperation("SelectedOptionChanged")>] member inline _.SelectedOptionChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: 'TOption -> Task<unit>) = render ==> html.callbackTask("SelectedOptionChanged", fn)
-    /// Gets or sets the selected value.
-    /// When Multiple = true this only reflects the first selected option value.
-    [<CustomOperation("Value")>] member inline _.Value ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Value" => x)
-    /// Gets or sets the selected value.
-    /// When Multiple = true this only reflects the first selected option value.
-    [<CustomOperation("Value'")>] member inline _.Value' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.String * (System.String -> unit)) = render ==> html.bind("Value", valueFn)
-    /// Called whenever the selection changed.
-    /// ⚠️ Only available when Multiple = false.
-    [<CustomOperation("ValueChanged")>] member inline _.ValueChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.String -> unit) = render ==> html.callback("ValueChanged", fn)
-    /// Called whenever the selection changed.
-    /// ⚠️ Only available when Multiple = false.
-    [<CustomOperation("ValueChanged")>] member inline _.ValueChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.String -> Task<unit>) = render ==> html.callbackTask("ValueChanged", fn)
-    /// If true, the user can select multiple elements.
-    /// ⚠️ Only available for the FluentSelect and FluentListbox components.
-    [<CustomOperation("Multiple")>] member inline _.Multiple ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Multiple" => (defaultArg x true))
-    /// Gets or sets the template for the Items items.
-    [<CustomOperation("OptionTemplate")>] member inline _.OptionTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: 'TOption -> NodeRenderFragment) = render ==> html.renderFragment("OptionTemplate", fn)
-    /// Gets or sets all selected items.
-    /// ⚠️ Only available when Multiple = true.
-    [<CustomOperation("SelectedOptions")>] member inline _.SelectedOptions ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<'TOption>) = render ==> ("SelectedOptions" => x)
-    /// Gets or sets all selected items.
-    /// ⚠️ Only available when Multiple = true.
-    [<CustomOperation("SelectedOptions'")>] member inline _.SelectedOptions' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Collections.Generic.IEnumerable<'TOption> * (System.Collections.Generic.IEnumerable<'TOption> -> unit)) = render ==> html.bind("SelectedOptions", valueFn)
-    /// Called whenever the selection changed.
-    /// ⚠️ Only available when Multiple = true.
-    [<CustomOperation("SelectedOptionsChanged")>] member inline _.SelectedOptionsChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Collections.Generic.IEnumerable<'TOption> -> unit) = render ==> html.callback("SelectedOptionsChanged", fn)
-    /// Called whenever the selection changed.
-    /// ⚠️ Only available when Multiple = true.
-    [<CustomOperation("SelectedOptionsChanged")>] member inline _.SelectedOptionsChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Collections.Generic.IEnumerable<'TOption> -> Task<unit>) = render ==> html.callbackTask("SelectedOptionsChanged", fn)
-
-type FluentAutocompleteBuilder<'FunBlazorGeneric, 'TOption when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ListComponentBaseBuilder<'FunBlazorGeneric, 'TOption>()
-    /// Gets or sets the placeholder value of the element, generally used to provide a hint to the user.
-    [<CustomOperation("Placeholder")>] member inline _.Placeholder ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Placeholder" => x)
-    /// Gets or sets the text field value.
-    [<CustomOperation("ValueText")>] member inline _.ValueText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ValueText" => x)
-    /// Gets or sets the text field value.
-    [<CustomOperation("ValueText'")>] member inline _.ValueText' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.String * (System.String -> unit)) = render ==> html.bind("ValueText", valueFn)
-    /// Gets or sets the callback that is invoked when the text field value changes.
-    [<CustomOperation("ValueTextChanged")>] member inline _.ValueTextChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.String -> unit) = render ==> html.callback("ValueTextChanged", fn)
-    /// Gets or sets the callback that is invoked when the text field value changes.
-    [<CustomOperation("ValueTextChanged")>] member inline _.ValueTextChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.String -> Task<unit>) = render ==> html.callbackTask("ValueTextChanged", fn)
-    /// Determines if the element should receive document focus on page load.
-    [<CustomOperation("Autofocus")>] member inline _.Autofocus ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Autofocus" => (defaultArg x true))
-    /// Gets or sets the visual appearance. See 
-    [<CustomOperation("Appearance")>] member inline _.Appearance ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.FluentInputAppearance) = render ==> ("Appearance" => x)
-    /// Specifies whether a form or an input field should have autocomplete "on" or "off" or another value.
-    /// An Id value must be set to use this property.
-    [<CustomOperation("AutoComplete")>] member inline _.AutoComplete ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("AutoComplete" => x)
-    /// Filter the list of options (items), using the text encoded by the user.
-    [<CustomOperation("OnOptionsSearch")>] member inline _.OnOptionsSearch ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.OptionsSearchEventArgs<'TOption> -> unit) = render ==> html.callback("OnOptionsSearch", fn)
-    /// Filter the list of options (items), using the text encoded by the user.
-    [<CustomOperation("OnOptionsSearch")>] member inline _.OnOptionsSearch ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.OptionsSearchEventArgs<'TOption> -> Task<unit>) = render ==> html.callbackTask("OnOptionsSearch", fn)
-    /// Gets or sets the style applied to all FluentOption`1 of the component.
-    [<CustomOperation("OptionStyle")>] member inline _.OptionStyle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("OptionStyle" => x)
-    /// Gets or sets the css class applied to all FluentOption`1 of the component.
-    [<CustomOperation("OptionClass")>] member inline _.OptionClass ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("OptionClass" => x)
-    /// Gets or sets the number of maximum options (items) returned by OnOptionsSearch.
-    /// Default value is 9.
-    [<CustomOperation("MaximumOptionsSearch")>] member inline _.MaximumOptionsSearch ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("MaximumOptionsSearch" => x)
-    /// Gets or sets the maximum number of options (items) selected.
-    /// Exceeding this value requires the user to delete some elements in order to select new ones.
-    /// See the MaximumSelectedOptionsMessage.
-    [<CustomOperation("MaximumSelectedOptions")>] member inline _.MaximumSelectedOptions ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("MaximumSelectedOptions" => x)
-    /// Gets or sets the message displayed when the MaximumSelectedOptions is reached.
-    [<CustomOperation("MaximumSelectedOptionsMessage")>] member inline _.MaximumSelectedOptionsMessage ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("MaximumSelectedOptionsMessage", fragment)
-    /// Gets or sets the message displayed when the MaximumSelectedOptions is reached.
-    [<CustomOperation("MaximumSelectedOptionsMessage")>] member inline _.MaximumSelectedOptionsMessage ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("MaximumSelectedOptionsMessage", fragment { yield! fragments })
-    /// Gets or sets the message displayed when the MaximumSelectedOptions is reached.
-    [<CustomOperation("MaximumSelectedOptionsMessage")>] member inline _.MaximumSelectedOptionsMessage ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("MaximumSelectedOptionsMessage", html.text x)
-    /// Gets or sets the message displayed when the MaximumSelectedOptions is reached.
-    [<CustomOperation("MaximumSelectedOptionsMessage")>] member inline _.MaximumSelectedOptionsMessage ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("MaximumSelectedOptionsMessage", html.text x)
-    /// Gets or sets the message displayed when the MaximumSelectedOptions is reached.
-    [<CustomOperation("MaximumSelectedOptionsMessage")>] member inline _.MaximumSelectedOptionsMessage ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("MaximumSelectedOptionsMessage", html.text x)
-    /// Gets or sets the template for the SelectedOptions items.
-    [<CustomOperation("SelectedOptionTemplate")>] member inline _.SelectedOptionTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: 'TOption -> NodeRenderFragment) = render ==> html.renderFragment("SelectedOptionTemplate", fn)
-    /// Gets or sets the header content, placed at the top of the popup panel.
-    [<CustomOperation("HeaderContent")>] member inline _.HeaderContent ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Collections.Generic.IEnumerable<'TOption> -> NodeRenderFragment) = render ==> html.renderFragment("HeaderContent", fn)
-    /// Gets or sets the footer content, placed at the bottom of the popup panel.
-    [<CustomOperation("FooterContent")>] member inline _.FooterContent ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Collections.Generic.IEnumerable<'TOption> -> NodeRenderFragment) = render ==> html.renderFragment("FooterContent", fn)
-    /// Gets or sets the title and Aria-Label for the Scroll to previous button.
-    [<CustomOperation("TitleScrollToPrevious")>] member inline _.TitleScrollToPrevious ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("TitleScrollToPrevious" => x)
-    /// Gets or sets the title and Aria-Label for the Scroll to next button.
-    [<CustomOperation("TitleScrollToNext")>] member inline _.TitleScrollToNext ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("TitleScrollToNext" => x)
-    /// Gets or sets the icon used for the Clear button. By default: Dismiss icon.
-    [<CustomOperation("IconDismiss")>] member inline _.IconDismiss ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Icon) = render ==> ("IconDismiss" => x)
-    /// Gets or sets the icon used for the Search button. By default: Search icon.
-    [<CustomOperation("IconSearch")>] member inline _.IconSearch ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Icon) = render ==> ("IconSearch" => x)
-    /// Gets or sets whether the dropdown is shown when there are no items.
-    [<CustomOperation("ShowOverlayOnEmptyResults")>] member inline _.ShowOverlayOnEmptyResults ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("ShowOverlayOnEmptyResults" => (defaultArg x true))
-    /// If true, the options list will be rendered with virtualization. This is normally used in conjunction with
-    /// scrolling and causes the option list to fetch and render only the data around the current scroll viewport.
-    /// This can greatly improve the performance when scrolling through large data sets.
-    ///             
-    /// If you use Virtualize, you should supply a value for ItemSize and must
-    /// ensure that every row renders with the same constant height.
-    ///             
-    /// Generally it's preferable not to use Virtualize if the amount of data being rendered is small.
-    [<CustomOperation("Virtualize")>] member inline _.Virtualize ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Virtualize" => (defaultArg x true))
-    /// This is applicable only when using Virtualize. It defines an expected height in pixels for
-    /// each row, allowing the virtualization mechanism to fetch the correct number of items to match the display
-    /// size and to ensure accurate scrolling.
-    [<CustomOperation("ItemSize")>] member inline _.ItemSize ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Single) = render ==> ("ItemSize" => x)
-
-type FluentComboboxBuilder<'FunBlazorGeneric, 'TOption when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ListComponentBaseBuilder<'FunBlazorGeneric, 'TOption>()
-    /// Gets or sets a value indicating whether the element auto completes. See 
-    [<CustomOperation("Autocomplete")>] member inline _.Autocomplete ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.ComboboxAutocomplete>) = render ==> ("Autocomplete" => x)
-    /// Gets or sets the open attribute.
-    [<CustomOperation("Open")>] member inline _.Open ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("Open" => x)
-    /// Gets or sets the placeholder value of the element, generally used to provide a hint to the user.
-    [<CustomOperation("Placeholder")>] member inline _.Placeholder ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Placeholder" => x)
-    /// Gets or sets the placement for the listbox when the combobox is open.
-    /// See 
-    [<CustomOperation("Position")>] member inline _.Position ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.SelectPosition>) = render ==> ("Position" => x)
-    /// Gets or sets the visual appearance. See 
-    [<CustomOperation("Appearance")>] member inline _.Appearance ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.Appearance>) = render ==> ("Appearance" => x)
-    /// Determines if the element should receive document focus on page load.
-    [<CustomOperation("Autofocus")>] member inline _.Autofocus ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Autofocus" => (defaultArg x true))
-
-type FluentListboxBuilder<'FunBlazorGeneric, 'TOption when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ListComponentBaseBuilder<'FunBlazorGeneric, 'TOption>()
-    /// Gets or sets the maximum number of options that should be visible in the listbox scroll area.
-    [<CustomOperation("Size")>] member inline _.Size ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("Size" => x)
-
-type FluentSelectBuilder<'FunBlazorGeneric, 'TOption when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ListComponentBaseBuilder<'FunBlazorGeneric, 'TOption>()
-    /// Gets or sets the open attribute.
-    [<CustomOperation("Open")>] member inline _.Open ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("Open" => x)
-    /// Reflects the placement for the listbox when the select is open.
-    /// See SelectPosition
-    [<CustomOperation("Position")>] member inline _.Position ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.SelectPosition>) = render ==> ("Position" => x)
-    /// Gets or sets the visual appearance. See 
-    [<CustomOperation("Appearance")>] member inline _.Appearance ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.Appearance>) = render ==> ("Appearance" => x)
 
 type FluentMainLayoutBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -1750,19 +1744,19 @@ type FluentNavMenuTreeBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micros
 
 type FluentNavMenuBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
-    /// Gets or sets the content to be rendered for the collapse icon when the menu is collapsible. 
+    /// Gets or sets the content to be rendered for the collapse icon when the menu is collapsible.
     /// The default icon will be used if this is not specified.
     [<CustomOperation("ExpanderContent")>] member inline _.ExpanderContent ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("ExpanderContent", fragment)
-    /// Gets or sets the content to be rendered for the collapse icon when the menu is collapsible. 
+    /// Gets or sets the content to be rendered for the collapse icon when the menu is collapsible.
     /// The default icon will be used if this is not specified.
     [<CustomOperation("ExpanderContent")>] member inline _.ExpanderContent ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("ExpanderContent", fragment { yield! fragments })
-    /// Gets or sets the content to be rendered for the collapse icon when the menu is collapsible. 
+    /// Gets or sets the content to be rendered for the collapse icon when the menu is collapsible.
     /// The default icon will be used if this is not specified.
     [<CustomOperation("ExpanderContent")>] member inline _.ExpanderContent ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("ExpanderContent", html.text x)
-    /// Gets or sets the content to be rendered for the collapse icon when the menu is collapsible. 
+    /// Gets or sets the content to be rendered for the collapse icon when the menu is collapsible.
     /// The default icon will be used if this is not specified.
     [<CustomOperation("ExpanderContent")>] member inline _.ExpanderContent ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("ExpanderContent", html.text x)
-    /// Gets or sets the content to be rendered for the collapse icon when the menu is collapsible. 
+    /// Gets or sets the content to be rendered for the collapse icon when the menu is collapsible.
     /// The default icon will be used if this is not specified.
     [<CustomOperation("ExpanderContent")>] member inline _.ExpanderContent ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("ExpanderContent", html.text x)
     /// Gets or sets the title of the navigation menu using the aria-label attribute.
@@ -1782,6 +1776,9 @@ type FluentNavMenuBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     [<CustomOperation("ExpandedChanged")>] member inline _.ExpandedChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("ExpandedChanged", fn)
     /// Adjust the vertical spacing between navlinks.
     [<CustomOperation("Margin")>] member inline _.Margin ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Margin" => x)
+    /// Gets or sets if a custom toggle for showing/hiding the menu is used.
+    /// This is primarily intended to be used in a mobile view
+    [<CustomOperation("CustomToggle")>] member inline _.CustomToggle ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("CustomToggle" => (defaultArg x true))
 
 type FluentOverflowBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -1975,10 +1972,34 @@ type FluentProfileMenuBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micros
     /// Gets or sets the content to be displayed in the footer section of the popover.
     /// Using this property will override the FooterLink property.
     [<CustomOperation("FooterTemplate")>] member inline _.FooterTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("FooterTemplate", html.text x)
+    /// Gets or sets the content to be displayed in the start (left) section of the Profile button.
+    [<CustomOperation("StartTemplate")>] member inline _.StartTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("StartTemplate", fragment)
+    /// Gets or sets the content to be displayed in the start (left) section of the Profile button.
+    [<CustomOperation("StartTemplate")>] member inline _.StartTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("StartTemplate", fragment { yield! fragments })
+    /// Gets or sets the content to be displayed in the start (left) section of the Profile button.
+    [<CustomOperation("StartTemplate")>] member inline _.StartTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("StartTemplate", html.text x)
+    /// Gets or sets the content to be displayed in the start (left) section of the Profile button.
+    [<CustomOperation("StartTemplate")>] member inline _.StartTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("StartTemplate", html.text x)
+    /// Gets or sets the content to be displayed in the start (left) section of the Profile button.
+    [<CustomOperation("StartTemplate")>] member inline _.StartTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("StartTemplate", html.text x)
+    /// Gets or sets the content to be displayed in the end (right) section of the Profile button.
+    [<CustomOperation("EndTemplate")>] member inline _.EndTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("EndTemplate", fragment)
+    /// Gets or sets the content to be displayed in the end (right) section of the Profile button.
+    [<CustomOperation("EndTemplate")>] member inline _.EndTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("EndTemplate", fragment { yield! fragments })
+    /// Gets or sets the content to be displayed in the end (right) section of the Profile button.
+    [<CustomOperation("EndTemplate")>] member inline _.EndTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("EndTemplate", html.text x)
+    /// Gets or sets the content to be displayed in the end (right) section of the Profile button.
+    [<CustomOperation("EndTemplate")>] member inline _.EndTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("EndTemplate", html.text x)
+    /// Gets or sets the content to be displayed in the end (right) section of the Profile button.
+    [<CustomOperation("EndTemplate")>] member inline _.EndTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("EndTemplate", html.text x)
     /// Gets or sets the status to show. See PresenceStatus for options.
     [<CustomOperation("Status")>] member inline _.Status ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.PresenceStatus>) = render ==> ("Status" => x)
     /// Gets or sets the title to show on hover. If not provided, the status will be used.
     [<CustomOperation("StatusTitle")>] member inline _.StatusTitle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("StatusTitle" => x)
+    /// Gets or sets the Class to apply to the Profile Popup.
+    [<CustomOperation("PopoverClass")>] member inline _.PopoverClass ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("PopoverClass" => x)
+    /// Gets or sets the Style to apply to the Profile Popup.
+    [<CustomOperation("PopoverStyle")>] member inline _.PopoverStyle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("PopoverStyle" => x)
     /// Gets or sets the initials to display if no image is provided.
     /// By default, the first letters of the FullName is used.
     [<CustomOperation("Initials")>] member inline _.Initials ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Initials" => x)
@@ -2212,8 +2233,6 @@ type FluentSortableListBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric 
     /// Gets or sets wether ro ignore the HTML5 DnD behaviour and force the fallback to kick in
     [<CustomOperation("Fallback")>] member inline _.Fallback ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Fallback" => (defaultArg x true))
 
-/// This component is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
-/// Add this line to suppress de compilation error: `@{ #pragma warning disable FluentMultiSplitter }`
 type FluentMultiSplitterBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
     /// Gets or sets the collapse callback.
@@ -2468,6 +2487,8 @@ type FluentTooltipProviderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Mi
 
 type FluentTreeItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
+    /// Gets or sets the list of sub-items to bind to the tree item
+    [<CustomOperation("Items")>] member inline _.Items ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<Microsoft.FluentUI.AspNetCore.Components.ITreeViewItem>) = render ==> ("Items" => x)
     /// Gets or sets the text of the tree item
     [<CustomOperation("Text")>] member inline _.Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Text" => x)
     /// Returns true if the tree item is expanded,
@@ -2496,9 +2517,31 @@ type FluentTreeItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     /// If set to true then the tree item will
     /// be selected when it is created.
     [<CustomOperation("InitiallySelected")>] member inline _.InitiallySelected ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("InitiallySelected" => (defaultArg x true))
+    /// Gets or sets the Icon displayed at the start of tree item,
+    /// when the node is collapsed.
+    /// If this icon is not set, the IconExpanded will be used.
+    [<CustomOperation("IconCollapsed")>] member inline _.IconCollapsed ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Icon) = render ==> ("IconCollapsed" => x)
+    /// Gets or sets the Icon displayed at the start of tree item,
+    /// when the node is expanded.
+    /// If this icon is not set, the IconCollapsed will be used.
+    [<CustomOperation("IconExpanded")>] member inline _.IconExpanded ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Icon) = render ==> ("IconExpanded" => x)
 
 type FluentTreeViewBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
+    /// Gets or sets the list of items to bind to the tree.
+    [<CustomOperation("Items")>] member inline _.Items ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<Microsoft.FluentUI.AspNetCore.Components.ITreeViewItem>) = render ==> ("Items" => x)
+    /// Gets or sets the currently selected tree item.
+    /// Only when using the Items property.
+    [<CustomOperation("SelectedItem")>] member inline _.SelectedItem ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.ITreeViewItem) = render ==> ("SelectedItem" => x)
+    /// Gets or sets the currently selected tree item.
+    /// Only when using the Items property.
+    [<CustomOperation("SelectedItem'")>] member inline _.SelectedItem' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: Microsoft.FluentUI.AspNetCore.Components.ITreeViewItem * (Microsoft.FluentUI.AspNetCore.Components.ITreeViewItem -> unit)) = render ==> html.bind("SelectedItem", valueFn)
+    /// Called when SelectedItem changes.
+    /// Only when using the Items property.
+    [<CustomOperation("SelectedItemChanged")>] member inline _.SelectedItemChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.ITreeViewItem -> unit) = render ==> html.callback("SelectedItemChanged", fn)
+    /// Called when SelectedItem changes.
+    /// Only when using the Items property.
+    [<CustomOperation("SelectedItemChanged")>] member inline _.SelectedItemChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.ITreeViewItem -> Task<unit>) = render ==> html.callbackTask("SelectedItemChanged", fn)
     /// Gets or sets whether the tree should render nodes under collapsed items
     /// Defaults to false
     [<CustomOperation("RenderCollapsedNodes")>] member inline _.RenderCollapsedNodes ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("RenderCollapsedNodes" => (defaultArg x true))
@@ -2507,21 +2550,33 @@ type FluentTreeViewBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     /// Gets or sets the currently selected tree item
     [<CustomOperation("CurrentSelected'")>] member inline _.CurrentSelected' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: Microsoft.FluentUI.AspNetCore.Components.FluentTreeItem * (Microsoft.FluentUI.AspNetCore.Components.FluentTreeItem -> unit)) = render ==> html.bind("CurrentSelected", valueFn)
     /// Called when CurrentSelected changes.
+    /// You cannot update FluentTreeItem properties.
     [<CustomOperation("CurrentSelectedChanged")>] member inline _.CurrentSelectedChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentTreeItem -> unit) = render ==> html.callback("CurrentSelectedChanged", fn)
     /// Called when CurrentSelected changes.
+    /// You cannot update FluentTreeItem properties.
     [<CustomOperation("CurrentSelectedChanged")>] member inline _.CurrentSelectedChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentTreeItem -> Task<unit>) = render ==> html.callbackTask("CurrentSelectedChanged", fn)
     /// Called whenever Selected changes on an
     /// item within the tree.
+    /// You cannot update FluentTreeItem properties.
     [<CustomOperation("OnSelectedChange")>] member inline _.OnSelectedChange ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentTreeItem -> unit) = render ==> html.callback("OnSelectedChange", fn)
     /// Called whenever Selected changes on an
     /// item within the tree.
+    /// You cannot update FluentTreeItem properties.
     [<CustomOperation("OnSelectedChange")>] member inline _.OnSelectedChange ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentTreeItem -> Task<unit>) = render ==> html.callbackTask("OnSelectedChange", fn)
     /// Called whenever Expanded changes on an
     /// item within the tree.
+    /// You cannot update FluentTreeItem properties.
     [<CustomOperation("OnExpandedChange")>] member inline _.OnExpandedChange ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentTreeItem -> unit) = render ==> html.callback("OnExpandedChange", fn)
     /// Called whenever Expanded changes on an
     /// item within the tree.
+    /// You cannot update FluentTreeItem properties.
     [<CustomOperation("OnExpandedChange")>] member inline _.OnExpandedChange ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentTreeItem -> Task<unit>) = render ==> html.callbackTask("OnExpandedChange", fn)
+    /// Gets or sets the template for rendering tree items.
+    [<CustomOperation("ItemTemplate")>] member inline _.ItemTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.ITreeViewItem -> NodeRenderFragment) = render ==> html.renderFragment("ItemTemplate", fn)
+    /// Can only be used when the Items is defined.
+    /// Gets or sets whether the tree should use lazy loading when expanding nodes.
+    /// If True, the tree will only render the children of a node when it is expanded and will remove them when it is collapsed.
+    [<CustomOperation("LazyLoadItems")>] member inline _.LazyLoadItems ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("LazyLoadItems" => (defaultArg x true))
 
 type FluentWizardBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -2617,7 +2672,7 @@ open Fun.Blazor.Operators
 open Microsoft.FluentUI.AspNetCore.Components.DslInternals
 
 type EditFormBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
     [<CustomOperation("AdditionalAttributes")>] member inline _.AdditionalAttributes ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>) = render ==> ("AdditionalAttributes" => x)
     [<CustomOperation("EditContext")>] member inline _.EditContext ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.AspNetCore.Components.Forms.EditContext) = render ==> ("EditContext" => x)
     [<CustomOperation("Enhance")>] member inline _.Enhance ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Enhance" => (defaultArg x true))
@@ -2775,6 +2830,10 @@ type SelectColumnBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric :>
     inherit ColumnBaseBuilder<'FunBlazorGeneric, 'TGridItem>()
     /// Gets or sets the content to be rendered for each row in the table.
     [<CustomOperation("ChildContent")>] member inline _.ChildContent ([<InlineIfLambda>] render: AttrRenderFragment, fn: 'TGridItem -> NodeRenderFragment) = render ==> html.renderFragment("ChildContent", fn)
+    /// Gets or sets whether the [All] checkbox is disabled (not clickable).
+    [<CustomOperation("SelectAllDisabled")>] member inline _.SelectAllDisabled ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("SelectAllDisabled" => (defaultArg x true))
+    /// Gets or sets the template for the [All] checkbox column template.
+    [<CustomOperation("SelectAllTemplate")>] member inline _.SelectAllTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.SelectAllTemplateArgs -> NodeRenderFragment) = render ==> html.renderFragment("SelectAllTemplate", fn)
     /// Gets or sets the list of selected items.
     [<CustomOperation("SelectedItems")>] member inline _.SelectedItems ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<'TGridItem>) = render ==> ("SelectedItems" => x)
     /// Gets or sets the list of selected items.
@@ -2827,7 +2886,7 @@ type SelectColumnBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric :>
     /// When this action is defined, the [All] checkbox is displayed.
     /// This action is required to update you data model.
     [<CustomOperation("SelectAllChanged")>] member inline _.SelectAllChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Nullable<System.Boolean> -> Task<unit>) = render ==> html.callbackTask("SelectAllChanged", fn)
-    /// Gets or sets the function to be executed to display the checked/unchecked icon, depending of you data model.
+    /// Gets or sets the function to executed to determine checked/unchecked status.
     [<CustomOperation("Property")>] member inline _.Property ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("Property" => (System.Func<'TGridItem, System.Boolean>fn))
     [<CustomOperation("SortBy")>] member inline _.SortBy ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.GridSort<'TGridItem>) = render ==> ("SortBy" => x)
 
@@ -2905,6 +2964,10 @@ type FluentKeyCodeBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     [<CustomOperation("OnKeyDown")>] member inline _.OnKeyDown ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentKeyCodeEventArgs -> unit) = render ==> html.callback("OnKeyDown", fn)
     /// Event triggered when a KeyDown event is raised.
     [<CustomOperation("OnKeyDown")>] member inline _.OnKeyDown ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentKeyCodeEventArgs -> Task<unit>) = render ==> html.callbackTask("OnKeyDown", fn)
+    /// Event triggered when a KeyUp event is raised.
+    [<CustomOperation("OnKeyUp")>] member inline _.OnKeyUp ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentKeyCodeEventArgs -> unit) = render ==> html.callback("OnKeyUp", fn)
+    /// Event triggered when a KeyUp event is raised.
+    [<CustomOperation("OnKeyUp")>] member inline _.OnKeyUp ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentKeyCodeEventArgs -> Task<unit>) = render ==> html.callbackTask("OnKeyUp", fn)
     /// Ignore modifier keys (Shift, Alt, Ctrl, Meta) when evaluating the key code.
     [<CustomOperation("IgnoreModifier")>] member inline _.IgnoreModifier ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("IgnoreModifier" => (defaultArg x true))
     /// Gets or sets the list of KeyCode to accept, and only this list, when evaluating the key code.
@@ -3006,6 +3069,14 @@ type FluentToastProviderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micr
     /// Gets or sets whether to show a close button on a toast. Default is true.
     [<CustomOperation("ShowCloseButton")>] member inline _.ShowCloseButton ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("ShowCloseButton" => (defaultArg x true))
 
+type RenderFragmentDialogBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("Content", fragment)
+    [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("Content", fragment { yield! fragments })
+    [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("Content", html.text x)
+    [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("Content", html.text x)
+    [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("Content", html.text x)
+
 type FluentPageScriptBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
     [<CustomOperation("Src")>] member inline _.Src ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Src" => x)
@@ -3028,7 +3099,7 @@ open Fun.Blazor.Operators
 open Microsoft.FluentUI.AspNetCore.Components.DslInternals
 
 type DesignTokenBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
     /// Gets or sets the value of the design token
     [<CustomOperation("Value")>] member inline _.Value ([<InlineIfLambda>] render: AttrRenderFragment, x: 'T) = render ==> ("Value" => x)
     /// Gets or sets the content to apply this design token on
@@ -3840,23 +3911,6 @@ type FocusStrokeInnerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microso
 
 
             
-namespace rec Microsoft.FluentUI.AspNetCore.Components.DslInternals.Components.Dialog.ContentComponents
-
-open System.Threading.Tasks
-open FSharp.Data.Adaptive
-open Fun.Blazor
-open Fun.Blazor.Operators
-open Microsoft.FluentUI.AspNetCore.Components.DslInternals
-
-type RenderFragmentDialogBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
-    [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("Content", fragment)
-    [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("Content", fragment { yield! fragments })
-    [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("Content", html.text x)
-    [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("Content", html.text x)
-    [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("Content", html.text x)
-
-            
 namespace rec Microsoft.FluentUI.AspNetCore.Components.DslInternals.DataGrid.Infrastructure
 
 open System.Threading.Tasks
@@ -3924,6 +3978,15 @@ module DslCE =
     type FluentDatePicker' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentDatePicker>)>] () = inherit FluentDatePickerBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentDatePicker>()
     type FluentCheckbox' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentCheckbox>)>] () = inherit FluentCheckboxBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentCheckbox>()
     type FluentTimePicker' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentTimePicker>)>] () = inherit FluentTimePickerBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentTimePicker>()
+
+    /// Component that provides a list of options.
+    type ListComponentBase'<'TOption> 
+        /// Component that provides a list of options.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.ListComponentBase<_>>)>] () = inherit ListComponentBaseBuilder<Microsoft.FluentUI.AspNetCore.Components.ListComponentBase<'TOption>, 'TOption>()
+    type FluentAutocomplete'<'TOption> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentAutocomplete<_>>)>] () = inherit FluentAutocompleteBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentAutocomplete<'TOption>, 'TOption>()
+    type FluentCombobox'<'TOption> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentCombobox<_>>)>] () = inherit FluentComboboxBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentCombobox<'TOption>, 'TOption>()
+    type FluentListbox'<'TOption> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentListbox<_>>)>] () = inherit FluentListboxBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentListbox<'TOption>, 'TOption>()
+    type FluentSelect'<'TOption> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentSelect<_>>)>] () = inherit FluentSelectBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentSelect<'TOption>, 'TOption>()
     type FluentNumberField'<'TValue when 'TValue : (new : unit -> 'TValue)> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentNumberField<_>>)>] () = inherit FluentNumberFieldBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentNumberField<'TValue>, 'TValue>()
 
     /// Groups child FluentRadio`1 components. 
@@ -3997,15 +4060,6 @@ module DslCE =
     type FluentPersona' 
         /// People picker option component.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentPersona>)>] () = inherit FluentPersonaBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentPersona>()
-
-    /// Component that provides a list of options.
-    type ListComponentBase'<'TOption> 
-        /// Component that provides a list of options.
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.ListComponentBase<_>>)>] () = inherit ListComponentBaseBuilder<Microsoft.FluentUI.AspNetCore.Components.ListComponentBase<'TOption>, 'TOption>()
-    type FluentAutocomplete'<'TOption> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentAutocomplete<_>>)>] () = inherit FluentAutocompleteBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentAutocomplete<'TOption>, 'TOption>()
-    type FluentCombobox'<'TOption> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentCombobox<_>>)>] () = inherit FluentComboboxBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentCombobox<'TOption>, 'TOption>()
-    type FluentListbox'<'TOption> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentListbox<_>>)>] () = inherit FluentListboxBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentListbox<'TOption>, 'TOption>()
-    type FluentSelect'<'TOption> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentSelect<_>>)>] () = inherit FluentSelectBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentSelect<'TOption>, 'TOption>()
     type FluentMainLayout' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentMainLayout>)>] () = inherit FluentMainLayoutBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentMainLayout>()
     type FluentMain' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentMain>)>] () = inherit FluentMainBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentMain>()
     type FluentMenuButton' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentMenuButton>)>] () = inherit FluentMenuButtonBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentMenuButton>()
@@ -4036,13 +4090,7 @@ module DslCE =
     type FluentSkeleton' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentSkeleton>)>] () = inherit FluentSkeletonBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentSkeleton>()
     type FluentSliderLabel'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentSliderLabel<_>>)>] () = inherit FluentSliderLabelBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentSliderLabel<'TValue>, 'TValue>()
     type FluentSortableList'<'TItem> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentSortableList<_>>)>] () = inherit FluentSortableListBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentSortableList<'TItem>, 'TItem>()
-
-    /// This component is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
-    /// Add this line to suppress de compilation error: `@{ #pragma warning disable FluentMultiSplitter }`
-    type FluentMultiSplitter' 
-        /// This component is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
-        /// Add this line to suppress de compilation error: `@{ #pragma warning disable FluentMultiSplitter }`
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentMultiSplitter>)>] () = inherit FluentMultiSplitterBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentMultiSplitter>()
+    type FluentMultiSplitter' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentMultiSplitter>)>] () = inherit FluentMultiSplitterBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentMultiSplitter>()
     type FluentMultiSplitterPane' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentMultiSplitterPane>)>] () = inherit FluentMultiSplitterPaneBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentMultiSplitterPane>()
     type FluentSplitter' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentSplitter>)>] () = inherit FluentSplitterBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentSplitter>()
     type FluentStack' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentStack>)>] () = inherit FluentStackBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentStack>()
@@ -4105,6 +4153,7 @@ module DslCE =
     type CommunicationToast' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.CommunicationToast>)>] () = inherit CommunicationToastBuilder<Microsoft.FluentUI.AspNetCore.Components.CommunicationToast>()
     type ProgressToast' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.ProgressToast>)>] () = inherit ProgressToastBuilder<Microsoft.FluentUI.AspNetCore.Components.ProgressToast>()
     type FluentToastProvider' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentToastProvider>)>] () = inherit FluentToastProviderBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentToastProvider>()
+    type RenderFragmentDialog' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.RenderFragmentDialog>)>] () = inherit RenderFragmentDialogBuilder<Microsoft.FluentUI.AspNetCore.Components.RenderFragmentDialog>()
     type FluentPageScript' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentPageScript>)>] () = inherit FluentPageScriptBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentPageScript>()
     type ConfirmationToast' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.ConfirmationToast>)>] () = inherit ConfirmationToastBuilder<Microsoft.FluentUI.AspNetCore.Components.ConfirmationToast>()
     type _Imports' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components._Imports>)>] () = inherit _ImportsBuilder<Microsoft.FluentUI.AspNetCore.Components._Imports>()
@@ -4923,16 +4972,6 @@ module DslCE =
     type FocusStrokeInner' 
         /// The FocusStrokeInner design token
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.FocusStrokeInner>)>] () = inherit FocusStrokeInnerBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.FocusStrokeInner>()
-            
-namespace Microsoft.FluentUI.AspNetCore.Components.Components.Dialog.ContentComponents
-
-[<AutoOpen>]
-module DslCE =
-  
-    open System.Diagnostics.CodeAnalysis
-    open Microsoft.FluentUI.AspNetCore.Components.DslInternals.Components.Dialog.ContentComponents
-
-    type RenderFragmentDialog' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.Components.Dialog.ContentComponents.RenderFragmentDialog>)>] () = inherit RenderFragmentDialogBuilder<Microsoft.FluentUI.AspNetCore.Components.Components.Dialog.ContentComponents.RenderFragmentDialog>()
             
 namespace Microsoft.FluentUI.AspNetCore.Components.DataGrid.Infrastructure
 
