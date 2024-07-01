@@ -1,5 +1,9 @@
 # Changelog
 
+## [4.0.5] - 2024-07-01
+
+- Improve CE code gen for struct and interface constraints
+
 ## [4.0.4] - 2024-05-17
 
 - Fix generic case: CheckboxGroup<TValue> : AntInputComponentBase<TValue[]>

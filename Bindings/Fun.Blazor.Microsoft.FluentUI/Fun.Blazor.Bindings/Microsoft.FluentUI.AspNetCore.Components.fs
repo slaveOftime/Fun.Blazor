@@ -718,7 +718,7 @@ type FluentSearchBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.A
     /// Gets or sets the visual appearance. See Appearance
     [<CustomOperation("Appearance")>] member inline _.Appearance ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.FluentInputAppearance) = render ==> ("Appearance" => x)
 
-type FluentSliderBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+type FluentSliderBuilder<'FunBlazorGeneric, 'TValue when System.Numerics.INumber<'TValue> and 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentInputBaseBuilder<'FunBlazorGeneric, 'TValue>()
     /// Gets or sets the slider's minimal value.
     [<CustomOperation("Min")>] member inline _.Min ([<InlineIfLambda>] render: AttrRenderFragment, x: 'TValue) = render ==> ("Min" => x)

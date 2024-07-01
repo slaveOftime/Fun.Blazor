@@ -1,5 +1,9 @@
 # Changelog
 
+## [4.0.3] - 2024-07-01
+
+- Improve CE code gen for struct and interface constraints
+
 ## [4.0.2] - 2024-02-20
 
 - Update generator versions
