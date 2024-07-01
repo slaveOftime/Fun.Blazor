@@ -136,7 +136,7 @@ let app =
                 MudIconButton'() {
                     Icon Icons.Custom.Brands.GitHub
                     Color Color.Inherit
-                    Link "https://github.com/slaveOftime/Fun.Blazor"
+                    Href "https://github.com/slaveOftime/Fun.Blazor"
                 }
             |]
         }
@@ -146,7 +146,6 @@ let app =
             MudDrawer'() {
                 Open' binding
                 Elevation 25
-                PreserveOpenState
                 ClipMode DrawerClipMode.Always
                 navmenu
             }
@@ -199,7 +198,7 @@ let app =
                         MudScrollToTop'() {
                             TopOffset 400
                             MudFab'() {
-                                Icon Icons.Material.Filled.KeyboardArrowUp
+                                StartIcon Icons.Material.Filled.KeyboardArrowUp
                                 Color Color.Primary
                             }
                         }

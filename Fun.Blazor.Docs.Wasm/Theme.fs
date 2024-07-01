@@ -11,6 +11,6 @@ type FunTheme =
 
     static member Create() =
         MudTheme(
-            Palette = PaletteLight(Primary = primaryColor, Secondary = secondaryColor),
+            PaletteLight = PaletteLight(Primary = primaryColor, Secondary = secondaryColor),
             PaletteDark = PaletteDark(Primary = primaryColor, Secondary = secondaryColor, Black = "#202120")
         )

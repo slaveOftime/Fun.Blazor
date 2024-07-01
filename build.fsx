@@ -19,7 +19,6 @@ open NuGet.Protocol
 open NuGet.Protocol.Core.Types
 
 
-
 let options = {|
     NUGET_API_KEY = EnvArg.Create("NUGET_API_KEY", description = "NUGET api key")
     WASM = CmdArg.Create(longName = "--wasm", description = "Run in blazor wasm mode, By default will run in server mode.")
