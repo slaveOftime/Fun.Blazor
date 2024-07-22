@@ -42,7 +42,7 @@
 		<Compile Include="Startup.fs" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="BlazorWasmPreRendering.Build" Version="3.1.0-preview.4" />
+		<PackageReference Include="BlazorWasmPreRendering.Build" Version="4.0.0" />
 		<PackageReference Include="FSharp.SystemTextJson" Version="1.2.42" />
 		<PackageReference Include="Majorsoft.Blazor.WebAssembly.Logging.Console" Version="1.5.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.*" />

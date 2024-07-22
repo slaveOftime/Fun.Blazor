@@ -184,6 +184,7 @@ let app =
             theme
             MudDialogProvider'.create ()
             MudSnackbarProvider'.create ()
+            MudPopoverProvider'.create ()
             MudLayout'.create [|
                 appBar
                 drawer
