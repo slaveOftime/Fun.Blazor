@@ -5,13 +5,13 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <TrimMode>link</TrimMode>
     <IsTrimmable>true</IsTrimmable>
-    <Version>3.3.0</Version>
+    <Version>3.4.0</Version>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Fun.Blazor.Bindings\ApexCharts.fs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference FunBlazor="" FunBlazorNamespace="ApexCharts" Include="Blazor-ApexCharts" Version="3.3.0" />
+    <PackageReference FunBlazor="" FunBlazorNamespace="ApexCharts" FunBlazorAssemblyName="Blazor-ApexCharts" Include="Blazor-ApexCharts" Version="3.4.0" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Update="FSharp.Core" Version="6.0.0" />

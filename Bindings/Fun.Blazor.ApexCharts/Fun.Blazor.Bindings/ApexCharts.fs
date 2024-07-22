@@ -143,6 +143,8 @@ type ApexChartBuilder<'FunBlazorGeneric, 'TItem when 'TItem : not struct and 'Fu
     [<CustomOperation("OnAnnotationPointMouseLeave")>] member inline _.OnAnnotationPointMouseLeave ([<InlineIfLambda>] render: AttrRenderFragment, fn: ApexCharts.AnnotationEvent<'TItem> -> Task<unit>) = render ==> html.callbackTask("OnAnnotationPointMouseLeave", fn)
     /// A custom function to execute for generating Y-axis labels. Only supported in Blazor WebAssembly!
     [<CustomOperation("FormatYAxisLabel")>] member inline _.FormatYAxisLabel ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("FormatYAxisLabel" => (System.Func<System.Decimal, System.String>fn))
+    /// A custom function to execute for generating X-axis labels. Only supported in Blazor WebAssembly!
+    [<CustomOperation("FormatXAxisLabel")>] member inline _.FormatXAxisLabel ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("FormatXAxisLabel" => (System.Func<System.Decimal, System.String>fn))
     /// Enables merging multiple data points into a single item in the chart
     [<CustomOperation("GroupPoints")>] member inline _.GroupPoints ([<InlineIfLambda>] render: AttrRenderFragment, x: ApexCharts.GroupPoints) = render ==> ("GroupPoints" => x)
 

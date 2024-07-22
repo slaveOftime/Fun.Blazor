@@ -5,13 +5,13 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <TrimMode>link</TrimMode>
     <IsTrimmable>true</IsTrimmable>
-    <Version>8.0.6</Version>
+    <Version>8.0.7</Version>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Fun.Blazor.Bindings\Microsoft.AspNetCore.Components.Authorization.fs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference FunBlazor="" FunBlazorNamespace="Microsoft.AspNetCore.Components.Authorization" Include="Microsoft.AspNetCore.Components.Authorization" Version="8.0.6" />
+    <PackageReference FunBlazor="" FunBlazorNamespace="Microsoft.AspNetCore.Components.Authorization" FunBlazorAssemblyName="Microsoft.AspNetCore.Components.Authorization" Include="Microsoft.AspNetCore.Components.Authorization" Version="8.0.7" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Update="FSharp.Core" Version="6.0.0" />
