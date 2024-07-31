@@ -1764,7 +1764,6 @@ type DialogWrapperBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
 
 type ModalBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit AntDomComponentBaseBuilder<'FunBlazorGeneric>()
-    [<CustomOperation("ModalRef")>] member inline _.ModalRef ([<InlineIfLambda>] render: AttrRenderFragment, x: AntDesign.ModalRef) = render ==> ("ModalRef" => x)
     [<CustomOperation("AfterClose")>] member inline _.AfterClose ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("AfterClose" => (System.Func<System.Threading.Tasks.Task>fn))
     [<CustomOperation("BodyStyle")>] member inline _.BodyStyle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("BodyStyle" => x)
     [<CustomOperation("CancelText")>] member inline _.CancelText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<OneOf.OneOf<System.String, Microsoft.AspNetCore.Components.RenderFragment>>) = render ==> ("CancelText" => x)
