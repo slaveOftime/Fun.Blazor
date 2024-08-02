@@ -1,5 +1,9 @@
 # Changelog
 
+## [4.0.7] - 2024-08-02
+
+- Improve ce code gen for ce instances
+
 ## [4.0.6] - 2024-08-02
 
 - Support expose static CE instance for lesser allocation

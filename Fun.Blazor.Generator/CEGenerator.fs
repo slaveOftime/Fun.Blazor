@@ -306,7 +306,7 @@ let generateCode (targetNamespace: string) (opens: string) (tys: Type seq) useIn
         |> Seq.groupBy (fun (Namespace ns, _) -> ns |> trimNamespace |> addStrIfNotEmpty ".")
         |> Seq.map (fun (subNamespace, group) ->
             let metas = group |> Seq.map snd |> Seq.concat
-            let code =
+            let codes =
                 metas
                 |> Seq.map (fun meta ->
                     let originalGenerics =
@@ -350,10 +350,21 @@ let generateCode (targetNamespace: string) (opens: string) (tys: Type seq) useIn
                         |> addStrIfNotEmpty "\n"
                         |> appendStrIfNotEmpty (String(' ', 8))
                     
-                    $"""{typeComment}    type {typeName}'{genericStrWithConstraint} {constructorComment}{linkerAttrStr} () = inherit {builderName}{builderGenerics}()
-    let {typeName}''{genericStrWithConstraint} = {typeName}'{genericStrWithoutConstraint}()
-    """
+                    let ceType = $"""{typeComment}    type {typeName}'{genericStrWithConstraint} {constructorComment}{linkerAttrStr} () = inherit {builderName}{builderGenerics}()"""
+                    let ceInstance = $"""    let {typeName}''{genericStrWithConstraint} = {typeName}'{genericStrWithoutConstraint}()"""
+
+                    typeName, ceType, ceInstance
                 )
+
+            let ceTypesCode =
+                codes
+                |> Seq.map (fun (_, x, _) -> x)
+                |> String.concat "\n"
+
+            let cetInstancesCode =
+                codes
+                |> Seq.distinctBy (fun (x, _, _) -> x)
+                |> Seq.map (fun (_, _, x) -> x)
                 |> String.concat "\n"
 
             $"""namespace {targetNamespace}{subNamespace}
@@ -364,7 +375,15 @@ module DslCE =
     open System.Diagnostics.CodeAnalysis
     open {targetNamespace}.{internalSegment}{subNamespace}
 
-{code}
+{ceTypesCode}
+
+[<AutoOpen>]
+module DslCEInstances =
+  
+    open System.Diagnostics.CodeAnalysis
+    open {targetNamespace}.{internalSegment}{subNamespace}
+
+{cetInstancesCode}
             """
         )
         |> String.concat "\n"
