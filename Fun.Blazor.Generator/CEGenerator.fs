@@ -324,7 +324,14 @@ let generateCode (targetNamespace: string) (opens: string) (tys: Type seq) useIn
                         meta.generics
                         |> getTypeNames
                         |> createGenerics
+
+                    let genericStrWithConstraint =
+                        genericStr
                         |> appendStr (createConstraint meta.generics)
+                        |> closeGenerics
+
+                    let genericStrWithoutConstraint =
+                        genericStr
                         |> closeGenerics
 
                     let linkerGenericStr =
@@ -342,7 +349,10 @@ let generateCode (targetNamespace: string) (opens: string) (tys: Type seq) useIn
                         |> makeSummaryDoc 8
                         |> addStrIfNotEmpty "\n"
                         |> appendStrIfNotEmpty (String(' ', 8))
-                    $"""{typeComment}    type {typeName}'{genericStr} {constructorComment}{linkerAttrStr} () = inherit {builderName}{builderGenerics}()"""
+                    
+                    $"""{typeComment}    type {typeName}'{genericStrWithConstraint} {constructorComment}{linkerAttrStr} () = inherit {builderName}{builderGenerics}()
+    let {typeName}''{genericStrWithConstraint} = {typeName}'{genericStrWithoutConstraint}()
+    """
                 )
                 |> String.concat "\n"
 

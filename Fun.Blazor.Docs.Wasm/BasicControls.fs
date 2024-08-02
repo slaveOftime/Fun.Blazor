@@ -22,7 +22,7 @@ let spaceH4 = spaceH 16
 
 
 let linearProgress =
-    MudProgressLinear'() {
+    MudProgressLinear'' {
         Indeterminate true
         Color Color.Primary
     }
@@ -30,7 +30,7 @@ let linearProgress =
 
 let notFound = div {
     style { padding 20 }
-    MudText'() {
+    MudText'' {
         Typo Typo.subtitle1
         "Content not found"
     }
@@ -40,20 +40,20 @@ let notFound = div {
 let errorBundary (views: NodeRenderFragment) =
     ErrorBoundary'() {
         ErrorContent(fun ex ->
-            MudPaper'() {
+            MudPaper'' {
                 style {
                     padding 10
                     margin 20
                 }
                 Elevation 10
                 childContent [|
-                    MudText'() {
+                    MudText'' {
                         Color Color.Error
                         Typo Typo.subtitle1
                         "Some error hanppened, you can try to refresh."
                     }
                     spaceV4
-                    MudAlert'() {
+                    MudAlert'' {
                         Severity Severity.Error
                         ex.Message
                     }

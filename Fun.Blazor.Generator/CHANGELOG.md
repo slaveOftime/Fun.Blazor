@@ -1,5 +1,9 @@
 # Changelog
 
+## [4.0.6] - 2024-08-02
+
+- Support expose static CE instance for lesser allocation
+
 ## [4.0.5] - 2024-07-01
 
 - Improve CE code gen for struct and interface constraints

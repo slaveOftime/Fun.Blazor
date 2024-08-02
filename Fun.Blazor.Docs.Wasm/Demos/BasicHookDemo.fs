@@ -18,7 +18,7 @@ let entry =
             }
         )
 
-        MudAlert'() {
+        MudAlert'' {
             Severity Severity.Info
             adaptiview () {
                 let! msg = msg

@@ -28,11 +28,11 @@ let navmenu =
                         match item with
                         | DocTreeNode.Category(indexDoc, docs, childs) ->
                             let path = path + "/" + sanitizeFileName indexDoc.Name
-                            MudNavGroup'() {
+                            MudNavGroup'' {
                                 Title(getDocName indexDoc)
                                 childContent [|
                                     for doc in docs do
-                                        MudNavLink'() {
+                                        MudNavLink'' {
                                             Href(path + "/" + sanitizeFileName doc.Name)
                                             getDocName doc
                                         }
@@ -41,9 +41,9 @@ let navmenu =
                             }
                         | DocTreeNode.Doc doc ->
                             let docName = getDocName doc
-                            MudNavLink'() {
+                            MudNavLink'' {
                                 Href(path + "/" + sanitizeFileName doc.Name)
-                                MudText'() {
+                                MudText'' {
                                     Typo Typo.``inherit``
                                     Color(
                                         if docName = "Get Started" || docName = "入门指南" then
@@ -75,7 +75,7 @@ let navmenu =
                             let! langStr = hook.Lang
                             let! tree, isLoading = hook.GetOrLoadDocsTree() |> AVal.map (LoadingState.unzip [])
                             if isLoading then MudProgressLinear'.create ()
-                            MudNavMenu'() { buildDocMenuTree langStr docsSeg tree }
+                            MudNavMenu'' { buildDocMenuTree langStr docsSeg tree }
                         }
                     }
                 |]

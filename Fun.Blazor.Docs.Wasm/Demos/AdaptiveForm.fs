@@ -53,7 +53,7 @@ module Extensions =
         [<CustomOperation "Errors">]
         member inline _.Errors([<InlineIfLambda>] render: AttrRenderFragment, errors: _ seq) =
             render
-            ==> MudFormComponent'() {
+            ==> MudFormComponent'' {
                 Error(errors |> Seq.isEmpty |> not)
                 ErrorText(errors |> Seq.map string |> String.concat ", ")
                 asAttrRenderFragment
@@ -65,7 +65,7 @@ let private addressForm (modelForm: AdaptiveForm<Address, AddressError>) =
     html.fragment [|
         adaptiview () {
             let! binding, errors = modelForm.UseFieldWithErrors(fun x -> x.Zip)
-            MudTextField'() {
+            MudTextField'' {
                 Label "Zip code"
                 Value' binding
                 Immediate true
@@ -74,7 +74,7 @@ let private addressForm (modelForm: AdaptiveForm<Address, AddressError>) =
         }
         adaptiview () {
             let! binding = modelForm.UseField(fun x -> x.Street)
-            MudTextField'() {
+            MudTextField'' {
                 Label "Street"
                 Value' binding
                 Immediate true
@@ -124,14 +124,14 @@ let entry =
                 .GetSubForm((fun x -> x.Address), AddressError)
                 .AddValidators((fun x -> x.Zip), true, [ required ZipCodeCannotBeEmpty ])
 
-        MudPaper'() {
+        MudPaper'' {
             Elevation 10
             style { padding 10 }
             childContent [
                 MudForm'.create [
                     adaptiview () {
                         let! binding, errors = modelForm.UseFieldWithErrors(fun x -> x.Name)
-                        MudTextField'() {
+                        MudTextField'' {
                             Label "Name"
                             Value' binding
                             Immediate true
@@ -141,7 +141,7 @@ let entry =
                     }
                     adaptiview () {
                         let! binding, errors = modelForm.UseFieldWithErrors(fun x -> x.Password)
-                        MudTextField'() {
+                        MudTextField'' {
                             Label "Password"
                             Value' binding
                             Immediate true
@@ -152,7 +152,7 @@ let entry =
                     }
                     adaptiview () {
                         let! binding, errors = modelForm.UseFieldWithErrors(fun x -> x.Age)
-                        MudTextField'() {
+                        MudTextField'' {
                             Label "Age"
                             Value' binding
                             Immediate true
@@ -162,7 +162,7 @@ let entry =
                     }
                     adaptiview () {
                         let! (value', setValue), errors = modelForm.UseFieldWithErrors(fun x -> x.Birthday)
-                        MudDatePicker'() {
+                        MudDatePicker'' {
                             Label "Birthday"
                             Date(Nullable value')
                             DateChanged(Option.ofNullable >> Option.iter setValue)
@@ -174,7 +174,7 @@ let entry =
                 spaceV4
                 adaptiview () {
                     let! errors = modelForm.UseErrors()
-                    MudAlert'() {
+                    MudAlert'' {
                         Severity Severity.Info
                         $"Total errors is {errors.Length}"
                     }
@@ -183,15 +183,15 @@ let entry =
                 adaptiview () {
                     let! hasChanges = modelForm.UseHasChanges()
                     if hasChanges then
-                        MudAlert'() {
+                        MudAlert'' {
                             Severity Severity.Info
                             "There are some changes"
                         }
-                    MudButton'() {
+                    MudButton'' {
                         OnClick(fun _ -> modelForm.SetValue(Model.DefaultValue))
                         "Reset"
                     }
-                    MudButton'() {
+                    MudButton'' {
                         OnClick(fun _ -> modelForm.UseFieldSetter (fun x -> x.Age) (24))
                         "Set age to 24"
                     }

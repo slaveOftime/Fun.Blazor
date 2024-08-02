@@ -48,7 +48,7 @@ module HtmlTemplateDemo =
                 let increaseBy2 () = setCount (count + 2)
 
                 let increaseBtn =
-                    MudButton'() {
+                    MudButton'' {
                         OnClick(fun _ -> setCount (count + 1))
                         Variant Variant.Filled
                         Color Color.Primary

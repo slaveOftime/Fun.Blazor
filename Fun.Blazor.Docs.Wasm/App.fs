@@ -25,17 +25,17 @@ let private isReadyIndicator =
                 div {
                     style { margin -40 10 40 10 }
                     childContent [|
-                        MudProgressLinear'() {
+                        MudProgressLinear'' {
                             Color Color.Warning
                             Indeterminate
                         }
                         spaceV2
-                        MudText'() {
+                        MudText'' {
                             Color Color.Warning
                             Typo Typo.subtitle2
                             ".NET WASM is still loading. You can interact in this page after it's fully loaded."
                         }
-                        MudText'() {
+                        MudText'' {
                             Color Color.Info
                             Typo Typo.body2
                             "Current page is prerendered."
@@ -54,7 +54,7 @@ let app =
 
         let theme = adaptiview () {
             let! isDark = shareStore.IsDarkMode
-            MudThemeProvider'() {
+            MudThemeProvider'' {
                 IsDarkMode isDark
                 Theme(Theme.FunTheme.Create())
             }
@@ -68,7 +68,7 @@ let app =
 
         let menuBtn = adaptiview () {
             let! isOpen, setIsOpen = isOpen.WithSetter()
-            MudIconButton'() {
+            MudIconButton'' {
                 Icon Icons.Material.Filled.Menu
                 Color Color.Inherit
                 Edge Edge.Start
@@ -76,7 +76,7 @@ let app =
             }
         }
 
-        let appBar = MudAppBar'() {
+        let appBar = MudAppBar'' {
             style {
                 "backdrop-filter: blur(15px)"
                 backgroundColor "transparent"
@@ -88,13 +88,13 @@ let app =
                 menuBtn
                 a {
                     href ""
-                    MudText'() {
+                    MudText'' {
                         Typo Typo.h6
                         Color Color.Primary
                         "Fun Blazor"
                     }
                 }
-                MudImage'() {
+                MudImage'' {
                     style { margin 10 }
                     Height 35
                     Width 35
@@ -103,17 +103,17 @@ let app =
                 MudSpacer'.create ()
                 adaptiview () {
                     let! langStr, setLang = hook.Lang.WithSetter()
-                    MudMenu'() {
+                    MudMenu'' {
                         style { maxWidth 120 }
                         Label langStr
                         StartIcon Icons.Material.Filled.Translate
                         EndIcon Icons.Material.Filled.KeyboardArrowDown
                         childContent [|
-                            MudMenuItem'() {
+                            MudMenuItem'' {
                                 OnClick(fun _ -> setLang "en")
                                 "English"
                             }
-                            MudMenuItem'() {
+                            MudMenuItem'' {
                                 OnClick(fun _ -> setLang "cn")
                                 "中文"
                             }
@@ -122,7 +122,7 @@ let app =
                 }
                 adaptiview () {
                     let! isDark, setIsDark = shareStore.IsDarkMode.WithSetter()
-                    MudIconButton'() {
+                    MudIconButton'' {
                         Color Color.Inherit
                         Icon(
                             if isDark then
@@ -133,7 +133,7 @@ let app =
                         OnClick(fun _ -> setIsDark (not isDark))
                     }
                 }
-                MudIconButton'() {
+                MudIconButton'' {
                     Icon Icons.Custom.Brands.GitHub
                     Color Color.Inherit
                     Href "https://github.com/slaveOftime/Fun.Blazor"
@@ -143,7 +143,7 @@ let app =
 
         let drawer = adaptiview () {
             let! binding = isOpen.WithSetter()
-            MudDrawer'() {
+            MudDrawer'' {
                 Open' binding
                 Elevation 25
                 ClipMode DrawerClipMode.Always
@@ -188,7 +188,7 @@ let app =
             MudLayout'.create [|
                 appBar
                 drawer
-                MudMainContent'() {
+                MudMainContent'' {
                     style {
                         paddingTop 100
                         paddingBottom 64
@@ -196,9 +196,9 @@ let app =
                     childContent [|
                         isReadyIndicator
                         errorBundary routesView
-                        MudScrollToTop'() {
+                        MudScrollToTop'' {
                             TopOffset 400
-                            MudFab'() {
+                            MudFab'' {
                                 StartIcon Icons.Material.Filled.KeyboardArrowUp
                                 Color Color.Primary
                             }

@@ -42,25 +42,25 @@ let private update msg model =
 
 let private view model (dispatch: Msg -> unit) =
     div.create [
-        MudText'() {
+        MudText'' {
             Typo Typo.h6
             Color Color.Primary
             model.Count
         }
-        MudButtonGroup'() {
+        MudButtonGroup'' {
             Variant Variant.Outlined
-            childContent [
-                MudButton'() {
+            childContent [|
+                MudButton'' {
                     Color Color.Primary
                     OnClick(fun _ -> Increase |> dispatch)
                     "Increase"
                 }
-                MudButton'() {
+                MudButton'' {
                     Color Color.Primary
                     OnClick(fun _ -> IncreaseTask |> dispatch)
                     "Increase task (delayed in 1s)"
                 }
-                MudButton'() {
+                MudButton'' {
                     Color Color.Secondary
                     Variant Variant.Outlined
                     OnClick(fun _ -> task {
@@ -69,13 +69,13 @@ let private view model (dispatch: Msg -> unit) =
                     })
                     "Increase (Delay 1s in click event)"
                 }
-                MudButton'() {
+                MudButton'' {
                     Color Color.Secondary
                     Variant Variant.Outlined
                     OnClick(fun _ -> Decrease |> dispatch)
                     "Decrease (loop in 3s)"
                 }
-            ]
+            |]
         }
     ]
 

@@ -29,14 +29,14 @@ let entry =
                 |> hook.AddDispose
             )
 
-            MudPaper'() {
+            MudPaper'' {
                 style { padding 10 }
-                childContent [
+                childContent [|
                     MudText'.create "externalDemo1"
                     spaceV3
                     div { "extenalX = %d{extenalX}" }
                     spaceV2
                     div { $"Count = {count}" }
-                ]
+                |]
             }
     )

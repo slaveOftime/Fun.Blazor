@@ -31,7 +31,7 @@ module ScopedServiceDemo =
                     |]
                 }
 
-            MudPaper'() {
+            MudPaper'' {
                 style { padding 10 }
                 Elevation 2
                 childContent [|

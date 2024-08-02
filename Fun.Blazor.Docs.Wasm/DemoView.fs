@@ -43,7 +43,7 @@ let demoView (demo: Demo) =
             )
 
 
-            MudPaper'() {
+            MudPaper'' {
                 style { padding 20 }
                 Elevation 5
                 childContent [|
@@ -57,7 +57,7 @@ let demoView (demo: Demo) =
                         }
                         adaptiview () {
                             let! showCode, setShowCode = showCode.WithSetter()
-                            MudButton'() {
+                            MudButton'' {
                                 OnClick(fun _ -> setShowCode (not showCode))
                                 StartIcon(if showCode then Icons.Material.Filled.HideSource else Icons.Material.Filled.Source)
                                 if showCode then "Hide source code" else "Show source code"

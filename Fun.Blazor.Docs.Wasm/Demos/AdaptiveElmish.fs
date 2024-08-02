@@ -40,27 +40,27 @@ let entry =
         div.create [|
             adaptiview () {
                 let! count = state |> AVal.map (fun x -> x.Count1) // only intrested in Count1
-                MudText'() {
+                MudText'' {
                     Typo Typo.h6
                     $"Count1={count} "
                 }
             }
             adaptiview () {
                 let! count = state |> AVal.map (fun x -> x.Count2) // only intrested in Count2
-                MudText'() {
+                MudText'' {
                     Typo Typo.h6
                     $"Count2={count}"
                 }
             }
             spaceV2
-            MudButtonGroup'() {
+            MudButtonGroup'' {
                 Variant Variant.Outlined
                 childContent [|
-                    MudButton'() {
+                    MudButton'' {
                         OnClick(fun _ -> Increase |> dispatch)
                         "Increase Count1"
                     }
-                    MudButton'() {
+                    MudButton'' {
                         OnClick(fun _ -> IncreaseCount2 |> dispatch)
                         "Increase Count2"
                     }
