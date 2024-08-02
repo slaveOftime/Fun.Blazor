@@ -3135,572 +3135,389 @@ module DslCE =
     open AntDesign.DslInternals
 
     type AntComponentBase' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.AntComponentBase>)>] () = inherit AntComponentBaseBuilder<AntDesign.AntComponentBase>()
-    let AntComponentBase'' = AntComponentBase'()
-    
     type AntDomComponentBase' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.AntDomComponentBase>)>] () = inherit AntDomComponentBaseBuilder<AntDesign.AntDomComponentBase>()
-    let AntDomComponentBase'' = AntDomComponentBase'()
-    
     type Dropdown' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Dropdown>)>] () = inherit DropdownBuilder<AntDesign.Dropdown>()
-    let Dropdown'' = Dropdown'()
-    
     type DropdownButton' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.DropdownButton>)>] () = inherit DropdownButtonBuilder<AntDesign.DropdownButton>()
-    let DropdownButton'' = DropdownButton'()
-    
     type Popconfirm' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Popconfirm>)>] () = inherit PopconfirmBuilder<AntDesign.Popconfirm>()
-    let Popconfirm'' = Popconfirm'()
-    
     type Popover' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Popover>)>] () = inherit PopoverBuilder<AntDesign.Popover>()
-    let Popover'' = Popover'()
-    
     type Tooltip' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Tooltip>)>] () = inherit TooltipBuilder<AntDesign.Tooltip>()
-    let Tooltip'' = Tooltip'()
-    
     type ColumnBase' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.ColumnBase>)>] () = inherit ColumnBaseBuilder<AntDesign.ColumnBase>()
-    let ColumnBase'' = ColumnBase'()
-    
     type ActionColumn' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.ActionColumn>)>] () = inherit ActionColumnBuilder<AntDesign.ActionColumn>()
-    let ActionColumn'' = ActionColumn'()
-    
     type ColumnDefinition' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.ColumnDefinition>)>] () = inherit ColumnDefinitionBuilder<AntDesign.ColumnDefinition>()
-    let ColumnDefinition'' = ColumnDefinition'()
-    
     type TableCell' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.TableCell>)>] () = inherit TableCellBuilder<AntDesign.TableCell>()
-    let TableCell'' = TableCell'()
-    
     type SimpleTableHeader' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.SimpleTableHeader>)>] () = inherit SimpleTableHeaderBuilder<AntDesign.SimpleTableHeader>()
-    let SimpleTableHeader'' = SimpleTableHeader'()
-    
     type Column'<'TData> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Column<_>>)>] () = inherit ColumnBuilder<AntDesign.Column<'TData>, 'TData>()
-    let Column''<'TData> = Column'<'TData>()
-    
     type PropertyColumn'<'TItem, 'TProp> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.PropertyColumn<_, _>>)>] () = inherit PropertyColumnBuilder<AntDesign.PropertyColumn<'TItem, 'TProp>, 'TItem, 'TProp>()
-    let PropertyColumn''<'TItem, 'TProp> = PropertyColumn'<'TItem, 'TProp>()
-    
     type TableHeader'<'TData> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.TableHeader<_>>)>] () = inherit TableHeaderBuilder<AntDesign.TableHeader<'TData>, 'TData>()
-    let TableHeader''<'TData> = TableHeader'<'TData>()
-    
     type Selection' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Selection>)>] () = inherit SelectionBuilder<AntDesign.Selection>()
-    let Selection'' = Selection'()
-    
     type SummaryCell' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.SummaryCell>)>] () = inherit SummaryCellBuilder<AntDesign.SummaryCell>()
-    let SummaryCell'' = SummaryCell'()
-    
     type DatePickerPanelBase'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.DatePickerPanelBase<_>>)>] () = inherit DatePickerPanelBaseBuilder<AntDesign.DatePickerPanelBase<'TValue>, 'TValue>()
-    let DatePickerPanelBase''<'TValue> = DatePickerPanelBase'<'TValue>()
-    
     type Button' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Button>)>] () = inherit ButtonBuilder<AntDesign.Button>()
-    let Button'' = Button'()
-    
     type DownloadButton' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.DownloadButton>)>] () = inherit DownloadButtonBuilder<AntDesign.DownloadButton>()
-    let DownloadButton'' = DownloadButton'()
-    
     type Col' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Col>)>] () = inherit ColBuilder<AntDesign.Col>()
-    let Col'' = Col'()
-    
     type GridCol' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.GridCol>)>] () = inherit GridColBuilder<AntDesign.GridCol>()
-    let GridCol'' = GridCol'()
-    
     type Row' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Row>)>] () = inherit RowBuilder<AntDesign.Row>()
-    let Row'' = Row'()
-    
     type GridRow' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.GridRow>)>] () = inherit GridRowBuilder<AntDesign.GridRow>()
-    let GridRow'' = GridRow'()
-    
     type Icon' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Icon>)>] () = inherit IconBuilder<AntDesign.Icon>()
-    let Icon'' = Icon'()
-    
     type IconFont' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.IconFont>)>] () = inherit IconFontBuilder<AntDesign.IconFont>()
-    let IconFont'' = IconFont'()
-    
     type NotificationBase' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.NotificationBase>)>] () = inherit NotificationBaseBuilder<AntDesign.NotificationBase>()
-    let NotificationBase'' = NotificationBase'()
-    
     type Notification' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Notification>)>] () = inherit NotificationBuilder<AntDesign.Notification>()
-    let Notification'' = Notification'()
-    
     type NotificationItem' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.NotificationItem>)>] () = inherit NotificationItemBuilder<AntDesign.NotificationItem>()
-    let NotificationItem'' = NotificationItem'()
-    
     type TypographyBase' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.TypographyBase>)>] () = inherit TypographyBaseBuilder<AntDesign.TypographyBase>()
-    let TypographyBase'' = TypographyBase'()
-    
     type Link' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Link>)>] () = inherit LinkBuilder<AntDesign.Link>()
-    let Link'' = Link'()
-    
     type Paragraph' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Paragraph>)>] () = inherit ParagraphBuilder<AntDesign.Paragraph>()
-    let Paragraph'' = Paragraph'()
-    
     type Text' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Text>)>] () = inherit TextBuilder<AntDesign.Text>()
-    let Text'' = Text'()
-    
     type Title' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Title>)>] () = inherit TitleBuilder<AntDesign.Title>()
-    let Title'' = Title'()
-    
     type Affix' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Affix>)>] () = inherit AffixBuilder<AntDesign.Affix>()
-    let Affix'' = Affix'()
-    
     type Alert' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Alert>)>] () = inherit AlertBuilder<AntDesign.Alert>()
-    let Alert'' = Alert'()
-    
     type Anchor' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Anchor>)>] () = inherit AnchorBuilder<AntDesign.Anchor>()
-    let Anchor'' = Anchor'()
-    
     type AnchorLink' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.AnchorLink>)>] () = inherit AnchorLinkBuilder<AntDesign.AnchorLink>()
-    let AnchorLink'' = AnchorLink'()
-    
     type AutoCompleteOptGroup' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.AutoCompleteOptGroup>)>] () = inherit AutoCompleteOptGroupBuilder<AntDesign.AutoCompleteOptGroup>()
-    let AutoCompleteOptGroup'' = AutoCompleteOptGroup'()
-    
     type AutoCompleteOption' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.AutoCompleteOption>)>] () = inherit AutoCompleteOptionBuilder<AntDesign.AutoCompleteOption>()
-    let AutoCompleteOption'' = AutoCompleteOption'()
-    
     type Avatar' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Avatar>)>] () = inherit AvatarBuilder<AntDesign.Avatar>()
-    let Avatar'' = Avatar'()
-    
     type AvatarGroup' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.AvatarGroup>)>] () = inherit AvatarGroupBuilder<AntDesign.AvatarGroup>()
-    let AvatarGroup'' = AvatarGroup'()
-    
     type BackTop' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.BackTop>)>] () = inherit BackTopBuilder<AntDesign.BackTop>()
-    let BackTop'' = BackTop'()
-    
     type Badge' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Badge>)>] () = inherit BadgeBuilder<AntDesign.Badge>()
-    let Badge'' = Badge'()
-    
     type BadgeRibbon' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.BadgeRibbon>)>] () = inherit BadgeRibbonBuilder<AntDesign.BadgeRibbon>()
-    let BadgeRibbon'' = BadgeRibbon'()
-    
     type Breadcrumb' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Breadcrumb>)>] () = inherit BreadcrumbBuilder<AntDesign.Breadcrumb>()
-    let Breadcrumb'' = Breadcrumb'()
-    
     type ButtonGroup' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.ButtonGroup>)>] () = inherit ButtonGroupBuilder<AntDesign.ButtonGroup>()
-    let ButtonGroup'' = ButtonGroup'()
-    
     type Calendar' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Calendar>)>] () = inherit CalendarBuilder<AntDesign.Calendar>()
-    let Calendar'' = Calendar'()
-    
     type Card' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Card>)>] () = inherit CardBuilder<AntDesign.Card>()
-    let Card'' = Card'()
-    
     type CardAction' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.CardAction>)>] () = inherit CardActionBuilder<AntDesign.CardAction>()
-    let CardAction'' = CardAction'()
-    
     type CardGrid' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.CardGrid>)>] () = inherit CardGridBuilder<AntDesign.CardGrid>()
-    let CardGrid'' = CardGrid'()
-    
     type Carousel' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Carousel>)>] () = inherit CarouselBuilder<AntDesign.Carousel>()
-    let Carousel'' = Carousel'()
-    
     type CarouselSlick' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.CarouselSlick>)>] () = inherit CarouselSlickBuilder<AntDesign.CarouselSlick>()
-    let CarouselSlick'' = CarouselSlick'()
-    
     type Collapse' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Collapse>)>] () = inherit CollapseBuilder<AntDesign.Collapse>()
-    let Collapse'' = Collapse'()
-    
     type Panel' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Panel>)>] () = inherit PanelBuilder<AntDesign.Panel>()
-    let Panel'' = Panel'()
-    
     type Comment' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Comment>)>] () = inherit CommentBuilder<AntDesign.Comment>()
-    let Comment'' = Comment'()
-    
     type AntContainerComponentBase' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.AntContainerComponentBase>)>] () = inherit AntContainerComponentBaseBuilder<AntDesign.AntContainerComponentBase>()
-    let AntContainerComponentBase'' = AntContainerComponentBase'()
-    
     type AntInputComponentBase'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.AntInputComponentBase<_>>)>] () = inherit AntInputComponentBaseBuilder<AntDesign.AntInputComponentBase<'TValue>, 'TValue>()
-    let AntInputComponentBase''<'TValue> = AntInputComponentBase'<'TValue>()
-    
     type AntInputBoolComponentBase' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.AntInputBoolComponentBase>)>] () = inherit AntInputBoolComponentBaseBuilder<AntDesign.AntInputBoolComponentBase>()
-    let AntInputBoolComponentBase'' = AntInputBoolComponentBase'()
-    
     type Checkbox' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Checkbox>)>] () = inherit CheckboxBuilder<AntDesign.Checkbox>()
-    let Checkbox'' = Checkbox'()
-    
     type Switch' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Switch>)>] () = inherit SwitchBuilder<AntDesign.Switch>()
-    let Switch'' = Switch'()
-    
     type AutoComplete'<'TOption> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.AutoComplete<_>>)>] () = inherit AutoCompleteBuilder<AntDesign.AutoComplete<'TOption>, 'TOption>()
-    let AutoComplete''<'TOption> = AutoComplete'<'TOption>()
-    
     type Cascader' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Cascader>)>] () = inherit CascaderBuilder<AntDesign.Cascader>()
-    let Cascader'' = Cascader'()
-    
     type CheckboxGroup'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.CheckboxGroup<_>>)>] () = inherit CheckboxGroupBuilder<AntDesign.CheckboxGroup<'TValue>, 'TValue>()
-    let CheckboxGroup''<'TValue> = CheckboxGroup'<'TValue>()
-    
     type EnumCheckboxGroup'<'TEnum> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.EnumCheckboxGroup<_>>)>] () = inherit EnumCheckboxGroupBuilder<AntDesign.EnumCheckboxGroup<'TEnum>, 'TEnum>()
-    let EnumCheckboxGroup''<'TEnum> = EnumCheckboxGroup'<'TEnum>()
-    
     type DatePickerBase'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.DatePickerBase<_>>)>] () = inherit DatePickerBaseBuilder<AntDesign.DatePickerBase<'TValue>, 'TValue>()
-    let DatePickerBase''<'TValue> = DatePickerBase'<'TValue>()
-    
     type DatePicker'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.DatePicker<_>>)>] () = inherit DatePickerBuilder<AntDesign.DatePicker<'TValue>, 'TValue>()
-    let DatePicker''<'TValue> = DatePicker'<'TValue>()
-    
     type MonthPicker'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.MonthPicker<_>>)>] () = inherit MonthPickerBuilder<AntDesign.MonthPicker<'TValue>, 'TValue>()
-    let MonthPicker''<'TValue> = MonthPicker'<'TValue>()
-    
     type QuarterPicker'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.QuarterPicker<_>>)>] () = inherit QuarterPickerBuilder<AntDesign.QuarterPicker<'TValue>, 'TValue>()
-    let QuarterPicker''<'TValue> = QuarterPicker'<'TValue>()
-    
     type WeekPicker'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.WeekPicker<_>>)>] () = inherit WeekPickerBuilder<AntDesign.WeekPicker<'TValue>, 'TValue>()
-    let WeekPicker''<'TValue> = WeekPicker'<'TValue>()
-    
     type YearPicker'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.YearPicker<_>>)>] () = inherit YearPickerBuilder<AntDesign.YearPicker<'TValue>, 'TValue>()
-    let YearPicker''<'TValue> = YearPicker'<'TValue>()
-    
     type TimePicker'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.TimePicker<_>>)>] () = inherit TimePickerBuilder<AntDesign.TimePicker<'TValue>, 'TValue>()
-    let TimePicker''<'TValue> = TimePicker'<'TValue>()
-    
     type RangePicker'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.RangePicker<_>>)>] () = inherit RangePickerBuilder<AntDesign.RangePicker<'TValue>, 'TValue>()
-    let RangePicker''<'TValue> = RangePicker'<'TValue>()
-    
     type InputNumber'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.InputNumber<_>>)>] () = inherit InputNumberBuilder<AntDesign.InputNumber<'TValue>, 'TValue>()
-    let InputNumber''<'TValue> = InputNumber'<'TValue>()
-    
     type Input'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Input<_>>)>] () = inherit InputBuilder<AntDesign.Input<'TValue>, 'TValue>()
-    let Input''<'TValue> = Input'<'TValue>()
-    
     type Search' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Search>)>] () = inherit SearchBuilder<AntDesign.Search>()
-    let Search'' = Search'()
-    
     type AutoCompleteSearch' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.AutoCompleteSearch>)>] () = inherit AutoCompleteSearchBuilder<AntDesign.AutoCompleteSearch>()
-    let AutoCompleteSearch'' = AutoCompleteSearch'()
-    
     type AutoCompleteInput'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.AutoCompleteInput<_>>)>] () = inherit AutoCompleteInputBuilder<AntDesign.AutoCompleteInput<'TValue>, 'TValue>()
-    let AutoCompleteInput''<'TValue> = AutoCompleteInput'<'TValue>()
-    
     type InputPassword' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.InputPassword>)>] () = inherit InputPasswordBuilder<AntDesign.InputPassword>()
-    let InputPassword'' = InputPassword'()
-    
     type TextArea' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.TextArea>)>] () = inherit TextAreaBuilder<AntDesign.TextArea>()
-    let TextArea'' = TextArea'()
-    
     type RadioGroup'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.RadioGroup<_>>)>] () = inherit RadioGroupBuilder<AntDesign.RadioGroup<'TValue>, 'TValue>()
-    let RadioGroup''<'TValue> = RadioGroup'<'TValue>()
-    
     type EnumRadioGroup'<'TEnum> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.EnumRadioGroup<_>>)>] () = inherit EnumRadioGroupBuilder<AntDesign.EnumRadioGroup<'TEnum>, 'TEnum>()
-    let EnumRadioGroup''<'TEnum> = EnumRadioGroup'<'TEnum>()
-    
     type SelectBase'<'TItemValue, 'TItem> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.SelectBase<_, _>>)>] () = inherit SelectBaseBuilder<AntDesign.SelectBase<'TItemValue, 'TItem>, 'TItemValue, 'TItem>()
-    let SelectBase''<'TItemValue, 'TItem> = SelectBase'<'TItemValue, 'TItem>()
-    
     type Select'<'TItemValue, 'TItem> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Select<_, _>>)>] () = inherit SelectBuilder<AntDesign.Select<'TItemValue, 'TItem>, 'TItemValue, 'TItem>()
-    let Select''<'TItemValue, 'TItem> = Select'<'TItemValue, 'TItem>()
-    
     type EnumSelect'<'TEnum> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.EnumSelect<_>>)>] () = inherit EnumSelectBuilder<AntDesign.EnumSelect<'TEnum>, 'TEnum>()
-    let EnumSelect''<'TEnum> = EnumSelect'<'TEnum>()
-    
     type SimpleSelect' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.SimpleSelect>)>] () = inherit SimpleSelectBuilder<AntDesign.SimpleSelect>()
-    let SimpleSelect'' = SimpleSelect'()
-    
     type TreeSelect'<'TItemValue, 'TItem> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.TreeSelect<_, _>>)>] () = inherit TreeSelectBuilder<AntDesign.TreeSelect<'TItemValue, 'TItem>, 'TItemValue, 'TItem>()
-    let TreeSelect''<'TItemValue, 'TItem> = TreeSelect'<'TItemValue, 'TItem>()
-    
     type Slider'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Slider<_>>)>] () = inherit SliderBuilder<AntDesign.Slider<'TValue>, 'TValue>()
-    let Slider''<'TValue> = Slider'<'TValue>()
-    
     type Descriptions' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Descriptions>)>] () = inherit DescriptionsBuilder<AntDesign.Descriptions>()
-    let Descriptions'' = Descriptions'()
-    
     type DescriptionsItem' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.DescriptionsItem>)>] () = inherit DescriptionsItemBuilder<AntDesign.DescriptionsItem>()
-    let DescriptionsItem'' = DescriptionsItem'()
-    
     type Divider' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Divider>)>] () = inherit DividerBuilder<AntDesign.Divider>()
-    let Divider'' = Divider'()
-    
     type Drawer' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Drawer>)>] () = inherit DrawerBuilder<AntDesign.Drawer>()
-    let Drawer'' = Drawer'()
-    
     type DrawerContainer' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.DrawerContainer>)>] () = inherit DrawerContainerBuilder<AntDesign.DrawerContainer>()
-    let DrawerContainer'' = DrawerContainer'()
-    
     type Empty' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Empty>)>] () = inherit EmptyBuilder<AntDesign.Empty>()
-    let Empty'' = Empty'()
-    
     type Flex' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Flex>)>] () = inherit FlexBuilder<AntDesign.Flex>()
-    let Flex'' = Flex'()
-    
     type Form'<'TModel> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Form<_>>)>] () = inherit FormBuilder<AntDesign.Form<'TModel>, 'TModel>()
-    let Form''<'TModel> = Form'<'TModel>()
-    
     type FormItem' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.FormItem>)>] () = inherit FormItemBuilder<AntDesign.FormItem>()
-    let FormItem'' = FormItem'()
-    
     type Image' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Image>)>] () = inherit ImageBuilder<AntDesign.Image>()
-    let Image'' = Image'()
-    
     type ImagePreviewContainer' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.ImagePreviewContainer>)>] () = inherit ImagePreviewContainerBuilder<AntDesign.ImagePreviewContainer>()
-    let ImagePreviewContainer'' = ImagePreviewContainer'()
-    
     type InputGroup' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.InputGroup>)>] () = inherit InputGroupBuilder<AntDesign.InputGroup>()
-    let InputGroup'' = InputGroup'()
-    
     type Sider' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Sider>)>] () = inherit SiderBuilder<AntDesign.Sider>()
-    let Sider'' = Sider'()
-    
     type AntList'<'TItem> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.AntList<_>>)>] () = inherit AntListBuilder<AntDesign.AntList<'TItem>, 'TItem>()
-    let AntList''<'TItem> = AntList'<'TItem>()
-    
     type ListItem' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.ListItem>)>] () = inherit ListItemBuilder<AntDesign.ListItem>()
-    let ListItem'' = ListItem'()
-    
     type ListItemMeta' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.ListItemMeta>)>] () = inherit ListItemMetaBuilder<AntDesign.ListItemMeta>()
-    let ListItemMeta'' = ListItemMeta'()
-    
     type Mentions' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Mentions>)>] () = inherit MentionsBuilder<AntDesign.Mentions>()
-    let Mentions'' = Mentions'()
-    
     type MentionsOption' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.MentionsOption>)>] () = inherit MentionsOptionBuilder<AntDesign.MentionsOption>()
-    let MentionsOption'' = MentionsOption'()
-    
     type Menu' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Menu>)>] () = inherit MenuBuilder<AntDesign.Menu>()
-    let Menu'' = Menu'()
-    
     type MenuItem' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.MenuItem>)>] () = inherit MenuItemBuilder<AntDesign.MenuItem>()
-    let MenuItem'' = MenuItem'()
-    
     type MenuItemGroup' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.MenuItemGroup>)>] () = inherit MenuItemGroupBuilder<AntDesign.MenuItemGroup>()
-    let MenuItemGroup'' = MenuItemGroup'()
-    
     type MenuLink' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.MenuLink>)>] () = inherit MenuLinkBuilder<AntDesign.MenuLink>()
-    let MenuLink'' = MenuLink'()
-    
     type SubMenu' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.SubMenu>)>] () = inherit SubMenuBuilder<AntDesign.SubMenu>()
-    let SubMenu'' = SubMenu'()
-    
     type Message' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Message>)>] () = inherit MessageBuilder<AntDesign.Message>()
-    let Message'' = Message'()
-    
     type MessageItem' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.MessageItem>)>] () = inherit MessageItemBuilder<AntDesign.MessageItem>()
-    let MessageItem'' = MessageItem'()
-    
     type ComfirmContainer' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.ComfirmContainer>)>] () = inherit ComfirmContainerBuilder<AntDesign.ComfirmContainer>()
-    let ComfirmContainer'' = ComfirmContainer'()
-    
     type Confirm' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Confirm>)>] () = inherit ConfirmBuilder<AntDesign.Confirm>()
-    let Confirm'' = Confirm'()
-    
     type Dialog' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Dialog>)>] () = inherit DialogBuilder<AntDesign.Dialog>()
-    let Dialog'' = Dialog'()
-    
     type DialogWrapper' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.DialogWrapper>)>] () = inherit DialogWrapperBuilder<AntDesign.DialogWrapper>()
-    let DialogWrapper'' = DialogWrapper'()
-    
     type Modal' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Modal>)>] () = inherit ModalBuilder<AntDesign.Modal>()
-    let Modal'' = Modal'()
-    
     type ModalCancelFooter' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.ModalCancelFooter>)>] () = inherit ModalCancelFooterBuilder<AntDesign.ModalCancelFooter>()
-    let ModalCancelFooter'' = ModalCancelFooter'()
-    
     type ModalContainer' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.ModalContainer>)>] () = inherit ModalContainerBuilder<AntDesign.ModalContainer>()
-    let ModalContainer'' = ModalContainer'()
-    
     type ModalFooter' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.ModalFooter>)>] () = inherit ModalFooterBuilder<AntDesign.ModalFooter>()
-    let ModalFooter'' = ModalFooter'()
-    
     type ModalOkFooter' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.ModalOkFooter>)>] () = inherit ModalOkFooterBuilder<AntDesign.ModalOkFooter>()
-    let ModalOkFooter'' = ModalOkFooter'()
-    
     type PageHeader' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.PageHeader>)>] () = inherit PageHeaderBuilder<AntDesign.PageHeader>()
-    let PageHeader'' = PageHeader'()
-    
     type Pagination' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Pagination>)>] () = inherit PaginationBuilder<AntDesign.Pagination>()
-    let Pagination'' = Pagination'()
-    
     type PaginationOptions' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.PaginationOptions>)>] () = inherit PaginationOptionsBuilder<AntDesign.PaginationOptions>()
-    let PaginationOptions'' = PaginationOptions'()
-    
     type Progress' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Progress>)>] () = inherit ProgressBuilder<AntDesign.Progress>()
-    let Progress'' = Progress'()
-    
     type Radio'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Radio<_>>)>] () = inherit RadioBuilder<AntDesign.Radio<'TValue>, 'TValue>()
-    let Radio''<'TValue> = Radio'<'TValue>()
-    
     type Rate' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Rate>)>] () = inherit RateBuilder<AntDesign.Rate>()
-    let Rate'' = Rate'()
-    
     type RateItem' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.RateItem>)>] () = inherit RateItemBuilder<AntDesign.RateItem>()
-    let RateItem'' = RateItem'()
-    
     type Result' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Result>)>] () = inherit ResultBuilder<AntDesign.Result>()
-    let Result'' = Result'()
-    
     type Segmented'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Segmented<_>>)>] () = inherit SegmentedBuilder<AntDesign.Segmented<'TValue>, 'TValue>()
-    let Segmented''<'TValue> = Segmented'<'TValue>()
-    
     type SegmentedItem'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.SegmentedItem<_>>)>] () = inherit SegmentedItemBuilder<AntDesign.SegmentedItem<'TValue>, 'TValue>()
-    let SegmentedItem''<'TValue> = SegmentedItem'<'TValue>()
-    
     type SelectOption'<'TItemValue, 'TItem> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.SelectOption<_, _>>)>] () = inherit SelectOptionBuilder<AntDesign.SelectOption<'TItemValue, 'TItem>, 'TItemValue, 'TItem>()
-    let SelectOption''<'TItemValue, 'TItem> = SelectOption'<'TItemValue, 'TItem>()
-    
     type SimpleSelectOption' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.SimpleSelectOption>)>] () = inherit SimpleSelectOptionBuilder<AntDesign.SimpleSelectOption>()
-    let SimpleSelectOption'' = SimpleSelectOption'()
-    
     type Skeleton' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Skeleton>)>] () = inherit SkeletonBuilder<AntDesign.Skeleton>()
-    let Skeleton'' = Skeleton'()
-    
     type SkeletonElement' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.SkeletonElement>)>] () = inherit SkeletonElementBuilder<AntDesign.SkeletonElement>()
-    let SkeletonElement'' = SkeletonElement'()
-    
     type Space' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Space>)>] () = inherit SpaceBuilder<AntDesign.Space>()
-    let Space'' = Space'()
-    
     type SpaceItem' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.SpaceItem>)>] () = inherit SpaceItemBuilder<AntDesign.SpaceItem>()
-    let SpaceItem'' = SpaceItem'()
-    
     type Spin' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Spin>)>] () = inherit SpinBuilder<AntDesign.Spin>()
-    let Spin'' = Spin'()
-    
     type StatisticComponentBase'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.StatisticComponentBase<_>>)>] () = inherit StatisticComponentBaseBuilder<AntDesign.StatisticComponentBase<'T>, 'T>()
-    let StatisticComponentBase''<'T> = StatisticComponentBase'<'T>()
-    
     type CountDown' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.CountDown>)>] () = inherit CountDownBuilder<AntDesign.CountDown>()
-    let CountDown'' = CountDown'()
-    
     type Statistic'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Statistic<_>>)>] () = inherit StatisticBuilder<AntDesign.Statistic<'TValue>, 'TValue>()
-    let Statistic''<'TValue> = Statistic'<'TValue>()
-    
     type Step' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Step>)>] () = inherit StepBuilder<AntDesign.Step>()
-    let Step'' = Step'()
-    
     type Steps' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Steps>)>] () = inherit StepsBuilder<AntDesign.Steps>()
-    let Steps'' = Steps'()
-    
     type Table'<'TItem> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Table<_>>)>] () = inherit TableBuilder<AntDesign.Table<'TItem>, 'TItem>()
-    let Table''<'TItem> = Table'<'TItem>()
-    
     type ReuseTabs' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.ReuseTabs>)>] () = inherit ReuseTabsBuilder<AntDesign.ReuseTabs>()
-    let ReuseTabs'' = ReuseTabs'()
-    
     type TabPane' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.TabPane>)>] () = inherit TabPaneBuilder<AntDesign.TabPane>()
-    let TabPane'' = TabPane'()
-    
     type Tabs' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Tabs>)>] () = inherit TabsBuilder<AntDesign.Tabs>()
-    let Tabs'' = Tabs'()
-    
     type Tag' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Tag>)>] () = inherit TagBuilder<AntDesign.Tag>()
-    let Tag'' = Tag'()
-    
     type Timeline' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Timeline>)>] () = inherit TimelineBuilder<AntDesign.Timeline>()
-    let Timeline'' = Timeline'()
-    
     type TimelineItem' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.TimelineItem>)>] () = inherit TimelineItemBuilder<AntDesign.TimelineItem>()
-    let TimelineItem'' = TimelineItem'()
-    
     type Transfer' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Transfer>)>] () = inherit TransferBuilder<AntDesign.Transfer>()
-    let Transfer'' = Transfer'()
-    
     type Tree'<'TItem> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Tree<_>>)>] () = inherit TreeBuilder<AntDesign.Tree<'TItem>, 'TItem>()
-    let Tree''<'TItem> = Tree'<'TItem>()
-    
     type DirectoryTree'<'TItem> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.DirectoryTree<_>>)>] () = inherit DirectoryTreeBuilder<AntDesign.DirectoryTree<'TItem>, 'TItem>()
-    let DirectoryTree''<'TItem> = DirectoryTree'<'TItem>()
-    
     type TreeNode'<'TItem> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.TreeNode<_>>)>] () = inherit TreeNodeBuilder<AntDesign.TreeNode<'TItem>, 'TItem>()
-    let TreeNode''<'TItem> = TreeNode'<'TItem>()
-    
     type Upload' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Upload>)>] () = inherit UploadBuilder<AntDesign.Upload>()
-    let Upload'' = Upload'()
-    
     type Watermark' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Watermark>)>] () = inherit WatermarkBuilder<AntDesign.Watermark>()
-    let Watermark'' = Watermark'()
-    
     type BreadcrumbItem' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.BreadcrumbItem>)>] () = inherit BreadcrumbItemBuilder<AntDesign.BreadcrumbItem>()
-    let BreadcrumbItem'' = BreadcrumbItem'()
-    
     type CalendarHeader' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.CalendarHeader>)>] () = inherit CalendarHeaderBuilder<AntDesign.CalendarHeader>()
-    let CalendarHeader'' = CalendarHeader'()
-    
     type CardMeta' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.CardMeta>)>] () = inherit CardMetaBuilder<AntDesign.CardMeta>()
-    let CardMeta'' = CardMeta'()
-    
     type AntContainer' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.AntContainer>)>] () = inherit AntContainerBuilder<AntDesign.AntContainer>()
-    let AntContainer'' = AntContainer'()
-    
     type Template' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Template>)>] () = inherit TemplateBuilder<AntDesign.Template>()
-    let Template'' = Template'()
-    
     type EmptyDefaultImg' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.EmptyDefaultImg>)>] () = inherit EmptyDefaultImgBuilder<AntDesign.EmptyDefaultImg>()
-    let EmptyDefaultImg'' = EmptyDefaultImg'()
-    
     type EmptySimpleImg' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.EmptySimpleImg>)>] () = inherit EmptySimpleImgBuilder<AntDesign.EmptySimpleImg>()
-    let EmptySimpleImg'' = EmptySimpleImg'()
-    
     type Content' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Content>)>] () = inherit ContentBuilder<AntDesign.Content>()
-    let Content'' = Content'()
-    
     type Footer' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Footer>)>] () = inherit FooterBuilder<AntDesign.Footer>()
-    let Footer'' = Footer'()
-    
     type Header' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Header>)>] () = inherit HeaderBuilder<AntDesign.Header>()
-    let Header'' = Header'()
-    
     type Layout' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Layout>)>] () = inherit LayoutBuilder<AntDesign.Layout>()
-    let Layout'' = Layout'()
-    
     type MenuDivider' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.MenuDivider>)>] () = inherit MenuDividerBuilder<AntDesign.MenuDivider>()
-    let MenuDivider'' = MenuDivider'()
-    
     type PaginationPager' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.PaginationPager>)>] () = inherit PaginationPagerBuilder<AntDesign.PaginationPager>()
-    let PaginationPager'' = PaginationPager'()
-    
     type TableRow' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.TableRow>)>] () = inherit TableRowBuilder<AntDesign.TableRow>()
-    let TableRow'' = TableRow'()
-    
     type ConfigProvider' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.ConfigProvider>)>] () = inherit ConfigProviderBuilder<AntDesign.ConfigProvider>()
-    let ConfigProvider'' = ConfigProvider'()
-    
     type TemplateComponentBase'<'TComponentOptions> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.TemplateComponentBase<_>>)>] () = inherit TemplateComponentBaseBuilder<AntDesign.TemplateComponentBase<'TComponentOptions>, 'TComponentOptions>()
-    let TemplateComponentBase''<'TComponentOptions> = TemplateComponentBase'<'TComponentOptions>()
-    
     type FeedbackComponent'<'TComponentOptions> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.FeedbackComponent<_>>)>] () = inherit FeedbackComponentBuilder<AntDesign.FeedbackComponent<'TComponentOptions>, 'TComponentOptions>()
-    let FeedbackComponent''<'TComponentOptions> = FeedbackComponent'<'TComponentOptions>()
-    
     type FeedbackComponent'<'TComponentOptions, 'TResult> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.FeedbackComponent<_, _>>)>] () = inherit FeedbackComponentBuilder2<AntDesign.FeedbackComponent<'TComponentOptions, 'TResult>, 'TComponentOptions, 'TResult>()
-    let FeedbackComponent''<'TComponentOptions, 'TResult> = FeedbackComponent'<'TComponentOptions, 'TResult>()
-    
     type FormProvider' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.FormProvider>)>] () = inherit FormProviderBuilder<AntDesign.FormProvider>()
-    let FormProvider'' = FormProvider'()
-    
     type Component' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Component>)>] () = inherit ComponentBuilder<AntDesign.Component>()
-    let Component'' = Component'()
-    
     type ForeachLoop'<'TItem> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.ForeachLoop<_>>)>] () = inherit ForeachLoopBuilder<AntDesign.ForeachLoop<'TItem>, 'TItem>()
-    let ForeachLoop''<'TItem> = ForeachLoop'<'TItem>()
-    
     type GenerateFormItem'<'TModel> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.GenerateFormItem<_>>)>] () = inherit GenerateFormItemBuilder<AntDesign.GenerateFormItem<'TModel>, 'TModel>()
-    let GenerateFormItem''<'TModel> = GenerateFormItem'<'TModel>()
-    
     type ImagePreview' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.ImagePreview>)>] () = inherit ImagePreviewBuilder<AntDesign.ImagePreview>()
-    let ImagePreview'' = ImagePreview'()
-    
     type ImagePreviewGroup' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.ImagePreviewGroup>)>] () = inherit ImagePreviewGroupBuilder<AntDesign.ImagePreviewGroup>()
-    let ImagePreviewGroup'' = ImagePreviewGroup'()
-    
     type GenerateColumns'<'TItem> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.GenerateColumns<_>>)>] () = inherit GenerateColumnsBuilder<AntDesign.GenerateColumns<'TItem>, 'TItem>()
-    let GenerateColumns''<'TItem> = GenerateColumns'<'TItem>()
-    
     type TreeIndent'<'TItem> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.TreeIndent<_>>)>] () = inherit TreeIndentBuilder<AntDesign.TreeIndent<'TItem>, 'TItem>()
-    let TreeIndent''<'TItem> = TreeIndent'<'TItem>()
-    
     type TreeNodeCheckbox'<'TItem> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.TreeNodeCheckbox<_>>)>] () = inherit TreeNodeCheckboxBuilder<AntDesign.TreeNodeCheckbox<'TItem>, 'TItem>()
-    let TreeNodeCheckbox''<'TItem> = TreeNodeCheckbox'<'TItem>()
-    
     type TreeNodeSwitcher'<'TItem> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.TreeNodeSwitcher<_>>)>] () = inherit TreeNodeSwitcherBuilder<AntDesign.TreeNodeSwitcher<'TItem>, 'TItem>()
-    let TreeNodeSwitcher''<'TItem> = TreeNodeSwitcher'<'TItem>()
-    
     type TreeNodeTitle'<'TItem> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.TreeNodeTitle<_>>)>] () = inherit TreeNodeTitleBuilder<AntDesign.TreeNodeTitle<'TItem>, 'TItem>()
-    let TreeNodeTitle''<'TItem> = TreeNodeTitle'<'TItem>()
-    
     type SummaryRow' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.SummaryRow>)>] () = inherit SummaryRowBuilder<AntDesign.SummaryRow>()
-    let SummaryRow'' = SummaryRow'()
-    
     type ReusePages' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.ReusePages>)>] () = inherit ReusePagesBuilder<AntDesign.ReusePages>()
-    let ReusePages'' = ReusePages'()
-    
     type _Imports' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign._Imports>)>] () = inherit _ImportsBuilder<AntDesign._Imports>()
+
+[<AutoOpen>]
+module DslCEInstances =
+  
+    open System.Diagnostics.CodeAnalysis
+    open AntDesign.DslInternals
+
+    let AntComponentBase'' = AntComponentBase'()
+    let AntDomComponentBase'' = AntDomComponentBase'()
+    let Dropdown'' = Dropdown'()
+    let DropdownButton'' = DropdownButton'()
+    let Popconfirm'' = Popconfirm'()
+    let Popover'' = Popover'()
+    let Tooltip'' = Tooltip'()
+    let ColumnBase'' = ColumnBase'()
+    let ActionColumn'' = ActionColumn'()
+    let ColumnDefinition'' = ColumnDefinition'()
+    let TableCell'' = TableCell'()
+    let SimpleTableHeader'' = SimpleTableHeader'()
+    let Column''<'TData> = Column'<'TData>()
+    let PropertyColumn''<'TItem, 'TProp> = PropertyColumn'<'TItem, 'TProp>()
+    let TableHeader''<'TData> = TableHeader'<'TData>()
+    let Selection'' = Selection'()
+    let SummaryCell'' = SummaryCell'()
+    let DatePickerPanelBase''<'TValue> = DatePickerPanelBase'<'TValue>()
+    let Button'' = Button'()
+    let DownloadButton'' = DownloadButton'()
+    let Col'' = Col'()
+    let GridCol'' = GridCol'()
+    let Row'' = Row'()
+    let GridRow'' = GridRow'()
+    let Icon'' = Icon'()
+    let IconFont'' = IconFont'()
+    let NotificationBase'' = NotificationBase'()
+    let Notification'' = Notification'()
+    let NotificationItem'' = NotificationItem'()
+    let TypographyBase'' = TypographyBase'()
+    let Link'' = Link'()
+    let Paragraph'' = Paragraph'()
+    let Text'' = Text'()
+    let Title'' = Title'()
+    let Affix'' = Affix'()
+    let Alert'' = Alert'()
+    let Anchor'' = Anchor'()
+    let AnchorLink'' = AnchorLink'()
+    let AutoCompleteOptGroup'' = AutoCompleteOptGroup'()
+    let AutoCompleteOption'' = AutoCompleteOption'()
+    let Avatar'' = Avatar'()
+    let AvatarGroup'' = AvatarGroup'()
+    let BackTop'' = BackTop'()
+    let Badge'' = Badge'()
+    let BadgeRibbon'' = BadgeRibbon'()
+    let Breadcrumb'' = Breadcrumb'()
+    let ButtonGroup'' = ButtonGroup'()
+    let Calendar'' = Calendar'()
+    let Card'' = Card'()
+    let CardAction'' = CardAction'()
+    let CardGrid'' = CardGrid'()
+    let Carousel'' = Carousel'()
+    let CarouselSlick'' = CarouselSlick'()
+    let Collapse'' = Collapse'()
+    let Panel'' = Panel'()
+    let Comment'' = Comment'()
+    let AntContainerComponentBase'' = AntContainerComponentBase'()
+    let AntInputComponentBase''<'TValue> = AntInputComponentBase'<'TValue>()
+    let AntInputBoolComponentBase'' = AntInputBoolComponentBase'()
+    let Checkbox'' = Checkbox'()
+    let Switch'' = Switch'()
+    let AutoComplete''<'TOption> = AutoComplete'<'TOption>()
+    let Cascader'' = Cascader'()
+    let CheckboxGroup''<'TValue> = CheckboxGroup'<'TValue>()
+    let EnumCheckboxGroup''<'TEnum> = EnumCheckboxGroup'<'TEnum>()
+    let DatePickerBase''<'TValue> = DatePickerBase'<'TValue>()
+    let DatePicker''<'TValue> = DatePicker'<'TValue>()
+    let MonthPicker''<'TValue> = MonthPicker'<'TValue>()
+    let QuarterPicker''<'TValue> = QuarterPicker'<'TValue>()
+    let WeekPicker''<'TValue> = WeekPicker'<'TValue>()
+    let YearPicker''<'TValue> = YearPicker'<'TValue>()
+    let TimePicker''<'TValue> = TimePicker'<'TValue>()
+    let RangePicker''<'TValue> = RangePicker'<'TValue>()
+    let InputNumber''<'TValue> = InputNumber'<'TValue>()
+    let Input''<'TValue> = Input'<'TValue>()
+    let Search'' = Search'()
+    let AutoCompleteSearch'' = AutoCompleteSearch'()
+    let AutoCompleteInput''<'TValue> = AutoCompleteInput'<'TValue>()
+    let InputPassword'' = InputPassword'()
+    let TextArea'' = TextArea'()
+    let RadioGroup''<'TValue> = RadioGroup'<'TValue>()
+    let EnumRadioGroup''<'TEnum> = EnumRadioGroup'<'TEnum>()
+    let SelectBase''<'TItemValue, 'TItem> = SelectBase'<'TItemValue, 'TItem>()
+    let Select''<'TItemValue, 'TItem> = Select'<'TItemValue, 'TItem>()
+    let EnumSelect''<'TEnum> = EnumSelect'<'TEnum>()
+    let SimpleSelect'' = SimpleSelect'()
+    let TreeSelect''<'TItemValue, 'TItem> = TreeSelect'<'TItemValue, 'TItem>()
+    let Slider''<'TValue> = Slider'<'TValue>()
+    let Descriptions'' = Descriptions'()
+    let DescriptionsItem'' = DescriptionsItem'()
+    let Divider'' = Divider'()
+    let Drawer'' = Drawer'()
+    let DrawerContainer'' = DrawerContainer'()
+    let Empty'' = Empty'()
+    let Flex'' = Flex'()
+    let Form''<'TModel> = Form'<'TModel>()
+    let FormItem'' = FormItem'()
+    let Image'' = Image'()
+    let ImagePreviewContainer'' = ImagePreviewContainer'()
+    let InputGroup'' = InputGroup'()
+    let Sider'' = Sider'()
+    let AntList''<'TItem> = AntList'<'TItem>()
+    let ListItem'' = ListItem'()
+    let ListItemMeta'' = ListItemMeta'()
+    let Mentions'' = Mentions'()
+    let MentionsOption'' = MentionsOption'()
+    let Menu'' = Menu'()
+    let MenuItem'' = MenuItem'()
+    let MenuItemGroup'' = MenuItemGroup'()
+    let MenuLink'' = MenuLink'()
+    let SubMenu'' = SubMenu'()
+    let Message'' = Message'()
+    let MessageItem'' = MessageItem'()
+    let ComfirmContainer'' = ComfirmContainer'()
+    let Confirm'' = Confirm'()
+    let Dialog'' = Dialog'()
+    let DialogWrapper'' = DialogWrapper'()
+    let Modal'' = Modal'()
+    let ModalCancelFooter'' = ModalCancelFooter'()
+    let ModalContainer'' = ModalContainer'()
+    let ModalFooter'' = ModalFooter'()
+    let ModalOkFooter'' = ModalOkFooter'()
+    let PageHeader'' = PageHeader'()
+    let Pagination'' = Pagination'()
+    let PaginationOptions'' = PaginationOptions'()
+    let Progress'' = Progress'()
+    let Radio''<'TValue> = Radio'<'TValue>()
+    let Rate'' = Rate'()
+    let RateItem'' = RateItem'()
+    let Result'' = Result'()
+    let Segmented''<'TValue> = Segmented'<'TValue>()
+    let SegmentedItem''<'TValue> = SegmentedItem'<'TValue>()
+    let SelectOption''<'TItemValue, 'TItem> = SelectOption'<'TItemValue, 'TItem>()
+    let SimpleSelectOption'' = SimpleSelectOption'()
+    let Skeleton'' = Skeleton'()
+    let SkeletonElement'' = SkeletonElement'()
+    let Space'' = Space'()
+    let SpaceItem'' = SpaceItem'()
+    let Spin'' = Spin'()
+    let StatisticComponentBase''<'T> = StatisticComponentBase'<'T>()
+    let CountDown'' = CountDown'()
+    let Statistic''<'TValue> = Statistic'<'TValue>()
+    let Step'' = Step'()
+    let Steps'' = Steps'()
+    let Table''<'TItem> = Table'<'TItem>()
+    let ReuseTabs'' = ReuseTabs'()
+    let TabPane'' = TabPane'()
+    let Tabs'' = Tabs'()
+    let Tag'' = Tag'()
+    let Timeline'' = Timeline'()
+    let TimelineItem'' = TimelineItem'()
+    let Transfer'' = Transfer'()
+    let Tree''<'TItem> = Tree'<'TItem>()
+    let DirectoryTree''<'TItem> = DirectoryTree'<'TItem>()
+    let TreeNode''<'TItem> = TreeNode'<'TItem>()
+    let Upload'' = Upload'()
+    let Watermark'' = Watermark'()
+    let BreadcrumbItem'' = BreadcrumbItem'()
+    let CalendarHeader'' = CalendarHeader'()
+    let CardMeta'' = CardMeta'()
+    let AntContainer'' = AntContainer'()
+    let Template'' = Template'()
+    let EmptyDefaultImg'' = EmptyDefaultImg'()
+    let EmptySimpleImg'' = EmptySimpleImg'()
+    let Content'' = Content'()
+    let Footer'' = Footer'()
+    let Header'' = Header'()
+    let Layout'' = Layout'()
+    let MenuDivider'' = MenuDivider'()
+    let PaginationPager'' = PaginationPager'()
+    let TableRow'' = TableRow'()
+    let ConfigProvider'' = ConfigProvider'()
+    let TemplateComponentBase''<'TComponentOptions> = TemplateComponentBase'<'TComponentOptions>()
+    let FeedbackComponent''<'TComponentOptions> = FeedbackComponent'<'TComponentOptions>()
+    let FormProvider'' = FormProvider'()
+    let Component'' = Component'()
+    let ForeachLoop''<'TItem> = ForeachLoop'<'TItem>()
+    let GenerateFormItem''<'TModel> = GenerateFormItem'<'TModel>()
+    let ImagePreview'' = ImagePreview'()
+    let ImagePreviewGroup'' = ImagePreviewGroup'()
+    let GenerateColumns''<'TItem> = GenerateColumns'<'TItem>()
+    let TreeIndent''<'TItem> = TreeIndent'<'TItem>()
+    let TreeNodeCheckbox''<'TItem> = TreeNodeCheckbox'<'TItem>()
+    let TreeNodeSwitcher''<'TItem> = TreeNodeSwitcher'<'TItem>()
+    let TreeNodeTitle''<'TItem> = TreeNodeTitle'<'TItem>()
+    let SummaryRow'' = SummaryRow'()
+    let ReusePages'' = ReusePages'()
     let _Imports'' = _Imports'()
-    
             
 namespace AntDesign.Internal
 
@@ -3711,68 +3528,54 @@ module DslCE =
     open AntDesign.DslInternals.Internal
 
     type OverlayTrigger' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Internal.OverlayTrigger>)>] () = inherit OverlayTriggerBuilder<AntDesign.Internal.OverlayTrigger>()
-    let OverlayTrigger'' = OverlayTrigger'()
-    
     type SubMenuTrigger' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Internal.SubMenuTrigger>)>] () = inherit SubMenuTriggerBuilder<AntDesign.Internal.SubMenuTrigger>()
-    let SubMenuTrigger'' = SubMenuTrigger'()
-    
     type PickerPanelBase' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Internal.PickerPanelBase>)>] () = inherit PickerPanelBaseBuilder<AntDesign.Internal.PickerPanelBase>()
-    let PickerPanelBase'' = PickerPanelBase'()
-    
     type DatePickerDatetimePanel'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Internal.DatePickerDatetimePanel<_>>)>] () = inherit DatePickerDatetimePanelBuilder<AntDesign.Internal.DatePickerDatetimePanel<'TValue>, 'TValue>()
-    let DatePickerDatetimePanel''<'TValue> = DatePickerDatetimePanel'<'TValue>()
-    
     type DatePickerTemplate'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Internal.DatePickerTemplate<_>>)>] () = inherit DatePickerTemplateBuilder<AntDesign.Internal.DatePickerTemplate<'TValue>, 'TValue>()
-    let DatePickerTemplate''<'TValue> = DatePickerTemplate'<'TValue>()
-    
     type DatePickerDatePanel'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Internal.DatePickerDatePanel<_>>)>] () = inherit DatePickerDatePanelBuilder<AntDesign.Internal.DatePickerDatePanel<'TValue>, 'TValue>()
-    let DatePickerDatePanel''<'TValue> = DatePickerDatePanel'<'TValue>()
-    
     type DatePickerDecadePanel'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Internal.DatePickerDecadePanel<_>>)>] () = inherit DatePickerDecadePanelBuilder<AntDesign.Internal.DatePickerDecadePanel<'TValue>, 'TValue>()
-    let DatePickerDecadePanel''<'TValue> = DatePickerDecadePanel'<'TValue>()
-    
     type DatePickerFooter'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Internal.DatePickerFooter<_>>)>] () = inherit DatePickerFooterBuilder<AntDesign.Internal.DatePickerFooter<'TValue>, 'TValue>()
-    let DatePickerFooter''<'TValue> = DatePickerFooter'<'TValue>()
-    
     type DatePickerHeader'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Internal.DatePickerHeader<_>>)>] () = inherit DatePickerHeaderBuilder<AntDesign.Internal.DatePickerHeader<'TValue>, 'TValue>()
-    let DatePickerHeader''<'TValue> = DatePickerHeader'<'TValue>()
-    
     type DatePickerMonthPanel'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Internal.DatePickerMonthPanel<_>>)>] () = inherit DatePickerMonthPanelBuilder<AntDesign.Internal.DatePickerMonthPanel<'TValue>, 'TValue>()
-    let DatePickerMonthPanel''<'TValue> = DatePickerMonthPanel'<'TValue>()
-    
     type DatePickerQuarterPanel'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Internal.DatePickerQuarterPanel<_>>)>] () = inherit DatePickerQuarterPanelBuilder<AntDesign.Internal.DatePickerQuarterPanel<'TValue>, 'TValue>()
-    let DatePickerQuarterPanel''<'TValue> = DatePickerQuarterPanel'<'TValue>()
-    
     type DatePickerYearPanel'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Internal.DatePickerYearPanel<_>>)>] () = inherit DatePickerYearPanelBuilder<AntDesign.Internal.DatePickerYearPanel<'TValue>, 'TValue>()
-    let DatePickerYearPanel''<'TValue> = DatePickerYearPanel'<'TValue>()
-    
     type CalendarPanelChooser' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Internal.CalendarPanelChooser>)>] () = inherit CalendarPanelChooserBuilder<AntDesign.Internal.CalendarPanelChooser>()
-    let CalendarPanelChooser'' = CalendarPanelChooser'()
-    
     type Element' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Internal.Element>)>] () = inherit ElementBuilder<AntDesign.Internal.Element>()
-    let Element'' = Element'()
-    
     type Overlay' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Internal.Overlay>)>] () = inherit OverlayBuilder<AntDesign.Internal.Overlay>()
-    let Overlay'' = Overlay'()
-    
     type DatePickerPanelChooser'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Internal.DatePickerPanelChooser<_>>)>] () = inherit DatePickerPanelChooserBuilder<AntDesign.Internal.DatePickerPanelChooser<'TValue>, 'TValue>()
-    let DatePickerPanelChooser''<'TValue> = DatePickerPanelChooser'<'TValue>()
-    
     type UploadButton' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Internal.UploadButton>)>] () = inherit UploadButtonBuilder<AntDesign.Internal.UploadButton>()
-    let UploadButton'' = UploadButton'()
-    
     type DatePickerInput' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Internal.DatePickerInput>)>] () = inherit DatePickerInputBuilder<AntDesign.Internal.DatePickerInput>()
-    let DatePickerInput'' = DatePickerInput'()
-    
     type DropdownGroupButton' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Internal.DropdownGroupButton>)>] () = inherit DropdownGroupButtonBuilder<AntDesign.Internal.DropdownGroupButton>()
-    let DropdownGroupButton'' = DropdownGroupButton'()
-    
     type FormRulesValidator' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Internal.FormRulesValidator>)>] () = inherit FormRulesValidatorBuilder<AntDesign.Internal.FormRulesValidator>()
-    let FormRulesValidator'' = FormRulesValidator'()
-    
     type TableRowWrapper'<'TItem> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Internal.TableRowWrapper<_>>)>] () = inherit TableRowWrapperBuilder<AntDesign.Internal.TableRowWrapper<'TItem>, 'TItem>()
+
+[<AutoOpen>]
+module DslCEInstances =
+  
+    open System.Diagnostics.CodeAnalysis
+    open AntDesign.DslInternals.Internal
+
+    let OverlayTrigger'' = OverlayTrigger'()
+    let SubMenuTrigger'' = SubMenuTrigger'()
+    let PickerPanelBase'' = PickerPanelBase'()
+    let DatePickerDatetimePanel''<'TValue> = DatePickerDatetimePanel'<'TValue>()
+    let DatePickerTemplate''<'TValue> = DatePickerTemplate'<'TValue>()
+    let DatePickerDatePanel''<'TValue> = DatePickerDatePanel'<'TValue>()
+    let DatePickerDecadePanel''<'TValue> = DatePickerDecadePanel'<'TValue>()
+    let DatePickerFooter''<'TValue> = DatePickerFooter'<'TValue>()
+    let DatePickerHeader''<'TValue> = DatePickerHeader'<'TValue>()
+    let DatePickerMonthPanel''<'TValue> = DatePickerMonthPanel'<'TValue>()
+    let DatePickerQuarterPanel''<'TValue> = DatePickerQuarterPanel'<'TValue>()
+    let DatePickerYearPanel''<'TValue> = DatePickerYearPanel'<'TValue>()
+    let CalendarPanelChooser'' = CalendarPanelChooser'()
+    let Element'' = Element'()
+    let Overlay'' = Overlay'()
+    let DatePickerPanelChooser''<'TValue> = DatePickerPanelChooser'<'TValue>()
+    let UploadButton'' = UploadButton'()
+    let DatePickerInput'' = DatePickerInput'()
+    let DropdownGroupButton'' = DropdownGroupButton'()
+    let FormRulesValidator'' = FormRulesValidator'()
     let TableRowWrapper''<'TItem> = TableRowWrapper'<'TItem>()
-    
             
 namespace AntDesign.Select.Internal
 
@@ -3783,14 +3586,18 @@ module DslCE =
     open AntDesign.DslInternals.Select.Internal
 
     type SelectContent'<'TItemValue, 'TItem> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Select.Internal.SelectContent<_, _>>)>] () = inherit SelectContentBuilder<AntDesign.Select.Internal.SelectContent<'TItemValue, 'TItem>, 'TItemValue, 'TItem>()
-    let SelectContent''<'TItemValue, 'TItem> = SelectContent'<'TItemValue, 'TItem>()
-    
     type SelectOptionGroup'<'TItemValue, 'TItem> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Select.Internal.SelectOptionGroup<_, _>>)>] () = inherit SelectOptionGroupBuilder<AntDesign.Select.Internal.SelectOptionGroup<'TItemValue, 'TItem>, 'TItemValue, 'TItem>()
-    let SelectOptionGroup''<'TItemValue, 'TItem> = SelectOptionGroup'<'TItemValue, 'TItem>()
-    
     type SelectSuffixIcon'<'TItemValue, 'TItem> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Select.Internal.SelectSuffixIcon<_, _>>)>] () = inherit SelectSuffixIconBuilder<AntDesign.Select.Internal.SelectSuffixIcon<'TItemValue, 'TItem>, 'TItemValue, 'TItem>()
+
+[<AutoOpen>]
+module DslCEInstances =
+  
+    open System.Diagnostics.CodeAnalysis
+    open AntDesign.DslInternals.Select.Internal
+
+    let SelectContent''<'TItemValue, 'TItem> = SelectContent'<'TItemValue, 'TItem>()
+    let SelectOptionGroup''<'TItemValue, 'TItem> = SelectOptionGroup'<'TItemValue, 'TItem>()
     let SelectSuffixIcon''<'TItemValue, 'TItem> = SelectSuffixIcon'<'TItemValue, 'TItem>()
-    
             
 namespace AntDesign.Core.Component.ResizeObserver
 
@@ -3801,8 +3608,14 @@ module DslCE =
     open AntDesign.DslInternals.Core.Component.ResizeObserver
 
     type ResizeObserver' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Core.Component.ResizeObserver.ResizeObserver>)>] () = inherit ResizeObserverBuilder<AntDesign.Core.Component.ResizeObserver.ResizeObserver>()
+
+[<AutoOpen>]
+module DslCEInstances =
+  
+    open System.Diagnostics.CodeAnalysis
+    open AntDesign.DslInternals.Core.Component.ResizeObserver
+
     let ResizeObserver'' = ResizeObserver'()
-    
             
 namespace AntDesign.statistic
 
@@ -3813,8 +3626,14 @@ module DslCE =
     open AntDesign.DslInternals.statistic
 
     type StatisticComponentBase'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.statistic.StatisticComponentBase<_>>)>] () = inherit StatisticComponentBaseBuilder<AntDesign.statistic.StatisticComponentBase<'T>, 'T>()
+
+[<AutoOpen>]
+module DslCEInstances =
+  
+    open System.Diagnostics.CodeAnalysis
+    open AntDesign.DslInternals.statistic
+
     let StatisticComponentBase''<'T> = StatisticComponentBase'<'T>()
-    
             
 namespace AntDesign.Filters
 
@@ -3825,8 +3644,14 @@ module DslCE =
     open AntDesign.DslInternals.Filters
 
     type FilterInputs' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Filters.FilterInputs>)>] () = inherit FilterInputsBuilder<AntDesign.Filters.FilterInputs>()
+
+[<AutoOpen>]
+module DslCEInstances =
+  
+    open System.Diagnostics.CodeAnalysis
+    open AntDesign.DslInternals.Filters
+
     let FilterInputs'' = FilterInputs'()
-    
             
 namespace AntDesign.Select
 
@@ -3837,8 +3662,14 @@ module DslCE =
     open AntDesign.DslInternals.Select
 
     type LabelTemplateItem'<'TItemValue, 'TItem> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Select.LabelTemplateItem<_, _>>)>] () = inherit LabelTemplateItemBuilder<AntDesign.Select.LabelTemplateItem<'TItemValue, 'TItem>, 'TItemValue, 'TItem>()
+
+[<AutoOpen>]
+module DslCEInstances =
+  
+    open System.Diagnostics.CodeAnalysis
+    open AntDesign.DslInternals.Select
+
     let LabelTemplateItem''<'TItemValue, 'TItem> = LabelTemplateItem'<'TItemValue, 'TItem>()
-    
             
 namespace AntDesign.core
 
@@ -3849,8 +3680,14 @@ module DslCE =
     open AntDesign.DslInternals.core
 
     type _Imports' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.core._Imports>)>] () = inherit _ImportsBuilder<AntDesign.core._Imports>()
+
+[<AutoOpen>]
+module DslCEInstances =
+  
+    open System.Diagnostics.CodeAnalysis
+    open AntDesign.DslInternals.core
+
     let _Imports'' = _Imports'()
-    
             
 namespace AntDesign.Internal.ModalDialog
 
@@ -3861,6 +3698,12 @@ module DslCE =
     open AntDesign.DslInternals.Internal.ModalDialog
 
     type ModalHeader' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Internal.ModalDialog.ModalHeader>)>] () = inherit ModalHeaderBuilder<AntDesign.Internal.ModalDialog.ModalHeader>()
+
+[<AutoOpen>]
+module DslCEInstances =
+  
+    open System.Diagnostics.CodeAnalysis
+    open AntDesign.DslInternals.Internal.ModalDialog
+
     let ModalHeader'' = ModalHeader'()
-    
             

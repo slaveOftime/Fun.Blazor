@@ -4604,557 +4604,381 @@ module DslCE =
     type ComponentBaseWithState' 
         /// Represents a base class for designing components which maintain state.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.ComponentBaseWithState>)>] () = inherit ComponentBaseWithStateBuilder<MudBlazor.ComponentBaseWithState>()
-    let ComponentBaseWithState'' = ComponentBaseWithState'()
-    
 
     /// Represents a base class for designing MudBlazor components.
     type MudComponentBase' 
         /// Represents a base class for designing MudBlazor components.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudComponentBase>)>] () = inherit MudComponentBaseBuilder<MudBlazor.MudComponentBase>()
-    let MudComponentBase'' = MudComponentBase'()
-    
 
     /// Shared a base class for designing category MudChart and MudTimeSeriesChart components.
     type MudChartBase' 
         /// Shared a base class for designing category MudChart and MudTimeSeriesChart components.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudChartBase>)>] () = inherit MudChartBaseBuilder<MudBlazor.MudChartBase>()
-    let MudChartBase'' = MudChartBase'()
-    
 
     /// Represents a base class for designing category MudChart components.
     type MudCategoryChartBase' 
         /// Represents a base class for designing category MudChart components.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudCategoryChartBase>)>] () = inherit MudCategoryChartBaseBuilder<MudBlazor.MudCategoryChartBase>()
-    let MudCategoryChartBase'' = MudCategoryChartBase'()
-    
 
     /// Represents a graphic display of data values in a line, bar, stacked bar, pie, or donut shape.
     type MudChart' 
         /// Represents a graphic display of data values in a line, bar, stacked bar, pie, or donut shape.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudChart>)>] () = inherit MudChartBuilder<MudBlazor.MudChart>()
-    let MudChart'' = MudChart'()
-    
     type MudTimeSeriesChartBase' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudTimeSeriesChartBase>)>] () = inherit MudTimeSeriesChartBaseBuilder<MudBlazor.MudTimeSeriesChartBase>()
-    let MudTimeSeriesChartBase'' = MudTimeSeriesChartBase'()
-    
     type MudTimeSeriesChart' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudTimeSeriesChart>)>] () = inherit MudTimeSeriesChartBuilder<MudBlazor.MudTimeSeriesChart>()
-    let MudTimeSeriesChart'' = MudTimeSeriesChart'()
-    
 
     /// Represents a base class for designing button components.
     type MudBaseButton' 
         /// Represents a base class for designing button components.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudBaseButton>)>] () = inherit MudBaseButtonBuilder<MudBlazor.MudBaseButton>()
-    let MudBaseButton'' = MudBaseButton'()
-    
 
     /// Represents a button for actions, links, and commands.
     type MudButton' 
         /// Represents a button for actions, links, and commands.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudButton>)>] () = inherit MudButtonBuilder<MudBlazor.MudButton>()
-    let MudButton'' = MudButton'()
-    
 
     /// Represents a floating action button.
     type MudFab' 
         /// Represents a floating action button.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudFab>)>] () = inherit MudFabBuilder<MudBlazor.MudFab>()
-    let MudFab'' = MudFab'()
-    
 
     /// Represents a button consisting of an icon.
     type MudIconButton' 
         /// Represents a button consisting of an icon.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudIconButton>)>] () = inherit MudIconButtonBuilder<MudBlazor.MudIconButton>()
-    let MudIconButton'' = MudIconButton'()
-    
 
     /// Represents a container for a MudDrawer component.
     type MudDrawerContainer' 
         /// Represents a container for a MudDrawer component.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudDrawerContainer>)>] () = inherit MudDrawerContainerBuilder<MudBlazor.MudDrawerContainer>()
-    let MudDrawerContainer'' = MudDrawerContainer'()
-    
     type MudLayout' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudLayout>)>] () = inherit MudLayoutBuilder<MudBlazor.MudLayout>()
-    let MudLayout'' = MudLayout'()
-    
 
     /// Represents a base class for designing selection items.
     type MudBaseSelectItem' 
         /// Represents a base class for designing selection items.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudBaseSelectItem>)>] () = inherit MudBaseSelectItemBuilder<MudBlazor.MudBaseSelectItem>()
-    let MudBaseSelectItem'' = MudBaseSelectItem'()
-    
     type MudNavLink' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudNavLink>)>] () = inherit MudNavLinkBuilder<MudBlazor.MudNavLink>()
-    let MudNavLink'' = MudNavLink'()
-    
 
     /// Represents an option of a select or multi-select. To be used inside MudSelect.
     type MudSelectItem'<'T> 
         /// Represents an option of a select or multi-select. To be used inside MudSelect.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudSelectItem<_>>)>] () = inherit MudSelectItemBuilder<MudBlazor.MudSelectItem<'T>, 'T>()
-    let MudSelectItem''<'T> = MudSelectItem'<'T>()
-    
 
     /// Base class for implementing Popover component.
     type MudPopoverBase' 
         /// Base class for implementing Popover component.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudPopoverBase>)>] () = inherit MudPopoverBaseBuilder<MudBlazor.MudPopoverBase>()
-    let MudPopoverBase'' = MudPopoverBase'()
-    
     type MudPopover' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudPopover>)>] () = inherit MudPopoverBuilder<MudBlazor.MudPopover>()
-    let MudPopover'' = MudPopover'()
-    
 
     /// A base class for designing table components.
     type MudTableBase' 
         /// A base class for designing table components.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudTableBase>)>] () = inherit MudTableBaseBuilder<MudBlazor.MudTableBase>()
-    let MudTableBase'' = MudTableBase'()
-    
 
     /// A sortable, filterable table with multiselection and pagination.
     type MudTable'<'T> 
         /// A sortable, filterable table with multiselection and pagination.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudTable<_>>)>] () = inherit MudTableBuilder<MudBlazor.MudTable<'T>, 'T>()
-    let MudTable''<'T> = MudTable'<'T>()
-    
     type MudTabs' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudTabs>)>] () = inherit MudTabsBuilder<MudBlazor.MudTabs>()
-    let MudTabs'' = MudTabs'()
-    
     type MudDynamicTabs' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudDynamicTabs>)>] () = inherit MudDynamicTabsBuilder<MudBlazor.MudDynamicTabs>()
-    let MudDynamicTabs'' = MudDynamicTabs'()
-    
 
     /// Represents a base class for designing components which contain items.
     type MudBaseItemsControl'<'TChildComponent when 'TChildComponent :> MudBlazor.MudComponentBase> 
         /// Represents a base class for designing components which contain items.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudBaseItemsControl<_>>)>] () = inherit MudBaseItemsControlBuilder<MudBlazor.MudBaseItemsControl<'TChildComponent>, 'TChildComponent>()
-    let MudBaseItemsControl''<'TChildComponent when 'TChildComponent :> MudBlazor.MudComponentBase> = MudBaseItemsControl'<'TChildComponent>()
-    
 
     /// Represents a base class for designing components with bindable items.
     type MudBaseBindableItemsControl'<'TChildComponent, 'TData when 'TChildComponent :> MudBlazor.MudComponentBase> 
         /// Represents a base class for designing components with bindable items.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudBaseBindableItemsControl<_, _>>)>] () = inherit MudBaseBindableItemsControlBuilder<MudBlazor.MudBaseBindableItemsControl<'TChildComponent, 'TData>, 'TChildComponent, 'TData>()
-    let MudBaseBindableItemsControl''<'TChildComponent, 'TData when 'TChildComponent :> MudBlazor.MudComponentBase> = MudBaseBindableItemsControl'<'TChildComponent, 'TData>()
-    
 
     /// Represents a set of slides which transition after a delay.
     type MudCarousel'<'TData> 
         /// Represents a set of slides which transition after a delay.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudCarousel<_>>)>] () = inherit MudCarouselBuilder<MudBlazor.MudCarousel<'TData>, 'TData>()
-    let MudCarousel''<'TData> = MudCarousel'<'TData>()
-    
     type MudTimeline' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudTimeline>)>] () = inherit MudTimelineBuilder<MudBlazor.MudTimeline>()
-    let MudTimeline'' = MudTimeline'()
-    
 
     /// Represents a base class for designing form input components.
     type MudFormComponent'<'T, 'U> 
         /// Represents a base class for designing form input components.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudFormComponent<_, _>>)>] () = inherit MudFormComponentBuilder<MudBlazor.MudFormComponent<'T, 'U>, 'T, 'U>()
-    let MudFormComponent''<'T, 'U> = MudFormComponent'<'T, 'U>()
-    
 
     /// Represents a base class for designing form input components.
     type MudBaseInput'<'T> 
         /// Represents a base class for designing form input components.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudBaseInput<_>>)>] () = inherit MudBaseInputBuilder<MudBlazor.MudBaseInput<'T>, 'T>()
-    let MudBaseInput''<'T> = MudBaseInput'<'T>()
-    
 
     /// Represents a component with simple and flexible type-ahead functionality.
     type MudAutocomplete'<'T> 
         /// Represents a component with simple and flexible type-ahead functionality.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudAutocomplete<_>>)>] () = inherit MudAutocompleteBuilder<MudBlazor.MudAutocomplete<'T>, 'T>()
-    let MudAutocomplete''<'T> = MudAutocomplete'<'T>()
-    
 
     /// A base class for designing input components which update after a delay.
     type MudDebouncedInput'<'T> 
         /// A base class for designing input components which update after a delay.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudDebouncedInput<_>>)>] () = inherit MudDebouncedInputBuilder<MudBlazor.MudDebouncedInput<'T>, 'T>()
-    let MudDebouncedInput''<'T> = MudDebouncedInput'<'T>()
-    
     type MudNumericField'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudNumericField<_>>)>] () = inherit MudNumericFieldBuilder<MudBlazor.MudNumericField<'T>, 'T>()
-    let MudNumericField''<'T> = MudNumericField'<'T>()
-    
 
     /// An input for collecting text values.
     type MudTextField'<'T> 
         /// An input for collecting text values.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudTextField<_>>)>] () = inherit MudTextFieldBuilder<MudBlazor.MudTextField<'T>, 'T>()
-    let MudTextField''<'T> = MudTextField'<'T>()
-    
 
     /// A component for collecting an input value.
     type MudInput'<'T> 
         /// A component for collecting an input value.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudInput<_>>)>] () = inherit MudInputBuilder<MudBlazor.MudInput<'T>, 'T>()
-    let MudInput''<'T> = MudInput'<'T>()
-    
 
     /// An input component for collecting alphanumeric values.
     type MudInputString' 
         /// An input component for collecting alphanumeric values.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudInputString>)>] () = inherit MudInputStringBuilder<MudBlazor.MudInputString>()
-    let MudInputString'' = MudInputString'()
-    
 
     /// A component for collecting start and end values which define a range.
     type MudRangeInput'<'T> 
         /// A component for collecting start and end values which define a range.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudRangeInput<_>>)>] () = inherit MudRangeInputBuilder<MudBlazor.MudRangeInput<'T>, 'T>()
-    let MudRangeInput''<'T> = MudRangeInput'<'T>()
-    
     type MudMask' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudMask>)>] () = inherit MudMaskBuilder<MudBlazor.MudMask>()
-    let MudMask'' = MudMask'()
-    
     type MudSelect'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudSelect<_>>)>] () = inherit MudSelectBuilder<MudBlazor.MudSelect<'T>, 'T>()
-    let MudSelect''<'T> = MudSelect'<'T>()
-    
 
     /// Represents a form input component which stores a boolean value.
     type MudBooleanInput'<'T> 
         /// Represents a form input component which stores a boolean value.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudBooleanInput<_>>)>] () = inherit MudBooleanInputBuilder<MudBlazor.MudBooleanInput<'T>, 'T>()
-    let MudBooleanInput''<'T> = MudBooleanInput'<'T>()
-    
 
     /// Represents a form input for boolean values or selecting multiple items in a list.
     type MudCheckBox'<'T> 
         /// Represents a form input for boolean values or selecting multiple items in a list.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudCheckBox<_>>)>] () = inherit MudCheckBoxBuilder<MudBlazor.MudCheckBox<'T>, 'T>()
-    let MudCheckBox''<'T> = MudCheckBox'<'T>()
-    
     type MudSwitch'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudSwitch<_>>)>] () = inherit MudSwitchBuilder<MudBlazor.MudSwitch<'T>, 'T>()
-    let MudSwitch''<'T> = MudSwitch'<'T>()
-    
 
     /// A form component for uploading one or more files.  For T, use either IBrowserFile for a single file or IReadOnlyCollection<IBrowserFile> for multiple files.
     type MudFileUpload'<'T> 
         /// A form component for uploading one or more files.  For T, use either IBrowserFile for a single file or IReadOnlyCollection<IBrowserFile> for multiple files.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudFileUpload<_>>)>] () = inherit MudFileUploadBuilder<MudBlazor.MudFileUpload<'T>, 'T>()
-    let MudFileUpload''<'T> = MudFileUpload'<'T>()
-    
 
     /// Represents a common form component for selecting date, time, and color values.
     type MudPicker'<'T> 
         /// Represents a common form component for selecting date, time, and color values.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudPicker<_>>)>] () = inherit MudPickerBuilder<MudBlazor.MudPicker<'T>, 'T>()
-    let MudPicker''<'T> = MudPicker'<'T>()
-    
 
     /// Represents a base class for designing date picker components.
     type MudBaseDatePicker' 
         /// Represents a base class for designing date picker components.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudBaseDatePicker>)>] () = inherit MudBaseDatePickerBuilder<MudBlazor.MudBaseDatePicker>()
-    let MudBaseDatePicker'' = MudBaseDatePicker'()
-    
 
     /// Represents a picker for dates.
     type MudDatePicker' 
         /// Represents a picker for dates.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudDatePicker>)>] () = inherit MudDatePickerBuilder<MudBlazor.MudDatePicker>()
-    let MudDatePicker'' = MudDatePicker'()
-    
 
     /// Represents a picker for a range of dates.
     type MudDateRangePicker' 
         /// Represents a picker for a range of dates.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudDateRangePicker>)>] () = inherit MudDateRangePickerBuilder<MudBlazor.MudDateRangePicker>()
-    let MudDateRangePicker'' = MudDateRangePicker'()
-    
 
     /// Represents a sophisticated and customizable pop-up for choosing a color.
     type MudColorPicker' 
         /// Represents a sophisticated and customizable pop-up for choosing a color.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudColorPicker>)>] () = inherit MudColorPickerBuilder<MudBlazor.MudColorPicker>()
-    let MudColorPicker'' = MudColorPicker'()
-    
     type MudTimePicker' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudTimePicker>)>] () = inherit MudTimePickerBuilder<MudBlazor.MudTimePicker>()
-    let MudTimePicker'' = MudTimePicker'()
-    
     type MudRadioGroup'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudRadioGroup<_>>)>] () = inherit MudRadioGroupBuilder<MudBlazor.MudRadioGroup<'T>, 'T>()
-    let MudRadioGroup''<'T> = MudRadioGroup'<'T>()
-    
 
     /// Represents an alert used to display an important message which is statically embedded in the page content.
     type MudAlert' 
         /// Represents an alert used to display an important message which is statically embedded in the page content.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudAlert>)>] () = inherit MudAlertBuilder<MudBlazor.MudAlert>()
-    let MudAlert'' = MudAlert'()
-    
 
     /// Represents a bar used to display actions, branding, navigation and screen titles.
     type MudAppBar' 
         /// Represents a bar used to display actions, branding, navigation and screen titles.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudAppBar>)>] () = inherit MudAppBarBuilder<MudBlazor.MudAppBar>()
-    let MudAppBar'' = MudAppBar'()
-    
 
     /// Represents a component which displays circular user profile pictures, icons or text.
     type MudAvatar' 
         /// Represents a component which displays circular user profile pictures, icons or text.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudAvatar>)>] () = inherit MudAvatarBuilder<MudBlazor.MudAvatar>()
-    let MudAvatar'' = MudAvatar'()
-    
 
     /// Represents a grouping of multiple MudAvatar components.
     type MudAvatarGroup' 
         /// Represents a grouping of multiple MudAvatar components.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudAvatarGroup>)>] () = inherit MudAvatarGroupBuilder<MudBlazor.MudAvatarGroup>()
-    let MudAvatarGroup'' = MudAvatarGroup'()
-    
 
     /// Represents an overlay added to an icon or button to add information such as a number of new items.
     type MudBadge' 
         /// Represents an overlay added to an icon or button to add information such as a number of new items.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudBadge>)>] () = inherit MudBadgeBuilder<MudBlazor.MudBadge>()
-    let MudBadge'' = MudBadge'()
-    
 
     /// Represents a series of links used to show the user's current location.
     type MudBreadcrumbs' 
         /// Represents a series of links used to show the user's current location.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudBreadcrumbs>)>] () = inherit MudBreadcrumbsBuilder<MudBlazor.MudBreadcrumbs>()
-    let MudBreadcrumbs'' = MudBreadcrumbs'()
-    
 
     /// Represents a cascading parameter which exposes the window's current breakpoint (xs, sm, md, lg, xl).
     type MudBreakpointProvider' 
         /// Represents a cascading parameter which exposes the window's current breakpoint (xs, sm, md, lg, xl).
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudBreakpointProvider>)>] () = inherit MudBreakpointProviderBuilder<MudBlazor.MudBreakpointProvider>()
-    let MudBreakpointProvider'' = MudBreakpointProvider'()
-    
 
     /// Represents a button consisting of an icon that can be toggled between two distinct states.
     type MudToggleIconButton' 
         /// Represents a button consisting of an icon that can be toggled between two distinct states.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudToggleIconButton>)>] () = inherit MudToggleIconButtonBuilder<MudBlazor.MudToggleIconButton>()
-    let MudToggleIconButton'' = MudToggleIconButton'()
-    
 
     /// Represents a group of connected MudButton components.
     type MudButtonGroup' 
         /// Represents a group of connected MudButton components.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudButtonGroup>)>] () = inherit MudButtonGroupBuilder<MudBlazor.MudButtonGroup>()
-    let MudButtonGroup'' = MudButtonGroup'()
-    
 
     /// Represents a block of content which can include a header, image, content, and actions.
     type MudCard' 
         /// Represents a block of content which can include a header, image, content, and actions.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudCard>)>] () = inherit MudCardBuilder<MudBlazor.MudCard>()
-    let MudCard'' = MudCard'()
-    
 
     /// Represents a set of buttons displayed as part of a MudCard.
     type MudCardActions' 
         /// Represents a set of buttons displayed as part of a MudCard.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudCardActions>)>] () = inherit MudCardActionsBuilder<MudBlazor.MudCardActions>()
-    let MudCardActions'' = MudCardActions'()
-    
 
     /// Represents the primary content displayed within a MudCard.
     type MudCardContent' 
         /// Represents the primary content displayed within a MudCard.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudCardContent>)>] () = inherit MudCardContentBuilder<MudBlazor.MudCardContent>()
-    let MudCardContent'' = MudCardContent'()
-    
 
     /// Represents the top portion of a MudCard.
     type MudCardHeader' 
         /// Represents the top portion of a MudCard.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudCardHeader>)>] () = inherit MudCardHeaderBuilder<MudBlazor.MudCardHeader>()
-    let MudCardHeader'' = MudCardHeader'()
-    
 
     /// Represents an image displayed as part of a MudCard.
     type MudCardMedia' 
         /// Represents an image displayed as part of a MudCard.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudCardMedia>)>] () = inherit MudCardMediaBuilder<MudBlazor.MudCardMedia>()
-    let MudCardMedia'' = MudCardMedia'()
-    
 
     /// Represents a slide displayed within a MudCarousel`1.
     type MudCarouselItem' 
         /// Represents a slide displayed within a MudCarousel`1.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudCarouselItem>)>] () = inherit MudCarouselItemBuilder<MudBlazor.MudCarouselItem>()
-    let MudCarouselItem'' = MudCarouselItem'()
-    
 
     /// Represents a compact element used to enter information, select a choice, filter content, or trigger an action.
     type MudChip'<'T> 
         /// Represents a compact element used to enter information, select a choice, filter content, or trigger an action.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudChip<_>>)>] () = inherit MudChipBuilder<MudBlazor.MudChip<'T>, 'T>()
-    let MudChip''<'T> = MudChip'<'T>()
-    
 
     /// Represents a set of multiple MudChip`1 components.
     type MudChipSet'<'T> 
         /// Represents a set of multiple MudChip`1 components.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudChipSet<_>>)>] () = inherit MudChipSetBuilder<MudBlazor.MudChipSet<'T>, 'T>()
-    let MudChipSet''<'T> = MudChipSet'<'T>()
-    
 
     /// Represents a container for content which can be collapsed and expanded.
     type MudCollapse' 
         /// Represents a container for content which can be collapsed and expanded.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudCollapse>)>] () = inherit MudCollapseBuilder<MudBlazor.MudCollapse>()
-    let MudCollapse'' = MudCollapse'()
-    
 
     /// Represents a vertical set of values.
     type Column'<'T> 
         /// Represents a vertical set of values.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.Column<_>>)>] () = inherit ColumnBuilder<MudBlazor.Column<'T>, 'T>()
-    let Column''<'T> = Column'<'T>()
-    
 
     /// Represents a column in a MudDataGrid`1 associated with an object's property.
     type PropertyColumn'<'T, 'TProperty> 
         /// Represents a column in a MudDataGrid`1 associated with an object's property.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.PropertyColumn<_, _>>)>] () = inherit PropertyColumnBuilder<MudBlazor.PropertyColumn<'T, 'TProperty>, 'T, 'TProperty>()
-    let PropertyColumn''<'T, 'TProperty> = PropertyColumn'<'T, 'TProperty>()
-    
 
     /// Represents an additional column for a MudDataGrid`1 which isn't tied to data.
     type TemplateColumn'<'T> 
         /// Represents an additional column for a MudDataGrid`1 which isn't tied to data.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.TemplateColumn<_>>)>] () = inherit TemplateColumnBuilder<MudBlazor.TemplateColumn<'T>, 'T>()
-    let TemplateColumn''<'T> = TemplateColumn'<'T>()
-    
 
     /// Represents a column filter shown when FilterMode is ColumnFilterRow.
     type FilterHeaderCell'<'T> 
         /// Represents a column filter shown when FilterMode is ColumnFilterRow.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.FilterHeaderCell<_>>)>] () = inherit FilterHeaderCellBuilder<MudBlazor.FilterHeaderCell<'T>, 'T>()
-    let FilterHeaderCell''<'T> = FilterHeaderCell'<'T>()
-    
 
     /// Represents a cell displayed at the bottom of a column.
     type FooterCell'<'T> 
         /// Represents a cell displayed at the bottom of a column.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.FooterCell<_>>)>] () = inherit FooterCellBuilder<MudBlazor.FooterCell<'T>, 'T>()
-    let FooterCell''<'T> = FooterCell'<'T>()
-    
 
     /// Represents a cell displayed at the top of a MudDataGrid`1 column.
     type HeaderCell'<'T> 
         /// Represents a cell displayed at the top of a MudDataGrid`1 column.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.HeaderCell<_>>)>] () = inherit HeaderCellBuilder<MudBlazor.HeaderCell<'T>, 'T>()
-    let HeaderCell''<'T> = HeaderCell'<'T>()
-    
 
     /// Represents a column in a MudDataGrid`1 which can be expanded to show additional information.
     type HierarchyColumn'<'T> 
         /// Represents a column in a MudDataGrid`1 which can be expanded to show additional information.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.HierarchyColumn<_>>)>] () = inherit HierarchyColumnBuilder<MudBlazor.HierarchyColumn<'T>, 'T>()
-    let HierarchyColumn''<'T> = HierarchyColumn'<'T>()
-    
 
     /// Represents a sortable, filterable data grid with multiselection and pagination.
     type MudDataGrid'<'T> 
         /// Represents a sortable, filterable data grid with multiselection and pagination.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudDataGrid<_>>)>] () = inherit MudDataGridBuilder<MudBlazor.MudDataGrid<'T>, 'T>()
-    let MudDataGrid''<'T> = MudDataGrid'<'T>()
-    
 
     /// Represents a pager for navigating pages of a MudDataGrid`1.
     type MudDataGridPager'<'T> 
         /// Represents a pager for navigating pages of a MudDataGrid`1.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudDataGridPager<_>>)>] () = inherit MudDataGridPagerBuilder<MudBlazor.MudDataGridPager<'T>, 'T>()
-    let MudDataGridPager''<'T> = MudDataGridPager'<'T>()
-    
 
     /// An overlay providing the user with information, a choice, or other input.
     type MudDialog' 
         /// An overlay providing the user with information, a choice, or other input.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudDialog>)>] () = inherit MudDialogBuilder<MudBlazor.MudDialog>()
-    let MudDialog'' = MudDialog'()
-    
 
     /// An instance of a MudDialog.
     type MudDialogInstance' 
         /// An instance of a MudDialog.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudDialogInstance>)>] () = inherit MudDialogInstanceBuilder<MudBlazor.MudDialogInstance>()
-    let MudDialogInstance'' = MudDialogInstance'()
-    
 
     /// A thin line that groups content in lists and layouts.
     type MudDivider' 
         /// A thin line that groups content in lists and layouts.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudDivider>)>] () = inherit MudDividerBuilder<MudBlazor.MudDivider>()
-    let MudDivider'' = MudDivider'()
-    
 
     /// Represents a navigation panel docked to the side of the page.
     type MudDrawer' 
         /// Represents a navigation panel docked to the side of the page.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudDrawer>)>] () = inherit MudDrawerBuilder<MudBlazor.MudDrawer>()
-    let MudDrawer'' = MudDrawer'()
-    
 
     /// Represents content at the top of a MudDrawer.
     type MudDrawerHeader' 
         /// Represents content at the top of a MudDrawer.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudDrawerHeader>)>] () = inherit MudDrawerHeaderBuilder<MudBlazor.MudDrawerHeader>()
-    let MudDrawerHeader'' = MudDrawerHeader'()
-    
 
     /// A container of MudDropZone`1 components for drag-and-drop operations.
     type MudDropContainer'<'T> 
         /// A container of MudDropZone`1 components for drag-and-drop operations.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudDropContainer<_>>)>] () = inherit MudDropContainerBuilder<MudBlazor.MudDropContainer<'T>, 'T>()
-    let MudDropContainer''<'T> = MudDropContainer'<'T>()
-    
 
     /// A location which can participate in a drag-and-drop operation.
     type MudDropZone'<'T> 
         /// A location which can participate in a drag-and-drop operation.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudDropZone<_>>)>] () = inherit MudDropZoneBuilder<MudBlazor.MudDropZone<'T>, 'T>()
-    let MudDropZone''<'T> = MudDropZone'<'T>()
-    
     type MudDynamicDropItem'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudDynamicDropItem<_>>)>] () = inherit MudDynamicDropItemBuilder<MudBlazor.MudDynamicDropItem<'T>, 'T>()
-    let MudDynamicDropItem''<'T> = MudDynamicDropItem'<'T>()
-    
 
     /// A primitive component which allows dynamically changing the HTML element rendered under the hood.
     type MudElement' 
         /// A primitive component which allows dynamically changing the HTML element rendered under the hood.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudElement>)>] () = inherit MudElementBuilder<MudBlazor.MudElement>()
-    let MudElement'' = MudElement'()
-    
 
     /// A component which can be expanded to show more content or collapsed to show only its header.
     type MudExpansionPanel' 
         /// A component which can be expanded to show more content or collapsed to show only its header.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudExpansionPanel>)>] () = inherit MudExpansionPanelBuilder<MudBlazor.MudExpansionPanel>()
-    let MudExpansionPanel'' = MudExpansionPanel'()
-    
 
     /// A container which manages MudExpansionPanel components such that when one panel is expanded the others are collapsed automatically.
     type MudExpansionPanels' 
         /// A container which manages MudExpansionPanel components such that when one panel is expanded the others are collapsed automatically.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudExpansionPanels>)>] () = inherit MudExpansionPanelsBuilder<MudBlazor.MudExpansionPanels>()
-    let MudExpansionPanels'' = MudExpansionPanels'()
-    
 
     /// A component similar to MudTextField`1 which supports custom content.
     type MudField' 
         /// A component similar to MudTextField`1 which supports custom content.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudField>)>] () = inherit MudFieldBuilder<MudBlazor.MudField>()
-    let MudField'' = MudField'()
-    
 
     /// A component which prevents the keyboard focus from cycling out of its child content.
     type MudFocusTrap' 
         /// A component which prevents the keyboard focus from cycling out of its child content.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudFocusTrap>)>] () = inherit MudFocusTrapBuilder<MudBlazor.MudFocusTrap>()
-    let MudFocusTrap'' = MudFocusTrap'()
-    
 
     /// A component for collecting and validating user input. Every input derived from MudFormComponent 
     /// within it is monitored and validated.
@@ -5162,284 +4986,310 @@ module DslCE =
         /// A component for collecting and validating user input. Every input derived from MudFormComponent 
         /// within it is monitored and validated.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudForm>)>] () = inherit MudFormBuilder<MudBlazor.MudForm>()
-    let MudForm'' = MudForm'()
-    
 
     /// A component for breaking a flex display using CSS styles.
     type MudFlexBreak' 
         /// A component for breaking a flex display using CSS styles.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudFlexBreak>)>] () = inherit MudFlexBreakBuilder<MudBlazor.MudFlexBreak>()
-    let MudFlexBreak'' = MudFlexBreak'()
-    
     type MudGrid' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudGrid>)>] () = inherit MudGridBuilder<MudBlazor.MudGrid>()
-    let MudGrid'' = MudGrid'()
-    
     type MudItem' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudItem>)>] () = inherit MudItemBuilder<MudBlazor.MudItem>()
-    let MudItem'' = MudItem'()
-    
     type MudHidden' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudHidden>)>] () = inherit MudHiddenBuilder<MudBlazor.MudHidden>()
-    let MudHidden'' = MudHidden'()
-    
     type MudHighlighter' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudHighlighter>)>] () = inherit MudHighlighterBuilder<MudBlazor.MudHighlighter>()
-    let MudHighlighter'' = MudHighlighter'()
-    
     type MudIcon' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudIcon>)>] () = inherit MudIconBuilder<MudBlazor.MudIcon>()
-    let MudIcon'' = MudIcon'()
-    
     type MudImage' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudImage>)>] () = inherit MudImageBuilder<MudBlazor.MudImage>()
-    let MudImage'' = MudImage'()
-    
 
     /// A label which describes a MudInput`1 component.
     type MudInputLabel' 
         /// A label which describes a MudInput`1 component.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudInputLabel>)>] () = inherit MudInputLabelBuilder<MudBlazor.MudInputLabel>()
-    let MudInputLabel'' = MudInputLabel'()
-    
     type MudInputControl' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudInputControl>)>] () = inherit MudInputControlBuilder<MudBlazor.MudInputControl>()
-    let MudInputControl'' = MudInputControl'()
-    
     type MudLink' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudLink>)>] () = inherit MudLinkBuilder<MudBlazor.MudLink>()
-    let MudLink'' = MudLink'()
-    
     type MudList'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudList<_>>)>] () = inherit MudListBuilder<MudBlazor.MudList<'T>, 'T>()
-    let MudList''<'T> = MudList'<'T>()
-    
     type MudListItem'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudListItem<_>>)>] () = inherit MudListItemBuilder<MudBlazor.MudListItem<'T>, 'T>()
-    let MudListItem''<'T> = MudListItem'<'T>()
-    
     type MudListSubheader' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudListSubheader>)>] () = inherit MudListSubheaderBuilder<MudBlazor.MudListSubheader>()
-    let MudListSubheader'' = MudListSubheader'()
-    
     type MudMenu' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudMenu>)>] () = inherit MudMenuBuilder<MudBlazor.MudMenu>()
-    let MudMenu'' = MudMenu'()
-    
     type MudMenuItem' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudMenuItem>)>] () = inherit MudMenuItemBuilder<MudBlazor.MudMenuItem>()
-    let MudMenuItem'' = MudMenuItem'()
-    
     type MudMessageBox' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudMessageBox>)>] () = inherit MudMessageBoxBuilder<MudBlazor.MudMessageBox>()
-    let MudMessageBox'' = MudMessageBox'()
-    
     type MudNavGroup' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudNavGroup>)>] () = inherit MudNavGroupBuilder<MudBlazor.MudNavGroup>()
-    let MudNavGroup'' = MudNavGroup'()
-    
     type MudNavMenu' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudNavMenu>)>] () = inherit MudNavMenuBuilder<MudBlazor.MudNavMenu>()
-    let MudNavMenu'' = MudNavMenu'()
-    
     type MudOverlay' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudOverlay>)>] () = inherit MudOverlayBuilder<MudBlazor.MudOverlay>()
-    let MudOverlay'' = MudOverlay'()
-    
     type MudPageContentNavigation' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudPageContentNavigation>)>] () = inherit MudPageContentNavigationBuilder<MudBlazor.MudPageContentNavigation>()
-    let MudPageContentNavigation'' = MudPageContentNavigation'()
-    
     type MudPagination' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudPagination>)>] () = inherit MudPaginationBuilder<MudBlazor.MudPagination>()
-    let MudPagination'' = MudPagination'()
-    
     type MudPaper' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudPaper>)>] () = inherit MudPaperBuilder<MudBlazor.MudPaper>()
-    let MudPaper'' = MudPaper'()
-    
 
     /// Represents the content within a MudPicker`1.
     type MudPickerContent' 
         /// Represents the content within a MudPicker`1.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudPickerContent>)>] () = inherit MudPickerContentBuilder<MudBlazor.MudPickerContent>()
-    let MudPickerContent'' = MudPickerContent'()
-    
 
     /// Represents the toolbar content of a MudPicker`1.
     type MudPickerToolbar' 
         /// Represents the toolbar content of a MudPicker`1.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudPickerToolbar>)>] () = inherit MudPickerToolbarBuilder<MudBlazor.MudPickerToolbar>()
-    let MudPickerToolbar'' = MudPickerToolbar'()
-    
     type MudProgressCircular' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudProgressCircular>)>] () = inherit MudProgressCircularBuilder<MudBlazor.MudProgressCircular>()
-    let MudProgressCircular'' = MudProgressCircular'()
-    
     type MudProgressLinear' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudProgressLinear>)>] () = inherit MudProgressLinearBuilder<MudBlazor.MudProgressLinear>()
-    let MudProgressLinear'' = MudProgressLinear'()
-    
     type MudRadio'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudRadio<_>>)>] () = inherit MudRadioBuilder<MudBlazor.MudRadio<'T>, 'T>()
-    let MudRadio''<'T> = MudRadio'<'T>()
-    
     type MudRating' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudRating>)>] () = inherit MudRatingBuilder<MudBlazor.MudRating>()
-    let MudRating'' = MudRating'()
-    
     type MudRatingItem' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudRatingItem>)>] () = inherit MudRatingItemBuilder<MudBlazor.MudRatingItem>()
-    let MudRatingItem'' = MudRatingItem'()
-    
 
     /// Represents a language support provider for Right-to-Left (RTL) languages such as Arabic, Hebrew, and Persian.
     type MudRTLProvider' 
         /// Represents a language support provider for Right-to-Left (RTL) languages such as Arabic, Hebrew, and Persian.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudRTLProvider>)>] () = inherit MudRTLProviderBuilder<MudBlazor.MudRTLProvider>()
-    let MudRTLProvider'' = MudRTLProvider'()
-    
     type MudScrollToTop' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudScrollToTop>)>] () = inherit MudScrollToTopBuilder<MudBlazor.MudScrollToTop>()
-    let MudScrollToTop'' = MudScrollToTop'()
-    
     type MudSkeleton' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudSkeleton>)>] () = inherit MudSkeletonBuilder<MudBlazor.MudSkeleton>()
-    let MudSkeleton'' = MudSkeleton'()
-    
 
     /// Represents a slider component, allowing users to select a value within a specified range.
     type MudSlider'<'T when 'T : struct and 'T : (new : unit -> 'T) and System.Numerics.INumber<'T> and 'T :> System.ValueType> 
         /// Represents a slider component, allowing users to select a value within a specified range.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudSlider<_>>)>] () = inherit MudSliderBuilder<MudBlazor.MudSlider<'T>, 'T>()
-    let MudSlider''<'T when 'T : struct and 'T : (new : unit -> 'T) and System.Numerics.INumber<'T> and 'T :> System.ValueType> = MudSlider'<'T>()
-    
     type MudSnackbarElement' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudSnackbarElement>)>] () = inherit MudSnackbarElementBuilder<MudBlazor.MudSnackbarElement>()
-    let MudSnackbarElement'' = MudSnackbarElement'()
-    
     type MudSnackbarProvider' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudSnackbarProvider>)>] () = inherit MudSnackbarProviderBuilder<MudBlazor.MudSnackbarProvider>()
-    let MudSnackbarProvider'' = MudSnackbarProvider'()
-    
     type MudStack' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudStack>)>] () = inherit MudStackBuilder<MudBlazor.MudStack>()
-    let MudStack'' = MudStack'()
-    
     type MudSwipeArea' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudSwipeArea>)>] () = inherit MudSwipeAreaBuilder<MudBlazor.MudSwipeArea>()
-    let MudSwipeArea'' = MudSwipeArea'()
-    
 
     /// A grouping of values for a column in a MudTable`1.
     type MudTableGroupRow'<'T> 
         /// A grouping of values for a column in a MudTable`1.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudTableGroupRow<_>>)>] () = inherit MudTableGroupRowBuilder<MudBlazor.MudTableGroupRow<'T>, 'T>()
-    let MudTableGroupRow''<'T> = MudTableGroupRow'<'T>()
-    
 
     /// A component which changes pages and page size for a MudTable`1.
     type MudTablePager' 
         /// A component which changes pages and page size for a MudTable`1.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudTablePager>)>] () = inherit MudTablePagerBuilder<MudBlazor.MudTablePager>()
-    let MudTablePager'' = MudTablePager'()
-    
 
     /// A clickable column which toggles the sort column and direction for a MudTable`1.
     type MudTableSortLabel'<'T> 
         /// A clickable column which toggles the sort column and direction for a MudTable`1.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudTableSortLabel<_>>)>] () = inherit MudTableSortLabelBuilder<MudBlazor.MudTableSortLabel<'T>, 'T>()
-    let MudTableSortLabel''<'T> = MudTableSortLabel'<'T>()
-    
 
     /// A cell within a MudTr, MudTHeadRow, or MudTFootRow row component.
     type MudTd' 
         /// A cell within a MudTr, MudTHeadRow, or MudTFootRow row component.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudTd>)>] () = inherit MudTdBuilder<MudBlazor.MudTd>()
-    let MudTd'' = MudTd'()
-    
 
     /// A footer row displayed at the bottom of a MudTable`1 and each group.
     type MudTFootRow' 
         /// A footer row displayed at the bottom of a MudTable`1 and each group.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudTFootRow>)>] () = inherit MudTFootRowBuilder<MudBlazor.MudTFootRow>()
-    let MudTFootRow'' = MudTFootRow'()
-    
 
     /// A header cell which labels a column of data for a MudTable`1.
     type MudTh' 
         /// A header cell which labels a column of data for a MudTable`1.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudTh>)>] () = inherit MudThBuilder<MudBlazor.MudTh>()
-    let MudTh'' = MudTh'()
-    
 
     /// A header row displayed at the top of a MudTable`1 and each group.
     type MudTHeadRow' 
         /// A header row displayed at the top of a MudTable`1 and each group.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudTHeadRow>)>] () = inherit MudTHeadRowBuilder<MudBlazor.MudTHeadRow>()
-    let MudTHeadRow'' = MudTHeadRow'()
-    
 
     /// A row of data within a MudTable`1.
     type MudTr' 
         /// A row of data within a MudTable`1.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudTr>)>] () = inherit MudTrBuilder<MudBlazor.MudTr>()
-    let MudTr'' = MudTr'()
-    
     type MudSimpleTable' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudSimpleTable>)>] () = inherit MudSimpleTableBuilder<MudBlazor.MudSimpleTable>()
-    let MudSimpleTable'' = MudSimpleTable'()
-    
     type MudTimelineItem' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudTimelineItem>)>] () = inherit MudTimelineItemBuilder<MudBlazor.MudTimelineItem>()
-    let MudTimelineItem'' = MudTimelineItem'()
-    
     type MudToggleGroup'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudToggleGroup<_>>)>] () = inherit MudToggleGroupBuilder<MudBlazor.MudToggleGroup<'T>, 'T>()
-    let MudToggleGroup''<'T> = MudToggleGroup'<'T>()
-    
     type MudToggleItem'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudToggleItem<_>>)>] () = inherit MudToggleItemBuilder<MudBlazor.MudToggleItem<'T>, 'T>()
-    let MudToggleItem''<'T> = MudToggleItem'<'T>()
-    
     type MudToolBar' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudToolBar>)>] () = inherit MudToolBarBuilder<MudBlazor.MudToolBar>()
-    let MudToolBar'' = MudToolBar'()
-    
     type MudTooltip' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudTooltip>)>] () = inherit MudTooltipBuilder<MudBlazor.MudTooltip>()
-    let MudTooltip'' = MudTooltip'()
-    
     type MudTreeView'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudTreeView<_>>)>] () = inherit MudTreeViewBuilder<MudBlazor.MudTreeView<'T>, 'T>()
-    let MudTreeView''<'T> = MudTreeView'<'T>()
-    
     type MudTreeViewItem'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudTreeViewItem<_>>)>] () = inherit MudTreeViewItemBuilder<MudBlazor.MudTreeViewItem<'T>, 'T>()
-    let MudTreeViewItem''<'T> = MudTreeViewItem'<'T>()
-    
     type MudTreeViewItemToggleButton' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudTreeViewItemToggleButton>)>] () = inherit MudTreeViewItemToggleButtonBuilder<MudBlazor.MudTreeViewItemToggleButton>()
-    let MudTreeViewItemToggleButton'' = MudTreeViewItemToggleButton'()
-    
     type MudText' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudText>)>] () = inherit MudTextBuilder<MudBlazor.MudText>()
-    let MudText'' = MudText'()
-    
     type MudContainer' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudContainer>)>] () = inherit MudContainerBuilder<MudBlazor.MudContainer>()
-    let MudContainer'' = MudContainer'()
-    
     type MudMainContent' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudMainContent>)>] () = inherit MudMainContentBuilder<MudBlazor.MudMainContent>()
-    let MudMainContent'' = MudMainContent'()
-    
     type MudTabPanel' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudTabPanel>)>] () = inherit MudTabPanelBuilder<MudBlazor.MudTabPanel>()
-    let MudTabPanel'' = MudTabPanel'()
-    
     type MudThemeProvider' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudThemeProvider>)>] () = inherit MudThemeProviderBuilder<MudBlazor.MudThemeProvider>()
-    let MudThemeProvider'' = MudThemeProvider'()
-    
 
     /// Represents a segment in a list of breadcrumbs.
     type BreadcrumbLink' 
         /// Represents a segment in a list of breadcrumbs.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.BreadcrumbLink>)>] () = inherit BreadcrumbLinkBuilder<MudBlazor.BreadcrumbLink>()
-    let BreadcrumbLink'' = BreadcrumbLink'()
-    
 
     /// Represents a divider between breadcrumb items.
     type BreadcrumbSeparator' 
         /// Represents a divider between breadcrumb items.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.BreadcrumbSeparator>)>] () = inherit BreadcrumbSeparatorBuilder<MudBlazor.BreadcrumbSeparator>()
-    let BreadcrumbSeparator'' = BreadcrumbSeparator'()
-    
 
     /// Represents a checkbox column used to select rows in a MudDataGrid`1.
     type SelectColumn'<'T> 
         /// Represents a checkbox column used to select rows in a MudDataGrid`1.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.SelectColumn<_>>)>] () = inherit SelectColumnBuilder<MudBlazor.SelectColumn<'T>, 'T>()
-    let SelectColumn''<'T> = SelectColumn'<'T>()
-    
 
     /// A manager for MudDialog instances.
     type MudDialogProvider' 
         /// A manager for MudDialog instances.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudDialogProvider>)>] () = inherit MudDialogProviderBuilder<MudBlazor.MudDialogProvider>()
-    let MudDialogProvider'' = MudDialogProvider'()
-    
     type MudPopoverProvider' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudPopoverProvider>)>] () = inherit MudPopoverProviderBuilder<MudBlazor.MudPopoverProvider>()
-    let MudPopoverProvider'' = MudPopoverProvider'()
-    
     type MudVirtualize'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudVirtualize<_>>)>] () = inherit MudVirtualizeBuilder<MudBlazor.MudVirtualize<'T>, 'T>()
-    let MudVirtualize''<'T> = MudVirtualize'<'T>()
-    
     type MudRender' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudRender>)>] () = inherit MudRenderBuilder<MudBlazor.MudRender>()
-    let MudRender'' = MudRender'()
-    
     type MudSpacer' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudSpacer>)>] () = inherit MudSpacerBuilder<MudBlazor.MudSpacer>()
-    let MudSpacer'' = MudSpacer'()
-    
     type _Imports' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor._Imports>)>] () = inherit _ImportsBuilder<MudBlazor._Imports>()
+
+[<AutoOpen>]
+module DslCEInstances =
+  
+    open System.Diagnostics.CodeAnalysis
+    open MudBlazor.DslInternals
+
+    let ComponentBaseWithState'' = ComponentBaseWithState'()
+    let MudComponentBase'' = MudComponentBase'()
+    let MudChartBase'' = MudChartBase'()
+    let MudCategoryChartBase'' = MudCategoryChartBase'()
+    let MudChart'' = MudChart'()
+    let MudTimeSeriesChartBase'' = MudTimeSeriesChartBase'()
+    let MudTimeSeriesChart'' = MudTimeSeriesChart'()
+    let MudBaseButton'' = MudBaseButton'()
+    let MudButton'' = MudButton'()
+    let MudFab'' = MudFab'()
+    let MudIconButton'' = MudIconButton'()
+    let MudDrawerContainer'' = MudDrawerContainer'()
+    let MudLayout'' = MudLayout'()
+    let MudBaseSelectItem'' = MudBaseSelectItem'()
+    let MudNavLink'' = MudNavLink'()
+    let MudSelectItem''<'T> = MudSelectItem'<'T>()
+    let MudPopoverBase'' = MudPopoverBase'()
+    let MudPopover'' = MudPopover'()
+    let MudTableBase'' = MudTableBase'()
+    let MudTable''<'T> = MudTable'<'T>()
+    let MudTabs'' = MudTabs'()
+    let MudDynamicTabs'' = MudDynamicTabs'()
+    let MudBaseItemsControl''<'TChildComponent when 'TChildComponent :> MudBlazor.MudComponentBase> = MudBaseItemsControl'<'TChildComponent>()
+    let MudBaseBindableItemsControl''<'TChildComponent, 'TData when 'TChildComponent :> MudBlazor.MudComponentBase> = MudBaseBindableItemsControl'<'TChildComponent, 'TData>()
+    let MudCarousel''<'TData> = MudCarousel'<'TData>()
+    let MudTimeline'' = MudTimeline'()
+    let MudFormComponent''<'T, 'U> = MudFormComponent'<'T, 'U>()
+    let MudBaseInput''<'T> = MudBaseInput'<'T>()
+    let MudAutocomplete''<'T> = MudAutocomplete'<'T>()
+    let MudDebouncedInput''<'T> = MudDebouncedInput'<'T>()
+    let MudNumericField''<'T> = MudNumericField'<'T>()
+    let MudTextField''<'T> = MudTextField'<'T>()
+    let MudInput''<'T> = MudInput'<'T>()
+    let MudInputString'' = MudInputString'()
+    let MudRangeInput''<'T> = MudRangeInput'<'T>()
+    let MudMask'' = MudMask'()
+    let MudSelect''<'T> = MudSelect'<'T>()
+    let MudBooleanInput''<'T> = MudBooleanInput'<'T>()
+    let MudCheckBox''<'T> = MudCheckBox'<'T>()
+    let MudSwitch''<'T> = MudSwitch'<'T>()
+    let MudFileUpload''<'T> = MudFileUpload'<'T>()
+    let MudPicker''<'T> = MudPicker'<'T>()
+    let MudBaseDatePicker'' = MudBaseDatePicker'()
+    let MudDatePicker'' = MudDatePicker'()
+    let MudDateRangePicker'' = MudDateRangePicker'()
+    let MudColorPicker'' = MudColorPicker'()
+    let MudTimePicker'' = MudTimePicker'()
+    let MudRadioGroup''<'T> = MudRadioGroup'<'T>()
+    let MudAlert'' = MudAlert'()
+    let MudAppBar'' = MudAppBar'()
+    let MudAvatar'' = MudAvatar'()
+    let MudAvatarGroup'' = MudAvatarGroup'()
+    let MudBadge'' = MudBadge'()
+    let MudBreadcrumbs'' = MudBreadcrumbs'()
+    let MudBreakpointProvider'' = MudBreakpointProvider'()
+    let MudToggleIconButton'' = MudToggleIconButton'()
+    let MudButtonGroup'' = MudButtonGroup'()
+    let MudCard'' = MudCard'()
+    let MudCardActions'' = MudCardActions'()
+    let MudCardContent'' = MudCardContent'()
+    let MudCardHeader'' = MudCardHeader'()
+    let MudCardMedia'' = MudCardMedia'()
+    let MudCarouselItem'' = MudCarouselItem'()
+    let MudChip''<'T> = MudChip'<'T>()
+    let MudChipSet''<'T> = MudChipSet'<'T>()
+    let MudCollapse'' = MudCollapse'()
+    let Column''<'T> = Column'<'T>()
+    let PropertyColumn''<'T, 'TProperty> = PropertyColumn'<'T, 'TProperty>()
+    let TemplateColumn''<'T> = TemplateColumn'<'T>()
+    let FilterHeaderCell''<'T> = FilterHeaderCell'<'T>()
+    let FooterCell''<'T> = FooterCell'<'T>()
+    let HeaderCell''<'T> = HeaderCell'<'T>()
+    let HierarchyColumn''<'T> = HierarchyColumn'<'T>()
+    let MudDataGrid''<'T> = MudDataGrid'<'T>()
+    let MudDataGridPager''<'T> = MudDataGridPager'<'T>()
+    let MudDialog'' = MudDialog'()
+    let MudDialogInstance'' = MudDialogInstance'()
+    let MudDivider'' = MudDivider'()
+    let MudDrawer'' = MudDrawer'()
+    let MudDrawerHeader'' = MudDrawerHeader'()
+    let MudDropContainer''<'T> = MudDropContainer'<'T>()
+    let MudDropZone''<'T> = MudDropZone'<'T>()
+    let MudDynamicDropItem''<'T> = MudDynamicDropItem'<'T>()
+    let MudElement'' = MudElement'()
+    let MudExpansionPanel'' = MudExpansionPanel'()
+    let MudExpansionPanels'' = MudExpansionPanels'()
+    let MudField'' = MudField'()
+    let MudFocusTrap'' = MudFocusTrap'()
+    let MudForm'' = MudForm'()
+    let MudFlexBreak'' = MudFlexBreak'()
+    let MudGrid'' = MudGrid'()
+    let MudItem'' = MudItem'()
+    let MudHidden'' = MudHidden'()
+    let MudHighlighter'' = MudHighlighter'()
+    let MudIcon'' = MudIcon'()
+    let MudImage'' = MudImage'()
+    let MudInputLabel'' = MudInputLabel'()
+    let MudInputControl'' = MudInputControl'()
+    let MudLink'' = MudLink'()
+    let MudList''<'T> = MudList'<'T>()
+    let MudListItem''<'T> = MudListItem'<'T>()
+    let MudListSubheader'' = MudListSubheader'()
+    let MudMenu'' = MudMenu'()
+    let MudMenuItem'' = MudMenuItem'()
+    let MudMessageBox'' = MudMessageBox'()
+    let MudNavGroup'' = MudNavGroup'()
+    let MudNavMenu'' = MudNavMenu'()
+    let MudOverlay'' = MudOverlay'()
+    let MudPageContentNavigation'' = MudPageContentNavigation'()
+    let MudPagination'' = MudPagination'()
+    let MudPaper'' = MudPaper'()
+    let MudPickerContent'' = MudPickerContent'()
+    let MudPickerToolbar'' = MudPickerToolbar'()
+    let MudProgressCircular'' = MudProgressCircular'()
+    let MudProgressLinear'' = MudProgressLinear'()
+    let MudRadio''<'T> = MudRadio'<'T>()
+    let MudRating'' = MudRating'()
+    let MudRatingItem'' = MudRatingItem'()
+    let MudRTLProvider'' = MudRTLProvider'()
+    let MudScrollToTop'' = MudScrollToTop'()
+    let MudSkeleton'' = MudSkeleton'()
+    let MudSlider''<'T when 'T : struct and 'T : (new : unit -> 'T) and System.Numerics.INumber<'T> and 'T :> System.ValueType> = MudSlider'<'T>()
+    let MudSnackbarElement'' = MudSnackbarElement'()
+    let MudSnackbarProvider'' = MudSnackbarProvider'()
+    let MudStack'' = MudStack'()
+    let MudSwipeArea'' = MudSwipeArea'()
+    let MudTableGroupRow''<'T> = MudTableGroupRow'<'T>()
+    let MudTablePager'' = MudTablePager'()
+    let MudTableSortLabel''<'T> = MudTableSortLabel'<'T>()
+    let MudTd'' = MudTd'()
+    let MudTFootRow'' = MudTFootRow'()
+    let MudTh'' = MudTh'()
+    let MudTHeadRow'' = MudTHeadRow'()
+    let MudTr'' = MudTr'()
+    let MudSimpleTable'' = MudSimpleTable'()
+    let MudTimelineItem'' = MudTimelineItem'()
+    let MudToggleGroup''<'T> = MudToggleGroup'<'T>()
+    let MudToggleItem''<'T> = MudToggleItem'<'T>()
+    let MudToolBar'' = MudToolBar'()
+    let MudTooltip'' = MudTooltip'()
+    let MudTreeView''<'T> = MudTreeView'<'T>()
+    let MudTreeViewItem''<'T> = MudTreeViewItem'<'T>()
+    let MudTreeViewItemToggleButton'' = MudTreeViewItemToggleButton'()
+    let MudText'' = MudText'()
+    let MudContainer'' = MudContainer'()
+    let MudMainContent'' = MudMainContent'()
+    let MudTabPanel'' = MudTabPanel'()
+    let MudThemeProvider'' = MudThemeProvider'()
+    let BreadcrumbLink'' = BreadcrumbLink'()
+    let BreadcrumbSeparator'' = BreadcrumbSeparator'()
+    let SelectColumn''<'T> = SelectColumn'<'T>()
+    let MudDialogProvider'' = MudDialogProvider'()
+    let MudPopoverProvider'' = MudPopoverProvider'()
+    let MudVirtualize''<'T> = MudVirtualize'<'T>()
+    let MudRender'' = MudRender'()
+    let MudSpacer'' = MudSpacer'()
     let _Imports'' = _Imports'()
-    
             
 namespace MudBlazor.Charts
 
@@ -5454,49 +5304,48 @@ module DslCE =
     type Bar' 
         /// Represents a chart which displays series values as rectangular bars.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.Charts.Bar>)>] () = inherit BarBuilder<MudBlazor.Charts.Bar>()
-    let Bar'' = Bar'()
-    
 
     /// Represents a chart which displays values as ring shape.
     type Donut' 
         /// Represents a chart which displays values as ring shape.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.Charts.Donut>)>] () = inherit DonutBuilder<MudBlazor.Charts.Donut>()
-    let Donut'' = Donut'()
-    
 
     /// Represents a chart which displays series values as connected lines.
     type Line' 
         /// Represents a chart which displays series values as connected lines.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.Charts.Line>)>] () = inherit LineBuilder<MudBlazor.Charts.Line>()
-    let Line'' = Line'()
-    
 
     /// Represents a chart which displays values as a percentage of a circle.
     type Pie' 
         /// Represents a chart which displays values as a percentage of a circle.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.Charts.Pie>)>] () = inherit PieBuilder<MudBlazor.Charts.Pie>()
-    let Pie'' = Pie'()
-    
 
     /// Represents a chart which displays series values as portions of vertical rectangles.
     type StackedBar' 
         /// Represents a chart which displays series values as portions of vertical rectangles.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.Charts.StackedBar>)>] () = inherit StackedBarBuilder<MudBlazor.Charts.StackedBar>()
-    let StackedBar'' = StackedBar'()
-    
     type TimeSeries' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.Charts.TimeSeries>)>] () = inherit TimeSeriesBuilder<MudBlazor.Charts.TimeSeries>()
-    let TimeSeries'' = TimeSeries'()
-    
 
     /// Represents a set of text labels which describe data values in a MudChart.
     type Legend' 
         /// Represents a set of text labels which describe data values in a MudChart.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.Charts.Legend>)>] () = inherit LegendBuilder<MudBlazor.Charts.Legend>()
-    let Legend'' = Legend'()
-    
     type Filters' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.Charts.Filters>)>] () = inherit FiltersBuilder<MudBlazor.Charts.Filters>()
+
+[<AutoOpen>]
+module DslCEInstances =
+  
+    open System.Diagnostics.CodeAnalysis
+    open MudBlazor.DslInternals.Charts
+
+    let Bar'' = Bar'()
+    let Donut'' = Donut'()
+    let Line'' = Line'()
+    let Pie'' = Pie'()
+    let StackedBar'' = StackedBar'()
+    let TimeSeries'' = TimeSeries'()
+    let Legend'' = Legend'()
     let Filters'' = Filters'()
-    
             
 namespace MudBlazor.Internal
 
@@ -5511,8 +5360,14 @@ module DslCE =
     type MudInputAdornment' 
         /// An icon displayed within an input component.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.Internal.MudInputAdornment>)>] () = inherit MudInputAdornmentBuilder<MudBlazor.Internal.MudInputAdornment>()
+
+[<AutoOpen>]
+module DslCEInstances =
+  
+    open System.Diagnostics.CodeAnalysis
+    open MudBlazor.DslInternals.Internal
+
     let MudInputAdornment'' = MudInputAdornment'()
-    
             
 namespace MudBlazor.Components.Snackbar.InternalComponents
 
@@ -5523,12 +5378,16 @@ module DslCE =
     open MudBlazor.DslInternals.Components.Snackbar.InternalComponents
 
     type SnackbarMessageMarkupString' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.Components.Snackbar.InternalComponents.SnackbarMessageMarkupString>)>] () = inherit SnackbarMessageMarkupStringBuilder<MudBlazor.Components.Snackbar.InternalComponents.SnackbarMessageMarkupString>()
-    let SnackbarMessageMarkupString'' = SnackbarMessageMarkupString'()
-    
     type SnackbarMessageRenderFragment' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.Components.Snackbar.InternalComponents.SnackbarMessageRenderFragment>)>] () = inherit SnackbarMessageRenderFragmentBuilder<MudBlazor.Components.Snackbar.InternalComponents.SnackbarMessageRenderFragment>()
-    let SnackbarMessageRenderFragment'' = SnackbarMessageRenderFragment'()
-    
     type SnackbarMessageText' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.Components.Snackbar.InternalComponents.SnackbarMessageText>)>] () = inherit SnackbarMessageTextBuilder<MudBlazor.Components.Snackbar.InternalComponents.SnackbarMessageText>()
+
+[<AutoOpen>]
+module DslCEInstances =
+  
+    open System.Diagnostics.CodeAnalysis
+    open MudBlazor.DslInternals.Components.Snackbar.InternalComponents
+
+    let SnackbarMessageMarkupString'' = SnackbarMessageMarkupString'()
+    let SnackbarMessageRenderFragment'' = SnackbarMessageRenderFragment'()
     let SnackbarMessageText'' = SnackbarMessageText'()
-    
             
