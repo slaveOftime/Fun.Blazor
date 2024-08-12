@@ -5,13 +5,13 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <TrimMode>link</TrimMode>
     <IsTrimmable>true</IsTrimmable>
-    <Version>7.5.0</Version>
+    <Version>7.6.0</Version>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Fun.Blazor.Bindings\MudBlazor.fs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference FunBlazor="" FunBlazorNamespace="MudBlazor" FunBlazorAssemblyName="MudBlazor" Include="MudBlazor" Version="7.5.0" />
+    <PackageReference FunBlazor="" FunBlazorNamespace="MudBlazor" FunBlazorAssemblyName="MudBlazor" Include="MudBlazor" Version="7.6.0" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Update="FSharp.Core" Version="6.0.0" />

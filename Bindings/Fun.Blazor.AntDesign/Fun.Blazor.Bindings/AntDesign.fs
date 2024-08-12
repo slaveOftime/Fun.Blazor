@@ -63,6 +63,9 @@ type OverlayTriggerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     [<CustomOperation("TriggerReference")>] member inline _.TriggerReference ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.AspNetCore.Components.ElementReference) = render ==> ("TriggerReference" => x)
     [<CustomOperation("Unbound")>] member inline _.Unbound ([<InlineIfLambda>] render: AttrRenderFragment, fn: AntDesign.ForwardRef -> NodeRenderFragment) = render ==> html.renderFragment("Unbound", fn)
     [<CustomOperation("Visible")>] member inline _.Visible ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Visible" => (defaultArg x true))
+    [<CustomOperation("Visible'")>] member inline _.Visible' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Boolean * (System.Boolean -> unit)) = render ==> html.bind("Visible", valueFn)
+    [<CustomOperation("VisibleChanged")>] member inline _.VisibleChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Boolean -> unit) = render ==> html.callback("VisibleChanged", fn)
+    [<CustomOperation("VisibleChanged")>] member inline _.VisibleChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("VisibleChanged", fn)
 
             
 namespace rec AntDesign.DslInternals
@@ -676,7 +679,6 @@ type BreadcrumbBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.Asp
     inherit AntDomComponentBaseBuilder<'FunBlazorGeneric>()
     [<CustomOperation("AutoGenerate")>] member inline _.AutoGenerate ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("AutoGenerate" => (defaultArg x true))
     [<CustomOperation("Separator")>] member inline _.Separator ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Separator" => x)
-    [<CustomOperation("RouteLabel")>] member inline _.RouteLabel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("RouteLabel" => x)
 
 type ButtonGroupBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit AntDomComponentBaseBuilder<'FunBlazorGeneric>()
@@ -757,6 +759,8 @@ type CarouselBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNe
     [<CustomOperation("DotPosition")>] member inline _.DotPosition ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("DotPosition" => x)
     [<CustomOperation("Autoplay")>] member inline _.Autoplay ([<InlineIfLambda>] render: AttrRenderFragment, x: System.TimeSpan) = render ==> ("Autoplay" => x)
     [<CustomOperation("Effect")>] member inline _.Effect ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Effect" => x)
+    [<CustomOperation("Dots")>] member inline _.Dots ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Dots" => (defaultArg x true))
+    [<CustomOperation("DotsClass")>] member inline _.DotsClass ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("DotsClass" => x)
 
 type CarouselSlickBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit AntDomComponentBaseBuilder<'FunBlazorGeneric>()
@@ -929,6 +933,7 @@ type CascaderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNe
     [<CustomOperation("SelectedNodesChanged")>] member inline _.SelectedNodesChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: AntDesign.CascaderNode[] -> unit) = render ==> html.callback("SelectedNodesChanged", fn)
     [<CustomOperation("SelectedNodesChanged")>] member inline _.SelectedNodesChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: AntDesign.CascaderNode[] -> Task<unit>) = render ==> html.callbackTask("SelectedNodesChanged", fn)
     [<CustomOperation("Options")>] member inline _.Options ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<AntDesign.CascaderNode>) = render ==> ("Options" => x)
+    [<CustomOperation("Placement")>] member inline _.Placement ([<InlineIfLambda>] render: AttrRenderFragment, x: AntDesign.Placement) = render ==> ("Placement" => x)
 
 type CheckboxGroupBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit AntInputComponentBaseBuilder<'FunBlazorGeneric, 'TValue[]>()
@@ -1171,6 +1176,9 @@ type SelectBaseBuilder<'FunBlazorGeneric, 'TItemValue, 'TItem when 'FunBlazorGen
     [<CustomOperation("SearchDebounceMilliseconds")>] member inline _.SearchDebounceMilliseconds ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("SearchDebounceMilliseconds" => x)
     [<CustomOperation("Loading")>] member inline _.Loading ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Loading" => (defaultArg x true))
     [<CustomOperation("Open")>] member inline _.Open ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Open" => (defaultArg x true))
+    [<CustomOperation("Open'")>] member inline _.Open' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Boolean * (System.Boolean -> unit)) = render ==> html.bind("Open", valueFn)
+    [<CustomOperation("OpenChanged")>] member inline _.OpenChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Boolean -> unit) = render ==> html.callback("OpenChanged", fn)
+    [<CustomOperation("OpenChanged")>] member inline _.OpenChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("OpenChanged", fn)
     [<CustomOperation("Placeholder")>] member inline _.Placeholder ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Placeholder" => x)
     [<CustomOperation("OnFocus")>] member inline _.OnFocus ([<InlineIfLambda>] render: AttrRenderFragment, fn: unit -> unit) = render ==> html.callback("OnFocus", fn)
     [<CustomOperation("OnFocus")>] member inline _.OnFocus ([<InlineIfLambda>] render: AttrRenderFragment, fn: unit -> Task<unit>) = render ==> html.callbackTask("OnFocus", fn)
@@ -1475,6 +1483,7 @@ type FormBuilder<'FunBlazorGeneric, 'TModel when 'FunBlazorGeneric :> Microsoft.
     [<CustomOperation("ValidateMessages")>] member inline _.ValidateMessages ([<InlineIfLambda>] render: AttrRenderFragment, x: AntDesign.FormValidateErrorMessages) = render ==> ("ValidateMessages" => x)
     [<CustomOperation("Enhance")>] member inline _.Enhance ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Enhance" => (defaultArg x true))
     [<CustomOperation("Autocomplete")>] member inline _.Autocomplete ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Autocomplete" => x)
+    [<CustomOperation("Locale")>] member inline _.Locale ([<InlineIfLambda>] render: AttrRenderFragment, x: AntDesign.Form.Locale.FormLocale) = render ==> ("Locale" => x)
 
 type FormItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit AntDomComponentBaseBuilder<'FunBlazorGeneric>()
@@ -1826,6 +1835,7 @@ type ModalBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCo
     [<CustomOperation("RestoreBtnIcon")>] member inline _.RestoreBtnIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("RestoreBtnIcon", html.text x)
     [<CustomOperation("DefaultMaximized")>] member inline _.DefaultMaximized ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("DefaultMaximized" => (defaultArg x true))
     [<CustomOperation("Resizable")>] member inline _.Resizable ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Resizable" => (defaultArg x true))
+    [<CustomOperation("ForceRender")>] member inline _.ForceRender ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("ForceRender" => (defaultArg x true))
 
 type ModalCancelFooterBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit AntDomComponentBaseBuilder<'FunBlazorGeneric>()
@@ -2216,6 +2226,7 @@ type TableBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> Microsoft.
     [<CustomOperation("RerenderStrategy")>] member inline _.RerenderStrategy ([<InlineIfLambda>] render: AttrRenderFragment, x: AntDesign.RerenderStrategy) = render ==> ("RerenderStrategy" => x)
     [<CustomOperation("DataSource")>] member inline _.DataSource ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<'TItem>) = render ==> ("DataSource" => x)
     [<CustomOperation("ChildContent")>] member inline _.ChildContent ([<InlineIfLambda>] render: AttrRenderFragment, fn: 'TItem -> NodeRenderFragment) = render ==> html.renderFragment("ChildContent", fn)
+    [<CustomOperation("GroupTitleTemplate")>] member inline _.GroupTitleTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: AntDesign.TableModels.RowData<'TItem> -> NodeRenderFragment) = render ==> html.renderFragment("GroupTitleTemplate", fn)
     [<CustomOperation("RowTemplate")>] member inline _.RowTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: AntDesign.TableModels.RowData<'TItem> -> NodeRenderFragment) = render ==> html.renderFragment("RowTemplate", fn)
     [<CustomOperation("ColumnDefinitions")>] member inline _.ColumnDefinitions ([<InlineIfLambda>] render: AttrRenderFragment, fn: 'TItem -> NodeRenderFragment) = render ==> html.renderFragment("ColumnDefinitions", fn)
     [<CustomOperation("HeaderTemplate")>] member inline _.HeaderTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: 'TItem -> NodeRenderFragment) = render ==> html.renderFragment("HeaderTemplate", fn)
@@ -2377,6 +2388,7 @@ type TagBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore
     [<CustomOperation("Color")>] member inline _.Color ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Color" => x)
     [<CustomOperation("PresetColor")>] member inline _.PresetColor ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<AntDesign.PresetColor>) = render ==> ("PresetColor" => x)
     [<CustomOperation("Icon")>] member inline _.Icon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Icon" => x)
+    [<CustomOperation("IconTheme")>] member inline _.IconTheme ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("IconTheme" => x)
     [<CustomOperation("NoAnimation")>] member inline _.NoAnimation ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("NoAnimation" => (defaultArg x true))
     [<CustomOperation("OnClose")>] member inline _.OnClose ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> unit) = render ==> html.callback("OnClose", fn)
     [<CustomOperation("OnClose")>] member inline _.OnClose ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> Task<unit>) = render ==> html.callbackTask("OnClose", fn)

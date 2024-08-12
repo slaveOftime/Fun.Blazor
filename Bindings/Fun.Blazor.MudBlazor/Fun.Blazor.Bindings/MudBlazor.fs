@@ -1496,6 +1496,8 @@ type MudDateRangePickerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micro
     [<CustomOperation("DateRange")>] member inline _.DateRange ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.DateRange) = render ==> ("DateRange" => x)
     /// The currently selected date range.
     [<CustomOperation("DateRange'")>] member inline _.DateRange' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: MudBlazor.DateRange * (MudBlazor.DateRange -> unit)) = render ==> html.bind("DateRange", valueFn)
+    /// Enables capture for disabled dates within the selected date range.
+    [<CustomOperation("AllowDisabledDatesInRange")>] member inline _.AllowDisabledDatesInRange ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("AllowDisabledDatesInRange" => (defaultArg x true))
 
 /// Represents a sophisticated and customizable pop-up for choosing a color.
 type MudColorPickerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -3438,7 +3440,7 @@ type MudOverlayBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.Asp
     [<CustomOperation("VisibleChanged")>] member inline _.VisibleChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Boolean -> unit) = render ==> html.callback("VisibleChanged", fn)
     /// Occurs when Visible changes.
     [<CustomOperation("VisibleChanged")>] member inline _.VisibleChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("VisibleChanged", fn)
-    /// Sets Visible to false on click.
+    /// Sets Visible to false when the overlay is clicked and calls OnClosed.
     [<CustomOperation("AutoClose")>] member inline _.AutoClose ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("AutoClose" => (defaultArg x true))
     /// Prevents the Document.body element from scrolling.
     [<CustomOperation("LockScroll")>] member inline _.LockScroll ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("LockScroll" => (defaultArg x true))
@@ -3792,10 +3794,6 @@ type MudStackBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNe
     /// Reverses the order of its items.
     [<CustomOperation("Reverse")>] member inline _.Reverse ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Reverse" => (defaultArg x true))
     /// The gap between items, measured in increments of 4px.
-    /// 
-    /// Maximum is 20.
-    /// 
-    /// Default is 3.
     [<CustomOperation("Spacing")>] member inline _.Spacing ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("Spacing" => x)
     /// Defines the distribution of children along the main axis within a MudStack component.
     [<CustomOperation("Justify")>] member inline _.Justify ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<MudBlazor.Justify>) = render ==> ("Justify" => x)
@@ -4176,6 +4174,10 @@ type MudTreeViewBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsof
     /// If true, the checkboxes will use the undetermined state in MultiSelection if any children in the subtree
     /// have a different selection value than the parent item.
     [<CustomOperation("TriState")>] member inline _.TriState ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("TriState" => (defaultArg x true))
+    /// If true, selecting all children will result in the parent being automatically selected.
+    /// Unselecting a children will still unselect the parent.
+    /// Note: This only has an effect in SelectionMode.MultiSelection.
+    [<CustomOperation("AutoSelectParent")>] member inline _.AutoSelectParent ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("AutoSelectParent" => (defaultArg x true))
     /// If true, clicking anywhere on the item will expand it, if it has children.
     [<CustomOperation("ExpandOnClick")>] member inline _.ExpandOnClick ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("ExpandOnClick" => (defaultArg x true))
     /// If true, double-clicking anywhere on the item will expand it, if it has children.
@@ -4246,7 +4248,9 @@ type MudTreeViewItemBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Micr
     [<CustomOperation("EndTextClass")>] member inline _.EndTextClass ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("EndTextClass" => x)
     /// If true, TreeViewItem will be disabled.
     [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Disabled" => (defaultArg x true))
-    /// If false, TreeViewItem will not be able to expand. 
+    /// If true, the MudTreeViewItem's selection can not be changed.  
+    [<CustomOperation("ReadOnly")>] member inline _.ReadOnly ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("ReadOnly" => (defaultArg x true))
+    /// If false, TreeViewItem will not be able to expand.
     [<CustomOperation("CanExpand")>] member inline _.CanExpand ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("CanExpand" => (defaultArg x true))
     /// Content of the item, if used completely replaced the default rendering.
     [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("Content", fragment)
@@ -4410,6 +4414,9 @@ type MudThemeProviderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microso
     /// If true, will not apply MudBlazor styled scrollbar and use browser default. 
     ///             
     [<CustomOperation("DefaultScrollbar")>] member inline _.DefaultScrollbar ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("DefaultScrollbar" => (defaultArg x true))
+    /// Sets a value indicating whether to observe changes in the system theme preference.
+    /// Default is true.
+    [<CustomOperation("ObserveSystemThemeChange")>] member inline _.ObserveSystemThemeChange ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("ObserveSystemThemeChange" => (defaultArg x true))
     /// The active palette of the theme.
     [<CustomOperation("IsDarkMode")>] member inline _.IsDarkMode ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("IsDarkMode" => (defaultArg x true))
     /// The active palette of the theme.
