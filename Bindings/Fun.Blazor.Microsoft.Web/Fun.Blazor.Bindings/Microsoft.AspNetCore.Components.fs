@@ -196,6 +196,14 @@ module DslCE =
     open Microsoft.AspNetCore.Components.DslInternals
 
     type ErrorBoundaryBase' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.ErrorBoundaryBase>)>] () = inherit ErrorBoundaryBaseBuilder<Microsoft.AspNetCore.Components.ErrorBoundaryBase>()
+
+[<AutoOpen>]
+module DslCEInstances =
+  
+    open System.Diagnostics.CodeAnalysis
+    open Microsoft.AspNetCore.Components.DslInternals
+
+    let ErrorBoundaryBase'' = ErrorBoundaryBase'()
             
 namespace Microsoft.AspNetCore.Components.Web
 
@@ -209,6 +217,17 @@ module DslCE =
     type HeadContent' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Web.HeadContent>)>] () = inherit HeadContentBuilder<Microsoft.AspNetCore.Components.Web.HeadContent>()
     type HeadOutlet' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Web.HeadOutlet>)>] () = inherit HeadOutletBuilder<Microsoft.AspNetCore.Components.Web.HeadOutlet>()
     type PageTitle' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Web.PageTitle>)>] () = inherit PageTitleBuilder<Microsoft.AspNetCore.Components.Web.PageTitle>()
+
+[<AutoOpen>]
+module DslCEInstances =
+  
+    open System.Diagnostics.CodeAnalysis
+    open Microsoft.AspNetCore.Components.DslInternals.Web
+
+    let ErrorBoundary'' = ErrorBoundary'()
+    let HeadContent'' = HeadContent'()
+    let HeadOutlet'' = HeadOutlet'()
+    let PageTitle'' = PageTitle'()
             
 namespace Microsoft.AspNetCore.Components.Routing
 
@@ -220,6 +239,15 @@ module DslCE =
 
     type FocusOnNavigate' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Routing.FocusOnNavigate>)>] () = inherit FocusOnNavigateBuilder<Microsoft.AspNetCore.Components.Routing.FocusOnNavigate>()
     type NavLink' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Routing.NavLink>)>] () = inherit NavLinkBuilder<Microsoft.AspNetCore.Components.Routing.NavLink>()
+
+[<AutoOpen>]
+module DslCEInstances =
+  
+    open System.Diagnostics.CodeAnalysis
+    open Microsoft.AspNetCore.Components.DslInternals.Routing
+
+    let FocusOnNavigate'' = FocusOnNavigate'()
+    let NavLink'' = NavLink'()
             
 namespace Microsoft.AspNetCore.Components.Web.Virtualization
 
@@ -230,6 +258,14 @@ module DslCE =
     open Microsoft.AspNetCore.Components.DslInternals.Web.Virtualization
 
     type Virtualize'<'TItem> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Web.Virtualization.Virtualize<_>>)>] () = inherit VirtualizeBuilder<Microsoft.AspNetCore.Components.Web.Virtualization.Virtualize<'TItem>, 'TItem>()
+
+[<AutoOpen>]
+module DslCEInstances =
+  
+    open System.Diagnostics.CodeAnalysis
+    open Microsoft.AspNetCore.Components.DslInternals.Web.Virtualization
+
+    let Virtualize''<'TItem> = Virtualize'<'TItem>()
             
 namespace Microsoft.AspNetCore.Components.Forms
 
@@ -253,4 +289,25 @@ module DslCE =
     type InputRadio'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Forms.InputRadio<_>>)>] () = inherit InputRadioBuilder<Microsoft.AspNetCore.Components.Forms.InputRadio<'TValue>, 'TValue>()
     type ValidationMessage'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Forms.ValidationMessage<_>>)>] () = inherit ValidationMessageBuilder<Microsoft.AspNetCore.Components.Forms.ValidationMessage<'TValue>, 'TValue>()
     type ValidationSummary' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Forms.ValidationSummary>)>] () = inherit ValidationSummaryBuilder<Microsoft.AspNetCore.Components.Forms.ValidationSummary>()
+
+[<AutoOpen>]
+module DslCEInstances =
+  
+    open System.Diagnostics.CodeAnalysis
+    open Microsoft.AspNetCore.Components.DslInternals.Forms
+
+    let EditForm'' = EditForm'()
+    let Editor''<'T> = Editor'<'T>()
+    let InputBase''<'TValue> = InputBase'<'TValue>()
+    let InputCheckbox'' = InputCheckbox'()
+    let InputDate''<'TValue> = InputDate'<'TValue>()
+    let InputNumber''<'TValue> = InputNumber'<'TValue>()
+    let InputRadioGroup''<'TValue> = InputRadioGroup'<'TValue>()
+    let InputSelect''<'TValue> = InputSelect'<'TValue>()
+    let InputText'' = InputText'()
+    let InputTextArea'' = InputTextArea'()
+    let InputFile'' = InputFile'()
+    let InputRadio''<'TValue> = InputRadio'<'TValue>()
+    let ValidationMessage''<'TValue> = ValidationMessage'<'TValue>()
+    let ValidationSummary'' = ValidationSummary'()
             

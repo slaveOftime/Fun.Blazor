@@ -42,4 +42,14 @@ module DslCE =
     type AuthorizeViewCore' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Authorization.AuthorizeViewCore>)>] () = inherit AuthorizeViewCoreBuilder<Microsoft.AspNetCore.Components.Authorization.AuthorizeViewCore>()
     type AuthorizeView' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Authorization.AuthorizeView>)>] () = inherit AuthorizeViewBuilder<Microsoft.AspNetCore.Components.Authorization.AuthorizeView>()
     type CascadingAuthenticationState' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Authorization.CascadingAuthenticationState>)>] () = inherit CascadingAuthenticationStateBuilder<Microsoft.AspNetCore.Components.Authorization.CascadingAuthenticationState>()
+
+[<AutoOpen>]
+module DslCEInstances =
+  
+    open System.Diagnostics.CodeAnalysis
+    open Microsoft.AspNetCore.Components.Authorization.DslInternals
+
+    let AuthorizeViewCore'' = AuthorizeViewCore'()
+    let AuthorizeView'' = AuthorizeView'()
+    let CascadingAuthenticationState'' = CascadingAuthenticationState'()
             

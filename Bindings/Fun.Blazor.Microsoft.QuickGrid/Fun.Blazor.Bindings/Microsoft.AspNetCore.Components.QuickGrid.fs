@@ -197,6 +197,18 @@ module DslCE =
     type QuickGrid'<'TGridItem> 
         /// A component that displays a grid.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.QuickGrid.QuickGrid<_>>)>] () = inherit QuickGridBuilder<Microsoft.AspNetCore.Components.QuickGrid.QuickGrid<'TGridItem>, 'TGridItem>()
+
+[<AutoOpen>]
+module DslCEInstances =
+  
+    open System.Diagnostics.CodeAnalysis
+    open Microsoft.AspNetCore.Components.QuickGrid.DslInternals
+
+    let ColumnBase''<'TGridItem> = ColumnBase'<'TGridItem>()
+    let PropertyColumn''<'TGridItem, 'TProp> = PropertyColumn'<'TGridItem, 'TProp>()
+    let TemplateColumn''<'TGridItem> = TemplateColumn'<'TGridItem>()
+    let Paginator'' = Paginator'()
+    let QuickGrid''<'TGridItem> = QuickGrid'<'TGridItem>()
             
 namespace Microsoft.AspNetCore.Components.QuickGrid.Infrastructure
 
@@ -211,4 +223,12 @@ module DslCE =
     type Defer' 
         /// For internal use only. Do not use.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.QuickGrid.Infrastructure.Defer>)>] () = inherit DeferBuilder<Microsoft.AspNetCore.Components.QuickGrid.Infrastructure.Defer>()
+
+[<AutoOpen>]
+module DslCEInstances =
+  
+    open System.Diagnostics.CodeAnalysis
+    open Microsoft.AspNetCore.Components.QuickGrid.DslInternals.Infrastructure
+
+    let Defer'' = Defer'()
             

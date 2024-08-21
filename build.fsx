@@ -138,6 +138,9 @@ let stage_generateBindingProjects name package nsp assemblyName patch targets =
     <PackageReference FunBlazor="" FunBlazorNamespace="{nsp}" FunBlazorAssemblyName="{defaultArg assemblyName package}" Include="{package}" Version="{version}" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="*.fs" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Update="FSharp.Core" Version="6.0.0" />
     <PackageReference Include="Fun.Blazor" Version="4.0.0" />
   </ItemGroup>

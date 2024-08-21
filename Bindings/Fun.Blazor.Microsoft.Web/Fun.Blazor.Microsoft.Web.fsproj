@@ -5,13 +5,13 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <TrimMode>link</TrimMode>
     <IsTrimmable>true</IsTrimmable>
-    <Version>8.0.7</Version>
+    <Version>8.0.8</Version>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Fun.Blazor.Bindings\Microsoft.AspNetCore.Components.fs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference FunBlazor="" FunBlazorNamespace="Microsoft.AspNetCore.Components" FunBlazorAssemblyName="Microsoft.AspNetCore.Components.Web" Include="Microsoft.AspNetCore.Components.Web" Version="8.0.7" />
+    <PackageReference FunBlazor="" FunBlazorNamespace="Microsoft.AspNetCore.Components" FunBlazorAssemblyName="Microsoft.AspNetCore.Components.Web" Include="Microsoft.AspNetCore.Components.Web" Version="8.0.8" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Update="FSharp.Core" Version="6.0.0" />
