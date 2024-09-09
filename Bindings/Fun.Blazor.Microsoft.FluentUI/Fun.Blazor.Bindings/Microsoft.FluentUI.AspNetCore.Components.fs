@@ -497,6 +497,12 @@ type FluentDatePickerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microso
     [<CustomOperation("PickerMonthChanged")>] member inline _.PickerMonthChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.DateTime -> unit) = render ==> html.callback("PickerMonthChanged", fn)
     /// Fired when the display month changes.
     [<CustomOperation("PickerMonthChanged")>] member inline _.PickerMonthChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.DateTime -> Task<unit>) = render ==> html.callbackTask("PickerMonthChanged", fn)
+    /// Command executed when the user double-clicks on the date picker.
+    [<CustomOperation("OnDoubleClick")>] member inline _.OnDoubleClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> unit) = render ==> html.callback("OnDoubleClick", fn)
+    /// Command executed when the user double-clicks on the date picker.
+    [<CustomOperation("OnDoubleClick")>] member inline _.OnDoubleClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> Task<unit>) = render ==> html.callbackTask("OnDoubleClick", fn)
+    /// Gets or sets a value which will be set when double-clicking on the text field of date picker.
+    [<CustomOperation("DoubleClickToDate")>] member inline _.DoubleClickToDate ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.DateTime>) = render ==> ("DoubleClickToDate" => x)
 
 type FluentCheckboxBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentInputBaseBuilder<'FunBlazorGeneric, System.Boolean>()
@@ -692,7 +698,7 @@ type FluentNumberFieldBuilder<'FunBlazorGeneric, 'TValue when 'TValue : (new : u
     [<CustomOperation("MinLength")>] member inline _.MinLength ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("MinLength" => x)
     /// Gets or sets the size.
     [<CustomOperation("Size")>] member inline _.Size ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("Size" => x)
-    /// Gets or sets the amount to increase/decrease the number with. Only use whole number when TValue is int or long. 
+    /// Gets or sets the amount to increase/decrease the number with. Only use whole number when TValue is int or long.
     [<CustomOperation("Step")>] member inline _.Step ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Step" => x)
     /// Gets or sets the maximum value.
     [<CustomOperation("Max")>] member inline _.Max ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Max" => x)
@@ -700,6 +706,9 @@ type FluentNumberFieldBuilder<'FunBlazorGeneric, 'TValue when 'TValue : (new : u
     [<CustomOperation("Min")>] member inline _.Min ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Min" => x)
     /// Gets or sets the Appearance.
     [<CustomOperation("Appearance")>] member inline _.Appearance ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.FluentInputAppearance) = render ==> ("Appearance" => x)
+    /// Specifies whether a form or an input field should have autocomplete "on" or "off" or another value.
+    /// An Id value must be set to use this property.
+    [<CustomOperation("AutoComplete")>] member inline _.AutoComplete ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("AutoComplete" => x)
     /// Gets or sets the error message to show when the field can not be parsed.
     [<CustomOperation("ParsingErrorMessage")>] member inline _.ParsingErrorMessage ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ParsingErrorMessage" => x)
 
@@ -1011,15 +1020,23 @@ type FluentDataGridBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric 
     /// each row, allowing the virtualization mechanism to fetch the correct number of items to match the display
     /// size and to ensure accurate scrolling.
     [<CustomOperation("ItemSize")>] member inline _.ItemSize ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Single) = render ==> ("ItemSize" => x)
-    /// If true, renders draggable handles around the column headers, allowing the user to resize the columns
-    /// manually. Size changes are not persisted.
+    /// If true, renders draggable handles around the column headers and adds a button to invoke a resize UI.
+    /// This allows the user to resize columns manually. Size changes are not persisted.
     [<CustomOperation("ResizableColumns")>] member inline _.ResizableColumns ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("ResizableColumns" => (defaultArg x true))
     /// To comply with WCAG 2.2, a one-click option should be offered to change column widths. We provide such an option through the
     /// ColumnOptions UI. This parameter allows you to enable or disable this resize UI.Enable it by setting the type of resize to perform
     /// Discrete: resize by a 10 pixels at a time
     /// Exact: resize to the exact width specified (in pixels)
     [<CustomOperation("ResizeType")>] member inline _.ResizeType ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.DataGridResizeType>) = render ==> ("ResizeType" => x)
-    [<CustomOperation("ResizeLabel")>] member inline _.ResizeLabel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ResizeLabel" => x)
+    /// (Aria) Labels used in the column resize UI.
+    [<CustomOperation("ColumnResizeLabels")>] member inline _.ColumnResizeLabels ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.ColumnResizeLabels) = render ==> ("ColumnResizeLabels" => x)
+    /// Labels used in the column sort UI.
+    [<CustomOperation("ColumnSortLabels")>] member inline _.ColumnSortLabels ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.ColumnSortLabels) = render ==> ("ColumnSortLabels" => x)
+    /// Labels used in the column options UI.
+    [<CustomOperation("ColumnOptionsLabels")>] member inline _.ColumnOptionsLabels ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.ColumnOptionsLabels) = render ==> ("ColumnOptionsLabels" => x)
+    /// If true, enables the new style of header cell that includes a button to display all column options through a menu.
+    ///             
+    [<CustomOperation("HeaderCellAsButtonWithMenu")>] member inline _.HeaderCellAsButtonWithMenu ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("HeaderCellAsButtonWithMenu" => (defaultArg x true))
     /// Optionally defines a value for @key on each rendered row. Typically this should be used to specify a
     /// unique identifier, such as a primary key value, for each data item.
     ///             
@@ -1099,6 +1116,8 @@ type FluentDataGridBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric 
     /// Gets or sets the content to render when Loading is true.
     /// A default fragment is used if loading content is not specified.
     [<CustomOperation("LoadingContent")>] member inline _.LoadingContent ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("LoadingContent", html.text x)
+    /// Sets GridTemplateColumns to automatically fit the columns to the available width as best it can.
+    [<CustomOperation("AutoFit")>] member inline _.AutoFit ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("AutoFit" => (defaultArg x true))
 
 type FluentDataGridCellBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -1250,6 +1269,8 @@ type FluentDragContainerBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
     /// This event is fired when the user starts dragging an element.
     [<CustomOperation("OnDragStart")>] member inline _.OnDragStart ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("OnDragStart" => (System.Action<Microsoft.FluentUI.AspNetCore.Components.FluentDragEventArgs<'TItem>>fn))
+    /// This event is fired when the drag operation ends (such as releasing a mouse button or hitting the Esc key).
+    [<CustomOperation("OnDragEnd")>] member inline _.OnDragEnd ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("OnDragEnd" => (System.Action<Microsoft.FluentUI.AspNetCore.Components.FluentDragEventArgs<'TItem>>fn))
     /// This event is fired when a dragged element enters a valid drop target.
     [<CustomOperation("OnDragEnter")>] member inline _.OnDragEnter ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("OnDragEnter" => (System.Action<Microsoft.FluentUI.AspNetCore.Components.FluentDragEventArgs<'TItem>>fn))
     /// This event is fired when an element is being dragged over a valid drop target.
@@ -1269,6 +1290,8 @@ type FluentDropZoneBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> M
     [<CustomOperation("Draggable")>] member inline _.Draggable ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Draggable" => (defaultArg x true))
     /// This event is fired when the user starts dragging an element.
     [<CustomOperation("OnDragStart")>] member inline _.OnDragStart ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("OnDragStart" => (System.Action<Microsoft.FluentUI.AspNetCore.Components.FluentDragEventArgs<'TItem>>fn))
+    /// This event is fired when the drag operation ends (such as releasing a mouse button or hitting the Esc key).
+    [<CustomOperation("OnDragEnd")>] member inline _.OnDragEnd ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("OnDragEnd" => (System.Action<Microsoft.FluentUI.AspNetCore.Components.FluentDragEventArgs<'TItem>>fn))
     /// This event is fired when a dragged element enters a valid drop target.
     [<CustomOperation("OnDragEnter")>] member inline _.OnDragEnter ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("OnDragEnter" => (System.Action<Microsoft.FluentUI.AspNetCore.Components.FluentDragEventArgs<'TItem>>fn))
     /// This event is fired when an element is being dragged over a valid drop target.
@@ -1641,6 +1664,10 @@ type FluentMenuButtonBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microso
 
 type FluentMenuBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
+    /// Use IMenuService to create the menu, if this service was injected.
+    /// This value must be defined before the component is rendered (you can't change it during the component lifecycle).
+    /// Default, true.
+    [<CustomOperation("UseMenuService")>] member inline _.UseMenuService ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("UseMenuService" => (defaultArg x true))
     /// Gets or sets the identifier of the source component clickable by the end user.
     [<CustomOperation("Anchor")>] member inline _.Anchor ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Anchor" => x)
     /// Gets or sets the automatic trigger. See 
@@ -1652,7 +1679,7 @@ type FluentMenuBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.Asp
     [<CustomOperation("Open'")>] member inline _.Open' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Boolean * (System.Boolean -> unit)) = render ==> html.bind("Open", valueFn)
     /// Gets or sets the horizontal menu position.
     [<CustomOperation("HorizontalPosition")>] member inline _.HorizontalPosition ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.HorizontalPosition) = render ==> ("HorizontalPosition" => x)
-    /// Gets or sets a value indicating whether the region overlaps the anchor on the horizontal axis. 
+    /// Gets or sets a value indicating whether the region overlaps the anchor on the horizontal axis.
     /// Default is false which places the region adjacent to the anchor element.
     [<CustomOperation("HorizontalInset")>] member inline _.HorizontalInset ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("HorizontalInset" => (defaultArg x true))
     /// Gets or sets the vertical menu position.
@@ -1672,6 +1699,10 @@ type FluentMenuBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.Asp
     [<CustomOperation("VerticalThreshold")>] member inline _.VerticalThreshold ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("VerticalThreshold" => x)
     /// Gets or sets how narrow the space allocated to the default position has to be before the widest area is selected for layout.
     [<CustomOperation("HorizontalThreshold")>] member inline _.HorizontalThreshold ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("HorizontalThreshold" => x)
+    /// Gets or sets the Horizontal viewport lock.
+    [<CustomOperation("HorizontalViewportLock")>] member inline _.HorizontalViewportLock ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("HorizontalViewportLock" => (defaultArg x true))
+    /// Gets or sets the horizontal scaling mode.
+    [<CustomOperation("HorizontalScaling")>] member inline _.HorizontalScaling ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.AxisScalingMode>) = render ==> ("HorizontalScaling" => x)
 
 type FluentMenuItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -1699,6 +1730,10 @@ type FluentMenuItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> unit) = render ==> html.callback("OnClick", fn)
     /// Event raised when the user click on this item.
     [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> Task<unit>) = render ==> html.callbackTask("OnClick", fn)
+
+type FluentMenuProviderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
+
 
 type FluentMessageBarBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -2379,11 +2414,11 @@ type FluentSplitterBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
 
 type FluentStackBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
-    /// Gets or sets the horizontal alignment of the components in the stack. 
+    /// Gets or sets the horizontal alignment of the components in the stack.
     [<CustomOperation("HorizontalAlignment")>] member inline _.HorizontalAlignment ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.HorizontalAlignment) = render ==> ("HorizontalAlignment" => x)
     /// Gets or sets the vertical alignment of the components in the stack.
     [<CustomOperation("VerticalAlignment")>] member inline _.VerticalAlignment ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.VerticalAlignment) = render ==> ("VerticalAlignment" => x)
-    /// Gets or sets the orientation of the stacked components. 
+    /// Gets or sets the orientation of the stacked components.
     [<CustomOperation("Orientation")>] member inline _.Orientation ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Orientation) = render ==> ("Orientation" => x)
     /// Gets or sets the width of the stack as a percentage string (default = 100%).
     [<CustomOperation("Width")>] member inline _.Width ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Width" => x)
@@ -2956,8 +2991,6 @@ type ColumnResizeOptionsBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGen
     inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
     /// Gets or sets the index of the Column to act upon
     [<CustomOperation("Column")>] member inline _.Column ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("Column" => x)
-    /// Gets or sets the label to display above the resize options
-    [<CustomOperation("Label")>] member inline _.Label ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Label" => x)
     /// Gets or sets the type of resize to perform
     /// Discrete: resize by a 10 pixels at a time
     /// Exact: resize to the exact width specified (in pixels)
@@ -3078,13 +3111,15 @@ type FluentInputLabelBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microso
 
 type FluentOverlayBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    /// Gets or sets the unique identifier of the overlay.
+    [<CustomOperation("Id")>] member inline _.Id ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Id" => x)
     /// Gets or sets a value indicating whether the overlay is visible.
     [<CustomOperation("Visible")>] member inline _.Visible ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Visible" => (defaultArg x true))
     /// Gets or sets a value indicating whether the overlay is visible.
     [<CustomOperation("Visible'")>] member inline _.Visible' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Boolean * (System.Boolean -> unit)) = render ==> html.bind("Visible", valueFn)
-    /// Callback for when overlay visisbility changes.
+    /// Callback for when overlay visibility changes.
     [<CustomOperation("VisibleChanged")>] member inline _.VisibleChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Boolean -> unit) = render ==> html.callback("VisibleChanged", fn)
-    /// Callback for when overlay visisbility changes.
+    /// Callback for when overlay visibility changes.
     [<CustomOperation("VisibleChanged")>] member inline _.VisibleChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("VisibleChanged", fn)
     /// Callback for when the overlay is closed.
     [<CustomOperation("OnClose")>] member inline _.OnClose ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> unit) = render ==> html.callback("OnClose", fn)
@@ -3102,6 +3137,14 @@ type FluentOverlayBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     [<CustomOperation("Justification")>] member inline _.Justification ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.JustifyContent) = render ==> ("Justification" => x)
     /// Gets or sets a value indicating whether the overlay is shown full screen or bound to the containing element.
     [<CustomOperation("FullScreen")>] member inline _.FullScreen ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("FullScreen" => (defaultArg x true))
+    /// Gets or sets a value indicating whether the overlay is interactive, except for the element with the specified InteractiveExceptId.
+    /// In other words, the elements below the overlay remain usable (mouse-over, click) and the overlay will closed when clicked.
+    [<CustomOperation("Interactive")>] member inline _.Interactive ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Interactive" => (defaultArg x true))
+    /// Gets or sets the HTML identifier of the element that is not interactive when the overlay is shown.
+    /// This property is ignored if Interactive is false.
+    [<CustomOperation("InteractiveExceptId")>] member inline _.InteractiveExceptId ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("InteractiveExceptId" => x)
+    /// Gets of sets a value indicating if the overlay can be dismissed by clicking on it.
+    /// Default is true.
     [<CustomOperation("Dismissable")>] member inline _.Dismissable ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Dismissable" => (defaultArg x true))
     /// Gets or sets the background color. 
     /// Needs to be formatted as an HTML hex color string (#rrggbb or #rgb).
@@ -4134,6 +4177,7 @@ module DslCE =
     type FluentMenuButton' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentMenuButton>)>] () = inherit FluentMenuButtonBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentMenuButton>()
     type FluentMenu' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentMenu>)>] () = inherit FluentMenuBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentMenu>()
     type FluentMenuItem' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentMenuItem>)>] () = inherit FluentMenuItemBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentMenuItem>()
+    type FluentMenuProvider' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentMenuProvider>)>] () = inherit FluentMenuProviderBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentMenuProvider>()
     type FluentMessageBar' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentMessageBar>)>] () = inherit FluentMessageBarBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentMessageBar>()
     type FluentMessageBarProvider' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentMessageBarProvider>)>] () = inherit FluentMessageBarProviderBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentMessageBarProvider>()
     type FluentNavMenuTree' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentNavMenuTree>)>] () = inherit FluentNavMenuTreeBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentNavMenuTree>()
@@ -4227,6 +4271,142 @@ module DslCE =
     type FluentPageScript' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentPageScript>)>] () = inherit FluentPageScriptBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentPageScript>()
     type ConfirmationToast' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.ConfirmationToast>)>] () = inherit ConfirmationToastBuilder<Microsoft.FluentUI.AspNetCore.Components.ConfirmationToast>()
     type _Imports' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components._Imports>)>] () = inherit _ImportsBuilder<Microsoft.FluentUI.AspNetCore.Components._Imports>()
+
+[<AutoOpen>]
+module DslCEInstances =
+  
+    open System.Diagnostics.CodeAnalysis
+    open Microsoft.FluentUI.AspNetCore.Components.DslInternals
+
+    let FluentComponentBase'' = FluentComponentBase'()
+    let FluentNavMenuItemBase'' = FluentNavMenuItemBase'()
+    let FluentNavMenuGroup'' = FluentNavMenuGroup'()
+    let FluentNavMenuLink'' = FluentNavMenuLink'()
+    let FluentNavBase'' = FluentNavBase'()
+    let FluentNavGroup'' = FluentNavGroup'()
+    let FluentNavLink'' = FluentNavLink'()
+    let FluentAccordion'' = FluentAccordion'()
+    let FluentAccordionItem'' = FluentAccordionItem'()
+    let FluentAnchoredRegion'' = FluentAnchoredRegion'()
+    let FluentAnchor'' = FluentAnchor'()
+    let FluentAppBar'' = FluentAppBar'()
+    let FluentAppBarItem'' = FluentAppBarItem'()
+    let FluentBadge'' = FluentBadge'()
+    let FluentInputBase''<'TValue> = FluentInputBase'<'TValue>()
+    let FluentCalendarBase'' = FluentCalendarBase'()
+    let FluentCalendar'' = FluentCalendar'()
+    let FluentDatePicker'' = FluentDatePicker'()
+    let FluentCheckbox'' = FluentCheckbox'()
+    let FluentTimePicker'' = FluentTimePicker'()
+    let ListComponentBase''<'TOption> = ListComponentBase'<'TOption>()
+    let FluentAutocomplete''<'TOption> = FluentAutocomplete'<'TOption>()
+    let FluentCombobox''<'TOption> = FluentCombobox'<'TOption>()
+    let FluentListbox''<'TOption> = FluentListbox'<'TOption>()
+    let FluentSelect''<'TOption> = FluentSelect'<'TOption>()
+    let FluentNumberField''<'TValue when 'TValue : (new : unit -> 'TValue)> = FluentNumberField'<'TValue>()
+    let FluentRadioGroup''<'TValue> = FluentRadioGroup'<'TValue>()
+    let FluentRating'' = FluentRating'()
+    let FluentSearch'' = FluentSearch'()
+    let FluentSlider''<'TValue when System.Numerics.INumber<'TValue>> = FluentSlider'<'TValue>()
+    let FluentSwitch'' = FluentSwitch'()
+    let FluentTextArea'' = FluentTextArea'()
+    let FluentTextField'' = FluentTextField'()
+    let FluentBodyContent'' = FluentBodyContent'()
+    let FluentBreadcrumb'' = FluentBreadcrumb'()
+    let FluentBreadcrumbItem'' = FluentBreadcrumbItem'()
+    let FluentButton'' = FluentButton'()
+    let FluentCard'' = FluentCard'()
+    let FluentCollapsibleRegion'' = FluentCollapsibleRegion'()
+    let FluentCounterBadge'' = FluentCounterBadge'()
+    let FluentDataGrid''<'TGridItem> = FluentDataGrid'<'TGridItem>()
+    let FluentDataGridCell''<'TGridItem> = FluentDataGridCell'<'TGridItem>()
+    let FluentDataGridRow''<'TGridItem> = FluentDataGridRow'<'TGridItem>()
+    let FluentDesignSystemProvider'' = FluentDesignSystemProvider'()
+    let FluentDialog'' = FluentDialog'()
+    let FluentDialogBody'' = FluentDialogBody'()
+    let FluentDialogFooter'' = FluentDialogFooter'()
+    let FluentDialogHeader'' = FluentDialogHeader'()
+    let FluentDivider'' = FluentDivider'()
+    let FluentDragContainer''<'TItem> = FluentDragContainer'<'TItem>()
+    let FluentDropZone''<'TItem> = FluentDropZone'<'TItem>()
+    let FluentEmoji''<'Emoji when 'Emoji : (new : unit -> 'Emoji) and 'Emoji :> Microsoft.FluentUI.AspNetCore.Components.Emoji> = FluentEmoji'<'Emoji>()
+    let FluentFlipper'' = FluentFlipper'()
+    let FluentFooter'' = FluentFooter'()
+    let FluentValidationMessage''<'TValue> = FluentValidationMessage'<'TValue>()
+    let FluentGrid'' = FluentGrid'()
+    let FluentGridItem'' = FluentGridItem'()
+    let FluentHeader'' = FluentHeader'()
+    let FluentHighlighter'' = FluentHighlighter'()
+    let FluentHorizontalScroll'' = FluentHorizontalScroll'()
+    let FluentIcon''<'Icon when 'Icon : (new : unit -> 'Icon) and 'Icon :> Microsoft.FluentUI.AspNetCore.Components.Icon> = FluentIcon'<'Icon>()
+    let FluentInputFile'' = FluentInputFile'()
+    let FluentLabel'' = FluentLabel'()
+    let FluentLayout'' = FluentLayout'()
+    let FluentOption''<'TOption> = FluentOption'<'TOption>()
+    let FluentPersona'' = FluentPersona'()
+    let FluentMainLayout'' = FluentMainLayout'()
+    let FluentMain'' = FluentMain'()
+    let FluentMenuButton'' = FluentMenuButton'()
+    let FluentMenu'' = FluentMenu'()
+    let FluentMenuItem'' = FluentMenuItem'()
+    let FluentMenuProvider'' = FluentMenuProvider'()
+    let FluentMessageBar'' = FluentMessageBar'()
+    let FluentMessageBarProvider'' = FluentMessageBarProvider'()
+    let FluentNavMenuTree'' = FluentNavMenuTree'()
+    let FluentNavMenu'' = FluentNavMenu'()
+    let FluentOverflow'' = FluentOverflow'()
+    let FluentOverflowItem'' = FluentOverflowItem'()
+    let FluentPaginator'' = FluentPaginator'()
+    let FluentPopover'' = FluentPopover'()
+    let FluentPresenceBadge'' = FluentPresenceBadge'()
+    let FluentProfileMenu'' = FluentProfileMenu'()
+    let FluentProgress'' = FluentProgress'()
+    let FluentProgressRing'' = FluentProgressRing'()
+    let FluentPullToRefresh'' = FluentPullToRefresh'()
+    let FluentRadio''<'TValue> = FluentRadio'<'TValue>()
+    let FluentSkeleton'' = FluentSkeleton'()
+    let FluentSliderLabel''<'TValue> = FluentSliderLabel'<'TValue>()
+    let FluentSortableList''<'TItem> = FluentSortableList'<'TItem>()
+    let FluentMultiSplitter'' = FluentMultiSplitter'()
+    let FluentMultiSplitterPane'' = FluentMultiSplitterPane'()
+    let FluentSplitter'' = FluentSplitter'()
+    let FluentStack'' = FluentStack'()
+    let FluentTab'' = FluentTab'()
+    let FluentTabs'' = FluentTabs'()
+    let FluentToast'' = FluentToast'()
+    let FluentToolbar'' = FluentToolbar'()
+    let FluentTooltip'' = FluentTooltip'()
+    let FluentTooltipProvider'' = FluentTooltipProvider'()
+    let FluentTreeItem'' = FluentTreeItem'()
+    let FluentTreeView'' = FluentTreeView'()
+    let FluentWizard'' = FluentWizard'()
+    let FluentWizardStep'' = FluentWizardStep'()
+    let EditForm'' = EditForm'()
+    let FluentEditForm'' = FluentEditForm'()
+    let ValidationSummary'' = ValidationSummary'()
+    let FluentValidationSummary'' = FluentValidationSummary'()
+    let FluentAccessibilityStatus'' = FluentAccessibilityStatus'()
+    let ColumnBase''<'TGridItem> = ColumnBase'<'TGridItem>()
+    let PropertyColumn''<'TGridItem, 'TProp> = PropertyColumn'<'TGridItem, 'TProp>()
+    let SelectColumn''<'TGridItem> = SelectColumn'<'TGridItem>()
+    let TemplateColumn''<'TGridItem> = TemplateColumn'<'TGridItem>()
+    let ColumnResizeOptions''<'TGridItem> = ColumnResizeOptions'<'TGridItem>()
+    let FluentDesignTheme'' = FluentDesignTheme'()
+    let FluentSplashScreen'' = FluentSplashScreen'()
+    let MessageBox'' = MessageBox'()
+    let FluentDialogProvider'' = FluentDialogProvider'()
+    let FluentKeyCode'' = FluentKeyCode'()
+    let FluentKeyCodeProvider'' = FluentKeyCodeProvider'()
+    let FluentInputLabel'' = FluentInputLabel'()
+    let FluentOverlay'' = FluentOverlay'()
+    let FluentSpacer'' = FluentSpacer'()
+    let CommunicationToast'' = CommunicationToast'()
+    let ProgressToast'' = ProgressToast'()
+    let FluentToastProvider'' = FluentToastProvider'()
+    let RenderFragmentDialog'' = RenderFragmentDialog'()
+    let FluentPageScript'' = FluentPageScript'()
+    let ConfirmationToast'' = ConfirmationToast'()
+    let _Imports'' = _Imports'()
             
 namespace Microsoft.FluentUI.AspNetCore.Components.DesignTokens
 
@@ -5042,6 +5222,175 @@ module DslCE =
     type FocusStrokeInner' 
         /// The FocusStrokeInner design token
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.FocusStrokeInner>)>] () = inherit FocusStrokeInnerBuilder<Microsoft.FluentUI.AspNetCore.Components.DesignTokens.FocusStrokeInner>()
+
+[<AutoOpen>]
+module DslCEInstances =
+  
+    open System.Diagnostics.CodeAnalysis
+    open Microsoft.FluentUI.AspNetCore.Components.DslInternals.DesignTokens
+
+    let DesignToken''<'T> = DesignToken'<'T>()
+    let Direction'' = Direction'()
+    let DisabledOpacity'' = DisabledOpacity'()
+    let BaseHeightMultiplier'' = BaseHeightMultiplier'()
+    let BaseHorizontalSpacingMultiplier'' = BaseHorizontalSpacingMultiplier'()
+    let Density'' = Density'()
+    let DesignUnit'' = DesignUnit'()
+    let ControlCornerRadius'' = ControlCornerRadius'()
+    let LayerCornerRadius'' = LayerCornerRadius'()
+    let StrokeWidth'' = StrokeWidth'()
+    let FocusStrokeWidth'' = FocusStrokeWidth'()
+    let BodyFont'' = BodyFont'()
+    let TypeRampBaseFontSize'' = TypeRampBaseFontSize'()
+    let TypeRampBaseLineHeight'' = TypeRampBaseLineHeight'()
+    let TypeRampMinus1FontSize'' = TypeRampMinus1FontSize'()
+    let TypeRampMinus1LineHeight'' = TypeRampMinus1LineHeight'()
+    let TypeRampMinus2FontSize'' = TypeRampMinus2FontSize'()
+    let TypeRampMinus2LineHeight'' = TypeRampMinus2LineHeight'()
+    let TypeRampPlus1FontSize'' = TypeRampPlus1FontSize'()
+    let TypeRampPlus1LineHeight'' = TypeRampPlus1LineHeight'()
+    let TypeRampPlus2FontSize'' = TypeRampPlus2FontSize'()
+    let TypeRampPlus2LineHeight'' = TypeRampPlus2LineHeight'()
+    let TypeRampPlus3FontSize'' = TypeRampPlus3FontSize'()
+    let TypeRampPlus3LineHeight'' = TypeRampPlus3LineHeight'()
+    let TypeRampPlus4FontSize'' = TypeRampPlus4FontSize'()
+    let TypeRampPlus4LineHeight'' = TypeRampPlus4LineHeight'()
+    let TypeRampPlus5FontSize'' = TypeRampPlus5FontSize'()
+    let TypeRampPlus5LineHeight'' = TypeRampPlus5LineHeight'()
+    let TypeRampPlus6FontSize'' = TypeRampPlus6FontSize'()
+    let TypeRampPlus6LineHeight'' = TypeRampPlus6LineHeight'()
+    let BaseLayerLuminance'' = BaseLayerLuminance'()
+    let AccentFillRestDelta'' = AccentFillRestDelta'()
+    let AccentFillHoverDelta'' = AccentFillHoverDelta'()
+    let AccentFillActiveDelta'' = AccentFillActiveDelta'()
+    let AccentFillFocusDelta'' = AccentFillFocusDelta'()
+    let AccentForegroundRestDelta'' = AccentForegroundRestDelta'()
+    let AccentForegroundHoverDelta'' = AccentForegroundHoverDelta'()
+    let AccentForegroundActiveDelta'' = AccentForegroundActiveDelta'()
+    let AccentForegroundFocusDelta'' = AccentForegroundFocusDelta'()
+    let NeutralFillRestDelta'' = NeutralFillRestDelta'()
+    let NeutralFillHoverDelta'' = NeutralFillHoverDelta'()
+    let NeutralFillActiveDelta'' = NeutralFillActiveDelta'()
+    let NeutralFillFocusDelta'' = NeutralFillFocusDelta'()
+    let NeutralFillInputRestDelta'' = NeutralFillInputRestDelta'()
+    let NeutralFillInputHoverDelta'' = NeutralFillInputHoverDelta'()
+    let NeutralFillInputActiveDelta'' = NeutralFillInputActiveDelta'()
+    let NeutralFillInputFocusDelta'' = NeutralFillInputFocusDelta'()
+    let NeutralFillInputAltRestDelta'' = NeutralFillInputAltRestDelta'()
+    let NeutralFillInputAltHoverDelta'' = NeutralFillInputAltHoverDelta'()
+    let NeutralFillInputAltActiveDelta'' = NeutralFillInputAltActiveDelta'()
+    let NeutralFillInputAltFocusDelta'' = NeutralFillInputAltFocusDelta'()
+    let NeutralFillLayerRestDelta'' = NeutralFillLayerRestDelta'()
+    let NeutralFillLayerHoverDelta'' = NeutralFillLayerHoverDelta'()
+    let NeutralFillLayerActiveDelta'' = NeutralFillLayerActiveDelta'()
+    let NeutralFillLayerAltRestDelta'' = NeutralFillLayerAltRestDelta'()
+    let NeutralFillSecondaryRestDelta'' = NeutralFillSecondaryRestDelta'()
+    let NeutralFillSecondaryHoverDelta'' = NeutralFillSecondaryHoverDelta'()
+    let NeutralFillSecondaryActiveDelta'' = NeutralFillSecondaryActiveDelta'()
+    let NeutralFillSecondaryFocusDelta'' = NeutralFillSecondaryFocusDelta'()
+    let NeutralFillStealthRestDelta'' = NeutralFillStealthRestDelta'()
+    let NeutralFillStealthHoverDelta'' = NeutralFillStealthHoverDelta'()
+    let NeutralFillStealthActiveDelta'' = NeutralFillStealthActiveDelta'()
+    let NeutralFillStealthFocusDelta'' = NeutralFillStealthFocusDelta'()
+    let NeutralFillStrongRestDelta'' = NeutralFillStrongRestDelta'()
+    let NeutralFillStrongHoverDelta'' = NeutralFillStrongHoverDelta'()
+    let NeutralFillStrongActiveDelta'' = NeutralFillStrongActiveDelta'()
+    let NeutralFillStrongFocusDelta'' = NeutralFillStrongFocusDelta'()
+    let NeutralStrokeRestDelta'' = NeutralStrokeRestDelta'()
+    let NeutralStrokeHoverDelta'' = NeutralStrokeHoverDelta'()
+    let NeutralStrokeActiveDelta'' = NeutralStrokeActiveDelta'()
+    let NeutralStrokeFocusDelta'' = NeutralStrokeFocusDelta'()
+    let NeutralStrokeControlRestDelta'' = NeutralStrokeControlRestDelta'()
+    let NeutralStrokeControlHoverDelta'' = NeutralStrokeControlHoverDelta'()
+    let NeutralStrokeControlActiveDelta'' = NeutralStrokeControlActiveDelta'()
+    let NeutralStrokeControlFocusDelta'' = NeutralStrokeControlFocusDelta'()
+    let NeutralStrokeDividerRestDelta'' = NeutralStrokeDividerRestDelta'()
+    let NeutralStrokeLayerRestDelta'' = NeutralStrokeLayerRestDelta'()
+    let NeutralStrokeLayerHoverDelta'' = NeutralStrokeLayerHoverDelta'()
+    let NeutralStrokeLayerActiveDelta'' = NeutralStrokeLayerActiveDelta'()
+    let NeutralStrokeStrongHoverDelta'' = NeutralStrokeStrongHoverDelta'()
+    let NeutralStrokeStrongActiveDelta'' = NeutralStrokeStrongActiveDelta'()
+    let NeutralStrokeStrongFocusDelta'' = NeutralStrokeStrongFocusDelta'()
+    let NeutralBaseColor'' = NeutralBaseColor'()
+    let AccentBaseColor'' = AccentBaseColor'()
+    let NeutralLayerCardContainer'' = NeutralLayerCardContainer'()
+    let NeutralLayerFloating'' = NeutralLayerFloating'()
+    let NeutralLayer1'' = NeutralLayer1'()
+    let NeutralLayer2'' = NeutralLayer2'()
+    let NeutralLayer3'' = NeutralLayer3'()
+    let NeutralLayer4'' = NeutralLayer4'()
+    let FillColor'' = FillColor'()
+    let AccentFillRest'' = AccentFillRest'()
+    let AccentFillHover'' = AccentFillHover'()
+    let AccentFillActive'' = AccentFillActive'()
+    let AccentFillFocus'' = AccentFillFocus'()
+    let ForegroundOnAccentRest'' = ForegroundOnAccentRest'()
+    let ForegroundOnAccentHover'' = ForegroundOnAccentHover'()
+    let ForegroundOnAccentActive'' = ForegroundOnAccentActive'()
+    let ForegroundOnAccentFocus'' = ForegroundOnAccentFocus'()
+    let AccentForegroundRest'' = AccentForegroundRest'()
+    let AccentForegroundHover'' = AccentForegroundHover'()
+    let AccentForegroundActive'' = AccentForegroundActive'()
+    let AccentForegroundFocus'' = AccentForegroundFocus'()
+    let AccentStrokeControlRest'' = AccentStrokeControlRest'()
+    let AccentStrokeControlHover'' = AccentStrokeControlHover'()
+    let AccentStrokeControlActive'' = AccentStrokeControlActive'()
+    let AccentStrokeControlFocus'' = AccentStrokeControlFocus'()
+    let NeutralFillRest'' = NeutralFillRest'()
+    let NeutralFillHover'' = NeutralFillHover'()
+    let NeutralFillActive'' = NeutralFillActive'()
+    let NeutralFillFocus'' = NeutralFillFocus'()
+    let NeutralFillInputRest'' = NeutralFillInputRest'()
+    let NeutralFillInputHover'' = NeutralFillInputHover'()
+    let NeutralFillInputActive'' = NeutralFillInputActive'()
+    let NeutralFillInputFocus'' = NeutralFillInputFocus'()
+    let NeutralFillInputAltRest'' = NeutralFillInputAltRest'()
+    let NeutralFillInputAltHover'' = NeutralFillInputAltHover'()
+    let NeutralFillInputAltActive'' = NeutralFillInputAltActive'()
+    let NeutralFillInputAltFocus'' = NeutralFillInputAltFocus'()
+    let NeutralFillLayerRest'' = NeutralFillLayerRest'()
+    let NeutralFillLayerHover'' = NeutralFillLayerHover'()
+    let NeutralFillLayerActive'' = NeutralFillLayerActive'()
+    let NeutralFillLayerAltRest'' = NeutralFillLayerAltRest'()
+    let NeutralFillSecondaryRest'' = NeutralFillSecondaryRest'()
+    let NeutralFillSecondaryHover'' = NeutralFillSecondaryHover'()
+    let NeutralFillSecondaryActive'' = NeutralFillSecondaryActive'()
+    let NeutralFillSecondaryFocus'' = NeutralFillSecondaryFocus'()
+    let NeutralFillStealthRest'' = NeutralFillStealthRest'()
+    let NeutralFillStealthHover'' = NeutralFillStealthHover'()
+    let NeutralFillStealthActive'' = NeutralFillStealthActive'()
+    let NeutralFillStealthFocus'' = NeutralFillStealthFocus'()
+    let NeutralFillStrongRest'' = NeutralFillStrongRest'()
+    let NeutralFillStrongHover'' = NeutralFillStrongHover'()
+    let NeutralFillStrongActive'' = NeutralFillStrongActive'()
+    let NeutralFillStrongFocus'' = NeutralFillStrongFocus'()
+    let NeutralForegroundRest'' = NeutralForegroundRest'()
+    let NeutralForegroundHover'' = NeutralForegroundHover'()
+    let NeutralForegroundActive'' = NeutralForegroundActive'()
+    let NeutralForegroundFocus'' = NeutralForegroundFocus'()
+    let NeutralForegroundHint'' = NeutralForegroundHint'()
+    let NeutralStrokeRest'' = NeutralStrokeRest'()
+    let NeutralStrokeHover'' = NeutralStrokeHover'()
+    let NeutralStrokeActive'' = NeutralStrokeActive'()
+    let NeutralStrokeFocus'' = NeutralStrokeFocus'()
+    let NeutralStrokeControlRest'' = NeutralStrokeControlRest'()
+    let NeutralStrokeControlHover'' = NeutralStrokeControlHover'()
+    let NeutralStrokeControlActive'' = NeutralStrokeControlActive'()
+    let NeutralStrokeControlFocus'' = NeutralStrokeControlFocus'()
+    let NeutralStrokeDividerRest'' = NeutralStrokeDividerRest'()
+    let NeutralStrokeInputRest'' = NeutralStrokeInputRest'()
+    let NeutralStrokeInputHover'' = NeutralStrokeInputHover'()
+    let NeutralStrokeInputActive'' = NeutralStrokeInputActive'()
+    let NeutralStrokeInputFocus'' = NeutralStrokeInputFocus'()
+    let NeutralStrokeLayerRest'' = NeutralStrokeLayerRest'()
+    let NeutralStrokeLayerHover'' = NeutralStrokeLayerHover'()
+    let NeutralStrokeLayerActive'' = NeutralStrokeLayerActive'()
+    let NeutralStrokeStrongRest'' = NeutralStrokeStrongRest'()
+    let NeutralStrokeStrongHover'' = NeutralStrokeStrongHover'()
+    let NeutralStrokeStrongActive'' = NeutralStrokeStrongActive'()
+    let NeutralStrokeStrongFocus'' = NeutralStrokeStrongFocus'()
+    let FocusStrokeOuter'' = FocusStrokeOuter'()
+    let FocusStrokeInner'' = FocusStrokeInner'()
             
 namespace Microsoft.FluentUI.AspNetCore.Components.DataGrid.Infrastructure
 
@@ -5056,4 +5405,12 @@ module DslCE =
     type Defer' 
         /// For internal use only. Do not use.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.DataGrid.Infrastructure.Defer>)>] () = inherit DeferBuilder<Microsoft.FluentUI.AspNetCore.Components.DataGrid.Infrastructure.Defer>()
+
+[<AutoOpen>]
+module DslCEInstances =
+  
+    open System.Diagnostics.CodeAnalysis
+    open Microsoft.FluentUI.AspNetCore.Components.DslInternals.DataGrid.Infrastructure
+
+    let Defer'' = Defer'()
             
