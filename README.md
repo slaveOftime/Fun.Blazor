@@ -19,7 +19,6 @@ Check the [WASM Docs](https://slaveoftime.github.io/Fun.Blazor.Docs/) for more ð
 If you find my projects helpful and would like to support my work, consider making a donation via PayPal. Your support is greatly appreciated!
 
 <a href="https://paypal.me/wubinwen" style="display: flex; align-items: center; gap: 12px;">
-    <span style="font-size: 20px; color: #f9c323; font-weight: 500;">Donate by</span>
     <img src="https://www.paypalobjects.com/paypal-ui/logos/svg/paypal-color.svg" height="30">
 </a>
 
