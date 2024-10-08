@@ -712,7 +712,7 @@ type FluentNumberFieldBuilder<'FunBlazorGeneric, 'TValue when 'TValue : (new : u
     /// Gets or sets the error message to show when the field can not be parsed.
     [<CustomOperation("ParsingErrorMessage")>] member inline _.ParsingErrorMessage ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ParsingErrorMessage" => x)
 
-/// Groups child FluentRadio`1 components. 
+/// Groups child FluentRadio`1 components.
 type FluentRadioGroupBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentInputBaseBuilder<'FunBlazorGeneric, 'TValue>()
     /// Gets or sets the orientation of the group. See Orientation
@@ -769,7 +769,7 @@ type FluentSliderBuilder<'FunBlazorGeneric, 'TValue when System.Numerics.INumber
     [<CustomOperation("Max")>] member inline _.Max ([<InlineIfLambda>] render: AttrRenderFragment, x: 'TValue) = render ==> ("Max" => x)
     /// Gets or sets the slider's step value.
     [<CustomOperation("Step")>] member inline _.Step ([<InlineIfLambda>] render: AttrRenderFragment, x: 'TValue) = render ==> ("Step" => x)
-    /// Gets or sets the orentation of the slider. See Orientation
+    /// Gets or sets the orientation of the slider. See Orientation
     [<CustomOperation("Orientation")>] member inline _.Orientation ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.Orientation>) = render ==> ("Orientation" => x)
     /// Gets or sets the selection mode.
     [<CustomOperation("Mode")>] member inline _.Mode ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.SliderMode>) = render ==> ("Mode" => x)
@@ -1027,6 +1027,7 @@ type FluentDataGridBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric 
     /// ColumnOptions UI. This parameter allows you to enable or disable this resize UI.Enable it by setting the type of resize to perform
     /// Discrete: resize by a 10 pixels at a time
     /// Exact: resize to the exact width specified (in pixels)
+    /// Note: This does not affect resizing by mouse dragging, just the keyboard driven resize.
     [<CustomOperation("ResizeType")>] member inline _.ResizeType ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.DataGridResizeType>) = render ==> ("ResizeType" => x)
     /// (Aria) Labels used in the column resize UI.
     [<CustomOperation("ColumnResizeLabels")>] member inline _.ColumnResizeLabels ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.ColumnResizeLabels) = render ==> ("ColumnResizeLabels" => x)
@@ -1651,6 +1652,8 @@ type FluentMenuButtonBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microso
     [<CustomOperation("Menu")>] member inline _.Menu ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.FluentMenu) = render ==> ("Menu" => x)
     /// Gets or sets the texts shown on th button.
     [<CustomOperation("Text")>] member inline _.Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Text" => x)
+    /// Gets or sets the Icon displayed at the start of button content.
+    [<CustomOperation("IconStart")>] member inline _.IconStart ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Icon) = render ==> ("IconStart" => x)
     /// Gets or sets the button style.
     [<CustomOperation("ButtonStyle")>] member inline _.ButtonStyle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ButtonStyle" => x)
     /// Gets or sets the menu style.
@@ -1764,6 +1767,9 @@ type FluentMessageBarBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microso
     /// Gets or sets the ability to dismiss the notification.
     /// Default is true.
     [<CustomOperation("AllowDismiss")>] member inline _.AllowDismiss ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("AllowDismiss" => (defaultArg x true))
+    /// Gets or sets the fade in animation for the MessageBar.
+    /// Default is true.
+    [<CustomOperation("FadeIn")>] member inline _.FadeIn ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("FadeIn" => (defaultArg x true))
 
 type FluentMessageBarProviderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -2976,6 +2982,8 @@ type SelectColumnBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric :>
     /// When this action is defined, the [All] checkbox is displayed.
     /// This action is required to update you data model.
     [<CustomOperation("SelectAllChanged")>] member inline _.SelectAllChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Nullable<System.Boolean> -> Task<unit>) = render ==> html.callbackTask("SelectAllChanged", fn)
+    /// Gets or sets the function executed to determine if the item can be selected.
+    [<CustomOperation("Selectable")>] member inline _.Selectable ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("Selectable" => (System.Func<'TGridItem, System.Boolean>fn))
     /// Gets or sets the function to executed to determine checked/unchecked status.
     [<CustomOperation("Property")>] member inline _.Property ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("Property" => (System.Func<'TGridItem, System.Boolean>fn))
     [<CustomOperation("SortBy")>] member inline _.SortBy ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.GridSort<'TGridItem>) = render ==> ("SortBy" => x)
@@ -4100,9 +4108,9 @@ module DslCE =
     type FluentSelect'<'TOption> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentSelect<_>>)>] () = inherit FluentSelectBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentSelect<'TOption>, 'TOption>()
     type FluentNumberField'<'TValue when 'TValue : (new : unit -> 'TValue)> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentNumberField<_>>)>] () = inherit FluentNumberFieldBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentNumberField<'TValue>, 'TValue>()
 
-    /// Groups child FluentRadio`1 components. 
+    /// Groups child FluentRadio`1 components.
     type FluentRadioGroup'<'TValue> 
-        /// Groups child FluentRadio`1 components. 
+        /// Groups child FluentRadio`1 components.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentRadioGroup<_>>)>] () = inherit FluentRadioGroupBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentRadioGroup<'TValue>, 'TValue>()
     type FluentRating' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentRating>)>] () = inherit FluentRatingBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentRating>()
     type FluentSearch' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentSearch>)>] () = inherit FluentSearchBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentSearch>()
