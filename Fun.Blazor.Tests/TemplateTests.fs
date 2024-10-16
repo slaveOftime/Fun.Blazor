@@ -13,7 +13,7 @@ let ``Template should work`` () =
     let classes = "c1 c2"
 
     let segment1 = Static.html "<h1>static</h1>"
-    let segment2 = Template.html $"<div>{count}</div>"
+    let segment2 = Template.html $"<div style=\"color:red;\">{count}</div>"
 
     let result =
         context.RenderNode(
@@ -29,7 +29,7 @@ let ``Template should work`` () =
         """
         <div class="c1 c2">
           <h1>static</h1>
-          <div>1</div>
+          <div style="color:red;">1</div>
         </div>
         """
     )

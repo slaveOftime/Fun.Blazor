@@ -7,7 +7,7 @@ open Microsoft.AspNetCore.Components.Rendering
 
 module private SSRTemplate =
     let partialStringCache =
-        System.Collections.Concurrent.ConcurrentDictionary<int, Map<int, String>>()
+        System.Collections.Concurrent.ConcurrentDictionary<string, Map<int, string>>()
 
 /// This is not supposed to be used in blazor runtime, because it will try to excape the partial markup.
 /// This is supposed to be used for server side render. For example, use it with htmx should be good.
@@ -17,7 +17,7 @@ type SSRTemplate =
     /// If use RenderNodeFragment only, then it can be used in blazor runtime. Any other arguments which will break the markup should not be used in blazor runtime. because it will try to process the markup string and excape some characters.
     static member html(html: FormattableString) =
         let args = html.GetArguments()
-        let hashKey = html.Format.GetHashCode()
+        let hashKey = html.Format
 
         let renderArg argIndex sequence comp (builder: RenderTreeBuilder) =
             let mutable sequence = sequence

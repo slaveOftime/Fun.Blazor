@@ -22,6 +22,5 @@ type Template =
         let args = html.GetArguments()
         if args.Length = 0 then Static.html html.Format
         else
-            let nodes =
-                caches.GetOrAdd(html.Format.GetHashCode(), Func<int, NodeItem list>(fun _ -> parseNodes html.Format))
+            let nodes = caches.GetOrAdd(html.Format, Func<_, NodeItem list>(fun _ -> parseNodes html.Format args))
             rebuildNodes nodes args
