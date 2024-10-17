@@ -405,7 +405,7 @@ type html() =
 type Static =
 
     /// This is for pure static html markup
-    static member html(x: string) =
+    static member inline html(x: string) =
         NodeRenderFragment(fun _ builder index ->
             builder.AddMarkupContent(index, x)
             index + 1
