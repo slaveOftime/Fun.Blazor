@@ -132,7 +132,7 @@ type html() =
     /// </code>
     /// </example>
     static member inline blazor<'T when 'T :> IComponent>(?render: AttrRenderFragment) =
-        html.blazor (typeof<'T>, attr = defaultArg render (emptyAttr ()))
+        html.blazor (typeof<'T>, attr = defaultArg render html.emptyAttr)
 
     /// <summary>
     /// Make a blazor component to a render fragment with a render for attributes
@@ -342,46 +342,19 @@ type html() =
         )
 
 
-    static member inline raw x =
+    static member inline raw(x: string) =
         NodeRenderFragment(fun _ builder index ->
             builder.AddMarkupContent(index, x)
             index + 1
         )
 
 
-    static member inline text(x: int) =
-        NodeRenderFragment(fun _ builder index ->
-            builder.AddContent(index, box x)
-            index + 1
-        )
-
-    static member inline text(x: float) =
-        NodeRenderFragment(fun _ builder index ->
-            builder.AddContent(index, box x)
-            index + 1
-        )
-
-    static member inline text(x: Guid) =
-        NodeRenderFragment(fun _ builder index ->
-            builder.AddContent(index, string x)
-            index + 1
-        )
-
-    static member inline text(x: string) =
+    static member inline text(x: obj) =
         NodeRenderFragment(fun _ builder index ->
             builder.AddContent(index, x)
             index + 1
         )
 
-
-    [<Obsolete>]
-    static member inline style(x: string) = "style" =>> x
-    [<Obsolete>]
-    static member inline styles(x) = "style" =>> makeStyles x
-    [<Obsolete>]
-    static member inline class'(x: string) = "class" =>> x
-    [<Obsolete>]
-    static member inline classes(x: string seq) = "class" =>> (String.concat " " x)
 
 #if !NET6_0
     /// Render a node as string, logging must be registered in the service collection
