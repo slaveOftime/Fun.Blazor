@@ -163,12 +163,10 @@ let private getMetaInfo useInline (ty: Type) =
 
             elif prop.Name = "Class" && prop.PropertyType = typeof<string> then
                 [
-                    $"{comment}    [<CustomOperation(\"Classes\")>] {memberStart}Classes ({contextArg}, x: string list) = render ==> html.classes x"
                 ]
 
             elif prop.Name = "Style" && prop.PropertyType = typeof<string> then
                 [
-                    $"{comment}    [<CustomOperation(\"Styles\")>] {memberStart}Styles ({contextArg}, x: (string * string) list) = render ==> html.styles x"
                 ]
 
             else
