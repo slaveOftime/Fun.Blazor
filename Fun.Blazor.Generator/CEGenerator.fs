@@ -154,8 +154,8 @@ let private getMetaInfo useInline (ty: Type) =
             elif prop.PropertyType = typeof<RenderFragment> then
                 [
                     if name <> "ChildContent" then
-                        $"{memberHead} ({contextArg}, fragment) = render ==> html.renderFragment(\"{prop.Name}\", fragment)"
-                        $"{memberHead} ({contextArg}, fragments) = render ==> html.renderFragment(\"{prop.Name}\", fragment {{ yield! fragments }})"
+                        $"{memberHead} ({contextArg}, fragment: NodeRenderFragment) = render ==> html.renderFragment(\"{prop.Name}\", fragment)"
+                        $"{memberHead} ({contextArg}, fragments: NodeRenderFragment seq) = render ==> html.renderFragment(\"{prop.Name}\", fragment {{ yield! fragments }})"
                         $"{memberHead} ({contextArg}, x: string) = render ==> html.renderFragment(\"{prop.Name}\", html.text x)"
                         $"{memberHead} ({contextArg}, x: int) = render ==> html.renderFragment(\"{prop.Name}\", html.text x)"
                         $"{memberHead} ({contextArg}, x: float) = render ==> html.renderFragment(\"{prop.Name}\", html.text x)"
@@ -173,7 +173,8 @@ let private getMetaInfo useInline (ty: Type) =
                 let propTypeName = getTypeName prop.PropertyType
                 [
                     if prop.PropertyType = typeof<bool> then
-                        $"{memberHead} ({contextArg}, ?x: bool) = render ==> (\"{prop.Name}\" => (defaultArg x true))"
+                        $"{memberHead} ({contextArg}) = render ==> (\"{prop.Name}\" =>>> true)"
+                        $"{memberHead} ({contextArg}, x: bool) = render ==> (\"{prop.Name}\" =>>> x)"
                     else
                         $"{memberHead} ({contextArg}, x: {propTypeName}) = render ==> (\"{prop.Name}\" => x)"
                     yield! createBindableProps propTypeName
