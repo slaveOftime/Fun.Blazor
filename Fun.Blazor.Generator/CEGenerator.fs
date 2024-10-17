@@ -100,12 +100,12 @@ let private getMetaInfo useInline (ty: Type) =
                     || prop.PropertyType.Name.StartsWith "Microsoft.AspNetCore.Components.EventCallback"
                 then
                     [
-                        $"{memberHead} ({contextArg}, fn: {getTypeName prop.PropertyType.GenericTypeArguments.[0]} -> unit) = render ==> html.callback(\"{prop.Name}\", fn)"
-                        $"{memberHead} ({contextArg}, fn: {getTypeName prop.PropertyType.GenericTypeArguments.[0]} -> Task<unit>) = render ==> html.callbackTask(\"{prop.Name}\", fn)"
+                        $"{memberHead} ({contextArg}, [<InlineIfLambda>] fn: {getTypeName prop.PropertyType.GenericTypeArguments.[0]} -> unit) = render ==> html.callback(\"{prop.Name}\", fn)"
+                        $"{memberHead} ({contextArg}, [<InlineIfLambda>] fn: {getTypeName prop.PropertyType.GenericTypeArguments.[0]} -> Task<unit>) = render ==> html.callbackTask(\"{prop.Name}\", fn)"
                     ]
                 elif prop.PropertyType.Name.StartsWith "RenderFragment`" then
                     [
-                        $"{memberHead} ({contextArg}, fn: {getTypeName prop.PropertyType.GenericTypeArguments.[0]} -> {nameof NodeRenderFragment}) = render ==> html.renderFragment(\"{prop.Name}\", fn)"
+                        $"{memberHead} ({contextArg}, [<InlineIfLambda>] fn: {getTypeName prop.PropertyType.GenericTypeArguments.[0]} -> {nameof NodeRenderFragment}) = render ==> html.renderFragment(\"{prop.Name}\", fn)"
                     ]
                 elif
                     prop.PropertyType.Namespace = "System"
@@ -133,7 +133,7 @@ let private getMetaInfo useInline (ty: Type) =
                         ]
                 elif prop.PropertyType.Namespace = "System" && prop.PropertyType.Name.StartsWith "Action`" then
                     [
-                        $"{memberHead} ({contextArg}, fn) = render ==> (\"{prop.Name}\" => ({getTypeName prop.PropertyType}fn))"
+                        $"{memberHead} ({contextArg}, [<InlineIfLambda>] fn) = render ==> (\"{prop.Name}\" => ({getTypeName prop.PropertyType}fn))"
                     ]
                 else
                     let propTypeName = getTypeName prop.PropertyType
@@ -147,8 +147,8 @@ let private getMetaInfo useInline (ty: Type) =
                 || prop.PropertyType.Name.StartsWith "Microsoft.AspNetCore.Components.EventCallback"
             then
                 [
-                    $"{memberHead} ({contextArg}, fn: unit -> unit) = render ==> html.callback(\"{prop.Name}\", fn)"
-                    $"{memberHead} ({contextArg}, fn: unit -> Task<unit>) = render ==> html.callbackTask(\"{prop.Name}\", fn)"
+                    $"{memberHead} ({contextArg}, [<InlineIfLambda>] fn: unit -> unit) = render ==> html.callback(\"{prop.Name}\", fn)"
+                    $"{memberHead} ({contextArg}, [<InlineIfLambda>] fn: unit -> Task<unit>) = render ==> html.callbackTask(\"{prop.Name}\", fn)"
                 ]
 
             elif prop.PropertyType = typeof<RenderFragment> then
