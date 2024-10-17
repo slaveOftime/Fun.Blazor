@@ -399,6 +399,41 @@ let ``for loop should work for component`` () =
 
 
 [<Fact>]
+let ``bool attribute should work for component`` () =
+    let context = createTestContext ()
+
+    let demo =
+        MudButton'' {
+            Disabled
+            "demo"
+        }
+
+    let result = context.RenderNode demo
+    result.MarkupMatches(
+        """
+        <button type="button" disabled="" class="mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple">
+          <span class="mud-button-label">demo</span>
+        </button>
+    """
+    )
+
+    let demo =
+        MudButton'' {
+            Disabled false
+            "demo"
+        }
+
+    let result = context.RenderNode demo
+    result.MarkupMatches(
+        """
+        <button type="button" class="mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple">
+          <span class="mud-button-label">demo</span>
+        </button>
+    """
+    )
+
+
+[<Fact>]
 let ``html blazor should work with ComponentAttrBuilder`` () =
     let context = createTestContext ()
 
