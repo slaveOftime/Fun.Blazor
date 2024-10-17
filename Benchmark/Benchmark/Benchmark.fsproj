@@ -17,9 +17,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="BenchmarkDotNet" Version="0.13.12" />
+		<PackageReference Include="BenchmarkDotNet" Version="0.14.0" />
 		<PackageReference Include="Bolero" Version="0.23.52" />
-		<PackageReference Include="bunit" Version="1.26.64" />
+		<PackageReference Include="bunit" Version="1.33.3" />
 		<PackageReference Include="CliWrap" Version="3.6.6" />
 	</ItemGroup>
 

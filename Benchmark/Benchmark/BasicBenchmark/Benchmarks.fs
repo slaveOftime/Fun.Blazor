@@ -28,8 +28,8 @@ type Benchmarks() =
     [<Benchmark>]
     member _.RenderWithFunBlazorArray() = FunBlazorComponentWithArray().Build()
 
-    // [<Benchmark>]
-    // member _.RenderWithFunBlazorTemplate() = TemplateComponent().Build()
+    [<Benchmark>]
+    member _.RenderWithFunBlazorTemplate() = TemplateComponent().Build()
 
-    // [<Benchmark>]
-    // member _.RenderWithFunBlazorSSRTemplate() = SSRTemplateComponent().Build()
+    [<Benchmark>]
+    member _.RenderWithFunBlazorSSRTemplate() = SSRTemplateComponent().Build()
