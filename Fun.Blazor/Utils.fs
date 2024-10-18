@@ -14,10 +14,10 @@ open Fun.Blazor.Operators
 
 module Internal =
     /// Helper method to create an empty AttrRenderFragment
-    let inline emptyAttr () = AttrRenderFragment(fun _ _ i -> i + 1)
+    let inline emptyAttr () = AttrRenderFragment(fun _ _ i -> i)
 
     /// Helper method to create an empty NodeRenderFragment
-    let inline emptyNode () = NodeRenderFragment(fun _ _ i -> i + 1)
+    let inline emptyNode () = NodeRenderFragment(fun _ _ i -> i)
 
     let inline makeRegion (nodes: NodeRenderFragment seq) =
         NodeRenderFragment(fun comp builder sequence ->
