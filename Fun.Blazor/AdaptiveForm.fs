@@ -15,17 +15,21 @@ type Validator<'T, 'Prop, 'Error> = AdaptiveForm<'T, 'Error> -> 'Prop -> 'Error 
 /// For internal use only
 type internal IAdaptiveForm =
     abstract member SetValueObj: value: obj -> unit
-    abstract member GetValueObj: unit -> obj
+
+    /// Normally the type is already konwn, but if you want to get a different type, you can pass it here.
+    abstract member GetValueObj: ?otherType: Type -> obj
 
 
 type AdaptiveForm<'T, 'Error>(defaultValue: 'T) as this =
     let ty = typeof<'T>
 
-    let props =
+    let getProps ty =
         if FSharp.Reflection.FSharpType.IsRecord ty then
             FSharp.Reflection.FSharpType.GetRecordFields(ty) |> Seq.ofArray
         else
             ty.GetProperties().Where(fun x -> not (x.GetAccessors(true).Any(fun x -> x.IsStatic)))
+
+    let props = getProps ty
 
 
     let hasChanges = cval false
@@ -62,6 +66,10 @@ type AdaptiveForm<'T, 'Error>(defaultValue: 'T) as this =
 
     member _.GetValue() = (this :> IAdaptiveForm).GetValueObj() |> unbox<'T>
 
+    /// Get value with different type, the type must be compatible with the original type.
+    /// For example you can use a complex type to create a form, but when you submit you can use this to get a sub set of the complex type and past it to api.
+    member _.GetValue<'NewT>() = (this :> IAdaptiveForm).GetValueObj(otherType = typeof<'NewT>) |> unbox<'NewT>
+
 
     member _.AddValidators(prop: Expression<Func<'T, 'Prop>>, checkAll, validators': Validator<'T, 'Prop, 'Error> list) =
         let name = getExpressionName prop
@@ -69,7 +77,7 @@ type AdaptiveForm<'T, 'Error>(defaultValue: 'T) as this =
 
         let validate value =
             if checkAll then
-                validators' |> List.map (fun fn -> fn this value) |> List.concat |> errors.[name].Publish
+                validators' |> Seq.map (fun fn -> fn this value) |> List.concat |> errors.[name].Publish
             else
                 validators'
                 |> List.tryPick (fun fn ->
@@ -167,30 +175,27 @@ type AdaptiveForm<'T, 'Error>(defaultValue: 'T) as this =
         let fieldName = getExpressionName propSelector
         let field = fields[fieldName]
 
-        if subForms.ContainsKey fieldName |> not then
+        if subForms.ContainsKey fieldName then
+            subForms[fieldName] |> unbox
+
+        else
             let subForm = new AdaptiveForm<'Prop, 'SubError>(unbox<'Prop> field.Value)
 
-            disposes.AddRange [
+            disposes.AddRange [|
                 subForm :> IDisposable
                 subForm.UseErrors().AddLazyCallback(List.map mapError >> errors[fieldName].Publish)
                 subForm.UseHasChanges().AddInstantCallback(fun x -> hasChanges.Publish(fun oldX -> oldX || x))
                 subForm.UseIsLoading().AddInstantCallback(fun x -> loaders[fieldName].Publish(fun oldX -> oldX || x))
-            ]
+            |]
 
             subForms[fieldName] <- subForm
             subForm
-
-        else
-            subForms[fieldName] |> unbox
 
 
     interface IAdaptiveForm with
 
         member _.SetValueObj(value) =
             transact (fun _ ->
-                // No need to clean errors, because if the we will set value below, if the value is changed then the error will be re-calculated, if it is not changed then the error should not be touched.
-                //for KeyValue(_, error) in errors do
-                //    error.Value <- []
                 for prop in props do
                     let field = prop.GetValue value
                     fields.[prop.Name].Value <- field
@@ -199,9 +204,15 @@ type AdaptiveForm<'T, 'Error>(defaultValue: 'T) as this =
             )
             hasChanges.Publish false
 
-        member _.GetValueObj() =
+        member _.GetValueObj(?otherType) =
+            let targetType = defaultArg otherType ty
+
             let fields =
-                fields
+                if targetType = ty then
+                    fields :> seq<KeyValuePair<string, cval<obj>>>
+                else
+                    let props = getProps targetType
+                    fields |> Seq.filter (fun x -> props.Any(fun p -> p.Name = x.Key))
                 |> Seq.map (
                     function
                     | KeyValue(k, x) ->
@@ -212,10 +223,10 @@ type AdaptiveForm<'T, 'Error>(defaultValue: 'T) as this =
                 )
                 |> Seq.toArray
 
-            if FSharp.Reflection.FSharpType.IsRecord ty then
-                FSharp.Reflection.FSharpValue.MakeRecord(ty, fields)
+            if FSharp.Reflection.FSharpType.IsRecord targetType then
+                FSharp.Reflection.FSharpValue.MakeRecord(targetType, fields)
             else
-                Activator.CreateInstance(ty, fields)
+                Activator.CreateInstance(targetType, fields)
 
 
     interface IDisposable with
