@@ -51,7 +51,11 @@ module Operators =
 
     /// Merge AttrRenderFragment and PostRenderFragment together
     let inline (===>) ([<InlineIfLambda>] render1: AttrRenderFragment) ([<InlineIfLambda>] render2: PostRenderFragment) =
-        AttrRenderFragment(fun comp builder index -> render2.Invoke(comp, builder, render1.Invoke(comp, builder, index)))
+        PostRenderFragment(fun comp builder index -> render2.Invoke(comp, builder, render1.Invoke(comp, builder, index)))
+        
+    /// Merge PostRenderFragment and PostRenderFragment together
+    let inline (====>) ([<InlineIfLambda>] render1: PostRenderFragment) ([<InlineIfLambda>] render2: PostRenderFragment) =
+        PostRenderFragment(fun comp builder index -> render2.Invoke(comp, builder, render1.Invoke(comp, builder, index)))
 
     /// Merge two NodeRenderFragment together
     let inline (>=>) ([<InlineIfLambda>] render1: NodeRenderFragment) ([<InlineIfLambda>] render2: NodeRenderFragment) =
@@ -60,6 +64,11 @@ module Operators =
     /// Merge AttrRenderFragment and NodeRenderFragment together.
     /// This should be used together for building element only. For component we should not use this, because it treat ChildContent different in Blazor
     let inline (>>>) ([<InlineIfLambda>] render1: AttrRenderFragment) ([<InlineIfLambda>] render2: NodeRenderFragment) =
+        NodeRenderFragment(fun comp builder index -> render2.Invoke(comp, builder, render1.Invoke(comp, builder, index)))
+
+    /// Merge PostRenderFragment and NodeRenderFragment together.
+    /// This should be used together for building element only. For component we should not use this, because it treat ChildContent different in Blazor
+    let inline (>>>>) ([<InlineIfLambda>] render1: PostRenderFragment) ([<InlineIfLambda>] render2: NodeRenderFragment) =
         NodeRenderFragment(fun comp builder index -> render2.Invoke(comp, builder, render1.Invoke(comp, builder, index)))
 
 
