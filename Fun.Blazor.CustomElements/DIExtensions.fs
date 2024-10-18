@@ -3,7 +3,6 @@
 open System.Reflection
 open System.Runtime.CompilerServices
 open Microsoft.AspNetCore.Components.Web
-open Fun.Result
 open Fun.Blazor
 open Fun.Blazor.CustomElements
 
