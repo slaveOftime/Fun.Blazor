@@ -8,7 +8,8 @@ open System.Text.Json.Serialization
 
 [<AutoOpen>]
 module private Utils =
-    let jsonOptions = lazy (JsonFSharpOptions.Default().ToJsonSerializerOptions())
+    let jsonOptions =
+        lazy (JsonFSharpOptions.Default().WithUnionAdjacentTag().WithAllowNullFields(true).ToJsonSerializerOptions())
 
 
 /// This can be used for component parameters which needs complex data type when using with htmx etc.

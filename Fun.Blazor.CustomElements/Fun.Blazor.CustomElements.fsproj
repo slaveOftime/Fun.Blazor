@@ -13,7 +13,7 @@
 		<Compile Include="Dsl.fs" />
 		<Compile Include="DIExtensions.fs" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
 		<PackageReference Update="FSharp.Core" Version="8.0.100" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.CustomElements" Version="8.0.10" />
