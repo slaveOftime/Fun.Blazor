@@ -27,7 +27,7 @@ type html with
     /// </code>
     /// </example>
     /// </summary>
-    static member inject(render: 'Services -> Task<NodeRenderFragment>) = ComponentWithChildBuilder<DIComponent<'Services>>() {
+    static member inline inject([<InlineIfLambda>] render: 'Services -> Task<NodeRenderFragment>) = ComponentWithChildBuilder<DIComponent<'Services>>() {
         key ("DIComponent-" + Guid.NewGuid().ToString())
         "RenderFn" => render
         "IsStatic" => false
@@ -51,7 +51,7 @@ type html with
     ///   )
     /// </code>
     /// </example>
-    static member inject(render: 'Services -> NodeRenderFragment) = html.inject (render >> Task.FromResult)
+    static member inline inject([<InlineIfLambda>] render: 'Services -> NodeRenderFragment) = html.inject (render >> Task.FromResult)
 
 
     /// This function will create a blazor component with a specific key.
@@ -66,7 +66,7 @@ type html with
     ///   html.inject ("demo-key", fun () -> html.text $"externalX = {externalX}")
     /// </code>
     /// </example>
-    static member inject(k, render: 'Services -> Task<NodeRenderFragment>) = ComponentWithChildBuilder<DIComponent<'Services>>() {
+    static member inline inject(k, [<InlineIfLambda>] render: 'Services -> Task<NodeRenderFragment>) = ComponentWithChildBuilder<DIComponent<'Services>>() {
         key k
         "RenderFn" => render
         "IsStatic" => true
@@ -84,7 +84,7 @@ type html with
     ///   html.inject ("demo-key", fun () -> html.text $"externalX = {externalX}")
     /// </code>
     /// </example>
-    static member inject(k, render: 'Services -> NodeRenderFragment) = html.inject (k, (render >> Task.FromResult))
+    static member inline inject(k, [<InlineIfLambda>] render: 'Services -> NodeRenderFragment) = html.inject (k, (render >> Task.FromResult))
 
 
     /// This function will create a blazor component with no key.
@@ -92,7 +92,7 @@ type html with
     ///
     /// 'Services should be something you defined in the asp.net core DI or unit
     /// 'Services must be a tuple like (hook: IComponentHook, sp: IServiceProvider)
-    static member injectWithNoKey(render: 'Services -> Task<NodeRenderFragment>) = ComponentWithChildBuilder<DIComponent<'Services>>() {
+    static member inline injectWithNoKey([<InlineIfLambda>] render: 'Services -> Task<NodeRenderFragment>) = ComponentWithChildBuilder<DIComponent<'Services>>() {
         "RenderFn" => render
         "IsStatic" => true
     }
@@ -102,14 +102,15 @@ type html with
     ///
     /// 'Services should be something you defined in the asp.net core DI or unit
     /// 'Services must be a tuple like (hook: IComponentHook, sp: IServiceProvider)
-    static member injectWithNoKey(render: 'Services -> NodeRenderFragment) = html.injectWithNoKey (render >> Task.FromResult)
+    static member inline injectWithNoKey([<InlineIfLambda>] render: 'Services -> NodeRenderFragment) =
+        html.injectWithNoKey (render >> Task.FromResult)
 
 
     /// This will get a IServiceScopeFactory from container and create a new scope and add it to CascadingValue.
     /// So all its child content can get service from this new scope by using hook.ScopedServiceProvider.
     /// The new scope will be disposed when this component is disposed.
     /// If useRootScope = true, the root ServiceProvider will be added to CascadingValue instead of create a new scope.
-    static member scoped(useRootScope, node: NodeRenderFragment) =
+    static member inline scoped(useRootScope, [<InlineIfLambda>] node: NodeRenderFragment) =
         html.inject (fun (hook: IComponentHook) ->
             let scope =
                 if useRootScope then
@@ -134,9 +135,9 @@ type html with
     /// This will get a IServiceScopeFactory from container and create a new scope and add it to CascadingValue.
     /// So all its child content can get service from this new scope by using hook.ScopedServiceProvider.
     /// The new scope will be disposed when this component is disposed.
-    static member scoped(node: NodeRenderFragment) = html.scoped (false, node)
+    static member inline scoped([<InlineIfLambda>] node: NodeRenderFragment) = html.scoped (false, node)
 
     /// This will get a IServiceScopeFactory from container and create a new scope and add it to CascadingValue.
     /// So all its child content can get service from this new scope by using hook.ScopedServiceProvider.
     /// The new scope will be disposed when this component is disposed.
-    static member scoped(nodes: NodeRenderFragment seq) = html.scoped (html.fragment nodes)
+    static member inline scoped(nodes: NodeRenderFragment seq) = html.scoped (html.fragment nodes)

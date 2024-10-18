@@ -403,7 +403,7 @@ type ComponentWithChildBuilder<'T when 'T :> IComponent>() =
             nextIndex
         )
 
-    static member inline create(x: NodeRenderFragment) =
+    static member inline create([<InlineIfLambda>] x: NodeRenderFragment) =
         NodeRenderFragment(fun comp builder index ->
             builder.OpenComponent<'T>(index)
             let nextIndex =
