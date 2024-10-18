@@ -43,6 +43,19 @@ let private formatStringMap =
         'O', (guidPattern, parseGuid >> box) // Guid
     ]
 
+
+let private formatTypeMap = [
+    'b', typeof<bool> // bool
+    'c', typeof<char> // char
+    's', typeof<string> // string
+    'i', typeof<int32> // int
+    'd', typeof<int64> // int64
+    'f', typeof<float> // float
+    'O', typeof<System.Guid> // guid
+    'u', typeof<uint64> // guid
+]
+
+
 [<Struct>]
 type MatchMode =
     | Exact // Will try to match entire string from start to end.
@@ -51,11 +64,10 @@ type MatchMode =
     | Contains // Will try to match a substring. Subject string should contain test case.
 
 [<Struct>]
-type MatchOptions =
-    {
-        IgnoreCase: bool
-        MatchMode: MatchMode
-    }
+type MatchOptions = {
+    IgnoreCase: bool
+    MatchMode: MatchMode
+} with
 
     static member Exact = { IgnoreCase = false; MatchMode = Exact }
     static member IgnoreCaseExact = { IgnoreCase = true; MatchMode = Exact }
@@ -96,7 +108,8 @@ let private convertToRegexPatternAndFormatChars (mode: MatchMode) (formatString:
 /// <returns>Matched value as an option of 'T</returns>
 let tryMatchInput<'T> (format: string) (options: MatchOptions) (input: string) =
     try
-        let pattern, formatChars = format |> Regex.Escape |> convertToRegexPatternAndFormatChars options.MatchMode
+        let pattern, formatChars =
+            format |> Regex.Escape |> convertToRegexPatternAndFormatChars options.MatchMode
 
         let options =
             match options.IgnoreCase with
@@ -127,8 +140,7 @@ let tryMatchInput<'T> (format: string) (options: MatchOptions) (input: string) =
                     let tupleType = FSharpType.MakeTupleType types
                     FSharpValue.MakeTuple(values, tupleType)
             result :?> 'T |> Some
-    with
-    | ex ->
+    with ex ->
 #if DEBUG
         raise ex
 #endif
@@ -164,7 +176,6 @@ let tryMatchInputExact<'T> (format: string) (ignoreCase: bool) (input: string) =
 /// **Output**
 ///
 /// Returns `unit` if validation was successful otherwise will throw an `Exception`.
-
 /// <summary>
 /// Validates if a given format string can be matched with a given tuple.
 /// </summary>
@@ -172,21 +183,9 @@ let tryMatchInputExact<'T> (format: string) (ignoreCase: bool) (input: string) =
 /// <returns>Returns <see cref="Microsoft.FSharp.Core.Unit"/> if validation was successful otherwise will throw an `Exception`.</returns>
 let validateFormat (format: PrintfFormat<_, _, _, _, 'T>) =
 
-    let mapping =
-        [
-            'b', typeof<bool> // bool
-            'c', typeof<char> // char
-            's', typeof<string> // string
-            'i', typeof<int32> // int
-            'd', typeof<int64> // int64
-            'f', typeof<float> // float
-            'O', typeof<System.Guid> // guid
-            'u', typeof<uint64> // guid
-        ]
-
     let tuplePrint pos last name =
         let mutable result = "("
-        for i in 0 .. last do
+        for i in 0..last do
             if i = pos then result <- result + name else result <- result + "_"
             if i <> last then result <- result + ","
         result + ")"
@@ -226,7 +225,7 @@ let validateFormat (format: PrintfFormat<_, _, _, _, 'T>) =
     for i in 0 .. path.Length - 1 do
         let mChar = path.[i]
         if matchNext then
-            charTypeMatch mapping mChar
+            charTypeMatch formatTypeMap mChar
             matchNext <- false
         else if mChar = '%' then
             matchNext <- true
@@ -243,7 +242,7 @@ let validateFormat (format: PrintfFormat<_, _, _, _, 'T>) =
                 if ct <> types.[i] then
                     let hdlFmt = tuplePrint i (types.Length - 1) types.[i].Name
                     let expFmt = tuplePrint i (types.Length - 1) ct.Name
-                    let guidance = typeCharMatch mapping types.[i]
+                    let guidance = typeCharMatch formatTypeMap types.[i]
 
                     failwithf
                         "Format string error: routef '%s' has type '%s' but handler expects '%s', mismatch on %s parameter '%%%c', %s."
@@ -264,7 +263,7 @@ let validateFormat (format: PrintfFormat<_, _, _, _, 'T>) =
         match parseChars with
         | [ (mChar, ct) ] ->
             if ct <> t then
-                let guidance = typeCharMatch mapping t
+                let guidance = typeCharMatch formatTypeMap t
                 failwithf
                     "Format string error: routef '%s' has type '%s' but handler expects '%s', mismatch on parameter '%%%c', %s."
                     path

@@ -131,8 +131,7 @@ type html() =
     /// })
     /// </code>
     /// </example>
-    static member inline blazor<'T when 'T :> IComponent>(?render: AttrRenderFragment) =
-        html.blazor (typeof<'T>, attr = defaultArg render html.emptyAttr)
+    static member inline blazor<'T when 'T :> IComponent>(?attr: AttrRenderFragment) = html.blazor (typeof<'T>, ?attr = attr)
 
     /// <summary>
     /// Make a blazor component to a render fragment with a render for attributes
@@ -188,7 +187,7 @@ type html() =
     /// </code>
     /// </example>
     static member inline blazor<'T when 'T :> IComponent>(renderMode: IComponentRenderMode, ?attr: AttrRenderFragment) =
-        html.blazor (typeof<'T>, renderMode, attr = defaultArg attr (emptyAttr ()))
+        html.blazor (typeof<'T>, renderMode, ?attr = attr)
 
     /// <summary>
     /// Make a blazor component to a render fragment with a render for attributes
@@ -275,7 +274,7 @@ type html() =
         )
 
     /// Helper method for create ref attribute
-    static member inline ref(fn) =
+    static member inline ref([<InlineIfLambda>] fn) =
         PostRenderFragment(fun _ builder index ->
             builder.AddElementReferenceCapture(index, Action<ElementReference> fn)
             index + 1
@@ -285,7 +284,7 @@ type html() =
     /// This is a helper method for create attributes for blazor bindable attribute which normally has two attributes, xxx and xxxChanged by convention.
     /// Be careful, the store change will not trigger the attribute to be re-render. This is used to update the store when the attribute is changed.
     /// This is normally used as a helper method for generated DSL.
-    static member bind<'T>(name: string, store: cval<'T>) =
+    static member inline bind<'T>(name: string, store: cval<'T>) =
         AttrRenderFragment(fun comp builder index ->
             builder.AddAttribute(index, name, store.Value)
             builder.AddAttribute(
@@ -298,7 +297,7 @@ type html() =
 
     /// This is a helper method for create attributes for blazor bindable attribute which normally has two attributes, xxx and xxxChanged by convention.
     /// This is normally used as a helper method for generated DSL.
-    static member bind<'T>(name: string, (value: 'T, fn: 'T -> unit)) =
+    static member inline bind<'T>(name: string, (value: 'T, fn: 'T -> unit)) =
         AttrRenderFragment(fun comp builder index ->
             builder.AddAttribute(index, name, value)
             builder.AddAttribute(index + 1, name + "Changed", EventCallback.Factory.Create(comp, Action<'T> fn))
@@ -307,35 +306,35 @@ type html() =
 
 
     /// Helper method for create callback attribute
-    static member inline callback<'T>(eventName, fn: 'T -> unit) =
+    static member inline callback<'T>(eventName, [<InlineIfLambda>] fn: 'T -> unit) =
         AttrRenderFragment(fun comp builder index ->
             builder.AddAttribute(index, eventName, EventCallback.Factory.Create(comp, Action<'T> fn))
             index + 1
         )
 
     /// Helper method for create callback attribute
-    static member inline callback(eventName, fn: unit -> unit) =
+    static member inline callback(eventName, [<InlineIfLambda>] fn: unit -> unit) =
         AttrRenderFragment(fun comp builder index ->
             builder.AddAttribute(index, eventName, EventCallback.Factory.Create(comp, Action fn))
             index + 1
         )
 
     /// Helper method for create callback attribute
-    static member inline callbackTask<'T>(eventName, fn: 'T -> Task) =
+    static member inline callbackTask<'T>(eventName, [<InlineIfLambda>] fn: 'T -> Task) =
         AttrRenderFragment(fun comp builder index ->
             builder.AddAttribute(index, eventName, EventCallback.Factory.Create(comp, Func<'T, Task>(fun x -> fn x)))
             index + 1
         )
 
     /// Helper method for create callback attribute
-    static member inline callbackTask<'T>(eventName, fn: 'T -> Task<unit>) =
+    static member inline callbackTask<'T>(eventName, [<InlineIfLambda>] fn: 'T -> Task<unit>) =
         AttrRenderFragment(fun comp builder index ->
             builder.AddAttribute(index, eventName, EventCallback.Factory.Create(comp, Func<'T, Task>(fun x -> fn x :> Task)))
             index + 1
         )
 
     /// Helper method for create callback attribute
-    static member inline callbackTask(eventName, fn: unit -> Task<unit>) =
+    static member inline callbackTask(eventName, [<InlineIfLambda>] fn: unit -> Task<unit>) =
         AttrRenderFragment(fun comp builder index ->
             builder.AddAttribute(index, eventName, EventCallback.Factory.Create(comp, Func<Task>(fun () -> fn () :> Task)))
             index + 1

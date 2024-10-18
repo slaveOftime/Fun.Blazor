@@ -4,7 +4,6 @@ open System
 open System.Threading.Tasks
 open System.Collections.Generic
 open System.Diagnostics.CodeAnalysis
-open FSharp.Data.Adaptive
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.Logging
 open Microsoft.AspNetCore.Components
@@ -15,6 +14,7 @@ open Internal
 module ServiceProviderExtensions =
     type IServiceProvider with
 
+        /// This is supposed to be used by DIComponent internally, please do not use it directly
         member sp.GetMultipleServices(depsType: Type, handleNotFoundType) =
             let inline getSvc ty =
                 let svc = sp.GetService(ty)
@@ -31,8 +31,10 @@ module ServiceProviderExtensions =
             else
                 getSvc depsType
 
+        /// This is supposed to be used by DIComponent internally, please do not use it directly
         member sp.GetMultipleServices(depsType: Type) = sp.GetMultipleServices(depsType, (fun x -> failwith $"Service {x} is not registered"))
 
+        /// This is supposed to be used by DIComponent internally, please do not use it directly
         /// 'Types must be a tuple or unit
         member sp.GetMultipleServices<'Types>() =
             sp.GetMultipleServices(typeof<'Types>, (fun x -> failwith $"Service {x} is not registered"))
@@ -160,10 +162,12 @@ type DIComponent<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typ
 
     override _.OnInitializedAsync() = task {
         let depsType, _ = Reflection.FSharpType.GetFunctionElements(this.RenderFn.GetType())
+
         let services =
             this.Services.GetMultipleServices(depsType, this.HandleNotFoundType) :?> 'T
+
         let! newNode = this.RenderFn services
-        node <- newNode |> ValueSome
+        node <- ValueSome newNode
 
         if initializedEvent.IsSome then initializedEvent.Value.Trigger()
 

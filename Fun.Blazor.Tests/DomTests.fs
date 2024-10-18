@@ -194,10 +194,12 @@ let ``DOM CE attribute share check`` () =
         tempAttr
         title' "t"
         demo 3456
+        aria.busy true
+        123
     }
     let result = context.RenderNode demo
-    result.MarkupMatches("""<div demo="123" title="t"></div>""")
-    Assert.Equal("""<div demo="123" title="t" demo="3456"></div>""", result.Markup)
+    result.MarkupMatches("""<div demo="123" title="t" aria-busy="True">123</div>""")
+    Assert.Equal("""<div demo="123" title="t" demo="3456" aria-busy="True">123</div>""", result.Markup)
 
 
 [<Fact>]

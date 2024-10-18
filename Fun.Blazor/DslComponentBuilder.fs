@@ -304,7 +304,6 @@ type ComponentWithChildBuilder<'T when 'T :> IComponent>() =
     /// Also it is clear for the DSL
     member inline _.Combine([<InlineIfLambda>] render1: AttrRenderFragment, [<InlineIfLambda>] render2: NodeRenderFragment) = (render1, render2)
 
-    //[<Obsolete("Please use childContent [| ... |] for multiple child items for better CE build performance", DiagnosticId = "FB0044")>]
     member inline _.Combine([<InlineIfLambda>] render1: NodeRenderFragment, [<InlineIfLambda>] render2: NodeRenderFragment) = render1 >=> render2
 
     member inline _.For([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> NodeRenderFragment) = (render, fn ())
