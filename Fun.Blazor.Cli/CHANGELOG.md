@@ -1,5 +1,7 @@
 # Changelog
 
+## [4.1.0-beta001] - 2024-10-18
+
 ## [4.0.5] - 2024-08-02
 
 - Improve ce code gen for ce instances

@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+## [4.1.0-beta001] - 2024-10-18
+
+
 ## [4.0.5] - 2024-03-14
 
 - Support MapRazorComponentsForSSR for dotnet6.0

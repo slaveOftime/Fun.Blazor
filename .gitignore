@@ -373,4 +373,3 @@ global.json
 /Fun.Blazor.Docs.Wasm/wwwroot/docs
 /Fun.Htmx/Properties
 /Fun.Blazor.Docs.Wasm.Release
-Directory.Build.props
