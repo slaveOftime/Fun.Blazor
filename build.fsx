@@ -308,17 +308,18 @@ pipeline "bindings-check" {
     collapseGithubActionLogs
     stage "check" {
         run (fun _ -> task {
-            let errors = Collections.Generic.List<string>()
+            let mutable hasErrors = false
 
             for info in getBindingInfos () do
                 printfn $"Check for {info.package}, current version: {info.version}"
                 let! nugetVersion = getNugetPackageLatestVersion info.package
                 let latestVersion = nugetVersion.OriginalVersion
                 if latestVersion <> info.version then
-                    errors.Add $"Package {info.package} should be updated from {info.version} to {latestVersion}"
+                    hasErrors <- true
+                    printfn $"::error::Package {info.package} should be updated from {info.version} to {latestVersion}"
 
-            if errors.Count > 0 then
-                raise (PipelineFailedException("Errors: " + String.concat "\n" errors))
+            if hasErrors then
+                raise (PipelineFailedException("Some packages' version changed"))
         })
     }
     runIfOnlySpecified
