@@ -9,9 +9,12 @@
 
 	<ItemGroup>
 		<Compile Include="Core.fs" />
+		<Compile Include="Operators.fs" />
 		<Compile Include="Utils.fs" />
 		<Compile Include="I18n.fs" />
 		<Compile Include="Store.fs" />
+		<Compile Include="QueryBuilder.fs" />
+		<Compile Include="ComponentAttrBuilder.fs" />
 		<Compile Include="Router.Giraffe.FormatExpressions.fs" />
 		<Compile Include="Router.Giraffe.Dsl.fs" />
 		<Compile Include="DslCore.fs" />
@@ -45,7 +48,6 @@
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)'=='net6.0'">
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.0" />
 	</ItemGroup>

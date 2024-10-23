@@ -10,8 +10,91 @@ open Microsoft.AspNetCore.Components
 open Internal
 
 
+type IComponentHook =
+    /// <summary>
+    /// Invoked after each time the component has been rendered.
+    /// The parameter will be true if the event corresponds to the first render otherwise it will be false.
+    /// </summary>
+    abstract OnAfterRender: IEvent<bool>
+    /// <summary>
+    /// Method invoked when the component is ready to start, having received its initial parameters from its parent in the render tree.
+    /// </summary>
+    abstract OnInitialized: IEvent<unit>
+    ///<summary>
+    /// Invoked the first time the component has been rendered.
+    /// This is a convenience event from OnAfterRender
+    /// </summary>
+    abstract OnFirstAfterRender: IEvent<unit>
+
+    /// <summary>
+    /// The component is being disposed, you can cleanup manually managed resources or log any information here.
+    /// </summary>
+    abstract OnDispose: IEvent<unit>
+
+    abstract AddInitializedTask: makeTask: (unit -> Task) -> unit
+    abstract AddAfterRenderTask: makeTask: (bool -> Task) -> unit
+    abstract AddFirstAfterRenderTask: makeTask: (unit -> Task) -> unit
+    abstract AddParameterSetTask: makeTask: (unit -> Task) -> unit
+
+    /// Adds a disposable object to the disposables list, these will be disposed together with the current component
+    /// ```fsharp
+    /// html.inject("my-component", fun (hook: IComponentHook) ->
+    ///     let store = cval 10
+    ///
+    ///     store.AddLazyCallback(fun x _ -> xxx) |> hook.AddDispose
+    ///
+    ///     button {
+    ///         onclick (fun _ -> store.Publish((+) 1))
+    ///         "Increase"
+    ///     }
+    /// )
+    /// ```
+    abstract AddDispose: IDisposable -> unit
+
+    /// Adds multiple objects to the disposables list, these will be disposed together with the current component
+    /// ```fsharp
+    /// html.inject("my-component", fun (hook: IComponentHook) ->
+    ///     let store = cval 10
+    ///
+    ///     hook.AddDisposes [|
+    ///         store.AddLazyCallback(fun x _ -> xxx)
+    ///     |]
+    ///
+    ///     button {
+    ///         onclick (fun _ -> store.Publish((+) 1))
+    ///         "Increase"
+    ///     }
+    /// )
+    /// ```
+    abstract AddDisposes: IDisposable seq -> unit
+
+    /// <summary>
+    /// Notify the component that its state has changed. When applicable, this will cause the component to be re-rendered.
+    /// </summary>
+    abstract StateHasChanged: unit -> unit
+
+    /// With this we can toggle the behavior to the default blazor component behavior when it makes sense to you.
+    abstract SetDisableEventTriggerStateHasChanged: bool -> unit
+
+    /// With this we can create extension of the hook and access all resources
+    /// which means we can add extensions that can be standalone and be reused more easizer
+    abstract ServiceProvider: IServiceProvider
+
+    /// This is using CascadeValue from blazor. To use this you will need to provider a wrapper around your child components or elements.
+    /// You also need to provider a root value for it, otherwise you will get null exception for using it.
+    /// ```fsharp
+    /// html.scoped [|
+    ///     html.inject (fun (hook: IComponentHook ->
+    ///         hook.ScopedServiceProvider ... you can use it then
+    ///         ...
+    ///     )
+    /// |]
+    /// ```
+    abstract ScopedServiceProvider: IServiceProvider
+
+
 [<AutoOpen>]
-module ServiceProviderExtensions =
+module DIComponentExtensions =
     type IServiceProvider with
 
         /// This is supposed to be used by DIComponent internally, please do not use it directly

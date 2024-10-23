@@ -9,48 +9,42 @@ open Operators
 
 type html with
 
-    /// <summary>
     /// This function will create a blazor component with a random key.
     /// In other words, every time you recall this it will create a brand new component.
     /// So it is not performed well, but it is simple and bug lesser
     ///
     /// 'Services should be something you defined in the asp.net core DI or unit
     /// 'Services must be a tuple like (hook: IComponentHook, sp: IServiceProvider)
-    /// <example>
-    /// <code lang="fsharp">
+    /// 
+    /// ```fsharp
     /// let view =
-    ///   html.inject (hook: IComponentHook, jsRuntime: IJsRuntime) =
-    ///      div {
-    ///          ...
-    ///      }
-    ///   )
-    /// </code>
-    /// </example>
-    /// </summary>
+    ///     html.inject (hook: IComponentHook, jsRuntime: IJsRuntime) = task {
+    ///        return div {
+    ///            ...
+    ///        }
+    ///     })
+    /// ```
     static member inline inject([<InlineIfLambda>] render: 'Services -> Task<NodeRenderFragment>) = ComponentWithChildBuilder<DIComponent<'Services>>() {
         key ("DIComponent-" + Guid.NewGuid().ToString())
         "RenderFn" => render
         "IsStatic" => false
     }
 
-    /// <summary>
     /// This function will create a blazor component with a random key.
     /// In other words, every time you recall this it will create a brand new component.
     /// So it is not performed well, but it is simple and bug lesser
     ///
     /// 'Services should be something you defined in the asp.net core DI or unit
     /// 'Services must be a tuple like (hook: IComponentHook, sp: IServiceProvider)
-    /// </summary>
-    /// <example>
-    /// <code lang="fsharp">
+    /// 
+    /// ```fsharp
     /// let view =
-    ///   html.inject (hook: IComponentHook, jsRuntime: IJsRuntime) =
-    ///      div {
-    ///          ...
-    ///      }
-    ///   )
-    /// </code>
-    /// </example>
+    ///     html.inject (fun (hook: IComponentHook, jsRuntime: IJsRuntime) ->
+    ///        div {
+    ///            ...
+    ///        }
+    ///     )
+    /// ```
     static member inline inject([<InlineIfLambda>] render: 'Services -> NodeRenderFragment) = html.inject (render >> Task.FromResult)
 
 
@@ -59,13 +53,14 @@ type html with
     ///
     /// 'Services should be something you defined in the asp.net core DI.
     /// 'Services must be a tuple like (hook: IComponentHook, sp: IServiceProvider) or unit
-    /// <example>
-    /// <code lang="fsharp">
+    /// 
+    /// ```fsharp
     /// // Below string will never change no matter how you change externalX
     /// let demo (externalX: int) =
-    ///   html.inject ("demo-key", fun () -> html.text $"externalX = {externalX}")
-    /// </code>
-    /// </example>
+    ///     html.inject ("demo-key", fun () -> task {
+    ///         return span { "externalX = "; externalX }
+    ///     })
+    /// ```
     static member inline inject(k, [<InlineIfLambda>] render: 'Services -> Task<NodeRenderFragment>) = ComponentWithChildBuilder<DIComponent<'Services>>() {
         key k
         "RenderFn" => render
@@ -77,13 +72,14 @@ type html with
     ///
     /// 'Services should be something you defined in the asp.net core DI.
     /// 'Services must be a tuple like (hook: IComponentHook, sp: IServiceProvider) or unit
-    /// <example>
-    /// <code lang="fsharp">
+    /// 
+    /// ```fsharp
     /// // Below string will never change no matter how you change externalX
     /// let demo (externalX: int) =
-    ///   html.inject ("demo-key", fun () -> html.text $"externalX = {externalX}")
-    /// </code>
-    /// </example>
+    ///     html.inject ("demo-key", fun () ->
+    ///         span { "externalX = "; externalX }
+    ///     )
+    /// ```
     static member inline inject(k, [<InlineIfLambda>] render: 'Services -> NodeRenderFragment) = html.inject (k, (render >> Task.FromResult))
 
 
@@ -110,7 +106,7 @@ type html with
     /// So all its child content can get service from this new scope by using hook.ScopedServiceProvider.
     /// The new scope will be disposed when this component is disposed.
     /// If useRootScope = true, the root ServiceProvider will be added to CascadingValue instead of create a new scope.
-    static member inline scoped(useRootScope, [<InlineIfLambda>] node: NodeRenderFragment) =
+    static member inline scoped(useRootScope: bool, [<InlineIfLambda>] node: NodeRenderFragment) =
         html.inject (fun (hook: IComponentHook) ->
             let scope =
                 if useRootScope then
