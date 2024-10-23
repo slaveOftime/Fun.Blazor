@@ -36,14 +36,16 @@
 		<Compile Include="Demos\CustomElementDemo.fs" />
 		<Compile Include="DemoMaps.fs" />
 		<Compile Include="DemoView.fs" />
+		<Compile Include="DocNav.fs" />
 		<Compile Include="DocView.fs" />
-		<Compile Include="Nav.fs" />
+		<Compile Include="HomeView.fs" />
+		<Compile Include="Routes.fs" />
 		<Compile Include="App.fs" />
 		<Compile Include="Startup.fs" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="BlazorWasmPreRendering.Build" Version="4.0.0" />
-		<PackageReference Include="FSharp.SystemTextJson" Version="1.2.42" />
+		<PackageReference Include="BlazorWasmPreRendering.Build" Version="4.0.1" />
+		<PackageReference Include="FSharp.SystemTextJson" Version="1.3.13" />
 		<PackageReference Include="Majorsoft.Blazor.WebAssembly.Logging.Console" Version="1.5.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.*" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.*" PrivateAssets="all" />

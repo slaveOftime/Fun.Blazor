@@ -16,7 +16,13 @@ let docView (doc: DocBrief) =
     html.inject (
         doc,
         fun (hook: IComponentHook, js: IJSRuntime) ->
-            adaptiview () {
+            let isOpen = hook.ShareStore.CreateCVal("IsDocDrawerOpen", false)
+            let docSegmentLoadedCount = cval 0
+
+            let mutable isCodeHighlighted = false
+
+
+            let segementsBundle = adaptive {
                 let! lang = hook.Lang
 
                 let segments =
@@ -38,8 +44,6 @@ let docView (doc: DocBrief) =
                     )
                     |> Seq.length
 
-                let docSegmentLoadedCount = cval 0
-
 
                 hook.SetPrerenderStore(fun _ ->
                     for segment in segments do
@@ -48,45 +52,83 @@ let docView (doc: DocBrief) =
                         | _ -> ()
                 )
 
-                hook.OnFirstAfterRender.Add(fun () ->
-                    let mutable isCodeHighlighted = false
-                    hook.AddDisposes [
-                        docSegmentLoadedCount.AddInstantCallback(
-                            function
-                            | x when x >= docSegmentsCount && not isCodeHighlighted ->
-                                task {
-                                    do! Task.Delay 100
-                                    do! js.highlightCode ()
-                                    isCodeHighlighted <- true
-                                }
-                                |> ignore
-                            | _ -> ()
-                        )
-                    ]
+                return segments, docSegmentsCount, langStr
+            }
+
+            let shouldHighlightCode = adaptive {
+                let! _, docSegmentsCount, _ = segementsBundle
+                let! x = docSegmentLoadedCount
+                return x >= docSegmentsCount && not isCodeHighlighted
+            }
+
+
+            let menuBtn = adaptiview () {
+                let! isOpen, setIsOpen = isOpen.WithSetter()
+                MudIconButton'' {
+                    Icon Icons.Material.Filled.Menu
+                    Color Color.Inherit
+                    Edge Edge.Start
+                    OnClick(fun _ -> setIsOpen (not isOpen))
+                }
+            }
+
+            let drawer = adaptiview () {
+                let! binding = isOpen.WithSetter()
+                MudDrawer'' {
+                    Open' binding
+                    Elevation 25
+                    ClipMode DrawerClipMode.Always
+                    docNavmenu
+                }
+            }
+
+
+            hook.OnFirstAfterRender.Add(fun () ->
+                shouldHighlightCode.AddInstantCallback(
+                    function
+                    | true ->
+                        task {
+                            do! Task.Delay 100
+                            do! js.highlightCode ()
+                            isCodeHighlighted <- true
+                        }
+                        |> ignore
+                    | _ -> ()
                 )
+                |> hook.AddDispose
+            )
 
 
-                MudContainer'.create [|
+            MudContainer'' {
+                SectionContent'() {
+                    SectionName "toolbar-start"
+                    menuBtn
+                }
+                SectionContent'() {
+                    SectionName "drawer"
+                    drawer
+                }
+                adaptiview () {
+                    let! segments, _, langStr = segementsBundle
                     for segment in segments do
                         match segment with
                         | Segment.Demo key -> demos |> Map.tryFind key |> Option.map demoView |> Option.defaultValue notFound
 
-                        | Segment.Html key ->
-                            adaptiview () {
-                                match! hook.GetOrLoadDocHtml(langStr, key, "cacheKey=" + string doc.LastModified.Ticks) with
-                                | LoadingState.NotStartYet -> notFound
-                                | LoadingState.Loading -> linearProgress
-                                | LoadingState.Loaded docHtml
-                                | LoadingState.Reloading docHtml ->
-                                    docSegmentLoadedCount.Publish((+) 1)
-                                    div {
-                                        article {
-                                            class' "markdown-body"
-                                            html.raw docHtml
-                                        }
+                        | Segment.Html key -> adaptiview () {
+                            match! hook.GetOrLoadDocHtml(langStr, key, "cacheKey=" + string doc.LastModified.Ticks) with
+                            | LoadingState.NotStartYet -> notFound
+                            | LoadingState.Loading -> linearProgress
+                            | LoadingState.Loaded docHtml
+                            | LoadingState.Reloading docHtml ->
+                                docSegmentLoadedCount.Publish((+) 1)
+                                div {
+                                    article {
+                                        class' "markdown-body"
+                                        html.raw docHtml
                                     }
-                            }
+                                }
+                          }
                         spaceV4
-                |]
+                }
             }
     )
