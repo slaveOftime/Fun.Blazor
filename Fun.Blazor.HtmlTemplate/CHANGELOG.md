@@ -2,6 +2,7 @@
 
 ## [4.1.0-beta001] - 2024-10-18
 
+- Improve template html performance
 
 ## [4.0.2] - 2024-02-13
 
