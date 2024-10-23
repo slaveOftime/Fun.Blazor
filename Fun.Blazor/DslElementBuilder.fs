@@ -98,12 +98,10 @@ type EltWithChildBuilder(name) =
             nextIndex
         )
 
-    member inline this.Run((render1, render2): (PostRenderFragment * NodeRenderFragment)) =
+    member inline this.Run([<InlineIfLambda>] render: PostRenderFragment) =
         NodeRenderFragment(fun comp builder index ->
             builder.OpenElement(index, (this :> IElementBuilder).Name)
-            let nextIndex = index + 1
-            let nextIndex = render1.Invoke(comp, builder, nextIndex)
-            let nextIndex = render2.Invoke(comp, builder, nextIndex)
+            let nextIndex = render.Invoke(comp, builder, index + 1)
             builder.CloseElement()
             nextIndex
         )
@@ -157,11 +155,11 @@ type EltWithChildBuilder(name) =
     member inline _.Combine([<InlineIfLambda>] render1: NodeRenderFragment, [<InlineIfLambda>] render2: NodeRenderFragment) = render1 >=> render2
 
 
+    member inline _.Delay([<InlineIfLambda>] fn: unit -> PostRenderFragment) = PostRenderFragment(fun c b i -> fn().Invoke(c, b, i))
+
     member inline _.Delay([<InlineIfLambda>] fn: unit -> NodeRenderFragment) = NodeRenderFragment(fun c b i -> fn().Invoke(c, b, i))
 
-    member inline _.Delay([<InlineIfLambda>] fn: unit -> (PostRenderFragment * NodeRenderFragment)) = fn ()
-
-
+    
     member inline _.For([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> NodeRenderFragment) = render >>> (fn ())
 
     member inline _.For([<InlineIfLambda>] render: PostRenderFragment, [<InlineIfLambda>] fn: unit -> NodeRenderFragment) = render >>>> (fn ())
