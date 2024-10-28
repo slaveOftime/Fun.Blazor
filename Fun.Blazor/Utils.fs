@@ -53,6 +53,11 @@ module Internal =
     /// Please do not depend on this type, it maybe renamed in the future
     [<Struct>]
     type AttrRenderFragmentWrapper = | AttrRenderFragmentWrapper of AttrRenderFragment
+    
+    /// Please do not depend on this type, it maybe renamed in the future
+    /// For better support empty ce body in fsharp 9
+    type EmptyComponenntFragment = struct end
+
 
 
     type ILogger with

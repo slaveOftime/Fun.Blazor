@@ -501,3 +501,39 @@ let ``renderAsString should work`` () = task {
     let! actual = div { "hi" } |> html.renderAsString serviceProvider
     Assert.Equal("<div>hi</div>", actual)
 }
+
+
+[<Fact>]
+let ``empty body ce should work`` () =
+    let context = createTestContext ()
+
+    let demo = MudButton'' {}
+
+    let result = context.RenderNode demo
+    result.MarkupMatches(
+        """
+        <button  type="button" class="mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple"  >
+          <span class="mud-button-label"></span>
+        </button>
+        """
+    )
+
+
+    let demo2 = div {
+        div 
+        div {}
+        if true then a {}
+        MudSpacer'' {}
+    }
+
+    let result = context.RenderNode demo2
+    result.MarkupMatches(
+        """
+        <div>
+          <div></div>
+          <div></div>
+          <a></a>
+          <div aria-hidden="true" class="flex-grow-1"></div>
+        </div>
+        """
+    )
