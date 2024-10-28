@@ -16,7 +16,7 @@ let docView (doc: DocBrief) =
     html.inject (
         doc,
         fun (hook: IComponentHook, js: IJSRuntime) ->
-            let isOpen = hook.ShareStore.CreateCVal("IsDocDrawerOpen", false)
+            let isOpen = hook.ShareStore.CreateCVal("IsDocDrawerOpen", true)
             let docSegmentLoadedCount = cval 0
 
             let mutable isCodeHighlighted = false
@@ -130,5 +130,6 @@ let docView (doc: DocBrief) =
                           }
                         spaceV4
                 }
+                styleElt { ruleset ".markdown-body li" { listStyleTypeInitial } }
             }
     )

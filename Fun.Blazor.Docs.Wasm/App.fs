@@ -23,82 +23,96 @@ let private theme =
         )
     })
 
+let appBar =
+    html.injectWithNoKey (fun (hook: IComponentHook, shareStore: IShareStore) -> MudAppBar'' {
+        style {
+            "backdrop-filter: blur(15px)"
+            backgroundColor "transparent"
+            color Theme.primaryColor
+        }
+        Elevation 1
+        Dense
+
+        SectionOutlet'() { SectionName "toolbar-start" }
+
+        MudImage'' {
+            style { margin 10 }
+            Height 35
+            Width 35
+            Src $"fun-blazor.png"
+        }
+        a {
+            href ""
+            MudText'' {
+                Typo Typo.h6
+                Color Color.Primary
+                "Fun.Blazor"
+            }
+        }
+
+        section {
+            style {
+                margin 0 24
+                displayFlex
+                alignItemsCenter
+                gap 8
+            }
+            MudLink'' {
+                Href "/docs"
+                "Docs"
+            }
+        }
+
+        MudSpacer'' { }
+
+        adaptiview () {
+            let! langStr, setLang = hook.Lang.WithSetter()
+            MudMenu'' {
+                style { maxWidth 120 }
+                Label langStr
+                StartIcon Icons.Material.Filled.Translate
+                EndIcon Icons.Material.Filled.KeyboardArrowDown
+                MudMenuItem'' {
+                    OnClick(fun _ -> setLang "en")
+                    "English"
+                }
+                MudMenuItem'' {
+                    OnClick(fun _ -> setLang "cn")
+                    "中文"
+                }
+            }
+        }
+        adaptiview () {
+            let! isDark, setIsDark = shareStore.IsDarkMode.WithSetter()
+            MudIconButton'' {
+                Color Color.Inherit
+                Icon(
+                    if isDark then
+                        Icons.Material.Filled.Brightness4
+                    else
+                        Icons.Material.Filled.Brightness3
+                )
+                OnClick(fun _ -> setIsDark (not isDark))
+            }
+        }
+        MudIconButton'' {
+            Icon Icons.Custom.Brands.GitHub
+            Color Color.Inherit
+            Href "https://github.com/slaveOftime/Fun.Blazor"
+        }
+    })
+
 
 let app =
-    html.inject (fun (hook: IComponentHook, shareStore: IShareStore) ->
+    html.inject (fun (hook: IComponentHook) ->
         hook.SetPrerenderStore(fun _ -> hook.SetDataToPrerenderStore(nameof hook.DocsTree, hook.DocsTree.Value))
-
-        let appBar = MudAppBar'' {
-            style {
-                "backdrop-filter: blur(15px)"
-                backgroundColor "transparent"
-                color Theme.primaryColor
-            }
-            Elevation 3
-            Dense
-            childContent [|
-                SectionOutlet'() { SectionName "toolbar-start" }
-                a {
-                    href ""
-                    MudText'' {
-                        Typo Typo.h6
-                        Color Color.Primary
-                        "Fun Blazor"
-                    }
-                }
-                MudImage'' {
-                    style { margin 10 }
-                    Height 35
-                    Width 35
-                    Src $"fun-blazor.png"
-                }
-                MudSpacer'.create ()
-                adaptiview () {
-                    let! langStr, setLang = hook.Lang.WithSetter()
-                    MudMenu'' {
-                        style { maxWidth 120 }
-                        Label langStr
-                        StartIcon Icons.Material.Filled.Translate
-                        EndIcon Icons.Material.Filled.KeyboardArrowDown
-                        childContent [|
-                            MudMenuItem'' {
-                                OnClick(fun _ -> setLang "en")
-                                "English"
-                            }
-                            MudMenuItem'' {
-                                OnClick(fun _ -> setLang "cn")
-                                "中文"
-                            }
-                        |]
-                    }
-                }
-                adaptiview () {
-                    let! isDark, setIsDark = shareStore.IsDarkMode.WithSetter()
-                    MudIconButton'' {
-                        Color Color.Inherit
-                        Icon(
-                            if isDark then
-                                Icons.Material.Filled.Brightness4
-                            else
-                                Icons.Material.Filled.Brightness3
-                        )
-                        OnClick(fun _ -> setIsDark (not isDark))
-                    }
-                }
-                MudIconButton'' {
-                    Icon Icons.Custom.Brands.GitHub
-                    Color Color.Inherit
-                    Href "https://github.com/slaveOftime/Fun.Blazor"
-                }
-            |]
-        }
 
         div {
             theme
 
-            MudDialogProvider''
-            MudSnackbarProvider''
-            MudPopoverProvider''
+            MudDialogProvider'' { }
+            MudSnackbarProvider'' { }
+            MudPopoverProvider'' { }
 
             MudLayout'' {
                 appBar
@@ -121,8 +135,6 @@ let app =
             }
 
             interopScript
-
-            styleElt { ruleset ".markdown-body li" { listStyleTypeInitial } }
         }
     )
 
