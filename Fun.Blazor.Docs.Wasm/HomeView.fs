@@ -144,6 +144,7 @@ div {
 let private multipleModeForDifferentUseCases = MudGrid'' {
     Justify Justify.Center
     Spacing 10
+    style { maxWidth 1080 }
     MudItem'' {
         xs 12
         sm 6
@@ -402,17 +403,20 @@ let home =
                 style {
                     padding 48 12
                     backgroundColor "var(--mud-palette-surface)"
+                    displayFlex
+                    flexDirectionColumn
+                    alignItemsCenter
                 }
                 multipleModeForDifferentUseCases
             }
             section {
                 style {
                     padding 48 12
-                    backgroundColor "var(--mud-palette-primary)"
                     displayFlex
                     flexDirectionColumn
                     alignItemsCenter
                     gap 24
+                    backgroundColor "var(--mud-palette-primary)"
                 }
                 richEcosystem
                 MudText'' {
