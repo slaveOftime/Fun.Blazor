@@ -108,11 +108,31 @@ let docView (doc: DocBrief) =
                     SectionName "drawer"
                     drawer
                 }
+                SectionContent'() {
+                    SectionName "toolbar-start"
+                    adaptiview () {
+                        let! langStr, setLang = hook.Lang.WithSetter()
+                        MudMenu'' {
+                            style { maxWidth 120 }
+                            Label langStr
+                            StartIcon Icons.Material.Filled.Translate
+                            EndIcon Icons.Material.Filled.KeyboardArrowDown
+                            MudMenuItem'' {
+                                OnClick(fun _ -> setLang "en")
+                                "English"
+                            }
+                            MudMenuItem'' {
+                                OnClick(fun _ -> setLang "cn")
+                                "中文"
+                            }
+                        }
+                    }
+                }
                 adaptiview () {
                     let! segments, _, langStr = segementsBundle
                     for segment in segments do
                         match segment with
-                        | Segment.Demo key -> demos |> Map.tryFind key |> Option.map demoView |> Option.defaultValue notFound
+                        | Segment.Demo key -> demos |> Map.tryFind key |> Option.map DemoView.Create |> Option.defaultValue notFound
 
                         | Segment.Html key -> adaptiview () {
                             match! hook.GetOrLoadDocHtml(langStr, key, "cacheKey=" + string doc.LastModified.Ticks) with

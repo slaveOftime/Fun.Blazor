@@ -28,7 +28,7 @@ let appBar =
         style {
             "backdrop-filter: blur(15px)"
             backgroundColor "transparent"
-            color Theme.primaryColor
+            color Theme.secondaryColor
         }
         Elevation 1
         Dense
@@ -39,13 +39,13 @@ let appBar =
             style { margin 10 }
             Height 35
             Width 35
-            Src $"fun-blazor.png"
+            Src "fun-blazor.png"
         }
         a {
             href ""
             MudText'' {
                 Typo Typo.h6
-                Color Color.Primary
+                Color Color.Secondary
                 "Fun.Blazor"
             }
         }
@@ -59,29 +59,15 @@ let appBar =
             }
             MudLink'' {
                 Href "/docs"
+                Color Color.Secondary
                 "Docs"
             }
         }
 
         MudSpacer'' { }
+        
+        SectionOutlet'() { SectionName "toolbar-end" }
 
-        adaptiview () {
-            let! langStr, setLang = hook.Lang.WithSetter()
-            MudMenu'' {
-                style { maxWidth 120 }
-                Label langStr
-                StartIcon Icons.Material.Filled.Translate
-                EndIcon Icons.Material.Filled.KeyboardArrowDown
-                MudMenuItem'' {
-                    OnClick(fun _ -> setLang "en")
-                    "English"
-                }
-                MudMenuItem'' {
-                    OnClick(fun _ -> setLang "cn")
-                    "中文"
-                }
-            }
-        }
         adaptiview () {
             let! isDark, setIsDark = shareStore.IsDarkMode.WithSetter()
             MudIconButton'' {

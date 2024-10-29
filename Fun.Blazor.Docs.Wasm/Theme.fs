@@ -3,8 +3,8 @@
 open MudBlazor
 
 
-let primaryColor = "#495ca5"
-let secondaryColor = "#6677BB"
+let primaryColor = "#2c364d"
+let secondaryColor = "#2e6f91"
 
 
 type FunTheme =
