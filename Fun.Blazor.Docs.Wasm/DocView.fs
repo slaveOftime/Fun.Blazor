@@ -109,7 +109,7 @@ let docView (doc: DocBrief) =
                     drawer
                 }
                 SectionContent'() {
-                    SectionName "toolbar-start"
+                    SectionName "toolbar-end"
                     adaptiview () {
                         let! langStr, setLang = hook.Lang.WithSetter()
                         MudMenu'' {

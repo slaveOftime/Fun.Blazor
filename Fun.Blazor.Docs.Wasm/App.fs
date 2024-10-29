@@ -46,6 +46,7 @@ let appBar =
             MudText'' {
                 Typo Typo.h6
                 Color Color.Secondary
+                class' "animated-glow-secondary-text"
                 "Fun.Blazor"
             }
         }
@@ -65,7 +66,7 @@ let appBar =
         }
 
         MudSpacer'' { }
-        
+
         SectionOutlet'() { SectionName "toolbar-end" }
 
         adaptiview () {
@@ -93,7 +94,7 @@ let app =
     html.inject (fun (hook: IComponentHook) ->
         hook.SetPrerenderStore(fun _ -> hook.SetDataToPrerenderStore(nameof hook.DocsTree, hook.DocsTree.Value))
 
-        div {
+        fragment {
             theme
 
             MudDialogProvider'' { }
@@ -111,7 +112,6 @@ let app =
                     isAppReadyIndicator
                     errorBundary routes
                     MudScrollToTop'' {
-                        TopOffset 400
                         MudFab'' {
                             StartIcon Icons.Material.Filled.KeyboardArrowUp
                             Color Color.Primary

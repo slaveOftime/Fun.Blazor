@@ -1,0 +1,14 @@
+@keyframes glow-secondary {
+    0%, 100% {
+        text-shadow: 0 0 2px #2e6f91, 0 0 10px #2e6f91, 0 0 15px #2e6f91;
+    }
+
+    50% {
+        text-shadow: 0 0 12px #2e6f91, 0 0 30px #2e6f91, 0 0 40px #2e6f91;
+    }
+}
+
+.animated-glow-secondary-text {
+    color: #fff;
+    animation: glow-secondary 3s ease-in-out infinite alternate;
+}
