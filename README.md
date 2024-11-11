@@ -9,7 +9,7 @@ This is a project to make F# developer to write blazor easier.
 3. Dependency injection (html.inject)
 4. [Adaptive](https://github.com/fsprojects/FSharp.Data.Adaptive) model (adaptiview/AdaptivieForm) (**recommend**), [elmish](https://github.com/elmish/elmish) model (html.elmish)
 5. Giraffe style routing (html.route/blazor official style)
-6. Type safe style (Fun.Css)
+6. Type safe css style (Fun.Css)
 7. Convert html to CE style by [Fun.Dev.Tools](https://slaveoftime.github.io/Fun.DevTools.Docs)
 
 Check the [WASM Docs](https://slaveoftime.github.io/Fun.Blazor.Docs/) for more 🚀
@@ -34,141 +34,34 @@ If you find my projects helpful and would like to support my work, consider maki
 
 ```fsharp
 // Functional style
-let demo (str) = fragment {
-    h2 { $"demo {str}" }
-    p { "hi here" }
+let count = cval 0
+let counter (str: string) = section {
+    h2 { "Counter: "; str }
+    adaptiview () {
+        let! count, setCount = count.WithSetter()
+        button {
+            onclick (fun _ -> setCount (count + 1))
+            "Increase "; count
+        }
+    }
 }
 
 // Class style
-type Foo() =
+type CountPage() =
     inherit FunComponent()
 
     let mutable count = 0
 
     override _.Render() = main {
-        h1 { "foo" }
-        demo $"hi {count}"
+        h1 { "Counter Page" }
+        p { "hi here" }
         button {
             onclick (fun _ -> count <- count + 1)
-            "Click me"
+            "Increase "; count
         }
+        counter "functional style"
     }
 ```
-
-## CE build performance
-
-- There is CE performance [issue](https://github.com/dotnet/fsharp/issues/14429) for inline or nest too much CE block.
-
-There are some tests in [here](https://github.com/albertwoo/CEPerfDemo), in summary, below are some recommend ways for better build time performance (but it can reduce runtime performance because we cannot inline and need to allocate memory on head for creating array or list)
-
-- The best result is **list-with-local-vars** for multiple child items
-
-    ```fsharp
-    let demo1 = div {
-        class' "font-bold"
-        "demo1"
-    }
-
-    let demo2 = div {
-        class' "font-bold"
-        "demo2"
-    }
-
-    let comp = div {
-        style { color "red" }
-        childContent [| // 👌✅
-            demo1
-            demo2
-        |]
-    }
-    ```
-
-    But you can also write like below even it will not **build** as fast as the above:
-
-    ```fsharp
-    let comp = div {
-        style { color "red" }
-        childContent [| // 👌✅
-            div {
-                class' "font-bold"
-                "demo1"
-            }
-            div {
-                class' "font-bold"
-                "demo2"
-            }
-        |]
-    }
-    ```
-
-- **nested-one** is kind of ok
-
-    ```fsharp
-    let comp = div {
-        class' "font-bold"
-        div { // 👌✅
-            class' "font-bold"
-            "demo1"
-        }
-    }
-    ```
-
-    But still prefer childContent:
-
-     ```fsharp
-    let comp = div {
-        class' "font-bold"
-        childContent (div { // 👌✅✅
-            class' "font-bold"
-            "demo1"
-        })
-    }
-    ```
-
-- **nested-one-one** is not ok (bad for build perf)
-
-    ```fsharp
-    let comp = div {
-        class' "font-bold"
-        div {
-            class' "font-bold"
-            div { // ⛔🙅
-                class' "font-bold"
-                "demo1"
-            }
-        }
-    }
-    ```
-
-    Write like below:
-
-    ```fsharp
-    let comp = div {
-        class' "font-bold"
-        div {
-            class' "font-bold"
-            childContent [|  // 👌✅
-                div {
-                    class' "font-bold"
-                    "demo1"
-                }
-            |]
-        }
-    }
-    ```
-
-- inline local vars is not ok (bad for build perf)
-
-    ```fsharp
-    let comp = div {
-        class' "font-bold"
-        let temp = div { // ⛔🙅
-            class' "font-bold"
-            "demo1"
-        }
-        temp
-    }
-    ```
 
 ## Local development
 

@@ -82,6 +82,24 @@ let docView (doc: DocBrief) =
                 }
             }
 
+            let langBtn = adaptiview () {
+                let! langStr, setLang = hook.Lang.WithSetter()
+                MudMenu'' {
+                    style { maxWidth 120 }
+                    Label langStr
+                    StartIcon Icons.Material.Filled.Translate
+                    EndIcon Icons.Material.Filled.KeyboardArrowDown
+                    MudMenuItem'' {
+                        OnClick(fun _ -> setLang "en")
+                        "English"
+                    }
+                    MudMenuItem'' {
+                        OnClick(fun _ -> setLang "cn")
+                        "中文"
+                    }
+                }
+            }
+
 
             hook.OnFirstAfterRender.Add(fun () ->
                 shouldHighlightCode.AddInstantCallback(
@@ -110,23 +128,7 @@ let docView (doc: DocBrief) =
                 }
                 SectionContent'() {
                     SectionName "toolbar-end"
-                    adaptiview () {
-                        let! langStr, setLang = hook.Lang.WithSetter()
-                        MudMenu'' {
-                            style { maxWidth 120 }
-                            Label langStr
-                            StartIcon Icons.Material.Filled.Translate
-                            EndIcon Icons.Material.Filled.KeyboardArrowDown
-                            MudMenuItem'' {
-                                OnClick(fun _ -> setLang "en")
-                                "English"
-                            }
-                            MudMenuItem'' {
-                                OnClick(fun _ -> setLang "cn")
-                                "中文"
-                            }
-                        }
-                    }
+                    langBtn
                 }
                 adaptiview () {
                     let! segments, _, langStr = segementsBundle
@@ -148,6 +150,7 @@ let docView (doc: DocBrief) =
                                     }
                                 }
                           }
+
                         spaceV4
                 }
                 styleElt { ruleset ".markdown-body li" { listStyleTypeInitial } }

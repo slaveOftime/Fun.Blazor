@@ -23,8 +23,9 @@ let private theme =
         )
     })
 
-let appBar =
-    html.injectWithNoKey (fun (hook: IComponentHook, shareStore: IShareStore) -> MudAppBar'' {
+
+let private appBar =
+    html.injectWithNoKey (fun (shareStore: IShareStore) -> MudAppBar'' {
         style {
             "backdrop-filter: blur(15px)"
             backgroundColor "transparent"

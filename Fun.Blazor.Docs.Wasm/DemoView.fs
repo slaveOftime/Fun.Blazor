@@ -27,7 +27,7 @@ type DemoView =
 
 
                 hook.OnFirstAfterRender.Add(fun () ->
-                    hook.AddDisposes [
+                    hook.AddDispose(
                         shouldHightLight.AddInstantCallback(
                             function
                             | true ->
@@ -38,7 +38,7 @@ type DemoView =
                                 |> ignore
                             | _ -> ()
                         )
-                    ]
+                    )
                 )
 
 

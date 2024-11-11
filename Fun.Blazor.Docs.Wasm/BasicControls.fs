@@ -79,7 +79,7 @@ let isAppReadyIndicator =
                     MudText'' {
                         Color Color.Warning
                         Typo Typo.subtitle2
-                        ".NET WASM is still loading. You can interact in this page after it's fully loaded."
+                        "Still loading... You can interact in this page after it's fully loaded/connected."
                     }
                     MudText'' {
                         Color Color.Info

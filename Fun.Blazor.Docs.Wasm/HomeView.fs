@@ -67,7 +67,7 @@ let private simplestSyntax = div {
 }
 
 
-let private flexsibleSyntax = div {
+let private flexibleSyntax = div {
     style {
         displayFlex
         alignItemsCenter
@@ -353,7 +353,7 @@ let home =
                         alignItemsCenter
                         justifyContentCenter
                     }
-                    flexsibleSyntax
+                    flexibleSyntax
                 }
             }
             section {

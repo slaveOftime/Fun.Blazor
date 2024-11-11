@@ -42,12 +42,7 @@ let docNavmenu =
                                 Href(path + "/" + sanitizeFileName doc.Name)
                                 MudText'' {
                                     Typo Typo.``inherit``
-                                    Color(
-                                        if docName = "Get Started" || docName = "入门指南" then
-                                            Color.Success
-                                        else
-                                            Color.Default
-                                    )
+                                    Color Color.Default
                                     docName
                                 }
                             }
