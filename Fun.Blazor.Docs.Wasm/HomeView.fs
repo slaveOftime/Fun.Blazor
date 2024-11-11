@@ -357,10 +357,15 @@ let home =
                 }
             }
             section {
-                style { padding 72 12 }
+                style {
+                    padding 72 12
+                    displayFlex
+                    flexDirectionColumn
+                    alignItemsCenter
+                    gap 24
+                }
                 MudText'' {
                     Typo Typo.h2
-                    style { textAlignCenter }
                     "You can run it in anywhere where dotnet can run!"
                 }
                 div {
@@ -369,8 +374,7 @@ let home =
                         alignItemsCenter
                         justifyContentCenter
                         flexWrapWrap
-                        gap 16
-                        marginTop 12
+                        gap 12
                     }
                     MudChip'' {
                         Color Color.Success
@@ -397,6 +401,12 @@ let home =
                         Variant Variant.Text
                         "..."
                     }
+                }
+                MudButton'' {
+                    Color Color.Success
+                    Variant Variant.Filled
+                    Href "/Docs/Get-Started"
+                    "Get Started"
                 }
             }
             section {
