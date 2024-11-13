@@ -71,15 +71,16 @@ You can run **dotnet fsi build.fsx -- -h** to check what is available to help yo
 
 BenchmarkDotNet v0.14.0, Windows 11 (10.0.22631.4317/23H2/2023Update/SunValley3)
 12th Gen Intel Core i7-12700H, 1 CPU, 20 logical and 14 physical cores
-.NET SDK 8.0.400
-  [Host]     : .NET 8.0.10 (8.0.1024.46610), X64 RyuJIT AVX2 DEBUG
-  DefaultJob : .NET 8.0.10 (8.0.1024.46610), X64 RyuJIT AVX2
+.NET SDK 9.0.100
+  [Host]     : .NET 9.0.0 (9.0.24.52809), X64 RyuJIT AVX2 DEBUG
+  DefaultJob : .NET 9.0.0 (9.0.24.52809), X64 RyuJIT AVX2
+
 
 | Method                         | Mean     | Error    | StdDev   | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
 |------------------------------- |---------:|---------:|---------:|------:|--------:|-------:|----------:|------------:|
-| RenderWithRazorCSharp          | 245.3 ns |  2.05 ns |  1.82 ns |  1.00 |    0.01 | 0.0296 |     376 B |        1.00 |
-| RenderWithFunBlazorInlineCE    | 389.9 ns |  7.82 ns |  9.01 ns |  1.59 |    0.04 | 0.0443 |     560 B |        1.49 |
-| RenderWithBolero               | 532.0 ns | 10.18 ns | 11.32 ns |  2.17 |    0.05 | 0.1173 |    1480 B |        3.94 |
-| RenderWithFunBlazorArray       | 532.2 ns | 10.60 ns | 16.50 ns |  2.17 |    0.07 | 0.1154 |    1448 B |        3.85 |
-| RenderWithFunBlazorSSRTemplate | 483.8 ns |  6.24 ns |  5.84 ns |  1.97 |    0.03 | 0.0401 |     512 B |        1.36 |
-| RenderWithFunBlazorTemplate    | 839.0 ns | 16.50 ns | 21.45 ns |  3.42 |    0.09 | 0.1230 |    1544 B |        4.11 |
+| RenderWithRazorCSharp          | 252.1 ns |  3.31 ns |  3.09 ns |  1.00 |    0.02 | 0.0291 |     368 B |        1.00 |
+| RenderWithFunBlazorInlineCE    | 372.9 ns |  7.48 ns |  7.00 ns |  1.48 |    0.03 | 0.0439 |     552 B |        1.50 |
+| RenderWithFunBlazorSSRTemplate | 467.9 ns |  5.83 ns |  5.45 ns |  1.86 |    0.03 | 0.0420 |     528 B |        1.43 |
+| RenderWithBolero               | 495.3 ns |  8.74 ns |  8.18 ns |  1.96 |    0.04 | 0.1192 |    1496 B |        4.07 |
+| RenderWithFunBlazorArray       | 539.8 ns |  9.13 ns | 16.69 ns |  2.14 |    0.07 | 0.1163 |    1464 B |        3.98 |
+| RenderWithFunBlazorTemplate    | 771.2 ns | 12.50 ns | 11.69 ns |  3.06 |    0.06 | 0.1240 |    1560 B |        4.24 |
