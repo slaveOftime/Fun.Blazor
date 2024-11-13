@@ -63,125 +63,11 @@ Components can be created using `adaptiview`, `html.inject`, etc. These componen
 
 There are a few things to keep in mind:
 
-1. The F# compiler has performance issues with intellisense for some large computation expressions (CEs). It is better to keep single CE blocks, or use sequences like `array` with `childContent` for better intellisense. [issue tracked in fsharp repo](https://github.com/dotnet/fsharp/issues/14429).
-
-    There are some tests in [here](https://github.com/albertwoo/CEPerfDemo), in summary, below are some recommend ways for better build time performance (but it can reduce runtime performance because we cannot inline and need to allocate memory on head for creating array or list)
-
-    - The best result is **list-with-local-vars** for multiple child items
-
-        ```fsharp
-        let demo1 = div {
-            class' "font-bold"
-            "demo1"
-        }
-
-        let demo2 = div {
-            class' "font-bold"
-            "demo2"
-        }
-
-        let comp = div {
-            style { color "red" }
-            childContent [| // 👌✅
-                demo1
-                demo2
-            |]
-        }
-        ```
-
-        But you can also write like below even it will not **build** as fast as the above:
-
-        ```fsharp
-        let comp = div {
-            style { color "red" }
-            childContent [| // 👌✅
-                div {
-                    class' "font-bold"
-                    "demo1"
-                }
-                div {
-                    class' "font-bold"
-                    "demo2"
-                }
-            |]
-        }
-        ```
-
-    - **nested-one** is kind of ok
-
-        ```fsharp
-        let comp = div {
-            class' "font-bold"
-            div { // 👌✅
-                class' "font-bold"
-                "demo1"
-            }
-        }
-        ```
-
-        but still prefer childContent:
-
-        ```fsharp
-        let comp = div {
-            class' "font-bold"
-            childContet (div { // 👌✅✅
-                class' "font-bold"
-                "demo1"
-            })
-        }
-        ```
-
-
-    - **nested-one-one** is not ok (bad for build perf)
-
-        ```fsharp
-        let comp = div {
-            class' "font-bold"
-            div {
-                class' "font-bold"
-                div { // ⛔🙅
-                    class' "font-bold"
-                    "demo1"
-                }
-            }
-        }
-        ```
-
-        Write like below:
-
-        ```fsharp
-        let comp = div {
-            class' "font-bold"
-            div {
-                class' "font-bold"
-                childContent [| // 👌✅
-                    div { 
-                        class' "font-bold"
-                        "demo1"
-                    }
-                |]
-            }
-        }
-        ```
-
-    - inline local vars is not ok (bad for build perf)
-
-        ```fsharp
-        let comp = div {
-            class' "font-bold"
-            let temp = div { // ⛔🙅
-                class' "font-bold"
-                "demo1"
-            }
-            temp
-        }
-        ```
-
-2. Hot-reload
+1. No support for hot-reload
 
    The default templates provide limited hot-reload support. Too many files can slow down the hot-reload process, so for best results, add `// hot-reload` at the top of files you want to enable hot-reload for. For more information, see the [Hot-reload in Fun.Blazor](https://www.slaveoftime.fun/blog/d959e36a-f4fe-4a10-88af-5e738633db0f?title=%20Hot-reload%20in%20Fun.Blazor) blog post or [document](https://slaveoftime.github.io/Fun.Blazor.Docs/?doc=/Hot%20Reload).
 
-3. Attribute, items position in CE
+2. Attribute, items position in CE
 
     When using a `ref` or `renderMode` attribute etc., you should place it like below, because blazor treat them very special and can only add them after other attributes:
 
@@ -206,15 +92,17 @@ There are a few things to keep in mind:
 
 ## Benchmarks
 
-BenchmarkDotNet v0.13.12, Windows 11 (10.0.22631.3007/23H2/2023Update/SunValley3)
+BenchmarkDotNet v0.14.0, Windows 11 (10.0.22631.4317/23H2/2023Update/SunValley3)
 12th Gen Intel Core i7-12700H, 1 CPU, 20 logical and 14 physical cores
-.NET SDK 8.0.100
-  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2 DEBUG
-  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+.NET SDK 9.0.100
+  [Host]     : .NET 9.0.0 (9.0.24.52809), X64 RyuJIT AVX2 DEBUG
+  DefaultJob : .NET 9.0.0 (9.0.24.52809), X64 RyuJIT AVX2
 
-| Method                      | Mean     | Error    | StdDev   | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
-|---------------------------- |---------:|---------:|---------:|------:|--------:|-------:|----------:|------------:|
-| RenderWithRazorCSharp       | 237.0 ns |  4.62 ns |  7.46 ns |  1.00 |    0.00 | 0.0296 |     376 B |        1.00 |
-| RenderWithFunBlazorInlineCE | 372.5 ns |  7.26 ns |  9.94 ns |  1.58 |    0.07 | 0.0443 |     560 B |        1.49 |
-| RenderWithFunBlazorArray    | 518.8 ns | 10.21 ns | 14.64 ns |  2.20 |    0.07 | 0.1154 |    1448 B |        3.85 |
-| RenderWithBolero            | 538.5 ns | 10.59 ns | 19.89 ns |  2.27 |    0.10 | 0.1173 |    1480 B |        3.94 |
+| Method                         | Mean     | Error    | StdDev   | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
+|------------------------------- |---------:|---------:|---------:|------:|--------:|-------:|----------:|------------:|
+| RenderWithRazorCSharp          | 247.7 ns |  3.80 ns |  3.37 ns |  1.00 |    0.02 | 0.0291 |     368 B |        1.00 |
+| RenderWithFunBlazorInlineCE    | 374.1 ns |  5.53 ns |  4.91 ns |  1.51 |    0.03 | 0.0439 |     552 B |        1.50 |
+| RenderWithFunBlazorSSRTemplate | 475.6 ns |  5.78 ns |  5.40 ns |  1.92 |    0.03 | 0.0420 |     528 B |        1.43 |
+| RenderWithBolero               | 497.9 ns |  8.46 ns | 10.07 ns |  2.01 |    0.05 | 0.1192 |    1496 B |        4.07 |
+| RenderWithFunBlazorArray       | 525.2 ns | 10.44 ns | 11.17 ns |  2.12 |    0.05 | 0.1144 |    1440 B |        3.91 |
+| RenderWithFunBlazorTemplate    | 785.9 ns |  7.95 ns |  7.44 ns |  3.17 |    0.05 | 0.1240 |    1560 B |        4.24 |

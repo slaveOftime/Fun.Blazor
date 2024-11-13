@@ -75,12 +75,11 @@ BenchmarkDotNet v0.14.0, Windows 11 (10.0.22631.4317/23H2/2023Update/SunValley3)
   [Host]     : .NET 9.0.0 (9.0.24.52809), X64 RyuJIT AVX2 DEBUG
   DefaultJob : .NET 9.0.0 (9.0.24.52809), X64 RyuJIT AVX2
 
-
 | Method                         | Mean     | Error    | StdDev   | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
 |------------------------------- |---------:|---------:|---------:|------:|--------:|-------:|----------:|------------:|
-| RenderWithRazorCSharp          | 252.1 ns |  3.31 ns |  3.09 ns |  1.00 |    0.02 | 0.0291 |     368 B |        1.00 |
-| RenderWithFunBlazorInlineCE    | 372.9 ns |  7.48 ns |  7.00 ns |  1.48 |    0.03 | 0.0439 |     552 B |        1.50 |
-| RenderWithFunBlazorSSRTemplate | 467.9 ns |  5.83 ns |  5.45 ns |  1.86 |    0.03 | 0.0420 |     528 B |        1.43 |
-| RenderWithBolero               | 495.3 ns |  8.74 ns |  8.18 ns |  1.96 |    0.04 | 0.1192 |    1496 B |        4.07 |
-| RenderWithFunBlazorArray       | 539.8 ns |  9.13 ns | 16.69 ns |  2.14 |    0.07 | 0.1163 |    1464 B |        3.98 |
-| RenderWithFunBlazorTemplate    | 771.2 ns | 12.50 ns | 11.69 ns |  3.06 |    0.06 | 0.1240 |    1560 B |        4.24 |
+| RenderWithRazorCSharp          | 247.7 ns |  3.80 ns |  3.37 ns |  1.00 |    0.02 | 0.0291 |     368 B |        1.00 |
+| RenderWithFunBlazorInlineCE    | 374.1 ns |  5.53 ns |  4.91 ns |  1.51 |    0.03 | 0.0439 |     552 B |        1.50 |
+| RenderWithFunBlazorSSRTemplate | 475.6 ns |  5.78 ns |  5.40 ns |  1.92 |    0.03 | 0.0420 |     528 B |        1.43 |
+| RenderWithBolero               | 497.9 ns |  8.46 ns | 10.07 ns |  2.01 |    0.05 | 0.1192 |    1496 B |        4.07 |
+| RenderWithFunBlazorArray       | 525.2 ns | 10.44 ns | 11.17 ns |  2.12 |    0.05 | 0.1144 |    1440 B |        3.91 |
+| RenderWithFunBlazorTemplate    | 785.9 ns |  7.95 ns |  7.44 ns |  3.17 |    0.05 | 0.1240 |    1560 B |        4.24 |

@@ -59,112 +59,9 @@ type NodeRenderFragment = delegate of root: IComponent * builder: RenderTreeBuil
 
 ## 在使用 Fun.Blazor 之前要考虑以下几点：
 
-1. F# 编译器在某些大型计算表达式 (CE) 的智能提示方面存在性能问题。最好减小单个 CE 块，或使用 `array` 与 `childContent` 以获得更好的智能提示效果：
+1. 不支持热重载
 
-    There are some tests in [here](https://github.com/albertwoo/CEPerfDemo), in summary, below are some recommend ways for better build time performance (but it can reduce runtime performance because we cannot inline and need to allocate memory on head for creating array or list)
-
-    - The best result is **list-with-local-vars** for multiple child items
-
-        ```fsharp
-        let demo1 = div {
-            class' "font-bold"
-            "demo1"
-        }
-
-        let demo2 = div {
-            class' "font-bold"
-            "demo2"
-        }
-
-        let comp = div {
-            style { color "red" }
-            childContent [| // 👌✅
-                demo1
-                demo2
-            |]
-        }
-        ```
-
-        But you can also write like below even it will not **build** as fast as the above:
-
-        ```fsharp
-        let comp = div {
-            style { color "red" }
-            childContent [| // 👌✅
-                div {
-                    class' "font-bold"
-                    "demo1"
-                }
-                div {
-                    class' "font-bold"
-                    "demo2"
-                }
-            |]
-        }
-        ```
-
-    - **nested-one** is ok
-
-        ```fsharp
-        let comp = div {
-            class' "font-bold"
-            div { // 👌✅
-                class' "font-bold"
-                "demo1"
-            }
-        }
-        ```
-
-    - **nested-one-one** is not ok (bad for build perf)
-
-        ```fsharp
-        let comp = div {
-            class' "font-bold"
-            div {
-                class' "font-bold"
-                div { // ⛔🙅
-                    class' "font-bold"
-                    "demo1"
-                }
-            }
-        }
-        ```
-        
-        Write like below:
-
-        ```fsharp
-        let comp = div {
-            class' "font-bold"
-            div {
-                class' "font-bold"
-                childContent [| // 👌✅
-                    div {
-                        class' "font-bold"
-                        "demo1"
-                    }
-                |]
-            }
-        }
-        ```
-
-    - inline local vars is not ok (bad for build perf)
-
-        ```fsharp
-        let comp = div {
-            class' "font-bold"
-            let temp = div { // ⛔🙅
-                class' "font-bold"
-                "demo1"
-            }
-            temp
-        }
-        ```
-
-2. 热重载
-
-    默认的模板已提供有限的热重载支持。 在过多的文件情况下会减慢热重载过程，因此为了取得最佳效果，应在想启用热重载的文件顶部添加 `// hot-reload` 。更多信息，请参见 [Fun.Blazor 热重载](https://www.slaveoftime.fun/blog/d959e36a-f4fe-4a10-88af-5e738633db0f?title=%20Hot-reload%20in%20Fun.Blazor) 博客文章或 [文档](https://slaveoftime.github.io/Fun.Blazor.Docs/?doc=/Hot%20Reload).
-
-3. 对于组件元素中的属性和子元素，最好按以下方式排列：
+2. 对于组件元素中的属性和子元素，最好按以下方式排列：
     ```fsharp
     div {
         attributes ...
@@ -187,15 +84,17 @@ type NodeRenderFragment = delegate of root: IComponent * builder: RenderTreeBuil
 
 ## 基准测试
 
-BenchmarkDotNet v0.13.12, Windows 11 (10.0.22631.3007/23H2/2023Update/SunValley3)
+BenchmarkDotNet v0.14.0, Windows 11 (10.0.22631.4317/23H2/2023Update/SunValley3)
 12th Gen Intel Core i7-12700H, 1 CPU, 20 logical and 14 physical cores
-.NET SDK 8.0.100
-  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2 DEBUG
-  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+.NET SDK 9.0.100
+  [Host]     : .NET 9.0.0 (9.0.24.52809), X64 RyuJIT AVX2 DEBUG
+  DefaultJob : .NET 9.0.0 (9.0.24.52809), X64 RyuJIT AVX2
 
-| Method                      | Mean     | Error    | StdDev   | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
-|---------------------------- |---------:|---------:|---------:|------:|--------:|-------:|----------:|------------:|
-| RenderWithRazorCSharp       | 237.0 ns |  4.62 ns |  7.46 ns |  1.00 |    0.00 | 0.0296 |     376 B |        1.00 |
-| RenderWithFunBlazorInlineCE | 372.5 ns |  7.26 ns |  9.94 ns |  1.58 |    0.07 | 0.0443 |     560 B |        1.49 |
-| RenderWithFunBlazorArray    | 518.8 ns | 10.21 ns | 14.64 ns |  2.20 |    0.07 | 0.1154 |    1448 B |        3.85 |
-| RenderWithBolero            | 538.5 ns | 10.59 ns | 19.89 ns |  2.27 |    0.10 | 0.1173 |    1480 B |        3.94 |
+| Method                         | Mean     | Error    | StdDev   | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
+|------------------------------- |---------:|---------:|---------:|------:|--------:|-------:|----------:|------------:|
+| RenderWithRazorCSharp          | 247.7 ns |  3.80 ns |  3.37 ns |  1.00 |    0.02 | 0.0291 |     368 B |        1.00 |
+| RenderWithFunBlazorInlineCE    | 374.1 ns |  5.53 ns |  4.91 ns |  1.51 |    0.03 | 0.0439 |     552 B |        1.50 |
+| RenderWithFunBlazorSSRTemplate | 475.6 ns |  5.78 ns |  5.40 ns |  1.92 |    0.03 | 0.0420 |     528 B |        1.43 |
+| RenderWithBolero               | 497.9 ns |  8.46 ns | 10.07 ns |  2.01 |    0.05 | 0.1192 |    1496 B |        4.07 |
+| RenderWithFunBlazorArray       | 525.2 ns | 10.44 ns | 11.17 ns |  2.12 |    0.05 | 0.1144 |    1440 B |        3.91 |
+| RenderWithFunBlazorTemplate    | 785.9 ns |  7.95 ns |  7.44 ns |  3.17 |    0.05 | 0.1240 |    1560 B |        4.24 |
