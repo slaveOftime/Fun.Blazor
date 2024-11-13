@@ -8,7 +8,7 @@ on:
       - edited
 
 jobs:
-  deploy-to-github-pages:
+  pr-check:
     runs-on: ubuntu-20.04
 
     steps:
@@ -17,7 +17,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 8.0.x
+        dotnet-version: 9.0.x
 
     - name: Run build.fsx
       run: dotnet fsi build.fsx -- -p test

@@ -51,7 +51,10 @@ let inline tran x = x
 /// </example>
 type I18n(?newJson: string, ?defaultTrans: Dictionary<string, string>) =
     let trans =
-        lazy (fromJsonToMap (defaultArg defaultTrans (Dictionary())) (defaultArg newJson "{}"))
+        lazy
+            (fromJsonToMap
+                (defaultTrans |> Option.defaultWith (fun _ -> Dictionary(StringComparer.InvariantCultureIgnoreCase)))
+                (newJson |> Option.defaultWith (fun _ -> "{}")))
 
     /// Merge new translations into existing dictionary.
     /// With base translations then add other translations to override its key value.

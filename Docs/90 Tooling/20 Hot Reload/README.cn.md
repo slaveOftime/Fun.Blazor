@@ -1,4 +1,4 @@
-# 热重载
+# 热重载 (停止支持)
 
 ```sh
 dotnet tool install --global Fun.Blazor.Cli --version 4.0.0

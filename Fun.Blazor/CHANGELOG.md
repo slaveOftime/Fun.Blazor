@@ -2,6 +2,19 @@
 
 ## [Unreleased]
 
+## [4.1.0-beta001] - 2024-10-18
+
+- Upgrade packages
+- Remove some obsolete things
+- Make i18n key case insensitive
+- Add more inline
+- Improve element builder perf
+- Code cleanup and refactor
+- Support to get value for other type in AdaptiveForm
+- Do not increase index for emptyAttr or emptyNode
+- Support CE empty body for fsharp 9
+- Expose component instance from IComponentHook
+
 ## [4.0.12] - 2024-06-05
 
 - Update packages

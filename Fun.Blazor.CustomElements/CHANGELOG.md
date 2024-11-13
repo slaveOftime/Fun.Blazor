@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [4.1.0-beta001] - 2024-10-18
+
+- Drop net7.0 support for Fun.Blazor.CustomElements
+
 ## [4.0.2] - 2024-02-13
 
 - Pin FSharp.Core version to remove build warning

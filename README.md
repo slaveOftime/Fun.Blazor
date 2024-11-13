@@ -9,7 +9,7 @@ This is a project to make F# developer to write blazor easier.
 3. Dependency injection (html.inject)
 4. [Adaptive](https://github.com/fsprojects/FSharp.Data.Adaptive) model (adaptiview/AdaptivieForm) (**recommend**), [elmish](https://github.com/elmish/elmish) model (html.elmish)
 5. Giraffe style routing (html.route/blazor official style)
-6. Type safe style (Fun.Css)
+6. Type safe css style (Fun.Css)
 7. Convert html to CE style by [Fun.Dev.Tools](https://slaveoftime.github.io/Fun.DevTools.Docs)
 
 Check the [WASM Docs](https://slaveoftime.github.io/Fun.Blazor.Docs/) for more 🚀
@@ -34,141 +34,34 @@ If you find my projects helpful and would like to support my work, consider maki
 
 ```fsharp
 // Functional style
-let demo (str) = fragment {
-    h2 { $"demo {str}" }
-    p { "hi here" }
+let count = cval 0
+let counter (str: string) = section {
+    h2 { "Counter: "; str }
+    adaptiview () {
+        let! count, setCount = count.WithSetter()
+        button {
+            onclick (fun _ -> setCount (count + 1))
+            "Increase "; count
+        }
+    }
 }
 
 // Class style
-type Foo() =
+type CountPage() =
     inherit FunComponent()
 
     let mutable count = 0
 
     override _.Render() = main {
-        h1 { "foo" }
-        demo $"hi {count}"
+        h1 { "Counter Page" }
+        p { "hi here" }
         button {
             onclick (fun _ -> count <- count + 1)
-            "Click me"
+            "Increase "; count
         }
+        counter "functional style"
     }
 ```
-
-## CE build performance
-
-- There is CE performance [issue](https://github.com/dotnet/fsharp/issues/14429) for inline or nest too much CE block.
-
-There are some tests in [here](https://github.com/albertwoo/CEPerfDemo), in summary, below are some recommend ways for better build time performance (but it can reduce runtime performance because we cannot inline and need to allocate memory on head for creating array or list)
-
-- The best result is **list-with-local-vars** for multiple child items
-
-    ```fsharp
-    let demo1 = div {
-        class' "font-bold"
-        "demo1"
-    }
-
-    let demo2 = div {
-        class' "font-bold"
-        "demo2"
-    }
-
-    let comp = div {
-        style { color "red" }
-        childContent [| // 👌✅
-            demo1
-            demo2
-        |]
-    }
-    ```
-
-    But you can also write like below even it will not **build** as fast as the above:
-
-    ```fsharp
-    let comp = div {
-        style { color "red" }
-        childContent [| // 👌✅
-            div {
-                class' "font-bold"
-                "demo1"
-            }
-            div {
-                class' "font-bold"
-                "demo2"
-            }
-        |]
-    }
-    ```
-
-- **nested-one** is kind of ok
-
-    ```fsharp
-    let comp = div {
-        class' "font-bold"
-        div { // 👌✅
-            class' "font-bold"
-            "demo1"
-        }
-    }
-    ```
-
-    But still prefer childContent:
-
-     ```fsharp
-    let comp = div {
-        class' "font-bold"
-        childContent (div { // 👌✅✅
-            class' "font-bold"
-            "demo1"
-        })
-    }
-    ```
-
-- **nested-one-one** is not ok (bad for build perf)
-
-    ```fsharp
-    let comp = div {
-        class' "font-bold"
-        div {
-            class' "font-bold"
-            div { // ⛔🙅
-                class' "font-bold"
-                "demo1"
-            }
-        }
-    }
-    ```
-
-    Write like below:
-
-    ```fsharp
-    let comp = div {
-        class' "font-bold"
-        div {
-            class' "font-bold"
-            childContent [|  // 👌✅
-                div {
-                    class' "font-bold"
-                    "demo1"
-                }
-            |]
-        }
-    }
-    ```
-
-- inline local vars is not ok (bad for build perf)
-
-    ```fsharp
-    let comp = div {
-        class' "font-bold"
-        let temp = div { // ⛔🙅
-            class' "font-bold"
-            "demo1"
-        }
-        temp
-    }
-    ```
 
 ## Local development
 
@@ -176,15 +69,18 @@ You can run **dotnet fsi build.fsx -- -h** to check what is available to help yo
 
 ## Benchmark
 
-BenchmarkDotNet v0.13.12, Windows 11 (10.0.22631.3007/23H2/2023Update/SunValley3)
+BenchmarkDotNet v0.14.0, Windows 11 (10.0.22631.4317/23H2/2023Update/SunValley3)
 12th Gen Intel Core i7-12700H, 1 CPU, 20 logical and 14 physical cores
-.NET SDK 8.0.100
-  [Host]     : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2 DEBUG
-  DefaultJob : .NET 8.0.1 (8.0.123.58001), X64 RyuJIT AVX2
+.NET SDK 9.0.100
+  [Host]     : .NET 9.0.0 (9.0.24.52809), X64 RyuJIT AVX2 DEBUG
+  DefaultJob : .NET 9.0.0 (9.0.24.52809), X64 RyuJIT AVX2
 
-| Method                      | Mean     | Error   | StdDev   | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
-|---------------------------- |---------:|--------:|---------:|------:|--------:|-------:|----------:|------------:|
-| RenderWithRazorCSharp       | 234.1 ns | 3.59 ns |  3.36 ns |  1.00 |    0.00 | 0.0298 |     376 B |        1.00 |
-| RenderWithFunBlazorInlineCE | 363.5 ns | 4.14 ns |  3.67 ns |  1.55 |    0.03 | 0.0443 |     560 B |        1.49 |
-| RenderWithFunBlazorArray    | 499.0 ns | 9.82 ns | 10.91 ns |  2.14 |    0.05 | 0.1154 |    1448 B |        3.85 |
-| RenderWithBolero            | 507.9 ns | 9.74 ns | 11.21 ns |  2.17 |    0.07 | 0.1173 |    1480 B |        3.94 |
+
+| Method                         | Mean     | Error    | StdDev   | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
+|------------------------------- |---------:|---------:|---------:|------:|--------:|-------:|----------:|------------:|
+| RenderWithRazorCSharp          | 252.1 ns |  3.31 ns |  3.09 ns |  1.00 |    0.02 | 0.0291 |     368 B |        1.00 |
+| RenderWithFunBlazorInlineCE    | 372.9 ns |  7.48 ns |  7.00 ns |  1.48 |    0.03 | 0.0439 |     552 B |        1.50 |
+| RenderWithFunBlazorSSRTemplate | 467.9 ns |  5.83 ns |  5.45 ns |  1.86 |    0.03 | 0.0420 |     528 B |        1.43 |
+| RenderWithBolero               | 495.3 ns |  8.74 ns |  8.18 ns |  1.96 |    0.04 | 0.1192 |    1496 B |        4.07 |
+| RenderWithFunBlazorArray       | 539.8 ns |  9.13 ns | 16.69 ns |  2.14 |    0.07 | 0.1163 |    1464 B |        3.98 |
+| RenderWithFunBlazorTemplate    | 771.2 ns | 12.50 ns | 11.69 ns |  3.06 |    0.06 | 0.1240 |    1560 B |        4.24 |

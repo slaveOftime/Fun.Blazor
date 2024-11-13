@@ -4,8 +4,11 @@ module Fun.Blazor.DslElementBuilder_extensions
 open System.Reflection
 open Microsoft.AspNetCore.Components
 open Fun.Blazor
+
+#if !NET6_0
 open Fun.Blazor.Operators
 open Fun.Blazor.DslElementBuilder_generated
+#endif
 
 
 #if !NET6_0
@@ -52,8 +55,10 @@ let inline js (x: string) =
 
 let inline doctype decl =
     NodeRenderFragment(fun _ builder index ->
-        builder.AddMarkupContent(index, $"<!DOCTYPE {decl}>\n")
-        index + 1
+        builder.AddMarkupContent(index, "<!DOCTYPE {decl}")
+        builder.AddMarkupContent(index + 1, decl)
+        builder.AddMarkupContent(index + 2, ">\n")
+        index + 3
     )
 
 let inline baseUrl (x: string) = base' { href x }

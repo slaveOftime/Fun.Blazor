@@ -1,5 +1,9 @@
 # Changelog
 
+## [4.1.0-beta001] - 2024-10-18
+
+- Bump version
+
 ## [4.0.4] - 2024-03-12
 
 - Upgrade dependencies

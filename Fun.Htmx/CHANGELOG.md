@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [4.1.0-beta001] - 2024-10-18
+
+- Add more inline
+
 ## [4.0.5] - 2024-03-14
 
 - Support hxRequestBlazorSSR for dotnet6.0

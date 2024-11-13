@@ -69,9 +69,9 @@ type AdaptiviewBuilder
             state <- AVal.map2 (fun x y -> x >=> y) state (fn item)
         state
 
-    member inline _.Bind(value: alist<_>, fn: _ -> aval<_>) : aval<_> = AList.toAVal value |> AVal.bind fn
+    member inline _.Bind(value: alist<_>, [<InlineIfLambda>] fn: _ -> aval<_>) : aval<_> = AList.toAVal value |> AVal.bind fn
 
-    member inline _.Bind(value: aset<_>, fn: _ -> aval<_>) : aval<_> = ASet.toAVal value |> AVal.bind fn
+    member inline _.Bind(value: aset<_>, [<InlineIfLambda>] fn: _ -> aval<_>) : aval<_> = ASet.toAVal value |> AVal.bind fn
 
 
 type IAdaptiveValue<'T> with
@@ -84,15 +84,15 @@ type IAdaptiveValue<'T> with
 type Extensions =
     /// Change the value in a transact
     [<Extension>]
-    static member Publish(this: cval<'T>, x: 'T) = transact (fun () -> this.Value <- x)
+    static member inline Publish(this: cval<'T>, x: 'T) = transact (fun () -> this.Value <- x)
 
     /// Change the value in a transact
     [<Extension>]
-    static member Publish(this: cval<'T>, fn: 'T -> 'T) = transact (fun () -> this.Value <- fn this.Value)
+    static member inline Publish(this: cval<'T>, [<InlineIfLambda>] fn: 'T -> 'T) = transact (fun () -> this.Value <- fn this.Value)
 
     /// Make a tuple: (value, setValue)
     [<Extension>]
-    static member WithSetter(this: cval<'T>) =
+    static member inline WithSetter(this: cval<'T>) =
         let setValue x = transact (fun () -> this.Value <- x)
         this |> AVal.map (fun x -> x, setValue)
 
@@ -100,7 +100,7 @@ type Extensions =
     /// The action will be triggered immediately
     /// The default AddCallback will have the same effect, but it has an override with (obj -> unit) which make type infer harder
     [<Extension>]
-    static member AddInstantCallback(value: aval<'T>, action: 'T -> unit) = value.AddCallback(fun (x: 'T) -> action x)
+    static member inline AddInstantCallback(value: aval<'T>, [<InlineIfLambda>] action: 'T -> unit) = value.AddCallback(fun (x: 'T) -> action x)
 
 
     /// This is a helper method to avoid trigger action when you first call this function
@@ -130,12 +130,12 @@ type Extensions =
 
 [<RequireQualifiedAccess>]
 module AVal =
-    let ofTask (defaultValue: 'T) (ts: Task<'T>) =
+    let inline ofTask (defaultValue: 'T) (ts: Task<'T>) =
         let data = cval defaultValue
         ts |> Task.map data.Publish |> ignore
         data :> aval<'T>
 
-    let ofObservable (defaultValue: 'T) (handleDispose) (obs: IObservable<'T>) =
+    let inline ofObservable (defaultValue: 'T) ([<InlineIfLambda>] handleDispose) (obs: IObservable<'T>) =
         let data = cval defaultValue
         obs |> Observable.subscribe data.Publish |> handleDispose
         data :> aval<'T>
@@ -148,14 +148,8 @@ module AVal =
 /// This will generate an alist<Node> as a Node parameter.
 /// When the isStatic is not set to true, every time when you call this it will trigger OnParametersSet,
 /// so when you write code like below:
-/// <example>
-/// <code lang="fsharp">
-///     1. change hanppened
-///     adaptiview(isStatic = false){
-///         2. this will init again, so if you want to keep the state of x you should move the definition of x upper or set isStatic to true
-///         let! x = cval 123
-///     }
 ///
+/// ```fsharp
 /// let counters =
 ///    adaptiview () {
 ///        let! count1, setCount1 = cval(1).WithSetter()
@@ -172,10 +166,11 @@ module AVal =
 ///         }
 ///     }
 ///
-/// But you can define like below
+/// But you can define like below:
+/// let count1 = cval 1
+/// let count2 = cval 2
+///
 /// let counters =
-///    let count1 = cval 1
-///    let count2 = cval 2
 ///    adaptiview () {
 ///        let! count1, setCount1 = count1.WithSetter()
 ///        let! count2, setCount2 = count2.WithSetter()
@@ -190,6 +185,5 @@ module AVal =
 ///            }
 ///         }
 ///     }
-/// </code>
-/// </example>
+/// ```
 type adaptiview = AdaptiviewBuilder

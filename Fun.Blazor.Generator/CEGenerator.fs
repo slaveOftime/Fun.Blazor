@@ -100,12 +100,12 @@ let private getMetaInfo useInline (ty: Type) =
                     || prop.PropertyType.Name.StartsWith "Microsoft.AspNetCore.Components.EventCallback"
                 then
                     [
-                        $"{memberHead} ({contextArg}, fn: {getTypeName prop.PropertyType.GenericTypeArguments.[0]} -> unit) = render ==> html.callback(\"{prop.Name}\", fn)"
-                        $"{memberHead} ({contextArg}, fn: {getTypeName prop.PropertyType.GenericTypeArguments.[0]} -> Task<unit>) = render ==> html.callbackTask(\"{prop.Name}\", fn)"
+                        $"{memberHead} ({contextArg}, [<InlineIfLambda>] fn: {getTypeName prop.PropertyType.GenericTypeArguments.[0]} -> unit) = render ==> html.callback(\"{prop.Name}\", fn)"
+                        $"{memberHead} ({contextArg}, [<InlineIfLambda>] fn: {getTypeName prop.PropertyType.GenericTypeArguments.[0]} -> Task<unit>) = render ==> html.callbackTask(\"{prop.Name}\", fn)"
                     ]
                 elif prop.PropertyType.Name.StartsWith "RenderFragment`" then
                     [
-                        $"{memberHead} ({contextArg}, fn: {getTypeName prop.PropertyType.GenericTypeArguments.[0]} -> {nameof NodeRenderFragment}) = render ==> html.renderFragment(\"{prop.Name}\", fn)"
+                        $"{memberHead} ({contextArg}, [<InlineIfLambda>] fn: {getTypeName prop.PropertyType.GenericTypeArguments.[0]} -> {nameof NodeRenderFragment}) = render ==> html.renderFragment(\"{prop.Name}\", fn)"
                     ]
                 elif
                     prop.PropertyType.Namespace = "System"
@@ -133,7 +133,7 @@ let private getMetaInfo useInline (ty: Type) =
                         ]
                 elif prop.PropertyType.Namespace = "System" && prop.PropertyType.Name.StartsWith "Action`" then
                     [
-                        $"{memberHead} ({contextArg}, fn) = render ==> (\"{prop.Name}\" => ({getTypeName prop.PropertyType}fn))"
+                        $"{memberHead} ({contextArg}, [<InlineIfLambda>] fn) = render ==> (\"{prop.Name}\" => ({getTypeName prop.PropertyType}fn))"
                     ]
                 else
                     let propTypeName = getTypeName prop.PropertyType
@@ -147,15 +147,15 @@ let private getMetaInfo useInline (ty: Type) =
                 || prop.PropertyType.Name.StartsWith "Microsoft.AspNetCore.Components.EventCallback"
             then
                 [
-                    $"{memberHead} ({contextArg}, fn: unit -> unit) = render ==> html.callback(\"{prop.Name}\", fn)"
-                    $"{memberHead} ({contextArg}, fn: unit -> Task<unit>) = render ==> html.callbackTask(\"{prop.Name}\", fn)"
+                    $"{memberHead} ({contextArg}, [<InlineIfLambda>] fn: unit -> unit) = render ==> html.callback(\"{prop.Name}\", fn)"
+                    $"{memberHead} ({contextArg}, [<InlineIfLambda>] fn: unit -> Task<unit>) = render ==> html.callbackTask(\"{prop.Name}\", fn)"
                 ]
 
             elif prop.PropertyType = typeof<RenderFragment> then
                 [
                     if name <> "ChildContent" then
-                        $"{memberHead} ({contextArg}, fragment) = render ==> html.renderFragment(\"{prop.Name}\", fragment)"
-                        $"{memberHead} ({contextArg}, fragments) = render ==> html.renderFragment(\"{prop.Name}\", fragment {{ yield! fragments }})"
+                        $"{memberHead} ({contextArg}, fragment: NodeRenderFragment) = render ==> html.renderFragment(\"{prop.Name}\", fragment)"
+                        $"{memberHead} ({contextArg}, fragments: NodeRenderFragment seq) = render ==> html.renderFragment(\"{prop.Name}\", fragment {{ yield! fragments }})"
                         $"{memberHead} ({contextArg}, x: string) = render ==> html.renderFragment(\"{prop.Name}\", html.text x)"
                         $"{memberHead} ({contextArg}, x: int) = render ==> html.renderFragment(\"{prop.Name}\", html.text x)"
                         $"{memberHead} ({contextArg}, x: float) = render ==> html.renderFragment(\"{prop.Name}\", html.text x)"
@@ -163,19 +163,18 @@ let private getMetaInfo useInline (ty: Type) =
 
             elif prop.Name = "Class" && prop.PropertyType = typeof<string> then
                 [
-                    $"{comment}    [<CustomOperation(\"Classes\")>] {memberStart}Classes ({contextArg}, x: string list) = render ==> html.classes x"
                 ]
 
             elif prop.Name = "Style" && prop.PropertyType = typeof<string> then
                 [
-                    $"{comment}    [<CustomOperation(\"Styles\")>] {memberStart}Styles ({contextArg}, x: (string * string) list) = render ==> html.styles x"
                 ]
 
             else
                 let propTypeName = getTypeName prop.PropertyType
                 [
                     if prop.PropertyType = typeof<bool> then
-                        $"{memberHead} ({contextArg}, ?x: bool) = render ==> (\"{prop.Name}\" => (defaultArg x true))"
+                        $"{memberHead} ({contextArg}) = render ==> (\"{prop.Name}\" =>>> true)"
+                        $"{memberHead} ({contextArg}, x: bool) = render ==> (\"{prop.Name}\" =>>> x)"
                     else
                         $"{memberHead} ({contextArg}, x: {propTypeName}) = render ==> (\"{prop.Name}\" => x)"
                     yield! createBindableProps propTypeName

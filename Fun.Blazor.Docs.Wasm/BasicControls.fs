@@ -21,11 +21,10 @@ let spaceH3 = spaceH 10
 let spaceH4 = spaceH 16
 
 
-let linearProgress =
-    MudProgressLinear'' {
-        Indeterminate true
-        Color Color.Primary
-    }
+let linearProgress = MudProgressLinear'' {
+    Indeterminate true
+    Color Color.Primary
+}
 
 
 let notFound = div {
@@ -37,28 +36,56 @@ let notFound = div {
 }
 
 
-let errorBundary (views: NodeRenderFragment) =
-    ErrorBoundary'() {
-        ErrorContent(fun ex ->
-            MudPaper'' {
-                style {
-                    padding 10
-                    margin 20
-                }
-                Elevation 10
-                childContent [|
-                    MudText'' {
-                        Color Color.Error
-                        Typo Typo.subtitle1
-                        "Some error hanppened, you can try to refresh."
-                    }
-                    spaceV4
-                    MudAlert'' {
-                        Severity Severity.Error
-                        ex.Message
-                    }
-                |]
-            }
+let errorBundary (views: NodeRenderFragment) = ErrorBoundary'() {
+    ErrorContent(fun ex -> MudPaper'' {
+        style {
+            padding 10
+            margin 20
+        }
+        Elevation 10
+        MudText'' {
+            Color Color.Error
+            Typo Typo.subtitle1
+            "Some error hanppened, you can try to refresh."
+        }
+        spaceV4
+        MudAlert'' {
+            Severity Severity.Error
+            ex.Message
+        }
+    })
+    views
+}
+
+
+let isAppReadyIndicator =
+    html.inject (fun (hook: IComponentHook) ->
+        let mutable showMessage = true
+
+        hook.OnFirstAfterRender.Add(fun _ ->
+            showMessage <- false
+            hook.StateHasChanged()
         )
-        views
-    }
+
+        fragment {
+            if showMessage then
+                div {
+                    style { margin -40 10 40 10 }
+                    MudProgressLinear'' {
+                        Color Color.Warning
+                        Indeterminate
+                    }
+                    spaceV2
+                    MudText'' {
+                        Color Color.Warning
+                        Typo Typo.subtitle2
+                        "Still loading... You can interact in this page after it's fully loaded/connected."
+                    }
+                    MudText'' {
+                        Color Color.Info
+                        Typo Typo.body2
+                        "Current page is prerendered."
+                    }
+                }
+        }
+    )

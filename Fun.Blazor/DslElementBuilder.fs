@@ -1,6 +1,5 @@
 ﻿namespace Fun.Blazor
 
-open System
 open Microsoft.AspNetCore.Components
 open Operators
 open Internal
@@ -21,10 +20,10 @@ type EltBuilder(name) =
             nextIndex
         )
 
-    member inline this.Run((render1, render2): (AttrRenderFragment * PostRenderFragment)) =
+    member inline this.Run([<InlineIfLambda>] render: PostRenderFragment) =
         NodeRenderFragment(fun comp builder index ->
             builder.OpenElement(index, (this :> IElementBuilder).Name)
-            let nextIndex = (render1 ===> render2).Invoke(comp, builder, index + 1)
+            let nextIndex = render.Invoke(comp, builder, index + 1)
             builder.CloseElement()
             nextIndex
         )
@@ -32,22 +31,22 @@ type EltBuilder(name) =
 
     [<CustomOperation("ref")>]
     member inline _.ref([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: 'T -> unit) =
-        (render,
-         PostRenderFragment(fun _ builder index ->
-             builder.AddElementReferenceCapture(index, (fun x -> fn (unbox<'T> x)))
-             index + 1
-         ))
+        render
+        ===> PostRenderFragment(fun _ builder index ->
+            builder.AddElementReferenceCapture(index, (fun x -> fn (unbox<'T> x)))
+            index + 1
+        )
 
     [<CustomOperation("ref")>]
-    member inline _.ref((render1, render2): (AttrRenderFragment * PostRenderFragment), [<InlineIfLambda>] fn: 'T -> unit) =
-        (render1,
-         PostRenderFragment(fun comp builder index ->
-             let nextIndex = render2.Invoke(comp, builder, index)
-             builder.AddElementReferenceCapture(nextIndex, (fun x -> fn (unbox<'T> x)))
-             nextIndex + 1
-         ))
+    member inline _.ref(render: PostRenderFragment, [<InlineIfLambda>] fn: 'T -> unit) =
+        render
+        ====> PostRenderFragment(fun _ builder index ->
+            builder.AddElementReferenceCapture(index, (fun x -> fn (unbox<'T> x)))
+            index + 1
+        )
 
-    member inline _.Delay([<InlineIfLambda>] fn: unit -> (AttrRenderFragment * PostRenderFragment)) = fn ()
+    member inline _.Delay([<InlineIfLambda>] fn: unit -> PostRenderFragment) = fn ()
+
 
     /// Create empty element
     member inline this.create() =
@@ -99,11 +98,10 @@ type EltWithChildBuilder(name) =
             nextIndex
         )
 
-    member inline this.Run((render1, render2, render3): (AttrRenderFragment * PostRenderFragment * NodeRenderFragment)) =
+    member inline this.Run([<InlineIfLambda>] render: PostRenderFragment) =
         NodeRenderFragment(fun comp builder index ->
             builder.OpenElement(index, (this :> IElementBuilder).Name)
-            let nextIndex = index + 1
-            let nextIndex = (render1 ===> render2 >>> render3).Invoke(comp, builder, nextIndex)
+            let nextIndex = render.Invoke(comp, builder, index + 1)
             builder.CloseElement()
             nextIndex
         )
@@ -152,21 +150,22 @@ type EltWithChildBuilder(name) =
     /// Also it is clear for the DSL
     member inline _.Combine([<InlineIfLambda>] render1: AttrRenderFragment, [<InlineIfLambda>] render2: NodeRenderFragment) = render1 >>> render2
 
-    //[<Obsolete("Please use childContent [| ... |] for multiple child items for better CE build performance", DiagnosticId = "FB0044")>]
+    member inline _.Combine([<InlineIfLambda>] render1: PostRenderFragment, [<InlineIfLambda>] render2: NodeRenderFragment) = render1 >>>> render2
+
     member inline _.Combine([<InlineIfLambda>] render1: NodeRenderFragment, [<InlineIfLambda>] render2: NodeRenderFragment) = render1 >=> render2
 
 
+    member inline _.Delay([<InlineIfLambda>] fn: unit -> PostRenderFragment) = PostRenderFragment(fun c b i -> fn().Invoke(c, b, i))
+
     member inline _.Delay([<InlineIfLambda>] fn: unit -> NodeRenderFragment) = NodeRenderFragment(fun c b i -> fn().Invoke(c, b, i))
 
-    member inline _.Delay([<InlineIfLambda>] fn: unit -> (AttrRenderFragment * PostRenderFragment * NodeRenderFragment)) = fn ()
-
-
+    
     member inline _.For([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> NodeRenderFragment) = render >>> (fn ())
+
+    member inline _.For([<InlineIfLambda>] render: PostRenderFragment, [<InlineIfLambda>] fn: unit -> NodeRenderFragment) = render >>>> (fn ())
 
     member inline _.For([<InlineIfLambda>] render: NodeRenderFragment, [<InlineIfLambda>] fn: unit -> NodeRenderFragment) = render >=> (fn ())
 
-    member inline _.For((render1, render2): (AttrRenderFragment * PostRenderFragment), [<InlineIfLambda>] fn: unit -> NodeRenderFragment) =
-        (render1, render2, fn ())
 
     member inline _.For(items: 'Data seq, [<InlineIfLambda>] fn: 'Data -> NodeRenderFragment) =
         NodeRenderFragment(fun comp builder sequence ->
@@ -194,131 +193,64 @@ type EltWithChildBuilder(name) =
 
     member inline _.Zero() = emptyNode ()
 
-    /// <summary>
     /// Single child node to be added into the element's children
-    /// </summary>
-    /// <example>
-    /// <code lang="fsharp">
-    /// // &lt;div>
-    /// //   &lt;p>This is my content&lt;/p>
-    /// // &lt;/div>
-    /// let myText content =
-    ///   p {
-    ///    class' "my-class"
-    ///    childContent content
-    ///   }
+    /// ```fsharp
     /// div {
-    ///   childContent (myText "This is my content")
+    ///     childContent (p {
+    ///        class' "my-class"
+    ///        childContent "content"
+    ///     })
     /// }
-    /// </code>
-    /// </example>
+    /// ```
     [<CustomOperation("childContent")>]
     member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] renderChild: NodeRenderFragment) =
         render >>> renderChild
 
-    /// <summary>
     /// Multiple Nodes that are going to be added to the element's children
-    /// </summary>
-    /// <example>
-    /// <code lang="fsharp">
-    /// // &lt;div>
-    /// //   &lt;p>&lt;/p>
-    /// //   &lt;p>&lt;p/>
-    /// // &lt;/div>
+    /// ```fsharp
     /// div {
-    ///   childContent [ p; p ]
+    ///     childContent [|
+    ///         for index in 1..10 do p {
+    ///             "i = "
+    ///             index
+    ///         }
+    ///     |]
     /// }
-    /// </code>
-    /// </example>
+    /// ```
     [<CustomOperation("childContent")>]
     member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, renders: NodeRenderFragment seq) = render >>> makeRegion renders
 
-    /// <summary>
-    /// Single child node to be added into the element's children
-    /// </summary>
-    /// <example>
-    /// <code lang="fsharp">
-    /// // &lt;div>
-    /// // This is my content
-    /// // &lt;/div>
-    /// div {
-    ///   childContent "This is my content"
-    /// }
-    /// </code>
-    /// </example>
     [<CustomOperation("childContent")>]
     member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, v: string) = render >>> (html.text v)
 
-    /// <summary>
-    /// Single child node to be added into the element's children
-    /// </summary>
-    /// <example>
-    /// <code lang="fsharp">
-    /// // &lt;div>
-    /// // 10
-    /// // &lt;/div>
-    /// div {
-    ///   childContent 10
-    /// }
-    /// </code>
-    /// </example>
     [<CustomOperation("childContent")>]
     member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, v: int) = render >>> (html.text v)
 
-    /// <summary>
-    /// Single child node to be added into the element's children
-    /// </summary>
-    /// <example>
-    /// <code lang="fsharp">
-    /// // &lt;div>
-    /// // 100.25
-    /// // &lt;/div>
-    /// div {
-    ///   childContent 100.25
-    /// }
-    /// </code>
-    /// </example>
     [<CustomOperation("childContent")>]
     member inline _.childContent([<InlineIfLambda>] render: AttrRenderFragment, v: float) = render >>> (html.text v)
 
-    /// <summary>
-    /// Single child node to be added into the element's children
-    /// </summary>
-    /// <example>
-    /// <code lang="fsharp">
-    /// div {
-    ///   childContentRaw ("""
-    ///     &lt;section>
-    ///       Watch out for XSS attacks if you use this,
-    ///       remember to sanitize your html!
-    ///     &lt;/section>
-    ///   """
-    /// }
-    /// </code>
-    /// </example>
     [<CustomOperation("childContentRaw")>]
     member inline _.childContentRaw([<InlineIfLambda>] render: AttrRenderFragment, v: string) = render >>> (html.raw v)
 
 
     [<CustomOperation("childContent")>]
-    member inline _.childContent((render1, render2): (AttrRenderFragment * PostRenderFragment), [<InlineIfLambda>] renderChild: NodeRenderFragment) =
-        render1 ===> render2 >>> renderChild
+    member inline _.childContent([<InlineIfLambda>] render: PostRenderFragment, [<InlineIfLambda>] renderChild: NodeRenderFragment) =
+        render >>>> renderChild
 
     [<CustomOperation("childContent")>]
-    member inline _.childContent((render1, render2): (AttrRenderFragment * PostRenderFragment), renders: NodeRenderFragment seq) =
-        (render1, render2, makeRegion renders)
+    member inline _.childContent(render: PostRenderFragment, renders: NodeRenderFragment seq) = render >>>> makeRegion renders
 
     [<CustomOperation("childContent")>]
-    member inline _.childContent((render1, render2): (AttrRenderFragment * PostRenderFragment), v: string) = render1 ===> render2 >>> (html.text v)
+    member inline _.childContent([<InlineIfLambda>] render: PostRenderFragment, v: string) = render >>>> (html.text v)
 
     [<CustomOperation("childContent")>]
-    member inline _.childContent((render1, render2): (AttrRenderFragment * PostRenderFragment), v: int) = render1 ===> render2 >>> (html.text v)
+    member inline _.childContent([<InlineIfLambda>] render: PostRenderFragment, v: int) = render >>>> (html.text v)
 
     [<CustomOperation("childContent")>]
-    member inline _.childContent((render1, render2): (AttrRenderFragment * PostRenderFragment), v: float) = render1 ===> render2 >>> (html.text v)
+    member inline _.childContent([<InlineIfLambda>] render: PostRenderFragment, v: float) = render >>>> (html.text v)
 
     [<CustomOperation("childContentRaw")>]
-    member inline _.childContentRaw((render1, render2): (AttrRenderFragment * PostRenderFragment), v: string) = render1 ===> render2 >>> (html.raw v)
+    member inline _.childContentRaw([<InlineIfLambda>] render: PostRenderFragment, v: string) = render >>>> (html.raw v)
 
 
 type EltBuilder_script() =
@@ -341,7 +273,6 @@ type EltBuilder_script() =
 
     member inline _.Combine([<InlineIfLambda>] render1: AttrRenderFragment, [<InlineIfLambda>] render2: NodeRenderFragment) = render1 >>> render2
 
-    //[<Obsolete("Please use childContent [| ... |] for multiple child items for better CE build performance", DiagnosticId = "FB0044")>]
     member inline _.Combine([<InlineIfLambda>] render1: NodeRenderFragment, [<InlineIfLambda>] render2: NodeRenderFragment) = render1 >=> render2
 
     member inline _.Delay([<InlineIfLambda>] fn: unit -> NodeRenderFragment) = NodeRenderFragment(fun c b i -> fn().Invoke(c, b, i))

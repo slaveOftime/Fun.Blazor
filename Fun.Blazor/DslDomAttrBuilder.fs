@@ -144,18 +144,14 @@ type DomAttrBuilder() =
     member inline this.dataPermanent([<InlineIfLambda>] render: AttrRenderFragment) = this.dataPermanent (render, true)
 #endif
 
-    /// <summary>
     /// A list of strings to be applied as classes
-    /// </summary>
-    /// <example>
-    /// <code lang="fsharp">
+    /// ```fsharp
     /// div {
-    ///   classes [ "flex"; "flex-row"; "space-betwen" ]
+    ///     classes [| "flex"; "flex-row"; "space-betwen" |]
     /// }
-    /// </code>
-    /// </example>
+    /// ```
     [<CustomOperation("classes")>]
-    member inline _.classes([<InlineIfLambda>] render: AttrRenderFragment, v: string list) = render ==> ("class" =>> (String.concat " " v))
+    member inline _.classes([<InlineIfLambda>] render: AttrRenderFragment, v: string seq) = render ==> ("class" =>> (String.concat " " v))
 
     [<CustomOperation("class'")>]
     member inline _.class'([<InlineIfLambda>] render: AttrRenderFragment, v: string) = render ==> ("class" =>> v)
@@ -176,4 +172,3 @@ type DomAttrBuilder() =
     /// Indicating that an element should be focused on page load, or when the <dialog> that it is part of is displayed.
     [<CustomOperation("autofocus")>]
     member inline _.autofocus([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("autofocus" =>>> defaultArg v true)
-    

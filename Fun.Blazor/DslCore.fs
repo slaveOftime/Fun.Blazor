@@ -3,12 +3,15 @@
 open System
 open System.Threading.Tasks
 open FSharp.Data.Adaptive
-open Microsoft.Extensions.Logging
-open Microsoft.Extensions.DependencyInjection
 open Microsoft.AspNetCore.Components
-open Microsoft.AspNetCore.Components.Web
 open Operators
 open Internal
+
+#if !NET6_0
+open Microsoft.Extensions.Logging
+open Microsoft.Extensions.DependencyInjection
+open Microsoft.AspNetCore.Components.Web
+#endif
 
 
 type html() =
@@ -80,31 +83,27 @@ type html() =
     ///
     /// ```fsharp
     /// let private errorView errors =
-    ///     html.region [
+    ///     html.region [|
     ///         if errors |> List.isEmpty |> not then
     ///             MudText'() {
     ///                 Color Color.Error
     ///                 Typo Typo.caption
     ///                 simplifyErrors errors
     ///             }
-    ///     ]
+    ///     |]
     /// ```
     static member inline region(nodes: NodeRenderFragment seq) = makeRegion nodes
 
 
-    /// <summary>
     /// Make a blazor component to a render fragment with a render for attributes
     /// You can open Fun.Blazor.Operators to build attribute very easily:
-    /// </summary>
-    /// <example>
-    /// <code lang="fsharp">
+    /// ```fsharp
     /// html.blazor<DemoComp> (domAttr {
     ///     "attrName1", attrValue1
     ///     "attrName2", attrValue2
     ///     "attrName3", attrValue3
     /// })
-    /// </code>
-    /// </example>
+    /// ```
     static member inline blazor(componentType: Type, ?attr: AttrRenderFragment) =
         NodeRenderFragment(fun comp builder index ->
             builder.OpenComponent(index, componentType)
@@ -118,50 +117,37 @@ type html() =
             nextIndex
         )
 
-    /// <summary>
     /// Make a blazor component to a render fragment with a render for attributes
     /// You can open Fun.Blazor.Operators to build attribute very easily:
-    /// </summary>
-    /// <example>
-    /// <code lang="fsharp">
+    /// ```fsharp
     /// html.blazor<DemoComp> (domAttr {
     ///     "attrName1", attrValue1
     ///     "attrName2", attrValue2
     ///     "attrName3", attrValue3
     /// })
-    /// </code>
-    /// </example>
-    static member inline blazor<'T when 'T :> IComponent>(?render: AttrRenderFragment) =
-        html.blazor (typeof<'T>, attr = defaultArg render (emptyAttr ()))
+    /// ```
+    static member inline blazor<'T when 'T :> IComponent>(?attr: AttrRenderFragment) = html.blazor (typeof<'T>, ?attr = attr)
 
-    /// <summary>
     /// Make a blazor component to a render fragment with a render for attributes
     /// You can open Fun.Blazor.Operators to build attribute very easily:
-    /// </summary>
-    /// <example>
-    /// <code lang="fsharp">
+    /// ```fsharp
     /// html.blazor (ComponentAttrBuilder<DemoComp>()
     ///     .Add((fun x -> x.Prop1), value1)
     ///     .Add((fun x -> x.Prop2), value2)
     /// )
-    /// </code>
-    /// </example>
+    /// ```
     static member inline blazor<'T when 'T :> IComponent>(attrBuilder: ComponentAttrBuilder<'T>) =
         html.blazor (typeof<'T>, attr = attrBuilder.Build())
 
 
 #if !NET6_0
-    /// <summary>
     /// Make a blazor component to a render fragment with a render for attributes
-    /// </summary>
-    /// <example>
-    /// <code lang="fsharp">
+    /// ```fsharp
     /// html.blazor<DemoComp> (RenderModeServer, domAttr {
     ///     "attrName1", attrValue1
     ///     "attrName2", attrValue2
     /// })
-    /// </code>
-    /// </example>
+    /// ```
     static member inline blazor(componentType: Type, renderMode: IComponentRenderMode, ?attr: AttrRenderFragment) =
         NodeRenderFragment(fun comp builder index ->
             builder.OpenComponent(index, componentType)
@@ -176,31 +162,23 @@ type html() =
             nextIndex
         )
 
-    /// <summary>
     /// Make a blazor component to a render fragment with a render for attributes
-    /// </summary>
-    /// <example>
-    /// <code lang="fsharp">
+    /// ```fsharp
     /// html.blazor<DemoComp> (RenderModeServer, domAttr {
     ///     "attrName1", attrValue1
     ///     "attrName2", attrValue2
     /// })
-    /// </code>
-    /// </example>
+    /// ```
     static member inline blazor<'T when 'T :> IComponent>(renderMode: IComponentRenderMode, ?attr: AttrRenderFragment) =
-        html.blazor (typeof<'T>, renderMode, attr = defaultArg attr (emptyAttr ()))
+        html.blazor (typeof<'T>, renderMode, ?attr = attr)
 
-    /// <summary>
     /// Make a blazor component to a render fragment with a render for attributes
-    /// </summary>
-    /// <example>
-    /// <code lang="fsharp">
+    /// ```fsharp
     /// html.blazor (RenderModeServer, ComponentAttrBuilder<DemoComp>()
     ///     .Add((fun x -> x.Prop1), value1)
     ///     .Add((fun x -> x.Prop2), value2)
     /// )
-    /// </code>
-    /// </example>
+    /// ```
     static member inline blazor<'T when 'T :> IComponent>(renderMode: IComponentRenderMode, attrBuilder: ComponentAttrBuilder<'T>) =
         html.blazor (typeof<'T>, renderMode, attr = attrBuilder.Build())
 
@@ -210,6 +188,7 @@ type html() =
     static member inline streaming(node: NodeRenderFragment) =
         html.blazor<FunStreamingComponent> (nameof Unchecked.defaultof<FunStreamingComponent>.Content => node)
 #endif
+
 
     /// Helper method to use 'Comp type to create an empty node for component
     static member inline fromBuilder<'Comp, 'T when 'Comp :> IComponentBuilder<'T>>(_: 'Comp) =
@@ -275,7 +254,7 @@ type html() =
         )
 
     /// Helper method for create ref attribute
-    static member inline ref(fn) =
+    static member inline ref([<InlineIfLambda>] fn) =
         PostRenderFragment(fun _ builder index ->
             builder.AddElementReferenceCapture(index, Action<ElementReference> fn)
             index + 1
@@ -285,7 +264,7 @@ type html() =
     /// This is a helper method for create attributes for blazor bindable attribute which normally has two attributes, xxx and xxxChanged by convention.
     /// Be careful, the store change will not trigger the attribute to be re-render. This is used to update the store when the attribute is changed.
     /// This is normally used as a helper method for generated DSL.
-    static member bind<'T>(name: string, store: cval<'T>) =
+    static member inline bind<'T>(name: string, store: cval<'T>) =
         AttrRenderFragment(fun comp builder index ->
             builder.AddAttribute(index, name, store.Value)
             builder.AddAttribute(
@@ -298,7 +277,7 @@ type html() =
 
     /// This is a helper method for create attributes for blazor bindable attribute which normally has two attributes, xxx and xxxChanged by convention.
     /// This is normally used as a helper method for generated DSL.
-    static member bind<'T>(name: string, (value: 'T, fn: 'T -> unit)) =
+    static member inline bind<'T>(name: string, (value: 'T, fn: 'T -> unit)) =
         AttrRenderFragment(fun comp builder index ->
             builder.AddAttribute(index, name, value)
             builder.AddAttribute(index + 1, name + "Changed", EventCallback.Factory.Create(comp, Action<'T> fn))
@@ -307,81 +286,55 @@ type html() =
 
 
     /// Helper method for create callback attribute
-    static member inline callback<'T>(eventName, fn: 'T -> unit) =
+    static member inline callback<'T>(eventName, [<InlineIfLambda>] fn: 'T -> unit) =
         AttrRenderFragment(fun comp builder index ->
             builder.AddAttribute(index, eventName, EventCallback.Factory.Create(comp, Action<'T> fn))
             index + 1
         )
 
     /// Helper method for create callback attribute
-    static member inline callback(eventName, fn: unit -> unit) =
+    static member inline callback(eventName, [<InlineIfLambda>] fn: unit -> unit) =
         AttrRenderFragment(fun comp builder index ->
             builder.AddAttribute(index, eventName, EventCallback.Factory.Create(comp, Action fn))
             index + 1
         )
 
     /// Helper method for create callback attribute
-    static member inline callbackTask<'T>(eventName, fn: 'T -> Task) =
+    static member inline callbackTask<'T>(eventName, [<InlineIfLambda>] fn: 'T -> Task) =
         AttrRenderFragment(fun comp builder index ->
             builder.AddAttribute(index, eventName, EventCallback.Factory.Create(comp, Func<'T, Task>(fun x -> fn x)))
             index + 1
         )
 
     /// Helper method for create callback attribute
-    static member inline callbackTask<'T>(eventName, fn: 'T -> Task<unit>) =
+    static member inline callbackTask<'T>(eventName, [<InlineIfLambda>] fn: 'T -> Task<unit>) =
         AttrRenderFragment(fun comp builder index ->
             builder.AddAttribute(index, eventName, EventCallback.Factory.Create(comp, Func<'T, Task>(fun x -> fn x :> Task)))
             index + 1
         )
 
     /// Helper method for create callback attribute
-    static member inline callbackTask(eventName, fn: unit -> Task<unit>) =
+    static member inline callbackTask(eventName, [<InlineIfLambda>] fn: unit -> Task<unit>) =
         AttrRenderFragment(fun comp builder index ->
             builder.AddAttribute(index, eventName, EventCallback.Factory.Create(comp, Func<Task>(fun () -> fn () :> Task)))
             index + 1
         )
 
 
-    static member inline raw x =
+    /// This is for pure static html markup
+    static member inline raw(x: string) =
         NodeRenderFragment(fun _ builder index ->
             builder.AddMarkupContent(index, x)
             index + 1
         )
 
 
-    static member inline text(x: int) =
-        NodeRenderFragment(fun _ builder index ->
-            builder.AddContent(index, box x)
-            index + 1
-        )
-
-    static member inline text(x: float) =
-        NodeRenderFragment(fun _ builder index ->
-            builder.AddContent(index, box x)
-            index + 1
-        )
-
-    static member inline text(x: Guid) =
-        NodeRenderFragment(fun _ builder index ->
-            builder.AddContent(index, string x)
-            index + 1
-        )
-
-    static member inline text(x: string) =
+    static member inline text(x: obj) =
         NodeRenderFragment(fun _ builder index ->
             builder.AddContent(index, x)
             index + 1
         )
 
-
-    [<Obsolete>]
-    static member inline style(x: string) = "style" =>> x
-    [<Obsolete>]
-    static member inline styles(x) = "style" =>> makeStyles x
-    [<Obsolete>]
-    static member inline class'(x: string) = "class" =>> x
-    [<Obsolete>]
-    static member inline classes(x: string seq) = "class" =>> (String.concat " " x)
 
 #if !NET6_0
     /// Render a node as string, logging must be registered in the service collection
@@ -402,10 +355,11 @@ type html() =
     }
 #endif
 
+
 type Static =
 
     /// This is for pure static html markup
-    static member html(x: string) =
+    static member inline html(x: string) =
         NodeRenderFragment(fun _ builder index ->
             builder.AddMarkupContent(index, x)
             index + 1

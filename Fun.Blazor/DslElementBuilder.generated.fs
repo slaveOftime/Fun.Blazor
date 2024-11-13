@@ -45,7 +45,8 @@ module DslElementsBuilder_global =
 
         /// Indicates whether controls in this form can by default have their values automatically completed by the browser.
         [<CustomOperation("autocomplete")>]
-        member inline _.autocomplete([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("autocomplete" =>> (if defaultArg v true then "on" else "off"))
+        member inline _.autocomplete([<InlineIfLambda>] render: AttrRenderFragment, ?v) =
+            render ==> ("autocomplete" =>> (if defaultArg v true then "on" else "off"))
 
         /// The audio or video should play as soon as possible.
         [<CustomOperation("autoplay")>]
@@ -143,7 +144,7 @@ module DslElementsBuilder_global =
         [<CustomOperation("dir")>]
         member inline _.dir([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("dir" => v)
 
-        
+
         [<CustomOperation("dirname")>]
         member inline _.dirname([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("dirname" => v)
 
@@ -239,7 +240,7 @@ module DslElementsBuilder_global =
         [<CustomOperation("ismap")>]
         member inline _.ismap([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("ismap" =>>> defaultArg v true)
 
-        
+
         [<CustomOperation("itemprop")>]
         member inline _.itemprop([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("itemprop" => v)
 
@@ -261,7 +262,8 @@ module DslElementsBuilder_global =
 
         /// Indicates if the element should be loaded lazily (loading="lazy") or loaded immediately (loading="eager").
         [<CustomOperation("loadingExperimental")>]
-        member inline _.loadingExperimental([<InlineIfLambda>] render: AttrRenderFragment, ?v) = render ==> ("loadingExperimental" =>>> defaultArg v true)
+        member inline _.loadingExperimental([<InlineIfLambda>] render: AttrRenderFragment, ?v) =
+            render ==> ("loadingExperimental" =>>> defaultArg v true)
 
         /// Indicates whether the media should start playing from the start when it's finished.
         [<CustomOperation("loop")>]
@@ -387,7 +389,7 @@ module DslElementsBuilder_global =
         [<CustomOperation("selected")>]
         member inline _.selected([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("selected" => v)
 
-        
+
         [<CustomOperation("shape")>]
         member inline _.shape([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("shape" => v)
 
@@ -395,7 +397,7 @@ module DslElementsBuilder_global =
         [<CustomOperation("size")>]
         member inline _.size([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("size" => v)
 
-        
+
         [<CustomOperation("sizes")>]
         member inline _.sizes([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("sizes" => v)
 
@@ -403,7 +405,7 @@ module DslElementsBuilder_global =
         [<CustomOperation("slot'")>]
         member inline _.slot'([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("slot" => v)
 
-        
+
         [<CustomOperation("span'")>]
         member inline _.span'([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("span" => v)
 
@@ -415,11 +417,11 @@ module DslElementsBuilder_global =
         [<CustomOperation("src")>]
         member inline _.src([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("src" => v)
 
-        
+
         [<CustomOperation("srcdoc")>]
         member inline _.srcdoc([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("srcdoc" => v)
 
-        
+
         [<CustomOperation("srclang")>]
         member inline _.srclang([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("srclang" => v)
 
@@ -431,7 +433,7 @@ module DslElementsBuilder_global =
         [<CustomOperation("start")>]
         member inline _.start([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("start" => v)
 
-        
+
         [<CustomOperation("step")>]
         member inline _.step([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("step" => v)
 
@@ -455,7 +457,7 @@ module DslElementsBuilder_global =
         [<CustomOperation("type'")>]
         member inline _.type'([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("type" => v)
 
-        
+
         [<CustomOperation("usemap")>]
         member inline _.usemap([<InlineIfLambda>] render: AttrRenderFragment, v) = render ==> ("usemap" => v)
 
@@ -984,4 +986,3 @@ module DslElements_generated =
 
     /// Represents a word break opportunityâa position within text where the browser may optionally break a line, though its line-breaking rules would not otherwise create a break at that location.
     let wbr = EltWithChildBuilder("wbr")
-

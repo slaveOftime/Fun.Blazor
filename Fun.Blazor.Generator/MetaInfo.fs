@@ -23,18 +23,16 @@ let rec private getTypeTree (baseType: Type) (tys: Type list) : TypeTree list =
 let create (buildMetaInfo: Type -> Namespace * 'T) (types: Type seq) =
     let rec getNamespaces tree =
         tree
-        |> Seq.map (fun (Node (ty, childTys)) -> ty.Namespace :: (getNamespaces childTys |> Seq.toList))
+        |> Seq.map (fun (Node(ty, childTys)) -> ty.Namespace :: (getNamespaces childTys |> Seq.toList))
         |> Seq.concat
 
     let rec getTypesInNamespace tree ns =
         tree
-        |> Seq.map (fun (Node (ty, childTys)) ->
-            [
-                if ty.Namespace = ns then
-                    ty
-                    yield! getTypesInNamespace childTys ns
-            ]
-        )
+        |> Seq.map (fun (Node(ty, childTys)) -> [
+            if ty.Namespace = ns then
+                ty
+                yield! getTypesInNamespace childTys ns
+        ])
         |> Seq.concat
 
     let rec getRootNamespaces (nss: string list) =
@@ -45,19 +43,22 @@ let create (buildMetaInfo: Type -> Namespace * 'T) (types: Type seq) =
             let _, p2 = rest |> List.partition (fun x -> x.StartsWith ns)
             ns :: getRootNamespaces p2
 
-    let rec getOrderedTypes tree =
-        tree |> Seq.map (fun (Node (ty, childTys)) -> [ ty; yield! getOrderedTypes childTys ]) |> Seq.concat
+    let rec getOrderedTypes tree = tree |> Seq.map (fun (Node(ty, childTys)) -> [ ty; yield! getOrderedTypes childTys ]) |> Seq.concat
 
     let rootType = typedefof<ComponentBase>
 
     let validTypes =
         types
         |> Seq.filter (fun x ->
-            x.IsAssignableTo rootType && x.IsPublic && not (isObsoleted (x.GetCustomAttributes(false)))
+            x.IsAssignableTo rootType
+            && x.IsPublic
+            && not (isObsoleted (x.GetCustomAttributes(false)))
+            && x.Name <> "_Imports"
         )
         |> Seq.toList
 
-    let baseTypes = validTypes |> Seq.map (fun x -> x.BaseType) |> Seq.filter ((<>) rootType)
+    let baseTypes =
+        validTypes |> Seq.map (fun x -> x.BaseType) |> Seq.filter ((<>) rootType)
 
     let deeperBaseTypes = System.Collections.Generic.List()
 

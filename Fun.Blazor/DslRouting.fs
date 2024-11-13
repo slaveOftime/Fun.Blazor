@@ -111,4 +111,4 @@ type html with
                 }
         )
 
-    static member route(key: obj, routes: Router<NodeRenderFragment> seq) = html.route (routes, key = key)
+    static member inline route(key: obj, routes: Router<NodeRenderFragment> seq) = html.route (routes, key = key)

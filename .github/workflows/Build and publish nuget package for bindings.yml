@@ -10,7 +10,7 @@ on:
         - ".github/Build and publish nuget package for bindings.yml"
 
 jobs:
-  build:
+  build-and-push-nuget-packages-for-bindings:
 
     runs-on: ubuntu-20.04
 
@@ -20,7 +20,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 8.0.x  
+        dotnet-version: 9.0.x  
 
     - name: Run build.fsx
       env:

@@ -36,7 +36,7 @@ type RulesetBuilder(ruleName: string) =
 
     member _.RuleName = ruleName
 
-    member inline this.Run(combine: Fun.Css.Internal.CombineKeyValue) = (this.RuleName, combine)
+    member inline this.Run([<InlineIfLambda>] combine: Fun.Css.Internal.CombineKeyValue) = (this.RuleName, combine)
 
 
 type KeyFrame = delegate of StringBuilder -> StringBuilder
@@ -114,7 +114,7 @@ type ICssRules =
     /// Add or override keyframe
     abstract member IncludeKeyFrame: (string * Fun.Blazor.Internal.KeyFrame) seq -> unit
 
-/// Implementation for IInlineStyles
+/// Implementation for ICssRules
 type CssRules() as this =
     let styles = cval (Map.empty<string, Fun.Css.Internal.CombineKeyValue>)
     let keyFrames = cval (Map.empty<string, Fun.Blazor.Internal.KeyFrame>)
@@ -161,25 +161,19 @@ module DslStyle =
     /// Build a style string
     let styleStr = StyleStrBuilder()
 
-    /// <summary>
     /// You can use it to build a style attribute for dom
-    /// </summary>
-    /// <example>
-    /// <code lang="fsharp">
+    /// ```fsharp
     /// div {
     ///     style {
     ///         color "red"
     ///     }
     /// }
-    /// </code>
-    /// </example>
+    /// ```
     let style = StyleBuilder()
 
-    /// <summary>
     /// You can use it as build block when you have complex logic for style
-    /// </summary>
-    /// <example>
-    /// <code lang="fsharp">
+    ///
+    /// fsharp
     /// div {
     ///     style {
     ///         color "red"
@@ -189,8 +183,7 @@ module DslStyle =
     ///             }
     ///     }
     /// }
-    /// </code>
-    /// </example>
+    /// ```
     let css = Fun.Css.CssBuilder()
 
 

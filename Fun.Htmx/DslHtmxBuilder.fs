@@ -11,7 +11,7 @@ open Fun.Blazor.Operators
 
 [<AutoOpen>]
 module Utils =
-    let (<|>) (name: string) (oob: OOB option) = match oob with Some OOB -> name + "-oob" | _ -> name
+    let inline (<|>) (name: string) (oob: OOB option) = match oob with Some OOB -> name + "-oob" | _ -> name
 
 
 type DomAttrBuilder with

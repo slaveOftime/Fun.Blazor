@@ -8,6 +8,42 @@ open FSharp.Data.Adaptive
 open Fun.Result
 
 
+type IStoreManager =
+
+    /// Create an adaptive value and share between components.
+    /// This is recommend way because you can use it with adaptiview easier.
+    abstract CreateCVal: string * 'T -> cval<'T>
+
+    /// Create an adaptive value and share between components.
+    /// This is recommend way because you can use it with adaptiview easier.
+    abstract CreateCVal: string * defautValue: 'T * init: (unit -> aval<'T>) -> cval<'T>
+
+    /// Create an adaptive value and share between components.
+    /// This is recommend way because you can use it with adaptiview easier.
+    abstract CreateCVal: string * defautValue: 'T * init: (unit -> Task<'T>) -> cval<'T>
+
+    // Help us to access DI container
+    abstract ServiceProvider: IServiceProvider
+
+    /// This is for library authors.
+    /// For example, with this we can abstract the FSharp.Control.Reactive out to a separate pacakges to consume.
+    abstract GetOrAddDisposableStore: string * (unit -> IDisposable) -> IDisposable
+
+    /// This is for library authors.
+    /// Can be used to add subscriptions resources, so we can clean it up when the store manager is disposing.
+    abstract AddDispose: IDisposable -> unit
+
+
+// You can consume it from a DI container, and it is served as a scoped service
+type IShareStore =
+    inherit IStoreManager
+
+// You can consume it from a DI container, and it is served as a singleton service
+// * Note this is not distributable, and only works for long runing single instance of web service.
+type IGlobalStore =
+    inherit IStoreManager
+
+
 type StoreManager(sp: IServiceProvider) =
     let avals = ConcurrentDictionary<string, IAdaptiveValue>()
     let stores = ConcurrentDictionary<string, IDisposable>()

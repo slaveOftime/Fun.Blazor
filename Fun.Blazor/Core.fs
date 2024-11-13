@@ -21,58 +21,27 @@ type NodeRenderFragment = delegate of root: IComponent * builder: RenderTreeBuil
 type PostRenderFragment = delegate of root: IComponent * builder: RenderTreeBuilder * sequence: int -> int
 
 
-module Operators =
-
-    /// Add Attribute with name and value
-    let inline (=>) (name: string) (value: 'Value) =
-        AttrRenderFragment(fun _ builder index ->
-            builder.AddAttribute(index, name, box value)
-            index + 1
-        )
-
-    /// Add Attribute with name and string value
-    let inline (=>>) (name: string) (value: string) =
-        AttrRenderFragment(fun _ builder index ->
-            builder.AddAttribute(index, name, value)
-            index + 1
-        )
-
-    /// Add Attribute with name and bool value
-    /// If true then add the name to attribute else do nothing
-    let inline (=>>>) (name: string) (value: bool) =
-        AttrRenderFragment(fun _ builder index ->
-            builder.AddAttribute(index, name, value)
-            index + 1
-        )
-
-    /// Merge two AttrRenderFragment together
-    let inline (==>) ([<InlineIfLambda>] render1: AttrRenderFragment) ([<InlineIfLambda>] render2: AttrRenderFragment) =
-        AttrRenderFragment(fun comp builder index -> render2.Invoke(comp, builder, render1.Invoke(comp, builder, index)))
-
-    /// Merge AttrRenderFragment and PostRenderFragment together
-    let inline (===>) ([<InlineIfLambda>] render1: AttrRenderFragment) ([<InlineIfLambda>] render2: PostRenderFragment) =
-        AttrRenderFragment(fun comp builder index -> render2.Invoke(comp, builder, render1.Invoke(comp, builder, index)))
-
-    /// Merge two NodeRenderFragment together
-    let inline (>=>) ([<InlineIfLambda>] render1: NodeRenderFragment) ([<InlineIfLambda>] render2: NodeRenderFragment) =
-        NodeRenderFragment(fun comp builder index -> render2.Invoke(comp, builder, render1.Invoke(comp, builder, index)))
-
-    /// Merge AttrRenderFragment and NodeRenderFragment together.
-    /// This should be used together for building element only. For component we should not use this, because it treat ChildContent different in Blazor
-    let inline (>>>) ([<InlineIfLambda>] render1: AttrRenderFragment) ([<InlineIfLambda>] render2: NodeRenderFragment) =
-        NodeRenderFragment(fun comp builder index -> render2.Invoke(comp, builder, render1.Invoke(comp, builder, index)))
-
-
+/// Type to represent a CE builder for Fun.Blazor
 type IFunBlazorBuilder = interface end
 
+/// Type to represent a CE builder for Fun.Blazor element
 type IElementBuilder =
     inherit IFunBlazorBuilder
     abstract member Name: string
 
+/// Type to represent a CE builder for Fun.Blazor component
 type IComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent> =
     inherit IFunBlazorBuilder
 
 
+/// Basic class for user to hook CE style into Blazor component.
+/// ```fsharp
+/// type MyComponent() =
+///     inherit FunComponent()
+///     override _.Render() = div {
+///         "Hello World"
+///     }
+/// ```
 [<AbstractClass>]
 type FunComponent() as this =
     inherit ComponentBase()
@@ -88,8 +57,10 @@ type FunComponent() as this =
 
 
 #if DEBUG
+    /// Should not be used in production, only for debug purpose
     static member val EnablePrintDebugInfo = false with get, set
 
+    /// Should not be used in production, only for debug purpose
     [<Parameter>]
     member val FunBlazorDebugKey: obj = null with get, set
 #endif
@@ -177,119 +148,3 @@ type FunInteractiveWebAssemblyAttribute() =
     override _.Mode = Web.RenderMode.InteractiveWebAssembly
 #endif
 
-
-type IComponentHook =
-    //abstract OnParametersSet: IEvent<unit>
-    /// <summary>
-    /// Invoked after each time the component has been rendered.
-    /// The parameter will be true if the event corresponds to the first render otherwise it will be false.
-    /// </summary>
-    abstract OnAfterRender: IEvent<bool>
-    /// <summary>
-    /// Method invoked when the component is ready to start, having received its initial parameters from its parent in the render tree.
-    /// </summary>
-    abstract OnInitialized: IEvent<unit>
-    ///<summary>
-    /// Invoked the first time the component has been rendered.
-    /// This is a convenience event from OnAfterRender
-    /// </summary>
-    abstract OnFirstAfterRender: IEvent<unit>
-
-    /// <summary>
-    /// The component is being disposed, you can cleanup manually managed resources or log any information here.
-    /// </summary>
-    abstract OnDispose: IEvent<unit>
-
-    abstract AddInitializedTask: makeTask: (unit -> Task) -> unit
-    abstract AddAfterRenderTask: makeTask: (bool -> Task) -> unit
-    abstract AddFirstAfterRenderTask: makeTask: (unit -> Task) -> unit
-    abstract AddParameterSetTask: makeTask: (unit -> Task) -> unit
-
-    /// <summary>
-    /// Adds a disposable object to the disposables list, these will be disposed together with the current component
-    /// </summary>
-    /// <example>
-    /// <code lang="fsharp">
-    /// let view (hook: IComponentHook) =
-    ///     let store = hook.UseStore 10
-    ///     hook.AddDispose store
-    /// html.inject("my-component", view)
-    /// </code>
-    /// </example>
-    abstract AddDispose: IDisposable -> unit
-    /// <summary>
-    /// Adds multiple objects to the disposables list, these will be disposed together with the current component
-    /// </summary>
-    /// <example>
-    /// <code lang="fsharp">
-    /// let view (hook: IComponentHook) =
-    ///     let ageStore = hook.UseStore 10
-    ///     let usernameStore = hook.UseStore ""
-    ///     hook.AddDisposes [ageStore; usernameStore]
-    /// html.inject("my-component", view)
-    /// </code>
-    /// </example>
-    abstract AddDisposes: IDisposable seq -> unit
-    /// <summary>
-    /// Notify the component that its state has changed. When applicable, this will cause the component to be re-rendered.
-    /// </summary>
-    abstract StateHasChanged: unit -> unit
-
-    /// With this we can toggle the behavior to the default blazor component behavior when it makes sense to you.
-    abstract SetDisableEventTriggerStateHasChanged: bool -> unit
-
-    /// With this we can create extension of the hook and access all resources
-    /// which means we can the extension that can be standalone and be reused more easizer
-    abstract ServiceProvider: IServiceProvider
-
-    /// <summary>
-    /// This is using CascadeValue from blazor. To use this you will need to provider a wrapper around your child components or elements.
-    /// You also need to provider a root value for it, otherwise you will get null exception for using it.
-    /// </summary>
-    /// <example>
-    /// <code lang="fsharp">
-    /// html.scoped [
-    ///     html.inject (fun (hook: IComponentHook ->)
-    ///         hook.ScopedServiceProvider ... you can use it then
-    ///         ...
-    ///     )
-    /// ]
-    /// </code>
-    /// </example>
-    abstract ScopedServiceProvider: IServiceProvider
-
-
-type IStoreManager =
-
-    /// Create an adaptive value and share between components. 
-    /// This is recommend way because you can use it with adaptiview easier. 
-    abstract CreateCVal: string * 'T -> cval<'T>
-
-    /// Create an adaptive value and share between components. 
-    /// This is recommend way because you can use it with adaptiview easier. 
-    abstract CreateCVal: string * defautValue: 'T * init: (unit -> aval<'T>) -> cval<'T>
-
-    /// Create an adaptive value and share between components. 
-    /// This is recommend way because you can use it with adaptiview easier. 
-    abstract CreateCVal: string * defautValue: 'T * init: (unit -> Task<'T>) -> cval<'T>
-
-    // Help us to access DI container
-    abstract ServiceProvider: IServiceProvider
-
-    /// This is for library authors.
-    /// For example, with this we can abstract the FSharp.Control.Reactive out to a separate pacakges to consume.
-    abstract GetOrAddDisposableStore: string * (unit -> IDisposable) -> IDisposable
-
-    /// This is for library authors.
-    /// Can be used to add subscriptions resources, so we can clean it up when the store manager is disposing.
-    abstract AddDispose: IDisposable -> unit
-
-
-// You can consume it from a DI container, and it is served as a scoped service
-type IShareStore =
-    inherit IStoreManager
-
-// You can consume it from a DI container, and it is served as a singleton service
-// * Note this is not distributable, and only works for long runing single instance of web service. 
-type IGlobalStore =
-    inherit IStoreManager

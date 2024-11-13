@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.1.0-beta001] - 2024-10-18
+
+- Ignore _Imports from code gen
+- Do not generate Classes and Styles for string of seq
+- Use overload instead of optional arg to reduce alloc
+- Add more inline to code gen
+- Clean code
+
 ## [4.0.7] - 2024-08-02
 
 - Improve ce code gen for ce instances

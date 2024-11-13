@@ -67,3 +67,5 @@ let ``adaptive sub form state tests`` () =
     Assert.Equal(data, form.GetValue())
     Assert.Equal(data.Demo, subForm.GetValue())
     Assert.Equal(false, form.UseHasChanges().Value)
+
+    Assert.Equal({| Timeout = 10 |}, form.GetValue<{| Timeout: int |}>())

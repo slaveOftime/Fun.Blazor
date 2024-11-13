@@ -8,7 +8,6 @@
 	<ItemGroup>
 		<Compile Include="Utils.fs" />
 		<Compile Include="MetaInfo.fs" />
-		<Compile Include="Generator.fs" />
 		<Compile Include="CEGenerator.fs" />
 		<Compile Include="CodeGen.fs" />
 	</ItemGroup>

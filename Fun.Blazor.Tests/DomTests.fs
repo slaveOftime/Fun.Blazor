@@ -194,10 +194,12 @@ let ``DOM CE attribute share check`` () =
         tempAttr
         title' "t"
         demo 3456
+        aria.busy true
+        123
     }
     let result = context.RenderNode demo
-    result.MarkupMatches("""<div demo="123" title="t"></div>""")
-    Assert.Equal("""<div demo="123" title="t" demo="3456"></div>""", result.Markup)
+    result.MarkupMatches("""<div demo="123" title="t" aria-busy="True">123</div>""")
+    Assert.Equal("""<div demo="123" title="t" demo="3456" aria-busy="True">123</div>""", result.Markup)
 
 
 [<Fact>]
@@ -399,6 +401,41 @@ let ``for loop should work for component`` () =
 
 
 [<Fact>]
+let ``bool attribute should work for component`` () =
+    let context = createTestContext ()
+
+    let demo =
+        MudButton'' {
+            Disabled
+            "demo"
+        }
+
+    let result = context.RenderNode demo
+    result.MarkupMatches(
+        """
+        <button type="button" disabled="" class="mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple">
+          <span class="mud-button-label">demo</span>
+        </button>
+    """
+    )
+
+    let demo =
+        MudButton'' {
+            Disabled false
+            "demo"
+        }
+
+    let result = context.RenderNode demo
+    result.MarkupMatches(
+        """
+        <button type="button" class="mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple">
+          <span class="mud-button-label">demo</span>
+        </button>
+    """
+    )
+
+
+[<Fact>]
 let ``html blazor should work with ComponentAttrBuilder`` () =
     let context = createTestContext ()
 
@@ -464,3 +501,39 @@ let ``renderAsString should work`` () = task {
     let! actual = div { "hi" } |> html.renderAsString serviceProvider
     Assert.Equal("<div>hi</div>", actual)
 }
+
+
+[<Fact>]
+let ``empty body ce should work`` () =
+    let context = createTestContext ()
+
+    let demo = MudButton'' {}
+
+    let result = context.RenderNode demo
+    result.MarkupMatches(
+        """
+        <button  type="button" class="mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple"  >
+          <span class="mud-button-label"></span>
+        </button>
+        """
+    )
+
+
+    let demo2 = div {
+        div 
+        div {}
+        if true then a {}
+        MudSpacer'' {}
+    }
+
+    let result = context.RenderNode demo2
+    result.MarkupMatches(
+        """
+        <div>
+          <div></div>
+          <div></div>
+          <a></a>
+          <div aria-hidden="true" class="flex-grow-1"></div>
+        </div>
+        """
+    )

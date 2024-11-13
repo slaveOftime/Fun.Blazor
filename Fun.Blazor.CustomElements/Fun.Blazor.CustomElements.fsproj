@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net7.0;net8.0</TargetFrameworks>
+		<TargetFrameworks>net8.0</TargetFrameworks>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<OutputType>library</OutputType>
 		<IsPackable>true</IsPackable>
@@ -13,10 +13,10 @@
 		<Compile Include="Dsl.fs" />
 		<Compile Include="DIExtensions.fs" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
-		<PackageReference Update="FSharp.Core" Version="6.0.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.CustomElements" Version="7.0.4" />
+		<PackageReference Update="FSharp.Core" Version="8.0.100" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.CustomElements" Version="8.0.10" />
 	</ItemGroup>
 
 	<ItemGroup>
