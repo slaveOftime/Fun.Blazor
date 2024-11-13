@@ -11,10 +11,6 @@ type FluentComponentBaseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micr
     /// Gets or sets the unique identifier.
     /// The value will be used as the HTML global id attribute.
     [<CustomOperation("Id")>] member inline _.Id ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Id" => x)
-    /// Optional CSS class names. If given, these will be included in the class attribute of the component.
-    [<CustomOperation("Classes")>] member inline _.Classes ([<InlineIfLambda>] render: AttrRenderFragment, x: string list) = render ==> html.classes x
-    /// Optional in-line styles. If given, these will be included in the style attribute of the component.
-    [<CustomOperation("Styles")>] member inline _.Styles ([<InlineIfLambda>] render: AttrRenderFragment, x: (string * string) list) = render ==> html.styles x
     /// Used to attach any user data object to the component.
     [<CustomOperation("Data")>] member inline _.Data ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Object) = render ==> ("Data" => x)
     /// A reference to the enclosing component.
@@ -26,24 +22,28 @@ type FluentComponentBaseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micr
 type FluentNavMenuItemBaseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
     /// Gets or sets whether the link is disabled.
-    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Disabled" => (defaultArg x true))
+    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Disabled" =>>> true)
+    /// Gets or sets whether the link is disabled.
+    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Disabled" =>>> x)
     /// Gets or sets the destination of the link.
     [<CustomOperation("Href")>] member inline _.Href ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Href" => x)
     /// Gets or sets the icon to display with the link
     /// Use a constant value from the FluentIcon`1 class 
     [<CustomOperation("Icon")>] member inline _.Icon ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Icon) = render ==> ("Icon" => x)
     /// Called when the user attempts to execute the default action of a menu item.
-    [<CustomOperation("OnAction")>] member inline _.OnAction ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.NavMenuActionArgs -> unit) = render ==> html.callback("OnAction", fn)
+    [<CustomOperation("OnAction")>] member inline _.OnAction ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.NavMenuActionArgs -> unit) = render ==> html.callback("OnAction", fn)
     /// Called when the user attempts to execute the default action of a menu item.
-    [<CustomOperation("OnAction")>] member inline _.OnAction ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.NavMenuActionArgs -> Task<unit>) = render ==> html.callbackTask("OnAction", fn)
+    [<CustomOperation("OnAction")>] member inline _.OnAction ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.NavMenuActionArgs -> Task<unit>) = render ==> html.callbackTask("OnAction", fn)
     /// Gets or sets a value indicating whether the item is selected.
-    [<CustomOperation("Selected")>] member inline _.Selected ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Selected" => (defaultArg x true))
+    [<CustomOperation("Selected")>] member inline _.Selected ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Selected" =>>> true)
+    /// Gets or sets a value indicating whether the item is selected.
+    [<CustomOperation("Selected")>] member inline _.Selected ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Selected" =>>> x)
     /// Gets or sets a value indicating whether the item is selected.
     [<CustomOperation("Selected'")>] member inline _.Selected' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Boolean * (System.Boolean -> unit)) = render ==> html.bind("Selected", valueFn)
     /// Event callback for when Selected changes.
-    [<CustomOperation("SelectedChanged")>] member inline _.SelectedChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Boolean -> unit) = render ==> html.callback("SelectedChanged", fn)
+    [<CustomOperation("SelectedChanged")>] member inline _.SelectedChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> unit) = render ==> html.callback("SelectedChanged", fn)
     /// Event callback for when Selected changes.
-    [<CustomOperation("SelectedChanged")>] member inline _.SelectedChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("SelectedChanged", fn)
+    [<CustomOperation("SelectedChanged")>] member inline _.SelectedChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("SelectedChanged", fn)
     /// Gets or sets the text of the link.
     [<CustomOperation("Text")>] member inline _.Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Text" => x)
     /// Gets or sets the width of the link (in pixels).
@@ -53,17 +53,23 @@ type FluentNavMenuGroupBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micro
     inherit FluentNavMenuItemBaseBuilder<'FunBlazorGeneric>()
     /// Returns true if the group is expanded,
     /// and false if collapsed.
-    [<CustomOperation("Expanded")>] member inline _.Expanded ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Expanded" => (defaultArg x true))
+    [<CustomOperation("Expanded")>] member inline _.Expanded ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Expanded" =>>> true)
+    /// Returns true if the group is expanded,
+    /// and false if collapsed.
+    [<CustomOperation("Expanded")>] member inline _.Expanded ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Expanded" =>>> x)
     /// Returns true if the group is expanded,
     /// and false if collapsed.
     [<CustomOperation("Expanded'")>] member inline _.Expanded' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Boolean * (System.Boolean -> unit)) = render ==> html.bind("Expanded", valueFn)
     /// Gets or sets a callback that is triggered whenever Expanded changes.
-    [<CustomOperation("ExpandedChanged")>] member inline _.ExpandedChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Boolean -> unit) = render ==> html.callback("ExpandedChanged", fn)
+    [<CustomOperation("ExpandedChanged")>] member inline _.ExpandedChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> unit) = render ==> html.callback("ExpandedChanged", fn)
     /// Gets or sets a callback that is triggered whenever Expanded changes.
-    [<CustomOperation("ExpandedChanged")>] member inline _.ExpandedChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("ExpandedChanged", fn)
+    [<CustomOperation("ExpandedChanged")>] member inline _.ExpandedChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("ExpandedChanged", fn)
     /// If set to true then the tree will
     /// expand when it is created.
-    [<CustomOperation("InitiallyExpanded")>] member inline _.InitiallyExpanded ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("InitiallyExpanded" => (defaultArg x true))
+    [<CustomOperation("InitiallyExpanded")>] member inline _.InitiallyExpanded ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("InitiallyExpanded" =>>> true)
+    /// If set to true then the tree will
+    /// expand when it is created.
+    [<CustomOperation("InitiallyExpanded")>] member inline _.InitiallyExpanded ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("InitiallyExpanded" =>>> x)
 
 type FluentNavMenuLinkBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentNavMenuItemBaseBuilder<'FunBlazorGeneric>()
@@ -87,7 +93,9 @@ type FluentNavBaseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     /// ⚠️ Only available when Color is set to Color.Custom.
     [<CustomOperation("CustomColor")>] member inline _.CustomColor ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("CustomColor" => x)
     /// If true, the button will be disabled.
-    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Disabled" => (defaultArg x true))
+    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Disabled" =>>> true)
+    /// If true, the button will be disabled.
+    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Disabled" =>>> x)
     /// Gets or sets the class names to use to indicate the item is active, separated by space.
     [<CustomOperation("ActiveClass")>] member inline _.ActiveClass ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ActiveClass" => x)
     /// Gets or sets how the link should be matched.
@@ -97,11 +105,13 @@ type FluentNavBaseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     /// For  FluentNavGroup the Title is used as fallback.
     [<CustomOperation("Tooltip")>] member inline _.Tooltip ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Tooltip" => x)
     /// The callback to invoke when the item is clicked.
-    [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> unit) = render ==> html.callback("OnClick", fn)
+    [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> unit) = render ==> html.callback("OnClick", fn)
     /// The callback to invoke when the item is clicked.
-    [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> Task<unit>) = render ==> html.callbackTask("OnClick", fn)
+    [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> Task<unit>) = render ==> html.callbackTask("OnClick", fn)
     /// If true, force browser to redirect outside component router-space.
-    [<CustomOperation("ForceLoad")>] member inline _.ForceLoad ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("ForceLoad" => (defaultArg x true))
+    [<CustomOperation("ForceLoad")>] member inline _.ForceLoad ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ForceLoad" =>>> true)
+    /// If true, force browser to redirect outside component router-space.
+    [<CustomOperation("ForceLoad")>] member inline _.ForceLoad ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ForceLoad" =>>> x)
     /// Gets or sets the id of the custom toggle element
     /// Defaults to navmenu-toggle
     [<CustomOperation("CustomToggleId")>] member inline _.CustomToggleId ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("CustomToggleId" => x)
@@ -112,12 +122,17 @@ type FluentNavGroupBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     [<CustomOperation("Title")>] member inline _.Title ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
     /// If true, expands the nav group, otherwise collapse it.
     /// Two-way bindable
-    [<CustomOperation("Expanded")>] member inline _.Expanded ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Expanded" => (defaultArg x true))
+    [<CustomOperation("Expanded")>] member inline _.Expanded ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Expanded" =>>> true)
+    /// If true, expands the nav group, otherwise collapse it.
+    /// Two-way bindable
+    [<CustomOperation("Expanded")>] member inline _.Expanded ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Expanded" =>>> x)
     /// If true, expands the nav group, otherwise collapse it.
     /// Two-way bindable
     [<CustomOperation("Expanded'")>] member inline _.Expanded' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Boolean * (System.Boolean -> unit)) = render ==> html.bind("Expanded", valueFn)
     /// If true, hides expand button at the end of the NavGroup.
-    [<CustomOperation("HideExpander")>] member inline _.HideExpander ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("HideExpander" => (defaultArg x true))
+    [<CustomOperation("HideExpander")>] member inline _.HideExpander ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("HideExpander" =>>> true)
+    /// If true, hides expand button at the end of the NavGroup.
+    [<CustomOperation("HideExpander")>] member inline _.HideExpander ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("HideExpander" =>>> x)
     /// Explicitly sets the height for the Collapse element to override the css default.
     [<CustomOperation("MaxHeight")>] member inline _.MaxHeight ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("MaxHeight" => x)
     /// Defines the vertical spacing between the NavGroup and adjacent items.
@@ -128,11 +143,11 @@ type FluentNavGroupBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     /// Allows for specific markup and styling to be applied for the group title
     /// When using this, the contained FluentNavLinks and FluentNavGroups need to be placed in a ChildContent tag.
     /// When specifying both Title and TitleTemplate, both will be rendered.
-    [<CustomOperation("TitleTemplate")>] member inline _.TitleTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("TitleTemplate", fragment)
+    [<CustomOperation("TitleTemplate")>] member inline _.TitleTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("TitleTemplate", fragment)
     /// Allows for specific markup and styling to be applied for the group title
     /// When using this, the contained FluentNavLinks and FluentNavGroups need to be placed in a ChildContent tag.
     /// When specifying both Title and TitleTemplate, both will be rendered.
-    [<CustomOperation("TitleTemplate")>] member inline _.TitleTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("TitleTemplate", fragment { yield! fragments })
+    [<CustomOperation("TitleTemplate")>] member inline _.TitleTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("TitleTemplate", fragment { yield! fragments })
     /// Allows for specific markup and styling to be applied for the group title
     /// When using this, the contained FluentNavLinks and FluentNavGroups need to be placed in a ChildContent tag.
     /// When specifying both Title and TitleTemplate, both will be rendered.
@@ -146,9 +161,9 @@ type FluentNavGroupBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     /// When specifying both Title and TitleTemplate, both will be rendered.
     [<CustomOperation("TitleTemplate")>] member inline _.TitleTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("TitleTemplate", html.text x)
     /// Gets or sets a callback that is triggered whenever Expanded changes.
-    [<CustomOperation("ExpandedChanged")>] member inline _.ExpandedChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Boolean -> unit) = render ==> html.callback("ExpandedChanged", fn)
+    [<CustomOperation("ExpandedChanged")>] member inline _.ExpandedChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> unit) = render ==> html.callback("ExpandedChanged", fn)
     /// Gets or sets a callback that is triggered whenever Expanded changes.
-    [<CustomOperation("ExpandedChanged")>] member inline _.ExpandedChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("ExpandedChanged", fn)
+    [<CustomOperation("ExpandedChanged")>] member inline _.ExpandedChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("ExpandedChanged", fn)
 
 type FluentNavLinkBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentNavBaseBuilder<'FunBlazorGeneric>()
@@ -164,13 +179,13 @@ type FluentAccordionBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsof
     /// Gets or sets the id of the active accordion item.
     [<CustomOperation("ActiveId'")>] member inline _.ActiveId' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.String * (System.String -> unit)) = render ==> html.bind("ActiveId", valueFn)
     /// Gets or sets a callback that updates the bound value.
-    [<CustomOperation("ActiveIdChanged")>] member inline _.ActiveIdChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.String -> unit) = render ==> html.callback("ActiveIdChanged", fn)
+    [<CustomOperation("ActiveIdChanged")>] member inline _.ActiveIdChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.String -> unit) = render ==> html.callback("ActiveIdChanged", fn)
     /// Gets or sets a callback that updates the bound value.
-    [<CustomOperation("ActiveIdChanged")>] member inline _.ActiveIdChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.String -> Task<unit>) = render ==> html.callbackTask("ActiveIdChanged", fn)
+    [<CustomOperation("ActiveIdChanged")>] member inline _.ActiveIdChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.String -> Task<unit>) = render ==> html.callbackTask("ActiveIdChanged", fn)
     /// Gets or sets a callback when a accordion item is changed.
-    [<CustomOperation("OnAccordionItemChange")>] member inline _.OnAccordionItemChange ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentAccordionItem -> unit) = render ==> html.callback("OnAccordionItemChange", fn)
+    [<CustomOperation("OnAccordionItemChange")>] member inline _.OnAccordionItemChange ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentAccordionItem -> unit) = render ==> html.callback("OnAccordionItemChange", fn)
     /// Gets or sets a callback when a accordion item is changed.
-    [<CustomOperation("OnAccordionItemChange")>] member inline _.OnAccordionItemChange ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentAccordionItem -> Task<unit>) = render ==> html.callbackTask("OnAccordionItemChange", fn)
+    [<CustomOperation("OnAccordionItemChange")>] member inline _.OnAccordionItemChange ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentAccordionItem -> Task<unit>) = render ==> html.callbackTask("OnAccordionItemChange", fn)
 
 type FluentAccordionItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -181,11 +196,11 @@ type FluentAccordionItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micr
     /// Gets or sets the heading content of the accordion item.
     /// Use either this or the Heading parameter."/>
     /// If both are set, this parameter will not be used.
-    [<CustomOperation("HeadingTemplate")>] member inline _.HeadingTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("HeadingTemplate", fragment)
+    [<CustomOperation("HeadingTemplate")>] member inline _.HeadingTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("HeadingTemplate", fragment)
     /// Gets or sets the heading content of the accordion item.
     /// Use either this or the Heading parameter."/>
     /// If both are set, this parameter will not be used.
-    [<CustomOperation("HeadingTemplate")>] member inline _.HeadingTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("HeadingTemplate", fragment { yield! fragments })
+    [<CustomOperation("HeadingTemplate")>] member inline _.HeadingTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("HeadingTemplate", fragment { yield! fragments })
     /// Gets or sets the heading content of the accordion item.
     /// Use either this or the Heading parameter."/>
     /// If both are set, this parameter will not be used.
@@ -199,13 +214,15 @@ type FluentAccordionItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micr
     /// If both are set, this parameter will not be used.
     [<CustomOperation("HeadingTemplate")>] member inline _.HeadingTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("HeadingTemplate", html.text x)
     /// Gets or sets a value indicating whether the item is expanded or collapsed.
-    [<CustomOperation("Expanded")>] member inline _.Expanded ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Expanded" => (defaultArg x true))
+    [<CustomOperation("Expanded")>] member inline _.Expanded ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Expanded" =>>> true)
+    /// Gets or sets a value indicating whether the item is expanded or collapsed.
+    [<CustomOperation("Expanded")>] member inline _.Expanded ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Expanded" =>>> x)
     /// Gets or sets a value indicating whether the item is expanded or collapsed.
     [<CustomOperation("Expanded'")>] member inline _.Expanded' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Boolean * (System.Boolean -> unit)) = render ==> html.bind("Expanded", valueFn)
     /// Gets or sets a callback for when the expanded state changes.
-    [<CustomOperation("ExpandedChanged")>] member inline _.ExpandedChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Boolean -> unit) = render ==> html.callback("ExpandedChanged", fn)
+    [<CustomOperation("ExpandedChanged")>] member inline _.ExpandedChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> unit) = render ==> html.callback("ExpandedChanged", fn)
     /// Gets or sets a callback for when the expanded state changes.
-    [<CustomOperation("ExpandedChanged")>] member inline _.ExpandedChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("ExpandedChanged", fn)
+    [<CustomOperation("ExpandedChanged")>] member inline _.ExpandedChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("ExpandedChanged", fn)
     /// Gets or sets the level of the heading element.
     /// Possible values: 1 | 2 | 3 | 4 | 5 | 6
     [<CustomOperation("HeadingLevel")>] member inline _.HeadingLevel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("HeadingLevel" => x)
@@ -228,10 +245,15 @@ type FluentAnchoredRegionBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Mic
     /// Default is unset. See 
     [<CustomOperation("HorizontalDefaultPosition")>] member inline _.HorizontalDefaultPosition ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.HorizontalPosition>) = render ==> ("HorizontalDefaultPosition" => x)
     /// Gets or sets a value indicating whether the region remains in the viewport (ie. detaches from the anchor) on the horizontal axis.
-    [<CustomOperation("HorizontalViewportLock")>] member inline _.HorizontalViewportLock ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("HorizontalViewportLock" => (defaultArg x true))
+    [<CustomOperation("HorizontalViewportLock")>] member inline _.HorizontalViewportLock ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("HorizontalViewportLock" =>>> true)
+    /// Gets or sets a value indicating whether the region remains in the viewport (ie. detaches from the anchor) on the horizontal axis.
+    [<CustomOperation("HorizontalViewportLock")>] member inline _.HorizontalViewportLock ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("HorizontalViewportLock" =>>> x)
     /// Gets or sets a value indicating whether the region overlaps the anchor on the horizontal axis. 
     /// Default is false which places the region adjacent to the anchor element.
-    [<CustomOperation("HorizontalInset")>] member inline _.HorizontalInset ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("HorizontalInset" => (defaultArg x true))
+    [<CustomOperation("HorizontalInset")>] member inline _.HorizontalInset ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("HorizontalInset" =>>> true)
+    /// Gets or sets a value indicating whether the region overlaps the anchor on the horizontal axis. 
+    /// Default is false which places the region adjacent to the anchor element.
+    [<CustomOperation("HorizontalInset")>] member inline _.HorizontalInset ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("HorizontalInset" =>>> x)
     /// How narrow the space allocated to the default position has to be before the widest area is selected for layout.
     [<CustomOperation("HorizontalThreshold")>] member inline _.HorizontalThreshold ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("HorizontalThreshold" => x)
     /// Defines how the width of the region is calculated.
@@ -249,7 +271,9 @@ type FluentAnchoredRegionBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Mic
     /// Gets or sets a value indicating whether the region remains in the viewport (ie. detaches from the anchor) on the vertical axis.
     [<CustomOperation("VerticalViewportLock")>] member inline _.VerticalViewportLock ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("VerticalViewportLock" => x)
     /// Gets or sets a value indicating whether the region overlaps the anchor on the vertical axis.
-    [<CustomOperation("VerticalInset")>] member inline _.VerticalInset ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("VerticalInset" => (defaultArg x true))
+    [<CustomOperation("VerticalInset")>] member inline _.VerticalInset ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("VerticalInset" =>>> true)
+    /// Gets or sets a value indicating whether the region overlaps the anchor on the vertical axis.
+    [<CustomOperation("VerticalInset")>] member inline _.VerticalInset ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("VerticalInset" =>>> x)
     /// How short the space allocated to the default position has to be before the tallest area
     /// is selected for layout.
     [<CustomOperation("VerticalThreshold")>] member inline _.VerticalThreshold ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("VerticalThreshold" => x)
@@ -267,7 +291,9 @@ type FluentAnchoredRegionBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Mic
     [<CustomOperation("AutoUpdateMode")>] member inline _.AutoUpdateMode ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.AutoUpdateMode>) = render ==> ("AutoUpdateMode" => x)
     [<CustomOperation("Shadow")>] member inline _.Shadow ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.ElevationShadow) = render ==> ("Shadow" => x)
     /// Gets or sets whether the element should receive the focus when the component is loaded.
-    [<CustomOperation("AutoFocus")>] member inline _.AutoFocus ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("AutoFocus" => (defaultArg x true))
+    [<CustomOperation("AutoFocus")>] member inline _.AutoFocus ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AutoFocus" =>>> true)
+    /// Gets or sets whether the element should receive the focus when the component is loaded.
+    [<CustomOperation("AutoFocus")>] member inline _.AutoFocus ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("AutoFocus" =>>> x)
 
 type FluentAnchorBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -296,17 +322,21 @@ type FluentAnchorBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.A
     [<CustomOperation("IconStart")>] member inline _.IconStart ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Icon) = render ==> ("IconStart" => x)
     /// Gets or sets the Icon displayed at the end of anchor content.
     [<CustomOperation("IconEnd")>] member inline _.IconEnd ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Icon) = render ==> ("IconEnd" => x)
-    [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: unit -> unit) = render ==> html.callback("OnClick", fn)
-    [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: unit -> Task<unit>) = render ==> html.callbackTask("OnClick", fn)
+    [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> unit) = render ==> html.callback("OnClick", fn)
+    [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> Task<unit>) = render ==> html.callbackTask("OnClick", fn)
 
 type FluentAppBarBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
     /// Gets or sets if the popover shows the search box.
-    [<CustomOperation("PopoverShowSearch")>] member inline _.PopoverShowSearch ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("PopoverShowSearch" => (defaultArg x true))
+    [<CustomOperation("PopoverShowSearch")>] member inline _.PopoverShowSearch ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("PopoverShowSearch" =>>> true)
+    /// Gets or sets if the popover shows the search box.
+    [<CustomOperation("PopoverShowSearch")>] member inline _.PopoverShowSearch ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("PopoverShowSearch" =>>> x)
+    /// Gets or sets the Orientation of the app bar.
+    [<CustomOperation("Orientation")>] member inline _.Orientation ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Orientation) = render ==> ("Orientation" => x)
     /// Event to be called when the visibility of the popover changes.
-    [<CustomOperation("PopoverVisibilityChanged")>] member inline _.PopoverVisibilityChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Boolean -> unit) = render ==> html.callback("PopoverVisibilityChanged", fn)
+    [<CustomOperation("PopoverVisibilityChanged")>] member inline _.PopoverVisibilityChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> unit) = render ==> html.callback("PopoverVisibilityChanged", fn)
     /// Event to be called when the visibility of the popover changes.
-    [<CustomOperation("PopoverVisibilityChanged")>] member inline _.PopoverVisibilityChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("PopoverVisibilityChanged", fn)
+    [<CustomOperation("PopoverVisibilityChanged")>] member inline _.PopoverVisibilityChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("PopoverVisibilityChanged", fn)
     /// Gets or sets the collections of app bar items.
     /// Use eiter this or ChildContent to define the content of the app bar.
     [<CustomOperation("Items")>] member inline _.Items ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<Microsoft.FluentUI.AspNetCore.Components.IAppBarItem>) = render ==> ("Items" => x)
@@ -329,9 +359,9 @@ type FluentAppBarItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microso
     /// Gets or sets the count to show on the item with a FluentCounterBadge.
     [<CustomOperation("Count")>] member inline _.Count ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("Count" => x)
     /// The callback to invoke when the item is clicked.
-    [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.IAppBarItem -> unit) = render ==> html.callback("OnClick", fn)
+    [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.IAppBarItem -> unit) = render ==> html.callback("OnClick", fn)
     /// The callback to invoke when the item is clicked.
-    [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.IAppBarItem -> Task<unit>) = render ==> html.callbackTask("OnClick", fn)
+    [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.IAppBarItem -> Task<unit>) = render ==> html.callbackTask("OnClick", fn)
 
 type FluentBadgeBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -342,7 +372,9 @@ type FluentBadgeBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.As
     /// Gets or sets the background color based on fill value.
     [<CustomOperation("Fill")>] member inline _.Fill ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Fill" => x)
     /// Gets or sets a value indicating whether the badge is rendered circular.
-    [<CustomOperation("Circular")>] member inline _.Circular ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Circular" => (defaultArg x true))
+    [<CustomOperation("Circular")>] member inline _.Circular ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Circular" =>>> true)
+    /// Gets or sets a value indicating whether the badge is rendered circular.
+    [<CustomOperation("Circular")>] member inline _.Circular ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Circular" =>>> x)
     /// Gets or sets the visual appearance. See 
     /// Possible values are Accent, Neutral (default) or Lightweight
     [<CustomOperation("Appearance")>] member inline _.Appearance ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.Appearance>) = render ==> ("Appearance" => x)
@@ -356,13 +388,13 @@ type FluentBadgeBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.As
     /// By default, a small cross icon is displayed.
     [<CustomOperation("DismissIcon")>] member inline _.DismissIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Icon) = render ==> ("DismissIcon" => x)
     /// Event callback for when the badge is clicked.
-    [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> unit) = render ==> html.callback("OnClick", fn)
+    [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> unit) = render ==> html.callback("OnClick", fn)
     /// Event callback for when the badge is clicked.
-    [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> Task<unit>) = render ==> html.callbackTask("OnClick", fn)
+    [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> Task<unit>) = render ==> html.callbackTask("OnClick", fn)
     /// Event callback for when the badge DismissIcon icon is clicked.
-    [<CustomOperation("OnDismissClick")>] member inline _.OnDismissClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> unit) = render ==> html.callback("OnDismissClick", fn)
+    [<CustomOperation("OnDismissClick")>] member inline _.OnDismissClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> unit) = render ==> html.callback("OnDismissClick", fn)
     /// Event callback for when the badge DismissIcon icon is clicked.
-    [<CustomOperation("OnDismissClick")>] member inline _.OnDismissClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> Task<unit>) = render ==> html.callbackTask("OnDismissClick", fn)
+    [<CustomOperation("OnDismissClick")>] member inline _.OnDismissClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> Task<unit>) = render ==> html.callbackTask("OnDismissClick", fn)
 
 /// A base class for fluent ui form input components. This base class automatically
 /// integrates with an EditContext, which must be supplied
@@ -370,9 +402,13 @@ type FluentBadgeBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.As
 type FluentInputBaseBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
     /// When true, the control will be immutable by user interaction. readonly HTML attribute for more information.
-    [<CustomOperation("ReadOnly")>] member inline _.ReadOnly ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("ReadOnly" => (defaultArg x true))
+    [<CustomOperation("ReadOnly")>] member inline _.ReadOnly ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ReadOnly" =>>> true)
+    /// When true, the control will be immutable by user interaction. readonly HTML attribute for more information.
+    [<CustomOperation("ReadOnly")>] member inline _.ReadOnly ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ReadOnly" =>>> x)
     /// Disables the form control, ensuring it doesn't participate in form submission.
-    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Disabled" => (defaultArg x true))
+    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Disabled" =>>> true)
+    /// Disables the form control, ensuring it doesn't participate in form submission.
+    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Disabled" =>>> x)
     /// Gets or sets the name of the element.
     /// Allows access by name from the associated form.
     /// ⚠️ This value needs to be set manually for SSR scenarios to work correctly.
@@ -382,10 +418,10 @@ type FluentInputBaseBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :>
     [<CustomOperation("Label")>] member inline _.Label ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Label" => x)
     /// Gets or sets the content to label the input component.
     /// This is usually displayed just above the input
-    [<CustomOperation("LabelTemplate")>] member inline _.LabelTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("LabelTemplate", fragment)
+    [<CustomOperation("LabelTemplate")>] member inline _.LabelTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("LabelTemplate", fragment)
     /// Gets or sets the content to label the input component.
     /// This is usually displayed just above the input
-    [<CustomOperation("LabelTemplate")>] member inline _.LabelTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("LabelTemplate", fragment { yield! fragments })
+    [<CustomOperation("LabelTemplate")>] member inline _.LabelTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("LabelTemplate", fragment { yield! fragments })
     /// Gets or sets the content to label the input component.
     /// This is usually displayed just above the input
     [<CustomOperation("LabelTemplate")>] member inline _.LabelTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("LabelTemplate", html.text x)
@@ -398,15 +434,17 @@ type FluentInputBaseBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :>
     /// Gets or sets the text used on aria-label attribute.
     [<CustomOperation("AriaLabel")>] member inline _.AriaLabel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("AriaLabel" => x)
     /// Gets or sets a value indicating whether the element needs to have a value.
-    [<CustomOperation("Required")>] member inline _.Required ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Required" => (defaultArg x true))
+    [<CustomOperation("Required")>] member inline _.Required ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Required" =>>> true)
+    /// Gets or sets a value indicating whether the element needs to have a value.
+    [<CustomOperation("Required")>] member inline _.Required ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Required" =>>> x)
     /// Gets or sets the value of the input. This should be used with two-way binding.
     [<CustomOperation("Value")>] member inline _.Value ([<InlineIfLambda>] render: AttrRenderFragment, x: 'TValue) = render ==> ("Value" => x)
     /// Gets or sets the value of the input. This should be used with two-way binding.
     [<CustomOperation("Value'")>] member inline _.Value' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: 'TValue * ('TValue -> unit)) = render ==> html.bind("Value", valueFn)
     /// Gets or sets a callback that updates the bound value.
-    [<CustomOperation("ValueChanged")>] member inline _.ValueChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: 'TValue -> unit) = render ==> html.callback("ValueChanged", fn)
+    [<CustomOperation("ValueChanged")>] member inline _.ValueChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: 'TValue -> unit) = render ==> html.callback("ValueChanged", fn)
     /// Gets or sets a callback that updates the bound value.
-    [<CustomOperation("ValueChanged")>] member inline _.ValueChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: 'TValue -> Task<unit>) = render ==> html.callbackTask("ValueChanged", fn)
+    [<CustomOperation("ValueChanged")>] member inline _.ValueChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: 'TValue -> Task<unit>) = render ==> html.callbackTask("ValueChanged", fn)
     /// Gets or sets an expression that identifies the bound value.
     [<CustomOperation("ValueExpression")>] member inline _.ValueExpression ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Linq.Expressions.Expression<System.Func<'TValue>>) = render ==> ("ValueExpression" => x)
     /// Gets or sets the FieldIdentifier that identifies the bound value.
@@ -416,14 +454,21 @@ type FluentInputBaseBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :>
     /// This value is used when generating error messages when the input value fails to parse correctly.
     [<CustomOperation("DisplayName")>] member inline _.DisplayName ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("DisplayName" => x)
     /// Determines if the element should receive document focus on page load.
-    [<CustomOperation("Autofocus")>] member inline _.Autofocus ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Autofocus" => (defaultArg x true))
+    [<CustomOperation("Autofocus")>] member inline _.Autofocus ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Autofocus" =>>> true)
+    /// Determines if the element should receive document focus on page load.
+    [<CustomOperation("Autofocus")>] member inline _.Autofocus ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Autofocus" =>>> x)
     /// Gets or sets the short hint displayed in the input before the user enters a value.
     [<CustomOperation("Placeholder")>] member inline _.Placeholder ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Placeholder" => x)
     /// Gets or sets if the derived component is embedded in another component.
     /// If true, the ClassValue property will not include the EditContext's FieldCssClass.
-    [<CustomOperation("Embedded")>] member inline _.Embedded ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Embedded" => (defaultArg x true))
+    [<CustomOperation("Embedded")>] member inline _.Embedded ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Embedded" =>>> true)
+    /// Gets or sets if the derived component is embedded in another component.
+    /// If true, the ClassValue property will not include the EditContext's FieldCssClass.
+    [<CustomOperation("Embedded")>] member inline _.Embedded ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Embedded" =>>> x)
     /// Change the content of this input field when the user write text (based on 'OnInput' HTML event).
-    [<CustomOperation("Immediate")>] member inline _.Immediate ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Immediate" => (defaultArg x true))
+    [<CustomOperation("Immediate")>] member inline _.Immediate ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Immediate" =>>> true)
+    /// Change the content of this input field when the user write text (based on 'OnInput' HTML event).
+    [<CustomOperation("Immediate")>] member inline _.Immediate ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Immediate" =>>> x)
     /// Gets or sets the delay, in milliseconds, before to raise the ValueChanged event.
     [<CustomOperation("ImmediateDelay")>] member inline _.ImmediateDelay ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("ImmediateDelay" => x)
 
@@ -436,12 +481,18 @@ type FluentCalendarBaseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micro
     [<CustomOperation("DisabledDateFunc")>] member inline _.DisabledDateFunc ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("DisabledDateFunc" => (System.Func<System.DateTime, System.Boolean>fn))
     /// Apply the disabled style to the DisabledDateFunc days.
     /// If this is not the case, the days are displayed like the others, but cannot be selected.
-    [<CustomOperation("DisabledSelectable")>] member inline _.DisabledSelectable ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("DisabledSelectable" => (defaultArg x true))
+    [<CustomOperation("DisabledSelectable")>] member inline _.DisabledSelectable ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("DisabledSelectable" =>>> true)
+    /// Apply the disabled style to the DisabledDateFunc days.
+    /// If this is not the case, the days are displayed like the others, but cannot be selected.
+    [<CustomOperation("DisabledSelectable")>] member inline _.DisabledSelectable ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("DisabledSelectable" =>>> x)
     /// Gets or sets the Type style for the day (numeric or 2-digits).
     [<CustomOperation("DayFormat")>] member inline _.DayFormat ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.DayFormat>) = render ==> ("DayFormat" => x)
     /// Gets or sets the verification to do when the selected value has changed.
     /// By default, ValueChanged is called only if the selected value has changed.
-    [<CustomOperation("CheckIfSelectedValueHasChanged")>] member inline _.CheckIfSelectedValueHasChanged ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("CheckIfSelectedValueHasChanged" => (defaultArg x true))
+    [<CustomOperation("CheckIfSelectedValueHasChanged")>] member inline _.CheckIfSelectedValueHasChanged ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("CheckIfSelectedValueHasChanged" =>>> true)
+    /// Gets or sets the verification to do when the selected value has changed.
+    /// By default, ValueChanged is called only if the selected value has changed.
+    [<CustomOperation("CheckIfSelectedValueHasChanged")>] member inline _.CheckIfSelectedValueHasChanged ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("CheckIfSelectedValueHasChanged" =>>> x)
     /// Defines the appearance of the FluentCalendar component.
     [<CustomOperation("View")>] member inline _.View ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.CalendarViews) = render ==> ("View" => x)
 
@@ -462,11 +513,11 @@ type FluentCalendarBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     /// If not set, the current month is displayed.
     [<CustomOperation("PickerMonth'")>] member inline _.PickerMonth' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.DateTime * (System.DateTime -> unit)) = render ==> html.bind("PickerMonth", valueFn)
     /// Fired when the display month changes.
-    [<CustomOperation("PickerMonthChanged")>] member inline _.PickerMonthChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.DateTime -> unit) = render ==> html.callback("PickerMonthChanged", fn)
+    [<CustomOperation("PickerMonthChanged")>] member inline _.PickerMonthChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.DateTime -> unit) = render ==> html.callback("PickerMonthChanged", fn)
     /// Fired when the display month changes.
-    [<CustomOperation("PickerMonthChanged")>] member inline _.PickerMonthChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.DateTime -> Task<unit>) = render ==> html.callbackTask("PickerMonthChanged", fn)
+    [<CustomOperation("PickerMonthChanged")>] member inline _.PickerMonthChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.DateTime -> Task<unit>) = render ==> html.callbackTask("PickerMonthChanged", fn)
     /// Defines the appearance of a Day cell.
-    [<CustomOperation("DaysTemplate")>] member inline _.DaysTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentCalendarDay -> NodeRenderFragment) = render ==> html.renderFragment("DaysTemplate", fn)
+    [<CustomOperation("DaysTemplate")>] member inline _.DaysTemplate ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentCalendarDay -> NodeRenderFragment) = render ==> html.renderFragment("DaysTemplate", fn)
     /// Gets ot sets if the calendar items are animated during a period change.
     /// By default, the animation is enabled for Months views, but disabled for Days and Years view.
     [<CustomOperation("AnimatePeriodChanges")>] member inline _.AnimatePeriodChanges ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("AnimatePeriodChanges" => x)
@@ -477,9 +528,9 @@ type FluentCalendarBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     /// Gets or sets the list of all selected dates, only when SelectMode is set to Range or Multiple.
     [<CustomOperation("SelectedDates'")>] member inline _.SelectedDates' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Collections.Generic.IEnumerable<System.DateTime> * (System.Collections.Generic.IEnumerable<System.DateTime> -> unit)) = render ==> html.bind("SelectedDates", valueFn)
     /// Fired when the selected dates change.
-    [<CustomOperation("SelectedDatesChanged")>] member inline _.SelectedDatesChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Collections.Generic.IEnumerable<System.DateTime> -> unit) = render ==> html.callback("SelectedDatesChanged", fn)
+    [<CustomOperation("SelectedDatesChanged")>] member inline _.SelectedDatesChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Collections.Generic.IEnumerable<System.DateTime> -> unit) = render ==> html.callback("SelectedDatesChanged", fn)
     /// Fired when the selected dates change.
-    [<CustomOperation("SelectedDatesChanged")>] member inline _.SelectedDatesChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Collections.Generic.IEnumerable<System.DateTime> -> Task<unit>) = render ==> html.callbackTask("SelectedDatesChanged", fn)
+    [<CustomOperation("SelectedDatesChanged")>] member inline _.SelectedDatesChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Collections.Generic.IEnumerable<System.DateTime> -> Task<unit>) = render ==> html.callbackTask("SelectedDatesChanged", fn)
     /// Fired when the selected mouse over change, to display the future range of dates.
     [<CustomOperation("SelectDatesHover")>] member inline _.SelectDatesHover ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("SelectDatesHover" => (System.Func<System.DateTime, System.Collections.Generic.IEnumerable<System.DateTime>>fn))
 
@@ -488,42 +539,52 @@ type FluentDatePickerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microso
     /// Gets or sets the design of this input.
     [<CustomOperation("Appearance")>] member inline _.Appearance ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.FluentInputAppearance) = render ==> ("Appearance" => x)
     /// raised when calendar popup opened
-    [<CustomOperation("OnCalendarOpen")>] member inline _.OnCalendarOpen ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Boolean -> unit) = render ==> html.callback("OnCalendarOpen", fn)
+    [<CustomOperation("OnCalendarOpen")>] member inline _.OnCalendarOpen ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> unit) = render ==> html.callback("OnCalendarOpen", fn)
     /// raised when calendar popup opened
-    [<CustomOperation("OnCalendarOpen")>] member inline _.OnCalendarOpen ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("OnCalendarOpen", fn)
+    [<CustomOperation("OnCalendarOpen")>] member inline _.OnCalendarOpen ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("OnCalendarOpen", fn)
     /// Defines the appearance of a Day cell.
-    [<CustomOperation("DaysTemplate")>] member inline _.DaysTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentCalendarDay -> NodeRenderFragment) = render ==> html.renderFragment("DaysTemplate", fn)
+    [<CustomOperation("DaysTemplate")>] member inline _.DaysTemplate ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentCalendarDay -> NodeRenderFragment) = render ==> html.renderFragment("DaysTemplate", fn)
     /// Fired when the display month changes.
-    [<CustomOperation("PickerMonthChanged")>] member inline _.PickerMonthChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.DateTime -> unit) = render ==> html.callback("PickerMonthChanged", fn)
+    [<CustomOperation("PickerMonthChanged")>] member inline _.PickerMonthChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.DateTime -> unit) = render ==> html.callback("PickerMonthChanged", fn)
     /// Fired when the display month changes.
-    [<CustomOperation("PickerMonthChanged")>] member inline _.PickerMonthChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.DateTime -> Task<unit>) = render ==> html.callbackTask("PickerMonthChanged", fn)
+    [<CustomOperation("PickerMonthChanged")>] member inline _.PickerMonthChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.DateTime -> Task<unit>) = render ==> html.callbackTask("PickerMonthChanged", fn)
     /// Command executed when the user double-clicks on the date picker.
-    [<CustomOperation("OnDoubleClick")>] member inline _.OnDoubleClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> unit) = render ==> html.callback("OnDoubleClick", fn)
+    [<CustomOperation("OnDoubleClick")>] member inline _.OnDoubleClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> unit) = render ==> html.callback("OnDoubleClick", fn)
     /// Command executed when the user double-clicks on the date picker.
-    [<CustomOperation("OnDoubleClick")>] member inline _.OnDoubleClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> Task<unit>) = render ==> html.callbackTask("OnDoubleClick", fn)
+    [<CustomOperation("OnDoubleClick")>] member inline _.OnDoubleClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> Task<unit>) = render ==> html.callbackTask("OnDoubleClick", fn)
     /// Gets or sets a value which will be set when double-clicking on the text field of date picker.
     [<CustomOperation("DoubleClickToDate")>] member inline _.DoubleClickToDate ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.DateTime>) = render ==> ("DoubleClickToDate" => x)
 
 type FluentCheckboxBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentInputBaseBuilder<'FunBlazorGeneric, System.Boolean>()
     /// Gets or sets a value indicating whether the CheckBox will allow three check states rather than two.
-    [<CustomOperation("ThreeState")>] member inline _.ThreeState ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("ThreeState" => (defaultArg x true))
+    [<CustomOperation("ThreeState")>] member inline _.ThreeState ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ThreeState" =>>> true)
+    /// Gets or sets a value indicating whether the CheckBox will allow three check states rather than two.
+    [<CustomOperation("ThreeState")>] member inline _.ThreeState ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ThreeState" =>>> x)
     /// Gets or sets a value indicating the order of the three states of the CheckBox.
     /// False (by default), the order is Unchecked -> Checked -> Intermediate.
     /// True: the order is Unchecked -> Intermediate -> Checked.
-    [<CustomOperation("ThreeStateOrderUncheckToIntermediate")>] member inline _.ThreeStateOrderUncheckToIntermediate ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("ThreeStateOrderUncheckToIntermediate" => (defaultArg x true))
+    [<CustomOperation("ThreeStateOrderUncheckToIntermediate")>] member inline _.ThreeStateOrderUncheckToIntermediate ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ThreeStateOrderUncheckToIntermediate" =>>> true)
+    /// Gets or sets a value indicating the order of the three states of the CheckBox.
+    /// False (by default), the order is Unchecked -> Checked -> Intermediate.
+    /// True: the order is Unchecked -> Intermediate -> Checked.
+    [<CustomOperation("ThreeStateOrderUncheckToIntermediate")>] member inline _.ThreeStateOrderUncheckToIntermediate ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ThreeStateOrderUncheckToIntermediate" =>>> x)
     /// Gets or sets a value indicating whether the user can display the indeterminate state by clicking the CheckBox.
     /// If this is not the case, the checkbox can be started in the indeterminate state, but the user cannot activate it with the mouse.
     /// Default is true.
-    [<CustomOperation("ShowIndeterminate")>] member inline _.ShowIndeterminate ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("ShowIndeterminate" => (defaultArg x true))
+    [<CustomOperation("ShowIndeterminate")>] member inline _.ShowIndeterminate ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowIndeterminate" =>>> true)
+    /// Gets or sets a value indicating whether the user can display the indeterminate state by clicking the CheckBox.
+    /// If this is not the case, the checkbox can be started in the indeterminate state, but the user cannot activate it with the mouse.
+    /// Default is true.
+    [<CustomOperation("ShowIndeterminate")>] member inline _.ShowIndeterminate ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowIndeterminate" =>>> x)
     /// Gets or sets the state of the CheckBox: true, false or null.
     [<CustomOperation("CheckState")>] member inline _.CheckState ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("CheckState" => x)
     /// Gets or sets the state of the CheckBox: true, false or null.
     [<CustomOperation("CheckState'")>] member inline _.CheckState' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Nullable<System.Boolean> * (System.Nullable<System.Boolean> -> unit)) = render ==> html.bind("CheckState", valueFn)
     /// Gets or sets a callback that updates the CheckState.
-    [<CustomOperation("CheckStateChanged")>] member inline _.CheckStateChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Nullable<System.Boolean> -> unit) = render ==> html.callback("CheckStateChanged", fn)
+    [<CustomOperation("CheckStateChanged")>] member inline _.CheckStateChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Nullable<System.Boolean> -> unit) = render ==> html.callback("CheckStateChanged", fn)
     /// Gets or sets a callback that updates the CheckState.
-    [<CustomOperation("CheckStateChanged")>] member inline _.CheckStateChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Nullable<System.Boolean> -> Task<unit>) = render ==> html.callbackTask("CheckStateChanged", fn)
+    [<CustomOperation("CheckStateChanged")>] member inline _.CheckStateChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Nullable<System.Boolean> -> Task<unit>) = render ==> html.callbackTask("CheckStateChanged", fn)
 
 type FluentTimePickerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentInputBaseBuilder<'FunBlazorGeneric, System.Nullable<System.DateTime>>()
@@ -559,15 +620,18 @@ type ListComponentBaseBuilder<'FunBlazorGeneric, 'TOption when 'FunBlazorGeneric
     [<CustomOperation("SelectedOption'")>] member inline _.SelectedOption' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: 'TOption * ('TOption -> unit)) = render ==> html.bind("SelectedOption", valueFn)
     /// Called whenever the selection changed.
     /// ⚠️ Only available when Multiple = false.
-    [<CustomOperation("SelectedOptionChanged")>] member inline _.SelectedOptionChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: 'TOption -> unit) = render ==> html.callback("SelectedOptionChanged", fn)
+    [<CustomOperation("SelectedOptionChanged")>] member inline _.SelectedOptionChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: 'TOption -> unit) = render ==> html.callback("SelectedOptionChanged", fn)
     /// Called whenever the selection changed.
     /// ⚠️ Only available when Multiple = false.
-    [<CustomOperation("SelectedOptionChanged")>] member inline _.SelectedOptionChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: 'TOption -> Task<unit>) = render ==> html.callbackTask("SelectedOptionChanged", fn)
+    [<CustomOperation("SelectedOptionChanged")>] member inline _.SelectedOptionChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: 'TOption -> Task<unit>) = render ==> html.callbackTask("SelectedOptionChanged", fn)
     /// If true, the user can select multiple elements.
     /// ⚠️ Only available for the FluentSelect and FluentListbox components.
-    [<CustomOperation("Multiple")>] member inline _.Multiple ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Multiple" => (defaultArg x true))
+    [<CustomOperation("Multiple")>] member inline _.Multiple ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Multiple" =>>> true)
+    /// If true, the user can select multiple elements.
+    /// ⚠️ Only available for the FluentSelect and FluentListbox components.
+    [<CustomOperation("Multiple")>] member inline _.Multiple ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Multiple" =>>> x)
     /// Gets or sets the template for the Items items.
-    [<CustomOperation("OptionTemplate")>] member inline _.OptionTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: 'TOption -> NodeRenderFragment) = render ==> html.renderFragment("OptionTemplate", fn)
+    [<CustomOperation("OptionTemplate")>] member inline _.OptionTemplate ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: 'TOption -> NodeRenderFragment) = render ==> html.renderFragment("OptionTemplate", fn)
     /// Gets or sets all selected items.
     /// ⚠️ Only available when Multiple = true.
     [<CustomOperation("SelectedOptions")>] member inline _.SelectedOptions ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<'TOption>) = render ==> ("SelectedOptions" => x)
@@ -576,10 +640,10 @@ type ListComponentBaseBuilder<'FunBlazorGeneric, 'TOption when 'FunBlazorGeneric
     [<CustomOperation("SelectedOptions'")>] member inline _.SelectedOptions' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Collections.Generic.IEnumerable<'TOption> * (System.Collections.Generic.IEnumerable<'TOption> -> unit)) = render ==> html.bind("SelectedOptions", valueFn)
     /// Called whenever the selection changed.
     /// ⚠️ Only available when Multiple = true.
-    [<CustomOperation("SelectedOptionsChanged")>] member inline _.SelectedOptionsChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Collections.Generic.IEnumerable<'TOption> -> unit) = render ==> html.callback("SelectedOptionsChanged", fn)
+    [<CustomOperation("SelectedOptionsChanged")>] member inline _.SelectedOptionsChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Collections.Generic.IEnumerable<'TOption> -> unit) = render ==> html.callback("SelectedOptionsChanged", fn)
     /// Called whenever the selection changed.
     /// ⚠️ Only available when Multiple = true.
-    [<CustomOperation("SelectedOptionsChanged")>] member inline _.SelectedOptionsChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Collections.Generic.IEnumerable<'TOption> -> Task<unit>) = render ==> html.callbackTask("SelectedOptionsChanged", fn)
+    [<CustomOperation("SelectedOptionsChanged")>] member inline _.SelectedOptionsChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Collections.Generic.IEnumerable<'TOption> -> Task<unit>) = render ==> html.callbackTask("SelectedOptionsChanged", fn)
 
 type FluentAutocompleteBuilder<'FunBlazorGeneric, 'TOption when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ListComponentBaseBuilder<'FunBlazorGeneric, 'TOption>()
@@ -588,9 +652,9 @@ type FluentAutocompleteBuilder<'FunBlazorGeneric, 'TOption when 'FunBlazorGeneri
     /// Gets or sets the text field value.
     [<CustomOperation("ValueText'")>] member inline _.ValueText' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.String * (System.String -> unit)) = render ==> html.bind("ValueText", valueFn)
     /// Gets or sets the callback that is invoked when the text field value changes.
-    [<CustomOperation("ValueTextChanged")>] member inline _.ValueTextChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.String -> unit) = render ==> html.callback("ValueTextChanged", fn)
+    [<CustomOperation("ValueTextChanged")>] member inline _.ValueTextChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.String -> unit) = render ==> html.callback("ValueTextChanged", fn)
     /// Gets or sets the callback that is invoked when the text field value changes.
-    [<CustomOperation("ValueTextChanged")>] member inline _.ValueTextChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.String -> Task<unit>) = render ==> html.callbackTask("ValueTextChanged", fn)
+    [<CustomOperation("ValueTextChanged")>] member inline _.ValueTextChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.String -> Task<unit>) = render ==> html.callbackTask("ValueTextChanged", fn)
     /// Gets or sets the value of the input. This should be used with two-way binding.
     /// For the FluentAutocomplete component, use the ValueText property instead.
     [<CustomOperation("Value")>] member inline _.Value ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Value" => x)
@@ -600,9 +664,9 @@ type FluentAutocompleteBuilder<'FunBlazorGeneric, 'TOption when 'FunBlazorGeneri
     /// An Id value must be set to use this property.
     [<CustomOperation("AutoComplete")>] member inline _.AutoComplete ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("AutoComplete" => x)
     /// Filter the list of options (items), using the text encoded by the user.
-    [<CustomOperation("OnOptionsSearch")>] member inline _.OnOptionsSearch ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.OptionsSearchEventArgs<'TOption> -> unit) = render ==> html.callback("OnOptionsSearch", fn)
+    [<CustomOperation("OnOptionsSearch")>] member inline _.OnOptionsSearch ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.OptionsSearchEventArgs<'TOption> -> unit) = render ==> html.callback("OnOptionsSearch", fn)
     /// Filter the list of options (items), using the text encoded by the user.
-    [<CustomOperation("OnOptionsSearch")>] member inline _.OnOptionsSearch ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.OptionsSearchEventArgs<'TOption> -> Task<unit>) = render ==> html.callbackTask("OnOptionsSearch", fn)
+    [<CustomOperation("OnOptionsSearch")>] member inline _.OnOptionsSearch ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.OptionsSearchEventArgs<'TOption> -> Task<unit>) = render ==> html.callbackTask("OnOptionsSearch", fn)
     /// Gets or sets the style applied to all FluentOption`1 of the component.
     [<CustomOperation("OptionStyle")>] member inline _.OptionStyle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("OptionStyle" => x)
     /// Gets or sets the css class applied to all FluentOption`1 of the component.
@@ -615,9 +679,9 @@ type FluentAutocompleteBuilder<'FunBlazorGeneric, 'TOption when 'FunBlazorGeneri
     /// See the MaximumSelectedOptionsMessage.
     [<CustomOperation("MaximumSelectedOptions")>] member inline _.MaximumSelectedOptions ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("MaximumSelectedOptions" => x)
     /// Gets or sets the message displayed when the MaximumSelectedOptions is reached.
-    [<CustomOperation("MaximumSelectedOptionsMessage")>] member inline _.MaximumSelectedOptionsMessage ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("MaximumSelectedOptionsMessage", fragment)
+    [<CustomOperation("MaximumSelectedOptionsMessage")>] member inline _.MaximumSelectedOptionsMessage ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("MaximumSelectedOptionsMessage", fragment)
     /// Gets or sets the message displayed when the MaximumSelectedOptions is reached.
-    [<CustomOperation("MaximumSelectedOptionsMessage")>] member inline _.MaximumSelectedOptionsMessage ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("MaximumSelectedOptionsMessage", fragment { yield! fragments })
+    [<CustomOperation("MaximumSelectedOptionsMessage")>] member inline _.MaximumSelectedOptionsMessage ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("MaximumSelectedOptionsMessage", fragment { yield! fragments })
     /// Gets or sets the message displayed when the MaximumSelectedOptions is reached.
     [<CustomOperation("MaximumSelectedOptionsMessage")>] member inline _.MaximumSelectedOptionsMessage ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("MaximumSelectedOptionsMessage", html.text x)
     /// Gets or sets the message displayed when the MaximumSelectedOptions is reached.
@@ -625,11 +689,11 @@ type FluentAutocompleteBuilder<'FunBlazorGeneric, 'TOption when 'FunBlazorGeneri
     /// Gets or sets the message displayed when the MaximumSelectedOptions is reached.
     [<CustomOperation("MaximumSelectedOptionsMessage")>] member inline _.MaximumSelectedOptionsMessage ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("MaximumSelectedOptionsMessage", html.text x)
     /// Gets or sets the template for the SelectedOptions items.
-    [<CustomOperation("SelectedOptionTemplate")>] member inline _.SelectedOptionTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: 'TOption -> NodeRenderFragment) = render ==> html.renderFragment("SelectedOptionTemplate", fn)
+    [<CustomOperation("SelectedOptionTemplate")>] member inline _.SelectedOptionTemplate ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: 'TOption -> NodeRenderFragment) = render ==> html.renderFragment("SelectedOptionTemplate", fn)
     /// Gets or sets the header content, placed at the top of the popup panel.
-    [<CustomOperation("HeaderContent")>] member inline _.HeaderContent ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Collections.Generic.IEnumerable<'TOption> -> NodeRenderFragment) = render ==> html.renderFragment("HeaderContent", fn)
+    [<CustomOperation("HeaderContent")>] member inline _.HeaderContent ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Collections.Generic.IEnumerable<'TOption> -> NodeRenderFragment) = render ==> html.renderFragment("HeaderContent", fn)
     /// Gets or sets the footer content, placed at the bottom of the popup panel.
-    [<CustomOperation("FooterContent")>] member inline _.FooterContent ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Collections.Generic.IEnumerable<'TOption> -> NodeRenderFragment) = render ==> html.renderFragment("FooterContent", fn)
+    [<CustomOperation("FooterContent")>] member inline _.FooterContent ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Collections.Generic.IEnumerable<'TOption> -> NodeRenderFragment) = render ==> html.renderFragment("FooterContent", fn)
     /// Gets or sets the title and Aria-Label for the Scroll to previous button.
     [<CustomOperation("TitleScrollToPrevious")>] member inline _.TitleScrollToPrevious ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("TitleScrollToPrevious" => x)
     /// Gets or sets the title and Aria-Label for the Scroll to next button.
@@ -639,7 +703,9 @@ type FluentAutocompleteBuilder<'FunBlazorGeneric, 'TOption when 'FunBlazorGeneri
     /// Gets or sets the icon used for the Search button. By default: Search icon.
     [<CustomOperation("IconSearch")>] member inline _.IconSearch ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Icon) = render ==> ("IconSearch" => x)
     /// Gets or sets whether the dropdown is shown when there are no items.
-    [<CustomOperation("ShowOverlayOnEmptyResults")>] member inline _.ShowOverlayOnEmptyResults ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("ShowOverlayOnEmptyResults" => (defaultArg x true))
+    [<CustomOperation("ShowOverlayOnEmptyResults")>] member inline _.ShowOverlayOnEmptyResults ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowOverlayOnEmptyResults" =>>> true)
+    /// Gets or sets whether the dropdown is shown when there are no items.
+    [<CustomOperation("ShowOverlayOnEmptyResults")>] member inline _.ShowOverlayOnEmptyResults ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowOverlayOnEmptyResults" =>>> x)
     /// If true, the options list will be rendered with virtualization. This is normally used in conjunction with
     /// scrolling and causes the option list to fetch and render only the data around the current scroll viewport.
     /// This can greatly improve the performance when scrolling through large data sets.
@@ -648,7 +714,16 @@ type FluentAutocompleteBuilder<'FunBlazorGeneric, 'TOption when 'FunBlazorGeneri
     /// ensure that every row renders with the same constant height.
     ///             
     /// Generally it's preferable not to use Virtualize if the amount of data being rendered is small.
-    [<CustomOperation("Virtualize")>] member inline _.Virtualize ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Virtualize" => (defaultArg x true))
+    [<CustomOperation("Virtualize")>] member inline _.Virtualize ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Virtualize" =>>> true)
+    /// If true, the options list will be rendered with virtualization. This is normally used in conjunction with
+    /// scrolling and causes the option list to fetch and render only the data around the current scroll viewport.
+    /// This can greatly improve the performance when scrolling through large data sets.
+    ///             
+    /// If you use Virtualize, you should supply a value for ItemSize and must
+    /// ensure that every row renders with the same constant height.
+    ///             
+    /// Generally it's preferable not to use Virtualize if the amount of data being rendered is small.
+    [<CustomOperation("Virtualize")>] member inline _.Virtualize ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Virtualize" =>>> x)
     /// This is applicable only when using Virtualize. It defines an expected height in pixels for
     /// each row, allowing the virtualization mechanism to fetch the correct number of items to match the display
     /// size and to ensure accurate scrolling.
@@ -657,7 +732,16 @@ type FluentAutocompleteBuilder<'FunBlazorGeneric, 'TOption when 'FunBlazorGeneri
     [<CustomOperation("MaxAutoHeight")>] member inline _.MaxAutoHeight ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("MaxAutoHeight" => x)
     /// Gets or sets whether the currently selected item from the drop-down (if it is open) is selected.
     /// Default is false.
-    [<CustomOperation("SelectValueOnTab")>] member inline _.SelectValueOnTab ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("SelectValueOnTab" => (defaultArg x true))
+    [<CustomOperation("SelectValueOnTab")>] member inline _.SelectValueOnTab ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("SelectValueOnTab" =>>> true)
+    /// Gets or sets whether the currently selected item from the drop-down (if it is open) is selected.
+    /// Default is false.
+    [<CustomOperation("SelectValueOnTab")>] member inline _.SelectValueOnTab ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("SelectValueOnTab" =>>> x)
+    /// Gets or sets whether the drop-down panel stays open after selecting an item,
+    /// until the number of selected items reaches the maximum (only using the mouse).
+    [<CustomOperation("KeepOpen")>] member inline _.KeepOpen ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("KeepOpen" =>>> true)
+    /// Gets or sets whether the drop-down panel stays open after selecting an item,
+    /// until the number of selected items reaches the maximum (only using the mouse).
+    [<CustomOperation("KeepOpen")>] member inline _.KeepOpen ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("KeepOpen" =>>> x)
 
 type FluentComboboxBuilder<'FunBlazorGeneric, 'TOption when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ListComponentBaseBuilder<'FunBlazorGeneric, 'TOption>()
@@ -689,7 +773,9 @@ type FluentSelectBuilder<'FunBlazorGeneric, 'TOption when 'FunBlazorGeneric :> M
 type FluentNumberFieldBuilder<'FunBlazorGeneric, 'TValue when 'TValue : (new : unit -> 'TValue) and 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentInputBaseBuilder<'FunBlazorGeneric, 'TValue>()
     /// When true, spin buttons will not be rendered.
-    [<CustomOperation("HideStep")>] member inline _.HideStep ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("HideStep" => (defaultArg x true))
+    [<CustomOperation("HideStep")>] member inline _.HideStep ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("HideStep" =>>> true)
+    /// When true, spin buttons will not be rendered.
+    [<CustomOperation("HideStep")>] member inline _.HideStep ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("HideStep" =>>> x)
     /// Allows associating a datalist to the element by id.
     [<CustomOperation("DataList")>] member inline _.DataList ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("DataList" => x)
     /// Gets or sets the maximum length.
@@ -736,11 +822,13 @@ type FluentRatingBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.A
     /// The icon width.
     [<CustomOperation("IconWidth")>] member inline _.IconWidth ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("IconWidth" => x)
     /// Gets or sets a value that whether to allow clear when click again.
-    [<CustomOperation("AllowReset")>] member inline _.AllowReset ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("AllowReset" => (defaultArg x true))
+    [<CustomOperation("AllowReset")>] member inline _.AllowReset ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AllowReset" =>>> true)
+    /// Gets or sets a value that whether to allow clear when click again.
+    [<CustomOperation("AllowReset")>] member inline _.AllowReset ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("AllowReset" =>>> x)
     /// Fires when hovered value changes. Value will be null if no rating item is hovered.
-    [<CustomOperation("OnHoverValueChanged")>] member inline _.OnHoverValueChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Nullable<System.Int32> -> unit) = render ==> html.callback("OnHoverValueChanged", fn)
+    [<CustomOperation("OnHoverValueChanged")>] member inline _.OnHoverValueChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Nullable<System.Int32> -> unit) = render ==> html.callback("OnHoverValueChanged", fn)
     /// Fires when hovered value changes. Value will be null if no rating item is hovered.
-    [<CustomOperation("OnHoverValueChanged")>] member inline _.OnHoverValueChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Nullable<System.Int32> -> Task<unit>) = render ==> html.callbackTask("OnHoverValueChanged", fn)
+    [<CustomOperation("OnHoverValueChanged")>] member inline _.OnHoverValueChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Nullable<System.Int32> -> Task<unit>) = render ==> html.callbackTask("OnHoverValueChanged", fn)
 
 type FluentSearchBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentInputBaseBuilder<'FunBlazorGeneric, System.String>()
@@ -884,12 +972,16 @@ type FluentButtonBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.A
     /// Gets or sets the element's current value.
     [<CustomOperation("CurrentValue")>] member inline _.CurrentValue ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("CurrentValue" => x)
     /// Disables the form control, ensuring it doesn't participate in form submission.
-    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Disabled" => (defaultArg x true))
+    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Disabled" =>>> true)
+    /// Disables the form control, ensuring it doesn't participate in form submission.
+    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Disabled" =>>> x)
     /// Gets or sets the name of the element.
     /// Allows access by name from the associated form.
     [<CustomOperation("Name")>] member inline _.Name ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Name" => x)
     /// Gets or sets a value indicating whether the element needs to have a value.
-    [<CustomOperation("Required")>] member inline _.Required ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Required" => (defaultArg x true))
+    [<CustomOperation("Required")>] member inline _.Required ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Required" =>>> true)
+    /// Gets or sets a value indicating whether the element needs to have a value.
+    [<CustomOperation("Required")>] member inline _.Required ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Required" =>>> x)
     /// Gets or sets the visual appearance. See 
     /// Defaults to 
     [<CustomOperation("Appearance")>] member inline _.Appearance ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.Appearance>) = render ==> ("Appearance" => x)
@@ -899,7 +991,9 @@ type FluentButtonBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.A
     /// Gets or sets the color of the font (overrides the Appearance property).
     [<CustomOperation("Color")>] member inline _.Color ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Color" => x)
     /// Display a progress ring and disable the button.
-    [<CustomOperation("Loading")>] member inline _.Loading ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Loading" => (defaultArg x true))
+    [<CustomOperation("Loading")>] member inline _.Loading ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Loading" =>>> true)
+    /// Display a progress ring and disable the button.
+    [<CustomOperation("Loading")>] member inline _.Loading ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Loading" =>>> x)
     /// Gets or sets the Icon displayed at the start of button content.
     [<CustomOperation("IconStart")>] member inline _.IconStart ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Icon) = render ==> ("IconStart" => x)
     /// Gets or sets the Icon displayed at the end of button content.
@@ -907,34 +1001,44 @@ type FluentButtonBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.A
     /// Gets or sets the title of the button.
     /// The text usually displayed in a 'tooltip' popup when the mouse is over the button.
     [<CustomOperation("Title")>] member inline _.Title ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
+    /// Gets or sets a way to prevent further propagation of the current event in the capturing and bubbling phases.
+    [<CustomOperation("StopPropagation")>] member inline _.StopPropagation ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("StopPropagation" =>>> true)
+    /// Gets or sets a way to prevent further propagation of the current event in the capturing and bubbling phases.
+    [<CustomOperation("StopPropagation")>] member inline _.StopPropagation ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("StopPropagation" =>>> x)
     /// Command executed when the user clicks on the button.
-    [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> unit) = render ==> html.callback("OnClick", fn)
+    [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> unit) = render ==> html.callback("OnClick", fn)
     /// Command executed when the user clicks on the button.
-    [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> Task<unit>) = render ==> html.callbackTask("OnClick", fn)
+    [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> Task<unit>) = render ==> html.callbackTask("OnClick", fn)
 
 type FluentCardBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
     /// By default, content in the card is restricted to the area of the card itself.
     /// If you want content to be able to overflow the card, set this property to false.
-    [<CustomOperation("AreaRestricted")>] member inline _.AreaRestricted ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("AreaRestricted" => (defaultArg x true))
+    [<CustomOperation("AreaRestricted")>] member inline _.AreaRestricted ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AreaRestricted" =>>> true)
+    /// By default, content in the card is restricted to the area of the card itself.
+    /// If you want content to be able to overflow the card, set this property to false.
+    [<CustomOperation("AreaRestricted")>] member inline _.AreaRestricted ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("AreaRestricted" =>>> x)
     /// Gets or sets the width of the card. Must be a valid CSS measurement.
     [<CustomOperation("Width")>] member inline _.Width ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Width" => x)
     /// Gets or sets the height of the card. Must be a valid CSS measurement.
     [<CustomOperation("Height")>] member inline _.Height ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Height" => x)
-    [<CustomOperation("MinimalStyle")>] member inline _.MinimalStyle ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("MinimalStyle" => (defaultArg x true))
+    [<CustomOperation("MinimalStyle")>] member inline _.MinimalStyle ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("MinimalStyle" =>>> true)
+    [<CustomOperation("MinimalStyle")>] member inline _.MinimalStyle ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("MinimalStyle" =>>> x)
 
 type FluentCollapsibleRegionBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
     /// If true, the region is expaned, otherwise it is collapsed.
-    [<CustomOperation("Expanded")>] member inline _.Expanded ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Expanded" => (defaultArg x true))
+    [<CustomOperation("Expanded")>] member inline _.Expanded ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Expanded" =>>> true)
+    /// If true, the region is expaned, otherwise it is collapsed.
+    [<CustomOperation("Expanded")>] member inline _.Expanded ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Expanded" =>>> x)
     /// If true, the region is expaned, otherwise it is collapsed.
     [<CustomOperation("Expanded'")>] member inline _.Expanded' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Boolean * (System.Boolean -> unit)) = render ==> html.bind("Expanded", valueFn)
     /// Explicitly sets the height for the Collapse element to override the css default.
     [<CustomOperation("MaxHeight")>] member inline _.MaxHeight ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("MaxHeight" => x)
     /// Callback for when the Expanded property changes.
-    [<CustomOperation("ExpandedChanged")>] member inline _.ExpandedChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Boolean -> unit) = render ==> html.callback("ExpandedChanged", fn)
+    [<CustomOperation("ExpandedChanged")>] member inline _.ExpandedChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> unit) = render ==> html.callback("ExpandedChanged", fn)
     /// Callback for when the Expanded property changes.
-    [<CustomOperation("ExpandedChanged")>] member inline _.ExpandedChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("ExpandedChanged", fn)
+    [<CustomOperation("ExpandedChanged")>] member inline _.ExpandedChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("ExpandedChanged", fn)
 
 type FluentCounterBadgeBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -942,9 +1046,9 @@ type FluentCounterBadgeBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micro
     /// Can be enriched with a plus sign with ShowOverflow
     [<CustomOperation("Count")>] member inline _.Count ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("Count" => x)
     /// Gets or sets the content you want inside the badge, to customize the badge content.
-    [<CustomOperation("BadgeContent")>] member inline _.BadgeContent ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("BadgeContent", fragment)
+    [<CustomOperation("BadgeContent")>] member inline _.BadgeContent ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("BadgeContent", fragment)
     /// Gets or sets the content you want inside the badge, to customize the badge content.
-    [<CustomOperation("BadgeContent")>] member inline _.BadgeContent ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("BadgeContent", fragment { yield! fragments })
+    [<CustomOperation("BadgeContent")>] member inline _.BadgeContent ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("BadgeContent", fragment { yield! fragments })
     /// Gets or sets the content you want inside the badge, to customize the badge content.
     [<CustomOperation("BadgeContent")>] member inline _.BadgeContent ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("BadgeContent", html.text x)
     /// Gets or sets the content you want inside the badge, to customize the badge content.
@@ -952,7 +1056,7 @@ type FluentCounterBadgeBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micro
     /// Gets or sets the content you want inside the badge, to customize the badge content.
     [<CustomOperation("BadgeContent")>] member inline _.BadgeContent ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("BadgeContent", html.text x)
     /// Gets or sets the content you want inside the badge, to customize the badge content.
-    [<CustomOperation("BadgeTemplate")>] member inline _.BadgeTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Nullable<System.Int32> -> NodeRenderFragment) = render ==> html.renderFragment("BadgeTemplate", fn)
+    [<CustomOperation("BadgeTemplate")>] member inline _.BadgeTemplate ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Nullable<System.Int32> -> NodeRenderFragment) = render ==> html.renderFragment("BadgeTemplate", fn)
     /// Gets or sets the maximum number that can be displayed inside the badge.
     /// Default is 99.
     [<CustomOperation("Max")>] member inline _.Max ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("Max" => x)
@@ -975,13 +1079,23 @@ type FluentCounterBadgeBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micro
     /// Gets or sets if just a dot should be displayed. Count will be ignored if this is set to true.
     /// Defaults to false.
     ///             
-    [<CustomOperation("Dot")>] member inline _.Dot ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Dot" => (defaultArg x true))
+    [<CustomOperation("Dot")>] member inline _.Dot ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Dot" =>>> true)
+    /// Gets or sets if just a dot should be displayed. Count will be ignored if this is set to true.
+    /// Defaults to false.
+    ///             
+    [<CustomOperation("Dot")>] member inline _.Dot ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Dot" =>>> x)
     /// If the counter badge should be displayed when the count is zero.
     /// Defaults to false.
     /// [Obsolete] This parameter will be removed in a future version. Use ShowWhen with a lambda expression instead
     /// For getting the same behavior as before, you can use ShowWhen="@(Count => Count >= 0)"
     ///             
-    [<CustomOperation("ShowZero")>] member inline _.ShowZero ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("ShowZero" => (defaultArg x true))
+    [<CustomOperation("ShowZero")>] member inline _.ShowZero ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowZero" =>>> true)
+    /// If the counter badge should be displayed when the count is zero.
+    /// Defaults to false.
+    /// [Obsolete] This parameter will be removed in a future version. Use ShowWhen with a lambda expression instead
+    /// For getting the same behavior as before, you can use ShowWhen="@(Count => Count >= 0)"
+    ///             
+    [<CustomOperation("ShowZero")>] member inline _.ShowZero ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowZero" =>>> x)
     /// Gets or sets if the counter badge is displayed based on the specified lambda expression.
     /// For example to show the badge when the count greater than 4, use ShowWhen=@(Count => Count > 4)
     /// Default the badge shows when the count is greater than 0.
@@ -989,7 +1103,11 @@ type FluentCounterBadgeBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micro
     /// If an plus sign should be displayed when the Count is greater than Max.
     /// Defaults to true.
     ///             
-    [<CustomOperation("ShowOverflow")>] member inline _.ShowOverflow ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("ShowOverflow" => (defaultArg x true))
+    [<CustomOperation("ShowOverflow")>] member inline _.ShowOverflow ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowOverflow" =>>> true)
+    /// If an plus sign should be displayed when the Count is greater than Max.
+    /// Defaults to true.
+    ///             
+    [<CustomOperation("ShowOverflow")>] member inline _.ShowOverflow ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowOverflow" =>>> x)
 
 /// A component that displays a grid.
 type FluentDataGridBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -1015,14 +1133,27 @@ type FluentDataGridBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric 
     ///             
     /// Generally it's preferable not to use Virtualize if the amount of data being rendered
     /// is small or if you are using pagination.
-    [<CustomOperation("Virtualize")>] member inline _.Virtualize ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Virtualize" => (defaultArg x true))
+    [<CustomOperation("Virtualize")>] member inline _.Virtualize ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Virtualize" =>>> true)
+    /// If true, the grid will be rendered with virtualization. This is normally used in conjunction with
+    /// scrolling and causes the grid to fetch and render only the data around the current scroll viewport.
+    /// This can greatly improve the performance when scrolling through large data sets.
+    ///             
+    /// If you use Virtualize, you should supply a value for ItemSize and must
+    /// ensure that every row renders with the same constant height.
+    ///             
+    /// Generally it's preferable not to use Virtualize if the amount of data being rendered
+    /// is small or if you are using pagination.
+    [<CustomOperation("Virtualize")>] member inline _.Virtualize ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Virtualize" =>>> x)
     /// This is applicable only when using Virtualize. It defines an expected height in pixels for
     /// each row, allowing the virtualization mechanism to fetch the correct number of items to match the display
     /// size and to ensure accurate scrolling.
     [<CustomOperation("ItemSize")>] member inline _.ItemSize ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Single) = render ==> ("ItemSize" => x)
     /// If true, renders draggable handles around the column headers and adds a button to invoke a resize UI.
     /// This allows the user to resize columns manually. Size changes are not persisted.
-    [<CustomOperation("ResizableColumns")>] member inline _.ResizableColumns ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("ResizableColumns" => (defaultArg x true))
+    [<CustomOperation("ResizableColumns")>] member inline _.ResizableColumns ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ResizableColumns" =>>> true)
+    /// If true, renders draggable handles around the column headers and adds a button to invoke a resize UI.
+    /// This allows the user to resize columns manually. Size changes are not persisted.
+    [<CustomOperation("ResizableColumns")>] member inline _.ResizableColumns ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ResizableColumns" =>>> x)
     /// To comply with WCAG 2.2, a one-click option should be offered to change column widths. We provide such an option through the
     /// ColumnOptions UI. This parameter allows you to enable or disable this resize UI.Enable it by setting the type of resize to perform
     /// Discrete: resize by a 10 pixels at a time
@@ -1037,7 +1168,10 @@ type FluentDataGridBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric 
     [<CustomOperation("ColumnOptionsLabels")>] member inline _.ColumnOptionsLabels ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.ColumnOptionsLabels) = render ==> ("ColumnOptionsLabels" => x)
     /// If true, enables the new style of header cell that includes a button to display all column options through a menu.
     ///             
-    [<CustomOperation("HeaderCellAsButtonWithMenu")>] member inline _.HeaderCellAsButtonWithMenu ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("HeaderCellAsButtonWithMenu" => (defaultArg x true))
+    [<CustomOperation("HeaderCellAsButtonWithMenu")>] member inline _.HeaderCellAsButtonWithMenu ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("HeaderCellAsButtonWithMenu" =>>> true)
+    /// If true, enables the new style of header cell that includes a button to display all column options through a menu.
+    ///             
+    [<CustomOperation("HeaderCellAsButtonWithMenu")>] member inline _.HeaderCellAsButtonWithMenu ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("HeaderCellAsButtonWithMenu" =>>> x)
     /// Optionally defines a value for @key on each rendered row. Typically this should be used to specify a
     /// unique identifier, such as a primary key value, for each data item.
     ///             
@@ -1055,7 +1189,10 @@ type FluentDataGridBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric 
     [<CustomOperation("Pagination")>] member inline _.Pagination ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.PaginationState) = render ==> ("Pagination" => x)
     /// Gets or sets a value indicating whether the component will not add itself to the tab queue.
     /// Default is false.
-    [<CustomOperation("NoTabbing")>] member inline _.NoTabbing ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("NoTabbing" => (defaultArg x true))
+    [<CustomOperation("NoTabbing")>] member inline _.NoTabbing ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("NoTabbing" =>>> true)
+    /// Gets or sets a value indicating whether the component will not add itself to the tab queue.
+    /// Default is false.
+    [<CustomOperation("NoTabbing")>] member inline _.NoTabbing ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("NoTabbing" =>>> x)
     /// Gets or sets a value indicating whether the grid should automatically generate a header row and its type.
     /// See GenerateHeaderOption
     [<CustomOperation("GenerateHeader")>] member inline _.GenerateHeader ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.GenerateHeaderOption>) = render ==> ("GenerateHeader" => x)
@@ -1064,36 +1201,38 @@ type FluentDataGridBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric 
     /// Needs to be a valid CSS string of space-separated values, such as "auto 1fr 2fr 100px".
     [<CustomOperation("GridTemplateColumns")>] member inline _.GridTemplateColumns ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("GridTemplateColumns" => x)
     /// Gets or sets a callback when a row is focused.
-    [<CustomOperation("OnRowFocus")>] member inline _.OnRowFocus ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentDataGridRow<'TGridItem> -> unit) = render ==> html.callback("OnRowFocus", fn)
+    [<CustomOperation("OnRowFocus")>] member inline _.OnRowFocus ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentDataGridRow<'TGridItem> -> unit) = render ==> html.callback("OnRowFocus", fn)
     /// Gets or sets a callback when a row is focused.
-    [<CustomOperation("OnRowFocus")>] member inline _.OnRowFocus ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentDataGridRow<'TGridItem> -> Task<unit>) = render ==> html.callbackTask("OnRowFocus", fn)
+    [<CustomOperation("OnRowFocus")>] member inline _.OnRowFocus ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentDataGridRow<'TGridItem> -> Task<unit>) = render ==> html.callbackTask("OnRowFocus", fn)
     /// Gets or sets a callback when a row is focused.
-    [<CustomOperation("OnCellFocus")>] member inline _.OnCellFocus ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentDataGridCell<'TGridItem> -> unit) = render ==> html.callback("OnCellFocus", fn)
+    [<CustomOperation("OnCellFocus")>] member inline _.OnCellFocus ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentDataGridCell<'TGridItem> -> unit) = render ==> html.callback("OnCellFocus", fn)
     /// Gets or sets a callback when a row is focused.
-    [<CustomOperation("OnCellFocus")>] member inline _.OnCellFocus ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentDataGridCell<'TGridItem> -> Task<unit>) = render ==> html.callbackTask("OnCellFocus", fn)
+    [<CustomOperation("OnCellFocus")>] member inline _.OnCellFocus ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentDataGridCell<'TGridItem> -> Task<unit>) = render ==> html.callbackTask("OnCellFocus", fn)
     /// Gets or sets a callback when a cell is clicked.
-    [<CustomOperation("OnCellClick")>] member inline _.OnCellClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentDataGridCell<'TGridItem> -> unit) = render ==> html.callback("OnCellClick", fn)
+    [<CustomOperation("OnCellClick")>] member inline _.OnCellClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentDataGridCell<'TGridItem> -> unit) = render ==> html.callback("OnCellClick", fn)
     /// Gets or sets a callback when a cell is clicked.
-    [<CustomOperation("OnCellClick")>] member inline _.OnCellClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentDataGridCell<'TGridItem> -> Task<unit>) = render ==> html.callbackTask("OnCellClick", fn)
+    [<CustomOperation("OnCellClick")>] member inline _.OnCellClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentDataGridCell<'TGridItem> -> Task<unit>) = render ==> html.callbackTask("OnCellClick", fn)
     /// Gets or sets a callback when a row is clicked.
-    [<CustomOperation("OnRowClick")>] member inline _.OnRowClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentDataGridRow<'TGridItem> -> unit) = render ==> html.callback("OnRowClick", fn)
+    [<CustomOperation("OnRowClick")>] member inline _.OnRowClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentDataGridRow<'TGridItem> -> unit) = render ==> html.callback("OnRowClick", fn)
     /// Gets or sets a callback when a row is clicked.
-    [<CustomOperation("OnRowClick")>] member inline _.OnRowClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentDataGridRow<'TGridItem> -> Task<unit>) = render ==> html.callbackTask("OnRowClick", fn)
+    [<CustomOperation("OnRowClick")>] member inline _.OnRowClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentDataGridRow<'TGridItem> -> Task<unit>) = render ==> html.callbackTask("OnRowClick", fn)
     /// Gets or sets a callback when a row is double-clicked.
-    [<CustomOperation("OnRowDoubleClick")>] member inline _.OnRowDoubleClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentDataGridRow<'TGridItem> -> unit) = render ==> html.callback("OnRowDoubleClick", fn)
+    [<CustomOperation("OnRowDoubleClick")>] member inline _.OnRowDoubleClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentDataGridRow<'TGridItem> -> unit) = render ==> html.callback("OnRowDoubleClick", fn)
     /// Gets or sets a callback when a row is double-clicked.
-    [<CustomOperation("OnRowDoubleClick")>] member inline _.OnRowDoubleClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentDataGridRow<'TGridItem> -> Task<unit>) = render ==> html.callbackTask("OnRowDoubleClick", fn)
+    [<CustomOperation("OnRowDoubleClick")>] member inline _.OnRowDoubleClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentDataGridRow<'TGridItem> -> Task<unit>) = render ==> html.callbackTask("OnRowDoubleClick", fn)
     /// Optionally defines a class to be applied to a rendered row.
     [<CustomOperation("RowClass")>] member inline _.RowClass ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("RowClass" => (System.Func<'TGridItem, System.String>fn))
     /// Optionally defines a style to be applied to a rendered row.
     /// Do not use to dynamically update a row style after rendering as this will interfere with the script that use this attribute. Use RowClass instead.
     [<CustomOperation("RowStyle")>] member inline _.RowStyle ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("RowStyle" => (System.Func<'TGridItem, System.String>fn))
     /// Gets or sets a value indicating whether the grid should show a hover effect on rows.
-    [<CustomOperation("ShowHover")>] member inline _.ShowHover ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("ShowHover" => (defaultArg x true))
+    [<CustomOperation("ShowHover")>] member inline _.ShowHover ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowHover" =>>> true)
+    /// Gets or sets a value indicating whether the grid should show a hover effect on rows.
+    [<CustomOperation("ShowHover")>] member inline _.ShowHover ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowHover" =>>> x)
     /// If specified, grids render this fragment when there is no content.
-    [<CustomOperation("EmptyContent")>] member inline _.EmptyContent ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("EmptyContent", fragment)
+    [<CustomOperation("EmptyContent")>] member inline _.EmptyContent ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("EmptyContent", fragment)
     /// If specified, grids render this fragment when there is no content.
-    [<CustomOperation("EmptyContent")>] member inline _.EmptyContent ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("EmptyContent", fragment { yield! fragments })
+    [<CustomOperation("EmptyContent")>] member inline _.EmptyContent ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("EmptyContent", fragment { yield! fragments })
     /// If specified, grids render this fragment when there is no content.
     [<CustomOperation("EmptyContent")>] member inline _.EmptyContent ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("EmptyContent", html.text x)
     /// If specified, grids render this fragment when there is no content.
@@ -1101,13 +1240,15 @@ type FluentDataGridBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric 
     /// If specified, grids render this fragment when there is no content.
     [<CustomOperation("EmptyContent")>] member inline _.EmptyContent ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("EmptyContent", html.text x)
     /// Gets or sets a value indicating whether the grid is in a loading data state.
-    [<CustomOperation("Loading")>] member inline _.Loading ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Loading" => (defaultArg x true))
+    [<CustomOperation("Loading")>] member inline _.Loading ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Loading" =>>> true)
+    /// Gets or sets a value indicating whether the grid is in a loading data state.
+    [<CustomOperation("Loading")>] member inline _.Loading ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Loading" =>>> x)
     /// Gets or sets the content to render when Loading is true.
     /// A default fragment is used if loading content is not specified.
-    [<CustomOperation("LoadingContent")>] member inline _.LoadingContent ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("LoadingContent", fragment)
+    [<CustomOperation("LoadingContent")>] member inline _.LoadingContent ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("LoadingContent", fragment)
     /// Gets or sets the content to render when Loading is true.
     /// A default fragment is used if loading content is not specified.
-    [<CustomOperation("LoadingContent")>] member inline _.LoadingContent ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("LoadingContent", fragment { yield! fragments })
+    [<CustomOperation("LoadingContent")>] member inline _.LoadingContent ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("LoadingContent", fragment { yield! fragments })
     /// Gets or sets the content to render when Loading is true.
     /// A default fragment is used if loading content is not specified.
     [<CustomOperation("LoadingContent")>] member inline _.LoadingContent ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("LoadingContent", html.text x)
@@ -1118,7 +1259,9 @@ type FluentDataGridBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric 
     /// A default fragment is used if loading content is not specified.
     [<CustomOperation("LoadingContent")>] member inline _.LoadingContent ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("LoadingContent", html.text x)
     /// Sets GridTemplateColumns to automatically fit the columns to the available width as best it can.
-    [<CustomOperation("AutoFit")>] member inline _.AutoFit ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("AutoFit" => (defaultArg x true))
+    [<CustomOperation("AutoFit")>] member inline _.AutoFit ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AutoFit" =>>> true)
+    /// Sets GridTemplateColumns to automatically fit the columns to the available width as best it can.
+    [<CustomOperation("AutoFit")>] member inline _.AutoFit ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("AutoFit" =>>> x)
 
 type FluentDataGridCellBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -1142,8 +1285,8 @@ type FluentDataGridRowBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGener
     /// Gets or sets the type of row. See DataGridRowType.
     [<CustomOperation("RowType")>] member inline _.RowType ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.DataGridRowType>) = render ==> ("RowType" => x)
     [<CustomOperation("VerticalAlignment")>] member inline _.VerticalAlignment ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.VerticalAlignment) = render ==> ("VerticalAlignment" => x)
-    [<CustomOperation("OnCellFocus")>] member inline _.OnCellFocus ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentDataGridCell<'TGridItem> -> unit) = render ==> html.callback("OnCellFocus", fn)
-    [<CustomOperation("OnCellFocus")>] member inline _.OnCellFocus ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentDataGridCell<'TGridItem> -> Task<unit>) = render ==> html.callbackTask("OnCellFocus", fn)
+    [<CustomOperation("OnCellFocus")>] member inline _.OnCellFocus ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentDataGridCell<'TGridItem> -> unit) = render ==> html.callback("OnCellFocus", fn)
+    [<CustomOperation("OnCellFocus")>] member inline _.OnCellFocus ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentDataGridCell<'TGridItem> -> Task<unit>) = render ==> html.callbackTask("OnCellFocus", fn)
 
 type FluentDesignSystemProviderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -1213,18 +1356,22 @@ type FluentDesignSystemProviderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric 
 type FluentDialogBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
     /// Prevents scrolling outside of the dialog while it is shown.
-    [<CustomOperation("PreventScroll")>] member inline _.PreventScroll ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("PreventScroll" => (defaultArg x true))
+    [<CustomOperation("PreventScroll")>] member inline _.PreventScroll ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("PreventScroll" =>>> true)
+    /// Prevents scrolling outside of the dialog while it is shown.
+    [<CustomOperation("PreventScroll")>] member inline _.PreventScroll ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("PreventScroll" =>>> x)
     /// Gets or sets a value indicating whether the element is modal. When modal, user mouse interaction will be limited to the contents of the element by a modal
     /// overlay. Clicks on the overlay will cause the dialog to emit a "dismiss" event.
     [<CustomOperation("Modal")>] member inline _.Modal ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("Modal" => x)
     /// Gets or sets a value indicating whether the dialog is hidden.
-    [<CustomOperation("Hidden")>] member inline _.Hidden ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Hidden" => (defaultArg x true))
+    [<CustomOperation("Hidden")>] member inline _.Hidden ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Hidden" =>>> true)
+    /// Gets or sets a value indicating whether the dialog is hidden.
+    [<CustomOperation("Hidden")>] member inline _.Hidden ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Hidden" =>>> x)
     /// Gets or sets a value indicating whether the dialog is hidden.
     [<CustomOperation("Hidden'")>] member inline _.Hidden' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Boolean * (System.Boolean -> unit)) = render ==> html.bind("Hidden", valueFn)
     /// The event callback invoked when Hidden change.
-    [<CustomOperation("HiddenChanged")>] member inline _.HiddenChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Boolean -> unit) = render ==> html.callback("HiddenChanged", fn)
+    [<CustomOperation("HiddenChanged")>] member inline _.HiddenChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> unit) = render ==> html.callback("HiddenChanged", fn)
     /// The event callback invoked when Hidden change.
-    [<CustomOperation("HiddenChanged")>] member inline _.HiddenChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("HiddenChanged", fn)
+    [<CustomOperation("HiddenChanged")>] member inline _.HiddenChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("HiddenChanged", fn)
     /// Gets or sets a value indicating whether that the dialog should trap focus.
     [<CustomOperation("TrapFocus")>] member inline _.TrapFocus ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("TrapFocus" => x)
     /// Gets or sets the id of the element describing the dialog.
@@ -1236,9 +1383,9 @@ type FluentDialogBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.A
     /// Gets or sets the instance containing the programmatic API for the dialog.
     [<CustomOperation("Instance")>] member inline _.Instance ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.DialogInstance) = render ==> ("Instance" => x)
     /// The event callback invoked to return the dialog result.
-    [<CustomOperation("OnDialogResult")>] member inline _.OnDialogResult ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.DialogResult -> unit) = render ==> html.callback("OnDialogResult", fn)
+    [<CustomOperation("OnDialogResult")>] member inline _.OnDialogResult ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.DialogResult -> unit) = render ==> html.callback("OnDialogResult", fn)
     /// The event callback invoked to return the dialog result.
-    [<CustomOperation("OnDialogResult")>] member inline _.OnDialogResult ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.DialogResult -> Task<unit>) = render ==> html.callbackTask("OnDialogResult", fn)
+    [<CustomOperation("OnDialogResult")>] member inline _.OnDialogResult ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.DialogResult -> Task<unit>) = render ==> html.callbackTask("OnDialogResult", fn)
 
 type FluentDialogBodyBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -1248,13 +1395,19 @@ type FluentDialogFooterBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micro
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
     /// When true, the footer is visible.
     /// Default is True.
-    [<CustomOperation("Visible")>] member inline _.Visible ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Visible" => (defaultArg x true))
+    [<CustomOperation("Visible")>] member inline _.Visible ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Visible" =>>> true)
+    /// When true, the footer is visible.
+    /// Default is True.
+    [<CustomOperation("Visible")>] member inline _.Visible ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Visible" =>>> x)
 
 type FluentDialogHeaderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
     /// When true, the header is visible.
     /// Default is True.
-    [<CustomOperation("Visible")>] member inline _.Visible ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Visible" => (defaultArg x true))
+    [<CustomOperation("Visible")>] member inline _.Visible ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Visible" =>>> true)
+    /// When true, the header is visible.
+    /// Default is True.
+    [<CustomOperation("Visible")>] member inline _.Visible ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Visible" =>>> x)
     /// When true, shows the dismiss button in the header.
     /// If defined, this value will replace the one defined in the DialogParameters.
     [<CustomOperation("ShowDismiss")>] member inline _.ShowDismiss ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("ShowDismiss" => x)
@@ -1286,9 +1439,13 @@ type FluentDropZoneBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> M
     /// Gets or sets the item to identify a draggable zone.
     [<CustomOperation("Item")>] member inline _.Item ([<InlineIfLambda>] render: AttrRenderFragment, x: 'TItem) = render ==> ("Item" => x)
     /// Gets or sets a value indicating whether the element can receive a dragged item.
-    [<CustomOperation("Droppable")>] member inline _.Droppable ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Droppable" => (defaultArg x true))
+    [<CustomOperation("Droppable")>] member inline _.Droppable ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Droppable" =>>> true)
+    /// Gets or sets a value indicating whether the element can receive a dragged item.
+    [<CustomOperation("Droppable")>] member inline _.Droppable ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Droppable" =>>> x)
     /// Gets or sets a value indicating whether the element can be dragged.
-    [<CustomOperation("Draggable")>] member inline _.Draggable ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Draggable" => (defaultArg x true))
+    [<CustomOperation("Draggable")>] member inline _.Draggable ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Draggable" =>>> true)
+    /// Gets or sets a value indicating whether the element can be dragged.
+    [<CustomOperation("Draggable")>] member inline _.Draggable ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Draggable" =>>> x)
     /// This event is fired when the user starts dragging an element.
     [<CustomOperation("OnDragStart")>] member inline _.OnDragStart ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("OnDragStart" => (System.Action<Microsoft.FluentUI.AspNetCore.Components.FluentDragEventArgs<'TItem>>fn))
     /// This event is fired when the drag operation ends (such as releasing a mouse button or hitting the Esc key).
@@ -1315,9 +1472,9 @@ type FluentEmojiBuilder<'FunBlazorGeneric, 'Emoji when 'Emoji : (new : unit -> '
     /// Gets or sets the Emoji object to render.
     [<CustomOperation("Value")>] member inline _.Value ([<InlineIfLambda>] render: AttrRenderFragment, x: 'Emoji) = render ==> ("Value" => x)
     /// Allows for capturing a mouse click on an emoji
-    [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> unit) = render ==> html.callback("OnClick", fn)
+    [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> unit) = render ==> html.callback("OnClick", fn)
     /// Allows for capturing a mouse click on an emoji
-    [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> Task<unit>) = render ==> html.callbackTask("OnClick", fn)
+    [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> Task<unit>) = render ==> html.callbackTask("OnClick", fn)
 
 type FluentFlipperBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -1353,11 +1510,14 @@ type FluentGridBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.Asp
     [<CustomOperation("Justify")>] member inline _.Justify ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.JustifyContent) = render ==> ("Justify" => x)
     /// Gets or sets the adaptive rendering, which not render the HTML code when the item is hidden (true) or only hide the item by CSS (false).
     /// Default is false.
-    [<CustomOperation("AdaptiveRendering")>] member inline _.AdaptiveRendering ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("AdaptiveRendering" => (defaultArg x true))
+    [<CustomOperation("AdaptiveRendering")>] member inline _.AdaptiveRendering ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AdaptiveRendering" =>>> true)
+    /// Gets or sets the adaptive rendering, which not render the HTML code when the item is hidden (true) or only hide the item by CSS (false).
+    /// Default is false.
+    [<CustomOperation("AdaptiveRendering")>] member inline _.AdaptiveRendering ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("AdaptiveRendering" =>>> x)
     /// when page size falls within a specific size range (xs, sm, md, lg, xl, xxl).
-    [<CustomOperation("OnBreakpointEnter")>] member inline _.OnBreakpointEnter ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.GridItemSize -> unit) = render ==> html.callback("OnBreakpointEnter", fn)
+    [<CustomOperation("OnBreakpointEnter")>] member inline _.OnBreakpointEnter ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.GridItemSize -> unit) = render ==> html.callback("OnBreakpointEnter", fn)
     /// when page size falls within a specific size range (xs, sm, md, lg, xl, xxl).
-    [<CustomOperation("OnBreakpointEnter")>] member inline _.OnBreakpointEnter ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.GridItemSize -> Task<unit>) = render ==> html.callbackTask("OnBreakpointEnter", fn)
+    [<CustomOperation("OnBreakpointEnter")>] member inline _.OnBreakpointEnter ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.GridItemSize -> Task<unit>) = render ==> html.callbackTask("OnBreakpointEnter", fn)
 
 type FluentGridItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -1398,7 +1558,9 @@ type FluentHeaderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.A
 type FluentHighlighterBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
     /// Gets or sets a value indicating whether the highlighted text is case sensitive.
-    [<CustomOperation("CaseSensitive")>] member inline _.CaseSensitive ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("CaseSensitive" => (defaultArg x true))
+    [<CustomOperation("CaseSensitive")>] member inline _.CaseSensitive ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("CaseSensitive" =>>> true)
+    /// Gets or sets a value indicating whether the highlighted text is case sensitive.
+    [<CustomOperation("CaseSensitive")>] member inline _.CaseSensitive ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("CaseSensitive" =>>> x)
     /// Gets or sets the fragment of text to be highlighted.
     [<CustomOperation("HighlightedText")>] member inline _.HighlightedText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("HighlightedText" => x)
     /// Gets or sets the whole text in which a fragment will be highlighted.
@@ -1406,7 +1568,9 @@ type FluentHighlighterBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micros
     /// Gets or sets the list of delimiters chars. Example: " ,;".
     [<CustomOperation("Delimiters")>] member inline _.Delimiters ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Delimiters" => x)
     /// If true, highlights the text until the next regex boundary.
-    [<CustomOperation("UntilNextBoundary")>] member inline _.UntilNextBoundary ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("UntilNextBoundary" => (defaultArg x true))
+    [<CustomOperation("UntilNextBoundary")>] member inline _.UntilNextBoundary ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("UntilNextBoundary" =>>> true)
+    /// If true, highlights the text until the next regex boundary.
+    [<CustomOperation("UntilNextBoundary")>] member inline _.UntilNextBoundary ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("UntilNextBoundary" =>>> x)
 
 type FluentHorizontalScrollBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -1441,18 +1605,24 @@ type FluentIconBuilder<'FunBlazorGeneric, 'Icon when 'Icon : (new : unit -> 'Ico
     /// Gets or sets the Icon object to render.
     [<CustomOperation("Value")>] member inline _.Value ([<InlineIfLambda>] render: AttrRenderFragment, x: 'Icon) = render ==> ("Value" => x)
     /// Allows for capturing a mouse click on an icon.
-    [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> unit) = render ==> html.callback("OnClick", fn)
+    [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> unit) = render ==> html.callback("OnClick", fn)
     /// Allows for capturing a mouse click on an icon.
-    [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> Task<unit>) = render ==> html.callbackTask("OnClick", fn)
+    [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> Task<unit>) = render ==> html.callbackTask("OnClick", fn)
     /// Gets or sets whether the icon is focusable (adding tabindex="0" and role="button"),
     /// allows the icon to be focused sequentially (generally with the Tab key).
-    [<CustomOperation("Focusable")>] member inline _.Focusable ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Focusable" => (defaultArg x true))
+    [<CustomOperation("Focusable")>] member inline _.Focusable ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Focusable" =>>> true)
+    /// Gets or sets whether the icon is focusable (adding tabindex="0" and role="button"),
+    /// allows the icon to be focused sequentially (generally with the Tab key).
+    [<CustomOperation("Focusable")>] member inline _.Focusable ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Focusable" =>>> x)
 
 type FluentInputFileBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
     /// To enable multiple file selection and upload, set the Multiple property to true.
     /// Set MaximumFileCount to change the number of allowed files.
-    [<CustomOperation("Multiple")>] member inline _.Multiple ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Multiple" => (defaultArg x true))
+    [<CustomOperation("Multiple")>] member inline _.Multiple ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Multiple" =>>> true)
+    /// To enable multiple file selection and upload, set the Multiple property to true.
+    /// Set MaximumFileCount to change the number of allowed files.
+    [<CustomOperation("Multiple")>] member inline _.Multiple ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Multiple" =>>> x)
     /// To select multiple files, set the maximum number of files allowed to be uploaded.
     /// Default value is 10.
     [<CustomOperation("MaximumFileCount")>] member inline _.MaximumFileCount ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("MaximumFileCount" => x)
@@ -1468,40 +1638,45 @@ type FluentInputFileBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsof
     /// for more information.
     [<CustomOperation("Accept")>] member inline _.Accept ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Accept" => x)
     /// Disables the form control, ensuring it doesn't participate in form submission.
-    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Disabled" => (defaultArg x true))
+    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Disabled" =>>> true)
+    /// Disables the form control, ensuring it doesn't participate in form submission.
+    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Disabled" =>>> x)
     /// Gets or sets the type of file reading.
     /// For SaveToTemporaryFolder, use LocalFile to retrieve the file.
     /// For Buffer, use Buffer to retrieve bytes.
     [<CustomOperation("Mode")>] member inline _.Mode ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.InputFileMode) = render ==> ("Mode" => x)
     /// Gets or sets a value indicating whether the Drag/Drop zone is visible.
     /// Default is true.
-    [<CustomOperation("DragDropZoneVisible")>] member inline _.DragDropZoneVisible ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("DragDropZoneVisible" => (defaultArg x true))
+    [<CustomOperation("DragDropZoneVisible")>] member inline _.DragDropZoneVisible ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("DragDropZoneVisible" =>>> true)
+    /// Gets or sets a value indicating whether the Drag/Drop zone is visible.
+    /// Default is true.
+    [<CustomOperation("DragDropZoneVisible")>] member inline _.DragDropZoneVisible ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("DragDropZoneVisible" =>>> x)
     /// Gets or sets the progress content of the component.
-    [<CustomOperation("ProgressTemplate")>] member inline _.ProgressTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.ProgressFileDetails -> NodeRenderFragment) = render ==> html.renderFragment("ProgressTemplate", fn)
+    [<CustomOperation("ProgressTemplate")>] member inline _.ProgressTemplate ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.ProgressFileDetails -> NodeRenderFragment) = render ==> html.renderFragment("ProgressTemplate", fn)
     /// Use the native event raised by the InputFile component.
     /// If you use this event, the OnFileUploaded will never be raised.
-    [<CustomOperation("OnInputFileChange")>] member inline _.OnInputFileChange ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.AspNetCore.Components.Forms.InputFileChangeEventArgs -> unit) = render ==> html.callback("OnInputFileChange", fn)
+    [<CustomOperation("OnInputFileChange")>] member inline _.OnInputFileChange ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Forms.InputFileChangeEventArgs -> unit) = render ==> html.callback("OnInputFileChange", fn)
     /// Use the native event raised by the InputFile component.
     /// If you use this event, the OnFileUploaded will never be raised.
-    [<CustomOperation("OnInputFileChange")>] member inline _.OnInputFileChange ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.AspNetCore.Components.Forms.InputFileChangeEventArgs -> Task<unit>) = render ==> html.callbackTask("OnInputFileChange", fn)
+    [<CustomOperation("OnInputFileChange")>] member inline _.OnInputFileChange ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Forms.InputFileChangeEventArgs -> Task<unit>) = render ==> html.callbackTask("OnInputFileChange", fn)
     /// Raise when a file is completely uploaded.
-    [<CustomOperation("OnFileUploaded")>] member inline _.OnFileUploaded ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentInputFileEventArgs -> unit) = render ==> html.callback("OnFileUploaded", fn)
+    [<CustomOperation("OnFileUploaded")>] member inline _.OnFileUploaded ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentInputFileEventArgs -> unit) = render ==> html.callback("OnFileUploaded", fn)
     /// Raise when a file is completely uploaded.
-    [<CustomOperation("OnFileUploaded")>] member inline _.OnFileUploaded ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentInputFileEventArgs -> Task<unit>) = render ==> html.callbackTask("OnFileUploaded", fn)
+    [<CustomOperation("OnFileUploaded")>] member inline _.OnFileUploaded ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentInputFileEventArgs -> Task<unit>) = render ==> html.callbackTask("OnFileUploaded", fn)
     /// Raise when a progression step is updated.
     /// You can use ProgressPercent and ProgressTitle to have more detail on the progression.
-    [<CustomOperation("OnProgressChange")>] member inline _.OnProgressChange ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentInputFileEventArgs -> unit) = render ==> html.callback("OnProgressChange", fn)
+    [<CustomOperation("OnProgressChange")>] member inline _.OnProgressChange ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentInputFileEventArgs -> unit) = render ==> html.callback("OnProgressChange", fn)
     /// Raise when a progression step is updated.
     /// You can use ProgressPercent and ProgressTitle to have more detail on the progression.
-    [<CustomOperation("OnProgressChange")>] member inline _.OnProgressChange ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentInputFileEventArgs -> Task<unit>) = render ==> html.callbackTask("OnProgressChange", fn)
+    [<CustomOperation("OnProgressChange")>] member inline _.OnProgressChange ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentInputFileEventArgs -> Task<unit>) = render ==> html.callbackTask("OnProgressChange", fn)
     /// Raise when a file raised an error. Not yet used.
-    [<CustomOperation("OnFileError")>] member inline _.OnFileError ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentInputFileEventArgs -> unit) = render ==> html.callback("OnFileError", fn)
+    [<CustomOperation("OnFileError")>] member inline _.OnFileError ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentInputFileEventArgs -> unit) = render ==> html.callback("OnFileError", fn)
     /// Raise when a file raised an error. Not yet used.
-    [<CustomOperation("OnFileError")>] member inline _.OnFileError ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentInputFileEventArgs -> Task<unit>) = render ==> html.callbackTask("OnFileError", fn)
+    [<CustomOperation("OnFileError")>] member inline _.OnFileError ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentInputFileEventArgs -> Task<unit>) = render ==> html.callbackTask("OnFileError", fn)
     /// Raise when all files are completely uploaded.
-    [<CustomOperation("OnCompleted")>] member inline _.OnCompleted ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Collections.Generic.IEnumerable<Microsoft.FluentUI.AspNetCore.Components.FluentInputFileEventArgs> -> unit) = render ==> html.callback("OnCompleted", fn)
+    [<CustomOperation("OnCompleted")>] member inline _.OnCompleted ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Collections.Generic.IEnumerable<Microsoft.FluentUI.AspNetCore.Components.FluentInputFileEventArgs> -> unit) = render ==> html.callback("OnCompleted", fn)
     /// Raise when all files are completely uploaded.
-    [<CustomOperation("OnCompleted")>] member inline _.OnCompleted ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Collections.Generic.IEnumerable<Microsoft.FluentUI.AspNetCore.Components.FluentInputFileEventArgs> -> Task<unit>) = render ==> html.callbackTask("OnCompleted", fn)
+    [<CustomOperation("OnCompleted")>] member inline _.OnCompleted ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Collections.Generic.IEnumerable<Microsoft.FluentUI.AspNetCore.Components.FluentInputFileEventArgs> -> Task<unit>) = render ==> html.callbackTask("OnCompleted", fn)
     /// Gets or sets the identifier of the source component clickable by the end user.
     [<CustomOperation("AnchorId")>] member inline _.AnchorId ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("AnchorId" => x)
     /// Gets or sets the current global value of the percentage of a current upload.
@@ -1509,20 +1684,26 @@ type FluentInputFileBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsof
     /// Gets or sets the current global value of the percentage of a current upload.
     [<CustomOperation("ProgressPercent'")>] member inline _.ProgressPercent' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Int32 * (System.Int32 -> unit)) = render ==> html.bind("ProgressPercent", valueFn)
     /// Gets or sets a callback that updates the ProgressPercent.
-    [<CustomOperation("ProgressPercentChanged")>] member inline _.ProgressPercentChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Int32 -> unit) = render ==> html.callback("ProgressPercentChanged", fn)
+    [<CustomOperation("ProgressPercentChanged")>] member inline _.ProgressPercentChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Int32 -> unit) = render ==> html.callback("ProgressPercentChanged", fn)
     /// Gets or sets a callback that updates the ProgressPercent.
-    [<CustomOperation("ProgressPercentChanged")>] member inline _.ProgressPercentChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Int32 -> Task<unit>) = render ==> html.callbackTask("ProgressPercentChanged", fn)
+    [<CustomOperation("ProgressPercentChanged")>] member inline _.ProgressPercentChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Int32 -> Task<unit>) = render ==> html.callbackTask("ProgressPercentChanged", fn)
 
 type FluentLabelBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
     /// Applies the theme typography styles.
     [<CustomOperation("Typo")>] member inline _.Typo ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Typography) = render ==> ("Typo" => x)
     /// Activates or deactivates the component (changes the color).
-    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Disabled" => (defaultArg x true))
+    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Disabled" =>>> true)
+    /// Activates or deactivates the component (changes the color).
+    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Disabled" =>>> x)
     /// Gets or sets the text-align on the component.
     [<CustomOperation("Alignment")>] member inline _.Alignment ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.HorizontalAlignment>) = render ==> ("Alignment" => x)
     /// Gets or sets the color of the component. It supports the theme colors.
     [<CustomOperation("Color")>] member inline _.Color ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.Color>) = render ==> ("Color" => x)
+    /// Gets or sets the color of the label to a custom value.
+    /// Needs to be formatted as a valid CSS color value (HTML hex color string (#rrggbb or #rgb), CSS variable or named color).
+    /// ⚠️ Only available when Color is set to Color.Custom.
+    [<CustomOperation("CustomColor")>] member inline _.CustomColor ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("CustomColor" => x)
     /// Gets or sets the font weight of the component:
     /// Normal (400), Bold (600) or Bolder (800).
     [<CustomOperation("Weight")>] member inline _.Weight ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.FontWeight) = render ==> ("Weight" => x)
@@ -1539,21 +1720,25 @@ type FluentLayoutBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.A
 type FluentOptionBuilder<'FunBlazorGeneric, 'TOption when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
     /// Gets or sets a value indicating whether the element is disabled.
-    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Disabled" => (defaultArg x true))
+    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Disabled" =>>> true)
+    /// Gets or sets a value indicating whether the element is disabled.
+    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Disabled" =>>> x)
     /// Gets or sets the value of this option.
     [<CustomOperation("Value")>] member inline _.Value ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Value" => x)
     /// Gets or sets a value indicating whether the element is selected.
-    [<CustomOperation("Selected")>] member inline _.Selected ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Selected" => (defaultArg x true))
+    [<CustomOperation("Selected")>] member inline _.Selected ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Selected" =>>> true)
+    /// Gets or sets a value indicating whether the element is selected.
+    [<CustomOperation("Selected")>] member inline _.Selected ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Selected" =>>> x)
     /// Gets or sets a value indicating whether the element is selected.
     [<CustomOperation("Selected'")>] member inline _.Selected' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Boolean * (System.Boolean -> unit)) = render ==> html.bind("Selected", valueFn)
     /// Called whenever the selection changed.
-    [<CustomOperation("SelectedChanged")>] member inline _.SelectedChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Boolean -> unit) = render ==> html.callback("SelectedChanged", fn)
+    [<CustomOperation("SelectedChanged")>] member inline _.SelectedChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> unit) = render ==> html.callback("SelectedChanged", fn)
     /// Called whenever the selection changed.
-    [<CustomOperation("SelectedChanged")>] member inline _.SelectedChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("SelectedChanged", fn)
+    [<CustomOperation("SelectedChanged")>] member inline _.SelectedChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("SelectedChanged", fn)
     /// Called whenever the selection changed.
-    [<CustomOperation("OnSelect")>] member inline _.OnSelect ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.String -> unit) = render ==> html.callback("OnSelect", fn)
+    [<CustomOperation("OnSelect")>] member inline _.OnSelect ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.String -> unit) = render ==> html.callback("OnSelect", fn)
     /// Called whenever the selection changed.
-    [<CustomOperation("OnSelect")>] member inline _.OnSelect ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.String -> Task<unit>) = render ==> html.callbackTask("OnSelect", fn)
+    [<CustomOperation("OnSelect")>] member inline _.OnSelect ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.String -> Task<unit>) = render ==> html.callbackTask("OnSelect", fn)
 
 /// People picker option component.
 type FluentPersonaBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -1578,22 +1763,22 @@ type FluentPersonaBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     /// Default is ExtraSmall.
     [<CustomOperation("StatusSize")>] member inline _.StatusSize ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.PresenceBadgeSize) = render ==> ("StatusSize" => x)
     /// Gets or sets the event raised when the user clicks on this Persona.
-    [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> unit) = render ==> html.callback("OnClick", fn)
+    [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> unit) = render ==> html.callback("OnClick", fn)
     /// Gets or sets the event raised when the user clicks on this Persona.
-    [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> Task<unit>) = render ==> html.callbackTask("OnClick", fn)
+    [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> Task<unit>) = render ==> html.callbackTask("OnClick", fn)
     /// Gets or sets the event raised when the user clicks on the dismiss button.
-    [<CustomOperation("OnDismissClick")>] member inline _.OnDismissClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: unit -> unit) = render ==> html.callback("OnDismissClick", fn)
+    [<CustomOperation("OnDismissClick")>] member inline _.OnDismissClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> unit) = render ==> html.callback("OnDismissClick", fn)
     /// Gets or sets the event raised when the user clicks on the dismiss button.
-    [<CustomOperation("OnDismissClick")>] member inline _.OnDismissClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: unit -> Task<unit>) = render ==> html.callbackTask("OnDismissClick", fn)
+    [<CustomOperation("OnDismissClick")>] member inline _.OnDismissClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> Task<unit>) = render ==> html.callbackTask("OnDismissClick", fn)
     /// Gets or sets the title of the dismiss button.
     [<CustomOperation("DismissTitle")>] member inline _.DismissTitle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("DismissTitle" => x)
 
 type FluentMainLayoutBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
     /// Gets or sets the header content.
-    [<CustomOperation("Header")>] member inline _.Header ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("Header", fragment)
+    [<CustomOperation("Header")>] member inline _.Header ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("Header", fragment)
     /// Gets or sets the header content.
-    [<CustomOperation("Header")>] member inline _.Header ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("Header", fragment { yield! fragments })
+    [<CustomOperation("Header")>] member inline _.Header ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("Header", fragment { yield! fragments })
     /// Gets or sets the header content.
     [<CustomOperation("Header")>] member inline _.Header ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("Header", html.text x)
     /// Gets or sets the header content.
@@ -1601,9 +1786,9 @@ type FluentMainLayoutBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microso
     /// Gets or sets the header content.
     [<CustomOperation("Header")>] member inline _.Header ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("Header", html.text x)
     /// Gets or sets the sub header content.
-    [<CustomOperation("SubHeader")>] member inline _.SubHeader ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("SubHeader", fragment)
+    [<CustomOperation("SubHeader")>] member inline _.SubHeader ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("SubHeader", fragment)
     /// Gets or sets the sub header content.
-    [<CustomOperation("SubHeader")>] member inline _.SubHeader ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("SubHeader", fragment { yield! fragments })
+    [<CustomOperation("SubHeader")>] member inline _.SubHeader ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("SubHeader", fragment { yield! fragments })
     /// Gets or sets the sub header content.
     [<CustomOperation("SubHeader")>] member inline _.SubHeader ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("SubHeader", html.text x)
     /// Gets or sets the sub header content.
@@ -1617,9 +1802,9 @@ type FluentMainLayoutBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microso
     /// Gets or sets the width of the navigation menu.
     [<CustomOperation("NavMenuWidth")>] member inline _.NavMenuWidth ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("NavMenuWidth" => x)
     /// Gets or sets the content of the navigation menu.
-    [<CustomOperation("NavMenuContent")>] member inline _.NavMenuContent ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("NavMenuContent", fragment)
+    [<CustomOperation("NavMenuContent")>] member inline _.NavMenuContent ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("NavMenuContent", fragment)
     /// Gets or sets the content of the navigation menu.
-    [<CustomOperation("NavMenuContent")>] member inline _.NavMenuContent ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("NavMenuContent", fragment { yield! fragments })
+    [<CustomOperation("NavMenuContent")>] member inline _.NavMenuContent ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("NavMenuContent", fragment { yield! fragments })
     /// Gets or sets the content of the navigation menu.
     [<CustomOperation("NavMenuContent")>] member inline _.NavMenuContent ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("NavMenuContent", html.text x)
     /// Gets or sets the content of the navigation menu.
@@ -1627,9 +1812,9 @@ type FluentMainLayoutBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microso
     /// Gets or sets the content of the navigation menu.
     [<CustomOperation("NavMenuContent")>] member inline _.NavMenuContent ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("NavMenuContent", html.text x)
     /// Gets or sets the content of the body.
-    [<CustomOperation("Body")>] member inline _.Body ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("Body", fragment)
+    [<CustomOperation("Body")>] member inline _.Body ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("Body", fragment)
     /// Gets or sets the content of the body.
-    [<CustomOperation("Body")>] member inline _.Body ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("Body", fragment { yield! fragments })
+    [<CustomOperation("Body")>] member inline _.Body ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("Body", fragment { yield! fragments })
     /// Gets or sets the content of the body.
     [<CustomOperation("Body")>] member inline _.Body ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("Body", html.text x)
     /// Gets or sets the content of the body.
@@ -1661,49 +1846,67 @@ type FluentMenuButtonBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microso
     /// Gets or sets the items to show in the menu.
     [<CustomOperation("Items")>] member inline _.Items ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.Dictionary<System.String, System.String>) = render ==> ("Items" => x)
     /// The callback to invoke when a menu item is chosen.
-    [<CustomOperation("OnMenuChanged")>] member inline _.OnMenuChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.MenuChangeEventArgs -> unit) = render ==> html.callback("OnMenuChanged", fn)
+    /// Using this event prevents the execution of any OnClick event on an included FluentMenuItem.
+    [<CustomOperation("OnMenuChanged")>] member inline _.OnMenuChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.MenuChangeEventArgs -> unit) = render ==> html.callback("OnMenuChanged", fn)
     /// The callback to invoke when a menu item is chosen.
-    [<CustomOperation("OnMenuChanged")>] member inline _.OnMenuChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.MenuChangeEventArgs -> Task<unit>) = render ==> html.callbackTask("OnMenuChanged", fn)
+    /// Using this event prevents the execution of any OnClick event on an included FluentMenuItem.
+    [<CustomOperation("OnMenuChanged")>] member inline _.OnMenuChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.MenuChangeEventArgs -> Task<unit>) = render ==> html.callbackTask("OnMenuChanged", fn)
 
 type FluentMenuBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
     /// Use IMenuService to create the menu, if this service was injected.
     /// This value must be defined before the component is rendered (you can't change it during the component lifecycle).
     /// Default, true.
-    [<CustomOperation("UseMenuService")>] member inline _.UseMenuService ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("UseMenuService" => (defaultArg x true))
+    [<CustomOperation("UseMenuService")>] member inline _.UseMenuService ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("UseMenuService" =>>> true)
+    /// Use IMenuService to create the menu, if this service was injected.
+    /// This value must be defined before the component is rendered (you can't change it during the component lifecycle).
+    /// Default, true.
+    [<CustomOperation("UseMenuService")>] member inline _.UseMenuService ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("UseMenuService" =>>> x)
     /// Gets or sets the identifier of the source component clickable by the end user.
     [<CustomOperation("Anchor")>] member inline _.Anchor ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Anchor" => x)
     /// Gets or sets the automatic trigger. See 
     /// Possible values are None (default), Left, Middle, Right, Back, Forward
     [<CustomOperation("Trigger")>] member inline _.Trigger ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.MouseButton) = render ==> ("Trigger" => x)
     /// Gets or sets the Menu status.
-    [<CustomOperation("Open")>] member inline _.Open ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Open" => (defaultArg x true))
+    [<CustomOperation("Open")>] member inline _.Open ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Open" =>>> true)
+    /// Gets or sets the Menu status.
+    [<CustomOperation("Open")>] member inline _.Open ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Open" =>>> x)
     /// Gets or sets the Menu status.
     [<CustomOperation("Open'")>] member inline _.Open' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Boolean * (System.Boolean -> unit)) = render ==> html.bind("Open", valueFn)
     /// Gets or sets the horizontal menu position.
     [<CustomOperation("HorizontalPosition")>] member inline _.HorizontalPosition ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.HorizontalPosition) = render ==> ("HorizontalPosition" => x)
     /// Gets or sets a value indicating whether the region overlaps the anchor on the horizontal axis.
     /// Default is false which places the region adjacent to the anchor element.
-    [<CustomOperation("HorizontalInset")>] member inline _.HorizontalInset ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("HorizontalInset" => (defaultArg x true))
+    [<CustomOperation("HorizontalInset")>] member inline _.HorizontalInset ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("HorizontalInset" =>>> true)
+    /// Gets or sets a value indicating whether the region overlaps the anchor on the horizontal axis.
+    /// Default is false which places the region adjacent to the anchor element.
+    [<CustomOperation("HorizontalInset")>] member inline _.HorizontalInset ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("HorizontalInset" =>>> x)
     /// Gets or sets the vertical menu position.
     [<CustomOperation("VerticalPosition")>] member inline _.VerticalPosition ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.VerticalPosition) = render ==> ("VerticalPosition" => x)
     /// Gets or sets a value indicating whether the region overlaps the anchor on the vertical axis.
-    [<CustomOperation("VerticalInset")>] member inline _.VerticalInset ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("VerticalInset" => (defaultArg x true))
+    [<CustomOperation("VerticalInset")>] member inline _.VerticalInset ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("VerticalInset" =>>> true)
+    /// Gets or sets a value indicating whether the region overlaps the anchor on the vertical axis.
+    [<CustomOperation("VerticalInset")>] member inline _.VerticalInset ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("VerticalInset" =>>> x)
     /// Gets or sets the width of this menu.
     [<CustomOperation("Width")>] member inline _.Width ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Width" => x)
     /// Raised when the Open property changed.
-    [<CustomOperation("OpenChanged")>] member inline _.OpenChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Boolean -> unit) = render ==> html.callback("OpenChanged", fn)
+    [<CustomOperation("OpenChanged")>] member inline _.OpenChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> unit) = render ==> html.callback("OpenChanged", fn)
     /// Raised when the Open property changed.
-    [<CustomOperation("OpenChanged")>] member inline _.OpenChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("OpenChanged", fn)
+    [<CustomOperation("OpenChanged")>] member inline _.OpenChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("OpenChanged", fn)
     /// Draw the menu below the component clicked (true) or
     /// using the mouse coordinates (false).
-    [<CustomOperation("Anchored")>] member inline _.Anchored ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Anchored" => (defaultArg x true))
+    [<CustomOperation("Anchored")>] member inline _.Anchored ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Anchored" =>>> true)
+    /// Draw the menu below the component clicked (true) or
+    /// using the mouse coordinates (false).
+    [<CustomOperation("Anchored")>] member inline _.Anchored ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Anchored" =>>> x)
     /// Gets or sets how short the space allocated to the default position has to be before the tallest area is selected for layout.
     [<CustomOperation("VerticalThreshold")>] member inline _.VerticalThreshold ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("VerticalThreshold" => x)
     /// Gets or sets how narrow the space allocated to the default position has to be before the widest area is selected for layout.
     [<CustomOperation("HorizontalThreshold")>] member inline _.HorizontalThreshold ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("HorizontalThreshold" => x)
     /// Gets or sets the Horizontal viewport lock.
-    [<CustomOperation("HorizontalViewportLock")>] member inline _.HorizontalViewportLock ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("HorizontalViewportLock" => (defaultArg x true))
+    [<CustomOperation("HorizontalViewportLock")>] member inline _.HorizontalViewportLock ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("HorizontalViewportLock" =>>> true)
+    /// Gets or sets the Horizontal viewport lock.
+    [<CustomOperation("HorizontalViewportLock")>] member inline _.HorizontalViewportLock ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("HorizontalViewportLock" =>>> x)
     /// Gets or sets the horizontal scaling mode.
     [<CustomOperation("HorizontalScaling")>] member inline _.HorizontalScaling ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.AxisScalingMode>) = render ==> ("HorizontalScaling" => x)
 
@@ -1712,17 +1915,27 @@ type FluentMenuItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     /// Gets or sets the menu item label.
     [<CustomOperation("Label")>] member inline _.Label ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Label" => x)
     /// Gets or sets a value indicating whether the element is disabled.
-    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Disabled" => (defaultArg x true))
+    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Disabled" =>>> true)
+    /// Gets or sets a value indicating whether the element is disabled.
+    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Disabled" =>>> x)
     /// Gets or sets the expanded state of the element.
-    [<CustomOperation("Expanded")>] member inline _.Expanded ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Expanded" => (defaultArg x true))
+    [<CustomOperation("Expanded")>] member inline _.Expanded ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Expanded" =>>> true)
+    /// Gets or sets the expanded state of the element.
+    [<CustomOperation("Expanded")>] member inline _.Expanded ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Expanded" =>>> x)
     /// Gets or sets the role of the element.
     [<CustomOperation("Role")>] member inline _.Role ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.MenuItemRole>) = render ==> ("Role" => x)
     /// Gets or sets a value indicating whether the element is checked.
-    [<CustomOperation("Checked")>] member inline _.Checked ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Checked" => (defaultArg x true))
+    [<CustomOperation("Checked")>] member inline _.Checked ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Checked" =>>> true)
+    /// Gets or sets a value indicating whether the element is checked.
+    [<CustomOperation("Checked")>] member inline _.Checked ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Checked" =>>> x)
+    /// Gets or sets a value indicates whether the FluentMenu should remain open after an action.
+    [<CustomOperation("KeepOpen")>] member inline _.KeepOpen ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("KeepOpen" =>>> true)
+    /// Gets or sets a value indicates whether the FluentMenu should remain open after an action.
+    [<CustomOperation("KeepOpen")>] member inline _.KeepOpen ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("KeepOpen" =>>> x)
     /// Gets or sets the list of sub-menu items.
-    [<CustomOperation("MenuItems")>] member inline _.MenuItems ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("MenuItems", fragment)
+    [<CustomOperation("MenuItems")>] member inline _.MenuItems ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("MenuItems", fragment)
     /// Gets or sets the list of sub-menu items.
-    [<CustomOperation("MenuItems")>] member inline _.MenuItems ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("MenuItems", fragment { yield! fragments })
+    [<CustomOperation("MenuItems")>] member inline _.MenuItems ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("MenuItems", fragment { yield! fragments })
     /// Gets or sets the list of sub-menu items.
     [<CustomOperation("MenuItems")>] member inline _.MenuItems ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("MenuItems", html.text x)
     /// Gets or sets the list of sub-menu items.
@@ -1730,9 +1943,9 @@ type FluentMenuItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     /// Gets or sets the list of sub-menu items.
     [<CustomOperation("MenuItems")>] member inline _.MenuItems ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("MenuItems", html.text x)
     /// Event raised when the user click on this item.
-    [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> unit) = render ==> html.callback("OnClick", fn)
+    [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> unit) = render ==> html.callback("OnClick", fn)
     /// Event raised when the user click on this item.
-    [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> Task<unit>) = render ==> html.callbackTask("OnClick", fn)
+    [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> Task<unit>) = render ==> html.callbackTask("OnClick", fn)
 
 type FluentMenuProviderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -1752,7 +1965,10 @@ type FluentMessageBarBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microso
     [<CustomOperation("Icon")>] member inline _.Icon ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Icon) = render ==> ("Icon" => x)
     /// Gets or sets the visibility of the message bar. 
     /// Default is true.
-    [<CustomOperation("Visible")>] member inline _.Visible ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Visible" => (defaultArg x true))
+    [<CustomOperation("Visible")>] member inline _.Visible ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Visible" =>>> true)
+    /// Gets or sets the visibility of the message bar. 
+    /// Default is true.
+    [<CustomOperation("Visible")>] member inline _.Visible ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Visible" =>>> x)
     /// Gets or sets the title. 
     /// Most important info to be shown in the message bar.
     [<CustomOperation("Title")>] member inline _.Title ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
@@ -1766,10 +1982,16 @@ type FluentMessageBarBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microso
     [<CustomOperation("IconColor")>] member inline _.IconColor ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.Color>) = render ==> ("IconColor" => x)
     /// Gets or sets the ability to dismiss the notification.
     /// Default is true.
-    [<CustomOperation("AllowDismiss")>] member inline _.AllowDismiss ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("AllowDismiss" => (defaultArg x true))
+    [<CustomOperation("AllowDismiss")>] member inline _.AllowDismiss ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AllowDismiss" =>>> true)
+    /// Gets or sets the ability to dismiss the notification.
+    /// Default is true.
+    [<CustomOperation("AllowDismiss")>] member inline _.AllowDismiss ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("AllowDismiss" =>>> x)
     /// Gets or sets the fade in animation for the MessageBar.
     /// Default is true.
-    [<CustomOperation("FadeIn")>] member inline _.FadeIn ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("FadeIn" => (defaultArg x true))
+    [<CustomOperation("FadeIn")>] member inline _.FadeIn ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("FadeIn" =>>> true)
+    /// Gets or sets the fade in animation for the MessageBar.
+    /// Default is true.
+    [<CustomOperation("FadeIn")>] member inline _.FadeIn ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("FadeIn" =>>> x)
 
 type FluentMessageBarProviderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -1783,18 +2005,22 @@ type FluentMessageBarProviderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :>
     /// Set a value equal to or less than zero, to display all messages for this Section (or all categories if not set).
     [<CustomOperation("MaxMessageCount")>] member inline _.MaxMessageCount ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("MaxMessageCount" => x)
     /// Display the newest messages on top (true) or on bottom (false).
-    [<CustomOperation("NewestOnTop")>] member inline _.NewestOnTop ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("NewestOnTop" => (defaultArg x true))
+    [<CustomOperation("NewestOnTop")>] member inline _.NewestOnTop ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("NewestOnTop" =>>> true)
+    /// Display the newest messages on top (true) or on bottom (false).
+    [<CustomOperation("NewestOnTop")>] member inline _.NewestOnTop ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("NewestOnTop" =>>> x)
     /// Clear all (shown and stored) messages when the user navigates to a new page.
-    [<CustomOperation("ClearAfterNavigation")>] member inline _.ClearAfterNavigation ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("ClearAfterNavigation" => (defaultArg x true))
+    [<CustomOperation("ClearAfterNavigation")>] member inline _.ClearAfterNavigation ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ClearAfterNavigation" =>>> true)
+    /// Clear all (shown and stored) messages when the user navigates to a new page.
+    [<CustomOperation("ClearAfterNavigation")>] member inline _.ClearAfterNavigation ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ClearAfterNavigation" =>>> x)
 
 type FluentNavMenuTreeBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
     /// Gets or sets the content to be rendered for the expander icon when the menu is collapsible. 
     /// The default icon will be used if this is not specified.
-    [<CustomOperation("ExpanderContent")>] member inline _.ExpanderContent ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("ExpanderContent", fragment)
+    [<CustomOperation("ExpanderContent")>] member inline _.ExpanderContent ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("ExpanderContent", fragment)
     /// Gets or sets the content to be rendered for the expander icon when the menu is collapsible. 
     /// The default icon will be used if this is not specified.
-    [<CustomOperation("ExpanderContent")>] member inline _.ExpanderContent ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("ExpanderContent", fragment { yield! fragments })
+    [<CustomOperation("ExpanderContent")>] member inline _.ExpanderContent ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("ExpanderContent", fragment { yield! fragments })
     /// Gets or sets the content to be rendered for the expander icon when the menu is collapsible. 
     /// The default icon will be used if this is not specified.
     [<CustomOperation("ExpanderContent")>] member inline _.ExpanderContent ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("ExpanderContent", html.text x)
@@ -1810,34 +2036,43 @@ type FluentNavMenuTreeBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micros
     /// Gets or sets the width of the menu (in pixels).
     [<CustomOperation("Width")>] member inline _.Width ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("Width" => x)
     /// Gets or sets whether or not the menu can be collapsed.
-    [<CustomOperation("Collapsible")>] member inline _.Collapsible ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Collapsible" => (defaultArg x true))
+    [<CustomOperation("Collapsible")>] member inline _.Collapsible ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Collapsible" =>>> true)
+    /// Gets or sets whether or not the menu can be collapsed.
+    [<CustomOperation("Collapsible")>] member inline _.Collapsible ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Collapsible" =>>> x)
     /// Returns true if the implementing component
     /// is expanded, and false if collapsed.
-    [<CustomOperation("Expanded")>] member inline _.Expanded ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Expanded" => (defaultArg x true))
+    [<CustomOperation("Expanded")>] member inline _.Expanded ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Expanded" =>>> true)
+    /// Returns true if the implementing component
+    /// is expanded, and false if collapsed.
+    [<CustomOperation("Expanded")>] member inline _.Expanded ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Expanded" =>>> x)
     /// Returns true if the implementing component
     /// is expanded, and false if collapsed.
     [<CustomOperation("Expanded'")>] member inline _.Expanded' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Boolean * (System.Boolean -> unit)) = render ==> html.bind("Expanded", valueFn)
     /// Event callback for when the Expanded property changes.
-    [<CustomOperation("ExpandedChanged")>] member inline _.ExpandedChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Boolean -> unit) = render ==> html.callback("ExpandedChanged", fn)
+    [<CustomOperation("ExpandedChanged")>] member inline _.ExpandedChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> unit) = render ==> html.callback("ExpandedChanged", fn)
     /// Event callback for when the Expanded property changes.
-    [<CustomOperation("ExpandedChanged")>] member inline _.ExpandedChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("ExpandedChanged", fn)
+    [<CustomOperation("ExpandedChanged")>] member inline _.ExpandedChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("ExpandedChanged", fn)
     /// Called when the user attempts to execute the default action of a menu item.
-    [<CustomOperation("OnAction")>] member inline _.OnAction ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.NavMenuActionArgs -> unit) = render ==> html.callback("OnAction", fn)
+    [<CustomOperation("OnAction")>] member inline _.OnAction ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.NavMenuActionArgs -> unit) = render ==> html.callback("OnAction", fn)
     /// Called when the user attempts to execute the default action of a menu item.
-    [<CustomOperation("OnAction")>] member inline _.OnAction ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.NavMenuActionArgs -> Task<unit>) = render ==> html.callbackTask("OnAction", fn)
+    [<CustomOperation("OnAction")>] member inline _.OnAction ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.NavMenuActionArgs -> Task<unit>) = render ==> html.callbackTask("OnAction", fn)
     /// If set to true then the tree will expand when it is created.
-    [<CustomOperation("InitiallyExpanded")>] member inline _.InitiallyExpanded ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("InitiallyExpanded" => (defaultArg x true))
+    [<CustomOperation("InitiallyExpanded")>] member inline _.InitiallyExpanded ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("InitiallyExpanded" =>>> true)
+    /// If set to true then the tree will expand when it is created.
+    [<CustomOperation("InitiallyExpanded")>] member inline _.InitiallyExpanded ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("InitiallyExpanded" =>>> x)
     /// If true, the menu will re-navigate to the current page when the user clicks on the currently selected menu item.
-    [<CustomOperation("ReNavigate")>] member inline _.ReNavigate ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("ReNavigate" => (defaultArg x true))
+    [<CustomOperation("ReNavigate")>] member inline _.ReNavigate ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ReNavigate" =>>> true)
+    /// If true, the menu will re-navigate to the current page when the user clicks on the currently selected menu item.
+    [<CustomOperation("ReNavigate")>] member inline _.ReNavigate ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ReNavigate" =>>> x)
 
 type FluentNavMenuBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
     /// Gets or sets the content to be rendered for the collapse icon when the menu is collapsible.
     /// The default icon will be used if this is not specified.
-    [<CustomOperation("ExpanderContent")>] member inline _.ExpanderContent ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("ExpanderContent", fragment)
+    [<CustomOperation("ExpanderContent")>] member inline _.ExpanderContent ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("ExpanderContent", fragment)
     /// Gets or sets the content to be rendered for the collapse icon when the menu is collapsible.
     /// The default icon will be used if this is not specified.
-    [<CustomOperation("ExpanderContent")>] member inline _.ExpanderContent ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("ExpanderContent", fragment { yield! fragments })
+    [<CustomOperation("ExpanderContent")>] member inline _.ExpanderContent ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("ExpanderContent", fragment { yield! fragments })
     /// Gets or sets the content to be rendered for the collapse icon when the menu is collapsible.
     /// The default icon will be used if this is not specified.
     [<CustomOperation("ExpanderContent")>] member inline _.ExpanderContent ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("ExpanderContent", html.text x)
@@ -1853,37 +2088,47 @@ type FluentNavMenuBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     /// Gets or sets the width of the menu (in pixels).
     [<CustomOperation("Width")>] member inline _.Width ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("Width" => x)
     /// Gets or sets whether or not the menu can be collapsed.
-    [<CustomOperation("Collapsible")>] member inline _.Collapsible ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Collapsible" => (defaultArg x true))
+    [<CustomOperation("Collapsible")>] member inline _.Collapsible ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Collapsible" =>>> true)
+    /// Gets or sets whether or not the menu can be collapsed.
+    [<CustomOperation("Collapsible")>] member inline _.Collapsible ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Collapsible" =>>> x)
     /// Gets or sets whether a menu with all child links is shown for FluentNavGroups when the navigation menu is collapsed.
-    [<CustomOperation("CollapsedChildNavigation")>] member inline _.CollapsedChildNavigation ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("CollapsedChildNavigation" => (defaultArg x true))
-    [<CustomOperation("Expanded")>] member inline _.Expanded ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Expanded" => (defaultArg x true))
+    [<CustomOperation("CollapsedChildNavigation")>] member inline _.CollapsedChildNavigation ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("CollapsedChildNavigation" =>>> true)
+    /// Gets or sets whether a menu with all child links is shown for FluentNavGroups when the navigation menu is collapsed.
+    [<CustomOperation("CollapsedChildNavigation")>] member inline _.CollapsedChildNavigation ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("CollapsedChildNavigation" =>>> x)
+    [<CustomOperation("Expanded")>] member inline _.Expanded ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Expanded" =>>> true)
+    [<CustomOperation("Expanded")>] member inline _.Expanded ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Expanded" =>>> x)
     [<CustomOperation("Expanded'")>] member inline _.Expanded' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Boolean * (System.Boolean -> unit)) = render ==> html.bind("Expanded", valueFn)
     /// Event callback for when the Expanded property changes.
-    [<CustomOperation("ExpandedChanged")>] member inline _.ExpandedChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Boolean -> unit) = render ==> html.callback("ExpandedChanged", fn)
+    [<CustomOperation("ExpandedChanged")>] member inline _.ExpandedChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> unit) = render ==> html.callback("ExpandedChanged", fn)
     /// Event callback for when the Expanded property changes.
-    [<CustomOperation("ExpandedChanged")>] member inline _.ExpandedChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("ExpandedChanged", fn)
+    [<CustomOperation("ExpandedChanged")>] member inline _.ExpandedChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("ExpandedChanged", fn)
     /// Adjust the vertical spacing between navlinks.
     [<CustomOperation("Margin")>] member inline _.Margin ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Margin" => x)
     /// Gets or sets if a custom toggle for showing/hiding the menu is used.
     /// This is primarily intended to be used in a mobile view
-    [<CustomOperation("CustomToggle")>] member inline _.CustomToggle ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("CustomToggle" => (defaultArg x true))
+    [<CustomOperation("CustomToggle")>] member inline _.CustomToggle ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("CustomToggle" =>>> true)
+    /// Gets or sets if a custom toggle for showing/hiding the menu is used.
+    /// This is primarily intended to be used in a mobile view
+    [<CustomOperation("CustomToggle")>] member inline _.CustomToggle ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("CustomToggle" =>>> x)
 
 type FluentOverflowBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
     /// Gets or sets the template to display ItemsOverflow elements.
-    [<CustomOperation("OverflowTemplate")>] member inline _.OverflowTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentOverflow -> NodeRenderFragment) = render ==> html.renderFragment("OverflowTemplate", fn)
+    [<CustomOperation("OverflowTemplate")>] member inline _.OverflowTemplate ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentOverflow -> NodeRenderFragment) = render ==> html.renderFragment("OverflowTemplate", fn)
     /// To prevent a flickering effect, set this property to False to hide the overflow items until the component is fully loaded.
-    [<CustomOperation("VisibleOnLoad")>] member inline _.VisibleOnLoad ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("VisibleOnLoad" => (defaultArg x true))
+    [<CustomOperation("VisibleOnLoad")>] member inline _.VisibleOnLoad ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("VisibleOnLoad" =>>> true)
+    /// To prevent a flickering effect, set this property to False to hide the overflow items until the component is fully loaded.
+    [<CustomOperation("VisibleOnLoad")>] member inline _.VisibleOnLoad ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("VisibleOnLoad" =>>> x)
     /// Gets or sets the template to display the More button.
-    [<CustomOperation("MoreButtonTemplate")>] member inline _.MoreButtonTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentOverflow -> NodeRenderFragment) = render ==> html.renderFragment("MoreButtonTemplate", fn)
+    [<CustomOperation("MoreButtonTemplate")>] member inline _.MoreButtonTemplate ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentOverflow -> NodeRenderFragment) = render ==> html.renderFragment("MoreButtonTemplate", fn)
     /// Gets or sets the orientation of the items flow.
     [<CustomOperation("Orientation")>] member inline _.Orientation ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Orientation) = render ==> ("Orientation" => x)
     /// Gets or sets the CSS selectors of the items to include in the overflow.
     [<CustomOperation("Selectors")>] member inline _.Selectors ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Selectors" => x)
     /// Event raised when a FluentOverflowItem enter or leave the current panel.
-    [<CustomOperation("OnOverflowRaised")>] member inline _.OnOverflowRaised ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Collections.Generic.IEnumerable<Microsoft.FluentUI.AspNetCore.Components.FluentOverflowItem> -> unit) = render ==> html.callback("OnOverflowRaised", fn)
+    [<CustomOperation("OnOverflowRaised")>] member inline _.OnOverflowRaised ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Collections.Generic.IEnumerable<Microsoft.FluentUI.AspNetCore.Components.FluentOverflowItem> -> unit) = render ==> html.callback("OnOverflowRaised", fn)
     /// Event raised when a FluentOverflowItem enter or leave the current panel.
-    [<CustomOperation("OnOverflowRaised")>] member inline _.OnOverflowRaised ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Collections.Generic.IEnumerable<Microsoft.FluentUI.AspNetCore.Components.FluentOverflowItem> -> Task<unit>) = render ==> html.callbackTask("OnOverflowRaised", fn)
+    [<CustomOperation("OnOverflowRaised")>] member inline _.OnOverflowRaised ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Collections.Generic.IEnumerable<Microsoft.FluentUI.AspNetCore.Components.FluentOverflowItem> -> Task<unit>) = render ==> html.callbackTask("OnOverflowRaised", fn)
 
 type FluentOverflowItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -1894,20 +2139,22 @@ type FluentOverflowItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micro
 /// A component that provides a user interface for PaginationState.
 type FluentPaginatorBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
-    [<CustomOperation("CurrentPageIndexChanged")>] member inline _.CurrentPageIndexChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Int32 -> unit) = render ==> html.callback("CurrentPageIndexChanged", fn)
-    [<CustomOperation("CurrentPageIndexChanged")>] member inline _.CurrentPageIndexChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Int32 -> Task<unit>) = render ==> html.callbackTask("CurrentPageIndexChanged", fn)
+    [<CustomOperation("CurrentPageIndexChanged")>] member inline _.CurrentPageIndexChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Int32 -> unit) = render ==> html.callback("CurrentPageIndexChanged", fn)
+    [<CustomOperation("CurrentPageIndexChanged")>] member inline _.CurrentPageIndexChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Int32 -> Task<unit>) = render ==> html.callbackTask("CurrentPageIndexChanged", fn)
     /// Disables the pagination buttons
-    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Disabled" => (defaultArg x true))
+    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Disabled" =>>> true)
+    /// Disables the pagination buttons
+    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Disabled" =>>> x)
     /// Gets or sets the associated PaginationState. This parameter is required.
     [<CustomOperation("State")>] member inline _.State ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.PaginationState) = render ==> ("State" => x)
     /// Optionally supplies a template for rendering the page count summary.
     /// The following values can be included:
     /// {your State parameter name}.TotalItemCount (for the total number of items)
-    [<CustomOperation("SummaryTemplate")>] member inline _.SummaryTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("SummaryTemplate", fragment)
+    [<CustomOperation("SummaryTemplate")>] member inline _.SummaryTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("SummaryTemplate", fragment)
     /// Optionally supplies a template for rendering the page count summary.
     /// The following values can be included:
     /// {your State parameter name}.TotalItemCount (for the total number of items)
-    [<CustomOperation("SummaryTemplate")>] member inline _.SummaryTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("SummaryTemplate", fragment { yield! fragments })
+    [<CustomOperation("SummaryTemplate")>] member inline _.SummaryTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("SummaryTemplate", fragment { yield! fragments })
     /// Optionally supplies a template for rendering the page count summary.
     /// The following values can be included:
     /// {your State parameter name}.TotalItemCount (for the total number of items)
@@ -1924,12 +2171,12 @@ type FluentPaginatorBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsof
     /// The following values can be included:
     /// {your State parameter name}.CurrentPageIndex (zero-based, so +1 for the current page number)
     /// {your State parameter name}.LastPageIndex (zero-based, so +1 for the total number of pages)
-    [<CustomOperation("PaginationTextTemplate")>] member inline _.PaginationTextTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("PaginationTextTemplate", fragment)
+    [<CustomOperation("PaginationTextTemplate")>] member inline _.PaginationTextTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("PaginationTextTemplate", fragment)
     /// Optionally supplies a template for rendering the pagination summary.
     /// The following values can be included:
     /// {your State parameter name}.CurrentPageIndex (zero-based, so +1 for the current page number)
     /// {your State parameter name}.LastPageIndex (zero-based, so +1 for the total number of pages)
-    [<CustomOperation("PaginationTextTemplate")>] member inline _.PaginationTextTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("PaginationTextTemplate", fragment { yield! fragments })
+    [<CustomOperation("PaginationTextTemplate")>] member inline _.PaginationTextTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("PaginationTextTemplate", fragment { yield! fragments })
     /// Optionally supplies a template for rendering the pagination summary.
     /// The following values can be included:
     /// {your State parameter name}.CurrentPageIndex (zero-based, so +1 for the current page number)
@@ -1955,7 +2202,10 @@ type FluentPopoverBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     [<CustomOperation("HorizontalPosition")>] member inline _.HorizontalPosition ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.HorizontalPosition>) = render ==> ("HorizontalPosition" => x)
     /// Gets or sets a value indicating whether the region overlaps the anchor on the horizontal axis.
     /// Default is true which places the region aligned with the anchor element.
-    [<CustomOperation("HorizontalInset")>] member inline _.HorizontalInset ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("HorizontalInset" => (defaultArg x true))
+    [<CustomOperation("HorizontalInset")>] member inline _.HorizontalInset ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("HorizontalInset" =>>> true)
+    /// Gets or sets a value indicating whether the region overlaps the anchor on the horizontal axis.
+    /// Default is true which places the region aligned with the anchor element.
+    [<CustomOperation("HorizontalInset")>] member inline _.HorizontalInset ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("HorizontalInset" =>>> x)
     /// Gets or sets the default vertical position of the region relative to the anchor element.
     /// Default is unset. See 
     [<CustomOperation("VerticalPosition")>] member inline _.VerticalPosition ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.VerticalPosition>) = render ==> ("VerticalPosition" => x)
@@ -1968,17 +2218,19 @@ type FluentPopoverBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     /// Fixed placement allows the region to break out of parent containers.
     [<CustomOperation("FixedPlacement")>] member inline _.FixedPlacement ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("FixedPlacement" => x)
     /// Gets or sets popover opened state.
-    [<CustomOperation("Open")>] member inline _.Open ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Open" => (defaultArg x true))
+    [<CustomOperation("Open")>] member inline _.Open ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Open" =>>> true)
+    /// Gets or sets popover opened state.
+    [<CustomOperation("Open")>] member inline _.Open ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Open" =>>> x)
     /// Gets or sets popover opened state.
     [<CustomOperation("Open'")>] member inline _.Open' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Boolean * (System.Boolean -> unit)) = render ==> html.bind("Open", valueFn)
     /// Callback for when open state changes.
-    [<CustomOperation("OpenChanged")>] member inline _.OpenChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Boolean -> unit) = render ==> html.callback("OpenChanged", fn)
+    [<CustomOperation("OpenChanged")>] member inline _.OpenChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> unit) = render ==> html.callback("OpenChanged", fn)
     /// Callback for when open state changes.
-    [<CustomOperation("OpenChanged")>] member inline _.OpenChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("OpenChanged", fn)
+    [<CustomOperation("OpenChanged")>] member inline _.OpenChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("OpenChanged", fn)
     /// Gets or sets the content of the header part of the popover.
-    [<CustomOperation("Header")>] member inline _.Header ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("Header", fragment)
+    [<CustomOperation("Header")>] member inline _.Header ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("Header", fragment)
     /// Gets or sets the content of the header part of the popover.
-    [<CustomOperation("Header")>] member inline _.Header ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("Header", fragment { yield! fragments })
+    [<CustomOperation("Header")>] member inline _.Header ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("Header", fragment { yield! fragments })
     /// Gets or sets the content of the header part of the popover.
     [<CustomOperation("Header")>] member inline _.Header ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("Header", html.text x)
     /// Gets or sets the content of the header part of the popover.
@@ -1986,9 +2238,9 @@ type FluentPopoverBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     /// Gets or sets the content of the header part of the popover.
     [<CustomOperation("Header")>] member inline _.Header ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("Header", html.text x)
     /// Gets or sets the content of the body part of the popover.
-    [<CustomOperation("Body")>] member inline _.Body ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("Body", fragment)
+    [<CustomOperation("Body")>] member inline _.Body ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("Body", fragment)
     /// Gets or sets the content of the body part of the popover.
-    [<CustomOperation("Body")>] member inline _.Body ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("Body", fragment { yield! fragments })
+    [<CustomOperation("Body")>] member inline _.Body ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("Body", fragment { yield! fragments })
     /// Gets or sets the content of the body part of the popover.
     [<CustomOperation("Body")>] member inline _.Body ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("Body", html.text x)
     /// Gets or sets the content of the body part of the popover.
@@ -1996,9 +2248,9 @@ type FluentPopoverBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     /// Gets or sets the content of the body part of the popover.
     [<CustomOperation("Body")>] member inline _.Body ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("Body", html.text x)
     /// Gets or sets the content of the footer part of the popover.
-    [<CustomOperation("Footer")>] member inline _.Footer ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("Footer", fragment)
+    [<CustomOperation("Footer")>] member inline _.Footer ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("Footer", fragment)
     /// Gets or sets the content of the footer part of the popover.
-    [<CustomOperation("Footer")>] member inline _.Footer ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("Footer", fragment { yield! fragments })
+    [<CustomOperation("Footer")>] member inline _.Footer ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("Footer", fragment { yield! fragments })
     /// Gets or sets the content of the footer part of the popover.
     [<CustomOperation("Footer")>] member inline _.Footer ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("Footer", html.text x)
     /// Gets or sets the content of the footer part of the popover.
@@ -2008,7 +2260,11 @@ type FluentPopoverBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     /// Gets or sets whether the element should receive the focus when the component is loaded.
     /// If this is the case, the user cannot navigate to other elements of the page while the Popup is open.
     /// Default is true.
-    [<CustomOperation("AutoFocus")>] member inline _.AutoFocus ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("AutoFocus" => (defaultArg x true))
+    [<CustomOperation("AutoFocus")>] member inline _.AutoFocus ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AutoFocus" =>>> true)
+    /// Gets or sets whether the element should receive the focus when the component is loaded.
+    /// If this is the case, the user cannot navigate to other elements of the page while the Popup is open.
+    /// Default is true.
+    [<CustomOperation("AutoFocus")>] member inline _.AutoFocus ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("AutoFocus" =>>> x)
     /// Gets or sets the keys that can be used to close the popover.
     /// By default, Escape
     [<CustomOperation("CloseKeys")>] member inline _.CloseKeys ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.KeyCode[]) = render ==> ("CloseKeys" => x)
@@ -2025,21 +2281,30 @@ type FluentPresenceBadgeBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micr
     [<CustomOperation("StatusTitle")>] member inline _.StatusTitle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("StatusTitle" => x)
     /// Modifies the display to indicate that the user is out of office. 
     /// This can be combined with any status to display an out-of-office version of that status.
-    [<CustomOperation("OutOfOffice")>] member inline _.OutOfOffice ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("OutOfOffice" => (defaultArg x true))
+    [<CustomOperation("OutOfOffice")>] member inline _.OutOfOffice ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("OutOfOffice" =>>> true)
+    /// Modifies the display to indicate that the user is out of office. 
+    /// This can be combined with any status to display an out-of-office version of that status.
+    [<CustomOperation("OutOfOffice")>] member inline _.OutOfOffice ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("OutOfOffice" =>>> x)
     /// Gets or sets the Status size to use.
     /// Default is Small.
     [<CustomOperation("Size")>] member inline _.Size ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.PresenceBadgeSize) = render ==> ("Size" => x)
 
 type FluentProfileMenuBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
+    /// Gets or sets the Menu status.
+    [<CustomOperation("Open")>] member inline _.Open ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Open" =>>> true)
+    /// Gets or sets the Menu status.
+    [<CustomOperation("Open")>] member inline _.Open ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Open" =>>> x)
     /// Gets or sets whether popover should be forced to top right or top left (RTL).
-    [<CustomOperation("TopCorner")>] member inline _.TopCorner ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("TopCorner" => (defaultArg x true))
+    [<CustomOperation("TopCorner")>] member inline _.TopCorner ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("TopCorner" =>>> true)
+    /// Gets or sets whether popover should be forced to top right or top left (RTL).
+    [<CustomOperation("TopCorner")>] member inline _.TopCorner ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("TopCorner" =>>> x)
     /// Gets or sets the content to be displayed in the header section of the popover.
     /// Using this property will override the HeaderLabel and HeaderButton properties.
-    [<CustomOperation("HeaderTemplate")>] member inline _.HeaderTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("HeaderTemplate", fragment)
+    [<CustomOperation("HeaderTemplate")>] member inline _.HeaderTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("HeaderTemplate", fragment)
     /// Gets or sets the content to be displayed in the header section of the popover.
     /// Using this property will override the HeaderLabel and HeaderButton properties.
-    [<CustomOperation("HeaderTemplate")>] member inline _.HeaderTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("HeaderTemplate", fragment { yield! fragments })
+    [<CustomOperation("HeaderTemplate")>] member inline _.HeaderTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("HeaderTemplate", fragment { yield! fragments })
     /// Gets or sets the content to be displayed in the header section of the popover.
     /// Using this property will override the HeaderLabel and HeaderButton properties.
     [<CustomOperation("HeaderTemplate")>] member inline _.HeaderTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("HeaderTemplate", html.text x)
@@ -2051,10 +2316,10 @@ type FluentProfileMenuBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micros
     [<CustomOperation("HeaderTemplate")>] member inline _.HeaderTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("HeaderTemplate", html.text x)
     /// Gets or sets the content to be displayed in the footer section of the popover.
     /// Using this property will override the FooterLink property.
-    [<CustomOperation("FooterTemplate")>] member inline _.FooterTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("FooterTemplate", fragment)
+    [<CustomOperation("FooterTemplate")>] member inline _.FooterTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("FooterTemplate", fragment)
     /// Gets or sets the content to be displayed in the footer section of the popover.
     /// Using this property will override the FooterLink property.
-    [<CustomOperation("FooterTemplate")>] member inline _.FooterTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("FooterTemplate", fragment { yield! fragments })
+    [<CustomOperation("FooterTemplate")>] member inline _.FooterTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("FooterTemplate", fragment { yield! fragments })
     /// Gets or sets the content to be displayed in the footer section of the popover.
     /// Using this property will override the FooterLink property.
     [<CustomOperation("FooterTemplate")>] member inline _.FooterTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("FooterTemplate", html.text x)
@@ -2065,9 +2330,9 @@ type FluentProfileMenuBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micros
     /// Using this property will override the FooterLink property.
     [<CustomOperation("FooterTemplate")>] member inline _.FooterTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("FooterTemplate", html.text x)
     /// Gets or sets the content to be displayed in the start (left) section of the Profile button.
-    [<CustomOperation("StartTemplate")>] member inline _.StartTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("StartTemplate", fragment)
+    [<CustomOperation("StartTemplate")>] member inline _.StartTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("StartTemplate", fragment)
     /// Gets or sets the content to be displayed in the start (left) section of the Profile button.
-    [<CustomOperation("StartTemplate")>] member inline _.StartTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("StartTemplate", fragment { yield! fragments })
+    [<CustomOperation("StartTemplate")>] member inline _.StartTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("StartTemplate", fragment { yield! fragments })
     /// Gets or sets the content to be displayed in the start (left) section of the Profile button.
     [<CustomOperation("StartTemplate")>] member inline _.StartTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("StartTemplate", html.text x)
     /// Gets or sets the content to be displayed in the start (left) section of the Profile button.
@@ -2075,9 +2340,9 @@ type FluentProfileMenuBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micros
     /// Gets or sets the content to be displayed in the start (left) section of the Profile button.
     [<CustomOperation("StartTemplate")>] member inline _.StartTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("StartTemplate", html.text x)
     /// Gets or sets the content to be displayed in the end (right) section of the Profile button.
-    [<CustomOperation("EndTemplate")>] member inline _.EndTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("EndTemplate", fragment)
+    [<CustomOperation("EndTemplate")>] member inline _.EndTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("EndTemplate", fragment)
     /// Gets or sets the content to be displayed in the end (right) section of the Profile button.
-    [<CustomOperation("EndTemplate")>] member inline _.EndTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("EndTemplate", fragment { yield! fragments })
+    [<CustomOperation("EndTemplate")>] member inline _.EndTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("EndTemplate", fragment { yield! fragments })
     /// Gets or sets the content to be displayed in the end (right) section of the Profile button.
     [<CustomOperation("EndTemplate")>] member inline _.EndTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("EndTemplate", html.text x)
     /// Gets or sets the content to be displayed in the end (right) section of the Profile button.
@@ -2110,17 +2375,17 @@ type FluentProfileMenuBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micros
     /// Gets or sets the Header Button label (e.g. Sign out) on the top-right.
     [<CustomOperation("HeaderButton")>] member inline _.HeaderButton ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("HeaderButton" => x)
     /// Event raised when the user clicks on the Header Button (e.g. Sign out).
-    [<CustomOperation("OnHeaderButtonClick")>] member inline _.OnHeaderButtonClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: unit -> unit) = render ==> html.callback("OnHeaderButtonClick", fn)
+    [<CustomOperation("OnHeaderButtonClick")>] member inline _.OnHeaderButtonClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> unit) = render ==> html.callback("OnHeaderButtonClick", fn)
     /// Event raised when the user clicks on the Header Button (e.g. Sign out).
-    [<CustomOperation("OnHeaderButtonClick")>] member inline _.OnHeaderButtonClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: unit -> Task<unit>) = render ==> html.callbackTask("OnHeaderButtonClick", fn)
+    [<CustomOperation("OnHeaderButtonClick")>] member inline _.OnHeaderButtonClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> Task<unit>) = render ==> html.callbackTask("OnHeaderButtonClick", fn)
     /// Gets or sets the footer label to display on the bottom-left.
     [<CustomOperation("FooterLabel")>] member inline _.FooterLabel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("FooterLabel" => x)
     /// Gets or sets the Footer hyperlink label (e.g. View account) on the bottom-right.
     [<CustomOperation("FooterLink")>] member inline _.FooterLink ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("FooterLink" => x)
     /// Event raised when the user clicks on the Footer hyperlink (e.g. View account).
-    [<CustomOperation("OnFooterLinkClick")>] member inline _.OnFooterLinkClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: unit -> unit) = render ==> html.callback("OnFooterLinkClick", fn)
+    [<CustomOperation("OnFooterLinkClick")>] member inline _.OnFooterLinkClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> unit) = render ==> html.callback("OnFooterLinkClick", fn)
     /// Event raised when the user clicks on the Footer hyperlink (e.g. View account).
-    [<CustomOperation("OnFooterLinkClick")>] member inline _.OnFooterLinkClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: unit -> Task<unit>) = render ==> html.callbackTask("OnFooterLinkClick", fn)
+    [<CustomOperation("OnFooterLinkClick")>] member inline _.OnFooterLinkClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> Task<unit>) = render ==> html.callbackTask("OnFooterLinkClick", fn)
 
 type FluentProgressBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -2131,7 +2396,9 @@ type FluentProgressBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     /// Gets or sets the current value.
     [<CustomOperation("Value")>] member inline _.Value ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("Value" => x)
     /// Gets or sets the visibility of the component
-    [<CustomOperation("Visible")>] member inline _.Visible ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Visible" => (defaultArg x true))
+    [<CustomOperation("Visible")>] member inline _.Visible ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Visible" =>>> true)
+    /// Gets or sets the visibility of the component
+    [<CustomOperation("Visible")>] member inline _.Visible ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Visible" =>>> x)
     /// Gets or sets the component width.
     [<CustomOperation("Width")>] member inline _.Width ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Width" => x)
     /// Gets or sets a value indicating whether the progress element is paused.
@@ -2151,7 +2418,8 @@ type FluentProgressRingBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micro
     [<CustomOperation("Max")>] member inline _.Max ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("Max" => x)
     /// Gets or sets the current value .
     [<CustomOperation("Value")>] member inline _.Value ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("Value" => x)
-    [<CustomOperation("Visible")>] member inline _.Visible ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Visible" => (defaultArg x true))
+    [<CustomOperation("Visible")>] member inline _.Visible ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Visible" =>>> true)
+    [<CustomOperation("Visible")>] member inline _.Visible ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Visible" =>>> x)
     /// Gets or sets a value indicating whether the progress element is paused.
     [<CustomOperation("Paused")>] member inline _.Paused ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("Paused" => x)
     /// Gets or sets the component width and height.
@@ -2167,18 +2435,26 @@ type FluentPullToRefreshBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micr
     [<CustomOperation("Direction")>] member inline _.Direction ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.PullDirection) = render ==> ("Direction" => x)
     /// Gets or sets if the pull action is disabled.
     /// Deaults to false.
-    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Disabled" => (defaultArg x true))
+    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Disabled" =>>> true)
+    /// Gets or sets if the pull action is disabled.
+    /// Deaults to false.
+    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Disabled" =>>> x)
     /// Gets or sets if the component should work on non-touch devices (by using an emulation script).
     /// Deaults to true.
-    [<CustomOperation("EmulateTouch")>] member inline _.EmulateTouch ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("EmulateTouch" => (defaultArg x true))
+    [<CustomOperation("EmulateTouch")>] member inline _.EmulateTouch ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("EmulateTouch" =>>> true)
+    /// Gets or sets if the component should work on non-touch devices (by using an emulation script).
+    /// Deaults to true.
+    [<CustomOperation("EmulateTouch")>] member inline _.EmulateTouch ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("EmulateTouch" =>>> x)
     /// Gets or sets if a tip is shown when ChildContent is not being pulled.
-    [<CustomOperation("ShowStaticTip")>] member inline _.ShowStaticTip ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("ShowStaticTip" => (defaultArg x true))
+    [<CustomOperation("ShowStaticTip")>] member inline _.ShowStaticTip ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowStaticTip" =>>> true)
+    /// Gets or sets if a tip is shown when ChildContent is not being pulled.
+    [<CustomOperation("ShowStaticTip")>] member inline _.ShowStaticTip ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowStaticTip" =>>> x)
     /// Returns whether there is more data available.
     [<CustomOperation("OnRefreshAsync")>] member inline _.OnRefreshAsync ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("OnRefreshAsync" => (System.Func<System.Threading.Tasks.Task<System.Boolean>>fn))
     /// Gets or sets the the content to indicate the ChildContent can be refreshed by a pull down/up action.
-    [<CustomOperation("PullingTemplate")>] member inline _.PullingTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("PullingTemplate", fragment)
+    [<CustomOperation("PullingTemplate")>] member inline _.PullingTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("PullingTemplate", fragment)
     /// Gets or sets the the content to indicate the ChildContent can be refreshed by a pull down/up action.
-    [<CustomOperation("PullingTemplate")>] member inline _.PullingTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("PullingTemplate", fragment { yield! fragments })
+    [<CustomOperation("PullingTemplate")>] member inline _.PullingTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("PullingTemplate", fragment { yield! fragments })
     /// Gets or sets the the content to indicate the ChildContent can be refreshed by a pull down/up action.
     [<CustomOperation("PullingTemplate")>] member inline _.PullingTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("PullingTemplate", html.text x)
     /// Gets or sets the the content to indicate the ChildContent can be refreshed by a pull down/up action.
@@ -2186,9 +2462,9 @@ type FluentPullToRefreshBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micr
     /// Gets or sets the the content to indicate the ChildContent can be refreshed by a pull down/up action.
     [<CustomOperation("PullingTemplate")>] member inline _.PullingTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("PullingTemplate", html.text x)
     /// Gets or sets the the content to indicate the pulled ChildContent must be released to start the refresh action.
-    [<CustomOperation("ReleaseTemplate")>] member inline _.ReleaseTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("ReleaseTemplate", fragment)
+    [<CustomOperation("ReleaseTemplate")>] member inline _.ReleaseTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("ReleaseTemplate", fragment)
     /// Gets or sets the the content to indicate the pulled ChildContent must be released to start the refresh action.
-    [<CustomOperation("ReleaseTemplate")>] member inline _.ReleaseTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("ReleaseTemplate", fragment { yield! fragments })
+    [<CustomOperation("ReleaseTemplate")>] member inline _.ReleaseTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("ReleaseTemplate", fragment { yield! fragments })
     /// Gets or sets the the content to indicate the pulled ChildContent must be released to start the refresh action.
     [<CustomOperation("ReleaseTemplate")>] member inline _.ReleaseTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("ReleaseTemplate", html.text x)
     /// Gets or sets the the content to indicate the pulled ChildContent must be released to start the refresh action.
@@ -2196,9 +2472,9 @@ type FluentPullToRefreshBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micr
     /// Gets or sets the the content to indicate the pulled ChildContent must be released to start the refresh action.
     [<CustomOperation("ReleaseTemplate")>] member inline _.ReleaseTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("ReleaseTemplate", html.text x)
     /// Gets or sets the the content to indicate the ChildContent is being refreshed.
-    [<CustomOperation("LoadingTemplate")>] member inline _.LoadingTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("LoadingTemplate", fragment)
+    [<CustomOperation("LoadingTemplate")>] member inline _.LoadingTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("LoadingTemplate", fragment)
     /// Gets or sets the the content to indicate the ChildContent is being refreshed.
-    [<CustomOperation("LoadingTemplate")>] member inline _.LoadingTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("LoadingTemplate", fragment { yield! fragments })
+    [<CustomOperation("LoadingTemplate")>] member inline _.LoadingTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("LoadingTemplate", fragment { yield! fragments })
     /// Gets or sets the the content to indicate the ChildContent is being refreshed.
     [<CustomOperation("LoadingTemplate")>] member inline _.LoadingTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("LoadingTemplate", html.text x)
     /// Gets or sets the the content to indicate the ChildContent is being refreshed.
@@ -2206,9 +2482,9 @@ type FluentPullToRefreshBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micr
     /// Gets or sets the the content to indicate the ChildContent is being refreshed.
     [<CustomOperation("LoadingTemplate")>] member inline _.LoadingTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("LoadingTemplate", html.text x)
     /// Gets or sets the the content to indicate the ChildContent has been refreshed.
-    [<CustomOperation("CompletedTemplate")>] member inline _.CompletedTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("CompletedTemplate", fragment)
+    [<CustomOperation("CompletedTemplate")>] member inline _.CompletedTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("CompletedTemplate", fragment)
     /// Gets or sets the the content to indicate the ChildContent has been refreshed.
-    [<CustomOperation("CompletedTemplate")>] member inline _.CompletedTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("CompletedTemplate", fragment { yield! fragments })
+    [<CustomOperation("CompletedTemplate")>] member inline _.CompletedTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("CompletedTemplate", fragment { yield! fragments })
     /// Gets or sets the the content to indicate the ChildContent has been refreshed.
     [<CustomOperation("CompletedTemplate")>] member inline _.CompletedTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("CompletedTemplate", html.text x)
     /// Gets or sets the the content to indicate the ChildContent has been refreshed.
@@ -2216,9 +2492,9 @@ type FluentPullToRefreshBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micr
     /// Gets or sets the the content to indicate the ChildContent has been refreshed.
     [<CustomOperation("CompletedTemplate")>] member inline _.CompletedTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("CompletedTemplate", html.text x)
     /// Gets or sets the the content to indicate the ChildContent can not be refreshed anymore.
-    [<CustomOperation("NoDataTemplate")>] member inline _.NoDataTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("NoDataTemplate", fragment)
+    [<CustomOperation("NoDataTemplate")>] member inline _.NoDataTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("NoDataTemplate", fragment)
     /// Gets or sets the the content to indicate the ChildContent can not be refreshed anymore.
-    [<CustomOperation("NoDataTemplate")>] member inline _.NoDataTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("NoDataTemplate", fragment { yield! fragments })
+    [<CustomOperation("NoDataTemplate")>] member inline _.NoDataTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("NoDataTemplate", fragment { yield! fragments })
     /// Gets or sets the the content to indicate the ChildContent can not be refreshed anymore.
     [<CustomOperation("NoDataTemplate")>] member inline _.NoDataTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("NoDataTemplate", html.text x)
     /// Gets or sets the the content to indicate the ChildContent can not be refreshed anymore.
@@ -2238,13 +2514,15 @@ type FluentPullToRefreshBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micr
 type FluentRadioBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
     /// Gets or sets a value indicating whether the element is readonly.
-    [<CustomOperation("ReadOnly")>] member inline _.ReadOnly ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("ReadOnly" => (defaultArg x true))
+    [<CustomOperation("ReadOnly")>] member inline _.ReadOnly ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ReadOnly" =>>> true)
+    /// Gets or sets a value indicating whether the element is readonly.
+    [<CustomOperation("ReadOnly")>] member inline _.ReadOnly ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ReadOnly" =>>> x)
     /// Gets or sets the text displayed just above the component.
     [<CustomOperation("Label")>] member inline _.Label ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Label" => x)
     /// Gets or sets the content displayed just above the component.
-    [<CustomOperation("LabelTemplate")>] member inline _.LabelTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("LabelTemplate", fragment)
+    [<CustomOperation("LabelTemplate")>] member inline _.LabelTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("LabelTemplate", fragment)
     /// Gets or sets the content displayed just above the component.
-    [<CustomOperation("LabelTemplate")>] member inline _.LabelTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("LabelTemplate", fragment { yield! fragments })
+    [<CustomOperation("LabelTemplate")>] member inline _.LabelTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("LabelTemplate", fragment { yield! fragments })
     /// Gets or sets the content displayed just above the component.
     [<CustomOperation("LabelTemplate")>] member inline _.LabelTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("LabelTemplate", html.text x)
     /// Gets or sets the content displayed just above the component.
@@ -2256,11 +2534,15 @@ type FluentRadioBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Mic
     /// Gets or sets the value of the element.
     [<CustomOperation("Value")>] member inline _.Value ([<InlineIfLambda>] render: AttrRenderFragment, x: 'TValue) = render ==> ("Value" => x)
     /// Disables the form control, ensuring it doesn't participate in form submission
-    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Disabled" => (defaultArg x true))
+    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Disabled" =>>> true)
+    /// Disables the form control, ensuring it doesn't participate in form submission
+    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Disabled" =>>> x)
     /// Gets or sets the name of the parent fluent radio group.
     [<CustomOperation("Name")>] member inline _.Name ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Name" => x)
     /// Gets or sets a value indicating whether the element needs to have a value.
-    [<CustomOperation("Required")>] member inline _.Required ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Required" => (defaultArg x true))
+    [<CustomOperation("Required")>] member inline _.Required ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Required" =>>> true)
+    /// Gets or sets a value indicating whether the element needs to have a value.
+    [<CustomOperation("Required")>] member inline _.Required ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Required" =>>> x)
     /// Gets or sets a value indicating whether the element is checked.
     [<CustomOperation("Checked")>] member inline _.Checked ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("Checked" => x)
 
@@ -2279,66 +2561,82 @@ type FluentSkeletonBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     /// Gets or sets the height of the skeleton.
     [<CustomOperation("Height")>] member inline _.Height ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Height" => x)
     /// Gets or sets a value indicating whether the skeleton is visible.
-    [<CustomOperation("Visible")>] member inline _.Visible ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Visible" => (defaultArg x true))
+    [<CustomOperation("Visible")>] member inline _.Visible ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Visible" =>>> true)
+    /// Gets or sets a value indicating whether the skeleton is visible.
+    [<CustomOperation("Visible")>] member inline _.Visible ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Visible" =>>> x)
 
-type FluentSliderLabelBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+type FluentSliderLabelBuilder<'FunBlazorGeneric, 'TValue when System.Numerics.INumber<'TValue> and 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
     /// Gets or sets the value for this slider position.
     [<CustomOperation("Position")>] member inline _.Position ([<InlineIfLambda>] render: AttrRenderFragment, x: 'TValue) = render ==> ("Position" => x)
     /// Gets or sets a value indicating whether marks are hidden.
     [<CustomOperation("HideMark")>] member inline _.HideMark ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("HideMark" => x)
-    /// Gets or sets disabled state of the label. This is generally controlled by the parent.
+    /// Gets the disabled state of the label. This is controlled by the owning FluentSlider`1.
     [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("Disabled" => x)
 
 type FluentSortableListBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
     /// Gets or sets the template to be used to define each sortable item in the list.
     /// Use the @context parameter to access the item and its properties.
-    [<CustomOperation("ItemTemplate")>] member inline _.ItemTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: 'TItem -> NodeRenderFragment) = render ==> html.renderFragment("ItemTemplate", fn)
+    [<CustomOperation("ItemTemplate")>] member inline _.ItemTemplate ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: 'TItem -> NodeRenderFragment) = render ==> html.renderFragment("ItemTemplate", fn)
     /// Gets or sets the list of items to be displayed in a sortable list.
     [<CustomOperation("Items")>] member inline _.Items ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<'TItem>) = render ==> ("Items" => x)
     /// Event callback for when the list is updated.
-    [<CustomOperation("OnUpdate")>] member inline _.OnUpdate ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentSortableListEventArgs -> unit) = render ==> html.callback("OnUpdate", fn)
+    [<CustomOperation("OnUpdate")>] member inline _.OnUpdate ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentSortableListEventArgs -> unit) = render ==> html.callback("OnUpdate", fn)
     /// Event callback for when the list is updated.
-    [<CustomOperation("OnUpdate")>] member inline _.OnUpdate ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentSortableListEventArgs -> Task<unit>) = render ==> html.callbackTask("OnUpdate", fn)
+    [<CustomOperation("OnUpdate")>] member inline _.OnUpdate ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentSortableListEventArgs -> Task<unit>) = render ==> html.callbackTask("OnUpdate", fn)
     /// Event callback for when an item is removed from the list.
-    [<CustomOperation("OnRemove")>] member inline _.OnRemove ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentSortableListEventArgs -> unit) = render ==> html.callback("OnRemove", fn)
+    [<CustomOperation("OnRemove")>] member inline _.OnRemove ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentSortableListEventArgs -> unit) = render ==> html.callback("OnRemove", fn)
     /// Event callback for when an item is removed from the list.
-    [<CustomOperation("OnRemove")>] member inline _.OnRemove ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentSortableListEventArgs -> Task<unit>) = render ==> html.callbackTask("OnRemove", fn)
+    [<CustomOperation("OnRemove")>] member inline _.OnRemove ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentSortableListEventArgs -> Task<unit>) = render ==> html.callbackTask("OnRemove", fn)
     /// Gets or sets the name of the Group used for dragging between lists. Set the group to the same value on both lists to enable.
     /// You can only have 1 group with 2 lists.
     [<CustomOperation("Group")>] member inline _.Group ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Group" => x)
     /// Gets or sets whether elements are cloned instead of moved. Set Pull to "clone" to enable this.
-    [<CustomOperation("Clone")>] member inline _.Clone ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Clone" => (defaultArg x true))
+    [<CustomOperation("Clone")>] member inline _.Clone ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Clone" =>>> true)
+    /// Gets or sets whether elements are cloned instead of moved. Set Pull to "clone" to enable this.
+    [<CustomOperation("Clone")>] member inline _.Clone ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Clone" =>>> x)
     /// Gets or sets wether it is possible to drop items into the current list from another list in the same group.
     /// Set to false to disable dropping from another list onto the current list.
-    [<CustomOperation("Drop")>] member inline _.Drop ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Drop" => (defaultArg x true))
+    [<CustomOperation("Drop")>] member inline _.Drop ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Drop" =>>> true)
+    /// Gets or sets wether it is possible to drop items into the current list from another list in the same group.
+    /// Set to false to disable dropping from another list onto the current list.
+    [<CustomOperation("Drop")>] member inline _.Drop ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Drop" =>>> x)
     /// Gets or sets whether the list is sortable.
     /// Default is true
     /// Disable sorting within a list by setting to false.
-    [<CustomOperation("Sort")>] member inline _.Sort ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Sort" => (defaultArg x true))
+    [<CustomOperation("Sort")>] member inline _.Sort ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Sort" =>>> true)
+    /// Gets or sets whether the list is sortable.
+    /// Default is true
+    /// Disable sorting within a list by setting to false.
+    [<CustomOperation("Sort")>] member inline _.Sort ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Sort" =>>> x)
     /// Gets or sets whether the whole item acts as drag handle.
     /// Set to true to use an element with classname `.sortable-grab` as the handle.
-    [<CustomOperation("Handle")>] member inline _.Handle ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Handle" => (defaultArg x true))
+    [<CustomOperation("Handle")>] member inline _.Handle ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Handle" =>>> true)
+    /// Gets or sets whether the whole item acts as drag handle.
+    /// Set to true to use an element with classname `.sortable-grab` as the handle.
+    [<CustomOperation("Handle")>] member inline _.Handle ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Handle" =>>> x)
     /// Gets or sets the function to filter out elements that cannot be sorted or moved.
     [<CustomOperation("ItemFilter")>] member inline _.ItemFilter ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("ItemFilter" => (System.Func<'TItem, System.Boolean>fn))
     /// Gets or sets wether ro ignore the HTML5 DnD behaviour and force the fallback to kick in
-    [<CustomOperation("Fallback")>] member inline _.Fallback ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Fallback" => (defaultArg x true))
+    [<CustomOperation("Fallback")>] member inline _.Fallback ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Fallback" =>>> true)
+    /// Gets or sets wether ro ignore the HTML5 DnD behaviour and force the fallback to kick in
+    [<CustomOperation("Fallback")>] member inline _.Fallback ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Fallback" =>>> x)
 
 type FluentMultiSplitterBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
     /// Gets or sets the collapse callback.
-    [<CustomOperation("OnCollapse")>] member inline _.OnCollapse ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentMultiSplitterEventArgs -> unit) = render ==> html.callback("OnCollapse", fn)
+    [<CustomOperation("OnCollapse")>] member inline _.OnCollapse ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentMultiSplitterEventArgs -> unit) = render ==> html.callback("OnCollapse", fn)
     /// Gets or sets the collapse callback.
-    [<CustomOperation("OnCollapse")>] member inline _.OnCollapse ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentMultiSplitterEventArgs -> Task<unit>) = render ==> html.callbackTask("OnCollapse", fn)
+    [<CustomOperation("OnCollapse")>] member inline _.OnCollapse ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentMultiSplitterEventArgs -> Task<unit>) = render ==> html.callbackTask("OnCollapse", fn)
     /// Gets or sets the expand callback.
-    [<CustomOperation("OnExpand")>] member inline _.OnExpand ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentMultiSplitterEventArgs -> unit) = render ==> html.callback("OnExpand", fn)
+    [<CustomOperation("OnExpand")>] member inline _.OnExpand ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentMultiSplitterEventArgs -> unit) = render ==> html.callback("OnExpand", fn)
     /// Gets or sets the expand callback.
-    [<CustomOperation("OnExpand")>] member inline _.OnExpand ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentMultiSplitterEventArgs -> Task<unit>) = render ==> html.callbackTask("OnExpand", fn)
+    [<CustomOperation("OnExpand")>] member inline _.OnExpand ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentMultiSplitterEventArgs -> Task<unit>) = render ==> html.callbackTask("OnExpand", fn)
     /// Gets or sets the resize callback.
-    [<CustomOperation("OnResize")>] member inline _.OnResize ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentMultiSplitterResizeEventArgs -> unit) = render ==> html.callback("OnResize", fn)
+    [<CustomOperation("OnResize")>] member inline _.OnResize ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentMultiSplitterResizeEventArgs -> unit) = render ==> html.callback("OnResize", fn)
     /// Gets or sets the resize callback.
-    [<CustomOperation("OnResize")>] member inline _.OnResize ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentMultiSplitterResizeEventArgs -> Task<unit>) = render ==> html.callbackTask("OnResize", fn)
+    [<CustomOperation("OnResize")>] member inline _.OnResize ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentMultiSplitterResizeEventArgs -> Task<unit>) = render ==> html.callbackTask("OnResize", fn)
     /// Gets or sets the size of the splitter bar in pixels. Default is 8
     [<CustomOperation("BarSize")>] member inline _.BarSize ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("BarSize" => x)
     /// Gets or sets the orientation.
@@ -2351,15 +2649,21 @@ type FluentMultiSplitterBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micr
 type FluentMultiSplitterPaneBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
     /// Gets or sets a value indicating whether this FluentMultiSplitterPane is collapsed.
-    [<CustomOperation("Collapsed")>] member inline _.Collapsed ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Collapsed" => (defaultArg x true))
+    [<CustomOperation("Collapsed")>] member inline _.Collapsed ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Collapsed" =>>> true)
+    /// Gets or sets a value indicating whether this FluentMultiSplitterPane is collapsed.
+    [<CustomOperation("Collapsed")>] member inline _.Collapsed ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Collapsed" =>>> x)
     /// Gets or sets a value indicating whether this FluentMultiSplitterPane is collapsible.
-    [<CustomOperation("Collapsible")>] member inline _.Collapsible ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Collapsible" => (defaultArg x true))
+    [<CustomOperation("Collapsible")>] member inline _.Collapsible ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Collapsible" =>>> true)
+    /// Gets or sets a value indicating whether this FluentMultiSplitterPane is collapsible.
+    [<CustomOperation("Collapsible")>] member inline _.Collapsible ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Collapsible" =>>> x)
     /// Determines the maximum value.
     [<CustomOperation("Max")>] member inline _.Max ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Max" => x)
     /// Determines the minimum value.
     [<CustomOperation("Min")>] member inline _.Min ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Min" => x)
     /// Gets or sets a value indicating whether this FluentMultiSplitterPane is resizable.
-    [<CustomOperation("Resizable")>] member inline _.Resizable ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Resizable" => (defaultArg x true))
+    [<CustomOperation("Resizable")>] member inline _.Resizable ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Resizable" =>>> true)
+    /// Gets or sets a value indicating whether this FluentMultiSplitterPane is resizable.
+    [<CustomOperation("Resizable")>] member inline _.Resizable ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Resizable" =>>> x)
     /// Gets or sets the size.
     [<CustomOperation("Size")>] member inline _.Size ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Size" => x)
 
@@ -2369,9 +2673,9 @@ type FluentSplitterBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     /// Default is horizontal (i.e a vertical splitter bar)
     [<CustomOperation("Orientation")>] member inline _.Orientation ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Orientation) = render ==> ("Orientation" => x)
     /// Gets or sets the content for the top/left panel.
-    [<CustomOperation("Panel1")>] member inline _.Panel1 ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("Panel1", fragment)
+    [<CustomOperation("Panel1")>] member inline _.Panel1 ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("Panel1", fragment)
     /// Gets or sets the content for the top/left panel.
-    [<CustomOperation("Panel1")>] member inline _.Panel1 ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("Panel1", fragment { yield! fragments })
+    [<CustomOperation("Panel1")>] member inline _.Panel1 ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("Panel1", fragment { yield! fragments })
     /// Gets or sets the content for the top/left panel.
     [<CustomOperation("Panel1")>] member inline _.Panel1 ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("Panel1", html.text x)
     /// Gets or sets the content for the top/left panel.
@@ -2379,9 +2683,9 @@ type FluentSplitterBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     /// Gets or sets the content for the top/left panel.
     [<CustomOperation("Panel1")>] member inline _.Panel1 ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("Panel1", html.text x)
     /// Gets or sets the content for the bottom/right panel.
-    [<CustomOperation("Panel2")>] member inline _.Panel2 ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("Panel2", fragment)
+    [<CustomOperation("Panel2")>] member inline _.Panel2 ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("Panel2", fragment)
     /// Gets or sets the content for the bottom/right panel.
-    [<CustomOperation("Panel2")>] member inline _.Panel2 ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("Panel2", fragment { yield! fragments })
+    [<CustomOperation("Panel2")>] member inline _.Panel2 ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("Panel2", fragment { yield! fragments })
     /// Gets or sets the content for the bottom/right panel.
     [<CustomOperation("Panel2")>] member inline _.Panel2 ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("Panel2", html.text x)
     /// Gets or sets the content for the bottom/right panel.
@@ -2407,29 +2711,40 @@ type FluentSplitterBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     [<CustomOperation("BarSize")>] member inline _.BarSize ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("BarSize" => x)
     /// Gets or sets a value indicating whether the splitter bar handle is visible.
     /// Default is true.
-    [<CustomOperation("BarHandle")>] member inline _.BarHandle ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("BarHandle" => (defaultArg x true))
+    [<CustomOperation("BarHandle")>] member inline _.BarHandle ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("BarHandle" =>>> true)
+    /// Gets or sets a value indicating whether the splitter bar handle is visible.
+    /// Default is true.
+    [<CustomOperation("BarHandle")>] member inline _.BarHandle ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("BarHandle" =>>> x)
     /// Gets or sets a value indicating whether the splitter is collapsed.
     /// If set to true, Panel1 will take up all the space and Panel2 as well as the splitter bar will be hidden.
-    [<CustomOperation("Collapsed")>] member inline _.Collapsed ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Collapsed" => (defaultArg x true))
-    [<CustomOperation("OnCollapsed")>] member inline _.OnCollapsed ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Boolean -> unit) = render ==> html.callback("OnCollapsed", fn)
-    [<CustomOperation("OnCollapsed")>] member inline _.OnCollapsed ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("OnCollapsed", fn)
-    [<CustomOperation("OnExpanded")>] member inline _.OnExpanded ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Boolean -> unit) = render ==> html.callback("OnExpanded", fn)
-    [<CustomOperation("OnExpanded")>] member inline _.OnExpanded ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("OnExpanded", fn)
-    [<CustomOperation("OnResized")>] member inline _.OnResized ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.SplitterResizedEventArgs -> unit) = render ==> html.callback("OnResized", fn)
-    [<CustomOperation("OnResized")>] member inline _.OnResized ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.SplitterResizedEventArgs -> Task<unit>) = render ==> html.callbackTask("OnResized", fn)
+    [<CustomOperation("Collapsed")>] member inline _.Collapsed ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Collapsed" =>>> true)
+    /// Gets or sets a value indicating whether the splitter is collapsed.
+    /// If set to true, Panel1 will take up all the space and Panel2 as well as the splitter bar will be hidden.
+    [<CustomOperation("Collapsed")>] member inline _.Collapsed ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Collapsed" =>>> x)
+    [<CustomOperation("OnCollapsed")>] member inline _.OnCollapsed ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> unit) = render ==> html.callback("OnCollapsed", fn)
+    [<CustomOperation("OnCollapsed")>] member inline _.OnCollapsed ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("OnCollapsed", fn)
+    [<CustomOperation("OnExpanded")>] member inline _.OnExpanded ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> unit) = render ==> html.callback("OnExpanded", fn)
+    [<CustomOperation("OnExpanded")>] member inline _.OnExpanded ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("OnExpanded", fn)
+    [<CustomOperation("OnResized")>] member inline _.OnResized ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.SplitterResizedEventArgs -> unit) = render ==> html.callback("OnResized", fn)
+    [<CustomOperation("OnResized")>] member inline _.OnResized ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.SplitterResizedEventArgs -> Task<unit>) = render ==> html.callbackTask("OnResized", fn)
 
 type FluentStackBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
     /// Gets or sets the horizontal alignment of the components in the stack.
+    /// Default is Left
     [<CustomOperation("HorizontalAlignment")>] member inline _.HorizontalAlignment ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.HorizontalAlignment) = render ==> ("HorizontalAlignment" => x)
     /// Gets or sets the vertical alignment of the components in the stack.
+    /// Default is Top
     [<CustomOperation("VerticalAlignment")>] member inline _.VerticalAlignment ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.VerticalAlignment) = render ==> ("VerticalAlignment" => x)
     /// Gets or sets the orientation of the stacked components.
+    /// Default is Horizontal.
     [<CustomOperation("Orientation")>] member inline _.Orientation ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Orientation) = render ==> ("Orientation" => x)
     /// Gets or sets the width of the stack as a percentage string (default = 100%).
     [<CustomOperation("Width")>] member inline _.Width ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Width" => x)
     /// Gets or sets a value indicating whether the stack wraps.
-    [<CustomOperation("Wrap")>] member inline _.Wrap ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Wrap" => (defaultArg x true))
+    [<CustomOperation("Wrap")>] member inline _.Wrap ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Wrap" =>>> true)
+    /// Gets or sets a value indicating whether the stack wraps.
+    [<CustomOperation("Wrap")>] member inline _.Wrap ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Wrap" =>>> x)
     /// Gets or sets the gap between horizontally stacked components (in pixels).
     /// Default is 10 pixels.
     [<CustomOperation("HorizontalGap")>] member inline _.HorizontalGap ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("HorizontalGap" => x)
@@ -2440,25 +2755,29 @@ type FluentStackBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.As
 type FluentTabBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
     /// When true, the control will be immutable by user interaction. See disabled HTML attribute for more information.
-    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Disabled" => (defaultArg x true))
+    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Disabled" =>>> true)
+    /// When true, the control will be immutable by user interaction. See disabled HTML attribute for more information.
+    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Disabled" =>>> x)
     /// Gets or sets the visibility of a tab
-    [<CustomOperation("Visible")>] member inline _.Visible ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Visible" => (defaultArg x true))
+    [<CustomOperation("Visible")>] member inline _.Visible ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Visible" =>>> true)
+    /// Gets or sets the visibility of a tab
+    [<CustomOperation("Visible")>] member inline _.Visible ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Visible" =>>> x)
     /// Gets or sets the label of the tab.
     [<CustomOperation("Label")>] member inline _.Label ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Label" => x)
     /// Gets or sets the label of the tab.
     [<CustomOperation("Label'")>] member inline _.Label' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.String * (System.String -> unit)) = render ==> html.bind("Label", valueFn)
     /// Callback to invoke when the label changes.
-    [<CustomOperation("LabelChanged")>] member inline _.LabelChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.String -> unit) = render ==> html.callback("LabelChanged", fn)
+    [<CustomOperation("LabelChanged")>] member inline _.LabelChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.String -> unit) = render ==> html.callback("LabelChanged", fn)
     /// Callback to invoke when the label changes.
-    [<CustomOperation("LabelChanged")>] member inline _.LabelChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.String -> Task<unit>) = render ==> html.callbackTask("LabelChanged", fn)
+    [<CustomOperation("LabelChanged")>] member inline _.LabelChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.String -> Task<unit>) = render ==> html.callbackTask("LabelChanged", fn)
     /// Gets or sets the class, applied to the Label Tab Item.
     [<CustomOperation("LabelClass")>] member inline _.LabelClass ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("LabelClass" => x)
     /// Gets or sets the style, applied to the Label Tab Item.
     [<CustomOperation("LabelStyle")>] member inline _.LabelStyle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("LabelStyle" => x)
     /// Gets or sets the customized content of the header.
-    [<CustomOperation("Header")>] member inline _.Header ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("Header", fragment)
+    [<CustomOperation("Header")>] member inline _.Header ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("Header", fragment)
     /// Gets or sets the customized content of the header.
-    [<CustomOperation("Header")>] member inline _.Header ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("Header", fragment { yield! fragments })
+    [<CustomOperation("Header")>] member inline _.Header ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("Header", fragment { yield! fragments })
     /// Gets or sets the customized content of the header.
     [<CustomOperation("Header")>] member inline _.Header ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("Header", html.text x)
     /// Gets or sets the customized content of the header.
@@ -2468,13 +2787,17 @@ type FluentTabBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspN
     /// Gets or sets the icon to display in front of the tab
     [<CustomOperation("Icon")>] member inline _.Icon ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Icon) = render ==> ("Icon" => x)
     /// True to let the user edit the Label property.
-    [<CustomOperation("LabelEditable")>] member inline _.LabelEditable ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("LabelEditable" => (defaultArg x true))
+    [<CustomOperation("LabelEditable")>] member inline _.LabelEditable ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("LabelEditable" =>>> true)
+    /// True to let the user edit the Label property.
+    [<CustomOperation("LabelEditable")>] member inline _.LabelEditable ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("LabelEditable" =>>> x)
     /// Render the tab content only when the tab is selected.
-    [<CustomOperation("DeferredLoading")>] member inline _.DeferredLoading ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("DeferredLoading" => (defaultArg x true))
+    [<CustomOperation("DeferredLoading")>] member inline _.DeferredLoading ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("DeferredLoading" =>>> true)
+    /// Render the tab content only when the tab is selected.
+    [<CustomOperation("DeferredLoading")>] member inline _.DeferredLoading ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("DeferredLoading" =>>> x)
     /// Gets or sets the customized content of this tab panel.
-    [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("Content", fragment)
+    [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("Content", fragment)
     /// Gets or sets the customized content of this tab panel.
-    [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("Content", fragment { yield! fragments })
+    [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("Content", fragment { yield! fragments })
     /// Gets or sets the customized content of this tab panel.
     [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("Content", html.text x)
     /// Gets or sets the customized content of this tab panel.
@@ -2482,9 +2805,9 @@ type FluentTabBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspN
     /// Gets or sets the customized content of this tab panel.
     [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("Content", html.text x)
     /// Gets or sets the customized loading content message when using deferred loading.
-    [<CustomOperation("LoadingContent")>] member inline _.LoadingContent ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("LoadingContent", fragment)
+    [<CustomOperation("LoadingContent")>] member inline _.LoadingContent ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("LoadingContent", fragment)
     /// Gets or sets the customized loading content message when using deferred loading.
-    [<CustomOperation("LoadingContent")>] member inline _.LoadingContent ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("LoadingContent", fragment { yield! fragments })
+    [<CustomOperation("LoadingContent")>] member inline _.LoadingContent ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("LoadingContent", fragment { yield! fragments })
     /// Gets or sets the customized loading content message when using deferred loading.
     [<CustomOperation("LoadingContent")>] member inline _.LoadingContent ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("LoadingContent", html.text x)
     /// Gets or sets the customized loading content message when using deferred loading.
@@ -2497,16 +2820,19 @@ type FluentTabsBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.Asp
     /// Gets or sets the tab's orentation. See Orientation
     [<CustomOperation("Orientation")>] member inline _.Orientation ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Orientation) = render ==> ("Orientation" => x)
     /// Raised when a tab is selected.
-    [<CustomOperation("OnTabSelect")>] member inline _.OnTabSelect ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentTab -> unit) = render ==> html.callback("OnTabSelect", fn)
+    [<CustomOperation("OnTabSelect")>] member inline _.OnTabSelect ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentTab -> unit) = render ==> html.callback("OnTabSelect", fn)
     /// Raised when a tab is selected.
-    [<CustomOperation("OnTabSelect")>] member inline _.OnTabSelect ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentTab -> Task<unit>) = render ==> html.callbackTask("OnTabSelect", fn)
+    [<CustomOperation("OnTabSelect")>] member inline _.OnTabSelect ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentTab -> Task<unit>) = render ==> html.callbackTask("OnTabSelect", fn)
     /// Raised when a tab is closed.
-    [<CustomOperation("OnTabClose")>] member inline _.OnTabClose ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentTab -> unit) = render ==> html.callback("OnTabClose", fn)
+    [<CustomOperation("OnTabClose")>] member inline _.OnTabClose ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentTab -> unit) = render ==> html.callback("OnTabClose", fn)
     /// Raised when a tab is closed.
-    [<CustomOperation("OnTabClose")>] member inline _.OnTabClose ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentTab -> Task<unit>) = render ==> html.callbackTask("OnTabClose", fn)
+    [<CustomOperation("OnTabClose")>] member inline _.OnTabClose ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentTab -> Task<unit>) = render ==> html.callbackTask("OnTabClose", fn)
     /// Determines if a dismiss icon is shown.
     /// When clicked the OnTabClose event is raised to remove this tab from the list.
-    [<CustomOperation("ShowClose")>] member inline _.ShowClose ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("ShowClose" => (defaultArg x true))
+    [<CustomOperation("ShowClose")>] member inline _.ShowClose ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowClose" =>>> true)
+    /// Determines if a dismiss icon is shown.
+    /// When clicked the OnTabClose event is raised to remove this tab from the list.
+    [<CustomOperation("ShowClose")>] member inline _.ShowClose ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowClose" =>>> x)
     /// Gets or sets the width of the tab items.
     [<CustomOperation("Size")>] member inline _.Size ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.TabSize>) = render ==> ("Size" => x)
     /// Gets or sets the width of the tabs component.
@@ -2518,15 +2844,17 @@ type FluentTabsBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.Asp
     [<CustomOperation("ActiveTabId")>] member inline _.ActiveTabId ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ActiveTabId" => x)
     [<CustomOperation("ActiveTabId'")>] member inline _.ActiveTabId' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.String * (System.String -> unit)) = render ==> html.bind("ActiveTabId", valueFn)
     /// Gets or sets a callback when the bound value is changed.
-    [<CustomOperation("ActiveTabIdChanged")>] member inline _.ActiveTabIdChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.String -> unit) = render ==> html.callback("ActiveTabIdChanged", fn)
+    [<CustomOperation("ActiveTabIdChanged")>] member inline _.ActiveTabIdChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.String -> unit) = render ==> html.callback("ActiveTabIdChanged", fn)
     /// Gets or sets a callback when the bound value is changed.
-    [<CustomOperation("ActiveTabIdChanged")>] member inline _.ActiveTabIdChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.String -> Task<unit>) = render ==> html.callbackTask("ActiveTabIdChanged", fn)
+    [<CustomOperation("ActiveTabIdChanged")>] member inline _.ActiveTabIdChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.String -> Task<unit>) = render ==> html.callbackTask("ActiveTabIdChanged", fn)
     /// Gets or sets a value indicating whether the active indicator is displayed.
-    [<CustomOperation("ShowActiveIndicator")>] member inline _.ShowActiveIndicator ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("ShowActiveIndicator" => (defaultArg x true))
+    [<CustomOperation("ShowActiveIndicator")>] member inline _.ShowActiveIndicator ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowActiveIndicator" =>>> true)
+    /// Gets or sets a value indicating whether the active indicator is displayed.
+    [<CustomOperation("ShowActiveIndicator")>] member inline _.ShowActiveIndicator ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowActiveIndicator" =>>> x)
     /// Gets or sets a callback when a tab is changed.
-    [<CustomOperation("OnTabChange")>] member inline _.OnTabChange ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentTab -> unit) = render ==> html.callback("OnTabChange", fn)
+    [<CustomOperation("OnTabChange")>] member inline _.OnTabChange ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentTab -> unit) = render ==> html.callback("OnTabChange", fn)
     /// Gets or sets a callback when a tab is changed.
-    [<CustomOperation("OnTabChange")>] member inline _.OnTabChange ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentTab -> Task<unit>) = render ==> html.callbackTask("OnTabChange", fn)
+    [<CustomOperation("OnTabChange")>] member inline _.OnTabChange ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentTab -> Task<unit>) = render ==> html.callbackTask("OnTabChange", fn)
 
 type FluentToastBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -2547,9 +2875,15 @@ type FluentTooltipBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     /// Use ITooltipService to create the tooltip, if this service was injected.
     /// If the ChildContent is dynamic, set this to false.
     /// Default, true.
-    [<CustomOperation("UseTooltipService")>] member inline _.UseTooltipService ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("UseTooltipService" => (defaultArg x true))
+    [<CustomOperation("UseTooltipService")>] member inline _.UseTooltipService ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("UseTooltipService" =>>> true)
+    /// Use ITooltipService to create the tooltip, if this service was injected.
+    /// If the ChildContent is dynamic, set this to false.
+    /// Default, true.
+    [<CustomOperation("UseTooltipService")>] member inline _.UseTooltipService ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("UseTooltipService" =>>> x)
     /// Gets or sets a value indicating whether the tooltip is visible.
-    [<CustomOperation("Visible")>] member inline _.Visible ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Visible" => (defaultArg x true))
+    [<CustomOperation("Visible")>] member inline _.Visible ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Visible" =>>> true)
+    /// Gets or sets a value indicating whether the tooltip is visible.
+    [<CustomOperation("Visible")>] member inline _.Visible ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Visible" =>>> x)
     /// Required. Gets or sets the control identifier associated with the tooltip.
     [<CustomOperation("Anchor")>] member inline _.Anchor ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Anchor" => x)
     /// Gets or sets the delay (in milliseconds). 
@@ -2565,13 +2899,17 @@ type FluentTooltipBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     /// Corresponds to anchored-region auto-update-mode.
     [<CustomOperation("AutoUpdateMode")>] member inline _.AutoUpdateMode ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.AutoUpdateMode>) = render ==> ("AutoUpdateMode" => x)
     /// Gets or sets whether the horizontal viewport is locked.
-    [<CustomOperation("HorizontalViewportLock")>] member inline _.HorizontalViewportLock ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("HorizontalViewportLock" => (defaultArg x true))
+    [<CustomOperation("HorizontalViewportLock")>] member inline _.HorizontalViewportLock ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("HorizontalViewportLock" =>>> true)
+    /// Gets or sets whether the horizontal viewport is locked.
+    [<CustomOperation("HorizontalViewportLock")>] member inline _.HorizontalViewportLock ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("HorizontalViewportLock" =>>> x)
     /// Gets or sets whether the vertical viewport is locked.
-    [<CustomOperation("VerticalViewportLock")>] member inline _.VerticalViewportLock ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("VerticalViewportLock" => (defaultArg x true))
+    [<CustomOperation("VerticalViewportLock")>] member inline _.VerticalViewportLock ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("VerticalViewportLock" =>>> true)
+    /// Gets or sets whether the vertical viewport is locked.
+    [<CustomOperation("VerticalViewportLock")>] member inline _.VerticalViewportLock ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("VerticalViewportLock" =>>> x)
     /// Callback for when the tooltip is dismissed.
-    [<CustomOperation("OnDismissed")>] member inline _.OnDismissed ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.EventArgs -> unit) = render ==> html.callback("OnDismissed", fn)
+    [<CustomOperation("OnDismissed")>] member inline _.OnDismissed ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.EventArgs -> unit) = render ==> html.callback("OnDismissed", fn)
     /// Callback for when the tooltip is dismissed.
-    [<CustomOperation("OnDismissed")>] member inline _.OnDismissed ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.EventArgs -> Task<unit>) = render ==> html.callbackTask("OnDismissed", fn)
+    [<CustomOperation("OnDismissed")>] member inline _.OnDismissed ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.EventArgs -> Task<unit>) = render ==> html.callbackTask("OnDismissed", fn)
 
 type FluentTooltipProviderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -2585,30 +2923,43 @@ type FluentTreeItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     [<CustomOperation("Text")>] member inline _.Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Text" => x)
     /// Returns true if the tree item is expanded,
     /// and false if collapsed.
-    [<CustomOperation("Expanded")>] member inline _.Expanded ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Expanded" => (defaultArg x true))
+    [<CustomOperation("Expanded")>] member inline _.Expanded ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Expanded" =>>> true)
+    /// Returns true if the tree item is expanded,
+    /// and false if collapsed.
+    [<CustomOperation("Expanded")>] member inline _.Expanded ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Expanded" =>>> x)
     /// Returns true if the tree item is expanded,
     /// and false if collapsed.
     [<CustomOperation("Expanded'")>] member inline _.Expanded' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Boolean * (System.Boolean -> unit)) = render ==> html.bind("Expanded", valueFn)
     /// Called whenever Expanded changes.
-    [<CustomOperation("ExpandedChanged")>] member inline _.ExpandedChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Boolean -> unit) = render ==> html.callback("ExpandedChanged", fn)
+    [<CustomOperation("ExpandedChanged")>] member inline _.ExpandedChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> unit) = render ==> html.callback("ExpandedChanged", fn)
     /// Called whenever Expanded changes.
-    [<CustomOperation("ExpandedChanged")>] member inline _.ExpandedChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("ExpandedChanged", fn)
+    [<CustomOperation("ExpandedChanged")>] member inline _.ExpandedChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("ExpandedChanged", fn)
     /// When true, the control will appear selected by user interaction.
-    [<CustomOperation("Selected")>] member inline _.Selected ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Selected" => (defaultArg x true))
+    [<CustomOperation("Selected")>] member inline _.Selected ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Selected" =>>> true)
+    /// When true, the control will appear selected by user interaction.
+    [<CustomOperation("Selected")>] member inline _.Selected ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Selected" =>>> x)
     /// When true, the control will appear selected by user interaction.
     [<CustomOperation("Selected'")>] member inline _.Selected' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Boolean * (System.Boolean -> unit)) = render ==> html.bind("Selected", valueFn)
     /// Called whenever Selected changes.
-    [<CustomOperation("SelectedChanged")>] member inline _.SelectedChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Boolean -> unit) = render ==> html.callback("SelectedChanged", fn)
+    [<CustomOperation("SelectedChanged")>] member inline _.SelectedChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> unit) = render ==> html.callback("SelectedChanged", fn)
     /// Called whenever Selected changes.
-    [<CustomOperation("SelectedChanged")>] member inline _.SelectedChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("SelectedChanged", fn)
+    [<CustomOperation("SelectedChanged")>] member inline _.SelectedChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("SelectedChanged", fn)
     /// When true, the control will be immutable by user interaction. See disabled HTML attribute for more information.
-    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Disabled" => (defaultArg x true))
+    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Disabled" =>>> true)
+    /// When true, the control will be immutable by user interaction. See disabled HTML attribute for more information.
+    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Disabled" =>>> x)
     /// If set to true then the tree item will
     /// be expanded when it is created.
-    [<CustomOperation("InitiallyExpanded")>] member inline _.InitiallyExpanded ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("InitiallyExpanded" => (defaultArg x true))
+    [<CustomOperation("InitiallyExpanded")>] member inline _.InitiallyExpanded ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("InitiallyExpanded" =>>> true)
+    /// If set to true then the tree item will
+    /// be expanded when it is created.
+    [<CustomOperation("InitiallyExpanded")>] member inline _.InitiallyExpanded ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("InitiallyExpanded" =>>> x)
     /// If set to true then the tree item will
     /// be selected when it is created.
-    [<CustomOperation("InitiallySelected")>] member inline _.InitiallySelected ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("InitiallySelected" => (defaultArg x true))
+    [<CustomOperation("InitiallySelected")>] member inline _.InitiallySelected ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("InitiallySelected" =>>> true)
+    /// If set to true then the tree item will
+    /// be selected when it is created.
+    [<CustomOperation("InitiallySelected")>] member inline _.InitiallySelected ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("InitiallySelected" =>>> x)
     /// Gets or sets the Icon displayed at the start of tree item,
     /// when the node is collapsed.
     /// If this icon is not set, the IconExpanded will be used.
@@ -2630,45 +2981,52 @@ type FluentTreeViewBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     [<CustomOperation("SelectedItem'")>] member inline _.SelectedItem' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: Microsoft.FluentUI.AspNetCore.Components.ITreeViewItem * (Microsoft.FluentUI.AspNetCore.Components.ITreeViewItem -> unit)) = render ==> html.bind("SelectedItem", valueFn)
     /// Called when SelectedItem changes.
     /// Only when using the Items property.
-    [<CustomOperation("SelectedItemChanged")>] member inline _.SelectedItemChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.ITreeViewItem -> unit) = render ==> html.callback("SelectedItemChanged", fn)
+    [<CustomOperation("SelectedItemChanged")>] member inline _.SelectedItemChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.ITreeViewItem -> unit) = render ==> html.callback("SelectedItemChanged", fn)
     /// Called when SelectedItem changes.
     /// Only when using the Items property.
-    [<CustomOperation("SelectedItemChanged")>] member inline _.SelectedItemChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.ITreeViewItem -> Task<unit>) = render ==> html.callbackTask("SelectedItemChanged", fn)
+    [<CustomOperation("SelectedItemChanged")>] member inline _.SelectedItemChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.ITreeViewItem -> Task<unit>) = render ==> html.callbackTask("SelectedItemChanged", fn)
     /// Gets or sets whether the tree should render nodes under collapsed items
     /// Defaults to false
-    [<CustomOperation("RenderCollapsedNodes")>] member inline _.RenderCollapsedNodes ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("RenderCollapsedNodes" => (defaultArg x true))
+    [<CustomOperation("RenderCollapsedNodes")>] member inline _.RenderCollapsedNodes ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("RenderCollapsedNodes" =>>> true)
+    /// Gets or sets whether the tree should render nodes under collapsed items
+    /// Defaults to false
+    [<CustomOperation("RenderCollapsedNodes")>] member inline _.RenderCollapsedNodes ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("RenderCollapsedNodes" =>>> x)
     /// Gets or sets the currently selected tree item
     [<CustomOperation("CurrentSelected")>] member inline _.CurrentSelected ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.FluentTreeItem) = render ==> ("CurrentSelected" => x)
     /// Gets or sets the currently selected tree item
     [<CustomOperation("CurrentSelected'")>] member inline _.CurrentSelected' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: Microsoft.FluentUI.AspNetCore.Components.FluentTreeItem * (Microsoft.FluentUI.AspNetCore.Components.FluentTreeItem -> unit)) = render ==> html.bind("CurrentSelected", valueFn)
     /// Called when CurrentSelected changes.
     /// You cannot update FluentTreeItem properties.
-    [<CustomOperation("CurrentSelectedChanged")>] member inline _.CurrentSelectedChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentTreeItem -> unit) = render ==> html.callback("CurrentSelectedChanged", fn)
+    [<CustomOperation("CurrentSelectedChanged")>] member inline _.CurrentSelectedChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentTreeItem -> unit) = render ==> html.callback("CurrentSelectedChanged", fn)
     /// Called when CurrentSelected changes.
     /// You cannot update FluentTreeItem properties.
-    [<CustomOperation("CurrentSelectedChanged")>] member inline _.CurrentSelectedChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentTreeItem -> Task<unit>) = render ==> html.callbackTask("CurrentSelectedChanged", fn)
+    [<CustomOperation("CurrentSelectedChanged")>] member inline _.CurrentSelectedChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentTreeItem -> Task<unit>) = render ==> html.callbackTask("CurrentSelectedChanged", fn)
     /// Called whenever Selected changes on an
     /// item within the tree.
     /// You cannot update FluentTreeItem properties.
-    [<CustomOperation("OnSelectedChange")>] member inline _.OnSelectedChange ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentTreeItem -> unit) = render ==> html.callback("OnSelectedChange", fn)
+    [<CustomOperation("OnSelectedChange")>] member inline _.OnSelectedChange ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentTreeItem -> unit) = render ==> html.callback("OnSelectedChange", fn)
     /// Called whenever Selected changes on an
     /// item within the tree.
     /// You cannot update FluentTreeItem properties.
-    [<CustomOperation("OnSelectedChange")>] member inline _.OnSelectedChange ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentTreeItem -> Task<unit>) = render ==> html.callbackTask("OnSelectedChange", fn)
+    [<CustomOperation("OnSelectedChange")>] member inline _.OnSelectedChange ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentTreeItem -> Task<unit>) = render ==> html.callbackTask("OnSelectedChange", fn)
     /// Called whenever Expanded changes on an
     /// item within the tree.
     /// You cannot update FluentTreeItem properties.
-    [<CustomOperation("OnExpandedChange")>] member inline _.OnExpandedChange ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentTreeItem -> unit) = render ==> html.callback("OnExpandedChange", fn)
+    [<CustomOperation("OnExpandedChange")>] member inline _.OnExpandedChange ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentTreeItem -> unit) = render ==> html.callback("OnExpandedChange", fn)
     /// Called whenever Expanded changes on an
     /// item within the tree.
     /// You cannot update FluentTreeItem properties.
-    [<CustomOperation("OnExpandedChange")>] member inline _.OnExpandedChange ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentTreeItem -> Task<unit>) = render ==> html.callbackTask("OnExpandedChange", fn)
+    [<CustomOperation("OnExpandedChange")>] member inline _.OnExpandedChange ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentTreeItem -> Task<unit>) = render ==> html.callbackTask("OnExpandedChange", fn)
     /// Gets or sets the template for rendering tree items.
-    [<CustomOperation("ItemTemplate")>] member inline _.ItemTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.ITreeViewItem -> NodeRenderFragment) = render ==> html.renderFragment("ItemTemplate", fn)
+    [<CustomOperation("ItemTemplate")>] member inline _.ItemTemplate ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.ITreeViewItem -> NodeRenderFragment) = render ==> html.renderFragment("ItemTemplate", fn)
     /// Can only be used when the Items is defined.
     /// Gets or sets whether the tree should use lazy loading when expanding nodes.
     /// If True, the tree will only render the children of a node when it is expanded and will remove them when it is collapsed.
-    [<CustomOperation("LazyLoadItems")>] member inline _.LazyLoadItems ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("LazyLoadItems" => (defaultArg x true))
+    [<CustomOperation("LazyLoadItems")>] member inline _.LazyLoadItems ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("LazyLoadItems" =>>> true)
+    /// Can only be used when the Items is defined.
+    /// Gets or sets whether the tree should use lazy loading when expanding nodes.
+    /// If True, the tree will only render the children of a node when it is expanded and will remove them when it is collapsed.
+    [<CustomOperation("LazyLoadItems")>] member inline _.LazyLoadItems ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("LazyLoadItems" =>>> x)
 
 type FluentWizardBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -2677,9 +3035,9 @@ type FluentWizardBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.A
     /// Gets or sets the width of the wizard.
     [<CustomOperation("Width")>] member inline _.Width ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Width" => x)
     /// Triggers when the done button is clicked.
-    [<CustomOperation("OnFinish")>] member inline _.OnFinish ([<InlineIfLambda>] render: AttrRenderFragment, fn: unit -> unit) = render ==> html.callback("OnFinish", fn)
+    [<CustomOperation("OnFinish")>] member inline _.OnFinish ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> unit) = render ==> html.callback("OnFinish", fn)
     /// Triggers when the done button is clicked.
-    [<CustomOperation("OnFinish")>] member inline _.OnFinish ([<InlineIfLambda>] render: AttrRenderFragment, fn: unit -> Task<unit>) = render ==> html.callbackTask("OnFinish", fn)
+    [<CustomOperation("OnFinish")>] member inline _.OnFinish ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> Task<unit>) = render ==> html.callbackTask("OnFinish", fn)
     /// Gets or sets the stepper position in the wizard (Top or Left).
     [<CustomOperation("StepperPosition")>] member inline _.StepperPosition ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.StepperPosition) = render ==> ("StepperPosition" => x)
     /// Gets or sets the stepper width (if position is Left)
@@ -2698,19 +3056,19 @@ type FluentWizardBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.A
     /// This value is bindable.
     [<CustomOperation("Value'")>] member inline _.Value' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Int32 * (System.Int32 -> unit)) = render ==> html.bind("Value", valueFn)
     /// Triggers when the value has changed.
-    [<CustomOperation("ValueChanged")>] member inline _.ValueChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Int32 -> unit) = render ==> html.callback("ValueChanged", fn)
+    [<CustomOperation("ValueChanged")>] member inline _.ValueChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Int32 -> unit) = render ==> html.callback("ValueChanged", fn)
     /// Triggers when the value has changed.
-    [<CustomOperation("ValueChanged")>] member inline _.ValueChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Int32 -> Task<unit>) = render ==> html.callbackTask("ValueChanged", fn)
+    [<CustomOperation("ValueChanged")>] member inline _.ValueChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Int32 -> Task<unit>) = render ==> html.callbackTask("ValueChanged", fn)
     /// Gets or sets the buttons section of the wizard.
     /// This configuration overrides the whole rendering of the bottom-right section of the Wizard,
     /// including the built-in buttons and thus provides a full control over it.
     /// Custom Wizard buttons do not trigger the component OnChange and OnFinish events.
     /// The OnChange event can be triggered using the GoToStepAsync method from your code.
-    [<CustomOperation("ButtonTemplate")>] member inline _.ButtonTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Int32 -> NodeRenderFragment) = render ==> html.renderFragment("ButtonTemplate", fn)
+    [<CustomOperation("ButtonTemplate")>] member inline _.ButtonTemplate ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Int32 -> NodeRenderFragment) = render ==> html.renderFragment("ButtonTemplate", fn)
     /// Gets or sets the wizard steps. Add WizardStep tags inside this tag.
-    [<CustomOperation("Steps")>] member inline _.Steps ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("Steps", fragment)
+    [<CustomOperation("Steps")>] member inline _.Steps ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("Steps", fragment)
     /// Gets or sets the wizard steps. Add WizardStep tags inside this tag.
-    [<CustomOperation("Steps")>] member inline _.Steps ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("Steps", fragment { yield! fragments })
+    [<CustomOperation("Steps")>] member inline _.Steps ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("Steps", fragment { yield! fragments })
     /// Gets or sets the wizard steps. Add WizardStep tags inside this tag.
     [<CustomOperation("Steps")>] member inline _.Steps ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("Steps", html.text x)
     /// Gets or sets the wizard steps. Add WizardStep tags inside this tag.
@@ -2727,11 +3085,15 @@ type FluentWizardBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.A
 type FluentWizardStepBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
     /// Gets or sets the template of the step icon.
-    [<CustomOperation("StepTemplate")>] member inline _.StepTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentWizardStepArgs -> NodeRenderFragment) = render ==> html.renderFragment("StepTemplate", fn)
+    [<CustomOperation("StepTemplate")>] member inline _.StepTemplate ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentWizardStepArgs -> NodeRenderFragment) = render ==> html.renderFragment("StepTemplate", fn)
     /// Gets or sets whether the step is disabled.
-    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Disabled" => (defaultArg x true))
+    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Disabled" =>>> true)
+    /// Gets or sets whether the step is disabled.
+    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Disabled" =>>> x)
     /// Render the Wizard Step content only when the Step is selected.
-    [<CustomOperation("DeferredLoading")>] member inline _.DeferredLoading ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("DeferredLoading" => (defaultArg x true))
+    [<CustomOperation("DeferredLoading")>] member inline _.DeferredLoading ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("DeferredLoading" =>>> true)
+    /// Render the Wizard Step content only when the Step is selected.
+    [<CustomOperation("DeferredLoading")>] member inline _.DeferredLoading ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("DeferredLoading" =>>> x)
     /// Gets or sets the label of the step.
     [<CustomOperation("Label")>] member inline _.Label ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Label" => x)
     /// Display a number the step icon.
@@ -2739,10 +3101,10 @@ type FluentWizardStepBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microso
     [<CustomOperation("DisplayStepNumber")>] member inline _.DisplayStepNumber ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("DisplayStepNumber" => x)
     /// The OnChange event fires before the current step has changed.
     /// The EventArgs contains a field of the targeted new step and a field to cancel the build-in action.
-    [<CustomOperation("OnChange")>] member inline _.OnChange ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentWizardStepChangeEventArgs -> unit) = render ==> html.callback("OnChange", fn)
+    [<CustomOperation("OnChange")>] member inline _.OnChange ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentWizardStepChangeEventArgs -> unit) = render ==> html.callback("OnChange", fn)
     /// The OnChange event fires before the current step has changed.
     /// The EventArgs contains a field of the targeted new step and a field to cancel the build-in action.
-    [<CustomOperation("OnChange")>] member inline _.OnChange ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentWizardStepChangeEventArgs -> Task<unit>) = render ==> html.callbackTask("OnChange", fn)
+    [<CustomOperation("OnChange")>] member inline _.OnChange ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentWizardStepChangeEventArgs -> Task<unit>) = render ==> html.callbackTask("OnChange", fn)
     /// Gets or sets the summary of the step, to diplay near the label.
     [<CustomOperation("Summary")>] member inline _.Summary ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Summary" => x)
     /// Gets or sets the icon to display for the past/previous step.
@@ -2768,15 +3130,16 @@ type EditFormBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNe
     inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
     [<CustomOperation("AdditionalAttributes")>] member inline _.AdditionalAttributes ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>) = render ==> ("AdditionalAttributes" => x)
     [<CustomOperation("EditContext")>] member inline _.EditContext ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.AspNetCore.Components.Forms.EditContext) = render ==> ("EditContext" => x)
-    [<CustomOperation("Enhance")>] member inline _.Enhance ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Enhance" => (defaultArg x true))
+    [<CustomOperation("Enhance")>] member inline _.Enhance ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Enhance" =>>> true)
+    [<CustomOperation("Enhance")>] member inline _.Enhance ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Enhance" =>>> x)
     [<CustomOperation("Model")>] member inline _.Model ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Object) = render ==> ("Model" => x)
-    [<CustomOperation("ChildContent")>] member inline _.ChildContent ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.AspNetCore.Components.Forms.EditContext -> NodeRenderFragment) = render ==> html.renderFragment("ChildContent", fn)
-    [<CustomOperation("OnSubmit")>] member inline _.OnSubmit ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.AspNetCore.Components.Forms.EditContext -> unit) = render ==> html.callback("OnSubmit", fn)
-    [<CustomOperation("OnSubmit")>] member inline _.OnSubmit ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.AspNetCore.Components.Forms.EditContext -> Task<unit>) = render ==> html.callbackTask("OnSubmit", fn)
-    [<CustomOperation("OnValidSubmit")>] member inline _.OnValidSubmit ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.AspNetCore.Components.Forms.EditContext -> unit) = render ==> html.callback("OnValidSubmit", fn)
-    [<CustomOperation("OnValidSubmit")>] member inline _.OnValidSubmit ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.AspNetCore.Components.Forms.EditContext -> Task<unit>) = render ==> html.callbackTask("OnValidSubmit", fn)
-    [<CustomOperation("OnInvalidSubmit")>] member inline _.OnInvalidSubmit ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.AspNetCore.Components.Forms.EditContext -> unit) = render ==> html.callback("OnInvalidSubmit", fn)
-    [<CustomOperation("OnInvalidSubmit")>] member inline _.OnInvalidSubmit ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.AspNetCore.Components.Forms.EditContext -> Task<unit>) = render ==> html.callbackTask("OnInvalidSubmit", fn)
+    [<CustomOperation("ChildContent")>] member inline _.ChildContent ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Forms.EditContext -> NodeRenderFragment) = render ==> html.renderFragment("ChildContent", fn)
+    [<CustomOperation("OnSubmit")>] member inline _.OnSubmit ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Forms.EditContext -> unit) = render ==> html.callback("OnSubmit", fn)
+    [<CustomOperation("OnSubmit")>] member inline _.OnSubmit ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Forms.EditContext -> Task<unit>) = render ==> html.callbackTask("OnSubmit", fn)
+    [<CustomOperation("OnValidSubmit")>] member inline _.OnValidSubmit ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Forms.EditContext -> unit) = render ==> html.callback("OnValidSubmit", fn)
+    [<CustomOperation("OnValidSubmit")>] member inline _.OnValidSubmit ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Forms.EditContext -> Task<unit>) = render ==> html.callbackTask("OnValidSubmit", fn)
+    [<CustomOperation("OnInvalidSubmit")>] member inline _.OnInvalidSubmit ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Forms.EditContext -> unit) = render ==> html.callback("OnInvalidSubmit", fn)
+    [<CustomOperation("OnInvalidSubmit")>] member inline _.OnInvalidSubmit ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Forms.EditContext -> Task<unit>) = render ==> html.callbackTask("OnInvalidSubmit", fn)
     [<CustomOperation("FormName")>] member inline _.FormName ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("FormName" => x)
 
             
@@ -2826,7 +3189,9 @@ type FluentAccessibilityStatusBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :
     /// Gets or sets the status message to be read by screen readers.
     [<CustomOperation("Message")>] member inline _.Message ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Message" => x)
     /// In Debug mode, you can set this to true to display the status message on the page (on right, in yellow).
-    [<CustomOperation("DebugDisplay")>] member inline _.DebugDisplay ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("DebugDisplay" => (defaultArg x true))
+    [<CustomOperation("DebugDisplay")>] member inline _.DebugDisplay ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("DebugDisplay" =>>> true)
+    /// In Debug mode, you can set this to true to display the status message on the page (on right, in yellow).
+    [<CustomOperation("DebugDisplay")>] member inline _.DebugDisplay ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("DebugDisplay" =>>> x)
 
 /// An abstract base class for columns in a FluentDataGrid`1.
 type ColumnBaseBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -2834,35 +3199,31 @@ type ColumnBaseBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric :> M
     /// Gets or sets the title text for the column.
     /// This is rendered automatically if HeaderCellItemTemplate is not used.
     [<CustomOperation("Title")>] member inline _.Title ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
-    /// Gets or sets the an optional CSS class name.
-    /// If specified, this is included in the class attribute of header and grid cells
-    /// for this column.
-    [<CustomOperation("Classes")>] member inline _.Classes ([<InlineIfLambda>] render: AttrRenderFragment, x: string list) = render ==> html.classes x
-    /// Gets or sets an optional CSS style specification.
-    /// If specified, this is included in the style attribute of header and grid cells
-    /// for this column.
-    [<CustomOperation("Styles")>] member inline _.Styles ([<InlineIfLambda>] render: AttrRenderFragment, x: (string * string) list) = render ==> html.styles x
     /// If specified, controls the justification of header and grid cells for this column.
     [<CustomOperation("Align")>] member inline _.Align ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Align) = render ==> ("Align" => x)
     /// If true, generates a title and aria-label attribute for the cell contents
-    [<CustomOperation("Tooltip")>] member inline _.Tooltip ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Tooltip" => (defaultArg x true))
-    /// Gets or sets the value to be used as the tooltip and aria-label in this column's cells
+    [<CustomOperation("Tooltip")>] member inline _.Tooltip ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Tooltip" =>>> true)
+    /// If true, generates a title and aria-label attribute for the cell contents
+    [<CustomOperation("Tooltip")>] member inline _.Tooltip ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Tooltip" =>>> x)
+    /// Gets or sets the function that defines the value to be used as the tooltip and aria-label in this column's cells
     [<CustomOperation("TooltipText")>] member inline _.TooltipText ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("TooltipText" => (System.Func<'TGridItem, System.String>fn))
+    /// Gets or sets the tooltip text for the column header.
+    [<CustomOperation("HeaderTooltip")>] member inline _.HeaderTooltip ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("HeaderTooltip" => x)
     /// Gets or sets an optional template for this column's header cell.
     /// If not specified, the default header template includes the Title along with any applicable sort indicators and options buttons.
-    [<CustomOperation("HeaderCellItemTemplate")>] member inline _.HeaderCellItemTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.ColumnBase<'TGridItem> -> NodeRenderFragment) = render ==> html.renderFragment("HeaderCellItemTemplate", fn)
+    [<CustomOperation("HeaderCellItemTemplate")>] member inline _.HeaderCellItemTemplate ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.ColumnBase<'TGridItem> -> NodeRenderFragment) = render ==> html.renderFragment("HeaderCellItemTemplate", fn)
     /// If specified, indicates that this column has this associated options UI. A button to display this
     /// UI will be included in the header cell by default.
     ///             
     /// If HeaderCellItemTemplate is used, it is left up to that template to render any relevant
     /// "show options" UI and invoke the grid's ShowColumnOptionsAsync).
-    [<CustomOperation("ColumnOptions")>] member inline _.ColumnOptions ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("ColumnOptions", fragment)
+    [<CustomOperation("ColumnOptions")>] member inline _.ColumnOptions ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("ColumnOptions", fragment)
     /// If specified, indicates that this column has this associated options UI. A button to display this
     /// UI will be included in the header cell by default.
     ///             
     /// If HeaderCellItemTemplate is used, it is left up to that template to render any relevant
     /// "show options" UI and invoke the grid's ShowColumnOptionsAsync).
-    [<CustomOperation("ColumnOptions")>] member inline _.ColumnOptions ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("ColumnOptions", fragment { yield! fragments })
+    [<CustomOperation("ColumnOptions")>] member inline _.ColumnOptions ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("ColumnOptions", fragment { yield! fragments })
     /// If specified, indicates that this column has this associated options UI. A button to display this
     /// UI will be included in the header cell by default.
     ///             
@@ -2895,9 +3256,11 @@ type ColumnBaseBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric :> M
     /// if IsDefaultSortColumn is true.
     [<CustomOperation("InitialSortDirection")>] member inline _.InitialSortDirection ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.SortDirection) = render ==> ("InitialSortDirection" => x)
     /// Gets or sets a value indicating whether this column should be sorted by default.
-    [<CustomOperation("IsDefaultSortColumn")>] member inline _.IsDefaultSortColumn ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("IsDefaultSortColumn" => (defaultArg x true))
+    [<CustomOperation("IsDefaultSortColumn")>] member inline _.IsDefaultSortColumn ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("IsDefaultSortColumn" =>>> true)
+    /// Gets or sets a value indicating whether this column should be sorted by default.
+    [<CustomOperation("IsDefaultSortColumn")>] member inline _.IsDefaultSortColumn ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("IsDefaultSortColumn" =>>> x)
     /// If specified, virtualized grids will use this template to render cells whose data has not yet been loaded.
-    [<CustomOperation("PlaceholderTemplate")>] member inline _.PlaceholderTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.AspNetCore.Components.Web.Virtualization.PlaceholderContext -> NodeRenderFragment) = render ==> html.renderFragment("PlaceholderTemplate", fn)
+    [<CustomOperation("PlaceholderTemplate")>] member inline _.PlaceholderTemplate ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.Virtualization.PlaceholderContext -> NodeRenderFragment) = render ==> html.renderFragment("PlaceholderTemplate", fn)
     /// Gets or sets the width of the column.
     /// Use either this or the FluentDataGrid`1 GridTemplateColumns parameter but not both.
     /// Needs to be a valid CSS width value like '100px', '10%' or '0.5fr'.
@@ -2922,22 +3285,27 @@ type PropertyColumnBuilder<'FunBlazorGeneric, 'TGridItem, 'TProp when 'FunBlazor
 type SelectColumnBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ColumnBaseBuilder<'FunBlazorGeneric, 'TGridItem>()
     /// Gets or sets the content to be rendered for each row in the table.
-    [<CustomOperation("ChildContent")>] member inline _.ChildContent ([<InlineIfLambda>] render: AttrRenderFragment, fn: 'TGridItem -> NodeRenderFragment) = render ==> html.renderFragment("ChildContent", fn)
+    [<CustomOperation("ChildContent")>] member inline _.ChildContent ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: 'TGridItem -> NodeRenderFragment) = render ==> html.renderFragment("ChildContent", fn)
     /// Gets or sets whether the [All] checkbox is disabled (not clickable).
-    [<CustomOperation("SelectAllDisabled")>] member inline _.SelectAllDisabled ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("SelectAllDisabled" => (defaultArg x true))
+    [<CustomOperation("SelectAllDisabled")>] member inline _.SelectAllDisabled ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("SelectAllDisabled" =>>> true)
+    /// Gets or sets whether the [All] checkbox is disabled (not clickable).
+    [<CustomOperation("SelectAllDisabled")>] member inline _.SelectAllDisabled ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("SelectAllDisabled" =>>> x)
     /// Gets or sets whether the selection of rows is restricted to the SelectColumn (false) or if the whole row can be clicked to toggled the selection (true).
     /// Default is True.
-    [<CustomOperation("SelectFromEntireRow")>] member inline _.SelectFromEntireRow ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("SelectFromEntireRow" => (defaultArg x true))
+    [<CustomOperation("SelectFromEntireRow")>] member inline _.SelectFromEntireRow ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("SelectFromEntireRow" =>>> true)
+    /// Gets or sets whether the selection of rows is restricted to the SelectColumn (false) or if the whole row can be clicked to toggled the selection (true).
+    /// Default is True.
+    [<CustomOperation("SelectFromEntireRow")>] member inline _.SelectFromEntireRow ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("SelectFromEntireRow" =>>> x)
     /// Gets or sets the template for the [All] checkbox column template.
-    [<CustomOperation("SelectAllTemplate")>] member inline _.SelectAllTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.SelectAllTemplateArgs -> NodeRenderFragment) = render ==> html.renderFragment("SelectAllTemplate", fn)
+    [<CustomOperation("SelectAllTemplate")>] member inline _.SelectAllTemplate ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.SelectAllTemplateArgs -> NodeRenderFragment) = render ==> html.renderFragment("SelectAllTemplate", fn)
     /// Gets or sets the list of selected items.
     [<CustomOperation("SelectedItems")>] member inline _.SelectedItems ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<'TGridItem>) = render ==> ("SelectedItems" => x)
     /// Gets or sets the list of selected items.
     [<CustomOperation("SelectedItems'")>] member inline _.SelectedItems' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Collections.Generic.IEnumerable<'TGridItem> * (System.Collections.Generic.IEnumerable<'TGridItem> -> unit)) = render ==> html.bind("SelectedItems", valueFn)
     /// Gets or sets a callback when list of selected items changed.
-    [<CustomOperation("SelectedItemsChanged")>] member inline _.SelectedItemsChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Collections.Generic.IEnumerable<'TGridItem> -> unit) = render ==> html.callback("SelectedItemsChanged", fn)
+    [<CustomOperation("SelectedItemsChanged")>] member inline _.SelectedItemsChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Collections.Generic.IEnumerable<'TGridItem> -> unit) = render ==> html.callback("SelectedItemsChanged", fn)
     /// Gets or sets a callback when list of selected items changed.
-    [<CustomOperation("SelectedItemsChanged")>] member inline _.SelectedItemsChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Collections.Generic.IEnumerable<'TGridItem> -> Task<unit>) = render ==> html.callbackTask("SelectedItemsChanged", fn)
+    [<CustomOperation("SelectedItemsChanged")>] member inline _.SelectedItemsChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Collections.Generic.IEnumerable<'TGridItem> -> Task<unit>) = render ==> html.callbackTask("SelectedItemsChanged", fn)
     /// Gets or sets the selection mode (Single or Multiple).
     [<CustomOperation("SelectMode")>] member inline _.SelectMode ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.DataGridSelectMode) = render ==> ("SelectMode" => x)
     /// Gets or sets the Icon to be rendered when the row is non selected.
@@ -2964,10 +3332,10 @@ type SelectColumnBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric :>
     [<CustomOperation("TitleAllIndeterminate")>] member inline _.TitleAllIndeterminate ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("TitleAllIndeterminate" => x)
     /// Gets or sets the action to be executed when the row is selected or unselected.
     /// This action is required to update you data model.
-    [<CustomOperation("OnSelect")>] member inline _.OnSelect ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.ValueTuple<'TGridItem, System.Boolean> -> unit) = render ==> html.callback("OnSelect", fn)
+    [<CustomOperation("OnSelect")>] member inline _.OnSelect ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.ValueTuple<'TGridItem, System.Boolean> -> unit) = render ==> html.callback("OnSelect", fn)
     /// Gets or sets the action to be executed when the row is selected or unselected.
     /// This action is required to update you data model.
-    [<CustomOperation("OnSelect")>] member inline _.OnSelect ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.ValueTuple<'TGridItem, System.Boolean> -> Task<unit>) = render ==> html.callbackTask("OnSelect", fn)
+    [<CustomOperation("OnSelect")>] member inline _.OnSelect ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.ValueTuple<'TGridItem, System.Boolean> -> Task<unit>) = render ==> html.callbackTask("OnSelect", fn)
     /// Gets or sets the value indicating whether the [All] checkbox is selected.
     /// Null is undefined.
     [<CustomOperation("SelectAll")>] member inline _.SelectAll ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("SelectAll" => x)
@@ -2977,11 +3345,11 @@ type SelectColumnBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric :>
     /// Gets or sets the action to be executed when the [All] checkbox is clicked.
     /// When this action is defined, the [All] checkbox is displayed.
     /// This action is required to update you data model.
-    [<CustomOperation("SelectAllChanged")>] member inline _.SelectAllChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Nullable<System.Boolean> -> unit) = render ==> html.callback("SelectAllChanged", fn)
+    [<CustomOperation("SelectAllChanged")>] member inline _.SelectAllChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Nullable<System.Boolean> -> unit) = render ==> html.callback("SelectAllChanged", fn)
     /// Gets or sets the action to be executed when the [All] checkbox is clicked.
     /// When this action is defined, the [All] checkbox is displayed.
     /// This action is required to update you data model.
-    [<CustomOperation("SelectAllChanged")>] member inline _.SelectAllChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Nullable<System.Boolean> -> Task<unit>) = render ==> html.callbackTask("SelectAllChanged", fn)
+    [<CustomOperation("SelectAllChanged")>] member inline _.SelectAllChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Nullable<System.Boolean> -> Task<unit>) = render ==> html.callbackTask("SelectAllChanged", fn)
     /// Gets or sets the function executed to determine if the item can be selected.
     [<CustomOperation("Selectable")>] member inline _.Selectable ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("Selectable" => (System.Func<'TGridItem, System.Boolean>fn))
     /// Gets or sets the function to executed to determine checked/unchecked status.
@@ -2992,7 +3360,7 @@ type SelectColumnBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric :>
 type TemplateColumnBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ColumnBaseBuilder<'FunBlazorGeneric, 'TGridItem>()
     /// Gets or sets the content to be rendered for each row in the table.
-    [<CustomOperation("ChildContent")>] member inline _.ChildContent ([<InlineIfLambda>] render: AttrRenderFragment, fn: 'TGridItem -> NodeRenderFragment) = render ==> html.renderFragment("ChildContent", fn)
+    [<CustomOperation("ChildContent")>] member inline _.ChildContent ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: 'TGridItem -> NodeRenderFragment) = render ==> html.renderFragment("ChildContent", fn)
     [<CustomOperation("SortBy")>] member inline _.SortBy ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.GridSort<'TGridItem>) = render ==> ("SortBy" => x)
 
 type ColumnResizeOptionsBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -3014,37 +3382,37 @@ type FluentDesignThemeBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micros
     /// Gets or sets the Theme mode: Dark, Light, or browser System theme.
     [<CustomOperation("Mode'")>] member inline _.Mode' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: Microsoft.FluentUI.AspNetCore.Components.DesignThemeModes * (Microsoft.FluentUI.AspNetCore.Components.DesignThemeModes -> unit)) = render ==> html.bind("Mode", valueFn)
     /// Gets or sets a callback that updates the Mode.
-    [<CustomOperation("ModeChanged")>] member inline _.ModeChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.DesignThemeModes -> unit) = render ==> html.callback("ModeChanged", fn)
+    [<CustomOperation("ModeChanged")>] member inline _.ModeChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.DesignThemeModes -> unit) = render ==> html.callback("ModeChanged", fn)
     /// Gets or sets a callback that updates the Mode.
-    [<CustomOperation("ModeChanged")>] member inline _.ModeChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.DesignThemeModes -> Task<unit>) = render ==> html.callbackTask("ModeChanged", fn)
+    [<CustomOperation("ModeChanged")>] member inline _.ModeChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.DesignThemeModes -> Task<unit>) = render ==> html.callbackTask("ModeChanged", fn)
     /// Gets or sets the Accent base color.
     [<CustomOperation("CustomColor")>] member inline _.CustomColor ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("CustomColor" => x)
     /// Gets or sets the Accent base color.
     [<CustomOperation("CustomColor'")>] member inline _.CustomColor' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.String * (System.String -> unit)) = render ==> html.bind("CustomColor", valueFn)
     /// Gets or sets a callback that updates the CustomColor.
-    [<CustomOperation("CustomColorChanged")>] member inline _.CustomColorChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.String -> unit) = render ==> html.callback("CustomColorChanged", fn)
+    [<CustomOperation("CustomColorChanged")>] member inline _.CustomColorChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.String -> unit) = render ==> html.callback("CustomColorChanged", fn)
     /// Gets or sets a callback that updates the CustomColor.
-    [<CustomOperation("CustomColorChanged")>] member inline _.CustomColorChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.String -> Task<unit>) = render ==> html.callbackTask("CustomColorChanged", fn)
+    [<CustomOperation("CustomColorChanged")>] member inline _.CustomColorChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.String -> Task<unit>) = render ==> html.callbackTask("CustomColorChanged", fn)
     /// Gets or sets the application to defined the Accent base color.
     [<CustomOperation("OfficeColor")>] member inline _.OfficeColor ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.OfficeColor>) = render ==> ("OfficeColor" => x)
     /// Gets or sets the application to defined the Accent base color.
     [<CustomOperation("OfficeColor'")>] member inline _.OfficeColor' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.OfficeColor> * (System.Nullable<Microsoft.FluentUI.AspNetCore.Components.OfficeColor> -> unit)) = render ==> html.bind("OfficeColor", valueFn)
     /// Gets or sets a callback that updates the OfficeColor.
-    [<CustomOperation("OfficeColorChanged")>] member inline _.OfficeColorChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.OfficeColor> -> unit) = render ==> html.callback("OfficeColorChanged", fn)
+    [<CustomOperation("OfficeColorChanged")>] member inline _.OfficeColorChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.OfficeColor> -> unit) = render ==> html.callback("OfficeColorChanged", fn)
     /// Gets or sets a callback that updates the OfficeColor.
-    [<CustomOperation("OfficeColorChanged")>] member inline _.OfficeColorChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.OfficeColor> -> Task<unit>) = render ==> html.callbackTask("OfficeColorChanged", fn)
+    [<CustomOperation("OfficeColorChanged")>] member inline _.OfficeColorChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.OfficeColor> -> Task<unit>) = render ==> html.callbackTask("OfficeColorChanged", fn)
     /// Gets or sets the local storage name to save and retrieve the Mode and the OfficeColor / CustomColor.
     [<CustomOperation("StorageName")>] member inline _.StorageName ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("StorageName" => x)
     /// Gets or sets the body.dir value.
     [<CustomOperation("Direction")>] member inline _.Direction ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.LocalizationDirection>) = render ==> ("Direction" => x)
     /// Callback raised when the Dark/Light luminance changes.
-    [<CustomOperation("OnLuminanceChanged")>] member inline _.OnLuminanceChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.LuminanceChangedEventArgs -> unit) = render ==> html.callback("OnLuminanceChanged", fn)
+    [<CustomOperation("OnLuminanceChanged")>] member inline _.OnLuminanceChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.LuminanceChangedEventArgs -> unit) = render ==> html.callback("OnLuminanceChanged", fn)
     /// Callback raised when the Dark/Light luminance changes.
-    [<CustomOperation("OnLuminanceChanged")>] member inline _.OnLuminanceChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.LuminanceChangedEventArgs -> Task<unit>) = render ==> html.callbackTask("OnLuminanceChanged", fn)
+    [<CustomOperation("OnLuminanceChanged")>] member inline _.OnLuminanceChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.LuminanceChangedEventArgs -> Task<unit>) = render ==> html.callbackTask("OnLuminanceChanged", fn)
     /// Callback raised when the component is rendered for the first time.
-    [<CustomOperation("OnLoaded")>] member inline _.OnLoaded ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.LoadedEventArgs -> unit) = render ==> html.callback("OnLoaded", fn)
+    [<CustomOperation("OnLoaded")>] member inline _.OnLoaded ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.LoadedEventArgs -> unit) = render ==> html.callback("OnLoaded", fn)
     /// Callback raised when the component is rendered for the first time.
-    [<CustomOperation("OnLoaded")>] member inline _.OnLoaded ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.LoadedEventArgs -> Task<unit>) = render ==> html.callbackTask("OnLoaded", fn)
+    [<CustomOperation("OnLoaded")>] member inline _.OnLoaded ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.LoadedEventArgs -> Task<unit>) = render ==> html.callbackTask("OnLoaded", fn)
 
 type FluentSplashScreenBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
@@ -3063,29 +3431,37 @@ type FluentDialogProviderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Mic
 type FluentKeyCodeBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
     /// Gets or sets whether the KeyCode engine is global (using document DOM element) or not (only for Anchor or ChildContent).
-    [<CustomOperation("GlobalDocument")>] member inline _.GlobalDocument ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("GlobalDocument" => (defaultArg x true))
+    [<CustomOperation("GlobalDocument")>] member inline _.GlobalDocument ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("GlobalDocument" =>>> true)
+    /// Gets or sets whether the KeyCode engine is global (using document DOM element) or not (only for Anchor or ChildContent).
+    [<CustomOperation("GlobalDocument")>] member inline _.GlobalDocument ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("GlobalDocument" =>>> x)
     /// Gets or sets the control identifier associated with the KeyCode engine.
     /// If not set, the KeyCode will be applied to the FluentKeyCode content: see ChildContent.
     /// This attribute is ignored when the ChildContent is used..
     [<CustomOperation("Anchor")>] member inline _.Anchor ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Anchor" => x)
     /// Event triggered when a KeyDown event is raised.
-    [<CustomOperation("OnKeyDown")>] member inline _.OnKeyDown ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentKeyCodeEventArgs -> unit) = render ==> html.callback("OnKeyDown", fn)
+    [<CustomOperation("OnKeyDown")>] member inline _.OnKeyDown ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentKeyCodeEventArgs -> unit) = render ==> html.callback("OnKeyDown", fn)
     /// Event triggered when a KeyDown event is raised.
-    [<CustomOperation("OnKeyDown")>] member inline _.OnKeyDown ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentKeyCodeEventArgs -> Task<unit>) = render ==> html.callbackTask("OnKeyDown", fn)
+    [<CustomOperation("OnKeyDown")>] member inline _.OnKeyDown ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentKeyCodeEventArgs -> Task<unit>) = render ==> html.callbackTask("OnKeyDown", fn)
     /// Event triggered when a KeyUp event is raised.
-    [<CustomOperation("OnKeyUp")>] member inline _.OnKeyUp ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentKeyCodeEventArgs -> unit) = render ==> html.callback("OnKeyUp", fn)
+    [<CustomOperation("OnKeyUp")>] member inline _.OnKeyUp ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentKeyCodeEventArgs -> unit) = render ==> html.callback("OnKeyUp", fn)
     /// Event triggered when a KeyUp event is raised.
-    [<CustomOperation("OnKeyUp")>] member inline _.OnKeyUp ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.FluentKeyCodeEventArgs -> Task<unit>) = render ==> html.callbackTask("OnKeyUp", fn)
+    [<CustomOperation("OnKeyUp")>] member inline _.OnKeyUp ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentKeyCodeEventArgs -> Task<unit>) = render ==> html.callbackTask("OnKeyUp", fn)
     /// Ignore modifier keys (Shift, Alt, Ctrl, Meta) when evaluating the key code.
-    [<CustomOperation("IgnoreModifier")>] member inline _.IgnoreModifier ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("IgnoreModifier" => (defaultArg x true))
+    [<CustomOperation("IgnoreModifier")>] member inline _.IgnoreModifier ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("IgnoreModifier" =>>> true)
+    /// Ignore modifier keys (Shift, Alt, Ctrl, Meta) when evaluating the key code.
+    [<CustomOperation("IgnoreModifier")>] member inline _.IgnoreModifier ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("IgnoreModifier" =>>> x)
     /// Gets or sets the list of KeyCode to accept, and only this list, when evaluating the key code.
     [<CustomOperation("Only")>] member inline _.Only ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.KeyCode[]) = render ==> ("Only" => x)
     /// Gets or sets the list of KeyCode to ignore when evaluating the key code.
     [<CustomOperation("Ignore")>] member inline _.Ignore ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.KeyCode[]) = render ==> ("Ignore" => x)
     /// Gets or sets a way to prevent further propagation of the current event in the capturing and bubbling phases.
-    [<CustomOperation("StopPropagation")>] member inline _.StopPropagation ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("StopPropagation" => (defaultArg x true))
+    [<CustomOperation("StopPropagation")>] member inline _.StopPropagation ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("StopPropagation" =>>> true)
+    /// Gets or sets a way to prevent further propagation of the current event in the capturing and bubbling phases.
+    [<CustomOperation("StopPropagation")>] member inline _.StopPropagation ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("StopPropagation" =>>> x)
     /// Gets or sets a way to tells the user agent that if the event does not get explicitly handled, its default action should not be taken as it normally would be.
-    [<CustomOperation("PreventDefault")>] member inline _.PreventDefault ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("PreventDefault" => (defaultArg x true))
+    [<CustomOperation("PreventDefault")>] member inline _.PreventDefault ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("PreventDefault" =>>> true)
+    /// Gets or sets a way to tells the user agent that if the event does not get explicitly handled, its default action should not be taken as it normally would be.
+    [<CustomOperation("PreventDefault")>] member inline _.PreventDefault ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("PreventDefault" =>>> x)
     /// Gets or sets the list of KeyCode to tells the user agent that if the event does not get explicitly handled,
     /// its default action should not be taken as it normally would be.
     [<CustomOperation("PreventDefaultOnly")>] member inline _.PreventDefaultOnly ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.KeyCode[]) = render ==> ("PreventDefaultOnly" => x)
@@ -3095,7 +3471,9 @@ type FluentKeyCodeBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
 type FluentKeyCodeProviderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
     /// Gets or sets a way to tells the user agent that if the event does not get explicitly handled, its default action should not be taken as it normally would be.
-    [<CustomOperation("PreventDefault")>] member inline _.PreventDefault ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("PreventDefault" => (defaultArg x true))
+    [<CustomOperation("PreventDefault")>] member inline _.PreventDefault ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("PreventDefault" =>>> true)
+    /// Gets or sets a way to tells the user agent that if the event does not get explicitly handled, its default action should not be taken as it normally would be.
+    [<CustomOperation("PreventDefault")>] member inline _.PreventDefault ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("PreventDefault" =>>> x)
 
 type FluentInputLabelBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
@@ -3106,7 +3484,9 @@ type FluentInputLabelBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microso
     /// This is usually displayd just above the component.
     [<CustomOperation("Label")>] member inline _.Label ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Label" => x)
     /// Gets or sets if an indicator is showed that this input is required.
-    [<CustomOperation("Required")>] member inline _.Required ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Required" => (defaultArg x true))
+    [<CustomOperation("Required")>] member inline _.Required ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Required" =>>> true)
+    /// Gets or sets if an indicator is showed that this input is required.
+    [<CustomOperation("Required")>] member inline _.Required ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Required" =>>> x)
     /// Gets or sets the text to be used as the `aria-label` attribute of the input.
     /// If not set, the Label will be used.
     [<CustomOperation("AriaLabel")>] member inline _.AriaLabel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("AriaLabel" => x)
@@ -3122,19 +3502,23 @@ type FluentOverlayBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     /// Gets or sets the unique identifier of the overlay.
     [<CustomOperation("Id")>] member inline _.Id ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Id" => x)
     /// Gets or sets a value indicating whether the overlay is visible.
-    [<CustomOperation("Visible")>] member inline _.Visible ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Visible" => (defaultArg x true))
+    [<CustomOperation("Visible")>] member inline _.Visible ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Visible" =>>> true)
+    /// Gets or sets a value indicating whether the overlay is visible.
+    [<CustomOperation("Visible")>] member inline _.Visible ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Visible" =>>> x)
     /// Gets or sets a value indicating whether the overlay is visible.
     [<CustomOperation("Visible'")>] member inline _.Visible' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Boolean * (System.Boolean -> unit)) = render ==> html.bind("Visible", valueFn)
     /// Callback for when overlay visibility changes.
-    [<CustomOperation("VisibleChanged")>] member inline _.VisibleChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Boolean -> unit) = render ==> html.callback("VisibleChanged", fn)
+    [<CustomOperation("VisibleChanged")>] member inline _.VisibleChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> unit) = render ==> html.callback("VisibleChanged", fn)
     /// Callback for when overlay visibility changes.
-    [<CustomOperation("VisibleChanged")>] member inline _.VisibleChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("VisibleChanged", fn)
+    [<CustomOperation("VisibleChanged")>] member inline _.VisibleChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("VisibleChanged", fn)
     /// Callback for when the overlay is closed.
-    [<CustomOperation("OnClose")>] member inline _.OnClose ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> unit) = render ==> html.callback("OnClose", fn)
+    [<CustomOperation("OnClose")>] member inline _.OnClose ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> unit) = render ==> html.callback("OnClose", fn)
     /// Callback for when the overlay is closed.
-    [<CustomOperation("OnClose")>] member inline _.OnClose ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> Task<unit>) = render ==> html.callbackTask("OnClose", fn)
+    [<CustomOperation("OnClose")>] member inline _.OnClose ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> Task<unit>) = render ==> html.callbackTask("OnClose", fn)
     /// Gets or set if the overlay is transparent.
-    [<CustomOperation("Transparent")>] member inline _.Transparent ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Transparent" => (defaultArg x true))
+    [<CustomOperation("Transparent")>] member inline _.Transparent ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Transparent" =>>> true)
+    /// Gets or set if the overlay is transparent.
+    [<CustomOperation("Transparent")>] member inline _.Transparent ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Transparent" =>>> x)
     /// Gets or sets the opacity of the overlay.
     [<CustomOperation("Opacity")>] member inline _.Opacity ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Double>) = render ==> ("Opacity" => x)
     /// Gets or sets the alignment of the content to a Align value.
@@ -3144,21 +3528,30 @@ type FluentOverlayBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     /// Defaults to JustifyContent.Center.
     [<CustomOperation("Justification")>] member inline _.Justification ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.JustifyContent) = render ==> ("Justification" => x)
     /// Gets or sets a value indicating whether the overlay is shown full screen or bound to the containing element.
-    [<CustomOperation("FullScreen")>] member inline _.FullScreen ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("FullScreen" => (defaultArg x true))
+    [<CustomOperation("FullScreen")>] member inline _.FullScreen ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("FullScreen" =>>> true)
+    /// Gets or sets a value indicating whether the overlay is shown full screen or bound to the containing element.
+    [<CustomOperation("FullScreen")>] member inline _.FullScreen ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("FullScreen" =>>> x)
     /// Gets or sets a value indicating whether the overlay is interactive, except for the element with the specified InteractiveExceptId.
     /// In other words, the elements below the overlay remain usable (mouse-over, click) and the overlay will closed when clicked.
-    [<CustomOperation("Interactive")>] member inline _.Interactive ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Interactive" => (defaultArg x true))
+    [<CustomOperation("Interactive")>] member inline _.Interactive ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Interactive" =>>> true)
+    /// Gets or sets a value indicating whether the overlay is interactive, except for the element with the specified InteractiveExceptId.
+    /// In other words, the elements below the overlay remain usable (mouse-over, click) and the overlay will closed when clicked.
+    [<CustomOperation("Interactive")>] member inline _.Interactive ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Interactive" =>>> x)
     /// Gets or sets the HTML identifier of the element that is not interactive when the overlay is shown.
     /// This property is ignored if Interactive is false.
     [<CustomOperation("InteractiveExceptId")>] member inline _.InteractiveExceptId ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("InteractiveExceptId" => x)
     /// Gets of sets a value indicating if the overlay can be dismissed by clicking on it.
     /// Default is true.
-    [<CustomOperation("Dismissable")>] member inline _.Dismissable ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Dismissable" => (defaultArg x true))
+    [<CustomOperation("Dismissable")>] member inline _.Dismissable ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Dismissable" =>>> true)
+    /// Gets of sets a value indicating if the overlay can be dismissed by clicking on it.
+    /// Default is true.
+    [<CustomOperation("Dismissable")>] member inline _.Dismissable ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Dismissable" =>>> x)
     /// Gets or sets the background color. 
     /// Needs to be formatted as an HTML hex color string (#rrggbb or #rgb).
     /// Default is '#ffffff'.
     [<CustomOperation("BackgroundColor")>] member inline _.BackgroundColor ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("BackgroundColor" => x)
-    [<CustomOperation("PreventScroll")>] member inline _.PreventScroll ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("PreventScroll" => (defaultArg x true))
+    [<CustomOperation("PreventScroll")>] member inline _.PreventScroll ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("PreventScroll" =>>> true)
+    [<CustomOperation("PreventScroll")>] member inline _.PreventScroll ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("PreventScroll" =>>> x)
 
 type FluentSpacerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
@@ -3183,15 +3576,20 @@ type FluentToastProviderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micr
     /// Gets or sets the maximum number of toasts that can be shown at once. Default is 4.
     [<CustomOperation("MaxToastCount")>] member inline _.MaxToastCount ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("MaxToastCount" => x)
     /// Gets or sets whether to remove toasts when the user navigates to a new page. Default is true.
-    [<CustomOperation("RemoveToastsOnNavigation")>] member inline _.RemoveToastsOnNavigation ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("RemoveToastsOnNavigation" => (defaultArg x true))
+    [<CustomOperation("RemoveToastsOnNavigation")>] member inline _.RemoveToastsOnNavigation ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("RemoveToastsOnNavigation" =>>> true)
+    /// Gets or sets whether to remove toasts when the user navigates to a new page. Default is true.
+    [<CustomOperation("RemoveToastsOnNavigation")>] member inline _.RemoveToastsOnNavigation ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("RemoveToastsOnNavigation" =>>> x)
     /// Gets or sets whether to show a close button on a toast. Default is true.
     /// [Obsolete("This parameter will be removed in a future version. It is and should not not used.")]
-    [<CustomOperation("ShowCloseButton")>] member inline _.ShowCloseButton ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("ShowCloseButton" => (defaultArg x true))
+    [<CustomOperation("ShowCloseButton")>] member inline _.ShowCloseButton ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowCloseButton" =>>> true)
+    /// Gets or sets whether to show a close button on a toast. Default is true.
+    /// [Obsolete("This parameter will be removed in a future version. It is and should not not used.")]
+    [<CustomOperation("ShowCloseButton")>] member inline _.ShowCloseButton ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowCloseButton" =>>> x)
 
 type RenderFragmentDialogBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
-    [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, fragment) = render ==> html.renderFragment("Content", fragment)
-    [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, fragments) = render ==> html.renderFragment("Content", fragment { yield! fragments })
+    [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("Content", fragment)
+    [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("Content", fragment { yield! fragments })
     [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("Content", html.text x)
     [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("Content", html.text x)
     [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("Content", html.text x)
@@ -3201,10 +3599,6 @@ type FluentPageScriptBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microso
     [<CustomOperation("Src")>] member inline _.Src ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Src" => x)
 
 type ConfirmationToastBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
-
-
-type _ImportsBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
 
 
@@ -3222,7 +3616,7 @@ type DesignTokenBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsof
     /// Gets or sets the value of the design token
     [<CustomOperation("Value")>] member inline _.Value ([<InlineIfLambda>] render: AttrRenderFragment, x: 'T) = render ==> ("Value" => x)
     /// Gets or sets the content to apply this design token on
-    [<CustomOperation("ChildContent")>] member inline _.ChildContent ([<InlineIfLambda>] render: AttrRenderFragment, fn: Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Reference -> NodeRenderFragment) = render ==> html.renderFragment("ChildContent", fn)
+    [<CustomOperation("ChildContent")>] member inline _.ChildContent ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.DesignTokens.Reference -> NodeRenderFragment) = render ==> html.renderFragment("ChildContent", fn)
 
 /// The Direction design token
 type DirectionBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -4209,7 +4603,8 @@ module DslCE =
     type FluentPullToRefresh' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentPullToRefresh>)>] () = inherit FluentPullToRefreshBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentPullToRefresh>()
     type FluentRadio'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentRadio<_>>)>] () = inherit FluentRadioBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentRadio<'TValue>, 'TValue>()
     type FluentSkeleton' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentSkeleton>)>] () = inherit FluentSkeletonBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentSkeleton>()
-    type FluentSliderLabel'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentSliderLabel<_>>)>] () = inherit FluentSliderLabelBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentSliderLabel<'TValue>, 'TValue>()
+    type FluentSliderLabelInt' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentSliderLabel<int>>)>] () = inherit FluentSliderLabelBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentSliderLabel<int>, int>()
+    type FluentSliderLabelFloat' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentSliderLabel<float>>)>] () = inherit FluentSliderLabelBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentSliderLabel<float>, float>()
     type FluentSortableList'<'TItem> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentSortableList<_>>)>] () = inherit FluentSortableListBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentSortableList<'TItem>, 'TItem>()
     type FluentMultiSplitter' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentMultiSplitter>)>] () = inherit FluentMultiSplitterBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentMultiSplitter>()
     type FluentMultiSplitterPane' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentMultiSplitterPane>)>] () = inherit FluentMultiSplitterPaneBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentMultiSplitterPane>()
@@ -4278,7 +4673,6 @@ module DslCE =
     type RenderFragmentDialog' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.RenderFragmentDialog>)>] () = inherit RenderFragmentDialogBuilder<Microsoft.FluentUI.AspNetCore.Components.RenderFragmentDialog>()
     type FluentPageScript' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentPageScript>)>] () = inherit FluentPageScriptBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentPageScript>()
     type ConfirmationToast' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.ConfirmationToast>)>] () = inherit ConfirmationToastBuilder<Microsoft.FluentUI.AspNetCore.Components.ConfirmationToast>()
-    type _Imports' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components._Imports>)>] () = inherit _ImportsBuilder<Microsoft.FluentUI.AspNetCore.Components._Imports>()
 
 [<AutoOpen>]
 module DslCEInstances =
@@ -4374,7 +4768,8 @@ module DslCEInstances =
     let FluentPullToRefresh'' = FluentPullToRefresh'()
     let FluentRadio''<'TValue> = FluentRadio'<'TValue>()
     let FluentSkeleton'' = FluentSkeleton'()
-    let FluentSliderLabel''<'TValue> = FluentSliderLabel'<'TValue>()
+    let FluentSliderLabelInt'' = FluentSliderLabelInt'()
+    let FluentSliderLabelFloat'' = FluentSliderLabelFloat'()
     let FluentSortableList''<'TItem> = FluentSortableList'<'TItem>()
     let FluentMultiSplitter'' = FluentMultiSplitter'()
     let FluentMultiSplitterPane'' = FluentMultiSplitterPane'()
@@ -4415,7 +4810,6 @@ module DslCEInstances =
     let RenderFragmentDialog'' = RenderFragmentDialog'()
     let FluentPageScript'' = FluentPageScript'()
     let ConfirmationToast'' = ConfirmationToast'()
-    let _Imports'' = _Imports'()
             
 namespace Microsoft.FluentUI.AspNetCore.Components.DesignTokens
 

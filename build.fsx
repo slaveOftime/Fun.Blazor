@@ -114,14 +114,13 @@ let stage_generateBindingProjects name package nsp assemblyName patch targets =
                 acceptValues [ projectName ]
             }
         }
-        noStdRedirectForStep
         run (fun _ -> task {
             let! nugetVersion = getNugetPackageLatestVersion package
             let version = nugetVersion.OriginalVersion
             printfn $"Found verion {version} for package {package}"
 
-            let version =
-                if String.IsNullOrEmpty patch then version else version + "." + "patch"
+            let bindingVersion =
+                if String.IsNullOrEmpty patch then version else version + "." + patch
 
             Directory.ensure projectDir
             File.write false (projectDir </> projectName + ".fsproj") [
@@ -132,7 +131,7 @@ let stage_generateBindingProjects name package nsp assemblyName patch targets =
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <TrimMode>link</TrimMode>
     <IsTrimmable>true</IsTrimmable>
-    <Version>{version}</Version>
+    <Version>{bindingVersion}</Version>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference FunBlazor="" FunBlazorNamespace="{nsp}" FunBlazorAssemblyName="{defaultArg assemblyName package}" Include="{package}" Version="{version}" />
@@ -142,7 +141,7 @@ let stage_generateBindingProjects name package nsp assemblyName patch targets =
   </ItemGroup>
   <ItemGroup>
     <PackageReference Update="FSharp.Core" Version="6.0.0" />
-    <PackageReference Include="Fun.Blazor" Version="4.0.12" />
+    <PackageReference Include="Fun.Blazor" Version="4.1.0-beta001" />
   </ItemGroup>
 </Project>"""
             ]
@@ -266,21 +265,21 @@ pipeline "bindings" {
         // paralle
         continueStepsOnFailure
         continueStageOnFailure
-        stage_generateBindingProjects "Microsoft.Web" "Microsoft.AspNetCore.Components.Web" "Microsoft.AspNetCore.Components" None "" "net8.0"
+        stage_generateBindingProjects "Microsoft.Web" "Microsoft.AspNetCore.Components.Web" "Microsoft.AspNetCore.Components" None "" "net9.0"
         stage_generateBindingProjects
             "Microsoft.Authorization"
             "Microsoft.AspNetCore.Components.Authorization"
             "Microsoft.AspNetCore.Components.Authorization"
             None
             ""
-            "net8.0"
+            "net9.0"
+        stage_generateBindingProjects "Microsoft.QuickGrid" "Microsoft.AspNetCore.Components.QuickGrid" "Microsoft.AspNetCore.Components.QuickGrid" None "" "net9.0"
         stage_generateBindingProjects "Microsoft.FluentUI" "Microsoft.FluentUI.AspNetCore.Components" "Microsoft.FluentUI.AspNetCore.Components" None "" "net8.0"
-        stage_generateBindingProjects "Microsoft.QuickGrid" "Microsoft.AspNetCore.Components.QuickGrid" "Microsoft.AspNetCore.Components.QuickGrid" None "" "net8.0"
         stage_generateBindingProjects "AntDesign" "AntDesign" "AntDesign" None "" "net6.0;net8.0"
         stage_generateBindingProjects "MudBlazor" "MudBlazor" "MudBlazor" None "" "net7.0;net8.0"
         stage_generateBindingProjects "ApexCharts" "Blazor-ApexCharts" "ApexCharts" None "" "net6.0;net8.0"
-        stage_generateBindingProjects "BlazorMonaco" "BlazorMonaco" "BlazorMonaco" None "" "net6.0;net8.0"
-        stage_generateBindingProjects "Diagrams" "Z.Blazor.Diagrams" "Blazor.Diagrams" (Some "Blazor.Diagrams") "" "net6.0;net8.0"
+        stage_generateBindingProjects "BlazorMonaco" "BlazorMonaco" "BlazorMonaco" None "001" "net6.0;net8.0"
+        stage_generateBindingProjects "Diagrams" "Z.Blazor.Diagrams" "Blazor.Diagrams" (Some "Blazor.Diagrams") "001" "net6.0;net8.0"
     }
     stage "pack for binding projects" {
         run (fun _ ->

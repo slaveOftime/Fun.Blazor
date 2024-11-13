@@ -5,13 +5,13 @@ Below is auto generated bindings, if the version does not match your requirement
 The bindings will be updated every week.
 
 ```bash
-dotnet add package Fun.Blazor.AntDesign --version 0.20.4.2
-dotnet add package Fun.Blazor.ApexCharts --version 3.4.0
-dotnet add package Fun.Blazor.BlazorMonaco --version 3.2.0
-dotnet add package Fun.Blazor.Diagrams --version 3.0.2
-dotnet add package Fun.Blazor.Microsoft.Authorization --version 8.0.8
-dotnet add package Fun.Blazor.Microsoft.FluentUI --version 4.10.1
-dotnet add package Fun.Blazor.Microsoft.QuickGrid --version 8.0.8
-dotnet add package Fun.Blazor.Microsoft.Web --version 8.0.8
-dotnet add package Fun.Blazor.MudBlazor --version 7.8.0
+dotnet add package Fun.Blazor.AntDesign --version 1.0.0
+dotnet add package Fun.Blazor.ApexCharts --version 4.0.0
+dotnet add package Fun.Blazor.BlazorMonaco --version 3.2.0.001
+dotnet add package Fun.Blazor.Diagrams --version 3.0.2.001
+dotnet add package Fun.Blazor.Microsoft.Authorization --version 9.0.0
+dotnet add package Fun.Blazor.Microsoft.FluentUI --version 4.10.3
+dotnet add package Fun.Blazor.Microsoft.QuickGrid --version 9.0.0
+dotnet add package Fun.Blazor.Microsoft.Web --version 9.0.0
+dotnet add package Fun.Blazor.MudBlazor --version 7.15.0
 ```

@@ -5,19 +5,19 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <TrimMode>link</TrimMode>
     <IsTrimmable>true</IsTrimmable>
-    <Version>4.10.1</Version>
+    <Version>4.10.3</Version>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Fun.Blazor.Bindings\Microsoft.FluentUI.AspNetCore.Components.fs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference FunBlazor="" FunBlazorNamespace="Microsoft.FluentUI.AspNetCore.Components" FunBlazorAssemblyName="Microsoft.FluentUI.AspNetCore.Components" Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.10.1" />
+    <PackageReference FunBlazor="" FunBlazorNamespace="Microsoft.FluentUI.AspNetCore.Components" FunBlazorAssemblyName="Microsoft.FluentUI.AspNetCore.Components" Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.10.3" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="*.fs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Update="FSharp.Core" Version="6.0.0" />
-    <PackageReference Include="Fun.Blazor" Version="4.0.0" />
+    <PackageReference Include="Fun.Blazor" Version="4.1.0-beta001" />
   </ItemGroup>
 </Project>
