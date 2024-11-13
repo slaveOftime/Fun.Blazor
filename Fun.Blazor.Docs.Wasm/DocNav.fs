@@ -27,24 +27,18 @@ let docNavmenu =
                             let path = path + "/" + sanitizeFileName indexDoc.Name
                             MudNavGroup'' {
                                 Title(getDocName indexDoc)
-                                childContent [|
-                                    for doc in docs do
-                                        MudNavLink'' {
-                                            Href(path + "/" + sanitizeFileName doc.Name)
-                                            getDocName doc
-                                        }
-                                    buildDocMenuTree langStr path childs
-                                |]
+                                for doc in docs do
+                                    MudNavLink'' {
+                                        Href(path + "/" + sanitizeFileName doc.Name)
+                                        getDocName doc
+                                    }
+                                buildDocMenuTree langStr path childs
                             }
                         | DocTreeNode.Doc doc ->
                             let docName = getDocName doc
                             MudNavLink'' {
                                 Href(path + "/" + sanitizeFileName doc.Name)
-                                MudText'' {
-                                    Typo Typo.``inherit``
-                                    Color Color.Default
-                                    docName
-                                }
+                                docName
                             }
                 }
 

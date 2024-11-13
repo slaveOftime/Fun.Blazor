@@ -23,6 +23,21 @@ let private theme =
         )
     })
 
+let privat themeSwitcher =
+    html.inject (fun (shareStore: IShareStore) -> adaptiview () {
+        let! isDark, setIsDark = shareStore.IsDarkMode.WithSetter()
+        MudIconButton'' {
+            Color Color.Inherit
+            Icon(
+                if isDark then
+                    Icons.Material.Filled.Brightness4
+                else
+                    Icons.Material.Filled.Brightness3
+            )
+            OnClick(fun _ -> setIsDark (not isDark))
+        }
+    })
+
 
 let private appBar =
     html.injectWithNoKey (fun (shareStore: IShareStore) -> MudAppBar'' {
@@ -70,19 +85,6 @@ let private appBar =
 
         SectionOutlet'() { SectionName "toolbar-end" }
 
-        adaptiview () {
-            let! isDark, setIsDark = shareStore.IsDarkMode.WithSetter()
-            MudIconButton'' {
-                Color Color.Inherit
-                Icon(
-                    if isDark then
-                        Icons.Material.Filled.Brightness4
-                    else
-                        Icons.Material.Filled.Brightness3
-                )
-                OnClick(fun _ -> setIsDark (not isDark))
-            }
-        }
         MudIconButton'' {
             Icon Icons.Custom.Brands.GitHub
             Color Color.Inherit

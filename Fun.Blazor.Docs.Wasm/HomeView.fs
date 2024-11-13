@@ -7,7 +7,7 @@ open Microsoft.JSInterop
 open MudBlazor
 
 
-let private simplestSyntax = div {
+let private simplestSyntaxDemo = div {
     style {
         displayFlex
         alignItemsCenter
@@ -67,7 +67,7 @@ let private simplestSyntax = div {
 }
 
 
-let private flexibleSyntax = div {
+let private flexibleSyntaxDemo = div {
     style {
         displayFlex
         alignItemsCenter
@@ -344,7 +344,7 @@ let home =
                         alignItemsCenter
                         justifyContentCenter
                     }
-                    simplestSyntax
+                    simplestSyntaxDemo
                 }
                 MudCarouselItem'' {
                     Transition Transition.Slide
@@ -353,7 +353,7 @@ let home =
                         alignItemsCenter
                         justifyContentCenter
                     }
-                    flexibleSyntax
+                    flexibleSyntaxDemo
                 }
             }
             section {
@@ -376,28 +376,12 @@ let home =
                         flexWrapWrap
                         gap 12
                     }
+                    MudChip'' { "asp.net core" }
+                    MudChip'' { "browser" }
+                    MudChip'' { "script: fsi" }
+                    MudChip'' { "giraffe" }
+                    MudChip'' { "falco" }
                     MudChip'' {
-                        Color Color.Success
-                        "asp.net core"
-                    }
-                    MudChip'' {
-                        Color Color.Success
-                        "browser"
-                    }
-                    MudChip'' {
-                        Color Color.Info
-                        "script: fsi"
-                    }
-                    MudChip'' {
-                        Color Color.Secondary
-                        "giraffe"
-                    }
-                    MudChip'' {
-                        Color Color.Secondary
-                        "falco"
-                    }
-                    MudChip'' {
-                        Color Color.Default
                         Variant Variant.Text
                         "..."
                     }
