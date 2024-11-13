@@ -73,7 +73,7 @@ let private appBar = MudAppBar'' {
             gap 8
         }
         MudLink'' {
-            Href "/docs"
+            Href "docs"
             Color Color.Secondary
             "Docs"
         }
