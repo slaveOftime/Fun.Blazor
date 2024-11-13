@@ -16,9 +16,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Update="FSharp.Core" Version="8.0.100" />
+		<PackageReference Update="FSharp.Core" Version="9.0.100" />
 		<PackageReference Include="MessagePack.FSharpExtensions" Version="4.0.0" />
-		<PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.*" />
+		<PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="9.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
