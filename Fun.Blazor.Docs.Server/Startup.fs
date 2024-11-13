@@ -52,11 +52,11 @@ app.MapFunBlazor(fun ctx ->
     let store = ctx.RequestServices.GetService<IShareStore>()
     store.IsServerSideRendering.Publish true
 
-    html.fragment [|
+    fragment {
         doctype "html"
         html' {
             lang "en"
-            head.create [|
+            head {
                 title { "Fun Blazor" }
                 chartsetUTF8
                 baseUrl "/"
@@ -64,8 +64,8 @@ app.MapFunBlazor(fun ctx ->
                 stylesheet "_content/MudBlazor/MudBlazor.min.css"
                 stylesheet "css/app.css"
                 CustomElement.lazyBlazorJs (hasBlazorJs = true)
-            |]
-            body.create [|
+            }
+            body {
                 html.route [|
                     routeCi "/custom-elements-demo" (CustomElementsDemo.Create())
                     routeAny (html.blazor<App> RenderMode.InteractiveServer)
@@ -80,13 +80,9 @@ app.MapFunBlazor(fun ctx ->
 
                 script { src "https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/components/prism-core.min.js" }
                 script { src "https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/plugins/autoloader/prism-autoloader.min.js" }
-
-#if DEBUG
-                html.hotReloadJSInterop
-#endif
-            |]
+            }
         }
-    |]
+    }
 )
 
 app.Run()
