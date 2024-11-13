@@ -11,6 +11,9 @@ open Internal
 
 
 type IComponentHook =
+    /// Get the current component instance
+    abstract Component: ComponentBase
+
     /// <summary>
     /// Invoked after each time the component has been rendered.
     /// The parameter will be true if the event corresponds to the first render otherwise it will be false.
@@ -158,6 +161,8 @@ type DIComponent<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typ
                 hook <-
                     ValueSome
                         { new IComponentHook with
+                            member _.Component = this
+
                             member _.OnAfterRender =
                                 if afterRenderEvent.IsNone then afterRenderEvent <- ValueSome(Event<_>())
                                 afterRenderEvent.Value.Publish
