@@ -8,7 +8,7 @@ on:
       - edited
 
 jobs:
-  deploy-to-github-pages:
+  pr-check:
     runs-on: ubuntu-20.04
 
     steps:

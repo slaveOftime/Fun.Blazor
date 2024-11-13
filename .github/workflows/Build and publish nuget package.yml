@@ -10,7 +10,7 @@ on:
         - "build.fsx"
 
 jobs:
-  build:
+  build-and-push-nuget-packages:
 
     runs-on: ubuntu-20.04
 
