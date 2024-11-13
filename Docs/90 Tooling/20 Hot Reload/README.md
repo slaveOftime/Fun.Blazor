@@ -1,4 +1,4 @@
-# Hot Reload
+# Hot Reload (obsolete)
 
 ```sh
 dotnet tool install --global Fun.Blazor.Cli --version 4.0.0

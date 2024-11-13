@@ -1,5 +1,4 @@
-﻿// hot-reload
-[<AutoOpen>]
+﻿[<AutoOpen>]
 module Fun.Blazor.Docs.Wasm.App
 
 open Fun.Blazor
@@ -39,58 +38,57 @@ let privat themeSwitcher =
     })
 
 
-let private appBar =
-    html.injectWithNoKey (fun (shareStore: IShareStore) -> MudAppBar'' {
+let private appBar = MudAppBar'' {
+    style {
+        "backdrop-filter: blur(15px)"
+        backgroundColor "transparent"
+        color Theme.secondaryColor
+    }
+    Elevation 1
+    Dense
+
+    SectionOutlet'() { SectionName "toolbar-start" }
+
+    MudImage'' {
+        style { margin 10 }
+        Height 35
+        Width 35
+        Src "fun-blazor.png"
+    }
+    a {
+        href ""
+        MudText'' {
+            Typo Typo.h6
+            Color Color.Secondary
+            class' "animated-glow-secondary-text"
+            "Fun.Blazor"
+        }
+    }
+
+    section {
         style {
-            "backdrop-filter: blur(15px)"
-            backgroundColor "transparent"
-            color Theme.secondaryColor
+            margin 0 24
+            displayFlex
+            alignItemsCenter
+            gap 8
         }
-        Elevation 1
-        Dense
-
-        SectionOutlet'() { SectionName "toolbar-start" }
-
-        MudImage'' {
-            style { margin 10 }
-            Height 35
-            Width 35
-            Src "fun-blazor.png"
+        MudLink'' {
+            Href "/docs"
+            Color Color.Secondary
+            "Docs"
         }
-        a {
-            href ""
-            MudText'' {
-                Typo Typo.h6
-                Color Color.Secondary
-                class' "animated-glow-secondary-text"
-                "Fun.Blazor"
-            }
-        }
+    }
 
-        section {
-            style {
-                margin 0 24
-                displayFlex
-                alignItemsCenter
-                gap 8
-            }
-            MudLink'' {
-                Href "/docs"
-                Color Color.Secondary
-                "Docs"
-            }
-        }
+    MudSpacer'' { }
 
-        MudSpacer'' { }
+    SectionOutlet'() { SectionName "toolbar-end" }
 
-        SectionOutlet'() { SectionName "toolbar-end" }
-
-        MudIconButton'' {
-            Icon Icons.Custom.Brands.GitHub
-            Color Color.Inherit
-            Href "https://github.com/slaveOftime/Fun.Blazor"
-        }
-    })
+    MudIconButton'' {
+        Icon Icons.Custom.Brands.GitHub
+        Color Color.Inherit
+        Href "https://github.com/slaveOftime/Fun.Blazor"
+    }
+}
 
 
 let app =
@@ -130,9 +128,4 @@ let app =
 
 type App() =
     inherit FunComponent()
-    override _.Render() =
-#if DEBUG
-        html.hotReloadComp (app, "Fun.Blazor.Docs.Wasm.App.app")
-#else
-        app
-#endif
+    override _.Render() = app

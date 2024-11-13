@@ -7,7 +7,6 @@ open System.Net.Http
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.AspNetCore.Components.WebAssembly.Hosting
 open MudBlazor.Services
-open Fun.Blazor
 open Fun.Blazor.Docs.Wasm
 
 
@@ -31,12 +30,8 @@ type Program =
 
         builder.RootComponents.RegisterCustomElementForFunBlazor<Demos.CustomElementDemo.DemoCounter>()
 
-#if DEBUG
-        builder.AddFunBlazor("#app", html.hotReloadComp (app, "Fun.Blazor.Docs.Wasm.App.app"))
-#else
         if builder.RootComponents.Count = 0 then
             builder.RootComponents.Add<App>("#app")
-#endif
 
         Program.ConfigureServices(builder.Services, builder.HostEnvironment.BaseAddress)
 
