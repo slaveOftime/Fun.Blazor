@@ -62,7 +62,7 @@ let docView (doc: DocBrief) =
             }
 
 
-            let menuBtn = adaptiview () {
+            let menuBtn = adapt {
                 let! isOpen, setIsOpen = isOpen.WithSetter()
                 MudIconButton'' {
                     Icon Icons.Material.Filled.Menu
@@ -72,7 +72,7 @@ let docView (doc: DocBrief) =
                 }
             }
 
-            let drawer = adaptiview () {
+            let drawer = adapt {
                 let! binding = isOpen.WithSetter()
                 MudDrawer'' {
                     Open' binding
@@ -82,7 +82,7 @@ let docView (doc: DocBrief) =
                 }
             }
 
-            let langBtn = adaptiview () {
+            let langBtn = adapt {
                 let! langStr, setLang = hook.Lang.WithSetter()
                 MudMenu'' {
                     style { maxWidth 120 }
@@ -118,25 +118,25 @@ let docView (doc: DocBrief) =
 
 
             MudContainer'' {
-                SectionContent'() {
+                SectionContent'' {
                     SectionName "toolbar-start"
                     menuBtn
                 }
-                SectionContent'() {
+                SectionContent'' {
                     SectionName "drawer"
                     drawer
                 }
-                SectionContent'() {
+                SectionContent'' {
                     SectionName "toolbar-end"
                     langBtn
                 }
-                adaptiview () {
+                adapt {
                     let! segments, _, langStr = segementsBundle
                     for segment in segments do
                         match segment with
                         | Segment.Demo key -> demos |> Map.tryFind key |> Option.map DemoView.Create |> Option.defaultValue notFound
 
-                        | Segment.Html key -> adaptiview () {
+                        | Segment.Html key -> adapt {
                             match! hook.GetOrLoadDocHtml(langStr, key, "cacheKey=" + string doc.LastModified.Ticks) with
                             | LoadingState.NotStartYet -> notFound
                             | LoadingState.Loading -> linearProgress

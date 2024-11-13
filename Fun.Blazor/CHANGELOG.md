@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+- Add adapt as simple version of adaptiview()
+
 ## [4.1.0-beta001] - 2024-10-18
 
 - Upgrade packages

@@ -12,7 +12,7 @@ let adaptiveObs = AVal.ofObservable 0L ignore observe
 let adaptiveStore = AVal.ofObservable 0 ignore store.Observable
 
 let entry = html.fragment [|
-    adaptiview () {
+    adapt {
         let! fromObs = adaptiveObs
         let! fromStore = adaptiveStore
         p { $"Observable: {fromObs} - Store: {fromStore}" }

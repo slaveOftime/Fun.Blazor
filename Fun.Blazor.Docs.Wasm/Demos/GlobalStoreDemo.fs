@@ -19,7 +19,7 @@ let entry =
                 Typo Typo.subtitle2
                 "This only works in server mode blazor which under hook is using SignalR."
             }
-            adaptiview () {
+            adapt {
                 let! isToggled, toggle = toggle.WithSetter()
                 MudSwitch''<bool> {
                     Value isToggled

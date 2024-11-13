@@ -187,3 +187,7 @@ module AVal =
 ///     }
 /// ```
 type adaptiview = AdaptiviewBuilder
+
+
+/// Simple version of adaptiview
+let adapt = adaptiview ()

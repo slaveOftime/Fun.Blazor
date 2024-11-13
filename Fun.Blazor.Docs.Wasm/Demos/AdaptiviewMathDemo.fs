@@ -23,7 +23,7 @@ let entry =
                 height 300
             }
             childContent [|
-                adaptiview () {
+                adapt {
                     let! y =
                         xaxis
                         |> AVal.map (
@@ -44,7 +44,7 @@ let entry =
                         DateTime.Now.ToString()
                     }
                 }
-                adaptiview () {
+                adapt {
                     let! x = xaxis
                     let y = 150. + Math.Sin(float x) * 100. |> int
                     div {

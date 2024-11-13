@@ -8,7 +8,7 @@ open Fun.Blazor.Docs.Wasm
 
 
 let private theme =
-    html.injectWithNoKey (fun (shareStore: IShareStore) -> adaptiview () {
+    html.injectWithNoKey (fun (shareStore: IShareStore) -> adapt {
         let! isDark = shareStore.IsDarkMode
         MudThemeProvider'' {
             IsDarkMode isDark
@@ -23,7 +23,7 @@ let private theme =
     })
 
 let privat themeSwitcher =
-    html.inject (fun (shareStore: IShareStore) -> adaptiview () {
+    html.inject (fun (shareStore: IShareStore) -> adapt {
         let! isDark, setIsDark = shareStore.IsDarkMode.WithSetter()
         MudIconButton'' {
             Color Color.Inherit
@@ -47,7 +47,7 @@ let private appBar = MudAppBar'' {
     Elevation 1
     Dense
 
-    SectionOutlet'() { SectionName "toolbar-start" }
+    SectionOutlet'' { SectionName "toolbar-start" }
 
     MudImage'' {
         style { margin 10 }
@@ -81,7 +81,7 @@ let private appBar = MudAppBar'' {
 
     MudSpacer'' { }
 
-    SectionOutlet'() { SectionName "toolbar-end" }
+    SectionOutlet'' { SectionName "toolbar-end" }
 
     MudIconButton'' {
         Icon Icons.Custom.Brands.GitHub
@@ -104,7 +104,7 @@ let app =
 
             MudLayout'' {
                 appBar
-                SectionOutlet'() { SectionName "drawer" }
+                SectionOutlet'' { SectionName "drawer" }
                 MudMainContent'' {
                     style {
                         paddingTop 100

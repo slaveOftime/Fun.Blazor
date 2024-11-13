@@ -17,7 +17,7 @@ module ScopedServiceDemo =
     let entry =
         html.inject (fun (demo1: ScopedDemoService) ->
             let view (demo: ScopedDemoService) msg =
-                adaptiview () {
+                adapt {
                     let! count, setCount = demo.Count.WithSetter()
                     html.fragment [|
                         div.create [|

@@ -40,7 +40,7 @@ module HtmlTemplateDemo =
 
     let entry =
         html.inject (fun (store: IShareStore) ->
-            adaptiview () {
+            adapt {
                 let! isDark = store.IsDarkMode
 
                 let! count, setCount = cval(1).WithSetter()

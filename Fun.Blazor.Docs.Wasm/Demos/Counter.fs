@@ -5,7 +5,7 @@ open FSharp.Data.Adaptive
 open Fun.Blazor
 
 let entry =
-    adaptiview () {
+    adapt {
         let! count1, setCount1 = cval(1).WithSetter()
         div.create [|
             h6 { $"Count1={count1}" }
