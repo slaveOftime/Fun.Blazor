@@ -10,7 +10,7 @@ let yourUI =
         style { ... }
         childContent [
             ... 很多东西
-            adaptiview () {
+            adapt {
                 let! msg = from store
                 // 只有下面的部分会重新渲染。
                 div {

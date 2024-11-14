@@ -112,7 +112,7 @@ module Home =
     article {
       h1 { "This is a title" }
 
-      adaptiview() {
+      adapt {
         let! value, setValue = cval("").WithSetter()
 
         MyComponent.create(value, setValue)

@@ -40,7 +40,7 @@ div { // 序列号 0
 ```fsharp
 div { // 序列号 0
     childContent [
-        adaptiview () { // 序列号 1
+        adapt { // 序列号 1
             match! isLoading with
             | true -> loader
             | false -> someDataView

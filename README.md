@@ -37,7 +37,7 @@ If you find my projects helpful and would like to support my work, consider maki
 let count = cval 0
 let counter (str: string) = section {
     h2 { "Counter: "; str }
-    adaptiview () {
+    adapt {
         let! count, setCount = count.WithSetter()
         button {
             onclick (fun _ -> setCount (count + 1))

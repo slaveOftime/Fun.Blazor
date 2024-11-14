@@ -37,7 +37,7 @@ let ``should be able to test hook service`` () =
         html.inject (fun (hook: IComponentHook) ->
             let demoHook = hook.GetHookService<IDemoHookService>()
             demoHook.InitDemoData()
-            adaptiview () {
+            adapt {
                 let! result = demoHook.DemoData
                 html.text result
             }

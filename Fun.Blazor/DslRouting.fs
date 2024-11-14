@@ -104,7 +104,7 @@ type html with
                     |> hook.AddDispose
                 )
 
-                adaptiview () {
+                adapt {
                     let! location = location
                     // We should not use location as component key to for choosed page, because it make nested html.route not as power as it can be
                     choose routes location |> Option.defaultWith emptyNode

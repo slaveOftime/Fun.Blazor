@@ -10,7 +10,7 @@ let yourUI =
         style { ... }
         childContent [
             ... a lot of stuff
-            adaptiview () {
+            adapt {
                 let! msg = from store
                 // only below part will be rerendered.
                 div {

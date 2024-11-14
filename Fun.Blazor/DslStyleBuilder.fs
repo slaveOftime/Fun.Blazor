@@ -209,7 +209,7 @@ module DslStyle =
         /// This will add all the consumed styles or keyframes from IScopedInlineStyles
         static member scopedCssRules =
             html.inject (fun (scopedCssRules: IScopedCssRules) -> fragment {
-                adaptiview () {
+                adapt {
                     let! styles' = scopedCssRules.Styles
                     if not styles'.IsEmpty then
                         styleElt {
@@ -217,7 +217,7 @@ module DslStyle =
                                 k, v
                         }
                 }
-                adaptiview () {
+                adapt {
                     let! keyframes = scopedCssRules.KeyFrames
                     if not keyframes.IsEmpty then
                         styleElt {

@@ -40,7 +40,7 @@ Most of the time, we will not even notice the difference with or without the **r
 ```fsharp
 div { // sequence 0
     childContent [
-        adaptiview () { // sequence 1
+        adapt { // sequence 1
             match! isLoading with
             | true -> loader
             | false -> someDataView

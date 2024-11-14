@@ -99,7 +99,7 @@ type IComponentHook with
     ///     // ... use the store or subscribe to it ...
     ///     // ensure disposal
     ///     hook.AddDispose state
-    ///     adaptiview() {
+    ///     adapt {
     ///        let! value, setValue = hook.UseCVal state
     ///     }
     ///

@@ -25,7 +25,7 @@ let ``html adaptive tests`` () =
     let store1 = cval 1
     let store2 = cval 1
 
-    let comp = adaptiview () {
+    let comp = adapt {
         let! s1 = store1
         let! s2 = store2
         html.text $"s1={s1};s2={s2}"
@@ -52,7 +52,7 @@ let ``html adaptive tests`` () =
 let ``html adaptive bind collections tests`` () =
     let context = createTestContext ()
 
-    let comp = adaptiview () {
+    let comp = adapt {
         let! s1 = AList.ofList [ 4; 3 ]
         let! s2 = ASet.ofList [ 2; 1 ]
         for x in s1 do
@@ -73,7 +73,7 @@ let ``html adaptive complex condition tests`` () =
     let store1 = cval 1
     let store2 = cval 1
 
-    let comp = adaptiview () {
+    let comp = adapt {
         let! s1 = store1
         let! s2 = store2
         region { if s1 >= 2 then div { $"s1={s1}" } }

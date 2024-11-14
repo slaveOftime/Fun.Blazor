@@ -25,7 +25,7 @@ module DynamicViews =
   open Fun.Blazor
 
   let adaptiveNode =
-    adaptiview () {
+    adapt {
       let! age, setAge = cval(10).WithSetter()
 
       section {
@@ -99,7 +99,7 @@ In the case of adaptive values it is easy to track where something will re-rende
 
 ```fsharp
 // ❌ Avoid
-adaptiview() {
+adapt {
   let! content = myAValue
 
   $"Hello static string" // will re-render
@@ -121,7 +121,7 @@ fragment {
 
   p { // Stays static
     div { // Stays static
-      adaptiview() {
+      adapt {
         let! content = myAValue
         fragment { $"Hello dynamic content {content}" } // will re-render
       }
