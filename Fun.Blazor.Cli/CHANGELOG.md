@@ -1,5 +1,11 @@
 # Changelog
 
+## [4.1.0-beta001] - 2024-11-14
+
+- Obsolete watch command (hot-reload)
+- Update generator version
+- Update packages
+
 ## [4.0.5] - 2024-08-02
 
 - Improve ce code gen for ce instances
