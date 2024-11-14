@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## [4.1.1] - 2024-11-14
+
+- Fix empty body for ComponentWithDomAttrBuilder
+- Fix formName of form
+- Add more helpers like Router''
+
 ## [4.1.0] - 2024-11-14
 
 - Bump version to 4.1.0
