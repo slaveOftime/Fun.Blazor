@@ -11,7 +11,7 @@
 [![Nuget](https://img.shields.io/nuget/vpre/Fun.Blazor.Templates)](https://www.nuget.org/packages/Fun.Blazor.Templates)
 
 ```shell
-dotnet new --install Fun.Blazor.Templates::4.0.2
+dotnet new --install Fun.Blazor.Templates::4.1.0
 dotnet new fun-blazor -o FunBlazorDemo1
 ```
 
@@ -69,16 +69,18 @@ let private fragment2 (shareStore: IShareStore) =
 // Or use Elmish if you like
 let private fragment3 = html.elmish (init, update, view)
 
-let comp1 =
-    html.inject (fun (svc1, shareStore: IShareStore, ...) ->
-        div {
-            childContent [
-                fragment1
-                fragment2 shareStore
-                fragment3
-            ]
-        }
-    )
+type Comp1 =
+    // So we can provide overloads for future iteration
+    static member Create() =
+        html.inject (fun (svc1, shareStore: IShareStore, ...) ->
+            div {
+                childContent [
+                    fragment1
+                    fragment2 shareStore
+                    fragment3
+                ]
+            }
+        )
 ```
 
 |--- Comp2.Hooks.fs // in case you have a large component, or you can even create a separate folder for the whole component  
@@ -89,8 +91,8 @@ let comp1 =
 ```fsharp
 let private routes =
     html.route [
-        routeCi "/page1" comp1
-        routeAny comp2
+        routeCi "/page1" (Comp1.Create())
+        routeAny (Comp2.Create())
     ]
 
 let app =

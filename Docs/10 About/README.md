@@ -65,8 +65,6 @@ There are a few things to keep in mind:
 
 1. No support for hot-reload
 
-   The default templates provide limited hot-reload support. Too many files can slow down the hot-reload process, so for best results, add `// hot-reload` at the top of files you want to enable hot-reload for. For more information, see the [Hot-reload in Fun.Blazor](https://www.slaveoftime.fun/blog/d959e36a-f4fe-4a10-88af-5e738633db0f?title=%20Hot-reload%20in%20Fun.Blazor) blog post or [document](https://slaveoftime.github.io/Fun.Blazor.Docs/?doc=/Hot%20Reload).
-
 2. Attribute, items position in CE
 
     When using a `ref` or `renderMode` attribute etc., you should place it like below, because blazor treat them very special and can only add them after other attributes:

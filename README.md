@@ -25,10 +25,10 @@ If you find my projects helpful and would like to support my work, consider maki
 
 ## Start to use
 
-    dotnet new install Fun.Blazor.Templates::4.0.2
+    dotnet new install Fun.Blazor.Templates::4.1.0
     dotnet new fun-blazor -o FunBlazorDemo1
 
-> Requires dotnet 8
+> The template is upgraded to dotnet 9, but you can downgrade it according to your needs.
 
 ## Code samples
 
