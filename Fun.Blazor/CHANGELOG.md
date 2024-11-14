@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [4.1.0] - 2024-11-14
+
+- Bump version to 4.1.0
+
 ## [4.1.0-beta003] - 2024-11-14
 
 - Fix empty body issue for component ce builder
