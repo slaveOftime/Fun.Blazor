@@ -8,6 +8,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<EmbeddedResource Include="ILLink.Substitutions.xml">
+			<LogicalName>ILLink.Substitutions.xml</LogicalName>
+		</EmbeddedResource>
 		<Compile Include="Core.fs" />
 		<Compile Include="NativeJs.fs" />
 		<Compile Include="DslHtmxBuilder.fs" />
@@ -20,6 +23,8 @@
 	<ItemGroup Condition="'$(TargetFramework)'=='net6.0'">
 		<PackageReference Update="FSharp.Core" Version="6.0.0" />
 	</ItemGroup>
+
+	<ItemGroup />
 
 	<ItemGroup>
 		<ProjectReference Include="..\Fun.Blazor.Server\Fun.Blazor.Server.fsproj" />

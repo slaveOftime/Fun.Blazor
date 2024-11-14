@@ -8,11 +8,16 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<EmbeddedResource Include="ILLink.Substitutions.xml">
+			<LogicalName>ILLink.Substitutions.xml</LogicalName>
+		</EmbeddedResource>
 		<Compile Include="Core.fs" />
 		<Compile Include="Utils.fs" />
 		<Compile Include="Dsl.fs" />
 		<Compile Include="DIExtensions.fs" />
 	</ItemGroup>
+
+	<ItemGroup />
 
 	<ItemGroup>
 		<PackageReference Update="FSharp.Core" Version="8.0.100" />

@@ -1,0 +1,8 @@
+﻿<linker>
+	<assembly fullname="Fun.Htmx">
+		<resource name="FSharpSignatureCompressedData.Fun.Htmx" action="remove" />
+		<resource name="FSharpSignatureCompressedDataB.Fun.Htmx" action="remove" />
+		<resource name="FSharpOptimizationCompressedData.Fun.Htmx" action="remove" />
+		<resource name="FSharpOptimizationCompressedDataB.Fun.Htmx" action="remove" />
+	</assembly>
+</linker>

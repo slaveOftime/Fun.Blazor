@@ -22,7 +22,7 @@ let private theme =
         )
     })
 
-let privat themeSwitcher =
+let private themeSwitcher =
     html.inject (fun (shareStore: IShareStore) -> adapt {
         let! isDark, setIsDark = shareStore.IsDarkMode.WithSetter()
         MudIconButton'' {

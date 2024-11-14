@@ -1,0 +1,8 @@
+﻿<linker>
+	<assembly fullname="Fun.Blazor.MudBlazor">
+		<resource name="FSharpSignatureCompressedData.Fun.Blazor.MudBlazor" action="remove" />
+		<resource name="FSharpSignatureCompressedDataB.Fun.Blazor.MudBlazor" action="remove" />
+		<resource name="FSharpOptimizationCompressedData.Fun.Blazor.MudBlazor" action="remove" />
+		<resource name="FSharpOptimizationCompressedDataB.Fun.Blazor.MudBlazor" action="remove" />
+	</assembly>
+</linker>

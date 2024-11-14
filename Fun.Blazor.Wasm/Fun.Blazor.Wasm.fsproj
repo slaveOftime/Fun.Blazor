@@ -3,11 +3,18 @@
 	<PropertyGroup>
 		<TargetFrameworks>net6.0;net8.0</TargetFrameworks>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<TrimMode>link</TrimMode>
+		<IsTrimmable>true</IsTrimmable>
 	</PropertyGroup>
 
 	<ItemGroup>
+		<EmbeddedResource Include="ILLink.Substitutions.xml">
+			<LogicalName>ILLink.Substitutions.xml</LogicalName>
+		</EmbeddedResource>
 		<Compile Include="DIExtensions.fs" />
 	</ItemGroup>
+
+	<ItemGroup />
 
 	<ItemGroup>
 		<ProjectReference Include="..\Fun.Blazor\Fun.Blazor.fsproj" />

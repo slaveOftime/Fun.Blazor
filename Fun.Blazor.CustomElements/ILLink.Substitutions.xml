@@ -1,0 +1,8 @@
+﻿<linker>
+	<assembly fullname="Fun.Blazor.CustomElements">
+		<resource name="FSharpSignatureCompressedData.Fun.Blazor.CustomElements" action="remove" />
+		<resource name="FSharpSignatureCompressedDataB.Fun.Blazor.CustomElements" action="remove" />
+		<resource name="FSharpOptimizationCompressedData.Fun.Blazor.CustomElements" action="remove" />
+		<resource name="FSharpOptimizationCompressedDataB.Fun.Blazor.CustomElements" action="remove" />
+	</assembly>
+</linker>
