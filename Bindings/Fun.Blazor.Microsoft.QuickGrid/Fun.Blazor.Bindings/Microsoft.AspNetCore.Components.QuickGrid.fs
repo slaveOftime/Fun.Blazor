@@ -80,7 +80,7 @@ type TemplateColumnBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric 
 
 /// A component that provides a user interface for PaginationState.
 type PaginatorBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
     /// Specifies the associated PaginationState. This parameter is required.
     [<CustomOperation("State")>] member inline _.State ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.AspNetCore.Components.QuickGrid.PaginationState) = render ==> ("State" => x)
     /// Optionally supplies a template for rendering the page count summary.

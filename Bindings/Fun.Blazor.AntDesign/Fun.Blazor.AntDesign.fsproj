@@ -9,6 +9,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Fun.Blazor.Bindings\AntDesign.fs" />
+    <EmbeddedResource Include="ILLink.Substitutions.xml" LogicalName="ILLink.Substitutions.xml" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference FunBlazor="" FunBlazorNamespace="AntDesign" FunBlazorAssemblyName="AntDesign" Include="AntDesign" Version="1.0.0" />
@@ -18,6 +19,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Update="FSharp.Core" Version="6.0.0" />
-    <PackageReference Include="Fun.Blazor" Version="4.1.0-beta001" />
+    <PackageReference Include="Fun.Blazor" Version="4.1.0" />
   </ItemGroup>
 </Project>

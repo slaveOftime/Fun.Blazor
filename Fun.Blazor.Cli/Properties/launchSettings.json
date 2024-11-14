@@ -2,7 +2,7 @@
   "profiles": {
     "Fun.Blazor.Cli": {
       "commandName": "Project",
-      "commandLineArgs": "generate \"$(SolutionDir)\\Bindings\\Fun.Blazor.MudBlazor\\Fun.Blazor.MudBlazor.fsproj\""
+      "commandLineArgs": "generate \"$(SolutionDir)\\Fun.Blazor.MudBlazor\\Fun.Blazor.MudBlazor.fsproj\""
     }
   }
 }

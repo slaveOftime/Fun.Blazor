@@ -21,9 +21,12 @@ let private FunBlazorInlineAttr = $"{FunBlazorPrefix}Inline"
 
 let private clean (project: XDocument) (projectFile: string) (codesDirName: string) =
     project.Element(xn "Project").Elements(xn "ItemGroup")
-    |> Seq.map (fun x -> x.Elements(xn "Compile"))
+    |> Seq.map (fun x -> x.Elements())
     |> Seq.concat
-    |> Seq.filter (fun x -> x.Attribute(xn "Include").Value.StartsWith codesDirName)
+    |> Seq.filter (fun x ->
+        let item = x.Attribute(xn "Include")
+        item <> null && item.Value.StartsWith codesDirName
+    )
     |> Seq.toList
     |> Seq.iter (fun x ->
         try
@@ -44,8 +47,7 @@ let private findPackageMetas projectDir (project: XDocument) style useInline =
     |> Seq.map (fun x -> seq {
         yield! x.Elements(xn "PackageReference")
         yield! x.Elements(xn "ProjectReference")
-    }
-    )
+    })
     |> Seq.concat
     |> Seq.filter (fun x -> x.Attributes() |> Seq.exists (fun x -> x.Name.LocalName.StartsWith FunBlazorPrefix))
     |> Seq.map (fun node ->
@@ -54,11 +56,10 @@ let private findPackageMetas projectDir (project: XDocument) style useInline =
         {
             Package =
                 if isPackageRef then
-                    Package.Package
-                        {|
-                            Name = includeValue
-                            Version = node.Attribute(xn "Version").Value
-                        |}
+                    Package.Package {|
+                        Name = includeValue
+                        Version = node.Attribute(xn "Version").Value
+                    |}
                 else
                     Package.Project(
                         if Path.IsPathRooted includeValue then
@@ -101,7 +102,7 @@ let private findPackageMetas projectDir (project: XDocument) style useInline =
 
 let private attachCodeFiles (project: XDocument) (projectFile: string) (codesDirName: string) =
     let codeFiles =
-        Directory.GetFiles(Path.GetDirectoryName projectFile </> codesDirName)
+        Directory.GetFiles(Path.GetDirectoryName projectFile </> codesDirName, "*.fs")
     let codeItemGroup = XElement(xn "ItemGroup")
 
     let firstItemGroup = project.Element(xn "Project").Element(xn "ItemGroup")
@@ -113,12 +114,31 @@ let private attachCodeFiles (project: XDocument) (projectFile: string) (codesDir
     for file in codeFiles do
         let code = XElement(xn "Compile")
         let codePath = codesDirName </> Path.GetFileName file
-
         code.Add(XAttribute(xn "Include", codePath))
         codeItemGroup.Add code
 
         AnsiConsole.MarkupLine $"Attach file: [green]{codePath}[/]"
 
+    let projectName = Path.GetFileNameWithoutExtension projectFile
+    File.WriteAllText(
+        Path.GetDirectoryName projectFile </> "ILLink.Substitutions.xml",
+        $"""<linker>
+	<assembly fullname="{projectName}">
+		<resource name="FSharpSignatureCompressedData.{projectName}" action="remove" />
+		<resource name="FSharpSignatureCompressedDataB.{projectName}" action="remove" />
+		<resource name="FSharpOptimizationCompressedData.{projectName}" action="remove" />
+		<resource name="FSharpOptimizationCompressedDataB.{projectName}" action="remove" />
+	</assembly>
+</linker>"""
+    )
+
+    printfn $"Generated ILLink.Substitutions.xml"
+
+    let linker = XElement(xn "EmbeddedResource")
+    linker.Add(XAttribute(xn "Include", "ILLink.Substitutions.xml"))
+    linker.Add(XAttribute(xn "LogicalName", "ILLink.Substitutions.xml"))
+    codeItemGroup.Add linker
+    printfn $"Attach ILLink.Substitutions.xml"
 
 
 let startGenerate (projectFile: string) (codesDirName: string) (style: Style) sdkStr generatorVersion useInline keepCodeGenProj =

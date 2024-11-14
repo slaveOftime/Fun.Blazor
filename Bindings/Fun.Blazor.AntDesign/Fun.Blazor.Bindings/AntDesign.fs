@@ -3295,7 +3295,7 @@ open Fun.Blazor.Operators
 open AntDesign.DslInternals
 
 type ComponentBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
     [<CustomOperation("Type")>] member inline _.Type ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Type) = render ==> ("Type" => x)
     [<CustomOperation("TypeName")>] member inline _.TypeName ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("TypeName" => x)
     [<CustomOperation("Parameters")>] member inline _.Parameters ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IDictionary<System.String, System.Object>) = render ==> ("Parameters" => x)
@@ -3306,14 +3306,14 @@ type ForeachLoopBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> Micr
     [<CustomOperation("ChildContent")>] member inline _.ChildContent ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: 'TItem -> NodeRenderFragment) = render ==> html.renderFragment("ChildContent", fn)
 
 type GenerateFormItemBuilder<'FunBlazorGeneric, 'TModel when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
     [<CustomOperation("ValidateRules")>] member inline _.ValidateRules ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("ValidateRules" => (System.Func<System.String, AntDesign.FormValidationRule[]>fn))
     [<CustomOperation("Definitions")>] member inline _.Definitions ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("Definitions" => (System.Func<System.String, Microsoft.AspNetCore.Components.RenderFragment>fn))
     [<CustomOperation("NotGenerate")>] member inline _.NotGenerate ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("NotGenerate" => (System.Func<System.String, System.Boolean>fn))
     [<CustomOperation("SubformStyle")>] member inline _.SubformStyle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("SubformStyle" => x)
 
 type ImagePreviewBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
     [<CustomOperation("ImageRef")>] member inline _.ImageRef ([<InlineIfLambda>] render: AttrRenderFragment, x: AntDesign.ImageRef) = render ==> ("ImageRef" => x)
 
 type ImagePreviewGroupBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -3325,27 +3325,27 @@ type ImagePreviewGroupBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micros
     [<CustomOperation("PreviewVisibleChanged")>] member inline _.PreviewVisibleChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("PreviewVisibleChanged", fn)
 
 type GenerateColumnsBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
     [<CustomOperation("Range")>] member inline _.Range ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Range>) = render ==> ("Range" => x)
     [<CustomOperation("HideColumnsByName")>] member inline _.HideColumnsByName ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<System.String>) = render ==> ("HideColumnsByName" => x)
     [<CustomOperation("Definitions")>] member inline _.Definitions ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("Definitions" => (System.Action<System.String, AntDesign.IFieldColumn>fn))
 
 type TreeIndentBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
     [<CustomOperation("TreeLevel")>] member inline _.TreeLevel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("TreeLevel" => x)
 
 type TreeNodeCheckboxBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
     [<CustomOperation("OnCheckBoxClick")>] member inline _.OnCheckBoxClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> unit) = render ==> html.callback("OnCheckBoxClick", fn)
     [<CustomOperation("OnCheckBoxClick")>] member inline _.OnCheckBoxClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> Task<unit>) = render ==> html.callbackTask("OnCheckBoxClick", fn)
 
 type TreeNodeSwitcherBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
     [<CustomOperation("OnSwitcherClick")>] member inline _.OnSwitcherClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> unit) = render ==> html.callback("OnSwitcherClick", fn)
     [<CustomOperation("OnSwitcherClick")>] member inline _.OnSwitcherClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> Task<unit>) = render ==> html.callbackTask("OnSwitcherClick", fn)
 
 type TreeNodeTitleBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
 
 
 type SummaryRowBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -3353,7 +3353,7 @@ type SummaryRowBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.Asp
 
 
 type ReusePagesBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
     [<CustomOperation("Reuse")>] member inline _.Reuse ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Reuse" =>>> true)
     [<CustomOperation("Reuse")>] member inline _.Reuse ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Reuse" =>>> x)
     [<CustomOperation("ActivedUri")>] member inline _.ActivedUri ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ActivedUri" => x)
@@ -3371,7 +3371,7 @@ open Fun.Blazor.Operators
 open AntDesign.DslInternals
 
 type StatisticComponentBaseBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
 
 
             
@@ -3384,7 +3384,7 @@ open Fun.Blazor.Operators
 open AntDesign.DslInternals
 
 type FilterInputsBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
 
 
             
@@ -3397,7 +3397,7 @@ open Fun.Blazor.Operators
 open AntDesign.DslInternals
 
 type LabelTemplateItemBuilder<'FunBlazorGeneric, 'TItemValue, 'TItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
     [<CustomOperation("LabelTemplateItemContent")>] member inline _.LabelTemplateItemContent ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: 'TItem -> NodeRenderFragment) = render ==> html.renderFragment("LabelTemplateItemContent", fn)
     [<CustomOperation("ContentStyle")>] member inline _.ContentStyle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ContentStyle" => x)
     [<CustomOperation("ContentClass")>] member inline _.ContentClass ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ContentClass" => x)
@@ -3415,7 +3415,7 @@ open Fun.Blazor.Operators
 open AntDesign.DslInternals
 
 type SelectSuffixIconBuilder<'FunBlazorGeneric, 'TItemValue, 'TItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
     [<CustomOperation("IsOverlayShow")>] member inline _.IsOverlayShow ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("IsOverlayShow" =>>> true)
     [<CustomOperation("IsOverlayShow")>] member inline _.IsOverlayShow ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("IsOverlayShow" =>>> x)
     [<CustomOperation("ShowSearchIcon")>] member inline _.ShowSearchIcon ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowSearchIcon" =>>> true)
@@ -3435,7 +3435,7 @@ open Fun.Blazor.Operators
 open AntDesign.DslInternals
 
 type FormRulesValidatorBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
 
 
 type TableRowWrapperBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -3452,7 +3452,7 @@ open Fun.Blazor.Operators
 open AntDesign.DslInternals
 
 type ModalHeaderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
 
 
             

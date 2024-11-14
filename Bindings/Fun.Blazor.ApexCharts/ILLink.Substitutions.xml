@@ -1,0 +1,8 @@
+<linker>
+	<assembly fullname="Fun.Blazor.ApexCharts">
+		<resource name="FSharpSignatureCompressedData.Fun.Blazor.ApexCharts" action="remove" />
+		<resource name="FSharpSignatureCompressedDataB.Fun.Blazor.ApexCharts" action="remove" />
+		<resource name="FSharpOptimizationCompressedData.Fun.Blazor.ApexCharts" action="remove" />
+		<resource name="FSharpOptimizationCompressedDataB.Fun.Blazor.ApexCharts" action="remove" />
+	</assembly>
+</linker>

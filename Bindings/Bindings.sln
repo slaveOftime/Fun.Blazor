@@ -21,13 +21,14 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fun.Blazor.Microsoft.Web", 
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fun.Blazor.MudBlazor", "Fun.Blazor.MudBlazor\Fun.Blazor.MudBlazor.fsproj", "{D1B25EFB-C915-48CC-A959-0D15A3B856AA}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fun.Blazor.Cli", "..\Fun.Blazor.Cli\Fun.Blazor.Cli.fsproj", "{A70C4042-0C8D-4C7C-B070-3375AE634678}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fun.Blazor.Generator", "..\Fun.Blazor.Generator\Fun.Blazor.Generator.fsproj", "{BA9E61CC-E763-4C87-B02F-3763F576A9F1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{51D4A272-F873-44A7-A262-CADD15A41035}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -66,5 +67,16 @@ Global
 		{D1B25EFB-C915-48CC-A959-0D15A3B856AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D1B25EFB-C915-48CC-A959-0D15A3B856AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D1B25EFB-C915-48CC-A959-0D15A3B856AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A70C4042-0C8D-4C7C-B070-3375AE634678}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A70C4042-0C8D-4C7C-B070-3375AE634678}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A70C4042-0C8D-4C7C-B070-3375AE634678}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A70C4042-0C8D-4C7C-B070-3375AE634678}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA9E61CC-E763-4C87-B02F-3763F576A9F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA9E61CC-E763-4C87-B02F-3763F576A9F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA9E61CC-E763-4C87-B02F-3763F576A9F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA9E61CC-E763-4C87-B02F-3763F576A9F1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal

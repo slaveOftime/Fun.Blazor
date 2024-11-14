@@ -1,4 +1,4 @@
-﻿
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk.Razor">
   <PropertyGroup>
     <TargetFrameworks>net6.0;net8.0</TargetFrameworks>
@@ -8,6 +8,10 @@
     <Version>3.0.2.001</Version>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Fun.Blazor.Bindings\Blazor.Diagrams.fs" />
+    <EmbeddedResource Include="ILLink.Substitutions.xml" LogicalName="ILLink.Substitutions.xml" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference FunBlazor="" FunBlazorNamespace="Blazor.Diagrams" FunBlazorAssemblyName="Blazor.Diagrams" Include="Z.Blazor.Diagrams" Version="3.0.2" />
   </ItemGroup>
   <ItemGroup>
@@ -15,6 +19,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Update="FSharp.Core" Version="6.0.0" />
-    <PackageReference Include="Fun.Blazor" Version="4.1.0-beta001" />
+    <PackageReference Include="Fun.Blazor" Version="4.1.0" />
   </ItemGroup>
 </Project>

@@ -1,26 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk.Razor">
-	<PropertyGroup>
-		<TargetFrameworks>net7.0;net8.0</TargetFrameworks>
-		<GenerateDocumentationFile>true</GenerateDocumentationFile>
-		<TrimMode>link</TrimMode>
-		<IsTrimmable>true</IsTrimmable>
-		<Version>7.8.0</Version>
-	</PropertyGroup>
-	<ItemGroup>
-		<EmbeddedResource Include="ILLink.Substitutions.xml">
-			<LogicalName>ILLink.Substitutions.xml</LogicalName>
-		</EmbeddedResource>
-		<Compile Include="Fun.Blazor.Bindings\MudBlazor.fs" />
-	</ItemGroup>
-	<ItemGroup>
-		<PackageReference FunBlazor="" FunBlazorNamespace="MudBlazor" FunBlazorAssemblyName="MudBlazor" Include="MudBlazor" Version="7.8.0" />
-	</ItemGroup>
-	<ItemGroup>
-		<Compile Include="*.fs" />
-	</ItemGroup>
-	<ItemGroup>
-		<PackageReference Update="FSharp.Core" Version="6.0.0" />
-		<PackageReference Include="Fun.Blazor" Version="4.0.12" />
-	</ItemGroup>
+  <PropertyGroup>
+    <TargetFrameworks>net7.0;net8.0</TargetFrameworks>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <TrimMode>link</TrimMode>
+    <IsTrimmable>true</IsTrimmable>
+    <Version>7.15.0</Version>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Fun.Blazor.Bindings\MudBlazor.fs" />
+    <EmbeddedResource Include="ILLink.Substitutions.xml" LogicalName="ILLink.Substitutions.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference FunBlazor="" FunBlazorNamespace="MudBlazor" FunBlazorAssemblyName="MudBlazor" Include="MudBlazor" Version="7.15.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="*.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Update="FSharp.Core" Version="6.0.0" />
+    <PackageReference Include="Fun.Blazor" Version="4.1.0" />
+  </ItemGroup>
 </Project>

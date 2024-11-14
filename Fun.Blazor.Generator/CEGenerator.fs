@@ -182,7 +182,8 @@ let private getMetaInfo useInline (ty: Type) =
         |> Seq.concat
 
 
-    let hasChildren = filteredProps |> Seq.exists (fun x -> x.Name = "ChildContent")
+    let hasChildren =
+        filteredProps |> Seq.exists (fun x -> not x.PropertyType.IsGenericType && x.Name = "ChildContent")
 
     let isSplatAttributesProp (p: PropertyInfo) =
         option {

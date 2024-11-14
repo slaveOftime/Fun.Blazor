@@ -1,0 +1,8 @@
+<linker>
+	<assembly fullname="Fun.Blazor.Microsoft.FluentUI">
+		<resource name="FSharpSignatureCompressedData.Fun.Blazor.Microsoft.FluentUI" action="remove" />
+		<resource name="FSharpSignatureCompressedDataB.Fun.Blazor.Microsoft.FluentUI" action="remove" />
+		<resource name="FSharpOptimizationCompressedData.Fun.Blazor.Microsoft.FluentUI" action="remove" />
+		<resource name="FSharpOptimizationCompressedDataB.Fun.Blazor.Microsoft.FluentUI" action="remove" />
+	</assembly>
+</linker>

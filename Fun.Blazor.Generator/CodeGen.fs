@@ -29,6 +29,7 @@ open {targetNamespace}.{Utils.internalSegment}"""
 
             let types = Assembly.Load(sourceAssemblyName).GetTypes()
             let path = codesDir </> formatedName + ".fs"
+            let linkerPath = codesDir </> formatedName + ".ILLink.Substitutions.xml"
 
             if Directory.Exists codesDir |> not then
                 Directory.CreateDirectory codesDir |> ignore
@@ -47,9 +48,8 @@ open {targetNamespace}.{Utils.internalSegment}"""
 {codes.dslCode}"""
 
             File.WriteAllText(path, code)
-
-
             printfn $"Generated code for {formatedName}: {path}"
 
-        with
-            | ex -> printfn "Generate code failed %s" ex.Message
+
+        with ex ->
+            printfn "Generate code failed %s" ex.Message

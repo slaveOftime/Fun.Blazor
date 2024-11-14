@@ -8,7 +8,7 @@ open Microsoft.AspNetCore.Components.Authorization.DslInternals
 
 /// A base class for components that display differing content depending on the user's authorization status.
 type AuthorizeViewCoreBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
+    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
     /// The content that will be displayed if the user is authorized.
     [<CustomOperation("ChildContent")>] member inline _.ChildContent ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Authorization.AuthenticationState -> NodeRenderFragment) = render ==> html.renderFragment("ChildContent", fn)
     /// The content that will be displayed if the user is not authorized.

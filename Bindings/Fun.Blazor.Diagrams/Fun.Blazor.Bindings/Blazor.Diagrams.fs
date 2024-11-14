@@ -7,7 +7,7 @@ open Fun.Blazor.Operators
 open Blazor.Diagrams.DslInternals
 
 type DiagramCanvasBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
     [<CustomOperation("Widgets")>] member inline _.Widgets ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("Widgets", fragment)
     [<CustomOperation("Widgets")>] member inline _.Widgets ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("Widgets", fragment { yield! fragments })
     [<CustomOperation("Widgets")>] member inline _.Widgets ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("Widgets", html.text x)
@@ -25,27 +25,27 @@ type DiagramCanvasBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     [<CustomOperation("AdditionalHtml")>] member inline _.AdditionalHtml ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("AdditionalHtml", html.text x)
 
 type LinkWidgetBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
     [<CustomOperation("Link")>] member inline _.Link ([<InlineIfLambda>] render: AttrRenderFragment, x: Blazor.Diagrams.Core.Models.LinkModel) = render ==> ("Link" => x)
 
 type DefaultGroupWidgetBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
     [<CustomOperation("Group")>] member inline _.Group ([<InlineIfLambda>] render: AttrRenderFragment, x: Blazor.Diagrams.Core.Models.GroupModel) = render ==> ("Group" => x)
 
 type DefaultLinkLabelWidgetBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
     [<CustomOperation("Label")>] member inline _.Label ([<InlineIfLambda>] render: AttrRenderFragment, x: Blazor.Diagrams.Core.Models.LinkLabelModel) = render ==> ("Label" => x)
 
 type GroupNodesBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
     [<CustomOperation("Group")>] member inline _.Group ([<InlineIfLambda>] render: AttrRenderFragment, x: Blazor.Diagrams.Core.Models.GroupModel) = render ==> ("Group" => x)
 
 type NodeWidgetBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
     [<CustomOperation("Node")>] member inline _.Node ([<InlineIfLambda>] render: AttrRenderFragment, x: Blazor.Diagrams.Core.Models.NodeModel) = render ==> ("Node" => x)
 
 type SvgNodeWidgetBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
     [<CustomOperation("Node")>] member inline _.Node ([<InlineIfLambda>] render: AttrRenderFragment, x: Blazor.Diagrams.Core.Models.NodeModel) = render ==> ("Node" => x)
 
             
@@ -58,14 +58,14 @@ open Fun.Blazor.Operators
 open Blazor.Diagrams.DslInternals
 
 type GridWidgetBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
     [<CustomOperation("Size")>] member inline _.Size ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Double) = render ==> ("Size" => x)
     [<CustomOperation("ZoomThreshold")>] member inline _.ZoomThreshold ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Double) = render ==> ("ZoomThreshold" => x)
     [<CustomOperation("Mode")>] member inline _.Mode ([<InlineIfLambda>] render: AttrRenderFragment, x: Blazor.Diagrams.Components.Widgets.GridMode) = render ==> ("Mode" => x)
     [<CustomOperation("BackgroundColor")>] member inline _.BackgroundColor ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("BackgroundColor" => x)
 
 type NavigatorWidgetBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
     [<CustomOperation("UseNodeShape")>] member inline _.UseNodeShape ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("UseNodeShape" =>>> true)
     [<CustomOperation("UseNodeShape")>] member inline _.UseNodeShape ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("UseNodeShape" =>>> x)
     [<CustomOperation("Width")>] member inline _.Width ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Double) = render ==> ("Width" => x)
@@ -77,7 +77,7 @@ type NavigatorWidgetBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsof
     [<CustomOperation("ViewStrokeWidth")>] member inline _.ViewStrokeWidth ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("ViewStrokeWidth" => x)
 
 type SelectionBoxWidgetBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
     [<CustomOperation("Background")>] member inline _.Background ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Background" => x)
 
             
@@ -90,26 +90,26 @@ open Fun.Blazor.Operators
 open Blazor.Diagrams.DslInternals
 
 type GroupRendererBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
     [<CustomOperation("Group")>] member inline _.Group ([<InlineIfLambda>] render: AttrRenderFragment, x: Blazor.Diagrams.Core.Models.GroupModel) = render ==> ("Group" => x)
 
 type LinkLabelRendererBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
     [<CustomOperation("Label")>] member inline _.Label ([<InlineIfLambda>] render: AttrRenderFragment, x: Blazor.Diagrams.Core.Models.LinkLabelModel) = render ==> ("Label" => x)
     [<CustomOperation("Path")>] member inline _.Path ([<InlineIfLambda>] render: AttrRenderFragment, x: SvgPathProperties.SvgPath) = render ==> ("Path" => x)
 
 type LinkRendererBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
     [<CustomOperation("Link")>] member inline _.Link ([<InlineIfLambda>] render: AttrRenderFragment, x: Blazor.Diagrams.Core.Models.Base.BaseLinkModel) = render ==> ("Link" => x)
 
 type LinkVertexRendererBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
     [<CustomOperation("Vertex")>] member inline _.Vertex ([<InlineIfLambda>] render: AttrRenderFragment, x: Blazor.Diagrams.Core.Models.LinkVertexModel) = render ==> ("Vertex" => x)
     [<CustomOperation("Color")>] member inline _.Color ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Color" => x)
     [<CustomOperation("SelectedColor")>] member inline _.SelectedColor ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("SelectedColor" => x)
 
 type NodeRendererBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
     [<CustomOperation("Node")>] member inline _.Node ([<InlineIfLambda>] render: AttrRenderFragment, x: Blazor.Diagrams.Core.Models.NodeModel) = render ==> ("Node" => x)
 
 type PortRendererBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -126,27 +126,27 @@ open Fun.Blazor.Operators
 open Blazor.Diagrams.DslInternals
 
 type ControlsLayerRendererBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
     [<CustomOperation("Svg")>] member inline _.Svg ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Svg" =>>> true)
     [<CustomOperation("Svg")>] member inline _.Svg ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Svg" =>>> x)
 
 type ArrowHeadControlWidgetBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
     [<CustomOperation("Control")>] member inline _.Control ([<InlineIfLambda>] render: AttrRenderFragment, x: Blazor.Diagrams.Core.Controls.Default.ArrowHeadControl) = render ==> ("Control" => x)
     [<CustomOperation("Model")>] member inline _.Model ([<InlineIfLambda>] render: AttrRenderFragment, x: Blazor.Diagrams.Core.Models.Base.BaseLinkModel) = render ==> ("Model" => x)
 
 type BoundaryControlWidgetBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
     [<CustomOperation("Control")>] member inline _.Control ([<InlineIfLambda>] render: AttrRenderFragment, x: Blazor.Diagrams.Core.Controls.Default.BoundaryControl) = render ==> ("Control" => x)
     [<CustomOperation("Model")>] member inline _.Model ([<InlineIfLambda>] render: AttrRenderFragment, x: Blazor.Diagrams.Core.Models.Base.Model) = render ==> ("Model" => x)
 
 type DragNewLinkControlWidgetBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
     [<CustomOperation("Control")>] member inline _.Control ([<InlineIfLambda>] render: AttrRenderFragment, x: Blazor.Diagrams.Core.Controls.Default.DragNewLinkControl) = render ==> ("Control" => x)
     [<CustomOperation("Model")>] member inline _.Model ([<InlineIfLambda>] render: AttrRenderFragment, x: Blazor.Diagrams.Core.Models.Base.Model) = render ==> ("Model" => x)
 
 type RemoveControlWidgetBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
     [<CustomOperation("Control")>] member inline _.Control ([<InlineIfLambda>] render: AttrRenderFragment, x: Blazor.Diagrams.Core.Controls.Default.RemoveControl) = render ==> ("Control" => x)
     [<CustomOperation("Model")>] member inline _.Model ([<InlineIfLambda>] render: AttrRenderFragment, x: Blazor.Diagrams.Core.Models.Base.Model) = render ==> ("Model" => x)
 

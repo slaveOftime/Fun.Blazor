@@ -42,7 +42,7 @@ open Microsoft.AspNetCore.Components.DslInternals
 /// matching a CSS selector. This can be used to build an accessible
 /// navigation system compatible with screen readers.
 type FocusOnNavigateBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
     /// Gets or sets the route data. This can be obtained from an enclosing
     /// Router component.
     [<CustomOperation("RouteData")>] member inline _.RouteData ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.AspNetCore.Components.RouteData) = render ==> ("RouteData" => x)
@@ -79,7 +79,7 @@ type HeadContentBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.As
 
 /// Renders content provided by HeadContent components.
 type HeadOutletBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
 
 
 /// Enables rendering an HTML <title> to a HeadOutlet component.
@@ -288,7 +288,7 @@ type InputTextAreaBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
 
 /// A component that wraps the HTML file input element and supplies a Stream for each file's contents.
 type InputFileBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
     /// Gets or sets the event callback that will be invoked when the collection of selected files changes.
     [<CustomOperation("OnChange")>] member inline _.OnChange ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Forms.InputFileChangeEventArgs -> unit) = render ==> html.callback("OnChange", fn)
     /// Gets or sets the event callback that will be invoked when the collection of selected files changes.
@@ -298,7 +298,7 @@ type InputFileBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspN
 
 /// An input component used for selecting a value from a group of choices.
 type InputRadioBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
     /// Gets or sets a collection of additional attributes that will be applied to the input element.
     [<CustomOperation("AdditionalAttributes")>] member inline _.AdditionalAttributes ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>) = render ==> ("AdditionalAttributes" => x)
     /// Gets or sets the value of this input.
@@ -308,7 +308,7 @@ type InputRadioBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Micr
 
 /// Displays a list of validation messages for a specified field within a cascaded EditContext.
 type ValidationMessageBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
     /// Gets or sets a collection of additional attributes that will be applied to the created div element.
     [<CustomOperation("AdditionalAttributes")>] member inline _.AdditionalAttributes ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>) = render ==> ("AdditionalAttributes" => x)
     /// Specifies the field for which validation messages should be displayed.
@@ -316,7 +316,7 @@ type ValidationMessageBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric 
 
 /// Displays a list of validation messages from a cascaded EditContext.
 type ValidationSummaryBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
     /// Gets or sets the model to produce the list of validation messages for.
     /// When specified, this lists all errors that are associated with the model instance.
     [<CustomOperation("Model")>] member inline _.Model ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Object) = render ==> ("Model" => x)

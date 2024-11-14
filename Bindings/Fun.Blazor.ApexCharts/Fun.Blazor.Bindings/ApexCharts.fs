@@ -137,7 +137,7 @@ type ApexChartBuilder<'FunBlazorGeneric, 'TItem when 'TItem : not struct and 'Fu
 
 /// Component to create a single-value RadialBar chart in Blazor
 type ApexGaugeBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
     /// Text to display as a title of chart
     [<CustomOperation("Title")>] member inline _.Title ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
     /// The value to assign to the radial bar chart
