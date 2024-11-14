@@ -1,4 +1,4 @@
-﻿<linker>
+<linker>
 	<assembly fullname="Fun.Blazor.Microsoft.Web">
 		<resource name="FSharpSignatureCompressedData.Fun.Blazor.Microsoft.Web" action="remove" />
 		<resource name="FSharpSignatureCompressedDataB.Fun.Blazor.Microsoft.Web" action="remove" />

@@ -293,7 +293,6 @@ let private ecosystemIcons = [
     "apexcharts.svg", "https://apexcharts.github.io/Blazor-ApexCharts/"
     "fluentui.svg", "https://github.com/microsoft/fluentui-blazor"
     "diagram.png", "https://blazor-diagrams.zhaytam.com/"
-    "telerik.svg", "https://www.telerik.com/blazor-ui"
     "radzen.svg", "https://blazor.radzen.com/?theme=material3"
 ]
 

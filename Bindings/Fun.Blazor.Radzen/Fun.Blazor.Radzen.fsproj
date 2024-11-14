@@ -1,18 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk.Razor">
   <PropertyGroup>
-    <TargetFrameworks>net7.0;net8.0</TargetFrameworks>
+    <TargetFrameworks>net6.0;net8.0;net9.0</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <TrimMode>link</TrimMode>
     <IsTrimmable>true</IsTrimmable>
-    <Version>7.15.0</Version>
+    <Version>5.6.0</Version>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Fun.Blazor.Bindings\MudBlazor.fs" />
+    <Compile Include="Fun.Blazor.Bindings\Radzen.Blazor.fs" />
     <EmbeddedResource Include="ILLink.Substitutions.xml" LogicalName="ILLink.Substitutions.xml" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference FunBlazor="" FunBlazorNamespace="MudBlazor" FunBlazorAssemblyName="MudBlazor" Include="MudBlazor" Version="7.15.0" />
+    <PackageReference FunBlazor="" FunBlazorNamespace="Radzen.Blazor" FunBlazorAssemblyName="Radzen.Blazor" Include="Radzen.Blazor" Version="5.6.0" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="*.fs" />

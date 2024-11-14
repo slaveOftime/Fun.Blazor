@@ -1,0 +1,8 @@
+<linker>
+	<assembly fullname="Fun.Blazor.AntDesign">
+		<resource name="FSharpSignatureCompressedData.Fun.Blazor.AntDesign" action="remove" />
+		<resource name="FSharpSignatureCompressedDataB.Fun.Blazor.AntDesign" action="remove" />
+		<resource name="FSharpOptimizationCompressedData.Fun.Blazor.AntDesign" action="remove" />
+		<resource name="FSharpOptimizationCompressedDataB.Fun.Blazor.AntDesign" action="remove" />
+	</assembly>
+</linker>

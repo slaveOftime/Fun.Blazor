@@ -1,23 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk.Razor">
   <PropertyGroup>
-    <TargetFrameworks>net8.0</TargetFrameworks>
+    <TargetFrameworks>net9.0</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <TrimMode>link</TrimMode>
     <IsTrimmable>true</IsTrimmable>
-    <Version>8.0.8</Version>
+    <Version>9.0.0</Version>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Fun.Blazor.Bindings\Microsoft.AspNetCore.Components.Authorization.fs" />
+    <EmbeddedResource Include="ILLink.Substitutions.xml" LogicalName="ILLink.Substitutions.xml" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference FunBlazor="" FunBlazorNamespace="Microsoft.AspNetCore.Components.Authorization" FunBlazorAssemblyName="Microsoft.AspNetCore.Components.Authorization" Include="Microsoft.AspNetCore.Components.Authorization" Version="8.0.8" />
+    <PackageReference FunBlazor="" FunBlazorNamespace="Microsoft.AspNetCore.Components.Authorization" FunBlazorAssemblyName="Microsoft.AspNetCore.Components.Authorization" Include="Microsoft.AspNetCore.Components.Authorization" Version="9.0.0" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="*.fs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Update="FSharp.Core" Version="6.0.0" />
-    <PackageReference Include="Fun.Blazor" Version="4.0.0" />
+    <PackageReference Include="Fun.Blazor" Version="4.1.0" />
   </ItemGroup>
 </Project>

@@ -1,5 +1,9 @@
 # Changelog
 
+## [4.1.0] - 2024-11-14
+
+- Auto generate ILLink.Substitutions.xml for bindings
+
 ## [4.1.0-beta003] - 2024-11-14
 
 - Fix hasChildren 

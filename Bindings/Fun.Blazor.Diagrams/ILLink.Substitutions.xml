@@ -1,0 +1,8 @@
+<linker>
+	<assembly fullname="Fun.Blazor.Diagrams">
+		<resource name="FSharpSignatureCompressedData.Fun.Blazor.Diagrams" action="remove" />
+		<resource name="FSharpSignatureCompressedDataB.Fun.Blazor.Diagrams" action="remove" />
+		<resource name="FSharpOptimizationCompressedData.Fun.Blazor.Diagrams" action="remove" />
+		<resource name="FSharpOptimizationCompressedDataB.Fun.Blazor.Diagrams" action="remove" />
+	</assembly>
+</linker>

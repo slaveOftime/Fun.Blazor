@@ -6,24 +6,11 @@ open Fun.Blazor
 open Fun.Blazor.Operators
 open ApexCharts.DslInternals
 
-type _ImportsBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
-
-
-            
-namespace rec ApexCharts.DslInternals
-
-open System.Threading.Tasks
-open FSharp.Data.Adaptive
-open Fun.Blazor
-open Fun.Blazor.Operators
-open ApexCharts.DslInternals
-
 /// Main component to create an Apex chart in Blazor
 type ApexChartBuilder<'FunBlazorGeneric, 'TItem when 'TItem : not struct and 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
     /// Tooltip allows you to preview data when user hovers over the chart area.
-    [<CustomOperation("ApexPointTooltip")>] member inline _.ApexPointTooltip ([<InlineIfLambda>] render: AttrRenderFragment, fn: ApexCharts.HoverData<'TItem> -> NodeRenderFragment) = render ==> html.renderFragment("ApexPointTooltip", fn)
+    [<CustomOperation("ApexPointTooltip")>] member inline _.ApexPointTooltip ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.HoverData<'TItem> -> NodeRenderFragment) = render ==> html.renderFragment("ApexPointTooltip", fn)
     /// The options to customize the chart with
     [<CustomOperation("Options")>] member inline _.Options ([<InlineIfLambda>] render: AttrRenderFragment, x: ApexCharts.ApexChartOptions<'TItem>) = render ==> ("Options" => x)
     /// Text to display as a title of chart
@@ -31,7 +18,7 @@ type ApexChartBuilder<'FunBlazorGeneric, 'TItem when 'TItem : not struct and 'Fu
     /// Specifies the data type to use for the x-axis
     [<CustomOperation("XAxisType")>] member inline _.XAxisType ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<ApexCharts.XAxisType>) = render ==> ("XAxisType" => x)
     /// Specifies whether to enable debug mode
-    [<CustomOperation("Debug")>] member inline _.Debug ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("Debug" => (defaultArg x true))
+    [<CustomOperation("Debug")>] member inline _.Debug ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("Debug" => x)
     /// Width of the chart.
     [<CustomOperation("Width")>] member inline _.Width ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Object) = render ==> ("Width" => x)
     /// Height of the chart. The default value 'auto' is calculated based on the golden ratio 1.618 which roughly translates to a 16:10 aspect ratio. Examples:
@@ -42,105 +29,105 @@ type ApexChartBuilder<'FunBlazorGeneric, 'TItem when 'TItem : not struct and 'Fu
     /// height: '100%' 
     [<CustomOperation("Height")>] member inline _.Height ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Object) = render ==> ("Height" => x)
     /// Fires when user clicks on the x-axis labels.
-    [<CustomOperation("OnXAxisLabelClick")>] member inline _.OnXAxisLabelClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: ApexCharts.XAxisLabelClicked<'TItem> -> unit) = render ==> html.callback("OnXAxisLabelClick", fn)
+    [<CustomOperation("OnXAxisLabelClick")>] member inline _.OnXAxisLabelClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.XAxisLabelClicked<'TItem> -> unit) = render ==> html.callback("OnXAxisLabelClick", fn)
     /// Fires when user clicks on the x-axis labels.
-    [<CustomOperation("OnXAxisLabelClick")>] member inline _.OnXAxisLabelClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: ApexCharts.XAxisLabelClicked<'TItem> -> Task<unit>) = render ==> html.callbackTask("OnXAxisLabelClick", fn)
+    [<CustomOperation("OnXAxisLabelClick")>] member inline _.OnXAxisLabelClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.XAxisLabelClicked<'TItem> -> Task<unit>) = render ==> html.callbackTask("OnXAxisLabelClick", fn)
     /// Fires when user clicks on the markers.
-    [<CustomOperation("OnMarkerClick")>] member inline _.OnMarkerClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: ApexCharts.SelectedData<'TItem> -> unit) = render ==> html.callback("OnMarkerClick", fn)
+    [<CustomOperation("OnMarkerClick")>] member inline _.OnMarkerClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.SelectedData<'TItem> -> unit) = render ==> html.callback("OnMarkerClick", fn)
     /// Fires when user clicks on the markers.
-    [<CustomOperation("OnMarkerClick")>] member inline _.OnMarkerClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: ApexCharts.SelectedData<'TItem> -> Task<unit>) = render ==> html.callbackTask("OnMarkerClick", fn)
+    [<CustomOperation("OnMarkerClick")>] member inline _.OnMarkerClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.SelectedData<'TItem> -> Task<unit>) = render ==> html.callbackTask("OnMarkerClick", fn)
     /// Fires when user clicks on a datapoint (bar/column/marker/bubble/donut-slice).
-    [<CustomOperation("OnDataPointSelection")>] member inline _.OnDataPointSelection ([<InlineIfLambda>] render: AttrRenderFragment, fn: ApexCharts.SelectedData<'TItem> -> unit) = render ==> html.callback("OnDataPointSelection", fn)
+    [<CustomOperation("OnDataPointSelection")>] member inline _.OnDataPointSelection ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.SelectedData<'TItem> -> unit) = render ==> html.callback("OnDataPointSelection", fn)
     /// Fires when user clicks on a datapoint (bar/column/marker/bubble/donut-slice).
-    [<CustomOperation("OnDataPointSelection")>] member inline _.OnDataPointSelection ([<InlineIfLambda>] render: AttrRenderFragment, fn: ApexCharts.SelectedData<'TItem> -> Task<unit>) = render ==> html.callbackTask("OnDataPointSelection", fn)
+    [<CustomOperation("OnDataPointSelection")>] member inline _.OnDataPointSelection ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.SelectedData<'TItem> -> Task<unit>) = render ==> html.callbackTask("OnDataPointSelection", fn)
     /// Fires when user's mouse enter on a datapoint (bar/column/marker/bubble/donut-slice).
-    [<CustomOperation("OnDataPointEnter")>] member inline _.OnDataPointEnter ([<InlineIfLambda>] render: AttrRenderFragment, fn: ApexCharts.HoverData<'TItem> -> unit) = render ==> html.callback("OnDataPointEnter", fn)
+    [<CustomOperation("OnDataPointEnter")>] member inline _.OnDataPointEnter ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.HoverData<'TItem> -> unit) = render ==> html.callback("OnDataPointEnter", fn)
     /// Fires when user's mouse enter on a datapoint (bar/column/marker/bubble/donut-slice).
-    [<CustomOperation("OnDataPointEnter")>] member inline _.OnDataPointEnter ([<InlineIfLambda>] render: AttrRenderFragment, fn: ApexCharts.HoverData<'TItem> -> Task<unit>) = render ==> html.callbackTask("OnDataPointEnter", fn)
+    [<CustomOperation("OnDataPointEnter")>] member inline _.OnDataPointEnter ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.HoverData<'TItem> -> Task<unit>) = render ==> html.callbackTask("OnDataPointEnter", fn)
     /// MouseLeave event for a datapoint (bar/column/marker/bubble/donut-slice).
-    [<CustomOperation("OnDataPointLeave")>] member inline _.OnDataPointLeave ([<InlineIfLambda>] render: AttrRenderFragment, fn: ApexCharts.HoverData<'TItem> -> unit) = render ==> html.callback("OnDataPointLeave", fn)
+    [<CustomOperation("OnDataPointLeave")>] member inline _.OnDataPointLeave ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.HoverData<'TItem> -> unit) = render ==> html.callback("OnDataPointLeave", fn)
     /// MouseLeave event for a datapoint (bar/column/marker/bubble/donut-slice).
-    [<CustomOperation("OnDataPointLeave")>] member inline _.OnDataPointLeave ([<InlineIfLambda>] render: AttrRenderFragment, fn: ApexCharts.HoverData<'TItem> -> Task<unit>) = render ==> html.callbackTask("OnDataPointLeave", fn)
+    [<CustomOperation("OnDataPointLeave")>] member inline _.OnDataPointLeave ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.HoverData<'TItem> -> Task<unit>) = render ==> html.callbackTask("OnDataPointLeave", fn)
     /// Fires when user clicks on legend.
-    [<CustomOperation("OnLegendClicked")>] member inline _.OnLegendClicked ([<InlineIfLambda>] render: AttrRenderFragment, fn: ApexCharts.LegendClicked<'TItem> -> unit) = render ==> html.callback("OnLegendClicked", fn)
+    [<CustomOperation("OnLegendClicked")>] member inline _.OnLegendClicked ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.LegendClicked<'TItem> -> unit) = render ==> html.callback("OnLegendClicked", fn)
     /// Fires when user clicks on legend.
-    [<CustomOperation("OnLegendClicked")>] member inline _.OnLegendClicked ([<InlineIfLambda>] render: AttrRenderFragment, fn: ApexCharts.LegendClicked<'TItem> -> Task<unit>) = render ==> html.callbackTask("OnLegendClicked", fn)
+    [<CustomOperation("OnLegendClicked")>] member inline _.OnLegendClicked ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.LegendClicked<'TItem> -> Task<unit>) = render ==> html.callbackTask("OnLegendClicked", fn)
     /// Fires when user selects rect using the selection tool.
-    [<CustomOperation("OnSelection")>] member inline _.OnSelection ([<InlineIfLambda>] render: AttrRenderFragment, fn: ApexCharts.SelectionData<'TItem> -> unit) = render ==> html.callback("OnSelection", fn)
+    [<CustomOperation("OnSelection")>] member inline _.OnSelection ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.SelectionData<'TItem> -> unit) = render ==> html.callback("OnSelection", fn)
     /// Fires when user selects rect using the selection tool.
-    [<CustomOperation("OnSelection")>] member inline _.OnSelection ([<InlineIfLambda>] render: AttrRenderFragment, fn: ApexCharts.SelectionData<'TItem> -> Task<unit>) = render ==> html.callbackTask("OnSelection", fn)
+    [<CustomOperation("OnSelection")>] member inline _.OnSelection ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.SelectionData<'TItem> -> Task<unit>) = render ==> html.callbackTask("OnSelection", fn)
     /// Fires when user drags the brush in a brush chart.
-    [<CustomOperation("OnBrushScrolled")>] member inline _.OnBrushScrolled ([<InlineIfLambda>] render: AttrRenderFragment, fn: ApexCharts.SelectionData<'TItem> -> unit) = render ==> html.callback("OnBrushScrolled", fn)
+    [<CustomOperation("OnBrushScrolled")>] member inline _.OnBrushScrolled ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.SelectionData<'TItem> -> unit) = render ==> html.callback("OnBrushScrolled", fn)
     /// Fires when user drags the brush in a brush chart.
-    [<CustomOperation("OnBrushScrolled")>] member inline _.OnBrushScrolled ([<InlineIfLambda>] render: AttrRenderFragment, fn: ApexCharts.SelectionData<'TItem> -> Task<unit>) = render ==> html.callbackTask("OnBrushScrolled", fn)
+    [<CustomOperation("OnBrushScrolled")>] member inline _.OnBrushScrolled ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.SelectionData<'TItem> -> Task<unit>) = render ==> html.callbackTask("OnBrushScrolled", fn)
     /// Fires when user zooms in/out the chart using either the selection zooming tool or zoom in/out buttons.
-    [<CustomOperation("OnZoomed")>] member inline _.OnZoomed ([<InlineIfLambda>] render: AttrRenderFragment, fn: ApexCharts.ZoomedData<'TItem> -> unit) = render ==> html.callback("OnZoomed", fn)
+    [<CustomOperation("OnZoomed")>] member inline _.OnZoomed ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.ZoomedData<'TItem> -> unit) = render ==> html.callback("OnZoomed", fn)
     /// Fires when user zooms in/out the chart using either the selection zooming tool or zoom in/out buttons.
-    [<CustomOperation("OnZoomed")>] member inline _.OnZoomed ([<InlineIfLambda>] render: AttrRenderFragment, fn: ApexCharts.ZoomedData<'TItem> -> Task<unit>) = render ==> html.callbackTask("OnZoomed", fn)
+    [<CustomOperation("OnZoomed")>] member inline _.OnZoomed ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.ZoomedData<'TItem> -> Task<unit>) = render ==> html.callbackTask("OnZoomed", fn)
     /// Fires when the chart’s initial animation is finished.
-    [<CustomOperation("OnAnimationEnd")>] member inline _.OnAnimationEnd ([<InlineIfLambda>] render: AttrRenderFragment, fn: unit -> unit) = render ==> html.callback("OnAnimationEnd", fn)
+    [<CustomOperation("OnAnimationEnd")>] member inline _.OnAnimationEnd ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> unit) = render ==> html.callback("OnAnimationEnd", fn)
     /// Fires when the chart’s initial animation is finished.
-    [<CustomOperation("OnAnimationEnd")>] member inline _.OnAnimationEnd ([<InlineIfLambda>] render: AttrRenderFragment, fn: unit -> Task<unit>) = render ==> html.callbackTask("OnAnimationEnd", fn)
+    [<CustomOperation("OnAnimationEnd")>] member inline _.OnAnimationEnd ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> Task<unit>) = render ==> html.callbackTask("OnAnimationEnd", fn)
     /// Fires before the chart has been drawn on screen.
-    [<CustomOperation("OnBeforeMount")>] member inline _.OnBeforeMount ([<InlineIfLambda>] render: AttrRenderFragment, fn: unit -> unit) = render ==> html.callback("OnBeforeMount", fn)
+    [<CustomOperation("OnBeforeMount")>] member inline _.OnBeforeMount ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> unit) = render ==> html.callback("OnBeforeMount", fn)
     /// Fires before the chart has been drawn on screen.
-    [<CustomOperation("OnBeforeMount")>] member inline _.OnBeforeMount ([<InlineIfLambda>] render: AttrRenderFragment, fn: unit -> Task<unit>) = render ==> html.callbackTask("OnBeforeMount", fn)
+    [<CustomOperation("OnBeforeMount")>] member inline _.OnBeforeMount ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> Task<unit>) = render ==> html.callbackTask("OnBeforeMount", fn)
     /// Fires after the chart has been drawn on screen.
-    [<CustomOperation("OnMounted")>] member inline _.OnMounted ([<InlineIfLambda>] render: AttrRenderFragment, fn: unit -> unit) = render ==> html.callback("OnMounted", fn)
+    [<CustomOperation("OnMounted")>] member inline _.OnMounted ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> unit) = render ==> html.callback("OnMounted", fn)
     /// Fires after the chart has been drawn on screen.
-    [<CustomOperation("OnMounted")>] member inline _.OnMounted ([<InlineIfLambda>] render: AttrRenderFragment, fn: unit -> Task<unit>) = render ==> html.callbackTask("OnMounted", fn)
+    [<CustomOperation("OnMounted")>] member inline _.OnMounted ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> Task<unit>) = render ==> html.callbackTask("OnMounted", fn)
     /// Fires when the chart has been dynamically updated either with UpdateOptionsAsync or UpdateSeriesAsync functions.
-    [<CustomOperation("OnUpdated")>] member inline _.OnUpdated ([<InlineIfLambda>] render: AttrRenderFragment, fn: unit -> unit) = render ==> html.callback("OnUpdated", fn)
+    [<CustomOperation("OnUpdated")>] member inline _.OnUpdated ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> unit) = render ==> html.callback("OnUpdated", fn)
     /// Fires when the chart has been dynamically updated either with UpdateOptionsAsync or UpdateSeriesAsync functions.
-    [<CustomOperation("OnUpdated")>] member inline _.OnUpdated ([<InlineIfLambda>] render: AttrRenderFragment, fn: unit -> Task<unit>) = render ==> html.callbackTask("OnUpdated", fn)
+    [<CustomOperation("OnUpdated")>] member inline _.OnUpdated ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> Task<unit>) = render ==> html.callbackTask("OnUpdated", fn)
     /// Fires when user moves mouse on any area of the chart.
-    [<CustomOperation("OnMouseMove")>] member inline _.OnMouseMove ([<InlineIfLambda>] render: AttrRenderFragment, fn: ApexCharts.SelectedData<'TItem> -> unit) = render ==> html.callback("OnMouseMove", fn)
+    [<CustomOperation("OnMouseMove")>] member inline _.OnMouseMove ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.SelectedData<'TItem> -> unit) = render ==> html.callback("OnMouseMove", fn)
     /// Fires when user moves mouse on any area of the chart.
-    [<CustomOperation("OnMouseMove")>] member inline _.OnMouseMove ([<InlineIfLambda>] render: AttrRenderFragment, fn: ApexCharts.SelectedData<'TItem> -> Task<unit>) = render ==> html.callbackTask("OnMouseMove", fn)
+    [<CustomOperation("OnMouseMove")>] member inline _.OnMouseMove ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.SelectedData<'TItem> -> Task<unit>) = render ==> html.callbackTask("OnMouseMove", fn)
     /// Fires when user moves mouse outside chart area (exclusing axis).
-    [<CustomOperation("OnMouseLeave")>] member inline _.OnMouseLeave ([<InlineIfLambda>] render: AttrRenderFragment, fn: unit -> unit) = render ==> html.callback("OnMouseLeave", fn)
+    [<CustomOperation("OnMouseLeave")>] member inline _.OnMouseLeave ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> unit) = render ==> html.callback("OnMouseLeave", fn)
     /// Fires when user moves mouse outside chart area (exclusing axis).
-    [<CustomOperation("OnMouseLeave")>] member inline _.OnMouseLeave ([<InlineIfLambda>] render: AttrRenderFragment, fn: unit -> Task<unit>) = render ==> html.callbackTask("OnMouseLeave", fn)
+    [<CustomOperation("OnMouseLeave")>] member inline _.OnMouseLeave ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> Task<unit>) = render ==> html.callbackTask("OnMouseLeave", fn)
     /// Fires when user clicks on any area of the chart.
-    [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: ApexCharts.SelectedData<'TItem> -> unit) = render ==> html.callback("OnClick", fn)
+    [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.SelectedData<'TItem> -> unit) = render ==> html.callback("OnClick", fn)
     /// Fires when user clicks on any area of the chart.
-    [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: ApexCharts.SelectedData<'TItem> -> Task<unit>) = render ==> html.callbackTask("OnClick", fn)
+    [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.SelectedData<'TItem> -> Task<unit>) = render ==> html.callbackTask("OnClick", fn)
     /// This function, if defined, runs just before zooming in/out of the chart allowing you to set a custom range for zooming in/out.
     [<CustomOperation("OnBeforeZoom")>] member inline _.OnBeforeZoom ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("OnBeforeZoom" => (System.Func<ApexCharts.SelectionXAxis, ApexCharts.SelectionXAxis>fn))
     /// This function, if defined, runs just before the user hits the HOME button on the toolbar to reset the chart to it’s original state. The function allows you to set a custom axes range for the initial view of the chart.
     [<CustomOperation("OnBeforeResetZoom")>] member inline _.OnBeforeResetZoom ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("OnBeforeResetZoom" => (System.Func<System.Object, ApexCharts.SelectionXAxis>fn))
     /// Fires when user scrolls using the pan tool. The 2nd argument includes information of the new xaxis generated after scrolling.
-    [<CustomOperation("OnScrolled")>] member inline _.OnScrolled ([<InlineIfLambda>] render: AttrRenderFragment, fn: ApexCharts.SelectionData<'TItem> -> unit) = render ==> html.callback("OnScrolled", fn)
+    [<CustomOperation("OnScrolled")>] member inline _.OnScrolled ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.SelectionData<'TItem> -> unit) = render ==> html.callback("OnScrolled", fn)
     /// Fires when user scrolls using the pan tool. The 2nd argument includes information of the new xaxis generated after scrolling.
-    [<CustomOperation("OnScrolled")>] member inline _.OnScrolled ([<InlineIfLambda>] render: AttrRenderFragment, fn: ApexCharts.SelectionData<'TItem> -> Task<unit>) = render ==> html.callbackTask("OnScrolled", fn)
+    [<CustomOperation("OnScrolled")>] member inline _.OnScrolled ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.SelectionData<'TItem> -> Task<unit>) = render ==> html.callbackTask("OnScrolled", fn)
     /// Fires when RenderAsync completes
-    [<CustomOperation("OnRendered")>] member inline _.OnRendered ([<InlineIfLambda>] render: AttrRenderFragment, fn: unit -> unit) = render ==> html.callback("OnRendered", fn)
+    [<CustomOperation("OnRendered")>] member inline _.OnRendered ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> unit) = render ==> html.callback("OnRendered", fn)
     /// Fires when RenderAsync completes
-    [<CustomOperation("OnRendered")>] member inline _.OnRendered ([<InlineIfLambda>] render: AttrRenderFragment, fn: unit -> Task<unit>) = render ==> html.callbackTask("OnRendered", fn)
+    [<CustomOperation("OnRendered")>] member inline _.OnRendered ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> Task<unit>) = render ==> html.callbackTask("OnRendered", fn)
     /// Fires when user click an annotation label.
-    [<CustomOperation("OnAnnotationLabelClick")>] member inline _.OnAnnotationLabelClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: ApexCharts.AnnotationEvent<'TItem> -> unit) = render ==> html.callback("OnAnnotationLabelClick", fn)
+    [<CustomOperation("OnAnnotationLabelClick")>] member inline _.OnAnnotationLabelClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.AnnotationEvent<'TItem> -> unit) = render ==> html.callback("OnAnnotationLabelClick", fn)
     /// Fires when user click an annotation label.
-    [<CustomOperation("OnAnnotationLabelClick")>] member inline _.OnAnnotationLabelClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: ApexCharts.AnnotationEvent<'TItem> -> Task<unit>) = render ==> html.callbackTask("OnAnnotationLabelClick", fn)
+    [<CustomOperation("OnAnnotationLabelClick")>] member inline _.OnAnnotationLabelClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.AnnotationEvent<'TItem> -> Task<unit>) = render ==> html.callbackTask("OnAnnotationLabelClick", fn)
     /// Fires when user mouse enters an annotation label.
-    [<CustomOperation("OnAnnotationLabelMouseEnter")>] member inline _.OnAnnotationLabelMouseEnter ([<InlineIfLambda>] render: AttrRenderFragment, fn: ApexCharts.AnnotationEvent<'TItem> -> unit) = render ==> html.callback("OnAnnotationLabelMouseEnter", fn)
+    [<CustomOperation("OnAnnotationLabelMouseEnter")>] member inline _.OnAnnotationLabelMouseEnter ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.AnnotationEvent<'TItem> -> unit) = render ==> html.callback("OnAnnotationLabelMouseEnter", fn)
     /// Fires when user mouse enters an annotation label.
-    [<CustomOperation("OnAnnotationLabelMouseEnter")>] member inline _.OnAnnotationLabelMouseEnter ([<InlineIfLambda>] render: AttrRenderFragment, fn: ApexCharts.AnnotationEvent<'TItem> -> Task<unit>) = render ==> html.callbackTask("OnAnnotationLabelMouseEnter", fn)
+    [<CustomOperation("OnAnnotationLabelMouseEnter")>] member inline _.OnAnnotationLabelMouseEnter ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.AnnotationEvent<'TItem> -> Task<unit>) = render ==> html.callbackTask("OnAnnotationLabelMouseEnter", fn)
     /// Fires when user mouse leaves an annotation label.
-    [<CustomOperation("OnAnnotationLabelMouseLeave")>] member inline _.OnAnnotationLabelMouseLeave ([<InlineIfLambda>] render: AttrRenderFragment, fn: ApexCharts.AnnotationEvent<'TItem> -> unit) = render ==> html.callback("OnAnnotationLabelMouseLeave", fn)
+    [<CustomOperation("OnAnnotationLabelMouseLeave")>] member inline _.OnAnnotationLabelMouseLeave ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.AnnotationEvent<'TItem> -> unit) = render ==> html.callback("OnAnnotationLabelMouseLeave", fn)
     /// Fires when user mouse leaves an annotation label.
-    [<CustomOperation("OnAnnotationLabelMouseLeave")>] member inline _.OnAnnotationLabelMouseLeave ([<InlineIfLambda>] render: AttrRenderFragment, fn: ApexCharts.AnnotationEvent<'TItem> -> Task<unit>) = render ==> html.callbackTask("OnAnnotationLabelMouseLeave", fn)
+    [<CustomOperation("OnAnnotationLabelMouseLeave")>] member inline _.OnAnnotationLabelMouseLeave ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.AnnotationEvent<'TItem> -> Task<unit>) = render ==> html.callbackTask("OnAnnotationLabelMouseLeave", fn)
     /// Fires when user click an annotation point.
-    [<CustomOperation("OnAnnotationPointClick")>] member inline _.OnAnnotationPointClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: ApexCharts.AnnotationEvent<'TItem> -> unit) = render ==> html.callback("OnAnnotationPointClick", fn)
+    [<CustomOperation("OnAnnotationPointClick")>] member inline _.OnAnnotationPointClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.AnnotationEvent<'TItem> -> unit) = render ==> html.callback("OnAnnotationPointClick", fn)
     /// Fires when user click an annotation point.
-    [<CustomOperation("OnAnnotationPointClick")>] member inline _.OnAnnotationPointClick ([<InlineIfLambda>] render: AttrRenderFragment, fn: ApexCharts.AnnotationEvent<'TItem> -> Task<unit>) = render ==> html.callbackTask("OnAnnotationPointClick", fn)
+    [<CustomOperation("OnAnnotationPointClick")>] member inline _.OnAnnotationPointClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.AnnotationEvent<'TItem> -> Task<unit>) = render ==> html.callbackTask("OnAnnotationPointClick", fn)
     /// Fires when user mouse enters an annotation point.
-    [<CustomOperation("OnAnnotationPointMouseEnter")>] member inline _.OnAnnotationPointMouseEnter ([<InlineIfLambda>] render: AttrRenderFragment, fn: ApexCharts.AnnotationEvent<'TItem> -> unit) = render ==> html.callback("OnAnnotationPointMouseEnter", fn)
+    [<CustomOperation("OnAnnotationPointMouseEnter")>] member inline _.OnAnnotationPointMouseEnter ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.AnnotationEvent<'TItem> -> unit) = render ==> html.callback("OnAnnotationPointMouseEnter", fn)
     /// Fires when user mouse enters an annotation point.
-    [<CustomOperation("OnAnnotationPointMouseEnter")>] member inline _.OnAnnotationPointMouseEnter ([<InlineIfLambda>] render: AttrRenderFragment, fn: ApexCharts.AnnotationEvent<'TItem> -> Task<unit>) = render ==> html.callbackTask("OnAnnotationPointMouseEnter", fn)
+    [<CustomOperation("OnAnnotationPointMouseEnter")>] member inline _.OnAnnotationPointMouseEnter ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.AnnotationEvent<'TItem> -> Task<unit>) = render ==> html.callbackTask("OnAnnotationPointMouseEnter", fn)
     /// Fires when user mouse leaves an annotation point.
-    [<CustomOperation("OnAnnotationPointMouseLeave")>] member inline _.OnAnnotationPointMouseLeave ([<InlineIfLambda>] render: AttrRenderFragment, fn: ApexCharts.AnnotationEvent<'TItem> -> unit) = render ==> html.callback("OnAnnotationPointMouseLeave", fn)
+    [<CustomOperation("OnAnnotationPointMouseLeave")>] member inline _.OnAnnotationPointMouseLeave ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.AnnotationEvent<'TItem> -> unit) = render ==> html.callback("OnAnnotationPointMouseLeave", fn)
     /// Fires when user mouse leaves an annotation point.
-    [<CustomOperation("OnAnnotationPointMouseLeave")>] member inline _.OnAnnotationPointMouseLeave ([<InlineIfLambda>] render: AttrRenderFragment, fn: ApexCharts.AnnotationEvent<'TItem> -> Task<unit>) = render ==> html.callbackTask("OnAnnotationPointMouseLeave", fn)
+    [<CustomOperation("OnAnnotationPointMouseLeave")>] member inline _.OnAnnotationPointMouseLeave ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.AnnotationEvent<'TItem> -> Task<unit>) = render ==> html.callbackTask("OnAnnotationPointMouseLeave", fn)
     /// A custom function to execute for generating Y-axis labels. Only supported in Blazor WebAssembly!
     [<CustomOperation("FormatYAxisLabel")>] member inline _.FormatYAxisLabel ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("FormatYAxisLabel" => (System.Func<System.Decimal, System.String>fn))
     /// A custom function to execute for generating X-axis labels. Only supported in Blazor WebAssembly!
@@ -150,7 +137,7 @@ type ApexChartBuilder<'FunBlazorGeneric, 'TItem when 'TItem : not struct and 'Fu
 
 /// Component to create a single-value RadialBar chart in Blazor
 type ApexGaugeBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
     /// Text to display as a title of chart
     [<CustomOperation("Title")>] member inline _.Title ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
     /// The value to assign to the radial bar chart
@@ -164,8 +151,10 @@ type ApexGaugeBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspN
 type ApexBaseSeriesBuilder<'FunBlazorGeneric, 'TItem when 'TItem : not struct and 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
     [<CustomOperation("Name")>] member inline _.Name ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Name" => x)
+    [<CustomOperation("Hidden")>] member inline _.Hidden ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("Hidden" => x)
     [<CustomOperation("XValue")>] member inline _.XValue ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("XValue" => (System.Func<'TItem, System.Object>fn))
-    [<CustomOperation("ShowDataLabels")>] member inline _.ShowDataLabels ([<InlineIfLambda>] render: AttrRenderFragment, ?x: bool) = render ==> ("ShowDataLabels" => (defaultArg x true))
+    [<CustomOperation("ShowDataLabels")>] member inline _.ShowDataLabels ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowDataLabels" =>>> true)
+    [<CustomOperation("ShowDataLabels")>] member inline _.ShowDataLabels ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowDataLabels" =>>> x)
     [<CustomOperation("Items")>] member inline _.Items ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<'TItem>) = render ==> ("Items" => x)
     [<CustomOperation("Stroke")>] member inline _.Stroke ([<InlineIfLambda>] render: AttrRenderFragment, x: ApexCharts.SeriesStroke) = render ==> ("Stroke" => x)
     [<CustomOperation("Color")>] member inline _.Color ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Color" => x)
@@ -283,7 +272,6 @@ module DslCE =
     open System.Diagnostics.CodeAnalysis
     open ApexCharts.DslInternals
 
-    type _Imports' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Blazor_ApexCharts._Imports>)>] () = inherit _ImportsBuilder<Blazor_ApexCharts._Imports>()
 
     /// Main component to create an Apex chart in Blazor
     type ApexChart'<'TItem when 'TItem : not struct> 
@@ -329,4 +317,20 @@ module DslCE =
     type ApexRangeSeries'<'TItem when 'TItem : not struct> 
         /// Component to create a RangeBar data series in Blazor
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<ApexCharts.ApexRangeSeries<_>>)>] () = inherit ApexRangeSeriesBuilder<ApexCharts.ApexRangeSeries<'TItem>, 'TItem>()
+
+[<AutoOpen>]
+module DslCEInstances =
+  
+    open System.Diagnostics.CodeAnalysis
+    open ApexCharts.DslInternals
+
+    let ApexChart''<'TItem when 'TItem : not struct> = ApexChart'<'TItem>()
+    let ApexGauge'' = ApexGauge'()
+    let ApexBaseSeries''<'TItem when 'TItem : not struct> = ApexBaseSeries'<'TItem>()
+    let ApexBoxPlotSeries''<'TItem when 'TItem : not struct> = ApexBoxPlotSeries'<'TItem>()
+    let ApexBubbleSeries''<'TItem when 'TItem : not struct> = ApexBubbleSeries'<'TItem>()
+    let ApexCandleSeries''<'TItem when 'TItem : not struct> = ApexCandleSeries'<'TItem>()
+    let ApexPointSeries''<'TItem when 'TItem : not struct> = ApexPointSeries'<'TItem>()
+    let ApexRangeAreaSeries''<'TItem when 'TItem : not struct> = ApexRangeAreaSeries'<'TItem>()
+    let ApexRangeSeries''<'TItem when 'TItem : not struct> = ApexRangeSeries'<'TItem>()
             

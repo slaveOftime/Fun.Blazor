@@ -1,0 +1,8 @@
+<linker>
+	<assembly fullname="Fun.Blazor.Microsoft.QuickGrid">
+		<resource name="FSharpSignatureCompressedData.Fun.Blazor.Microsoft.QuickGrid" action="remove" />
+		<resource name="FSharpSignatureCompressedDataB.Fun.Blazor.Microsoft.QuickGrid" action="remove" />
+		<resource name="FSharpOptimizationCompressedData.Fun.Blazor.Microsoft.QuickGrid" action="remove" />
+		<resource name="FSharpOptimizationCompressedDataB.Fun.Blazor.Microsoft.QuickGrid" action="remove" />
+	</assembly>
+</linker>
