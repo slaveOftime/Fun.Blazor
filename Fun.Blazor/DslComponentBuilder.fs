@@ -448,6 +448,9 @@ type ComponentWithDomAttrBuilder<'T when 'T :> IComponent>() =
     member inline _.Combine([<InlineIfLambda>] render1: AttrRenderFragment, (attrRender, nodeRender): (AttrRenderFragment * NodeRenderFragment)) =
         (render1 ==> attrRender, nodeRender)
 
+        
+    member inline _.Zero() = emptyAttr ()
+
 
     [<CustomOperation("ref")>]
     member inline _.ref([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: 'T -> unit) =
