@@ -52,21 +52,12 @@ module CodeGenProject =
 
         Directory.CreateDirectory codeGenFolder |> ignore
 
-        match sdk with
-        | None -> ()
-        | Some x ->
-            File.WriteAllText(
-                codeGenFolder </> "global.json",
-                $"""
-{{
-  "sdk": {{
-    "version": "{x}"
-  }}
-}}
-            """
-            )
+        let command =
+            match sdk with
+            | None -> "new console -lang f#"
+            | Some x -> $"new console -lang f# -f net{x}"
 
-        Cli.Wrap("dotnet").WithArguments("new console -lang f#").WithWorkingDirectory(codeGenFolder).Run()
+        Cli.Wrap("dotnet").WithArguments(command).WithWorkingDirectory(codeGenFolder).Run()
 
         
         AnsiConsole.WriteLine()

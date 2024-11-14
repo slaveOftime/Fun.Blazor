@@ -231,13 +231,6 @@ type ComponentWithChildBuilder<'T when 'T :> IComponent>() =
             index + 2
         )
 
-    member inline _.Run(_: EmptyComponenntFragment) =
-        NodeRenderFragment(fun _ builder index ->
-            builder.OpenComponent<'T>(index)
-            builder.CloseComponent()
-            index + 2
-        )
-
     /// We should handle this because in Blazor, component need an Attribute called ChildContent for its child elements or components.
     /// So we cannot merge AttrRenderFragment and NodeRenderFragment directly.
     /// Instead, we should first invoke AttrRenderFragment then add ChildContent RenderFragment as attribute and switch builder context.
@@ -302,7 +295,6 @@ type ComponentWithChildBuilder<'T when 'T :> IComponent>() =
 
     member inline _.Yield(x: NodeRenderFragment seq) = html.region x
 
-    member inline _.Delay([<InlineIfLambda>] fn: unit -> EmptyComponenntFragment) = fn ()
     member inline _.Delay([<InlineIfLambda>] fn: unit -> NodeRenderFragment) = NodeRenderFragment(fun c b i -> fn().Invoke(c, b, i))
     member inline _.Delay([<InlineIfLambda>] fn: unit -> (AttrRenderFragment * NodeRenderFragment)) = fn ()
     member inline _.Delay([<InlineIfLambda>] fn: unit -> (AttrRenderFragment * PostRenderFragment * NodeRenderFragment)) = fn ()
@@ -347,7 +339,7 @@ type ComponentWithChildBuilder<'T when 'T :> IComponent>() =
             sequence + 1
         )
 
-    member inline _.Zero() = EmptyComponenntFragment()
+    member inline _.Zero() = html.none
 
 
     [<CustomOperation("childContent")>]
@@ -538,13 +530,6 @@ type ComponentWithDomAndChildAttrBuilder<'T when 'T :> IComponent>() =
             index + 2
         )
 
-    member inline _.Run(_: EmptyComponenntFragment) =
-        NodeRenderFragment(fun _ builder index ->
-            builder.OpenComponent<'T>(index)
-            builder.CloseComponent()
-            index + 2
-        )
-
     /// We should handle this because in Blazor, component need an Attribute called ChildContent for its child elements or components.
     /// So we cannot merge AttrRenderFragment and NodeRenderFragment directly.
     /// Instead, we should first invoke AttrRenderFragment then add ChildContent RenderFragment as attribute and switch builder context.
@@ -609,7 +594,6 @@ type ComponentWithDomAndChildAttrBuilder<'T when 'T :> IComponent>() =
 
     member inline _.Yield(x: NodeRenderFragment seq) = html.region x
 
-    member inline _.Delay([<InlineIfLambda>] fn: unit -> EmptyComponenntFragment) = fn ()
     member inline _.Delay([<InlineIfLambda>] fn: unit -> NodeRenderFragment) = NodeRenderFragment(fun c b i -> fn().Invoke(c, b, i))
     member inline _.Delay([<InlineIfLambda>] fn: unit -> (AttrRenderFragment * NodeRenderFragment)) = fn ()
     member inline _.Delay([<InlineIfLambda>] fn: unit -> (AttrRenderFragment * PostRenderFragment * NodeRenderFragment)) = fn ()
@@ -656,7 +640,7 @@ type ComponentWithDomAndChildAttrBuilder<'T when 'T :> IComponent>() =
             sequence + 1
         )
 
-    member inline _.Zero() = EmptyComponenntFragment()
+    member inline _.Zero() = html.none
 
 
     [<CustomOperation("childContent")>]

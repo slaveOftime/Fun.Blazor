@@ -251,6 +251,7 @@ let generateCode (targetNamespace: string) (opens: string) (tys: Type seq) useIn
             builderNames.Add(key, Dictionary([ KeyValuePair(uniqueName, 1) ]))
             builderName
 
+    let hasChildInherit (ty: Type) = tys |> Seq.exists (fun x -> x.InheritsFromTypeName(ty.FullName, TypeNameStyle.FullName))
 
     let internalCode =
         metaInfos.metas
@@ -271,7 +272,7 @@ let generateCode (targetNamespace: string) (opens: string) (tys: Type seq) useIn
 
                     let inheirit' =
                         match meta.inheritInfo with
-                        | None when meta.props.Contains("CustomOperation(\"ChildContent\")") ->
+                        | None when not(meta.props.Contains("CustomOperation(\"ChildContent\")")) && not (hasChildInherit meta.ty) ->
                             $"inherit {nameof ComponentWithDomAttrBuilder}<{funBlazorGeneric}>()"
                         | None ->
                             // Use ComponentWithDomAndChildAttrBuilder because we cannot do multi inheritance and will endup of a lot of duplication

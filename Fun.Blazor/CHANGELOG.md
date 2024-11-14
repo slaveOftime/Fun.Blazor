@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [4.1.0-beta003] - 2024-11-14
+
+- Fix empty body issue for component ce builder
+
 ## [4.1.0-beta002] - 2024-11-14
 
 - Add adapt as simple version of adaptiview()
