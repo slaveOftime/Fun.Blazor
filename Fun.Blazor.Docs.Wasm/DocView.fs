@@ -12,11 +12,10 @@ open Fun.Blazor.Docs.Controls
 open Fun.Blazor.Docs.Wasm
 
 
-let docView (doc: DocBrief) =
+let private docDetail (doc: DocBrief) =
     html.inject (
         doc,
         fun (hook: IComponentHook, js: IJSRuntime) ->
-            let isOpen = hook.ShareStore.CreateCVal("IsDocDrawerOpen", true)
             let docSegmentLoadedCount = cval 0
 
             let mutable isCodeHighlighted = false
@@ -62,26 +61,6 @@ let docView (doc: DocBrief) =
             }
 
 
-            let menuBtn = adapt {
-                let! isOpen, setIsOpen = isOpen.WithSetter()
-                MudIconButton'' {
-                    Icon Icons.Material.Filled.Menu
-                    Color Color.Inherit
-                    Edge Edge.Start
-                    OnClick(fun _ -> setIsOpen (not isOpen))
-                }
-            }
-
-            let drawer = adapt {
-                let! binding = isOpen.WithSetter()
-                MudDrawer'' {
-                    Open' binding
-                    Elevation 25
-                    ClipMode DrawerClipMode.Always
-                    docNavmenu
-                }
-            }
-
             let langBtn = adapt {
                 let! langStr, setLang = hook.Lang.WithSetter()
                 MudMenu'' {
@@ -118,18 +97,6 @@ let docView (doc: DocBrief) =
 
 
             MudContainer'' {
-                SectionContent'' {
-                    SectionName "toolbar-start"
-                    menuBtn
-                }
-                SectionContent'' {
-                    SectionName "drawer"
-                    drawer
-                }
-                SectionContent'' {
-                    SectionName "toolbar-end"
-                    langBtn
-                }
                 adapt {
                     let! segments, _, langStr = segementsBundle
                     for segment in segments do
@@ -156,3 +123,64 @@ let docView (doc: DocBrief) =
                 styleElt { ruleset ".markdown-body li" { listStyleTypeInitial } }
             }
     )
+
+
+let docView (doc: DocBrief) = fragment {
+    html.injectWithNoKey (fun (hook: IComponentHook) ->
+        let isOpen = hook.ShareStore.CreateCVal("IsDocDrawerOpen", true)
+
+        let menuBtn = adapt {
+            let! isOpen, setIsOpen = isOpen.WithSetter()
+            MudIconButton'' {
+                Icon Icons.Material.Filled.Menu
+                Color Color.Inherit
+                Edge Edge.Start
+                OnClick(fun _ -> setIsOpen (not isOpen))
+            }
+        }
+
+        let drawer = adapt {
+            let! binding = isOpen.WithSetter()
+            MudDrawer'' {
+                Open' binding
+                Elevation 25
+                ClipMode DrawerClipMode.Always
+                docNavmenu
+            }
+        }
+
+        let langBtn = adapt {
+            let! langStr, setLang = hook.Lang.WithSetter()
+            MudMenu'' {
+                style { maxWidth 120 }
+                Label langStr
+                StartIcon Icons.Material.Filled.Translate
+                EndIcon Icons.Material.Filled.KeyboardArrowDown
+                MudMenuItem'' {
+                    OnClick(fun _ -> setLang "en")
+                    "English"
+                }
+                MudMenuItem'' {
+                    OnClick(fun _ -> setLang "cn")
+                    "中文"
+                }
+            }
+        }
+
+        fragment {
+            SectionContent'' {
+                SectionName "toolbar-start"
+                menuBtn
+            }
+            SectionContent'' {
+                SectionName "drawer"
+                drawer
+            }
+            SectionContent'' {
+                SectionName "toolbar-end"
+                langBtn
+            }
+        }
+    )
+    docDetail doc
+}
