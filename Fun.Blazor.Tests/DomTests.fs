@@ -1,6 +1,7 @@
 ﻿module Fun.Blazor.Tests.DomTests
 
 open Microsoft.AspNetCore.Components
+open Microsoft.AspNetCore.Components.Web
 open Microsoft.AspNetCore.Components.Forms
 open Microsoft.AspNetCore.Components.Routing
 open Microsoft.Extensions.DependencyInjection
@@ -560,5 +561,25 @@ let ``empty body ce should work`` () =
                 </span>
             </button>
         </div>
+        """
+    )
+
+
+[<Fact>]
+let ``form should work`` () =
+    let context = createTestContext ()
+
+    let demo = form {
+        dataEnhance true
+        formName "demo"
+        input { value 1 }
+    }
+
+    let result = context.RenderNode demo
+    result.MarkupMatches(
+        """
+        <form data-enhance="true">
+          <input value="1">
+        </form>
         """
     )
