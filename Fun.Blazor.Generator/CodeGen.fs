@@ -29,7 +29,6 @@ open {targetNamespace}.{Utils.internalSegment}"""
 
             let types = Assembly.Load(sourceAssemblyName).GetTypes()
             let path = codesDir </> formatedName + ".fs"
-            let linkerPath = codesDir </> formatedName + ".ILLink.Substitutions.xml"
 
             if Directory.Exists codesDir |> not then
                 Directory.CreateDirectory codesDir |> ignore
