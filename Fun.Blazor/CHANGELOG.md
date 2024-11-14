@@ -2,7 +2,10 @@
 
 ## [Unreleased]
 
+## [4.1.0-beta002] - 2024-11-14
+
 - Add adapt as simple version of adaptiview()
+- Add ILLink.Substitutions.xml
 
 ## [4.1.0-beta001] - 2024-10-18
 
