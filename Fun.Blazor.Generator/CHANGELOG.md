@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.1.0-beta003] - 2024-11-14
+
+- Fix hasChildren 
+
+## [4.1.0-beta002] - 2024-11-14
+
+- When a type does not has ChildContent attribute and has no other types inherit from it, we should use ComponentWithDomAttrBuilder
+
 ## [4.1.0-beta001] - 2024-10-18
 
 - Ignore _Imports from code gen

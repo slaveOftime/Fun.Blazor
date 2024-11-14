@@ -1,4 +1,5 @@
-﻿namespace Fun.Blazor
+﻿[<AutoOpen>]
+module Fun.Blazor.DslComponents
 
 open System.Diagnostics.CodeAnalysis
 open Microsoft.AspNetCore.Components
@@ -23,3 +24,7 @@ type FunFragment'<'Value> [<DynamicDependency(DynamicallyAccessedMemberTypes.All
 
     [<CustomOperation "Fragment">]
     member inline _.Fragment([<InlineIfLambda>] render: AttrRenderFragment, x: NodeRenderFragment) = render ==> ("Fragment" => x)
+
+
+let CascadingValue''<'Value> = CascadingValue'<'Value>()
+let FunFragment''<'Value> = FunFragment'<'Value>()

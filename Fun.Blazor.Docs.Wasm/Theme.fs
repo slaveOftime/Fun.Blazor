@@ -13,5 +13,5 @@ type FunTheme =
         MudTheme(
             PaletteLight = PaletteLight(Primary = primaryColor, Secondary = secondaryColor),
             PaletteDark =
-                PaletteDark(Primary = primaryColor, Secondary = secondaryColor, Black = "#0d1121", Surface = "#18202c", Background = "#161926")
+                PaletteDark(Primary = "#596b94", Secondary = secondaryColor, Black = "#0d1121", Surface = "#18202c", Background = "#161926")
         )

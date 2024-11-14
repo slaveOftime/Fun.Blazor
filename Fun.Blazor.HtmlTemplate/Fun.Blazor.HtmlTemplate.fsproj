@@ -8,10 +8,15 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<EmbeddedResource Include="ILLink.Substitutions.xml">
+			<LogicalName>ILLink.Substitutions.xml</LogicalName>
+		</EmbeddedResource>
 		<Compile Include="Internals.fs" />
 		<Compile Include="Template.fs" />
 		<Compile Include="SSRTemplate.fs" />
 	</ItemGroup>
+
+	<ItemGroup />
 
 	<ItemGroup>
 		<PackageReference Update="FSharp.Core" Version="6.0.1" />

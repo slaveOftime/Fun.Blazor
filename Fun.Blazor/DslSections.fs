@@ -29,4 +29,8 @@ type SectionContent' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typ
 
     [<CustomOperation "SectionName">]
     member inline _.SectionName([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> ("SectionName" => x)
+
+
+let SectionOutlet'' = SectionOutlet'()
+let SectionContent'' = SectionContent'()
 #endif

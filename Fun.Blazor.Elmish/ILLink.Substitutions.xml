@@ -1,0 +1,8 @@
+﻿<linker>
+	<assembly fullname="Fun.Blazor.Elimish">
+		<resource name="FSharpSignatureCompressedData.Fun.Blazor.Elimish" action="remove" />
+		<resource name="FSharpSignatureCompressedDataB.Fun.Blazor.Elimish" action="remove" />
+		<resource name="FSharpOptimizationCompressedData.Fun.Blazor.Elimish" action="remove" />
+		<resource name="FSharpOptimizationCompressedDataB.Fun.Blazor.Elimish" action="remove" />
+	</assembly>
+</linker>

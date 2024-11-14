@@ -1,5 +1,9 @@
 # Changelog
 
+## [4.1.0] - 2024-11-14
+
+- Bump version to 4.1.0
+
 ## [4.0.2] - 2024-02-13
 
 - Pin FSharp.Core version to remove build warning

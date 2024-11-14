@@ -6,8 +6,12 @@
 		<BlazorWasmPrerenderingMode>WebAssemblyPrerendered</BlazorWasmPrerenderingMode>
 		<BlazorWasmPrerenderingRootComponentType>Fun.Blazor.Docs.Wasm.App.App</BlazorWasmPrerenderingRootComponentType>
 		<BlazorWasmPrerenderingDeleteLoadingContents>true</BlazorWasmPrerenderingDeleteLoadingContents>
+		<WasmEnableWebcil>false</WasmEnableWebcil>
 	</PropertyGroup>
 	<ItemGroup>
+		<EmbeddedResource Include="ILLink.Substitutions.xml">
+			<LogicalName>ILLink.Substitutions.xml</LogicalName>
+		</EmbeddedResource>
 		<Compile Include="Types.fs" />
 		<Compile Include="Utils.fs" />
 		<Compile Include="Theme.fs" />

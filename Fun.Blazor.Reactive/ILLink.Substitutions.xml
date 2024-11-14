@@ -1,0 +1,8 @@
+﻿<linker>
+	<assembly fullname="Fun.Blazor.Reactive">
+		<resource name="FSharpSignatureCompressedData.Fun.Blazor.Reactive" action="remove" />
+		<resource name="FSharpSignatureCompressedDataB.Fun.Blazor.Reactive" action="remove" />
+		<resource name="FSharpOptimizationCompressedData.Fun.Blazor.Reactive" action="remove" />
+		<resource name="FSharpOptimizationCompressedDataB.Fun.Blazor.Reactive" action="remove" />
+	</assembly>
+</linker>

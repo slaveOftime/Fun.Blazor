@@ -8,6 +8,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<EmbeddedResource Include="ILLink.Substitutions.xml">
+			<LogicalName>ILLink.Substitutions.xml</LogicalName>
+		</EmbeddedResource>
 		<Compile Include="Core.fs" />
 		<Compile Include="Operators.fs" />
 		<Compile Include="Utils.fs" />
@@ -39,10 +42,12 @@
 		<Compile Include="DIExtensions.fs" />
 	</ItemGroup>
 
+	<ItemGroup />
+
 	<ItemGroup>
 		<PackageReference Update="FSharp.Core" Version="6.0.0" />
 		<PackageReference Include="FSharp.Data.Adaptive" Version="1.2.15" />
-		<PackageReference Include="Fun.Css" Version="1.0.0" />
+		<PackageReference Include="Fun.Css" Version="1.0.1" />
 		<PackageReference Include="Fun.Result" Version="2.1.0" />
 		<PackageReference Include="Microsoft.Extensions.ObjectPool" Version="8.0.*" />
 	</ItemGroup>

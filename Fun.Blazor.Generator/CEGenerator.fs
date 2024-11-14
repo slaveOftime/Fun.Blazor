@@ -162,12 +162,10 @@ let private getMetaInfo useInline (ty: Type) =
                 ]
 
             elif prop.Name = "Class" && prop.PropertyType = typeof<string> then
-                [
-                ]
+                []
 
             elif prop.Name = "Style" && prop.PropertyType = typeof<string> then
-                [
-                ]
+                []
 
             else
                 let propTypeName = getTypeName prop.PropertyType
@@ -184,9 +182,7 @@ let private getMetaInfo useInline (ty: Type) =
         |> Seq.concat
 
 
-    // Because we are using ComponentWithDomAndChildAttrBuilder
-    // props |> Seq.exists (fun x -> x.Contains $"{memberStart}childContent")
-    let hasChildren = true
+    let hasChildren = filteredProps |> Seq.exists (fun x -> x.Name = "ChildContent")
 
     let isSplatAttributesProp (p: PropertyInfo) =
         option {
@@ -251,6 +247,7 @@ let generateCode (targetNamespace: string) (opens: string) (tys: Type seq) useIn
             builderNames.Add(key, Dictionary([ KeyValuePair(uniqueName, 1) ]))
             builderName
 
+    let hasChildInherit (ty: Type) = tys |> Seq.exists (fun x -> x.InheritsFromTypeName(ty.FullName, TypeNameStyle.FullName))
 
     let internalCode =
         metaInfos.metas
@@ -271,7 +268,7 @@ let generateCode (targetNamespace: string) (opens: string) (tys: Type seq) useIn
 
                     let inheirit' =
                         match meta.inheritInfo with
-                        | None when meta.props.Contains("CustomOperation(\"ChildContent\")") ->
+                        | None when not meta.hasChildren && not (hasChildInherit meta.ty) && not meta.ty.IsAbstract ->
                             $"inherit {nameof ComponentWithDomAttrBuilder}<{funBlazorGeneric}>()"
                         | None ->
                             // Use ComponentWithDomAndChildAttrBuilder because we cannot do multi inheritance and will endup of a lot of duplication
@@ -319,19 +316,12 @@ let generateCode (targetNamespace: string) (opens: string) (tys: Type seq) useIn
                     let typeName = meta.ty |> getTypeShortName
                     let typeFullName = meta.ty |> getTypeName |> (fun x -> x.Split("<")[0])
 
-                    let genericStr =
-                        meta.generics
-                        |> getTypeNames
-                        |> createGenerics
+                    let genericStr = meta.generics |> getTypeNames |> createGenerics
 
                     let genericStrWithConstraint =
-                        genericStr
-                        |> appendStr (createConstraint meta.generics)
-                        |> closeGenerics
+                        genericStr |> appendStr (createConstraint meta.generics) |> closeGenerics
 
-                    let genericStrWithoutConstraint =
-                        genericStr
-                        |> closeGenerics
+                    let genericStrWithoutConstraint = genericStr |> closeGenerics
 
                     let linkerGenericStr =
                         if meta.generics.Length > 0 then
@@ -348,23 +338,19 @@ let generateCode (targetNamespace: string) (opens: string) (tys: Type seq) useIn
                         |> makeSummaryDoc 8
                         |> addStrIfNotEmpty "\n"
                         |> appendStrIfNotEmpty (String(' ', 8))
-                    
-                    let ceType = $"""{typeComment}    type {typeName}'{genericStrWithConstraint} {constructorComment}{linkerAttrStr} () = inherit {builderName}{builderGenerics}()"""
-                    let ceInstance = $"""    let {typeName}''{genericStrWithConstraint} = {typeName}'{genericStrWithoutConstraint}()"""
+
+                    let ceType =
+                        $"""{typeComment}    type {typeName}'{genericStrWithConstraint} {constructorComment}{linkerAttrStr} () = inherit {builderName}{builderGenerics}()"""
+                    let ceInstance =
+                        $"""    let {typeName}''{genericStrWithConstraint} = {typeName}'{genericStrWithoutConstraint}()"""
 
                     typeName, ceType, ceInstance
                 )
 
-            let ceTypesCode =
-                codes
-                |> Seq.map (fun (_, x, _) -> x)
-                |> String.concat "\n"
+            let ceTypesCode = codes |> Seq.map (fun (_, x, _) -> x) |> String.concat "\n"
 
             let cetInstancesCode =
-                codes
-                |> Seq.distinctBy (fun (x, _, _) -> x)
-                |> Seq.map (fun (_, _, x) -> x)
-                |> String.concat "\n"
+                codes |> Seq.distinctBy (fun (x, _, _) -> x) |> Seq.map (fun (_, _, x) -> x) |> String.concat "\n"
 
             $"""namespace {targetNamespace}{subNamespace}
 

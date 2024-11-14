@@ -34,7 +34,7 @@ let private docRouting (docs: DocTreeNode list) : Router<NodeRenderFragment> =
 
 
 let routes =
-    html.injectWithNoKey (fun (hook: IComponentHook) -> adaptiview () {
+    html.injectWithNoKey (fun (hook: IComponentHook) -> adapt {
         match! hook.GetOrLoadDocsTree() with
         | LoadingState.NotStartYet -> notFound
         | LoadingState.Loading -> MudProgressLinear'.create ()

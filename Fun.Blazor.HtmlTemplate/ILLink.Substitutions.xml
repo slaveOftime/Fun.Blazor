@@ -1,0 +1,8 @@
+﻿<linker>
+	<assembly fullname="Fun.Blazor.HtmlTemplate">
+		<resource name="FSharpSignatureCompressedData.Fun.Blazor.HtmlTemplate" action="remove" />
+		<resource name="FSharpSignatureCompressedDataB.Fun.Blazor.HtmlTemplate" action="remove" />
+		<resource name="FSharpOptimizationCompressedData.Fun.Blazor.HtmlTemplate" action="remove" />
+		<resource name="FSharpOptimizationCompressedDataB.Fun.Blazor.HtmlTemplate" action="remove" />
+	</assembly>
+</linker>

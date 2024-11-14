@@ -53,7 +53,7 @@ type DemoView =
                             alignItemsCenter
                             justifyContentCenter
                         }
-                        adaptiview () {
+                        adapt {
                             let! showCode, setShowCode = showCode.WithSetter()
                             MudButton'' {
                                 OnClick(fun _ -> setShowCode (not showCode))
@@ -67,7 +67,7 @@ type DemoView =
                             }
                         }
                     }
-                    adaptiview () {
+                    adapt {
                         match! showCode with
                         | false -> ()
                         | true ->

@@ -2,6 +2,19 @@
 
 ## [Unreleased]
 
+## [4.1.0] - 2024-11-14
+
+- Bump version to 4.1.0
+
+## [4.1.0-beta003] - 2024-11-14
+
+- Fix empty body issue for component ce builder
+
+## [4.1.0-beta002] - 2024-11-14
+
+- Add adapt as simple version of adaptiview()
+- Add ILLink.Substitutions.xml
+
 ## [4.1.0-beta001] - 2024-10-18
 
 - Upgrade packages

@@ -32,7 +32,7 @@ let entry =
                     keyframeTo { transformRotate 359 }
                 }
             }
-            adaptiview () {
+            adapt {
                 let! isAnimated = isAnimated
                 if isAnimated then
                     styleElt {

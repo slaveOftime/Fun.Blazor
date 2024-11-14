@@ -20,7 +20,7 @@ let entry =
 
         MudAlert'' {
             Severity Severity.Info
-            adaptiview () {
+            adapt {
                 let! msg = msg
                 html.text msg
             }

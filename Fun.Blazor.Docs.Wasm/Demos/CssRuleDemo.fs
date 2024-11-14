@@ -6,7 +6,7 @@ open Fun.Blazor
 open Fun.Css
 
 let entry =
-    adaptiview () {
+    adapt {
         let! count, setCount = cval(0).WithSetter()
 
         div {

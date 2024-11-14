@@ -32,7 +32,7 @@ let private simplestSyntaxDemo = div {
                 textDecorationUnderline
             }
             class' "animated-glow-secondary-text"
-            Color Color.Primary
+            Color Color.Default
             "Simplest"
         }
         MudText'' {
@@ -127,7 +127,7 @@ div {
                 textDecorationUnderline
             }
             class' "animated-glow-secondary-text"
-            Color Color.Primary
+            Color Color.Default
             "Flexsible"
         }
         MudText'' {
@@ -389,7 +389,7 @@ let home =
                 MudButton'' {
                     Color Color.Success
                     Variant Variant.Filled
-                    Href "/Docs/Get-Started"
+                    Href "Docs/Get-Started"
                     "Get Started"
                 }
             }

@@ -56,7 +56,7 @@ let docNavmenu =
                         flexGrow 1
                         overflowAuto
                     }
-                    adaptiview () {
+                    adapt {
                         let! langStr = hook.Lang
                         let! tree, isLoading = hook.GetOrLoadDocsTree() |> AVal.map (LoadingState.unzip [])
                         if isLoading then MudProgressLinear'.create ()

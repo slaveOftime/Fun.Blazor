@@ -8,13 +8,13 @@ open Fun.Blazor
 let entry =
     let number1 = cval 1
 
-    adaptiview () {
+    adapt {
         let! n1, setN1 = number1.WithSetter()
         MudButton'' {
             OnClick(fun _ -> setN1 (n1 + 1))
             "Number1"
         }
-        adaptiview () {
+        adapt {
             let! n2, setN2 = cval(2).WithSetter()
             div { $"Number1: {n1}. (Will change when click Number1)" }
             div { $"Number2: {n2}. (Will change when click Number2. And will be reset when click Number1)" }

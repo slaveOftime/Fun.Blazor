@@ -38,14 +38,14 @@ let entry =
     html.inject (fun (hook: IComponentHook) ->
         let state, dispatch = hook.UseElmish(init, update)
         div.create [|
-            adaptiview () {
+            adapt {
                 let! count = state |> AVal.map (fun x -> x.Count1) // only intrested in Count1
                 MudText'' {
                     Typo Typo.h6
                     $"Count1={count} "
                 }
             }
-            adaptiview () {
+            adapt {
                 let! count = state |> AVal.map (fun x -> x.Count2) // only intrested in Count2
                 MudText'' {
                     Typo Typo.h6

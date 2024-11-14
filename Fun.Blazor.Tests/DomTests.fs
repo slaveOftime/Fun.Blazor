@@ -356,15 +356,14 @@ let ``for loop should work for element`` () =
 let ``should work for component`` () =
     let context = createTestContext ()
 
-    let demo =
-        MudPaper'() {
-            class' "p-2"
-            style {
-                overflowHidden
-                height "100%"
-            }
-            div { "foo" }
+    let demo = MudPaper'() {
+        class' "p-2"
+        style {
+            overflowHidden
+            height "100%"
         }
+        div { "foo" }
+    }
 
     let result = context.RenderNode demo
     result.MarkupMatches(
@@ -380,11 +379,10 @@ let ``should work for component`` () =
 let ``for loop should work for component`` () =
     let context = createTestContext ()
 
-    let demo =
-        MudCard'() {
-            for i in 1..3 do
-                if i < 2 then MudButton'() { i } else span { i }
-        }
+    let demo = MudCard'() {
+        for i in 1..3 do
+            if i < 2 then MudButton'() { i } else span { i }
+    }
 
     let result = context.RenderNode demo
     result.MarkupMatches(
@@ -404,11 +402,10 @@ let ``for loop should work for component`` () =
 let ``bool attribute should work for component`` () =
     let context = createTestContext ()
 
-    let demo =
-        MudButton'' {
-            Disabled
-            "demo"
-        }
+    let demo = MudButton'' {
+        Disabled
+        "demo"
+    }
 
     let result = context.RenderNode demo
     result.MarkupMatches(
@@ -419,11 +416,10 @@ let ``bool attribute should work for component`` () =
     """
     )
 
-    let demo =
-        MudButton'' {
-            Disabled false
-            "demo"
-        }
+    let demo = MudButton'' {
+        Disabled false
+        "demo"
+    }
 
     let result = context.RenderNode demo
     result.MarkupMatches(
@@ -472,13 +468,12 @@ let ``support yield seq`` () =
     "
     )
 
-    let demo =
-        MudCard'() {
-            [|
-                for i in 1..3 do
-                    if i < 2 then MudButton'() { i } else span { i }
-            |]
-        }
+    let demo = MudCard'() {
+        [|
+            for i in 1..3 do
+                if i < 2 then MudButton'() { i } else span { i }
+        |]
+    }
 
     let result = context.RenderNode demo
     result.MarkupMatches(
@@ -507,7 +502,7 @@ let ``renderAsString should work`` () = task {
 let ``empty body ce should work`` () =
     let context = createTestContext ()
 
-    let demo = MudButton'' {}
+    let demo = MudButton'' { }
 
     let result = context.RenderNode demo
     result.MarkupMatches(
@@ -520,10 +515,10 @@ let ``empty body ce should work`` () =
 
 
     let demo2 = div {
-        div 
-        div {}
-        if true then a {}
-        MudSpacer'' {}
+        div
+        div { }
+        if true then a { }
+        MudSpacer'' { }
     }
 
     let result = context.RenderNode demo2
@@ -534,6 +529,36 @@ let ``empty body ce should work`` () =
           <div></div>
           <a></a>
           <div aria-hidden="true" class="flex-grow-1"></div>
+        </div>
+        """
+    )
+
+    let demo3 = MudContainer'' {
+        div
+        div { }
+        if true then a { }
+        MudSpacer'' { }
+        if true then
+            MudButton'' { if true then MudIcon'' { Icon Icons.Material.Filled.Add } }
+        if false then section {}
+    }
+
+    let result = context.RenderNode demo3
+    result.MarkupMatches(
+        """
+        <div class="mud-container mud-container-maxwidth-lg mud-container--gutters">
+            <div></div>
+            <div></div>
+            <a></a>
+            <div aria-hidden="true" class="flex-grow-1"></div>
+            <button  type="button" class="mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple"  >
+                <span class="mud-button-label">
+                    <svg class="mud-icon-root mud-svg-icon mud-icon-size-medium" focusable="false" viewBox="0 0 24 24" aria-hidden="true" role="img">
+                    <path d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+                    </svg>
+                </span>
+            </button>
         </div>
         """
     )
