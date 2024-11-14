@@ -81,12 +81,17 @@ type FocusOnNavigate' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, ty
     member inline _.Selector([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> ("Selector" => x)
 
 
+let Router'' = Router'()
+let RouteView'' = RouteView'()
+let FocusOnNavigate'' = FocusOnNavigate'()
+
+
 type html with
 
     /// By default we will set key (fun-blazor-routers) for this component. So it can keep it's state when its parent rerender.
-    /// And only rerender when location is changed. 
-    /// You should open Fun.Blazor.Router to use routeCi etc. 
-    /// For example: html.route [ routeCi "/demo" (html.text "demo") ] 
+    /// And only rerender when location is changed.
+    /// You should open Fun.Blazor.Router to use routeCi etc.
+    /// For example: html.route [ routeCi "/demo" (html.text "demo") ]
     static member route(routes: Router<NodeRenderFragment> seq, ?key: obj) =
         html.inject (
             defaultArg key "fun-blazor-routers",
