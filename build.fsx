@@ -278,8 +278,9 @@ pipeline "bindings" {
         stage_generateBindingProjects "AntDesign" "AntDesign" "AntDesign" None "" "net6.0;net8.0"
         stage_generateBindingProjects "MudBlazor" "MudBlazor" "MudBlazor" None "" "net7.0;net8.0"
         stage_generateBindingProjects "ApexCharts" "Blazor-ApexCharts" "ApexCharts" None "" "net6.0;net8.0"
-        stage_generateBindingProjects "BlazorMonaco" "BlazorMonaco" "BlazorMonaco" None "001" "net6.0;net8.0"
-        stage_generateBindingProjects "Diagrams" "Z.Blazor.Diagrams" "Blazor.Diagrams" (Some "Blazor.Diagrams") "001" "net6.0;net8.0"
+        stage_generateBindingProjects "BlazorMonaco" "BlazorMonaco" "BlazorMonaco" None "" "net6.0;net8.0"
+        stage_generateBindingProjects "Diagrams" "Z.Blazor.Diagrams" "Blazor.Diagrams" (Some "Blazor.Diagrams") "" "net6.0;net8.0"
+        stage_generateBindingProjects "Radzen" "Radzen.Blazor" "Radzen.Blazor" None "" "net6.0;net8.0;net9.0"
     }
     stage "pack for binding projects" {
         run (fun _ ->

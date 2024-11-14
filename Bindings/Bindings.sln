@@ -25,6 +25,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fun.Blazor.Cli", "..\Fun.Bl
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fun.Blazor.Generator", "..\Fun.Blazor.Generator\Fun.Blazor.Generator.fsproj", "{BA9E61CC-E763-4C87-B02F-3763F576A9F1}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Fun.Blazor.Radzen", "Fun.Blazor.Radzen\Fun.Blazor.Radzen.fsproj", "{6C386F5D-D87E-47D6-91B4-57CDAD6F697A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{BA9E61CC-E763-4C87-B02F-3763F576A9F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA9E61CC-E763-4C87-B02F-3763F576A9F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BA9E61CC-E763-4C87-B02F-3763F576A9F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C386F5D-D87E-47D6-91B4-57CDAD6F697A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C386F5D-D87E-47D6-91B4-57CDAD6F697A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C386F5D-D87E-47D6-91B4-57CDAD6F697A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C386F5D-D87E-47D6-91B4-57CDAD6F697A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

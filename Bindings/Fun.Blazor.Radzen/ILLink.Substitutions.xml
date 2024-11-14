@@ -1,0 +1,8 @@
+<linker>
+	<assembly fullname="Fun.Blazor.Radzen">
+		<resource name="FSharpSignatureCompressedData.Fun.Blazor.Radzen" action="remove" />
+		<resource name="FSharpSignatureCompressedDataB.Fun.Blazor.Radzen" action="remove" />
+		<resource name="FSharpOptimizationCompressedData.Fun.Blazor.Radzen" action="remove" />
+		<resource name="FSharpOptimizationCompressedDataB.Fun.Blazor.Radzen" action="remove" />
+	</assembly>
+</linker>
