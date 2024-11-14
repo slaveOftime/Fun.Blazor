@@ -1,5 +1,9 @@
 # Changelog
 
+## [4.1.0] - 2024-11-14
+
+- Update generator version
+
 ## [4.1.0-beta002] - 2024-11-14
 
 - Fix empty body issue for component ce builder
