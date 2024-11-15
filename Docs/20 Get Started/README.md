@@ -2,9 +2,9 @@
 
 ## Please check the samples for a quick start
 
-This contains the code for the document site itself: https://github.com/slaveOftime/Fun.Blazor/tree/master/Fun.Blazor.Docs.Wasm. 
+- Document site source code: https://github.com/slaveOftime/Fun.Blazor/tree/master/Fun.Blazor.Docs.Wasm. 
 
-This contains the code for Fun.Blazor templates, also with more samples in it: https://github.com/slaveOftime/Fun.Blazor.Samples.
+- Templates, also with more samples in it: https://github.com/slaveOftime/Fun.Blazor.Samples.
 
 ## Use dotnet templates:
 
@@ -73,11 +73,9 @@ type Comp1 =
     static member Create() =
         html.inject (fun (svc1, shareStore: IShareStore, ...) ->
             div {
-                childContent [
-                    fragment1
-                    fragment2 shareStore
-                    fragment3
-                ]
+                fragment1
+                fragment2 shareStore
+                fragment3
             }
         )
 ```

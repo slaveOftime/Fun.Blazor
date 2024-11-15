@@ -8,18 +8,16 @@ In Fun.Blazor, we use it to isolate dynamic UI parts. Because most of the time, 
 let yourUI =
     div {
         style { ... }
-        childContent [
-            ... a lot of stuff
-            adapt {
-                let! msg = from store
-                // only below part will be rerendered.
-                div {
-                    style { ... }
-                    msg
-                }
-            } 
-            ... a lot of stuff
-        ]
+        ... a lot of stuff
+        adapt {
+            let! msg = from store
+            // only below part will be rerendered.
+            div {
+                style { ... }
+                msg
+            }
+        } 
+        ... a lot of stuff
     }
 ```
 

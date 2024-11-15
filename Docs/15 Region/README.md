@@ -6,13 +6,11 @@ But in Fun.Blazor everything is dynamic, so the sequence number can also change 
 
 ```fsharp
 div { // sequence 0
-    childContent [
-        if isLoading then
-            loader
-        div { // sequence may change
-            "hi"
-        }
-    ]
+    if isLoading then
+        loader
+    div { // sequence may change
+        "hi"
+    }
 }
 ```
 
@@ -22,16 +20,14 @@ According to the official document, we developed **region** to help with this:
 
 ```fsharp
 div { // sequence 0
-    childContent [
-        region { // sequence 1
-            // Below content's sequence number is isolated
-            if isLoading then
-                loader
-        }
-        div { // sequence 2
-            "hi" // sequence 3
-        }
-    ]
+    region { // sequence 1
+        // Below content's sequence number is isolated
+        if isLoading then
+            loader
+    }
+    div { // sequence 2
+        "hi" // sequence 3
+    }
 }
 ```
 
@@ -39,15 +35,13 @@ Most of the time, we will not even notice the difference with or without the **r
 
 ```fsharp
 div { // sequence 0
-    childContent [
-        adapt { // sequence 1
-            match! isLoading with
-            | true -> loader
-            | false -> someDataView
-        }
-        div { // sequence 2
-            "hi" // sequence 3
-        }
-    ]
+    adapt { // sequence 1
+        match! isLoading with
+        | true -> loader
+        | false -> someDataView
+    }
+    div { // sequence 2
+        "hi" // sequence 3
+    }
 }
 ```

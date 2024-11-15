@@ -8,14 +8,13 @@ open Fun.Blazor.Validators
 open Fun.Blazor.Docs.Controls
 
 
-type Model =
-    {
-        Name: string
-        Password: string
-        Age: int
-        Birthday: DateTime
-        Address: Address
-    }
+type Model = {
+    Name: string
+    Password: string
+    Age: int
+    Birthday: DateTime
+    Address: Address
+} with
 
     static member DefaultValue = {
         Name = ""
@@ -61,26 +60,25 @@ module Extensions =
 
 
 // This is used to demo nest/sub form
-let private addressForm (modelForm: AdaptiveForm<Address, AddressError>) =
-    html.fragment [|
-        adapt {
-            let! binding, errors = modelForm.UseFieldWithErrors(fun x -> x.Zip)
-            MudTextField'' {
-                Label "Zip code"
-                Value' binding
-                Immediate true
-                Errors errors
-            }
+let private addressForm (modelForm: AdaptiveForm<Address, AddressError>) = fragment {
+    adapt {
+        let! binding, errors = modelForm.UseFieldWithErrors(fun x -> x.Zip)
+        MudTextField'' {
+            Label "Zip code"
+            Value' binding
+            Immediate true
+            Errors errors
         }
-        adapt {
-            let! binding = modelForm.UseField(fun x -> x.Street)
-            MudTextField'' {
-                Label "Street"
-                Value' binding
-                Immediate true
-            }
+    }
+    adapt {
+        let! binding = modelForm.UseField(fun x -> x.Street)
+        MudTextField'' {
+            Label "Street"
+            Value' binding
+            Immediate true
         }
-    |]
+    }
+}
 
 
 let entry =
@@ -127,75 +125,73 @@ let entry =
         MudPaper'' {
             Elevation 10
             style { padding 10 }
-            childContent [
-                MudForm'.create [
-                    adapt {
-                        let! binding, errors = modelForm.UseFieldWithErrors(fun x -> x.Name)
-                        MudTextField'' {
-                            Label "Name"
-                            Value' binding
-                            Immediate true
-                            Required true
-                            Errors errors
-                        }
-                    }
-                    adapt {
-                        let! binding, errors = modelForm.UseFieldWithErrors(fun x -> x.Password)
-                        MudTextField'' {
-                            Label "Password"
-                            Value' binding
-                            Immediate true
-                            InputType InputType.Password
-                            Required true
-                            Errors errors
-                        }
-                    }
-                    adapt {
-                        let! binding, errors = modelForm.UseFieldWithErrors(fun x -> x.Age)
-                        MudTextField'' {
-                            Label "Age"
-                            Value' binding
-                            Immediate true
-                            InputType InputType.Number
-                            Errors errors
-                        }
-                    }
-                    adapt {
-                        let! (value', setValue), errors = modelForm.UseFieldWithErrors(fun x -> x.Birthday)
-                        MudDatePicker'' {
-                            Label "Birthday"
-                            Date(Nullable value')
-                            DateChanged(Option.ofNullable >> Option.iter setValue)
-                            Errors errors
-                        }
-                    }
-                    addressForm addressModelForm
-                ]
-                spaceV4
+            MudForm'' {
                 adapt {
-                    let! errors = modelForm.UseErrors()
+                    let! binding, errors = modelForm.UseFieldWithErrors(fun x -> x.Name)
+                    MudTextField'' {
+                        Label "Name"
+                        Value' binding
+                        Immediate true
+                        Required true
+                        Errors errors
+                    }
+                }
+                adapt {
+                    let! binding, errors = modelForm.UseFieldWithErrors(fun x -> x.Password)
+                    MudTextField'' {
+                        Label "Password"
+                        Value' binding
+                        Immediate true
+                        InputType InputType.Password
+                        Required true
+                        Errors errors
+                    }
+                }
+                adapt {
+                    let! binding, errors = modelForm.UseFieldWithErrors(fun x -> x.Age)
+                    MudTextField'' {
+                        Label "Age"
+                        Value' binding
+                        Immediate true
+                        InputType InputType.Number
+                        Errors errors
+                    }
+                }
+                adapt {
+                    let! (value', setValue), errors = modelForm.UseFieldWithErrors(fun x -> x.Birthday)
+                    MudDatePicker'' {
+                        Label "Birthday"
+                        Date(Nullable value')
+                        DateChanged(Option.ofNullable >> Option.iter setValue)
+                        Errors errors
+                    }
+                }
+                addressForm addressModelForm
+            }
+            spaceV4
+            adapt {
+                let! errors = modelForm.UseErrors()
+                MudAlert'' {
+                    Severity Severity.Info
+                    $"Total errors is {errors.Length}"
+                }
+            }
+            spaceV4
+            adapt {
+                let! hasChanges = modelForm.UseHasChanges()
+                if hasChanges then
                     MudAlert'' {
                         Severity Severity.Info
-                        $"Total errors is {errors.Length}"
+                        "There are some changes"
                     }
+                MudButton'' {
+                    OnClick(fun _ -> modelForm.SetValue(Model.DefaultValue))
+                    "Reset"
                 }
-                spaceV4
-                adapt {
-                    let! hasChanges = modelForm.UseHasChanges()
-                    if hasChanges then
-                        MudAlert'' {
-                            Severity Severity.Info
-                            "There are some changes"
-                        }
-                    MudButton'' {
-                        OnClick(fun _ -> modelForm.SetValue(Model.DefaultValue))
-                        "Reset"
-                    }
-                    MudButton'' {
-                        OnClick(fun _ -> modelForm.UseFieldSetter (fun x -> x.Age) (24))
-                        "Set age to 24"
-                    }
+                MudButton'' {
+                    OnClick(fun _ -> modelForm.UseFieldSetter (fun x -> x.Age) (24))
+                    "Set age to 24"
                 }
-            ]
+            }
         }
     )

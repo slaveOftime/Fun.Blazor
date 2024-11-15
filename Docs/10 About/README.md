@@ -83,7 +83,7 @@ There are a few things to keep in mind:
     div {
         attributes ...
         ref (fun x -> ()) // ✅
-        div { 1 }
+        div { }
     }
     ```
 

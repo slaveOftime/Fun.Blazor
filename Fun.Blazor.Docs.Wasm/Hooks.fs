@@ -1,12 +1,14 @@
 ﻿[<AutoOpen>]
 module Fun.Blazor.Docs.Wasm.Hooks
 
+open System
 open System.Net
 open System.Net.Http
 open System.Text.Json
 open System.Text.Json.Serialization
 open FSharp.Data.Adaptive
 open Microsoft.JSInterop
+open Microsoft.Extensions.DependencyInjection
 open Microsoft.AspNetCore.Components
 open Fun.Result
 open Fun.Blazor
@@ -17,6 +19,8 @@ let private jsonOptions =
     let options = JsonSerializerOptions()
     options.Converters.Add(JsonFSharpConverter())
     options
+
+let mutable private isHighlightingCode = false
 
 
 type IShareStore with
@@ -155,3 +159,24 @@ type IComponentHook with
             hook.GetHttpString(source) |> hook.RenderCall(LoadingState.ofOption >> sourceStore.Publish)
 
         sourceStore :> aval<_>
+
+
+    /// Will retry
+    member hook.HighlightCode(?maxCount) = task {
+        if not isHighlightingCode then
+            isHighlightingCode <- true
+
+            let maxCount = defaultArg maxCount 10
+            let js = hook.ServiceProvider.GetService<IJSRuntime>()
+
+            let mutable retryCount = 0
+            while retryCount < maxCount do
+                if retryCount > 0 then do! Async.Sleep 300
+                try
+                    do! js.highlightCode ()
+                    retryCount <- Int32.MaxValue
+                with _ ->
+                    retryCount <- retryCount + 1
+
+            isHighlightingCode <- false
+    }

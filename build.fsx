@@ -195,11 +195,11 @@ pipeline "dev" {
             whenNot { cmdArg options.WASM }
             run "dotnet run"
         }
-        stage "hot-reload" {
-            workingDir "./Fun.Blazor.Cli"
-            whenCmdArg "--hot-reload"
-            run "dotnet run --framework net8.0 -- watch ../Fun.Blazor.Docs.Wasm/Fun.Blazor.Docs.Wasm.fsproj"
-        }
+        //stage "hot-reload" {
+        //    workingDir "./Fun.Blazor.Cli"
+        //    whenCmdArg "--hot-reload"
+        //    run "dotnet run --framework net8.0 -- watch ../Fun.Blazor.Docs.Wasm/Fun.Blazor.Docs.Wasm.fsproj"
+        //}
     }
     runIfOnlySpecified
 }

@@ -134,7 +134,7 @@ type MudTable'<'T> with
     [<CustomOperation("withDefaultSettings")>]
     member inline _.withDefaultSettings([<InlineIfLambda>] render: AttrRenderFragment) =
         render
-        ==> MudTable'() {
+        ==> MudTable'' {
             Hover true
             FixedHeader true
             HorizontalScrollbar true
@@ -143,15 +143,15 @@ type MudTable'<'T> with
         }
 
 let demo =
-    MudTable'() {
+    MudTable'' {
         Height "100%"
         Items items
         HeaderAndRow [
-            MudTh'() { "Name" },
-            fun item -> MudTd'() { item.Name }
+            MudTh'' { "Name" },
+            fun item -> MudTd'' { item.Name }
 
-            MudTh'() { "Age" },
-            fun item -> MudTd'() { item.Age }
+            MudTh'' { "Age" },
+            fun item -> MudTd'' { item.Age }
         ]
         withDefaultSettings
     }

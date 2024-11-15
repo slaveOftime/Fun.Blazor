@@ -11,9 +11,9 @@ Adding inline styles to elements is very straight forward
 
 ```fsharp
 div {
-  style {
-    color "red"
-  }
+    style {
+        color "red"
+    }
 }
 ```
 
@@ -27,19 +27,17 @@ If you like to pursue inline styles you can also share those styles, for that we
 
 ```fsharp
 module SharedStyles =
-  let ClickableGreen =
-    css {
+    let ClickableGreen = css {
         cursorPointer
         color "green"
     }
 
-let styledDiv =
-  div {
+let styledDiv = div {
     style {
-      SharedStyles.ClickableGreen
-      fontSize 16
+        SharedStyles.ClickableGreen
+        fontSize 16
     }
-  }
+}
 ```
 
 > Note: The normal styling rules still apply, if we supply a `color "red"` attribute in our button, the browser will pick up that instead of our shared style. Keep in mind however that it also means you will have duplicated css properties in inline styles.
@@ -50,44 +48,39 @@ To create style tags you can use the `ruleset` builder, this will produce a css 
 
 ```fsharp
 module SharedClasses =
-  let Page =
-    ruleset ".page" {
-      margin 0
-      padding "1em"
-      displayFlex
-      flexDirectionColumn
-      height "100vh"
+    let Page = ruleset ".page" {
+        margin 0
+        padding "1em"
+        displayFlex
+        flexDirectionColumn
+        height "100vh"
     }
 
-  let Title =
-    ruleset ".title" { fontSize "calc(10px + 3vmin)" }
+  let Title = ruleset ".title" { fontSize "calc(10px + 3vmin)" }
 
-  let Text =
-    ruleset ".text" { fontSize "calc(10px + 1vmin)" }
-
+  let Text = ruleset ".text" { fontSize "calc(10px + 1vmin)" }
 ```
 
 With those rules in mind we can then add a "home page"
 
 ```fsharp
-let HomePage =
-  article {
+let HomePage = article {
     class' "page home"
     h1 { class' "title"; "This is the title" }
 
     section {
-      p { class' "text"; "This is some text" }
-      p { "This is another text" }
+        p { class' "text"; "This is some text" }
+        p { "This is another text" }
     }
 
     styleElt {
-      ruleset ".home" {
-        fontSize "medium"
-        boxShadow "5px 5px 0.5em rgba(0, 0, 0, 0.5)"
-      }
-      SharedClasses.Page
-      SharedClasses.Title
-      SharedClasses.Text
+        ruleset ".home" {
+            fontSize "medium"
+            boxShadow "5px 5px 0.5em rgba(0, 0, 0, 0.5)"
+        }
+        SharedClasses.Page
+        SharedClasses.Title
+        SharedClasses.Text
     }
   }
 ```
@@ -161,26 +154,25 @@ module StyleExtensions =
 Once we have defined our extension members on the style builder, we can use those in the following way:
 
 ```fsharp
-let MyItems =
-  ul {
+let MyItems = ul {
     // display: flex; flex-direction: column;
     style { VStack }
 
     // content
   }
-let MyItems2 =
-  ul {
+
+let MyItems2 = ul {
     // display: flex;
     style { HStack }
 
     // content
-  }
-let MyItems3 =
-  ul {
+}
+
+let MyItems3 = ul {
     // display: flex; justify-content: space-evenly;
     style { EvenHStack }
     // content
-  }
+}
 ```
 
 ### Other Examples:

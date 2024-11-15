@@ -75,8 +75,8 @@ type NodeRenderFragment = delegate of root: IComponent * builder: RenderTreeBuil
     div {
         attributes ...
         ref (fun x -> ()) // ✅
-        div { 1 }
-        div { 1 }
+        div { }
+        div { }
         // ...
     }
     ```

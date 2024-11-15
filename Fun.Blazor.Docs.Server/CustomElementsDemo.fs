@@ -16,20 +16,22 @@ type ServerDemoCounter() as this =
 
     [<Parameter>]
     member val count_from_form = "" with get, set
-    
+
     [<Parameter>]
     member val is_loading = false with get, set
 
     [<Parameter>]
     member val time = DateTime.Now with get, set
 
-    override _.Render() = div.create [|
-        p { $"count = {count}; count_from_query {this.count_from_query}; count_from_form {this.count_from_form}; is_loading {this.is_loading}; time {this.time}" }
+    override _.Render() = div {
+        p {
+            $"count = {count}; count_from_query {this.count_from_query}; count_from_form {this.count_from_form}; is_loading {this.is_loading}; time {this.time}"
+        }
         button {
             onclick (fun _ -> count <- count + 1)
             "Click me"
         }
-    |]
+    }
 
 type CustomElementsDemo =
     static member Create() =
@@ -41,7 +43,7 @@ type CustomElementsDemo =
             }
             yield! nodes
         }
-        div.create [|
+        div {
             section [|
                 p { "Custom element without prerender" }
                 html.customElement<ServerDemoCounter> ()
@@ -102,13 +104,13 @@ type CustomElementsDemo =
                 }
             |]
             section [|
-                p.create [|
+                p {
                     span { "Integrate SSR with htmx" }
                     span {
                         style { color "red" }
                         "(the counter is not interactive)"
                     }
-                |]
+                }
                 button {
                     hxTrigger' hxEvt.mouse.click
                     name (nameof Unchecked.defaultof<ServerDemoCounter>.count_from_form)
@@ -118,4 +120,4 @@ type CustomElementsDemo =
                     "Htmx click to add counter"
                 }
             |]
-        |]
+        }

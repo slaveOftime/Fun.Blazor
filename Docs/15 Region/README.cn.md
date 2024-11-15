@@ -6,13 +6,11 @@
 
 ```fsharp
 div { // 序列号 0
-    childContent [
-        if isLoading then
-            loader
-        div { // 序列号可能在此处改变
-            "hi"
-        }
-    ]
+    if isLoading then
+        loader
+    div { // 序列号可能在此处改变
+        "hi"
+    }
 }
 ```
 
@@ -22,16 +20,14 @@ div { // 序列号 0
 
 ```fsharp
 div { // 序列号 0
-    childContent [
-        region { // 序列号 1
-            // 下面的序列号将不会影响外面的序列号
-            if isLoading then
-                loader
-        }
-        div { // 序列号 2
-            "hi" // 序列号 3
-        }
-    ]
+    region { // 序列号 1
+        // 下面的序列号将不会影响外面的序列号
+        if isLoading then
+            loader
+    }
+    div { // 序列号 2
+        "hi" // 序列号 3
+    }
 }
 ```
 
@@ -39,15 +35,13 @@ div { // 序列号 0
 
 ```fsharp
 div { // 序列号 0
-    childContent [
-        adapt { // 序列号 1
-            match! isLoading with
-            | true -> loader
-            | false -> someDataView
-        }
-        div { // 序列号 2
-            "hi" // 序列号 3
-        }
-    ]
+    adapt { // 序列号 1
+        match! isLoading with
+        | true -> loader
+        | false -> someDataView
+    }
+    div { // 序列号 2
+        "hi" // 序列号 3
+    }
 }
 ```

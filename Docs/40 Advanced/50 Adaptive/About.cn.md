@@ -8,18 +8,16 @@ Adaptive 基于 [FSharp.Data.Adaptive](https://github.com/fsprojects/FSharp.Data
 let yourUI =
     div {
         style { ... }
-        childContent [
-            ... 很多东西
-            adapt {
-                let! msg = from store
-                // 只有下面的部分会重新渲染。
-                div {
-                    style { ... }
-                    msg
-                }
-            } 
-            ... 很多东西
-        ]
+        ... 很多东西
+        adapt {
+            let! msg = from store
+            // 只有下面的部分会重新渲染。
+            div {
+                style { ... }
+                msg
+            }
+        } 
+        ... 很多东西
     }
 ```
 

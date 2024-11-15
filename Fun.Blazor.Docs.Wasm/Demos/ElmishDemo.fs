@@ -40,44 +40,41 @@ let private update msg model =
             ()
             (id)
 
-let private view model (dispatch: Msg -> unit) =
-    div.create [
-        MudText'' {
-            Typo Typo.h6
+let private view model (dispatch: Msg -> unit) = div {
+    MudText'' {
+        Typo Typo.h6
+        Color Color.Primary
+        model.Count
+    }
+    MudButtonGroup'' {
+        Variant Variant.Outlined
+        MudButton'' {
             Color Color.Primary
-            model.Count
+            OnClick(fun _ -> Increase |> dispatch)
+            "Increase"
         }
-        MudButtonGroup'' {
+        MudButton'' {
+            Color Color.Primary
+            OnClick(fun _ -> IncreaseTask |> dispatch)
+            "Increase task (delayed in 1s)"
+        }
+        MudButton'' {
+            Color Color.Secondary
             Variant Variant.Outlined
-            childContent [|
-                MudButton'' {
-                    Color Color.Primary
-                    OnClick(fun _ -> Increase |> dispatch)
-                    "Increase"
-                }
-                MudButton'' {
-                    Color Color.Primary
-                    OnClick(fun _ -> IncreaseTask |> dispatch)
-                    "Increase task (delayed in 1s)"
-                }
-                MudButton'' {
-                    Color Color.Secondary
-                    Variant Variant.Outlined
-                    OnClick(fun _ -> task {
-                        do! System.Threading.Tasks.Task.Delay 1000
-                        Increase |> dispatch
-                    })
-                    "Increase (Delay 1s in click event)"
-                }
-                MudButton'' {
-                    Color Color.Secondary
-                    Variant Variant.Outlined
-                    OnClick(fun _ -> Decrease |> dispatch)
-                    "Decrease (loop in 3s)"
-                }
-            |]
+            OnClick(fun _ -> task {
+                do! System.Threading.Tasks.Task.Delay 1000
+                Increase |> dispatch
+            })
+            "Increase (Delay 1s in click event)"
         }
-    ]
+        MudButton'' {
+            Color Color.Secondary
+            Variant Variant.Outlined
+            OnClick(fun _ -> Decrease |> dispatch)
+            "Decrease (loop in 3s)"
+        }
+    }
+}
 
 
 let entry = html.elmish (init, update, view)

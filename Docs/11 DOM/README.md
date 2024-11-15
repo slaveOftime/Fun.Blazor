@@ -8,12 +8,11 @@
 Fun.Blazor provides a friendly way to write HTML for web applications. It uses [F# Computation Expressions] to generate a simple yet performant DSL.
 
 ```fsharp
-let hello name =
-  div {
+let hello name = div {
     id "my-id"
     class' "my-class"
-    $"Hello, {name}"
-  }
+    "Hello, "; name
+}
 
 hello "World!"
 ```
@@ -36,32 +35,28 @@ Since you're using F# for your markup code, you have all of the F# arsenal at yo
 
 ```fsharp
 
-let element isVisible =
-  div {
+let element isVisible = div {
     $"The element is: "
     region { // good for diff performance and sematic for dynamic part, but if you do not use region to wrap it, it is still ok for most of the cases
-      if isVisible then
-        "Visible"
-      else
-        "Not Visible"
+        if isVisible then "Visible"
+        else "Not Visible"
     }
-  }
+}
 ```
 
 ### Match
 
 ```fsharp
 
-let element kind =
-  div {
+let element kind = div {
     $"The element is: "
     region { // good for diff performance and sematic for dynamic part, but if you do not use region to wrap it, it is still ok for most of the cases
-      match kind with
-      | Fantastic -> "Fantastic"
-      | Average -> "Average"
-      | WellItsSomething -> "Wel... it is something"
+       match kind with
+       | Fantastic -> "Fantastic"
+       | Average -> "Average"
+       | WellItsSomething -> "Wel... it is something"
     }
-  }
+}
 ```
 
 ### Lists
@@ -70,14 +65,14 @@ To render lists you can use `for item in items do`
 
 ```fsharp
 div {
-  h3 { "Some title." }
-  ul {
-    for item in 0..10 do
-      li {
-          key item
-          $"Item: {item}"
-      }
-  }
+    h3 { "Some title." }
+    ul {
+        for item in 0..10 do
+            li {
+                key item
+                $"Item: {item}"
+            }
+    }
 }
 ```
 
@@ -85,7 +80,7 @@ Or also if you have an existing list of nodes you can use the `childContent` ope
 
 ```fsharp
 ul {
-  childContent listOfNodes
+    childContent listOfNodes
 }
 ```
 
@@ -93,7 +88,7 @@ Or yield directly:
 
 ```fsharp
 ul {
-  yield! listOfNodes
+    yield! listOfNodes
 }
 ```
 
@@ -105,7 +100,7 @@ Fun.Blazor provides out of the box most if not all of the existing HTML attribut
 
 ```fsharp
 section {
-  "my-attribute", "value"
+    "my-attribute", "value"
 }
 ```
 
@@ -115,23 +110,20 @@ If you'd like to share attributes between different elements you can use the `do
 
 ```fsharp
 module SharedAttrs =
-  let classAndData =
-    domAttr {
-      class' "has-data"
-      "my-data", "123"
+    let classAndData = domAttr {
+        class' "has-data"
+        "my-data", "123"
     }
 
-let someNode =
-  div {
+let someNode = div {
     SharedAttrs.classAndData
     "Some Node"
-  }
+}
 
-let otherNode =
-  div {
+let otherNode = div {
     SharedAttrs.classAndData
     "Other Node"
-  }
+}
 ```
 
 ## Events
@@ -141,16 +133,16 @@ handlers can be async or sync depending on your usage but they're often defined 
 
 ```fsharp
 button {
-  onclick(fun e -> printfn "clicked")
-  "Click Me"
+    onclick(fun e -> printfn "clicked")
+    "Click Me"
 }
 
 button {
-  onclick(fun e -> task {
-    do! Async.Sleep 1000
-    printfn "clicked"
-  })
-  "Click Me Task"
+    onclick(fun e -> task {
+        do! Async.Sleep 1000
+        printfn "clicked"
+    })
+    "Click Me Task"
 }
 ```
 
@@ -158,19 +150,19 @@ For inputs remember that events provide values as strings, so you have to unbox 
 
 ```fsharp
 input {
-  placeholder "Write Something"
-  oninput(fun e ->
-    unbox<string> e.Value |> printfn "New Value: '%s'"
-  )
+    placeholder "Write Something"
+    oninput(fun e ->
+      unbox<string> e.Value |> printfn "New Value: '%s'"
+    )
 }
 
 input {
-  type' "number"
-  placeholder "Change Number"
-  type' InputTypes.number
-  oninput(fun e ->
-    unbox<string> e.Value |> int |> printfn "New Value: '%i'"
-  )
+    type' "number"
+    placeholder "Change Number"
+    type' InputTypes.number
+    oninput(fun e ->
+        unbox<string> e.Value |> int |> printfn "New Value: '%i'"
+    )
 }
 ```
 

@@ -4,7 +4,6 @@ module Fun.Blazor.Docs.Wasm.DocView
 
 open System.Threading.Tasks
 open FSharp.Data.Adaptive
-open Microsoft.JSInterop
 open Fun.Result
 open Fun.Blazor
 open MudBlazor
@@ -15,7 +14,7 @@ open Fun.Blazor.Docs.Wasm
 let private docDetail (doc: DocBrief) =
     html.inject (
         doc,
-        fun (hook: IComponentHook, js: IJSRuntime) ->
+        fun (hook: IComponentHook) ->
             let docSegmentLoadedCount = cval 0
 
             let mutable isCodeHighlighted = false
@@ -86,7 +85,7 @@ let private docDetail (doc: DocBrief) =
                     | true ->
                         task {
                             do! Task.Delay 100
-                            do! js.highlightCode ()
+                            do! hook.HighlightCode()
                             isCodeHighlighted <- true
                         }
                         |> ignore

@@ -16,12 +16,10 @@ type private Msg =
 
 let private delayDecrease =
     Cmd.OfAsync.perform
-        (fun () ->
-            async {
-                do! Async.Sleep 3000
-                return Decrease
-            }
-        )
+        (fun () -> async {
+            do! Async.Sleep 3000
+            return Decrease
+        })
         ()
         (id)
 
@@ -37,7 +35,7 @@ let private update msg model =
 let entry =
     html.inject (fun (hook: IComponentHook) ->
         let state, dispatch = hook.UseElmish(init, update)
-        div.create [|
+        div {
             adapt {
                 let! count = state |> AVal.map (fun x -> x.Count1) // only intrested in Count1
                 MudText'' {
@@ -55,16 +53,14 @@ let entry =
             spaceV2
             MudButtonGroup'' {
                 Variant Variant.Outlined
-                childContent [|
-                    MudButton'' {
-                        OnClick(fun _ -> Increase |> dispatch)
-                        "Increase Count1"
-                    }
-                    MudButton'' {
-                        OnClick(fun _ -> IncreaseCount2 |> dispatch)
-                        "Increase Count2"
-                    }
-                |]
+                MudButton'' {
+                    OnClick(fun _ -> Increase |> dispatch)
+                    "Increase Count1"
+                }
+                MudButton'' {
+                    OnClick(fun _ -> IncreaseCount2 |> dispatch)
+                    "Increase Count2"
+                }
             }
-        |]
+        }
     )

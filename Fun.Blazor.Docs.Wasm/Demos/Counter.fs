@@ -3,15 +3,19 @@ module Fun.Blazor.Docs.Wasm.Demos.Counter
 
 open FSharp.Data.Adaptive
 open Fun.Blazor
+open MudBlazor
 
 let entry =
     adapt {
-        let! count1, setCount1 = cval(1).WithSetter()
-        div.create [|
-            h6 { $"Count1={count1}" }
-            button {
-                onclick (fun _ -> setCount1 (count1 + 1))
-                "Increase count 1"
+        let amount = 1
+        let! count, setCount = cval(1).WithSetter()
+        div {
+            p { "Count="; count }
+            MudButton'' {
+                Size Size.Small
+                Variant Variant.Outlined
+                OnClick (fun _ -> setCount (count + amount))
+                "Increase count by "; amount
             }
-        |]
+        }
     }

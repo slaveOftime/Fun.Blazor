@@ -22,7 +22,7 @@ let entry =
             hook.OnFirstAfterRender.Add(fun () ->
                 TimeSpan.FromSeconds 1.
                 |> Observable.interval
-                |> Observable.subscribe (fun _ -> 
+                |> Observable.subscribe (fun _ ->
                     count <- count + 1
                     hook.StateHasChanged()
                 )
@@ -31,12 +31,10 @@ let entry =
 
             MudPaper'' {
                 style { padding 10 }
-                childContent [|
-                    MudText'.create "externalDemo1"
-                    spaceV3
-                    div { "extenalX = %d{extenalX}" }
-                    spaceV2
-                    div { $"Count = {count}" }
-                |]
+                MudText'.create "externalDemo1"
+                spaceV3
+                div { "extenalX = %d{extenalX}" }
+                spaceV2
+                div { $"Count = {count}" }
             }
     )

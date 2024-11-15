@@ -15,8 +15,8 @@
 		<Compile Include="Types.fs" />
 		<Compile Include="Utils.fs" />
 		<Compile Include="Theme.fs" />
-		<Compile Include="Hooks.fs" />
 		<Compile Include="JsInterop.fs" />
+		<Compile Include="Hooks.fs" />
 		<Compile Include="BasicControls.fs" />
 		<Compile Include="Demos\Counter.fs" />
 		<Compile Include="Demos\CounterClassStyle.fs" />

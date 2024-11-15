@@ -63,6 +63,7 @@ app.MapFunBlazor(fun ctx ->
                 viewport "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
                 stylesheet "_content/MudBlazor/MudBlazor.min.css"
                 stylesheet "css/app.css"
+                HeadOutlet'' { }
                 CustomElement.lazyBlazorJs (hasBlazorJs = true)
             }
             body {

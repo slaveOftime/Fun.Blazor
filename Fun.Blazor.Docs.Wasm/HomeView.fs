@@ -2,8 +2,8 @@
 [<AutoOpen>]
 module Fun.Blazor.Docs.Wasm.Home
 
+open FSharp.Data.Adaptive
 open Fun.Blazor
-open Microsoft.JSInterop
 open MudBlazor
 
 
@@ -317,42 +317,50 @@ let private richEcosystem = div {
 
 
 let home =
-    html.inject (fun (hook: IComponentHook, js: IJSRuntime) ->
+    html.inject (fun (hook: IComponentHook) ->
         hook.AddFirstAfterRenderTask(fun _ -> task {
-            do! Async.Sleep 3000
-            do! js.highlightCode ()
+            do! Async.Sleep 200
+            do! hook.HighlightCode()
         })
 
         div {
             style { marginTop -64 }
-            MudCarousel'' {
-                style {
-                    height 700
-                    overflowYAuto
-                    backgroundImageUrl "hero.webp"
-                }
-                ShowArrows
-                ShowBullets
-                EnableSwipeGesture
-                AutoCycle
-                SelectedIndexChanged(fun _ -> task { do! js.highlightCode () })
-                MudCarouselItem'' {
-                    Transition Transition.Slide
+            adapt {
+                let! selectedIndex, setSelectedIndex = cval(0).WithSetter()
+                MudCarousel'' {
                     style {
-                        displayFlex
-                        alignItemsCenter
-                        justifyContentCenter
+                        height 700
+                        overflowYAuto
+                        backgroundImageUrl "hero.webp"
                     }
-                    simplestSyntaxDemo
-                }
-                MudCarouselItem'' {
-                    Transition Transition.Slide
-                    style {
-                        displayFlex
-                        alignItemsCenter
-                        justifyContentCenter
+                    ShowArrows
+                    ShowBullets
+                    EnableSwipeGesture
+                    AutoCycle
+                    SelectedIndex selectedIndex
+                    SelectedIndexChanged(fun x -> task {
+                        do! Async.Sleep 200 // After transition is done
+                        do! hook.HighlightCode()
+                        setSelectedIndex x
+                    })
+                    MudCarouselItem'' {
+                        Transition Transition.Slide
+                        style {
+                            displayFlex
+                            alignItemsCenter
+                            justifyContentCenter
+                        }
+                        simplestSyntaxDemo
                     }
-                    flexibleSyntaxDemo
+                    MudCarouselItem'' {
+                        Transition Transition.Slide
+                        style {
+                            displayFlex
+                            alignItemsCenter
+                            justifyContentCenter
+                        }
+                        flexibleSyntaxDemo
+                    }
                 }
             }
             section {
@@ -365,6 +373,7 @@ let home =
                 }
                 MudText'' {
                     Typo Typo.h2
+                    Align Align.Center
                     "You can run it in anywhere where dotnet can run!"
                 }
                 div {
@@ -414,7 +423,16 @@ let home =
                 richEcosystem
                 MudText'' {
                     Typo Typo.h5
-                    "Access to rich ecosystem by auto-generated/pre-generated bindings!!! ❤️"
+                    Align Align.Center
+                    "Access to rich ecosystem by auto-generated/"
+                    MudLink'' {
+                        Href "Docs/Bindings"
+                        Color Color.Default
+                        Underline Underline.Always
+                        Typo Typo.``inherit``
+                        "pre-generated"
+                    }
+                    " bindings!!! ❤️"
                 }
             }
             section {

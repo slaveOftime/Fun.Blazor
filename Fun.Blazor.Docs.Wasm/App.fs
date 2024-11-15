@@ -1,6 +1,8 @@
 ﻿[<AutoOpen>]
 module Fun.Blazor.Docs.Wasm.App
 
+open Microsoft.AspNetCore.Components
+open Microsoft.AspNetCore.Components.Web
 open Fun.Blazor
 open MudBlazor
 open Fun.Blazor.Docs.Controls

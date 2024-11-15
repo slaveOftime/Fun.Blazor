@@ -2,9 +2,9 @@
 
 ## 请查看示例以快速开始
 
-这包含文档网站本身的代码：https://github.com/slaveOftime/Fun.Blazor/tree/master/Fun.Blazor.Docs.Wasm。
+- 这包含文档网站本身的代码：https://github.com/slaveOftime/Fun.Blazor/tree/master/Fun.Blazor.Docs.Wasm。
 
-这包含 Fun.Blazor 模板的代码，还有更多示例：https://github.com/slaveOftime/Fun.Blazor.Samples。
+- 这包含 Fun.Blazor 模板的代码，还有更多示例：https://github.com/slaveOftime/Fun.Blazor.Samples。
 
 ## 使用 dotnet 模板：
 
@@ -74,11 +74,9 @@ type Comp1 =
     static member Create() =
         html.inject (fun (svc1, shareStore: IShareStore, ...) ->
             div {
-                childContent [
-                    fragment1
-                    fragment2 shareStore
-                    fragment3
-                ]
+                fragment1
+                fragment2 shareStore
+                fragment3
             }
         )
 ```

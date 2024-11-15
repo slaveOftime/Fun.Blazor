@@ -28,10 +28,10 @@ type MyContext() =
 
 
 let demo =
-    CascadingValue'() {
+    CascadingValue'' {
         Name "MyContext"
         Value 1
-        CascadingValue'() {
+        CascadingValue'' {
             Name "MyContext"
             Value 2 // 这个值会被消费，因为它更接近消费者。
             MyContext.Consume (fun x -> div {
