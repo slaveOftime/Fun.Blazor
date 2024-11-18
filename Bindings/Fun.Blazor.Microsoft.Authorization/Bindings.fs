@@ -1,9 +1,12 @@
 namespace Microsoft.AspNetCore.Components.Authorization
 
+
 [<AutoOpen>]
 module Bindings =
   
+    open System
     open System.Diagnostics.CodeAnalysis
+    open Microsoft.AspNetCore.Components
     open Microsoft.AspNetCore.Components.Authorization
     open Fun.Blazor
     open Fun.Blazor.Operators
@@ -17,7 +20,20 @@ module Bindings =
     /// which makes the user's current authentication state available to descendants.
     /// </summary>
     type AuthorizeRouteView' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AuthorizeRouteView>)>] () = 
-        inherit RouteView'()
+        inherit ComponentBuilder<AuthorizeRouteView>()
+        
+        /// Gets or sets the route data.
+        /// This determines the page that will be displayed and the parameter values that will be supplied to the page.
+        [<CustomOperation("RouteData")>]
+        member inline _.RouteData([<InlineIfLambda>] render: AttrRenderFragment, x: RouteData) = render ==> ("RouteData" => x)
+
+        /// <summary>
+        /// Gets or sets the type of a layout to be used if the page does not
+        /// declare any layout. If specified, the type must implement <see cref="T:Microsoft.AspNetCore.Components.IComponent" />
+        /// and accept a parameter named <see cref="P:Microsoft.AspNetCore.Components.LayoutComponentBase.Body" />.
+        /// </summary>
+        [<CustomOperation("DefaultLayout")>]
+        member inline _.DefaultLayout([<InlineIfLambda>] render: AttrRenderFragment, x: Type) = render ==> ("DefaultLayout" => x)
 
         /// <summary>
         /// The content that will be displayed if the user is not authorized.
