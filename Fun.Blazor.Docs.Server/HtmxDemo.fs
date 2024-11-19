@@ -10,16 +10,17 @@ type HtmxSseStockDemo() =
     inherit HxSseComponent()
 
     override _.GetNodes() = taskSeq {
-        for i in 1..5 do
+        for productId in 1..5 do
             div {
                 "stock: "
                 MudChip'' {
                     Variant Variant.Filled
-                    Color(if i % 2 = 0 then Color.Primary else Color.Secondary)
+                    Color(if productId % 2 = 0 then Color.Primary else Color.Secondary)
                     "Product #"
-                    i
+                    productId
                     ": "
                     System.Random.Shared.Next(100, 200)
+                    "$"
                 }
             }
             do! Async.Sleep 1000
@@ -40,8 +41,8 @@ type HtmxDemo =
         section {
             hxSseConnectComp (QueryBuilder<HtmxSseStockDemo>())
             hxSseCloseOnComp
-            hxSseSwapOnComp
-            "Htmx SSE demo with attributes：supposed to display the latest stock info"
+            "Htmx SSE demo: supposed to display the latest stock info"
+            div { hxSseSwapOnComp }
         }
         MudDivider'' { style { margin 20 0 } }
         section {
