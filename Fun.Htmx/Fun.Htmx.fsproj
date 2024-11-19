@@ -14,6 +14,11 @@
 		<Compile Include="Core.fs" />
 		<Compile Include="NativeJs.fs" />
 		<Compile Include="DslHtmxBuilder.fs" />
+		<Compile Include="DslSse.fs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="FSharp.Control.TaskSeq" Version="0.4.0" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)'!='net6.0'">
@@ -23,8 +28,6 @@
 	<ItemGroup Condition="'$(TargetFramework)'=='net6.0'">
 		<PackageReference Update="FSharp.Core" Version="6.0.0" />
 	</ItemGroup>
-
-	<ItemGroup />
 
 	<ItemGroup>
 		<ProjectReference Include="..\Fun.Blazor.Server\Fun.Blazor.Server.fsproj" />

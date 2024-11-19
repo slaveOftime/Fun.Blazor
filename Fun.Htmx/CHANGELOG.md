@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## [4.1.1] - 2024-11-19
+
+- Add hxExt from htmx 2.x
+- Add hxSsexxx from htmx sse extension 2.x
+- Add HxSseComponent for building sse component
+
 ## [4.1.0] - 2024-11-14
 
 - Bump version to 4.1.0

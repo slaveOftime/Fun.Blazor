@@ -28,6 +28,11 @@ type DomAttrBuilder with
             index + 1
         )
 
+    
+    /// Install the extension on that HTML element
+    [<CustomOperation "hxExt">]
+    member inline _.hxExt([<InlineIfLambda>] render: AttrRenderFragment, ext: string) = render ==> ("hx-ext" => ext)
+
     /// Issues a request to get the blazor component and reader as static dom
     [<CustomOperation "hxRequestBlazorSSR">]
     member inline _.hxRequestBlazorSSR([<InlineIfLambda>] render: AttrRenderFragment, compTy: System.Type, ?queries: (string * obj) seq, ?method: string) =
@@ -384,17 +389,6 @@ type DomAttrBuilder with
             | _ -> ""
 
         render ==> ("hx-ws" => "send" + modifier)
-
-
-    [<CustomOperation "hxSSE">]
-    member inline _.hxSSE([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> ("hx-sse" => x)
-
-    [<CustomOperation "hxSSE_connect">]
-    member inline this.hxSSE_connect([<InlineIfLambda>] render: AttrRenderFragment, x: string) = this.hxSSE (render, "connect:" + x)
-
-    [<CustomOperation "hxSSE_swap">]
-    member inline this.hxSSE_swap([<InlineIfLambda>] render: AttrRenderFragment, x: string) = this.hxSSE (render, "swap:" + x)
-
 
     /// The hx-on attribute allows you to embed scripts inline to respond to events directly on an element; similar to the onevent properties found in HTML, such as onClick.
     /// 

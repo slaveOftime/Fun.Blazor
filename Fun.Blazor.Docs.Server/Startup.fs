@@ -67,14 +67,19 @@ app.MapFunBlazor(fun ctx ->
                 CustomElement.lazyBlazorJs (hasBlazorJs = true)
             }
             body {
+                App.theme
+
                 html.route [|
+                    routeCi "/htmx-demo" (HtmxDemo.Create())
                     routeCi "/custom-elements-demo" (CustomElementsDemo.Create())
                     routeAny (html.blazor<App> RenderMode.InteractiveServer)
                 |]
 
                 script { src "_content/MudBlazor/MudBlazor.min.js" }
                 script { src "_framework/blazor.server.js" }
-                script { src "https://unpkg.com/htmx.org@1.9.9" }
+                
+                script { src "https://unpkg.com/htmx.org@2.0.3" }
+                script { src "https://unpkg.com/htmx-ext-sse@2.2.2/sse.js" }
 
                 stylesheet "css/google-font.css"
                 stylesheet "css/prism-vsc-dark-plus.css"

@@ -5,6 +5,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<Compile Include="HtmxDemo.fs" />
 		<Compile Include="CustomElementsDemo.fs" />
 		<Compile Include="Startup.fs" />
 	</ItemGroup>

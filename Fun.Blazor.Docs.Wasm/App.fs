@@ -9,7 +9,7 @@ open Fun.Blazor.Docs.Controls
 open Fun.Blazor.Docs.Wasm
 
 
-let private theme =
+let theme =
     html.injectWithNoKey (fun (shareStore: IShareStore) -> adapt {
         let! isDark = shareStore.IsDarkMode
         MudThemeProvider'' {
