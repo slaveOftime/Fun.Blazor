@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [4.1.2] - 2024-11-20
+
+- Support to yield ComponentAttrBuilder
+
 ## [4.1.1] - 2024-11-14
 
 - Fix empty body for ComponentWithDomAttrBuilder

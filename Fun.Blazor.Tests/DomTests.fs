@@ -541,7 +541,7 @@ let ``empty body ce should work`` () =
         MudSpacer'' { }
         if true then
             MudButton'' { if true then MudIcon'' { Icon Icons.Material.Filled.Add } }
-        if false then section {}
+        if false then section { }
     }
 
     let result = context.RenderNode demo3
@@ -581,5 +581,25 @@ let ``form should work`` () =
         <form data-enhance="true">
           <input value="1">
         </form>
+        """
+    )
+
+
+[<Fact>]
+let ``ComponentAttrBuilder should yield correctly`` () =
+    let context = createTestContext ()
+
+    let demo = MudPaper'' {
+        Height "100px"
+        ComponentAttrBuilder<MudPaper>().Add((fun x -> x.Height), "200px").Add((fun x -> x.Outlined), true)
+        "cool"
+    }
+
+    let result = context.RenderNode demo
+    result.MarkupMatches(
+        """
+        <div class="mud-paper mud-paper-outlined" style="height:100px;">
+            cool
+        </div>
         """
     )

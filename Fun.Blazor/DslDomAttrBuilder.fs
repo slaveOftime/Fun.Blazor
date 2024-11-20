@@ -19,6 +19,8 @@ type DomAttrBuilder() =
 
     member inline _.Yield([<InlineIfLambda>] x: AttrRenderFragment) = x
 
+    member inline _.Yield(x: ComponentAttrBuilder<_>) = x.Build()
+
 
     member inline _.Yield((key, value): string * string) =
         AttrRenderFragment(fun _ builder index ->
