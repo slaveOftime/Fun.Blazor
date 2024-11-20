@@ -13,6 +13,7 @@
 		</EmbeddedResource>
 		<Compile Include="Core.fs" />
 		<Compile Include="NativeJs.fs" />
+		<Compile Include="EmptyComp.fs" />
 		<Compile Include="DslHtmxBuilder.fs" />
 		<Compile Include="DslSse.fs" />
 	</ItemGroup>

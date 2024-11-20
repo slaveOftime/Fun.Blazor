@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+- Add hxGetEmpty
+
 ## [4.1.1] - 2024-11-19
 
 - Add hxExt from htmx 2.x

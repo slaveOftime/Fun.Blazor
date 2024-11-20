@@ -60,6 +60,11 @@ type DomAttrBuilder with
     [<CustomOperation "hxGetComponent">]
     member inline this.hxGetComponent<'T>([<InlineIfLambda>] render: AttrRenderFragment, queryBuilder: QueryBuilder<'T>) =
         this.hxRequestBlazorSSR(render, HttpMethods.Get, queryBuilder)
+
+    /// Issue a get request to get a cache empty content, can be used to set some element to empty
+    [<CustomOperation "hxGetEmpty">]
+    member inline this.hxGetEmpty([<InlineIfLambda>] render: AttrRenderFragment) =
+        this.hxRequestBlazorSSR(render, typeof<EmptyComp>, method = HttpMethods.Get)
     
     /// Issues a post request to get the blazor component and reader as static dom
     [<CustomOperation "hxPostComponent">]
