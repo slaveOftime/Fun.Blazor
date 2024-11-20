@@ -69,7 +69,8 @@ type DomAttrBuilder with
 type html with
 
     /// <summary>
-    /// Helper function to add a component which inherits from HxSseComponentBase, for streaming its content with server sent events.
+    /// Helper function to add a component which inherits from HxSseComponentBase, for streaming its content with server sent events. 
+    /// You can use hxSseConnnectComp directly on your target element. This is just s helper function with some default setup.
     /// </summary>
     /// <param name="attrs">attributes of the container element</param>
     static member sse<'T when 'T :> HxSseComponent>(?tag: string, ?attrs: AttrRenderFragment, ?setCompAttrs) =
