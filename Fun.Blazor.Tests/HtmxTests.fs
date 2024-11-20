@@ -6,6 +6,9 @@ open Fun.Blazor
 open FSharp.Control
 open Bunit
 open Microsoft.AspNetCore.Components
+open Microsoft.Extensions.DependencyInjection
+open Microsoft.AspNetCore.Http
+open Moq
 
 
 [<Fact>]
@@ -96,6 +99,7 @@ type LiverCounter() as this =
 [<Fact>]
 let ``hxRequestxxx should work`` () =
     let context = new TestContext()
+    context.Services.AddTransient<IHttpContextAccessor>(fun _ -> Mock.Of<IHttpContextAccessor>()) |> ignore
 
     let result =
         context.RenderNode(
@@ -125,6 +129,7 @@ let ``hxRequestxxx should work`` () =
                     attrs = domAttr { hxSwap_beforeend },
                     setCompAttrs = (fun builder -> builder.Add((fun x -> x.Initial), 10))
                 )
+                html.blazor<LiverCounter> ()
             }
         )
 
@@ -144,5 +149,6 @@ let ``hxRequestxxx should work`` () =
         </div>
         <div hx-ext="sse" sse-connect="/fun-blazor-server-side-render-components/Fun.Blazor.Tests.HtmxTests+LiverCounter?IsStreaming=True" sse-swap="NewNode" sse-close="CloseSse"></div>
         <section hx-swap="beforeend" hx-ext="sse" sse-connect="/fun-blazor-server-side-render-components/Fun.Blazor.Tests.HtmxTests+LiverCounter?IsStreaming=True&amp;Initial=10" sse-swap="NewNode" sse-close="CloseSse"></section>
+        <section hx-ext="sse" sse-connect="/fun-blazor-server-side-render-components/Fun.Blazor.Tests.HtmxTests+LiverCounter?Initial=0&amp;IsStreaming=True&amp;Tag=section" sse-swap="NewNode" sse-close="CloseSse" hx-swap="innerHTML"></section>
         """
     )
