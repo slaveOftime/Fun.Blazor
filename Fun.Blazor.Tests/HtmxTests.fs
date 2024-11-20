@@ -3,6 +3,7 @@
 open Xunit
 open Fun.Htmx
 open Fun.Blazor
+open FSharp.Control
 open Bunit
 open Microsoft.AspNetCore.Components
 
@@ -76,6 +77,21 @@ type DemoComp() =
 
     override _.Render() = html.none
 
+type LiverCounter() as this =
+    inherit HxSseComponent()
+
+    [<Parameter>]
+    member val Initial = 0 with get, set
+
+    override _.GetNodes() = taskSeq {
+        for count in this.Initial .. (this.Initial + 3) do
+            div {
+                "count="
+                count
+            }
+            do! Async.Sleep 1000
+    }
+
 
 [<Fact>]
 let ``hxRequestxxx should work`` () =
@@ -83,7 +99,7 @@ let ``hxRequestxxx should work`` () =
 
     let result =
         context.RenderNode(
-            html.fragment [|
+            fragment {
                 div { hxRequestBlazorSSR (QueryBuilder<DemoComp>().Add((fun x -> x.Count), 1)) }
                 div { hxRequestBlazorSSR "post" (QueryBuilder<DemoComp>().Add((fun x -> x.Count), 2)) }
                 div { hxRequestBlazorSSR typeof<DemoComp> [ "Count", box 3 ] }
@@ -92,21 +108,24 @@ let ``hxRequestxxx should work`` () =
                 div { hxRequestCustomElement "post" (QueryBuilder<DemoComp>().Add((fun x -> x.Count), 2)) }
                 div { hxRequestCustomElement typeof<DemoComp> [ "Count", box 3 ] }
                 div { hxRequestCustomElement typeof<DemoComp> [ "Count", box 4 ] "post" }
-                div { 
-                    hxRequestCustomElement (QueryBuilder<DemoComp>()
-                        .Add((fun x -> x.Count), 2)
-                        .Add((fun x -> x.Count), 3)
-                        .Add(DemoComp(Count = 4))
-                    ) 
+                div {
+                    hxRequestCustomElement (QueryBuilder<DemoComp>().Add((fun x -> x.Count), 2).Add((fun x -> x.Count), 3).Add(DemoComp(Count = 4)))
                 }
-                div { 
-                    hxRequestCustomElement (QueryBuilder<DemoComp>()
-                        .Add((fun x -> x.Count), 2)
-                        .Add((fun x -> x.Count), 3, append = true)
-                    ) 
+                div {
+                    hxRequestCustomElement (QueryBuilder<DemoComp>().Add((fun x -> x.Count), 2).Add((fun x -> x.Count), 3, append = true))
                     html.createHiddenInputs (DemoComp(Count = 1))
                 }
-            |]
+                div {
+                    hxSseConnectComp (QueryBuilder<LiverCounter>())
+                    hxSseSwapOnComp
+                    hxSseCloseOnComp
+                }
+                html.sse<LiverCounter> (
+                    tag = "section",
+                    attrs = domAttr { hxSwap_beforeend },
+                    setCompAttrs = (fun builder -> builder.Add((fun x -> x.Initial), 10))
+                )
+            }
         )
 
     result.MarkupMatches(
@@ -123,5 +142,7 @@ let ``hxRequestxxx should work`` () =
         <div hx-get="/fun-blazor-custom-elements/Fun.Blazor.Tests.HtmxTests+DemoComp?Count=2&amp;Count=3">
             <input type="hidden" name="Count" value="1">
         </div>
+        <div hx-ext="sse" sse-connect="/fun-blazor-server-side-render-components/Fun.Blazor.Tests.HtmxTests+LiverCounter?IsStreaming=True" sse-swap="NewNode" sse-close="CloseSse"></div>
+        <section hx-swap="beforeend" hx-ext="sse" sse-connect="/fun-blazor-server-side-render-components/Fun.Blazor.Tests.HtmxTests+LiverCounter?IsStreaming=True&amp;Initial=10" sse-swap="NewNode" sse-close="CloseSse"></section>
         """
     )

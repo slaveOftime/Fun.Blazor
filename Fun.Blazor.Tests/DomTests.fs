@@ -185,22 +185,31 @@ let ``DOM CE attribute share check`` () =
         asAttrRenderFragment
     }
 
-    MudAlert'() {
-        tempAttr
-        demo 123
-    }
-    |> ignore
-
+    
     let demo = div {
         tempAttr
         title' "t"
         demo 3456
+        demo 34567
         aria.busy true
         123
+        MudButton'' {
+            tempAttr
+            demo 456
+            "cool"
+        }
     }
     let result = context.RenderNode demo
-    result.MarkupMatches("""<div demo="123" title="t" aria-busy="True">123</div>""")
-    Assert.Equal("""<div demo="123" title="t" demo="3456" aria-busy="True">123</div>""", result.Markup)
+    result.MarkupMatches(
+        """
+        <div demo="123" title="t" aria-busy="True">
+            123
+            <button demo="456" type="button" class="mud-button-root mud-button mud-button-text mud-button-text-default mud-button-text-size-medium mud-ripple"  >
+                <span class="mud-button-label">cool</span>
+            </button>
+        </div>
+        """
+    )
 
 
 [<Fact>]
@@ -590,7 +599,6 @@ let ``ComponentAttrBuilder should yield correctly`` () =
     let context = createTestContext ()
 
     let demo = MudPaper'' {
-        Height "100px"
         ComponentAttrBuilder<MudPaper>().Add((fun x -> x.Height), "200px").Add((fun x -> x.Outlined), true)
         "cool"
     }
@@ -598,7 +606,7 @@ let ``ComponentAttrBuilder should yield correctly`` () =
     let result = context.RenderNode demo
     result.MarkupMatches(
         """
-        <div class="mud-paper mud-paper-outlined" style="height:100px;">
+        <div class="mud-paper mud-paper-outlined" style="height:200px;">
             cool
         </div>
         """

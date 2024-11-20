@@ -3,6 +3,7 @@
 ## [Unreleased]
 
 - Add hxGetEmpty
+- Improve html.sse
 
 ## [4.1.1] - 2024-11-19
 

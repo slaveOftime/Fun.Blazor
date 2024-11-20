@@ -68,13 +68,28 @@ type DomAttrBuilder with
 
 type html with
 
-    /// Helper function to add a component which inherits from HxSseComponentBase, for streaming its content with server sent events
-    static member sse<'T when 'T :> HxSseComponent>(?tag: string, ?attrs: AttrRenderFragment) =
-        html.blazor (
-            ComponentAttrBuilder<'T>()
-                .Add((fun x -> x.Tag), defaultArg tag "section")
-                .Add((fun x -> x.Attributes), defaultArg attrs html.emptyAttr)
-        )
+    /// <summary>
+    /// Helper function to add a component which inherits from HxSseComponentBase, for streaming its content with server sent events.
+    /// </summary>
+    /// <param name="attrs">attributes of the container element</param>
+    static member sse<'T when 'T :> HxSseComponent>(?tag: string, ?attrs: AttrRenderFragment, ?setCompAttrs) =
+        let attrs = defaultArg attrs html.emptyAttr
+
+        let query =
+            QueryBuilder<'T>().Add((fun x -> x.IsStreaming), true).Remove(fun x -> x.Attributes)
+
+        let query =
+            match setCompAttrs with
+            | None -> query
+            | Some f -> f query
+
+        EltBuilder(defaultArg tag "section") {
+            attrs
+            hxSseConnect $"/fun-blazor-server-side-render-components/{typeof<'T>.FullName}?{query.ToString()}"
+            hxSseSwapOnComp
+            hxSseCloseOnComp
+            hxSwap_innerHTML
+        }
 
 
 [<AbstractClass>]
@@ -158,6 +173,7 @@ type HxSseComponent() as this =
                 hxSseConnect $"/fun-blazor-server-side-render-components/{this.GetType().FullName}?{query}"
                 hxSseSwapOnComp
                 hxSseCloseOnComp
+                hxSwap_innerHTML
             }
 
 #endif
