@@ -2,6 +2,7 @@
 
 open FSharp.Control
 open MudBlazor
+open Fun.Result
 open Fun.Blazor
 open Fun.Htmx
 
@@ -9,8 +10,27 @@ open Fun.Htmx
 type HtmxSseStockDemo() =
     inherit HxSseComponent()
 
-    override _.GetNodes() = taskSeq {
-        for productId in 1..5 do
+    static member val ProgressEventName = "event-progress"
+
+    override this.GetNodes() = taskSeq {
+        this.EventName <- HtmxSseStockDemo.ProgressEventName
+        MudText'' {
+            Color Color.Warning
+            "Event started"
+        }
+
+
+        let endIndex = 10
+
+        let startIndex =
+            match this.LastEventId with
+            | null -> 0
+            | INT32 x -> if x >= endIndex then 0 else x + 1
+            | _ -> 0
+
+        for productId in startIndex..endIndex do
+            this.EventId <- string productId
+            this.EventName <- HxSseComponent.NewNodeEventName
             div {
                 "stock: "
                 MudChip'' {
@@ -25,6 +45,9 @@ type HtmxSseStockDemo() =
             }
             do! Async.Sleep 1000
 
+
+        this.EventId <- null
+        this.EventName <- HtmxSseStockDemo.ProgressEventName
         MudText'' {
             Color Color.Warning
             "Event finished"
@@ -43,6 +66,10 @@ type HtmxDemo =
             hxSseCloseOnComp
             "Htmx SSE demo: supposed to display the latest stock info"
             div { hxSseSwapOnComp }
+            div { 
+                hxSseSwap HtmxSseStockDemo.ProgressEventName
+                "Stock status"
+            }
         }
         MudDivider'' { style { margin 20 0 } }
         section {

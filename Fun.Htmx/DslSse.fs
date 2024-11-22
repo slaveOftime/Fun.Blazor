@@ -97,11 +97,31 @@ type html with
 type HxSseComponent() as this =
     inherit FunComponent()
 
+    // We use string here to avoid int to string converting when write to response body
+    let mutable retry: string | null = null
+
     static member val NewNodeEventName = "NewNode"
     static member val CloseSseEventName = "CloseSse"
 
+    /// The event ID to set the EventSource object's last event ID value.
+    member val EventId: string | null = null with get, set
+
+    /// Get last event id, so we can continue from the last event
+    member _.LastEventId: string | null = 
+        match this.Context.HttpContext.Request.Headers.TryGetValue("Last-Event-Id") with
+        | true, value -> string value
+        | _ -> null
+
+    /// A string identifying the type of event described. By default is will be same as HxSseComponent.NewNodeEventName. 
+    /// You can set it to different one, so by hxSseSwap, you can listen to the specific names for different domain logic. 
+    member val EventName = HxSseComponent.NewNodeEventName with get, set
+
+    /// The reconnection time (ms). If the connection to the server is lost, the browser will wait for the specified time before attempting to reconnect. Default is null.
+    member _.Retry with set x = retry <- string x
+    
+
     [<Inject>]
-    member val Context = Unchecked.defaultof<IHttpContextAccessor> with get, set
+    member val Context: IHttpContextAccessor = Unchecked.defaultof<IHttpContextAccessor> with get, set
 
     [<Inject>]
     member val ServiceProvider = Unchecked.defaultof<IServiceProvider> with get, set
@@ -138,8 +158,22 @@ type HxSseComponent() as this =
 
                     let! nodeStr = html.renderAsString this.ServiceProvider node
 
+                    match this.EventId with
+                    | null -> ()
+                    | id ->
+                        do! this.Context.HttpContext.Response.WriteAsync("id: ")
+                        do! this.Context.HttpContext.Response.WriteAsync(id)
+                        do! this.Context.HttpContext.Response.WriteAsync("\n")
+
+                    match retry with
+                    | null ->  ()
+                    | retry ->
+                        do! this.Context.HttpContext.Response.WriteAsync("retry: ")
+                        do! this.Context.HttpContext.Response.WriteAsync(retry)
+                        do! this.Context.HttpContext.Response.WriteAsync("\n")
+
                     do! this.Context.HttpContext.Response.WriteAsync("event: ")
-                    do! this.Context.HttpContext.Response.WriteAsync(HxSseComponent.NewNodeEventName)
+                    do! this.Context.HttpContext.Response.WriteAsync(this.EventName)
                     do! this.Context.HttpContext.Response.WriteAsync("\n")
 
                     let strs = nodeStr.Split('\r', '\n')

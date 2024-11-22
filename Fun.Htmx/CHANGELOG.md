@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+## [4.1.3] - 2024-11-22
+
+- Add EventId for HxSseComponent
+- Add LastEventId for HxSseComponent
+- Add EventName for HxSseComponent
+- Add Retry for HxSseComponent
+
 ## [4.1.2] - 2024-11-20
 
 - Add hxGetEmpty
