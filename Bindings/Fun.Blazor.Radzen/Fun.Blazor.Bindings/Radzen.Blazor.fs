@@ -472,6 +472,8 @@ type RadzenSplitButtonBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micros
     [<CustomOperation("OpenAriaLabel")>] member inline _.OpenAriaLabel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("OpenAriaLabel" => x)
     /// Gets or sets the icon of the drop down.
     [<CustomOperation("DropDownIcon")>] member inline _.DropDownIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("DropDownIcon" => x)
+    /// Gets or sets the index of the tab.
+    [<CustomOperation("TabIndex")>] member inline _.TabIndex ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("TabIndex" => x)
     /// Gets or sets the click callback.
     [<CustomOperation("Click")>] member inline _.Click ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.Blazor.RadzenSplitButtonItem -> unit) = render ==> html.callback("Click", fn)
     /// Gets or sets the click callback.
@@ -1779,6 +1781,10 @@ type RadzenDataGridBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> M
     [<CustomOperation("ContainsText")>] member inline _.ContainsText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ContainsText" => x)
     /// Gets or sets the does not contain text.
     [<CustomOperation("DoesNotContainText")>] member inline _.DoesNotContainText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("DoesNotContainText" => x)
+    /// Gets or sets the in operator text.
+    [<CustomOperation("InText")>] member inline _.InText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("InText" => x)
+    /// Gets or sets the not in operator text.
+    [<CustomOperation("NotInText")>] member inline _.NotInText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("NotInText" => x)
     /// Gets or sets the starts with text.
     [<CustomOperation("StartsWithText")>] member inline _.StartsWithText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("StartsWithText" => x)
     /// Gets or sets the not null text.
@@ -4020,6 +4026,8 @@ type RadzenSeriesAnnotationBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGene
     [<CustomOperation("OffsetX")>] member inline _.OffsetX ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Double) = render ==> ("OffsetX" => x)
     /// Vertical offset from the default position. 
     [<CustomOperation("OffsetY")>] member inline _.OffsetY ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Double) = render ==> ("OffsetY" => x)
+    /// The color of the annotation text. 
+    [<CustomOperation("Fill")>] member inline _.Fill ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Fill" => x)
     /// Determines whether the annotation is visible. Set to true by default.
     [<CustomOperation("Visible")>] member inline _.Visible ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Visible" =>>> true)
     /// Determines whether the annotation is visible. Set to true by default.
@@ -4588,6 +4596,8 @@ type RadzenDataFilterPropertyBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGe
     [<CustomOperation("Title")>] member inline _.Title ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
     /// Gets or sets the property name.
     [<CustomOperation("Property")>] member inline _.Property ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Property" => x)
+    /// Gets or sets the filter property name.
+    [<CustomOperation("FilterProperty")>] member inline _.FilterProperty ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("FilterProperty" => x)
     /// Gets or sets a value indicating whether this property is selected in the filter.
     [<CustomOperation("IsSelected")>] member inline _.IsSelected ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("IsSelected" =>>> true)
     /// Gets or sets a value indicating whether this property is selected in the filter.
@@ -4744,6 +4754,8 @@ type RadzenDataGridColumnBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneri
     [<CustomOperation("FormatProvider")>] member inline _.FormatProvider ([<InlineIfLambda>] render: AttrRenderFragment, x: System.IFormatProvider) = render ==> ("FormatProvider" => x)
     /// Gets or sets the filter operator.
     [<CustomOperation("FilterOperator")>] member inline _.FilterOperator ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.FilterOperator) = render ==> ("FilterOperator" => x)
+    /// Gets or sets the filter operators.
+    [<CustomOperation("FilterOperators")>] member inline _.FilterOperators ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<Radzen.FilterOperator>) = render ==> ("FilterOperators" => x)
     /// Gets or sets the second filter operator.
     [<CustomOperation("SecondFilterOperator")>] member inline _.SecondFilterOperator ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.FilterOperator) = render ==> ("SecondFilterOperator" => x)
 
@@ -5429,6 +5441,7 @@ type TextBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCor
     [<CustomOperation("Value")>] member inline _.Value ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Value" => x)
     [<CustomOperation("Position")>] member inline _.Position ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Blazor.Point) = render ==> ("Position" => x)
     [<CustomOperation("TextAnchor")>] member inline _.TextAnchor ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("TextAnchor" => x)
+    [<CustomOperation("Fill")>] member inline _.Fill ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Fill" => x)
 
 type YearViewBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
