@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [4.1.3] - 2024-11-29
+
+- Fix doctype
+
 ## [4.1.2] - 2024-11-20
 
 - Support to yield ComponentAttrBuilder

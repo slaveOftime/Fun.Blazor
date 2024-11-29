@@ -55,7 +55,7 @@ let inline js (x: string) =
 
 let inline doctype decl =
     NodeRenderFragment(fun _ builder index ->
-        builder.AddMarkupContent(index, "<!DOCTYPE {decl}")
+        builder.AddMarkupContent(index, "<!DOCTYPE ")
         builder.AddMarkupContent(index + 1, decl)
         builder.AddMarkupContent(index + 2, ">\n")
         index + 3
