@@ -77,6 +77,8 @@ type DemoComp() =
 
     [<Parameter>]
     member val Count = 0 with get, set
+    [<Parameter>]
+    member val Cancelled = false with get, set
 
     override _.Render() = html.none
 
@@ -143,9 +145,10 @@ let ``hxRequestxxx should work`` () =
         <div hx-post="/fun-blazor-custom-elements/Fun.Blazor.Tests.HtmxTests+DemoComp?Count=2"></div>
         <div hx-get="/fun-blazor-custom-elements/Fun.Blazor.Tests.HtmxTests+DemoComp?Count=3"></div>
         <div hx-post="/fun-blazor-custom-elements/Fun.Blazor.Tests.HtmxTests+DemoComp?Count=4"></div>
-        <div hx-get="/fun-blazor-custom-elements/Fun.Blazor.Tests.HtmxTests+DemoComp?Count=4"></div>
+        <div hx-get="/fun-blazor-custom-elements/Fun.Blazor.Tests.HtmxTests+DemoComp?Count=4&amp;Cancelled=False"></div>
         <div hx-get="/fun-blazor-custom-elements/Fun.Blazor.Tests.HtmxTests+DemoComp?Count=2&amp;Count=3">
-            <input type="hidden" name="Count" value="1">
+          <input type="hidden" name="Count" value="1">
+          <input type="hidden" name="Cancelled" value="False">
         </div>
         <div hx-ext="sse" sse-connect="/fun-blazor-server-side-render-components/Fun.Blazor.Tests.HtmxTests+LiverCounter?IsStreaming=True" sse-swap="NewNode" sse-close="CloseSse"></div>
         <section hx-swap="beforeend" hx-ext="sse" sse-connect="/fun-blazor-server-side-render-components/Fun.Blazor.Tests.HtmxTests+LiverCounter?IsStreaming=True&amp;Initial=10" sse-swap="NewNode" sse-close="CloseSse"></section>

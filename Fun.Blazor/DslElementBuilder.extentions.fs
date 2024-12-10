@@ -95,7 +95,7 @@ type html with
             | x -> input {
                 type' InputTypes.hidden
                 name p.Name
-                value x
+                value (if p.PropertyType = typeof<bool> then box (string x) else x)
               }
         )
         |> html.fragment

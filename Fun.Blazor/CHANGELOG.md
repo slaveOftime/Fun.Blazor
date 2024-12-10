@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [4.1.4] - 2024-12-10
+
+- Fix createHiddenInputs bool property handling
+
 ## [4.1.3] - 2024-11-29
 
 - Fix doctype
