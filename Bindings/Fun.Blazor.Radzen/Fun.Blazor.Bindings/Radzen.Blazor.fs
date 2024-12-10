@@ -2934,6 +2934,18 @@ type RadzenPanelMenuItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micr
 /// RadzenCard component.
 type RadzenPickListBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit RadzenComponentBuilder<'FunBlazorGeneric>()
+    /// Gets or sets a value indicating whether it is allowed to move all items.
+    [<CustomOperation("AllowMoveAll")>] member inline _.AllowMoveAll ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AllowMoveAll" =>>> true)
+    /// Gets or sets a value indicating whether it is allowed to move all items.
+    [<CustomOperation("AllowMoveAll")>] member inline _.AllowMoveAll ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("AllowMoveAll" =>>> x)
+    /// Gets or sets a value indicating whether it is allowed to move all items from source to target.
+    [<CustomOperation("AllowMoveAllSourceToTarget")>] member inline _.AllowMoveAllSourceToTarget ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AllowMoveAllSourceToTarget" =>>> true)
+    /// Gets or sets a value indicating whether it is allowed to move all items from source to target.
+    [<CustomOperation("AllowMoveAllSourceToTarget")>] member inline _.AllowMoveAllSourceToTarget ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("AllowMoveAllSourceToTarget" =>>> x)
+    /// Gets or sets a value indicating whether it is allowed to move all items from target to source.
+    [<CustomOperation("AllowMoveAllTargetToSource")>] member inline _.AllowMoveAllTargetToSource ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AllowMoveAllTargetToSource" =>>> true)
+    /// Gets or sets a value indicating whether it is allowed to move all items from target to source.
+    [<CustomOperation("AllowMoveAllTargetToSource")>] member inline _.AllowMoveAllTargetToSource ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("AllowMoveAllTargetToSource" =>>> x)
     /// Gets or sets a value indicating whether multiple selection is allowed.
     [<CustomOperation("Multiple")>] member inline _.Multiple ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Multiple" =>>> true)
     /// Gets or sets a value indicating whether multiple selection is allowed.
@@ -2972,6 +2984,8 @@ type RadzenPickListBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> M
     [<CustomOperation("TextProperty")>] member inline _.TextProperty ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("TextProperty" => x)
     /// Gets or sets the source template
     [<CustomOperation("Template")>] member inline _.Template ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: 'TItem -> NodeRenderFragment) = render ==> html.renderFragment("Template", fn)
+    /// Gets or sets the row render callback. Use it to set row attributes.
+    [<CustomOperation("ItemRender")>] member inline _.ItemRender ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("ItemRender" => (System.Action<Radzen.PickListItemRenderEventArgs<'TItem>>fn))
     /// Gets or sets value if filtering is allowed.
     [<CustomOperation("AllowFiltering")>] member inline _.AllowFiltering ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AllowFiltering" =>>> true)
     /// Gets or sets value if filtering is allowed.
