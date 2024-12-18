@@ -861,6 +861,8 @@ type DropDownBaseBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microso
     [<CustomOperation("SelectedItem'")>] member inline _.SelectedItem' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Object * (System.Object -> unit)) = render ==> html.bind("SelectedItem", valueFn)
     /// Gets or sets the item separator for Multiple dropdown.
     [<CustomOperation("Separator")>] member inline _.Separator ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Separator" => x)
+    /// For lists of objects, an IEqualityComparer to control how selected items are determined
+    [<CustomOperation("ItemComparer")>] member inline _.ItemComparer ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEqualityComparer<System.Object>) = render ==> ("ItemComparer" => x)
 
             
 namespace rec Radzen.Blazor.DslInternals.Blazor
@@ -2984,6 +2986,8 @@ type RadzenPickListBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> M
     [<CustomOperation("TextProperty")>] member inline _.TextProperty ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("TextProperty" => x)
     /// Gets or sets the source template
     [<CustomOperation("Template")>] member inline _.Template ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: 'TItem -> NodeRenderFragment) = render ==> html.renderFragment("Template", fn)
+    /// Gets or sets the select all text.
+    [<CustomOperation("SelectAllText")>] member inline _.SelectAllText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("SelectAllText" => x)
     /// Gets or sets the row render callback. Use it to set row attributes.
     [<CustomOperation("ItemRender")>] member inline _.ItemRender ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("ItemRender" => (System.Action<Radzen.PickListItemRenderEventArgs<'TItem>>fn))
     /// Gets or sets value if filtering is allowed.
@@ -3564,6 +3568,12 @@ type RadzenTreeBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.Asp
     [<CustomOperation("CheckedValues")>] member inline _.CheckedValues ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<System.Object>) = render ==> ("CheckedValues" => x)
     /// Gets or sets the checked values. Use with @bind-CheckedValues to sync it with a property.
     [<CustomOperation("CheckedValues'")>] member inline _.CheckedValues' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Collections.Generic.IEnumerable<System.Object> * (System.Collections.Generic.IEnumerable<System.Object> -> unit)) = render ==> html.bind("CheckedValues", valueFn)
+    /// Gets or sets the CSS classes added to the item content.
+    [<CustomOperation("ItemContentCssClass")>] member inline _.ItemContentCssClass ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ItemContentCssClass" => x)
+    /// Gets or sets the CSS classes added to the item icon.
+    [<CustomOperation("ItemIconCssClass")>] member inline _.ItemIconCssClass ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ItemIconCssClass" => x)
+    /// Gets or sets the CSS classes added to the item label.
+    [<CustomOperation("ItemLabelCssClass")>] member inline _.ItemLabelCssClass ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ItemLabelCssClass" => x)
     /// A callback which will be invoked when CheckedValues changes.
     [<CustomOperation("CheckedValuesChanged")>] member inline _.CheckedValuesChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Collections.Generic.IEnumerable<System.Object> -> unit) = render ==> html.callback("CheckedValuesChanged", fn)
     /// A callback which will be invoked when CheckedValues changes.
@@ -4354,6 +4364,24 @@ type RadzenMonthViewBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsof
     /// Specifies the text displayed when there are more appointments in a slot than MaxAppointmentsInSlot.
     [<CustomOperation("MoreText")>] member inline _.MoreText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("MoreText" => x)
 
+/// Displays the appointments in a multi-day view in RadzenScheduler`1
+type RadzenMultiDayViewBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit Blazor.SchedulerViewBaseBuilder<'FunBlazorGeneric>()
+    /// Gets the text of the view. It is displayed in the view switching UI.
+    [<CustomOperation("Text")>] member inline _.Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Text" => x)
+    /// Gets or sets the time format.
+    [<CustomOperation("TimeFormat")>] member inline _.TimeFormat ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("TimeFormat" => x)
+    /// Gets or sets the format used to display the header text.
+    [<CustomOperation("HeaderFormat")>] member inline _.HeaderFormat ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("HeaderFormat" => x)
+    /// Gets or sets the start time.
+    [<CustomOperation("StartTime")>] member inline _.StartTime ([<InlineIfLambda>] render: AttrRenderFragment, x: System.TimeSpan) = render ==> ("StartTime" => x)
+    /// Gets or sets the end time.
+    [<CustomOperation("EndTime")>] member inline _.EndTime ([<InlineIfLambda>] render: AttrRenderFragment, x: System.TimeSpan) = render ==> ("EndTime" => x)
+    /// Gets or sets slot size in minutes. Set to 30 by default.
+    [<CustomOperation("MinutesPerSlot")>] member inline _.MinutesPerSlot ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("MinutesPerSlot" => x)
+    /// Gets or sets number of days to view. Set to 2 by default.
+    [<CustomOperation("NumberOfDays")>] member inline _.NumberOfDays ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("NumberOfDays" => x)
+
 /// Displays the appointments in a week day in RadzenScheduler`1
 type RadzenWeekViewBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit Blazor.SchedulerViewBaseBuilder<'FunBlazorGeneric>()
@@ -5077,6 +5105,12 @@ type RadzenTreeItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     [<CustomOperation("Selected")>] member inline _.Selected ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Selected" =>>> x)
     /// The children data.
     [<CustomOperation("Data")>] member inline _.Data ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.IEnumerable) = render ==> ("Data" => x)
+    /// Gets or sets the CSS classes added to the content.
+    [<CustomOperation("ContentCssClass")>] member inline _.ContentCssClass ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ContentCssClass" => x)
+    /// Gets or sets the CSS classes added to the icon.
+    [<CustomOperation("IconCssClass")>] member inline _.IconCssClass ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("IconCssClass" => x)
+    /// Gets or sets the CSS classes added to the label.
+    [<CustomOperation("LabelCssClass")>] member inline _.LabelCssClass ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("LabelCssClass" => x)
 
 /// Configures a level of nodes in a RadzenTree during data-binding.
 type RadzenTreeLevelBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -6368,6 +6402,11 @@ module DslCE =
         /// Displays the appointments in a month day in RadzenScheduler`1
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenMonthView>)>] () = inherit RadzenMonthViewBuilder<Radzen.Blazor.RadzenMonthView>()
 
+    /// Displays the appointments in a multi-day view in RadzenScheduler`1
+    type RadzenMultiDayView' 
+        /// Displays the appointments in a multi-day view in RadzenScheduler`1
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenMultiDayView>)>] () = inherit RadzenMultiDayViewBuilder<Radzen.Blazor.RadzenMultiDayView>()
+
     /// Displays the appointments in a week day in RadzenScheduler`1
     type RadzenWeekView' 
         /// Displays the appointments in a week day in RadzenScheduler`1
@@ -6714,6 +6753,7 @@ module DslCEInstances =
     let SchedulerViewBase'' = SchedulerViewBase'()
     let RadzenDayView'' = RadzenDayView'()
     let RadzenMonthView'' = RadzenMonthView'()
+    let RadzenMultiDayView'' = RadzenMultiDayView'()
     let RadzenWeekView'' = RadzenWeekView'()
     let RadzenYearPlannerView'' = RadzenYearPlannerView'()
     let RadzenYearTimelineView'' = RadzenYearTimelineView'()

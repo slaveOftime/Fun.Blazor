@@ -14,5 +14,5 @@ dotnet add package Fun.Blazor.Microsoft.FluentUI --version 4.10.4
 dotnet add package Fun.Blazor.Microsoft.QuickGrid --version 9.0.0
 dotnet add package Fun.Blazor.Microsoft.Web --version 9.0.0
 dotnet add package Fun.Blazor.MudBlazor --version 7.15.0
-dotnet add package Fun.Blazor.Radzen --version 5.6.13
+dotnet add package Fun.Blazor.Radzen --version 5.7.0
 ```
