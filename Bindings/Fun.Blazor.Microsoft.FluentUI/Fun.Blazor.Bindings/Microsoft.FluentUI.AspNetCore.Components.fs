@@ -554,6 +554,9 @@ type FluentDatePickerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microso
     [<CustomOperation("OnDoubleClick")>] member inline _.OnDoubleClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> Task<unit>) = render ==> html.callbackTask("OnDoubleClick", fn)
     /// Gets or sets a value which will be set when double-clicking on the text field of date picker.
     [<CustomOperation("DoubleClickToDate")>] member inline _.DoubleClickToDate ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.DateTime>) = render ==> ("DoubleClickToDate" => x)
+    /// Gets or sets an HorizontalPosition for the popup displayed when the user open the calendar.
+    /// By default, this value is Left or Right, depending of the 'CurrentUICulture.TextInfo.IsRightToLeft' value.
+    [<CustomOperation("PopupHorizontalPosition")>] member inline _.PopupHorizontalPosition ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.HorizontalPosition>) = render ==> ("PopupHorizontalPosition" => x)
 
 type FluentCheckboxBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentInputBaseBuilder<'FunBlazorGeneric, System.Boolean>()
@@ -812,7 +815,7 @@ type FluentRatingBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.A
     [<CustomOperation("IconFilled")>] member inline _.IconFilled ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Icon) = render ==> ("IconFilled" => x)
     /// The icon to display when the rating value is less than the item's value.
     [<CustomOperation("IconOutline")>] member inline _.IconOutline ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Icon) = render ==> ("IconOutline" => x)
-    /// Gets or sets the icon drawing and fill color. 
+    /// Gets or sets the icon drawing and fill color.
     /// Value comes from the Color enumeration. Defaults to Accent.
     [<CustomOperation("IconColor")>] member inline _.IconColor ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.Color>) = render ==> ("IconColor" => x)
     /// Gets or sets the icon drawing and fill color to a custom value.
@@ -1144,6 +1147,11 @@ type FluentDataGridBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric 
     /// Generally it's preferable not to use Virtualize if the amount of data being rendered
     /// is small or if you are using pagination.
     [<CustomOperation("Virtualize")>] member inline _.Virtualize ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Virtualize" =>>> x)
+    /// This is applicable only when using Virtualize. It defines how many additional items will be rendered
+    /// before and after the visible region to reduce rendering frequency during scrolling. While higher values can improve
+    /// scroll smoothness by rendering more items off-screen, they can also increase initial load times. Finding a balance
+    /// based on your data set size and user experience requirements is recommended. The default value is 3.
+    [<CustomOperation("OverscanCount")>] member inline _.OverscanCount ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("OverscanCount" => x)
     /// This is applicable only when using Virtualize. It defines an expected height in pixels for
     /// each row, allowing the virtualization mechanism to fetch the correct number of items to match the display
     /// size and to ensure accurate scrolling.
@@ -1239,10 +1247,9 @@ type FluentDataGridBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric 
     [<CustomOperation("EmptyContent")>] member inline _.EmptyContent ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("EmptyContent", html.text x)
     /// If specified, grids render this fragment when there is no content.
     [<CustomOperation("EmptyContent")>] member inline _.EmptyContent ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("EmptyContent", html.text x)
-    /// Gets or sets a value indicating whether the grid is in a loading data state.
-    [<CustomOperation("Loading")>] member inline _.Loading ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Loading" =>>> true)
-    /// Gets or sets a value indicating whether the grid is in a loading data state.
-    [<CustomOperation("Loading")>] member inline _.Loading ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Loading" =>>> x)
+    /// Gets or sets a value to indicate the grid loading data state.
+    /// If not set and a ItemsProvider is present, the grid will show LoadingContent until the provider's first return.
+    [<CustomOperation("Loading")>] member inline _.Loading ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("Loading" => x)
     /// Gets or sets the content to render when Loading is true.
     /// A default fragment is used if loading content is not specified.
     [<CustomOperation("LoadingContent")>] member inline _.LoadingContent ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("LoadingContent", fragment)
@@ -1262,13 +1269,31 @@ type FluentDataGridBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric 
     [<CustomOperation("AutoFit")>] member inline _.AutoFit ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AutoFit" =>>> true)
     /// Sets GridTemplateColumns to automatically fit the columns to the available width as best it can.
     [<CustomOperation("AutoFit")>] member inline _.AutoFit ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("AutoFit" =>>> x)
+    /// Gets or sets the size of each row in the grid based on the DataGridRowSize enum.
+    [<CustomOperation("RowSize")>] member inline _.RowSize ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.DataGridRowSize) = render ==> ("RowSize" => x)
+    /// Gets or sets a value indicating whether the grid should allow multiple lines of text in cells.
+    [<CustomOperation("MultiLine")>] member inline _.MultiLine ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("MultiLine" =>>> true)
+    /// Gets or sets a value indicating whether the grid should allow multiple lines of text in cells.
+    [<CustomOperation("MultiLine")>] member inline _.MultiLine ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("MultiLine" =>>> x)
+    /// Gets or sets a value indicating whether the grid should save its paging state in the URL.
+    /// This is an experimental feature, which might cause unwanted jumping in the page when you change something in the grid.
+    [<CustomOperation("SaveStateInUrl")>] member inline _.SaveStateInUrl ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("SaveStateInUrl" =>>> true)
+    /// Gets or sets a value indicating whether the grid should save its paging state in the URL.
+    /// This is an experimental feature, which might cause unwanted jumping in the page when you change something in the grid.
+    [<CustomOperation("SaveStateInUrl")>] member inline _.SaveStateInUrl ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("SaveStateInUrl" =>>> x)
+    /// Gets or sets a prefix to use when saving the grid state in the URL.
+    [<CustomOperation("SaveStatePrefix")>] member inline _.SaveStatePrefix ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("SaveStatePrefix" => x)
+    /// Gets or sets a value indicating whether the grids' first cell should be focused.
+    [<CustomOperation("AutoFocus")>] member inline _.AutoFocus ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AutoFocus" =>>> true)
+    /// Gets or sets a value indicating whether the grids' first cell should be focused.
+    [<CustomOperation("AutoFocus")>] member inline _.AutoFocus ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("AutoFocus" =>>> x)
 
 type FluentDataGridCellBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
     /// Gets or sets the reference to the item that holds this cell's values.
     [<CustomOperation("Item")>] member inline _.Item ([<InlineIfLambda>] render: AttrRenderFragment, x: 'TGridItem) = render ==> ("Item" => x)
     /// Gets or sets the cell type. See DataGridCellType.
-    [<CustomOperation("CellType")>] member inline _.CellType ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.DataGridCellType>) = render ==> ("CellType" => x)
+    [<CustomOperation("CellType")>] member inline _.CellType ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.DataGridCellType) = render ==> ("CellType" => x)
     /// Gets or sets the column index of the cell.
     /// This will be applied to the css grid-column-index value applied to the cell.
     [<CustomOperation("GridColumn")>] member inline _.GridColumn ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("GridColumn" => x)
@@ -3240,6 +3265,8 @@ type ColumnBaseBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric :> M
     /// Gets or sets the title text for the column.
     /// This is rendered automatically if HeaderCellItemTemplate is not used.
     [<CustomOperation("Title")>] member inline _.Title ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
+    /// Gets or sets the index (1-based) of the column
+    [<CustomOperation("Index")>] member inline _.Index ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("Index" => x)
     /// If specified, controls the justification of header and grid cells for this column.
     [<CustomOperation("Align")>] member inline _.Align ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Align) = render ==> ("Align" => x)
     /// If true, generates a title and aria-label attribute for the cell contents

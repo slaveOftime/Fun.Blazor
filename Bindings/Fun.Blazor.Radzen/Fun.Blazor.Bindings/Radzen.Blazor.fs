@@ -1674,6 +1674,10 @@ type RadzenDataGridBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> M
     [<CustomOperation("ShowEmptyMessage")>] member inline _.ShowEmptyMessage ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowEmptyMessage" =>>> true)
     /// Gets or sets a value indicating whether DataGrid data body show empty message.
     [<CustomOperation("ShowEmptyMessage")>] member inline _.ShowEmptyMessage ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowEmptyMessage" =>>> x)
+    /// Gets or sets value if headers are shown.
+    [<CustomOperation("ShowHeader")>] member inline _.ShowHeader ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowHeader" =>>> true)
+    /// Gets or sets value if headers are shown.
+    [<CustomOperation("ShowHeader")>] member inline _.ShowHeader ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowHeader" =>>> x)
     /// Gets or sets a value indicating whether DataGrid is responsive.
     [<CustomOperation("Responsive")>] member inline _.Responsive ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Responsive" =>>> true)
     /// Gets or sets a value indicating whether DataGrid is responsive.
@@ -2125,6 +2129,10 @@ type RadzenAccordionItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micr
     [<CustomOperation("Selected")>] member inline _.Selected ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Selected" =>>> true)
     /// Gets or sets a value indicating whether this RadzenAccordionItem is selected.
     [<CustomOperation("Selected")>] member inline _.Selected ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Selected" =>>> x)
+    /// Gets or sets a value indicating whether this RadzenAccordionItem is disabled.
+    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Disabled" =>>> true)
+    /// Gets or sets a value indicating whether this RadzenAccordionItem is disabled.
+    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Disabled" =>>> x)
     /// Gets or sets the title attribute of the expand button.
     [<CustomOperation("ExpandTitle")>] member inline _.ExpandTitle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ExpandTitle" => x)
     /// Gets or sets the title attribute of the collapse button.
@@ -4381,6 +4389,8 @@ type RadzenMultiDayViewBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micro
     [<CustomOperation("MinutesPerSlot")>] member inline _.MinutesPerSlot ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("MinutesPerSlot" => x)
     /// Gets or sets number of days to view. Set to 2 by default.
     [<CustomOperation("NumberOfDays")>] member inline _.NumberOfDays ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("NumberOfDays" => x)
+    /// Gets or sets number of days to advance when using prev / next. Set to 1 by default.
+    [<CustomOperation("AdvanceDays")>] member inline _.AdvanceDays ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("AdvanceDays" => x)
 
 /// Displays the appointments in a week day in RadzenScheduler`1
 type RadzenWeekViewBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
