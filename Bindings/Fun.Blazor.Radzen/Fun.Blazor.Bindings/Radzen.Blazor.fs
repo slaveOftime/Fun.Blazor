@@ -3126,6 +3126,10 @@ type RadzenSchedulerBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> 
     [<CustomOperation("Date")>] member inline _.Date ([<InlineIfLambda>] render: AttrRenderFragment, x: System.DateTime) = render ==> ("Date" => x)
     /// Specifies the property of  which will set Text.
     [<CustomOperation("TextProperty")>] member inline _.TextProperty ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("TextProperty" => x)
+    /// Specifies whether to Show or Hide the Scheduler Header. Defaults to true />.
+    [<CustomOperation("ShowHeader")>] member inline _.ShowHeader ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowHeader" =>>> true)
+    /// Specifies whether to Show or Hide the Scheduler Header. Defaults to true />.
+    [<CustomOperation("ShowHeader")>] member inline _.ShowHeader ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowHeader" =>>> x)
     /// A callback that will be invoked when the user clicks a slot in the current view. Commonly used to add new appointments.
     [<CustomOperation("SlotSelect")>] member inline _.SlotSelect ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.SchedulerSlotSelectEventArgs -> unit) = render ==> html.callback("SlotSelect", fn)
     /// A callback that will be invoked when the user clicks a slot in the current view. Commonly used to add new appointments.
@@ -4348,6 +4352,47 @@ type SchedulerViewBaseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micros
     inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
 
 
+/// A base class for RadzenScheduler`1 views.
+type SchedulerYearViewBaseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit Blazor.SchedulerViewBaseBuilder<'FunBlazorGeneric>()
+
+
+/// Displays the appointments in a month day in RadzenScheduler`1
+type RadzenYearPlannerViewBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit Blazor.SchedulerYearViewBaseBuilder<'FunBlazorGeneric>()
+    /// Gets the text of the view. It is displayed in the view switching UI.
+    [<CustomOperation("Text")>] member inline _.Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Text" => x)
+    /// Specifies the maximum appointnments to render in a slot.
+    [<CustomOperation("MaxAppointmentsInSlot")>] member inline _.MaxAppointmentsInSlot ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("MaxAppointmentsInSlot" => x)
+    /// Specifies the text displayed when there are more appointments in a slot than MaxAppointmentsInSlot.
+    [<CustomOperation("MoreText")>] member inline _.MoreText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("MoreText" => x)
+    /// Gets or sets the start month for the year views />.
+    [<CustomOperation("StartMonth")>] member inline _.StartMonth ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Month) = render ==> ("StartMonth" => x)
+
+/// Displays the appointments in a month day in RadzenScheduler`1
+type RadzenYearTimelineViewBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit Blazor.SchedulerYearViewBaseBuilder<'FunBlazorGeneric>()
+    /// Gets the text of the view. It is displayed in the view switching UI.
+    [<CustomOperation("Text")>] member inline _.Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Text" => x)
+    /// Specifies the maximum appointnments to render in a slot.
+    [<CustomOperation("MaxAppointmentsInSlot")>] member inline _.MaxAppointmentsInSlot ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("MaxAppointmentsInSlot" => x)
+    /// Specifies the text displayed when there are more appointments in a slot than MaxAppointmentsInSlot.
+    [<CustomOperation("MoreText")>] member inline _.MoreText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("MoreText" => x)
+    /// Gets or sets the start month for the year views />.
+    [<CustomOperation("StartMonth")>] member inline _.StartMonth ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Month) = render ==> ("StartMonth" => x)
+
+/// Displays the appointments in a month day in RadzenScheduler`1
+type RadzenYearViewBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit Blazor.SchedulerYearViewBaseBuilder<'FunBlazorGeneric>()
+    /// Gets the text of the view. It is displayed in the view switching UI.
+    [<CustomOperation("Text")>] member inline _.Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Text" => x)
+    /// Specifies the text displayed when there are more appointments in a slot than MaxAppointmentsInSlot.
+    [<CustomOperation("MoreText")>] member inline _.MoreText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("MoreText" => x)
+    /// Specifies the text displayed when the user clicks on a day with no events in the year view
+    [<CustomOperation("NoDayEventsText")>] member inline _.NoDayEventsText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("NoDayEventsText" => x)
+    /// Gets or sets the start month for the year views />.
+    [<CustomOperation("StartMonth")>] member inline _.StartMonth ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Month) = render ==> ("StartMonth" => x)
+
 /// Displays the appointments in a single day in RadzenScheduler`1
 type RadzenDayViewBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit Blazor.SchedulerViewBaseBuilder<'FunBlazorGeneric>()
@@ -4407,42 +4452,6 @@ type RadzenWeekViewBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     [<CustomOperation("EndTime")>] member inline _.EndTime ([<InlineIfLambda>] render: AttrRenderFragment, x: System.TimeSpan) = render ==> ("EndTime" => x)
     /// Gets or sets slot size in minutes. Set to 30 by default.
     [<CustomOperation("MinutesPerSlot")>] member inline _.MinutesPerSlot ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("MinutesPerSlot" => x)
-
-/// Displays the appointments in a month day in RadzenScheduler`1
-type RadzenYearPlannerViewBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit Blazor.SchedulerViewBaseBuilder<'FunBlazorGeneric>()
-    /// Gets the text of the view. It is displayed in the view switching UI.
-    [<CustomOperation("Text")>] member inline _.Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Text" => x)
-    /// Specifies the maximum appointnments to render in a slot.
-    [<CustomOperation("MaxAppointmentsInSlot")>] member inline _.MaxAppointmentsInSlot ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("MaxAppointmentsInSlot" => x)
-    /// Specifies the text displayed when there are more appointments in a slot than MaxAppointmentsInSlot.
-    [<CustomOperation("MoreText")>] member inline _.MoreText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("MoreText" => x)
-    /// Gets or sets the start month for the year views />.
-    [<CustomOperation("StartMonth")>] member inline _.StartMonth ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Month) = render ==> ("StartMonth" => x)
-
-/// Displays the appointments in a month day in RadzenScheduler`1
-type RadzenYearTimelineViewBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit Blazor.SchedulerViewBaseBuilder<'FunBlazorGeneric>()
-    /// Gets the text of the view. It is displayed in the view switching UI.
-    [<CustomOperation("Text")>] member inline _.Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Text" => x)
-    /// Specifies the maximum appointnments to render in a slot.
-    [<CustomOperation("MaxAppointmentsInSlot")>] member inline _.MaxAppointmentsInSlot ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("MaxAppointmentsInSlot" => x)
-    /// Specifies the text displayed when there are more appointments in a slot than MaxAppointmentsInSlot.
-    [<CustomOperation("MoreText")>] member inline _.MoreText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("MoreText" => x)
-    /// Gets or sets the start month for the year views />.
-    [<CustomOperation("StartMonth")>] member inline _.StartMonth ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Month) = render ==> ("StartMonth" => x)
-
-/// Displays the appointments in a month day in RadzenScheduler`1
-type RadzenYearViewBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit Blazor.SchedulerViewBaseBuilder<'FunBlazorGeneric>()
-    /// Gets the text of the view. It is displayed in the view switching UI.
-    [<CustomOperation("Text")>] member inline _.Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Text" => x)
-    /// Specifies the text displayed when there are more appointments in a slot than MaxAppointmentsInSlot.
-    [<CustomOperation("MoreText")>] member inline _.MoreText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("MoreText" => x)
-    /// Specifies the text displayed when the user clicks on a day with no events in the year view
-    [<CustomOperation("NoDayEventsText")>] member inline _.NoDayEventsText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("NoDayEventsText" => x)
-    /// Gets or sets the start month for the year views />.
-    [<CustomOperation("StartMonth")>] member inline _.StartMonth ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Month) = render ==> ("StartMonth" => x)
 
             
 namespace rec Radzen.Blazor.DslInternals.Blazor.Rendering
@@ -6402,6 +6411,26 @@ module DslCE =
         /// A base class for RadzenScheduler`1 views.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.SchedulerViewBase>)>] () = inherit SchedulerViewBaseBuilder<Radzen.Blazor.SchedulerViewBase>()
 
+    /// A base class for RadzenScheduler`1 views.
+    type SchedulerYearViewBase' 
+        /// A base class for RadzenScheduler`1 views.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.SchedulerYearViewBase>)>] () = inherit SchedulerYearViewBaseBuilder<Radzen.Blazor.SchedulerYearViewBase>()
+
+    /// Displays the appointments in a month day in RadzenScheduler`1
+    type RadzenYearPlannerView' 
+        /// Displays the appointments in a month day in RadzenScheduler`1
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenYearPlannerView>)>] () = inherit RadzenYearPlannerViewBuilder<Radzen.Blazor.RadzenYearPlannerView>()
+
+    /// Displays the appointments in a month day in RadzenScheduler`1
+    type RadzenYearTimelineView' 
+        /// Displays the appointments in a month day in RadzenScheduler`1
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenYearTimelineView>)>] () = inherit RadzenYearTimelineViewBuilder<Radzen.Blazor.RadzenYearTimelineView>()
+
+    /// Displays the appointments in a month day in RadzenScheduler`1
+    type RadzenYearView' 
+        /// Displays the appointments in a month day in RadzenScheduler`1
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenYearView>)>] () = inherit RadzenYearViewBuilder<Radzen.Blazor.RadzenYearView>()
+
     /// Displays the appointments in a single day in RadzenScheduler`1
     type RadzenDayView' 
         /// Displays the appointments in a single day in RadzenScheduler`1
@@ -6421,21 +6450,6 @@ module DslCE =
     type RadzenWeekView' 
         /// Displays the appointments in a week day in RadzenScheduler`1
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenWeekView>)>] () = inherit RadzenWeekViewBuilder<Radzen.Blazor.RadzenWeekView>()
-
-    /// Displays the appointments in a month day in RadzenScheduler`1
-    type RadzenYearPlannerView' 
-        /// Displays the appointments in a month day in RadzenScheduler`1
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenYearPlannerView>)>] () = inherit RadzenYearPlannerViewBuilder<Radzen.Blazor.RadzenYearPlannerView>()
-
-    /// Displays the appointments in a month day in RadzenScheduler`1
-    type RadzenYearTimelineView' 
-        /// Displays the appointments in a month day in RadzenScheduler`1
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenYearTimelineView>)>] () = inherit RadzenYearTimelineViewBuilder<Radzen.Blazor.RadzenYearTimelineView>()
-
-    /// Displays the appointments in a month day in RadzenScheduler`1
-    type RadzenYearView' 
-        /// Displays the appointments in a month day in RadzenScheduler`1
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenYearView>)>] () = inherit RadzenYearViewBuilder<Radzen.Blazor.RadzenYearView>()
 
     /// RadzenArcGaugeScale component.
     type RadzenArcGaugeScale' 
@@ -6761,13 +6775,14 @@ module DslCEInstances =
     let RadzenHtmlEditorUnlink'' = RadzenHtmlEditorUnlink'()
     let RadzenHtmlEditorUnorderedList'' = RadzenHtmlEditorUnorderedList'()
     let SchedulerViewBase'' = SchedulerViewBase'()
+    let SchedulerYearViewBase'' = SchedulerYearViewBase'()
+    let RadzenYearPlannerView'' = RadzenYearPlannerView'()
+    let RadzenYearTimelineView'' = RadzenYearTimelineView'()
+    let RadzenYearView'' = RadzenYearView'()
     let RadzenDayView'' = RadzenDayView'()
     let RadzenMonthView'' = RadzenMonthView'()
     let RadzenMultiDayView'' = RadzenMultiDayView'()
     let RadzenWeekView'' = RadzenWeekView'()
-    let RadzenYearPlannerView'' = RadzenYearPlannerView'()
-    let RadzenYearTimelineView'' = RadzenYearTimelineView'()
-    let RadzenYearView'' = RadzenYearView'()
     let RadzenArcGaugeScale'' = RadzenArcGaugeScale'()
     let RadzenArcGaugeScaleValue'' = RadzenArcGaugeScaleValue'()
     let RadzenCarouselItem'' = RadzenCarouselItem'()

@@ -1209,8 +1209,10 @@ type FluentDataGridBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric 
     /// Needs to be a valid CSS string of space-separated values, such as "auto 1fr 2fr 100px".
     [<CustomOperation("GridTemplateColumns")>] member inline _.GridTemplateColumns ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("GridTemplateColumns" => x)
     /// Gets or sets a callback when a row is focused.
+    /// As of 4.11 a row is a tr element with a 'display: contents'. Browsers can not focus such elements currently, but work is underway to fix that.
     [<CustomOperation("OnRowFocus")>] member inline _.OnRowFocus ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentDataGridRow<'TGridItem> -> unit) = render ==> html.callback("OnRowFocus", fn)
     /// Gets or sets a callback when a row is focused.
+    /// As of 4.11 a row is a tr element with a 'display: contents'. Browsers can not focus such elements currently, but work is underway to fix that.
     [<CustomOperation("OnRowFocus")>] member inline _.OnRowFocus ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentDataGridRow<'TGridItem> -> Task<unit>) = render ==> html.callbackTask("OnRowFocus", fn)
     /// Gets or sets a callback when a row is focused.
     [<CustomOperation("OnCellFocus")>] member inline _.OnCellFocus ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentDataGridCell<'TGridItem> -> unit) = render ==> html.callback("OnCellFocus", fn)
@@ -1269,6 +1271,7 @@ type FluentDataGridBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric 
     [<CustomOperation("AutoFit")>] member inline _.AutoFit ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AutoFit" =>>> true)
     /// Sets GridTemplateColumns to automatically fit the columns to the available width as best it can.
     [<CustomOperation("AutoFit")>] member inline _.AutoFit ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("AutoFit" =>>> x)
+    [<CustomOperation("DisplayMode")>] member inline _.DisplayMode ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.DataGridDisplayMode) = render ==> ("DisplayMode" => x)
     /// Gets or sets the size of each row in the grid based on the DataGridRowSize enum.
     [<CustomOperation("RowSize")>] member inline _.RowSize ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.DataGridRowSize) = render ==> ("RowSize" => x)
     /// Gets or sets a value indicating whether the grid should allow multiple lines of text in cells.
@@ -1436,6 +1439,10 @@ type FluentDialogHeaderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micro
     /// When true, shows the dismiss button in the header.
     /// If defined, this value will replace the one defined in the DialogParameters.
     [<CustomOperation("ShowDismiss")>] member inline _.ShowDismiss ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("ShowDismiss" => x)
+    /// When true, shows the "Close" button tooltip in the header.
+    [<CustomOperation("ShowDismissTooltip")>] member inline _.ShowDismissTooltip ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("ShowDismissTooltip" => x)
+    /// Allows developers to make elements sequentially focusable and determine their relative ordering for navigation (usually with the Tab key).
+    [<CustomOperation("TabIndex")>] member inline _.TabIndex ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("TabIndex" => x)
 
 type FluentDividerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()

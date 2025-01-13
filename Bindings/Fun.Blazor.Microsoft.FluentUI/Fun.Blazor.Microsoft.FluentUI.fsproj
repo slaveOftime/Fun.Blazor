@@ -5,14 +5,14 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <TrimMode>link</TrimMode>
     <IsTrimmable>true</IsTrimmable>
-    <Version>4.11.0</Version>
+    <Version>4.11.1</Version>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Fun.Blazor.Bindings\Microsoft.FluentUI.AspNetCore.Components.fs" />
     <EmbeddedResource Include="ILLink.Substitutions.xml" LogicalName="ILLink.Substitutions.xml" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference FunBlazor="" FunBlazorNamespace="Microsoft.FluentUI.AspNetCore.Components" FunBlazorAssemblyName="Microsoft.FluentUI.AspNetCore.Components" Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.11.0" />
+    <PackageReference FunBlazor="" FunBlazorNamespace="Microsoft.FluentUI.AspNetCore.Components" FunBlazorAssemblyName="Microsoft.FluentUI.AspNetCore.Components" Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.11.1" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="*.fs" />

@@ -675,6 +675,10 @@ type TitleBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCo
     inherit TypographyBaseBuilder<'FunBlazorGeneric>()
     [<CustomOperation("Level")>] member inline _.Level ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("Level" => x)
 
+type TypographyBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit TypographyBaseBuilder<'FunBlazorGeneric>()
+
+
 type AffixBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit AntDomComponentBaseBuilder<'FunBlazorGeneric>()
     [<CustomOperation("OffsetBottom")>] member inline _.OffsetBottom ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("OffsetBottom" => x)
@@ -794,11 +798,11 @@ type BadgeBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCo
     [<CustomOperation("Status")>] member inline _.Status ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<AntDesign.BadgeStatus>) = render ==> ("Status" => x)
     [<CustomOperation("Text")>] member inline _.Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Text" => x)
     [<CustomOperation("Title")>] member inline _.Title ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
-    [<CustomOperation("Size")>] member inline _.Size ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Size" => x)
+    [<CustomOperation("Size")>] member inline _.Size ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<BadgeSize>) = render ==> ("Size" => x)
 
 type BadgeRibbonBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit AntDomComponentBaseBuilder<'FunBlazorGeneric>()
-    [<CustomOperation("Color")>] member inline _.Color ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Color" => x)
+    [<CustomOperation("Color")>] member inline _.Color ([<InlineIfLambda>] render: AttrRenderFragment, x: OneOf.OneOf<System.Nullable<AntDesign.BadgeColor>, System.String>) = render ==> ("Color" => x)
     [<CustomOperation("Text")>] member inline _.Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Text" => x)
     [<CustomOperation("TextTemplate")>] member inline _.TextTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("TextTemplate", fragment)
     [<CustomOperation("TextTemplate")>] member inline _.TextTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("TextTemplate", fragment { yield! fragments })
@@ -3514,6 +3518,7 @@ module DslCE =
     type Paragraph' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Paragraph>)>] () = inherit ParagraphBuilder<AntDesign.Paragraph>()
     type Text' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Text>)>] () = inherit TextBuilder<AntDesign.Text>()
     type Title' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Title>)>] () = inherit TitleBuilder<AntDesign.Title>()
+    type Typography' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Typography>)>] () = inherit TypographyBuilder<AntDesign.Typography>()
     type Affix' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Affix>)>] () = inherit AffixBuilder<AntDesign.Affix>()
     type Alert' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Alert>)>] () = inherit AlertBuilder<AntDesign.Alert>()
     type Anchor' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Anchor>)>] () = inherit AnchorBuilder<AntDesign.Anchor>()
@@ -3709,6 +3714,7 @@ module DslCEInstances =
     let Paragraph'' = Paragraph'()
     let Text'' = Text'()
     let Title'' = Title'()
+    let Typography'' = Typography'()
     let Affix'' = Affix'()
     let Alert'' = Alert'()
     let Anchor'' = Anchor'()
