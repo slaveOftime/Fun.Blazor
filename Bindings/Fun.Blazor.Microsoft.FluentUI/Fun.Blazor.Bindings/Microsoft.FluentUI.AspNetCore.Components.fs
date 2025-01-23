@@ -3158,57 +3158,20 @@ open Fun.Blazor
 open Fun.Blazor.Operators
 open Microsoft.FluentUI.AspNetCore.Components.DslInternals
 
-/// Renders a form element that cascades an EditContext to descendants.
 type EditFormBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
-    /// Gets or sets a collection of additional attributes that will be applied to the created form element.
     [<CustomOperation("AdditionalAttributes")>] member inline _.AdditionalAttributes ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>) = render ==> ("AdditionalAttributes" => x)
-    /// Supplies the edit context explicitly. If using this parameter, do not
-    /// also supply Model, since the model value will be taken
-    /// from the Model property.
     [<CustomOperation("EditContext")>] member inline _.EditContext ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.AspNetCore.Components.Forms.EditContext) = render ==> ("EditContext" => x)
-    /// If enabled, form submission is performed without fully reloading the page. This is
-    /// equivalent to adding data-enhance to the form.
-    ///             
-    /// This flag is only relevant in server-side rendering (SSR) scenarios. For interactive
-    /// rendering, the flag has no effect since there is no full-page reload on submit anyway.
     [<CustomOperation("Enhance")>] member inline _.Enhance ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Enhance" =>>> true)
-    /// If enabled, form submission is performed without fully reloading the page. This is
-    /// equivalent to adding data-enhance to the form.
-    ///             
-    /// This flag is only relevant in server-side rendering (SSR) scenarios. For interactive
-    /// rendering, the flag has no effect since there is no full-page reload on submit anyway.
     [<CustomOperation("Enhance")>] member inline _.Enhance ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Enhance" =>>> x)
-    /// Specifies the top-level model object for the form. An edit context will
-    /// be constructed for this model. If using this parameter, do not also supply
-    /// a value for EditContext.
     [<CustomOperation("Model")>] member inline _.Model ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Object) = render ==> ("Model" => x)
-    /// Specifies the content to be rendered inside this EditForm.
     [<CustomOperation("ChildContent")>] member inline _.ChildContent ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Forms.EditContext -> NodeRenderFragment) = render ==> html.renderFragment("ChildContent", fn)
-    /// A callback that will be invoked when the form is submitted.
-    ///             
-    /// If using this parameter, you are responsible for triggering any validation
-    /// manually, e.g., by calling Validate.
     [<CustomOperation("OnSubmit")>] member inline _.OnSubmit ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Forms.EditContext -> unit) = render ==> html.callback("OnSubmit", fn)
-    /// A callback that will be invoked when the form is submitted.
-    ///             
-    /// If using this parameter, you are responsible for triggering any validation
-    /// manually, e.g., by calling Validate.
     [<CustomOperation("OnSubmit")>] member inline _.OnSubmit ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Forms.EditContext -> Task<unit>) = render ==> html.callbackTask("OnSubmit", fn)
-    /// A callback that will be invoked when the form is submitted and the
-    /// EditContext is determined to be valid.
     [<CustomOperation("OnValidSubmit")>] member inline _.OnValidSubmit ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Forms.EditContext -> unit) = render ==> html.callback("OnValidSubmit", fn)
-    /// A callback that will be invoked when the form is submitted and the
-    /// EditContext is determined to be valid.
     [<CustomOperation("OnValidSubmit")>] member inline _.OnValidSubmit ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Forms.EditContext -> Task<unit>) = render ==> html.callbackTask("OnValidSubmit", fn)
-    /// A callback that will be invoked when the form is submitted and the
-    /// EditContext is determined to be invalid.
     [<CustomOperation("OnInvalidSubmit")>] member inline _.OnInvalidSubmit ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Forms.EditContext -> unit) = render ==> html.callback("OnInvalidSubmit", fn)
-    /// A callback that will be invoked when the form is submitted and the
-    /// EditContext is determined to be invalid.
     [<CustomOperation("OnInvalidSubmit")>] member inline _.OnInvalidSubmit ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Forms.EditContext -> Task<unit>) = render ==> html.callbackTask("OnInvalidSubmit", fn)
-    /// Gets or sets the form handler name. This is required for posting it to a server-side endpoint.
-    /// It is not used during interactive rendering.
     [<CustomOperation("FormName")>] member inline _.FormName ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("FormName" => x)
 
             
@@ -3233,13 +3196,9 @@ open Fun.Blazor
 open Fun.Blazor.Operators
 open Microsoft.FluentUI.AspNetCore.Components.DslInternals
 
-/// Displays a list of validation messages from a cascaded EditContext.
 type ValidationSummaryBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
-    /// Gets or sets the model to produce the list of validation messages for.
-    /// When specified, this lists all errors that are associated with the model instance.
     [<CustomOperation("Model")>] member inline _.Model ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Object) = render ==> ("Model" => x)
-    /// Gets or sets a collection of additional attributes that will be applied to the created ul element.
     [<CustomOperation("AdditionalAttributes")>] member inline _.AdditionalAttributes ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>) = render ==> ("AdditionalAttributes" => x)
 
             
@@ -3381,7 +3340,7 @@ type SelectColumnBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric :>
     [<CustomOperation("SelectedItemsChanged")>] member inline _.SelectedItemsChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Collections.Generic.IEnumerable<'TGridItem> -> unit) = render ==> html.callback("SelectedItemsChanged", fn)
     /// Gets or sets a callback when list of selected items changed.
     [<CustomOperation("SelectedItemsChanged")>] member inline _.SelectedItemsChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Collections.Generic.IEnumerable<'TGridItem> -> Task<unit>) = render ==> html.callbackTask("SelectedItemsChanged", fn)
-    /// Gets or sets the selection mode (Single or Multiple).
+    /// Gets or sets the selection mode (Single, SingleSticky or Multiple).
     [<CustomOperation("SelectMode")>] member inline _.SelectMode ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.DataGridSelectMode) = render ==> ("SelectMode" => x)
     /// Gets or sets the Icon to be rendered when the row is non selected.
     [<CustomOperation("IconUnchecked")>] member inline _.IconUnchecked ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Icon) = render ==> ("IconUnchecked" => x)
@@ -4699,17 +4658,9 @@ module DslCE =
     type FluentTreeView' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentTreeView>)>] () = inherit FluentTreeViewBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentTreeView>()
     type FluentWizard' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentWizard>)>] () = inherit FluentWizardBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentWizard>()
     type FluentWizardStep' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentWizardStep>)>] () = inherit FluentWizardStepBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentWizardStep>()
-
-    /// Renders a form element that cascades an EditContext to descendants.
-    type EditForm' 
-        /// Renders a form element that cascades an EditContext to descendants.
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Forms.EditForm>)>] () = inherit EditFormBuilder<Microsoft.AspNetCore.Components.Forms.EditForm>()
+    type EditForm' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Forms.EditForm>)>] () = inherit EditFormBuilder<Microsoft.AspNetCore.Components.Forms.EditForm>()
     type FluentEditForm' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentEditForm>)>] () = inherit FluentEditFormBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentEditForm>()
-
-    /// Displays a list of validation messages from a cascaded EditContext.
-    type ValidationSummary' 
-        /// Displays a list of validation messages from a cascaded EditContext.
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Forms.ValidationSummary>)>] () = inherit ValidationSummaryBuilder<Microsoft.AspNetCore.Components.Forms.ValidationSummary>()
+    type ValidationSummary' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Forms.ValidationSummary>)>] () = inherit ValidationSummaryBuilder<Microsoft.AspNetCore.Components.Forms.ValidationSummary>()
     type FluentValidationSummary' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.FluentUI.AspNetCore.Components.FluentValidationSummary>)>] () = inherit FluentValidationSummaryBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentValidationSummary>()
 
     /// The status message will be read by screen readers.

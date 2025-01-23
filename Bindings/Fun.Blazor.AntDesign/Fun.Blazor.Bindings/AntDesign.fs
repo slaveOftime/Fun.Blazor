@@ -2432,7 +2432,7 @@ type SkeletonElementBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsof
 
 type SpaceBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit AntDomComponentBaseBuilder<'FunBlazorGeneric>()
-    [<CustomOperation("Align")>] member inline _.Align ([<InlineIfLambda>] render: AttrRenderFragment, x: OneOf.OneOf<AntDesign.SpaceAlign, System.String>) = render ==> ("Align" => x)
+    [<CustomOperation("Align")>] member inline _.Align ([<InlineIfLambda>] render: AttrRenderFragment, x: AntDesign.SpaceAlign) = render ==> ("Align" => x)
     [<CustomOperation("Direction")>] member inline _.Direction ([<InlineIfLambda>] render: AttrRenderFragment, x: AntDesign.SpaceDirection) = render ==> ("Direction" => x)
     [<CustomOperation("Size")>] member inline _.Size ([<InlineIfLambda>] render: AttrRenderFragment, x: OneOf.OneOf<AntDesign.SpaceSize, System.String, System.ValueTuple<System.String, System.String>>) = render ==> ("Size" => x)
     [<CustomOperation("Wrap")>] member inline _.Wrap ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Wrap" =>>> true)

@@ -1102,6 +1102,14 @@ type RadzenListBoxBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> M
 /// RadzenAutoComplete component.
 type RadzenAutoCompleteBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit DataBoundFormComponentBuilder<'FunBlazorGeneric, System.String>()
+    /// Gets or sets the selected item.
+    [<CustomOperation("SelectedItem")>] member inline _.SelectedItem ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Object) = render ==> ("SelectedItem" => x)
+    /// Gets or sets the selected item.
+    [<CustomOperation("SelectedItem'")>] member inline _.SelectedItem' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Object * (System.Object -> unit)) = render ==> html.bind("SelectedItem", valueFn)
+    /// Gets or sets the selected item changed.
+    [<CustomOperation("SelectedItemChanged")>] member inline _.SelectedItemChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Object -> unit) = render ==> html.callback("SelectedItemChanged", fn)
+    /// Gets or sets the selected item changed.
+    [<CustomOperation("SelectedItemChanged")>] member inline _.SelectedItemChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Object -> Task<unit>) = render ==> html.callbackTask("SelectedItemChanged", fn)
     /// Specifies additional custom attributes that will be rendered by the input.
     [<CustomOperation("InputAttributes")>] member inline _.InputAttributes ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>) = render ==> ("InputAttributes" => x)
     /// Gets or sets a value indicating whether this RadzenAutoComplete is multiline.
@@ -1484,8 +1492,10 @@ type RadzenSecurityCodeBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micro
 /// RadzenSelectBar component.
 type RadzenSelectBarBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FormComponentBuilder<'FunBlazorGeneric, 'TValue>()
-    /// Gets or sets the size.
+    /// Gets or sets the size. Set to ButtonSize.Medium by default.
     [<CustomOperation("Size")>] member inline _.Size ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.ButtonSize) = render ==> ("Size" => x)
+    /// Gets or sets the orientation. Set to Orientation.Horizontal by default.
+    [<CustomOperation("Orientation")>] member inline _.Orientation ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Orientation) = render ==> ("Orientation" => x)
     /// Gets or sets the value property.
     [<CustomOperation("ValueProperty")>] member inline _.ValueProperty ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ValueProperty" => x)
     /// Gets or sets the text property.
@@ -2129,6 +2139,12 @@ type RadzenAccordionItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micr
     [<CustomOperation("Selected")>] member inline _.Selected ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Selected" =>>> true)
     /// Gets or sets a value indicating whether this RadzenAccordionItem is selected.
     [<CustomOperation("Selected")>] member inline _.Selected ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Selected" =>>> x)
+    /// Gets or sets a value indicating whether this RadzenAccordionItem is selected.
+    [<CustomOperation("Selected'")>] member inline _.Selected' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Boolean * (System.Boolean -> unit)) = render ==> html.bind("Selected", valueFn)
+    /// Gets or sets the value changed.
+    [<CustomOperation("SelectedChanged")>] member inline _.SelectedChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> unit) = render ==> html.callback("SelectedChanged", fn)
+    /// Gets or sets the value changed.
+    [<CustomOperation("SelectedChanged")>] member inline _.SelectedChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("SelectedChanged", fn)
     /// Gets or sets a value indicating whether this RadzenAccordionItem is disabled.
     [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Disabled" =>>> true)
     /// Gets or sets a value indicating whether this RadzenAccordionItem is disabled.
