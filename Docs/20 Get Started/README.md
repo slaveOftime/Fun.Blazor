@@ -12,7 +12,10 @@
 
 ```shell
 dotnet new --install Fun.Blazor.Templates::4.1.1
-dotnet new fun-blazor -o FunBlazorDemo1
+# We have multiple templates to get you started, you can run this to check
+dotnet new list --tag Fun.Blazor
+# You can try the simplest one:
+dotnet new fun-wasm -o FunBlazorDemo1
 ```
 
 ## Code structure example (just my opinionated way)

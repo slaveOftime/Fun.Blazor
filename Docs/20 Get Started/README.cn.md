@@ -11,8 +11,11 @@
 [![Nuget](https://img.shields.io/nuget/vpre/Fun.Blazor.Templates)](https://www.nuget.org/packages/Fun.Blazor.Templates)
 
 ```shell
-dotnet new --install Fun.Blazor.Templates::4.1.1
-dotnet new fun-blazor -o FunBlazorDemo1
+dotnet new fun-blazor -o MyFunBlazorApp
+# 我们有多个模板供您入门，您可以运行以下命令来查看
+dotnet new list --tag Fun.Blazor
+# 你可以尝试最简单的一个：
+dotnet new fun-wasm -o FunBlazorDemo1
 ```
 
 ## 代码结构示例（只是我的意见）
