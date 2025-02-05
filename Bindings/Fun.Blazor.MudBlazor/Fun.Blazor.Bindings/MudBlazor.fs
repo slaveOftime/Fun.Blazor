@@ -651,124 +651,126 @@ type MudTableBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.A
     /// Gets the sorted and paginated data for the table.
     [<CustomOperation("ServerData")>] member inline _.ServerData ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("ServerData" => (System.Func<MudBlazor.TableState, System.Threading.CancellationToken, System.Threading.Tasks.Task<MudBlazor.TableData<'T>>>fn))
 
+/// A set of views organized into one or more MudTabPanel components.
 type MudTabsBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit MudComponentBaseBuilder<'FunBlazorGeneric>()
-    /// If true, render all tabs and hide (display:none) every non-active.
+    /// Persists the content of tabs when they are not visible.
     [<CustomOperation("KeepPanelsAlive")>] member inline _.KeepPanelsAlive ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("KeepPanelsAlive" =>>> true)
-    /// If true, render all tabs and hide (display:none) every non-active.
+    /// Persists the content of tabs when they are not visible.
     [<CustomOperation("KeepPanelsAlive")>] member inline _.KeepPanelsAlive ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("KeepPanelsAlive" =>>> x)
-    /// If true, sets the border-radius to theme default.
+    /// Uses rounded corners on the tab's edges.
     [<CustomOperation("Rounded")>] member inline _.Rounded ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Rounded" =>>> true)
-    /// If true, sets the border-radius to theme default.
+    /// Uses rounded corners on the tab's edges.
     [<CustomOperation("Rounded")>] member inline _.Rounded ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Rounded" =>>> x)
-    /// If true, sets a border between the content and the tabHeader depending on the position.
+    /// Shows a border between the tab content and tab header.
     [<CustomOperation("Border")>] member inline _.Border ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Border" =>>> true)
-    /// If true, sets a border between the content and the tabHeader depending on the position.
+    /// Shows a border between the tab content and tab header.
     [<CustomOperation("Border")>] member inline _.Border ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Border" =>>> x)
-    /// If true, tabHeader will be outlined.
+    /// Shows an outline around the tab header.
     [<CustomOperation("Outlined")>] member inline _.Outlined ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Outlined" =>>> true)
-    /// If true, tabHeader will be outlined.
+    /// Shows an outline around the tab header.
     [<CustomOperation("Outlined")>] member inline _.Outlined ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Outlined" =>>> x)
-    /// If true, centers the tabitems.
+    /// Centers tabs horizontally in the tab header.
     [<CustomOperation("Centered")>] member inline _.Centered ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Centered" =>>> true)
-    /// If true, centers the tabitems.
+    /// Centers tabs horizontally in the tab header.
     [<CustomOperation("Centered")>] member inline _.Centered ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Centered" =>>> x)
-    /// Hides the active tab slider.
+    /// Hides the slider underneath the tab header.
     [<CustomOperation("HideSlider")>] member inline _.HideSlider ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("HideSlider" =>>> true)
-    /// Hides the active tab slider.
+    /// Hides the slider underneath the tab header.
     [<CustomOperation("HideSlider")>] member inline _.HideSlider ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("HideSlider" =>>> x)
-    /// Icon to use for left pagination.
+    /// The icon for scrolling to the previous page of tabs.
     [<CustomOperation("PrevIcon")>] member inline _.PrevIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("PrevIcon" => x)
-    /// Icon to use for right pagination.
+    /// The icon for scrolling to the next page of tabs.
     [<CustomOperation("NextIcon")>] member inline _.NextIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("NextIcon" => x)
-    /// If true, always display the scroll buttons even if the tabs are smaller than the required with, buttons will be disabled if there is nothing to scroll.
+    /// Shows the scroll buttons even if all tabs are visible.
     [<CustomOperation("AlwaysShowScrollButtons")>] member inline _.AlwaysShowScrollButtons ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AlwaysShowScrollButtons" =>>> true)
-    /// If true, always display the scroll buttons even if the tabs are smaller than the required with, buttons will be disabled if there is nothing to scroll.
+    /// Shows the scroll buttons even if all tabs are visible.
     [<CustomOperation("AlwaysShowScrollButtons")>] member inline _.AlwaysShowScrollButtons ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("AlwaysShowScrollButtons" =>>> x)
-    /// Sets the maxheight the component can have.
+    /// The maximum height for this component, in pixels.
     [<CustomOperation("MaxHeight")>] member inline _.MaxHeight ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("MaxHeight" => x)
-    /// Sets the min-wdth of the tabs. 160px by default.
+    /// The minimum width of each tab panel.
     [<CustomOperation("MinimumTabWidth")>] member inline _.MinimumTabWidth ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("MinimumTabWidth" => x)
-    /// Sets the position of the tabs itself.
+    /// The location of the tab header.
     [<CustomOperation("Position")>] member inline _.Position ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Position) = render ==> ("Position" => x)
-    /// The color of the component. It supports the theme colors.
+    /// The color of the tab header.
     [<CustomOperation("Color")>] member inline _.Color ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Color) = render ==> ("Color" => x)
-    /// The color of the tab slider. It supports the theme colors.
+    /// The color of the tab slider.
     [<CustomOperation("SliderColor")>] member inline _.SliderColor ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Color) = render ==> ("SliderColor" => x)
-    /// The color of the icon. It supports the theme colors.
+    /// The color of each tab panel's icon.
     [<CustomOperation("IconColor")>] member inline _.IconColor ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Color) = render ==> ("IconColor" => x)
-    /// The color of the next/prev icons. It supports the theme colors.
+    /// The color of the scroll icon buttons.
     [<CustomOperation("ScrollIconColor")>] member inline _.ScrollIconColor ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Color) = render ==> ("ScrollIconColor" => x)
-    /// The higher the number, the heavier the drop-shadow, applies around the whole component.
+    /// The size of the drop shadow.
     [<CustomOperation("Elevation")>] member inline _.Elevation ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("Elevation" => x)
-    /// If true, will apply elevation, rounded, outlined effects to the whole tab component instead of just tabHeader.
+    /// Applies the Elevation, Rounded and Outlined effects to the tab panel.
     [<CustomOperation("ApplyEffectsToContainer")>] member inline _.ApplyEffectsToContainer ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ApplyEffectsToContainer" =>>> true)
-    /// If true, will apply elevation, rounded, outlined effects to the whole tab component instead of just tabHeader.
+    /// Applies the Elevation, Rounded and Outlined effects to the tab panel.
     [<CustomOperation("ApplyEffectsToContainer")>] member inline _.ApplyEffectsToContainer ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ApplyEffectsToContainer" =>>> x)
-    /// Gets or sets whether to show a ripple effect when the user clicks the button. Default is true.
+    /// Shows a ripple effect when a tab is clicked.
     [<CustomOperation("Ripple")>] member inline _.Ripple ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Ripple" =>>> true)
-    /// Gets or sets whether to show a ripple effect when the user clicks the button. Default is true.
+    /// Shows a ripple effect when a tab is clicked.
     [<CustomOperation("Ripple")>] member inline _.Ripple ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Ripple" =>>> x)
-    /// If true, displays slider animation
+    /// Shows an animated line which slides to the selected tab.
     [<CustomOperation("SliderAnimation")>] member inline _.SliderAnimation ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("SliderAnimation" =>>> true)
-    /// If true, displays slider animation
+    /// Shows an animated line which slides to the selected tab.
     [<CustomOperation("SliderAnimation")>] member inline _.SliderAnimation ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("SliderAnimation" =>>> x)
     /// This fragment is placed between tabHeader and panels. 
     /// It can be used to display additional content like an address line in a browser.
     /// The active tab will be the content of this RenderFragement
     [<CustomOperation("PrePanelContent")>] member inline _.PrePanelContent ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: MudBlazor.MudTabPanel -> NodeRenderFragment) = render ==> html.renderFragment("PrePanelContent", fn)
-    /// Custom class/classes for TabPanel
+    /// The CSS classes applied to tab panels.
     [<CustomOperation("TabPanelClass")>] member inline _.TabPanelClass ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("TabPanelClass" => x)
-    /// Custom class/classes for TabHeader
+    /// The CSS classes applied to the tab header.
     [<CustomOperation("TabHeaderClass")>] member inline _.TabHeaderClass ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("TabHeaderClass" => x)
-    /// Custom class/classes for the active tab
+    /// The CSS classes applied to the currently selected tab.
     [<CustomOperation("ActiveTabClass")>] member inline _.ActiveTabClass ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ActiveTabClass" => x)
-    /// Custom class/classes for Selected Content Panel
+    /// The CSS classes applied to all tab panels.
     [<CustomOperation("PanelClass")>] member inline _.PanelClass ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("PanelClass" => x)
-    /// The current active panel index. Also with Bidirectional Binding
+    /// The index of the currently selected tab panel.
     [<CustomOperation("ActivePanelIndex")>] member inline _.ActivePanelIndex ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("ActivePanelIndex" => x)
-    /// The current active panel index. Also with Bidirectional Binding
+    /// The index of the currently selected tab panel.
     [<CustomOperation("ActivePanelIndex'")>] member inline _.ActivePanelIndex' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Int32 * (System.Int32 -> unit)) = render ==> html.bind("ActivePanelIndex", valueFn)
-    /// Fired when ActivePanelIndex changes.
+    /// Occurs when ActivePanelIndex has changed.
     [<CustomOperation("ActivePanelIndexChanged")>] member inline _.ActivePanelIndexChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Int32 -> unit) = render ==> html.callback("ActivePanelIndexChanged", fn)
-    /// Fired when ActivePanelIndex changes.
+    /// Occurs when ActivePanelIndex has changed.
     [<CustomOperation("ActivePanelIndexChanged")>] member inline _.ActivePanelIndexChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Int32 -> Task<unit>) = render ==> html.callbackTask("ActivePanelIndexChanged", fn)
-    /// A render fragment that is added before or after (based on the value of HeaderPosition) the tabs inside the header panel of the tab control
+    /// The custom content added before or after the list of tabs.
     [<CustomOperation("Header")>] member inline _.Header ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: MudBlazor.MudTabs -> NodeRenderFragment) = render ==> html.renderFragment("Header", fn)
-    /// Additional content specified by Header is placed either before the tabs, after or not at all
+    /// The location of custom header content provided in Header.
     [<CustomOperation("HeaderPosition")>] member inline _.HeaderPosition ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.TabHeaderPosition) = render ==> ("HeaderPosition" => x)
-    /// A render fragment that is added before or after (based on the value of HeaderPosition) inside each tab panel
+    /// Custom content added before or after each tab panel.
     [<CustomOperation("TabPanelHeader")>] member inline _.TabPanelHeader ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: MudBlazor.MudTabPanel -> NodeRenderFragment) = render ==> html.renderFragment("TabPanelHeader", fn)
-    /// Additional content specified by Header is placed either before the tabs, after or not at all
+    /// The location of custom tab panel content provided in TabPanelHeader.
     [<CustomOperation("TabPanelHeaderPosition")>] member inline _.TabPanelHeaderPosition ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.TabHeaderPosition) = render ==> ("TabPanelHeaderPosition" => x)
-    /// Fired when a panel gets activated. Returned Task will be awaited.
+    /// Occurs before a panel is activated.
     [<CustomOperation("OnPreviewInteraction")>] member inline _.OnPreviewInteraction ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("OnPreviewInteraction" => (System.Func<MudBlazor.TabInteractionEventArgs, System.Threading.Tasks.Task>fn))
 
+/// A tab component where the tabs are controlled dynamically, similar to browser tabs.
 type MudDynamicTabsBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit MudTabsBuilder<'FunBlazorGeneric>()
-    /// The icon used for the add button
+    /// The icon for the add button.
     [<CustomOperation("AddTabIcon")>] member inline _.AddTabIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("AddTabIcon" => x)
-    /// The icon used for the close button
+    /// The icon for the close button.
     [<CustomOperation("CloseTabIcon")>] member inline _.CloseTabIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("CloseTabIcon" => x)
-    /// The callback, when the add button has been clicked
+    /// Occurs when the "Add" button has been clicked.
     [<CustomOperation("AddTab")>] member inline _.AddTab ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> unit) = render ==> html.callback("AddTab", fn)
-    /// The callback, when the add button has been clicked
+    /// Occurs when the "Add" button has been clicked.
     [<CustomOperation("AddTab")>] member inline _.AddTab ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> Task<unit>) = render ==> html.callbackTask("AddTab", fn)
-    /// The callback, when the close button has been clicked
+    /// Occurs when a tab has been closed.
     [<CustomOperation("CloseTab")>] member inline _.CloseTab ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: MudBlazor.MudTabPanel -> unit) = render ==> html.callback("CloseTab", fn)
-    /// The callback, when the close button has been clicked
+    /// Occurs when a tab has been closed.
     [<CustomOperation("CloseTab")>] member inline _.CloseTab ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: MudBlazor.MudTabPanel -> Task<unit>) = render ==> html.callbackTask("CloseTab", fn)
-    /// Classes that are applied to the icon button of the add button
+    /// The CSS classes applied to the "Add" button.
     [<CustomOperation("AddIconClass")>] member inline _.AddIconClass ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("AddIconClass" => x)
-    /// Styles that are applied to the icon button of the add button
+    /// The CSS styles applied to the "Add" button.
     [<CustomOperation("AddIconStyle")>] member inline _.AddIconStyle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("AddIconStyle" => x)
-    /// Classes that are applied to the icon button of the close button
+    /// The CSS classes applied to the "Close" button.
     [<CustomOperation("CloseIconClass")>] member inline _.CloseIconClass ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("CloseIconClass" => x)
-    /// Styles that are applied to the icon button of the close button
+    /// The CSS styles applied to the "Close" button.
     [<CustomOperation("CloseIconStyle")>] member inline _.CloseIconStyle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("CloseIconStyle" => x)
-    /// Tooltip that shown when a user hovers of the add button. Empty or null, if no tooltip should be visible
+    /// The text shown when the user hovers over the "Add" button.
     [<CustomOperation("AddIconToolTip")>] member inline _.AddIconToolTip ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("AddIconToolTip" => x)
-    /// Tooltip that shown when a user hovers of the close button. Empty or null, if no tooltip should be visible
+    /// The text shown when the user hovers over the "Close" button.
     [<CustomOperation("CloseIconToolTip")>] member inline _.CloseIconToolTip ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("CloseIconToolTip" => x)
 
 /// Represents a base class for designing components which contain items.
@@ -1501,13 +1503,14 @@ type MudRadioBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.A
     /// The icon to display for an indeterminate state.
     [<CustomOperation("IndeterminateIcon")>] member inline _.IndeterminateIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("IndeterminateIcon" => x)
 
+/// A component which switches between two values.
 type MudSwitchBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit MudBooleanInputBuilder<'FunBlazorGeneric, 'T>()
-    /// The base color of the component in its none active/unchecked state. It supports the theme colors.
+    /// The color of this switch when in an unchecked state.
     [<CustomOperation("UncheckedColor")>] member inline _.UncheckedColor ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Color) = render ==> ("UncheckedColor" => x)
-    /// Shows an icon on Switch's thumb.
+    /// The icon to display for the switch thumb.
     [<CustomOperation("ThumbIcon")>] member inline _.ThumbIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ThumbIcon" => x)
-    /// The color of the thumb icon. Supports the theme colors.
+    /// The color of the thumb icon.
     [<CustomOperation("ThumbIconColor")>] member inline _.ThumbIconColor ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Color) = render ==> ("ThumbIconColor" => x)
 
 /// A form component for uploading one or more files.  For T, use either IBrowserFile for a single file or IReadOnlyList<IBrowserFile> for multiple files.
@@ -3582,6 +3585,8 @@ type MudImageBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNe
     [<CustomOperation("Fluid")>] member inline _.Fluid ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Fluid" =>>> x)
     /// The path to the image.
     [<CustomOperation("Src")>] member inline _.Src ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Src" => x)
+    /// The fallback image path to use if Src fails to load.
+    [<CustomOperation("FallbackSrc")>] member inline _.FallbackSrc ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("FallbackSrc" => x)
     /// The alternate text for this image.
     [<CustomOperation("Alt")>] member inline _.Alt ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Alt" => x)
     /// The height of this image, in pixels.
@@ -4744,17 +4749,18 @@ type MudStepperBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.Asp
     /// Use this to override the default action buttons of the stepper
     [<CustomOperation("ActionContent")>] member inline _.ActionContent ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: MudBlazor.MudStepper -> NodeRenderFragment) = render ==> html.renderFragment("ActionContent", fn)
 
+/// An area which receives swipe events for devices where touch events are supported.
 type MudSwipeAreaBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit MudComponentBaseBuilder<'FunBlazorGeneric>()
+    /// Occurs when a swipe has ended.
     [<CustomOperation("OnSwipeEnd")>] member inline _.OnSwipeEnd ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: MudBlazor.SwipeEventArgs -> unit) = render ==> html.callback("OnSwipeEnd", fn)
+    /// Occurs when a swipe has ended.
     [<CustomOperation("OnSwipeEnd")>] member inline _.OnSwipeEnd ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: MudBlazor.SwipeEventArgs -> Task<unit>) = render ==> html.callbackTask("OnSwipeEnd", fn)
-    /// Swipe threshold in pixels. If SwipeDelta is below Sensitivity then OnSwipe is not called.
+    /// The amount of pixels which must be swiped to raise the OnSwipeEnd event.
     [<CustomOperation("Sensitivity")>] member inline _.Sensitivity ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("Sensitivity" => x)
-    /// Prevents default behavior of the browser when swiping.
-    /// Usable especially when swiping up/down - this will prevent the whole page from scrolling up/down.
+    /// Prevents the default behavior of the browser when swiping.
     [<CustomOperation("PreventDefault")>] member inline _.PreventDefault ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("PreventDefault" =>>> true)
-    /// Prevents default behavior of the browser when swiping.
-    /// Usable especially when swiping up/down - this will prevent the whole page from scrolling up/down.
+    /// Prevents the default behavior of the browser when swiping.
     [<CustomOperation("PreventDefault")>] member inline _.PreventDefault ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("PreventDefault" =>>> x)
 
 /// A grouping of values for a column in a MudTable`1.
@@ -4991,6 +4997,54 @@ type MudSimpleTableBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     [<CustomOperation("FixedHeader")>] member inline _.FixedHeader ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("FixedHeader" =>>> true)
     /// Fixes the table header in place while the table is scrolled.
     [<CustomOperation("FixedHeader")>] member inline _.FixedHeader ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("FixedHeader" =>>> x)
+
+/// A tab as part of a MudTabs or MudDynamicTabs component.
+type MudTabPanelBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit MudComponentBaseBuilder<'FunBlazorGeneric>()
+    /// The title of this tab panel.
+    [<CustomOperation("Text")>] member inline _.Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Text" => x)
+    /// The icon for this tab.
+    [<CustomOperation("Icon")>] member inline _.Icon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Icon" => x)
+    /// The color of this tab's icon.
+    [<CustomOperation("IconColor")>] member inline _.IconColor ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Color) = render ==> ("IconColor" => x)
+    /// Prevents the user from interacting with this panel.
+    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Disabled" =>>> true)
+    /// Prevents the user from interacting with this panel.
+    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Disabled" =>>> x)
+    /// For dynamic tabs, shows a "Close" icon for this tab.
+    [<CustomOperation("ShowCloseIcon")>] member inline _.ShowCloseIcon ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowCloseIcon" =>>> true)
+    /// For dynamic tabs, shows a "Close" icon for this tab.
+    [<CustomOperation("ShowCloseIcon")>] member inline _.ShowCloseIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowCloseIcon" =>>> x)
+    /// The badge shown for this tab.
+    [<CustomOperation("BadgeData")>] member inline _.BadgeData ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Object) = render ==> ("BadgeData" => x)
+    /// Optional icon to be shown in the badge instead of text.
+    [<CustomOperation("BadgeIcon")>] member inline _.BadgeIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("BadgeIcon" => x)
+    /// Shows a dot instead of text or icon for the badge.
+    [<CustomOperation("BadgeDot")>] member inline _.BadgeDot ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("BadgeDot" =>>> true)
+    /// Shows a dot instead of text or icon for the badge.
+    [<CustomOperation("BadgeDot")>] member inline _.BadgeDot ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("BadgeDot" =>>> x)
+    /// The color of the badge.
+    [<CustomOperation("BadgeColor")>] member inline _.BadgeColor ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Color) = render ==> ("BadgeColor" => x)
+    /// The unique ID for this panel.
+    [<CustomOperation("ID")>] member inline _.ID ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Object) = render ==> ("ID" => x)
+    /// Occurs when this tab is clicked.
+    [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> unit) = render ==> html.callback("OnClick", fn)
+    /// Occurs when this tab is clicked.
+    [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> Task<unit>) = render ==> html.callbackTask("OnClick", fn)
+    /// The content within this tab's title.
+    [<CustomOperation("TabContent")>] member inline _.TabContent ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("TabContent", fragment)
+    /// The content within this tab's title.
+    [<CustomOperation("TabContent")>] member inline _.TabContent ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("TabContent", fragment { yield! fragments })
+    /// The content within this tab's title.
+    [<CustomOperation("TabContent")>] member inline _.TabContent ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("TabContent", html.text x)
+    /// The content within this tab's title.
+    [<CustomOperation("TabContent")>] member inline _.TabContent ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("TabContent", html.text x)
+    /// The content within this tab's title.
+    [<CustomOperation("TabContent")>] member inline _.TabContent ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("TabContent", html.text x)
+    /// The content enclosing this tab.
+    [<CustomOperation("TabWrapperContent")>] member inline _.TabWrapperContent ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.RenderFragment -> NodeRenderFragment) = render ==> html.renderFragment("TabWrapperContent", fn)
+    /// The tooltip displayed for this tab.
+    [<CustomOperation("ToolTip")>] member inline _.ToolTip ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ToolTip" => x)
 
 type MudTimelineItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit MudComponentBaseBuilder<'FunBlazorGeneric>()
@@ -5340,6 +5394,11 @@ type MudTreeViewItemBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Micr
     /// Content of the item body, if used replaced the text, end text and end icon rendering.
     [<CustomOperation("BodyContent")>] member inline _.BodyContent ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: MudBlazor.MudTreeViewItem<'T> -> NodeRenderFragment) = render ==> html.renderFragment("BodyContent", fn)
     [<CustomOperation("Items")>] member inline _.Items ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IReadOnlyCollection<MudBlazor.TreeItemData<'T>>) = render ==> ("Items" => x)
+    [<CustomOperation("Items'")>] member inline _.Items' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Collections.Generic.IReadOnlyCollection<MudBlazor.TreeItemData<'T>> * (System.Collections.Generic.IReadOnlyCollection<MudBlazor.TreeItemData<'T>> -> unit)) = render ==> html.bind("Items", valueFn)
+    /// Called whenever children were loaded from the server
+    [<CustomOperation("ItemsChanged")>] member inline _.ItemsChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Collections.Generic.IReadOnlyCollection<MudBlazor.TreeItemData<'T>> -> unit) = render ==> html.callback("ItemsChanged", fn)
+    /// Called whenever children were loaded from the server
+    [<CustomOperation("ItemsChanged")>] member inline _.ItemsChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Collections.Generic.IReadOnlyCollection<MudBlazor.TreeItemData<'T>> -> Task<unit>) = render ==> html.callbackTask("ItemsChanged", fn)
     /// Expand or collapse TreeView item when it has children. Two-way bindable. Note: if you directly set this to
     /// true or false (instead of using two-way binding) it will force the item's expansion state.
     [<CustomOperation("Expanded")>] member inline _.Expanded ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Expanded" =>>> true)
@@ -5457,54 +5516,6 @@ type MudContainerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.A
     [<CustomOperation("Gutters")>] member inline _.Gutters ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Gutters" =>>> true)
     /// Adds left and right padding to the container itself.
     [<CustomOperation("Gutters")>] member inline _.Gutters ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Gutters" =>>> x)
-
-type MudTabPanelBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit MudComponentBaseBuilder<'FunBlazorGeneric>()
-    /// Text will be displayed in the TabPanel as TabTitle. Text is no longer rendered
-    /// as a MarkupString, so use the TabContent RenderFragment instead for HTML content.
-    [<CustomOperation("Text")>] member inline _.Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Text" => x)
-    /// Icon placed before the text if set.
-    [<CustomOperation("Icon")>] member inline _.Icon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Icon" => x)
-    /// The color of the Icon.
-    [<CustomOperation("IconColor")>] member inline _.IconColor ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Color) = render ==> ("IconColor" => x)
-    /// If true, the tabpanel will be disabled.
-    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Disabled" =>>> true)
-    /// If true, the tabpanel will be disabled.
-    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Disabled" =>>> x)
-    /// MudDynamicTabs: If true, shows the close icon in the TabPanel.
-    [<CustomOperation("ShowCloseIcon")>] member inline _.ShowCloseIcon ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowCloseIcon" =>>> true)
-    /// MudDynamicTabs: If true, shows the close icon in the TabPanel.
-    [<CustomOperation("ShowCloseIcon")>] member inline _.ShowCloseIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowCloseIcon" =>>> x)
-    /// Optional information to be showed into a badge
-    [<CustomOperation("BadgeData")>] member inline _.BadgeData ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Object) = render ==> ("BadgeData" => x)
-    /// Optional information to show the badge as a dot.
-    [<CustomOperation("BadgeDot")>] member inline _.BadgeDot ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("BadgeDot" =>>> true)
-    /// Optional information to show the badge as a dot.
-    [<CustomOperation("BadgeDot")>] member inline _.BadgeDot ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("BadgeDot" =>>> x)
-    /// The color of the badge.
-    [<CustomOperation("BadgeColor")>] member inline _.BadgeColor ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Color) = render ==> ("BadgeColor" => x)
-    /// Unique TabPanel ID. Useful for activation when Panels are dynamically generated.
-    [<CustomOperation("ID")>] member inline _.ID ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Object) = render ==> ("ID" => x)
-    /// Raised when tab is clicked
-    [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> unit) = render ==> html.callback("OnClick", fn)
-    /// Raised when tab is clicked
-    [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> Task<unit>) = render ==> html.callbackTask("OnClick", fn)
-    /// Tab content of component.
-    [<CustomOperation("TabContent")>] member inline _.TabContent ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("TabContent", fragment)
-    /// Tab content of component.
-    [<CustomOperation("TabContent")>] member inline _.TabContent ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("TabContent", fragment { yield! fragments })
-    /// Tab content of component.
-    [<CustomOperation("TabContent")>] member inline _.TabContent ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("TabContent", html.text x)
-    /// Tab content of component.
-    [<CustomOperation("TabContent")>] member inline _.TabContent ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("TabContent", html.text x)
-    /// Tab content of component.
-    [<CustomOperation("TabContent")>] member inline _.TabContent ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("TabContent", html.text x)
-    /// Tab content wrapper of component. It is used to wrap the content of a tab heading in a user supplied div or component. 
-    /// Use @context in the TabWrapperContent to render the tab header within your custom wrapper. 
-    /// This is most useful with tooltips, which must wrap the entire content they refer to.
-    [<CustomOperation("TabWrapperContent")>] member inline _.TabWrapperContent ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.RenderFragment -> NodeRenderFragment) = render ==> html.renderFragment("TabWrapperContent", fn)
-    /// TabPanel Tooltip. It will be ignored if TabContent is provided.
-    [<CustomOperation("ToolTip")>] member inline _.ToolTip ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ToolTip" => x)
 
 type MudThemeProviderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ComponentBaseWithStateBuilder<'FunBlazorGeneric>()
@@ -5820,8 +5831,16 @@ module DslCE =
     type MudTable'<'T> 
         /// A sortable, filterable table with multiselection and pagination.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudTable<_>>)>] () = inherit MudTableBuilder<MudBlazor.MudTable<'T>, 'T>()
-    type MudTabs' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudTabs>)>] () = inherit MudTabsBuilder<MudBlazor.MudTabs>()
-    type MudDynamicTabs' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudDynamicTabs>)>] () = inherit MudDynamicTabsBuilder<MudBlazor.MudDynamicTabs>()
+
+    /// A set of views organized into one or more MudTabPanel components.
+    type MudTabs' 
+        /// A set of views organized into one or more MudTabPanel components.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudTabs>)>] () = inherit MudTabsBuilder<MudBlazor.MudTabs>()
+
+    /// A tab component where the tabs are controlled dynamically, similar to browser tabs.
+    type MudDynamicTabs' 
+        /// A tab component where the tabs are controlled dynamically, similar to browser tabs.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudDynamicTabs>)>] () = inherit MudDynamicTabsBuilder<MudBlazor.MudDynamicTabs>()
 
     /// Represents a base class for designing components which contain items.
     type MudBaseItemsControl'<'TChildComponent when 'TChildComponent :> MudBlazor.MudComponentBase> 
@@ -5914,7 +5933,11 @@ module DslCE =
     type MudRadio'<'T> 
         /// An option from a set of mutually exclusive options, often as part of a MudRadioGroup`1.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudRadio<_>>)>] () = inherit MudRadioBuilder<MudBlazor.MudRadio<'T>, 'T>()
-    type MudSwitch'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudSwitch<_>>)>] () = inherit MudSwitchBuilder<MudBlazor.MudSwitch<'T>, 'T>()
+
+    /// A component which switches between two values.
+    type MudSwitch'<'T> 
+        /// A component which switches between two values.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudSwitch<_>>)>] () = inherit MudSwitchBuilder<MudBlazor.MudSwitch<'T>, 'T>()
 
     /// A form component for uploading one or more files.  For T, use either IBrowserFile for a single file or IReadOnlyList<IBrowserFile> for multiple files.
     type MudFileUpload'<'T> 
@@ -6366,7 +6389,11 @@ module DslCE =
     type MudStepper' 
         /// A wizard that guides the user through a series of steps to complete a transaction.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudStepper>)>] () = inherit MudStepperBuilder<MudBlazor.MudStepper>()
-    type MudSwipeArea' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudSwipeArea>)>] () = inherit MudSwipeAreaBuilder<MudBlazor.MudSwipeArea>()
+
+    /// An area which receives swipe events for devices where touch events are supported.
+    type MudSwipeArea' 
+        /// An area which receives swipe events for devices where touch events are supported.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudSwipeArea>)>] () = inherit MudSwipeAreaBuilder<MudBlazor.MudSwipeArea>()
 
     /// A grouping of values for a column in a MudTable`1.
     type MudTableGroupRow'<'T> 
@@ -6412,6 +6439,11 @@ module DslCE =
     type MudSimpleTable' 
         /// A table similar to MudTable`1 but with basic styling features.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudSimpleTable>)>] () = inherit MudSimpleTableBuilder<MudBlazor.MudSimpleTable>()
+
+    /// A tab as part of a MudTabs or MudDynamicTabs component.
+    type MudTabPanel' 
+        /// A tab as part of a MudTabs or MudDynamicTabs component.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudTabPanel>)>] () = inherit MudTabPanelBuilder<MudBlazor.MudTabPanel>()
     type MudTimelineItem' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudTimelineItem>)>] () = inherit MudTimelineItemBuilder<MudBlazor.MudTimelineItem>()
     type MudToggleGroup'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudToggleGroup<_>>)>] () = inherit MudToggleGroupBuilder<MudBlazor.MudToggleGroup<'T>, 'T>()
     type MudToggleItem'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudToggleItem<_>>)>] () = inherit MudToggleItemBuilder<MudBlazor.MudToggleItem<'T>, 'T>()
@@ -6422,7 +6454,6 @@ module DslCE =
     type MudTreeViewItemToggleButton' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudTreeViewItemToggleButton>)>] () = inherit MudTreeViewItemToggleButtonBuilder<MudBlazor.MudTreeViewItemToggleButton>()
     type MudText' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudText>)>] () = inherit MudTextBuilder<MudBlazor.MudText>()
     type MudContainer' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudContainer>)>] () = inherit MudContainerBuilder<MudBlazor.MudContainer>()
-    type MudTabPanel' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudTabPanel>)>] () = inherit MudTabPanelBuilder<MudBlazor.MudTabPanel>()
     type MudThemeProvider' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudThemeProvider>)>] () = inherit MudThemeProviderBuilder<MudBlazor.MudThemeProvider>()
 
     /// Represents a segment in a list of breadcrumbs.
@@ -6602,6 +6633,7 @@ module DslCEInstances =
     let MudTHeadRow'' = MudTHeadRow'()
     let MudTr'' = MudTr'()
     let MudSimpleTable'' = MudSimpleTable'()
+    let MudTabPanel'' = MudTabPanel'()
     let MudTimelineItem'' = MudTimelineItem'()
     let MudToggleGroup''<'T> = MudToggleGroup'<'T>()
     let MudToggleItem''<'T> = MudToggleItem'<'T>()
@@ -6612,7 +6644,6 @@ module DslCEInstances =
     let MudTreeViewItemToggleButton'' = MudTreeViewItemToggleButton'()
     let MudText'' = MudText'()
     let MudContainer'' = MudContainer'()
-    let MudTabPanel'' = MudTabPanel'()
     let MudThemeProvider'' = MudThemeProvider'()
     let BreadcrumbLink'' = BreadcrumbLink'()
     let BreadcrumbSeparator'' = BreadcrumbSeparator'()

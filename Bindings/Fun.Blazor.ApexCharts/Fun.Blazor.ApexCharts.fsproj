@@ -5,14 +5,14 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <TrimMode>link</TrimMode>
     <IsTrimmable>true</IsTrimmable>
-    <Version>5.0.1</Version>
+    <Version>5.1.0</Version>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Fun.Blazor.Bindings\ApexCharts.fs" />
     <EmbeddedResource Include="ILLink.Substitutions.xml" LogicalName="ILLink.Substitutions.xml" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference FunBlazor="" FunBlazorNamespace="ApexCharts" FunBlazorAssemblyName="Blazor-ApexCharts" Include="Blazor-ApexCharts" Version="5.0.1" />
+    <PackageReference FunBlazor="" FunBlazorNamespace="ApexCharts" FunBlazorAssemblyName="Blazor-ApexCharts" Include="Blazor-ApexCharts" Version="5.1.0" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="*.fs" />

@@ -261,6 +261,23 @@ type ApexRangeSeriesBuilder<'FunBlazorGeneric, 'TItem when 'TItem : not struct a
     [<CustomOperation("DataPointMutator")>] member inline _.DataPointMutator ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("DataPointMutator" => (System.Action<ApexCharts.ListPoint<'TItem>>fn))
 
             
+namespace rec ApexCharts.DslInternals.Internal
+
+open System.Threading.Tasks
+open FSharp.Data.Adaptive
+open Fun.Blazor
+open Fun.Blazor.Operators
+open ApexCharts.DslInternals
+
+type ApexChartTooltipBuilder<'FunBlazorGeneric, 'TItem when 'TItem : not struct and 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
+    [<CustomOperation("ChartId")>] member inline _.ChartId ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ChartId" => x)
+    /// Tooltip allows you to preview data when user hovers over the chart area.
+    [<CustomOperation("ApexTooltip")>] member inline _.ApexTooltip ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.HoverData<'TItem> -> NodeRenderFragment) = render ==> html.renderFragment("ApexTooltip", fn)
+    [<CustomOperation("Data")>] member inline _.Data ([<InlineIfLambda>] render: AttrRenderFragment, x: ApexCharts.HoverData<'TItem>) = render ==> ("Data" => x)
+    [<CustomOperation("JsApexchart")>] member inline _.JsApexchart ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.JSInterop.IJSObjectReference) = render ==> ("JsApexchart" => x)
+
+            
 
 // =======================================================================================================================
 
@@ -333,4 +350,22 @@ module DslCEInstances =
     let ApexPointSeries''<'TItem when 'TItem : not struct> = ApexPointSeries'<'TItem>()
     let ApexRangeAreaSeries''<'TItem when 'TItem : not struct> = ApexRangeAreaSeries'<'TItem>()
     let ApexRangeSeries''<'TItem when 'TItem : not struct> = ApexRangeSeries'<'TItem>()
+            
+namespace ApexCharts.Internal
+
+[<AutoOpen>]
+module DslCE =
+  
+    open System.Diagnostics.CodeAnalysis
+    open ApexCharts.DslInternals.Internal
+
+    type ApexChartTooltip'<'TItem when 'TItem : not struct> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<ApexCharts.Internal.ApexChartTooltip<_>>)>] () = inherit ApexChartTooltipBuilder<ApexCharts.Internal.ApexChartTooltip<'TItem>, 'TItem>()
+
+[<AutoOpen>]
+module DslCEInstances =
+  
+    open System.Diagnostics.CodeAnalysis
+    open ApexCharts.DslInternals.Internal
+
+    let ApexChartTooltip''<'TItem when 'TItem : not struct> = ApexChartTooltip'<'TItem>()
             

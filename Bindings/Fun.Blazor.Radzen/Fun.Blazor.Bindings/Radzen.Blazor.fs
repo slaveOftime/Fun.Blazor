@@ -481,6 +481,46 @@ type RadzenSplitButtonBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micros
     /// Gets or sets the add button aria-label attribute.
     [<CustomOperation("ButtonAriaLabel")>] member inline _.ButtonAriaLabel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ButtonAriaLabel" => x)
 
+/// RadzenTable component.
+type RadzenTableBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit RadzenComponentWithChildrenBuilder<'FunBlazorGeneric>()
+    /// Gets or sets the grid lines.
+    [<CustomOperation("GridLines")>] member inline _.GridLines ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.DataGridGridLines) = render ==> ("GridLines" => x)
+    /// Gets or sets a value indicating whether RadzenTable should use alternating row styles.
+    [<CustomOperation("AllowAlternatingRows")>] member inline _.AllowAlternatingRows ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AllowAlternatingRows" =>>> true)
+    /// Gets or sets a value indicating whether RadzenTable should use alternating row styles.
+    [<CustomOperation("AllowAlternatingRows")>] member inline _.AllowAlternatingRows ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("AllowAlternatingRows" =>>> x)
+
+/// RadzenTableBody component.
+type RadzenTableBodyBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit RadzenComponentWithChildrenBuilder<'FunBlazorGeneric>()
+
+
+/// RadzenTableRow component.
+type RadzenTableCellBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit RadzenComponentWithChildrenBuilder<'FunBlazorGeneric>()
+
+
+/// RadzenTableHeader component.
+type RadzenTableHeaderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit RadzenComponentWithChildrenBuilder<'FunBlazorGeneric>()
+
+
+/// RadzenTableRow component.
+type RadzenTableHeaderCellBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit RadzenComponentWithChildrenBuilder<'FunBlazorGeneric>()
+
+
+/// RadzenTableRow component.
+type RadzenTableHeaderRowBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit RadzenComponentWithChildrenBuilder<'FunBlazorGeneric>()
+
+
+/// RadzenTableRow component.
+type RadzenTableRowBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit RadzenComponentWithChildrenBuilder<'FunBlazorGeneric>()
+
+
 type RadzenMenuItemWrapperBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit RadzenComponentWithChildrenBuilder<'FunBlazorGeneric>()
     /// Gets or sets the menu item.
@@ -1538,6 +1578,10 @@ type RadzenSliderBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Mi
 /// RadzenSwitch component.
 type RadzenSwitchBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FormComponentBuilder<'FunBlazorGeneric, System.Boolean>()
+    /// Gets or sets a value indicating whether is read only.
+    [<CustomOperation("ReadOnly")>] member inline _.ReadOnly ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ReadOnly" =>>> true)
+    /// Gets or sets a value indicating whether is read only.
+    [<CustomOperation("ReadOnly")>] member inline _.ReadOnly ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ReadOnly" =>>> x)
     /// Specifies additional custom attributes that will be rendered by the input.
     [<CustomOperation("InputAttributes")>] member inline _.InputAttributes ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>) = render ==> ("InputAttributes" => x)
 
@@ -1811,6 +1855,8 @@ type RadzenDataGridBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> M
     [<CustomOperation("IsEmptyText")>] member inline _.IsEmptyText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("IsEmptyText" => x)
     /// Gets or sets the is not empty text.
     [<CustomOperation("IsNotEmptyText")>] member inline _.IsNotEmptyText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("IsNotEmptyText" => x)
+    /// Gets or sets the custom filter operator text.
+    [<CustomOperation("CustomText")>] member inline _.CustomText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("CustomText" => x)
     /// Gets or sets the filter case sensitivity.
     [<CustomOperation("FilterCaseSensitivity")>] member inline _.FilterCaseSensitivity ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.FilterCaseSensitivity) = render ==> ("FilterCaseSensitivity" => x)
     /// Gets or sets the filter delay.
@@ -2369,6 +2415,8 @@ type RadzenDataFilterBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :>
     [<CustomOperation("IsEmptyText")>] member inline _.IsEmptyText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("IsEmptyText" => x)
     /// Gets or sets the is not empty text.
     [<CustomOperation("IsNotEmptyText")>] member inline _.IsNotEmptyText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("IsNotEmptyText" => x)
+    /// Gets or sets the custom filter operator text.
+    [<CustomOperation("CustomText")>] member inline _.CustomText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("CustomText" => x)
     /// Gets or sets a value indicating whether the columns can be filtered.
     [<CustomOperation("AllowColumnFiltering")>] member inline _.AllowColumnFiltering ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AllowColumnFiltering" =>>> true)
     /// Gets or sets a value indicating whether the columns can be filtered.
@@ -2684,6 +2732,8 @@ type RadzenGravatarBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     [<CustomOperation("Email")>] member inline _.Email ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Email" => x)
     /// Gets or sets the text.
     [<CustomOperation("AlternateText")>] member inline _.AlternateText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("AlternateText" => x)
+    /// Gets or sets the size. Defaulted to 36 (pixels). 
+    [<CustomOperation("Size")>] member inline _.Size ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("Size" => x)
 
 /// RadzenHeading component.
 type RadzenHeadingBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -3158,6 +3208,10 @@ type RadzenSchedulerBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> 
     [<CustomOperation("MonthSelect")>] member inline _.MonthSelect ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.SchedulerMonthSelectEventArgs -> unit) = render ==> html.callback("MonthSelect", fn)
     /// A callback that will be invoked when the user clicks a month header button.
     [<CustomOperation("MonthSelect")>] member inline _.MonthSelect ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.SchedulerMonthSelectEventArgs -> Task<unit>) = render ==> html.callbackTask("MonthSelect", fn)
+    /// A callback that will be invoked when the user clicks a day header button or the day number in a MonthView.
+    [<CustomOperation("DaySelect")>] member inline _.DaySelect ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.SchedulerDaySelectEventArgs -> unit) = render ==> html.callback("DaySelect", fn)
+    /// A callback that will be invoked when the user clicks a day header button or the day number in a MonthView.
+    [<CustomOperation("DaySelect")>] member inline _.DaySelect ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.SchedulerDaySelectEventArgs -> Task<unit>) = render ==> html.callbackTask("DaySelect", fn)
     /// A callback that will be invoked when the user clicks an appointment in the current view. Commonly used to edit existing appointments.
     [<CustomOperation("AppointmentSelect")>] member inline _.AppointmentSelect ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.SchedulerAppointmentSelectEventArgs<'TItem> -> unit) = render ==> html.callback("AppointmentSelect", fn)
     /// A callback that will be invoked when the user clicks an appointment in the current view. Commonly used to edit existing appointments.
@@ -5732,6 +5786,41 @@ module DslCE =
     type RadzenSplitButton' 
         /// RadzenSplitButton component.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenSplitButton>)>] () = inherit RadzenSplitButtonBuilder<Radzen.Blazor.RadzenSplitButton>()
+
+    /// RadzenTable component.
+    type RadzenTable' 
+        /// RadzenTable component.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenTable>)>] () = inherit RadzenTableBuilder<Radzen.Blazor.RadzenTable>()
+
+    /// RadzenTableBody component.
+    type RadzenTableBody' 
+        /// RadzenTableBody component.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenTableBody>)>] () = inherit RadzenTableBodyBuilder<Radzen.Blazor.RadzenTableBody>()
+
+    /// RadzenTableRow component.
+    type RadzenTableCell' 
+        /// RadzenTableRow component.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenTableCell>)>] () = inherit RadzenTableCellBuilder<Radzen.Blazor.RadzenTableCell>()
+
+    /// RadzenTableHeader component.
+    type RadzenTableHeader' 
+        /// RadzenTableHeader component.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenTableHeader>)>] () = inherit RadzenTableHeaderBuilder<Radzen.Blazor.RadzenTableHeader>()
+
+    /// RadzenTableRow component.
+    type RadzenTableHeaderCell' 
+        /// RadzenTableRow component.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenTableHeaderCell>)>] () = inherit RadzenTableHeaderCellBuilder<Radzen.Blazor.RadzenTableHeaderCell>()
+
+    /// RadzenTableRow component.
+    type RadzenTableHeaderRow' 
+        /// RadzenTableRow component.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenTableHeaderRow>)>] () = inherit RadzenTableHeaderRowBuilder<Radzen.Blazor.RadzenTableHeaderRow>()
+
+    /// RadzenTableRow component.
+    type RadzenTableRow' 
+        /// RadzenTableRow component.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenTableRow>)>] () = inherit RadzenTableRowBuilder<Radzen.Blazor.RadzenTableRow>()
     type RadzenMenuItemWrapper' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenMenuItemWrapper>)>] () = inherit RadzenMenuItemWrapperBuilder<Radzen.Blazor.RadzenMenuItemWrapper>()
 
     /// Base class of Radzen validator components.
@@ -6653,6 +6742,13 @@ module DslCEInstances =
     let RadzenProfileMenu'' = RadzenProfileMenu'()
     let RadzenSidebar'' = RadzenSidebar'()
     let RadzenSplitButton'' = RadzenSplitButton'()
+    let RadzenTable'' = RadzenTable'()
+    let RadzenTableBody'' = RadzenTableBody'()
+    let RadzenTableCell'' = RadzenTableCell'()
+    let RadzenTableHeader'' = RadzenTableHeader'()
+    let RadzenTableHeaderCell'' = RadzenTableHeaderCell'()
+    let RadzenTableHeaderRow'' = RadzenTableHeaderRow'()
+    let RadzenTableRow'' = RadzenTableRow'()
     let RadzenMenuItemWrapper'' = RadzenMenuItemWrapper'()
     let ValidatorBase'' = ValidatorBase'()
     let RadzenCompareValidator'' = RadzenCompareValidator'()
