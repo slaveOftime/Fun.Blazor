@@ -627,6 +627,9 @@ type ListComponentBaseBuilder<'FunBlazorGeneric, 'TOption when 'FunBlazorGeneric
     /// Called whenever the selection changed.
     /// ⚠️ Only available when Multiple = false.
     [<CustomOperation("SelectedOptionChanged")>] member inline _.SelectedOptionChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: 'TOption -> Task<unit>) = render ==> html.callbackTask("SelectedOptionChanged", fn)
+    /// Gets or sets an expression that identifies the bound selected options.
+    /// ⚠️ Only available when Multiple = false.
+    [<CustomOperation("SelectedOptionExpression")>] member inline _.SelectedOptionExpression ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Linq.Expressions.Expression<System.Func<'TOption>>) = render ==> ("SelectedOptionExpression" => x)
     /// If true, the user can select multiple elements.
     /// ⚠️ Only available for the FluentSelect and FluentListbox components.
     [<CustomOperation("Multiple")>] member inline _.Multiple ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Multiple" =>>> true)
@@ -641,12 +644,21 @@ type ListComponentBaseBuilder<'FunBlazorGeneric, 'TOption when 'FunBlazorGeneric
     /// Gets or sets all selected items.
     /// ⚠️ Only available when Multiple = true.
     [<CustomOperation("SelectedOptions'")>] member inline _.SelectedOptions' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Collections.Generic.IEnumerable<'TOption> * (System.Collections.Generic.IEnumerable<'TOption> -> unit)) = render ==> html.bind("SelectedOptions", valueFn)
+    /// Gets or sets whether using the up and down arrow keys should change focus and select immediately or that selection is done only on Enter.
+    /// ⚠️ Only applicable in single select scenarios.
+    [<CustomOperation("ChangeOnEnterOnly")>] member inline _.ChangeOnEnterOnly ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ChangeOnEnterOnly" =>>> true)
+    /// Gets or sets whether using the up and down arrow keys should change focus and select immediately or that selection is done only on Enter.
+    /// ⚠️ Only applicable in single select scenarios.
+    [<CustomOperation("ChangeOnEnterOnly")>] member inline _.ChangeOnEnterOnly ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ChangeOnEnterOnly" =>>> x)
     /// Called whenever the selection changed.
     /// ⚠️ Only available when Multiple = true.
     [<CustomOperation("SelectedOptionsChanged")>] member inline _.SelectedOptionsChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Collections.Generic.IEnumerable<'TOption> -> unit) = render ==> html.callback("SelectedOptionsChanged", fn)
     /// Called whenever the selection changed.
     /// ⚠️ Only available when Multiple = true.
     [<CustomOperation("SelectedOptionsChanged")>] member inline _.SelectedOptionsChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Collections.Generic.IEnumerable<'TOption> -> Task<unit>) = render ==> html.callbackTask("SelectedOptionsChanged", fn)
+    /// Gets or sets an expression that identifies the bound selected options.
+    /// ⚠️ Only available when Multiple = true.
+    [<CustomOperation("SelectedOptionsExpression")>] member inline _.SelectedOptionsExpression ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Linq.Expressions.Expression<System.Func<System.Collections.Generic.IEnumerable<'TOption>>>) = render ==> ("SelectedOptionsExpression" => x)
 
 type FluentAutocompleteBuilder<'FunBlazorGeneric, 'TOption when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ListComponentBaseBuilder<'FunBlazorGeneric, 'TOption>()
@@ -752,6 +764,8 @@ type FluentComboboxBuilder<'FunBlazorGeneric, 'TOption when 'FunBlazorGeneric :>
     [<CustomOperation("Autocomplete")>] member inline _.Autocomplete ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.ComboboxAutocomplete>) = render ==> ("Autocomplete" => x)
     /// Gets or sets the open attribute.
     [<CustomOperation("Open")>] member inline _.Open ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("Open" => x)
+    /// Gets or sets the option to allow closing the FluentCombobox list by clicking the dropdown button. Default is false.
+    [<CustomOperation("EnableClickToClose")>] member inline _.EnableClickToClose ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("EnableClickToClose" => x)
     /// Gets or sets the placement for the listbox when the combobox is open.
     /// See 
     [<CustomOperation("Position")>] member inline _.Position ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.SelectPosition>) = render ==> ("Position" => x)
@@ -1271,6 +1285,10 @@ type FluentDataGridBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric 
     [<CustomOperation("AutoFit")>] member inline _.AutoFit ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AutoFit" =>>> true)
     /// Sets GridTemplateColumns to automatically fit the columns to the available width as best it can.
     [<CustomOperation("AutoFit")>] member inline _.AutoFit ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("AutoFit" =>>> x)
+    /// Automatically fit the number of items per page to the available height.
+    [<CustomOperation("AutoItemsPerPage")>] member inline _.AutoItemsPerPage ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AutoItemsPerPage" =>>> true)
+    /// Automatically fit the number of items per page to the available height.
+    [<CustomOperation("AutoItemsPerPage")>] member inline _.AutoItemsPerPage ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("AutoItemsPerPage" =>>> x)
     [<CustomOperation("DisplayMode")>] member inline _.DisplayMode ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.DataGridDisplayMode) = render ==> ("DisplayMode" => x)
     /// Gets or sets the size of each row in the grid based on the DataGridRowSize enum.
     [<CustomOperation("RowSize")>] member inline _.RowSize ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.DataGridRowSize) = render ==> ("RowSize" => x)
@@ -1705,6 +1723,12 @@ type FluentInputFileBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsof
     [<CustomOperation("OnFileError")>] member inline _.OnFileError ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentInputFileEventArgs -> unit) = render ==> html.callback("OnFileError", fn)
     /// Raise when a file raised an error. Not yet used.
     [<CustomOperation("OnFileError")>] member inline _.OnFileError ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentInputFileEventArgs -> Task<unit>) = render ==> html.callbackTask("OnFileError", fn)
+    /// Raised when the MaximumFileCount is exceeded.
+    /// The return parameter specifies the total number of files that were attempted for upload.
+    [<CustomOperation("OnFileCountExceeded")>] member inline _.OnFileCountExceeded ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Int32 -> unit) = render ==> html.callback("OnFileCountExceeded", fn)
+    /// Raised when the MaximumFileCount is exceeded.
+    /// The return parameter specifies the total number of files that were attempted for upload.
+    [<CustomOperation("OnFileCountExceeded")>] member inline _.OnFileCountExceeded ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Int32 -> Task<unit>) = render ==> html.callbackTask("OnFileCountExceeded", fn)
     /// Raise when all files are completely uploaded.
     [<CustomOperation("OnCompleted")>] member inline _.OnCompleted ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Collections.Generic.IEnumerable<Microsoft.FluentUI.AspNetCore.Components.FluentInputFileEventArgs> -> unit) = render ==> html.callback("OnCompleted", fn)
     /// Raise when all files are completely uploaded.
@@ -2897,6 +2921,8 @@ type FluentToolbarBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
     /// Gets or sets the toolbar's orentation. See Orientation
     [<CustomOperation("Orientation")>] member inline _.Orientation ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.Orientation>) = render ==> ("Orientation" => x)
+    /// Gets or sets a value indicating whether arrow key navigation within text input fields is enabled. Default is false.
+    [<CustomOperation("EnableArrowKeyTextNavigation")>] member inline _.EnableArrowKeyTextNavigation ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("EnableArrowKeyTextNavigation" => x)
 
 type FluentTooltipBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()

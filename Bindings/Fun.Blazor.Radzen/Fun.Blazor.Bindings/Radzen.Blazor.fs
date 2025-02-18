@@ -2780,6 +2780,10 @@ type RadzenLinkBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.Asp
     [<CustomOperation("Path")>] member inline _.Path ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Path" => x)
     /// Gets or sets the navigation link match.
     [<CustomOperation("Match")>] member inline _.Match ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.AspNetCore.Components.Routing.NavLinkMatch) = render ==> ("Match" => x)
+    /// Gets or sets whether the link is disabled.
+    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Disabled" =>>> true)
+    /// Gets or sets whether the link is disabled.
+    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Disabled" =>>> x)
 
 /// RadzenLogin component. Must be placed in RadzenTemplateForm.
 type RadzenLoginBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -3026,6 +3030,10 @@ type RadzenPickListBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> M
     [<CustomOperation("Multiple")>] member inline _.Multiple ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Multiple" =>>> true)
     /// Gets or sets a value indicating whether multiple selection is allowed.
     [<CustomOperation("Multiple")>] member inline _.Multiple ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Multiple" =>>> x)
+    /// Gets or sets a value indicating whether selecting all items is allowed.
+    [<CustomOperation("AllowSelectAll")>] member inline _.AllowSelectAll ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AllowSelectAll" =>>> true)
+    /// Gets or sets a value indicating whether selecting all items is allowed.
+    [<CustomOperation("AllowSelectAll")>] member inline _.AllowSelectAll ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("AllowSelectAll" =>>> x)
     /// Gets or sets a value indicating whether component is disabled.
     [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Disabled" =>>> true)
     /// Gets or sets a value indicating whether component is disabled.
@@ -3058,6 +3066,8 @@ type RadzenPickListBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> M
     [<CustomOperation("TargetPlaceholder")>] member inline _.TargetPlaceholder ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("TargetPlaceholder" => x)
     /// Gets or sets the text property
     [<CustomOperation("TextProperty")>] member inline _.TextProperty ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("TextProperty" => x)
+    /// Gets or sets the disabled property
+    [<CustomOperation("DisabledProperty")>] member inline _.DisabledProperty ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("DisabledProperty" => x)
     /// Gets or sets the source template
     [<CustomOperation("Template")>] member inline _.Template ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: 'TItem -> NodeRenderFragment) = render ==> html.renderFragment("Template", fn)
     /// Gets or sets the select all text.
@@ -3094,6 +3104,14 @@ type RadzenPickListBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> M
     [<CustomOperation("TargetToSourceTitle")>] member inline _.TargetToSourceTitle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("TargetToSourceTitle" => x)
     /// Gets or sets the selected target to source  title
     [<CustomOperation("SelectedTargetToSourceTitle")>] member inline _.SelectedTargetToSourceTitle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("SelectedTargetToSourceTitle" => x)
+    /// Gets or sets the source to target icon
+    [<CustomOperation("SourceToTargetIcon")>] member inline _.SourceToTargetIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("SourceToTargetIcon" => x)
+    /// Gets or sets the selected source to target icon
+    [<CustomOperation("SelectedSourceToTargetIcon")>] member inline _.SelectedSourceToTargetIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("SelectedSourceToTargetIcon" => x)
+    /// Gets or sets the target to source icon
+    [<CustomOperation("TargetToSourceIcon")>] member inline _.TargetToSourceIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("TargetToSourceIcon" => x)
+    /// Gets or sets the selected target to source  icon
+    [<CustomOperation("SelectedTargetToSourceIcon")>] member inline _.SelectedTargetToSourceIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("SelectedTargetToSourceIcon" => x)
     /// Gets or sets the source collection.
     [<CustomOperation("Source")>] member inline _.Source ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<'TItem>) = render ==> ("Source" => x)
     /// Gets or sets the source collection.
@@ -5263,7 +5281,7 @@ type RadzenDataGridGroupFooterCellBuilder<'FunBlazorGeneric, 'TItem when 'FunBla
 type RadzenDataGridGroupFooterRowBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
     [<CustomOperation("Columns")>] member inline _.Columns ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IList<Radzen.Blazor.RadzenDataGridColumn<'TItem>>) = render ==> ("Columns" => x)
-    [<CustomOperation("GroupResult")>] member inline _.GroupResult ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Linq.Dynamic.Core.GroupResult) = render ==> ("GroupResult" => x)
+    [<CustomOperation("GroupResult")>] member inline _.GroupResult ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.GroupResult) = render ==> ("GroupResult" => x)
     [<CustomOperation("Grid")>] member inline _.Grid ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Blazor.RadzenDataGrid<'TItem>) = render ==> ("Grid" => x)
     [<CustomOperation("Parent")>] member inline _.Parent ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Blazor.RadzenDataGridGroupRow<'TItem>) = render ==> ("Parent" => x)
     [<CustomOperation("Builder")>] member inline _.Builder ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder) = render ==> ("Builder" => x)
@@ -5271,7 +5289,7 @@ type RadzenDataGridGroupFooterRowBuilder<'FunBlazorGeneric, 'TItem when 'FunBlaz
 type RadzenDataGridGroupRowBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
     [<CustomOperation("Columns")>] member inline _.Columns ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IList<Radzen.Blazor.RadzenDataGridColumn<'TItem>>) = render ==> ("Columns" => x)
-    [<CustomOperation("GroupResult")>] member inline _.GroupResult ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Linq.Dynamic.Core.GroupResult) = render ==> ("GroupResult" => x)
+    [<CustomOperation("GroupResult")>] member inline _.GroupResult ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.GroupResult) = render ==> ("GroupResult" => x)
     [<CustomOperation("Grid")>] member inline _.Grid ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Blazor.RadzenDataGrid<'TItem>) = render ==> ("Grid" => x)
     [<CustomOperation("Parent")>] member inline _.Parent ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Blazor.RadzenDataGridGroupRow<'TItem>) = render ==> ("Parent" => x)
     [<CustomOperation("Builder")>] member inline _.Builder ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder) = render ==> ("Builder" => x)
