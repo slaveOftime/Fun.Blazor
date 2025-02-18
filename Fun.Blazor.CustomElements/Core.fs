@@ -12,7 +12,7 @@ type FunBlazorCustomElementAttribute() =
     member val TagName = "" with get, set
 
 
-[<RequireQualifiedAccess; Struct>]
+[<RequireQualifiedAccess>]
 type RenderAfter =
     /// Render after timeout in ms
     | Delay of delay: int

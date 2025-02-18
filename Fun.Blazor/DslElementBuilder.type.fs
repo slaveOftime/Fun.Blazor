@@ -4,7 +4,7 @@ module Fun.Blazor.DslElementBuilder_type
 open Fun.Blazor
 open Operators
 
-[<RequireQualifiedAccess; Struct>]
+[<RequireQualifiedAccess>]
 type InputTypes =
     | button
     | checkbox

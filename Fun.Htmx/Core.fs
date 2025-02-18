@@ -4,7 +4,7 @@ open System.Text
 open Fun.Result
 
 
-[<RequireQualifiedAccess; Struct>]
+[<RequireQualifiedAccess>]
 type HxQueue =
     | First
     | Last
