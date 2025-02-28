@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [4.1.6] - 2025-02-28
+
+- Fix store generic conversion issue
+
 ## [4.1.5] - 2025-02-28
 
 - Add CreateCList for store

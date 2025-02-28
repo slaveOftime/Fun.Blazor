@@ -61,36 +61,41 @@ type StoreManager(sp: IServiceProvider) =
 
     interface IShareStore with
 
-        member _.CreateCVal(key: string, defaultValue: 'T) = avals.GetOrAdd(key, (fun _ -> cval defaultValue)) :?> cval<'T>
+        member _.CreateCVal(key: string, defaultValue: 'T) =
+            let x = avals.GetOrAdd(key, valueFactory = (fun _ -> cval defaultValue))
+
+            x :?> cval<'T>
 
         member _.CreateCVal(key: string, defaultValue: 'T, init: unit -> aval<'T>) =
             avals.GetOrAdd(
                 key,
-                fun _ ->
-                    let data = cval defaultValue
-                    init().AddCallback(fun x -> transact (fun () -> data.Value <- x)) |> ignore
-                    data
+                valueFactory =
+                    fun _ ->
+                        let data = cval defaultValue
+                        init().AddCallback(fun x -> transact (fun () -> data.Value <- x)) |> ignore
+                        data
             )
             :?> cval<'T>
 
         member _.CreateCVal(key: string, defaultValue: 'T, init: unit -> Task<'T>) =
             avals.GetOrAdd(
                 key,
-                fun _ ->
-                    let data = cval defaultValue
-                    init () |> Task.map (fun x -> transact (fun () -> data.Value <- x)) |> ignore
-                    data
+                valueFactory =
+                    fun _ ->
+                        let data = cval defaultValue
+                        init () |> Task.map (fun x -> transact (fun () -> data.Value <- x)) |> ignore
+                        data
             )
             :?> cval<'T>
 
         member _.CreateCList(key: string, ?defaultValue: 'T seq) =
-            avals.GetOrAdd(key, fun _ -> clist (defaultArg defaultValue Seq.empty)) :?> clist<'T>
+            avals.GetOrAdd(key, valueFactory = (fun _ -> clist (defaultArg defaultValue Seq.empty))) :?> clist<'T>
 
         member _.CreateCHashSet(key: string, ?defaultValue: 'T seq) =
-            avals.GetOrAdd(key, fun _ -> ChangeableHashSet(defaultArg defaultValue Seq.empty)) :?> ChangeableHashSet<'T>
+            avals.GetOrAdd(key, valueFactory = (fun _ -> ChangeableHashSet(defaultArg defaultValue Seq.empty))) :?> ChangeableHashSet<'T>
 
         member _.CreateCMap(key: string, ?defaultValue: ('K * 'T) seq) =
-            avals.GetOrAdd(key, fun _ -> cmap<'K, 'T> (defaultArg defaultValue Seq.empty)) :?> cmap<'K, 'T>
+            avals.GetOrAdd(key, valueFactory = (fun _ -> cmap<'K, 'T> (defaultArg defaultValue Seq.empty))) :?> cmap<'K, 'T>
 
         member _.ServiceProvider = sp
 
