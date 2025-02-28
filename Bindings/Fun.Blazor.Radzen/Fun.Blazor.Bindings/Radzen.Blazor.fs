@@ -4829,6 +4829,10 @@ type RadzenDataGridColumnBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneri
     [<CustomOperation("FooterCssClass")>] member inline _.FooterCssClass ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("FooterCssClass" => x)
     /// Gets or sets the group footer CSS class applied to group footer cell.
     [<CustomOperation("GroupFooterCssClass")>] member inline _.GroupFooterCssClass ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("GroupFooterCssClass" => x)
+    /// Gets or sets the header white space style.
+    [<CustomOperation("HeaderWhiteSpace")>] member inline _.HeaderWhiteSpace ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Blazor.WhiteSpace) = render ==> ("HeaderWhiteSpace" => x)
+    /// Gets or sets the white space style.
+    [<CustomOperation("WhiteSpace")>] member inline _.WhiteSpace ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Blazor.WhiteSpace) = render ==> ("WhiteSpace" => x)
     /// Gets or sets a value indicating whether this RadzenDataGridColumn`1 is filterable.
     [<CustomOperation("Filterable")>] member inline _.Filterable ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Filterable" =>>> true)
     /// Gets or sets a value indicating whether this RadzenDataGridColumn`1 is filterable.

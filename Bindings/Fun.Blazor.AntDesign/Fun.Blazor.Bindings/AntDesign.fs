@@ -1091,7 +1091,6 @@ type DatePickerBaseBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> 
     [<CustomOperation("ChangeOnClose")>] member inline _.ChangeOnClose ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ChangeOnClose" =>>> x)
     [<CustomOperation("Picker")>] member inline _.Picker ([<InlineIfLambda>] render: AttrRenderFragment, x: AntDesign.DatePickerType) = render ==> ("Picker" => x)
     [<CustomOperation("PopupContainerSelector")>] member inline _.PopupContainerSelector ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("PopupContainerSelector" => x)
-    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: OneOf.OneOf<System.Boolean, System.Boolean[]>) = render ==> ("Disabled" => x)
     [<CustomOperation("BoundaryAdjustMode")>] member inline _.BoundaryAdjustMode ([<InlineIfLambda>] render: AttrRenderFragment, x: AntDesign.TriggerBoundaryAdjustMode) = render ==> ("BoundaryAdjustMode" => x)
     [<CustomOperation("Bordered")>] member inline _.Bordered ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Bordered" =>>> true)
     [<CustomOperation("Bordered")>] member inline _.Bordered ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Bordered" =>>> x)
@@ -1152,6 +1151,8 @@ type DatePickerBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Micr
     inherit DatePickerBaseBuilder<'FunBlazorGeneric, 'TValue>()
     [<CustomOperation("OnChange")>] member inline _.OnChange ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: AntDesign.DateTimeChangedEventArgs<'TValue> -> unit) = render ==> html.callback("OnChange", fn)
     [<CustomOperation("OnChange")>] member inline _.OnChange ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: AntDesign.DateTimeChangedEventArgs<'TValue> -> Task<unit>) = render ==> html.callbackTask("OnChange", fn)
+    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Disabled" =>>> true)
+    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Disabled" =>>> x)
 
 type MonthPickerBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit DatePickerBuilder<'FunBlazorGeneric, 'TValue>()
@@ -1179,6 +1180,7 @@ type RangePickerBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Mic
     [<CustomOperation("OnChange")>] member inline _.OnChange ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: AntDesign.DateRangeChangedEventArgs<'TValue> -> unit) = render ==> html.callback("OnChange", fn)
     [<CustomOperation("OnChange")>] member inline _.OnChange ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: AntDesign.DateRangeChangedEventArgs<'TValue> -> Task<unit>) = render ==> html.callbackTask("OnChange", fn)
     [<CustomOperation("DisabledDate")>] member inline _.DisabledDate ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("DisabledDate" => (System.Func<System.DateTime, System.Boolean>fn))
+    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: OneOf.OneOf<System.Boolean, System.Boolean[]>) = render ==> ("Disabled" => x)
 
 type InputNumberBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit AntInputComponentBaseBuilder<'FunBlazorGeneric, 'TValue>()
@@ -2270,7 +2272,7 @@ type ProgressBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNe
     [<CustomOperation("Percent")>] member inline _.Percent ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Double) = render ==> ("Percent" => x)
     [<CustomOperation("ShowInfo")>] member inline _.ShowInfo ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowInfo" =>>> true)
     [<CustomOperation("ShowInfo")>] member inline _.ShowInfo ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowInfo" =>>> x)
-    [<CustomOperation("Status")>] member inline _.Status ([<InlineIfLambda>] render: AttrRenderFragment, x: AntDesign.ProgressStatus) = render ==> ("Status" => x)
+    [<CustomOperation("Status")>] member inline _.Status ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<AntDesign.ProgressStatus>) = render ==> ("Status" => x)
     [<CustomOperation("StrokeLinecap")>] member inline _.StrokeLinecap ([<InlineIfLambda>] render: AttrRenderFragment, x: AntDesign.ProgressStrokeLinecap) = render ==> ("StrokeLinecap" => x)
     [<CustomOperation("SuccessPercent")>] member inline _.SuccessPercent ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Double) = render ==> ("SuccessPercent" => x)
     [<CustomOperation("TrailColor")>] member inline _.TrailColor ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("TrailColor" => x)

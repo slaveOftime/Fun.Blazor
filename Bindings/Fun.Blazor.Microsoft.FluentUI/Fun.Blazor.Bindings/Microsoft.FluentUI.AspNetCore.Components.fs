@@ -479,6 +479,12 @@ type FluentCalendarBaseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micro
     [<CustomOperation("Culture")>] member inline _.Culture ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Globalization.CultureInfo) = render ==> ("Culture" => x)
     /// Function to know if a specific day must be disabled.
     [<CustomOperation("DisabledDateFunc")>] member inline _.DisabledDateFunc ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("DisabledDateFunc" => (System.Func<System.DateTime, System.Boolean>fn))
+    /// By default, the DisabledDateFunc check only the first day of the month and the first day of the year for the Month and Year views.
+    /// Set this property to `true` to check if all days of the month and year are disabled (more time consuming).
+    [<CustomOperation("DisabledCheckAllDaysOfMonthYear")>] member inline _.DisabledCheckAllDaysOfMonthYear ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("DisabledCheckAllDaysOfMonthYear" =>>> true)
+    /// By default, the DisabledDateFunc check only the first day of the month and the first day of the year for the Month and Year views.
+    /// Set this property to `true` to check if all days of the month and year are disabled (more time consuming).
+    [<CustomOperation("DisabledCheckAllDaysOfMonthYear")>] member inline _.DisabledCheckAllDaysOfMonthYear ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("DisabledCheckAllDaysOfMonthYear" =>>> x)
     /// Apply the disabled style to the DisabledDateFunc days.
     /// If this is not the case, the days are displayed like the others, but cannot be selected.
     [<CustomOperation("DisabledSelectable")>] member inline _.DisabledSelectable ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("DisabledSelectable" =>>> true)
@@ -814,6 +820,12 @@ type FluentNumberFieldBuilder<'FunBlazorGeneric, 'TValue when 'TValue : (new : u
     [<CustomOperation("AutoComplete")>] member inline _.AutoComplete ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("AutoComplete" => x)
     /// Gets or sets the error message to show when the field can not be parsed.
     [<CustomOperation("ParsingErrorMessage")>] member inline _.ParsingErrorMessage ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ParsingErrorMessage" => x)
+    /// If true, the min and max values will be automatically set based on the type of TValue,
+    /// unless an explicit value for Min or Max is provided.
+    [<CustomOperation("UseTypeConstraints")>] member inline _.UseTypeConstraints ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("UseTypeConstraints" =>>> true)
+    /// If true, the min and max values will be automatically set based on the type of TValue,
+    /// unless an explicit value for Min or Max is provided.
+    [<CustomOperation("UseTypeConstraints")>] member inline _.UseTypeConstraints ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("UseTypeConstraints" =>>> x)
 
 /// Groups child FluentRadio`1 components.
 type FluentRadioGroupBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -969,6 +981,7 @@ type FluentButtonBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.A
     /// Determines if the element should receive document focus on page load.
     [<CustomOperation("Autofocus")>] member inline _.Autofocus ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("Autofocus" => x)
     /// Gets or sets the id of a form to associate the element to.
+    /// Both the Id and the FormId must be set if the button is placed outside of a form.
     [<CustomOperation("FormId")>] member inline _.FormId ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("FormId" => x)
     /// See button element for more details.
     [<CustomOperation("Action")>] member inline _.Action ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Action" => x)

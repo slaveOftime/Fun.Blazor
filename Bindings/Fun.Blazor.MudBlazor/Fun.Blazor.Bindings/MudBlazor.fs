@@ -4616,6 +4616,8 @@ type MudStackBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNe
     [<CustomOperation("StretchItems")>] member inline _.StretchItems ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<MudBlazor.StretchItems>) = render ==> ("StretchItems" => x)
     /// Controls how items are wrapped.
     [<CustomOperation("Wrap")>] member inline _.Wrap ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<MudBlazor.Wrap>) = render ==> ("Wrap" => x)
+    /// The breakpoint at which the Stack should switch to a row or column layout.
+    [<CustomOperation("Breakpoint")>] member inline _.Breakpoint ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Breakpoint) = render ==> ("Breakpoint" => x)
 
 /// A individual step as part of a MudStepper.
 type MudStepBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -5011,6 +5013,10 @@ type MudTabPanelBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.As
     [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Disabled" =>>> true)
     /// Prevents the user from interacting with this panel.
     [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Disabled" =>>> x)
+    /// Shows the tab.
+    [<CustomOperation("Visible")>] member inline _.Visible ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Visible" =>>> true)
+    /// Shows the tab.
+    [<CustomOperation("Visible")>] member inline _.Visible ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Visible" =>>> x)
     /// For dynamic tabs, shows a "Close" icon for this tab.
     [<CustomOperation("ShowCloseIcon")>] member inline _.ShowCloseIcon ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowCloseIcon" =>>> true)
     /// For dynamic tabs, shows a "Close" icon for this tab.
