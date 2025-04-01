@@ -341,6 +341,8 @@ type DatePickerPanelBaseBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneri
     [<CustomOperation("RenderExtraFooter")>] member inline _.RenderExtraFooter ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("RenderExtraFooter", html.text x)
     [<CustomOperation("Use12Hours")>] member inline _.Use12Hours ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Use12Hours" =>>> true)
     [<CustomOperation("Use12Hours")>] member inline _.Use12Hours ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Use12Hours" =>>> x)
+    [<CustomOperation("ShowWeek")>] member inline _.ShowWeek ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowWeek" =>>> true)
+    [<CustomOperation("ShowWeek")>] member inline _.ShowWeek ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowWeek" =>>> x)
 
             
 namespace rec AntDesign.DslInternals.Internal
@@ -1146,6 +1148,8 @@ type DatePickerBaseBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> 
     [<CustomOperation("Placement")>] member inline _.Placement ([<InlineIfLambda>] render: AttrRenderFragment, x: AntDesign.Placement) = render ==> ("Placement" => x)
     [<CustomOperation("Use12Hours")>] member inline _.Use12Hours ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Use12Hours" =>>> true)
     [<CustomOperation("Use12Hours")>] member inline _.Use12Hours ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Use12Hours" =>>> x)
+    [<CustomOperation("ShowWeek")>] member inline _.ShowWeek ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowWeek" =>>> true)
+    [<CustomOperation("ShowWeek")>] member inline _.ShowWeek ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowWeek" =>>> x)
 
 type DatePickerBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit DatePickerBaseBuilder<'FunBlazorGeneric, 'TValue>()
@@ -1947,6 +1951,7 @@ type MenuItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNe
     [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> Task<unit>) = render ==> html.callbackTask("OnClick", fn)
     [<CustomOperation("RouterLink")>] member inline _.RouterLink ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("RouterLink" => x)
     [<CustomOperation("RouterMatch")>] member inline _.RouterMatch ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.AspNetCore.Components.Routing.NavLinkMatch) = render ==> ("RouterMatch" => x)
+    [<CustomOperation("Target")>] member inline _.Target ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<AntDesign.MenuTarget>) = render ==> ("Target" => x)
     [<CustomOperation("Title")>] member inline _.Title ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
     [<CustomOperation("Icon")>] member inline _.Icon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Icon" => x)
     [<CustomOperation("IconTemplate")>] member inline _.IconTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("IconTemplate", fragment)
@@ -1969,6 +1974,7 @@ type MenuLinkBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNe
     inherit AntDomComponentBaseBuilder<'FunBlazorGeneric>()
     [<CustomOperation("ActiveClass")>] member inline _.ActiveClass ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ActiveClass" => x)
     [<CustomOperation("Href")>] member inline _.Href ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Href" => x)
+    [<CustomOperation("Target")>] member inline _.Target ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<AntDesign.MenuTarget>) = render ==> ("Target" => x)
     [<CustomOperation("Attributes")>] member inline _.Attributes ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.Dictionary<System.String, System.Object>) = render ==> ("Attributes" => x)
     [<CustomOperation("Match")>] member inline _.Match ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.AspNetCore.Components.Routing.NavLinkMatch) = render ==> ("Match" => x)
 

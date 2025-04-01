@@ -996,6 +996,8 @@ type RadzenDropDownDataGridBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGen
     /// Gets or sets a value indicating whether the selected items will be displayed as chips. Set to false by default.
     /// Requires Multiple to be set to true.
     [<CustomOperation("Chips")>] member inline _.Chips ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Chips" =>>> x)
+    /// Gets or sets the Popup style.
+    [<CustomOperation("PopupStyle")>] member inline _.PopupStyle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("PopupStyle" => x)
     /// Gets or sets a value indicating whether popup should open on focus. Set to false by default.
     [<CustomOperation("OpenOnFocus")>] member inline _.OpenOnFocus ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("OpenOnFocus" =>>> true)
     /// Gets or sets a value indicating whether popup should open on focus. Set to false by default.
@@ -1260,6 +1262,8 @@ type RadzenNumericBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> M
     [<CustomOperation("ReadOnly")>] member inline _.ReadOnly ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ReadOnly" =>>> true)
     /// Gets or sets a value indicating whether is read only.
     [<CustomOperation("ReadOnly")>] member inline _.ReadOnly ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ReadOnly" =>>> x)
+    /// Gets or sets the maximum allowed text length.
+    [<CustomOperation("MaxLength")>] member inline _.MaxLength ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int64>) = render ==> ("MaxLength" => x)
     /// Gets or sets a value indicating whether up down buttons are shown.
     [<CustomOperation("ShowUpDown")>] member inline _.ShowUpDown ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowUpDown" =>>> true)
     /// Gets or sets a value indicating whether up down buttons are shown.
@@ -2453,6 +2457,11 @@ type RadzenDatePickerBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :
     [<CustomOperation("ToggleAmPmAriaLabel")>] member inline _.ToggleAmPmAriaLabel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ToggleAmPmAriaLabel" => x)
     /// Specifies additional custom attributes that will be rendered by the input.
     [<CustomOperation("InputAttributes")>] member inline _.InputAttributes ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>) = render ==> ("InputAttributes" => x)
+    /// Gets or sets the year formatter. Set to FormatYear by default.
+    /// If set, this function will take precedence over YearFormat.
+    [<CustomOperation("YearFormatter")>] member inline _.YearFormatter ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("YearFormatter" => (System.Func<System.Int32, System.String>fn))
+    /// Gets ot sets the year format. Set to yyyy by default.
+    [<CustomOperation("YearFormat")>] member inline _.YearFormat ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("YearFormat" => x)
     /// Gets or sets a value indicating whether value can be cleared.
     [<CustomOperation("AllowClear")>] member inline _.AllowClear ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AllowClear" =>>> true)
     /// Gets or sets a value indicating whether value can be cleared.
@@ -2857,6 +2866,14 @@ type RadzenLoginBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.As
     /// Gets or sets the password required.
     [<CustomOperation("PasswordRequired")>] member inline _.PasswordRequired ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("PasswordRequired" => x)
 
+/// A component which renders markdown content.
+type RadzenMarkdownBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit RadzenComponentBuilder<'FunBlazorGeneric>()
+    /// Gets or sets the markdown content as a string. Overrides ChildContent if set.
+    [<CustomOperation("Text")>] member inline _.Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Text" => x)
+    /// The maximum heading depth to create anchor links for. Set to 0 to disable auto-linking.
+    [<CustomOperation("AutoLinkHeadingDepth")>] member inline _.AutoLinkHeadingDepth ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("AutoLinkHeadingDepth" => x)
+
 /// RadzenMenuItem component.
 type RadzenMenuItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit RadzenComponentBuilder<'FunBlazorGeneric>()
@@ -3175,22 +3192,27 @@ type RadzenSchedulerBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> 
     /// Gets or sets the additional content to be rendered in place of the default navigation buttons in the scheduler.
     /// This property allows for complete customization of the navigation controls, replacing the native date navigation buttons (such as year, month, and day) with user-defined content or buttons.
     /// Use this to add custom controls or interactive elements that better suit your application's requirements.
+    /// This requires that the ShowHeader parameter to be set to true (enabled by default).
     [<CustomOperation("NavigationTemplate")>] member inline _.NavigationTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("NavigationTemplate", fragment)
     /// Gets or sets the additional content to be rendered in place of the default navigation buttons in the scheduler.
     /// This property allows for complete customization of the navigation controls, replacing the native date navigation buttons (such as year, month, and day) with user-defined content or buttons.
     /// Use this to add custom controls or interactive elements that better suit your application's requirements.
+    /// This requires that the ShowHeader parameter to be set to true (enabled by default).
     [<CustomOperation("NavigationTemplate")>] member inline _.NavigationTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("NavigationTemplate", fragment { yield! fragments })
     /// Gets or sets the additional content to be rendered in place of the default navigation buttons in the scheduler.
     /// This property allows for complete customization of the navigation controls, replacing the native date navigation buttons (such as year, month, and day) with user-defined content or buttons.
     /// Use this to add custom controls or interactive elements that better suit your application's requirements.
+    /// This requires that the ShowHeader parameter to be set to true (enabled by default).
     [<CustomOperation("NavigationTemplate")>] member inline _.NavigationTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("NavigationTemplate", html.text x)
     /// Gets or sets the additional content to be rendered in place of the default navigation buttons in the scheduler.
     /// This property allows for complete customization of the navigation controls, replacing the native date navigation buttons (such as year, month, and day) with user-defined content or buttons.
     /// Use this to add custom controls or interactive elements that better suit your application's requirements.
+    /// This requires that the ShowHeader parameter to be set to true (enabled by default).
     [<CustomOperation("NavigationTemplate")>] member inline _.NavigationTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("NavigationTemplate", html.text x)
     /// Gets or sets the additional content to be rendered in place of the default navigation buttons in the scheduler.
     /// This property allows for complete customization of the navigation controls, replacing the native date navigation buttons (such as year, month, and day) with user-defined content or buttons.
     /// Use this to add custom controls or interactive elements that better suit your application's requirements.
+    /// This requires that the ShowHeader parameter to be set to true (enabled by default).
     [<CustomOperation("NavigationTemplate")>] member inline _.NavigationTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("NavigationTemplate", html.text x)
     /// Gets or sets the data of RadzenScheduler. It will display an appointment for every item of the collection which is within the current view date range.
     [<CustomOperation("Data")>] member inline _.Data ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<'TItem>) = render ==> ("Data" => x)
@@ -3614,6 +3636,123 @@ type RadzenTimelineItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micro
     [<CustomOperation("PointVariant")>] member inline _.PointVariant ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Variant) = render ==> ("PointVariant" => x)
     /// Specifies the Shadow level from 0 (no shadow) to 10. Set to 1 by default.
     [<CustomOperation("PointShadow")>] member inline _.PointShadow ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("PointShadow" => x)
+
+/// RadzenTimeSpanPicker component.
+type RadzenTimeSpanPickerBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit RadzenComponentBuilder<'FunBlazorGeneric>()
+    /// Specifies the value of the component.
+    [<CustomOperation("Value")>] member inline _.Value ([<InlineIfLambda>] render: AttrRenderFragment, x: 'TValue) = render ==> ("Value" => x)
+    /// Specifies the value of the component.
+    [<CustomOperation("Value'")>] member inline _.Value' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: 'TValue * ('TValue -> unit)) = render ==> html.bind("Value", valueFn)
+    /// Specifies the minimum time stamp allowed.
+    [<CustomOperation("Min")>] member inline _.Min ([<InlineIfLambda>] render: AttrRenderFragment, x: System.TimeSpan) = render ==> ("Min" => x)
+    /// Specifies the maximum time stamp allowed.
+    [<CustomOperation("Max")>] member inline _.Max ([<InlineIfLambda>] render: AttrRenderFragment, x: System.TimeSpan) = render ==> ("Max" => x)
+    /// Specifies whether the value can be cleared.
+    [<CustomOperation("AllowClear")>] member inline _.AllowClear ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AllowClear" =>>> true)
+    /// Specifies whether the value can be cleared.
+    [<CustomOperation("AllowClear")>] member inline _.AllowClear ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("AllowClear" =>>> x)
+    /// Specifies whether input in the input field is allowed.
+    /// Set to true by default.
+    [<CustomOperation("AllowInput")>] member inline _.AllowInput ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AllowInput" =>>> true)
+    /// Specifies whether input in the input field is allowed.
+    /// Set to true by default.
+    [<CustomOperation("AllowInput")>] member inline _.AllowInput ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("AllowInput" =>>> x)
+    /// Specifies whether the input field is disabled.
+    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Disabled" =>>> true)
+    /// Specifies whether the input field is disabled.
+    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Disabled" =>>> x)
+    /// Specifies whether the input field is read only.
+    [<CustomOperation("ReadOnly")>] member inline _.ReadOnly ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ReadOnly" =>>> true)
+    /// Specifies whether the input field is read only.
+    [<CustomOperation("ReadOnly")>] member inline _.ReadOnly ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ReadOnly" =>>> x)
+    /// Specifies whether to display popup icon button in the input field.
+    [<CustomOperation("ShowPopupButton")>] member inline _.ShowPopupButton ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowPopupButton" =>>> true)
+    /// Specifies whether to display popup icon button in the input field.
+    [<CustomOperation("ShowPopupButton")>] member inline _.ShowPopupButton ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowPopupButton" =>>> x)
+    /// Specifies the popup toggle button CSS classes, separated with spaces.
+    [<CustomOperation("PopupButtonClass")>] member inline _.PopupButtonClass ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("PopupButtonClass" => x)
+    /// Specifies additional custom attributes that will be rendered by the input.
+    [<CustomOperation("InputAttributes")>] member inline _.InputAttributes ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>) = render ==> ("InputAttributes" => x)
+    /// Specifies the input CSS classes, separated with spaces.
+    [<CustomOperation("InputClass")>] member inline _.InputClass ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("InputClass" => x)
+    /// Specifies the name of the input field.
+    [<CustomOperation("Name")>] member inline _.Name ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Name" => x)
+    /// Specifies the tab index.
+    [<CustomOperation("TabIndex")>] member inline _.TabIndex ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("TabIndex" => x)
+    /// Specifies the time span format in the input field.
+    /// For more details, see the documentation of
+    /// standard
+    /// and custom
+    /// time span format strings.
+    [<CustomOperation("TimeSpanFormat")>] member inline _.TimeSpanFormat ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("TimeSpanFormat" => x)
+    /// Specifies custom function to parse the input.
+    /// If it's not defined or the function it returns null, a built-in parser us used instead.
+    [<CustomOperation("ParseInput")>] member inline _.ParseInput ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("ParseInput" => (System.Func<System.String, System.Nullable<System.TimeSpan>>fn))
+    /// Specifies the input placeholder.
+    [<CustomOperation("Placeholder")>] member inline _.Placeholder ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Placeholder" => x)
+    /// Specifies the aria label for the toggle popup button.
+    [<CustomOperation("TogglePopupAriaLabel")>] member inline _.TogglePopupAriaLabel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("TogglePopupAriaLabel" => x)
+    /// Specifies the render mode of the popup.
+    [<CustomOperation("PopupRenderMode")>] member inline _.PopupRenderMode ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.PopupRenderMode) = render ==> ("PopupRenderMode" => x)
+    /// Specifies whether the component is inline or shows a popup.
+    [<CustomOperation("Inline")>] member inline _.Inline ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Inline" =>>> true)
+    /// Specifies whether the component is inline or shows a popup.
+    [<CustomOperation("Inline")>] member inline _.Inline ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Inline" =>>> x)
+    /// Specifies whether to display the confirmation button in the panel to accept changes.
+    [<CustomOperation("ShowConfirmationButton")>] member inline _.ShowConfirmationButton ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowConfirmationButton" =>>> true)
+    /// Specifies whether to display the confirmation button in the panel to accept changes.
+    [<CustomOperation("ShowConfirmationButton")>] member inline _.ShowConfirmationButton ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowConfirmationButton" =>>> x)
+    /// Specifies whether the time fields in the panel, except for the days field, are padded with leading zeros.
+    [<CustomOperation("PadTimeValues")>] member inline _.PadTimeValues ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("PadTimeValues" =>>> true)
+    /// Specifies whether the time fields in the panel, except for the days field, are padded with leading zeros.
+    [<CustomOperation("PadTimeValues")>] member inline _.PadTimeValues ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("PadTimeValues" =>>> x)
+    /// Specifies the most precise time unit field in the picker panel. Set to Second by default.
+    [<CustomOperation("FieldPrecision")>] member inline _.FieldPrecision ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.TimeSpanUnit) = render ==> ("FieldPrecision" => x)
+    /// Specifies the step of the days field in the picker panel.
+    [<CustomOperation("DaysStep")>] member inline _.DaysStep ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("DaysStep" => x)
+    /// Specifies the step of the hours field in the picker panel.
+    [<CustomOperation("HoursStep")>] member inline _.HoursStep ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("HoursStep" => x)
+    /// Specifies the step of the minutes field in the picker panel.
+    [<CustomOperation("MinutesStep")>] member inline _.MinutesStep ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("MinutesStep" => x)
+    /// Specifies the step of the seconds field in the picker panel.
+    [<CustomOperation("SecondsStep")>] member inline _.SecondsStep ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("SecondsStep" => x)
+    /// Specifies the step of the milliseconds field in the picker panel.
+    [<CustomOperation("MillisecondsStep")>] member inline _.MillisecondsStep ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("MillisecondsStep" => x)
+    /// Specifies the step of the microseconds field in the picker panel.
+    [<CustomOperation("MicrosecondsStep")>] member inline _.MicrosecondsStep ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("MicrosecondsStep" => x)
+    /// Specifies the text of the confirmation button. Used only if ShowConfirmationButton is true.
+    [<CustomOperation("ConfirmationButtonText")>] member inline _.ConfirmationButtonText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ConfirmationButtonText" => x)
+    /// Specifies the text of the positive value button.
+    [<CustomOperation("PositiveButtonText")>] member inline _.PositiveButtonText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("PositiveButtonText" => x)
+    /// Specifies the text of the negative value button.
+    [<CustomOperation("NegativeButtonText")>] member inline _.NegativeButtonText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("NegativeButtonText" => x)
+    /// Specifies the text displayed next to the fields in the panel when the value is positive and there's no sign picker.
+    [<CustomOperation("PositiveValueText")>] member inline _.PositiveValueText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("PositiveValueText" => x)
+    /// Specifies the text displayed next to the fields in the panel when the value is negative and there's no sign picker.
+    [<CustomOperation("NegativeValueText")>] member inline _.NegativeValueText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("NegativeValueText" => x)
+    /// Specifies the days label text.
+    [<CustomOperation("DaysUnitText")>] member inline _.DaysUnitText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("DaysUnitText" => x)
+    /// Specifies the hours label text.
+    [<CustomOperation("HoursUnitText")>] member inline _.HoursUnitText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("HoursUnitText" => x)
+    /// Specifies the minutes label text.
+    [<CustomOperation("MinutesUnitText")>] member inline _.MinutesUnitText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("MinutesUnitText" => x)
+    /// Specifies the seconds label text.
+    [<CustomOperation("SecondsUnitText")>] member inline _.SecondsUnitText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("SecondsUnitText" => x)
+    /// Specifies the milliseconds label text.
+    [<CustomOperation("MillisecondsUnitText")>] member inline _.MillisecondsUnitText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("MillisecondsUnitText" => x)
+    /// Specifies the microseconds label text.
+    [<CustomOperation("MicrosecondsUnitText")>] member inline _.MicrosecondsUnitText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("MicrosecondsUnitText" => x)
+    /// Specifies the value expression used while creating the FieldIdentifier.
+    [<CustomOperation("ValueExpression")>] member inline _.ValueExpression ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Linq.Expressions.Expression<System.Func<'TValue>>) = render ==> ("ValueExpression" => x)
+    /// Specifies the callback of the value change.
+    [<CustomOperation("ValueChanged")>] member inline _.ValueChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: 'TValue -> unit) = render ==> html.callback("ValueChanged", fn)
+    /// Specifies the callback of the value change.
+    [<CustomOperation("ValueChanged")>] member inline _.ValueChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: 'TValue -> Task<unit>) = render ==> html.callbackTask("ValueChanged", fn)
+    /// Specifies the callback of the underlying nullable TimeSpan value.
+    [<CustomOperation("Change")>] member inline _.Change ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Nullable<System.TimeSpan> -> unit) = render ==> html.callback("Change", fn)
+    /// Specifies the callback of the underlying nullable TimeSpan value.
+    [<CustomOperation("Change")>] member inline _.Change ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Nullable<System.TimeSpan> -> Task<unit>) = render ==> html.callbackTask("Change", fn)
 
 /// A component which displays a hierarchy of items. Supports inline definition and data-binding.
 type RadzenTreeBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -4759,6 +4898,8 @@ type RadzenDataFilterPropertyBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGe
     [<CustomOperation("Type")>] member inline _.Type ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Type) = render ==> ("Type" => x)
     /// Gets or sets the filter operator.
     [<CustomOperation("FilterOperator")>] member inline _.FilterOperator ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.FilterOperator) = render ==> ("FilterOperator" => x)
+    /// Gets or sets the filter operators.
+    [<CustomOperation("FilterOperators")>] member inline _.FilterOperators ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<Radzen.FilterOperator>) = render ==> ("FilterOperators" => x)
 
 /// RadzenDataGridColumn component.
 /// Must be placed inside a RadzenDataGrid`1
@@ -4817,6 +4958,8 @@ type RadzenDataGridColumnBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneri
     [<CustomOperation("Width")>] member inline _.Width ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Width" => x)
     /// Gets or sets the min-width.
     [<CustomOperation("MinWidth")>] member inline _.MinWidth ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("MinWidth" => x)
+    /// Gets or sets the max-width.
+    [<CustomOperation("MaxWidth")>] member inline _.MaxWidth ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("MaxWidth" => x)
     /// Gets or sets the format string.
     [<CustomOperation("FormatString")>] member inline _.FormatString ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("FormatString" => x)
     /// Gets or sets the CSS class applied to data cells.
@@ -6157,6 +6300,11 @@ module DslCE =
         /// RadzenLogin component. Must be placed in RadzenTemplateForm.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenLogin>)>] () = inherit RadzenLoginBuilder<Radzen.Blazor.RadzenLogin>()
 
+    /// A component which renders markdown content.
+    type RadzenMarkdown' 
+        /// A component which renders markdown content.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenMarkdown>)>] () = inherit RadzenMarkdownBuilder<Radzen.Blazor.RadzenMarkdown>()
+
     /// RadzenMenuItem component.
     type RadzenMenuItem' 
         /// RadzenMenuItem component.
@@ -6269,6 +6417,11 @@ module DslCE =
     type RadzenTimelineItem' 
         /// RadzenTimeline item.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenTimelineItem>)>] () = inherit RadzenTimelineItemBuilder<Radzen.Blazor.RadzenTimelineItem>()
+
+    /// RadzenTimeSpanPicker component.
+    type RadzenTimeSpanPicker'<'TValue> 
+        /// RadzenTimeSpanPicker component.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenTimeSpanPicker<_>>)>] () = inherit RadzenTimeSpanPickerBuilder<Radzen.Blazor.RadzenTimeSpanPicker<'TValue>, 'TValue>()
 
     /// A component which displays a hierarchy of items. Supports inline definition and data-binding.
     type RadzenTree' 
@@ -6832,6 +6985,7 @@ module DslCEInstances =
     let RadzenLabel'' = RadzenLabel'()
     let RadzenLink'' = RadzenLink'()
     let RadzenLogin'' = RadzenLogin'()
+    let RadzenMarkdown'' = RadzenMarkdown'()
     let RadzenMenuItem'' = RadzenMenuItem'()
     let RadzenPager'' = RadzenPager'()
     let RadzenPanelMenuItem'' = RadzenPanelMenuItem'()
@@ -6853,6 +7007,7 @@ module DslCEInstances =
     let RadzenText'' = RadzenText'()
     let RadzenTimeline'' = RadzenTimeline'()
     let RadzenTimelineItem'' = RadzenTimelineItem'()
+    let RadzenTimeSpanPicker''<'TValue> = RadzenTimeSpanPicker'<'TValue>()
     let RadzenTree'' = RadzenTree'()
     let RadzenUpload'' = RadzenUpload'()
     let RadzenChartComponentBase'' = RadzenChartComponentBase'()

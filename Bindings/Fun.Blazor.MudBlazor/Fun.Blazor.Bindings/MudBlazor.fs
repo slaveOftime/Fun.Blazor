@@ -24,6 +24,8 @@ type MudChartBaseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.A
     inherit MudComponentBaseBuilder<'FunBlazorGeneric>()
     /// The display options applied to the chart.
     [<CustomOperation("ChartOptions")>] member inline _.ChartOptions ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.ChartOptions) = render ==> ("ChartOptions" => x)
+    /// Display options for axis-based charts.
+    [<CustomOperation("AxisChartOptions")>] member inline _.AxisChartOptions ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.AxisChartOptions) = render ==> ("AxisChartOptions" => x)
     /// The custom graphics within this chart.
     [<CustomOperation("CustomGraphics")>] member inline _.CustomGraphics ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("CustomGraphics", fragment)
     /// The custom graphics within this chart.
@@ -67,8 +69,7 @@ type MudCategoryChartBaseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Mic
     /// The series of values to display.
     [<CustomOperation("ChartSeries")>] member inline _.ChartSeries ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.List<MudBlazor.ChartSeries>) = render ==> ("ChartSeries" => x)
 
-/// Represents a graphic display of data values in a line, bar, stacked bar, pie, heat map, or donut shape.
-type MudChartBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+type MudCategoryAxisChartBaseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit MudCategoryChartBaseBuilder<'FunBlazorGeneric>()
 
 
@@ -83,10 +84,43 @@ open MudBlazor.DslInternals
 
 /// Represents a chart which displays series values as rectangular bars.
 type BarBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit MudCategoryAxisChartBaseBuilder<'FunBlazorGeneric>()
+
+
+/// Represents a chart which displays series values as connected lines.
+type LineBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit MudCategoryAxisChartBaseBuilder<'FunBlazorGeneric>()
+
+
+/// Represents a chart which displays series values as portions of vertical rectangles.
+type StackedBarBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit MudCategoryAxisChartBaseBuilder<'FunBlazorGeneric>()
+
+
+            
+namespace rec MudBlazor.DslInternals
+
+open System.Threading.Tasks
+open FSharp.Data.Adaptive
+open Fun.Blazor
+open Fun.Blazor.Operators
+open MudBlazor.DslInternals
+
+/// Represents a graphic display of data values in a line, bar, stacked bar, pie, heat map, or donut shape.
+type MudChartBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit MudCategoryChartBaseBuilder<'FunBlazorGeneric>()
 
 
-/// Represents a chart which displays values as ring shape.
+            
+namespace rec MudBlazor.DslInternals.Charts
+
+open System.Threading.Tasks
+open FSharp.Data.Adaptive
+open Fun.Blazor
+open Fun.Blazor.Operators
+open MudBlazor.DslInternals
+
+/// Represents a chart which displays values as a percentage of a circle.
 type DonutBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit MudCategoryChartBaseBuilder<'FunBlazorGeneric>()
 
@@ -95,20 +129,11 @@ type HeatMapBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNet
     inherit MudCategoryChartBaseBuilder<'FunBlazorGeneric>()
 
 
-/// Represents a chart which displays series values as connected lines.
-type LineBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit MudCategoryChartBaseBuilder<'FunBlazorGeneric>()
-
-
 /// Represents a chart which displays values as a percentage of a circle.
 type PieBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit MudCategoryChartBaseBuilder<'FunBlazorGeneric>()
-
-
-/// Represents a chart which displays series values as portions of vertical rectangles.
-type StackedBarBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit MudCategoryChartBaseBuilder<'FunBlazorGeneric>()
-
+    /// Defines the ratio of the circle to the donut hole.
+    [<CustomOperation("CircleDonutRatio")>] member inline _.CircleDonutRatio ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Double) = render ==> ("CircleDonutRatio" => x)
 
             
 namespace rec MudBlazor.DslInternals
@@ -125,12 +150,26 @@ type MudTimeSeriesChartBaseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> M
     [<CustomOperation("ChartSeries")>] member inline _.ChartSeries ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.List<MudBlazor.TimeSeriesChartSeries>) = render ==> ("ChartSeries" => x)
     /// A way to have minimum spacing between timestamp labels, default of 5 minutes.
     [<CustomOperation("TimeLabelSpacing")>] member inline _.TimeLabelSpacing ([<InlineIfLambda>] render: AttrRenderFragment, x: System.TimeSpan) = render ==> ("TimeLabelSpacing" => x)
-    /// A way to specify datetime formats for timestamp labels, default of HH:mm.
+    /// Determines whether timestamp labels should be rounded to the nearest spacing value. 
+    [<CustomOperation("TimeLabelSpacingRounding")>] member inline _.TimeLabelSpacingRounding ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("TimeLabelSpacingRounding" =>>> true)
+    /// Determines whether timestamp labels should be rounded to the nearest spacing value. 
+    [<CustomOperation("TimeLabelSpacingRounding")>] member inline _.TimeLabelSpacingRounding ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("TimeLabelSpacingRounding" =>>> x)
+    /// Determines how timestamp labels are adjusted when TimeLabelSpacingRounding is enabled.
+    [<CustomOperation("TimeLabelSpacingRoundingPadSeries")>] member inline _.TimeLabelSpacingRoundingPadSeries ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("TimeLabelSpacingRoundingPadSeries" =>>> true)
+    /// Determines how timestamp labels are adjusted when TimeLabelSpacingRounding is enabled.
+    [<CustomOperation("TimeLabelSpacingRoundingPadSeries")>] member inline _.TimeLabelSpacingRoundingPadSeries ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("TimeLabelSpacingRoundingPadSeries" =>>> x)
+    /// Specifies the datetime format for timestamp labels. 
     [<CustomOperation("TimeLabelFormat")>] member inline _.TimeLabelFormat ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("TimeLabelFormat" => x)
+    /// Specifies the DateTime format for Timestamp labels in DataPoint marker tooltips. 
+    [<CustomOperation("DataMarkerTooltipTimeLabelFormat")>] member inline _.DataMarkerTooltipTimeLabelFormat ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("DataMarkerTooltipTimeLabelFormat" => x)
     /// Specifies the title for the X axis.
     [<CustomOperation("XAxisTitle")>] member inline _.XAxisTitle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("XAxisTitle" => x)
     /// Specifies the title for the Y axis.
     [<CustomOperation("YAxisTitle")>] member inline _.YAxisTitle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("YAxisTitle" => x)
+    /// Determines if the chart should derive its bounds from the parent chart.
+    [<CustomOperation("MatchBoundsToSize")>] member inline _.MatchBoundsToSize ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("MatchBoundsToSize" =>>> true)
+    /// Determines if the chart should derive its bounds from the parent chart.
+    [<CustomOperation("MatchBoundsToSize")>] member inline _.MatchBoundsToSize ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("MatchBoundsToSize" =>>> x)
 
 type MudTimeSeriesChartBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit MudTimeSeriesChartBaseBuilder<'FunBlazorGeneric>()
@@ -376,6 +415,8 @@ type MudTableBaseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.A
     [<CustomOperation("Dense")>] member inline _.Dense ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Dense" =>>> true)
     /// Uses compact padding for all rows.
     [<CustomOperation("Dense")>] member inline _.Dense ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Dense" =>>> x)
+    /// The CSS classes applied to all cells of the table.
+    [<CustomOperation("CellClass")>] member inline _.CellClass ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("CellClass" => x)
     /// Highlights rows when hovering over them.
     [<CustomOperation("Hover")>] member inline _.Hover ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Hover" =>>> true)
     /// Highlights rows when hovering over them.
@@ -855,21 +896,22 @@ type MudCarouselBuilder<'FunBlazorGeneric, 'TData when 'FunBlazorGeneric :> Micr
     /// Allows swipe gestures for touch devices.
     [<CustomOperation("EnableSwipeGesture")>] member inline _.EnableSwipeGesture ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("EnableSwipeGesture" =>>> x)
 
+/// Displays items in chronological order.
 type MudTimelineBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit MudBaseItemsControlBuilder<'FunBlazorGeneric, MudBlazor.MudTimelineItem>()
-    /// Sets the orientation of the timeline and its timeline items.
+    /// The orientation of the timeline and its items.
     [<CustomOperation("TimelineOrientation")>] member inline _.TimelineOrientation ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.TimelineOrientation) = render ==> ("TimelineOrientation" => x)
-    /// The position the timeline itself and how the timeline items should be displayed.
+    /// The position the timeline and how its items are displayed.
     [<CustomOperation("TimelinePosition")>] member inline _.TimelinePosition ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.TimelinePosition) = render ==> ("TimelinePosition" => x)
-    /// Aligns the dot and any item modifiers is changed, in default mode they are centered to the item.
+    /// The position of each item's dot relative to its text.
     [<CustomOperation("TimelineAlign")>] member inline _.TimelineAlign ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.TimelineAlign) = render ==> ("TimelineAlign" => x)
-    /// Reverse the order of TimelineItems when TimelinePosition is set to Alternate.
+    /// Reverses the order of items when TimelinePosition is Alternate.
     [<CustomOperation("Reverse")>] member inline _.Reverse ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Reverse" =>>> true)
-    /// Reverse the order of TimelineItems when TimelinePosition is set to Alternate.
+    /// Reverses the order of items when TimelinePosition is Alternate.
     [<CustomOperation("Reverse")>] member inline _.Reverse ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Reverse" =>>> x)
-    /// If true, enables all TimelineItem modifiers, like adding a caret to a MudCard. Enabled by default.
+    /// Enables modifiers for items, such as adding a caret for a MudCard.
     [<CustomOperation("Modifiers")>] member inline _.Modifiers ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Modifiers" =>>> true)
-    /// If true, enables all TimelineItem modifiers, like adding a caret to a MudCard. Enabled by default.
+    /// Enables modifiers for items, such as adding a caret for a MudCard.
     [<CustomOperation("Modifiers")>] member inline _.Modifiers ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Modifiers" =>>> x)
 
 /// Represents a base class for designing form input components.
@@ -1344,6 +1386,10 @@ type MudSelectBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.
     [<CustomOperation("DropdownSettings")>] member inline _.DropdownSettings ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.DropdownSettings) = render ==> ("DropdownSettings" => x)
     /// Determines the width of this Popover dropdown in relation to the parent container.
     [<CustomOperation("RelativeWidth")>] member inline _.RelativeWidth ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.DropdownWidth) = render ==> ("RelativeWidth" => x)
+    /// Sets the container width to match its contents.
+    [<CustomOperation("FitContent")>] member inline _.FitContent ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("FitContent" =>>> true)
+    /// Sets the container width to match its contents.
+    [<CustomOperation("FitContent")>] member inline _.FitContent ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("FitContent" =>>> x)
     /// The CSS classes applied to the outer div.
     [<CustomOperation("OuterClass")>] member inline _.OuterClass ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("OuterClass" => x)
     /// The CSS classes applied to the input.
@@ -1742,6 +1788,14 @@ type MudDatePickerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
 /// Represents a picker for a range of dates.
 type MudDateRangePickerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit MudBaseDatePickerBuilder<'FunBlazorGeneric>()
+    /// The maximum number of selectable days.
+    [<CustomOperation("MaxDays")>] member inline _.MaxDays ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("MaxDays" => x)
+    /// The minimum number of selectable days.
+    [<CustomOperation("MinDays")>] member inline _.MinDays ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("MinDays" => x)
+    /// Include disabled dates within the valid min/max days range.
+    [<CustomOperation("AllowDisabledDatesInCount")>] member inline _.AllowDisabledDatesInCount ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AllowDisabledDatesInCount" =>>> true)
+    /// Include disabled dates within the valid min/max days range.
+    [<CustomOperation("AllowDisabledDatesInCount")>] member inline _.AllowDisabledDatesInCount ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("AllowDisabledDatesInCount" =>>> x)
     /// The text displayed in the start input if no date is specified.
     [<CustomOperation("PlaceholderStart")>] member inline _.PlaceholderStart ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("PlaceholderStart" => x)
     /// The text displayed in the end input if no date is specified.
@@ -1823,33 +1877,34 @@ type MudColorPickerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     /// The delay, in milliseconds, between updates to the selected color when DragEffect is true.
     [<CustomOperation("ThrottleInterval")>] member inline _.ThrottleInterval ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("ThrottleInterval" => x)
 
+/// A component for selecting time values.
 type MudTimePickerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit MudPickerBuilder<'FunBlazorGeneric, System.Nullable<System.TimeSpan>>()
-    /// First view to show in the MudDatePicker.
+    /// The initial view for this picker.
     [<CustomOperation("OpenTo")>] member inline _.OpenTo ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.OpenTo) = render ==> ("OpenTo" => x)
-    /// Selects the edit mode. By default, you can edit hours and minutes.
+    /// Controls which values can be edited.
     [<CustomOperation("TimeEditMode")>] member inline _.TimeEditMode ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.TimeEditMode) = render ==> ("TimeEditMode" => x)
-    /// Sets the amount of time in milliseconds to wait before closing the picker.
+    /// The amount of time, in milliseconds, to wait before closing the picker.
     [<CustomOperation("ClosingDelay")>] member inline _.ClosingDelay ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("ClosingDelay" => x)
-    /// If true and PickerActions are defined, the hour and the minutes can be defined without any action.
+    /// Closes this picker when the value is set or cleared.
     [<CustomOperation("AutoClose")>] member inline _.AutoClose ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AutoClose" =>>> true)
-    /// If true and PickerActions are defined, the hour and the minutes can be defined without any action.
+    /// Closes this picker when the value is set or cleared.
     [<CustomOperation("AutoClose")>] member inline _.AutoClose ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("AutoClose" =>>> x)
-    /// Sets the number interval for minutes.
+    /// The step interval when selecting minutes.
     [<CustomOperation("MinuteSelectionStep")>] member inline _.MinuteSelectionStep ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("MinuteSelectionStep" => x)
-    /// If true, enables 12 hour selection clock.
+    /// Shows a 12-hour selection clock.
     [<CustomOperation("AmPm")>] member inline _.AmPm ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AmPm" =>>> true)
-    /// If true, enables 12 hour selection clock.
+    /// Shows a 12-hour selection clock.
     [<CustomOperation("AmPm")>] member inline _.AmPm ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("AmPm" =>>> x)
-    /// String format for selected time view.
+    /// The format applied to time values.
     [<CustomOperation("TimeFormat")>] member inline _.TimeFormat ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("TimeFormat" => x)
-    /// The currently selected time (two-way bindable). If null, nothing was selected.
+    /// The currently selected time.
     [<CustomOperation("Time")>] member inline _.Time ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.TimeSpan>) = render ==> ("Time" => x)
-    /// The currently selected time (two-way bindable). If null, nothing was selected.
+    /// The currently selected time.
     [<CustomOperation("Time'")>] member inline _.Time' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Nullable<System.TimeSpan> * (System.Nullable<System.TimeSpan> -> unit)) = render ==> html.bind("Time", valueFn)
-    /// Fired when the date changes.
+    /// Occurs when Time has changed.
     [<CustomOperation("TimeChanged")>] member inline _.TimeChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Nullable<System.TimeSpan> -> unit) = render ==> html.callback("TimeChanged", fn)
-    /// Fired when the date changes.
+    /// Occurs when Time has changed.
     [<CustomOperation("TimeChanged")>] member inline _.TimeChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Nullable<System.TimeSpan> -> Task<unit>) = render ==> html.callbackTask("TimeChanged", fn)
 
 /// A group of MudRadio`1 components.
@@ -2215,6 +2270,12 @@ type MudHeatMapCellBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     [<CustomOperation("Width")>] member inline _.Width ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("Width" => x)
     /// Optional, The height of the custom svg element you want to include. Please note the custom svg elements you provide are resized according to this value if supplied.
     [<CustomOperation("Height")>] member inline _.Height ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("Height" => x)
+    /// Optional, setting this will set the minimum value for the heatmap range, by default the range is calculated from the data. This only needs to be set on one
+    /// MudHeatMapCell in the HeatMap."/> Only the last value set will be used.
+    [<CustomOperation("MinValue")>] member inline _.MinValue ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Double>) = render ==> ("MinValue" => x)
+    /// Optional, setting this will set the maximum value for the heatmap range, by default the range is calculated from the data. This only needs to be set on one
+    /// MudHeatMapCell in the HeatMap."/> Only the last value set will be used.
+    [<CustomOperation("MaxValue")>] member inline _.MaxValue ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Double>) = render ==> ("MaxValue" => x)
 
 type MudChatBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit MudComponentBaseBuilder<'FunBlazorGeneric>()
@@ -5052,55 +5113,56 @@ type MudTabPanelBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.As
     /// The tooltip displayed for this tab.
     [<CustomOperation("ToolTip")>] member inline _.ToolTip ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ToolTip" => x)
 
+/// A chronological item displayed as part of a MudTimeline
 type MudTimelineItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit MudComponentBaseBuilder<'FunBlazorGeneric>()
-    /// Dot Icon
+    /// (Obsolete) The icon displayed for the dot.
     [<CustomOperation("Icon")>] member inline _.Icon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Icon" => x)
-    /// Variant of the dot.
+    /// The display variant for the dot.
     [<CustomOperation("Variant")>] member inline _.Variant ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Variant) = render ==> ("Variant" => x)
-    /// User styles, applied to the lineItem dot.
+    /// The CSS styles applied to the dot.
     [<CustomOperation("DotStyle")>] member inline _.DotStyle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("DotStyle" => x)
-    /// Color of the dot.
+    /// The color of the dot.
     [<CustomOperation("Color")>] member inline _.Color ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Color) = render ==> ("Color" => x)
-    /// Size of the dot.
+    /// The size of the dot.
     [<CustomOperation("Size")>] member inline _.Size ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Size) = render ==> ("Size" => x)
-    /// Elevation of the dot. The higher the number, the heavier the drop-shadow.
+    /// The size of the dot's drop shadow.
     [<CustomOperation("Elevation")>] member inline _.Elevation ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("Elevation" => x)
-    /// Overrides Timeline Parents default sorting method in Default and Reverse mode.
+    /// Overrides TimelineAlign with a custom value.
     [<CustomOperation("TimelineAlign")>] member inline _.TimelineAlign ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.TimelineAlign) = render ==> ("TimelineAlign" => x)
-    /// If true, dot will not be displayed.
+    /// Hides the dot for this item.
     [<CustomOperation("HideDot")>] member inline _.HideDot ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("HideDot" =>>> true)
-    /// If true, dot will not be displayed.
+    /// Hides the dot for this item.
     [<CustomOperation("HideDot")>] member inline _.HideDot ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("HideDot" =>>> x)
-    /// If used renders child content of the ItemOpposite.
+    /// The custom content for the opposite side of this item.
     [<CustomOperation("ItemOpposite")>] member inline _.ItemOpposite ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("ItemOpposite", fragment)
-    /// If used renders child content of the ItemOpposite.
+    /// The custom content for the opposite side of this item.
     [<CustomOperation("ItemOpposite")>] member inline _.ItemOpposite ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("ItemOpposite", fragment { yield! fragments })
-    /// If used renders child content of the ItemOpposite.
+    /// The custom content for the opposite side of this item.
     [<CustomOperation("ItemOpposite")>] member inline _.ItemOpposite ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("ItemOpposite", html.text x)
-    /// If used renders child content of the ItemOpposite.
+    /// The custom content for the opposite side of this item.
     [<CustomOperation("ItemOpposite")>] member inline _.ItemOpposite ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("ItemOpposite", html.text x)
-    /// If used renders child content of the ItemOpposite.
+    /// The custom content for the opposite side of this item.
     [<CustomOperation("ItemOpposite")>] member inline _.ItemOpposite ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("ItemOpposite", html.text x)
-    /// If used renders child content of the ItemContent.
+    /// The custom content for this item.
     [<CustomOperation("ItemContent")>] member inline _.ItemContent ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("ItemContent", fragment)
-    /// If used renders child content of the ItemContent.
+    /// The custom content for this item.
     [<CustomOperation("ItemContent")>] member inline _.ItemContent ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("ItemContent", fragment { yield! fragments })
-    /// If used renders child content of the ItemContent.
+    /// The custom content for this item.
     [<CustomOperation("ItemContent")>] member inline _.ItemContent ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("ItemContent", html.text x)
-    /// If used renders child content of the ItemContent.
+    /// The custom content for this item.
     [<CustomOperation("ItemContent")>] member inline _.ItemContent ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("ItemContent", html.text x)
-    /// If used renders child content of the ItemContent.
+    /// The custom content for this item.
     [<CustomOperation("ItemContent")>] member inline _.ItemContent ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("ItemContent", html.text x)
-    /// If used renders child content of the ItemDot.
+    /// The custom content for the dot.
     [<CustomOperation("ItemDot")>] member inline _.ItemDot ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("ItemDot", fragment)
-    /// If used renders child content of the ItemDot.
+    /// The custom content for the dot.
     [<CustomOperation("ItemDot")>] member inline _.ItemDot ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("ItemDot", fragment { yield! fragments })
-    /// If used renders child content of the ItemDot.
+    /// The custom content for the dot.
     [<CustomOperation("ItemDot")>] member inline _.ItemDot ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("ItemDot", html.text x)
-    /// If used renders child content of the ItemDot.
+    /// The custom content for the dot.
     [<CustomOperation("ItemDot")>] member inline _.ItemDot ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("ItemDot", html.text x)
-    /// If used renders child content of the ItemDot.
+    /// The custom content for the dot.
     [<CustomOperation("ItemDot")>] member inline _.ItemDot ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("ItemDot", html.text x)
 
 type MudToggleGroupBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -5523,31 +5585,28 @@ type MudContainerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.A
     /// Adds left and right padding to the container itself.
     [<CustomOperation("Gutters")>] member inline _.Gutters ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Gutters" =>>> x)
 
+/// Provides a standard set of colors, shapes, sizes and shadows to a layout.
 type MudThemeProviderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ComponentBaseWithStateBuilder<'FunBlazorGeneric>()
     /// The theme used by the application.
     [<CustomOperation("Theme")>] member inline _.Theme ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.MudTheme) = render ==> ("Theme" => x)
-    /// If true, will not apply MudBlazor styled scrollbar and use browser default. 
-    ///             
+    /// Uses the browser default scrollbar instead of the MudBlazor scrollbar. 
     [<CustomOperation("DefaultScrollbar")>] member inline _.DefaultScrollbar ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("DefaultScrollbar" =>>> true)
-    /// If true, will not apply MudBlazor styled scrollbar and use browser default. 
-    ///             
+    /// Uses the browser default scrollbar instead of the MudBlazor scrollbar. 
     [<CustomOperation("DefaultScrollbar")>] member inline _.DefaultScrollbar ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("DefaultScrollbar" =>>> x)
-    /// Sets a value indicating whether to observe changes in the system theme preference.
-    /// Default is true.
+    /// Detects when the system theme has changed between Light Mode and Dark Mode.
     [<CustomOperation("ObserveSystemThemeChange")>] member inline _.ObserveSystemThemeChange ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ObserveSystemThemeChange" =>>> true)
-    /// Sets a value indicating whether to observe changes in the system theme preference.
-    /// Default is true.
+    /// Detects when the system theme has changed between Light Mode and Dark Mode.
     [<CustomOperation("ObserveSystemThemeChange")>] member inline _.ObserveSystemThemeChange ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ObserveSystemThemeChange" =>>> x)
-    /// The active palette of the theme.
+    /// Uses darker colors for all MudBlazor components.
     [<CustomOperation("IsDarkMode")>] member inline _.IsDarkMode ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("IsDarkMode" =>>> true)
-    /// The active palette of the theme.
+    /// Uses darker colors for all MudBlazor components.
     [<CustomOperation("IsDarkMode")>] member inline _.IsDarkMode ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("IsDarkMode" =>>> x)
-    /// The active palette of the theme.
+    /// Uses darker colors for all MudBlazor components.
     [<CustomOperation("IsDarkMode'")>] member inline _.IsDarkMode' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Boolean * (System.Boolean -> unit)) = render ==> html.bind("IsDarkMode", valueFn)
-    /// Invoked when the dark mode changes.
+    /// Occurs when IsDarkMode has changed.
     [<CustomOperation("IsDarkModeChanged")>] member inline _.IsDarkModeChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> unit) = render ==> html.callback("IsDarkModeChanged", fn)
-    /// Invoked when the dark mode changes.
+    /// Occurs when IsDarkMode has changed.
     [<CustomOperation("IsDarkModeChanged")>] member inline _.IsDarkModeChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("IsDarkModeChanged", fn)
 
 /// Represents a segment in a list of breadcrumbs.
@@ -5734,6 +5793,19 @@ open Fun.Blazor
 open Fun.Blazor.Operators
 open MudBlazor.DslInternals
 
+type ChartTooltipBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
+    /// The title of the tooltip.
+    [<CustomOperation("Title")>] member inline _.Title ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
+    /// The subtitle of the tooltip.
+    [<CustomOperation("Subtitle")>] member inline _.Subtitle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Subtitle" => x)
+    /// The X coordinate of the tooltip anchor.
+    [<CustomOperation("X")>] member inline _.X ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Double) = render ==> ("X" => x)
+    /// The Y coordinate of the tooltip anchor.
+    [<CustomOperation("Y")>] member inline _.Y ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Double) = render ==> ("Y" => x)
+    /// The color of the tooltip.
+    [<CustomOperation("Color")>] member inline _.Color ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Color" => x)
+
 type FiltersBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
 
@@ -5770,6 +5842,7 @@ module DslCE =
     type MudCategoryChartBase' 
         /// Represents a base class for designing category MudChart components.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudCategoryChartBase>)>] () = inherit MudCategoryChartBaseBuilder<MudBlazor.MudCategoryChartBase>()
+    type MudCategoryAxisChartBase' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudCategoryAxisChartBase>)>] () = inherit MudCategoryAxisChartBaseBuilder<MudBlazor.MudCategoryAxisChartBase>()
 
     /// Represents a graphic display of data values in a line, bar, stacked bar, pie, heat map, or donut shape.
     type MudChart' 
@@ -5862,7 +5935,11 @@ module DslCE =
     type MudCarousel'<'TData> 
         /// Represents a set of slides which transition after a delay.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudCarousel<_>>)>] () = inherit MudCarouselBuilder<MudBlazor.MudCarousel<'TData>, 'TData>()
-    type MudTimeline' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudTimeline>)>] () = inherit MudTimelineBuilder<MudBlazor.MudTimeline>()
+
+    /// Displays items in chronological order.
+    type MudTimeline' 
+        /// Displays items in chronological order.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudTimeline>)>] () = inherit MudTimelineBuilder<MudBlazor.MudTimeline>()
 
     /// Represents a base class for designing form input components.
     type MudFormComponent'<'T, 'U> 
@@ -5974,7 +6051,11 @@ module DslCE =
     type MudColorPicker' 
         /// Represents a sophisticated and customizable pop-up for choosing a color.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudColorPicker>)>] () = inherit MudColorPickerBuilder<MudBlazor.MudColorPicker>()
-    type MudTimePicker' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudTimePicker>)>] () = inherit MudTimePickerBuilder<MudBlazor.MudTimePicker>()
+
+    /// A component for selecting time values.
+    type MudTimePicker' 
+        /// A component for selecting time values.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudTimePicker>)>] () = inherit MudTimePickerBuilder<MudBlazor.MudTimePicker>()
 
     /// A group of MudRadio`1 components.
     type MudRadioGroup'<'T> 
@@ -6450,7 +6531,11 @@ module DslCE =
     type MudTabPanel' 
         /// A tab as part of a MudTabs or MudDynamicTabs component.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudTabPanel>)>] () = inherit MudTabPanelBuilder<MudBlazor.MudTabPanel>()
-    type MudTimelineItem' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudTimelineItem>)>] () = inherit MudTimelineItemBuilder<MudBlazor.MudTimelineItem>()
+
+    /// A chronological item displayed as part of a MudTimeline
+    type MudTimelineItem' 
+        /// A chronological item displayed as part of a MudTimeline
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudTimelineItem>)>] () = inherit MudTimelineItemBuilder<MudBlazor.MudTimelineItem>()
     type MudToggleGroup'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudToggleGroup<_>>)>] () = inherit MudToggleGroupBuilder<MudBlazor.MudToggleGroup<'T>, 'T>()
     type MudToggleItem'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudToggleItem<_>>)>] () = inherit MudToggleItemBuilder<MudBlazor.MudToggleItem<'T>, 'T>()
     type MudToolBar' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudToolBar>)>] () = inherit MudToolBarBuilder<MudBlazor.MudToolBar>()
@@ -6460,7 +6545,11 @@ module DslCE =
     type MudTreeViewItemToggleButton' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudTreeViewItemToggleButton>)>] () = inherit MudTreeViewItemToggleButtonBuilder<MudBlazor.MudTreeViewItemToggleButton>()
     type MudText' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudText>)>] () = inherit MudTextBuilder<MudBlazor.MudText>()
     type MudContainer' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudContainer>)>] () = inherit MudContainerBuilder<MudBlazor.MudContainer>()
-    type MudThemeProvider' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudThemeProvider>)>] () = inherit MudThemeProviderBuilder<MudBlazor.MudThemeProvider>()
+
+    /// Provides a standard set of colors, shapes, sizes and shadows to a layout.
+    type MudThemeProvider' 
+        /// Provides a standard set of colors, shapes, sizes and shadows to a layout.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudThemeProvider>)>] () = inherit MudThemeProviderBuilder<MudBlazor.MudThemeProvider>()
 
     /// Represents a segment in a list of breadcrumbs.
     type BreadcrumbLink' 
@@ -6500,6 +6589,7 @@ module DslCEInstances =
     let MudComponentBase'' = MudComponentBase'()
     let MudChartBase'' = MudChartBase'()
     let MudCategoryChartBase'' = MudCategoryChartBase'()
+    let MudCategoryAxisChartBase'' = MudCategoryAxisChartBase'()
     let MudChart'' = MudChart'()
     let MudTimeSeriesChartBase'' = MudTimeSeriesChartBase'()
     let MudTimeSeriesChart'' = MudTimeSeriesChart'()
@@ -6674,26 +6764,26 @@ module DslCE =
         /// Represents a chart which displays series values as rectangular bars.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.Charts.Bar>)>] () = inherit BarBuilder<MudBlazor.Charts.Bar>()
 
-    /// Represents a chart which displays values as ring shape.
-    type Donut' 
-        /// Represents a chart which displays values as ring shape.
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.Charts.Donut>)>] () = inherit DonutBuilder<MudBlazor.Charts.Donut>()
-    type HeatMap' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.Charts.HeatMap>)>] () = inherit HeatMapBuilder<MudBlazor.Charts.HeatMap>()
-
     /// Represents a chart which displays series values as connected lines.
     type Line' 
         /// Represents a chart which displays series values as connected lines.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.Charts.Line>)>] () = inherit LineBuilder<MudBlazor.Charts.Line>()
 
-    /// Represents a chart which displays values as a percentage of a circle.
-    type Pie' 
-        /// Represents a chart which displays values as a percentage of a circle.
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.Charts.Pie>)>] () = inherit PieBuilder<MudBlazor.Charts.Pie>()
-
     /// Represents a chart which displays series values as portions of vertical rectangles.
     type StackedBar' 
         /// Represents a chart which displays series values as portions of vertical rectangles.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.Charts.StackedBar>)>] () = inherit StackedBarBuilder<MudBlazor.Charts.StackedBar>()
+
+    /// Represents a chart which displays values as a percentage of a circle.
+    type Donut' 
+        /// Represents a chart which displays values as a percentage of a circle.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.Charts.Donut>)>] () = inherit DonutBuilder<MudBlazor.Charts.Donut>()
+    type HeatMap' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.Charts.HeatMap>)>] () = inherit HeatMapBuilder<MudBlazor.Charts.HeatMap>()
+
+    /// Represents a chart which displays values as a percentage of a circle.
+    type Pie' 
+        /// Represents a chart which displays values as a percentage of a circle.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.Charts.Pie>)>] () = inherit PieBuilder<MudBlazor.Charts.Pie>()
 
     /// A chart which displays values over time.
     type TimeSeries' 
@@ -6704,6 +6794,7 @@ module DslCE =
     type Legend' 
         /// Represents a set of text labels which describe data values in a MudChart.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.Charts.Legend>)>] () = inherit LegendBuilder<MudBlazor.Charts.Legend>()
+    type ChartTooltip' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.Charts.ChartTooltip>)>] () = inherit ChartTooltipBuilder<MudBlazor.Charts.ChartTooltip>()
     type Filters' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.Charts.Filters>)>] () = inherit FiltersBuilder<MudBlazor.Charts.Filters>()
 
 [<AutoOpen>]
@@ -6713,13 +6804,14 @@ module DslCEInstances =
     open MudBlazor.DslInternals.Charts
 
     let Bar'' = Bar'()
+    let Line'' = Line'()
+    let StackedBar'' = StackedBar'()
     let Donut'' = Donut'()
     let HeatMap'' = HeatMap'()
-    let Line'' = Line'()
     let Pie'' = Pie'()
-    let StackedBar'' = StackedBar'()
     let TimeSeries'' = TimeSeries'()
     let Legend'' = Legend'()
+    let ChartTooltip'' = ChartTooltip'()
     let Filters'' = Filters'()
             
 namespace MudBlazor.Internal

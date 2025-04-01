@@ -1092,14 +1092,14 @@ type FluentCounterBadgeBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micro
     [<CustomOperation("Max")>] member inline _.Max ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("Max" => x)
     /// Gets or sets the horizontal position of the badge in percentage in relation to the left of the container (right in RTL).
     /// Default value is 60 (80 when Dot=true).
-    [<CustomOperation("HorizontalPosition")>] member inline _.HorizontalPosition ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("HorizontalPosition" => x)
+    [<CustomOperation("HorizontalPosition")>] member inline _.HorizontalPosition ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("HorizontalPosition" => x)
     /// Gets or sets the bottom position of the badge in percentage.
     /// [Obsolete] This parameter will be removed in a future version. Use VerticalPosition instead.
     /// Default value is 60 (80 when Dot=true).
     [<CustomOperation("BottomPosition")>] member inline _.BottomPosition ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("BottomPosition" => x)
     /// Gets or sets the vertical position of the badge in percentage in relation to the bottom of the container.
     /// Default value is 60 (80 when Dot=true).
-    [<CustomOperation("VerticalPosition")>] member inline _.VerticalPosition ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("VerticalPosition" => x)
+    [<CustomOperation("VerticalPosition")>] member inline _.VerticalPosition ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("VerticalPosition" => x)
     /// Gets or sets the default design of this badge using colors from theme.
     [<CustomOperation("Appearance")>] member inline _.Appearance ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.Appearance>) = render ==> ("Appearance" => x)
     /// Gets or sets the background color to replace the color inferred from property.
@@ -1150,6 +1150,10 @@ type FluentDataGridBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric 
     ///             
     /// You should supply either Items or ItemsProvider, but not both.
     [<CustomOperation("Items")>] member inline _.Items ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Linq.IQueryable<'TGridItem>) = render ==> ("Items" => x)
+    /// Gets or sets a callback which will be called if there is a change in pagination, ordering or if a RefreshDataAsync is forced.
+    ///             
+    /// You must supply Items if you use this callback.
+    [<CustomOperation("RefreshItems")>] member inline _.RefreshItems ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("RefreshItems" => (System.Func<Microsoft.FluentUI.AspNetCore.Components.GridItemsProviderRequest<'TGridItem>, System.Threading.Tasks.Task>fn))
     /// Gets or sets a callback that supplies data for the rid.
     ///             
     /// You should supply either Items or ItemsProvider, but not both.
@@ -1302,6 +1306,11 @@ type FluentDataGridBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric 
     [<CustomOperation("AutoItemsPerPage")>] member inline _.AutoItemsPerPage ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AutoItemsPerPage" =>>> true)
     /// Automatically fit the number of items per page to the available height.
     [<CustomOperation("AutoItemsPerPage")>] member inline _.AutoItemsPerPage ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("AutoItemsPerPage" =>>> x)
+    /// Gets or set the DataGridDisplayMode of the grid.
+    /// Default is 'Grid'.
+    /// When set to Grid, GridTemplateColumns can be used to specify column widths.
+    /// When set to Table, widths need to be specified at the column level.
+    /// When using Virtualize, it is recommended to use Table.
     [<CustomOperation("DisplayMode")>] member inline _.DisplayMode ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.DataGridDisplayMode) = render ==> ("DisplayMode" => x)
     /// Gets or sets the size of each row in the grid based on the DataGridRowSize enum.
     [<CustomOperation("RowSize")>] member inline _.RowSize ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.DataGridRowSize) = render ==> ("RowSize" => x)
@@ -1978,6 +1987,10 @@ type FluentMenuBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.Asp
     [<CustomOperation("HorizontalViewportLock")>] member inline _.HorizontalViewportLock ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("HorizontalViewportLock" =>>> x)
     /// Gets or sets the horizontal scaling mode.
     [<CustomOperation("HorizontalScaling")>] member inline _.HorizontalScaling ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.AxisScalingMode>) = render ==> ("HorizontalScaling" => x)
+    /// Raised when FluentMenuItem Checked changed.
+    [<CustomOperation("OnCheckedChanged")>] member inline _.OnCheckedChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentMenuItem -> unit) = render ==> html.callback("OnCheckedChanged", fn)
+    /// Raised when FluentMenuItem Checked changed.
+    [<CustomOperation("OnCheckedChanged")>] member inline _.OnCheckedChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.FluentMenuItem -> Task<unit>) = render ==> html.callbackTask("OnCheckedChanged", fn)
 
 type FluentMenuItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -1997,6 +2010,8 @@ type FluentMenuItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     [<CustomOperation("Checked")>] member inline _.Checked ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Checked" =>>> true)
     /// Gets or sets a value indicating whether the element is checked.
     [<CustomOperation("Checked")>] member inline _.Checked ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Checked" =>>> x)
+    /// Gets or sets a value indicating whether the element is checked.
+    [<CustomOperation("Checked'")>] member inline _.Checked' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Boolean * (System.Boolean -> unit)) = render ==> html.bind("Checked", valueFn)
     /// Gets or sets a value indicates whether the FluentMenu should remain open after an action.
     [<CustomOperation("KeepOpen")>] member inline _.KeepOpen ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("KeepOpen" =>>> true)
     /// Gets or sets a value indicates whether the FluentMenu should remain open after an action.
@@ -2015,6 +2030,10 @@ type FluentMenuItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> unit) = render ==> html.callback("OnClick", fn)
     /// Event raised when the user click on this item.
     [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> Task<unit>) = render ==> html.callbackTask("OnClick", fn)
+    /// Event raised for checkbox and radio menuitems
+    [<CustomOperation("CheckedChanged")>] member inline _.CheckedChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> unit) = render ==> html.callback("CheckedChanged", fn)
+    /// Event raised for checkbox and radio menuitems
+    [<CustomOperation("CheckedChanged")>] member inline _.CheckedChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("CheckedChanged", fn)
 
 type FluentMenuProviderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentComponentBaseBuilder<'FunBlazorGeneric>()
@@ -2808,6 +2827,8 @@ type FluentStackBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.As
     /// Gets or sets the orientation of the stacked components.
     /// Default is Horizontal.
     [<CustomOperation("Orientation")>] member inline _.Orientation ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.Orientation) = render ==> ("Orientation" => x)
+    /// Gets or sets a value indicating whether the stack is reversed.
+    [<CustomOperation("Reversed")>] member inline _.Reversed ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("Reversed" => x)
     /// Gets or sets the width of the stack as a percentage string (default = 100%).
     [<CustomOperation("Width")>] member inline _.Width ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Width" => x)
     /// Gets or sets a value indicating whether the stack wraps.
@@ -3352,7 +3373,7 @@ type PropertyColumnBuilder<'FunBlazorGeneric, 'TGridItem, 'TProp when 'FunBlazor
     ///             
     /// Using this requires the  type to implement IComparable`1.
     [<CustomOperation("Comparer")>] member inline _.Comparer ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IComparer<'TProp>) = render ==> ("Comparer" => x)
-    [<CustomOperation("SortBy")>] member inline _.SortBy ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.GridSort<'TGridItem>) = render ==> ("SortBy" => x)
+    [<CustomOperation("SortBy")>] member inline _.SortBy ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.IGridSort<'TGridItem>) = render ==> ("SortBy" => x)
 
 /// Represents a FluentDataGrid`1 column whose cells render a selected checkbox updated when the user click on a row.
 type SelectColumnBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -3427,14 +3448,14 @@ type SelectColumnBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric :>
     [<CustomOperation("Selectable")>] member inline _.Selectable ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("Selectable" => (System.Func<'TGridItem, System.Boolean>fn))
     /// Gets or sets the function to executed to determine checked/unchecked status.
     [<CustomOperation("Property")>] member inline _.Property ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("Property" => (System.Func<'TGridItem, System.Boolean>fn))
-    [<CustomOperation("SortBy")>] member inline _.SortBy ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.GridSort<'TGridItem>) = render ==> ("SortBy" => x)
+    [<CustomOperation("SortBy")>] member inline _.SortBy ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.IGridSort<'TGridItem>) = render ==> ("SortBy" => x)
 
 /// Represents a FluentDataGrid`1 column whose cells render a supplied template.
 type TemplateColumnBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ColumnBaseBuilder<'FunBlazorGeneric, 'TGridItem>()
     /// Gets or sets the content to be rendered for each row in the table.
     [<CustomOperation("ChildContent")>] member inline _.ChildContent ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: 'TGridItem -> NodeRenderFragment) = render ==> html.renderFragment("ChildContent", fn)
-    [<CustomOperation("SortBy")>] member inline _.SortBy ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.GridSort<'TGridItem>) = render ==> ("SortBy" => x)
+    [<CustomOperation("SortBy")>] member inline _.SortBy ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.IGridSort<'TGridItem>) = render ==> ("SortBy" => x)
 
 type ColumnResizeOptionsBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
@@ -3474,6 +3495,10 @@ type FluentDesignThemeBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micros
     [<CustomOperation("OfficeColorChanged")>] member inline _.OfficeColorChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.OfficeColor> -> unit) = render ==> html.callback("OfficeColorChanged", fn)
     /// Gets or sets a callback that updates the OfficeColor.
     [<CustomOperation("OfficeColorChanged")>] member inline _.OfficeColorChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.OfficeColor> -> Task<unit>) = render ==> html.callbackTask("OfficeColorChanged", fn)
+    [<CustomOperation("NeutralBaseColor")>] member inline _.NeutralBaseColor ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("NeutralBaseColor" => x)
+    [<CustomOperation("NeutralBaseColor'")>] member inline _.NeutralBaseColor' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.String * (System.String -> unit)) = render ==> html.bind("NeutralBaseColor", valueFn)
+    [<CustomOperation("NeutralBaseColorChanged")>] member inline _.NeutralBaseColorChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.String -> unit) = render ==> html.callback("NeutralBaseColorChanged", fn)
+    [<CustomOperation("NeutralBaseColorChanged")>] member inline _.NeutralBaseColorChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.String -> Task<unit>) = render ==> html.callbackTask("NeutralBaseColorChanged", fn)
     /// Gets or sets the local storage name to save and retrieve the Mode and the OfficeColor / CustomColor.
     [<CustomOperation("StorageName")>] member inline _.StorageName ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("StorageName" => x)
     /// Gets or sets the body.dir value.
@@ -3597,6 +3622,7 @@ type FluentOverlayBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     /// Gets or set if the overlay is transparent.
     [<CustomOperation("Transparent")>] member inline _.Transparent ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Transparent" =>>> x)
     /// Gets or sets the opacity of the overlay.
+    /// Default is 0.4.
     [<CustomOperation("Opacity")>] member inline _.Opacity ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Double>) = render ==> ("Opacity" => x)
     /// Gets or sets the alignment of the content to a Align value.
     /// Defaults to Align.Center.
@@ -3623,9 +3649,9 @@ type FluentOverlayBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     /// Gets of sets a value indicating if the overlay can be dismissed by clicking on it.
     /// Default is true.
     [<CustomOperation("Dismissable")>] member inline _.Dismissable ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Dismissable" =>>> x)
-    /// Gets or sets the background color. 
-    /// Needs to be formatted as an HTML hex color string (#rrggbb or #rgb).
-    /// Default is '#ffffff'.
+    /// Gets or sets the background color.
+    /// Needs to be formatted as an HTML hex color string (#rrggbb or #rgb)
+    /// Default NeutralBaseColor token value (#808080).
     [<CustomOperation("BackgroundColor")>] member inline _.BackgroundColor ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("BackgroundColor" => x)
     [<CustomOperation("PreventScroll")>] member inline _.PreventScroll ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("PreventScroll" =>>> true)
     [<CustomOperation("PreventScroll")>] member inline _.PreventScroll ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("PreventScroll" =>>> x)
