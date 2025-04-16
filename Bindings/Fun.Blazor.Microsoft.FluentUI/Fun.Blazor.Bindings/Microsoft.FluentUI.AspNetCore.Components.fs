@@ -1315,8 +1315,10 @@ type FluentDataGridBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric 
     /// Gets or sets the size of each row in the grid based on the DataGridRowSize enum.
     [<CustomOperation("RowSize")>] member inline _.RowSize ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.DataGridRowSize) = render ==> ("RowSize" => x)
     /// Gets or sets a value indicating whether the grid should allow multiple lines of text in cells.
+    /// Cannot be used together with Virtualize.
     [<CustomOperation("MultiLine")>] member inline _.MultiLine ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("MultiLine" =>>> true)
     /// Gets or sets a value indicating whether the grid should allow multiple lines of text in cells.
+    /// Cannot be used together with Virtualize.
     [<CustomOperation("MultiLine")>] member inline _.MultiLine ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("MultiLine" =>>> x)
     /// Gets or sets a value indicating whether the grid should save its paging state in the URL.
     /// This is an experimental feature, which might cause unwanted jumping in the page when you change something in the grid.

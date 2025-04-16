@@ -1659,6 +1659,8 @@ type PagedDataBoundComponentBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric
     [<CustomOperation("ShowPagingSummary")>] member inline _.ShowPagingSummary ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowPagingSummary" =>>> x)
     /// Gets or sets the pager summary format.
     [<CustomOperation("PagingSummaryFormat")>] member inline _.PagingSummaryFormat ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("PagingSummaryFormat" => x)
+    /// Gets or sets the pager summary template.
+    [<CustomOperation("PagingSummaryTemplate")>] member inline _.PagingSummaryTemplate ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.Blazor.PagingInformation -> NodeRenderFragment) = render ==> html.renderFragment("PagingSummaryTemplate", fn)
     /// Gets or sets the pager's first page button's title attribute.
     [<CustomOperation("FirstPageTitle")>] member inline _.FirstPageTitle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("FirstPageTitle" => x)
     /// Gets or sets the pager's first page button's aria-label attribute.
@@ -2514,6 +2516,10 @@ type RadzenDatePickerBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :
     [<CustomOperation("ShowButton")>] member inline _.ShowButton ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowButton" =>>> true)
     /// Gets or sets a value indicating whether popup datepicker button is shown.
     [<CustomOperation("ShowButton")>] member inline _.ShowButton ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowButton" =>>> x)
+    /// Gets or sets a value indicating whether the input box is shown. Ignored if ShowButton is false.
+    [<CustomOperation("ShowInput")>] member inline _.ShowInput ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowInput" =>>> true)
+    /// Gets or sets a value indicating whether the input box is shown. Ignored if ShowButton is false.
+    [<CustomOperation("ShowInput")>] member inline _.ShowInput ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowInput" =>>> x)
     /// Gets or sets a value indicating whether this RadzenDatePicker`1 is disabled.
     [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Disabled" =>>> true)
     /// Gets or sets a value indicating whether this RadzenDatePicker`1 is disabled.
@@ -2869,6 +2875,18 @@ type RadzenLoginBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.As
 /// A component which renders markdown content.
 type RadzenMarkdownBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit RadzenComponentBuilder<'FunBlazorGeneric>()
+    /// Gets or sets a value indicating whether to allow HTML content in the markdown. Certain dangerous HTML tags (script, style, object, iframe) and attributes are removed.
+    /// Set to true by default.
+    [<CustomOperation("AllowHtml")>] member inline _.AllowHtml ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AllowHtml" =>>> true)
+    /// Gets or sets a value indicating whether to allow HTML content in the markdown. Certain dangerous HTML tags (script, style, object, iframe) and attributes are removed.
+    /// Set to true by default.
+    [<CustomOperation("AllowHtml")>] member inline _.AllowHtml ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("AllowHtml" =>>> x)
+    /// Gets or sets a list of allowed HTML tags. If set, only these tags will be allowed in the markdown content. By default would use a list of safe HTML tags.
+    /// Considered only if AllowHtml is set to true.
+    [<CustomOperation("AllowedHtmlTags")>] member inline _.AllowedHtmlTags ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<System.String>) = render ==> ("AllowedHtmlTags" => x)
+    /// Gets or sets a list of allowed HTML attributes. If set, only these attributes will be allowed in the markdown content. By default would use a list of safe HTML attributes.
+    /// Considered only if AllowHtml is set to true.
+    [<CustomOperation("AllowedHtmlAttributes")>] member inline _.AllowedHtmlAttributes ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<System.String>) = render ==> ("AllowedHtmlAttributes" => x)
     /// Gets or sets the markdown content as a string. Overrides ChildContent if set.
     [<CustomOperation("Text")>] member inline _.Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Text" => x)
     /// The maximum heading depth to create anchor links for. Set to 0 to disable auto-linking.
@@ -2965,6 +2983,8 @@ type RadzenPagerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.As
     [<CustomOperation("ShowPagingSummary")>] member inline _.ShowPagingSummary ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowPagingSummary" =>>> x)
     /// Gets or sets the pager summary format.
     [<CustomOperation("PagingSummaryFormat")>] member inline _.PagingSummaryFormat ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("PagingSummaryFormat" => x)
+    /// Gets or sets the pager summary template.
+    [<CustomOperation("PagingSummaryTemplate")>] member inline _.PagingSummaryTemplate ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.Blazor.PagingInformation -> NodeRenderFragment) = render ==> html.renderFragment("PagingSummaryTemplate", fn)
     /// Gets or sets the page numbers count.
     [<CustomOperation("PageNumbersCount")>] member inline _.PageNumbersCount ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("PageNumbersCount" => x)
     /// Gets or sets the total items count.
@@ -3754,6 +3774,14 @@ type RadzenTimeSpanPickerBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGener
     /// Specifies the callback of the underlying nullable TimeSpan value.
     [<CustomOperation("Change")>] member inline _.Change ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Nullable<System.TimeSpan> -> Task<unit>) = render ==> html.callbackTask("Change", fn)
 
+/// Displays a table of contents for a page.
+type RadzenTocBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit RadzenComponentBuilder<'FunBlazorGeneric>()
+    /// Gets or sets the orientation of the table of contents.
+    [<CustomOperation("Orientation")>] member inline _.Orientation ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Orientation) = render ==> ("Orientation" => x)
+    /// Gets or sets the CSS selector of the element to monitor for scroll events. By default the entire page is monitored.
+    [<CustomOperation("Selector")>] member inline _.Selector ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Selector" => x)
+
 /// A component which displays a hierarchy of items. Supports inline definition and data-binding.
 type RadzenTreeBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit RadzenComponentBuilder<'FunBlazorGeneric>()
@@ -4307,6 +4335,8 @@ type RadzenSeriesDataLabelsBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> M
     [<CustomOperation("Visible")>] member inline _.Visible ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Visible" =>>> true)
     /// Determines the visibility of the data labels. Set to true by default.
     [<CustomOperation("Visible")>] member inline _.Visible ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Visible" =>>> x)
+    /// Defines the fill color of the component.
+    [<CustomOperation("Fill")>] member inline _.Fill ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Fill" => x)
 
             
 namespace rec Radzen.Blazor.DslInternals.Blazor.Rendering
@@ -5329,6 +5359,14 @@ type RadzenTicksBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.As
     [<CustomOperation("LineType")>] member inline _.LineType ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Blazor.LineType) = render ==> ("LineType" => x)
     /// Gets or sets the template.
     [<CustomOperation("Template")>] member inline _.Template ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.Blazor.TickTemplateContext -> NodeRenderFragment) = render ==> html.renderFragment("Template", fn)
+
+/// Represents a table of contents item.
+type RadzenTocItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    /// Gets or sets the text displayed in the table of contents.
+    [<CustomOperation("Text")>] member inline _.Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Text" => x)
+    /// Gets or sets the CSS selector of the element to scroll to.
+    [<CustomOperation("Selector")>] member inline _.Selector ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Selector" => x)
 
 /// A component which is an item in a RadzenTree
 type RadzenTreeItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -6423,6 +6461,11 @@ module DslCE =
         /// RadzenTimeSpanPicker component.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenTimeSpanPicker<_>>)>] () = inherit RadzenTimeSpanPickerBuilder<Radzen.Blazor.RadzenTimeSpanPicker<'TValue>, 'TValue>()
 
+    /// Displays a table of contents for a page.
+    type RadzenToc' 
+        /// Displays a table of contents for a page.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenToc>)>] () = inherit RadzenTocBuilder<Radzen.Blazor.RadzenToc>()
+
     /// A component which displays a hierarchy of items. Supports inline definition and data-binding.
     type RadzenTree' 
         /// A component which displays a hierarchy of items. Supports inline definition and data-binding.
@@ -6861,6 +6904,11 @@ module DslCE =
         /// Tick configuration of IChartAxis. 
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenTicks>)>] () = inherit RadzenTicksBuilder<Radzen.Blazor.RadzenTicks>()
 
+    /// Represents a table of contents item.
+    type RadzenTocItem' 
+        /// Represents a table of contents item.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenTocItem>)>] () = inherit RadzenTocItemBuilder<Radzen.Blazor.RadzenTocItem>()
+
     /// A component which is an item in a RadzenTree
     type RadzenTreeItem' 
         /// A component which is an item in a RadzenTree
@@ -7008,6 +7056,7 @@ module DslCEInstances =
     let RadzenTimeline'' = RadzenTimeline'()
     let RadzenTimelineItem'' = RadzenTimelineItem'()
     let RadzenTimeSpanPicker''<'TValue> = RadzenTimeSpanPicker'<'TValue>()
+    let RadzenToc'' = RadzenToc'()
     let RadzenTree'' = RadzenTree'()
     let RadzenUpload'' = RadzenUpload'()
     let RadzenChartComponentBase'' = RadzenChartComponentBase'()
@@ -7098,6 +7147,7 @@ module DslCEInstances =
     let RadzenTabsItem'' = RadzenTabsItem'()
     let RadzenTheme'' = RadzenTheme'()
     let RadzenTicks'' = RadzenTicks'()
+    let RadzenTocItem'' = RadzenTocItem'()
     let RadzenTreeItem'' = RadzenTreeItem'()
     let RadzenTreeLevel'' = RadzenTreeLevel'()
     let RadzenChartTooltip'' = RadzenChartTooltip'()

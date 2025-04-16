@@ -5,14 +5,14 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <TrimMode>link</TrimMode>
     <IsTrimmable>true</IsTrimmable>
-    <Version>1.3.0</Version>
+    <Version>1.3.2</Version>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Fun.Blazor.Bindings\AntDesign.fs" />
     <EmbeddedResource Include="ILLink.Substitutions.xml" LogicalName="ILLink.Substitutions.xml" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference FunBlazor="" FunBlazorNamespace="AntDesign" FunBlazorAssemblyName="AntDesign" Include="AntDesign" Version="1.3.0" />
+    <PackageReference FunBlazor="" FunBlazorNamespace="AntDesign" FunBlazorAssemblyName="AntDesign" Include="AntDesign" Version="1.3.2" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="*.fs" />
