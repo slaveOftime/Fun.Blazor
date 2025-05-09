@@ -676,6 +676,8 @@ type FluentAutocompleteBuilder<'FunBlazorGeneric, 'TOption when 'FunBlazorGeneri
     [<CustomOperation("ValueTextChanged")>] member inline _.ValueTextChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.String -> unit) = render ==> html.callback("ValueTextChanged", fn)
     /// Gets or sets the callback that is invoked when the text field value changes.
     [<CustomOperation("ValueTextChanged")>] member inline _.ValueTextChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.String -> Task<unit>) = render ==> html.callbackTask("ValueTextChanged", fn)
+    /// Gets or sets the position of the options popup.
+    [<CustomOperation("Position")>] member inline _.Position ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.SelectPosition>) = render ==> ("Position" => x)
     /// Gets or sets the value of the input. This should be used with two-way binding.
     /// For the FluentAutocomplete component, use the ValueText property instead.
     [<CustomOperation("Value")>] member inline _.Value ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Value" => x)
@@ -782,6 +784,14 @@ type FluentListboxBuilder<'FunBlazorGeneric, 'TOption when 'FunBlazorGeneric :> 
     inherit ListComponentBaseBuilder<'FunBlazorGeneric, 'TOption>()
     /// Gets or sets the maximum number of options that should be visible in the listbox scroll area.
     [<CustomOperation("Size")>] member inline _.Size ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("Size" => x)
+    /// Called whenever the selection changed.
+    /// ⚠️ Only available when Multiple = true.
+    /// ⚠️ When using manual options, the internal data structure cannot be updated reliably, because of this, the SelectedOptionsChanged event will not be triggered.
+    [<CustomOperation("SelectedOptionsChanged")>] member inline _.SelectedOptionsChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Collections.Generic.IEnumerable<'TOption> -> unit) = render ==> html.callback("SelectedOptionsChanged", fn)
+    /// Called whenever the selection changed.
+    /// ⚠️ Only available when Multiple = true.
+    /// ⚠️ When using manual options, the internal data structure cannot be updated reliably, because of this, the SelectedOptionsChanged event will not be triggered.
+    [<CustomOperation("SelectedOptionsChanged")>] member inline _.SelectedOptionsChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Collections.Generic.IEnumerable<'TOption> -> Task<unit>) = render ==> html.callbackTask("SelectedOptionsChanged", fn)
 
 type FluentSelectBuilder<'FunBlazorGeneric, 'TOption when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ListComponentBaseBuilder<'FunBlazorGeneric, 'TOption>()
@@ -792,6 +802,14 @@ type FluentSelectBuilder<'FunBlazorGeneric, 'TOption when 'FunBlazorGeneric :> M
     [<CustomOperation("Position")>] member inline _.Position ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.SelectPosition>) = render ==> ("Position" => x)
     /// Gets or sets the visual appearance. See 
     [<CustomOperation("Appearance")>] member inline _.Appearance ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Microsoft.FluentUI.AspNetCore.Components.Appearance>) = render ==> ("Appearance" => x)
+    /// Called whenever the selection changed.
+    /// ⚠️ Only available when Multiple = true.
+    /// ⚠️ When using manual options, the internal data structure cannot be updated reliably, because of this, the SelectedOptionsChanged event will not be triggered.
+    [<CustomOperation("SelectedOptionsChanged")>] member inline _.SelectedOptionsChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Collections.Generic.IEnumerable<'TOption> -> unit) = render ==> html.callback("SelectedOptionsChanged", fn)
+    /// Called whenever the selection changed.
+    /// ⚠️ Only available when Multiple = true.
+    /// ⚠️ When using manual options, the internal data structure cannot be updated reliably, because of this, the SelectedOptionsChanged event will not be triggered.
+    [<CustomOperation("SelectedOptionsChanged")>] member inline _.SelectedOptionsChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Collections.Generic.IEnumerable<'TOption> -> Task<unit>) = render ==> html.callbackTask("SelectedOptionsChanged", fn)
 
 type FluentNumberFieldBuilder<'FunBlazorGeneric, 'TValue when 'TValue : (new : unit -> 'TValue) and 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FluentInputBaseBuilder<'FunBlazorGeneric, 'TValue>()
@@ -1701,10 +1719,10 @@ type FluentInputFileBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsof
     /// Default value is 10.
     [<CustomOperation("MaximumFileCount")>] member inline _.MaximumFileCount ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("MaximumFileCount" => x)
     /// Gets or sets the maximum size of a file to be uploaded (in bytes).
-    /// Default value is 10 MB.
+    /// Default value is 10 MiB.
     [<CustomOperation("MaximumFileSize")>] member inline _.MaximumFileSize ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int64) = render ==> ("MaximumFileSize" => x)
     /// Gets or sets the sze of buffer to read bytes from uploaded file (in bytes).
-    /// Default value is 10 KB.
+    /// Default value is 10 KiB.
     [<CustomOperation("BufferSize")>] member inline _.BufferSize ([<InlineIfLambda>] render: AttrRenderFragment, x: System.UInt32) = render ==> ("BufferSize" => x)
     /// Gets or sets the filter for what file types the user can pick from the file input dialog box.
     /// Example: ".gif, .jpg, .png, .doc", "audio/*", "video/*", "image/*"
@@ -1718,6 +1736,7 @@ type FluentInputFileBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsof
     /// Gets or sets the type of file reading.
     /// For SaveToTemporaryFolder, use LocalFile to retrieve the file.
     /// For Buffer, use Buffer to retrieve bytes.
+    /// For Stream, use Stream to have full control over retrieving the file.
     [<CustomOperation("Mode")>] member inline _.Mode ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.InputFileMode) = render ==> ("Mode" => x)
     /// Gets or sets a value indicating whether the Drag/Drop zone is visible.
     /// Default is true.
@@ -2385,6 +2404,12 @@ type FluentProfileMenuBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micros
     [<CustomOperation("Open")>] member inline _.Open ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Open" =>>> true)
     /// Gets or sets the Menu status.
     [<CustomOperation("Open")>] member inline _.Open ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Open" =>>> x)
+    /// Gets or sets the Menu status.
+    [<CustomOperation("Open'")>] member inline _.Open' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Boolean * (System.Boolean -> unit)) = render ==> html.bind("Open", valueFn)
+    /// Gets or sets the callback that is invoked when the open state changes.
+    [<CustomOperation("OpenChanged")>] member inline _.OpenChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> unit) = render ==> html.callback("OpenChanged", fn)
+    /// Gets or sets the callback that is invoked when the open state changes.
+    [<CustomOperation("OpenChanged")>] member inline _.OpenChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("OpenChanged", fn)
     /// Gets or sets whether popover should be forced to top right or top left (RTL).
     [<CustomOperation("TopCorner")>] member inline _.TopCorner ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("TopCorner" =>>> true)
     /// Gets or sets whether popover should be forced to top right or top left (RTL).
@@ -2980,7 +3005,7 @@ type FluentTooltipBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     [<CustomOperation("Visible")>] member inline _.Visible ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Visible" =>>> x)
     /// Required. Gets or sets the control identifier associated with the tooltip.
     [<CustomOperation("Anchor")>] member inline _.Anchor ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Anchor" => x)
-    /// Gets or sets the delay (in milliseconds). 
+    /// Gets or sets the delay (in milliseconds).
     /// Default is 300.
     [<CustomOperation("Delay'")>] member inline _.Delay' ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("Delay" => x)
     /// Gets or sets the tooltip's position. See TooltipPosition.

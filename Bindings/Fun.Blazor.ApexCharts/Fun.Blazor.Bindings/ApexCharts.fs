@@ -269,6 +269,7 @@ open Fun.Blazor
 open Fun.Blazor.Operators
 open ApexCharts.DslInternals
 
+/// Component for .Net Tooltip
 type ApexChartTooltipBuilder<'FunBlazorGeneric, 'TItem when 'TItem : not struct and 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
     [<CustomOperation("ChartId")>] member inline _.ChartId ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ChartId" => x)
@@ -359,7 +360,11 @@ module DslCE =
     open System.Diagnostics.CodeAnalysis
     open ApexCharts.DslInternals.Internal
 
-    type ApexChartTooltip'<'TItem when 'TItem : not struct> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<ApexCharts.Internal.ApexChartTooltip<_>>)>] () = inherit ApexChartTooltipBuilder<ApexCharts.Internal.ApexChartTooltip<'TItem>, 'TItem>()
+
+    /// Component for .Net Tooltip
+    type ApexChartTooltip'<'TItem when 'TItem : not struct> 
+        /// Component for .Net Tooltip
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<ApexCharts.Internal.ApexChartTooltip<_>>)>] () = inherit ApexChartTooltipBuilder<ApexCharts.Internal.ApexChartTooltip<'TItem>, 'TItem>()
 
 [<AutoOpen>]
 module DslCEInstances =

@@ -277,7 +277,7 @@ pipeline "bindings" {
         stage_generateBindingProjects "Microsoft.FluentUI" "Microsoft.FluentUI.AspNetCore.Components" "Microsoft.FluentUI.AspNetCore.Components" None "" "net8.0"
         stage_generateBindingProjects "AntDesign" "AntDesign" "AntDesign" None "" "net6.0;net8.0"
         stage_generateBindingProjects "MudBlazor" "MudBlazor" "MudBlazor" None "" "net8.0;net9.0"
-        stage_generateBindingProjects "ApexCharts" "Blazor-ApexCharts" "ApexCharts" None "" "net6.0;net8.0"
+        stage_generateBindingProjects "ApexCharts" "Blazor-ApexCharts" "ApexCharts" None "" "net8.0"
         stage_generateBindingProjects "BlazorMonaco" "BlazorMonaco" "BlazorMonaco" None "" "net6.0;net8.0"
         stage_generateBindingProjects "Diagrams" "Z.Blazor.Diagrams" "Blazor.Diagrams" (Some "Blazor.Diagrams") "" "net6.0;net8.0"
         stage_generateBindingProjects "Radzen" "Radzen.Blazor" "Radzen.Blazor" None "" "net6.0;net8.0;net9.0"

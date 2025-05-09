@@ -478,13 +478,15 @@ type RadzenSplitButtonBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micros
     [<CustomOperation("Click")>] member inline _.Click ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.Blazor.RadzenSplitButtonItem -> unit) = render ==> html.callback("Click", fn)
     /// Gets or sets the click callback.
     [<CustomOperation("Click")>] member inline _.Click ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.Blazor.RadzenSplitButtonItem -> Task<unit>) = render ==> html.callbackTask("Click", fn)
+    /// Gets or sets the type of the button.
+    [<CustomOperation("ButtonType")>] member inline _.ButtonType ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.ButtonType) = render ==> ("ButtonType" => x)
     /// Gets or sets the add button aria-label attribute.
     [<CustomOperation("ButtonAriaLabel")>] member inline _.ButtonAriaLabel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ButtonAriaLabel" => x)
 
-/// RadzenTable component.
+/// Display a styled table with data.
 type RadzenTableBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit RadzenComponentWithChildrenBuilder<'FunBlazorGeneric>()
-    /// Gets or sets the grid lines.
+    /// Gets or sets the grid lines style.
     [<CustomOperation("GridLines")>] member inline _.GridLines ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.DataGridGridLines) = render ==> ("GridLines" => x)
     /// Gets or sets a value indicating whether RadzenTable should use alternating row styles.
     [<CustomOperation("AllowAlternatingRows")>] member inline _.AllowAlternatingRows ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AllowAlternatingRows" =>>> true)
@@ -496,7 +498,7 @@ type RadzenTableBodyBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsof
     inherit RadzenComponentWithChildrenBuilder<'FunBlazorGeneric>()
 
 
-/// RadzenTableRow component.
+/// Represents a cell in RadzenTable
 type RadzenTableCellBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit RadzenComponentWithChildrenBuilder<'FunBlazorGeneric>()
 
@@ -1324,6 +1326,14 @@ type RadzenCheckBoxListBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric
     [<CustomOperation("ValueProperty")>] member inline _.ValueProperty ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ValueProperty" => x)
     /// Gets or sets the text property.
     [<CustomOperation("TextProperty")>] member inline _.TextProperty ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("TextProperty" => x)
+    /// Gets or sets the content justify.
+    [<CustomOperation("JustifyContent")>] member inline _.JustifyContent ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.JustifyContent) = render ==> ("JustifyContent" => x)
+    /// Gets or sets the items alignment.
+    [<CustomOperation("AlignItems")>] member inline _.AlignItems ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.AlignItems) = render ==> ("AlignItems" => x)
+    /// Gets or sets the spacing between items
+    [<CustomOperation("Gap")>] member inline _.Gap ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Gap" => x)
+    /// Gets or sets the wrap.
+    [<CustomOperation("Wrap")>] member inline _.Wrap ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.FlexWrap) = render ==> ("Wrap" => x)
     /// Gets or sets the disabled property.
     [<CustomOperation("DisabledProperty")>] member inline _.DisabledProperty ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("DisabledProperty" => x)
     /// Gets or sets the read-only property.
@@ -1490,6 +1500,14 @@ type RadzenRadioButtonListBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGene
     [<CustomOperation("ValueProperty")>] member inline _.ValueProperty ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ValueProperty" => x)
     /// Gets or sets the text property.
     [<CustomOperation("TextProperty")>] member inline _.TextProperty ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("TextProperty" => x)
+    /// Gets or sets the content justify.
+    [<CustomOperation("JustifyContent")>] member inline _.JustifyContent ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.JustifyContent) = render ==> ("JustifyContent" => x)
+    /// Gets or sets the items alignment.
+    [<CustomOperation("AlignItems")>] member inline _.AlignItems ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.AlignItems) = render ==> ("AlignItems" => x)
+    /// Gets or sets the spacing between items
+    [<CustomOperation("Gap")>] member inline _.Gap ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Gap" => x)
+    /// Gets or sets the wrap.
+    [<CustomOperation("Wrap")>] member inline _.Wrap ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.FlexWrap) = render ==> ("Wrap" => x)
     /// Gets or sets the disabled property.
     [<CustomOperation("DisabledProperty")>] member inline _.DisabledProperty ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("DisabledProperty" => x)
     /// Gets or sets the visible property.
@@ -2681,6 +2699,21 @@ type RadzenFormFieldBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsof
     [<CustomOperation("Helper")>] member inline _.Helper ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("Helper", html.text x)
     /// Gets or sets the optional content that will be rendered below the child content. Used with a validator or to display some additional information.
     [<CustomOperation("Helper")>] member inline _.Helper ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("Helper", html.text x)
+    /// Gets or sets the custom content for the label using a Razor template.
+    /// When provided, this template will be rendered instead of the plain text specified in the Text parameter.
+    [<CustomOperation("TextTemplate")>] member inline _.TextTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("TextTemplate", fragment)
+    /// Gets or sets the custom content for the label using a Razor template.
+    /// When provided, this template will be rendered instead of the plain text specified in the Text parameter.
+    [<CustomOperation("TextTemplate")>] member inline _.TextTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("TextTemplate", fragment { yield! fragments })
+    /// Gets or sets the custom content for the label using a Razor template.
+    /// When provided, this template will be rendered instead of the plain text specified in the Text parameter.
+    [<CustomOperation("TextTemplate")>] member inline _.TextTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("TextTemplate", html.text x)
+    /// Gets or sets the custom content for the label using a Razor template.
+    /// When provided, this template will be rendered instead of the plain text specified in the Text parameter.
+    [<CustomOperation("TextTemplate")>] member inline _.TextTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("TextTemplate", html.text x)
+    /// Gets or sets the custom content for the label using a Razor template.
+    /// When provided, this template will be rendered instead of the plain text specified in the Text parameter.
+    [<CustomOperation("TextTemplate")>] member inline _.TextTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("TextTemplate", html.text x)
     /// Gets or sets the label text.
     [<CustomOperation("Text")>] member inline _.Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Text" => x)
     /// Gets or sets a value indicating whether the label is floating or fixed on top.
@@ -5365,6 +5398,16 @@ type RadzenTocItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
     /// Gets or sets the text displayed in the table of contents.
     [<CustomOperation("Text")>] member inline _.Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Text" => x)
+    /// Gets or sets the custom content of the item.
+    [<CustomOperation("Template")>] member inline _.Template ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("Template", fragment)
+    /// Gets or sets the custom content of the item.
+    [<CustomOperation("Template")>] member inline _.Template ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("Template", fragment { yield! fragments })
+    /// Gets or sets the custom content of the item.
+    [<CustomOperation("Template")>] member inline _.Template ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("Template", html.text x)
+    /// Gets or sets the custom content of the item.
+    [<CustomOperation("Template")>] member inline _.Template ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("Template", html.text x)
+    /// Gets or sets the custom content of the item.
+    [<CustomOperation("Template")>] member inline _.Template ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("Template", html.text x)
     /// Gets or sets the CSS selector of the element to scroll to.
     [<CustomOperation("Selector")>] member inline _.Selector ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Selector" => x)
 
@@ -5546,6 +5589,18 @@ open FSharp.Data.Adaptive
 open Fun.Blazor
 open Fun.Blazor.Operators
 open Radzen.Blazor.DslInternals
+
+/// Expandable content.
+type ExpanderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    /// Gets or sets the additional attributes.
+    [<CustomOperation("Attributes")>] member inline _.Attributes ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>) = render ==> ("Attributes" => x)
+    /// Gets or sets the CSS class.
+    [<CustomOperation("CssClass")>] member inline _.CssClass ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("CssClass" => x)
+    /// Determines whether the content is visible.
+    [<CustomOperation("Expanded")>] member inline _.Expanded ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Expanded" =>>> true)
+    /// Determines whether the content is visible.
+    [<CustomOperation("Expanded")>] member inline _.Expanded ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Expanded" =>>> x)
 
 type AppointmentBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
@@ -5990,9 +6045,9 @@ module DslCE =
         /// RadzenSplitButton component.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenSplitButton>)>] () = inherit RadzenSplitButtonBuilder<Radzen.Blazor.RadzenSplitButton>()
 
-    /// RadzenTable component.
+    /// Display a styled table with data.
     type RadzenTable' 
-        /// RadzenTable component.
+        /// Display a styled table with data.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenTable>)>] () = inherit RadzenTableBuilder<Radzen.Blazor.RadzenTable>()
 
     /// RadzenTableBody component.
@@ -6000,9 +6055,9 @@ module DslCE =
         /// RadzenTableBody component.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenTableBody>)>] () = inherit RadzenTableBodyBuilder<Radzen.Blazor.RadzenTableBody>()
 
-    /// RadzenTableRow component.
+    /// Represents a cell in RadzenTable
     type RadzenTableCell' 
-        /// RadzenTableRow component.
+        /// Represents a cell in RadzenTable
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenTableCell>)>] () = inherit RadzenTableCellBuilder<Radzen.Blazor.RadzenTableCell>()
 
     /// RadzenTableHeader component.
@@ -7201,6 +7256,11 @@ module DslCE =
     type WeekView' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.Rendering.WeekView>)>] () = inherit WeekViewBuilder<Radzen.Blazor.Rendering.WeekView>()
     type YearPlannerView' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.Rendering.YearPlannerView>)>] () = inherit YearPlannerViewBuilder<Radzen.Blazor.Rendering.YearPlannerView>()
     type YearTimelineView' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.Rendering.YearTimelineView>)>] () = inherit YearTimelineViewBuilder<Radzen.Blazor.Rendering.YearTimelineView>()
+
+    /// Expandable content.
+    type Expander' 
+        /// Expandable content.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.Rendering.Expander>)>] () = inherit ExpanderBuilder<Radzen.Blazor.Rendering.Expander>()
     type Appointment' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.Rendering.Appointment>)>] () = inherit AppointmentBuilder<Radzen.Blazor.Rendering.Appointment>()
     type CategoryAxisTitle' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.Rendering.CategoryAxisTitle>)>] () = inherit CategoryAxisTitleBuilder<Radzen.Blazor.Rendering.CategoryAxisTitle>()
     type ChartSharedTooltip' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.Rendering.ChartSharedTooltip>)>] () = inherit ChartSharedTooltipBuilder<Radzen.Blazor.Rendering.ChartSharedTooltip>()
@@ -7246,6 +7306,7 @@ module DslCEInstances =
     let WeekView'' = WeekView'()
     let YearPlannerView'' = YearPlannerView'()
     let YearTimelineView'' = YearTimelineView'()
+    let Expander'' = Expander'()
     let Appointment'' = Appointment'()
     let CategoryAxisTitle'' = CategoryAxisTitle'()
     let ChartSharedTooltip'' = ChartSharedTooltip'()

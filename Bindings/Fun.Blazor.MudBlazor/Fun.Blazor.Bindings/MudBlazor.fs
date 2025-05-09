@@ -1188,6 +1188,10 @@ type MudAutocompleteBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Micr
     [<CustomOperation("ProgressIndicatorInPopoverTemplate")>] member inline _.ProgressIndicatorInPopoverTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("ProgressIndicatorInPopoverTemplate", html.text x)
     /// The custom template used for the progress indicator inside the popover when ShowProgressIndicator is true.
     [<CustomOperation("ProgressIndicatorInPopoverTemplate")>] member inline _.ProgressIndicatorInPopoverTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("ProgressIndicatorInPopoverTemplate", html.text x)
+    /// Prevents interaction with background elements while this list is open.
+    [<CustomOperation("Modal")>] member inline _.Modal ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Modal" =>>> true)
+    /// Prevents interaction with background elements while this list is open.
+    [<CustomOperation("Modal")>] member inline _.Modal ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Modal" =>>> x)
     /// Determines the width of this Popover dropdown in relation to the parent container.
     [<CustomOperation("RelativeWidth")>] member inline _.RelativeWidth ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.DropdownWidth) = render ==> ("RelativeWidth" => x)
     /// Overrides the Text property when an item is selected.
@@ -1402,6 +1406,10 @@ type MudSelectBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.
     [<CustomOperation("OnClose")>] member inline _.OnClose ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> unit) = render ==> html.callback("OnClose", fn)
     /// Occurs when this drop-down closes.
     [<CustomOperation("OnClose")>] member inline _.OnClose ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> Task<unit>) = render ==> html.callbackTask("OnClose", fn)
+    /// Prevents interaction with background elements while this list is open.
+    [<CustomOperation("Modal")>] member inline _.Modal ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Modal" =>>> true)
+    /// Prevents interaction with background elements while this list is open.
+    [<CustomOperation("Modal")>] member inline _.Modal ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Modal" =>>> x)
     /// The CSS classes applied to the popover.
     [<CustomOperation("PopoverClass")>] member inline _.PopoverClass ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("PopoverClass" => x)
     /// The CSS classes applied to the internal list.
@@ -1710,6 +1718,10 @@ type MudPickerBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.
     [<CustomOperation("Margin")>] member inline _.Margin ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Margin) = render ==> ("Margin" => x)
     /// The mask to apply to input values when Editable is true.
     [<CustomOperation("Mask")>] member inline _.Mask ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.IMask) = render ==> ("Mask" => x)
+    /// Prevents interaction with background elements while the picker is open.
+    [<CustomOperation("Modal")>] member inline _.Modal ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Modal" =>>> true)
+    /// Prevents interaction with background elements while the picker is open.
+    [<CustomOperation("Modal")>] member inline _.Modal ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Modal" =>>> x)
     /// The location the popover opens, relative to its container.
     [<CustomOperation("AnchorOrigin")>] member inline _.AnchorOrigin ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Origin) = render ==> ("AnchorOrigin" => x)
     /// The direction the popover opens, relative to its container.
@@ -2515,6 +2527,28 @@ type ColumnBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.Asp
     [<CustomOperation("AggregateTemplate")>] member inline _.AggregateTemplate ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Collections.Generic.IEnumerable<'T> -> NodeRenderFragment) = render ==> html.renderFragment("AggregateTemplate", fn)
     /// The function which groups values in this column.
     [<CustomOperation("GroupBy")>] member inline _.GroupBy ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("GroupBy" => (System.Func<'T, System.Object>fn))
+    /// The order in which values are grouped when there are more than one group
+    [<CustomOperation("GroupByOrder")>] member inline _.GroupByOrder ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("GroupByOrder" => x)
+    /// The order in which values are grouped when there are more than one group
+    [<CustomOperation("GroupByOrder'")>] member inline _.GroupByOrder' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Int32 * (System.Int32 -> unit)) = render ==> html.bind("GroupByOrder", valueFn)
+    /// Occurs when the GroupByOrder property has changed.
+    [<CustomOperation("GroupByOrderChanged")>] member inline _.GroupByOrderChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Int32 -> unit) = render ==> html.callback("GroupByOrderChanged", fn)
+    /// Occurs when the GroupByOrder property has changed.
+    [<CustomOperation("GroupByOrderChanged")>] member inline _.GroupByOrderChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Int32 -> Task<unit>) = render ==> html.callbackTask("GroupByOrderChanged", fn)
+    /// Whether the column is indented 48px beyond it's parent when grouped.
+    [<CustomOperation("GroupIndented")>] member inline _.GroupIndented ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("GroupIndented" =>>> true)
+    /// Whether the column is indented 48px beyond it's parent when grouped.
+    [<CustomOperation("GroupIndented")>] member inline _.GroupIndented ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("GroupIndented" =>>> x)
+    /// Whether groups created from this column are expanded. Toggling the value will Toggle all grouped rows of this column.
+    [<CustomOperation("GroupExpanded")>] member inline _.GroupExpanded ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("GroupExpanded" =>>> true)
+    /// Whether groups created from this column are expanded. Toggling the value will Toggle all grouped rows of this column.
+    [<CustomOperation("GroupExpanded")>] member inline _.GroupExpanded ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("GroupExpanded" =>>> x)
+    /// Whether groups created from this column are expanded. Toggling the value will Toggle all grouped rows of this column.
+    [<CustomOperation("GroupExpanded'")>] member inline _.GroupExpanded' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Boolean * (System.Boolean -> unit)) = render ==> html.bind("GroupExpanded", valueFn)
+    /// Occurs when the GroupExpanded property has changed.
+    [<CustomOperation("GroupExpandedChanged")>] member inline _.GroupExpandedChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> unit) = render ==> html.callback("GroupExpandedChanged", fn)
+    /// Occurs when the GroupExpanded property has changed.
+    [<CustomOperation("GroupExpandedChanged")>] member inline _.GroupExpandedChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("GroupExpandedChanged", fn)
     /// Requires a value to be set.
     [<CustomOperation("Required")>] member inline _.Required ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Required" =>>> true)
     /// Requires a value to be set.
@@ -2636,6 +2670,32 @@ type TemplateColumnBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Micro
     /// Shows options for this column.
     [<CustomOperation("ShowColumnOptions")>] member inline _.ShowColumnOptions ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("ShowColumnOptions" => x)
 
+type DataGridGroupRowBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit MudComponentBaseBuilder<'FunBlazorGeneric>()
+    [<CustomOperation("DataGrid")>] member inline _.DataGrid ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.MudDataGrid<'T>) = render ==> ("DataGrid" => x)
+    [<CustomOperation("RowClick")>] member inline _.RowClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.ValueTuple<Microsoft.AspNetCore.Components.Web.MouseEventArgs, 'T, System.Int32> -> unit) = render ==> html.callback("RowClick", fn)
+    [<CustomOperation("RowClick")>] member inline _.RowClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.ValueTuple<Microsoft.AspNetCore.Components.Web.MouseEventArgs, 'T, System.Int32> -> Task<unit>) = render ==> html.callbackTask("RowClick", fn)
+    [<CustomOperation("ContextRowClick")>] member inline _.ContextRowClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.ValueTuple<Microsoft.AspNetCore.Components.Web.MouseEventArgs, 'T, System.Int32> -> unit) = render ==> html.callback("ContextRowClick", fn)
+    [<CustomOperation("ContextRowClick")>] member inline _.ContextRowClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.ValueTuple<Microsoft.AspNetCore.Components.Web.MouseEventArgs, 'T, System.Int32> -> Task<unit>) = render ==> html.callbackTask("ContextRowClick", fn)
+    /// The definition for this grouping level
+    [<CustomOperation("GroupDefinition")>] member inline _.GroupDefinition ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.GroupDefinition<'T>) = render ==> ("GroupDefinition" => x)
+    /// The groups and items within this grouping.
+    [<CustomOperation("Items")>] member inline _.Items ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Linq.IGrouping<System.Object, 'T>) = render ==> ("Items" => x)
+    [<CustomOperation("GroupClass")>] member inline _.GroupClass ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("GroupClass" => x)
+    [<CustomOperation("GroupStyle")>] member inline _.GroupStyle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("GroupStyle" => x)
+    [<CustomOperation("GroupClassFunc")>] member inline _.GroupClassFunc ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("GroupClassFunc" => (System.Func<MudBlazor.GroupDefinition<'T>, System.String>fn))
+    [<CustomOperation("GroupStyleFunc")>] member inline _.GroupStyleFunc ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("GroupStyleFunc" => (System.Func<MudBlazor.GroupDefinition<'T>, System.String>fn))
+    [<CustomOperation("StyleClass")>] member inline _.StyleClass ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("StyleClass" => x)
+
+type DataGridVirtualizeRowBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit MudComponentBaseBuilder<'FunBlazorGeneric>()
+    [<CustomOperation("DataGrid")>] member inline _.DataGrid ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.MudDataGrid<'T>) = render ==> ("DataGrid" => x)
+    [<CustomOperation("GroupedItems")>] member inline _.GroupedItems ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Linq.IGrouping<System.Object, 'T>) = render ==> ("GroupedItems" => x)
+    [<CustomOperation("RowClick")>] member inline _.RowClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.ValueTuple<Microsoft.AspNetCore.Components.Web.MouseEventArgs, 'T, System.Int32> -> unit) = render ==> html.callback("RowClick", fn)
+    [<CustomOperation("RowClick")>] member inline _.RowClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.ValueTuple<Microsoft.AspNetCore.Components.Web.MouseEventArgs, 'T, System.Int32> -> Task<unit>) = render ==> html.callbackTask("RowClick", fn)
+    [<CustomOperation("ContextRowClick")>] member inline _.ContextRowClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.ValueTuple<Microsoft.AspNetCore.Components.Web.MouseEventArgs, 'T, System.Int32> -> unit) = render ==> html.callback("ContextRowClick", fn)
+    [<CustomOperation("ContextRowClick")>] member inline _.ContextRowClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.ValueTuple<Microsoft.AspNetCore.Components.Web.MouseEventArgs, 'T, System.Int32> -> Task<unit>) = render ==> html.callbackTask("ContextRowClick", fn)
+
 /// Represents a column filter shown when FilterMode is ColumnFilterRow.
 type FilterHeaderCellBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit MudComponentBaseBuilder<'FunBlazorGeneric>()
@@ -2683,6 +2743,22 @@ type HierarchyColumnBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Micr
     [<CustomOperation("HiddenChanged")>] member inline _.HiddenChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> unit) = render ==> html.callback("HiddenChanged", fn)
     /// Occurs when the Hidden property has changed.
     [<CustomOperation("HiddenChanged")>] member inline _.HiddenChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("HiddenChanged", fn)
+    /// Whether or not to show a button in the header to expand/collapse all columns.
+    [<CustomOperation("EnableHeaderToggle")>] member inline _.EnableHeaderToggle ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("EnableHeaderToggle" =>>> true)
+    /// Whether or not to show a button in the header to expand/collapse all columns.
+    [<CustomOperation("EnableHeaderToggle")>] member inline _.EnableHeaderToggle ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("EnableHeaderToggle" =>>> x)
+    /// The CSS class applied to the header.
+    [<CustomOperation("HeaderClass")>] member inline _.HeaderClass ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("HeaderClass" => x)
+    /// The function which calculates CSS classes for the header.
+    [<CustomOperation("HeaderClassFunc")>] member inline _.HeaderClassFunc ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("HeaderClassFunc" => (System.Func<System.Collections.Generic.IEnumerable<'T>, System.String>fn))
+    /// The CSS style applied to this column's header.
+    [<CustomOperation("HeaderStyle")>] member inline _.HeaderStyle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("HeaderStyle" => x)
+    /// The function which calculates CSS styles for the header.
+    [<CustomOperation("HeaderStyleFunc")>] member inline _.HeaderStyleFunc ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("HeaderStyleFunc" => (System.Func<System.Collections.Generic.IEnumerable<'T>, System.String>fn))
+    /// The template used to display this column's header.
+    [<CustomOperation("HeaderTemplate")>] member inline _.HeaderTemplate ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: MudBlazor.HeaderContext<'T> -> NodeRenderFragment) = render ==> html.renderFragment("HeaderTemplate", fn)
+    /// The template used to display this column's value cells.
+    [<CustomOperation("CellTemplate")>] member inline _.CellTemplate ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: MudBlazor.CellContext<'T> -> NodeRenderFragment) = render ==> html.renderFragment("CellTemplate", fn)
     /// The function which determines whether the row should be initially expanded.
     [<CustomOperation("InitiallyExpandedFunc")>] member inline _.InitiallyExpandedFunc ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("InitiallyExpandedFunc" => (System.Func<'T, System.Boolean>fn))
 
@@ -2993,9 +3069,9 @@ type MudDataGridBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsof
     [<CustomOperation("Groupable")>] member inline _.Groupable ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Groupable" =>>> true)
     /// Allows grouping of columns in this grid.
     [<CustomOperation("Groupable")>] member inline _.Groupable ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Groupable" =>>> x)
-    /// Expands grouped columns by default.
+    /// Expands grouped columns by default. Overrides GroupExpanded
     [<CustomOperation("GroupExpanded")>] member inline _.GroupExpanded ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("GroupExpanded" =>>> true)
-    /// Expands grouped columns by default.
+    /// Expands grouped columns by default. Overrides GroupExpanded
     [<CustomOperation("GroupExpanded")>] member inline _.GroupExpanded ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("GroupExpanded" =>>> x)
     /// The CSS classes applied to column groups.
     [<CustomOperation("GroupClass")>] member inline _.GroupClass ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("GroupClass" => x)
@@ -3009,6 +3085,10 @@ type MudDataGridBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsof
     [<CustomOperation("ShowMenuIcon")>] member inline _.ShowMenuIcon ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowMenuIcon" =>>> true)
     /// Shows the settings icon in the grid header.
     [<CustomOperation("ShowMenuIcon")>] member inline _.ShowMenuIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowMenuIcon" =>>> x)
+    /// Ensures the user can only expand one Hierarchy row at a time. This only has an effect if you are using a Hierarchy column.
+    [<CustomOperation("ExpandSingleRow")>] member inline _.ExpandSingleRow ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ExpandSingleRow" =>>> true)
+    /// Ensures the user can only expand one Hierarchy row at a time. This only has an effect if you are using a Hierarchy column.
+    [<CustomOperation("ExpandSingleRow")>] member inline _.ExpandSingleRow ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ExpandSingleRow" =>>> x)
     /// The comparer used to determine row selection.
     [<CustomOperation("Comparer")>] member inline _.Comparer ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEqualityComparer<'T>) = render ==> ("Comparer" => x)
     /// The validator which validates values in each row.
@@ -3986,6 +4066,10 @@ type MudMenuBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNet
     [<CustomOperation("DropShadow")>] member inline _.DropShadow ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("DropShadow" =>>> true)
     /// Displays a drop shadow under the activator button.
     [<CustomOperation("DropShadow")>] member inline _.DropShadow ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("DropShadow" =>>> x)
+    /// Prevents interaction with background elements while this menu is open.
+    [<CustomOperation("Modal")>] member inline _.Modal ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Modal" =>>> true)
+    /// Prevents interaction with background elements while this menu is open.
+    [<CustomOperation("Modal")>] member inline _.Modal ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Modal" =>>> x)
     /// Whether this menu is open and the menu items are visible.
     [<CustomOperation("Open")>] member inline _.Open ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Open" =>>> true)
     /// Whether this menu is open and the menu items are visible.
@@ -4238,6 +4322,10 @@ type MudOverlayBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.Asp
     [<CustomOperation("LockScroll")>] member inline _.LockScroll ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("LockScroll" =>>> x)
     /// The css class that will be added to body if lockscroll is used.
     [<CustomOperation("LockScrollClass")>] member inline _.LockScrollClass ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("LockScrollClass" => x)
+    /// Prevents interaction with background elements.
+    [<CustomOperation("Modal")>] member inline _.Modal ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Modal" =>>> true)
+    /// Prevents interaction with background elements.
+    [<CustomOperation("Modal")>] member inline _.Modal ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Modal" =>>> x)
     /// Applies the theme's dark overlay color.
     [<CustomOperation("DarkBackground")>] member inline _.DarkBackground ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("DarkBackground" =>>> true)
     /// Applies the theme's dark overlay color.
@@ -6186,6 +6274,8 @@ module DslCE =
     type TemplateColumn'<'T> 
         /// Represents an additional column for a MudDataGrid`1 which isn't tied to data.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.TemplateColumn<_>>)>] () = inherit TemplateColumnBuilder<MudBlazor.TemplateColumn<'T>, 'T>()
+    type DataGridGroupRow'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.DataGridGroupRow<_>>)>] () = inherit DataGridGroupRowBuilder<MudBlazor.DataGridGroupRow<'T>, 'T>()
+    type DataGridVirtualizeRow'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.DataGridVirtualizeRow<_>>)>] () = inherit DataGridVirtualizeRowBuilder<MudBlazor.DataGridVirtualizeRow<'T>, 'T>()
 
     /// Represents a column filter shown when FilterMode is ColumnFilterRow.
     type FilterHeaderCell'<'T> 
@@ -6659,6 +6749,8 @@ module DslCEInstances =
     let Column''<'T> = Column'<'T>()
     let PropertyColumn''<'T, 'TProperty> = PropertyColumn'<'T, 'TProperty>()
     let TemplateColumn''<'T> = TemplateColumn'<'T>()
+    let DataGridGroupRow''<'T> = DataGridGroupRow'<'T>()
+    let DataGridVirtualizeRow''<'T> = DataGridVirtualizeRow'<'T>()
     let FilterHeaderCell''<'T> = FilterHeaderCell'<'T>()
     let FooterCell''<'T> = FooterCell'<'T>()
     let HeaderCell''<'T> = HeaderCell'<'T>()
