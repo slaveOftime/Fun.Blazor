@@ -618,6 +618,9 @@ type ListComponentBaseBuilder<'FunBlazorGeneric, 'TOption when 'FunBlazorGeneric
     [<CustomOperation("OptionDisabled")>] member inline _.OptionDisabled ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("OptionDisabled" => (System.Func<'TOption, System.Boolean>fn))
     /// Gets or sets the function used to determine if an option is initially selected.
     [<CustomOperation("OptionSelected")>] member inline _.OptionSelected ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("OptionSelected" => (System.Func<'TOption, System.Boolean>fn))
+    /// Gets or sets the IEqualityComparer`1 used to determine if an option is already added to the internal list.
+    /// ⚠️ Only available when Multiple = true.
+    [<CustomOperation("OptionComparer")>] member inline _.OptionComparer ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEqualityComparer<'TOption>) = render ==> ("OptionComparer" => x)
     /// Gets or sets the content source of all items to display in this list.
     /// Each item must be instantiated (cannot be null).
     [<CustomOperation("Items")>] member inline _.Items ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<'TOption>) = render ==> ("Items" => x)
@@ -1229,6 +1232,14 @@ type FluentDataGridBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric 
     /// If true, enables the new style of header cell that includes a button to display all column options through a menu.
     ///             
     [<CustomOperation("HeaderCellAsButtonWithMenu")>] member inline _.HeaderCellAsButtonWithMenu ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("HeaderCellAsButtonWithMenu" =>>> x)
+    /// Use IMenuService to create the menu, if this service was injected.
+    /// This value must be defined before the component is rendered (you can't change it during the component lifecycle).
+    /// Default, true.
+    [<CustomOperation("UseMenuService")>] member inline _.UseMenuService ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("UseMenuService" =>>> true)
+    /// Use IMenuService to create the menu, if this service was injected.
+    /// This value must be defined before the component is rendered (you can't change it during the component lifecycle).
+    /// Default, true.
+    [<CustomOperation("UseMenuService")>] member inline _.UseMenuService ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("UseMenuService" =>>> x)
     /// Optionally defines a value for @key on each rendered row. Typically this should be used to specify a
     /// unique identifier, such as a primary key value, for each data item.
     ///             
@@ -3333,6 +3344,9 @@ type ColumnBaseBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric :> M
     /// Gets or sets an optional template for this column's header cell.
     /// If not specified, the default header template includes the Title along with any applicable sort indicators and options buttons.
     [<CustomOperation("HeaderCellItemTemplate")>] member inline _.HeaderCellItemTemplate ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.ColumnBase<'TGridItem> -> NodeRenderFragment) = render ==> html.renderFragment("HeaderCellItemTemplate", fn)
+    /// Gets or sets a template for the title content of this column's header cell.
+    /// If not specified, the default header template includes the Title.
+    [<CustomOperation("HeaderCellTitleTemplate")>] member inline _.HeaderCellTitleTemplate ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.FluentUI.AspNetCore.Components.ColumnBase<'TGridItem> -> NodeRenderFragment) = render ==> html.renderFragment("HeaderCellTitleTemplate", fn)
     /// If specified, indicates that this column has this associated options UI. A button to display this
     /// UI will be included in the header cell by default.
     ///             

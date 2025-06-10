@@ -677,6 +677,8 @@ type MudTableBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.A
     [<CustomOperation("SelectedItemsChanged")>] member inline _.SelectedItemsChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Collections.Generic.HashSet<'T> -> Task<unit>) = render ==> html.callbackTask("SelectedItemsChanged", fn)
     /// Defines how rows are grouped together.
     [<CustomOperation("GroupBy")>] member inline _.GroupBy ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.TableGroupDefinition<'T>) = render ==> ("GroupBy" => x)
+    /// The custom CSS classes to apply to the table.
+    [<CustomOperation("TableClass")>] member inline _.TableClass ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("TableClass" => x)
     /// The content for the header of each group when GroupBy is set.
     [<CustomOperation("GroupHeaderTemplate")>] member inline _.GroupHeaderTemplate ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: MudBlazor.TableGroupData<System.Object, 'T> -> NodeRenderFragment) = render ==> html.renderFragment("GroupHeaderTemplate", fn)
     /// The custom CSS classes to apply to each group header row.
@@ -785,6 +787,10 @@ type MudTabsBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNet
     [<CustomOperation("TabPanelHeaderPosition")>] member inline _.TabPanelHeaderPosition ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.TabHeaderPosition) = render ==> ("TabPanelHeaderPosition" => x)
     /// Occurs before a panel is activated.
     [<CustomOperation("OnPreviewInteraction")>] member inline _.OnPreviewInteraction ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("OnPreviewInteraction" => (System.Func<MudBlazor.TabInteractionEventArgs, System.Threading.Tasks.Task>fn))
+    /// Sort tab labels lexicographically by Text or SortKey. Ignored if SortComparer is set.
+    [<CustomOperation("SortDirection")>] member inline _.SortDirection ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.SortDirection) = render ==> ("SortDirection" => x)
+    /// Specify a custom Comparer to sort tabs. When set, SortDirection is not used.
+    [<CustomOperation("SortComparer")>] member inline _.SortComparer ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IComparer<MudBlazor.MudTabPanel>) = render ==> ("SortComparer" => x)
 
 /// A tab component where the tabs are controlled dynamically, similar to browser tabs.
 type MudDynamicTabsBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -1232,6 +1238,10 @@ type MudAutocompleteBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Micr
     [<CustomOperation("ReturnedItemsCountChanged")>] member inline _.ReturnedItemsCountChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Int32 -> unit) = render ==> html.callback("ReturnedItemsCountChanged", fn)
     /// Occurs when the number of items returned by SearchFunc has changed.
     [<CustomOperation("ReturnedItemsCountChanged")>] member inline _.ReturnedItemsCountChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Int32 -> Task<unit>) = render ==> html.callbackTask("ReturnedItemsCountChanged", fn)
+    /// Prevents scrolling while the dropdown is open.
+    [<CustomOperation("LockScroll")>] member inline _.LockScroll ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("LockScroll" =>>> true)
+    /// Prevents scrolling while the dropdown is open.
+    [<CustomOperation("LockScroll")>] member inline _.LockScroll ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("LockScroll" =>>> x)
 
 /// A base class for designing input components which update after a delay.
 type MudDebouncedInputBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -1714,8 +1724,12 @@ type MudPickerBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.
     [<CustomOperation("ActionsClass")>] member inline _.ActionsClass ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ActionsClass" => x)
     /// The custom action buttons to display.
     [<CustomOperation("PickerActions")>] member inline _.PickerActions ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: MudBlazor.MudPicker<'T> -> NodeRenderFragment) = render ==> html.renderFragment("PickerActions", fn)
-    /// Applies vertical spacing.
+    /// The amount of vertical spacing for the text input.
     [<CustomOperation("Margin")>] member inline _.Margin ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Margin) = render ==> ("Margin" => x)
+    /// Shows the label inside the text input if no Text is specified.
+    [<CustomOperation("ShrinkLabel")>] member inline _.ShrinkLabel ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShrinkLabel" =>>> true)
+    /// Shows the label inside the text input if no Text is specified.
+    [<CustomOperation("ShrinkLabel")>] member inline _.ShrinkLabel ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShrinkLabel" =>>> x)
     /// The mask to apply to input values when Editable is true.
     [<CustomOperation("Mask")>] member inline _.Mask ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.IMask) = render ==> ("Mask" => x)
     /// Prevents interaction with background elements while the picker is open.
@@ -4900,13 +4914,25 @@ type MudStepperBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.Asp
     /// Use this to override the default action buttons of the stepper
     [<CustomOperation("ActionContent")>] member inline _.ActionContent ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: MudBlazor.MudStepper -> NodeRenderFragment) = render ==> html.renderFragment("ActionContent", fn)
 
-/// An area which receives swipe events for devices where touch events are supported.
+/// An area which receives swipe events.
 type MudSwipeAreaBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit MudComponentBaseBuilder<'FunBlazorGeneric>()
+    /// Occurs when a swipe has on progress. Ignores sensitivity.
+    [<CustomOperation("OnSwipeMove")>] member inline _.OnSwipeMove ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: MudBlazor.MultiDimensionSwipeEventArgs -> unit) = render ==> html.callback("OnSwipeMove", fn)
+    /// Occurs when a swipe has on progress. Ignores sensitivity.
+    [<CustomOperation("OnSwipeMove")>] member inline _.OnSwipeMove ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: MudBlazor.MultiDimensionSwipeEventArgs -> Task<unit>) = render ==> html.callbackTask("OnSwipeMove", fn)
     /// Occurs when a swipe has ended.
     [<CustomOperation("OnSwipeEnd")>] member inline _.OnSwipeEnd ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: MudBlazor.SwipeEventArgs -> unit) = render ==> html.callback("OnSwipeEnd", fn)
     /// Occurs when a swipe has ended.
     [<CustomOperation("OnSwipeEnd")>] member inline _.OnSwipeEnd ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: MudBlazor.SwipeEventArgs -> Task<unit>) = render ==> html.callbackTask("OnSwipeEnd", fn)
+    /// Occurs when a swipe leaves the area.
+    [<CustomOperation("OnSwipeLeave")>] member inline _.OnSwipeLeave ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.PointerEventArgs -> unit) = render ==> html.callback("OnSwipeLeave", fn)
+    /// Occurs when a swipe leaves the area.
+    [<CustomOperation("OnSwipeLeave")>] member inline _.OnSwipeLeave ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.PointerEventArgs -> Task<unit>) = render ==> html.callbackTask("OnSwipeLeave", fn)
+    /// Occurs when a swipe cancelled.
+    [<CustomOperation("OnSwipeCancel")>] member inline _.OnSwipeCancel ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.PointerEventArgs -> unit) = render ==> html.callback("OnSwipeCancel", fn)
+    /// Occurs when a swipe cancelled.
+    [<CustomOperation("OnSwipeCancel")>] member inline _.OnSwipeCancel ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.PointerEventArgs -> Task<unit>) = render ==> html.callbackTask("OnSwipeCancel", fn)
     /// The amount of pixels which must be swiped to raise the OnSwipeEnd event.
     [<CustomOperation("Sensitivity")>] member inline _.Sensitivity ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("Sensitivity" => x)
     /// Prevents the default behavior of the browser when swiping.
@@ -5200,6 +5226,8 @@ type MudTabPanelBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.As
     [<CustomOperation("TabWrapperContent")>] member inline _.TabWrapperContent ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.RenderFragment -> NodeRenderFragment) = render ==> html.renderFragment("TabWrapperContent", fn)
     /// The tooltip displayed for this tab.
     [<CustomOperation("ToolTip")>] member inline _.ToolTip ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ToolTip" => x)
+    /// Value to use when ordering tabs lexicographically, in place of Text.
+    [<CustomOperation("SortKey")>] member inline _.SortKey ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("SortKey" => x)
 
 /// A chronological item displayed as part of a MudTimeline
 type MudTimelineItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -5253,94 +5281,88 @@ type MudTimelineItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsof
     /// The custom content for the dot.
     [<CustomOperation("ItemDot")>] member inline _.ItemDot ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("ItemDot", html.text x)
 
+/// Maintains the selection of a group of MudToggleItem`1 components.
 type MudToggleGroupBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit MudComponentBaseBuilder<'FunBlazorGeneric>()
-    /// If true, the group will be disabled.
+    /// Prevents the user from interacting with this toggle group.
     [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Disabled" =>>> true)
-    /// If true, the group will be disabled.
+    /// Prevents the user from interacting with this toggle group.
     [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Disabled" =>>> x)
-    /// The selected value in single- and toggle-selection mode.
+    /// The currently selected value.
     [<CustomOperation("Value")>] member inline _.Value ([<InlineIfLambda>] render: AttrRenderFragment, x: 'T) = render ==> ("Value" => x)
-    /// The selected value in single- and toggle-selection mode.
+    /// The currently selected value.
     [<CustomOperation("Value'")>] member inline _.Value' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: 'T * ('T -> unit)) = render ==> html.bind("Value", valueFn)
-    /// Fires when Value changes.
+    /// Occurs when Value has changed.
     [<CustomOperation("ValueChanged")>] member inline _.ValueChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: 'T -> unit) = render ==> html.callback("ValueChanged", fn)
-    /// Fires when Value changes.
+    /// Occurs when Value has changed.
     [<CustomOperation("ValueChanged")>] member inline _.ValueChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: 'T -> Task<unit>) = render ==> html.callbackTask("ValueChanged", fn)
-    /// The selected values for multi-selection mode.
+    /// The currently selected values.
     [<CustomOperation("Values")>] member inline _.Values ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<'T>) = render ==> ("Values" => x)
-    /// The selected values for multi-selection mode.
+    /// The currently selected values.
     [<CustomOperation("Values'")>] member inline _.Values' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Collections.Generic.IEnumerable<'T> * (System.Collections.Generic.IEnumerable<'T> -> unit)) = render ==> html.bind("Values", valueFn)
-    /// Fires when Values change.
+    /// Occurs when Values has changed.
     [<CustomOperation("ValuesChanged")>] member inline _.ValuesChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Collections.Generic.IEnumerable<'T> -> unit) = render ==> html.callback("ValuesChanged", fn)
-    /// Fires when Values change.
+    /// Occurs when Values has changed.
     [<CustomOperation("ValuesChanged")>] member inline _.ValuesChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Collections.Generic.IEnumerable<'T> -> Task<unit>) = render ==> html.callbackTask("ValuesChanged", fn)
-    /// Classes (separated by space) to be applied to the selected items only.
+    /// The CSS classes applied to selected items.
     [<CustomOperation("SelectedClass")>] member inline _.SelectedClass ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("SelectedClass" => x)
-    /// Classes (separated by space) to be applied to SelectedIcon/UnselectedIcon of the items (if CheckMark is true).
+    /// The CSS classes applied to checkmark icons.
     [<CustomOperation("CheckMarkClass")>] member inline _.CheckMarkClass ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("CheckMarkClass" => x)
-    /// If true, use vertical layout.
+    /// Uses a vertical layout for items.
     [<CustomOperation("Vertical")>] member inline _.Vertical ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Vertical" =>>> true)
-    /// If true, use vertical layout.
+    /// Uses a vertical layout for items.
     [<CustomOperation("Vertical")>] member inline _.Vertical ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Vertical" =>>> x)
-    /// If true, show an outline border. Default is true.
+    /// Shows an outline border.
     [<CustomOperation("Outlined")>] member inline _.Outlined ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Outlined" =>>> true)
-    /// If true, show an outline border. Default is true.
+    /// Shows an outline border.
     [<CustomOperation("Outlined")>] member inline _.Outlined ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Outlined" =>>> x)
-    /// If true, show a line delimiter between items. Default is true.
+    /// Shows a line delimiter between each item.
     [<CustomOperation("Delimiters")>] member inline _.Delimiters ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Delimiters" =>>> true)
-    /// If true, show a line delimiter between items. Default is true.
+    /// Shows a line delimiter between each item.
     [<CustomOperation("Delimiters")>] member inline _.Delimiters ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Delimiters" =>>> x)
-    /// Gets or sets whether to show a ripple effect when the user clicks the button. Default is true.
+    /// Show a ripple effect when the user clicks an item.
     [<CustomOperation("Ripple")>] member inline _.Ripple ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Ripple" =>>> true)
-    /// Gets or sets whether to show a ripple effect when the user clicks the button. Default is true.
+    /// Show a ripple effect when the user clicks an item.
     [<CustomOperation("Ripple")>] member inline _.Ripple ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Ripple" =>>> x)
-    /// The size of the items in the toggle group.
+    /// The size of each toggle item.
     [<CustomOperation("Size")>] member inline _.Size ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Size) = render ==> ("Size" => x)
-    /// The selection behavior of the group. SingleSelection (the default) is a radio-button like exclusive collection.
-    /// MultiSelection behaves like a group of check boxes. ToggleSelection is an exclusive single selection where
-    /// you can also select nothing by toggling off the current choice.
+    /// The selection behavior for this group.
     [<CustomOperation("SelectionMode")>] member inline _.SelectionMode ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.SelectionMode) = render ==> ("SelectionMode" => x)
-    /// The color of the component. Affects borders and selection color. Default is Colors.Primary.
+    /// The color of borders and the current selections.
     [<CustomOperation("Color")>] member inline _.Color ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Color) = render ==> ("Color" => x)
-    /// If true, the items show a check mark next to the text or render fragment. Customize the check mark by setting
-    /// SelectedIcon and UnselectedIcon.
+    /// Shows a checkmark next to each item.
     [<CustomOperation("CheckMark")>] member inline _.CheckMark ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("CheckMark" =>>> true)
-    /// If true, the items show a check mark next to the text or render fragment. Customize the check mark by setting
-    /// SelectedIcon and UnselectedIcon.
+    /// Shows a checkmark next to each item.
     [<CustomOperation("CheckMark")>] member inline _.CheckMark ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("CheckMark" =>>> x)
-    /// If true, the check mark is counter balanced with padding on the right side which makes the content stay always
-    /// centered no matter if the check mark is shown or not.
+    /// Reserves space for checkmarks even when CheckMark is false.
     [<CustomOperation("FixedContent")>] member inline _.FixedContent ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("FixedContent" =>>> true)
-    /// If true, the check mark is counter balanced with padding on the right side which makes the content stay always
-    /// centered no matter if the check mark is shown or not.
+    /// Reserves space for checkmarks even when CheckMark is false.
     [<CustomOperation("FixedContent")>] member inline _.FixedContent ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("FixedContent" =>>> x)
 
+/// An item as part of a MudToggleGroup`1
 type MudToggleItemBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit MudComponentBaseBuilder<'FunBlazorGeneric>()
-    /// If true, the item will be disabled.
+    /// Prevents the user from interacting with this item.
     [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Disabled" =>>> true)
-    /// If true, the item will be disabled.
+    /// Prevents the user from interacting with this item.
     [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Disabled" =>>> x)
+    /// The value associated with this item.
     [<CustomOperation("Value")>] member inline _.Value ([<InlineIfLambda>] render: AttrRenderFragment, x: 'T) = render ==> ("Value" => x)
-    /// Icon to show if the item is not selected (if CheckMark is true on the parent group)
-    /// Leave null to show no check mark (default).
+    /// The icon shown for the unselected checkmark.
     [<CustomOperation("UnselectedIcon")>] member inline _.UnselectedIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("UnselectedIcon" => x)
-    /// Icon to show if the item is selected (if CheckMark is true on the parent group)
-    /// By default this is set to a check mark icon.
+    /// The icon shown for the selected checkmark.
     [<CustomOperation("SelectedIcon")>] member inline _.SelectedIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("SelectedIcon" => x)
-    /// The text to show. You need to set this only if you want a text that differs from the Value. If null,
-    /// show Value?.ToString().
-    /// Note: the Text is only shown if you haven't defined your own child content.
+    /// The text shown for this item.
     [<CustomOperation("Text")>] member inline _.Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Text" => x)
-    /// Custom child content which overrides the text. The boolean parameter conveys whether or not the item is selected.
+    /// The custom content shown for this item.
     [<CustomOperation("ChildContent")>] member inline _.ChildContent ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> NodeRenderFragment) = render ==> html.renderFragment("ChildContent", fn)
 
+/// A set of action buttons.  
 type MudToolBarBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit MudComponentBaseBuilder<'FunBlazorGeneric>()
-    /// Uses compact padding.
+    /// Uses compact vertical padding.
     [<CustomOperation("Dense")>] member inline _.Dense ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Dense" =>>> true)
-    /// Uses compact padding.
+    /// Uses compact vertical padding.
     [<CustomOperation("Dense")>] member inline _.Dense ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Dense" =>>> x)
     /// Adds left and right padding.
     [<CustomOperation("Gutters")>] member inline _.Gutters ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Gutters" =>>> true)
@@ -5351,313 +5373,308 @@ type MudToolBarBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.Asp
     /// Allows the toolbar's content to wrap.
     [<CustomOperation("WrapContent")>] member inline _.WrapContent ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("WrapContent" =>>> x)
 
+/// A small popup which provides more information.
 type MudTooltipBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit MudComponentBaseBuilder<'FunBlazorGeneric>()
-    /// The color of the component. It supports the theme colors.
+    /// The tooltip color.
     [<CustomOperation("Color")>] member inline _.Color ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Color) = render ==> ("Color" => x)
-    /// Sets the text to be displayed inside the tooltip.
+    /// The tooltip text.
     [<CustomOperation("Text")>] member inline _.Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Text" => x)
-    /// If true, an arrow will be displayed pointing towards the content from the tooltip.
+    /// Displays an arrow pointing towards the tooltip content.
     [<CustomOperation("Arrow")>] member inline _.Arrow ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Arrow" =>>> true)
-    /// If true, an arrow will be displayed pointing towards the content from the tooltip.
+    /// Displays an arrow pointing towards the tooltip content.
     [<CustomOperation("Arrow")>] member inline _.Arrow ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Arrow" =>>> x)
-    /// The length of time that the opening transition takes to complete.
+    /// The length of time to animate the opening transition.
     [<CustomOperation("Duration")>] member inline _.Duration ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Double) = render ==> ("Duration" => x)
-    /// The amount of time in milliseconds to wait from opening the popover before beginning to perform the transition. 
+    /// The amount of time, in milliseconds, to wait from opening the popover before performing the transition. 
     [<CustomOperation("Delay'")>] member inline _.Delay' ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Double) = render ==> ("Delay" => x)
-    /// Tooltip placement.
+    /// The location of the tooltip relative to its content.
     [<CustomOperation("Placement")>] member inline _.Placement ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Placement) = render ==> ("Placement" => x)
-    /// Tooltip content. May contain any valid html
+    /// The content of the tooltip.
     [<CustomOperation("TooltipContent")>] member inline _.TooltipContent ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("TooltipContent", fragment)
-    /// Tooltip content. May contain any valid html
+    /// The content of the tooltip.
     [<CustomOperation("TooltipContent")>] member inline _.TooltipContent ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("TooltipContent", fragment { yield! fragments })
-    /// Tooltip content. May contain any valid html
+    /// The content of the tooltip.
     [<CustomOperation("TooltipContent")>] member inline _.TooltipContent ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("TooltipContent", html.text x)
-    /// Tooltip content. May contain any valid html
+    /// The content of the tooltip.
     [<CustomOperation("TooltipContent")>] member inline _.TooltipContent ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("TooltipContent", html.text x)
-    /// Tooltip content. May contain any valid html
+    /// The content of the tooltip.
     [<CustomOperation("TooltipContent")>] member inline _.TooltipContent ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("TooltipContent", html.text x)
-    /// Determines if this component should be inline with it's surrounding (default) or if it should behave like a block element.
+    /// Displays this tooltip inline with its container.
     [<CustomOperation("Inline")>] member inline _.Inline ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Inline" =>>> true)
-    /// Determines if this component should be inline with it's surrounding (default) or if it should behave like a block element.
+    /// Displays this tooltip inline with its container.
     [<CustomOperation("Inline")>] member inline _.Inline ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Inline" =>>> x)
-    /// Styles applied directly to root component of the tooltip
+    /// Any CSS styles applied to the tooltip.
     [<CustomOperation("RootStyle")>] member inline _.RootStyle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("RootStyle" => x)
-    /// Classes applied directly to root component of the tooltip
+    /// Any CSS classes applied to the tooltip.
     [<CustomOperation("RootClass")>] member inline _.RootClass ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("RootClass" => x)
-    /// Determines on which events the tooltip will act
+    /// Shows this tooltip when hovering over its content.
     [<CustomOperation("ShowOnHover")>] member inline _.ShowOnHover ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowOnHover" =>>> true)
-    /// Determines on which events the tooltip will act
+    /// Shows this tooltip when hovering over its content.
     [<CustomOperation("ShowOnHover")>] member inline _.ShowOnHover ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowOnHover" =>>> x)
-    /// Determines on which events the tooltip will act
+    /// Shows this tooltip when its content is focused.
     [<CustomOperation("ShowOnFocus")>] member inline _.ShowOnFocus ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowOnFocus" =>>> true)
-    /// Determines on which events the tooltip will act
+    /// Shows this tooltip when its content is focused.
     [<CustomOperation("ShowOnFocus")>] member inline _.ShowOnFocus ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowOnFocus" =>>> x)
+    /// Shows this tooltip when its content is clicked.
     [<CustomOperation("ShowOnClick")>] member inline _.ShowOnClick ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowOnClick" =>>> true)
+    /// Shows this tooltip when its content is clicked.
     [<CustomOperation("ShowOnClick")>] member inline _.ShowOnClick ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowOnClick" =>>> x)
-    /// The visible state of the Tooltip.
+    /// Shows this tooltip.
     [<CustomOperation("Visible")>] member inline _.Visible ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Visible" =>>> true)
-    /// The visible state of the Tooltip.
+    /// Shows this tooltip.
     [<CustomOperation("Visible")>] member inline _.Visible ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Visible" =>>> x)
-    /// The visible state of the Tooltip.
+    /// Shows this tooltip.
     [<CustomOperation("Visible'")>] member inline _.Visible' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Boolean * (System.Boolean -> unit)) = render ==> html.bind("Visible", valueFn)
-    /// An event triggered when the state of Visible has changed
+    /// Occurs when Visible has changed.
     [<CustomOperation("VisibleChanged")>] member inline _.VisibleChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> unit) = render ==> html.callback("VisibleChanged", fn)
-    /// An event triggered when the state of Visible has changed
+    /// Occurs when Visible has changed.
     [<CustomOperation("VisibleChanged")>] member inline _.VisibleChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("VisibleChanged", fn)
-    /// If true, the tooltip will be disabled; the popover will not be visible.
+    /// Prevents this tooltip from being displayed.
     [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Disabled" =>>> true)
-    /// If true, the tooltip will be disabled; the popover will not be visible.
+    /// Prevents this tooltip from being displayed.
     [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Disabled" =>>> x)
 
+/// A hierarchical tree of expandable items with optional value selection.
 type MudTreeViewBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit MudComponentBaseBuilder<'FunBlazorGeneric>()
-    /// The color of the selected TreeViewItem.
+    /// The color of the selected item.
     [<CustomOperation("Color")>] member inline _.Color ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Color) = render ==> ("Color" => x)
-    /// Check box color if multiselection is used.
+    /// The color of checkboxes.
     [<CustomOperation("CheckBoxColor")>] member inline _.CheckBoxColor ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Color) = render ==> ("CheckBoxColor" => x)
-    /// The selection mode determines whether only a single item (SingleSelection) or multiple items
-    /// can be selected (MultiSelection) and whether the selected item can be toggled off by clicking a
-    /// second time (ToggleSelection).
+    /// Controls how many items can be selected at one time.
     [<CustomOperation("SelectionMode")>] member inline _.SelectionMode ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.SelectionMode) = render ==> ("SelectionMode" => x)
-    /// If true, the checkboxes will use the undetermined state in MultiSelection if any children in the subtree
-    /// have a different selection value than the parent item.
+    /// Uses checkboxes which support an undetermined state.
     [<CustomOperation("TriState")>] member inline _.TriState ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("TriState" =>>> true)
-    /// If true, the checkboxes will use the undetermined state in MultiSelection if any children in the subtree
-    /// have a different selection value than the parent item.
+    /// Uses checkboxes which support an undetermined state.
     [<CustomOperation("TriState")>] member inline _.TriState ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("TriState" =>>> x)
-    /// If true, selecting all children will result in the parent being automatically selected.
-    /// Unselecting a children will still unselect the parent.
-    /// Note: This only has an effect in SelectionMode.MultiSelection.
+    /// Automatically checks an item if all children are selected.
     [<CustomOperation("AutoSelectParent")>] member inline _.AutoSelectParent ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AutoSelectParent" =>>> true)
-    /// If true, selecting all children will result in the parent being automatically selected.
-    /// Unselecting a children will still unselect the parent.
-    /// Note: This only has an effect in SelectionMode.MultiSelection.
+    /// Automatically checks an item if all children are selected.
     [<CustomOperation("AutoSelectParent")>] member inline _.AutoSelectParent ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("AutoSelectParent" =>>> x)
-    /// If true, clicking anywhere on the item will expand it, if it has children.
+    /// Expands an item with children if it is clicked anywhere (not just the expand/collapse buttons).
     [<CustomOperation("ExpandOnClick")>] member inline _.ExpandOnClick ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ExpandOnClick" =>>> true)
-    /// If true, clicking anywhere on the item will expand it, if it has children.
+    /// Expands an item with children if it is clicked anywhere (not just the expand/collapse buttons).
     [<CustomOperation("ExpandOnClick")>] member inline _.ExpandOnClick ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ExpandOnClick" =>>> x)
-    /// If true, double-clicking anywhere on the item will expand it, if it has children.
+    /// Expands an item with children if it is double-clicked anywhere (not just the expand/collapse buttons).
     [<CustomOperation("ExpandOnDoubleClick")>] member inline _.ExpandOnDoubleClick ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ExpandOnDoubleClick" =>>> true)
-    /// If true, double-clicking anywhere on the item will expand it, if it has children.
+    /// Expands an item with children if it is double-clicked anywhere (not just the expand/collapse buttons).
     [<CustomOperation("ExpandOnDoubleClick")>] member inline _.ExpandOnDoubleClick ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ExpandOnDoubleClick" =>>> x)
-    /// Gets or sets whether the tree automatically expands to reveal the selected item.
+    /// Automatically expands items to show selected children.
     [<CustomOperation("AutoExpand")>] member inline _.AutoExpand ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AutoExpand" =>>> true)
-    /// Gets or sets whether the tree automatically expands to reveal the selected item.
+    /// Automatically expands items to show selected children.
     [<CustomOperation("AutoExpand")>] member inline _.AutoExpand ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("AutoExpand" =>>> x)
-    /// Hover effect for item's on mouse-over.
+    /// Shows an effect when items are hovered over.
     [<CustomOperation("Hover")>] member inline _.Hover ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Hover" =>>> true)
-    /// Hover effect for item's on mouse-over.
+    /// Shows an effect when items are hovered over.
     [<CustomOperation("Hover")>] member inline _.Hover ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Hover" =>>> x)
-    /// If true, compact vertical padding will be applied to all TreeView items.
+    /// Uses compact vertical padding.
     [<CustomOperation("Dense")>] member inline _.Dense ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Dense" =>>> true)
-    /// If true, compact vertical padding will be applied to all TreeView items.
+    /// Uses compact vertical padding.
     [<CustomOperation("Dense")>] member inline _.Dense ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Dense" =>>> x)
-    /// Setting a height will allow to scroll the TreeView. If not set, it will try to grow in height.
-    /// You can set this to any CSS value that the attribute 'height' accepts, i.e. 500px.
+    /// Sets a fixed height.
     [<CustomOperation("Height")>] member inline _.Height ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Height" => x)
-    /// Setting a maximum height will allow to scroll the TreeView. If not set, it will try to grow in height.
-    /// You can set this to any CSS value that the attribute 'height' accepts, i.e. 500px.
+    /// Sets a maximum height.
     [<CustomOperation("MaxHeight")>] member inline _.MaxHeight ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("MaxHeight" => x)
-    /// Setting a width the TreeView. You can set this to any CSS value that the attribute 'height' accepts, i.e. 500px.
+    /// Sets a fixed width.
     [<CustomOperation("Width")>] member inline _.Width ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Width" => x)
-    /// If true, TreeView will be disabled and all its children.
+    /// Prevents the user from interacting with any items.
     [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Disabled" =>>> true)
-    /// If true, TreeView will be disabled and all its children.
+    /// Prevents the user from interacting with any items.
     [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Disabled" =>>> x)
-    /// Determines whether the TreeItemData`1 is displayed during filtering or not. True is visible and false is invisible.
+    /// Determines whether items are displayed.
     [<CustomOperation("FilterFunc")>] member inline _.FilterFunc ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("FilterFunc" => (System.Func<MudBlazor.TreeItemData<'T>, System.Threading.Tasks.Task<System.Boolean>>fn))
-    /// Gets or sets whether to show a ripple effect when the user clicks the button. Default is true.
+    /// Shows a ripple effect when an item is clicked.
     [<CustomOperation("Ripple")>] member inline _.Ripple ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Ripple" =>>> true)
-    /// Gets or sets whether to show a ripple effect when the user clicks the button. Default is true.
+    /// Shows a ripple effect when an item is clicked.
     [<CustomOperation("Ripple")>] member inline _.Ripple ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Ripple" =>>> x)
-    /// Tree items that will be rendered using the Item
+    /// The items being displayed.
     [<CustomOperation("Items")>] member inline _.Items ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IReadOnlyCollection<MudBlazor.TreeItemData<'T>>) = render ==> ("Items" => x)
+    /// The currently selected value.
     [<CustomOperation("SelectedValue")>] member inline _.SelectedValue ([<InlineIfLambda>] render: AttrRenderFragment, x: 'T) = render ==> ("SelectedValue" => x)
+    /// The currently selected value.
     [<CustomOperation("SelectedValue'")>] member inline _.SelectedValue' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: 'T * ('T -> unit)) = render ==> html.bind("SelectedValue", valueFn)
-    /// Called whenever the selected value changed.
+    /// Occurs when SelectedValue has changed.
     [<CustomOperation("SelectedValueChanged")>] member inline _.SelectedValueChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: 'T -> unit) = render ==> html.callback("SelectedValueChanged", fn)
-    /// Called whenever the selected value changed.
+    /// Occurs when SelectedValue has changed.
     [<CustomOperation("SelectedValueChanged")>] member inline _.SelectedValueChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: 'T -> Task<unit>) = render ==> html.callbackTask("SelectedValueChanged", fn)
+    /// The currently selected values.
     [<CustomOperation("SelectedValues")>] member inline _.SelectedValues ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IReadOnlyCollection<'T>) = render ==> ("SelectedValues" => x)
+    /// The currently selected values.
     [<CustomOperation("SelectedValues'")>] member inline _.SelectedValues' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Collections.Generic.IReadOnlyCollection<'T> * (System.Collections.Generic.IReadOnlyCollection<'T> -> unit)) = render ==> html.bind("SelectedValues", valueFn)
-    /// Called whenever the selection changes.
+    /// Occurs when SelectedValues has changed.
     [<CustomOperation("SelectedValuesChanged")>] member inline _.SelectedValuesChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Collections.Generic.IReadOnlyCollection<'T> -> unit) = render ==> html.callback("SelectedValuesChanged", fn)
-    /// Called whenever the selection changes.
+    /// Occurs when SelectedValues has changed.
     [<CustomOperation("SelectedValuesChanged")>] member inline _.SelectedValuesChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Collections.Generic.IReadOnlyCollection<'T> -> Task<unit>) = render ==> html.callbackTask("SelectedValuesChanged", fn)
-    /// ItemTemplate for rendering children.
+    /// The template for rendering each item.
     [<CustomOperation("ItemTemplate")>] member inline _.ItemTemplate ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: MudBlazor.TreeItemData<'T> -> NodeRenderFragment) = render ==> html.renderFragment("ItemTemplate", fn)
-    /// Comparer is used to check if two tree items are equal
+    /// The comparer used to check if two items are equal.
     [<CustomOperation("Comparer")>] member inline _.Comparer ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEqualityComparer<'T>) = render ==> ("Comparer" => x)
-    /// Supply a func that asynchronously loads tree view items on demand
+    /// The function for asynchronously loading items.
     [<CustomOperation("ServerData")>] member inline _.ServerData ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("ServerData" => (System.Func<'T, System.Threading.Tasks.Task<System.Collections.Generic.IReadOnlyCollection<MudBlazor.TreeItemData<'T>>>>fn))
-    /// If true, the selection of the tree view can not be changed by clicking its items.
-    /// The currently selected value(s) are still displayed however
+    /// Prevents selections from being changed.
     [<CustomOperation("ReadOnly")>] member inline _.ReadOnly ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ReadOnly" =>>> true)
-    /// If true, the selection of the tree view can not be changed by clicking its items.
-    /// The currently selected value(s) are still displayed however
+    /// Prevents selections from being changed.
     [<CustomOperation("ReadOnly")>] member inline _.ReadOnly ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ReadOnly" =>>> x)
-    /// Custom checked icon.
+    /// The icon displayed for checked items.
     [<CustomOperation("CheckedIcon")>] member inline _.CheckedIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("CheckedIcon" => x)
-    /// Custom unchecked icon.
+    /// The icon displayed for unchecked items.
     [<CustomOperation("UncheckedIcon")>] member inline _.UncheckedIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("UncheckedIcon" => x)
-    /// Custom tri-state indeterminate icon.
+    /// The icon displayed for indeterminate items.
     [<CustomOperation("IndeterminateIcon")>] member inline _.IndeterminateIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("IndeterminateIcon" => x)
 
+/// An expandable branch of a MudTreeView`1.
 type MudTreeViewItemBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit MudComponentBaseBuilder<'FunBlazorGeneric>()
-    /// Value of the TreeViewItem. Acts as the displayed text if no text is set.
+    /// The value associated with this item.
     [<CustomOperation("Value")>] member inline _.Value ([<InlineIfLambda>] render: AttrRenderFragment, x: 'T) = render ==> ("Value" => x)
-    /// The text to display
+    /// The text to display.
     [<CustomOperation("Text")>] member inline _.Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Text" => x)
-    /// Typography for the text.
+    /// The size of the text.
     [<CustomOperation("TextTypo")>] member inline _.TextTypo ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Typo) = render ==> ("TextTypo" => x)
-    /// User class names for the text, separated by space.
+    /// The CSS classes applied to the Text parameter.
     [<CustomOperation("TextClass")>] member inline _.TextClass ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("TextClass" => x)
     /// The text at the end of the item.
     [<CustomOperation("EndText")>] member inline _.EndText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("EndText" => x)
-    /// Typography for the endtext.
+    /// The size of the end text.
     [<CustomOperation("EndTextTypo")>] member inline _.EndTextTypo ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Typo) = render ==> ("EndTextTypo" => x)
-    /// User class names for the endtext, separated by space.
+    /// The CSS classes applied to the EndText parameter.
     [<CustomOperation("EndTextClass")>] member inline _.EndTextClass ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("EndTextClass" => x)
-    /// Indicates whether the tree view item and its children are visible.
+    /// Whether this item and its children are displayed.
     [<CustomOperation("Visible")>] member inline _.Visible ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Visible" =>>> true)
-    /// Indicates whether the tree view item and its children are visible.
+    /// Whether this item and its children are displayed.
     [<CustomOperation("Visible")>] member inline _.Visible ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Visible" =>>> x)
-    /// If true, TreeViewItem will be disabled.
+    /// Prevents the user from interacting with this item.
     [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Disabled" =>>> true)
-    /// If true, TreeViewItem will be disabled.
+    /// Prevents the user from interacting with this item.
     [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Disabled" =>>> x)
-    /// If true, the MudTreeViewItem's selection can not be changed.  
+    /// Prevents this item from being selected.
     [<CustomOperation("ReadOnly")>] member inline _.ReadOnly ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ReadOnly" =>>> true)
-    /// If true, the MudTreeViewItem's selection can not be changed.  
+    /// Prevents this item from being selected.
     [<CustomOperation("ReadOnly")>] member inline _.ReadOnly ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ReadOnly" =>>> x)
-    /// If false, TreeViewItem will not be able to expand.
+    /// Allows this item to expand to display children.
     [<CustomOperation("CanExpand")>] member inline _.CanExpand ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("CanExpand" =>>> true)
-    /// If false, TreeViewItem will not be able to expand.
+    /// Allows this item to expand to display children.
     [<CustomOperation("CanExpand")>] member inline _.CanExpand ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("CanExpand" =>>> x)
-    /// Content of the item, if used completely replaced the default rendering.
+    /// The custom content within this item.
     [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("Content", fragment)
-    /// Content of the item, if used completely replaced the default rendering.
+    /// The custom content within this item.
     [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("Content", fragment { yield! fragments })
-    /// Content of the item, if used completely replaced the default rendering.
+    /// The custom content within this item.
     [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("Content", html.text x)
-    /// Content of the item, if used completely replaced the default rendering.
+    /// The custom content within this item.
     [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("Content", html.text x)
-    /// Content of the item, if used completely replaced the default rendering.
+    /// The custom content within this item.
     [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("Content", html.text x)
-    /// Content of the item body, if used replaced the text, end text and end icon rendering.
+    /// The custom content for the text, end text, and end icon.
     [<CustomOperation("BodyContent")>] member inline _.BodyContent ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: MudBlazor.MudTreeViewItem<'T> -> NodeRenderFragment) = render ==> html.renderFragment("BodyContent", fn)
+    /// The child items underneath this item.
     [<CustomOperation("Items")>] member inline _.Items ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IReadOnlyCollection<MudBlazor.TreeItemData<'T>>) = render ==> ("Items" => x)
+    /// The child items underneath this item.
     [<CustomOperation("Items'")>] member inline _.Items' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Collections.Generic.IReadOnlyCollection<MudBlazor.TreeItemData<'T>> * (System.Collections.Generic.IReadOnlyCollection<MudBlazor.TreeItemData<'T>> -> unit)) = render ==> html.bind("Items", valueFn)
-    /// Called whenever children were loaded from the server
+    /// Occurs when Items has changed.
     [<CustomOperation("ItemsChanged")>] member inline _.ItemsChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Collections.Generic.IReadOnlyCollection<MudBlazor.TreeItemData<'T>> -> unit) = render ==> html.callback("ItemsChanged", fn)
-    /// Called whenever children were loaded from the server
+    /// Occurs when Items has changed.
     [<CustomOperation("ItemsChanged")>] member inline _.ItemsChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Collections.Generic.IReadOnlyCollection<MudBlazor.TreeItemData<'T>> -> Task<unit>) = render ==> html.callbackTask("ItemsChanged", fn)
-    /// Expand or collapse TreeView item when it has children. Two-way bindable. Note: if you directly set this to
-    /// true or false (instead of using two-way binding) it will force the item's expansion state.
+    /// Shows the children items underneath this item.
     [<CustomOperation("Expanded")>] member inline _.Expanded ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Expanded" =>>> true)
-    /// Expand or collapse TreeView item when it has children. Two-way bindable. Note: if you directly set this to
-    /// true or false (instead of using two-way binding) it will force the item's expansion state.
+    /// Shows the children items underneath this item.
     [<CustomOperation("Expanded")>] member inline _.Expanded ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Expanded" =>>> x)
-    /// Expand or collapse TreeView item when it has children. Two-way bindable. Note: if you directly set this to
-    /// true or false (instead of using two-way binding) it will force the item's expansion state.
+    /// Shows the children items underneath this item.
     [<CustomOperation("Expanded'")>] member inline _.Expanded' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Boolean * (System.Boolean -> unit)) = render ==> html.bind("Expanded", valueFn)
-    /// Called whenever expanded changed.
+    /// Occurs when Expanded has changed.
     [<CustomOperation("ExpandedChanged")>] member inline _.ExpandedChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> unit) = render ==> html.callback("ExpandedChanged", fn)
-    /// Called whenever expanded changed.
+    /// Occurs when Expanded has changed.
     [<CustomOperation("ExpandedChanged")>] member inline _.ExpandedChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("ExpandedChanged", fn)
-    /// Set this to true to mark the item initially selected in single selection mode or checked in multi selection mode.
-    /// You can two-way bind this to get selection updates from this item
+    /// Selects this item.
     [<CustomOperation("Selected")>] member inline _.Selected ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Selected" =>>> true)
-    /// Set this to true to mark the item initially selected in single selection mode or checked in multi selection mode.
-    /// You can two-way bind this to get selection updates from this item
+    /// Selects this item.
     [<CustomOperation("Selected")>] member inline _.Selected ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Selected" =>>> x)
-    /// Set this to true to mark the item initially selected in single selection mode or checked in multi selection mode.
-    /// You can two-way bind this to get selection updates from this item
+    /// Selects this item.
     [<CustomOperation("Selected'")>] member inline _.Selected' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Boolean * (System.Boolean -> unit)) = render ==> html.bind("Selected", valueFn)
-    /// Icon placed before the text if set.
+    /// The item shown before the text.
     [<CustomOperation("Icon")>] member inline _.Icon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Icon" => x)
-    /// Alternative icon to show instead of Icon if expanded.
+    /// The icon shown when this item is expanded.
     [<CustomOperation("IconExpanded")>] member inline _.IconExpanded ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("IconExpanded" => x)
-    /// The color of the icon. It supports the theme colors.
+    /// The color of the icon when Icon is set.
     [<CustomOperation("IconColor")>] member inline _.IconColor ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Color) = render ==> ("IconColor" => x)
     /// Icon placed after the text if set.
     [<CustomOperation("EndIcon")>] member inline _.EndIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("EndIcon" => x)
-    /// The color of the icon. It supports the theme colors.
+    /// The color of the end icon when EndIcon is set.
     [<CustomOperation("EndIconColor")>] member inline _.EndIconColor ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Color) = render ==> ("EndIconColor" => x)
-    /// The expand/collapse icon.
+    /// The icon shown for the expand/collapse button.
     [<CustomOperation("ExpandButtonIcon")>] member inline _.ExpandButtonIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ExpandButtonIcon" => x)
-    /// The color of the expand/collapse button. It supports the theme colors.
+    /// The color of the expand/collapse button.
     [<CustomOperation("ExpandButtonIconColor")>] member inline _.ExpandButtonIconColor ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Color) = render ==> ("ExpandButtonIconColor" => x)
-    /// The loading icon.
+    /// The icon shown while this item is loading.
     [<CustomOperation("LoadingIcon")>] member inline _.LoadingIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("LoadingIcon" => x)
-    /// The color of the loading. It supports the theme colors.
+    /// The color of the loading icon.
     [<CustomOperation("LoadingIconColor")>] member inline _.LoadingIconColor ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Color) = render ==> ("LoadingIconColor" => x)
-    /// Called whenever the selected value changed.
+    /// Occurs when Selected has changed.
     [<CustomOperation("SelectedChanged")>] member inline _.SelectedChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> unit) = render ==> html.callback("SelectedChanged", fn)
-    /// Called whenever the selected value changed.
+    /// Occurs when Selected has changed.
     [<CustomOperation("SelectedChanged")>] member inline _.SelectedChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("SelectedChanged", fn)
-    /// Tree item click event.
+    /// Occurs when this item has been clicked.
     [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> unit) = render ==> html.callback("OnClick", fn)
-    /// Tree item click event.
+    /// Occurs when this item has been clicked.
     [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> Task<unit>) = render ==> html.callbackTask("OnClick", fn)
-    /// Tree item double click event.
+    /// Occurs when this item has been double-clicked.
     [<CustomOperation("OnDoubleClick")>] member inline _.OnDoubleClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> unit) = render ==> html.callback("OnDoubleClick", fn)
-    /// Tree item double click event.
+    /// Occurs when this item has been double-clicked.
     [<CustomOperation("OnDoubleClick")>] member inline _.OnDoubleClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> Task<unit>) = render ==> html.callbackTask("OnDoubleClick", fn)
 
+/// Toggles the expansion state of a MudTreeViewItem`1.
 type MudTreeViewItemToggleButtonBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit MudComponentBaseBuilder<'FunBlazorGeneric>()
-    /// If true, displays the button.
+    /// Shows this button.
     [<CustomOperation("Visible")>] member inline _.Visible ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Visible" =>>> true)
-    /// If true, displays the button.
+    /// Shows this button.
     [<CustomOperation("Visible")>] member inline _.Visible ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Visible" =>>> x)
-    /// Propagate disabled state to icon.
+    /// Prevents the user from interacting with this button.
     [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Disabled" =>>> true)
-    /// Propagate disabled state to icon.
+    /// Prevents the user from interacting with this button.
     [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Disabled" =>>> x)
-    /// Determines when to flip the expanded icon.
+    /// Whether this button is in the "expanded" state.
     [<CustomOperation("Expanded")>] member inline _.Expanded ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Expanded" =>>> true)
-    /// Determines when to flip the expanded icon.
+    /// Whether this button is in the "expanded" state.
     [<CustomOperation("Expanded")>] member inline _.Expanded ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Expanded" =>>> x)
-    /// Determines when to flip the expanded icon.
+    /// Whether this button is in the "expanded" state.
     [<CustomOperation("Expanded'")>] member inline _.Expanded' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Boolean * (System.Boolean -> unit)) = render ==> html.bind("Expanded", valueFn)
-    /// If true, displays the loading icon.
+    /// Displays the loading icon.
     [<CustomOperation("Loading")>] member inline _.Loading ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Loading" =>>> true)
-    /// If true, displays the loading icon.
+    /// Displays the loading icon.
     [<CustomOperation("Loading")>] member inline _.Loading ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Loading" =>>> x)
-    /// Called whenever expanded changed.
+    /// Occurs when Expanded.
     [<CustomOperation("ExpandedChanged")>] member inline _.ExpandedChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> unit) = render ==> html.callback("ExpandedChanged", fn)
-    /// Called whenever expanded changed.
+    /// Occurs when Expanded.
     [<CustomOperation("ExpandedChanged")>] member inline _.ExpandedChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("ExpandedChanged", fn)
-    /// The loading icon.
+    /// The icon shown when in the "loading" state.
     [<CustomOperation("LoadingIcon")>] member inline _.LoadingIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("LoadingIcon" => x)
-    /// The color of the loading. It supports the theme colors.
+    /// The color of the loading icon.
     [<CustomOperation("LoadingIconColor")>] member inline _.LoadingIconColor ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Color) = render ==> ("LoadingIconColor" => x)
     /// The expand/collapse icon.
     [<CustomOperation("ExpandedIcon")>] member inline _.ExpandedIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ExpandedIcon" => x)
-    /// The color of the expand/collapse. It supports the theme colors.
+    /// The color of the expand/collapse icon.
     [<CustomOperation("ExpandedIconColor")>] member inline _.ExpandedIconColor ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Color) = render ==> ("ExpandedIconColor" => x)
 
+/// A customizable piece of text.
 type MudTextBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit MudComponentBaseBuilder<'FunBlazorGeneric>()
-    /// Applies theme typography styles to the element.
+    /// The theme style of the text.
     [<CustomOperation("Typo")>] member inline _.Typo ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Typo) = render ==> ("Typo" => x)
-    /// The text-align that will be used.
+    /// The horizontal alignment of this text.
     [<CustomOperation("Align")>] member inline _.Align ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Align) = render ==> ("Align" => x)
-    /// The theme color of the component.
+    /// The color of this text.
     [<CustomOperation("Color")>] member inline _.Color ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Color) = render ==> ("Color" => x)
     /// Adds a bottom margin.
     [<CustomOperation("GutterBottom")>] member inline _.GutterBottom ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("GutterBottom" =>>> true)
     /// Adds a bottom margin.
     [<CustomOperation("GutterBottom")>] member inline _.GutterBottom ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("GutterBottom" =>>> x)
-    /// Adds the d-inline display class, allowing text to continue on the same line rather than starting a new line.
+    /// Whether this text continues on the same line.
     [<CustomOperation("Inline")>] member inline _.Inline ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Inline" =>>> true)
-    /// Adds the d-inline display class, allowing text to continue on the same line rather than starting a new line.
+    /// Whether this text continues on the same line.
     [<CustomOperation("Inline")>] member inline _.Inline ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Inline" =>>> x)
-    /// The HTML element that will be rendered (Example: span, p, h1).
+    /// The HTML element used for this text.         that will be rendered (Example: span, p, h1).
     [<CustomOperation("HtmlTag")>] member inline _.HtmlTag ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("HtmlTag" => x)
 
 type MudContainerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -6567,9 +6584,9 @@ module DslCE =
         /// A wizard that guides the user through a series of steps to complete a transaction.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudStepper>)>] () = inherit MudStepperBuilder<MudBlazor.MudStepper>()
 
-    /// An area which receives swipe events for devices where touch events are supported.
+    /// An area which receives swipe events.
     type MudSwipeArea' 
-        /// An area which receives swipe events for devices where touch events are supported.
+        /// An area which receives swipe events.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudSwipeArea>)>] () = inherit MudSwipeAreaBuilder<MudBlazor.MudSwipeArea>()
 
     /// A grouping of values for a column in a MudTable`1.
@@ -6626,14 +6643,46 @@ module DslCE =
     type MudTimelineItem' 
         /// A chronological item displayed as part of a MudTimeline
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudTimelineItem>)>] () = inherit MudTimelineItemBuilder<MudBlazor.MudTimelineItem>()
-    type MudToggleGroup'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudToggleGroup<_>>)>] () = inherit MudToggleGroupBuilder<MudBlazor.MudToggleGroup<'T>, 'T>()
-    type MudToggleItem'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudToggleItem<_>>)>] () = inherit MudToggleItemBuilder<MudBlazor.MudToggleItem<'T>, 'T>()
-    type MudToolBar' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudToolBar>)>] () = inherit MudToolBarBuilder<MudBlazor.MudToolBar>()
-    type MudTooltip' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudTooltip>)>] () = inherit MudTooltipBuilder<MudBlazor.MudTooltip>()
-    type MudTreeView'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudTreeView<_>>)>] () = inherit MudTreeViewBuilder<MudBlazor.MudTreeView<'T>, 'T>()
-    type MudTreeViewItem'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudTreeViewItem<_>>)>] () = inherit MudTreeViewItemBuilder<MudBlazor.MudTreeViewItem<'T>, 'T>()
-    type MudTreeViewItemToggleButton' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudTreeViewItemToggleButton>)>] () = inherit MudTreeViewItemToggleButtonBuilder<MudBlazor.MudTreeViewItemToggleButton>()
-    type MudText' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudText>)>] () = inherit MudTextBuilder<MudBlazor.MudText>()
+
+    /// Maintains the selection of a group of MudToggleItem`1 components.
+    type MudToggleGroup'<'T> 
+        /// Maintains the selection of a group of MudToggleItem`1 components.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudToggleGroup<_>>)>] () = inherit MudToggleGroupBuilder<MudBlazor.MudToggleGroup<'T>, 'T>()
+
+    /// An item as part of a MudToggleGroup`1
+    type MudToggleItem'<'T> 
+        /// An item as part of a MudToggleGroup`1
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudToggleItem<_>>)>] () = inherit MudToggleItemBuilder<MudBlazor.MudToggleItem<'T>, 'T>()
+
+    /// A set of action buttons.  
+    type MudToolBar' 
+        /// A set of action buttons.  
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudToolBar>)>] () = inherit MudToolBarBuilder<MudBlazor.MudToolBar>()
+
+    /// A small popup which provides more information.
+    type MudTooltip' 
+        /// A small popup which provides more information.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudTooltip>)>] () = inherit MudTooltipBuilder<MudBlazor.MudTooltip>()
+
+    /// A hierarchical tree of expandable items with optional value selection.
+    type MudTreeView'<'T> 
+        /// A hierarchical tree of expandable items with optional value selection.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudTreeView<_>>)>] () = inherit MudTreeViewBuilder<MudBlazor.MudTreeView<'T>, 'T>()
+
+    /// An expandable branch of a MudTreeView`1.
+    type MudTreeViewItem'<'T> 
+        /// An expandable branch of a MudTreeView`1.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudTreeViewItem<_>>)>] () = inherit MudTreeViewItemBuilder<MudBlazor.MudTreeViewItem<'T>, 'T>()
+
+    /// Toggles the expansion state of a MudTreeViewItem`1.
+    type MudTreeViewItemToggleButton' 
+        /// Toggles the expansion state of a MudTreeViewItem`1.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudTreeViewItemToggleButton>)>] () = inherit MudTreeViewItemToggleButtonBuilder<MudBlazor.MudTreeViewItemToggleButton>()
+
+    /// A customizable piece of text.
+    type MudText' 
+        /// A customizable piece of text.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudText>)>] () = inherit MudTextBuilder<MudBlazor.MudText>()
     type MudContainer' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudContainer>)>] () = inherit MudContainerBuilder<MudBlazor.MudContainer>()
 
     /// Provides a standard set of colors, shapes, sizes and shadows to a layout.

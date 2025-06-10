@@ -3697,9 +3697,9 @@ type RadzenTimeSpanPickerBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGener
     [<CustomOperation("Value")>] member inline _.Value ([<InlineIfLambda>] render: AttrRenderFragment, x: 'TValue) = render ==> ("Value" => x)
     /// Specifies the value of the component.
     [<CustomOperation("Value'")>] member inline _.Value' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: 'TValue * ('TValue -> unit)) = render ==> html.bind("Value", valueFn)
-    /// Specifies the minimum time stamp allowed.
+    /// Specifies the minimum time span allowed.
     [<CustomOperation("Min")>] member inline _.Min ([<InlineIfLambda>] render: AttrRenderFragment, x: System.TimeSpan) = render ==> ("Min" => x)
-    /// Specifies the maximum time stamp allowed.
+    /// Specifies the maximum time span allowed.
     [<CustomOperation("Max")>] member inline _.Max ([<InlineIfLambda>] render: AttrRenderFragment, x: System.TimeSpan) = render ==> ("Max" => x)
     /// Specifies whether the value can be cleared.
     [<CustomOperation("AllowClear")>] member inline _.AllowClear ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AllowClear" =>>> true)
