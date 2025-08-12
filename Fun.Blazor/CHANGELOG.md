@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [4.1.7] - 2025-08-12
+
 - Support MapAsset for hook and base components
 - Support html.emptyCss
 
