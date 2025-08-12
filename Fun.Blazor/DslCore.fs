@@ -22,6 +22,10 @@ type html() =
     /// Helper method to create an empty attribute
     static member inline emptyAttr = emptyAttr ()
 
+    /// Helper method to create an empty css node
+    static member inline emptyCss = Fun.Css.Internal.CombineKeyValue(fun x -> x)
+
+
     static member inline mergeAttrs(attrs: AttrRenderFragment seq) =
         AttrRenderFragment(fun comp builder i ->
             let mutable i = i

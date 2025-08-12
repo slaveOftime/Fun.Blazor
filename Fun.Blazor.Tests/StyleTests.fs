@@ -45,6 +45,7 @@ let ``basic style should work``() =
                 width 50
                 height 50
                 transformOrigin "25px 0"
+                html.emptyCss
             }
             keyframes "animationRotation" {
                 keyframeFrom { transformRotate 0 }
