@@ -204,6 +204,7 @@ type ColumnBaseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.Asp
     [<CustomOperation("Fixed")>] member inline _.Fixed ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<AntDesign.ColumnFixPlacement>) = render ==> ("Fixed" => x)
     [<CustomOperation("Ellipsis")>] member inline _.Ellipsis ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Ellipsis" =>>> true)
     [<CustomOperation("Ellipsis")>] member inline _.Ellipsis ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Ellipsis" =>>> x)
+    [<CustomOperation("EllipsisShowTitle")>] member inline _.EllipsisShowTitle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("EllipsisShowTitle" => x)
     [<CustomOperation("Hidden")>] member inline _.Hidden ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Hidden" =>>> true)
     [<CustomOperation("Hidden")>] member inline _.Hidden ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Hidden" =>>> x)
     [<CustomOperation("Align")>] member inline _.Align ([<InlineIfLambda>] render: AttrRenderFragment, x: AntDesign.ColumnAlign) = render ==> ("Align" => x)
@@ -566,6 +567,10 @@ type NotificationItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microso
     inherit NotificationBaseBuilder<'FunBlazorGeneric>()
     [<CustomOperation("Config")>] member inline _.Config ([<InlineIfLambda>] render: AttrRenderFragment, x: AntDesign.NotificationConfig) = render ==> ("Config" => x)
     [<CustomOperation("OnClose")>] member inline _.OnClose ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("OnClose" => (System.Func<AntDesign.NotificationConfig, System.Threading.Tasks.Task>fn))
+    [<CustomOperation("OnMouseEnter")>] member inline _.OnMouseEnter ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: AntDesign.NotificationItem -> unit) = render ==> html.callback("OnMouseEnter", fn)
+    [<CustomOperation("OnMouseEnter")>] member inline _.OnMouseEnter ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: AntDesign.NotificationItem -> Task<unit>) = render ==> html.callbackTask("OnMouseEnter", fn)
+    [<CustomOperation("OnMouseLeave")>] member inline _.OnMouseLeave ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: AntDesign.NotificationItem -> unit) = render ==> html.callback("OnMouseLeave", fn)
+    [<CustomOperation("OnMouseLeave")>] member inline _.OnMouseLeave ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: AntDesign.NotificationItem -> Task<unit>) = render ==> html.callbackTask("OnMouseLeave", fn)
 
 type TabsBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit AntDomComponentBaseBuilder<'FunBlazorGeneric>()
@@ -617,6 +622,8 @@ type TabsBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCor
     [<CustomOperation("Draggable")>] member inline _.Draggable ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Draggable" =>>> x)
     [<CustomOperation("Centered")>] member inline _.Centered ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Centered" =>>> true)
     [<CustomOperation("Centered")>] member inline _.Centered ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Centered" =>>> x)
+    [<CustomOperation("StandaloneInCard")>] member inline _.StandaloneInCard ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("StandaloneInCard" =>>> true)
+    [<CustomOperation("StandaloneInCard")>] member inline _.StandaloneInCard ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("StandaloneInCard" =>>> x)
 
 type ReuseTabsBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit TabsBuilder<'FunBlazorGeneric>()
@@ -914,6 +921,10 @@ type CollapseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNe
     [<CustomOperation("Bordered")>] member inline _.Bordered ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Bordered" =>>> x)
     [<CustomOperation("ExpandIconPosition")>] member inline _.ExpandIconPosition ([<InlineIfLambda>] render: AttrRenderFragment, x: AntDesign.CollapseExpandIconPosition) = render ==> ("ExpandIconPosition" => x)
     [<CustomOperation("DefaultActiveKey")>] member inline _.DefaultActiveKey ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String[]) = render ==> ("DefaultActiveKey" => x)
+    [<CustomOperation("ActiveKeys")>] member inline _.ActiveKeys ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String[]) = render ==> ("ActiveKeys" => x)
+    [<CustomOperation("ActiveKeys'")>] member inline _.ActiveKeys' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.String[] * (System.String[] -> unit)) = render ==> html.bind("ActiveKeys", valueFn)
+    [<CustomOperation("ActiveKeysChanged")>] member inline _.ActiveKeysChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.String[] -> unit) = render ==> html.callback("ActiveKeysChanged", fn)
+    [<CustomOperation("ActiveKeysChanged")>] member inline _.ActiveKeysChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.String[] -> Task<unit>) = render ==> html.callbackTask("ActiveKeysChanged", fn)
     [<CustomOperation("OnChange")>] member inline _.OnChange ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.String[] -> unit) = render ==> html.callback("OnChange", fn)
     [<CustomOperation("OnChange")>] member inline _.OnChange ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.String[] -> Task<unit>) = render ==> html.callbackTask("OnChange", fn)
     [<CustomOperation("ExpandIcon")>] member inline _.ExpandIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ExpandIcon" => x)
@@ -1254,8 +1265,8 @@ type InputBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Microsoft
     [<CustomOperation("OnKeyUp")>] member inline _.OnKeyUp ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.KeyboardEventArgs -> Task<unit>) = render ==> html.callbackTask("OnKeyUp", fn)
     [<CustomOperation("OnMouseUp")>] member inline _.OnMouseUp ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> unit) = render ==> html.callback("OnMouseUp", fn)
     [<CustomOperation("OnMouseUp")>] member inline _.OnMouseUp ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> Task<unit>) = render ==> html.callbackTask("OnMouseUp", fn)
-    [<CustomOperation("OnPressEnter")>] member inline _.OnPressEnter ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.KeyboardEventArgs -> unit) = render ==> html.callback("OnPressEnter", fn)
-    [<CustomOperation("OnPressEnter")>] member inline _.OnPressEnter ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.KeyboardEventArgs -> Task<unit>) = render ==> html.callbackTask("OnPressEnter", fn)
+    [<CustomOperation("OnPressEnter")>] member inline _.OnPressEnter ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: AntDesign.PressEnterEventArgs -> unit) = render ==> html.callback("OnPressEnter", fn)
+    [<CustomOperation("OnPressEnter")>] member inline _.OnPressEnter ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: AntDesign.PressEnterEventArgs -> Task<unit>) = render ==> html.callbackTask("OnPressEnter", fn)
     [<CustomOperation("Placeholder")>] member inline _.Placeholder ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Placeholder" => x)
     [<CustomOperation("Prefix")>] member inline _.Prefix ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("Prefix", fragment)
     [<CustomOperation("Prefix")>] member inline _.Prefix ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("Prefix", fragment { yield! fragments })
@@ -1277,6 +1288,8 @@ type InputBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Microsoft
     [<CustomOperation("ShowCount")>] member inline _.ShowCount ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowCount" =>>> true)
     [<CustomOperation("ShowCount")>] member inline _.ShowCount ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowCount" =>>> x)
     [<CustomOperation("Width")>] member inline _.Width ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Width" => x)
+    [<CustomOperation("DefaultToEmptyString")>] member inline _.DefaultToEmptyString ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("DefaultToEmptyString" =>>> true)
+    [<CustomOperation("DefaultToEmptyString")>] member inline _.DefaultToEmptyString ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("DefaultToEmptyString" =>>> x)
 
 type SearchBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit InputBuilder<'FunBlazorGeneric, System.String>()
@@ -1312,8 +1325,6 @@ type TextAreaBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNe
     inherit InputBuilder<'FunBlazorGeneric, System.String>()
     [<CustomOperation("AutoSize")>] member inline _.AutoSize ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AutoSize" =>>> true)
     [<CustomOperation("AutoSize")>] member inline _.AutoSize ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("AutoSize" =>>> x)
-    [<CustomOperation("DefaultToEmptyString")>] member inline _.DefaultToEmptyString ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("DefaultToEmptyString" =>>> true)
-    [<CustomOperation("DefaultToEmptyString")>] member inline _.DefaultToEmptyString ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("DefaultToEmptyString" =>>> x)
     [<CustomOperation("MaxRows")>] member inline _.MaxRows ([<InlineIfLambda>] render: AttrRenderFragment, x: System.UInt32) = render ==> ("MaxRows" => x)
     [<CustomOperation("MinRows")>] member inline _.MinRows ([<InlineIfLambda>] render: AttrRenderFragment, x: System.UInt32) = render ==> ("MinRows" => x)
     [<CustomOperation("Rows")>] member inline _.Rows ([<InlineIfLambda>] render: AttrRenderFragment, x: System.UInt32) = render ==> ("Rows" => x)
@@ -1391,11 +1402,6 @@ type SelectBaseBuilder<'FunBlazorGeneric, 'TItemValue, 'TItem when 'FunBlazorGen
     [<CustomOperation("Values")>] member inline _.Values ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<'TItemValue>) = render ==> ("Values" => x)
     [<CustomOperation("Values'")>] member inline _.Values' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Collections.Generic.IEnumerable<'TItemValue> * (System.Collections.Generic.IEnumerable<'TItemValue> -> unit)) = render ==> html.bind("Values", valueFn)
     [<CustomOperation("CustomTagLabelToValue")>] member inline _.CustomTagLabelToValue ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("CustomTagLabelToValue" => (System.Func<System.String, 'TItemValue>fn))
-    [<CustomOperation("SelectOptions")>] member inline _.SelectOptions ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("SelectOptions", fragment)
-    [<CustomOperation("SelectOptions")>] member inline _.SelectOptions ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("SelectOptions", fragment { yield! fragments })
-    [<CustomOperation("SelectOptions")>] member inline _.SelectOptions ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("SelectOptions", html.text x)
-    [<CustomOperation("SelectOptions")>] member inline _.SelectOptions ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("SelectOptions", html.text x)
-    [<CustomOperation("SelectOptions")>] member inline _.SelectOptions ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("SelectOptions", html.text x)
     [<CustomOperation("MaxTagTextLength")>] member inline _.MaxTagTextLength ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("MaxTagTextLength" => x)
     [<CustomOperation("LabelInValue")>] member inline _.LabelInValue ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("LabelInValue" =>>> true)
     [<CustomOperation("LabelInValue")>] member inline _.LabelInValue ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("LabelInValue" =>>> x)
@@ -1438,6 +1444,11 @@ type SelectBuilder<'FunBlazorGeneric, 'TItemValue, 'TItem when 'FunBlazorGeneric
     [<CustomOperation("EnableVirtualization")>] member inline _.EnableVirtualization ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("EnableVirtualization" =>>> true)
     [<CustomOperation("EnableVirtualization")>] member inline _.EnableVirtualization ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("EnableVirtualization" =>>> x)
     [<CustomOperation("DataSource")>] member inline _.DataSource ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<'TItem>) = render ==> ("DataSource" => x)
+    [<CustomOperation("SelectOptions")>] member inline _.SelectOptions ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("SelectOptions", fragment)
+    [<CustomOperation("SelectOptions")>] member inline _.SelectOptions ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("SelectOptions", fragment { yield! fragments })
+    [<CustomOperation("SelectOptions")>] member inline _.SelectOptions ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("SelectOptions", html.text x)
+    [<CustomOperation("SelectOptions")>] member inline _.SelectOptions ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("SelectOptions", html.text x)
+    [<CustomOperation("SelectOptions")>] member inline _.SelectOptions ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("SelectOptions", html.text x)
     [<CustomOperation("DataSourceEqualityComparer")>] member inline _.DataSourceEqualityComparer ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEqualityComparer<'TItem>) = render ==> ("DataSourceEqualityComparer" => x)
     [<CustomOperation("DefaultActiveFirstOption")>] member inline _.DefaultActiveFirstOption ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("DefaultActiveFirstOption" =>>> true)
     [<CustomOperation("DefaultActiveFirstOption")>] member inline _.DefaultActiveFirstOption ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("DefaultActiveFirstOption" =>>> x)
@@ -1458,7 +1469,6 @@ type SelectBuilder<'FunBlazorGeneric, 'TItemValue, 'TItem when 'FunBlazorGeneric
     [<CustomOperation("OnDataSourceChanged")>] member inline _.OnDataSourceChanged ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Action) = render ==> ("OnDataSourceChanged" => x)
     [<CustomOperation("OnDropdownVisibleChange")>] member inline _.OnDropdownVisibleChange ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("OnDropdownVisibleChange" => (System.Action<System.Boolean>fn))
     [<CustomOperation("OnSearch")>] member inline _.OnSearch ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("OnSearch" => (System.Action<System.String>fn))
-    [<CustomOperation("FilterExpression")>] member inline _.FilterExpression ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("FilterExpression" => (System.Func<AntDesign.Select.Internal.SelectOptionItem<'TItemValue, 'TItem>, System.String, System.Boolean>fn))
     [<CustomOperation("PopupContainerMaxHeight")>] member inline _.PopupContainerMaxHeight ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("PopupContainerMaxHeight" => x)
     [<CustomOperation("ShowArrowIcon")>] member inline _.ShowArrowIcon ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowArrowIcon" =>>> true)
     [<CustomOperation("ShowArrowIcon")>] member inline _.ShowArrowIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowArrowIcon" =>>> x)
@@ -1472,6 +1482,7 @@ type SelectBuilder<'FunBlazorGeneric, 'TItemValue, 'TItem when 'FunBlazorGeneric
     [<CustomOperation("DisabledPredicate")>] member inline _.DisabledPredicate ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("DisabledPredicate" => (System.Func<'TItem, System.Boolean>fn))
     [<CustomOperation("DefaultValue")>] member inline _.DefaultValue ([<InlineIfLambda>] render: AttrRenderFragment, x: 'TItemValue) = render ==> ("DefaultValue" => x)
     [<CustomOperation("ListboxStyle")>] member inline _.ListboxStyle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ListboxStyle" => x)
+    [<CustomOperation("FilterExpression")>] member inline _.FilterExpression ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("FilterExpression" => (System.Func<AntDesign.Select.Internal.SelectOptionItem<'TItemValue, 'TItem>, System.String, System.Boolean>fn))
 
 type EnumSelectBuilder<'FunBlazorGeneric, 'TEnum when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit SelectBuilder<'FunBlazorGeneric, 'TEnum, 'TEnum>()
@@ -2003,6 +2014,10 @@ type MessageBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNet
 type MessageItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit AntDomComponentBaseBuilder<'FunBlazorGeneric>()
     [<CustomOperation("Config")>] member inline _.Config ([<InlineIfLambda>] render: AttrRenderFragment, x: AntDesign.MessageConfig) = render ==> ("Config" => x)
+    [<CustomOperation("OnMouseEnter")>] member inline _.OnMouseEnter ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: AntDesign.MessageItem -> unit) = render ==> html.callback("OnMouseEnter", fn)
+    [<CustomOperation("OnMouseEnter")>] member inline _.OnMouseEnter ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: AntDesign.MessageItem -> Task<unit>) = render ==> html.callbackTask("OnMouseEnter", fn)
+    [<CustomOperation("OnMouseLeave")>] member inline _.OnMouseLeave ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: AntDesign.MessageItem -> unit) = render ==> html.callback("OnMouseLeave", fn)
+    [<CustomOperation("OnMouseLeave")>] member inline _.OnMouseLeave ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: AntDesign.MessageItem -> Task<unit>) = render ==> html.callbackTask("OnMouseLeave", fn)
 
 type ComfirmContainerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit AntDomComponentBaseBuilder<'FunBlazorGeneric>()
@@ -2465,6 +2480,16 @@ type SpinBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCor
     [<CustomOperation("Indicator")>] member inline _.Indicator ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("Indicator", html.text x)
     [<CustomOperation("Indicator")>] member inline _.Indicator ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("Indicator", html.text x)
 
+type SplitterBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit AntDomComponentBaseBuilder<'FunBlazorGeneric>()
+    [<CustomOperation("FirstPaneSizeChanged")>] member inline _.FirstPaneSizeChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.String -> unit) = render ==> html.callback("FirstPaneSizeChanged", fn)
+    [<CustomOperation("FirstPaneSizeChanged")>] member inline _.FirstPaneSizeChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.String -> Task<unit>) = render ==> html.callbackTask("FirstPaneSizeChanged", fn)
+    [<CustomOperation("SecondPaneSizeChanged")>] member inline _.SecondPaneSizeChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.String -> unit) = render ==> html.callback("SecondPaneSizeChanged", fn)
+    [<CustomOperation("SecondPaneSizeChanged")>] member inline _.SecondPaneSizeChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.String -> Task<unit>) = render ==> html.callbackTask("SecondPaneSizeChanged", fn)
+    [<CustomOperation("Layout")>] member inline _.Layout ([<InlineIfLambda>] render: AttrRenderFragment, x: SplitterLayout) = render ==> ("Layout" => x)
+    [<CustomOperation("OnResize")>] member inline _.OnResize ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.String[] -> unit) = render ==> html.callback("OnResize", fn)
+    [<CustomOperation("OnResize")>] member inline _.OnResize ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.String[] -> Task<unit>) = render ==> html.callbackTask("OnResize", fn)
+
 type StatisticComponentBaseBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit AntDomComponentBaseBuilder<'FunBlazorGeneric>()
     [<CustomOperation("Prefix")>] member inline _.Prefix ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Prefix" => x)
@@ -2621,6 +2646,7 @@ type TableBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> Microsoft.
     [<CustomOperation("FieldFilterTypeResolver")>] member inline _.FieldFilterTypeResolver ([<InlineIfLambda>] render: AttrRenderFragment, x: AntDesign.Filters.IFieldFilterTypeResolver) = render ==> ("FieldFilterTypeResolver" => x)
     [<CustomOperation("EnableVirtualization")>] member inline _.EnableVirtualization ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("EnableVirtualization" =>>> true)
     [<CustomOperation("EnableVirtualization")>] member inline _.EnableVirtualization ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("EnableVirtualization" =>>> x)
+    [<CustomOperation("StickyOffsetHeader")>] member inline _.StickyOffsetHeader ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("StickyOffsetHeader" => x)
     [<CustomOperation("HidePagination")>] member inline _.HidePagination ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("HidePagination" =>>> true)
     [<CustomOperation("HidePagination")>] member inline _.HidePagination ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("HidePagination" =>>> x)
     [<CustomOperation("PaginationPosition")>] member inline _.PaginationPosition ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("PaginationPosition" => x)
@@ -2972,6 +2998,10 @@ type UploadBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetC
     [<CustomOperation("Drag")>] member inline _.Drag ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Drag" =>>> true)
     [<CustomOperation("Drag")>] member inline _.Drag ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Drag" =>>> x)
     [<CustomOperation("Method")>] member inline _.Method ([<InlineIfLambda>] render: AttrRenderFragment, x: OneOf.OneOf<System.Net.Http.HttpMethod, System.String>) = render ==> ("Method" => x)
+    [<CustomOperation("BatchUpload")>] member inline _.BatchUpload ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("BatchUpload" =>>> true)
+    [<CustomOperation("BatchUpload")>] member inline _.BatchUpload ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("BatchUpload" =>>> x)
+    [<CustomOperation("WithCredentials")>] member inline _.WithCredentials ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("WithCredentials" =>>> true)
+    [<CustomOperation("WithCredentials")>] member inline _.WithCredentials ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("WithCredentials" =>>> x)
 
 type WatermarkBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit AntDomComponentBaseBuilder<'FunBlazorGeneric>()
@@ -3342,6 +3372,17 @@ type ImagePreviewGroupBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micros
     [<CustomOperation("PreviewVisibleChanged")>] member inline _.PreviewVisibleChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> unit) = render ==> html.callback("PreviewVisibleChanged", fn)
     [<CustomOperation("PreviewVisibleChanged")>] member inline _.PreviewVisibleChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("PreviewVisibleChanged", fn)
 
+type SplitterPanelBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    [<CustomOperation("DefaultSize")>] member inline _.DefaultSize ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("DefaultSize" => x)
+    [<CustomOperation("Min")>] member inline _.Min ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Min" => x)
+    [<CustomOperation("Max")>] member inline _.Max ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Max" => x)
+    [<CustomOperation("Size")>] member inline _.Size ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Size" => x)
+    [<CustomOperation("Collapsible")>] member inline _.Collapsible ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Collapsible" =>>> true)
+    [<CustomOperation("Collapsible")>] member inline _.Collapsible ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Collapsible" =>>> x)
+    [<CustomOperation("Resizable")>] member inline _.Resizable ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Resizable" =>>> true)
+    [<CustomOperation("Resizable")>] member inline _.Resizable ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Resizable" =>>> x)
+
 type GenerateColumnsBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
     [<CustomOperation("Range")>] member inline _.Range ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Range>) = render ==> ("Range" => x)
@@ -3629,6 +3670,7 @@ module DslCE =
     type Space' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Space>)>] () = inherit SpaceBuilder<AntDesign.Space>()
     type SpaceItem' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.SpaceItem>)>] () = inherit SpaceItemBuilder<AntDesign.SpaceItem>()
     type Spin' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Spin>)>] () = inherit SpinBuilder<AntDesign.Spin>()
+    type Splitter' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Splitter>)>] () = inherit SplitterBuilder<AntDesign.Splitter>()
     type StatisticComponentBase'<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.StatisticComponentBase<_>>)>] () = inherit StatisticComponentBaseBuilder<AntDesign.StatisticComponentBase<'T>, 'T>()
     type CountDown' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.CountDown>)>] () = inherit CountDownBuilder<AntDesign.CountDown>()
     type Statistic'<'TValue> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.Statistic<_>>)>] () = inherit StatisticBuilder<AntDesign.Statistic<'TValue>, 'TValue>()
@@ -3668,6 +3710,7 @@ module DslCE =
     type GenerateFormItem'<'TModel> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.GenerateFormItem<_>>)>] () = inherit GenerateFormItemBuilder<AntDesign.GenerateFormItem<'TModel>, 'TModel>()
     type ImagePreview' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.ImagePreview>)>] () = inherit ImagePreviewBuilder<AntDesign.ImagePreview>()
     type ImagePreviewGroup' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.ImagePreviewGroup>)>] () = inherit ImagePreviewGroupBuilder<AntDesign.ImagePreviewGroup>()
+    type SplitterPanel' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.SplitterPanel>)>] () = inherit SplitterPanelBuilder<AntDesign.SplitterPanel>()
     type GenerateColumns'<'TItem> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.GenerateColumns<_>>)>] () = inherit GenerateColumnsBuilder<AntDesign.GenerateColumns<'TItem>, 'TItem>()
     type TreeIndent'<'TItem> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.TreeIndent<_>>)>] () = inherit TreeIndentBuilder<AntDesign.TreeIndent<'TItem>, 'TItem>()
     type TreeNodeCheckbox'<'TItem> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<AntDesign.TreeNodeCheckbox<_>>)>] () = inherit TreeNodeCheckboxBuilder<AntDesign.TreeNodeCheckbox<'TItem>, 'TItem>()
@@ -3825,6 +3868,7 @@ module DslCEInstances =
     let Space'' = Space'()
     let SpaceItem'' = SpaceItem'()
     let Spin'' = Spin'()
+    let Splitter'' = Splitter'()
     let StatisticComponentBase''<'T> = StatisticComponentBase'<'T>()
     let CountDown'' = CountDown'()
     let Statistic''<'TValue> = Statistic'<'TValue>()
@@ -3863,6 +3907,7 @@ module DslCEInstances =
     let GenerateFormItem''<'TModel> = GenerateFormItem'<'TModel>()
     let ImagePreview'' = ImagePreview'()
     let ImagePreviewGroup'' = ImagePreviewGroup'()
+    let SplitterPanel'' = SplitterPanel'()
     let GenerateColumns''<'TItem> = GenerateColumns'<'TItem>()
     let TreeIndent''<'TItem> = TreeIndent'<'TItem>()
     let TreeNodeCheckbox''<'TItem> = TreeNodeCheckbox'<'TItem>()

@@ -5,14 +5,14 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <TrimMode>link</TrimMode>
     <IsTrimmable>true</IsTrimmable>
-    <Version>9.0.5</Version>
+    <Version>9.0.8</Version>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Fun.Blazor.Bindings\Microsoft.AspNetCore.Components.fs" />
     <EmbeddedResource Include="ILLink.Substitutions.xml" LogicalName="ILLink.Substitutions.xml" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference FunBlazor="" FunBlazorNamespace="Microsoft.AspNetCore.Components" FunBlazorAssemblyName="Microsoft.AspNetCore.Components.Web" Include="Microsoft.AspNetCore.Components.Web" Version="9.0.5" />
+    <PackageReference FunBlazor="" FunBlazorNamespace="Microsoft.AspNetCore.Components" FunBlazorAssemblyName="Microsoft.AspNetCore.Components.Web" Include="Microsoft.AspNetCore.Components.Web" Version="9.0.8" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="*.fs" />

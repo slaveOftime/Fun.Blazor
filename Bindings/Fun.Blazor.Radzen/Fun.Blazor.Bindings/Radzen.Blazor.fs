@@ -754,6 +754,8 @@ type RadzenToggleButtonBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micro
     [<CustomOperation("Change")>] member inline _.Change ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> unit) = render ==> html.callback("Change", fn)
     /// Gets or sets the change.
     [<CustomOperation("Change")>] member inline _.Change ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("Change", fn)
+    /// Gets the field identifier.
+    [<CustomOperation("FieldIdentifier")>] member inline _.FieldIdentifier ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.AspNetCore.Components.Forms.FieldIdentifier) = render ==> ("FieldIdentifier" => x)
     /// Gets or sets the value expression.
     [<CustomOperation("ValueExpression")>] member inline _.ValueExpression ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Linq.Expressions.Expression<System.Func<System.Boolean>>) = render ==> ("ValueExpression" => x)
     /// Gets or sets the ToggleButton style.
@@ -812,9 +814,9 @@ type DataBoundFormComponentBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric 
     /// Gets or sets the load data.
     [<CustomOperation("LoadData")>] member inline _.LoadData ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.LoadDataArgs -> Task<unit>) = render ==> html.callbackTask("LoadData", fn)
     /// Gets or sets the value.
-    [<CustomOperation("Value")>] member inline _.Value ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Object) = render ==> ("Value" => x)
+    [<CustomOperation("Value")>] member inline _.Value ([<InlineIfLambda>] render: AttrRenderFragment, x: 'T) = render ==> ("Value" => x)
     /// Gets or sets the value.
-    [<CustomOperation("Value'")>] member inline _.Value' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Object * (System.Object -> unit)) = render ==> html.bind("Value", valueFn)
+    [<CustomOperation("Value'")>] member inline _.Value' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: 'T * ('T -> unit)) = render ==> html.bind("Value", valueFn)
     /// Gets or sets the value changed.
     [<CustomOperation("ValueChanged")>] member inline _.ValueChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: 'T -> unit) = render ==> html.callback("ValueChanged", fn)
     /// Gets or sets the value changed.
@@ -831,6 +833,8 @@ type DataBoundFormComponentBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric 
     [<CustomOperation("SearchTextChanged")>] member inline _.SearchTextChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.String -> unit) = render ==> html.callback("SearchTextChanged", fn)
     /// Gets or sets the search text changed.
     [<CustomOperation("SearchTextChanged")>] member inline _.SearchTextChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.String -> Task<unit>) = render ==> html.callbackTask("SearchTextChanged", fn)
+    /// Gets the field identifier.
+    [<CustomOperation("FieldIdentifier")>] member inline _.FieldIdentifier ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.AspNetCore.Components.Forms.FieldIdentifier) = render ==> ("FieldIdentifier" => x)
     /// Gets or sets the value expression.
     [<CustomOperation("ValueExpression")>] member inline _.ValueExpression ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Linq.Expressions.Expression<System.Func<'T>>) = render ==> ("ValueExpression" => x)
 
@@ -873,6 +877,10 @@ type DropDownBaseBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microso
     [<CustomOperation("Multiple")>] member inline _.Multiple ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Multiple" =>>> true)
     /// Gets or sets a value indicating whether this DropDownBase`1 is multiple.
     [<CustomOperation("Multiple")>] member inline _.Multiple ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Multiple" =>>> x)
+    /// Gets or sets a value indicating the selected index should reset to the top item when filtering, resulting in a down arrow action will start moving from the top.
+    [<CustomOperation("ResetSelectedIndexOnFilter")>] member inline _.ResetSelectedIndexOnFilter ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ResetSelectedIndexOnFilter" =>>> true)
+    /// Gets or sets a value indicating the selected index should reset to the top item when filtering, resulting in a down arrow action will start moving from the top.
+    [<CustomOperation("ResetSelectedIndexOnFilter")>] member inline _.ResetSelectedIndexOnFilter ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ResetSelectedIndexOnFilter" =>>> x)
     /// Gets or sets a value indicating whether the user can select all values in multiple selection. Set to true by default.
     [<CustomOperation("AllowSelectAll")>] member inline _.AllowSelectAll ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AllowSelectAll" =>>> true)
     /// Gets or sets a value indicating whether the user can select all values in multiple selection. Set to true by default.
@@ -998,6 +1006,8 @@ type RadzenDropDownDataGridBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGen
     /// Gets or sets a value indicating whether the selected items will be displayed as chips. Set to false by default.
     /// Requires Multiple to be set to true.
     [<CustomOperation("Chips")>] member inline _.Chips ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Chips" =>>> x)
+    /// Gets or sets the grid lines.
+    [<CustomOperation("GridLines")>] member inline _.GridLines ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.DataGridGridLines) = render ==> ("GridLines" => x)
     /// Gets or sets the Popup style.
     [<CustomOperation("PopupStyle")>] member inline _.PopupStyle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("PopupStyle" => x)
     /// Gets or sets a value indicating whether popup should open on focus. Set to false by default.
@@ -1124,6 +1134,8 @@ type RadzenDropDownDataGridBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGen
     [<CustomOperation("AllowFilteringByWord")>] member inline _.AllowFilteringByWord ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AllowFilteringByWord" =>>> true)
     /// Gets or sets a value indicating whether filtering by each entered word in the search term, sperated by a space, is allowed.
     [<CustomOperation("AllowFilteringByWord")>] member inline _.AllowFilteringByWord ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("AllowFilteringByWord" =>>> x)
+    /// Gets or sets the AllowFilteringByWord max count.
+    [<CustomOperation("AllowFilteringByWordCount")>] member inline _.AllowFilteringByWordCount ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("AllowFilteringByWordCount" => x)
     /// Gets or sets a value indicating whether DataGrid row can be selected on row click.
     [<CustomOperation("AllowRowSelectOnRowClick")>] member inline _.AllowRowSelectOnRowClick ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AllowRowSelectOnRowClick" =>>> true)
     /// Gets or sets a value indicating whether DataGrid row can be selected on row click.
@@ -1213,6 +1225,8 @@ type FormComponentBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Micros
     [<CustomOperation("Change")>] member inline _.Change ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: 'T -> unit) = render ==> html.callback("Change", fn)
     /// Gets or sets the change.
     [<CustomOperation("Change")>] member inline _.Change ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: 'T -> Task<unit>) = render ==> html.callbackTask("Change", fn)
+    /// Gets the field identifier.
+    [<CustomOperation("FieldIdentifier")>] member inline _.FieldIdentifier ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.AspNetCore.Components.Forms.FieldIdentifier) = render ==> ("FieldIdentifier" => x)
     /// Gets or sets the value expression.
     [<CustomOperation("ValueExpression")>] member inline _.ValueExpression ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Linq.Expressions.Expression<System.Func<'T>>) = render ==> ("ValueExpression" => x)
 
@@ -1304,6 +1318,10 @@ type RadzenTextBoxBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     [<CustomOperation("Trim")>] member inline _.Trim ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Trim" =>>> true)
     /// Specifies whether to remove any leading or trailing whitespace from the value. Set to false by default.
     [<CustomOperation("Trim")>] member inline _.Trim ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Trim" =>>> x)
+    /// Gets or sets a value indicating whether the component should update the value immediately when the user types. Set to false by default.
+    [<CustomOperation("Immediate")>] member inline _.Immediate ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Immediate" =>>> true)
+    /// Gets or sets a value indicating whether the component should update the value immediately when the user types. Set to false by default.
+    [<CustomOperation("Immediate")>] member inline _.Immediate ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Immediate" =>>> x)
 
 /// RadzenCheckBox component.
 type RadzenCheckBoxBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -2602,6 +2620,8 @@ type RadzenDatePickerBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :
     [<CustomOperation("FooterTemplate")>] member inline _.FooterTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("FooterTemplate", html.text x)
     /// Gets or sets the footer template.
     [<CustomOperation("FooterTemplate")>] member inline _.FooterTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("FooterTemplate", html.text x)
+    /// Gets the field identifier.
+    [<CustomOperation("FieldIdentifier")>] member inline _.FieldIdentifier ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.AspNetCore.Components.Forms.FieldIdentifier) = render ==> ("FieldIdentifier" => x)
     /// Gets or sets the value expression.
     [<CustomOperation("ValueExpression")>] member inline _.ValueExpression ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Linq.Expressions.Expression<System.Func<'TValue>>) = render ==> ("ValueExpression" => x)
     /// Gets or sets the render mode.
@@ -3076,6 +3096,10 @@ type RadzenPanelMenuItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micr
     [<CustomOperation("Selected")>] member inline _.Selected ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Selected" =>>> true)
     /// Gets or sets a value indicating whether this RadzenPanelMenuItem is selected.
     [<CustomOperation("Selected")>] member inline _.Selected ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Selected" =>>> x)
+    /// Gets or sets a value indicating whether this RadzenPanelMenuItem is disabled.
+    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Disabled" =>>> true)
+    /// Gets or sets a value indicating whether this RadzenPanelMenuItem is disabled.
+    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Disabled" =>>> x)
     /// Gets or sets the click callback.
     [<CustomOperation("Click")>] member inline _.Click ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.MenuItemEventArgs -> unit) = render ==> html.callback("Click", fn)
     /// Gets or sets the click callback.
@@ -3806,6 +3830,8 @@ type RadzenTimeSpanPickerBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGener
     [<CustomOperation("Change")>] member inline _.Change ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Nullable<System.TimeSpan> -> unit) = render ==> html.callback("Change", fn)
     /// Specifies the callback of the underlying nullable TimeSpan value.
     [<CustomOperation("Change")>] member inline _.Change ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Nullable<System.TimeSpan> -> Task<unit>) = render ==> html.callbackTask("Change", fn)
+    /// Gets the field identifier.
+    [<CustomOperation("FieldIdentifier")>] member inline _.FieldIdentifier ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.AspNetCore.Components.Forms.FieldIdentifier) = render ==> ("FieldIdentifier" => x)
 
 /// Displays a table of contents for a page.
 type RadzenTocBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -4978,6 +5004,10 @@ type RadzenDataGridColumnBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneri
     [<CustomOperation("Columns")>] member inline _.Columns ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("Columns", html.text x)
     /// Gets or sets the columns.
     [<CustomOperation("Columns")>] member inline _.Columns ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("Columns", html.text x)
+    /// Gets or sets a value indicating whether cell data should be shown as tooltip.
+    [<CustomOperation("ShowCellDataAsTooltip")>] member inline _.ShowCellDataAsTooltip ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowCellDataAsTooltip" =>>> true)
+    /// Gets or sets a value indicating whether cell data should be shown as tooltip.
+    [<CustomOperation("ShowCellDataAsTooltip")>] member inline _.ShowCellDataAsTooltip ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowCellDataAsTooltip" =>>> x)
     /// Specifies wether CheckBoxList filter list virtualization is enabled. Set to true by default.
     [<CustomOperation("AllowCheckBoxListVirtualization")>] member inline _.AllowCheckBoxListVirtualization ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AllowCheckBoxListVirtualization" =>>> true)
     /// Specifies wether CheckBoxList filter list virtualization is enabled. Set to true by default.
@@ -5376,6 +5406,10 @@ type RadzenThemeBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.As
     inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
     /// Gets or sets the theme.
     [<CustomOperation("Theme")>] member inline _.Theme ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Theme" => x)
+    /// When set to true the icon font will be preloadd.
+    [<CustomOperation("PreloadIconFont")>] member inline _.PreloadIconFont ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("PreloadIconFont" =>>> true)
+    /// When set to true the icon font will be preloadd.
+    [<CustomOperation("PreloadIconFont")>] member inline _.PreloadIconFont ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("PreloadIconFont" =>>> x)
     /// Enables WCAG contrast requirements. If set to true additional CSS file will be loaded.
     [<CustomOperation("Wcag")>] member inline _.Wcag ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Wcag" =>>> true)
     /// Enables WCAG contrast requirements. If set to true additional CSS file will be loaded.

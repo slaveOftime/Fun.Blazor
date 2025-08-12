@@ -5,14 +5,14 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <TrimMode>link</TrimMode>
     <IsTrimmable>true</IsTrimmable>
-    <Version>8.7.0</Version>
+    <Version>8.11.0</Version>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Fun.Blazor.Bindings\MudBlazor.fs" />
     <EmbeddedResource Include="ILLink.Substitutions.xml" LogicalName="ILLink.Substitutions.xml" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference FunBlazor="" FunBlazorNamespace="MudBlazor" FunBlazorAssemblyName="MudBlazor" Include="MudBlazor" Version="8.7.0" />
+    <PackageReference FunBlazor="" FunBlazorNamespace="MudBlazor" FunBlazorAssemblyName="MudBlazor" Include="MudBlazor" Version="8.11.0" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="*.fs" />
