@@ -56,8 +56,18 @@ type FunComponent() as this =
 
 #if NET9_0_OR_GREATER
     member _.MapAsset(x) = base.Assets[x]
-    member _.AssignedRenderMode = base.AssignedRenderMode
-    member _.RendererInfo = base.RendererInfo
+
+    member _.AssignedRenderMode =
+        try
+            base.AssignedRenderMode
+        with _ ->
+            null
+
+    member _.RendererInfo = 
+        try
+            base.RendererInfo
+        with _ ->
+            null
 #endif
 
 #if DEBUG

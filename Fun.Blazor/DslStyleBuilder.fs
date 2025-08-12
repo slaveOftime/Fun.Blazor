@@ -89,7 +89,12 @@ type StyleEltBuilder() =
             html.raw (sb.ToString())
         finally
             stringBuilderPool.Return sb
-
+            
+    member inline _.Yield(x: string) =
+        NodeRenderFragment(fun _ builder index ->
+            builder.AddMarkupContent(index, x)
+            index + 1
+        )
 
     member inline _.Combine([<InlineIfLambda>] render1: NodeRenderFragment, [<InlineIfLambda>] render2: NodeRenderFragment) = render1 >=> render2
 

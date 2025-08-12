@@ -53,6 +53,11 @@ let ``basic style should work``() =
                 keyframe 70 { opacity 0.0 }
                 keyframeTo { transformRotate 359 }
             }
+            """
+            .free-style {
+                height: 100px;
+            }
+            """
         }
     }
 
@@ -86,6 +91,9 @@ let ``basic style should work``() =
         to {
             transform: rotate(359deg);
         }
+    }
+    .free-style {
+        height: 100px;
     }
     </style>
     """)
