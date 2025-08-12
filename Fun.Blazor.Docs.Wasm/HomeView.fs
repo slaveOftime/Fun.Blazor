@@ -128,7 +128,7 @@ div {
             }
             class' "animated-glow-secondary-text"
             Color Color.Default
-            "Flexsible"
+            "Flexible"
         }
         MudText'' {
             style {
