@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+- Support MapAsset for hook and base components
+
 ## [4.1.6] - 2025-02-28
 
 - Fix store generic conversion issue

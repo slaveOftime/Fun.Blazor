@@ -141,150 +141,151 @@ div {
 }
 
 
-let private multipleModeForDifferentUseCases = MudGrid'' {
-    Justify Justify.Center
-    Spacing 10
-    style { maxWidth 1080 }
-    MudItem'' {
-        xs 12
-        sm 6
-        md 4
-        MudCard'' {
-            Outlined
-            MudCardMedia'' {
-                Image "ssr.jpg"
-                Height 200
-            }
-            MudCardContent'' {
-                MudText'' {
-                    class' "animated-glow-secondary-text"
-                    Typo Typo.h5
-                    "SSR (Server side rendering)"
+let private multipleModeForDifferentUseCases =
+    html.inject (fun (hook: IComponentHook) -> MudGrid'' {
+        Justify Justify.Center
+        Spacing 10
+        style { maxWidth 1080 }
+        MudItem'' {
+            xs 12
+            sm 6
+            md 4
+            MudCard'' {
+                Outlined
+                MudCardMedia'' {
+                    Image(hook.MapAsset "ssr.jpg")
+                    Height 200
                 }
-                MudText'' {
-                    Typo Typo.body2
-                    "Everything can be rendered on the server and streamed to browser and improve SEO etc."
-                }
-                MudText'' {
-                    Typo Typo.body2
-                    "This is mainly for static page rendering or first load for some pages."
-                }
-            }
-        }
-    }
-    MudItem'' {
-        xs 12
-        sm 6
-        md 4
-        MudCard'' {
-            Outlined
-            MudCardMedia'' {
-                Image "signalr.svg"
-                Height 200
-            }
-            MudCardContent'' {
-                MudText'' {
-                    class' "animated-glow-secondary-text"
-                    Typo Typo.h5
-                    "Server Mode"
-                }
-                MudText'' {
-                    Typo Typo.body2
-                    "Can do very complex interactive UI logic."
-                }
-                MudText'' {
-                    Typo Typo.body2
-                    "Very productive for enterprise internal tools, because there is no need to build any RESTful APIs, everything is handled on server."
-                }
-                MudText'' {
-                    Typo Typo.body2
-                    "Will need WebSocket support, so the network or connectivity will have large impact on its use cases."
-                }
-            }
-        }
-    }
-    MudItem'' {
-        xs 12
-        sm 6
-        md 4
-        MudCard'' {
-            Outlined
-            MudCardMedia'' {
-                Image "wasm.png"
-                Height 200
-            }
-            MudCardContent'' {
-                MudText'' {
-                    class' "animated-glow-secondary-text"
-                    Typo Typo.h5
-                    "Client Mode (WASM)"
-                }
-                MudText'' {
-                    Typo Typo.body2
-                    "Like all other frameworks' WASM mode, will load all the code in the browser and run locally. So the download size may be a little big."
-                }
-            }
-        }
-    }
-    MudItem'' {
-        xs 12
-        sm 6
-        md 4
-        MudCard'' {
-            Outlined
-            MudCardMedia'' {
-                Image "hyper1.jpg"
-                Height 200
-            }
-            MudCardContent'' {
-                MudText'' {
-                    class' "animated-glow-secondary-text"
-                    Typo Typo.h5
-                    "Hyper Mode"
-                }
-                MudText'' {
-                    Typo Typo.body2
-                    "Get all the benifits, but yes it will introduce more complexity."
-                }
-                MudText'' {
-                    Typo Typo.body2
-                    "For example, the first load can be SSR, a quick and fast static page will be sent to user. Then will check if the client side file (WASM) is downloaded before, if not then will use server mode to serve the logic, and in the background the WASM files will be loaded for the next time's usage."
-                }
-            }
-        }
-    }
-    MudItem'' {
-        xs 12
-        sm 6
-        md 4
-        MudCard'' {
-            Outlined
-            MudCardMedia'' {
-                Image "hyper2.jpg"
-                Height 200
-            }
-            MudCardContent'' {
-                MudText'' {
-                    class' "animated-glow-secondary-text"
-                    Typo Typo.h5
-                    "Hyper mode 2"
-                }
-                MudText'' {
-                    Typo Typo.body2
-                    "Prefer SSR first, then for simple interactive logic use "
+                MudCardContent'' {
+                    MudText'' {
+                        class' "animated-glow-secondary-text"
+                        Typo Typo.h5
+                        "SSR (Server side rendering)"
+                    }
                     MudText'' {
                         Typo Typo.body2
-                        Color Color.Success
-                        Inline
-                        "HTMX"
+                        "Everything can be rendered on the server and streamed to browser and improve SEO etc."
                     }
-                    " to do partial html patch. "
-                    "For rich interactive, we can use server mode and only render it when it's in view."
+                    MudText'' {
+                        Typo Typo.body2
+                        "This is mainly for static page rendering or first load for some pages."
+                    }
                 }
             }
         }
-    }
-}
+        MudItem'' {
+            xs 12
+            sm 6
+            md 4
+            MudCard'' {
+                Outlined
+                MudCardMedia'' {
+                    Image(hook.MapAsset "signalr.svg")
+                    Height 200
+                }
+                MudCardContent'' {
+                    MudText'' {
+                        class' "animated-glow-secondary-text"
+                        Typo Typo.h5
+                        "Server Mode"
+                    }
+                    MudText'' {
+                        Typo Typo.body2
+                        "Can do very complex interactive UI logic."
+                    }
+                    MudText'' {
+                        Typo Typo.body2
+                        "Very productive for enterprise internal tools, because there is no need to build any RESTful APIs, everything is handled on server."
+                    }
+                    MudText'' {
+                        Typo Typo.body2
+                        "Will need WebSocket support, so the network or connectivity will have large impact on its use cases."
+                    }
+                }
+            }
+        }
+        MudItem'' {
+            xs 12
+            sm 6
+            md 4
+            MudCard'' {
+                Outlined
+                MudCardMedia'' {
+                    Image(hook.MapAsset "wasm.png")
+                    Height 200
+                }
+                MudCardContent'' {
+                    MudText'' {
+                        class' "animated-glow-secondary-text"
+                        Typo Typo.h5
+                        "Client Mode (WASM)"
+                    }
+                    MudText'' {
+                        Typo Typo.body2
+                        "Like all other frameworks' WASM mode, will load all the code in the browser and run locally. So the download size may be a little big."
+                    }
+                }
+            }
+        }
+        MudItem'' {
+            xs 12
+            sm 6
+            md 4
+            MudCard'' {
+                Outlined
+                MudCardMedia'' {
+                    Image(hook.MapAsset "hyper1.jpg")
+                    Height 200
+                }
+                MudCardContent'' {
+                    MudText'' {
+                        class' "animated-glow-secondary-text"
+                        Typo Typo.h5
+                        "Hyper Mode"
+                    }
+                    MudText'' {
+                        Typo Typo.body2
+                        "Get all the benifits, but yes it will introduce more complexity."
+                    }
+                    MudText'' {
+                        Typo Typo.body2
+                        "For example, the first load can be SSR, a quick and fast static page will be sent to user. Then will check if the client side file (WASM) is downloaded before, if not then will use server mode to serve the logic, and in the background the WASM files will be loaded for the next time's usage."
+                    }
+                }
+            }
+        }
+        MudItem'' {
+            xs 12
+            sm 6
+            md 4
+            MudCard'' {
+                Outlined
+                MudCardMedia'' {
+                    Image(hook.MapAsset "hyper2.jpg")
+                    Height 200
+                }
+                MudCardContent'' {
+                    MudText'' {
+                        class' "animated-glow-secondary-text"
+                        Typo Typo.h5
+                        "Hyper mode 2"
+                    }
+                    MudText'' {
+                        Typo Typo.body2
+                        "Prefer SSR first, then for simple interactive logic use "
+                        MudText'' {
+                            Typo Typo.body2
+                            Color Color.Success
+                            Inline
+                            "HTMX"
+                        }
+                        " to do partial html patch. "
+                        "For rich interactive, we can use server mode and only render it when it's in view."
+                    }
+                }
+            }
+        }
+    })
 
 
 let private ecosystemIcons = [
@@ -296,24 +297,25 @@ let private ecosystemIcons = [
     "radzen.svg", "https://blazor.radzen.com/?theme=material3"
 ]
 
-let private richEcosystem = div {
-    style {
-        displayFlex
-        alignItemsCenter
-        justifyContentCenter
-        maxWidth 720
-        flexWrapWrap
-        gap 48
-    }
-    for icon, url in ecosystemIcons do
-        a {
-            href url
-            MudImage'' {
-                Src $"ecosystem/{icon}"
-                Height 80
-            }
+let private richEcosystem =
+    html.inject (fun (hook: IComponentHook) -> div {
+        style {
+            displayFlex
+            alignItemsCenter
+            justifyContentCenter
+            maxWidth 720
+            flexWrapWrap
+            gap 48
         }
-}
+        for icon, url in ecosystemIcons do
+            a {
+                href url
+                MudImage'' {
+                    Src(hook.MapAsset $"ecosystem/{icon}")
+                    Height 80
+                }
+            }
+    })
 
 
 let home =

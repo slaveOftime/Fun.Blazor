@@ -114,8 +114,10 @@ type IComponentHook with
             let persistentStore =
                 hook.ServiceProvider.GetMultipleServices<PersistentComponentState>()
 
-            hook.OnInitialized.Add(fun _ -> persistentStore.RegisterOnPersisting(fun _ -> task { onPersistence () }) |> ignore)
-
+            hook.OnInitialized.Add(fun _ ->
+                persistentStore.RegisterOnPersisting((fun _ -> task { onPersistence () }), renderMode = Web.RenderMode.InteractiveServer)
+                |> ignore
+            )
 
     /// Get docs tree json file and save it to global store
     member hook.GetOrLoadDocsTree() =

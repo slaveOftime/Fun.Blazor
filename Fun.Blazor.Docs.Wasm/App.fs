@@ -10,7 +10,7 @@ open Fun.Blazor.Docs.Wasm
 
 
 let theme =
-    html.injectWithNoKey (fun (shareStore: IShareStore) -> adapt {
+    html.injectWithNoKey (fun (hook: IComponentHook, shareStore: IShareStore) -> adapt {
         let! isDark = shareStore.IsDarkMode
         MudThemeProvider'' {
             IsDarkMode isDark
@@ -18,9 +18,9 @@ let theme =
         }
         stylesheet (
             if isDark then
-                "css/github-markdown-dark.css"
+                hook.MapAsset "css/github-markdown-dark.css"
             else
-                "css/github-markdown-light.css"
+                hook.MapAsset "css/github-markdown-light.css"
         )
     })
 
@@ -103,7 +103,7 @@ let app =
             MudDialogProvider'' { }
             MudSnackbarProvider'' { }
             MudPopoverProvider'' { }
-
+            
             MudLayout'' {
                 appBar
                 SectionOutlet'' { SectionName "drawer" }

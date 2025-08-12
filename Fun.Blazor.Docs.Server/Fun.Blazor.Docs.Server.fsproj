@@ -7,6 +7,7 @@
 	<ItemGroup>
 		<Compile Include="HtmxDemo.fs" />
 		<Compile Include="CustomElementsDemo.fs" />
+		<Compile Include="Index.fs" />
 		<Compile Include="Startup.fs" />
 	</ItemGroup>
 

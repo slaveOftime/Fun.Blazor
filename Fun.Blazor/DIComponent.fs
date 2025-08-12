@@ -79,6 +79,12 @@ type IComponentHook =
     /// With this we can toggle the behavior to the default blazor component behavior when it makes sense to you.
     abstract SetDisableEventTriggerStateHasChanged: bool -> unit
 
+#if NET9_0_OR_GREATER
+    abstract member MapAsset: string -> string
+    abstract member AssignedRenderMode: IComponentRenderMode
+    abstract member RendererInfo: RendererInfo
+#endif
+
     /// With this we can create extension of the hook and access all resources
     /// which means we can add extensions that can be standalone and be reused more easizer
     abstract ServiceProvider: IServiceProvider
@@ -207,6 +213,12 @@ type DIComponent<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typ
                             member _.StateHasChanged() = this.ForceRerender()
                             member _.SetDisableEventTriggerStateHasChanged(x) = this.DisableEventTriggerStateHasChanged <- x
                             member _.ServiceProvider = this.Services
+
+#if NET9_0_OR_GREATER
+                            member _.MapAsset(x) = this.MapAsset(x)
+                            member _.AssignedRenderMode = this.AssignedRenderMode
+                            member _.RendererInfo = this.RendererInfo
+#endif
 
                             member _.ScopedServiceProvider =
                                 if isNull this.ScopedServices then

@@ -46,15 +46,19 @@ type IComponentBuilder<'T when 'T :> Microsoft.AspNetCore.Components.IComponent>
 type FunComponent() as this =
     inherit ComponentBase()
 
-    override _.BuildRenderTree(builder: RenderTreeBuilder) = 
-        this.Render().Invoke(this, builder, 0) |> ignore
-        
-    abstract Render: unit -> NodeRenderFragment    
+    override _.BuildRenderTree(builder: RenderTreeBuilder) = this.Render().Invoke(this, builder, 0) |> ignore
+
+    abstract Render: unit -> NodeRenderFragment
 
     member _.StateHasChanged() = base.StateHasChanged()
 
     member _.ForceRerender() = this.InvokeAsync(fun () -> this.StateHasChanged()) |> ignore
 
+#if NET9_0_OR_GREATER
+    member _.MapAsset(x) = base.Assets[x]
+    member _.AssignedRenderMode = base.AssignedRenderMode
+    member _.RendererInfo = base.RendererInfo
+#endif
 
 #if DEBUG
     /// Should not be used in production, only for debug purpose
@@ -72,9 +76,9 @@ type FunComponent() as this =
 #endif
         ()
 
-/// This is a helper abstract class which will disable event trigger StateHasChanged, 
-/// because for internal Fun Blazor components they are using adaptive model and will not need event triger re-render. 
-/// And event trigger re-render may cause unnecessary cost. 
+/// This is a helper abstract class which will disable event trigger StateHasChanged,
+/// because for internal Fun Blazor components they are using adaptive model and will not need event triger re-render.
+/// And event trigger re-render may cause unnecessary cost.
 /// When you use adaptive, elmish, reative models etc., and also want to use component style, you can use this one.
 [<AbstractClass>]
 type FunBlazorComponent() as this =
@@ -147,4 +151,3 @@ type FunInteractiveWebAssemblyAttribute() =
 
     override _.Mode = Web.RenderMode.InteractiveWebAssembly
 #endif
-
