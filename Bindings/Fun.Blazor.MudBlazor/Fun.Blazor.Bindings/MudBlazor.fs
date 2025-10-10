@@ -623,16 +623,26 @@ type MudTableBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.A
     [<CustomOperation("NoRecordsContent")>] member inline _.NoRecordsContent ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("NoRecordsContent", html.text x)
     /// The content shown when there are no rows to display.
     [<CustomOperation("NoRecordsContent")>] member inline _.NoRecordsContent ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("NoRecordsContent", html.text x)
-    /// The content shown while table data is loading and the table has no rows.
+    /// The content shown while Loading is true and the table has no rows.
     [<CustomOperation("LoadingContent")>] member inline _.LoadingContent ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("LoadingContent", fragment)
-    /// The content shown while table data is loading and the table has no rows.
+    /// The content shown while Loading is true and the table has no rows.
     [<CustomOperation("LoadingContent")>] member inline _.LoadingContent ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("LoadingContent", fragment { yield! fragments })
-    /// The content shown while table data is loading and the table has no rows.
+    /// The content shown while Loading is true and the table has no rows.
     [<CustomOperation("LoadingContent")>] member inline _.LoadingContent ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("LoadingContent", html.text x)
-    /// The content shown while table data is loading and the table has no rows.
+    /// The content shown while Loading is true and the table has no rows.
     [<CustomOperation("LoadingContent")>] member inline _.LoadingContent ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("LoadingContent", html.text x)
-    /// The content shown while table data is loading and the table has no rows.
+    /// The content shown while Loading is true and the table has no rows.
     [<CustomOperation("LoadingContent")>] member inline _.LoadingContent ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("LoadingContent", html.text x)
+    /// The content shown while Loading is true and the table has no rows.
+    [<CustomOperation("LoadingContentBody")>] member inline _.LoadingContentBody ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("LoadingContentBody", fragment)
+    /// The content shown while Loading is true and the table has no rows.
+    [<CustomOperation("LoadingContentBody")>] member inline _.LoadingContentBody ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("LoadingContentBody", fragment { yield! fragments })
+    /// The content shown while Loading is true and the table has no rows.
+    [<CustomOperation("LoadingContentBody")>] member inline _.LoadingContentBody ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("LoadingContentBody", html.text x)
+    /// The content shown while Loading is true and the table has no rows.
+    [<CustomOperation("LoadingContentBody")>] member inline _.LoadingContentBody ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("LoadingContentBody", html.text x)
+    /// The content shown while Loading is true and the table has no rows.
+    [<CustomOperation("LoadingContentBody")>] member inline _.LoadingContentBody ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("LoadingContentBody", html.text x)
     /// Shows a horizontal scroll bar if the content exceeds the maximum width.
     [<CustomOperation("HorizontalScrollbar")>] member inline _.HorizontalScrollbar ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("HorizontalScrollbar" =>>> true)
     /// Shows a horizontal scroll bar if the content exceeds the maximum width.
@@ -2827,6 +2837,10 @@ type MudDataGridBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsof
     [<CustomOperation("FormFieldChanged")>] member inline _.FormFieldChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: MudBlazor.Utilities.FormFieldChangedEventArgs -> unit) = render ==> html.callback("FormFieldChanged", fn)
     /// Occurs when a field changes in the edit dialog.
     [<CustomOperation("FormFieldChanged")>] member inline _.FormFieldChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: MudBlazor.Utilities.FormFieldChangedEventArgs -> Task<unit>) = render ==> html.callbackTask("FormFieldChanged", fn)
+    /// Occurs when hierarchy visibility toggled.
+    [<CustomOperation("HierarchyVisibilityToggled")>] member inline _.HierarchyVisibilityToggled ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: MudBlazor.Utilities.DataGridHierarchyVisibilityToggledEventArgs<'T> -> unit) = render ==> html.callback("HierarchyVisibilityToggled", fn)
+    /// Occurs when hierarchy visibility toggled.
+    [<CustomOperation("HierarchyVisibilityToggled")>] member inline _.HierarchyVisibilityToggled ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: MudBlazor.Utilities.DataGridHierarchyVisibilityToggledEventArgs<'T> -> Task<unit>) = render ==> html.callbackTask("HierarchyVisibilityToggled", fn)
     /// Allows columns to be reordered via the columns panel.
     [<CustomOperation("ColumnsPanelReordering")>] member inline _.ColumnsPanelReordering ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ColumnsPanelReordering" =>>> true)
     /// Allows columns to be reordered via the columns panel.
@@ -2911,6 +2925,12 @@ type MudDataGridBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsof
     [<CustomOperation("ShowFilterIcons")>] member inline _.ShowFilterIcons ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowFilterIcons" =>>> true)
     /// Shows icons for each column filter.
     [<CustomOperation("ShowFilterIcons")>] member inline _.ShowFilterIcons ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowFilterIcons" =>>> x)
+    /// The empty filter icon shown on a column when Filterable is true and no filters are applied to this column.
+    [<CustomOperation("FilterIconEmpty")>] member inline _.FilterIconEmpty ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("FilterIconEmpty" => x)
+    /// The filled filter icon shown on a column when Filterable is true and filters are applied to this column.
+    [<CustomOperation("FilterIconFilled")>] member inline _.FilterIconFilled ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("FilterIconFilled" => x)
+    /// The clear filter icon shown on a column when Filterable is true to remove filters applied to this column.
+    [<CustomOperation("FilterIconClear")>] member inline _.FilterIconClear ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("FilterIconClear" => x)
     /// The way that this grid filters data.
     [<CustomOperation("FilterMode")>] member inline _.FilterMode ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.DataGridFilterMode) = render ==> ("FilterMode" => x)
     /// The case sensitivity setting for columns with string values.
@@ -2926,23 +2946,23 @@ type MudDataGridBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsof
     /// Renders only visible items instead of all items.
     [<CustomOperation("Virtualize")>] member inline _.Virtualize ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Virtualize" =>>> x)
     /// A RenderFragment that will be used as a placeholder when the Virtualize component is asynchronously loading data.
-    /// This placeholder is displayed for each item in the data source that is yet to be loaded. Useful for presenting a loading indicator 
+    /// This placeholder is displayed for each item in the data source that is yet to be loaded. Useful for presenting a loading indicator
     /// in a data grid row while the actual data is being fetched from the server.
     [<CustomOperation("RowLoadingContent")>] member inline _.RowLoadingContent ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("RowLoadingContent", fragment)
     /// A RenderFragment that will be used as a placeholder when the Virtualize component is asynchronously loading data.
-    /// This placeholder is displayed for each item in the data source that is yet to be loaded. Useful for presenting a loading indicator 
+    /// This placeholder is displayed for each item in the data source that is yet to be loaded. Useful for presenting a loading indicator
     /// in a data grid row while the actual data is being fetched from the server.
     [<CustomOperation("RowLoadingContent")>] member inline _.RowLoadingContent ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("RowLoadingContent", fragment { yield! fragments })
     /// A RenderFragment that will be used as a placeholder when the Virtualize component is asynchronously loading data.
-    /// This placeholder is displayed for each item in the data source that is yet to be loaded. Useful for presenting a loading indicator 
+    /// This placeholder is displayed for each item in the data source that is yet to be loaded. Useful for presenting a loading indicator
     /// in a data grid row while the actual data is being fetched from the server.
     [<CustomOperation("RowLoadingContent")>] member inline _.RowLoadingContent ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("RowLoadingContent", html.text x)
     /// A RenderFragment that will be used as a placeholder when the Virtualize component is asynchronously loading data.
-    /// This placeholder is displayed for each item in the data source that is yet to be loaded. Useful for presenting a loading indicator 
+    /// This placeholder is displayed for each item in the data source that is yet to be loaded. Useful for presenting a loading indicator
     /// in a data grid row while the actual data is being fetched from the server.
     [<CustomOperation("RowLoadingContent")>] member inline _.RowLoadingContent ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("RowLoadingContent", html.text x)
     /// A RenderFragment that will be used as a placeholder when the Virtualize component is asynchronously loading data.
-    /// This placeholder is displayed for each item in the data source that is yet to be loaded. Useful for presenting a loading indicator 
+    /// This placeholder is displayed for each item in the data source that is yet to be loaded. Useful for presenting a loading indicator
     /// in a data grid row while the actual data is being fetched from the server.
     [<CustomOperation("RowLoadingContent")>] member inline _.RowLoadingContent ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("RowLoadingContent", html.text x)
     /// The number of additional items rendered outside the visible region when Virtualize is true.
@@ -3121,7 +3141,7 @@ type MudDataGridBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsof
     [<CustomOperation("ExpandSingleRow")>] member inline _.ExpandSingleRow ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ExpandSingleRow" =>>> x)
     /// The comparer used to determine row selection.
     [<CustomOperation("Comparer")>] member inline _.Comparer ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEqualityComparer<'T>) = render ==> ("Comparer" => x)
-    /// The default template used to display column grouping for any column that is grouped. 
+    /// The default template used to display column grouping for any column that is grouped.
     [<CustomOperation("GroupTemplate")>] member inline _.GroupTemplate ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: MudBlazor.GroupDefinition<'T> -> NodeRenderFragment) = render ==> html.renderFragment("GroupTemplate", fn)
     /// Determines whether an unsorted state (None) is allowed when toggling sort directions.
     [<CustomOperation("AllowUnsorted")>] member inline _.AllowUnsorted ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AllowUnsorted" =>>> true)
@@ -5162,6 +5182,8 @@ type MudTHeadRowBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.As
 /// A row of data within a MudTable`1.
 type MudTrBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit MudComponentBaseBuilder<'FunBlazorGeneric>()
+    /// Optional ID for the row, used for programmatic scrolling and focusing.
+    [<CustomOperation("RowId")>] member inline _.RowId ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("RowId" => x)
     /// The data being displayed for this row.
     [<CustomOperation("Item")>] member inline _.Item ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Object) = render ==> ("Item" => x)
     /// Displays a checkbox at the start of this row.
