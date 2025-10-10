@@ -21,7 +21,7 @@ type NativeJs =
             {{queriesToDelete}}
             {{queriesToAdd}}
             const queryStr = query.toString();
-            window.history.replaceState(null, null, !!queryStr ? ('?' + queryStr) : '/');
+            window.history.replaceState(null, null, window.location.pathname + (!!queryStr ? ('?' + queryStr) : ''));
         })()"""
 
     /// Native script directly for updating queries
@@ -29,7 +29,7 @@ type NativeJs =
         $$"""
         (function(){
             const queryStr = '{{query}}';
-            window.history.replaceState(null, null, !!queryStr ? ('?' + queryStr) : '/');
+            window.history.replaceState(null, null, window.location.pathname + (!!queryStr ? ('?' + queryStr) : ''));
         })()"""
 
     /// Native script directly for updating queries
@@ -58,3 +58,5 @@ type NativeJs =
     /// Native script for reloading current page.
     static member ReloadPage() = $"window.location.reload();"
 
+    /// Native script for going back in history.
+    static member GoBack() = "window.history.back();"

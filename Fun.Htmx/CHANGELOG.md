@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [4.1.4] - 2025-10-10
+
+- Fix NativeJs UpdateQueries browser issue
+
 ## [4.1.3] - 2024-11-22
 
 - Add EventId for HxSseComponent
