@@ -311,15 +311,15 @@ type DIComponent<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typ
 
     override _.OnAfterRenderAsync firstRender = task {
         if afterRenderTasks <> null then
-            // Prevent task await issue in debug mode for wasm runtime
-            if this.IsWasmRuntime then do! Task.Yield()
             for makeTask in afterRenderTasks do
+                // Prevent task await issue in debug mode for wasm runtime
+                if this.IsWasmRuntime then do! Task.Yield()
                 do! makeTask firstRender
 
         if firstRender && firstAfterRenderTasks <> null then
-            // Prevent task await issue in debug mode for wasm runtime
-            if this.IsWasmRuntime then do! Task.Yield()
             for makeTask in firstAfterRenderTasks do
+                // Prevent task await issue in debug mode for wasm runtime
+                if this.IsWasmRuntime then do! Task.Yield()
                 do! makeTask ()
     }
 
