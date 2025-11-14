@@ -8,6 +8,7 @@ open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.Logging
 open Microsoft.AspNetCore.Components
 open Internal
+open Microsoft.JSInterop
 
 
 type IComponentHook =
@@ -249,6 +250,14 @@ type DIComponent<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typ
     [<Inject>]
     member val Logger = Unchecked.defaultof<ILogger<DIComponent<'T>>> with get, set
 
+    [<Inject>]
+    member val JSRuntime = Unchecked.defaultof<IJSRuntime> with get, set
+
+    member _.IsWasmRuntime =
+        match this.JSRuntime with
+        | :? IJSInProcessRuntime -> true
+        | _ -> false
+
 
     override _.Render() =
         html.region (
@@ -303,9 +312,14 @@ type DIComponent<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typ
     override _.OnAfterRenderAsync firstRender = task {
         if afterRenderTasks <> null then
             for makeTask in afterRenderTasks do
+                // Prevent task await issue in debug mode for wasm runtime
+                if this.IsWasmRuntime then do! Task.Yield()
                 do! makeTask firstRender
+
         if firstRender && firstAfterRenderTasks <> null then
             for makeTask in firstAfterRenderTasks do
+                // Prevent task await issue in debug mode for wasm runtime
+                if this.IsWasmRuntime then do! Task.Yield()
                 do! makeTask ()
     }
 

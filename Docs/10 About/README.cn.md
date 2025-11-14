@@ -84,17 +84,18 @@ type NodeRenderFragment = delegate of root: IComponent * builder: RenderTreeBuil
 
 ## 基准测试
 
-BenchmarkDotNet v0.14.0, Windows 11 (10.0.22631.4317/23H2/2023Update/SunValley3)
-12th Gen Intel Core i7-12700H, 1 CPU, 20 logical and 14 physical cores
-.NET SDK 9.0.100
-  [Host]     : .NET 9.0.0 (9.0.24.52809), X64 RyuJIT AVX2 DEBUG
-  DefaultJob : .NET 9.0.0 (9.0.24.52809), X64 RyuJIT AVX2
+BenchmarkDotNet v0.15.6, Windows 11 (10.0.26200.7019)
+Intel Core i7-8700K CPU 3.70GHz (Coffee Lake), 1 CPU, 12 logical and 6 physical cores
+.NET SDK 10.0.100
+  [Host]     : .NET 10.0.0 (10.0.0, 10.0.25.52411), X64 RyuJIT x86-64-v3 DEBUG
+  DefaultJob : .NET 10.0.0 (10.0.0, 10.0.25.52411), X64 RyuJIT x86-64-v3
 
-| Method                         | Mean     | Error    | StdDev   | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
-|------------------------------- |---------:|---------:|---------:|------:|--------:|-------:|----------:|------------:|
-| RenderWithRazorCSharp          | 247.7 ns |  3.80 ns |  3.37 ns |  1.00 |    0.02 | 0.0291 |     368 B |        1.00 |
-| RenderWithFunBlazorInlineCE    | 374.1 ns |  5.53 ns |  4.91 ns |  1.51 |    0.03 | 0.0439 |     552 B |        1.50 |
-| RenderWithFunBlazorSSRTemplate | 475.6 ns |  5.78 ns |  5.40 ns |  1.92 |    0.03 | 0.0420 |     528 B |        1.43 |
-| RenderWithBolero               | 497.9 ns |  8.46 ns | 10.07 ns |  2.01 |    0.05 | 0.1192 |    1496 B |        4.07 |
-| RenderWithFunBlazorArray       | 525.2 ns | 10.44 ns | 11.17 ns |  2.12 |    0.05 | 0.1144 |    1440 B |        3.91 |
-| RenderWithFunBlazorTemplate    | 785.9 ns |  7.95 ns |  7.44 ns |  3.17 |    0.05 | 0.1240 |    1560 B |        4.24 |
+| Method                         | Mean       | Error    | StdDev   | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
+|------------------------------- |-----------:|---------:|---------:|------:|--------:|-------:|----------:|------------:|
+| RenderWithRazorCSharp          |   331.6 ns |  6.38 ns | 11.66 ns |  1.00 |    0.05 | 0.0587 |     368 B |        1.00 |
+| RenderWithFunBlazorInlineCE ❤️ |   484.2 ns |  9.68 ns |  9.51 ns |  1.46 |    0.06 | 0.0777 |     488 B |        1.33 |
+| RenderWithBolero               |   581.2 ns | 11.37 ns | 17.70 ns |  1.75 |    0.08 | 0.1364 |     856 B |        2.33 |
+| RenderWithFunBlazorSSRTemplate |   648.5 ns | 17.72 ns | 48.20 ns |  1.96 |    0.16 | 0.0839 |     528 B |        1.43 |
+| RenderWithFunBlazorArray       |   671.0 ns | 13.41 ns | 21.27 ns |  2.03 |    0.09 | 0.2174 |    1368 B |        3.72 |
+| RenderWithFunBlazorTemplate    | 1,055.6 ns | 20.98 ns | 46.50 ns |  3.19 |    0.18 | 0.2384 |    1496 B |        4.07 |
+

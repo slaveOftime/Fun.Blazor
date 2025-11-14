@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+## [4.1.8] - 2025-11-14
+
+- Fix task await issue for html.inject especially when debugging
+- Sync with csharp blazor implementation for HandleEventAsync
+
 ## [4.1.7] - 2025-08-12
 
 - Support MapAsset for hook and base components

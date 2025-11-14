@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
 	<PropertyGroup>
-		<TargetFramework>net9.0</TargetFramework>
+		<TargetFramework>net10.0</TargetFramework>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -19,7 +19,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-      	<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="9.0.*" />
+      	<PackageReference Include="Microsoft.AspNetCore.App.Internal.Assets" Version="10.0.0" />
+      	<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="10.0.*" />
 	</ItemGroup>
 
 </Project>

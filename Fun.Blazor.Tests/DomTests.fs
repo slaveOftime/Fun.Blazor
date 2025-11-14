@@ -13,8 +13,8 @@ open Fun.Blazor
 open Fun.Blazor.Operators
 
 
-let private createTestContext () =
-    let textContext = new TestContext()
+let private createBunitContext () =
+    let textContext = new BunitContext()
 
     textContext.Services.AddScoped<INavigationInterception>(fun _ -> Mock.Of<INavigationInterception>())
     |> ignore
@@ -24,7 +24,7 @@ let private createTestContext () =
 
 [<Fact>]
 let ``Yield key value attributes`` () =
-    let context = createTestContext ()
+    let context = createBunitContext ()
 
     let demo =
         html.inject (fun (hook: IComponentHook) ->
@@ -94,7 +94,7 @@ let ``Yield key value attributes`` () =
 
 [<Fact>]
 let ``DOM events simple`` () =
-    let context = createTestContext ()
+    let context = createBunitContext ()
 
     let demo =
         html.inject (fun (hook: IComponentHook) ->
@@ -127,7 +127,7 @@ let ``DOM events simple`` () =
 
 [<Fact>]
 let ``DOM share attrs`` () =
-    let context = createTestContext ()
+    let context = createBunitContext ()
 
     let sharedImgAttr = input {
         style { width 10 }
@@ -178,7 +178,7 @@ type IFunBlazorBuilder with
 
 [<Fact>]
 let ``DOM CE attribute share check`` () =
-    let context = createTestContext ()
+    let context = createBunitContext ()
 
     let tempAttr = domAttr {
         demo 123
@@ -214,7 +214,7 @@ let ``DOM CE attribute share check`` () =
 
 [<Fact>]
 let ``Check some attributes`` () =
-    let context = createTestContext ()
+    let context = createBunitContext ()
 
     let demo = input {
         hidden true
@@ -246,7 +246,7 @@ let ``Check some attributes`` () =
 
 [<Fact>]
 let ``script tag should work`` () =
-    let context = createTestContext ()
+    let context = createBunitContext ()
 
     let demo = script { src "demo" }
 
@@ -290,7 +290,7 @@ let ``script tag should work`` () =
 
 [<Fact>]
 let ``Yield RenderFragment directly`` () =
-    let context = createTestContext ()
+    let context = createBunitContext ()
 
     let demo =
         div.create [|
@@ -309,7 +309,7 @@ let ``Yield RenderFragment directly`` () =
 
 [<Fact>]
 let ``Sections should work`` () =
-    let context = createTestContext ()
+    let context = createBunitContext ()
 
     let demo =
         div.create [|
@@ -343,7 +343,7 @@ let ``Sections should work`` () =
 
 [<Fact>]
 let ``for loop should work for element`` () =
-    let context = createTestContext ()
+    let context = createBunitContext ()
 
     let demo = div {
         for i in 1..3 do
@@ -364,7 +364,7 @@ let ``for loop should work for element`` () =
 
 [<Fact>]
 let ``should work for component`` () =
-    let context = createTestContext ()
+    let context = createBunitContext ()
 
     let demo = MudPaper'() {
         class' "p-2"
@@ -387,7 +387,7 @@ let ``should work for component`` () =
 
 [<Fact>]
 let ``for loop should work for component`` () =
-    let context = createTestContext ()
+    let context = createBunitContext ()
 
     let demo = MudCard'() {
         for i in 1..3 do
@@ -410,7 +410,7 @@ let ``for loop should work for component`` () =
 
 [<Fact>]
 let ``bool attribute should work for component`` () =
-    let context = createTestContext ()
+    let context = createBunitContext ()
 
     let demo = MudButton'' {
         Disabled
@@ -443,7 +443,7 @@ let ``bool attribute should work for component`` () =
 
 [<Fact>]
 let ``html blazor should work with ComponentAttrBuilder`` () =
-    let context = createTestContext ()
+    let context = createBunitContext ()
 
     let demo =
         html.blazor (ComponentAttrBuilder<MudPaper>().Add((fun x -> x.Elevation), 10).Add((fun x -> x.Outlined), true))
@@ -458,7 +458,7 @@ let ``html blazor should work with ComponentAttrBuilder`` () =
 
 [<Fact>]
 let ``support yield seq`` () =
-    let context = createTestContext ()
+    let context = createBunitContext ()
 
     let demo = div {
         [|
@@ -510,7 +510,7 @@ let ``renderAsString should work`` () = task {
 
 [<Fact>]
 let ``empty body ce should work`` () =
-    let context = createTestContext ()
+    let context = createBunitContext ()
 
     let demo = MudButton'' { }
 
@@ -576,7 +576,7 @@ let ``empty body ce should work`` () =
 
 [<Fact>]
 let ``form should work`` () =
-    let context = createTestContext ()
+    let context = createBunitContext ()
 
     let demo = form {
         dataEnhance true
@@ -596,7 +596,7 @@ let ``form should work`` () =
 
 [<Fact>]
 let ``ComponentAttrBuilder should yield correctly`` () =
-    let context = createTestContext ()
+    let context = createBunitContext ()
 
     let demo = MudPaper'' {
         ComponentAttrBuilder<MudPaper>().Add((fun x -> x.Height), "200px").Add((fun x -> x.Outlined), true)

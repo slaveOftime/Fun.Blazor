@@ -9,12 +9,12 @@ open Fun.Blazor
 open Fun.Blazor.Operators
 
 
-let private createTestContext () =  new TestContext()
+let private createBunitContext () =  new BunitContext()
 
 
 [<Fact>]
 let ``ref should work for element`` () =
-    let context = createTestContext ()
+    let context = createBunitContext ()
 
     let mutable i = 0
 
@@ -64,7 +64,7 @@ let ``ref should work for element`` () =
 
 [<Fact>]
 let ``ref should work for component`` () =
-    let context = createTestContext ()
+    let context = createBunitContext ()
 
     let mutable i = 0
 
@@ -127,7 +127,7 @@ let ``ref should work for component`` () =
 
 [<Fact>]
 let ``ref and renderMode should work for component`` () =
-    let context = createTestContext ()
+    let context = createBunitContext ()
 
     let mutable i = 0
 
@@ -195,7 +195,7 @@ let ``ref and renderMode should work for component`` () =
 
 [<Fact>]
 let ``renderMode should work for component`` () =
-    let context = createTestContext ()
+    let context = createBunitContext ()
 
     let demo = MudButton'() {
         interactiveServer
@@ -239,7 +239,7 @@ let ``renderMode should work for component`` () =
 
 [<Fact>]
 let ``renderMode should work for component without attrs`` () =
-    let context = createTestContext ()
+    let context = createBunitContext ()
 
     let demo = CascadingValue'() {
         Value 1
@@ -251,7 +251,7 @@ let ``renderMode should work for component without attrs`` () =
 
 [<Fact>]
 let ``renderMode should work for html blazor`` () =
-    let context = createTestContext ()
+    let context = createBunitContext ()
 
     let demo = html.blazor<CascadingValue<int>>(RenderMode.InteractiveServer, attr = (nameof(Unchecked.defaultof<CascadingValue<int>>.Value) => 123))
 

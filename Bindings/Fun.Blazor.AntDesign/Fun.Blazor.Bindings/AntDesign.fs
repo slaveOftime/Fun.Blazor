@@ -229,11 +229,7 @@ type SimpleTableHeaderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micros
 type ColumnBuilder<'FunBlazorGeneric, 'TData when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ColumnBaseBuilder<'FunBlazorGeneric>()
     [<CustomOperation("FieldExpression")>] member inline _.FieldExpression ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Linq.Expressions.Expression<System.Func<'TData>>) = render ==> ("FieldExpression" => x)
-    [<CustomOperation("FilterDropdown")>] member inline _.FilterDropdown ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("FilterDropdown", fragment)
-    [<CustomOperation("FilterDropdown")>] member inline _.FilterDropdown ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("FilterDropdown", fragment { yield! fragments })
-    [<CustomOperation("FilterDropdown")>] member inline _.FilterDropdown ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("FilterDropdown", html.text x)
-    [<CustomOperation("FilterDropdown")>] member inline _.FilterDropdown ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("FilterDropdown", html.text x)
-    [<CustomOperation("FilterDropdown")>] member inline _.FilterDropdown ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("FilterDropdown", html.text x)
+    [<CustomOperation("FilterDropdown")>] member inline _.FilterDropdown ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: AntDesign.Filters.TableFilterDropdownContext -> NodeRenderFragment) = render ==> html.renderFragment("FilterDropdown", fn)
     [<CustomOperation("Field")>] member inline _.Field ([<InlineIfLambda>] render: AttrRenderFragment, x: 'TData) = render ==> ("Field" => x)
     [<CustomOperation("Field'")>] member inline _.Field' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: 'TData * ('TData -> unit)) = render ==> html.bind("Field", valueFn)
     [<CustomOperation("FieldChanged")>] member inline _.FieldChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: 'TData -> unit) = render ==> html.callback("FieldChanged", fn)
@@ -624,6 +620,8 @@ type TabsBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCor
     [<CustomOperation("Centered")>] member inline _.Centered ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Centered" =>>> x)
     [<CustomOperation("StandaloneInCard")>] member inline _.StandaloneInCard ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("StandaloneInCard" =>>> true)
     [<CustomOperation("StandaloneInCard")>] member inline _.StandaloneInCard ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("StandaloneInCard" =>>> x)
+    [<CustomOperation("EnableSwipe")>] member inline _.EnableSwipe ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("EnableSwipe" =>>> true)
+    [<CustomOperation("EnableSwipe")>] member inline _.EnableSwipe ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("EnableSwipe" =>>> x)
 
 type ReuseTabsBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit TabsBuilder<'FunBlazorGeneric>()
@@ -807,7 +805,7 @@ type BadgeBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCo
     [<CustomOperation("Status")>] member inline _.Status ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<AntDesign.BadgeStatus>) = render ==> ("Status" => x)
     [<CustomOperation("Text")>] member inline _.Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Text" => x)
     [<CustomOperation("Title")>] member inline _.Title ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
-    [<CustomOperation("Size")>] member inline _.Size ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<BadgeSize>) = render ==> ("Size" => x)
+    [<CustomOperation("Size")>] member inline _.Size ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<AntDesign.BadgeSize>) = render ==> ("Size" => x)
 
 type BadgeRibbonBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit AntDomComponentBaseBuilder<'FunBlazorGeneric>()
@@ -908,6 +906,8 @@ type CarouselBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNe
     [<CustomOperation("Dots")>] member inline _.Dots ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Dots" =>>> true)
     [<CustomOperation("Dots")>] member inline _.Dots ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Dots" =>>> x)
     [<CustomOperation("DotsClass")>] member inline _.DotsClass ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("DotsClass" => x)
+    [<CustomOperation("EnableSwipe")>] member inline _.EnableSwipe ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("EnableSwipe" =>>> true)
+    [<CustomOperation("EnableSwipe")>] member inline _.EnableSwipe ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("EnableSwipe" =>>> x)
 
 type CarouselSlickBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit AntDomComponentBaseBuilder<'FunBlazorGeneric>()
@@ -1911,6 +1911,8 @@ type MentionsBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNe
     [<CustomOperation("LoadOptions")>] member inline _.LoadOptions ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("LoadOptions" => (System.Func<System.String, System.Threading.CancellationToken, System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<AntDesign.MentionsDynamicOption>>>fn))
     [<CustomOperation("TextareaTemplate")>] member inline _.TextareaTemplate ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: AntDesign.MentionsTextareaTemplateOptions -> NodeRenderFragment) = render ==> html.renderFragment("TextareaTemplate", fn)
     [<CustomOperation("Prefix")>] member inline _.Prefix ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Prefix" => x)
+    [<CustomOperation("OnSearch")>] member inline _.OnSearch ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.ValueTuple<System.String, System.String> -> unit) = render ==> html.callback("OnSearch", fn)
+    [<CustomOperation("OnSearch")>] member inline _.OnSearch ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.ValueTuple<System.String, System.String> -> Task<unit>) = render ==> html.callbackTask("OnSearch", fn)
 
 type MentionsOptionBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit AntDomComponentBaseBuilder<'FunBlazorGeneric>()
@@ -2418,6 +2420,7 @@ type SelectOptionBuilder<'FunBlazorGeneric, 'TItemValue, 'TItem when 'FunBlazorG
     [<CustomOperation("Label")>] member inline _.Label ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Label" => x)
     [<CustomOperation("Value")>] member inline _.Value ([<InlineIfLambda>] render: AttrRenderFragment, x: 'TItemValue) = render ==> ("Value" => x)
     [<CustomOperation("Item")>] member inline _.Item ([<InlineIfLambda>] render: AttrRenderFragment, x: 'TItem) = render ==> ("Item" => x)
+    [<CustomOperation("ChildContent")>] member inline _.ChildContent ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: 'TItem -> NodeRenderFragment) = render ==> html.renderFragment("ChildContent", fn)
 
 type SimpleSelectOptionBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit SelectOptionBuilder<'FunBlazorGeneric, System.String, System.String>()
@@ -3002,6 +3005,9 @@ type UploadBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetC
     [<CustomOperation("BatchUpload")>] member inline _.BatchUpload ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("BatchUpload" =>>> x)
     [<CustomOperation("WithCredentials")>] member inline _.WithCredentials ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("WithCredentials" =>>> true)
     [<CustomOperation("WithCredentials")>] member inline _.WithCredentials ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("WithCredentials" =>>> x)
+    [<CustomOperation("Defer")>] member inline _.Defer ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Defer" =>>> true)
+    [<CustomOperation("Defer")>] member inline _.Defer ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Defer" =>>> x)
+    [<CustomOperation("Trigger")>] member inline _.Trigger ([<InlineIfLambda>] render: AttrRenderFragment, x: AntDesign.UploadTrigger) = render ==> ("Trigger" => x)
 
 type WatermarkBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit AntDomComponentBaseBuilder<'FunBlazorGeneric>()

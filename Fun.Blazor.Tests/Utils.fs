@@ -10,7 +10,7 @@ open Fun.Blazor
 type FunBlazorTestExtensions =
 
     [<Extension>]
-    static member RenderNode(ctx: TestContext, node: NodeRenderFragment) =
-        ctx.RenderComponent(fun (parameters: ComponentParameterCollectionBuilder<FunFragmentComponent>) ->
+    static member RenderNode(ctx: BunitContext, node: NodeRenderFragment) =
+        ctx.Render(fun (parameters: ComponentParameterCollectionBuilder<FunFragmentComponent>) ->
             parameters.Add((fun p -> p.Fragment), node) |> ignore
         )

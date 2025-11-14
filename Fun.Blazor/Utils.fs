@@ -53,11 +53,11 @@ module Internal =
     /// Please do not depend on this type, it maybe renamed in the future
     [<Struct>]
     type AttrRenderFragmentWrapper = | AttrRenderFragmentWrapper of AttrRenderFragment
-    
+
 
     type ILogger with
 
-        member inline this.LogDebugForPerf fn =
+        member inline this.LogDebugForPerf([<InlineIfLambda>] fn) =
 #if DEBUG
             let sw = Stopwatch.StartNew()
             this.LogDebug($"Function started")

@@ -30,7 +30,7 @@ let ``should be able to test hook service`` () =
     moq.Setup(fun x -> x.InitDemoData())
     moq.SetupGet(fun x -> x.DemoData).Returns(cval "from test")
 
-    let context = new TestContext()
+    let context = new BunitContext()
     context.Services.AddHookService(fun _ -> moq.Object)
 
     let comp =

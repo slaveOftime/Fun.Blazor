@@ -6,31 +6,44 @@ open Fun.Blazor
 open Fun.Blazor.Operators
 open Radzen.Blazor.DslInternals
 
-/// Base class of Radzen Blazor components.
-///             
+/// Base class for all Radzen Blazor components providing common functionality for styling, attributes, events, and lifecycle management.
+/// All Radzen components inherit from RadzenComponent to gain standard features like visibility control, custom attributes, mouse events, and disposal.
+/// Provides foundational functionality including visibility control via Visible property, custom CSS via Style property and class via Attributes,
+/// HTML attribute passing via unmatched parameters, MouseEnter/MouseLeave/ContextMenu event callbacks, localization support for numbers/dates/text,
+/// access to the rendered HTML element via Element Reference, and proper cleanup via IDisposable pattern.
+/// Components inheriting from RadzenComponent can override GetComponentCssClass() to provide their base CSS classes and use the protected Visible property to control rendering.
 type RadzenComponentBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
-    /// Specifies additional custom attributes that will be rendered by the component.
+    /// Gets or sets a dictionary of additional HTML attributes that will be applied to the component's root element.
+    /// Any attributes not explicitly defined as parameters will be captured here and rendered on the element.
+    /// Use this to add data-* attributes, ARIA attributes, or any custom HTML attributes.
     [<CustomOperation("Attributes")>] member inline _.Attributes ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>) = render ==> ("Attributes" => x)
-    /// A callback that will be invoked when the user hovers the component. Commonly used to display a tooltip via 
-    /// Open.
+    /// Gets or sets the callback invoked when the mouse pointer enters the component's bounds.
+    /// Commonly used with TooltipService to display tooltips on hover.
+    /// Receives the component's ElementReference as a parameter.
     [<CustomOperation("MouseEnter")>] member inline _.MouseEnter ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.ElementReference -> unit) = render ==> html.callback("MouseEnter", fn)
-    /// A callback that will be invoked when the user hovers the component. Commonly used to display a tooltip via 
-    /// Open.
+    /// Gets or sets the callback invoked when the mouse pointer enters the component's bounds.
+    /// Commonly used with TooltipService to display tooltips on hover.
+    /// Receives the component's ElementReference as a parameter.
     [<CustomOperation("MouseEnter")>] member inline _.MouseEnter ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.ElementReference -> Task<unit>) = render ==> html.callbackTask("MouseEnter", fn)
-    /// A callback that will be invoked when the user moves the mouse out of the component. Commonly used to hide a tooltip via 
-    /// Close.
+    /// Gets or sets the callback invoked when the mouse pointer leaves the component's bounds.
+    /// Commonly used with TooltipService to hide tooltips when hover ends.
+    /// Receives the component's ElementReference as a parameter.
     [<CustomOperation("MouseLeave")>] member inline _.MouseLeave ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.ElementReference -> unit) = render ==> html.callback("MouseLeave", fn)
-    /// A callback that will be invoked when the user moves the mouse out of the component. Commonly used to hide a tooltip via 
-    /// Close.
+    /// Gets or sets the callback invoked when the mouse pointer leaves the component's bounds.
+    /// Commonly used with TooltipService to hide tooltips when hover ends.
+    /// Receives the component's ElementReference as a parameter.
     [<CustomOperation("MouseLeave")>] member inline _.MouseLeave ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.ElementReference -> Task<unit>) = render ==> html.callbackTask("MouseLeave", fn)
-    /// A callback that will be invoked when the user right-clicks the component. Commonly used to display a context menu via 
-    /// Open.
+    /// Gets or sets the callback invoked when the user right-clicks the component.
+    /// Commonly used with ContextMenuService to display context menus.
+    /// Receives mouse event arguments containing click position.
     [<CustomOperation("ContextMenu")>] member inline _.ContextMenu ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> unit) = render ==> html.callback("ContextMenu", fn)
-    /// A callback that will be invoked when the user right-clicks the component. Commonly used to display a context menu via 
-    /// Open.
+    /// Gets or sets the callback invoked when the user right-clicks the component.
+    /// Commonly used with ContextMenuService to display context menus.
+    /// Receives mouse event arguments containing click position.
     [<CustomOperation("ContextMenu")>] member inline _.ContextMenu ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> Task<unit>) = render ==> html.callbackTask("ContextMenu", fn)
-    /// Gets or sets the culture used to display localizable data (numbers, dates). Set by default to CurrentCulture.
+    /// Gets or sets the culture used for formatting and parsing localizable data (numbers, dates, currency).
+    /// If not set, uses the DefaultCulture from a parent component or falls back to CurrentCulture.
     [<CustomOperation("Culture")>] member inline _.Culture ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Globalization.CultureInfo) = render ==> ("Culture" => x)
     /// Gets or sets a value indicating whether this RadzenComponent is visible. Invisible components are not rendered.
     [<CustomOperation("Visible")>] member inline _.Visible ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Visible" =>>> true)
@@ -59,54 +72,98 @@ open Fun.Blazor
 open Fun.Blazor.Operators
 open Radzen.Blazor.DslInternals
 
-/// RadzenCard component.
+/// A flexbox row container component that horizontally arranges RadzenColumn components in a responsive 12-column grid layout.
+/// RadzenRow provides gap spacing, alignment, and justification controls for creating flexible, responsive page layouts.
+/// Serves as a container for RadzenColumn components, creating a horizontal flexbox layout where columns automatically wrap to the next line when their combined Size values exceed 12.
+/// Supports Gap and RowGap properties for spacing between columns and wrapped rows, AlignItems for vertical alignment (start, center, end, stretch, baseline),
+/// JustifyContent for horizontal distribution (start, center, end, space-between, space-around), and works seamlessly with RadzenColumn's breakpoint-specific sizing.
+/// Use AlignItems and JustifyContent from the base RadzenFlexComponent to control layout behavior.
 type RadzenRowBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit RadzenFlexComponentBuilder<'FunBlazorGeneric>()
-    /// Gets or sets the gap.
+    /// Gets or sets the spacing between columns within the row.
+    /// Accepts CSS length values (e.g., "1rem", "16px", "2em") or unitless numbers (interpreted as pixels).
+    /// This sets the horizontal gap between column elements.
     [<CustomOperation("Gap")>] member inline _.Gap ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Gap" => x)
-    /// Gets or sets the row gap.
+    /// Gets or sets the vertical spacing between wrapped rows when columns wrap to multiple lines.
+    /// Accepts CSS length values (e.g., "1rem", "16px", "2em") or unitless numbers (interpreted as pixels).
+    /// Only applicable when columns wrap due to exceeding the 12-column limit.
     [<CustomOperation("RowGap")>] member inline _.RowGap ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("RowGap" => x)
 
-/// RadzenStack component.
+/// A flexbox container component that arranges child elements in a vertical or horizontal stack with configurable spacing and alignment.
+/// RadzenStack provides a simpler alternative to RadzenRow/RadzenColumn for linear layouts without the 12-column grid constraint.
+/// Ideal for creating simple vertical or horizontal layouts without needing a grid system. Unlike RadzenRow/RadzenColumn which uses a 12-column grid, Stack arranges children linearly with equal spacing.
+/// Features Vertical (column) or Horizontal (row) orientation, consistent gap spacing between child elements, AlignItems for cross-axis alignment and JustifyContent for main-axis distribution,
+/// option to reverse the order of children, and control whether children wrap to new lines or stay in a single line.
+/// Use for simpler layouts like button groups, form field stacks, or toolbar arrangements.
 type RadzenStackBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit RadzenFlexComponentBuilder<'FunBlazorGeneric>()
-    /// Gets or sets the wrap.
+    /// Gets or sets the flex wrap behavior controlling whether child elements wrap to new lines when they don't fit.
+    /// NoWrap keeps all children on one line (may cause overflow), Wrap allows wrapping to multiple lines.
     [<CustomOperation("Wrap")>] member inline _.Wrap ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.FlexWrap) = render ==> ("Wrap" => x)
-    /// Gets or sets the orientation.
+    /// Gets or sets the stack direction: Vertical arranges children top-to-bottom, Horizontal arranges left-to-right.
+    /// This determines the main axis direction for the flexbox layout.
     [<CustomOperation("Orientation")>] member inline _.Orientation ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Orientation) = render ==> ("Orientation" => x)
-    /// Gets or sets the spacing
+    /// Gets or sets the spacing between child elements in the stack.
+    /// Accepts CSS length values (e.g., "1rem", "16px", "2em") or unitless numbers (interpreted as pixels).
+    /// The gap applies uniformly between all adjacent children.
     [<CustomOperation("Gap")>] member inline _.Gap ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Gap" => x)
-    /// Gets or sets the reverse
+    /// Gets or sets whether to reverse the display order of child elements.
+    /// When true, children are displayed in reverse order (bottom-to-top for vertical, right-to-left for horizontal).
+    /// Useful for visual reordering without changing markup order.
     [<CustomOperation("Reverse")>] member inline _.Reverse ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Reverse" =>>> true)
-    /// Gets or sets the reverse
+    /// Gets or sets whether to reverse the display order of child elements.
+    /// When true, children are displayed in reverse order (bottom-to-top for vertical, right-to-left for horizontal).
+    /// Useful for visual reordering without changing markup order.
     [<CustomOperation("Reverse")>] member inline _.Reverse ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Reverse" =>>> x)
 
-/// RadzenAlert component.
+/// An alert/notification box component for displaying important messages with semantic colors and optional close functionality.
+/// RadzenAlert provides contextual feedback messages for Success, Info, Warning, Error, and other notification scenarios.
+/// Supports semantic styles (Info, Success, Warning, Danger) for contextual coloring, variants (Filled, Flat, Outlined, Text), 
+/// automatic contextual icons or custom icons via Icon property, optional close button via AllowClose for dismissible alerts,
+/// sizes (ExtraSmall, Small, Medium, Large), and content via Title/Text properties or rich content via ChildContent.
+/// Automatically displays appropriate icons based on AlertStyle (checkmark for Success, warning triangle for Warning, etc.) unless ShowIcon is set to false or a custom Icon is provided.
 type RadzenAlertBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit RadzenComponentWithChildrenBuilder<'FunBlazorGeneric>()
-    /// Gets or sets a value indicating whether close is allowed. Set to true by default.
+    /// Gets or sets whether the alert can be dismissed by showing a close button.
+    /// When enabled, a small X button appears in the top-right corner allowing users to close the alert.
+    /// Handle the Close event to perform actions when the alert is dismissed.
     [<CustomOperation("AllowClose")>] member inline _.AllowClose ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AllowClose" =>>> true)
-    /// Gets or sets a value indicating whether close is allowed. Set to true by default.
+    /// Gets or sets whether the alert can be dismissed by showing a close button.
+    /// When enabled, a small X button appears in the top-right corner allowing users to close the alert.
+    /// Handle the Close event to perform actions when the alert is dismissed.
     [<CustomOperation("AllowClose")>] member inline _.AllowClose ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("AllowClose" =>>> x)
-    /// Gets or sets a value indicating whether icon should be shown. Set to true by default.
+    /// Gets or sets whether to display the contextual icon based on the AlertStyle.
+    /// When true, shows an appropriate icon (checkmark for Success, info icon for Info, warning for Warning, etc.).
+    /// Set to false to hide the icon, or provide a custom icon via the Icon property.
     [<CustomOperation("ShowIcon")>] member inline _.ShowIcon ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowIcon" =>>> true)
-    /// Gets or sets a value indicating whether icon should be shown. Set to true by default.
+    /// Gets or sets whether to display the contextual icon based on the AlertStyle.
+    /// When true, shows an appropriate icon (checkmark for Success, info icon for Info, warning for Warning, etc.).
+    /// Set to false to hide the icon, or provide a custom icon via the Icon property.
     [<CustomOperation("ShowIcon")>] member inline _.ShowIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowIcon" =>>> x)
-    /// Gets or sets the title.
+    /// Gets or sets the title text displayed prominently at the top of the alert.
+    /// Use this for the main alert heading, with additional details in Text or custom content via ChildContent.
     [<CustomOperation("Title")>] member inline _.Title ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
-    /// Gets or sets the text of the alert. Overriden by ChildContent.
+    /// Gets or sets the body text of the alert.
+    /// This appears below the title as the main alert message. Overridden by ChildContent if custom content is provided.
     [<CustomOperation("Text")>] member inline _.Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Text" => x)
-    /// Gets or sets the icon.
+    /// Gets or sets a custom Material icon name to display instead of the default contextual icon.
+    /// Overrides the automatic icon selection based on AlertStyle.
+    /// Use Material Symbols icon names (e.g., "info", "warning", "check_circle").
     [<CustomOperation("Icon")>] member inline _.Icon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Icon" => x)
-    /// Gets or sets the icon color.
+    /// Gets or sets a custom color for the alert icon.
+    /// Supports any valid CSS color value. If not set, the icon color matches the alert's semantic style.
     [<CustomOperation("IconColor")>] member inline _.IconColor ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("IconColor" => x)
-    /// Gets or sets the severity.
+    /// Gets or sets the semantic style/severity of the alert.
+    /// Determines the color scheme and default icon: Info (blue), Success (green), Warning (orange), Danger (red), etc.
     [<CustomOperation("AlertStyle")>] member inline _.AlertStyle ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.AlertStyle) = render ==> ("AlertStyle" => x)
-    /// Gets or sets the design variant of the alert.
+    /// Gets or sets the design variant that controls the alert's visual appearance.
+    /// Options include Filled (solid background), Flat (subtle background), Outlined (border only), and Text (minimal styling).
     [<CustomOperation("Variant")>] member inline _.Variant ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Variant) = render ==> ("Variant" => x)
-    /// Gets or sets the color shade of the alert.
+    /// Gets or sets the color intensity shade for the alert.
+    /// Works in combination with AlertStyle to adjust the color darkness/lightness.
     [<CustomOperation("Shade")>] member inline _.Shade ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Shade) = render ==> ("Shade" => x)
-    /// Gets or sets the size.
+    /// Gets or sets the size of the alert component.
+    /// Controls the padding, font size, and icon size within the alert.
     [<CustomOperation("Size")>] member inline _.Size ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.AlertSize) = render ==> ("Size" => x)
     /// Gets or sets the callback which is invoked when the alert is shown or hidden.
     [<CustomOperation("VisibleChanged")>] member inline _.VisibleChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> unit) = render ==> html.callback("VisibleChanged", fn)
@@ -131,16 +188,30 @@ type RadzenBodyBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.Asp
     /// Gets or sets a callback raised when the component is expanded or collapsed.
     [<CustomOperation("ExpandedChanged")>] member inline _.ExpandedChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("ExpandedChanged", fn)
 
-/// A component to display a Bread Crumb style menu
+/// A breadcrumb navigation component that displays the current page's location within the application hierarchy.
+/// RadzenBreadCrumb shows a trail of links representing the path from the root to the current page, helping users understand their location and navigate back.
+/// Provides secondary navigation with items separated by a visual divider (typically ">"), with each item linking to its respective page.
+/// Common uses include multi-level navigation indicating current location, e-commerce category navigation (Home > Electronics > Laptops), documentation section paths, and file system or folder navigation.
+/// Items are defined using RadzenBreadCrumbItem components as child content.
+/// The last item typically represents the current page and is often not clickable.
 type RadzenBreadCrumbBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit RadzenComponentWithChildrenBuilder<'FunBlazorGeneric>()
-    /// An optional RenderFragment that is rendered per Item
+    /// Gets or sets a custom template for rendering breadcrumb items.
+    /// When set, this template is used instead of the default rendering for each item, allowing complete control over item appearance.
+    /// The template receives a RadzenBreadCrumbItem as context.
     [<CustomOperation("Template")>] member inline _.Template ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.Blazor.RadzenBreadCrumbItem -> NodeRenderFragment) = render ==> html.renderFragment("Template", fn)
 
-/// RadzenCard component.
+/// A card container component that groups related content with a consistent visual design and optional elevation.
+/// RadzenCard provides a versatile styled container for displaying information, images, actions, and other content in a structured format.
+/// Supports different visual variants (Filled, Flat, Outlined, Text) that affect the card's appearance.
+/// Works well in grid layouts (using RadzenRow/RadzenColumn) or can be stacked vertically.
+/// Ideal for grouping related information, creating dashboard widgets, displaying product information, or organizing form sections.
+/// Combine with other Radzen components like RadzenImage, RadzenText, and RadzenButton for rich card content.
 type RadzenCardBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit RadzenComponentWithChildrenBuilder<'FunBlazorGeneric>()
-    /// Gets or sets the card variant.
+    /// Gets or sets the visual design variant of the card.
+    /// Controls the card's appearance: Filled (solid background with elevation), Flat (subtle background), 
+    /// Outlined (border only), or Text (minimal styling).
     [<CustomOperation("Variant")>] member inline _.Variant ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Variant) = render ==> ("Variant" => x)
 
 /// RadzenCardGroup component.
@@ -153,50 +224,65 @@ type RadzenCardGroupBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsof
     /// expanded on larger displays and collapsed on touch devices. Set to false if you want to disable this behavior.
     [<CustomOperation("Responsive")>] member inline _.Responsive ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Responsive" =>>> x)
 
-/// RadzenColumn component.
+/// A responsive grid column component used within RadzenRow to create flexible, responsive layouts based on a 12-column grid system.
+/// RadzenColumn provides breakpoint-specific sizing, offsetting, and ordering capabilities for building adaptive interfaces.
+/// Must be used inside a RadzenRow component. The column width is specified as a value from 1-12, representing the number of grid columns to span.
+/// Supports responsive design through breakpoint-specific properties including Size for default column width (1-12), SizeXS/SM/MD/LG/XL/XX for breakpoint-specific widths,
+/// Offset for number of columns to skip before this column (creates left margin), OffsetXS/SM/MD/LG/XL/XX for breakpoint-specific offsets,
+/// Order to control visual order of columns (useful for reordering on different screen sizes), and OrderXS/SM/MD/LG/XL/XX for breakpoint-specific ordering.
+/// Columns automatically fill available space when no size is specified, and wrap to new lines when the total exceeds 12.
 type RadzenColumnBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit RadzenComponentWithChildrenBuilder<'FunBlazorGeneric>()
-    /// Gets or sets the size.
+    /// Gets or sets the default column width as a value from 1-12 in the grid system.
+    /// If not specified, the column will automatically expand to fill available space.
     [<CustomOperation("Size")>] member inline _.Size ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("Size" => x)
-    /// Gets or sets the XS size.
+    /// Gets or sets the column width for extra small screens (breakpoint < 576px).
+    /// Overrides the default Size on mobile devices.
     [<CustomOperation("SizeXS")>] member inline _.SizeXS ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("SizeXS" => x)
-    /// Gets or sets the SM size.
+    /// Gets or sets the column width for small screens (breakpoint ≥ 576px).
+    /// Overrides the default Size on small tablets and larger devices.
     [<CustomOperation("SizeSM")>] member inline _.SizeSM ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("SizeSM" => x)
-    /// Gets or sets the MD size.
+    /// Gets or sets the column width for medium screens (breakpoint ≥ 768px).
+    /// Overrides the default Size on tablets and larger devices.
     [<CustomOperation("SizeMD")>] member inline _.SizeMD ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("SizeMD" => x)
-    /// Gets or sets the LG size.
+    /// Gets or sets the column width for large screens (breakpoint ≥ 1024px).
+    /// Overrides the default Size on desktops and larger devices.
     [<CustomOperation("SizeLG")>] member inline _.SizeLG ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("SizeLG" => x)
-    /// Gets or sets the XL size.
+    /// Gets or sets the column width for extra large screens (breakpoint ≥ 1280px).
+    /// Overrides the default Size on large desktops and larger devices.
     [<CustomOperation("SizeXL")>] member inline _.SizeXL ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("SizeXL" => x)
-    /// Gets or sets the XX size.
+    /// Gets or sets the column width for extra extra large screens (breakpoint ≥ 1536px).
+    /// Overrides the default Size on very large displays.
     [<CustomOperation("SizeXX")>] member inline _.SizeXX ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("SizeXX" => x)
-    /// Gets or sets the offset.
+    /// Gets or sets the number of columns to skip before this column (left margin spacing).
+    /// Creates empty space to the left by pushing the column to the right.
     [<CustomOperation("Offset")>] member inline _.Offset ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("Offset" => x)
-    /// Gets or sets the XS offset.
+    /// Gets or sets the offset for extra small screens (breakpoint < 576px).
     [<CustomOperation("OffsetXS")>] member inline _.OffsetXS ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("OffsetXS" => x)
-    /// Gets or sets the SM offset.
+    /// Gets or sets the offset for small screens (breakpoint ≥ 576px).
     [<CustomOperation("OffsetSM")>] member inline _.OffsetSM ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("OffsetSM" => x)
-    /// Gets or sets the MD offset.
+    /// Gets or sets the offset for medium screens (breakpoint ≥ 768px).
     [<CustomOperation("OffsetMD")>] member inline _.OffsetMD ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("OffsetMD" => x)
-    /// Gets or sets the LG offset.
+    /// Gets or sets the offset for large screens (breakpoint ≥ 1024px).
     [<CustomOperation("OffsetLG")>] member inline _.OffsetLG ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("OffsetLG" => x)
-    /// Gets or sets the XL offset.
+    /// Gets or sets the offset for extra large screens (breakpoint ≥ 1280px).
     [<CustomOperation("OffsetXL")>] member inline _.OffsetXL ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("OffsetXL" => x)
-    /// Gets or sets the XX offset.
+    /// Gets or sets the offset for extra extra large screens (breakpoint ≥ 1536px).
     [<CustomOperation("OffsetXX")>] member inline _.OffsetXX ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("OffsetXX" => x)
-    /// Gets or sets the order.
+    /// Gets or sets the visual display order of this column within its row.
+    /// Allows reordering columns without changing their position in markup. Values can be 0-12 or "first"/"last".
     [<CustomOperation("Order")>] member inline _.Order ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Order" => x)
-    /// Gets or sets the XS order.
+    /// Gets or sets the column order for extra small screens (breakpoint < 576px).
     [<CustomOperation("OrderXS")>] member inline _.OrderXS ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("OrderXS" => x)
-    /// Gets or sets the SM order.
+    /// Gets or sets the column order for small screens (breakpoint ≥ 576px).
     [<CustomOperation("OrderSM")>] member inline _.OrderSM ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("OrderSM" => x)
-    /// Gets or sets the MD order.
+    /// Gets or sets the column order for medium screens (breakpoint ≥ 768px).
     [<CustomOperation("OrderMD")>] member inline _.OrderMD ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("OrderMD" => x)
-    /// Gets or sets the LG order.
+    /// Gets or sets the column order for large screens (breakpoint ≥ 1024px).
     [<CustomOperation("OrderLG")>] member inline _.OrderLG ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("OrderLG" => x)
-    /// Gets or sets the XL order.
+    /// Gets or sets the column order for extra large screens (breakpoint ≥ 1280px).
     [<CustomOperation("OrderXL")>] member inline _.OrderXL ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("OrderXL" => x)
-    /// Gets or sets the XX order.
+    /// Gets or sets the column order for extra extra large screens (breakpoint ≥ 1536px).
     [<CustomOperation("OrderXX")>] member inline _.OrderXX ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("OrderXX" => x)
 
 /// RadzenContent component.
@@ -260,33 +346,57 @@ type RadzenHeaderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.A
     inherit RadzenComponentWithChildrenBuilder<'FunBlazorGeneric>()
 
 
-/// RadzenImage component.
+/// An image display component that renders images from various sources including URLs, base64 data, or application assets.
+/// RadzenImage provides a simple wrapper for HTML img elements with click event support and alternate text for accessibility.
+/// Can display images from file paths (relative or absolute URLs to image files), external URLs (full HTTP/HTTPS URLs to remote images),
+/// base64 data (data URLs with embedded image data, e.g., from file uploads or database BLOBs), and application assets (images from wwwroot or other application folders).
+/// Use AlternateText to provide descriptive text for screen readers and when images fail to load.
+/// The Click event can be used to make images interactive (e.g., opening lightboxes or navigating).
+/// Combine with CSS (via Style or class attributes) for sizing, borders, shadows, and other visual effects.
 type RadzenImageBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit RadzenComponentWithChildrenBuilder<'FunBlazorGeneric>()
-    /// Gets or sets the path.
+    /// Gets or sets the image source path or URL.
+    /// Supports file paths (relative or absolute), external URLs, or data URLs with base64-encoded images.
     [<CustomOperation("Path")>] member inline _.Path ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Path" => x)
-    /// Gets or sets the text.
+    /// Gets or sets the alternate text describing the image for accessibility and when the image fails to load.
+    /// This text is read by screen readers and displayed if the image cannot be shown.
+    /// Always provide descriptive alternate text for better accessibility.
     [<CustomOperation("AlternateText")>] member inline _.AlternateText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("AlternateText" => x)
-    /// Gets or sets the click callback.
+    /// Gets or sets the callback invoked when the image is clicked.
+    /// Use this to make images interactive, such as opening modal viewers, navigating, or triggering actions.
     [<CustomOperation("Click")>] member inline _.Click ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> unit) = render ==> html.callback("Click", fn)
-    /// Gets or sets the click callback.
+    /// Gets or sets the callback invoked when the image is clicked.
+    /// Use this to make images interactive, such as opening modal viewers, navigating, or triggering actions.
     [<CustomOperation("Click")>] member inline _.Click ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> Task<unit>) = render ==> html.callbackTask("Click", fn)
 
-/// RadzenLayout component.
+/// A layout container component that defines the overall structure of a Blazor application with header, sidebar, body, and footer sections.
+/// RadzenLayout is typically used in MainLayout.razor to create a consistent page structure with optional collapsible sidebar and theme integration.
+/// Works with companion components: RadzenHeader, RadzenSidebar, RadzenBody, and RadzenFooter. Automatically integrates with ThemeService to apply theme-specific CSS classes.
+/// All sections are optional and can be used in any combination to create the desired page structure. The sidebar can be configured as collapsible, and the layout adjusts automatically when the sidebar expands or collapses.
 type RadzenLayoutBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit RadzenComponentWithChildrenBuilder<'FunBlazorGeneric>()
 
 
-/// RadzenMenu component.
+/// A horizontal menu component with support for nested submenus, icons, and responsive behavior.
+/// RadzenMenu provides a classic menu bar for navigation, typically used in application headers or toolbars.
+/// Displays menu items horizontally with dropdown submenus.
+/// Supports multi-level nested menus via RadzenMenuItem child items, automatic navigation via Path property or custom Click handlers,
+/// icons displayed alongside menu item text, responsive design that automatically collapses to a hamburger menu on small screens (configurable),
+/// click-to-open or hover-to-open interaction modes, keyboard navigation (Arrow keys, Enter, Escape) for accessibility, and visual separators between menu items.
+/// Use for application navigation bars, command menus, or toolbar-style interfaces. Menu items are defined using RadzenMenuItem components as child content.
 type RadzenMenuBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit RadzenComponentWithChildrenBuilder<'FunBlazorGeneric>()
-    /// Gets or sets a value indicating whether this RadzenMenu is responsive.
+    /// Gets or sets whether the menu should automatically collapse to a hamburger menu on small screens.
+    /// When enabled, displays a toggle button that expands/collapses the menu on mobile devices.
     [<CustomOperation("Responsive")>] member inline _.Responsive ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Responsive" =>>> true)
-    /// Gets or sets a value indicating whether this RadzenMenu is responsive.
+    /// Gets or sets whether the menu should automatically collapse to a hamburger menu on small screens.
+    /// When enabled, displays a toggle button that expands/collapses the menu on mobile devices.
     [<CustomOperation("Responsive")>] member inline _.Responsive ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Responsive" =>>> x)
-    /// Gets or sets a value indicating whether this RadzenMenu should open item on click or on hover.
+    /// Gets or sets the interaction mode for opening submenus.
+    /// When true, submenus open on click. When false, submenus open on hover (desktop) and click (touch devices).
     [<CustomOperation("ClickToOpen")>] member inline _.ClickToOpen ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ClickToOpen" =>>> true)
-    /// Gets or sets a value indicating whether this RadzenMenu should open item on click or on hover.
+    /// Gets or sets the interaction mode for opening submenus.
+    /// When true, submenus open on click. When false, submenus open on hover (desktop) and click (touch devices).
     [<CustomOperation("ClickToOpen")>] member inline _.ClickToOpen ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ClickToOpen" =>>> x)
     /// Gets or sets the click callback.
     [<CustomOperation("Click")>] member inline _.Click ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.MenuItemEventArgs -> unit) = render ==> html.callback("Click", fn)
@@ -295,60 +405,103 @@ type RadzenMenuBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.Asp
     /// Gets or sets the add button aria-label attribute.
     [<CustomOperation("ToggleAriaLabel")>] member inline _.ToggleAriaLabel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ToggleAriaLabel" => x)
 
-/// RadzenPanel component.
+/// A collapsible panel component with customizable header, content, summary, and footer sections.
+/// RadzenPanel provides an expandable/collapsible container for organizing and hiding content, ideal for settings panels, detail sections, or grouped information.
+/// Displays content in a structured container with optional collapsing functionality. When AllowCollapse is enabled, users can click the header to toggle the panel's expanded/collapsed state.
+/// Supports customizable header via HeaderTemplate/Text/Icon properties, main panel body via ChildContent, optional summary content shown when collapsed (SummaryTemplate),
+/// optional footer section (FooterTemplate), Collapsed property with two-way binding for programmatic control, and Expand/Collapse event callbacks.
+/// The header displays a collapse/expand icon when AllowCollapse is true, and users can click anywhere on the header to toggle.
 type RadzenPanelBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit RadzenComponentWithChildrenBuilder<'FunBlazorGeneric>()
-    /// Gets or sets a value indicating whether collapsing is allowed. Set to false by default.
+    /// Gets or sets whether the panel can be collapsed by clicking its header.
+    /// When enabled, a collapse/expand icon appears in the header, and clicking anywhere on the header toggles the panel state.
     [<CustomOperation("AllowCollapse")>] member inline _.AllowCollapse ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AllowCollapse" =>>> true)
-    /// Gets or sets a value indicating whether collapsing is allowed. Set to false by default.
+    /// Gets or sets whether the panel can be collapsed by clicking its header.
+    /// When enabled, a collapse/expand icon appears in the header, and clicking anywhere on the header toggles the panel state.
     [<CustomOperation("AllowCollapse")>] member inline _.AllowCollapse ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("AllowCollapse" =>>> x)
-    /// Gets or sets a value indicating whether this RadzenPanel is collapsed.
+    /// Gets or sets whether the panel is currently in a collapsed state.
+    /// When collapsed, the main content is hidden and only the header (and optional SummaryTemplate) are visible.
+    /// Use with @bind-Collapsed for two-way binding to programmatically control the panel state.
     [<CustomOperation("Collapsed")>] member inline _.Collapsed ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Collapsed" =>>> true)
-    /// Gets or sets a value indicating whether this RadzenPanel is collapsed.
+    /// Gets or sets whether the panel is currently in a collapsed state.
+    /// When collapsed, the main content is hidden and only the header (and optional SummaryTemplate) are visible.
+    /// Use with @bind-Collapsed for two-way binding to programmatically control the panel state.
     [<CustomOperation("Collapsed")>] member inline _.Collapsed ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Collapsed" =>>> x)
-    /// Gets or sets the icon.
+    /// Gets or sets the Material icon name displayed in the panel header before the text.
+    /// Use Material Symbols icon names (e.g., "settings", "info", "warning").
     [<CustomOperation("Icon")>] member inline _.Icon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Icon" => x)
-    /// Gets or sets the icon color.
+    /// Gets or sets a custom color for the header icon.
+    /// Supports any valid CSS color value. If not set, uses the theme's default icon color.
     [<CustomOperation("IconColor")>] member inline _.IconColor ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("IconColor" => x)
-    /// Gets or sets the text.
+    /// Gets or sets the text displayed in the panel header.
+    /// This appears as the panel title. For more complex headers, use HeaderTemplate instead.
     [<CustomOperation("Text")>] member inline _.Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Text" => x)
-    /// Gets or sets the header template.
+    /// Gets or sets the custom content for the panel header.
+    /// When set, overrides the default header rendering (Text and Icon properties are ignored).
+    /// Use this for complex headers with custom layouts, buttons, or other components.
     [<CustomOperation("HeaderTemplate")>] member inline _.HeaderTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("HeaderTemplate", fragment)
-    /// Gets or sets the header template.
+    /// Gets or sets the custom content for the panel header.
+    /// When set, overrides the default header rendering (Text and Icon properties are ignored).
+    /// Use this for complex headers with custom layouts, buttons, or other components.
     [<CustomOperation("HeaderTemplate")>] member inline _.HeaderTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("HeaderTemplate", fragment { yield! fragments })
-    /// Gets or sets the header template.
+    /// Gets or sets the custom content for the panel header.
+    /// When set, overrides the default header rendering (Text and Icon properties are ignored).
+    /// Use this for complex headers with custom layouts, buttons, or other components.
     [<CustomOperation("HeaderTemplate")>] member inline _.HeaderTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("HeaderTemplate", html.text x)
-    /// Gets or sets the header template.
+    /// Gets or sets the custom content for the panel header.
+    /// When set, overrides the default header rendering (Text and Icon properties are ignored).
+    /// Use this for complex headers with custom layouts, buttons, or other components.
     [<CustomOperation("HeaderTemplate")>] member inline _.HeaderTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("HeaderTemplate", html.text x)
-    /// Gets or sets the header template.
+    /// Gets or sets the custom content for the panel header.
+    /// When set, overrides the default header rendering (Text and Icon properties are ignored).
+    /// Use this for complex headers with custom layouts, buttons, or other components.
     [<CustomOperation("HeaderTemplate")>] member inline _.HeaderTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("HeaderTemplate", html.text x)
-    /// Gets or sets the summary template.
+    /// Gets or sets the summary content displayed when the panel is collapsed.
+    /// This optional content appears below the header in collapsed state, providing a preview or summary of the hidden content.
+    /// When the panel is expanded, this content is not displayed.
     [<CustomOperation("SummaryTemplate")>] member inline _.SummaryTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("SummaryTemplate", fragment)
-    /// Gets or sets the summary template.
+    /// Gets or sets the summary content displayed when the panel is collapsed.
+    /// This optional content appears below the header in collapsed state, providing a preview or summary of the hidden content.
+    /// When the panel is expanded, this content is not displayed.
     [<CustomOperation("SummaryTemplate")>] member inline _.SummaryTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("SummaryTemplate", fragment { yield! fragments })
-    /// Gets or sets the summary template.
+    /// Gets or sets the summary content displayed when the panel is collapsed.
+    /// This optional content appears below the header in collapsed state, providing a preview or summary of the hidden content.
+    /// When the panel is expanded, this content is not displayed.
     [<CustomOperation("SummaryTemplate")>] member inline _.SummaryTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("SummaryTemplate", html.text x)
-    /// Gets or sets the summary template.
+    /// Gets or sets the summary content displayed when the panel is collapsed.
+    /// This optional content appears below the header in collapsed state, providing a preview or summary of the hidden content.
+    /// When the panel is expanded, this content is not displayed.
     [<CustomOperation("SummaryTemplate")>] member inline _.SummaryTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("SummaryTemplate", html.text x)
-    /// Gets or sets the summary template.
+    /// Gets or sets the summary content displayed when the panel is collapsed.
+    /// This optional content appears below the header in collapsed state, providing a preview or summary of the hidden content.
+    /// When the panel is expanded, this content is not displayed.
     [<CustomOperation("SummaryTemplate")>] member inline _.SummaryTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("SummaryTemplate", html.text x)
-    /// Gets or sets the footer template.
+    /// Gets or sets the footer content displayed at the bottom of the panel.
+    /// This section appears below the main content and remains visible regardless of collapse state.
     [<CustomOperation("FooterTemplate")>] member inline _.FooterTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("FooterTemplate", fragment)
-    /// Gets or sets the footer template.
+    /// Gets or sets the footer content displayed at the bottom of the panel.
+    /// This section appears below the main content and remains visible regardless of collapse state.
     [<CustomOperation("FooterTemplate")>] member inline _.FooterTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("FooterTemplate", fragment { yield! fragments })
-    /// Gets or sets the footer template.
+    /// Gets or sets the footer content displayed at the bottom of the panel.
+    /// This section appears below the main content and remains visible regardless of collapse state.
     [<CustomOperation("FooterTemplate")>] member inline _.FooterTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("FooterTemplate", html.text x)
-    /// Gets or sets the footer template.
+    /// Gets or sets the footer content displayed at the bottom of the panel.
+    /// This section appears below the main content and remains visible regardless of collapse state.
     [<CustomOperation("FooterTemplate")>] member inline _.FooterTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("FooterTemplate", html.text x)
-    /// Gets or sets the footer template.
+    /// Gets or sets the footer content displayed at the bottom of the panel.
+    /// This section appears below the main content and remains visible regardless of collapse state.
     [<CustomOperation("FooterTemplate")>] member inline _.FooterTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("FooterTemplate", html.text x)
-    /// Gets or sets the expand callback.
+    /// Gets or sets the callback invoked when the panel is expanded from a collapsed state.
+    /// Useful for loading data on-demand or triggering animations when the panel opens.
     [<CustomOperation("Expand")>] member inline _.Expand ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> unit) = render ==> html.callback("Expand", fn)
-    /// Gets or sets the expand callback.
+    /// Gets or sets the callback invoked when the panel is expanded from a collapsed state.
+    /// Useful for loading data on-demand or triggering animations when the panel opens.
     [<CustomOperation("Expand")>] member inline _.Expand ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> Task<unit>) = render ==> html.callbackTask("Expand", fn)
-    /// Gets or sets the collapse callback.
+    /// Gets or sets the callback invoked when the panel is collapsed from an expanded state.
+    /// Useful for cleanup operations or tracking panel state changes.
     [<CustomOperation("Collapse")>] member inline _.Collapse ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> unit) = render ==> html.callback("Collapse", fn)
-    /// Gets or sets the collapse callback.
+    /// Gets or sets the callback invoked when the panel is collapsed from an expanded state.
+    /// Useful for cleanup operations or tracking panel state changes.
     [<CustomOperation("Collapse")>] member inline _.Collapse ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> Task<unit>) = render ==> html.callbackTask("Collapse", fn)
     /// Gets or sets the title attribute of the expand button.
     [<CustomOperation("ExpandTitle")>] member inline _.ExpandTitle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ExpandTitle" => x)
@@ -401,26 +554,33 @@ type RadzenProfileMenuBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micros
     /// Show/Hide the "arrow down" icon
     [<CustomOperation("ShowIcon")>] member inline _.ShowIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowIcon" =>>> x)
 
-/// RadzenSidebar component.
+/// A collapsible sidebar component for application navigation, typically used within RadzenLayout.
+/// RadzenSidebar provides a navigation panel that can be toggled open/closed and responds to screen size changes.
+/// Commonly used in application layouts for primary navigation menus.
+/// Features responsive design (automatically collapses on mobile devices and expands on desktop, configurable), positioning on Left/Right/Start/End of the layout,
+/// full height option to span entire layout height or align with body section only, programmatic expand/collapse via Expanded property or Toggle() method,
+/// seamless integration with RadzenLayout/RadzenHeader/RadzenBody/RadzenFooter, and typically contains RadzenPanelMenu or RadzenMenu for navigation.
+/// Must be used inside RadzenLayout to enable responsive behavior and proper layout integration. Use @bind-Expanded for two-way binding to control sidebar state from code.
 type RadzenSidebarBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit RadzenComponentWithChildrenBuilder<'FunBlazorGeneric>()
-    /// Toggles the responsive mode of the component. If set to true (the default) the component will be 
-    /// expanded on larger displays and collapsed on touch devices. Set to false if you want to disable this behavior.
-    /// Responsive mode is only available when RadzenSidebar is inside RadzenLayout.
+    /// Gets or sets whether the sidebar should automatically collapse on small screens (responsive mode).
+    /// When true (default), the sidebar expands on desktop and collapses on mobile. When false, responsive behavior is disabled.
+    /// Responsive mode only works when RadzenSidebar is inside RadzenLayout.
     [<CustomOperation("Responsive")>] member inline _.Responsive ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Responsive" =>>> true)
-    /// Toggles the responsive mode of the component. If set to true (the default) the component will be 
-    /// expanded on larger displays and collapsed on touch devices. Set to false if you want to disable this behavior.
-    /// Responsive mode is only available when RadzenSidebar is inside RadzenLayout.
+    /// Gets or sets whether the sidebar should automatically collapse on small screens (responsive mode).
+    /// When true (default), the sidebar expands on desktop and collapses on mobile. When false, responsive behavior is disabled.
+    /// Responsive mode only works when RadzenSidebar is inside RadzenLayout.
     [<CustomOperation("Responsive")>] member inline _.Responsive ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Responsive" =>>> x)
-    /// Gets or sets a value indicating whether the RadzenSidebar should occupy the full height of the RadzenLayout.
-    /// When false (default), the sidebar is rendered next to RadzenBody.
-    /// When true, it stretches to the full height of the layout and appears alongside RadzenHeader, RadzenBody, and RadzenFooter.
+    /// Gets or sets whether the sidebar occupies the full height of the layout (from top to bottom).
+    /// When false (default), sidebar appears between header and footer, aligned with body section.
+    /// When true, sidebar stretches the entire layout height alongside all sections.
     [<CustomOperation("FullHeight")>] member inline _.FullHeight ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("FullHeight" =>>> true)
-    /// Gets or sets a value indicating whether the RadzenSidebar should occupy the full height of the RadzenLayout.
-    /// When false (default), the sidebar is rendered next to RadzenBody.
-    /// When true, it stretches to the full height of the layout and appears alongside RadzenHeader, RadzenBody, and RadzenFooter.
+    /// Gets or sets whether the sidebar occupies the full height of the layout (from top to bottom).
+    /// When false (default), sidebar appears between header and footer, aligned with body section.
+    /// When true, sidebar stretches the entire layout height alongside all sections.
     [<CustomOperation("FullHeight")>] member inline _.FullHeight ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("FullHeight" =>>> x)
-    /// Gets or sets the sidebar position (Left, Right, Start, End).
+    /// Gets or sets which side of the layout the sidebar appears on.
+    /// Options include Left, Right, Start (left in LTR, right in RTL), End (right in LTR, left in RTL).
     [<CustomOperation("Position")>] member inline _.Position ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Radzen.SidebarPosition>) = render ==> ("Position" => x)
     /// Gets or sets the maximum width, in pixels, at which the component switches to a responsive layout.
     [<CustomOperation("ResponsiveMaxWidth")>] member inline _.ResponsiveMaxWidth ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ResponsiveMaxWidth" => x)
@@ -435,7 +595,13 @@ type RadzenSidebarBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     /// Gets or sets the expanded changed callback.
     [<CustomOperation("ExpandedChanged")>] member inline _.ExpandedChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Boolean -> Task<unit>) = render ==> html.callbackTask("ExpandedChanged", fn)
 
-/// RadzenSplitButton component.
+/// A split button component that combines a primary action button with a dropdown menu of additional related actions.
+/// RadzenSplitButton displays a main button with a small dropdown toggle, allowing quick access to a default action while providing alternatives.
+/// Ideal when you have a primary action and several related alternatives. The left side executes the default action, the right side opens a menu of options.
+/// Common examples include Save (with options: Save As, Save and Close), Download (with options: Download PDF, Download Excel, Download CSV), and Send (with options: Send Now, Schedule Send, Save Draft).
+/// Features main action triggered by clicking the left portion, additional options in a dropdown from the right toggle, ButtonStyle/Variant/Shade/Size for consistent appearance,
+/// optional icon on the main button, and keyboard navigation (Arrow keys, Enter, Escape) for menu navigation.
+/// Menu items are defined using RadzenSplitButtonItem components as child content.
 type RadzenSplitButtonBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit RadzenComponentWithChildrenBuilder<'FunBlazorGeneric>()
     /// Gets or sets the child content.
@@ -552,8 +718,12 @@ type ValidatorBaseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     /// Determines if the validator is displayed as a popup or not. Set to false by default.
     [<CustomOperation("Popup")>] member inline _.Popup ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Popup" =>>> x)
 
-/// A validator component which compares a component value with a specified value.
-/// Must be placed inside a RadzenTemplateForm`1
+/// A validator component that compares a form input's value against another value or another component's value using a specified comparison operator.
+/// RadzenCompareValidator is commonly used for password confirmation, numeric range validation, or ensuring field values match expected criteria.
+/// Must be placed inside a RadzenTemplateForm`1 and associated with a named input component.
+/// Supports various comparison operations (Equal, NotEqual, GreaterThan, LessThan, etc.) via the Operator property.
+/// For password confirmation scenarios, set the Value property to the password field and the Component to the confirmation field name.
+/// Can react to changes in the comparison value by setting ValidateOnComponentValueChange to true (default).
 type RadzenCompareValidatorBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit Blazor.ValidatorBaseBuilder<'FunBlazorGeneric>()
     /// Gets or sets the message displayed when the component is invalid. Set to "Value should match" by default.
@@ -567,35 +737,59 @@ type RadzenCompareValidatorBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> M
     /// Gets or sets a value indicating whether this RadzenCompareValidator should be validated on value change of the specified Component.
     [<CustomOperation("ValidateOnComponentValueChange")>] member inline _.ValidateOnComponentValueChange ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ValidateOnComponentValueChange" =>>> x)
 
-/// A validator component which compares a component value with a specified value.
-/// Must be placed inside a RadzenTemplateForm`1
+/// A validator component that executes custom validation logic via a user-provided function.
+/// RadzenCustomValidator enables complex validation rules that cannot be achieved with built-in validators, such as database checks, cross-field validation, or business rule enforcement.
+/// Must be placed inside a RadzenTemplateForm`1.
+/// Provides complete flexibility for validation logic by executing a Func<bool> that you define. The validator is valid when the function returns true, invalid when it returns false.
+/// Common use cases include uniqueness checks (validating email/username against existing database records), business rules (enforcing domain-specific validation logic),
+/// cross-field validation (validating relationships between multiple fields), API validation (checking values against external services), and any complex logic requiring custom code.
+/// The Validator function should return true for valid values and false for invalid values. The function is called during form validation, so keep it fast or use async patterns for slow operations.
 type RadzenCustomValidatorBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit Blazor.ValidatorBaseBuilder<'FunBlazorGeneric>()
-    /// Gets or sets the message displayed when the component is invalid. Set to "Value should match" by default.
+    /// Gets or sets the error message displayed when the validation function returns false.
+    /// Provide clear, actionable text explaining why the value is invalid and how to fix it.
     [<CustomOperation("Text")>] member inline _.Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Text" => x)
-    /// Specifies the function which validates the component value. Must return true if the component is valid.
+    /// Gets or sets the validation function that determines whether the component value is valid.
+    /// The function should return true if the value is valid, false if invalid.
+    /// This function is called during form validation, so keep it fast or handle async operations appropriately.
     [<CustomOperation("Validator")>] member inline _.Validator ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("Validator" => (System.Func<System.Boolean>fn))
 
-/// A validator component which validates a component value using the data annotations
-/// defined on the corresponding model property.
-/// Must be placed inside a RadzenTemplateForm`1
+/// A validator component that validates form inputs using Data Annotations attributes defined on model properties.
+/// RadzenDataAnnotationValidator enables automatic validation based on attributes like [Required], [StringLength], [Range], [EmailAddress], etc.
+/// Must be placed inside a RadzenTemplateForm`1.
+/// Uses the standard .NET validation attributes from System.ComponentModel.DataAnnotations. Reads all validation attributes on a model property and validates the input accordingly.
+/// Benefits include centralized validation (define rules once on the model, use everywhere), support for multiple validation attributes per property,
+/// built-in attributes (Required, StringLength, Range, EmailAddress, Phone, Url, RegularExpression, etc.), works with custom ValidationAttribute implementations,
+/// and multiple errors joined with MessageSeparator.
+/// Ideal when your validation rules are already defined on your data models using data annotations. Automatically extracts error messages from the attributes' ErrorMessage properties.
 type RadzenDataAnnotationValidatorBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit Blazor.ValidatorBaseBuilder<'FunBlazorGeneric>()
-    /// Gets or sets the message displayed when the component is invalid.
-    /// The message is generated from the data annotation attributes applied to the model property.
+    /// Gets or sets the validation error message.
+    /// This property is automatically populated with error messages from data annotation attributes when validation fails.
+    /// If multiple attributes fail, messages are joined using MessageSeparator.
     [<CustomOperation("Text")>] member inline _.Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Text" => x)
-    /// Gets or sets the separator used to join multiple validation messages.
+    /// Gets or sets the text used to join multiple validation error messages.
+    /// When multiple data annotation attributes fail (e.g., both Required and StringLength), their messages are combined with this separator.
     [<CustomOperation("MessageSeparator")>] member inline _.MessageSeparator ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("MessageSeparator" => x)
 
-/// A validator component which checks if a component value is a valid email address.
-/// Must be placed inside a RadzenTemplateForm`1
+/// A validator component that verifies whether a text input contains a valid email address format.
+/// RadzenEmailValidator uses the .NET EmailAddressAttribute to validate email format according to standard rules.
+/// Must be placed inside a RadzenTemplateForm`1 and associated with a named input component.
+/// Checks email format using System.ComponentModel.DataAnnotations.EmailAddressAttribute validation rules.
+/// Empty or null values are considered valid - combine with RadzenRequiredValidator to ensure the field is not empty.
+/// The validation runs when the form is submitted or when the component loses focus.
 type RadzenEmailValidatorBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit Blazor.ValidatorBaseBuilder<'FunBlazorGeneric>()
-    /// Gets or sets the message displayed when the component is invalid. Set to "Invalid email" by default.
+    /// Gets or sets the error message displayed when the email address format is invalid.
+    /// Customize this message to provide clear feedback to users about the expected email format.
     [<CustomOperation("Text")>] member inline _.Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Text" => x)
 
-/// A validator component which checks if then component value length is within a specified range.
-/// Must be placed inside a RadzenTemplateForm`1
+/// A validator component that ensures a text input's length falls within a specified minimum and maximum range.
+/// RadzenLengthValidator is useful for enforcing username lengths, password complexity, or limiting text field sizes.
+/// Must be placed inside a RadzenTemplateForm`1 and associated with a named input component.
+/// Checks the string length against optional Min and Max constraints.
+/// If only Min is set, validates minimum length. If only Max is set, validates maximum length. If both are set, the length must be within the range (inclusive).
+/// Null or empty values are considered invalid if Min is set, and valid if only Max is set.
 type RadzenLengthValidatorBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit Blazor.ValidatorBaseBuilder<'FunBlazorGeneric>()
     /// Gets or sets the message displayed when the component is invalid. Set to "Invalid length" by default.
@@ -605,77 +799,129 @@ type RadzenLengthValidatorBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Mi
     /// Specifies the maximum accepted length. The component value length should be less than the maximum in order to be valid.
     [<CustomOperation("Max")>] member inline _.Max ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("Max" => x)
 
-/// A validator component which checks if a component value is within a specified range.
-/// Must be placed inside a RadzenTemplateForm`1
+/// A validator component that ensures a numeric value falls within a specified minimum and maximum range.
+/// RadzenNumericRangeValidator is ideal for quantity limits, age restrictions, price ranges, or any bounded numeric input.
+/// Must be placed inside a RadzenTemplateForm`1.
+/// Ensures values are within acceptable bounds by checking that the value is greater than or equal to Min and less than or equal to Max. Both bounds are inclusive.
+/// You can specify just Min to validate minimum value (e.g., age must be at least 18), just Max to validate maximum value (e.g., quantity cannot exceed 100), or both to validate range (e.g., rating must be between 1 and 5).
+/// Works with any IComparable type (int, decimal, double, DateTime, etc.). Set AllowNull = true to accept null values as valid (for optional nullable fields).
 type RadzenNumericRangeValidatorBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit Blazor.ValidatorBaseBuilder<'FunBlazorGeneric>()
-    /// Gets or sets the message displayed when the component is invalid. Set to "Not in the valid range" by default.
+    /// Gets or sets the error message displayed when the value is outside the valid range.
+    /// Customize to provide specific guidance (e.g., "Age must be between 18 and 65").
     [<CustomOperation("Text")>] member inline _.Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Text" => x)
-    /// Specifies the minimum value. The component value should be greater than the minimum in order to be valid.
+    /// Gets or sets the minimum allowed value (inclusive).
+    /// The component value must be greater than or equal to this value. Can be null to only validate maximum.
+    /// Works with any IComparable type (int, decimal, DateTime, etc.).
     [<CustomOperation("Min")>] member inline _.Min ([<InlineIfLambda>] render: AttrRenderFragment, x: System.IComparable) = render ==> ("Min" => x)
-    /// Specifies the maximum value. The component value should be less than the maximum in order to be valid.
+    /// Gets or sets the maximum allowed value (inclusive).
+    /// The component value must be less than or equal to this value. Can be null to only validate minimum.
+    /// Works with any IComparable type (int, decimal, DateTime, etc.).
     [<CustomOperation("Max")>] member inline _.Max ([<InlineIfLambda>] render: AttrRenderFragment, x: System.IComparable) = render ==> ("Max" => x)
-    /// Specifies if value can be null. If true, a null component value will be accepted.
+    /// Gets or sets whether null values should be considered valid.
+    /// When true, null values pass validation (useful for optional nullable fields).
+    /// When false (default), null values fail validation.
     [<CustomOperation("AllowNull")>] member inline _.AllowNull ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AllowNull" =>>> true)
-    /// Specifies if value can be null. If true, a null component value will be accepted.
+    /// Gets or sets whether null values should be considered valid.
+    /// When true, null values pass validation (useful for optional nullable fields).
+    /// When false (default), null values fail validation.
     [<CustomOperation("AllowNull")>] member inline _.AllowNull ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("AllowNull" =>>> x)
 
-/// A validator component which matches a component value against a specified regular expression pattern.
-/// Must be placed inside a RadzenTemplateForm`1
+/// A validator component that ensures a text input matches a specified regular expression pattern.
+/// RadzenRegexValidator is useful for validating formats like ZIP codes, phone numbers, custom IDs, or any pattern-based data.
+/// Must be placed inside a RadzenTemplateForm`1.
+/// Checks input against a regular expression pattern using .NET's RegularExpressionAttribute.
+/// Common use cases include ZIP/postal codes (e.g., "\d{5}" for US ZIP), phone numbers (e.g., "\d{3}-\d{3}-\d{4}"), custom ID formats (e.g., "^[A-Z]{2}\d{6}$"), and alphanumeric constraints (e.g., "^[a-zA-Z0-9]+$").
+/// The validator passes when the value matches the entire pattern (implicit anchoring). Empty or null values are considered valid - combine with RadzenRequiredValidator to ensure the field is filled.
 type RadzenRegexValidatorBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit Blazor.ValidatorBaseBuilder<'FunBlazorGeneric>()
-    /// Gets or sets the message displayed when the component is invalid. Set to "Value should match" by default.
+    /// Gets or sets the error message displayed when the component value does not match the pattern.
+    /// Customize this to provide clear guidance on the expected format.
     [<CustomOperation("Text")>] member inline _.Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Text" => x)
-    /// Specifies the regular expression pattern which the component value should match in order to be valid.
+    /// Gets or sets the regular expression pattern that the component value must match.
+    /// Use standard .NET regex syntax. The pattern should match the entire value (implicit full-string match).
+    /// Example patterns: "^\d{5}$" (5 digits), "^[A-Z]{3}\d{4}$" (3 letters + 4 digits).
     [<CustomOperation("Pattern")>] member inline _.Pattern ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Pattern" => x)
 
-/// A validator component which checks if a component has value.
-/// Must be placed inside a RadzenTemplateForm`1
+/// A validator component that ensures a form input component has a non-empty value.
+/// RadzenRequiredValidator verifies that required fields are filled before form submission.
+/// Must be placed inside a RadzenTemplateForm`1 and associated with a named input component.
+/// Checks if the associated component has a value (HasValue returns true) and that the value is not equal to the optional DefaultValue.
+/// For text inputs, an empty string is considered invalid. For dropdowns and other components, null or default values are considered invalid.
+/// The validation message can be customized via the Text property and displayed inline, as a block, or as a popup depending on the Style property.
 type RadzenRequiredValidatorBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit Blazor.ValidatorBaseBuilder<'FunBlazorGeneric>()
-    /// Gets or sets the message displayed when the component is invalid. Set to "Required" by default.
+    /// Gets or sets the error message displayed when the associated component is invalid (has no value or has the default value).
+    /// This message helps users understand what is required to pass validation.
     [<CustomOperation("Text")>] member inline _.Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Text" => x)
-    /// Specifies a default value. If the component value is equal to DefaultValue it is considered invalid.
+    /// Gets or sets a default value that should be considered invalid (empty).
+    /// For example, set to 0 for numeric dropdowns where 0 represents "not selected", or empty Guid for Guid fields.
+    /// If the component's value equals this DefaultValue, validation will fail.
     [<CustomOperation("DefaultValue")>] member inline _.DefaultValue ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Object) = render ==> ("DefaultValue" => x)
 
-/// RadzenButton component.
+/// A clickable button component that supports various visual styles, icons, images, and loading states.
+/// RadzenButton provides a consistent and accessible way to trigger actions in your Blazor application.
+/// Supports multiple visual variants (Filled, Flat, Outlined, Text), color styles (Primary, Secondary, Success, etc.), 
+/// and sizes (ExtraSmall, Small, Medium, Large). It can display text, icons, images, or a combination of these.
+/// When IsBusy is true, the button shows a loading indicator and becomes disabled.
 type RadzenButtonBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit RadzenComponentBuilder<'FunBlazorGeneric>()
-    /// Gets or sets the index of the tab.
+    /// Gets or sets the tab index for keyboard navigation.
+    /// Controls the order in which the button receives focus when the user presses the Tab key.
     [<CustomOperation("TabIndex")>] member inline _.TabIndex ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("TabIndex" => x)
-    /// Gets or sets the text.
+    /// Gets or sets the text label displayed on the button.
+    /// If both Text and Icon are set, both will be displayed.
     [<CustomOperation("Text")>] member inline _.Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Text" => x)
-    /// Gets or sets the text.
+    /// Gets or sets the alternate text for the button's image.
+    /// This is used as the alt attribute when an Image is specified, improving accessibility.
     [<CustomOperation("ImageAlternateText")>] member inline _.ImageAlternateText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ImageAlternateText" => x)
-    /// Gets or sets the icon.
+    /// Gets or sets the Material icon name to be displayed in the button.
+    /// Use Material Symbols icon names (e.g., "save", "delete", "add"). The icon will be rendered using the rzi icon font.
     [<CustomOperation("Icon")>] member inline _.Icon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Icon" => x)
-    /// Gets or sets the icon color.
+    /// Gets or sets a custom color for the icon.
+    /// This overrides the default icon color determined by the button's ButtonStyle and Variant.
+    /// Supports any valid CSS color value (e.g., "#FF0000", "rgb(255, 0, 0)", "var(--my-color)").
     [<CustomOperation("IconColor")>] member inline _.IconColor ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("IconColor" => x)
-    /// Gets or sets the image.
+    /// Gets or sets the URL of an image to be displayed in the button.
+    /// The image will be rendered as an img element. For icon fonts, use the Icon property instead.
     [<CustomOperation("Image")>] member inline _.Image ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Image" => x)
-    /// Gets or sets the button style.
+    /// Gets or sets the semantic color style of the button.
+    /// Determines the button's color scheme based on its purpose (e.g., Primary for main actions, Danger for destructive actions).
     [<CustomOperation("ButtonStyle")>] member inline _.ButtonStyle ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.ButtonStyle) = render ==> ("ButtonStyle" => x)
-    /// Gets or sets the type of the button.
+    /// Gets or sets the HTML button type attribute.
+    /// Use Submit for form submissions or Button for regular clickable buttons.
     [<CustomOperation("ButtonType")>] member inline _.ButtonType ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.ButtonType) = render ==> ("ButtonType" => x)
-    /// Gets or sets the design variant of the button.
+    /// Gets or sets the design variant that controls the button's visual appearance.
+    /// Options include Filled (solid background), Flat (subtle background), Outlined (border only), and Text (minimal styling).
     [<CustomOperation("Variant")>] member inline _.Variant ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Variant) = render ==> ("Variant" => x)
-    /// Gets or sets the color shade of the button.
+    /// Gets or sets the color intensity shade for the button.
+    /// Works in combination with ButtonStyle to adjust the color darkness/lightness.
     [<CustomOperation("Shade")>] member inline _.Shade ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Shade) = render ==> ("Shade" => x)
-    /// Gets or sets the size.
+    /// Gets or sets the button size.
+    /// Controls the padding, font size, and overall dimensions of the button.
     [<CustomOperation("Size")>] member inline _.Size ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.ButtonSize) = render ==> ("Size" => x)
-    /// Gets or sets a value indicating whether this RadzenButton is disabled.
+    /// Gets or sets whether the button is disabled and cannot be clicked.
+    /// When true, the button will have a disabled appearance and will not respond to user interactions.
     [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Disabled" =>>> true)
-    /// Gets or sets a value indicating whether this RadzenButton is disabled.
+    /// Gets or sets whether the button is disabled and cannot be clicked.
+    /// When true, the button will have a disabled appearance and will not respond to user interactions.
     [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Disabled" =>>> x)
-    /// Gets or sets the click callback.
+    /// Gets or sets the callback invoked when the button is clicked.
+    /// This event will not fire if the button is Disabled or IsBusy.
     [<CustomOperation("Click")>] member inline _.Click ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> unit) = render ==> html.callback("Click", fn)
-    /// Gets or sets the click callback.
+    /// Gets or sets the callback invoked when the button is clicked.
+    /// This event will not fire if the button is Disabled or IsBusy.
     [<CustomOperation("Click")>] member inline _.Click ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> Task<unit>) = render ==> html.callbackTask("Click", fn)
-    /// Gets or sets a value indicating whether this instance busy text is shown.
+    /// Gets or sets whether the button is in a busy/loading state.
+    /// When true, the button displays a loading indicator, shows the BusyText, and becomes disabled.
+    /// This is useful for indicating asynchronous operations are in progress.
     [<CustomOperation("IsBusy")>] member inline _.IsBusy ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("IsBusy" =>>> true)
-    /// Gets or sets a value indicating whether this instance busy text is shown.
+    /// Gets or sets whether the button is in a busy/loading state.
+    /// When true, the button displays a loading indicator, shows the BusyText, and becomes disabled.
+    /// This is useful for indicating asynchronous operations are in progress.
     [<CustomOperation("IsBusy")>] member inline _.IsBusy ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("IsBusy" =>>> x)
-    /// Gets or sets the busy text.
+    /// Gets or sets the text displayed when the button is in a busy state (IsBusy is true).
+    /// If not set, the button will show a loading indicator without text.
     [<CustomOperation("BusyText")>] member inline _.BusyText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("BusyText" => x)
 
 /// RadzenFab component.
@@ -686,11 +932,14 @@ type RadzenFabBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspN
 /// RadzenFabMenuItem component.
 type RadzenFabMenuItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit Blazor.RadzenButtonBuilder<'FunBlazorGeneric>()
-    /// Gets or sets the design variant of the button.
+    /// Gets or sets the design variant that controls the button's visual appearance.
+    /// Options include Filled (solid background), Flat (subtle background), Outlined (border only), and Text (minimal styling).
     [<CustomOperation("Variant")>] member inline _.Variant ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Variant) = render ==> ("Variant" => x)
-    /// Gets or sets the color shade of the button.
+    /// Gets or sets the color intensity shade for the button.
+    /// Works in combination with ButtonStyle to adjust the color darkness/lightness.
     [<CustomOperation("Shade")>] member inline _.Shade ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Shade) = render ==> ("Shade" => x)
-    /// Gets or sets the size.
+    /// Gets or sets the button size.
+    /// Controls the padding, font size, and overall dimensions of the button.
     [<CustomOperation("Size")>] member inline _.Size ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.ButtonSize) = render ==> ("Size" => x)
 
 /// RadzenButton component.
@@ -729,58 +978,99 @@ type RadzenToggleButtonBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micro
     /// Gets or sets the aria-label attribute.
     [<CustomOperation("AriaLabel")>] member inline _.AriaLabel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("AriaLabel" => x)
 
-/// RadzenProgressBar component.
+/// A linear progress bar component for indicating task completion or ongoing processes.
+/// RadzenProgressBar displays progress horizontally with determinate (specific value) or indeterminate (ongoing) modes.
+/// Provides visual feedback about the status of lengthy operations like file uploads, data processing, or multi-step workflows.
+/// Supports determinate mode showing specific progress value (0-100%) with a filling bar, indeterminate mode with animated bar indicating ongoing operation without specific progress,
+/// optional percentage or custom unit value display overlay, configurable Min/Max values for non-percentage scales, various semantic colors (Primary, Success, Info, Warning, Danger),
+/// custom template to override default value display, and ARIA attributes for screen reader support.
+/// Use determinate mode when you can calculate progress percentage (e.g., file upload, form completion). Use indeterminate mode for operations with unknown duration (e.g., waiting for server response).
 type RadzenProgressBarBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit RadzenComponentBuilder<'FunBlazorGeneric>()
-    /// Gets or sets the template.
+    /// Gets or sets a custom template for rendering content overlaid on the progress bar.
+    /// Use this to display custom progress information instead of the default value/percentage display.
     [<CustomOperation("Template")>] member inline _.Template ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("Template", fragment)
-    /// Gets or sets the template.
+    /// Gets or sets a custom template for rendering content overlaid on the progress bar.
+    /// Use this to display custom progress information instead of the default value/percentage display.
     [<CustomOperation("Template")>] member inline _.Template ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("Template", fragment { yield! fragments })
-    /// Gets or sets the template.
+    /// Gets or sets a custom template for rendering content overlaid on the progress bar.
+    /// Use this to display custom progress information instead of the default value/percentage display.
     [<CustomOperation("Template")>] member inline _.Template ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("Template", html.text x)
-    /// Gets or sets the template.
+    /// Gets or sets a custom template for rendering content overlaid on the progress bar.
+    /// Use this to display custom progress information instead of the default value/percentage display.
     [<CustomOperation("Template")>] member inline _.Template ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("Template", html.text x)
-    /// Gets or sets the template.
+    /// Gets or sets a custom template for rendering content overlaid on the progress bar.
+    /// Use this to display custom progress information instead of the default value/percentage display.
     [<CustomOperation("Template")>] member inline _.Template ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("Template", html.text x)
-    /// Gets or sets the mode.
+    /// Gets or sets the progress bar mode determining the visual behavior.
+    /// Determinate shows specific progress, Indeterminate shows continuous animation for unknown duration.
     [<CustomOperation("Mode")>] member inline _.Mode ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.ProgressBarMode) = render ==> ("Mode" => x)
-    /// Gets or sets the unit.
+    /// Gets or sets the unit text displayed after the value (e.g., "%", "MB", "items").
+    /// Only shown when ShowValue is true.
     [<CustomOperation("Unit")>] member inline _.Unit ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Unit" => x)
-    /// Gets or sets the value.
+    /// Gets or sets the current progress value.
+    /// Should be between Min and Max. Values outside this range are clamped.
     [<CustomOperation("Value")>] member inline _.Value ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Double) = render ==> ("Value" => x)
-    /// Gets or sets the value.
+    /// Gets or sets the current progress value.
+    /// Should be between Min and Max. Values outside this range are clamped.
     [<CustomOperation("Value'")>] member inline _.Value' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Double * (System.Double -> unit)) = render ==> html.bind("Value", valueFn)
-    /// Determines the minimum value.
+    /// Gets or sets the minimum value of the progress range.
+    /// Use non-zero values for custom progress scales (e.g., 0-1000 for byte counts).
     [<CustomOperation("Min")>] member inline _.Min ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Double) = render ==> ("Min" => x)
-    /// Determines the maximum value.
+    /// Gets or sets the maximum value of the progress range representing 100% completion.
     [<CustomOperation("Max")>] member inline _.Max ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Double) = render ==> ("Max" => x)
-    /// Gets or sets a value indicating whether value is shown.
+    /// Gets or sets whether to display the progress value as text overlay on the progress bar.
+    /// When true, shows the value with the unit (e.g., "45%"). Set to false for a cleaner look.
     [<CustomOperation("ShowValue")>] member inline _.ShowValue ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowValue" =>>> true)
-    /// Gets or sets a value indicating whether value is shown.
+    /// Gets or sets whether to display the progress value as text overlay on the progress bar.
+    /// When true, shows the value with the unit (e.g., "45%"). Set to false for a cleaner look.
     [<CustomOperation("ShowValue")>] member inline _.ShowValue ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowValue" =>>> x)
-    /// Gets or sets the value changed callback.
+    /// Gets or sets a callback invoked when the progress value changes.
+    /// Note: This is an Action, not EventCallback. For data binding, the Value property is typically bound directly.
     [<CustomOperation("ValueChanged")>] member inline _.ValueChanged ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("ValueChanged" => (System.Action<System.Double>fn))
-    /// Gets or sets the progress bar style.
+    /// Gets or sets the semantic color style of the progress bar.
+    /// Determines the progress bar color: Primary, Success, Info, Warning, Danger, etc.
     [<CustomOperation("ProgressBarStyle")>] member inline _.ProgressBarStyle ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.ProgressBarStyle) = render ==> ("ProgressBarStyle" => x)
+    /// Gets or sets the ARIA label for accessibility support.
+    /// Announced by screen readers to describe the progress bar's purpose (e.g., "File upload progress").
+    [<CustomOperation("AriaLabel")>] member inline _.AriaLabel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("AriaLabel" => x)
 
-/// RadzenProgressBarCircular component.
+/// A circular progress indicator component for showing task completion or ongoing processes in a compact circular format.
+/// RadzenProgressBarCircular displays progress as a ring with determinate (specific value) or indeterminate (spinning) modes.
+/// Space-efficient and works well for dashboards, loading states, or anywhere circular design fits better than linear bars.
+/// Inherits all features from RadzenProgressBar and adds circular design showing progress as a ring/arc instead of a linear bar,
+/// size options (ExtraSmall, Small, Medium, Large) for different contexts, value display in the center of the circle, and compact design taking less space than linear progress bars.
+/// Use for dashboard KPIs, button loading states, or compact loading indicators. The circular shape makes it ideal for displaying progress where space is limited.
 type RadzenProgressBarCircularBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit Blazor.RadzenProgressBarBuilder<'FunBlazorGeneric>()
-    /// Gets or sets the size.
+    /// Gets or sets the size of the circular progress indicator.
+    /// Controls the diameter of the circle: ExtraSmall, Small, Medium, or Large.
     [<CustomOperation("Size")>] member inline _.Size ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.ProgressBarCircularSize) = render ==> ("Size" => x)
 
-/// Displays line, area, donut, pie, bar or column series.
+/// A versatile chart component for visualizing data through various chart types including line, area, column, bar, pie, and donut series.
+/// RadzenChart supports multiple series, customizable axes, legends, tooltips, data labels, markers, and interactive features.
+/// Container for one or more chart series components. Each series (RadzenLineSeries, RadzenColumnSeries, RadzenAreaSeries, etc.) defines how data is visualized.
+/// Supports Cartesian charts (Line, Area, Column, Bar, StackedColumn, StackedBar, StackedArea with X/Y axes), Pie charts (Pie and Donut series for showing proportions),
+/// customization of color schemes/axis configuration/grid lines/legends/tooltips/data labels/markers, interactive click events on series and legend items with hover tooltips,
+/// annotations including trend lines/mean/median/mode lines/value annotations, and responsive design that automatically adapts to container size.
+/// Series are defined as child components within the RadzenChart. Configure axes using RadzenCategoryAxis and RadzenValueAxis, customize the legend with RadzenLegend, and add tooltips with RadzenChartTooltipOptions.
 type RadzenChartBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit RadzenComponentBuilder<'FunBlazorGeneric>()
-    /// Gets or sets the color scheme used to render the series.
+    /// Gets or sets the color scheme used to assign colors to chart series.
+    /// Determines the palette of colors applied sequentially to each series when series-specific colors are not set.
+    /// Available schemes include Pastel, Palette (default), Monochrome, and custom color schemes.
     [<CustomOperation("ColorScheme")>] member inline _.ColorScheme ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Blazor.ColorScheme) = render ==> ("ColorScheme" => x)
-    /// A callback that will be invoked when the user clicks on a series.
+    /// Gets or sets the callback invoked when a user clicks on a data point or segment in a chart series.
+    /// Provides information about the clicked series, data item, and value in the event arguments.
     [<CustomOperation("SeriesClick")>] member inline _.SeriesClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.SeriesClickEventArgs -> unit) = render ==> html.callback("SeriesClick", fn)
-    /// A callback that will be invoked when the user clicks on a series.
+    /// Gets or sets the callback invoked when a user clicks on a data point or segment in a chart series.
+    /// Provides information about the clicked series, data item, and value in the event arguments.
     [<CustomOperation("SeriesClick")>] member inline _.SeriesClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.SeriesClickEventArgs -> Task<unit>) = render ==> html.callbackTask("SeriesClick", fn)
-    /// A callback that will be invoked when the user clicks on a legend.
+    /// Gets or sets the callback invoked when a user clicks on a legend item.
+    /// Useful for implementing custom behaviors like toggling series visibility or filtering data.
     [<CustomOperation("LegendClick")>] member inline _.LegendClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.LegendClickEventArgs -> unit) = render ==> html.callback("LegendClick", fn)
-    /// A callback that will be invoked when the user clicks on a legend.
+    /// Gets or sets the callback invoked when a user clicks on a legend item.
+    /// Useful for implementing custom behaviors like toggling series visibility or filtering data.
     [<CustomOperation("LegendClick")>] member inline _.LegendClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.LegendClickEventArgs -> Task<unit>) = render ==> html.callbackTask("LegendClick", fn)
     /// The minimum pixel distance from a data point to the mouse cursor required for the SeriesClick event to fire. Set to 25 by default.
     [<CustomOperation("ClickTolerance")>] member inline _.ClickTolerance ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("ClickTolerance" => x)
@@ -952,49 +1242,84 @@ open Fun.Blazor
 open Fun.Blazor.Operators
 open Radzen.Blazor.DslInternals
 
-/// RadzenDropDown component.
+/// A dropdown select component that allows users to choose one or multiple items from a popup list.
+/// RadzenDropDown supports data binding, filtering, templates, virtual scrolling, and both single and multiple selection modes.
+/// Binds to a data source via the Data property and uses TextProperty and ValueProperty to determine what to display and what value to bind.
+/// Supports filtering (with configurable operators and case sensitivity), custom item templates, empty state templates, value templates for the selected item display,
+/// and can be configured as editable to allow custom text entry. For multiple selection, set Multiple=true and bind to a collection type.
 type RadzenDropDownBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit DropDownBaseBuilder<'FunBlazorGeneric, 'TValue>()
-    /// Specifies additional custom attributes that will be rendered by the input.
+    /// Gets or sets additional HTML attributes to be applied to the underlying input element.
+    /// This allows passing custom attributes like data-* attributes, aria-* attributes, or other HTML attributes directly to the input.
     [<CustomOperation("InputAttributes")>] member inline _.InputAttributes ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>) = render ==> ("InputAttributes" => x)
-    /// Gets or sets a value indicating whether is read only.
+    /// Gets or sets whether the dropdown is read-only and cannot be changed by user interaction.
+    /// When true, the dropdown displays the selected value but prevents changing the selection.
     [<CustomOperation("ReadOnly")>] member inline _.ReadOnly ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ReadOnly" =>>> true)
-    /// Gets or sets a value indicating whether is read only.
+    /// Gets or sets whether the dropdown is read-only and cannot be changed by user interaction.
+    /// When true, the dropdown displays the selected value but prevents changing the selection.
     [<CustomOperation("ReadOnly")>] member inline _.ReadOnly ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ReadOnly" =>>> x)
-    /// Gets or sets the value template.
+    /// Gets or sets the template used to render the currently selected value in the dropdown input.
+    /// This allows custom formatting or layout for the displayed selection. The template receives the selected item as context.
     [<CustomOperation("ValueTemplate")>] member inline _.ValueTemplate ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Object -> NodeRenderFragment) = render ==> html.renderFragment("ValueTemplate", fn)
-    /// Gets or sets the empty template.
+    /// Gets or sets the template displayed when the dropdown data source is empty or no items match the filter.
+    /// Use this to show a custom "No items found" or "Empty list" message.
     [<CustomOperation("EmptyTemplate")>] member inline _.EmptyTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("EmptyTemplate", fragment)
-    /// Gets or sets the empty template.
+    /// Gets or sets the template displayed when the dropdown data source is empty or no items match the filter.
+    /// Use this to show a custom "No items found" or "Empty list" message.
     [<CustomOperation("EmptyTemplate")>] member inline _.EmptyTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("EmptyTemplate", fragment { yield! fragments })
-    /// Gets or sets the empty template.
+    /// Gets or sets the template displayed when the dropdown data source is empty or no items match the filter.
+    /// Use this to show a custom "No items found" or "Empty list" message.
     [<CustomOperation("EmptyTemplate")>] member inline _.EmptyTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("EmptyTemplate", html.text x)
-    /// Gets or sets the empty template.
+    /// Gets or sets the template displayed when the dropdown data source is empty or no items match the filter.
+    /// Use this to show a custom "No items found" or "Empty list" message.
     [<CustomOperation("EmptyTemplate")>] member inline _.EmptyTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("EmptyTemplate", html.text x)
-    /// Gets or sets the empty template.
+    /// Gets or sets the template displayed when the dropdown data source is empty or no items match the filter.
+    /// Use this to show a custom "No items found" or "Empty list" message.
     [<CustomOperation("EmptyTemplate")>] member inline _.EmptyTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("EmptyTemplate", html.text x)
-    /// Gets or sets a value indicating whether popup should open on focus. Set to false by default.
+    /// Gets or sets the footer template.
+    [<CustomOperation("FooterTemplate")>] member inline _.FooterTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("FooterTemplate", fragment)
+    /// Gets or sets the footer template.
+    [<CustomOperation("FooterTemplate")>] member inline _.FooterTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("FooterTemplate", fragment { yield! fragments })
+    /// Gets or sets the footer template.
+    [<CustomOperation("FooterTemplate")>] member inline _.FooterTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("FooterTemplate", html.text x)
+    /// Gets or sets the footer template.
+    [<CustomOperation("FooterTemplate")>] member inline _.FooterTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("FooterTemplate", html.text x)
+    /// Gets or sets the footer template.
+    [<CustomOperation("FooterTemplate")>] member inline _.FooterTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("FooterTemplate", html.text x)
+    /// Gets or sets whether the dropdown popup should automatically open when the input receives focus.
+    /// Useful for improving user experience by reducing clicks needed to interact with the dropdown.
     [<CustomOperation("OpenOnFocus")>] member inline _.OpenOnFocus ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("OpenOnFocus" =>>> true)
-    /// Gets or sets a value indicating whether popup should open on focus. Set to false by default.
+    /// Gets or sets whether the dropdown popup should automatically open when the input receives focus.
+    /// Useful for improving user experience by reducing clicks needed to interact with the dropdown.
     [<CustomOperation("OpenOnFocus")>] member inline _.OpenOnFocus ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("OpenOnFocus" =>>> x)
-    /// Gets or sets a value indicating whether search field need to be cleared after selection. Set to false by default.
+    /// Gets or sets whether the filter search text should be cleared after an item is selected.
+    /// When true, selecting an item will reset the filter, showing all items again on the next open.
     [<CustomOperation("ClearSearchAfterSelection")>] member inline _.ClearSearchAfterSelection ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ClearSearchAfterSelection" =>>> true)
-    /// Gets or sets a value indicating whether search field need to be cleared after selection. Set to false by default.
+    /// Gets or sets whether the filter search text should be cleared after an item is selected.
+    /// When true, selecting an item will reset the filter, showing all items again on the next open.
     [<CustomOperation("ClearSearchAfterSelection")>] member inline _.ClearSearchAfterSelection ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ClearSearchAfterSelection" =>>> x)
-    /// Gets or sets the filter placeholder.
+    /// Gets or sets the placeholder text displayed in the filter search box within the dropdown popup.
+    /// This helps users understand they can filter the list by typing.
     [<CustomOperation("FilterPlaceholder")>] member inline _.FilterPlaceholder ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("FilterPlaceholder" => x)
-    /// Gets or Sets the filter autocomplete type.
+    /// Gets or sets the HTML autocomplete attribute value for the filter search input.
+    /// Controls whether the browser should provide autocomplete suggestions for the filter field.
     [<CustomOperation("FilterAutoCompleteType")>] member inline _.FilterAutoCompleteType ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Blazor.AutoCompleteType) = render ==> ("FilterAutoCompleteType" => x)
-    /// Gets or sets the row render callback. Use it to set row attributes.
+    /// Gets or sets a callback invoked when rendering each dropdown item.
+    /// Use this to customize item attributes, such as adding CSS classes or data attributes based on item properties.
     [<CustomOperation("ItemRender")>] member inline _.ItemRender ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("ItemRender" => (System.Action<Radzen.DropDownItemRenderEventArgs<'TValue>>fn))
-    /// Gets or sets the number of maximum selected labels.
+    /// Gets or sets the maximum number of selected item labels to display in the input before showing a count summary.
+    /// When multiple selection is enabled and more items are selected than this value, the input will show "N items selected" instead of listing all labels.
+    /// Only applicable when Multiple is true.
     [<CustomOperation("MaxSelectedLabels")>] member inline _.MaxSelectedLabels ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("MaxSelectedLabels" => x)
-    /// Gets or sets the Popup height.
+    /// Gets or sets the CSS style applied to the dropdown popup container.
+    /// Use this to control the popup dimensions, especially max-height to limit scrollable area.
     [<CustomOperation("PopupStyle")>] member inline _.PopupStyle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("PopupStyle" => x)
-    /// Gets or sets a value indicating whether the selected items will be displayed as chips. Set to false by default.
+    /// Gets or sets whether selected items should be displayed as removable chips in the input area.
+    /// When enabled in multiple selection mode, each selected item appears as a chip with an X button for quick removal.
     /// Requires Multiple to be set to true.
     [<CustomOperation("Chips")>] member inline _.Chips ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Chips" =>>> true)
-    /// Gets or sets a value indicating whether the selected items will be displayed as chips. Set to false by default.
+    /// Gets or sets whether selected items should be displayed as removable chips in the input area.
+    /// When enabled in multiple selection mode, each selected item appears as a chip with an X button for quick removal.
     /// Requires Multiple to be set to true.
     [<CustomOperation("Chips")>] member inline _.Chips ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Chips" =>>> x)
     /// Gets or sets the selected items text.
@@ -1010,7 +1335,13 @@ type RadzenDropDownBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> 
     /// Callback for when a dropdown is closed.
     [<CustomOperation("Close")>] member inline _.Close ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> Task<unit>) = render ==> html.callbackTask("Close", fn)
 
-/// RadzenDropDownDataGrid component.
+/// A dropdown component that displays items in a DataGrid within the popup instead of a simple list.
+/// RadzenDropDownDataGrid combines dropdown selection with grid features like multiple columns, sorting, filtering, and paging.
+/// Ideal when dropdown items have multiple properties you want to display in columns. Instead of showing just one property per item, the grid popup can display multiple columns.
+/// Perfect for scenarios like selecting products with columns for Name/SKU/Price/Stock, choosing employees with Name/Department/Email columns, or picking customers with Company/Contact/Location columns.
+/// Features full DataGrid with columns/sorting/filtering in the dropdown popup, column definition using RadzenDropDownDataGridColumn, built-in column filtering in the grid,
+/// multiple selection with checkboxes, optional paging for large datasets, and custom column templates for rich item display.
+/// Define columns as child components to specify what data to show in the grid popup.
 type RadzenDropDownDataGridBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit DropDownBaseBuilder<'FunBlazorGeneric, 'TValue>()
     /// Specifies additional custom attributes that will be rendered by the input.
@@ -1067,6 +1398,14 @@ type RadzenDropDownDataGridBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGen
     [<CustomOperation("AllowColumnResize")>] member inline _.AllowColumnResize ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AllowColumnResize" =>>> true)
     /// Gets or sets a value indicating whether column resizing is allowed.
     [<CustomOperation("AllowColumnResize")>] member inline _.AllowColumnResize ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("AllowColumnResize" =>>> x)
+    /// Gets or sets a value indicating whether column reorder is allowed.
+    [<CustomOperation("AllowColumnReorder")>] member inline _.AllowColumnReorder ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AllowColumnReorder" =>>> true)
+    /// Gets or sets a value indicating whether column reorder is allowed.
+    [<CustomOperation("AllowColumnReorder")>] member inline _.AllowColumnReorder ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("AllowColumnReorder" =>>> x)
+    /// Gets or sets a value indicating whether column picking is allowed.
+    [<CustomOperation("AllowColumnPicking")>] member inline _.AllowColumnPicking ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AllowColumnPicking" =>>> true)
+    /// Gets or sets a value indicating whether column picking is allowed.
+    [<CustomOperation("AllowColumnPicking")>] member inline _.AllowColumnPicking ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("AllowColumnPicking" =>>> x)
     /// Gets or sets the width of all columns.
     [<CustomOperation("ColumnWidth")>] member inline _.ColumnWidth ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ColumnWidth" => x)
     /// Gets or sets a value indicating whether this RadzenDropDownDataGrid`1 is responsive.
@@ -1089,6 +1428,8 @@ type RadzenDropDownDataGridBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGen
     [<CustomOperation("PreserveRowSelectionOnPaging")>] member inline _.PreserveRowSelectionOnPaging ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("PreserveRowSelectionOnPaging" =>>> true)
     /// Gets or sets preserving the selected row index on pageing.
     [<CustomOperation("PreserveRowSelectionOnPaging")>] member inline _.PreserveRowSelectionOnPaging ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("PreserveRowSelectionOnPaging" =>>> x)
+    /// Gets or sets the page size options.
+    [<CustomOperation("PageSizeOptions")>] member inline _.PageSizeOptions ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<System.Int32>) = render ==> ("PageSizeOptions" => x)
     /// Gets or sets the page numbers count.
     [<CustomOperation("PageNumbersCount")>] member inline _.PageNumbersCount ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("PageNumbersCount" => x)
     /// Gets or sets the pager summary visibility.
@@ -1170,7 +1511,13 @@ type RadzenDropDownDataGridBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGen
     /// Gets or sets a value indicating whether DataGrid row can be selected on row click.
     [<CustomOperation("AllowRowSelectOnRowClick")>] member inline _.AllowRowSelectOnRowClick ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("AllowRowSelectOnRowClick" =>>> x)
 
-/// RadzenListBox component.
+/// A list box component that displays a scrollable list of items with single or multiple selection support.
+/// RadzenListBox provides an always-visible alternative to dropdowns, ideal for showing multiple options without requiring a popup.
+/// Displays all items in a scrollable container, making all options visible at once (unlike dropdowns which hide options in a popup).
+/// Supports single selection (default) or multiple selection via Multiple property, built-in search/filter with configurable operators and case sensitivity,
+/// binding to any IEnumerable data source with TextProperty and ValueProperty, custom item templates for rich list item content,
+/// efficient rendering of large lists via IQueryable support, optional "Select All" checkbox for multiple selection mode, and keyboard navigation (Arrow keys, Page Up/Down, Home/End) for accessibility.
+/// Use when you want to show all available options without requiring clicks to open a dropdown, or when multiple selection is needed and checkboxes would take too much space.
 type RadzenListBoxBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit DropDownBaseBuilder<'FunBlazorGeneric, 'TValue>()
     /// Gets or sets the select all text.
@@ -1184,7 +1531,12 @@ type RadzenListBoxBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> M
     /// Gets or sets a value indicating whether is read only.
     [<CustomOperation("ReadOnly")>] member inline _.ReadOnly ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ReadOnly" =>>> x)
 
-/// RadzenAutoComplete component.
+/// An autocomplete text input component that provides real-time suggestions as users type based on a data source.
+/// RadzenAutoComplete combines a text input with a suggestion dropdown that filters and displays matching items, enabling quick selection without typing complete values.
+/// Features configurable filter operators (Contains, StartsWith, etc.) and case sensitivity, binding to any IEnumerable data source with TextProperty to specify display field,
+/// MinLength to require typing before showing suggestions, FilterDelay for debouncing, custom templates for rendering suggestion items,
+/// LoadData event for on-demand server-side filtering, textarea-style multiline input support, and option to show all items when field gains focus.
+/// Unlike dropdown, allows free-text entry and suggests matching items. The Value is the entered text, while SelectedItem provides access to the selected data object.
 type RadzenAutoCompleteBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit DataBoundFormComponentBuilder<'FunBlazorGeneric, System.String>()
     /// Gets or sets the selected item.
@@ -1213,7 +1565,7 @@ type RadzenAutoCompleteBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micro
     [<CustomOperation("MinLength")>] member inline _.MinLength ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("MinLength" => x)
     /// Gets or sets the filter delay.
     [<CustomOperation("FilterDelay")>] member inline _.FilterDelay ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("FilterDelay" => x)
-    /// Gets or sets the underlying input type.
+    /// Gets or sets the underlying input type. This does not apply when Multiline is true.
     [<CustomOperation("InputType")>] member inline _.InputType ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("InputType" => x)
     /// Gets or sets the underlying max length.
     [<CustomOperation("MaxLength")>] member inline _.MaxLength ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int64>) = render ==> ("MaxLength" => x)
@@ -1227,14 +1579,22 @@ open Fun.Blazor
 open Fun.Blazor.Operators
 open Radzen.Blazor.DslInternals
 
-/// Class FormComponent.
-/// Implements the RadzenComponent
-/// Implements the IRadzenFormComponent
+/// Base class for all Radzen form input components providing data binding, validation, and change event capabilities.
+/// FormComponent integrates with Blazor's EditContext for form validation and provides common functionality for all input controls.
+/// This is the base class for components like RadzenTextBox, RadzenCheckBox, RadzenDropDown, RadzenDatePicker, etc.
+/// Provides @bind-Value support for two-way binding, integration with Blazor EditContext and validators, Change and ValueChanged callbacks,
+/// Disable property to prevent user interaction, Placeholder text for empty inputs, Name property for validation and label association,
+/// and TabIndex for keyboard navigation control.
+/// Components inheriting from FormComponent automatically work with RadzenTemplateForm and validators.
 type FormComponentBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit RadzenComponentBuilder<'FunBlazorGeneric>()
-    /// Gets or sets the name.
+    /// Gets or sets the unique name identifier for this form component.
+    /// Used for validation association (linking with validators and labels) and for identifying the field in form submission.
+    /// This name should be unique within the form and match the Component property of associated validators/labels.
     [<CustomOperation("Name")>] member inline _.Name ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Name" => x)
-    /// Gets or sets the index of the tab.
+    /// Gets or sets the tab order index for keyboard navigation.
+    /// Controls the order in which fields receive focus when the user presses the Tab key.
+    /// Lower values receive focus first. Use -1 to exclude from tab navigation.
     [<CustomOperation("TabIndex")>] member inline _.TabIndex ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("TabIndex" => x)
     /// Gets or sets the placeholder.
     [<CustomOperation("Placeholder")>] member inline _.Placeholder ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Placeholder" => x)
@@ -1259,12 +1619,15 @@ type FormComponentBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Micros
     /// Gets or sets the value expression.
     [<CustomOperation("ValueExpression")>] member inline _.ValueExpression ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Linq.Expressions.Expression<System.Func<'T>>) = render ==> ("ValueExpression" => x)
 
-/// Class FormComponentWithAutoComplete.
+/// Base class for form input components that support browser autocomplete functionality.
+/// Extends FormComponent`1 with properties for controlling browser autocomplete behavior and ARIA autocomplete attributes.
+/// Used by input components like RadzenTextBox, RadzenPassword, RadzenNumeric, and RadzenMask.
+/// Provides standardized autocomplete behavior for better integration with browser password managers and autofill features.
 type FormComponentWithAutoCompleteBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FormComponentBuilder<'FunBlazorGeneric, 'T>()
-    /// Gets or sets a value indicating the type of built-in autocomplete
-    /// the browser should use.
-    /// AutoCompleteType
+    /// Gets or sets the browser autocomplete behavior for this input field.
+    /// Controls whether browsers should offer to autofill this field based on user history or saved data.
+    /// Common values include On (enable), Off (disable), Username, CurrentPassword, Email, etc.
     [<CustomOperation("AutoCompleteType")>] member inline _.AutoCompleteType ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Blazor.AutoCompleteType) = render ==> ("AutoCompleteType" => x)
 
             
@@ -1276,26 +1639,46 @@ open Fun.Blazor
 open Fun.Blazor.Operators
 open Radzen.Blazor.DslInternals
 
-/// RadzenMask component.
+/// A masked text input component that enforces a specific format pattern as users type (e.g., phone numbers, dates, credit cards).
+/// RadzenMask guides users to enter data in the correct format by automatically formatting input according to a mask pattern.
+/// Uses a pattern string where asterisks (*) represent user-input positions and other characters are literals. As users type, the input is automatically formatted to match the mask.
+/// Features mask pattern definition using * for input positions (e.g., "(***) ***-****" for phone numbers), character filtering via Pattern (regex) to remove invalid characters and CharacterPattern (regex) to specify valid characters,
+/// automatic insertion of literal characters (parentheses, dashes, spaces, etc.), and placeholder showing the expected format to guide users.
+/// Common uses include phone numbers, dates, credit cards, SSN, postal codes, or any fixed-format data entry. The mask helps prevent input errors and improves data consistency.
 type RadzenMaskBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FormComponentWithAutoCompleteBuilder<'FunBlazorGeneric, System.String>()
-    /// Gets or sets a value indicating whether is read only.
+    /// Gets or sets whether the masked input is read-only and cannot be edited.
+    /// When true, displays the formatted value but prevents user input.
     [<CustomOperation("ReadOnly")>] member inline _.ReadOnly ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ReadOnly" =>>> true)
-    /// Gets or sets a value indicating whether is read only.
+    /// Gets or sets whether the masked input is read-only and cannot be edited.
+    /// When true, displays the formatted value but prevents user input.
     [<CustomOperation("ReadOnly")>] member inline _.ReadOnly ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ReadOnly" =>>> x)
-    /// Gets or sets the maximum length.
+    /// Gets or sets the maximum number of characters that can be entered.
+    /// Typically matches the mask length, but can be set for additional constraints.
     [<CustomOperation("MaxLength")>] member inline _.MaxLength ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int64>) = render ==> ("MaxLength" => x)
-    /// Gets or sets the mask.
+    /// Gets or sets the mask pattern that defines the input format.
+    /// Use asterisks (*) for user input positions and literal characters for formatting.
+    /// Example: "(***) ***-****" creates a phone number format like "(555) 123-4567".
     [<CustomOperation("Mask")>] member inline _.Mask ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Mask" => x)
-    /// Gets or sets the pattern that will be used to replace all invalid characters with regular expression.
+    /// Gets or sets a regular expression pattern for removing invalid characters from user input.
+    /// Characters matching this pattern are stripped out as the user types.
+    /// Example: "[^0-9]" removes all non-digit characters for numeric-only input.
     [<CustomOperation("Pattern")>] member inline _.Pattern ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Pattern" => x)
-    /// Gets or sets the pattern that will be used to match all valid characters with regular expression. If both Pattern and CharacterPattern are set CharacterPattern will be used.
+    /// Gets or sets a regular expression pattern specifying which characters are valid for user input.
+    /// Only characters matching this pattern are accepted as the user types.
+    /// If both Pattern and CharacterPattern are set, CharacterPattern takes precedence.
+    /// Example: "[0-9]" allows only digit characters.
     [<CustomOperation("CharacterPattern")>] member inline _.CharacterPattern ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("CharacterPattern" => x)
 
-/// RadzenNumeric component.
+/// A numeric input component that allows users to enter numbers with optional increment/decrement buttons and value constraints.
+/// RadzenNumeric supports various numeric types, formatting, min/max validation, step increments, and culture-specific number display.
+/// Provides up/down arrow buttons for incrementing/decrementing the value by a specified step amount.
+/// Supports min/max constraints that are enforced during input and stepping, formatted value display using standard .NET format strings,
+/// and can be configured with or without the up/down buttons. Handles overflow protection and respects the numeric type's natural limits.
 type RadzenNumericBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FormComponentWithAutoCompleteBuilder<'FunBlazorGeneric, 'TValue>()
-    /// Specifies additional custom attributes that will be rendered by the input.
+    /// Gets or sets additional HTML attributes to be applied to the underlying input element.
+    /// This allows passing custom attributes like data-* attributes, aria-* attributes, or other HTML attributes directly to the input.
     [<CustomOperation("InputAttributes")>] member inline _.InputAttributes ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>) = render ==> ("InputAttributes" => x)
     /// Gets or sets the value.
     [<CustomOperation("Value")>] member inline _.Value ([<InlineIfLambda>] render: AttrRenderFragment, x: 'TValue) = render ==> ("Value" => x)
@@ -1326,47 +1709,92 @@ type RadzenNumericBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> M
     /// Gets or sets the down button aria-label attribute.
     [<CustomOperation("DownAriaLabel")>] member inline _.DownAriaLabel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("DownAriaLabel" => x)
 
-/// RadzenPassword component.
+/// A password input component that masks entered characters for secure password entry with autocomplete support.
+/// RadzenPassword provides a styled password field with browser autocomplete integration for password managers.
+/// Displays entered characters as dots or asterisks to protect sensitive data from shoulder surfing, integrates with browser password managers by setting appropriate autocomplete attributes.
+/// Supports data binding, validation, placeholder text, and read-only mode for display purposes.
+/// Use within forms for login, registration, password change, or any scenario requiring secure text entry.
 type RadzenPasswordBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FormComponentWithAutoCompleteBuilder<'FunBlazorGeneric, System.String>()
-    /// Gets or sets a value indicating whether is read only.
+    /// Gets or sets whether the password input is read-only and cannot be edited.
+    /// When true, displays the masked value (or placeholder) but prevents user input.
+    /// Useful for displaying password field in view-only forms, though typically passwords are not displayed at all.
     [<CustomOperation("ReadOnly")>] member inline _.ReadOnly ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ReadOnly" =>>> true)
-    /// Gets or sets a value indicating whether is read only.
+    /// Gets or sets whether the password input is read-only and cannot be edited.
+    /// When true, displays the masked value (or placeholder) but prevents user input.
+    /// Useful for displaying password field in view-only forms, though typically passwords are not displayed at all.
     [<CustomOperation("ReadOnly")>] member inline _.ReadOnly ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ReadOnly" =>>> x)
-
-/// An input component for single line text entry.
-type RadzenTextBoxBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit FormComponentWithAutoCompleteBuilder<'FunBlazorGeneric, System.String>()
-    /// Gets or sets a value indicating whether is read only.
-    [<CustomOperation("ReadOnly")>] member inline _.ReadOnly ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ReadOnly" =>>> true)
-    /// Gets or sets a value indicating whether is read only.
-    [<CustomOperation("ReadOnly")>] member inline _.ReadOnly ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ReadOnly" =>>> x)
-    /// Gets or sets the maximum allowed text length.
-    [<CustomOperation("MaxLength")>] member inline _.MaxLength ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int64>) = render ==> ("MaxLength" => x)
-    /// Specifies whether to remove any leading or trailing whitespace from the value. Set to false by default.
-    [<CustomOperation("Trim")>] member inline _.Trim ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Trim" =>>> true)
-    /// Specifies whether to remove any leading or trailing whitespace from the value. Set to false by default.
-    [<CustomOperation("Trim")>] member inline _.Trim ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Trim" =>>> x)
-    /// Gets or sets a value indicating whether the component should update the value immediately when the user types. Set to false by default.
+    /// Gets or sets whether the component should update the bound value immediately as the user types (oninput event),
+    /// rather than waiting for the input to lose focus (onchange event).
+    /// This enables real-time value updates but may trigger more frequent change events.
     [<CustomOperation("Immediate")>] member inline _.Immediate ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Immediate" =>>> true)
-    /// Gets or sets a value indicating whether the component should update the value immediately when the user types. Set to false by default.
+    /// Gets or sets whether the component should update the bound value immediately as the user types (oninput event),
+    /// rather than waiting for the input to lose focus (onchange event).
+    /// This enables real-time value updates but may trigger more frequent change events.
     [<CustomOperation("Immediate")>] member inline _.Immediate ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Immediate" =>>> x)
 
-/// RadzenCheckBox component.
+/// A single-line text input component that supports data binding, validation, and various input behaviors.
+/// RadzenTextBox provides a styled text input with support for placeholders, autocomplete, immediate updates, and string trimming.
+/// Supports two-way data binding via @bind-Value and form validation when used within Radzen forms.
+/// Can be configured for immediate value updates as the user types or deferred updates on blur/change.
+/// Use Trim to automatically remove whitespace, and MaxLength to limit input length.
+type RadzenTextBoxBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit FormComponentWithAutoCompleteBuilder<'FunBlazorGeneric, System.String>()
+    /// Gets or sets whether the text box is read-only and cannot be edited by the user.
+    /// When true, the text box displays the value but prevents user input while still allowing selection and copying.
+    [<CustomOperation("ReadOnly")>] member inline _.ReadOnly ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ReadOnly" =>>> true)
+    /// Gets or sets whether the text box is read-only and cannot be edited by the user.
+    /// When true, the text box displays the value but prevents user input while still allowing selection and copying.
+    [<CustomOperation("ReadOnly")>] member inline _.ReadOnly ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ReadOnly" =>>> x)
+    /// Gets or sets the maximum number of characters that can be entered in the text box.
+    /// When set, the browser will prevent users from typing beyond this limit.
+    [<CustomOperation("MaxLength")>] member inline _.MaxLength ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int64>) = render ==> ("MaxLength" => x)
+    /// Gets or sets whether to automatically remove leading and trailing whitespace from the value.
+    /// When enabled, whitespace is trimmed when the value changes.
+    [<CustomOperation("Trim")>] member inline _.Trim ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Trim" =>>> true)
+    /// Gets or sets whether to automatically remove leading and trailing whitespace from the value.
+    /// When enabled, whitespace is trimmed when the value changes.
+    [<CustomOperation("Trim")>] member inline _.Trim ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Trim" =>>> x)
+    /// Gets or sets whether the component should update the bound value immediately as the user types (oninput event),
+    /// rather than waiting for the input to lose focus (onchange event).
+    /// This enables real-time value updates but may trigger more frequent change events.
+    [<CustomOperation("Immediate")>] member inline _.Immediate ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Immediate" =>>> true)
+    /// Gets or sets whether the component should update the bound value immediately as the user types (oninput event),
+    /// rather than waiting for the input to lose focus (onchange event).
+    /// This enables real-time value updates but may trigger more frequent change events.
+    [<CustomOperation("Immediate")>] member inline _.Immediate ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Immediate" =>>> x)
+
+/// A checkbox input component that supports two-state (checked/unchecked) or tri-state (checked/unchecked/indeterminate) modes.
+/// RadzenCheckBox provides data binding, validation, and keyboard accessibility for boolean or nullable boolean values.
+/// In two-state mode, the value toggles between true and false. In tri-state mode (TriState = true), the value cycles through false → null → true → false.
+/// Supports keyboard interaction (Space/Enter to toggle) and integrates with Blazor EditContext for form validation.
 type RadzenCheckBoxBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FormComponentBuilder<'FunBlazorGeneric, 'TValue>()
-    /// Specifies additional custom attributes that will be rendered by the input.
+    /// Gets or sets additional HTML attributes to be applied to the underlying input element.
+    /// This allows passing custom attributes like data-* attributes, aria-* attributes, or other HTML attributes directly to the input.
     [<CustomOperation("InputAttributes")>] member inline _.InputAttributes ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>) = render ==> ("InputAttributes" => x)
-    /// Gets or sets a value indicating whether is tri-state (true, false or null).
+    /// Gets or sets whether the checkbox supports three states: checked (true), unchecked (false), and indeterminate (null).
+    /// When enabled, clicking cycles through all three states. Use with nullable boolean (bool?) values.
     [<CustomOperation("TriState")>] member inline _.TriState ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("TriState" =>>> true)
-    /// Gets or sets a value indicating whether is tri-state (true, false or null).
+    /// Gets or sets whether the checkbox supports three states: checked (true), unchecked (false), and indeterminate (null).
+    /// When enabled, clicking cycles through all three states. Use with nullable boolean (bool?) values.
     [<CustomOperation("TriState")>] member inline _.TriState ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("TriState" =>>> x)
-    /// Gets or sets a value indicating whether is read only.
+    /// Gets or sets whether the checkbox is read-only and cannot be toggled by user interaction.
+    /// When true, the checkbox displays its current state but prevents clicking or keyboard toggling.
+    /// Useful for displaying checkbox state in view-only scenarios.
     [<CustomOperation("ReadOnly")>] member inline _.ReadOnly ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ReadOnly" =>>> true)
-    /// Gets or sets a value indicating whether is read only.
+    /// Gets or sets whether the checkbox is read-only and cannot be toggled by user interaction.
+    /// When true, the checkbox displays its current state but prevents clicking or keyboard toggling.
+    /// Useful for displaying checkbox state in view-only scenarios.
     [<CustomOperation("ReadOnly")>] member inline _.ReadOnly ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ReadOnly" =>>> x)
 
-/// RadzenCheckBoxList component.
+/// A checkbox group component that allows users to select multiple options from a list of choices.
+/// RadzenCheckBoxList displays multiple checkboxes with configurable layout, orientation, and data binding, binding to a collection of selected values.
+/// Allows multiple selections, unlike radio button lists. The bound value is a collection of all checked items.
+/// Supports multiple selection where users can check/uncheck any number of items, data binding via Data property or static item declaration,
+/// configurable layout including orientation (Horizontal/Vertical), gap spacing, wrapping, alignment, and justification,
+/// custom item templates for complex checkbox content, disabled/read-only items individually or for the entire list, and keyboard navigation (Arrow keys, Space, Enter) for accessibility.
+/// The Value property is IEnumerable<TValue> containing all selected item values. Common uses include multi-select filters, preference selections, or feature toggles.
 type RadzenCheckBoxListBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FormComponentBuilder<'FunBlazorGeneric, System.Collections.Generic.IEnumerable<'TValue>>()
     /// Gets or sets the value property.
@@ -1410,7 +1838,13 @@ type RadzenCheckBoxListBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric
     /// Gets or sets the items that will be concatenated with generated items from Data.
     [<CustomOperation("Items")>] member inline _.Items ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("Items", html.text x)
 
-/// RadzenColorPicker component.
+/// A color picker component that allows users to select colors through various input methods including color palette, RGB sliders, hex input, and predefined swatches.
+/// RadzenColorPicker provides a comprehensive color selection interface with alpha channel support.
+/// Displays a button showing the current color. Clicking opens a popup with multiple color selection methods including visual picker (click on hue/saturation gradient to select colors visually),
+/// hue/alpha sliders to fine-tune hue and transparency, RGB input to enter specific Red/Green/Blue values (0-255), hex input to enter hex color codes (#RRGGBB or #RRGGBBAA),
+/// and predefined swatches for quick selection.
+/// The Value is a hex color string (e.g., "#FF0000" for red, "#FF0000AA" for semi-transparent red). Supports alpha channel (transparency) in RGBA format.
+/// Use for applications requiring color customization like themes, charts, or design tools.
 type RadzenColorPickerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FormComponentBuilder<'FunBlazorGeneric, System.String>()
     /// Gets or sets the toggle popup aria label text.
@@ -1458,7 +1892,13 @@ type RadzenColorPickerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micros
     /// Gets or sets the render mode.
     [<CustomOperation("PopupRenderMode")>] member inline _.PopupRenderMode ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.PopupRenderMode) = render ==> ("PopupRenderMode" => x)
 
-/// RadzenFileInput component.
+/// A file input component that reads selected files and binds their content as base64 strings or byte arrays.
+/// RadzenFileInput provides client-side file reading without server upload, ideal for form fields or immediate file processing.
+/// Unlike RadzenUpload which sends files to a server, FileInput reads files on the client and binds the content to a property.
+/// Useful for form integration (including file content in form models without separate upload), client-side processing (processing files in browser for image preview, parsing, etc.),
+/// embedded storage (storing file content in database as base64 or binary), and avoiding server-side upload endpoints when file content is part of form data.
+/// Reads the selected file and binds it as TValue = string for base64-encoded data URL (e.g., "data:image/png;base64,iVBORw0K...") or TValue = byte[] for raw binary file content.
+/// For image files, automatically shows a preview. Use MaxFileSize to limit file size.
 type RadzenFileInputBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FormComponentBuilder<'FunBlazorGeneric, 'TValue>()
     /// Specifies additional custom attributes that will be rendered by the input.
@@ -1506,14 +1946,23 @@ type RadzenFileInputBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :>
     /// Gets or sets the FileSize changed.
     [<CustomOperation("FileSizeChanged")>] member inline _.FileSizeChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Nullable<System.Int64> -> Task<unit>) = render ==> html.callbackTask("FileSizeChanged", fn)
 
-/// A component which edits HTML content. Provides built-in upload capabilities.
+/// A rich text HTML editor component with WYSIWYG editing, formatting toolbar, image upload, and custom tool support.
+/// RadzenHtmlEditor provides a full-featured editor for creating and editing formatted content with a Microsoft Word-like interface.
+/// Allows users to create rich formatted content without knowing HTML.
+/// Features WYSIWYG (what-you-see-is-what-you-get) visual editing interface, formatting tools (bold, italic, underline, font selection, colors, alignment, lists, links, images),
+/// built-in image upload with configurable upload URL, custom toolbar buttons via RadzenHtmlEditorCustomTool, toggle between visual editing and HTML source code view,
+/// paste filtering to remove unwanted HTML when pasting from other sources, and programmatic execution of formatting commands via ExecuteCommandAsync().
+/// The Value property contains HTML markup. Use UploadUrl to configure where images are uploaded. Add custom tools for domain-specific functionality like inserting templates or special content.
 type RadzenHtmlEditorBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FormComponentBuilder<'FunBlazorGeneric, System.String>()
-    /// Specifies whether to show the toolbar. Set it to false to hide the toolbar. Default value is true.
+    /// Gets or sets whether to display the formatting toolbar above the editor.
+    /// When false, hides the toolbar but editing is still possible. Useful for read-only or simplified views.
     [<CustomOperation("ShowToolbar")>] member inline _.ShowToolbar ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowToolbar" =>>> true)
-    /// Specifies whether to show the toolbar. Set it to false to hide the toolbar. Default value is true.
+    /// Gets or sets whether to display the formatting toolbar above the editor.
+    /// When false, hides the toolbar but editing is still possible. Useful for read-only or simplified views.
     [<CustomOperation("ShowToolbar")>] member inline _.ShowToolbar ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowToolbar" =>>> x)
-    /// Gets or sets the mode of the editor.
+    /// Gets or sets the editor mode determining whether users see the visual editor or HTML source code.
+    /// Design mode shows WYSIWYG editing, Source mode shows raw HTML for advanced users.
     [<CustomOperation("Mode")>] member inline _.Mode ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.HtmlEditorMode) = render ==> ("Mode" => x)
     /// Specifies custom headers that will be submit during uploads.
     [<CustomOperation("UploadHeaders")>] member inline _.UploadHeaders ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IDictionary<System.String, System.String>) = render ==> ("UploadHeaders" => x)
@@ -1540,7 +1989,12 @@ type RadzenHtmlEditorBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microso
     /// Gets or sets the callback which when a file is uploaded.
     [<CustomOperation("UploadComplete")>] member inline _.UploadComplete ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.UploadCompleteEventArgs -> Task<unit>) = render ==> html.callbackTask("UploadComplete", fn)
 
-/// RadzenRadioButtonList component.
+/// A radio button group component that allows users to select a single option from a list of choices.
+/// RadzenRadioButtonList displays multiple radio buttons with configurable layout, orientation, and data binding.
+/// Presents mutually exclusive options where only one can be selected at a time.
+/// Supports data binding via Data property or static item declaration, configurable layout including orientation (Horizontal/Vertical), gap spacing, wrapping, alignment, and justification,
+/// custom item templates for complex radio button content, disabled items individually or for the entire list, and keyboard navigation (Arrow keys, Space, Enter) for accessibility.
+/// Use for forms where users must choose one option from several, like payment methods, shipping options, or preference settings.
 type RadzenRadioButtonListBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FormComponentBuilder<'FunBlazorGeneric, 'TValue>()
     /// Gets or sets the value property.
@@ -1574,18 +2028,29 @@ type RadzenRadioButtonListBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGene
     /// Gets or sets the items.
     [<CustomOperation("Items")>] member inline _.Items ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("Items", html.text x)
 
-/// RadzenRating component.
+/// A star rating input component that allows users to provide ratings by selecting a number of stars.
+/// RadzenRating displays an interactive or read-only star rating with configurable number of stars and keyboard accessibility.
+/// Displays a row of stars (or other symbols) that users can click to select a rating value. The value is an integer from 0 to the number of stars configured.
+/// Common uses include product reviews and ratings, user feedback and satisfaction surveys, content quality indicators, and service ratings.
+/// Supports keyboard navigation (arrow keys, Space/Enter) for accessibility. Use ReadOnly mode to display ratings without allowing user input.
 type RadzenRatingBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FormComponentBuilder<'FunBlazorGeneric, System.Int32>()
-    /// Gets or sets the number of stars.
+    /// Gets or sets the total number of stars to display in the rating component.
+    /// The value can range from 0 to this number. Common values are 5 or 10.
     [<CustomOperation("Stars")>] member inline _.Stars ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("Stars" => x)
-    /// Gets or sets the clear aria label text.
+    /// Gets or sets the accessible label text for the clear rating action.
+    /// Used by screen readers to announce the clear/reset rating button functionality.
     [<CustomOperation("ClearAriaLabel")>] member inline _.ClearAriaLabel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ClearAriaLabel" => x)
-    /// Gets or sets the rate aria label text.
+    /// Gets or sets the accessible label text template for rating actions.
+    /// Used by screen readers to announce each star's rating value (e.g., "Rate 3 stars").
     [<CustomOperation("RateAriaLabel")>] member inline _.RateAriaLabel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("RateAriaLabel" => x)
-    /// Gets or sets a value indicating whether is read only.
+    /// Gets or sets whether the rating is read-only and cannot be changed by user interaction.
+    /// When true, the stars display the current rating but cannot be clicked or modified.
+    /// Useful for displaying ratings without allowing users to change them (e.g., showing product ratings).
     [<CustomOperation("ReadOnly")>] member inline _.ReadOnly ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ReadOnly" =>>> true)
-    /// Gets or sets a value indicating whether is read only.
+    /// Gets or sets whether the rating is read-only and cannot be changed by user interaction.
+    /// When true, the stars display the current rating but cannot be clicked or modified.
+    /// Useful for displaying ratings without allowing users to change them (e.g., showing product ratings).
     [<CustomOperation("ReadOnly")>] member inline _.ReadOnly ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ReadOnly" =>>> x)
 
 /// RadzenRating component.
@@ -1598,12 +2063,19 @@ type RadzenSecurityCodeBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micro
     /// Gets or sets the spacing between inputs
     [<CustomOperation("Gap")>] member inline _.Gap ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Gap" => x)
 
-/// RadzenSelectBar component.
+/// A segmented button control component that displays options as a group of connected buttons for single or multiple selection.
+/// RadzenSelectBar provides a visually distinct way to select from a limited set of options, commonly used for view modes, filters, or categories.
+/// Presents options as a row or column of connected buttons where selected items are highlighted. Ideal when you have 2-7 options and want a more prominent UI than radio buttons or checkboxes.
+/// Supports single selection (default) or multiple selection via Multiple property, Horizontal (side-by-side) or Vertical (stacked) button orientation, binding to a data source or static declaration of items,
+/// custom item templates with text/icons/images, ExtraSmall/Small/Medium/Large button sizes, disabled items, and keyboard navigation (Arrow keys and Space/Enter) for accessibility.
+/// Common uses include view toggles (list/grid), time period selectors (day/week/month), category filters, or any small set of mutually exclusive options.
 type RadzenSelectBarBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FormComponentBuilder<'FunBlazorGeneric, 'TValue>()
-    /// Gets or sets the size. Set to ButtonSize.Medium by default.
+    /// Gets or sets the size of the buttons in the select bar.
+    /// Controls the button padding, font size, and overall dimensions for all items.
     [<CustomOperation("Size")>] member inline _.Size ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.ButtonSize) = render ==> ("Size" => x)
-    /// Gets or sets the orientation. Set to Orientation.Horizontal by default.
+    /// Gets or sets the layout direction of the select bar.
+    /// Horizontal displays buttons side-by-side in a row, Vertical stacks buttons in a column.
     [<CustomOperation("Orientation")>] member inline _.Orientation ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Orientation) = render ==> ("Orientation" => x)
     /// Gets or sets the value property.
     [<CustomOperation("ValueProperty")>] member inline _.ValueProperty ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ValueProperty" => x)
@@ -1626,7 +2098,14 @@ type RadzenSelectBarBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :>
     /// Gets or sets the items.
     [<CustomOperation("Items")>] member inline _.Items ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("Items", html.text x)
 
-/// RadzenSlider component.
+/// A slider component for selecting numeric values by dragging a handle along a track.
+/// RadzenSlider supports single value selection or range selection (min/max) with horizontal or vertical orientation.
+/// Provides an intuitive way to select numeric values within a range, especially useful when the exact value is less important than the approximate position,
+/// you want to show the valid range visually, or the input should be constrained to specific increments.
+/// Features single value or min/max range selection, Horizontal (default) or Vertical layout, Min/Max values defining the selectable range,
+/// Step property controlling value granularity, colored track showing selected portion for visual feedback, Arrow key support for precise adjustment, and drag gestures on mobile devices.
+/// For range selection, set Range=true and bind to IEnumerable<TValue> (e.g., IEnumerable<int>) for min/max values.
+/// Common uses include price filters, volume controls, zoom levels, or any bounded numeric input.
 type RadzenSliderBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FormComponentBuilder<'FunBlazorGeneric, 'TValue>()
     /// Specifies the orientation. Set to Orientation.Horizontal by default.
@@ -1644,29 +2123,53 @@ type RadzenSliderBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Mi
     /// Determines the maximum value.
     [<CustomOperation("Max")>] member inline _.Max ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Decimal) = render ==> ("Max" => x)
 
-/// RadzenSwitch component.
+/// A toggle switch component for boolean on/off states with a sliding animation.
+/// RadzenSwitch provides an alternative to checkboxes with a more modern toggle UI pattern, ideal for settings and preferences.
+/// Displays as a sliding toggle that users can click or drag to change between on (true) and off (false) states, providing visual feedback with a sliding animation and color change.
+/// Common uses include enabling/disabling settings or features, toggling visibility of sections, on/off preferences in configuration panels, and boolean options in forms.
+/// Supports keyboard navigation (Space/Enter to toggle) for accessibility. Unlike checkboxes, switches are typically used for immediate effects rather than form submission actions.
 type RadzenSwitchBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FormComponentBuilder<'FunBlazorGeneric, System.Boolean>()
-    /// Gets or sets a value indicating whether is read only.
+    /// Gets or sets whether the switch is read-only and cannot be toggled by user interaction.
+    /// When true, the switch displays its current state but prevents clicking or keyboard toggling.
+    /// Useful for displaying switch state in view-only forms or dashboards.
     [<CustomOperation("ReadOnly")>] member inline _.ReadOnly ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ReadOnly" =>>> true)
-    /// Gets or sets a value indicating whether is read only.
+    /// Gets or sets whether the switch is read-only and cannot be toggled by user interaction.
+    /// When true, the switch displays its current state but prevents clicking or keyboard toggling.
+    /// Useful for displaying switch state in view-only forms or dashboards.
     [<CustomOperation("ReadOnly")>] member inline _.ReadOnly ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ReadOnly" =>>> x)
-    /// Specifies additional custom attributes that will be rendered by the input.
+    /// Gets or sets additional HTML attributes to be applied to the underlying input element.
+    /// This allows passing custom attributes like data-* attributes, aria-* attributes, or other HTML attributes directly to the input.
     [<CustomOperation("InputAttributes")>] member inline _.InputAttributes ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>) = render ==> ("InputAttributes" => x)
 
-/// RadzenTextArea component.
+/// A multi-line text input component for entering longer text content with configurable dimensions.
+/// RadzenTextArea provides a resizable textarea with data binding, validation, and automatic sizing options.
+/// Ideal for comments, descriptions, messages, or any content requiring multiple lines.
+/// Features configurable sizing via Rows (height) and Cols (width) properties, MaxLength to restrict input length,
+/// browser-resizable textarea, integration with Blazor EditContext for form validation, and two-way binding via @bind-Value.
+/// The Rows and Cols properties set the initial/minimum size, but users can often resize the textarea using the resize handle.
 type RadzenTextAreaBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FormComponentBuilder<'FunBlazorGeneric, System.String>()
-    /// Gets or sets the maximum length.
+    /// Gets or sets the maximum number of characters that can be entered in the textarea.
+    /// When set, the browser prevents users from entering more characters than this limit.
     [<CustomOperation("MaxLength")>] member inline _.MaxLength ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int64>) = render ==> ("MaxLength" => x)
-    /// Gets or sets a value indicating whether is read only.
+    /// Gets or sets whether the textarea is read-only and cannot be edited by the user.
+    /// When true, the textarea displays the value but prevents user input while still allowing selection and copying.
     [<CustomOperation("ReadOnly")>] member inline _.ReadOnly ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ReadOnly" =>>> true)
-    /// Gets or sets a value indicating whether is read only.
+    /// Gets or sets whether the textarea is read-only and cannot be edited by the user.
+    /// When true, the textarea displays the value but prevents user input while still allowing selection and copying.
     [<CustomOperation("ReadOnly")>] member inline _.ReadOnly ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ReadOnly" =>>> x)
-    /// Gets or sets the number of rows.
+    /// Gets or sets the number of visible text rows (height) in the textarea.
+    /// This determines the initial height of the textarea. Users may be able to resize it depending on browser and CSS settings.
     [<CustomOperation("Rows")>] member inline _.Rows ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("Rows" => x)
-    /// Gets or sets the number of cols.
+    /// Gets or sets the number of visible text columns (width) in the textarea.
+    /// This determines the initial width of the textarea based on average character width. 
+    /// In modern CSS layouts, setting an explicit width via Style property is often preferred.
     [<CustomOperation("Cols")>] member inline _.Cols ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("Cols" => x)
+    /// Gets or sets a value indicating whether the component should update the value immediately when the user types. Set to false by default.
+    [<CustomOperation("Immediate")>] member inline _.Immediate ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Immediate" =>>> true)
+    /// Gets or sets a value indicating whether the component should update the value immediately when the user types. Set to false by default.
+    [<CustomOperation("Immediate")>] member inline _.Immediate ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Immediate" =>>> x)
 
             
 namespace rec Radzen.Blazor.DslInternals
@@ -1722,9 +2225,9 @@ type PagedDataBoundComponentBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric
     [<CustomOperation("ShowPagingSummary")>] member inline _.ShowPagingSummary ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowPagingSummary" =>>> true)
     /// Gets or sets the pager summary visibility.
     [<CustomOperation("ShowPagingSummary")>] member inline _.ShowPagingSummary ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowPagingSummary" =>>> x)
-    /// Gets or sets the pager summary format.
+    /// Gets or sets the pager summary format. PagingSummaryTemplate has preference over this property.
     [<CustomOperation("PagingSummaryFormat")>] member inline _.PagingSummaryFormat ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("PagingSummaryFormat" => x)
-    /// Gets or sets the pager summary template.
+    /// Gets or sets the pager summary template. Has preference over PagingSummaryFormat.
     [<CustomOperation("PagingSummaryTemplate")>] member inline _.PagingSummaryTemplate ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.Blazor.PagingInformation -> NodeRenderFragment) = render ==> html.renderFragment("PagingSummaryTemplate", fn)
     /// Gets or sets the pager's first page button's title attribute.
     [<CustomOperation("FirstPageTitle")>] member inline _.FirstPageTitle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("FirstPageTitle" => x)
@@ -1768,14 +2271,25 @@ open Fun.Blazor
 open Fun.Blazor.Operators
 open Radzen.Blazor.DslInternals
 
-/// RadzenDataGrid component.
+/// A powerful data grid component for displaying and manipulating tabular data with support for sorting, filtering, paging, grouping, editing, and selection.
+/// RadzenDataGrid provides a full-featured table with inline editing, master-detail views, virtualization, export capabilities, and extensive customization options.
+/// Supports single/multiple column sorting, simple/advanced filtering, grouping with aggregation, inline/cell editing with validation, and single/multiple row selection with checkbox columns.
+/// Features on-demand data loading via LoadData event for server-side operations, export to Excel and CSV formats, column/row templates, group headers/footers, and density modes (Default/Compact) for responsive layouts.
+/// The grid can work with in-memory collections or load data on-demand from APIs.
+/// Columns are defined using RadzenDataGridColumn components within the Columns template.
 type RadzenDataGridBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit PagedDataBoundComponentBuilder<'FunBlazorGeneric, 'TItem>()
-    /// Gets or sets a value indicating whether this instance is virtualized.
+    /// Gets or sets whether the DataGrid uses virtualization to improve performance with large datasets.
+    /// When enabled, only visible rows are rendered in the DOM, with additional rows loaded as the user scrolls.
+    /// Virtualization significantly reduces memory usage and initial render time for grids with thousands of rows.
     [<CustomOperation("AllowVirtualization")>] member inline _.AllowVirtualization ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AllowVirtualization" =>>> true)
-    /// Gets or sets a value indicating whether this instance is virtualized.
+    /// Gets or sets whether the DataGrid uses virtualization to improve performance with large datasets.
+    /// When enabled, only visible rows are rendered in the DOM, with additional rows loaded as the user scrolls.
+    /// Virtualization significantly reduces memory usage and initial render time for grids with thousands of rows.
     [<CustomOperation("AllowVirtualization")>] member inline _.AllowVirtualization ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("AllowVirtualization" =>>> x)
-    /// Gets or sets a value that determines how many additional items will be rendered before and after the visible region. This help to reduce the frequency of rendering during scrolling. However, higher values mean that more elements will be present in the page.
+    /// Gets or sets the number of additional rows to render before and after the visible viewport when virtualization is enabled.
+    /// A higher overscan count reduces the chance of seeing blank space during fast scrolling, but increases the number of rendered elements.
+    /// The optimal value depends on row height and typical scroll speed.
     [<CustomOperation("VirtualizationOverscanCount")>] member inline _.VirtualizationOverscanCount ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("VirtualizationOverscanCount" => x)
     /// Gets or sets the callback used to load column filter data for DataGrid FilterMode.CheckBoxList filter mode.
     [<CustomOperation("LoadColumnFilterData")>] member inline _.LoadColumnFilterData ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.DataGridLoadColumnFilterDataEventArgs<'TItem> -> unit) = render ==> html.callback("LoadColumnFilterData", fn)
@@ -2177,32 +2691,54 @@ type RadzenDataGridBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> M
     /// Gets or sets the settings changed callback.
     [<CustomOperation("SettingsChanged")>] member inline _.SettingsChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.DataGridSettings -> Task<unit>) = render ==> html.callbackTask("SettingsChanged", fn)
 
-/// RadzenDataList component.
+/// A data list component for displaying collections of items using custom templates, with support for paging and virtualization.
+/// RadzenDataList provides a flexible way to render data in cards, tiles, or custom layouts instead of traditional table rows.
+/// Ideal when you need more control over item presentation than a traditional table provides. Perfect for product catalogs, image galleries, card-based dashboards, or any non-tabular data display.
+/// Supports complete control over item rendering via Template parameter, built-in paging with configurable page size, item wrapping to multiple columns/rows based on container width,
+/// efficient rendering for large datasets via virtualization, customizable message or template for empty state when no data exists, and on-demand data loading for server-side paging via LoadData.
+/// Use Template to define how each item should be rendered. The template receives the item as @context. Combine with RadzenRow/RadzenColumn for grid-based layouts or RadzenCard for card designs.
 type RadzenDataListBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit PagedDataBoundComponentBuilder<'FunBlazorGeneric, 'TItem>()
-    /// Gets or sets a value indicating whether DataList should show empty message.
+    /// Gets or sets whether to display an empty message when the data source has no items.
+    /// Enable this to show EmptyText or EmptyTemplate when the list is empty, providing user feedback.
     [<CustomOperation("ShowEmptyMessage")>] member inline _.ShowEmptyMessage ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowEmptyMessage" =>>> true)
-    /// Gets or sets a value indicating whether DataList should show empty message.
+    /// Gets or sets whether to display an empty message when the data source has no items.
+    /// Enable this to show EmptyText or EmptyTemplate when the list is empty, providing user feedback.
     [<CustomOperation("ShowEmptyMessage")>] member inline _.ShowEmptyMessage ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowEmptyMessage" =>>> x)
-    /// Gets or sets the empty text shown when Data is empty collection.
+    /// Gets or sets the text message displayed when the data source is empty.
+    /// Only shown if ShowEmptyMessage is true and no EmptyTemplate is specified.
     [<CustomOperation("EmptyText")>] member inline _.EmptyText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("EmptyText" => x)
-    /// Gets or sets the empty template shown when Data is empty collection.
+    /// Gets or sets a custom template for rendering the empty state when the data source has no items.
+    /// Takes precedence over EmptyText when both are set.
+    /// Use this for rich empty states with images, icons, or action buttons.
     [<CustomOperation("EmptyTemplate")>] member inline _.EmptyTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("EmptyTemplate", fragment)
-    /// Gets or sets the empty template shown when Data is empty collection.
+    /// Gets or sets a custom template for rendering the empty state when the data source has no items.
+    /// Takes precedence over EmptyText when both are set.
+    /// Use this for rich empty states with images, icons, or action buttons.
     [<CustomOperation("EmptyTemplate")>] member inline _.EmptyTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("EmptyTemplate", fragment { yield! fragments })
-    /// Gets or sets the empty template shown when Data is empty collection.
+    /// Gets or sets a custom template for rendering the empty state when the data source has no items.
+    /// Takes precedence over EmptyText when both are set.
+    /// Use this for rich empty states with images, icons, or action buttons.
     [<CustomOperation("EmptyTemplate")>] member inline _.EmptyTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("EmptyTemplate", html.text x)
-    /// Gets or sets the empty template shown when Data is empty collection.
+    /// Gets or sets a custom template for rendering the empty state when the data source has no items.
+    /// Takes precedence over EmptyText when both are set.
+    /// Use this for rich empty states with images, icons, or action buttons.
     [<CustomOperation("EmptyTemplate")>] member inline _.EmptyTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("EmptyTemplate", html.text x)
-    /// Gets or sets the empty template shown when Data is empty collection.
+    /// Gets or sets a custom template for rendering the empty state when the data source has no items.
+    /// Takes precedence over EmptyText when both are set.
+    /// Use this for rich empty states with images, icons, or action buttons.
     [<CustomOperation("EmptyTemplate")>] member inline _.EmptyTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("EmptyTemplate", html.text x)
-    /// Gets or sets a value indicating whether to wrap items.
+    /// Gets or sets whether items should wrap to multiple rows based on their width and the container size.
+    /// When true, items flow horizontally and wrap like words in a paragraph. When false, items stack vertically.
     [<CustomOperation("WrapItems")>] member inline _.WrapItems ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("WrapItems" =>>> true)
-    /// Gets or sets a value indicating whether to wrap items.
+    /// Gets or sets whether items should wrap to multiple rows based on their width and the container size.
+    /// When true, items flow horizontally and wrap like words in a paragraph. When false, items stack vertically.
     [<CustomOperation("WrapItems")>] member inline _.WrapItems ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("WrapItems" =>>> x)
-    /// Gets or sets a value indicating whether this instance is virtualized.
+    /// Gets or sets whether the DataList uses virtualization to improve performance with large datasets.
+    /// When enabled, only visible items are rendered in the DOM, significantly improving performance for long lists.
     [<CustomOperation("AllowVirtualization")>] member inline _.AllowVirtualization ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AllowVirtualization" =>>> true)
-    /// Gets or sets a value indicating whether this instance is virtualized.
+    /// Gets or sets whether the DataList uses virtualization to improve performance with large datasets.
+    /// When enabled, only visible items are rendered in the DOM, significantly improving performance for long lists.
     [<CustomOperation("AllowVirtualization")>] member inline _.AllowVirtualization ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("AllowVirtualization" =>>> x)
     /// Gets or sets a value indicating whether this instance loading indicator is shown.
     [<CustomOperation("IsLoading")>] member inline _.IsLoading ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("IsLoading" =>>> true)
@@ -2379,38 +2915,62 @@ type RadzenPivotDataGridBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric
     /// Gets or sets whether to allow filter date input.
     [<CustomOperation("AllowFilterDateInput")>] member inline _.AllowFilterDateInput ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("AllowFilterDateInput" =>>> x)
 
-/// RadzenAccordion component.
+/// An accordion component that displays collapsible content panels with only one or multiple panels expanded at a time.
+/// RadzenAccordion organizes content into expandable sections, saving vertical space while keeping all content accessible.
+/// Ideal for FAQs, settings panels, grouped content, or any scenario where showing all content at once would be overwhelming.
+/// Features single/multiple expand control, optional icons in panel headers, programmatic control via SelectedIndex two-way binding,
+/// Expand and Collapse event callbacks, keyboard navigation (Arrow keys, Space/Enter, Home/End), and disabled item support.
+/// By default, only one panel can be expanded at a time (Multiple = false). Set Multiple = true to allow multiple panels to be expanded simultaneously.
 type RadzenAccordionBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit RadzenComponentBuilder<'FunBlazorGeneric>()
-    /// Gets or sets a value indicating whether multiple items can be expanded.
+    /// Gets or sets whether multiple accordion items can be expanded simultaneously.
+    /// When false (default), expanding one item automatically collapses others.
+    /// When true, users can expand multiple items independently.
     [<CustomOperation("Multiple")>] member inline _.Multiple ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Multiple" =>>> true)
-    /// Gets or sets a value indicating whether multiple items can be expanded.
+    /// Gets or sets whether multiple accordion items can be expanded simultaneously.
+    /// When false (default), expanding one item automatically collapses others.
+    /// When true, users can expand multiple items independently.
     [<CustomOperation("Multiple")>] member inline _.Multiple ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Multiple" =>>> x)
-    /// Gets or sets the index of the selected item.
+    /// Gets or sets the zero-based index of the currently expanded item.
+    /// Use with @bind-SelectedIndex for two-way binding to programmatically control which item is expanded.
+    /// In multiple expand mode, this represents the last expanded item.
     [<CustomOperation("SelectedIndex")>] member inline _.SelectedIndex ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("SelectedIndex" => x)
-    /// Gets or sets the index of the selected item.
+    /// Gets or sets the zero-based index of the currently expanded item.
+    /// Use with @bind-SelectedIndex for two-way binding to programmatically control which item is expanded.
+    /// In multiple expand mode, this represents the last expanded item.
     [<CustomOperation("SelectedIndex'")>] member inline _.SelectedIndex' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Int32 * (System.Int32 -> unit)) = render ==> html.bind("SelectedIndex", valueFn)
-    /// Gets or sets the value changed.
+    /// Gets or sets the callback invoked when the selected index changes.
+    /// Used for two-way binding with @bind-SelectedIndex.
     [<CustomOperation("SelectedIndexChanged")>] member inline _.SelectedIndexChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Int32 -> unit) = render ==> html.callback("SelectedIndexChanged", fn)
-    /// Gets or sets the value changed.
+    /// Gets or sets the callback invoked when the selected index changes.
+    /// Used for two-way binding with @bind-SelectedIndex.
     [<CustomOperation("SelectedIndexChanged")>] member inline _.SelectedIndexChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Int32 -> Task<unit>) = render ==> html.callbackTask("SelectedIndexChanged", fn)
-    /// Gets or sets a callback raised when the item is expanded.
+    /// Gets or sets the callback invoked when an accordion item is expanded.
+    /// Receives the index of the expanded item as a parameter.
     [<CustomOperation("Expand")>] member inline _.Expand ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Int32 -> unit) = render ==> html.callback("Expand", fn)
-    /// Gets or sets a callback raised when the item is expanded.
+    /// Gets or sets the callback invoked when an accordion item is expanded.
+    /// Receives the index of the expanded item as a parameter.
     [<CustomOperation("Expand")>] member inline _.Expand ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Int32 -> Task<unit>) = render ==> html.callbackTask("Expand", fn)
-    /// Gets or sets a callback raised when the item is collapsed.
+    /// Gets or sets the callback invoked when an accordion item is collapsed.
+    /// Receives the index of the collapsed item as a parameter.
     [<CustomOperation("Collapse")>] member inline _.Collapse ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Int32 -> unit) = render ==> html.callback("Collapse", fn)
-    /// Gets or sets a callback raised when the item is collapsed.
+    /// Gets or sets the callback invoked when an accordion item is collapsed.
+    /// Receives the index of the collapsed item as a parameter.
     [<CustomOperation("Collapse")>] member inline _.Collapse ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Int32 -> Task<unit>) = render ==> html.callbackTask("Collapse", fn)
-    /// Gets or sets the items.
+    /// Gets or sets the render fragment containing RadzenAccordionItem components that define the accordion panels.
+    /// Each RadzenAccordionItem represents one expandable panel with its header and content.
     [<CustomOperation("Items")>] member inline _.Items ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("Items", fragment)
-    /// Gets or sets the items.
+    /// Gets or sets the render fragment containing RadzenAccordionItem components that define the accordion panels.
+    /// Each RadzenAccordionItem represents one expandable panel with its header and content.
     [<CustomOperation("Items")>] member inline _.Items ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("Items", fragment { yield! fragments })
-    /// Gets or sets the items.
+    /// Gets or sets the render fragment containing RadzenAccordionItem components that define the accordion panels.
+    /// Each RadzenAccordionItem represents one expandable panel with its header and content.
     [<CustomOperation("Items")>] member inline _.Items ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("Items", html.text x)
-    /// Gets or sets the items.
+    /// Gets or sets the render fragment containing RadzenAccordionItem components that define the accordion panels.
+    /// Each RadzenAccordionItem represents one expandable panel with its header and content.
     [<CustomOperation("Items")>] member inline _.Items ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("Items", html.text x)
-    /// Gets or sets the items.
+    /// Gets or sets the render fragment containing RadzenAccordionItem components that define the accordion panels.
+    /// Each RadzenAccordionItem represents one expandable panel with its header and content.
     [<CustomOperation("Items")>] member inline _.Items ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("Items", html.text x)
 
 /// Class RadzenAccordionItem.
@@ -2557,20 +3117,32 @@ type RadzenAppearanceToggleBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> M
     /// Gets or sets the dark theme. Not set by default - the component uses the dark version of the current theme.
     [<CustomOperation("DarkTheme")>] member inline _.DarkTheme ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("DarkTheme" => x)
 
-/// RadzenBadge component.
+/// A small label component used to display counts, statuses, or short text labels with semantic color coding.
+/// RadzenBadge is a compact visual indicator commonly used for notification counts, status indicators, tags, or highlighting important information.
+/// Supports multiple styles (Primary, Secondary, Success, Info, Warning, Danger, Light, Dark) for semantic coloring,
+/// variants (Filled, Flat, Outlined, Text) for different appearances, and shapes (standard rectangular or pill-shaped via IsPill).
+/// Content can be simple text via Text property or custom content via ChildContent.
+/// Can be absolutely positioned to overlay other elements (e.g., notification icon with count).
+/// Often used inline with text, on buttons (to show counts), or overlaid on icons (notification badges).
 type RadzenBadgeBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit RadzenComponentBuilder<'FunBlazorGeneric>()
-    /// Gets or sets the text.
+    /// Gets or sets the text content displayed in the badge.
+    /// Typically used for short text like numbers, single words, or abbreviations.
     [<CustomOperation("Text")>] member inline _.Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Text" => x)
-    /// Gets or sets the badge style.
+    /// Gets or sets the semantic color style of the badge.
+    /// Determines the badge's color based on its purpose (Primary, Success, Danger, Warning, etc.).
     [<CustomOperation("BadgeStyle")>] member inline _.BadgeStyle ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.BadgeStyle) = render ==> ("BadgeStyle" => x)
-    /// Gets or sets the badge variant.
+    /// Gets or sets the design variant that controls the badge's visual appearance.
+    /// Options include Filled (solid background), Flat (subtle background), Outlined (border only), and Text (minimal styling).
     [<CustomOperation("Variant")>] member inline _.Variant ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Variant) = render ==> ("Variant" => x)
-    /// Gets or sets the badge shade color.
+    /// Gets or sets the color intensity shade for the badge.
+    /// Works in combination with BadgeStyle to adjust the color darkness/lightness.
     [<CustomOperation("Shade")>] member inline _.Shade ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Shade) = render ==> ("Shade" => x)
-    /// Gets or sets a value indicating whether this instance is pill.
+    /// Gets or sets whether the badge should have rounded pill-shaped ends instead of rectangular corners.
+    /// Pill badges have a more modern, capsule-like appearance and are often used for tags or status indicators.
     [<CustomOperation("IsPill")>] member inline _.IsPill ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("IsPill" =>>> true)
-    /// Gets or sets a value indicating whether this instance is pill.
+    /// Gets or sets whether the badge should have rounded pill-shaped ends instead of rectangular corners.
+    /// Pill badges have a more modern, capsule-like appearance and are often used for tags or status indicators.
     [<CustomOperation("IsPill")>] member inline _.IsPill ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("IsPill" =>>> x)
 
 /// Bread Crumb Item Component
@@ -2585,7 +3157,13 @@ type RadzenBreadCrumbItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Mic
     /// Gets or sets the icon color.
     [<CustomOperation("IconColor")>] member inline _.IconColor ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("IconColor" => x)
 
-/// RadzenCarousel component.
+/// A carousel/slideshow component for cycling through content items (images, cards, or custom content) with navigation and paging controls.
+/// RadzenCarousel displays one item at a time with automatic or manual advancement and various navigation options.
+/// Perfect for image galleries, product showcases, hero sections, or any content that benefits from sequential presentation.
+/// Features automatic advancement with configurable interval, Previous/Next buttons with customizable icons and text, dot indicators or page numbers for direct item selection,
+/// infinite loop for continuous cycling from last to first item, keyboard control (Arrow keys for navigation, Page Up/Down for first/last), swipe gestures on touch devices,
+/// and customization of button styles, pager position (top/bottom/overlay), and navigation visibility.
+/// Items are defined using RadzenCarouselItem components. Each item can contain images, text, or complex layouts. Use Auto property to enable automatic cycling, and Interval to control slide duration.
 type RadzenCarouselBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit RadzenComponentBuilder<'FunBlazorGeneric>()
     /// Gets or sets the items.
@@ -2647,7 +3225,14 @@ type RadzenCarouselBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     /// Gets or sets the previous button icon.
     [<CustomOperation("PrevIcon")>] member inline _.PrevIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("PrevIcon" => x)
 
-/// RadzenChat component that provides a modern chat interface for multi-participant conversations.
+/// A chat interface component for displaying and sending messages in multi-participant conversations.
+/// RadzenChat provides a complete chat UI with message history, user avatars, typing indicators, and message composition.
+/// Creates a messaging interface similar to modern chat applications, ideal for customer support chats, team collaboration, messaging features, or AI chatbots.
+/// Features multi-user support displaying messages from multiple participants with avatars and names, chronological message list with sender identification,
+/// user avatars showing photos or initials with customizable colors, optional "User is typing..." feedback, text input with Send button for new messages,
+/// customizable templates for message rendering/empty state/typing indicator, automatic scrolling to newest messages, and message send time stamps.
+/// Provide a list of ChatUser objects for participants and ChatMessage objects for message history. Set CurrentUserId to distinguish the current user's messages (typically right-aligned) from others (left-aligned).
+/// Handle MessageSent to process new messages (save to database, send to server, etc.).
 type RadzenChatBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit RadzenComponentBuilder<'FunBlazorGeneric>()
     /// Gets or sets the message template.
@@ -2841,13 +3426,26 @@ type RadzenDataFilterBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :>
     /// Gets or sets the filter date format.
     [<CustomOperation("FilterDateFormat")>] member inline _.FilterDateFormat ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("FilterDateFormat" => x)
 
-/// RadzenDatePicker component.
+/// A date and time picker component that provides a calendar popup for selecting dates and optional time selection.
+/// RadzenDatePicker supports DateTime, DateTime?, DateTimeOffset, DateTimeOffset?, DateOnly, and DateOnly? types with extensive customization options.
+/// Displays a text input with a calendar icon button. Clicking opens a popup calendar for date selection.
+/// Optional time selection can be enabled via ShowTime property, supporting both 12-hour and 24-hour formats.
+/// Supports features like min/max date constraints, disabled dates, initial view configuration, calendar week display,
+/// inline calendar mode (always visible), time-only mode, multiple date selection, and culture-specific formatting.
 type RadzenDatePickerBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit RadzenComponentBuilder<'FunBlazorGeneric>()
-    /// Gets or sets a value indicating whether calendar week will be shown.
+    /// Gets or sets whether the calendar week number column should be displayed in the calendar popup.
+    /// When enabled, each week row shows its corresponding week number according to ISO 8601.
     [<CustomOperation("ShowCalendarWeek")>] member inline _.ShowCalendarWeek ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowCalendarWeek" =>>> true)
-    /// Gets or sets a value indicating whether calendar week will be shown.
+    /// Gets or sets whether the calendar week number column should be displayed in the calendar popup.
+    /// When enabled, each week row shows its corresponding week number according to ISO 8601.
     [<CustomOperation("ShowCalendarWeek")>] member inline _.ShowCalendarWeek ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowCalendarWeek" =>>> x)
+    /// Gets or sets whether multiple dates can be selected.
+    /// When enabled, users can select multiple dates from the calendar, and the value will be a collection of DateTimes.
+    [<CustomOperation("Multiple")>] member inline _.Multiple ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Multiple" =>>> true)
+    /// Gets or sets whether multiple dates can be selected.
+    /// When enabled, users can select multiple dates from the calendar, and the value will be a collection of DateTimes.
+    [<CustomOperation("Multiple")>] member inline _.Multiple ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Multiple" =>>> x)
     /// Gets or sets the previous month aria label text.
     [<CustomOperation("CalendarWeekTitle")>] member inline _.CalendarWeekTitle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("CalendarWeekTitle" => x)
     /// Gets or sets the toggle popup aria label text.
@@ -2935,6 +3533,14 @@ type RadzenDatePickerBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :
     [<CustomOperation("ShowTime")>] member inline _.ShowTime ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowTime" =>>> true)
     /// Gets or sets a value indicating whether time part is shown.
     [<CustomOperation("ShowTime")>] member inline _.ShowTime ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowTime" =>>> x)
+    /// Gets or sets a value indicating whether hour is shown.
+    [<CustomOperation("ShowHour")>] member inline _.ShowHour ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowHour" =>>> true)
+    /// Gets or sets a value indicating whether hour is shown.
+    [<CustomOperation("ShowHour")>] member inline _.ShowHour ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowHour" =>>> x)
+    /// Gets or sets a value indicating whether minutes are shown.
+    [<CustomOperation("ShowMinutes")>] member inline _.ShowMinutes ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowMinutes" =>>> true)
+    /// Gets or sets a value indicating whether minutes are shown.
+    [<CustomOperation("ShowMinutes")>] member inline _.ShowMinutes ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowMinutes" =>>> x)
     /// Gets or sets a value indicating whether seconds are shown.
     [<CustomOperation("ShowSeconds")>] member inline _.ShowSeconds ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowSeconds" =>>> true)
     /// Gets or sets a value indicating whether seconds are shown.
@@ -3045,7 +3651,12 @@ type RadzenFabMenuBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     /// Gets or sets the direction in which the menu items expand.
     [<CustomOperation("Direction")>] member inline _.Direction ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.FabMenuDirection) = render ==> ("Direction" => x)
 
-/// RadzenFieldset component.
+/// A fieldset container component that groups related form fields with a legend/header and optional collapse functionality.
+/// RadzenFieldset provides semantic form grouping with visual borders, useful for organizing complex forms into logical sections.
+/// Fieldsets are HTML form elements that semantically group related inputs, improving form structure and accessibility.
+/// Features visual and semantic grouping of related form fields, customizable header via Text or HeaderTemplate, optional expand/collapse to hide/show grouped fields,
+/// optional icon in the legend, optional summary content shown when collapsed, and screen reader announcement of fieldset legends for grouped fields.
+/// Use to organize forms into sections like "Personal Information", "Address", "Payment Details". When AllowCollapse is enabled, users can collapse sections they don't need to see.
 type RadzenFieldsetBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit RadzenComponentBuilder<'FunBlazorGeneric>()
     /// Gets or sets a value indicating whether collapsing is allowed. Set to false by default.
@@ -3099,38 +3710,75 @@ type RadzenFieldsetBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     /// Gets or sets the collapse callback.
     [<CustomOperation("Collapse")>] member inline _.Collapse ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> Task<unit>) = render ==> html.callbackTask("Collapse", fn)
 
-/// A Blazor component that wraps another component and adds a label, helper text, start and end content.
+/// A form field container component that wraps input components with labels, icons, helper text, and validation messages.
+/// RadzenFormField provides a Material Design-style field layout with floating labels and consistent spacing.
+/// Enhances form inputs by adding structure, labels, and supplementary content in a cohesive layout.
+/// Features top-aligned or floating labels via Text property, Start/End content for icons or buttons before/after the input (e.g., search icon, clear button),
+/// helper text for explanatory text or validation messages below the input, Filled/Outlined/Flat variants matching Material Design,
+/// floating labels that animate upward when input is focused or has value, and automatic display of validation messages when used with validators.
+/// Compatible with RadzenTextBox, RadzenTextArea, RadzenPassword, RadzenDropDown, RadzenNumeric, RadzenDatePicker, and similar input components.
+/// Use Start for leading icons (search, email), End for trailing icons (visibility toggle, clear button).
 type RadzenFormFieldBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit RadzenComponentBuilder<'FunBlazorGeneric>()
-    /// Gets or sets the optional content that will be rendered before the child content. Usually used with RadzenIcon.
+    /// Gets or sets content to render before (leading position of) the input field.
+    /// Typically used for icons like search, email, lock, or prefix text like currency symbols.
+    /// Appears inside the form field border, before the input element.
     [<CustomOperation("Start")>] member inline _.Start ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("Start", fragment)
-    /// Gets or sets the optional content that will be rendered before the child content. Usually used with RadzenIcon.
+    /// Gets or sets content to render before (leading position of) the input field.
+    /// Typically used for icons like search, email, lock, or prefix text like currency symbols.
+    /// Appears inside the form field border, before the input element.
     [<CustomOperation("Start")>] member inline _.Start ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("Start", fragment { yield! fragments })
-    /// Gets or sets the optional content that will be rendered before the child content. Usually used with RadzenIcon.
+    /// Gets or sets content to render before (leading position of) the input field.
+    /// Typically used for icons like search, email, lock, or prefix text like currency symbols.
+    /// Appears inside the form field border, before the input element.
     [<CustomOperation("Start")>] member inline _.Start ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("Start", html.text x)
-    /// Gets or sets the optional content that will be rendered before the child content. Usually used with RadzenIcon.
+    /// Gets or sets content to render before (leading position of) the input field.
+    /// Typically used for icons like search, email, lock, or prefix text like currency symbols.
+    /// Appears inside the form field border, before the input element.
     [<CustomOperation("Start")>] member inline _.Start ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("Start", html.text x)
-    /// Gets or sets the optional content that will be rendered before the child content. Usually used with RadzenIcon.
+    /// Gets or sets content to render before (leading position of) the input field.
+    /// Typically used for icons like search, email, lock, or prefix text like currency symbols.
+    /// Appears inside the form field border, before the input element.
     [<CustomOperation("Start")>] member inline _.Start ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("Start", html.text x)
-    /// Gets or sets the optional content that will be rendered after the child content. Usually used with RadzenIcon.
+    /// Gets or sets content to render after (trailing position of) the input field.
+    /// Typically used for icons like visibility toggle, clear button, or suffix text like units.
+    /// Appears inside the form field border, after the input element.
     [<CustomOperation("End")>] member inline _.End ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("End", fragment)
-    /// Gets or sets the optional content that will be rendered after the child content. Usually used with RadzenIcon.
+    /// Gets or sets content to render after (trailing position of) the input field.
+    /// Typically used for icons like visibility toggle, clear button, or suffix text like units.
+    /// Appears inside the form field border, after the input element.
     [<CustomOperation("End")>] member inline _.End ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("End", fragment { yield! fragments })
-    /// Gets or sets the optional content that will be rendered after the child content. Usually used with RadzenIcon.
+    /// Gets or sets content to render after (trailing position of) the input field.
+    /// Typically used for icons like visibility toggle, clear button, or suffix text like units.
+    /// Appears inside the form field border, after the input element.
     [<CustomOperation("End")>] member inline _.End ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("End", html.text x)
-    /// Gets or sets the optional content that will be rendered after the child content. Usually used with RadzenIcon.
+    /// Gets or sets content to render after (trailing position of) the input field.
+    /// Typically used for icons like visibility toggle, clear button, or suffix text like units.
+    /// Appears inside the form field border, after the input element.
     [<CustomOperation("End")>] member inline _.End ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("End", html.text x)
-    /// Gets or sets the optional content that will be rendered after the child content. Usually used with RadzenIcon.
+    /// Gets or sets content to render after (trailing position of) the input field.
+    /// Typically used for icons like visibility toggle, clear button, or suffix text like units.
+    /// Appears inside the form field border, after the input element.
     [<CustomOperation("End")>] member inline _.End ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("End", html.text x)
-    /// Gets or sets the optional content that will be rendered below the child content. Used with a validator or to display some additional information.
+    /// Gets or sets content to render below the input field.
+    /// Used for helper text, hints, character counters, or validation messages.
+    /// Validators placed here are automatically displayed when validation fails.
     [<CustomOperation("Helper")>] member inline _.Helper ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("Helper", fragment)
-    /// Gets or sets the optional content that will be rendered below the child content. Used with a validator or to display some additional information.
+    /// Gets or sets content to render below the input field.
+    /// Used for helper text, hints, character counters, or validation messages.
+    /// Validators placed here are automatically displayed when validation fails.
     [<CustomOperation("Helper")>] member inline _.Helper ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("Helper", fragment { yield! fragments })
-    /// Gets or sets the optional content that will be rendered below the child content. Used with a validator or to display some additional information.
+    /// Gets or sets content to render below the input field.
+    /// Used for helper text, hints, character counters, or validation messages.
+    /// Validators placed here are automatically displayed when validation fails.
     [<CustomOperation("Helper")>] member inline _.Helper ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("Helper", html.text x)
-    /// Gets or sets the optional content that will be rendered below the child content. Used with a validator or to display some additional information.
+    /// Gets or sets content to render below the input field.
+    /// Used for helper text, hints, character counters, or validation messages.
+    /// Validators placed here are automatically displayed when validation fails.
     [<CustomOperation("Helper")>] member inline _.Helper ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("Helper", html.text x)
-    /// Gets or sets the optional content that will be rendered below the child content. Used with a validator or to display some additional information.
+    /// Gets or sets content to render below the input field.
+    /// Used for helper text, hints, character counters, or validation messages.
+    /// Validators placed here are automatically displayed when validation fails.
     [<CustomOperation("Helper")>] member inline _.Helper ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("Helper", html.text x)
     /// Gets or sets the custom content for the label using a Razor template.
     /// When provided, this template will be rendered instead of the plain text specified in the Text parameter.
@@ -3206,14 +3854,23 @@ type RadzenGoogleMapMarkerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Mi
     /// Gets or sets the label.
     [<CustomOperation("Label")>] member inline _.Label ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Label" => x)
 
-/// RadzenGravatar component.
+/// A Gravatar avatar component that displays a user's profile image from Gravatar.com based on their email address.
+/// RadzenGravatar automatically fetches and displays the globally recognized avatar associated with an email.
+/// Gravatar (Globally Recognized Avatar) is a service that associates profile images with email addresses.
+/// Fetches avatar using MD5 hash of email address, requires no storage or management of avatar images, shows default retro-style avatar if email has no Gravatar,
+/// features configurable pixel dimensions, and uses secure.gravatar.com to retrieve images.
+/// Generates a Gravatar URL from the email and displays it as an image. If the email doesn't have a Gravatar account, a retro-style default avatar is shown.
+/// Commonly used in user profiles, comment sections, or anywhere user identity is displayed.
 type RadzenGravatarBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit RadzenComponentBuilder<'FunBlazorGeneric>()
-    /// Gets or sets the email.
+    /// Gets or sets the email address used to fetch the Gravatar image.
+    /// The email is hashed (MD5) and used to query Gravatar.com for the associated profile image.
     [<CustomOperation("Email")>] member inline _.Email ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Email" => x)
-    /// Gets or sets the text.
+    /// Gets or sets the alternate text describing the avatar for accessibility.
+    /// This text is read by screen readers and displayed if the image fails to load.
     [<CustomOperation("AlternateText")>] member inline _.AlternateText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("AlternateText" => x)
-    /// Gets or sets the size. Defaulted to 36 (pixels). 
+    /// Gets or sets the size of the avatar image in pixels (both width and height).
+    /// Gravatar provides square images at various sizes.
     [<CustomOperation("Size")>] member inline _.Size ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("Size" => x)
 
 /// RadzenHeading component.
@@ -3224,49 +3881,91 @@ type RadzenHeadingBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     /// Gets or sets the size.
     [<CustomOperation("Size")>] member inline _.Size ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Size" => x)
 
-/// RadzenIcon component. Displays icon from Material Symbols variable font.
+/// An icon component that displays icons from the Material Symbols font (2,500+ icons included).
+/// RadzenIcon provides a simple way to add scalable vector icons to your Blazor application without external dependencies.
+/// Uses the embedded Material Symbols Outlined variable font to render icons as text glyphs, providing benefits including no HTTP requests for icon files (icons are part of the font),
+/// vector-based icons that scale perfectly at any size, text color inheritance with coloring via IconColor or CSS, access to 2,500+ Material Symbols icons,
+/// and support for Outlined (default), Filled, Rounded, and Sharp variants via IconStyle.
+/// Icon names use underscores (e.g., "home", "account_circle", "check_circle"). See Material Symbols documentation for the full icon list.
 type RadzenIconBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit RadzenComponentBuilder<'FunBlazorGeneric>()
-    /// Gets or sets the icon.
+    /// Gets or sets the Material Symbols icon name to display.
+    /// Use icon names with underscores (e.g., "home", "settings", "account_circle", "check_circle").
+    /// See the Material Symbols icon library for available names.
     [<CustomOperation("Icon")>] member inline _.Icon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Icon" => x)
-    /// Gets or sets the icon color.
+    /// Gets or sets a custom color for the icon.
+    /// Supports any valid CSS color value (e.g., "#FF0000", "rgb(255, 0, 0)", "var(--primary-color)").
+    /// If not set, the icon inherits the current text color from its parent.
     [<CustomOperation("IconColor")>] member inline _.IconColor ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("IconColor" => x)
-    /// Specifies the display style of the icon.
+    /// Gets or sets the visual style variant of the icon.
+    /// Material Symbols supports different styles: Outlined (default), Filled, Rounded, and Sharp.
+    /// The style affects the icon's visual appearance (e.g., Filled icons have solid shapes vs. outlined strokes).
     [<CustomOperation("IconStyle")>] member inline _.IconStyle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Radzen.IconStyle>) = render ==> ("IconStyle" => x)
 
-/// RadzenLabel component.
+/// A label component for associating descriptive text with form input components.
+/// RadzenLabel creates accessible labels linked to input fields via the HTML for/id relationship.
+/// Provides descriptive text for form inputs, improving usability and accessibility. When properly associated with an input (via the Component property), clicking the label focuses the input.
+/// Features association linking to input components via the Component property (matching the input's Name), proper label/input relationships for screen readers,
+/// click behavior that focuses the associated input, and content display via Text property or custom content via ChildContent.
+/// Always use labels with form inputs for better UX and accessibility compliance. The Component property should match the Name property of the input it describes.
 type RadzenLabelBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit RadzenComponentBuilder<'FunBlazorGeneric>()
-    /// Gets or sets the component name for the label.
+    /// Gets or sets the name of the input component this label is associated with.
+    /// Must match the Name property of the target input component to create the proper label/input relationship.
+    /// When set, clicking the label will focus the associated input.
     [<CustomOperation("Component")>] member inline _.Component ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Component" => x)
-    /// Gets or sets the text.
+    /// Gets or sets the label text to display.
+    /// For simple text labels, use this property. For complex content, use ChildContent instead.
     [<CustomOperation("Text")>] member inline _.Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Text" => x)
 
-/// RadzenLink component.
+/// A hyperlink component for navigation within the application or to external URLs.
+/// RadzenLink provides styled links with icon support, active state highlighting, and disabled states.
+/// Enables navigation styled according to the application theme.
+/// Supports internal navigation using Path for Blazor routing without page reloads, external links opening in same or new window via Target property,
+/// automatic highlighting when the current URL matches the link path, optional icon before text via Icon property, alternative icon using custom image via Image property,
+/// disabled state that prevents navigation and changes visual appearance, and prefix or exact matching for active state detection.
+/// For internal navigation, uses Blazor's NavigationManager for client-side routing. For external URLs, use Target="_blank" to open in a new tab.
 type RadzenLinkBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit RadzenComponentBuilder<'FunBlazorGeneric>()
-    /// Gets or sets the text.
+    /// Gets or sets the alternate text for the image when using the Image property.
+    /// Provides accessibility text for screen readers when an image is used instead of an icon.
     [<CustomOperation("ImageAlternateText")>] member inline _.ImageAlternateText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ImageAlternateText" => x)
-    /// Gets or sets the target.
+    /// Gets or sets the target window or frame for the link navigation.
+    /// Use "_blank" for new tab, "_self" for same window, or custom frame names.
     [<CustomOperation("Target")>] member inline _.Target ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Target" => x)
-    /// Gets or sets the icon.
+    /// Gets or sets the Material icon name to display before the link text.
+    /// Use Material Symbols icon names (e.g., "home", "settings", "open_in_new").
     [<CustomOperation("Icon")>] member inline _.Icon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Icon" => x)
-    /// Gets or sets the icon color.
+    /// Gets or sets a custom color for the icon.
+    /// Supports any valid CSS color value. If not set, icon inherits the link color.
     [<CustomOperation("IconColor")>] member inline _.IconColor ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("IconColor" => x)
-    /// Gets or sets the image.
+    /// Gets or sets a custom image URL to display before the link text instead of an icon.
+    /// Alternative to using Icon for custom graphics.
     [<CustomOperation("Image")>] member inline _.Image ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Image" => x)
-    /// Gets or sets the text.
+    /// Gets or sets the link text to display.
+    /// For simple text links, use this property. For complex content, use ChildContent instead.
     [<CustomOperation("Text")>] member inline _.Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Text" => x)
-    /// Gets or sets the path.
+    /// Gets or sets the URL path for navigation.
+    /// Can be a relative path for internal navigation (e.g., "/products") or an absolute URL for external sites.
     [<CustomOperation("Path")>] member inline _.Path ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Path" => x)
-    /// Gets or sets the navigation link match.
+    /// Gets or sets how the link's active state is determined by comparing the current URL to the link path.
+    /// Prefix matches when URL starts with path, All requires exact match.
     [<CustomOperation("Match")>] member inline _.Match ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.AspNetCore.Components.Routing.NavLinkMatch) = render ==> ("Match" => x)
-    /// Gets or sets whether the link is disabled.
+    /// Gets or sets whether the link is disabled and cannot be clicked.
+    /// When disabled, the link appears grayed out and does not navigate.
     [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Disabled" =>>> true)
-    /// Gets or sets whether the link is disabled.
+    /// Gets or sets whether the link is disabled and cannot be clicked.
+    /// When disabled, the link appears grayed out and does not navigate.
     [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Disabled" =>>> x)
 
-/// RadzenLogin component. Must be placed in RadzenTemplateForm.
+/// A pre-built login form component with username/password fields and optional "Remember Me", "Register", and "Reset Password" features.
+/// RadzenLogin provides a ready-to-use authentication UI that can be customized with events for login, registration, and password reset flows.
+/// Must be placed inside a RadzenTemplateForm`1.
+/// Eliminates the need to manually create login forms by providing a complete, styled login interface.
+/// Features pre-configured text and password inputs, optional switch for persistent sessions (Remember Me), optional link to registration page/modal,
+/// optional link for password recovery (Reset Password), browser password manager integration with autocomplete, customizable labels/button text/layout via parameters,
+/// Login/Register/ResetPassword event callbacks for implementing auth logic, and built-in required field validation.
+/// Handle the Login event to authenticate users with your backend. Use AllowRegister and AllowResetPassword to show/hide those links based on your auth requirements.
 type RadzenLoginBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit RadzenComponentBuilder<'FunBlazorGeneric>()
     /// Gets or sets a value indicating whether automatic complete of inputs is enabled.
@@ -3338,24 +4037,35 @@ type RadzenLoginBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.As
     /// Gets or sets the password required.
     [<CustomOperation("PasswordRequired")>] member inline _.PasswordRequired ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("PasswordRequired" => x)
 
-/// A component which renders markdown content.
+/// A markdown rendering component that parses and displays Markdown syntax as formatted HTML.
+/// RadzenMarkdown converts Markdown text (headings, lists, links, code blocks, etc.) into rich HTML content with security features.
+/// Parses CommonMark-compliant markdown and renders it as HTML. Ideal for documentation, blog posts, README files, or any content authored in Markdown format.
+/// Features full support for standard Markdown syntax (headings, bold, italic, lists, links, images, code, blockquotes, tables), optional HTML tag support within markdown with security filtering,
+/// dangerous tag filtering (script, iframe, object) to prevent XSS attacks, automatic anchor link creation for headings (configurable depth),
+/// control over allowed HTML tags and attributes, and flexible input via child content or Text property.
+/// Parses markdown and renders it as Blazor components/HTML for display. Use AllowHtml = false to strictly render only Markdown syntax without any HTML pass-through.
 type RadzenMarkdownBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit RadzenComponentBuilder<'FunBlazorGeneric>()
-    /// Gets or sets a value indicating whether to allow HTML content in the markdown. Certain dangerous HTML tags (script, style, object, iframe) and attributes are removed.
-    /// Set to true by default.
+    /// Gets or sets whether HTML tags within the markdown are rendered or escaped.
+    /// When true (default), safe HTML tags are allowed. Dangerous tags (script, iframe, style, object) are always filtered.
+    /// When false, all HTML is treated as plain text and displayed literally.
     [<CustomOperation("AllowHtml")>] member inline _.AllowHtml ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AllowHtml" =>>> true)
-    /// Gets or sets a value indicating whether to allow HTML content in the markdown. Certain dangerous HTML tags (script, style, object, iframe) and attributes are removed.
-    /// Set to true by default.
+    /// Gets or sets whether HTML tags within the markdown are rendered or escaped.
+    /// When true (default), safe HTML tags are allowed. Dangerous tags (script, iframe, style, object) are always filtered.
+    /// When false, all HTML is treated as plain text and displayed literally.
     [<CustomOperation("AllowHtml")>] member inline _.AllowHtml ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("AllowHtml" =>>> x)
-    /// Gets or sets a list of allowed HTML tags. If set, only these tags will be allowed in the markdown content. By default would use a list of safe HTML tags.
-    /// Considered only if AllowHtml is set to true.
+    /// Gets or sets a whitelist of HTML tags permitted in the markdown when AllowHtml is true.
+    /// If set, only these tags will be rendered; others are stripped. If not set, uses a default list of safe tags.
     [<CustomOperation("AllowedHtmlTags")>] member inline _.AllowedHtmlTags ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<System.String>) = render ==> ("AllowedHtmlTags" => x)
-    /// Gets or sets a list of allowed HTML attributes. If set, only these attributes will be allowed in the markdown content. By default would use a list of safe HTML attributes.
-    /// Considered only if AllowHtml is set to true.
+    /// Gets or sets a whitelist of HTML attributes permitted on HTML tags when AllowHtml is true.
+    /// If set, only these attributes are rendered; others are stripped. If not set, uses a default list of safe attributes.
     [<CustomOperation("AllowedHtmlAttributes")>] member inline _.AllowedHtmlAttributes ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<System.String>) = render ==> ("AllowedHtmlAttributes" => x)
-    /// Gets or sets the markdown content as a string. Overrides ChildContent if set.
+    /// Gets or sets the markdown content as a string.
+    /// When set, takes precedence over ChildContent. Use this to bind markdown from a variable.
     [<CustomOperation("Text")>] member inline _.Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Text" => x)
-    /// The maximum heading depth to create anchor links for. Set to 0 to disable auto-linking.
+    /// Gets or sets the maximum heading level (1-6) for which to automatically generate anchor links.
+    /// For example, setting to 3 creates anchors for h1, h2, and h3 headings.
+    /// Set to 0 to disable auto-linking. Auto-links enable table of contents navigation.
     [<CustomOperation("AutoLinkHeadingDepth")>] member inline _.AutoLinkHeadingDepth ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("AutoLinkHeadingDepth" => x)
 
 /// RadzenMenuItem component.
@@ -3400,7 +4110,14 @@ type RadzenMenuItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     /// Gets or sets the click callback.
     [<CustomOperation("Click")>] member inline _.Click ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.MenuItemEventArgs -> Task<unit>) = render ==> html.callbackTask("Click", fn)
 
-/// RadzenPager component.
+/// A pagination component that provides navigation controls for paged data display.
+/// RadzenPager displays page numbers, navigation buttons, and optional page size selector for navigating through large datasets.
+/// Works standalone or integrated with data components like RadzenDataGrid and RadzenDataList.
+/// Provides navigation buttons (First/Previous/Next/Last page with customizable labels and icons), clickable page number buttons with configurable count,
+/// optional dropdown to change items per page, summary display ("Page X of Y" or custom summary text), alignment controls (left/center/right) via HorizontalAlign,
+/// compact or default spacing density, and ARIA labels for all buttons for accessibility.
+/// The PageChanged event provides Skip and Top values for loading the correct page of data.
+/// Use Count to specify total items, PageSize for items per page, and PageNumbersCount for visible page buttons.
 type RadzenPagerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit RadzenComponentBuilder<'FunBlazorGeneric>()
     /// Gets or sets the pager's first page button's title attribute.
@@ -3447,9 +4164,9 @@ type RadzenPagerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.As
     [<CustomOperation("ShowPagingSummary")>] member inline _.ShowPagingSummary ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowPagingSummary" =>>> true)
     /// Gets or sets the pager summary visibility.
     [<CustomOperation("ShowPagingSummary")>] member inline _.ShowPagingSummary ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowPagingSummary" =>>> x)
-    /// Gets or sets the pager summary format.
+    /// Gets or sets the pager summary format. PagingSummaryTemplate has preference over this property.
     [<CustomOperation("PagingSummaryFormat")>] member inline _.PagingSummaryFormat ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("PagingSummaryFormat" => x)
-    /// Gets or sets the pager summary template.
+    /// Gets or sets the pager summary template. Has preference over PagingSummaryFormat.
     [<CustomOperation("PagingSummaryTemplate")>] member inline _.PagingSummaryTemplate ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.Blazor.PagingInformation -> NodeRenderFragment) = render ==> html.renderFragment("PagingSummaryTemplate", fn)
     /// Gets or sets the page numbers count.
     [<CustomOperation("PageNumbersCount")>] member inline _.PageNumbersCount ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("PageNumbersCount" => x)
@@ -3640,7 +4357,11 @@ type RadzenPickListBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> M
     /// Gets or sets the target changed.
     [<CustomOperation("TargetChanged")>] member inline _.TargetChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Collections.Generic.IEnumerable<'TItem> -> Task<unit>) = render ==> html.callbackTask("TargetChanged", fn)
 
-/// RadzenProfileMenuItem component.
+/// A menu item component used within RadzenProfileMenu to define individual navigation or action items.
+/// RadzenProfileMenuItem represents one clickable item in a profile menu dropdown with support for icons, navigation, and custom content.
+/// Used inside RadzenProfileMenu to create user profile dropdown menus. Each item can navigate to a page (via Path), trigger an action (via click event), or display custom content (via Template).
+/// Common uses in profile menus include account settings, user profile page, logout/sign out, preferences, and help/documentation.
+/// Items support icons, images, text, and custom templates for flexible rendering.
 type RadzenProfileMenuItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit RadzenComponentBuilder<'FunBlazorGeneric>()
     /// Gets or sets the text.
@@ -3661,6 +4382,72 @@ type RadzenProfileMenuItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Mi
     [<CustomOperation("Text")>] member inline _.Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Text" => x)
     /// Gets or sets the value.
     [<CustomOperation("Value")>] member inline _.Value ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Value" => x)
+    /// Gets or sets the template.
+    [<CustomOperation("Template")>] member inline _.Template ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("Template", fragment)
+    /// Gets or sets the template.
+    [<CustomOperation("Template")>] member inline _.Template ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("Template", fragment { yield! fragments })
+    /// Gets or sets the template.
+    [<CustomOperation("Template")>] member inline _.Template ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("Template", html.text x)
+    /// Gets or sets the template.
+    [<CustomOperation("Template")>] member inline _.Template ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("Template", html.text x)
+    /// Gets or sets the template.
+    [<CustomOperation("Template")>] member inline _.Template ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("Template", html.text x)
+
+/// A QR code generator component that creates scannable QR codes from text, URLs, or other data as SVG graphics.
+/// RadzenQRCode supports extensive customization including colors, shapes, error correction, and embedded logos.
+/// Encodes data in a two-dimensional barcode format scannable by smartphones and QR code readers. Generates QR codes entirely client-side as SVG, with no external dependencies.
+/// Features data encoding (text, URLs, contact info, WiFi credentials, or any string data), error correction levels (Low, Medium, Quartile, High) for different damage resistance,
+/// customization of colors for modules (dots) and background with custom shapes (Square, Rounded, Circle), optional logo/image embedding in the center of the QR code,
+/// eye styling to customize the appearance of the three corner finder patterns, and responsive size (percentage or pixel-based) for responsive layouts.
+/// Higher error correction levels allow the QR code to remain scannable even when partially damaged or obscured (e.g., by a logo). Use Quartile or High error correction when embedding logos.
+type RadzenQRCodeBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit RadzenComponentBuilder<'FunBlazorGeneric>()
+    /// Gets or sets the error correction level determining how much damage the QR code can sustain while remaining scannable.
+    /// Higher levels add more redundancy but reduce data capacity. Use High or Quartile when embedding logos.
+    [<CustomOperation("Ecc")>] member inline _.Ecc ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Blazor.RadzenQREcc) = render ==> ("Ecc" => x)
+    /// Gets or sets the text or data to encode in the QR code.
+    /// Can be plain text, URLs, contact information (vCard), WiFi credentials, or any string data.
+    [<CustomOperation("Value")>] member inline _.Value ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Value" => x)
+    /// Gets or sets the rendered size (both width and height) of the QR code SVG.
+    /// Accepts CSS units (e.g., "200px", "100%", "10rem"). Use percentage for responsive sizing.
+    [<CustomOperation("Size")>] member inline _.Size ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Size" => x)
+    /// Gets or sets the color of the QR code modules (the dark squares/dots).
+    /// Supports any valid CSS color. Use high contrast with background for best scanability.
+    [<CustomOperation("Foreground")>] member inline _.Foreground ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Foreground" => x)
+    /// Gets or sets the background color of the QR code.
+    /// Should contrast well with the foreground color for reliable scanning.
+    [<CustomOperation("Background")>] member inline _.Background ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Background" => x)
+    /// Gets or sets the visual shape of the QR code modules (data squares).
+    /// Square creates standard QR codes, Rounded creates softer corners, Circle creates dot-based codes.
+    [<CustomOperation("ModuleShape")>] member inline _.ModuleShape ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Blazor.QRCodeModuleShape) = render ==> ("ModuleShape" => x)
+    /// Shape for finder eyes (the 3 corner boxes).
+    [<CustomOperation("EyeShape")>] member inline _.EyeShape ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Blazor.QRCodeEyeShape) = render ==> ("EyeShape" => x)
+    /// Shape for top left finder eye.
+    [<CustomOperation("EyeShapeTopLeft")>] member inline _.EyeShapeTopLeft ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Radzen.Blazor.QRCodeEyeShape>) = render ==> ("EyeShapeTopLeft" => x)
+    /// Shape for top right finder eye.
+    [<CustomOperation("EyeShapeTopRight")>] member inline _.EyeShapeTopRight ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Radzen.Blazor.QRCodeEyeShape>) = render ==> ("EyeShapeTopRight" => x)
+    /// Shape for top bottom finder eye.
+    [<CustomOperation("EyeShapeBottomLeft")>] member inline _.EyeShapeBottomLeft ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Radzen.Blazor.QRCodeEyeShape>) = render ==> ("EyeShapeBottomLeft" => x)
+    /// Optional color for eyes; if empty, falls back to Foreground.
+    [<CustomOperation("EyeColor")>] member inline _.EyeColor ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("EyeColor" => x)
+    /// Optional color for top left eye; if empty, falls back to EyeColor.
+    [<CustomOperation("EyeColorTopLeft")>] member inline _.EyeColorTopLeft ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("EyeColorTopLeft" => x)
+    /// Optional color for top right eye; if empty, falls back to EyeColor.
+    [<CustomOperation("EyeColorTopRight")>] member inline _.EyeColorTopRight ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("EyeColorTopRight" => x)
+    /// Optional color for bottom right eye; if empty, falls back to EyeColor.
+    [<CustomOperation("EyeColorBottomLeft")>] member inline _.EyeColorBottomLeft ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("EyeColorBottomLeft" => x)
+    /// URL, data: URI, or raw base64 (will be prefixed) to render in the center.
+    [<CustomOperation("Image")>] member inline _.Image ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Image" => x)
+    /// Logo box size as % of the inner QR (without quiet zone). Safe range 5�60%. Default 20.
+    [<CustomOperation("ImageSizePercent")>] member inline _.ImageSizePercent ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Double) = render ==> ("ImageSizePercent" => x)
+    /// Extra white padding around the logo in module units. Default 1.
+    [<CustomOperation("ImagePaddingModules")>] member inline _.ImagePaddingModules ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Double) = render ==> ("ImagePaddingModules" => x)
+    /// Rounded-corner radius for the logo cutout in module units. Default 0.75.
+    [<CustomOperation("ImageCornerRadius")>] member inline _.ImageCornerRadius ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Double) = render ==> ("ImageCornerRadius" => x)
+    /// Background color under the logo (usually white).
+    [<CustomOperation("ImageBackground")>] member inline _.ImageBackground ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ImageBackground" => x)
+    /// Background opacity under the logo (0..1). Default 1.
+    [<CustomOperation("ImageBackgroundOpacity")>] member inline _.ImageBackgroundOpacity ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Double) = render ==> ("ImageBackgroundOpacity" => x)
 
 /// RadzenRadioButtonListItem component.
 type RadzenRadioButtonListItemBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -3722,7 +4509,13 @@ type RadzenSankeyDiagramBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric
     /// Gets or sets whether to animate the flow in the links.
     [<CustomOperation("Animated")>] member inline _.Animated ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Animated" =>>> x)
 
-/// Displays a collection of AppointmentData in day, week or month view.
+/// A scheduler component for displaying and managing calendar appointments in multiple view types (day, week, month, year).
+/// RadzenScheduler provides a rich calendar interface with drag-and-drop, inline editing, recurring events, and customizable views.
+/// Displays time-based events in various calendar views, ideal for appointment booking, event calendars, resource scheduling, or any time-based data visualization.
+/// Features multiple views (Day, Week, Month, Year Planner, Year Timeline), drag & drop to move appointments between time slots, resize to adjust appointment duration by dragging edges,
+/// inline editing to create and edit appointments directly in the calendar, tooltips for quick info on hover, customizable appointment templates,
+/// support for all-day and multi-day events, and timezone-aware appointments.
+/// Define data properties using StartProperty, EndProperty, and TextProperty. Add view components (RadzenDayView, RadzenWeekView, RadzenMonthView) as child content.
 type RadzenSchedulerBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit RadzenComponentBuilder<'FunBlazorGeneric>()
     /// Gets or sets the template used to render appointments.
@@ -3861,12 +4654,19 @@ type RadzenSidebarToggleBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micr
     /// Gets or sets the add button aria-label attribute.
     [<CustomOperation("ToggleAriaLabel")>] member inline _.ToggleAriaLabel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ToggleAriaLabel" => x)
 
-/// RadzenSkeleton component. Displays a loading placeholder with various animation types.
+/// A skeleton screen component that displays placeholder shapes while content is loading.
+/// RadzenSkeleton provides subtle loading states that match content structure, improving perceived performance.
+/// Shows gray placeholder shapes that mimic the structure of the content being loaded, providing better UX than spinners by showing users the approximate layout before content appears,
+/// making loading feel faster with immediate feedback, and reducing anxiety through progressive disclosure.
+/// Supports multiple shapes including Text (horizontal bars for text lines, default), Circle (circular placeholders for avatars or icons), and Rectangle (rectangular blocks for images or cards).
+/// Animations (None, Pulse, Wave) can be applied for additional loading feedback. Use multiple skeletons to represent the full structure of your loading content.
 type RadzenSkeletonBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit RadzenComponentBuilder<'FunBlazorGeneric>()
-    /// Gets or sets the type of skeleton shape.
+    /// Gets or sets the shape variant of the skeleton placeholder.
+    /// Text creates horizontal bars, Circle creates circular shapes, Rectangle creates rectangular blocks.
     [<CustomOperation("Variant")>] member inline _.Variant ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.SkeletonVariant) = render ==> ("Variant" => x)
-    /// Gets or sets the animation type for the skeleton.
+    /// Gets or sets the animation effect applied to the skeleton placeholder.
+    /// None (static), Pulse (fade in/out), or Wave (shimmer effect moving across).
     [<CustomOperation("Animation")>] member inline _.Animation ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.SkeletonAnimation) = render ==> ("Animation" => x)
 
 /// RadzenSpeechToTextButton component. Enables speech to text functionality.
@@ -3911,10 +4711,19 @@ type RadzenSplitButtonItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Mi
     /// Gets or sets a value indicating whether this RadzenSplitButtonItem is disabled.
     [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Disabled" =>>> x)
 
-/// RadzenSplitter component.
+/// A splitter component that divides space between resizable panes with draggable dividers.
+/// RadzenSplitter creates layouts with user-adjustable panel sizes, ideal for multi-column interfaces or resizable sidebars.
+/// Allows users to customize their workspace by dragging dividers to resize panes.
+/// Common use cases include code editors with resizable file explorer/code/output panes, email clients with adjustable folder list/message list/message preview,
+/// admin dashboards with resizable navigation and content areas, and data analysis tools with adjustable grid/chart/filter panels.
+/// Features resizable panes (drag dividers between panes to adjust sizes), Horizontal (side-by-side) or Vertical (top-to-bottom) orientation,
+/// size control with fixed pixel sizes/percentages/auto-sized panes, min/max constraints to prevent panes from becoming too small or large,
+/// optional collapse/expand functionality per pane, and nested splitters to create complex layouts.
+/// Panes are defined using RadzenSplitterPane components. Use Size property for fixed widths/heights.
 type RadzenSplitterBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit RadzenComponentBuilder<'FunBlazorGeneric>()
-    /// Gets or sets the orientation.
+    /// Gets or sets the layout direction of the splitter.
+    /// Horizontal arranges panes side-by-side (resizable width), Vertical stacks panes top-to-bottom (resizable height).
     [<CustomOperation("Orientation")>] member inline _.Orientation ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Orientation) = render ==> ("Orientation" => x)
     /// Gets or sets the collapse callback.
     [<CustomOperation("Collapse")>] member inline _.Collapse ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.RadzenSplitterEventArgs -> unit) = render ==> html.callback("Collapse", fn)
@@ -3983,12 +4792,20 @@ type RadzenSSRSViewerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microso
     /// Gets or sets the load callback.
     [<CustomOperation("Load")>] member inline _.Load ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.ProgressEventArgs -> Task<unit>) = render ==> html.callbackTask("Load", fn)
 
-/// RadzenSteps component.
+/// A wizard-style steps component that guides users through a multi-step process with numbered navigation.
+/// RadzenSteps displays a visual progress indicator and manages sequential navigation through each step, ideal for forms, checkout flows, or setup wizards.
+/// Provides a structured way to break complex processes into manageable sequential stages.
+/// Features numbered circles showing current/completed/upcoming steps for visual progress, Next/Previous buttons for moving between steps or clicking on step numbers,
+/// optional form validation integration to prevent advancing with invalid data, CanChange event to control when users can move between steps,
+/// navigation to specific steps via SelectedIndex binding, and optional built-in Next/Previous buttons or use your own custom navigation.
+/// Each step is defined using RadzenStepsItem components. Use the CanChange event to validate data before allowing step transitions. Integrates with Blazor EditContext for form validation.
 type RadzenStepsBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit RadzenComponentBuilder<'FunBlazorGeneric>()
-    /// Gets or sets a value indicating whether to show steps buttons.
+    /// Gets or sets whether to display the built-in Next and Previous navigation buttons below the step content.
+    /// When false, you must provide your own navigation buttons using NextStep() and PrevStep() methods.
     [<CustomOperation("ShowStepsButtons")>] member inline _.ShowStepsButtons ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowStepsButtons" =>>> true)
-    /// Gets or sets a value indicating whether to show steps buttons.
+    /// Gets or sets whether to display the built-in Next and Previous navigation buttons below the step content.
+    /// When false, you must provide your own navigation buttons using NextStep() and PrevStep() methods.
     [<CustomOperation("ShowStepsButtons")>] member inline _.ShowStepsButtons ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowStepsButtons" =>>> x)
     /// Gets or sets the selected index.
     [<CustomOperation("SelectedIndex")>] member inline _.SelectedIndex ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("SelectedIndex" => x)
@@ -4053,34 +4870,55 @@ type RadzenStepsItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsof
     /// Gets or sets a value indicating whether this RadzenStepsItem is disabled.
     [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Disabled" =>>> x)
 
-/// RadzenTabs component.
+/// A tabbed interface component that organizes content into multiple panels with clickable tabs for navigation.
+/// RadzenTabs allows users to switch between different views or sections without navigating away from the page.
+/// Provides a container for RadzenTabsItem components, each representing one tab and its associated content panel.
+/// Supports tab positioning at Top, Bottom, Left, Right, TopRight, or BottomRight, server-side rendering (default) or client-side rendering for improved interactivity,
+/// programmatic selection via SelectedIndex with two-way binding, Change event when tabs are switched, dynamic tab addition/removal using AddTab() and RemoveItem(),
+/// keyboard navigation (Arrow keys, Home, End, Space, Enter) for accessibility, and disabled tabs to prevent selection.
+/// Use Server render mode for standard Blazor rendering, or Client mode for faster tab switching with JavaScript.
 type RadzenTabsBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit RadzenComponentBuilder<'FunBlazorGeneric>()
-    /// Gets or sets the render mode.
+    /// Gets or sets the rendering mode that determines how tab content is rendered and switched.
+    /// Server mode re-renders on the server when tabs change, while Client mode uses JavaScript for instant switching.
     [<CustomOperation("RenderMode")>] member inline _.RenderMode ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.TabRenderMode) = render ==> ("RenderMode" => x)
-    /// Gets or sets the tab position.
+    /// Gets or sets the visual position of the tab headers relative to the content panels.
+    /// Controls the layout direction and can position tabs at Top, Bottom, Left, Right, TopRight, or BottomRight of the content.
     [<CustomOperation("TabPosition")>] member inline _.TabPosition ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.TabPosition) = render ==> ("TabPosition" => x)
-    /// Gets or sets the selected index.
+    /// Gets or sets the zero-based index of the currently selected tab.
+    /// Use with @bind-SelectedIndex for two-way binding to track and control the active tab.
+    /// Set to -1 for no selection (though typically the first tab is selected automatically).
     [<CustomOperation("SelectedIndex")>] member inline _.SelectedIndex ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("SelectedIndex" => x)
-    /// Gets or sets the selected index.
+    /// Gets or sets the zero-based index of the currently selected tab.
+    /// Use with @bind-SelectedIndex for two-way binding to track and control the active tab.
+    /// Set to -1 for no selection (though typically the first tab is selected automatically).
     [<CustomOperation("SelectedIndex'")>] member inline _.SelectedIndex' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.Int32 * (System.Int32 -> unit)) = render ==> html.bind("SelectedIndex", valueFn)
-    /// Gets or sets the selected index changed callback.
+    /// Gets or sets the callback invoked when the selected tab index changes.
+    /// Used for two-way binding with @bind-SelectedIndex.
     [<CustomOperation("SelectedIndexChanged")>] member inline _.SelectedIndexChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Int32 -> unit) = render ==> html.callback("SelectedIndexChanged", fn)
-    /// Gets or sets the selected index changed callback.
+    /// Gets or sets the callback invoked when the selected tab index changes.
+    /// Used for two-way binding with @bind-SelectedIndex.
     [<CustomOperation("SelectedIndexChanged")>] member inline _.SelectedIndexChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Int32 -> Task<unit>) = render ==> html.callbackTask("SelectedIndexChanged", fn)
-    /// Gets or sets the change callback.
+    /// Gets or sets the callback invoked when the user switches to a different tab.
+    /// Provides the index of the newly selected tab. Use this for side effects or logging.
     [<CustomOperation("Change")>] member inline _.Change ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Int32 -> unit) = render ==> html.callback("Change", fn)
-    /// Gets or sets the change callback.
+    /// Gets or sets the callback invoked when the user switches to a different tab.
+    /// Provides the index of the newly selected tab. Use this for side effects or logging.
     [<CustomOperation("Change")>] member inline _.Change ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Int32 -> Task<unit>) = render ==> html.callbackTask("Change", fn)
-    /// Gets or sets the tabs.
+    /// Gets or sets the render fragment containing RadzenTabsItem components that define the tabs.
+    /// Each RadzenTabsItem represents one tab with its header and content.
     [<CustomOperation("Tabs")>] member inline _.Tabs ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("Tabs", fragment)
-    /// Gets or sets the tabs.
+    /// Gets or sets the render fragment containing RadzenTabsItem components that define the tabs.
+    /// Each RadzenTabsItem represents one tab with its header and content.
     [<CustomOperation("Tabs")>] member inline _.Tabs ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("Tabs", fragment { yield! fragments })
-    /// Gets or sets the tabs.
+    /// Gets or sets the render fragment containing RadzenTabsItem components that define the tabs.
+    /// Each RadzenTabsItem represents one tab with its header and content.
     [<CustomOperation("Tabs")>] member inline _.Tabs ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("Tabs", html.text x)
-    /// Gets or sets the tabs.
+    /// Gets or sets the render fragment containing RadzenTabsItem components that define the tabs.
+    /// Each RadzenTabsItem represents one tab with its header and content.
     [<CustomOperation("Tabs")>] member inline _.Tabs ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("Tabs", html.text x)
-    /// Gets or sets the tabs.
+    /// Gets or sets the render fragment containing RadzenTabsItem components that define the tabs.
+    /// Each RadzenTabsItem represents one tab with its header and content.
     [<CustomOperation("Tabs")>] member inline _.Tabs ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("Tabs", html.text x)
 
 /// A component which represents a form. Provides validation support.
@@ -4109,42 +4947,72 @@ type RadzenTemplateFormBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric 
     /// Gets or sets the edit context.
     [<CustomOperation("EditContext")>] member inline _.EditContext ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.AspNetCore.Components.Forms.EditContext) = render ==> ("EditContext" => x)
 
-/// A component which displays text or makup with predefined styling.
+/// A text display component with predefined typography styles matching Material Design text hierarchy.
+/// RadzenText provides consistent text formatting for headings, subtitles, body text, captions, and more with semantic HTML tags.
+/// Simplifies typography by providing preset styles that match your theme's design system, allowing consistent, professionally designed text formatting without managing CSS classes manually.
+/// Supports text styles (Display headings H1-H6, subtitles, body text, captions, button text, overlines), automatically uses appropriate HTML tags (h1-h6, p, span) based on style,
+/// manual HTML tag specification via TagName property, built-in text alignment (left, right, center, justify), and optional anchor links for heading navigation.
+/// TextStyle.DisplayH1-H6 provide large display headings, TextStyle.H1-H6 provide standard headings, Subtitle1/2 for subtitles, Body1/2 for paragraphs, Caption for small text, and Overline for labels.
 type RadzenTextBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit RadzenComponentBuilder<'FunBlazorGeneric>()
-    /// The text that will be displayed.
+    /// Gets or sets the plain text content to display.
+    /// For simple text display, use this property. For rich content with markup, use ChildContent instead.
+    /// When set, takes precedence over ChildContent.
     [<CustomOperation("Text")>] member inline _.Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Text" => x)
-    /// The style of the text. Set to Body1 by default.
+    /// Gets or sets the typography style that determines the text size, weight, and appearance.
+    /// Options include display headings (DisplayH1-H6), standard headings (H1-H6), subtitles, body text, captions, and more.
+    /// Each style provides consistent formatting matching the theme's design system.
     [<CustomOperation("TextStyle")>] member inline _.TextStyle ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Blazor.TextStyle) = render ==> ("TextStyle" => x)
-    /// The horozontal alignment of the text.
+    /// Gets or sets the horizontal text alignment within the container.
+    /// Options include Left, Right, Center, Justify, Start, End, and JustifyAll.
     [<CustomOperation("TextAlign")>] member inline _.TextAlign ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.TextAlign) = render ==> ("TextAlign" => x)
-    /// The tag name of the element that will be rendered. Set to Auto which uses a default tag name depending on the current TextStyle.
+    /// Gets or sets the HTML element tag to render.
+    /// When set to Auto (default), the tag is chosen automatically based on TextStyle
+    /// (e.g., H1 style uses <h1> tag). Override to use a specific tag regardless of style.
     [<CustomOperation("TagName")>] member inline _.TagName ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Blazor.TagName) = render ==> ("TagName" => x)
-    /// Gets or sets the anchor name. If set an additional anchor will be rendered. Clicking on the anchor will scroll the page to the element with the same id.
+    /// Gets or sets an anchor identifier for creating linkable headings.
+    /// When set, adds a clickable link icon next to the text that scrolls to this element when clicked.
+    /// The anchor href will be the current page URL with #anchorname appended.
     [<CustomOperation("Anchor")>] member inline _.Anchor ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Anchor" => x)
 
-/// RadzenTimeline component is a graphical representation used to display a chronological sequence of events or data points.
+/// A timeline component for displaying chronological sequences of events with visual indicators and connecting lines.
+/// RadzenTimeline presents events along a vertical or horizontal axis, ideal for histories, project milestones, or process flows.
+/// Visualizes temporal data in a linear sequence with customizable markers, labels, and content for each event.
+/// Supports Vertical (top-to-bottom) or Horizontal (left-to-right) orientation, Center/Start/End/Alternate positioning of the connecting line,
+/// custom point markers/labels/content per item via templates, content alignment control (start, center, end, stretch), chronological order reversal,
+/// and flexible content where each item can have point marker, label, and main content.
+/// Timeline items are defined using RadzenTimelineItem components. Common uses include order tracking, project progress, changelog displays, or activity feeds.
 type RadzenTimelineBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit RadzenComponentBuilder<'FunBlazorGeneric>()
-    /// Gets or sets the items.
+    /// Gets or sets the render fragment containing RadzenTimelineItem components that define the timeline events.
+    /// Each RadzenTimelineItem represents one event or milestone in the timeline.
     [<CustomOperation("Items")>] member inline _.Items ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("Items", fragment)
-    /// Gets or sets the items.
+    /// Gets or sets the render fragment containing RadzenTimelineItem components that define the timeline events.
+    /// Each RadzenTimelineItem represents one event or milestone in the timeline.
     [<CustomOperation("Items")>] member inline _.Items ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("Items", fragment { yield! fragments })
-    /// Gets or sets the items.
+    /// Gets or sets the render fragment containing RadzenTimelineItem components that define the timeline events.
+    /// Each RadzenTimelineItem represents one event or milestone in the timeline.
     [<CustomOperation("Items")>] member inline _.Items ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("Items", html.text x)
-    /// Gets or sets the items.
+    /// Gets or sets the render fragment containing RadzenTimelineItem components that define the timeline events.
+    /// Each RadzenTimelineItem represents one event or milestone in the timeline.
     [<CustomOperation("Items")>] member inline _.Items ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("Items", html.text x)
-    /// Gets or sets the items.
+    /// Gets or sets the render fragment containing RadzenTimelineItem components that define the timeline events.
+    /// Each RadzenTimelineItem represents one event or milestone in the timeline.
     [<CustomOperation("Items")>] member inline _.Items ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("Items", html.text x)
-    /// Specifies the orientation - whether items flow in horizontal or vertical direction. Set to Orientation.Vertical by default.
+    /// Gets or sets the layout direction of the timeline.
+    /// Vertical displays events top-to-bottom, Horizontal displays events left-to-right.
     [<CustomOperation("Orientation")>] member inline _.Orientation ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Orientation) = render ==> ("Orientation" => x)
-    /// Specifies the line position. Set to LinePosition.Center by default.
+    /// Gets or sets where the connecting line appears relative to the timeline items.
+    /// Options include Center (line between content), Start/End (line on side), or Alternate (zigzag pattern).
     [<CustomOperation("LinePosition")>] member inline _.LinePosition ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.LinePosition) = render ==> ("LinePosition" => x)
-    /// Specifies if the LinePosition is reversed.
+    /// Gets or sets whether to reverse the timeline order visually (but not in markup).
+    /// When true with vertical orientation, items flow bottom-to-top. With horizontal, items flow right-to-left.
     [<CustomOperation("Reverse")>] member inline _.Reverse ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Reverse" =>>> true)
-    /// Specifies if the LinePosition is reversed.
+    /// Gets or sets whether to reverse the timeline order visually (but not in markup).
+    /// When true with vertical orientation, items flow bottom-to-top. With horizontal, items flow right-to-left.
     [<CustomOperation("Reverse")>] member inline _.Reverse ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Reverse" =>>> x)
-    /// Specifies the alignment of LabelContent, PointContent and ChildContent inside TimelineItems. Set to AlignItems.Center by default.
+    /// Gets or sets the cross-axis alignment of timeline item content (label, point, and child content).
+    /// Controls vertical alignment for horizontal timelines, or horizontal alignment for vertical timelines.
     [<CustomOperation("AlignItems")>] member inline _.AlignItems ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.AlignItems) = render ==> ("AlignItems" => x)
 
 /// RadzenTimeline item.
@@ -4310,7 +5178,13 @@ type RadzenTocBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspN
     /// Gets or sets the CSS selector of the element to monitor for scroll events. By default the entire page is monitored.
     [<CustomOperation("Selector")>] member inline _.Selector ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Selector" => x)
 
-/// A component which displays a hierarchy of items. Supports inline definition and data-binding.
+/// A hierarchical tree view component for displaying nested data structures with expand/collapse functionality.
+/// RadzenTree supports both inline item definition and data-binding for displaying file systems, organization charts, category hierarchies, or any tree-structured data.
+/// Organizes data in a parent-child hierarchy where items can be expanded to reveal children.
+/// Supports static definition declaring tree structure using nested RadzenTreeItem components, data binding to hierarchical data using RadzenTreeLevel components,
+/// single or multiple item selection with checkboxes, individual item or programmatic expand/collapse control, custom icons per item or data-bound icon properties,
+/// custom rendering templates for tree items, keyboard navigation (Arrow keys, Space/Enter, Home/End) for accessibility, and Change/Expand/selection events.
+/// For data binding, use RadzenTreeLevel to define how to render each hierarchy level from your data model. For checkbox selection, use AllowCheckBoxes and bind to CheckedValues.
 type RadzenTreeBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit RadzenComponentBuilder<'FunBlazorGeneric>()
     /// Gets or sets the open button aria-label attribute.
@@ -4374,7 +5248,13 @@ type RadzenTreeBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.Asp
     /// A callback which will be invoked when CheckedValues changes.
     [<CustomOperation("CheckedValuesChanged")>] member inline _.CheckedValuesChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Collections.Generic.IEnumerable<System.Object> -> Task<unit>) = render ==> html.callbackTask("CheckedValuesChanged", fn)
 
-/// RadzenUpload component.
+/// A file upload component with progress tracking, multiple file support, and drag-and-drop capability.
+/// RadzenUpload provides a full-featured file upload interface with automatic or manual upload, server communication, and comprehensive event handling.
+/// Handles file selection and upload to a server endpoint with automatic upload on file selection or manual triggering via Upload() method,
+/// real-time upload progress with percentage and bytes loaded, file type restriction via Accept property (MIME types or extensions),
+/// custom authentication or HTTP headers, Complete/Error/Progress/Change events for tracking upload lifecycle,
+/// automatic image preview for image files, file removal support, and built-in drag-and-drop for file selection.
+/// Uploads files to the URL endpoint via HTTP POST multipart/form-data. Server-side endpoint must accept file uploads and return appropriate responses.
 type RadzenUploadBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit RadzenComponentBuilder<'FunBlazorGeneric>()
     /// Gets or sets the text.
@@ -4636,62 +5516,103 @@ type RadzenBarSeriesBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> 
     /// Gets or sets the color range of the stroke.
     [<CustomOperation("StrokeRange")>] member inline _.StrokeRange ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IList<Radzen.Blazor.SeriesColorRange>) = render ==> ("StrokeRange" => x)
 
-/// Renders column series in RadzenChart
+/// A chart series that displays data as vertical columns (bars) in a RadzenChart.
+/// RadzenColumnSeries is ideal for comparing values across categories or showing trends over time with discrete data points.
+/// Renders vertical rectangles where the height represents the data value. Multiple column series in the same chart are displayed side-by-side for each category.
+/// Supports fill color/stroke color/width customization with individual column colors via Fills/Strokes, dynamic coloring based on value ranges using FillRange and StrokeRange,
+/// optional value labels on top of columns, interactive tooltips showing category/value/series name, and click event handling for drill-down scenarios.
+/// Use CategoryProperty to specify the X-axis field and ValueProperty for the column height (Y-axis value).
 type RadzenColumnSeriesBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit Blazor.CartesianSeriesBuilder<'FunBlazorGeneric, 'TItem>()
-    /// Specifies the fill (background color) of the column series.
+    /// Gets or sets the fill (background) color applied to all columns in the series.
+    /// Supports any valid CSS color value. If not set, uses the color scheme's default color.
     [<CustomOperation("Fill")>] member inline _.Fill ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Fill" => x)
-    /// Specifies a list of colors that will be used to set the individual column backgrounds.
+    /// Gets or sets a collection of fill colors to apply to individual columns in sequence.
+    /// Each column gets the color at its index position, allowing rainbow or gradient-like effects.
+    /// Takes precedence over the Fill property.
     [<CustomOperation("Fills")>] member inline _.Fills ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<System.String>) = render ==> ("Fills" => x)
-    /// Specifies the stroke (border color) of the column series.
+    /// Gets or sets the stroke (border) color applied to all columns in the series.
+    /// If not set, columns render without borders.
     [<CustomOperation("Stroke")>] member inline _.Stroke ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Stroke" => x)
-    /// Specifies a list of colors that will be used to set the individual column borders.
+    /// Gets or sets a collection of stroke colors to apply to individual column borders in sequence.
+    /// Each column border gets the color at its index position.
+    /// Takes precedence over the Stroke property.
     [<CustomOperation("Strokes")>] member inline _.Strokes ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<System.String>) = render ==> ("Strokes" => x)
-    /// Gets or sets the width of the stroke (border).
+    /// Gets or sets the width of the column border in pixels.
+    /// Only visible if Stroke or Strokes is specified.
     [<CustomOperation("StrokeWidth")>] member inline _.StrokeWidth ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Double) = render ==> ("StrokeWidth" => x)
-    /// Gets or sets the type of the line used to render the column border.
+    /// Gets or sets the line style for column borders (solid, dashed, dotted).
+    /// Only applicable if stroke is enabled.
     [<CustomOperation("LineType")>] member inline _.LineType ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Blazor.LineType) = render ==> ("LineType" => x)
-    /// Gets or sets the color range of the fill.
+    /// Gets or sets value-based color ranges that dynamically color columns based on their values.
+    /// Allows conditional coloring (e.g., red for negative values, green for positive).
+    /// Each range specifies a min/max value and a color to apply to columns within that range.
     [<CustomOperation("FillRange")>] member inline _.FillRange ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IList<Radzen.Blazor.SeriesColorRange>) = render ==> ("FillRange" => x)
-    /// Gets or sets the color range of the stroke.
+    /// Gets or sets value-based color ranges that dynamically color column borders based on their values.
+    /// Works similarly to FillRange but affects the stroke color instead of fill.
     [<CustomOperation("StrokeRange")>] member inline _.StrokeRange ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IList<Radzen.Blazor.SeriesColorRange>) = render ==> ("StrokeRange" => x)
 
-/// Renders line series in RadzenChart.
+/// A chart series that displays data as a continuous line connecting data points in a RadzenChart.
+/// RadzenLineSeries is ideal for showing trends over time, continuous data, or comparing multiple data series.
+/// Connects data points with lines, making it easy to visualize trends and patterns.
+/// Supports multiple interpolation modes (straight lines, smooth curves, step functions), customizable appearance (color, width, line style),
+/// markers at data points, data labels, combination of multiple line series in one chart for comparison, and line styling with different patterns (solid, dashed, dotted).
+/// Use CategoryProperty for the X-axis values and ValueProperty for the Y-axis values. Enable Smooth for curved lines, or use Interpolation for more control over line rendering.
 type RadzenLineSeriesBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit Blazor.CartesianSeriesBuilder<'FunBlazorGeneric, 'TItem>()
-    /// Specifies the color of the line.
+    /// Gets or sets the color of the line.
+    /// Supports any valid CSS color value (e.g., "#FF0000", "rgb(255,0,0)", "var(--my-color)").
+    /// If not set, uses the color from the chart's color scheme.
     [<CustomOperation("Stroke")>] member inline _.Stroke ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Stroke" => x)
-    /// Specifies the pixel width of the line. Set to 2 by default.
+    /// Gets or sets the width of the line in pixels.
+    /// Thicker lines are more visible but may obscure details in dense data.
     [<CustomOperation("StrokeWidth")>] member inline _.StrokeWidth ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Double) = render ==> ("StrokeWidth" => x)
-    /// Specifies the line type.
+    /// Gets or sets the line style pattern (solid, dashed, dotted).
+    /// Use LineType.Dashed or LineType.Dotted to create non-solid lines for visual distinction or to represent projected/estimated data.
     [<CustomOperation("LineType")>] member inline _.LineType ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Blazor.LineType) = render ==> ("LineType" => x)
-    /// Specifies whether to render a smooth line. Set to false by default.
+    /// Gets or sets whether to render smooth curved lines between data points instead of straight lines.
+    /// When true, uses spline interpolation to create smooth curves. This is a convenience property for setting Interpolation to Spline.
     [<CustomOperation("Smooth")>] member inline _.Smooth ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Smooth" =>>> true)
-    /// Specifies whether to render a smooth line. Set to false by default.
+    /// Gets or sets whether to render smooth curved lines between data points instead of straight lines.
+    /// When true, uses spline interpolation to create smooth curves. This is a convenience property for setting Interpolation to Spline.
     [<CustomOperation("Smooth")>] member inline _.Smooth ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Smooth" =>>> x)
-    /// Specifies how to render lines between data points. Set to Line by default
+    /// Gets or sets the interpolation method used to render lines between data points.
+    /// Options include Line (straight lines), Spline (smooth curves), and Step (stair-step lines).
     [<CustomOperation("Interpolation")>] member inline _.Interpolation ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Blazor.Interpolation) = render ==> ("Interpolation" => x)
 
-/// Renders pie series in RadzenChart.
+/// A chart series that displays data as a circular pie chart with segments representing proportions of a whole.
+/// RadzenPieSeries is ideal for showing percentage breakdowns, composition analysis, or relative comparisons of parts to a total.
+/// Divides a circle into segments where each segment's angle is proportional to its value relative to the sum of all values.
+/// Supports segment color customization via Fills, borders via Strokes with custom radius and positioning, TotalAngle to create semi-circles or partial pie charts (e.g., gauge-like displays),
+/// StartAngle controlling where the first segment begins, optional labels showing values or percentages on segments, interactive tooltips showing category/value/percentage,
+/// and legend where each segment appears as a legend item using category values.
+/// Use CategoryProperty for segment labels (shown in legend/tooltip) and ValueProperty for the numeric value determining segment size. For a donut chart (pie with hollow center), use RadzenDonutSeries instead.
 type RadzenPieSeriesBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit Blazor.CartesianSeriesBuilder<'FunBlazorGeneric, 'TItem>()
-    /// Specifies the x coordinate of the pie center. Not set by default which centers pie horizontally.
+    /// Gets or sets the horizontal center position of the pie chart in pixels.
+    /// If not set, the pie is automatically centered horizontally within the chart area.
     [<CustomOperation("X")>] member inline _.X ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Double>) = render ==> ("X" => x)
-    /// Specifies the y coordinate of the pie center. Not set by default which centers pie vertically.
+    /// Gets or sets the vertical center position of the pie chart in pixels.
+    /// If not set, the pie is automatically centered vertically within the chart area.
     [<CustomOperation("Y")>] member inline _.Y ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Double>) = render ==> ("Y" => x)
-    /// Specifies the radius of the pie. Not set by default - the pie takes as much size of the chart as possible.
+    /// Gets or sets the radius of the pie chart in pixels.
+    /// If not set, the radius is automatically calculated to fit the available chart space.
     [<CustomOperation("Radius")>] member inline _.Radius ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Double>) = render ==> ("Radius" => x)
-    /// The fill colors of the pie segments. Used as the background of the segments.
+    /// Gets or sets a collection of fill colors applied to individual pie segments in sequence.
+    /// Each segment gets the color at its index position. If fewer colors than segments, colors are reused cyclically.
+    /// If not set, uses the chart's color scheme.
     [<CustomOperation("Fills")>] member inline _.Fills ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<System.String>) = render ==> ("Fills" => x)
-    /// The stroke colors of the pie segments.
+    /// Gets or sets a collection of stroke (border) colors applied to individual pie segments in sequence.
+    /// Use with StrokeWidth to create visible segment borders.
     [<CustomOperation("Strokes")>] member inline _.Strokes ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<System.String>) = render ==> ("Strokes" => x)
-    /// The stroke width of the segments in pixels. By default set to 0.
+    /// Gets or sets the width of the pie segment borders in pixels.
+    /// Set to 0 for no borders, or increase to make segment divisions more visible.
     [<CustomOperation("StrokeWidth")>] member inline _.StrokeWidth ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Double) = render ==> ("StrokeWidth" => x)
-    /// Gets or sets the start angle from which segments are rendered (clockwise). Set to 90 by default.
-    /// Top is 90, right is 0, bottom is 270, left is 180.
+    /// Gets or sets the starting angle (in degrees) from which pie segments begin rendering, measured clockwise from the right (0°).
+    /// Use to rotate the pie: 90° (top), 0° (right), 180° (left), 270° (bottom).
     [<CustomOperation("StartAngle")>] member inline _.StartAngle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Double) = render ==> ("StartAngle" => x)
-    /// Gets or sets the total angle of the pie in degrees. Set to 360 by default which renders a full circle.
-    /// Set to 180 to render a half circle or
+    /// Gets or sets the total angle span of the pie in degrees.
+    /// Use 360 for a full circle, 180 for a semi-circle, or other values for partial pies (useful for gauge-like visualizations).
     [<CustomOperation("TotalAngle")>] member inline _.TotalAngle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Double) = render ==> ("TotalAngle" => x)
 
 /// Renders donut series in RadzenChart.
@@ -5459,33 +6380,63 @@ type RadzenDataFilterPropertyBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGe
     /// Gets or sets the filter operators.
     [<CustomOperation("FilterOperators")>] member inline _.FilterOperators ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<Radzen.FilterOperator>) = render ==> ("FilterOperators" => x)
 
-/// RadzenDataGridColumn component.
-/// Must be placed inside a RadzenDataGrid`1
+/// Defines a column in a RadzenDataGrid, specifying how data is displayed, sorted, filtered, and edited.
+/// RadzenDataGridColumn supports data binding via Property, custom templates, formatting, sorting, filtering, grouping, aggregation, and inline editing.
+/// Must be placed inside a RadzenDataGrid`1 within the Columns template.
+/// Each column represents one field or computed value from the data source.
+/// Features data binding using Property to bind to a data field or Template for custom content, display properties (Title, FormatString, TextAlign, Width, Frozen for locked scrolling),
+/// Sortable property enabling/disabling sorting, Filterable property with FilterTemplate for custom filter UI and FilterValue for programmatic filtering,
+/// EditTemplate for inline editing with Editable property to control edit permission, GroupProperty for hierarchical data grouping,
+/// FooterTemplate with Sum()/Average()/Count() aggregation functions, child columns for multi-level headers,
+/// and Visible property with responsive breakpoint properties (visible-sm, visible-md, etc.).
+/// Use Template for complete control over cell rendering, or EditTemplate for edit mode cells.
 type RadzenDataGridColumnBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
-    /// Gets or sets the columns.
+    /// Gets or sets the child columns render fragment for creating composite/hierarchical column headers.
+    /// When set, this column becomes a header grouping column, and child columns are rendered beneath it.
+    /// Useful for creating multi-level column headers where related columns are grouped under a common header.
     [<CustomOperation("Columns")>] member inline _.Columns ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("Columns", fragment)
-    /// Gets or sets the columns.
+    /// Gets or sets the child columns render fragment for creating composite/hierarchical column headers.
+    /// When set, this column becomes a header grouping column, and child columns are rendered beneath it.
+    /// Useful for creating multi-level column headers where related columns are grouped under a common header.
     [<CustomOperation("Columns")>] member inline _.Columns ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("Columns", fragment { yield! fragments })
-    /// Gets or sets the columns.
+    /// Gets or sets the child columns render fragment for creating composite/hierarchical column headers.
+    /// When set, this column becomes a header grouping column, and child columns are rendered beneath it.
+    /// Useful for creating multi-level column headers where related columns are grouped under a common header.
     [<CustomOperation("Columns")>] member inline _.Columns ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("Columns", html.text x)
-    /// Gets or sets the columns.
+    /// Gets or sets the child columns render fragment for creating composite/hierarchical column headers.
+    /// When set, this column becomes a header grouping column, and child columns are rendered beneath it.
+    /// Useful for creating multi-level column headers where related columns are grouped under a common header.
     [<CustomOperation("Columns")>] member inline _.Columns ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("Columns", html.text x)
-    /// Gets or sets the columns.
+    /// Gets or sets the child columns render fragment for creating composite/hierarchical column headers.
+    /// When set, this column becomes a header grouping column, and child columns are rendered beneath it.
+    /// Useful for creating multi-level column headers where related columns are grouped under a common header.
     [<CustomOperation("Columns")>] member inline _.Columns ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("Columns", html.text x)
-    /// Gets or sets a value indicating whether cell data should be shown as tooltip.
+    /// Gets or sets whether cell values should automatically display as tooltips on hover.
+    /// Useful for columns that may contain truncated text, allowing users to see the full value.
     [<CustomOperation("ShowCellDataAsTooltip")>] member inline _.ShowCellDataAsTooltip ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowCellDataAsTooltip" =>>> true)
-    /// Gets or sets a value indicating whether cell data should be shown as tooltip.
+    /// Gets or sets whether cell values should automatically display as tooltips on hover.
+    /// Useful for columns that may contain truncated text, allowing users to see the full value.
     [<CustomOperation("ShowCellDataAsTooltip")>] member inline _.ShowCellDataAsTooltip ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowCellDataAsTooltip" =>>> x)
-    /// Specifies wether CheckBoxList filter list virtualization is enabled. Set to true by default.
+    /// Gets or sets whether virtualization is enabled for the CheckBoxList filter dropdown.
+    /// When enabled, only visible checkbox items are rendered for better performance with large datasets.
+    /// Only applicable when using FilterMode.CheckBoxList.
     [<CustomOperation("AllowCheckBoxListVirtualization")>] member inline _.AllowCheckBoxListVirtualization ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AllowCheckBoxListVirtualization" =>>> true)
-    /// Specifies wether CheckBoxList filter list virtualization is enabled. Set to true by default.
+    /// Gets or sets whether virtualization is enabled for the CheckBoxList filter dropdown.
+    /// When enabled, only visible checkbox items are rendered for better performance with large datasets.
+    /// Only applicable when using FilterMode.CheckBoxList.
     [<CustomOperation("AllowCheckBoxListVirtualization")>] member inline _.AllowCheckBoxListVirtualization ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("AllowCheckBoxListVirtualization" =>>> x)
-    /// Specifies whether the CheckBoxList filter should always show all data, ignoring filtering from other columns. Set to false by default.
+    /// Gets or sets whether the CheckBoxList filter should display all distinct values regardless of filters applied to other columns.
+    /// When false (default), the filter list is dynamically filtered based on other active column filters.
+    /// Set to true to always show the complete list of distinct values from the original dataset.
     [<CustomOperation("AlwaysShowAllCheckBoxListData")>] member inline _.AlwaysShowAllCheckBoxListData ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AlwaysShowAllCheckBoxListData" =>>> true)
-    /// Specifies whether the CheckBoxList filter should always show all data, ignoring filtering from other columns. Set to false by default.
+    /// Gets or sets whether the CheckBoxList filter should display all distinct values regardless of filters applied to other columns.
+    /// When false (default), the filter list is dynamically filtered based on other active column filters.
+    /// Set to true to always show the complete list of distinct values from the original dataset.
     [<CustomOperation("AlwaysShowAllCheckBoxListData")>] member inline _.AlwaysShowAllCheckBoxListData ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("AlwaysShowAllCheckBoxListData" =>>> x)
-    /// Gets or sets the column filter mode.
+    /// Gets or sets the filtering UI mode for this column.
+    /// Controls whether the column uses simple filter controls (textbox in header), advanced filter menu, CheckBoxList, or no filtering.
+    /// If not set, inherits from the parent grid's FilterMode setting.
     [<CustomOperation("FilterMode")>] member inline _.FilterMode ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Radzen.FilterMode>) = render ==> ("FilterMode" => x)
     /// Gets or sets the unique identifier.
     [<CustomOperation("UniqueID")>] member inline _.UniqueID ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("UniqueID" => x)
@@ -5610,6 +6561,8 @@ type RadzenDataGridColumnBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneri
     [<CustomOperation("SecondFilterValueTemplate")>] member inline _.SecondFilterValueTemplate ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.Blazor.RadzenDataGridColumn<'TItem> -> NodeRenderFragment) = render ==> html.renderFragment("SecondFilterValueTemplate", fn)
     /// Gets or sets the logical filter operator.
     [<CustomOperation("LogicalFilterOperator")>] member inline _.LogicalFilterOperator ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.LogicalFilterOperator) = render ==> ("LogicalFilterOperator" => x)
+    /// Gets or sets the mode that determines whether the filter applies to any or all items in a collection.
+    [<CustomOperation("CollectionFilterMode")>] member inline _.CollectionFilterMode ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.CollectionFilterMode) = render ==> ("CollectionFilterMode" => x)
     /// Gets or sets the data type.
     [<CustomOperation("Type")>] member inline _.Type ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Type) = render ==> ("Type" => x)
     /// Gets or sets the IFormatProvider used for FormatString.
@@ -6445,11 +7398,19 @@ module DslCE =
     open Radzen.Blazor.DslInternals
 
 
-    /// Base class of Radzen Blazor components.
-    ///             
+    /// Base class for all Radzen Blazor components providing common functionality for styling, attributes, events, and lifecycle management.
+    /// All Radzen components inherit from RadzenComponent to gain standard features like visibility control, custom attributes, mouse events, and disposal.
+    /// Provides foundational functionality including visibility control via Visible property, custom CSS via Style property and class via Attributes,
+    /// HTML attribute passing via unmatched parameters, MouseEnter/MouseLeave/ContextMenu event callbacks, localization support for numbers/dates/text,
+    /// access to the rendered HTML element via Element Reference, and proper cleanup via IDisposable pattern.
+    /// Components inheriting from RadzenComponent can override GetComponentCssClass() to provide their base CSS classes and use the protected Visible property to control rendering.
     type RadzenComponent' 
-        /// Base class of Radzen Blazor components.
-        ///             
+        /// Base class for all Radzen Blazor components providing common functionality for styling, attributes, events, and lifecycle management.
+        /// All Radzen components inherit from RadzenComponent to gain standard features like visibility control, custom attributes, mouse events, and disposal.
+        /// Provides foundational functionality including visibility control via Visible property, custom CSS via Style property and class via Attributes,
+        /// HTML attribute passing via unmatched parameters, MouseEnter/MouseLeave/ContextMenu event callbacks, localization support for numbers/dates/text,
+        /// access to the rendered HTML element via Element Reference, and proper cleanup via IDisposable pattern.
+        /// Components inheriting from RadzenComponent can override GetComponentCssClass() to provide their base CSS classes and use the protected Visible property to control rendering.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.RadzenComponent>)>] () = inherit RadzenComponentBuilder<Radzen.RadzenComponent>()
 
     /// A base class of components that have child content.
@@ -6476,18 +7437,32 @@ module DslCE =
         /// Base class of components that display a list of items.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.DropDownBase<_>>)>] () = inherit DropDownBaseBuilder<Radzen.DropDownBase<'T>, 'T>()
 
-    /// Class FormComponent.
-    /// Implements the RadzenComponent
-    /// Implements the IRadzenFormComponent
+    /// Base class for all Radzen form input components providing data binding, validation, and change event capabilities.
+    /// FormComponent integrates with Blazor's EditContext for form validation and provides common functionality for all input controls.
+    /// This is the base class for components like RadzenTextBox, RadzenCheckBox, RadzenDropDown, RadzenDatePicker, etc.
+    /// Provides @bind-Value support for two-way binding, integration with Blazor EditContext and validators, Change and ValueChanged callbacks,
+    /// Disable property to prevent user interaction, Placeholder text for empty inputs, Name property for validation and label association,
+    /// and TabIndex for keyboard navigation control.
+    /// Components inheriting from FormComponent automatically work with RadzenTemplateForm and validators.
     type FormComponent'<'T> 
-        /// Class FormComponent.
-        /// Implements the RadzenComponent
-        /// Implements the IRadzenFormComponent
+        /// Base class for all Radzen form input components providing data binding, validation, and change event capabilities.
+        /// FormComponent integrates with Blazor's EditContext for form validation and provides common functionality for all input controls.
+        /// This is the base class for components like RadzenTextBox, RadzenCheckBox, RadzenDropDown, RadzenDatePicker, etc.
+        /// Provides @bind-Value support for two-way binding, integration with Blazor EditContext and validators, Change and ValueChanged callbacks,
+        /// Disable property to prevent user interaction, Placeholder text for empty inputs, Name property for validation and label association,
+        /// and TabIndex for keyboard navigation control.
+        /// Components inheriting from FormComponent automatically work with RadzenTemplateForm and validators.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.FormComponent<_>>)>] () = inherit FormComponentBuilder<Radzen.FormComponent<'T>, 'T>()
 
-    /// Class FormComponentWithAutoComplete.
+    /// Base class for form input components that support browser autocomplete functionality.
+    /// Extends FormComponent`1 with properties for controlling browser autocomplete behavior and ARIA autocomplete attributes.
+    /// Used by input components like RadzenTextBox, RadzenPassword, RadzenNumeric, and RadzenMask.
+    /// Provides standardized autocomplete behavior for better integration with browser password managers and autofill features.
     type FormComponentWithAutoComplete'<'T> 
-        /// Class FormComponentWithAutoComplete.
+        /// Base class for form input components that support browser autocomplete functionality.
+        /// Extends FormComponent`1 with properties for controlling browser autocomplete behavior and ARIA autocomplete attributes.
+        /// Used by input components like RadzenTextBox, RadzenPassword, RadzenNumeric, and RadzenMask.
+        /// Provides standardized autocomplete behavior for better integration with browser password managers and autofill features.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.FormComponentWithAutoComplete<_>>)>] () = inherit FormComponentWithAutoCompleteBuilder<Radzen.FormComponentWithAutoComplete<'T>, 'T>()
 
     /// Base classes of components that support paging.
@@ -6519,19 +7494,49 @@ module DslCE =
     open Radzen.Blazor.DslInternals.Blazor
 
 
-    /// RadzenCard component.
+    /// A flexbox row container component that horizontally arranges RadzenColumn components in a responsive 12-column grid layout.
+    /// RadzenRow provides gap spacing, alignment, and justification controls for creating flexible, responsive page layouts.
+    /// Serves as a container for RadzenColumn components, creating a horizontal flexbox layout where columns automatically wrap to the next line when their combined Size values exceed 12.
+    /// Supports Gap and RowGap properties for spacing between columns and wrapped rows, AlignItems for vertical alignment (start, center, end, stretch, baseline),
+    /// JustifyContent for horizontal distribution (start, center, end, space-between, space-around), and works seamlessly with RadzenColumn's breakpoint-specific sizing.
+    /// Use AlignItems and JustifyContent from the base RadzenFlexComponent to control layout behavior.
     type RadzenRow' 
-        /// RadzenCard component.
+        /// A flexbox row container component that horizontally arranges RadzenColumn components in a responsive 12-column grid layout.
+        /// RadzenRow provides gap spacing, alignment, and justification controls for creating flexible, responsive page layouts.
+        /// Serves as a container for RadzenColumn components, creating a horizontal flexbox layout where columns automatically wrap to the next line when their combined Size values exceed 12.
+        /// Supports Gap and RowGap properties for spacing between columns and wrapped rows, AlignItems for vertical alignment (start, center, end, stretch, baseline),
+        /// JustifyContent for horizontal distribution (start, center, end, space-between, space-around), and works seamlessly with RadzenColumn's breakpoint-specific sizing.
+        /// Use AlignItems and JustifyContent from the base RadzenFlexComponent to control layout behavior.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenRow>)>] () = inherit RadzenRowBuilder<Radzen.Blazor.RadzenRow>()
 
-    /// RadzenStack component.
+    /// A flexbox container component that arranges child elements in a vertical or horizontal stack with configurable spacing and alignment.
+    /// RadzenStack provides a simpler alternative to RadzenRow/RadzenColumn for linear layouts without the 12-column grid constraint.
+    /// Ideal for creating simple vertical or horizontal layouts without needing a grid system. Unlike RadzenRow/RadzenColumn which uses a 12-column grid, Stack arranges children linearly with equal spacing.
+    /// Features Vertical (column) or Horizontal (row) orientation, consistent gap spacing between child elements, AlignItems for cross-axis alignment and JustifyContent for main-axis distribution,
+    /// option to reverse the order of children, and control whether children wrap to new lines or stay in a single line.
+    /// Use for simpler layouts like button groups, form field stacks, or toolbar arrangements.
     type RadzenStack' 
-        /// RadzenStack component.
+        /// A flexbox container component that arranges child elements in a vertical or horizontal stack with configurable spacing and alignment.
+        /// RadzenStack provides a simpler alternative to RadzenRow/RadzenColumn for linear layouts without the 12-column grid constraint.
+        /// Ideal for creating simple vertical or horizontal layouts without needing a grid system. Unlike RadzenRow/RadzenColumn which uses a 12-column grid, Stack arranges children linearly with equal spacing.
+        /// Features Vertical (column) or Horizontal (row) orientation, consistent gap spacing between child elements, AlignItems for cross-axis alignment and JustifyContent for main-axis distribution,
+        /// option to reverse the order of children, and control whether children wrap to new lines or stay in a single line.
+        /// Use for simpler layouts like button groups, form field stacks, or toolbar arrangements.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenStack>)>] () = inherit RadzenStackBuilder<Radzen.Blazor.RadzenStack>()
 
-    /// RadzenAlert component.
+    /// An alert/notification box component for displaying important messages with semantic colors and optional close functionality.
+    /// RadzenAlert provides contextual feedback messages for Success, Info, Warning, Error, and other notification scenarios.
+    /// Supports semantic styles (Info, Success, Warning, Danger) for contextual coloring, variants (Filled, Flat, Outlined, Text), 
+    /// automatic contextual icons or custom icons via Icon property, optional close button via AllowClose for dismissible alerts,
+    /// sizes (ExtraSmall, Small, Medium, Large), and content via Title/Text properties or rich content via ChildContent.
+    /// Automatically displays appropriate icons based on AlertStyle (checkmark for Success, warning triangle for Warning, etc.) unless ShowIcon is set to false or a custom Icon is provided.
     type RadzenAlert' 
-        /// RadzenAlert component.
+        /// An alert/notification box component for displaying important messages with semantic colors and optional close functionality.
+        /// RadzenAlert provides contextual feedback messages for Success, Info, Warning, Error, and other notification scenarios.
+        /// Supports semantic styles (Info, Success, Warning, Danger) for contextual coloring, variants (Filled, Flat, Outlined, Text), 
+        /// automatic contextual icons or custom icons via Icon property, optional close button via AllowClose for dismissible alerts,
+        /// sizes (ExtraSmall, Small, Medium, Large), and content via Title/Text properties or rich content via ChildContent.
+        /// Automatically displays appropriate icons based on AlertStyle (checkmark for Success, warning triangle for Warning, etc.) unless ShowIcon is set to false or a custom Icon is provided.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenAlert>)>] () = inherit RadzenAlertBuilder<Radzen.Blazor.RadzenAlert>()
 
     /// RadzenBody component.
@@ -6539,14 +7544,34 @@ module DslCE =
         /// RadzenBody component.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenBody>)>] () = inherit RadzenBodyBuilder<Radzen.Blazor.RadzenBody>()
 
-    /// A component to display a Bread Crumb style menu
+    /// A breadcrumb navigation component that displays the current page's location within the application hierarchy.
+    /// RadzenBreadCrumb shows a trail of links representing the path from the root to the current page, helping users understand their location and navigate back.
+    /// Provides secondary navigation with items separated by a visual divider (typically ">"), with each item linking to its respective page.
+    /// Common uses include multi-level navigation indicating current location, e-commerce category navigation (Home > Electronics > Laptops), documentation section paths, and file system or folder navigation.
+    /// Items are defined using RadzenBreadCrumbItem components as child content.
+    /// The last item typically represents the current page and is often not clickable.
     type RadzenBreadCrumb' 
-        /// A component to display a Bread Crumb style menu
+        /// A breadcrumb navigation component that displays the current page's location within the application hierarchy.
+        /// RadzenBreadCrumb shows a trail of links representing the path from the root to the current page, helping users understand their location and navigate back.
+        /// Provides secondary navigation with items separated by a visual divider (typically ">"), with each item linking to its respective page.
+        /// Common uses include multi-level navigation indicating current location, e-commerce category navigation (Home > Electronics > Laptops), documentation section paths, and file system or folder navigation.
+        /// Items are defined using RadzenBreadCrumbItem components as child content.
+        /// The last item typically represents the current page and is often not clickable.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenBreadCrumb>)>] () = inherit RadzenBreadCrumbBuilder<Radzen.Blazor.RadzenBreadCrumb>()
 
-    /// RadzenCard component.
+    /// A card container component that groups related content with a consistent visual design and optional elevation.
+    /// RadzenCard provides a versatile styled container for displaying information, images, actions, and other content in a structured format.
+    /// Supports different visual variants (Filled, Flat, Outlined, Text) that affect the card's appearance.
+    /// Works well in grid layouts (using RadzenRow/RadzenColumn) or can be stacked vertically.
+    /// Ideal for grouping related information, creating dashboard widgets, displaying product information, or organizing form sections.
+    /// Combine with other Radzen components like RadzenImage, RadzenText, and RadzenButton for rich card content.
     type RadzenCard' 
-        /// RadzenCard component.
+        /// A card container component that groups related content with a consistent visual design and optional elevation.
+        /// RadzenCard provides a versatile styled container for displaying information, images, actions, and other content in a structured format.
+        /// Supports different visual variants (Filled, Flat, Outlined, Text) that affect the card's appearance.
+        /// Works well in grid layouts (using RadzenRow/RadzenColumn) or can be stacked vertically.
+        /// Ideal for grouping related information, creating dashboard widgets, displaying product information, or organizing form sections.
+        /// Combine with other Radzen components like RadzenImage, RadzenText, and RadzenButton for rich card content.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenCard>)>] () = inherit RadzenCardBuilder<Radzen.Blazor.RadzenCard>()
 
     /// RadzenCardGroup component.
@@ -6554,9 +7579,21 @@ module DslCE =
         /// RadzenCardGroup component.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenCardGroup>)>] () = inherit RadzenCardGroupBuilder<Radzen.Blazor.RadzenCardGroup>()
 
-    /// RadzenColumn component.
+    /// A responsive grid column component used within RadzenRow to create flexible, responsive layouts based on a 12-column grid system.
+    /// RadzenColumn provides breakpoint-specific sizing, offsetting, and ordering capabilities for building adaptive interfaces.
+    /// Must be used inside a RadzenRow component. The column width is specified as a value from 1-12, representing the number of grid columns to span.
+    /// Supports responsive design through breakpoint-specific properties including Size for default column width (1-12), SizeXS/SM/MD/LG/XL/XX for breakpoint-specific widths,
+    /// Offset for number of columns to skip before this column (creates left margin), OffsetXS/SM/MD/LG/XL/XX for breakpoint-specific offsets,
+    /// Order to control visual order of columns (useful for reordering on different screen sizes), and OrderXS/SM/MD/LG/XL/XX for breakpoint-specific ordering.
+    /// Columns automatically fill available space when no size is specified, and wrap to new lines when the total exceeds 12.
     type RadzenColumn' 
-        /// RadzenColumn component.
+        /// A responsive grid column component used within RadzenRow to create flexible, responsive layouts based on a 12-column grid system.
+        /// RadzenColumn provides breakpoint-specific sizing, offsetting, and ordering capabilities for building adaptive interfaces.
+        /// Must be used inside a RadzenRow component. The column width is specified as a value from 1-12, representing the number of grid columns to span.
+        /// Supports responsive design through breakpoint-specific properties including Size for default column width (1-12), SizeXS/SM/MD/LG/XL/XX for breakpoint-specific widths,
+        /// Offset for number of columns to skip before this column (creates left margin), OffsetXS/SM/MD/LG/XL/XX for breakpoint-specific offsets,
+        /// Order to control visual order of columns (useful for reordering on different screen sizes), and OrderXS/SM/MD/LG/XL/XX for breakpoint-specific ordering.
+        /// Columns automatically fill available space when no size is specified, and wrap to new lines when the total exceeds 12.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenColumn>)>] () = inherit RadzenColumnBuilder<Radzen.Blazor.RadzenColumn>()
 
     /// RadzenContent component.
@@ -6589,24 +7626,64 @@ module DslCE =
         /// RadzenHeader component.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenHeader>)>] () = inherit RadzenHeaderBuilder<Radzen.Blazor.RadzenHeader>()
 
-    /// RadzenImage component.
+    /// An image display component that renders images from various sources including URLs, base64 data, or application assets.
+    /// RadzenImage provides a simple wrapper for HTML img elements with click event support and alternate text for accessibility.
+    /// Can display images from file paths (relative or absolute URLs to image files), external URLs (full HTTP/HTTPS URLs to remote images),
+    /// base64 data (data URLs with embedded image data, e.g., from file uploads or database BLOBs), and application assets (images from wwwroot or other application folders).
+    /// Use AlternateText to provide descriptive text for screen readers and when images fail to load.
+    /// The Click event can be used to make images interactive (e.g., opening lightboxes or navigating).
+    /// Combine with CSS (via Style or class attributes) for sizing, borders, shadows, and other visual effects.
     type RadzenImage' 
-        /// RadzenImage component.
+        /// An image display component that renders images from various sources including URLs, base64 data, or application assets.
+        /// RadzenImage provides a simple wrapper for HTML img elements with click event support and alternate text for accessibility.
+        /// Can display images from file paths (relative or absolute URLs to image files), external URLs (full HTTP/HTTPS URLs to remote images),
+        /// base64 data (data URLs with embedded image data, e.g., from file uploads or database BLOBs), and application assets (images from wwwroot or other application folders).
+        /// Use AlternateText to provide descriptive text for screen readers and when images fail to load.
+        /// The Click event can be used to make images interactive (e.g., opening lightboxes or navigating).
+        /// Combine with CSS (via Style or class attributes) for sizing, borders, shadows, and other visual effects.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenImage>)>] () = inherit RadzenImageBuilder<Radzen.Blazor.RadzenImage>()
 
-    /// RadzenLayout component.
+    /// A layout container component that defines the overall structure of a Blazor application with header, sidebar, body, and footer sections.
+    /// RadzenLayout is typically used in MainLayout.razor to create a consistent page structure with optional collapsible sidebar and theme integration.
+    /// Works with companion components: RadzenHeader, RadzenSidebar, RadzenBody, and RadzenFooter. Automatically integrates with ThemeService to apply theme-specific CSS classes.
+    /// All sections are optional and can be used in any combination to create the desired page structure. The sidebar can be configured as collapsible, and the layout adjusts automatically when the sidebar expands or collapses.
     type RadzenLayout' 
-        /// RadzenLayout component.
+        /// A layout container component that defines the overall structure of a Blazor application with header, sidebar, body, and footer sections.
+        /// RadzenLayout is typically used in MainLayout.razor to create a consistent page structure with optional collapsible sidebar and theme integration.
+        /// Works with companion components: RadzenHeader, RadzenSidebar, RadzenBody, and RadzenFooter. Automatically integrates with ThemeService to apply theme-specific CSS classes.
+        /// All sections are optional and can be used in any combination to create the desired page structure. The sidebar can be configured as collapsible, and the layout adjusts automatically when the sidebar expands or collapses.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenLayout>)>] () = inherit RadzenLayoutBuilder<Radzen.Blazor.RadzenLayout>()
 
-    /// RadzenMenu component.
+    /// A horizontal menu component with support for nested submenus, icons, and responsive behavior.
+    /// RadzenMenu provides a classic menu bar for navigation, typically used in application headers or toolbars.
+    /// Displays menu items horizontally with dropdown submenus.
+    /// Supports multi-level nested menus via RadzenMenuItem child items, automatic navigation via Path property or custom Click handlers,
+    /// icons displayed alongside menu item text, responsive design that automatically collapses to a hamburger menu on small screens (configurable),
+    /// click-to-open or hover-to-open interaction modes, keyboard navigation (Arrow keys, Enter, Escape) for accessibility, and visual separators between menu items.
+    /// Use for application navigation bars, command menus, or toolbar-style interfaces. Menu items are defined using RadzenMenuItem components as child content.
     type RadzenMenu' 
-        /// RadzenMenu component.
+        /// A horizontal menu component with support for nested submenus, icons, and responsive behavior.
+        /// RadzenMenu provides a classic menu bar for navigation, typically used in application headers or toolbars.
+        /// Displays menu items horizontally with dropdown submenus.
+        /// Supports multi-level nested menus via RadzenMenuItem child items, automatic navigation via Path property or custom Click handlers,
+        /// icons displayed alongside menu item text, responsive design that automatically collapses to a hamburger menu on small screens (configurable),
+        /// click-to-open or hover-to-open interaction modes, keyboard navigation (Arrow keys, Enter, Escape) for accessibility, and visual separators between menu items.
+        /// Use for application navigation bars, command menus, or toolbar-style interfaces. Menu items are defined using RadzenMenuItem components as child content.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenMenu>)>] () = inherit RadzenMenuBuilder<Radzen.Blazor.RadzenMenu>()
 
-    /// RadzenPanel component.
+    /// A collapsible panel component with customizable header, content, summary, and footer sections.
+    /// RadzenPanel provides an expandable/collapsible container for organizing and hiding content, ideal for settings panels, detail sections, or grouped information.
+    /// Displays content in a structured container with optional collapsing functionality. When AllowCollapse is enabled, users can click the header to toggle the panel's expanded/collapsed state.
+    /// Supports customizable header via HeaderTemplate/Text/Icon properties, main panel body via ChildContent, optional summary content shown when collapsed (SummaryTemplate),
+    /// optional footer section (FooterTemplate), Collapsed property with two-way binding for programmatic control, and Expand/Collapse event callbacks.
+    /// The header displays a collapse/expand icon when AllowCollapse is true, and users can click anywhere on the header to toggle.
     type RadzenPanel' 
-        /// RadzenPanel component.
+        /// A collapsible panel component with customizable header, content, summary, and footer sections.
+        /// RadzenPanel provides an expandable/collapsible container for organizing and hiding content, ideal for settings panels, detail sections, or grouped information.
+        /// Displays content in a structured container with optional collapsing functionality. When AllowCollapse is enabled, users can click the header to toggle the panel's expanded/collapsed state.
+        /// Supports customizable header via HeaderTemplate/Text/Icon properties, main panel body via ChildContent, optional summary content shown when collapsed (SummaryTemplate),
+        /// optional footer section (FooterTemplate), Collapsed property with two-way binding for programmatic control, and Expand/Collapse event callbacks.
+        /// The header displays a collapse/expand icon when AllowCollapse is true, and users can click anywhere on the header to toggle.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenPanel>)>] () = inherit RadzenPanelBuilder<Radzen.Blazor.RadzenPanel>()
 
     /// RadzenPanelMenu component.
@@ -6619,14 +7696,38 @@ module DslCE =
         /// RadzenProfileMenu component.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenProfileMenu>)>] () = inherit RadzenProfileMenuBuilder<Radzen.Blazor.RadzenProfileMenu>()
 
-    /// RadzenSidebar component.
+    /// A collapsible sidebar component for application navigation, typically used within RadzenLayout.
+    /// RadzenSidebar provides a navigation panel that can be toggled open/closed and responds to screen size changes.
+    /// Commonly used in application layouts for primary navigation menus.
+    /// Features responsive design (automatically collapses on mobile devices and expands on desktop, configurable), positioning on Left/Right/Start/End of the layout,
+    /// full height option to span entire layout height or align with body section only, programmatic expand/collapse via Expanded property or Toggle() method,
+    /// seamless integration with RadzenLayout/RadzenHeader/RadzenBody/RadzenFooter, and typically contains RadzenPanelMenu or RadzenMenu for navigation.
+    /// Must be used inside RadzenLayout to enable responsive behavior and proper layout integration. Use @bind-Expanded for two-way binding to control sidebar state from code.
     type RadzenSidebar' 
-        /// RadzenSidebar component.
+        /// A collapsible sidebar component for application navigation, typically used within RadzenLayout.
+        /// RadzenSidebar provides a navigation panel that can be toggled open/closed and responds to screen size changes.
+        /// Commonly used in application layouts for primary navigation menus.
+        /// Features responsive design (automatically collapses on mobile devices and expands on desktop, configurable), positioning on Left/Right/Start/End of the layout,
+        /// full height option to span entire layout height or align with body section only, programmatic expand/collapse via Expanded property or Toggle() method,
+        /// seamless integration with RadzenLayout/RadzenHeader/RadzenBody/RadzenFooter, and typically contains RadzenPanelMenu or RadzenMenu for navigation.
+        /// Must be used inside RadzenLayout to enable responsive behavior and proper layout integration. Use @bind-Expanded for two-way binding to control sidebar state from code.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenSidebar>)>] () = inherit RadzenSidebarBuilder<Radzen.Blazor.RadzenSidebar>()
 
-    /// RadzenSplitButton component.
+    /// A split button component that combines a primary action button with a dropdown menu of additional related actions.
+    /// RadzenSplitButton displays a main button with a small dropdown toggle, allowing quick access to a default action while providing alternatives.
+    /// Ideal when you have a primary action and several related alternatives. The left side executes the default action, the right side opens a menu of options.
+    /// Common examples include Save (with options: Save As, Save and Close), Download (with options: Download PDF, Download Excel, Download CSV), and Send (with options: Send Now, Schedule Send, Save Draft).
+    /// Features main action triggered by clicking the left portion, additional options in a dropdown from the right toggle, ButtonStyle/Variant/Shade/Size for consistent appearance,
+    /// optional icon on the main button, and keyboard navigation (Arrow keys, Enter, Escape) for menu navigation.
+    /// Menu items are defined using RadzenSplitButtonItem components as child content.
     type RadzenSplitButton' 
-        /// RadzenSplitButton component.
+        /// A split button component that combines a primary action button with a dropdown menu of additional related actions.
+        /// RadzenSplitButton displays a main button with a small dropdown toggle, allowing quick access to a default action while providing alternatives.
+        /// Ideal when you have a primary action and several related alternatives. The left side executes the default action, the right side opens a menu of options.
+        /// Common examples include Save (with options: Save As, Save and Close), Download (with options: Download PDF, Download Excel, Download CSV), and Send (with options: Send Now, Schedule Send, Save Draft).
+        /// Features main action triggered by clicking the left portion, additional options in a dropdown from the right toggle, ButtonStyle/Variant/Shade/Size for consistent appearance,
+        /// optional icon on the main button, and keyboard navigation (Arrow keys, Enter, Escape) for menu navigation.
+        /// Menu items are defined using RadzenSplitButtonItem components as child content.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenSplitButton>)>] () = inherit RadzenSplitButtonBuilder<Radzen.Blazor.RadzenSplitButton>()
 
     /// Display a styled table with data.
@@ -6670,67 +7771,143 @@ module DslCE =
         /// Base class of Radzen validator components.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.ValidatorBase>)>] () = inherit ValidatorBaseBuilder<Radzen.Blazor.ValidatorBase>()
 
-    /// A validator component which compares a component value with a specified value.
-    /// Must be placed inside a RadzenTemplateForm`1
+    /// A validator component that compares a form input's value against another value or another component's value using a specified comparison operator.
+    /// RadzenCompareValidator is commonly used for password confirmation, numeric range validation, or ensuring field values match expected criteria.
+    /// Must be placed inside a RadzenTemplateForm`1 and associated with a named input component.
+    /// Supports various comparison operations (Equal, NotEqual, GreaterThan, LessThan, etc.) via the Operator property.
+    /// For password confirmation scenarios, set the Value property to the password field and the Component to the confirmation field name.
+    /// Can react to changes in the comparison value by setting ValidateOnComponentValueChange to true (default).
     type RadzenCompareValidator' 
-        /// A validator component which compares a component value with a specified value.
-        /// Must be placed inside a RadzenTemplateForm`1
+        /// A validator component that compares a form input's value against another value or another component's value using a specified comparison operator.
+        /// RadzenCompareValidator is commonly used for password confirmation, numeric range validation, or ensuring field values match expected criteria.
+        /// Must be placed inside a RadzenTemplateForm`1 and associated with a named input component.
+        /// Supports various comparison operations (Equal, NotEqual, GreaterThan, LessThan, etc.) via the Operator property.
+        /// For password confirmation scenarios, set the Value property to the password field and the Component to the confirmation field name.
+        /// Can react to changes in the comparison value by setting ValidateOnComponentValueChange to true (default).
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenCompareValidator>)>] () = inherit RadzenCompareValidatorBuilder<Radzen.Blazor.RadzenCompareValidator>()
 
-    /// A validator component which compares a component value with a specified value.
-    /// Must be placed inside a RadzenTemplateForm`1
+    /// A validator component that executes custom validation logic via a user-provided function.
+    /// RadzenCustomValidator enables complex validation rules that cannot be achieved with built-in validators, such as database checks, cross-field validation, or business rule enforcement.
+    /// Must be placed inside a RadzenTemplateForm`1.
+    /// Provides complete flexibility for validation logic by executing a Func<bool> that you define. The validator is valid when the function returns true, invalid when it returns false.
+    /// Common use cases include uniqueness checks (validating email/username against existing database records), business rules (enforcing domain-specific validation logic),
+    /// cross-field validation (validating relationships between multiple fields), API validation (checking values against external services), and any complex logic requiring custom code.
+    /// The Validator function should return true for valid values and false for invalid values. The function is called during form validation, so keep it fast or use async patterns for slow operations.
     type RadzenCustomValidator' 
-        /// A validator component which compares a component value with a specified value.
-        /// Must be placed inside a RadzenTemplateForm`1
+        /// A validator component that executes custom validation logic via a user-provided function.
+        /// RadzenCustomValidator enables complex validation rules that cannot be achieved with built-in validators, such as database checks, cross-field validation, or business rule enforcement.
+        /// Must be placed inside a RadzenTemplateForm`1.
+        /// Provides complete flexibility for validation logic by executing a Func<bool> that you define. The validator is valid when the function returns true, invalid when it returns false.
+        /// Common use cases include uniqueness checks (validating email/username against existing database records), business rules (enforcing domain-specific validation logic),
+        /// cross-field validation (validating relationships between multiple fields), API validation (checking values against external services), and any complex logic requiring custom code.
+        /// The Validator function should return true for valid values and false for invalid values. The function is called during form validation, so keep it fast or use async patterns for slow operations.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenCustomValidator>)>] () = inherit RadzenCustomValidatorBuilder<Radzen.Blazor.RadzenCustomValidator>()
 
-    /// A validator component which validates a component value using the data annotations
-    /// defined on the corresponding model property.
-    /// Must be placed inside a RadzenTemplateForm`1
+    /// A validator component that validates form inputs using Data Annotations attributes defined on model properties.
+    /// RadzenDataAnnotationValidator enables automatic validation based on attributes like [Required], [StringLength], [Range], [EmailAddress], etc.
+    /// Must be placed inside a RadzenTemplateForm`1.
+    /// Uses the standard .NET validation attributes from System.ComponentModel.DataAnnotations. Reads all validation attributes on a model property and validates the input accordingly.
+    /// Benefits include centralized validation (define rules once on the model, use everywhere), support for multiple validation attributes per property,
+    /// built-in attributes (Required, StringLength, Range, EmailAddress, Phone, Url, RegularExpression, etc.), works with custom ValidationAttribute implementations,
+    /// and multiple errors joined with MessageSeparator.
+    /// Ideal when your validation rules are already defined on your data models using data annotations. Automatically extracts error messages from the attributes' ErrorMessage properties.
     type RadzenDataAnnotationValidator' 
-        /// A validator component which validates a component value using the data annotations
-        /// defined on the corresponding model property.
-        /// Must be placed inside a RadzenTemplateForm`1
+        /// A validator component that validates form inputs using Data Annotations attributes defined on model properties.
+        /// RadzenDataAnnotationValidator enables automatic validation based on attributes like [Required], [StringLength], [Range], [EmailAddress], etc.
+        /// Must be placed inside a RadzenTemplateForm`1.
+        /// Uses the standard .NET validation attributes from System.ComponentModel.DataAnnotations. Reads all validation attributes on a model property and validates the input accordingly.
+        /// Benefits include centralized validation (define rules once on the model, use everywhere), support for multiple validation attributes per property,
+        /// built-in attributes (Required, StringLength, Range, EmailAddress, Phone, Url, RegularExpression, etc.), works with custom ValidationAttribute implementations,
+        /// and multiple errors joined with MessageSeparator.
+        /// Ideal when your validation rules are already defined on your data models using data annotations. Automatically extracts error messages from the attributes' ErrorMessage properties.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenDataAnnotationValidator>)>] () = inherit RadzenDataAnnotationValidatorBuilder<Radzen.Blazor.RadzenDataAnnotationValidator>()
 
-    /// A validator component which checks if a component value is a valid email address.
-    /// Must be placed inside a RadzenTemplateForm`1
+    /// A validator component that verifies whether a text input contains a valid email address format.
+    /// RadzenEmailValidator uses the .NET EmailAddressAttribute to validate email format according to standard rules.
+    /// Must be placed inside a RadzenTemplateForm`1 and associated with a named input component.
+    /// Checks email format using System.ComponentModel.DataAnnotations.EmailAddressAttribute validation rules.
+    /// Empty or null values are considered valid - combine with RadzenRequiredValidator to ensure the field is not empty.
+    /// The validation runs when the form is submitted or when the component loses focus.
     type RadzenEmailValidator' 
-        /// A validator component which checks if a component value is a valid email address.
-        /// Must be placed inside a RadzenTemplateForm`1
+        /// A validator component that verifies whether a text input contains a valid email address format.
+        /// RadzenEmailValidator uses the .NET EmailAddressAttribute to validate email format according to standard rules.
+        /// Must be placed inside a RadzenTemplateForm`1 and associated with a named input component.
+        /// Checks email format using System.ComponentModel.DataAnnotations.EmailAddressAttribute validation rules.
+        /// Empty or null values are considered valid - combine with RadzenRequiredValidator to ensure the field is not empty.
+        /// The validation runs when the form is submitted or when the component loses focus.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenEmailValidator>)>] () = inherit RadzenEmailValidatorBuilder<Radzen.Blazor.RadzenEmailValidator>()
 
-    /// A validator component which checks if then component value length is within a specified range.
-    /// Must be placed inside a RadzenTemplateForm`1
+    /// A validator component that ensures a text input's length falls within a specified minimum and maximum range.
+    /// RadzenLengthValidator is useful for enforcing username lengths, password complexity, or limiting text field sizes.
+    /// Must be placed inside a RadzenTemplateForm`1 and associated with a named input component.
+    /// Checks the string length against optional Min and Max constraints.
+    /// If only Min is set, validates minimum length. If only Max is set, validates maximum length. If both are set, the length must be within the range (inclusive).
+    /// Null or empty values are considered invalid if Min is set, and valid if only Max is set.
     type RadzenLengthValidator' 
-        /// A validator component which checks if then component value length is within a specified range.
-        /// Must be placed inside a RadzenTemplateForm`1
+        /// A validator component that ensures a text input's length falls within a specified minimum and maximum range.
+        /// RadzenLengthValidator is useful for enforcing username lengths, password complexity, or limiting text field sizes.
+        /// Must be placed inside a RadzenTemplateForm`1 and associated with a named input component.
+        /// Checks the string length against optional Min and Max constraints.
+        /// If only Min is set, validates minimum length. If only Max is set, validates maximum length. If both are set, the length must be within the range (inclusive).
+        /// Null or empty values are considered invalid if Min is set, and valid if only Max is set.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenLengthValidator>)>] () = inherit RadzenLengthValidatorBuilder<Radzen.Blazor.RadzenLengthValidator>()
 
-    /// A validator component which checks if a component value is within a specified range.
-    /// Must be placed inside a RadzenTemplateForm`1
+    /// A validator component that ensures a numeric value falls within a specified minimum and maximum range.
+    /// RadzenNumericRangeValidator is ideal for quantity limits, age restrictions, price ranges, or any bounded numeric input.
+    /// Must be placed inside a RadzenTemplateForm`1.
+    /// Ensures values are within acceptable bounds by checking that the value is greater than or equal to Min and less than or equal to Max. Both bounds are inclusive.
+    /// You can specify just Min to validate minimum value (e.g., age must be at least 18), just Max to validate maximum value (e.g., quantity cannot exceed 100), or both to validate range (e.g., rating must be between 1 and 5).
+    /// Works with any IComparable type (int, decimal, double, DateTime, etc.). Set AllowNull = true to accept null values as valid (for optional nullable fields).
     type RadzenNumericRangeValidator' 
-        /// A validator component which checks if a component value is within a specified range.
-        /// Must be placed inside a RadzenTemplateForm`1
+        /// A validator component that ensures a numeric value falls within a specified minimum and maximum range.
+        /// RadzenNumericRangeValidator is ideal for quantity limits, age restrictions, price ranges, or any bounded numeric input.
+        /// Must be placed inside a RadzenTemplateForm`1.
+        /// Ensures values are within acceptable bounds by checking that the value is greater than or equal to Min and less than or equal to Max. Both bounds are inclusive.
+        /// You can specify just Min to validate minimum value (e.g., age must be at least 18), just Max to validate maximum value (e.g., quantity cannot exceed 100), or both to validate range (e.g., rating must be between 1 and 5).
+        /// Works with any IComparable type (int, decimal, double, DateTime, etc.). Set AllowNull = true to accept null values as valid (for optional nullable fields).
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenNumericRangeValidator>)>] () = inherit RadzenNumericRangeValidatorBuilder<Radzen.Blazor.RadzenNumericRangeValidator>()
 
-    /// A validator component which matches a component value against a specified regular expression pattern.
-    /// Must be placed inside a RadzenTemplateForm`1
+    /// A validator component that ensures a text input matches a specified regular expression pattern.
+    /// RadzenRegexValidator is useful for validating formats like ZIP codes, phone numbers, custom IDs, or any pattern-based data.
+    /// Must be placed inside a RadzenTemplateForm`1.
+    /// Checks input against a regular expression pattern using .NET's RegularExpressionAttribute.
+    /// Common use cases include ZIP/postal codes (e.g., "\d{5}" for US ZIP), phone numbers (e.g., "\d{3}-\d{3}-\d{4}"), custom ID formats (e.g., "^[A-Z]{2}\d{6}$"), and alphanumeric constraints (e.g., "^[a-zA-Z0-9]+$").
+    /// The validator passes when the value matches the entire pattern (implicit anchoring). Empty or null values are considered valid - combine with RadzenRequiredValidator to ensure the field is filled.
     type RadzenRegexValidator' 
-        /// A validator component which matches a component value against a specified regular expression pattern.
-        /// Must be placed inside a RadzenTemplateForm`1
+        /// A validator component that ensures a text input matches a specified regular expression pattern.
+        /// RadzenRegexValidator is useful for validating formats like ZIP codes, phone numbers, custom IDs, or any pattern-based data.
+        /// Must be placed inside a RadzenTemplateForm`1.
+        /// Checks input against a regular expression pattern using .NET's RegularExpressionAttribute.
+        /// Common use cases include ZIP/postal codes (e.g., "\d{5}" for US ZIP), phone numbers (e.g., "\d{3}-\d{3}-\d{4}"), custom ID formats (e.g., "^[A-Z]{2}\d{6}$"), and alphanumeric constraints (e.g., "^[a-zA-Z0-9]+$").
+        /// The validator passes when the value matches the entire pattern (implicit anchoring). Empty or null values are considered valid - combine with RadzenRequiredValidator to ensure the field is filled.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenRegexValidator>)>] () = inherit RadzenRegexValidatorBuilder<Radzen.Blazor.RadzenRegexValidator>()
 
-    /// A validator component which checks if a component has value.
-    /// Must be placed inside a RadzenTemplateForm`1
+    /// A validator component that ensures a form input component has a non-empty value.
+    /// RadzenRequiredValidator verifies that required fields are filled before form submission.
+    /// Must be placed inside a RadzenTemplateForm`1 and associated with a named input component.
+    /// Checks if the associated component has a value (HasValue returns true) and that the value is not equal to the optional DefaultValue.
+    /// For text inputs, an empty string is considered invalid. For dropdowns and other components, null or default values are considered invalid.
+    /// The validation message can be customized via the Text property and displayed inline, as a block, or as a popup depending on the Style property.
     type RadzenRequiredValidator' 
-        /// A validator component which checks if a component has value.
-        /// Must be placed inside a RadzenTemplateForm`1
+        /// A validator component that ensures a form input component has a non-empty value.
+        /// RadzenRequiredValidator verifies that required fields are filled before form submission.
+        /// Must be placed inside a RadzenTemplateForm`1 and associated with a named input component.
+        /// Checks if the associated component has a value (HasValue returns true) and that the value is not equal to the optional DefaultValue.
+        /// For text inputs, an empty string is considered invalid. For dropdowns and other components, null or default values are considered invalid.
+        /// The validation message can be customized via the Text property and displayed inline, as a block, or as a popup depending on the Style property.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenRequiredValidator>)>] () = inherit RadzenRequiredValidatorBuilder<Radzen.Blazor.RadzenRequiredValidator>()
 
-    /// RadzenButton component.
+    /// A clickable button component that supports various visual styles, icons, images, and loading states.
+    /// RadzenButton provides a consistent and accessible way to trigger actions in your Blazor application.
+    /// Supports multiple visual variants (Filled, Flat, Outlined, Text), color styles (Primary, Secondary, Success, etc.), 
+    /// and sizes (ExtraSmall, Small, Medium, Large). It can display text, icons, images, or a combination of these.
+    /// When IsBusy is true, the button shows a loading indicator and becomes disabled.
     type RadzenButton' 
-        /// RadzenButton component.
+        /// A clickable button component that supports various visual styles, icons, images, and loading states.
+        /// RadzenButton provides a consistent and accessible way to trigger actions in your Blazor application.
+        /// Supports multiple visual variants (Filled, Flat, Outlined, Text), color styles (Primary, Secondary, Success, etc.), 
+        /// and sizes (ExtraSmall, Small, Medium, Large). It can display text, icons, images, or a combination of these.
+        /// When IsBusy is true, the button shows a loading indicator and becomes disabled.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenButton>)>] () = inherit RadzenButtonBuilder<Radzen.Blazor.RadzenButton>()
 
     /// RadzenFab component.
@@ -6748,19 +7925,53 @@ module DslCE =
         /// RadzenButton component.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenToggleButton>)>] () = inherit RadzenToggleButtonBuilder<Radzen.Blazor.RadzenToggleButton>()
 
-    /// RadzenProgressBar component.
+    /// A linear progress bar component for indicating task completion or ongoing processes.
+    /// RadzenProgressBar displays progress horizontally with determinate (specific value) or indeterminate (ongoing) modes.
+    /// Provides visual feedback about the status of lengthy operations like file uploads, data processing, or multi-step workflows.
+    /// Supports determinate mode showing specific progress value (0-100%) with a filling bar, indeterminate mode with animated bar indicating ongoing operation without specific progress,
+    /// optional percentage or custom unit value display overlay, configurable Min/Max values for non-percentage scales, various semantic colors (Primary, Success, Info, Warning, Danger),
+    /// custom template to override default value display, and ARIA attributes for screen reader support.
+    /// Use determinate mode when you can calculate progress percentage (e.g., file upload, form completion). Use indeterminate mode for operations with unknown duration (e.g., waiting for server response).
     type RadzenProgressBar' 
-        /// RadzenProgressBar component.
+        /// A linear progress bar component for indicating task completion or ongoing processes.
+        /// RadzenProgressBar displays progress horizontally with determinate (specific value) or indeterminate (ongoing) modes.
+        /// Provides visual feedback about the status of lengthy operations like file uploads, data processing, or multi-step workflows.
+        /// Supports determinate mode showing specific progress value (0-100%) with a filling bar, indeterminate mode with animated bar indicating ongoing operation without specific progress,
+        /// optional percentage or custom unit value display overlay, configurable Min/Max values for non-percentage scales, various semantic colors (Primary, Success, Info, Warning, Danger),
+        /// custom template to override default value display, and ARIA attributes for screen reader support.
+        /// Use determinate mode when you can calculate progress percentage (e.g., file upload, form completion). Use indeterminate mode for operations with unknown duration (e.g., waiting for server response).
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenProgressBar>)>] () = inherit RadzenProgressBarBuilder<Radzen.Blazor.RadzenProgressBar>()
 
-    /// RadzenProgressBarCircular component.
+    /// A circular progress indicator component for showing task completion or ongoing processes in a compact circular format.
+    /// RadzenProgressBarCircular displays progress as a ring with determinate (specific value) or indeterminate (spinning) modes.
+    /// Space-efficient and works well for dashboards, loading states, or anywhere circular design fits better than linear bars.
+    /// Inherits all features from RadzenProgressBar and adds circular design showing progress as a ring/arc instead of a linear bar,
+    /// size options (ExtraSmall, Small, Medium, Large) for different contexts, value display in the center of the circle, and compact design taking less space than linear progress bars.
+    /// Use for dashboard KPIs, button loading states, or compact loading indicators. The circular shape makes it ideal for displaying progress where space is limited.
     type RadzenProgressBarCircular' 
-        /// RadzenProgressBarCircular component.
+        /// A circular progress indicator component for showing task completion or ongoing processes in a compact circular format.
+        /// RadzenProgressBarCircular displays progress as a ring with determinate (specific value) or indeterminate (spinning) modes.
+        /// Space-efficient and works well for dashboards, loading states, or anywhere circular design fits better than linear bars.
+        /// Inherits all features from RadzenProgressBar and adds circular design showing progress as a ring/arc instead of a linear bar,
+        /// size options (ExtraSmall, Small, Medium, Large) for different contexts, value display in the center of the circle, and compact design taking less space than linear progress bars.
+        /// Use for dashboard KPIs, button loading states, or compact loading indicators. The circular shape makes it ideal for displaying progress where space is limited.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenProgressBarCircular>)>] () = inherit RadzenProgressBarCircularBuilder<Radzen.Blazor.RadzenProgressBarCircular>()
 
-    /// Displays line, area, donut, pie, bar or column series.
+    /// A versatile chart component for visualizing data through various chart types including line, area, column, bar, pie, and donut series.
+    /// RadzenChart supports multiple series, customizable axes, legends, tooltips, data labels, markers, and interactive features.
+    /// Container for one or more chart series components. Each series (RadzenLineSeries, RadzenColumnSeries, RadzenAreaSeries, etc.) defines how data is visualized.
+    /// Supports Cartesian charts (Line, Area, Column, Bar, StackedColumn, StackedBar, StackedArea with X/Y axes), Pie charts (Pie and Donut series for showing proportions),
+    /// customization of color schemes/axis configuration/grid lines/legends/tooltips/data labels/markers, interactive click events on series and legend items with hover tooltips,
+    /// annotations including trend lines/mean/median/mode lines/value annotations, and responsive design that automatically adapts to container size.
+    /// Series are defined as child components within the RadzenChart. Configure axes using RadzenCategoryAxis and RadzenValueAxis, customize the legend with RadzenLegend, and add tooltips with RadzenChartTooltipOptions.
     type RadzenChart' 
-        /// Displays line, area, donut, pie, bar or column series.
+        /// A versatile chart component for visualizing data through various chart types including line, area, column, bar, pie, and donut series.
+        /// RadzenChart supports multiple series, customizable axes, legends, tooltips, data labels, markers, and interactive features.
+        /// Container for one or more chart series components. Each series (RadzenLineSeries, RadzenColumnSeries, RadzenAreaSeries, etc.) defines how data is visualized.
+        /// Supports Cartesian charts (Line, Area, Column, Bar, StackedColumn, StackedBar, StackedArea with X/Y axes), Pie charts (Pie and Donut series for showing proportions),
+        /// customization of color schemes/axis configuration/grid lines/legends/tooltips/data labels/markers, interactive click events on series and legend items with hover tooltips,
+        /// annotations including trend lines/mean/median/mode lines/value annotations, and responsive design that automatically adapts to container size.
+        /// Series are defined as child components within the RadzenChart. Configure axes using RadzenCategoryAxis and RadzenValueAxis, customize the legend with RadzenLegend, and add tooltips with RadzenChartTooltipOptions.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenChart>)>] () = inherit RadzenChartBuilder<Radzen.Blazor.RadzenChart>()
 
     /// A sparkline is a small chart that provides a simple way to visualize trends in data.
@@ -6777,79 +7988,227 @@ module DslCE =
     type RadzenArcGauge' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenArcGauge>)>] () = inherit RadzenArcGaugeBuilder<Radzen.Blazor.RadzenArcGauge>()
     type RadzenRadialGauge' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenRadialGauge>)>] () = inherit RadzenRadialGaugeBuilder<Radzen.Blazor.RadzenRadialGauge>()
 
-    /// RadzenDropDown component.
+    /// A dropdown select component that allows users to choose one or multiple items from a popup list.
+    /// RadzenDropDown supports data binding, filtering, templates, virtual scrolling, and both single and multiple selection modes.
+    /// Binds to a data source via the Data property and uses TextProperty and ValueProperty to determine what to display and what value to bind.
+    /// Supports filtering (with configurable operators and case sensitivity), custom item templates, empty state templates, value templates for the selected item display,
+    /// and can be configured as editable to allow custom text entry. For multiple selection, set Multiple=true and bind to a collection type.
     type RadzenDropDown'<'TValue> 
-        /// RadzenDropDown component.
+        /// A dropdown select component that allows users to choose one or multiple items from a popup list.
+        /// RadzenDropDown supports data binding, filtering, templates, virtual scrolling, and both single and multiple selection modes.
+        /// Binds to a data source via the Data property and uses TextProperty and ValueProperty to determine what to display and what value to bind.
+        /// Supports filtering (with configurable operators and case sensitivity), custom item templates, empty state templates, value templates for the selected item display,
+        /// and can be configured as editable to allow custom text entry. For multiple selection, set Multiple=true and bind to a collection type.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenDropDown<_>>)>] () = inherit RadzenDropDownBuilder<Radzen.Blazor.RadzenDropDown<'TValue>, 'TValue>()
 
-    /// RadzenDropDownDataGrid component.
+    /// A dropdown component that displays items in a DataGrid within the popup instead of a simple list.
+    /// RadzenDropDownDataGrid combines dropdown selection with grid features like multiple columns, sorting, filtering, and paging.
+    /// Ideal when dropdown items have multiple properties you want to display in columns. Instead of showing just one property per item, the grid popup can display multiple columns.
+    /// Perfect for scenarios like selecting products with columns for Name/SKU/Price/Stock, choosing employees with Name/Department/Email columns, or picking customers with Company/Contact/Location columns.
+    /// Features full DataGrid with columns/sorting/filtering in the dropdown popup, column definition using RadzenDropDownDataGridColumn, built-in column filtering in the grid,
+    /// multiple selection with checkboxes, optional paging for large datasets, and custom column templates for rich item display.
+    /// Define columns as child components to specify what data to show in the grid popup.
     type RadzenDropDownDataGrid'<'TValue> 
-        /// RadzenDropDownDataGrid component.
+        /// A dropdown component that displays items in a DataGrid within the popup instead of a simple list.
+        /// RadzenDropDownDataGrid combines dropdown selection with grid features like multiple columns, sorting, filtering, and paging.
+        /// Ideal when dropdown items have multiple properties you want to display in columns. Instead of showing just one property per item, the grid popup can display multiple columns.
+        /// Perfect for scenarios like selecting products with columns for Name/SKU/Price/Stock, choosing employees with Name/Department/Email columns, or picking customers with Company/Contact/Location columns.
+        /// Features full DataGrid with columns/sorting/filtering in the dropdown popup, column definition using RadzenDropDownDataGridColumn, built-in column filtering in the grid,
+        /// multiple selection with checkboxes, optional paging for large datasets, and custom column templates for rich item display.
+        /// Define columns as child components to specify what data to show in the grid popup.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenDropDownDataGrid<_>>)>] () = inherit RadzenDropDownDataGridBuilder<Radzen.Blazor.RadzenDropDownDataGrid<'TValue>, 'TValue>()
 
-    /// RadzenListBox component.
+    /// A list box component that displays a scrollable list of items with single or multiple selection support.
+    /// RadzenListBox provides an always-visible alternative to dropdowns, ideal for showing multiple options without requiring a popup.
+    /// Displays all items in a scrollable container, making all options visible at once (unlike dropdowns which hide options in a popup).
+    /// Supports single selection (default) or multiple selection via Multiple property, built-in search/filter with configurable operators and case sensitivity,
+    /// binding to any IEnumerable data source with TextProperty and ValueProperty, custom item templates for rich list item content,
+    /// efficient rendering of large lists via IQueryable support, optional "Select All" checkbox for multiple selection mode, and keyboard navigation (Arrow keys, Page Up/Down, Home/End) for accessibility.
+    /// Use when you want to show all available options without requiring clicks to open a dropdown, or when multiple selection is needed and checkboxes would take too much space.
     type RadzenListBox'<'TValue> 
-        /// RadzenListBox component.
+        /// A list box component that displays a scrollable list of items with single or multiple selection support.
+        /// RadzenListBox provides an always-visible alternative to dropdowns, ideal for showing multiple options without requiring a popup.
+        /// Displays all items in a scrollable container, making all options visible at once (unlike dropdowns which hide options in a popup).
+        /// Supports single selection (default) or multiple selection via Multiple property, built-in search/filter with configurable operators and case sensitivity,
+        /// binding to any IEnumerable data source with TextProperty and ValueProperty, custom item templates for rich list item content,
+        /// efficient rendering of large lists via IQueryable support, optional "Select All" checkbox for multiple selection mode, and keyboard navigation (Arrow keys, Page Up/Down, Home/End) for accessibility.
+        /// Use when you want to show all available options without requiring clicks to open a dropdown, or when multiple selection is needed and checkboxes would take too much space.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenListBox<_>>)>] () = inherit RadzenListBoxBuilder<Radzen.Blazor.RadzenListBox<'TValue>, 'TValue>()
 
-    /// RadzenAutoComplete component.
+    /// An autocomplete text input component that provides real-time suggestions as users type based on a data source.
+    /// RadzenAutoComplete combines a text input with a suggestion dropdown that filters and displays matching items, enabling quick selection without typing complete values.
+    /// Features configurable filter operators (Contains, StartsWith, etc.) and case sensitivity, binding to any IEnumerable data source with TextProperty to specify display field,
+    /// MinLength to require typing before showing suggestions, FilterDelay for debouncing, custom templates for rendering suggestion items,
+    /// LoadData event for on-demand server-side filtering, textarea-style multiline input support, and option to show all items when field gains focus.
+    /// Unlike dropdown, allows free-text entry and suggests matching items. The Value is the entered text, while SelectedItem provides access to the selected data object.
     type RadzenAutoComplete' 
-        /// RadzenAutoComplete component.
+        /// An autocomplete text input component that provides real-time suggestions as users type based on a data source.
+        /// RadzenAutoComplete combines a text input with a suggestion dropdown that filters and displays matching items, enabling quick selection without typing complete values.
+        /// Features configurable filter operators (Contains, StartsWith, etc.) and case sensitivity, binding to any IEnumerable data source with TextProperty to specify display field,
+        /// MinLength to require typing before showing suggestions, FilterDelay for debouncing, custom templates for rendering suggestion items,
+        /// LoadData event for on-demand server-side filtering, textarea-style multiline input support, and option to show all items when field gains focus.
+        /// Unlike dropdown, allows free-text entry and suggests matching items. The Value is the entered text, while SelectedItem provides access to the selected data object.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenAutoComplete>)>] () = inherit RadzenAutoCompleteBuilder<Radzen.Blazor.RadzenAutoComplete>()
 
-    /// RadzenMask component.
+    /// A masked text input component that enforces a specific format pattern as users type (e.g., phone numbers, dates, credit cards).
+    /// RadzenMask guides users to enter data in the correct format by automatically formatting input according to a mask pattern.
+    /// Uses a pattern string where asterisks (*) represent user-input positions and other characters are literals. As users type, the input is automatically formatted to match the mask.
+    /// Features mask pattern definition using * for input positions (e.g., "(***) ***-****" for phone numbers), character filtering via Pattern (regex) to remove invalid characters and CharacterPattern (regex) to specify valid characters,
+    /// automatic insertion of literal characters (parentheses, dashes, spaces, etc.), and placeholder showing the expected format to guide users.
+    /// Common uses include phone numbers, dates, credit cards, SSN, postal codes, or any fixed-format data entry. The mask helps prevent input errors and improves data consistency.
     type RadzenMask' 
-        /// RadzenMask component.
+        /// A masked text input component that enforces a specific format pattern as users type (e.g., phone numbers, dates, credit cards).
+        /// RadzenMask guides users to enter data in the correct format by automatically formatting input according to a mask pattern.
+        /// Uses a pattern string where asterisks (*) represent user-input positions and other characters are literals. As users type, the input is automatically formatted to match the mask.
+        /// Features mask pattern definition using * for input positions (e.g., "(***) ***-****" for phone numbers), character filtering via Pattern (regex) to remove invalid characters and CharacterPattern (regex) to specify valid characters,
+        /// automatic insertion of literal characters (parentheses, dashes, spaces, etc.), and placeholder showing the expected format to guide users.
+        /// Common uses include phone numbers, dates, credit cards, SSN, postal codes, or any fixed-format data entry. The mask helps prevent input errors and improves data consistency.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenMask>)>] () = inherit RadzenMaskBuilder<Radzen.Blazor.RadzenMask>()
 
-    /// RadzenNumeric component.
+    /// A numeric input component that allows users to enter numbers with optional increment/decrement buttons and value constraints.
+    /// RadzenNumeric supports various numeric types, formatting, min/max validation, step increments, and culture-specific number display.
+    /// Provides up/down arrow buttons for incrementing/decrementing the value by a specified step amount.
+    /// Supports min/max constraints that are enforced during input and stepping, formatted value display using standard .NET format strings,
+    /// and can be configured with or without the up/down buttons. Handles overflow protection and respects the numeric type's natural limits.
     type RadzenNumeric'<'TValue> 
-        /// RadzenNumeric component.
+        /// A numeric input component that allows users to enter numbers with optional increment/decrement buttons and value constraints.
+        /// RadzenNumeric supports various numeric types, formatting, min/max validation, step increments, and culture-specific number display.
+        /// Provides up/down arrow buttons for incrementing/decrementing the value by a specified step amount.
+        /// Supports min/max constraints that are enforced during input and stepping, formatted value display using standard .NET format strings,
+        /// and can be configured with or without the up/down buttons. Handles overflow protection and respects the numeric type's natural limits.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenNumeric<_>>)>] () = inherit RadzenNumericBuilder<Radzen.Blazor.RadzenNumeric<'TValue>, 'TValue>()
 
-    /// RadzenPassword component.
+    /// A password input component that masks entered characters for secure password entry with autocomplete support.
+    /// RadzenPassword provides a styled password field with browser autocomplete integration for password managers.
+    /// Displays entered characters as dots or asterisks to protect sensitive data from shoulder surfing, integrates with browser password managers by setting appropriate autocomplete attributes.
+    /// Supports data binding, validation, placeholder text, and read-only mode for display purposes.
+    /// Use within forms for login, registration, password change, or any scenario requiring secure text entry.
     type RadzenPassword' 
-        /// RadzenPassword component.
+        /// A password input component that masks entered characters for secure password entry with autocomplete support.
+        /// RadzenPassword provides a styled password field with browser autocomplete integration for password managers.
+        /// Displays entered characters as dots or asterisks to protect sensitive data from shoulder surfing, integrates with browser password managers by setting appropriate autocomplete attributes.
+        /// Supports data binding, validation, placeholder text, and read-only mode for display purposes.
+        /// Use within forms for login, registration, password change, or any scenario requiring secure text entry.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenPassword>)>] () = inherit RadzenPasswordBuilder<Radzen.Blazor.RadzenPassword>()
 
-    /// An input component for single line text entry.
+    /// A single-line text input component that supports data binding, validation, and various input behaviors.
+    /// RadzenTextBox provides a styled text input with support for placeholders, autocomplete, immediate updates, and string trimming.
+    /// Supports two-way data binding via @bind-Value and form validation when used within Radzen forms.
+    /// Can be configured for immediate value updates as the user types or deferred updates on blur/change.
+    /// Use Trim to automatically remove whitespace, and MaxLength to limit input length.
     type RadzenTextBox' 
-        /// An input component for single line text entry.
+        /// A single-line text input component that supports data binding, validation, and various input behaviors.
+        /// RadzenTextBox provides a styled text input with support for placeholders, autocomplete, immediate updates, and string trimming.
+        /// Supports two-way data binding via @bind-Value and form validation when used within Radzen forms.
+        /// Can be configured for immediate value updates as the user types or deferred updates on blur/change.
+        /// Use Trim to automatically remove whitespace, and MaxLength to limit input length.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenTextBox>)>] () = inherit RadzenTextBoxBuilder<Radzen.Blazor.RadzenTextBox>()
 
-    /// RadzenCheckBox component.
+    /// A checkbox input component that supports two-state (checked/unchecked) or tri-state (checked/unchecked/indeterminate) modes.
+    /// RadzenCheckBox provides data binding, validation, and keyboard accessibility for boolean or nullable boolean values.
+    /// In two-state mode, the value toggles between true and false. In tri-state mode (TriState = true), the value cycles through false → null → true → false.
+    /// Supports keyboard interaction (Space/Enter to toggle) and integrates with Blazor EditContext for form validation.
     type RadzenCheckBox'<'TValue> 
-        /// RadzenCheckBox component.
+        /// A checkbox input component that supports two-state (checked/unchecked) or tri-state (checked/unchecked/indeterminate) modes.
+        /// RadzenCheckBox provides data binding, validation, and keyboard accessibility for boolean or nullable boolean values.
+        /// In two-state mode, the value toggles between true and false. In tri-state mode (TriState = true), the value cycles through false → null → true → false.
+        /// Supports keyboard interaction (Space/Enter to toggle) and integrates with Blazor EditContext for form validation.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenCheckBox<_>>)>] () = inherit RadzenCheckBoxBuilder<Radzen.Blazor.RadzenCheckBox<'TValue>, 'TValue>()
 
-    /// RadzenCheckBoxList component.
+    /// A checkbox group component that allows users to select multiple options from a list of choices.
+    /// RadzenCheckBoxList displays multiple checkboxes with configurable layout, orientation, and data binding, binding to a collection of selected values.
+    /// Allows multiple selections, unlike radio button lists. The bound value is a collection of all checked items.
+    /// Supports multiple selection where users can check/uncheck any number of items, data binding via Data property or static item declaration,
+    /// configurable layout including orientation (Horizontal/Vertical), gap spacing, wrapping, alignment, and justification,
+    /// custom item templates for complex checkbox content, disabled/read-only items individually or for the entire list, and keyboard navigation (Arrow keys, Space, Enter) for accessibility.
+    /// The Value property is IEnumerable<TValue> containing all selected item values. Common uses include multi-select filters, preference selections, or feature toggles.
     type RadzenCheckBoxList'<'TValue> 
-        /// RadzenCheckBoxList component.
+        /// A checkbox group component that allows users to select multiple options from a list of choices.
+        /// RadzenCheckBoxList displays multiple checkboxes with configurable layout, orientation, and data binding, binding to a collection of selected values.
+        /// Allows multiple selections, unlike radio button lists. The bound value is a collection of all checked items.
+        /// Supports multiple selection where users can check/uncheck any number of items, data binding via Data property or static item declaration,
+        /// configurable layout including orientation (Horizontal/Vertical), gap spacing, wrapping, alignment, and justification,
+        /// custom item templates for complex checkbox content, disabled/read-only items individually or for the entire list, and keyboard navigation (Arrow keys, Space, Enter) for accessibility.
+        /// The Value property is IEnumerable<TValue> containing all selected item values. Common uses include multi-select filters, preference selections, or feature toggles.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenCheckBoxList<_>>)>] () = inherit RadzenCheckBoxListBuilder<Radzen.Blazor.RadzenCheckBoxList<'TValue>, 'TValue>()
 
-    /// RadzenColorPicker component.
+    /// A color picker component that allows users to select colors through various input methods including color palette, RGB sliders, hex input, and predefined swatches.
+    /// RadzenColorPicker provides a comprehensive color selection interface with alpha channel support.
+    /// Displays a button showing the current color. Clicking opens a popup with multiple color selection methods including visual picker (click on hue/saturation gradient to select colors visually),
+    /// hue/alpha sliders to fine-tune hue and transparency, RGB input to enter specific Red/Green/Blue values (0-255), hex input to enter hex color codes (#RRGGBB or #RRGGBBAA),
+    /// and predefined swatches for quick selection.
+    /// The Value is a hex color string (e.g., "#FF0000" for red, "#FF0000AA" for semi-transparent red). Supports alpha channel (transparency) in RGBA format.
+    /// Use for applications requiring color customization like themes, charts, or design tools.
     type RadzenColorPicker' 
-        /// RadzenColorPicker component.
+        /// A color picker component that allows users to select colors through various input methods including color palette, RGB sliders, hex input, and predefined swatches.
+        /// RadzenColorPicker provides a comprehensive color selection interface with alpha channel support.
+        /// Displays a button showing the current color. Clicking opens a popup with multiple color selection methods including visual picker (click on hue/saturation gradient to select colors visually),
+        /// hue/alpha sliders to fine-tune hue and transparency, RGB input to enter specific Red/Green/Blue values (0-255), hex input to enter hex color codes (#RRGGBB or #RRGGBBAA),
+        /// and predefined swatches for quick selection.
+        /// The Value is a hex color string (e.g., "#FF0000" for red, "#FF0000AA" for semi-transparent red). Supports alpha channel (transparency) in RGBA format.
+        /// Use for applications requiring color customization like themes, charts, or design tools.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenColorPicker>)>] () = inherit RadzenColorPickerBuilder<Radzen.Blazor.RadzenColorPicker>()
 
-    /// RadzenFileInput component.
+    /// A file input component that reads selected files and binds their content as base64 strings or byte arrays.
+    /// RadzenFileInput provides client-side file reading without server upload, ideal for form fields or immediate file processing.
+    /// Unlike RadzenUpload which sends files to a server, FileInput reads files on the client and binds the content to a property.
+    /// Useful for form integration (including file content in form models without separate upload), client-side processing (processing files in browser for image preview, parsing, etc.),
+    /// embedded storage (storing file content in database as base64 or binary), and avoiding server-side upload endpoints when file content is part of form data.
+    /// Reads the selected file and binds it as TValue = string for base64-encoded data URL (e.g., "data:image/png;base64,iVBORw0K...") or TValue = byte[] for raw binary file content.
+    /// For image files, automatically shows a preview. Use MaxFileSize to limit file size.
     type RadzenFileInput'<'TValue> 
-        /// RadzenFileInput component.
+        /// A file input component that reads selected files and binds their content as base64 strings or byte arrays.
+        /// RadzenFileInput provides client-side file reading without server upload, ideal for form fields or immediate file processing.
+        /// Unlike RadzenUpload which sends files to a server, FileInput reads files on the client and binds the content to a property.
+        /// Useful for form integration (including file content in form models without separate upload), client-side processing (processing files in browser for image preview, parsing, etc.),
+        /// embedded storage (storing file content in database as base64 or binary), and avoiding server-side upload endpoints when file content is part of form data.
+        /// Reads the selected file and binds it as TValue = string for base64-encoded data URL (e.g., "data:image/png;base64,iVBORw0K...") or TValue = byte[] for raw binary file content.
+        /// For image files, automatically shows a preview. Use MaxFileSize to limit file size.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenFileInput<_>>)>] () = inherit RadzenFileInputBuilder<Radzen.Blazor.RadzenFileInput<'TValue>, 'TValue>()
 
-    /// A component which edits HTML content. Provides built-in upload capabilities.
+    /// A rich text HTML editor component with WYSIWYG editing, formatting toolbar, image upload, and custom tool support.
+    /// RadzenHtmlEditor provides a full-featured editor for creating and editing formatted content with a Microsoft Word-like interface.
+    /// Allows users to create rich formatted content without knowing HTML.
+    /// Features WYSIWYG (what-you-see-is-what-you-get) visual editing interface, formatting tools (bold, italic, underline, font selection, colors, alignment, lists, links, images),
+    /// built-in image upload with configurable upload URL, custom toolbar buttons via RadzenHtmlEditorCustomTool, toggle between visual editing and HTML source code view,
+    /// paste filtering to remove unwanted HTML when pasting from other sources, and programmatic execution of formatting commands via ExecuteCommandAsync().
+    /// The Value property contains HTML markup. Use UploadUrl to configure where images are uploaded. Add custom tools for domain-specific functionality like inserting templates or special content.
     type RadzenHtmlEditor' 
-        /// A component which edits HTML content. Provides built-in upload capabilities.
+        /// A rich text HTML editor component with WYSIWYG editing, formatting toolbar, image upload, and custom tool support.
+        /// RadzenHtmlEditor provides a full-featured editor for creating and editing formatted content with a Microsoft Word-like interface.
+        /// Allows users to create rich formatted content without knowing HTML.
+        /// Features WYSIWYG (what-you-see-is-what-you-get) visual editing interface, formatting tools (bold, italic, underline, font selection, colors, alignment, lists, links, images),
+        /// built-in image upload with configurable upload URL, custom toolbar buttons via RadzenHtmlEditorCustomTool, toggle between visual editing and HTML source code view,
+        /// paste filtering to remove unwanted HTML when pasting from other sources, and programmatic execution of formatting commands via ExecuteCommandAsync().
+        /// The Value property contains HTML markup. Use UploadUrl to configure where images are uploaded. Add custom tools for domain-specific functionality like inserting templates or special content.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenHtmlEditor>)>] () = inherit RadzenHtmlEditorBuilder<Radzen.Blazor.RadzenHtmlEditor>()
 
-    /// RadzenRadioButtonList component.
+    /// A radio button group component that allows users to select a single option from a list of choices.
+    /// RadzenRadioButtonList displays multiple radio buttons with configurable layout, orientation, and data binding.
+    /// Presents mutually exclusive options where only one can be selected at a time.
+    /// Supports data binding via Data property or static item declaration, configurable layout including orientation (Horizontal/Vertical), gap spacing, wrapping, alignment, and justification,
+    /// custom item templates for complex radio button content, disabled items individually or for the entire list, and keyboard navigation (Arrow keys, Space, Enter) for accessibility.
+    /// Use for forms where users must choose one option from several, like payment methods, shipping options, or preference settings.
     type RadzenRadioButtonList'<'TValue> 
-        /// RadzenRadioButtonList component.
+        /// A radio button group component that allows users to select a single option from a list of choices.
+        /// RadzenRadioButtonList displays multiple radio buttons with configurable layout, orientation, and data binding.
+        /// Presents mutually exclusive options where only one can be selected at a time.
+        /// Supports data binding via Data property or static item declaration, configurable layout including orientation (Horizontal/Vertical), gap spacing, wrapping, alignment, and justification,
+        /// custom item templates for complex radio button content, disabled items individually or for the entire list, and keyboard navigation (Arrow keys, Space, Enter) for accessibility.
+        /// Use for forms where users must choose one option from several, like payment methods, shipping options, or preference settings.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenRadioButtonList<_>>)>] () = inherit RadzenRadioButtonListBuilder<Radzen.Blazor.RadzenRadioButtonList<'TValue>, 'TValue>()
 
-    /// RadzenRating component.
+    /// A star rating input component that allows users to provide ratings by selecting a number of stars.
+    /// RadzenRating displays an interactive or read-only star rating with configurable number of stars and keyboard accessibility.
+    /// Displays a row of stars (or other symbols) that users can click to select a rating value. The value is an integer from 0 to the number of stars configured.
+    /// Common uses include product reviews and ratings, user feedback and satisfaction surveys, content quality indicators, and service ratings.
+    /// Supports keyboard navigation (arrow keys, Space/Enter) for accessibility. Use ReadOnly mode to display ratings without allowing user input.
     type RadzenRating' 
-        /// RadzenRating component.
+        /// A star rating input component that allows users to provide ratings by selecting a number of stars.
+        /// RadzenRating displays an interactive or read-only star rating with configurable number of stars and keyboard accessibility.
+        /// Displays a row of stars (or other symbols) that users can click to select a rating value. The value is an integer from 0 to the number of stars configured.
+        /// Common uses include product reviews and ratings, user feedback and satisfaction surveys, content quality indicators, and service ratings.
+        /// Supports keyboard navigation (arrow keys, Space/Enter) for accessibility. Use ReadOnly mode to display ratings without allowing user input.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenRating>)>] () = inherit RadzenRatingBuilder<Radzen.Blazor.RadzenRating>()
 
     /// RadzenRating component.
@@ -6857,34 +8216,96 @@ module DslCE =
         /// RadzenRating component.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenSecurityCode>)>] () = inherit RadzenSecurityCodeBuilder<Radzen.Blazor.RadzenSecurityCode>()
 
-    /// RadzenSelectBar component.
+    /// A segmented button control component that displays options as a group of connected buttons for single or multiple selection.
+    /// RadzenSelectBar provides a visually distinct way to select from a limited set of options, commonly used for view modes, filters, or categories.
+    /// Presents options as a row or column of connected buttons where selected items are highlighted. Ideal when you have 2-7 options and want a more prominent UI than radio buttons or checkboxes.
+    /// Supports single selection (default) or multiple selection via Multiple property, Horizontal (side-by-side) or Vertical (stacked) button orientation, binding to a data source or static declaration of items,
+    /// custom item templates with text/icons/images, ExtraSmall/Small/Medium/Large button sizes, disabled items, and keyboard navigation (Arrow keys and Space/Enter) for accessibility.
+    /// Common uses include view toggles (list/grid), time period selectors (day/week/month), category filters, or any small set of mutually exclusive options.
     type RadzenSelectBar'<'TValue> 
-        /// RadzenSelectBar component.
+        /// A segmented button control component that displays options as a group of connected buttons for single or multiple selection.
+        /// RadzenSelectBar provides a visually distinct way to select from a limited set of options, commonly used for view modes, filters, or categories.
+        /// Presents options as a row or column of connected buttons where selected items are highlighted. Ideal when you have 2-7 options and want a more prominent UI than radio buttons or checkboxes.
+        /// Supports single selection (default) or multiple selection via Multiple property, Horizontal (side-by-side) or Vertical (stacked) button orientation, binding to a data source or static declaration of items,
+        /// custom item templates with text/icons/images, ExtraSmall/Small/Medium/Large button sizes, disabled items, and keyboard navigation (Arrow keys and Space/Enter) for accessibility.
+        /// Common uses include view toggles (list/grid), time period selectors (day/week/month), category filters, or any small set of mutually exclusive options.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenSelectBar<_>>)>] () = inherit RadzenSelectBarBuilder<Radzen.Blazor.RadzenSelectBar<'TValue>, 'TValue>()
 
-    /// RadzenSlider component.
+    /// A slider component for selecting numeric values by dragging a handle along a track.
+    /// RadzenSlider supports single value selection or range selection (min/max) with horizontal or vertical orientation.
+    /// Provides an intuitive way to select numeric values within a range, especially useful when the exact value is less important than the approximate position,
+    /// you want to show the valid range visually, or the input should be constrained to specific increments.
+    /// Features single value or min/max range selection, Horizontal (default) or Vertical layout, Min/Max values defining the selectable range,
+    /// Step property controlling value granularity, colored track showing selected portion for visual feedback, Arrow key support for precise adjustment, and drag gestures on mobile devices.
+    /// For range selection, set Range=true and bind to IEnumerable<TValue> (e.g., IEnumerable<int>) for min/max values.
+    /// Common uses include price filters, volume controls, zoom levels, or any bounded numeric input.
     type RadzenSlider'<'TValue> 
-        /// RadzenSlider component.
+        /// A slider component for selecting numeric values by dragging a handle along a track.
+        /// RadzenSlider supports single value selection or range selection (min/max) with horizontal or vertical orientation.
+        /// Provides an intuitive way to select numeric values within a range, especially useful when the exact value is less important than the approximate position,
+        /// you want to show the valid range visually, or the input should be constrained to specific increments.
+        /// Features single value or min/max range selection, Horizontal (default) or Vertical layout, Min/Max values defining the selectable range,
+        /// Step property controlling value granularity, colored track showing selected portion for visual feedback, Arrow key support for precise adjustment, and drag gestures on mobile devices.
+        /// For range selection, set Range=true and bind to IEnumerable<TValue> (e.g., IEnumerable<int>) for min/max values.
+        /// Common uses include price filters, volume controls, zoom levels, or any bounded numeric input.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenSlider<_>>)>] () = inherit RadzenSliderBuilder<Radzen.Blazor.RadzenSlider<'TValue>, 'TValue>()
 
-    /// RadzenSwitch component.
+    /// A toggle switch component for boolean on/off states with a sliding animation.
+    /// RadzenSwitch provides an alternative to checkboxes with a more modern toggle UI pattern, ideal for settings and preferences.
+    /// Displays as a sliding toggle that users can click or drag to change between on (true) and off (false) states, providing visual feedback with a sliding animation and color change.
+    /// Common uses include enabling/disabling settings or features, toggling visibility of sections, on/off preferences in configuration panels, and boolean options in forms.
+    /// Supports keyboard navigation (Space/Enter to toggle) for accessibility. Unlike checkboxes, switches are typically used for immediate effects rather than form submission actions.
     type RadzenSwitch' 
-        /// RadzenSwitch component.
+        /// A toggle switch component for boolean on/off states with a sliding animation.
+        /// RadzenSwitch provides an alternative to checkboxes with a more modern toggle UI pattern, ideal for settings and preferences.
+        /// Displays as a sliding toggle that users can click or drag to change between on (true) and off (false) states, providing visual feedback with a sliding animation and color change.
+        /// Common uses include enabling/disabling settings or features, toggling visibility of sections, on/off preferences in configuration panels, and boolean options in forms.
+        /// Supports keyboard navigation (Space/Enter to toggle) for accessibility. Unlike checkboxes, switches are typically used for immediate effects rather than form submission actions.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenSwitch>)>] () = inherit RadzenSwitchBuilder<Radzen.Blazor.RadzenSwitch>()
 
-    /// RadzenTextArea component.
+    /// A multi-line text input component for entering longer text content with configurable dimensions.
+    /// RadzenTextArea provides a resizable textarea with data binding, validation, and automatic sizing options.
+    /// Ideal for comments, descriptions, messages, or any content requiring multiple lines.
+    /// Features configurable sizing via Rows (height) and Cols (width) properties, MaxLength to restrict input length,
+    /// browser-resizable textarea, integration with Blazor EditContext for form validation, and two-way binding via @bind-Value.
+    /// The Rows and Cols properties set the initial/minimum size, but users can often resize the textarea using the resize handle.
     type RadzenTextArea' 
-        /// RadzenTextArea component.
+        /// A multi-line text input component for entering longer text content with configurable dimensions.
+        /// RadzenTextArea provides a resizable textarea with data binding, validation, and automatic sizing options.
+        /// Ideal for comments, descriptions, messages, or any content requiring multiple lines.
+        /// Features configurable sizing via Rows (height) and Cols (width) properties, MaxLength to restrict input length,
+        /// browser-resizable textarea, integration with Blazor EditContext for form validation, and two-way binding via @bind-Value.
+        /// The Rows and Cols properties set the initial/minimum size, but users can often resize the textarea using the resize handle.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenTextArea>)>] () = inherit RadzenTextAreaBuilder<Radzen.Blazor.RadzenTextArea>()
 
-    /// RadzenDataGrid component.
+    /// A powerful data grid component for displaying and manipulating tabular data with support for sorting, filtering, paging, grouping, editing, and selection.
+    /// RadzenDataGrid provides a full-featured table with inline editing, master-detail views, virtualization, export capabilities, and extensive customization options.
+    /// Supports single/multiple column sorting, simple/advanced filtering, grouping with aggregation, inline/cell editing with validation, and single/multiple row selection with checkbox columns.
+    /// Features on-demand data loading via LoadData event for server-side operations, export to Excel and CSV formats, column/row templates, group headers/footers, and density modes (Default/Compact) for responsive layouts.
+    /// The grid can work with in-memory collections or load data on-demand from APIs.
+    /// Columns are defined using RadzenDataGridColumn components within the Columns template.
     type RadzenDataGrid'<'TItem> 
-        /// RadzenDataGrid component.
+        /// A powerful data grid component for displaying and manipulating tabular data with support for sorting, filtering, paging, grouping, editing, and selection.
+        /// RadzenDataGrid provides a full-featured table with inline editing, master-detail views, virtualization, export capabilities, and extensive customization options.
+        /// Supports single/multiple column sorting, simple/advanced filtering, grouping with aggregation, inline/cell editing with validation, and single/multiple row selection with checkbox columns.
+        /// Features on-demand data loading via LoadData event for server-side operations, export to Excel and CSV formats, column/row templates, group headers/footers, and density modes (Default/Compact) for responsive layouts.
+        /// The grid can work with in-memory collections or load data on-demand from APIs.
+        /// Columns are defined using RadzenDataGridColumn components within the Columns template.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenDataGrid<_>>)>] () = inherit RadzenDataGridBuilder<Radzen.Blazor.RadzenDataGrid<'TItem>, 'TItem>()
 
-    /// RadzenDataList component.
+    /// A data list component for displaying collections of items using custom templates, with support for paging and virtualization.
+    /// RadzenDataList provides a flexible way to render data in cards, tiles, or custom layouts instead of traditional table rows.
+    /// Ideal when you need more control over item presentation than a traditional table provides. Perfect for product catalogs, image galleries, card-based dashboards, or any non-tabular data display.
+    /// Supports complete control over item rendering via Template parameter, built-in paging with configurable page size, item wrapping to multiple columns/rows based on container width,
+    /// efficient rendering for large datasets via virtualization, customizable message or template for empty state when no data exists, and on-demand data loading for server-side paging via LoadData.
+    /// Use Template to define how each item should be rendered. The template receives the item as @context. Combine with RadzenRow/RadzenColumn for grid-based layouts or RadzenCard for card designs.
     type RadzenDataList'<'TItem> 
-        /// RadzenDataList component.
+        /// A data list component for displaying collections of items using custom templates, with support for paging and virtualization.
+        /// RadzenDataList provides a flexible way to render data in cards, tiles, or custom layouts instead of traditional table rows.
+        /// Ideal when you need more control over item presentation than a traditional table provides. Perfect for product catalogs, image galleries, card-based dashboards, or any non-tabular data display.
+        /// Supports complete control over item rendering via Template parameter, built-in paging with configurable page size, item wrapping to multiple columns/rows based on container width,
+        /// efficient rendering for large datasets via virtualization, customizable message or template for empty state when no data exists, and on-demand data loading for server-side paging via LoadData.
+        /// Use Template to define how each item should be rendered. The template receives the item as @context. Combine with RadzenRow/RadzenColumn for grid-based layouts or RadzenCard for card designs.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenDataList<_>>)>] () = inherit RadzenDataListBuilder<Radzen.Blazor.RadzenDataList<'TItem>, 'TItem>()
 
     /// RadzenPivotDataGrid component for creating pivot tables with cross-tabulation functionality.
@@ -6892,9 +8313,19 @@ module DslCE =
         /// RadzenPivotDataGrid component for creating pivot tables with cross-tabulation functionality.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenPivotDataGrid<_>>)>] () = inherit RadzenPivotDataGridBuilder<Radzen.Blazor.RadzenPivotDataGrid<'TItem>, 'TItem>()
 
-    /// RadzenAccordion component.
+    /// An accordion component that displays collapsible content panels with only one or multiple panels expanded at a time.
+    /// RadzenAccordion organizes content into expandable sections, saving vertical space while keeping all content accessible.
+    /// Ideal for FAQs, settings panels, grouped content, or any scenario where showing all content at once would be overwhelming.
+    /// Features single/multiple expand control, optional icons in panel headers, programmatic control via SelectedIndex two-way binding,
+    /// Expand and Collapse event callbacks, keyboard navigation (Arrow keys, Space/Enter, Home/End), and disabled item support.
+    /// By default, only one panel can be expanded at a time (Multiple = false). Set Multiple = true to allow multiple panels to be expanded simultaneously.
     type RadzenAccordion' 
-        /// RadzenAccordion component.
+        /// An accordion component that displays collapsible content panels with only one or multiple panels expanded at a time.
+        /// RadzenAccordion organizes content into expandable sections, saving vertical space while keeping all content accessible.
+        /// Ideal for FAQs, settings panels, grouped content, or any scenario where showing all content at once would be overwhelming.
+        /// Features single/multiple expand control, optional icons in panel headers, programmatic control via SelectedIndex two-way binding,
+        /// Expand and Collapse event callbacks, keyboard navigation (Arrow keys, Space/Enter, Home/End), and disabled item support.
+        /// By default, only one panel can be expanded at a time (Multiple = false). Set Multiple = true to allow multiple panels to be expanded simultaneously.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenAccordion>)>] () = inherit RadzenAccordionBuilder<Radzen.Blazor.RadzenAccordion>()
 
     /// Class RadzenAccordionItem.
@@ -6912,9 +8343,21 @@ module DslCE =
         /// Dark or light theme switch. Requires ThemeService to be registered in the DI container.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenAppearanceToggle>)>] () = inherit RadzenAppearanceToggleBuilder<Radzen.Blazor.RadzenAppearanceToggle>()
 
-    /// RadzenBadge component.
+    /// A small label component used to display counts, statuses, or short text labels with semantic color coding.
+    /// RadzenBadge is a compact visual indicator commonly used for notification counts, status indicators, tags, or highlighting important information.
+    /// Supports multiple styles (Primary, Secondary, Success, Info, Warning, Danger, Light, Dark) for semantic coloring,
+    /// variants (Filled, Flat, Outlined, Text) for different appearances, and shapes (standard rectangular or pill-shaped via IsPill).
+    /// Content can be simple text via Text property or custom content via ChildContent.
+    /// Can be absolutely positioned to overlay other elements (e.g., notification icon with count).
+    /// Often used inline with text, on buttons (to show counts), or overlaid on icons (notification badges).
     type RadzenBadge' 
-        /// RadzenBadge component.
+        /// A small label component used to display counts, statuses, or short text labels with semantic color coding.
+        /// RadzenBadge is a compact visual indicator commonly used for notification counts, status indicators, tags, or highlighting important information.
+        /// Supports multiple styles (Primary, Secondary, Success, Info, Warning, Danger, Light, Dark) for semantic coloring,
+        /// variants (Filled, Flat, Outlined, Text) for different appearances, and shapes (standard rectangular or pill-shaped via IsPill).
+        /// Content can be simple text via Text property or custom content via ChildContent.
+        /// Can be absolutely positioned to overlay other elements (e.g., notification icon with count).
+        /// Often used inline with text, on buttons (to show counts), or overlaid on icons (notification badges).
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenBadge>)>] () = inherit RadzenBadgeBuilder<Radzen.Blazor.RadzenBadge>()
 
     /// Bread Crumb Item Component
@@ -6922,14 +8365,40 @@ module DslCE =
         /// Bread Crumb Item Component
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenBreadCrumbItem>)>] () = inherit RadzenBreadCrumbItemBuilder<Radzen.Blazor.RadzenBreadCrumbItem>()
 
-    /// RadzenCarousel component.
+    /// A carousel/slideshow component for cycling through content items (images, cards, or custom content) with navigation and paging controls.
+    /// RadzenCarousel displays one item at a time with automatic or manual advancement and various navigation options.
+    /// Perfect for image galleries, product showcases, hero sections, or any content that benefits from sequential presentation.
+    /// Features automatic advancement with configurable interval, Previous/Next buttons with customizable icons and text, dot indicators or page numbers for direct item selection,
+    /// infinite loop for continuous cycling from last to first item, keyboard control (Arrow keys for navigation, Page Up/Down for first/last), swipe gestures on touch devices,
+    /// and customization of button styles, pager position (top/bottom/overlay), and navigation visibility.
+    /// Items are defined using RadzenCarouselItem components. Each item can contain images, text, or complex layouts. Use Auto property to enable automatic cycling, and Interval to control slide duration.
     type RadzenCarousel' 
-        /// RadzenCarousel component.
+        /// A carousel/slideshow component for cycling through content items (images, cards, or custom content) with navigation and paging controls.
+        /// RadzenCarousel displays one item at a time with automatic or manual advancement and various navigation options.
+        /// Perfect for image galleries, product showcases, hero sections, or any content that benefits from sequential presentation.
+        /// Features automatic advancement with configurable interval, Previous/Next buttons with customizable icons and text, dot indicators or page numbers for direct item selection,
+        /// infinite loop for continuous cycling from last to first item, keyboard control (Arrow keys for navigation, Page Up/Down for first/last), swipe gestures on touch devices,
+        /// and customization of button styles, pager position (top/bottom/overlay), and navigation visibility.
+        /// Items are defined using RadzenCarouselItem components. Each item can contain images, text, or complex layouts. Use Auto property to enable automatic cycling, and Interval to control slide duration.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenCarousel>)>] () = inherit RadzenCarouselBuilder<Radzen.Blazor.RadzenCarousel>()
 
-    /// RadzenChat component that provides a modern chat interface for multi-participant conversations.
+    /// A chat interface component for displaying and sending messages in multi-participant conversations.
+    /// RadzenChat provides a complete chat UI with message history, user avatars, typing indicators, and message composition.
+    /// Creates a messaging interface similar to modern chat applications, ideal for customer support chats, team collaboration, messaging features, or AI chatbots.
+    /// Features multi-user support displaying messages from multiple participants with avatars and names, chronological message list with sender identification,
+    /// user avatars showing photos or initials with customizable colors, optional "User is typing..." feedback, text input with Send button for new messages,
+    /// customizable templates for message rendering/empty state/typing indicator, automatic scrolling to newest messages, and message send time stamps.
+    /// Provide a list of ChatUser objects for participants and ChatMessage objects for message history. Set CurrentUserId to distinguish the current user's messages (typically right-aligned) from others (left-aligned).
+    /// Handle MessageSent to process new messages (save to database, send to server, etc.).
     type RadzenChat' 
-        /// RadzenChat component that provides a modern chat interface for multi-participant conversations.
+        /// A chat interface component for displaying and sending messages in multi-participant conversations.
+        /// RadzenChat provides a complete chat UI with message history, user avatars, typing indicators, and message composition.
+        /// Creates a messaging interface similar to modern chat applications, ideal for customer support chats, team collaboration, messaging features, or AI chatbots.
+        /// Features multi-user support displaying messages from multiple participants with avatars and names, chronological message list with sender identification,
+        /// user avatars showing photos or initials with customizable colors, optional "User is typing..." feedback, text input with Send button for new messages,
+        /// customizable templates for message rendering/empty state/typing indicator, automatic scrolling to newest messages, and message send time stamps.
+        /// Provide a list of ChatUser objects for participants and ChatMessage objects for message history. Set CurrentUserId to distinguish the current user's messages (typically right-aligned) from others (left-aligned).
+        /// Handle MessageSent to process new messages (save to database, send to server, etc.).
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenChat>)>] () = inherit RadzenChatBuilder<Radzen.Blazor.RadzenChat>()
 
     /// RadzenCheckBoxListItem component.
@@ -6942,9 +8411,19 @@ module DslCE =
         /// RadzenDataFilter component.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenDataFilter<_>>)>] () = inherit RadzenDataFilterBuilder<Radzen.Blazor.RadzenDataFilter<'TItem>, 'TItem>()
 
-    /// RadzenDatePicker component.
+    /// A date and time picker component that provides a calendar popup for selecting dates and optional time selection.
+    /// RadzenDatePicker supports DateTime, DateTime?, DateTimeOffset, DateTimeOffset?, DateOnly, and DateOnly? types with extensive customization options.
+    /// Displays a text input with a calendar icon button. Clicking opens a popup calendar for date selection.
+    /// Optional time selection can be enabled via ShowTime property, supporting both 12-hour and 24-hour formats.
+    /// Supports features like min/max date constraints, disabled dates, initial view configuration, calendar week display,
+    /// inline calendar mode (always visible), time-only mode, multiple date selection, and culture-specific formatting.
     type RadzenDatePicker'<'TValue> 
-        /// RadzenDatePicker component.
+        /// A date and time picker component that provides a calendar popup for selecting dates and optional time selection.
+        /// RadzenDatePicker supports DateTime, DateTime?, DateTimeOffset, DateTimeOffset?, DateOnly, and DateOnly? types with extensive customization options.
+        /// Displays a text input with a calendar icon button. Clicking opens a popup calendar for date selection.
+        /// Optional time selection can be enabled via ShowTime property, supporting both 12-hour and 24-hour formats.
+        /// Supports features like min/max date constraints, disabled dates, initial view configuration, calendar week display,
+        /// inline calendar mode (always visible), time-only mode, multiple date selection, and culture-specific formatting.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenDatePicker<_>>)>] () = inherit RadzenDatePickerBuilder<Radzen.Blazor.RadzenDatePicker<'TValue>, 'TValue>()
 
     /// RadzenDropZoneItem component.
@@ -6957,14 +8436,38 @@ module DslCE =
         /// RadzenFabMenu component.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenFabMenu>)>] () = inherit RadzenFabMenuBuilder<Radzen.Blazor.RadzenFabMenu>()
 
-    /// RadzenFieldset component.
+    /// A fieldset container component that groups related form fields with a legend/header and optional collapse functionality.
+    /// RadzenFieldset provides semantic form grouping with visual borders, useful for organizing complex forms into logical sections.
+    /// Fieldsets are HTML form elements that semantically group related inputs, improving form structure and accessibility.
+    /// Features visual and semantic grouping of related form fields, customizable header via Text or HeaderTemplate, optional expand/collapse to hide/show grouped fields,
+    /// optional icon in the legend, optional summary content shown when collapsed, and screen reader announcement of fieldset legends for grouped fields.
+    /// Use to organize forms into sections like "Personal Information", "Address", "Payment Details". When AllowCollapse is enabled, users can collapse sections they don't need to see.
     type RadzenFieldset' 
-        /// RadzenFieldset component.
+        /// A fieldset container component that groups related form fields with a legend/header and optional collapse functionality.
+        /// RadzenFieldset provides semantic form grouping with visual borders, useful for organizing complex forms into logical sections.
+        /// Fieldsets are HTML form elements that semantically group related inputs, improving form structure and accessibility.
+        /// Features visual and semantic grouping of related form fields, customizable header via Text or HeaderTemplate, optional expand/collapse to hide/show grouped fields,
+        /// optional icon in the legend, optional summary content shown when collapsed, and screen reader announcement of fieldset legends for grouped fields.
+        /// Use to organize forms into sections like "Personal Information", "Address", "Payment Details". When AllowCollapse is enabled, users can collapse sections they don't need to see.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenFieldset>)>] () = inherit RadzenFieldsetBuilder<Radzen.Blazor.RadzenFieldset>()
 
-    /// A Blazor component that wraps another component and adds a label, helper text, start and end content.
+    /// A form field container component that wraps input components with labels, icons, helper text, and validation messages.
+    /// RadzenFormField provides a Material Design-style field layout with floating labels and consistent spacing.
+    /// Enhances form inputs by adding structure, labels, and supplementary content in a cohesive layout.
+    /// Features top-aligned or floating labels via Text property, Start/End content for icons or buttons before/after the input (e.g., search icon, clear button),
+    /// helper text for explanatory text or validation messages below the input, Filled/Outlined/Flat variants matching Material Design,
+    /// floating labels that animate upward when input is focused or has value, and automatic display of validation messages when used with validators.
+    /// Compatible with RadzenTextBox, RadzenTextArea, RadzenPassword, RadzenDropDown, RadzenNumeric, RadzenDatePicker, and similar input components.
+    /// Use Start for leading icons (search, email), End for trailing icons (visibility toggle, clear button).
     type RadzenFormField' 
-        /// A Blazor component that wraps another component and adds a label, helper text, start and end content.
+        /// A form field container component that wraps input components with labels, icons, helper text, and validation messages.
+        /// RadzenFormField provides a Material Design-style field layout with floating labels and consistent spacing.
+        /// Enhances form inputs by adding structure, labels, and supplementary content in a cohesive layout.
+        /// Features top-aligned or floating labels via Text property, Start/End content for icons or buttons before/after the input (e.g., search icon, clear button),
+        /// helper text for explanatory text or validation messages below the input, Filled/Outlined/Flat variants matching Material Design,
+        /// floating labels that animate upward when input is focused or has value, and automatic display of validation messages when used with validators.
+        /// Compatible with RadzenTextBox, RadzenTextArea, RadzenPassword, RadzenDropDown, RadzenNumeric, RadzenDatePicker, and similar input components.
+        /// Use Start for leading icons (search, email), End for trailing icons (visibility toggle, clear button).
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenFormField>)>] () = inherit RadzenFormFieldBuilder<Radzen.Blazor.RadzenFormField>()
 
     /// RadzenGoogleMap component.
@@ -6977,9 +8480,21 @@ module DslCE =
         /// RadzenGoogleMapMarker component.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenGoogleMapMarker>)>] () = inherit RadzenGoogleMapMarkerBuilder<Radzen.Blazor.RadzenGoogleMapMarker>()
 
-    /// RadzenGravatar component.
+    /// A Gravatar avatar component that displays a user's profile image from Gravatar.com based on their email address.
+    /// RadzenGravatar automatically fetches and displays the globally recognized avatar associated with an email.
+    /// Gravatar (Globally Recognized Avatar) is a service that associates profile images with email addresses.
+    /// Fetches avatar using MD5 hash of email address, requires no storage or management of avatar images, shows default retro-style avatar if email has no Gravatar,
+    /// features configurable pixel dimensions, and uses secure.gravatar.com to retrieve images.
+    /// Generates a Gravatar URL from the email and displays it as an image. If the email doesn't have a Gravatar account, a retro-style default avatar is shown.
+    /// Commonly used in user profiles, comment sections, or anywhere user identity is displayed.
     type RadzenGravatar' 
-        /// RadzenGravatar component.
+        /// A Gravatar avatar component that displays a user's profile image from Gravatar.com based on their email address.
+        /// RadzenGravatar automatically fetches and displays the globally recognized avatar associated with an email.
+        /// Gravatar (Globally Recognized Avatar) is a service that associates profile images with email addresses.
+        /// Fetches avatar using MD5 hash of email address, requires no storage or management of avatar images, shows default retro-style avatar if email has no Gravatar,
+        /// features configurable pixel dimensions, and uses secure.gravatar.com to retrieve images.
+        /// Generates a Gravatar URL from the email and displays it as an image. If the email doesn't have a Gravatar account, a retro-style default avatar is shown.
+        /// Commonly used in user profiles, comment sections, or anywhere user identity is displayed.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenGravatar>)>] () = inherit RadzenGravatarBuilder<Radzen.Blazor.RadzenGravatar>()
 
     /// RadzenHeading component.
@@ -6987,29 +8502,87 @@ module DslCE =
         /// RadzenHeading component.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenHeading>)>] () = inherit RadzenHeadingBuilder<Radzen.Blazor.RadzenHeading>()
 
-    /// RadzenIcon component. Displays icon from Material Symbols variable font.
+    /// An icon component that displays icons from the Material Symbols font (2,500+ icons included).
+    /// RadzenIcon provides a simple way to add scalable vector icons to your Blazor application without external dependencies.
+    /// Uses the embedded Material Symbols Outlined variable font to render icons as text glyphs, providing benefits including no HTTP requests for icon files (icons are part of the font),
+    /// vector-based icons that scale perfectly at any size, text color inheritance with coloring via IconColor or CSS, access to 2,500+ Material Symbols icons,
+    /// and support for Outlined (default), Filled, Rounded, and Sharp variants via IconStyle.
+    /// Icon names use underscores (e.g., "home", "account_circle", "check_circle"). See Material Symbols documentation for the full icon list.
     type RadzenIcon' 
-        /// RadzenIcon component. Displays icon from Material Symbols variable font.
+        /// An icon component that displays icons from the Material Symbols font (2,500+ icons included).
+        /// RadzenIcon provides a simple way to add scalable vector icons to your Blazor application without external dependencies.
+        /// Uses the embedded Material Symbols Outlined variable font to render icons as text glyphs, providing benefits including no HTTP requests for icon files (icons are part of the font),
+        /// vector-based icons that scale perfectly at any size, text color inheritance with coloring via IconColor or CSS, access to 2,500+ Material Symbols icons,
+        /// and support for Outlined (default), Filled, Rounded, and Sharp variants via IconStyle.
+        /// Icon names use underscores (e.g., "home", "account_circle", "check_circle"). See Material Symbols documentation for the full icon list.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenIcon>)>] () = inherit RadzenIconBuilder<Radzen.Blazor.RadzenIcon>()
 
-    /// RadzenLabel component.
+    /// A label component for associating descriptive text with form input components.
+    /// RadzenLabel creates accessible labels linked to input fields via the HTML for/id relationship.
+    /// Provides descriptive text for form inputs, improving usability and accessibility. When properly associated with an input (via the Component property), clicking the label focuses the input.
+    /// Features association linking to input components via the Component property (matching the input's Name), proper label/input relationships for screen readers,
+    /// click behavior that focuses the associated input, and content display via Text property or custom content via ChildContent.
+    /// Always use labels with form inputs for better UX and accessibility compliance. The Component property should match the Name property of the input it describes.
     type RadzenLabel' 
-        /// RadzenLabel component.
+        /// A label component for associating descriptive text with form input components.
+        /// RadzenLabel creates accessible labels linked to input fields via the HTML for/id relationship.
+        /// Provides descriptive text for form inputs, improving usability and accessibility. When properly associated with an input (via the Component property), clicking the label focuses the input.
+        /// Features association linking to input components via the Component property (matching the input's Name), proper label/input relationships for screen readers,
+        /// click behavior that focuses the associated input, and content display via Text property or custom content via ChildContent.
+        /// Always use labels with form inputs for better UX and accessibility compliance. The Component property should match the Name property of the input it describes.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenLabel>)>] () = inherit RadzenLabelBuilder<Radzen.Blazor.RadzenLabel>()
 
-    /// RadzenLink component.
+    /// A hyperlink component for navigation within the application or to external URLs.
+    /// RadzenLink provides styled links with icon support, active state highlighting, and disabled states.
+    /// Enables navigation styled according to the application theme.
+    /// Supports internal navigation using Path for Blazor routing without page reloads, external links opening in same or new window via Target property,
+    /// automatic highlighting when the current URL matches the link path, optional icon before text via Icon property, alternative icon using custom image via Image property,
+    /// disabled state that prevents navigation and changes visual appearance, and prefix or exact matching for active state detection.
+    /// For internal navigation, uses Blazor's NavigationManager for client-side routing. For external URLs, use Target="_blank" to open in a new tab.
     type RadzenLink' 
-        /// RadzenLink component.
+        /// A hyperlink component for navigation within the application or to external URLs.
+        /// RadzenLink provides styled links with icon support, active state highlighting, and disabled states.
+        /// Enables navigation styled according to the application theme.
+        /// Supports internal navigation using Path for Blazor routing without page reloads, external links opening in same or new window via Target property,
+        /// automatic highlighting when the current URL matches the link path, optional icon before text via Icon property, alternative icon using custom image via Image property,
+        /// disabled state that prevents navigation and changes visual appearance, and prefix or exact matching for active state detection.
+        /// For internal navigation, uses Blazor's NavigationManager for client-side routing. For external URLs, use Target="_blank" to open in a new tab.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenLink>)>] () = inherit RadzenLinkBuilder<Radzen.Blazor.RadzenLink>()
 
-    /// RadzenLogin component. Must be placed in RadzenTemplateForm.
+    /// A pre-built login form component with username/password fields and optional "Remember Me", "Register", and "Reset Password" features.
+    /// RadzenLogin provides a ready-to-use authentication UI that can be customized with events for login, registration, and password reset flows.
+    /// Must be placed inside a RadzenTemplateForm`1.
+    /// Eliminates the need to manually create login forms by providing a complete, styled login interface.
+    /// Features pre-configured text and password inputs, optional switch for persistent sessions (Remember Me), optional link to registration page/modal,
+    /// optional link for password recovery (Reset Password), browser password manager integration with autocomplete, customizable labels/button text/layout via parameters,
+    /// Login/Register/ResetPassword event callbacks for implementing auth logic, and built-in required field validation.
+    /// Handle the Login event to authenticate users with your backend. Use AllowRegister and AllowResetPassword to show/hide those links based on your auth requirements.
     type RadzenLogin' 
-        /// RadzenLogin component. Must be placed in RadzenTemplateForm.
+        /// A pre-built login form component with username/password fields and optional "Remember Me", "Register", and "Reset Password" features.
+        /// RadzenLogin provides a ready-to-use authentication UI that can be customized with events for login, registration, and password reset flows.
+        /// Must be placed inside a RadzenTemplateForm`1.
+        /// Eliminates the need to manually create login forms by providing a complete, styled login interface.
+        /// Features pre-configured text and password inputs, optional switch for persistent sessions (Remember Me), optional link to registration page/modal,
+        /// optional link for password recovery (Reset Password), browser password manager integration with autocomplete, customizable labels/button text/layout via parameters,
+        /// Login/Register/ResetPassword event callbacks for implementing auth logic, and built-in required field validation.
+        /// Handle the Login event to authenticate users with your backend. Use AllowRegister and AllowResetPassword to show/hide those links based on your auth requirements.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenLogin>)>] () = inherit RadzenLoginBuilder<Radzen.Blazor.RadzenLogin>()
 
-    /// A component which renders markdown content.
+    /// A markdown rendering component that parses and displays Markdown syntax as formatted HTML.
+    /// RadzenMarkdown converts Markdown text (headings, lists, links, code blocks, etc.) into rich HTML content with security features.
+    /// Parses CommonMark-compliant markdown and renders it as HTML. Ideal for documentation, blog posts, README files, or any content authored in Markdown format.
+    /// Features full support for standard Markdown syntax (headings, bold, italic, lists, links, images, code, blockquotes, tables), optional HTML tag support within markdown with security filtering,
+    /// dangerous tag filtering (script, iframe, object) to prevent XSS attacks, automatic anchor link creation for headings (configurable depth),
+    /// control over allowed HTML tags and attributes, and flexible input via child content or Text property.
+    /// Parses markdown and renders it as Blazor components/HTML for display. Use AllowHtml = false to strictly render only Markdown syntax without any HTML pass-through.
     type RadzenMarkdown' 
-        /// A component which renders markdown content.
+        /// A markdown rendering component that parses and displays Markdown syntax as formatted HTML.
+        /// RadzenMarkdown converts Markdown text (headings, lists, links, code blocks, etc.) into rich HTML content with security features.
+        /// Parses CommonMark-compliant markdown and renders it as HTML. Ideal for documentation, blog posts, README files, or any content authored in Markdown format.
+        /// Features full support for standard Markdown syntax (headings, bold, italic, lists, links, images, code, blockquotes, tables), optional HTML tag support within markdown with security filtering,
+        /// dangerous tag filtering (script, iframe, object) to prevent XSS attacks, automatic anchor link creation for headings (configurable depth),
+        /// control over allowed HTML tags and attributes, and flexible input via child content or Text property.
+        /// Parses markdown and renders it as Blazor components/HTML for display. Use AllowHtml = false to strictly render only Markdown syntax without any HTML pass-through.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenMarkdown>)>] () = inherit RadzenMarkdownBuilder<Radzen.Blazor.RadzenMarkdown>()
 
     /// RadzenMenuItem component.
@@ -7017,9 +8590,23 @@ module DslCE =
         /// RadzenMenuItem component.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenMenuItem>)>] () = inherit RadzenMenuItemBuilder<Radzen.Blazor.RadzenMenuItem>()
 
-    /// RadzenPager component.
+    /// A pagination component that provides navigation controls for paged data display.
+    /// RadzenPager displays page numbers, navigation buttons, and optional page size selector for navigating through large datasets.
+    /// Works standalone or integrated with data components like RadzenDataGrid and RadzenDataList.
+    /// Provides navigation buttons (First/Previous/Next/Last page with customizable labels and icons), clickable page number buttons with configurable count,
+    /// optional dropdown to change items per page, summary display ("Page X of Y" or custom summary text), alignment controls (left/center/right) via HorizontalAlign,
+    /// compact or default spacing density, and ARIA labels for all buttons for accessibility.
+    /// The PageChanged event provides Skip and Top values for loading the correct page of data.
+    /// Use Count to specify total items, PageSize for items per page, and PageNumbersCount for visible page buttons.
     type RadzenPager' 
-        /// RadzenPager component.
+        /// A pagination component that provides navigation controls for paged data display.
+        /// RadzenPager displays page numbers, navigation buttons, and optional page size selector for navigating through large datasets.
+        /// Works standalone or integrated with data components like RadzenDataGrid and RadzenDataList.
+        /// Provides navigation buttons (First/Previous/Next/Last page with customizable labels and icons), clickable page number buttons with configurable count,
+        /// optional dropdown to change items per page, summary display ("Page X of Y" or custom summary text), alignment controls (left/center/right) via HorizontalAlign,
+        /// compact or default spacing density, and ARIA labels for all buttons for accessibility.
+        /// The PageChanged event provides Skip and Top values for loading the correct page of data.
+        /// Use Count to specify total items, PageSize for items per page, and PageNumbersCount for visible page buttons.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenPager>)>] () = inherit RadzenPagerBuilder<Radzen.Blazor.RadzenPager>()
 
     /// RadzenPanelMenuItem component.
@@ -7032,10 +8619,35 @@ module DslCE =
         /// RadzenCard component.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenPickList<_>>)>] () = inherit RadzenPickListBuilder<Radzen.Blazor.RadzenPickList<'TItem>, 'TItem>()
 
-    /// RadzenProfileMenuItem component.
+    /// A menu item component used within RadzenProfileMenu to define individual navigation or action items.
+    /// RadzenProfileMenuItem represents one clickable item in a profile menu dropdown with support for icons, navigation, and custom content.
+    /// Used inside RadzenProfileMenu to create user profile dropdown menus. Each item can navigate to a page (via Path), trigger an action (via click event), or display custom content (via Template).
+    /// Common uses in profile menus include account settings, user profile page, logout/sign out, preferences, and help/documentation.
+    /// Items support icons, images, text, and custom templates for flexible rendering.
     type RadzenProfileMenuItem' 
-        /// RadzenProfileMenuItem component.
+        /// A menu item component used within RadzenProfileMenu to define individual navigation or action items.
+        /// RadzenProfileMenuItem represents one clickable item in a profile menu dropdown with support for icons, navigation, and custom content.
+        /// Used inside RadzenProfileMenu to create user profile dropdown menus. Each item can navigate to a page (via Path), trigger an action (via click event), or display custom content (via Template).
+        /// Common uses in profile menus include account settings, user profile page, logout/sign out, preferences, and help/documentation.
+        /// Items support icons, images, text, and custom templates for flexible rendering.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenProfileMenuItem>)>] () = inherit RadzenProfileMenuItemBuilder<Radzen.Blazor.RadzenProfileMenuItem>()
+
+    /// A QR code generator component that creates scannable QR codes from text, URLs, or other data as SVG graphics.
+    /// RadzenQRCode supports extensive customization including colors, shapes, error correction, and embedded logos.
+    /// Encodes data in a two-dimensional barcode format scannable by smartphones and QR code readers. Generates QR codes entirely client-side as SVG, with no external dependencies.
+    /// Features data encoding (text, URLs, contact info, WiFi credentials, or any string data), error correction levels (Low, Medium, Quartile, High) for different damage resistance,
+    /// customization of colors for modules (dots) and background with custom shapes (Square, Rounded, Circle), optional logo/image embedding in the center of the QR code,
+    /// eye styling to customize the appearance of the three corner finder patterns, and responsive size (percentage or pixel-based) for responsive layouts.
+    /// Higher error correction levels allow the QR code to remain scannable even when partially damaged or obscured (e.g., by a logo). Use Quartile or High error correction when embedding logos.
+    type RadzenQRCode' 
+        /// A QR code generator component that creates scannable QR codes from text, URLs, or other data as SVG graphics.
+        /// RadzenQRCode supports extensive customization including colors, shapes, error correction, and embedded logos.
+        /// Encodes data in a two-dimensional barcode format scannable by smartphones and QR code readers. Generates QR codes entirely client-side as SVG, with no external dependencies.
+        /// Features data encoding (text, URLs, contact info, WiFi credentials, or any string data), error correction levels (Low, Medium, Quartile, High) for different damage resistance,
+        /// customization of colors for modules (dots) and background with custom shapes (Square, Rounded, Circle), optional logo/image embedding in the center of the QR code,
+        /// eye styling to customize the appearance of the three corner finder patterns, and responsive size (percentage or pixel-based) for responsive layouts.
+        /// Higher error correction levels allow the QR code to remain scannable even when partially damaged or obscured (e.g., by a logo). Use Quartile or High error correction when embedding logos.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenQRCode>)>] () = inherit RadzenQRCodeBuilder<Radzen.Blazor.RadzenQRCode>()
 
     /// RadzenRadioButtonListItem component.
     type RadzenRadioButtonListItem'<'TValue> 
@@ -7047,9 +8659,21 @@ module DslCE =
         /// RadzenSankeyDiagram component.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenSankeyDiagram<_>>)>] () = inherit RadzenSankeyDiagramBuilder<Radzen.Blazor.RadzenSankeyDiagram<'TItem>, 'TItem>()
 
-    /// Displays a collection of AppointmentData in day, week or month view.
+    /// A scheduler component for displaying and managing calendar appointments in multiple view types (day, week, month, year).
+    /// RadzenScheduler provides a rich calendar interface with drag-and-drop, inline editing, recurring events, and customizable views.
+    /// Displays time-based events in various calendar views, ideal for appointment booking, event calendars, resource scheduling, or any time-based data visualization.
+    /// Features multiple views (Day, Week, Month, Year Planner, Year Timeline), drag & drop to move appointments between time slots, resize to adjust appointment duration by dragging edges,
+    /// inline editing to create and edit appointments directly in the calendar, tooltips for quick info on hover, customizable appointment templates,
+    /// support for all-day and multi-day events, and timezone-aware appointments.
+    /// Define data properties using StartProperty, EndProperty, and TextProperty. Add view components (RadzenDayView, RadzenWeekView, RadzenMonthView) as child content.
     type RadzenScheduler'<'TItem> 
-        /// Displays a collection of AppointmentData in day, week or month view.
+        /// A scheduler component for displaying and managing calendar appointments in multiple view types (day, week, month, year).
+        /// RadzenScheduler provides a rich calendar interface with drag-and-drop, inline editing, recurring events, and customizable views.
+        /// Displays time-based events in various calendar views, ideal for appointment booking, event calendars, resource scheduling, or any time-based data visualization.
+        /// Features multiple views (Day, Week, Month, Year Planner, Year Timeline), drag & drop to move appointments between time slots, resize to adjust appointment duration by dragging edges,
+        /// inline editing to create and edit appointments directly in the calendar, tooltips for quick info on hover, customizable appointment templates,
+        /// support for all-day and multi-day events, and timezone-aware appointments.
+        /// Define data properties using StartProperty, EndProperty, and TextProperty. Add view components (RadzenDayView, RadzenWeekView, RadzenMonthView) as child content.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenScheduler<_>>)>] () = inherit RadzenSchedulerBuilder<Radzen.Blazor.RadzenScheduler<'TItem>, 'TItem>()
 
     /// RadzenSelectBarItem component.
@@ -7062,9 +8686,19 @@ module DslCE =
         /// RadzenSidebarToggle component.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenSidebarToggle>)>] () = inherit RadzenSidebarToggleBuilder<Radzen.Blazor.RadzenSidebarToggle>()
 
-    /// RadzenSkeleton component. Displays a loading placeholder with various animation types.
+    /// A skeleton screen component that displays placeholder shapes while content is loading.
+    /// RadzenSkeleton provides subtle loading states that match content structure, improving perceived performance.
+    /// Shows gray placeholder shapes that mimic the structure of the content being loaded, providing better UX than spinners by showing users the approximate layout before content appears,
+    /// making loading feel faster with immediate feedback, and reducing anxiety through progressive disclosure.
+    /// Supports multiple shapes including Text (horizontal bars for text lines, default), Circle (circular placeholders for avatars or icons), and Rectangle (rectangular blocks for images or cards).
+    /// Animations (None, Pulse, Wave) can be applied for additional loading feedback. Use multiple skeletons to represent the full structure of your loading content.
     type RadzenSkeleton' 
-        /// RadzenSkeleton component. Displays a loading placeholder with various animation types.
+        /// A skeleton screen component that displays placeholder shapes while content is loading.
+        /// RadzenSkeleton provides subtle loading states that match content structure, improving perceived performance.
+        /// Shows gray placeholder shapes that mimic the structure of the content being loaded, providing better UX than spinners by showing users the approximate layout before content appears,
+        /// making loading feel faster with immediate feedback, and reducing anxiety through progressive disclosure.
+        /// Supports multiple shapes including Text (horizontal bars for text lines, default), Circle (circular placeholders for avatars or icons), and Rectangle (rectangular blocks for images or cards).
+        /// Animations (None, Pulse, Wave) can be applied for additional loading feedback. Use multiple skeletons to represent the full structure of your loading content.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenSkeleton>)>] () = inherit RadzenSkeletonBuilder<Radzen.Blazor.RadzenSkeleton>()
 
     /// RadzenSpeechToTextButton component. Enables speech to text functionality.
@@ -7085,9 +8719,25 @@ module DslCE =
         /// RadzenSplitButtonItem component.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenSplitButtonItem>)>] () = inherit RadzenSplitButtonItemBuilder<Radzen.Blazor.RadzenSplitButtonItem>()
 
-    /// RadzenSplitter component.
+    /// A splitter component that divides space between resizable panes with draggable dividers.
+    /// RadzenSplitter creates layouts with user-adjustable panel sizes, ideal for multi-column interfaces or resizable sidebars.
+    /// Allows users to customize their workspace by dragging dividers to resize panes.
+    /// Common use cases include code editors with resizable file explorer/code/output panes, email clients with adjustable folder list/message list/message preview,
+    /// admin dashboards with resizable navigation and content areas, and data analysis tools with adjustable grid/chart/filter panels.
+    /// Features resizable panes (drag dividers between panes to adjust sizes), Horizontal (side-by-side) or Vertical (top-to-bottom) orientation,
+    /// size control with fixed pixel sizes/percentages/auto-sized panes, min/max constraints to prevent panes from becoming too small or large,
+    /// optional collapse/expand functionality per pane, and nested splitters to create complex layouts.
+    /// Panes are defined using RadzenSplitterPane components. Use Size property for fixed widths/heights.
     type RadzenSplitter' 
-        /// RadzenSplitter component.
+        /// A splitter component that divides space between resizable panes with draggable dividers.
+        /// RadzenSplitter creates layouts with user-adjustable panel sizes, ideal for multi-column interfaces or resizable sidebars.
+        /// Allows users to customize their workspace by dragging dividers to resize panes.
+        /// Common use cases include code editors with resizable file explorer/code/output panes, email clients with adjustable folder list/message list/message preview,
+        /// admin dashboards with resizable navigation and content areas, and data analysis tools with adjustable grid/chart/filter panels.
+        /// Features resizable panes (drag dividers between panes to adjust sizes), Horizontal (side-by-side) or Vertical (top-to-bottom) orientation,
+        /// size control with fixed pixel sizes/percentages/auto-sized panes, min/max constraints to prevent panes from becoming too small or large,
+        /// optional collapse/expand functionality per pane, and nested splitters to create complex layouts.
+        /// Panes are defined using RadzenSplitterPane components. Use Size property for fixed widths/heights.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenSplitter>)>] () = inherit RadzenSplitterBuilder<Radzen.Blazor.RadzenSplitter>()
 
     /// RadzenSplitterPane component.
@@ -7100,9 +8750,21 @@ module DslCE =
         /// RadzenSSRSViewer component.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenSSRSViewer>)>] () = inherit RadzenSSRSViewerBuilder<Radzen.Blazor.RadzenSSRSViewer>()
 
-    /// RadzenSteps component.
+    /// A wizard-style steps component that guides users through a multi-step process with numbered navigation.
+    /// RadzenSteps displays a visual progress indicator and manages sequential navigation through each step, ideal for forms, checkout flows, or setup wizards.
+    /// Provides a structured way to break complex processes into manageable sequential stages.
+    /// Features numbered circles showing current/completed/upcoming steps for visual progress, Next/Previous buttons for moving between steps or clicking on step numbers,
+    /// optional form validation integration to prevent advancing with invalid data, CanChange event to control when users can move between steps,
+    /// navigation to specific steps via SelectedIndex binding, and optional built-in Next/Previous buttons or use your own custom navigation.
+    /// Each step is defined using RadzenStepsItem components. Use the CanChange event to validate data before allowing step transitions. Integrates with Blazor EditContext for form validation.
     type RadzenSteps' 
-        /// RadzenSteps component.
+        /// A wizard-style steps component that guides users through a multi-step process with numbered navigation.
+        /// RadzenSteps displays a visual progress indicator and manages sequential navigation through each step, ideal for forms, checkout flows, or setup wizards.
+        /// Provides a structured way to break complex processes into manageable sequential stages.
+        /// Features numbered circles showing current/completed/upcoming steps for visual progress, Next/Previous buttons for moving between steps or clicking on step numbers,
+        /// optional form validation integration to prevent advancing with invalid data, CanChange event to control when users can move between steps,
+        /// navigation to specific steps via SelectedIndex binding, and optional built-in Next/Previous buttons or use your own custom navigation.
+        /// Each step is defined using RadzenStepsItem components. Use the CanChange event to validate data before allowing step transitions. Integrates with Blazor EditContext for form validation.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenSteps>)>] () = inherit RadzenStepsBuilder<Radzen.Blazor.RadzenSteps>()
 
     /// RadzenStepsItem component.
@@ -7110,9 +8772,21 @@ module DslCE =
         /// RadzenStepsItem component.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenStepsItem>)>] () = inherit RadzenStepsItemBuilder<Radzen.Blazor.RadzenStepsItem>()
 
-    /// RadzenTabs component.
+    /// A tabbed interface component that organizes content into multiple panels with clickable tabs for navigation.
+    /// RadzenTabs allows users to switch between different views or sections without navigating away from the page.
+    /// Provides a container for RadzenTabsItem components, each representing one tab and its associated content panel.
+    /// Supports tab positioning at Top, Bottom, Left, Right, TopRight, or BottomRight, server-side rendering (default) or client-side rendering for improved interactivity,
+    /// programmatic selection via SelectedIndex with two-way binding, Change event when tabs are switched, dynamic tab addition/removal using AddTab() and RemoveItem(),
+    /// keyboard navigation (Arrow keys, Home, End, Space, Enter) for accessibility, and disabled tabs to prevent selection.
+    /// Use Server render mode for standard Blazor rendering, or Client mode for faster tab switching with JavaScript.
     type RadzenTabs' 
-        /// RadzenTabs component.
+        /// A tabbed interface component that organizes content into multiple panels with clickable tabs for navigation.
+        /// RadzenTabs allows users to switch between different views or sections without navigating away from the page.
+        /// Provides a container for RadzenTabsItem components, each representing one tab and its associated content panel.
+        /// Supports tab positioning at Top, Bottom, Left, Right, TopRight, or BottomRight, server-side rendering (default) or client-side rendering for improved interactivity,
+        /// programmatic selection via SelectedIndex with two-way binding, Change event when tabs are switched, dynamic tab addition/removal using AddTab() and RemoveItem(),
+        /// keyboard navigation (Arrow keys, Home, End, Space, Enter) for accessibility, and disabled tabs to prevent selection.
+        /// Use Server render mode for standard Blazor rendering, or Client mode for faster tab switching with JavaScript.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenTabs>)>] () = inherit RadzenTabsBuilder<Radzen.Blazor.RadzenTabs>()
 
     /// A component which represents a form. Provides validation support.
@@ -7120,14 +8794,36 @@ module DslCE =
         /// A component which represents a form. Provides validation support.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenTemplateForm<_>>)>] () = inherit RadzenTemplateFormBuilder<Radzen.Blazor.RadzenTemplateForm<'TItem>, 'TItem>()
 
-    /// A component which displays text or makup with predefined styling.
+    /// A text display component with predefined typography styles matching Material Design text hierarchy.
+    /// RadzenText provides consistent text formatting for headings, subtitles, body text, captions, and more with semantic HTML tags.
+    /// Simplifies typography by providing preset styles that match your theme's design system, allowing consistent, professionally designed text formatting without managing CSS classes manually.
+    /// Supports text styles (Display headings H1-H6, subtitles, body text, captions, button text, overlines), automatically uses appropriate HTML tags (h1-h6, p, span) based on style,
+    /// manual HTML tag specification via TagName property, built-in text alignment (left, right, center, justify), and optional anchor links for heading navigation.
+    /// TextStyle.DisplayH1-H6 provide large display headings, TextStyle.H1-H6 provide standard headings, Subtitle1/2 for subtitles, Body1/2 for paragraphs, Caption for small text, and Overline for labels.
     type RadzenText' 
-        /// A component which displays text or makup with predefined styling.
+        /// A text display component with predefined typography styles matching Material Design text hierarchy.
+        /// RadzenText provides consistent text formatting for headings, subtitles, body text, captions, and more with semantic HTML tags.
+        /// Simplifies typography by providing preset styles that match your theme's design system, allowing consistent, professionally designed text formatting without managing CSS classes manually.
+        /// Supports text styles (Display headings H1-H6, subtitles, body text, captions, button text, overlines), automatically uses appropriate HTML tags (h1-h6, p, span) based on style,
+        /// manual HTML tag specification via TagName property, built-in text alignment (left, right, center, justify), and optional anchor links for heading navigation.
+        /// TextStyle.DisplayH1-H6 provide large display headings, TextStyle.H1-H6 provide standard headings, Subtitle1/2 for subtitles, Body1/2 for paragraphs, Caption for small text, and Overline for labels.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenText>)>] () = inherit RadzenTextBuilder<Radzen.Blazor.RadzenText>()
 
-    /// RadzenTimeline component is a graphical representation used to display a chronological sequence of events or data points.
+    /// A timeline component for displaying chronological sequences of events with visual indicators and connecting lines.
+    /// RadzenTimeline presents events along a vertical or horizontal axis, ideal for histories, project milestones, or process flows.
+    /// Visualizes temporal data in a linear sequence with customizable markers, labels, and content for each event.
+    /// Supports Vertical (top-to-bottom) or Horizontal (left-to-right) orientation, Center/Start/End/Alternate positioning of the connecting line,
+    /// custom point markers/labels/content per item via templates, content alignment control (start, center, end, stretch), chronological order reversal,
+    /// and flexible content where each item can have point marker, label, and main content.
+    /// Timeline items are defined using RadzenTimelineItem components. Common uses include order tracking, project progress, changelog displays, or activity feeds.
     type RadzenTimeline' 
-        /// RadzenTimeline component is a graphical representation used to display a chronological sequence of events or data points.
+        /// A timeline component for displaying chronological sequences of events with visual indicators and connecting lines.
+        /// RadzenTimeline presents events along a vertical or horizontal axis, ideal for histories, project milestones, or process flows.
+        /// Visualizes temporal data in a linear sequence with customizable markers, labels, and content for each event.
+        /// Supports Vertical (top-to-bottom) or Horizontal (left-to-right) orientation, Center/Start/End/Alternate positioning of the connecting line,
+        /// custom point markers/labels/content per item via templates, content alignment control (start, center, end, stretch), chronological order reversal,
+        /// and flexible content where each item can have point marker, label, and main content.
+        /// Timeline items are defined using RadzenTimelineItem components. Common uses include order tracking, project progress, changelog displays, or activity feeds.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenTimeline>)>] () = inherit RadzenTimelineBuilder<Radzen.Blazor.RadzenTimeline>()
 
     /// RadzenTimeline item.
@@ -7145,14 +8841,38 @@ module DslCE =
         /// Displays a table of contents for a page.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenToc>)>] () = inherit RadzenTocBuilder<Radzen.Blazor.RadzenToc>()
 
-    /// A component which displays a hierarchy of items. Supports inline definition and data-binding.
+    /// A hierarchical tree view component for displaying nested data structures with expand/collapse functionality.
+    /// RadzenTree supports both inline item definition and data-binding for displaying file systems, organization charts, category hierarchies, or any tree-structured data.
+    /// Organizes data in a parent-child hierarchy where items can be expanded to reveal children.
+    /// Supports static definition declaring tree structure using nested RadzenTreeItem components, data binding to hierarchical data using RadzenTreeLevel components,
+    /// single or multiple item selection with checkboxes, individual item or programmatic expand/collapse control, custom icons per item or data-bound icon properties,
+    /// custom rendering templates for tree items, keyboard navigation (Arrow keys, Space/Enter, Home/End) for accessibility, and Change/Expand/selection events.
+    /// For data binding, use RadzenTreeLevel to define how to render each hierarchy level from your data model. For checkbox selection, use AllowCheckBoxes and bind to CheckedValues.
     type RadzenTree' 
-        /// A component which displays a hierarchy of items. Supports inline definition and data-binding.
+        /// A hierarchical tree view component for displaying nested data structures with expand/collapse functionality.
+        /// RadzenTree supports both inline item definition and data-binding for displaying file systems, organization charts, category hierarchies, or any tree-structured data.
+        /// Organizes data in a parent-child hierarchy where items can be expanded to reveal children.
+        /// Supports static definition declaring tree structure using nested RadzenTreeItem components, data binding to hierarchical data using RadzenTreeLevel components,
+        /// single or multiple item selection with checkboxes, individual item or programmatic expand/collapse control, custom icons per item or data-bound icon properties,
+        /// custom rendering templates for tree items, keyboard navigation (Arrow keys, Space/Enter, Home/End) for accessibility, and Change/Expand/selection events.
+        /// For data binding, use RadzenTreeLevel to define how to render each hierarchy level from your data model. For checkbox selection, use AllowCheckBoxes and bind to CheckedValues.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenTree>)>] () = inherit RadzenTreeBuilder<Radzen.Blazor.RadzenTree>()
 
-    /// RadzenUpload component.
+    /// A file upload component with progress tracking, multiple file support, and drag-and-drop capability.
+    /// RadzenUpload provides a full-featured file upload interface with automatic or manual upload, server communication, and comprehensive event handling.
+    /// Handles file selection and upload to a server endpoint with automatic upload on file selection or manual triggering via Upload() method,
+    /// real-time upload progress with percentage and bytes loaded, file type restriction via Accept property (MIME types or extensions),
+    /// custom authentication or HTTP headers, Complete/Error/Progress/Change events for tracking upload lifecycle,
+    /// automatic image preview for image files, file removal support, and built-in drag-and-drop for file selection.
+    /// Uploads files to the URL endpoint via HTTP POST multipart/form-data. Server-side endpoint must accept file uploads and return appropriate responses.
     type RadzenUpload' 
-        /// RadzenUpload component.
+        /// A file upload component with progress tracking, multiple file support, and drag-and-drop capability.
+        /// RadzenUpload provides a full-featured file upload interface with automatic or manual upload, server communication, and comprehensive event handling.
+        /// Handles file selection and upload to a server endpoint with automatic upload on file selection or manual triggering via Upload() method,
+        /// real-time upload progress with percentage and bytes loaded, file type restriction via Accept property (MIME types or extensions),
+        /// custom authentication or HTTP headers, Complete/Error/Progress/Change events for tracking upload lifecycle,
+        /// automatic image preview for image files, file removal support, and built-in drag-and-drop for file selection.
+        /// Uploads files to the URL endpoint via HTTP POST multipart/form-data. Server-side endpoint must accept file uploads and return appropriate responses.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenUpload>)>] () = inherit RadzenUploadBuilder<Radzen.Blazor.RadzenUpload>()
 
     /// Base class of components that are rendered inside a RadzenChart.
@@ -7208,19 +8928,51 @@ module DslCE =
         /// Renders bar series in RadzenChart.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenBarSeries<_>>)>] () = inherit RadzenBarSeriesBuilder<Radzen.Blazor.RadzenBarSeries<'TItem>, 'TItem>()
 
-    /// Renders column series in RadzenChart
+    /// A chart series that displays data as vertical columns (bars) in a RadzenChart.
+    /// RadzenColumnSeries is ideal for comparing values across categories or showing trends over time with discrete data points.
+    /// Renders vertical rectangles where the height represents the data value. Multiple column series in the same chart are displayed side-by-side for each category.
+    /// Supports fill color/stroke color/width customization with individual column colors via Fills/Strokes, dynamic coloring based on value ranges using FillRange and StrokeRange,
+    /// optional value labels on top of columns, interactive tooltips showing category/value/series name, and click event handling for drill-down scenarios.
+    /// Use CategoryProperty to specify the X-axis field and ValueProperty for the column height (Y-axis value).
     type RadzenColumnSeries'<'TItem> 
-        /// Renders column series in RadzenChart
+        /// A chart series that displays data as vertical columns (bars) in a RadzenChart.
+        /// RadzenColumnSeries is ideal for comparing values across categories or showing trends over time with discrete data points.
+        /// Renders vertical rectangles where the height represents the data value. Multiple column series in the same chart are displayed side-by-side for each category.
+        /// Supports fill color/stroke color/width customization with individual column colors via Fills/Strokes, dynamic coloring based on value ranges using FillRange and StrokeRange,
+        /// optional value labels on top of columns, interactive tooltips showing category/value/series name, and click event handling for drill-down scenarios.
+        /// Use CategoryProperty to specify the X-axis field and ValueProperty for the column height (Y-axis value).
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenColumnSeries<_>>)>] () = inherit RadzenColumnSeriesBuilder<Radzen.Blazor.RadzenColumnSeries<'TItem>, 'TItem>()
 
-    /// Renders line series in RadzenChart.
+    /// A chart series that displays data as a continuous line connecting data points in a RadzenChart.
+    /// RadzenLineSeries is ideal for showing trends over time, continuous data, or comparing multiple data series.
+    /// Connects data points with lines, making it easy to visualize trends and patterns.
+    /// Supports multiple interpolation modes (straight lines, smooth curves, step functions), customizable appearance (color, width, line style),
+    /// markers at data points, data labels, combination of multiple line series in one chart for comparison, and line styling with different patterns (solid, dashed, dotted).
+    /// Use CategoryProperty for the X-axis values and ValueProperty for the Y-axis values. Enable Smooth for curved lines, or use Interpolation for more control over line rendering.
     type RadzenLineSeries'<'TItem> 
-        /// Renders line series in RadzenChart.
+        /// A chart series that displays data as a continuous line connecting data points in a RadzenChart.
+        /// RadzenLineSeries is ideal for showing trends over time, continuous data, or comparing multiple data series.
+        /// Connects data points with lines, making it easy to visualize trends and patterns.
+        /// Supports multiple interpolation modes (straight lines, smooth curves, step functions), customizable appearance (color, width, line style),
+        /// markers at data points, data labels, combination of multiple line series in one chart for comparison, and line styling with different patterns (solid, dashed, dotted).
+        /// Use CategoryProperty for the X-axis values and ValueProperty for the Y-axis values. Enable Smooth for curved lines, or use Interpolation for more control over line rendering.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenLineSeries<_>>)>] () = inherit RadzenLineSeriesBuilder<Radzen.Blazor.RadzenLineSeries<'TItem>, 'TItem>()
 
-    /// Renders pie series in RadzenChart.
+    /// A chart series that displays data as a circular pie chart with segments representing proportions of a whole.
+    /// RadzenPieSeries is ideal for showing percentage breakdowns, composition analysis, or relative comparisons of parts to a total.
+    /// Divides a circle into segments where each segment's angle is proportional to its value relative to the sum of all values.
+    /// Supports segment color customization via Fills, borders via Strokes with custom radius and positioning, TotalAngle to create semi-circles or partial pie charts (e.g., gauge-like displays),
+    /// StartAngle controlling where the first segment begins, optional labels showing values or percentages on segments, interactive tooltips showing category/value/percentage,
+    /// and legend where each segment appears as a legend item using category values.
+    /// Use CategoryProperty for segment labels (shown in legend/tooltip) and ValueProperty for the numeric value determining segment size. For a donut chart (pie with hollow center), use RadzenDonutSeries instead.
     type RadzenPieSeries'<'TItem> 
-        /// Renders pie series in RadzenChart.
+        /// A chart series that displays data as a circular pie chart with segments representing proportions of a whole.
+        /// RadzenPieSeries is ideal for showing percentage breakdowns, composition analysis, or relative comparisons of parts to a total.
+        /// Divides a circle into segments where each segment's angle is proportional to its value relative to the sum of all values.
+        /// Supports segment color customization via Fills, borders via Strokes with custom radius and positioning, TotalAngle to create semi-circles or partial pie charts (e.g., gauge-like displays),
+        /// StartAngle controlling where the first segment begins, optional labels showing values or percentages on segments, interactive tooltips showing category/value/percentage,
+        /// and legend where each segment appears as a legend item using category values.
+        /// Use CategoryProperty for segment labels (shown in legend/tooltip) and ValueProperty for the numeric value determining segment size. For a donut chart (pie with hollow center), use RadzenDonutSeries instead.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenPieSeries<_>>)>] () = inherit RadzenPieSeriesBuilder<Radzen.Blazor.RadzenPieSeries<'TItem>, 'TItem>()
 
     /// Renders donut series in RadzenChart.
@@ -7485,11 +9237,27 @@ module DslCE =
         /// Must be placed inside a RadzenDataFilter`1
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenDataFilterProperty<_>>)>] () = inherit RadzenDataFilterPropertyBuilder<Radzen.Blazor.RadzenDataFilterProperty<'TItem>, 'TItem>()
 
-    /// RadzenDataGridColumn component.
-    /// Must be placed inside a RadzenDataGrid`1
+    /// Defines a column in a RadzenDataGrid, specifying how data is displayed, sorted, filtered, and edited.
+    /// RadzenDataGridColumn supports data binding via Property, custom templates, formatting, sorting, filtering, grouping, aggregation, and inline editing.
+    /// Must be placed inside a RadzenDataGrid`1 within the Columns template.
+    /// Each column represents one field or computed value from the data source.
+    /// Features data binding using Property to bind to a data field or Template for custom content, display properties (Title, FormatString, TextAlign, Width, Frozen for locked scrolling),
+    /// Sortable property enabling/disabling sorting, Filterable property with FilterTemplate for custom filter UI and FilterValue for programmatic filtering,
+    /// EditTemplate for inline editing with Editable property to control edit permission, GroupProperty for hierarchical data grouping,
+    /// FooterTemplate with Sum()/Average()/Count() aggregation functions, child columns for multi-level headers,
+    /// and Visible property with responsive breakpoint properties (visible-sm, visible-md, etc.).
+    /// Use Template for complete control over cell rendering, or EditTemplate for edit mode cells.
     type RadzenDataGridColumn'<'TItem> 
-        /// RadzenDataGridColumn component.
-        /// Must be placed inside a RadzenDataGrid`1
+        /// Defines a column in a RadzenDataGrid, specifying how data is displayed, sorted, filtered, and edited.
+        /// RadzenDataGridColumn supports data binding via Property, custom templates, formatting, sorting, filtering, grouping, aggregation, and inline editing.
+        /// Must be placed inside a RadzenDataGrid`1 within the Columns template.
+        /// Each column represents one field or computed value from the data source.
+        /// Features data binding using Property to bind to a data field or Template for custom content, display properties (Title, FormatString, TextAlign, Width, Frozen for locked scrolling),
+        /// Sortable property enabling/disabling sorting, Filterable property with FilterTemplate for custom filter UI and FilterValue for programmatic filtering,
+        /// EditTemplate for inline editing with Editable property to control edit permission, GroupProperty for hierarchical data grouping,
+        /// FooterTemplate with Sum()/Average()/Count() aggregation functions, child columns for multi-level headers,
+        /// and Visible property with responsive breakpoint properties (visible-sm, visible-md, etc.).
+        /// Use Template for complete control over cell rendering, or EditTemplate for edit mode cells.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenDataGridColumn<_>>)>] () = inherit RadzenDataGridColumnBuilder<Radzen.Blazor.RadzenDataGridColumn<'TItem>, 'TItem>()
     type RadzenDropDownDataGridColumn' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenDropDownDataGridColumn>)>] () = inherit RadzenDropDownDataGridColumnBuilder<Radzen.Blazor.RadzenDropDownDataGridColumn>()
 
@@ -7744,6 +9512,7 @@ module DslCEInstances =
     let RadzenPanelMenuItem'' = RadzenPanelMenuItem'()
     let RadzenPickList''<'TItem> = RadzenPickList'<'TItem>()
     let RadzenProfileMenuItem'' = RadzenProfileMenuItem'()
+    let RadzenQRCode'' = RadzenQRCode'()
     let RadzenRadioButtonListItem''<'TValue> = RadzenRadioButtonListItem'<'TValue>()
     let RadzenSankeyDiagram''<'TItem> = RadzenSankeyDiagram'<'TItem>()
     let RadzenScheduler''<'TItem> = RadzenScheduler'<'TItem>()

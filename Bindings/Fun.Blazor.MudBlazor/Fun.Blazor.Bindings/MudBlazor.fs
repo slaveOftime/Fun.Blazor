@@ -26,6 +26,8 @@ type MudChartBaseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.A
     [<CustomOperation("ChartOptions")>] member inline _.ChartOptions ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.ChartOptions) = render ==> ("ChartOptions" => x)
     /// Display options for axis-based charts.
     [<CustomOperation("AxisChartOptions")>] member inline _.AxisChartOptions ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.AxisChartOptions) = render ==> ("AxisChartOptions" => x)
+    /// Display options for node-based charts.
+    [<CustomOperation("NodeChartOptions")>] member inline _.NodeChartOptions ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.NodeChartOptions) = render ==> ("NodeChartOptions" => x)
     /// The custom graphics within this chart.
     [<CustomOperation("CustomGraphics")>] member inline _.CustomGraphics ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("CustomGraphics", fragment)
     /// The custom graphics within this chart.
@@ -68,6 +70,10 @@ type MudCategoryChartBaseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Mic
     [<CustomOperation("XAxisLabels")>] member inline _.XAxisLabels ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String[]) = render ==> ("XAxisLabels" => x)
     /// The series of values to display.
     [<CustomOperation("ChartSeries")>] member inline _.ChartSeries ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.List<MudBlazor.ChartSeries>) = render ==> ("ChartSeries" => x)
+    /// The nodes to be displayed.
+    [<CustomOperation("Nodes")>] member inline _.Nodes ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.List<MudBlazor.SankeyChartNode>) = render ==> ("Nodes" => x)
+    /// The edges to be displayed.
+    [<CustomOperation("Edges")>] member inline _.Edges ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.List<MudBlazor.SankeyChartEdge>) = render ==> ("Edges" => x)
 
 type MudCategoryAxisChartBaseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit MudCategoryChartBaseBuilder<'FunBlazorGeneric>()
@@ -134,6 +140,11 @@ type PieBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore
     inherit MudCategoryChartBaseBuilder<'FunBlazorGeneric>()
     /// Defines the ratio of the circle to the donut hole.
     [<CustomOperation("CircleDonutRatio")>] member inline _.CircleDonutRatio ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Double) = render ==> ("CircleDonutRatio" => x)
+
+/// Represents a chart which displays data as nodes connected by weighted edges.
+type SankeyBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit MudCategoryChartBaseBuilder<'FunBlazorGeneric>()
+
 
             
 namespace rec MudBlazor.DslInternals
@@ -393,6 +404,8 @@ type MudPopoverBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.Asp
 /// A base class for designing table components.
 type MudTableBaseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit MudComponentBaseBuilder<'FunBlazorGeneric>()
+    /// The aria-label for the HTML table element.
+    [<CustomOperation("AriaLabel")>] member inline _.AriaLabel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("AriaLabel" => x)
     /// Forces a row being edited to be saved or canceled before a new row can be selected.
     [<CustomOperation("IsEditRowSwitchingBlocked")>] member inline _.IsEditRowSwitchingBlocked ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("IsEditRowSwitchingBlocked" =>>> true)
     /// Forces a row being edited to be saved or canceled before a new row can be selected.
@@ -1708,6 +1721,8 @@ type MudPickerBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsoft.
     [<CustomOperation("Editable")>] member inline _.Editable ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Editable" =>>> true)
     /// Allows the value to be edited.
     [<CustomOperation("Editable")>] member inline _.Editable ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Editable" =>>> x)
+    /// The ID of the input element.
+    [<CustomOperation("InputId")>] member inline _.InputId ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("InputId" => x)
     /// Shows the toolbar.
     [<CustomOperation("ShowToolbar")>] member inline _.ShowToolbar ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowToolbar" =>>> true)
     /// Shows the toolbar.
@@ -1924,6 +1939,10 @@ type MudColorPickerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     [<CustomOperation("ImportExportIcon")>] member inline _.ImportExportIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ImportExportIcon" => x)
     /// The delay, in milliseconds, between updates to the selected color when DragEffect is true.
     [<CustomOperation("ThrottleInterval")>] member inline _.ThrottleInterval ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("ThrottleInterval" => x)
+    /// Enables tooltips for icon buttons.
+    [<CustomOperation("ShowTooltips")>] member inline _.ShowTooltips ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowTooltips" =>>> true)
+    /// Enables tooltips for icon buttons.
+    [<CustomOperation("ShowTooltips")>] member inline _.ShowTooltips ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowTooltips" =>>> x)
 
 /// A component for selecting time values.
 type MudTimePickerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -4176,6 +4195,10 @@ type MudMenuItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.As
     [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> unit) = render ==> html.callback("OnClick", fn)
     /// Occurs when this menu item is clicked.
     [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> Task<unit>) = render ==> html.callbackTask("OnClick", fn)
+    /// Hides the submenu arrow if the item is being populated from the activator content. 
+    [<CustomOperation("HideSubMenuArrow")>] member inline _.HideSubMenuArrow ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("HideSubMenuArrow" =>>> true)
+    /// Hides the submenu arrow if the item is being populated from the activator content. 
+    [<CustomOperation("HideSubMenuArrow")>] member inline _.HideSubMenuArrow ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("HideSubMenuArrow" =>>> x)
 
 /// A pop-up dialog with a simple message and button choices.
 type MudMessageBoxBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -4365,7 +4388,7 @@ type MudNavMenuBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.Asp
     /// Uses compact vertical padding to all MudNavLink items.
     [<CustomOperation("Dense")>] member inline _.Dense ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Dense" =>>> x)
 
-/// A layer that can be used for various purposes such as displaying loading indicators, modals, or blocking user interaction with underlying content.
+/// Renders a translucent layer over content, typically used for modals, popovers, progress bars, or blocking interactions.
 type MudOverlayBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit MudComponentBaseBuilder<'FunBlazorGeneric>()
     /// Makes the overlay visible.
@@ -5982,6 +6005,18 @@ type ChartTooltipBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.A
     [<CustomOperation("Y")>] member inline _.Y ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Double) = render ==> ("Y" => x)
     /// The color of the tooltip.
     [<CustomOperation("Color")>] member inline _.Color ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Color" => x)
+    /// The font size of the Title and Subtitle.
+    [<CustomOperation("FontSize")>] member inline _.FontSize ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("FontSize" => x)
+    /// The color of the Title and Subtitle.
+    [<CustomOperation("FontColor")>] member inline _.FontColor ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("FontColor" => x)
+    /// The width of the border.
+    [<CustomOperation("StrokeWidth")>] member inline _.StrokeWidth ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("StrokeWidth" => x)
+    /// Whether to show the triangle pointing down.
+    [<CustomOperation("ShowTriangle")>] member inline _.ShowTriangle ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowTriangle" =>>> true)
+    /// Whether to show the triangle pointing down.
+    [<CustomOperation("ShowTriangle")>] member inline _.ShowTriangle ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowTriangle" =>>> x)
+    /// How to align the tooltip in respect to the given x coordinates.
+    [<CustomOperation("AnchorPositionX")>] member inline _.AnchorPositionX ([<InlineIfLambda>] render: AttrRenderFragment, x: MudBlazor.Charts.ChartTooltipAnchorPositionX) = render ==> ("AnchorPositionX" => x)
 
 type FiltersBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
@@ -6564,9 +6599,9 @@ module DslCE =
         /// A list of navigation links with support for groups.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudNavMenu>)>] () = inherit MudNavMenuBuilder<MudBlazor.MudNavMenu>()
 
-    /// A layer that can be used for various purposes such as displaying loading indicators, modals, or blocking user interaction with underlying content.
+    /// Renders a translucent layer over content, typically used for modals, popovers, progress bars, or blocking interactions.
     type MudOverlay' 
-        /// A layer that can be used for various purposes such as displaying loading indicators, modals, or blocking user interaction with underlying content.
+        /// Renders a translucent layer over content, typically used for modals, popovers, progress bars, or blocking interactions.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.MudOverlay>)>] () = inherit MudOverlayBuilder<MudBlazor.MudOverlay>()
 
     /// A drawer used to navigate sections on a page.
@@ -6998,6 +7033,11 @@ module DslCE =
         /// Represents a chart which displays values as a percentage of a circle.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.Charts.Pie>)>] () = inherit PieBuilder<MudBlazor.Charts.Pie>()
 
+    /// Represents a chart which displays data as nodes connected by weighted edges.
+    type Sankey' 
+        /// Represents a chart which displays data as nodes connected by weighted edges.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<MudBlazor.Charts.Sankey>)>] () = inherit SankeyBuilder<MudBlazor.Charts.Sankey>()
+
     /// A chart which displays values over time.
     type TimeSeries' 
         /// A chart which displays values over time.
@@ -7022,6 +7062,7 @@ module DslCEInstances =
     let Donut'' = Donut'()
     let HeatMap'' = HeatMap'()
     let Pie'' = Pie'()
+    let Sankey'' = Sankey'()
     let TimeSeries'' = TimeSeries'()
     let Legend'' = Legend'()
     let ChartTooltip'' = ChartTooltip'()

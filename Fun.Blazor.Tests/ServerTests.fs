@@ -78,7 +78,7 @@ module ServerTests =
                     services.AddRouting() |> ignore
 
                     services.AddServerSideBlazor(fun options ->
-                        options.RootComponents.RegisterCustomElementForFunBlazor(typeof<ServerDemoCounter>.Assembly)
+                        options.RootComponents.RegisterCustomElementForFunBlazor<ServerDemoCounter>()
                     )
                     |> ignore
 

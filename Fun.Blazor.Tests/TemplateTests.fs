@@ -7,7 +7,7 @@ open Bunit
 
 [<Fact>]
 let ``Template should work`` () =
-    let context = new TestContext()
+    let context = new BunitContext()
 
     let count = 1
     let classes = "c1 c2"
@@ -37,7 +37,7 @@ let ``Template should work`` () =
 
 [<Fact>]
 let ``SSRTemplate should work`` () =
-    let context = new TestContext()
+    let context = new BunitContext()
 
     let count = 1
     let classes = "c1 c2"
