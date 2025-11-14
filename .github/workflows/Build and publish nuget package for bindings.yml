@@ -7,7 +7,7 @@ on:
         paths:
         - "Bindings/**/*.*"
         - "build.fsx"
-        - ".github/Build and publish nuget package for bindings.yml"
+        - ".github/workflows/Build and publish nuget package for bindings.yml"
 
 jobs:
   build-and-push-nuget-packages-for-bindings:

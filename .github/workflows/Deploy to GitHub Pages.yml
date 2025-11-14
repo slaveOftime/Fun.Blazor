@@ -8,6 +8,7 @@ on:
       - 'Docs/**/*.*'
       - 'Fun.Blazor*/**/*.*'
       - "build.fsx"
+      - ".github/workflows/Deploy to GitHub Pages.yml"
   # release:
   #   types: [published]
 
