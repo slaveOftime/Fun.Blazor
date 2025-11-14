@@ -157,6 +157,8 @@ type QuickGridBuilder<'FunBlazorGeneric, 'TGridItem when 'FunBlazorGeneric :> Mi
     [<CustomOperation("Pagination")>] member inline _.Pagination ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.AspNetCore.Components.QuickGrid.PaginationState) = render ==> ("Pagination" => x)
     /// Gets or sets a collection of additional attributes that will be applied to the created element.
     [<CustomOperation("AdditionalAttributes")>] member inline _.AdditionalAttributes ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>) = render ==> ("AdditionalAttributes" => x)
+    /// Optional. A callback to be invoked for each rendered row to specify a CSS class.
+    [<CustomOperation("RowClass")>] member inline _.RowClass ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("RowClass" => (System.Func<'TGridItem, System.String>fn))
 
             
 namespace rec Microsoft.AspNetCore.Components.QuickGrid.DslInternals.Infrastructure

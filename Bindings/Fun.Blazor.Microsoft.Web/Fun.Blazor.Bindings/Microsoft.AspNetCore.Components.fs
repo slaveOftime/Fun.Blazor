@@ -258,6 +258,11 @@ type InputDateBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Micro
     /// Gets or sets the error message used when displaying an a parsing error.
     [<CustomOperation("ParsingErrorMessage")>] member inline _.ParsingErrorMessage ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ParsingErrorMessage" => x)
 
+/// An hidden input component for storing String values.
+type InputHiddenBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit Forms.InputBaseBuilder<'FunBlazorGeneric, System.String>()
+
+
 /// An input component for editing numeric values.
 /// Supported numeric types are Int32, Int64, Int16, Single, Double, Decimal.
 type InputNumberBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -485,6 +490,11 @@ module DslCE =
         /// The supported types for the date value are:
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Forms.InputDate<_>>)>] () = inherit InputDateBuilder<Microsoft.AspNetCore.Components.Forms.InputDate<'TValue>, 'TValue>()
 
+    /// An hidden input component for storing String values.
+    type InputHidden' 
+        /// An hidden input component for storing String values.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Forms.InputHidden>)>] () = inherit InputHiddenBuilder<Microsoft.AspNetCore.Components.Forms.InputHidden>()
+
     /// An input component for editing numeric values.
     /// Supported numeric types are Int32, Int64, Int16, Single, Double, Decimal.
     type InputNumber'<'TValue> 
@@ -543,6 +553,7 @@ module DslCEInstances =
     let InputBase''<'TValue> = InputBase'<'TValue>()
     let InputCheckbox'' = InputCheckbox'()
     let InputDate''<'TValue> = InputDate'<'TValue>()
+    let InputHidden'' = InputHidden'()
     let InputNumber''<'TValue> = InputNumber'<'TValue>()
     let InputRadioGroup''<'TValue> = InputRadioGroup'<'TValue>()
     let InputSelect''<'TValue> = InputSelect'<'TValue>()

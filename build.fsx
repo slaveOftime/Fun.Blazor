@@ -265,15 +265,15 @@ pipeline "bindings" {
         // paralle
         continueStepsOnFailure
         continueStageOnFailure
-        stage_generateBindingProjects "Microsoft.Web" "Microsoft.AspNetCore.Components.Web" "Microsoft.AspNetCore.Components" None "" "net9.0"
+        stage_generateBindingProjects "Microsoft.Web" "Microsoft.AspNetCore.Components.Web" "Microsoft.AspNetCore.Components" None "" "net10.0"
         stage_generateBindingProjects
             "Microsoft.Authorization"
             "Microsoft.AspNetCore.Components.Authorization"
             "Microsoft.AspNetCore.Components.Authorization"
             None
             ""
-            "net9.0"
-        stage_generateBindingProjects "Microsoft.QuickGrid" "Microsoft.AspNetCore.Components.QuickGrid" "Microsoft.AspNetCore.Components.QuickGrid" None "" "net9.0"
+            "net10.0"
+        stage_generateBindingProjects "Microsoft.QuickGrid" "Microsoft.AspNetCore.Components.QuickGrid" "Microsoft.AspNetCore.Components.QuickGrid" None "" "net10.0"
         stage_generateBindingProjects "Microsoft.FluentUI" "Microsoft.FluentUI.AspNetCore.Components" "Microsoft.FluentUI.AspNetCore.Components" None "" "net8.0"
         stage_generateBindingProjects "AntDesign" "AntDesign" "AntDesign" None "" "net6.0;net8.0"
         stage_generateBindingProjects "MudBlazor" "MudBlazor" "MudBlazor" None "" "net8.0;net9.0"
