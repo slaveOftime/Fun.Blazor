@@ -12,7 +12,7 @@ let entry =
         let xaxis = cval 0
 
         hook.AddDisposes [
-            Observable.interval (TimeSpan.FromMilliseconds 200)
+            Observable.interval (TimeSpan.FromMilliseconds 200L)
             |> Observable.subscribe (fun x -> xaxis.Publish(int (Math.Sin(float x) * 400. + 400.)))
         ]
 

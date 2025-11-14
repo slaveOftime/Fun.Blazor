@@ -35,12 +35,13 @@ let private docRouting (docs: DocTreeNode list) : Router<NodeRenderFragment> =
 
 let routes =
     html.injectWithNoKey (fun (hook: IComponentHook) -> adapt {
+        let routes = [ routeCi "/" home; Demos.GiraffeStyleRouter.demoRouting ]
         match! hook.GetOrLoadDocsTree() with
-        | LoadingState.NotStartYet -> notFound
+        | LoadingState.NotStartYet -> html.route routes
         | LoadingState.Loading -> MudProgressLinear'.create ()
         | LoadingState.Loaded docs
         | LoadingState.Reloading docs ->
-            let routes = [ routeCi "/" home; docRouting docs; Demos.GiraffeStyleRouter.demoRouting ]
+            let routes = [ yield! routes; docRouting docs ]
             html.route (
                 docs,
                 [|

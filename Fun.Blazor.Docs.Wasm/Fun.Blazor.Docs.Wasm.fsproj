@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 	<PropertyGroup>
-		<TargetFramework>net9.0</TargetFramework>
+		<TargetFramework>net10.0</TargetFramework>
 		<!-- <RunAOTCompilation>true</RunAOTCompilation>
   		<WasmStripILAfterAOT>true</WasmStripILAfterAOT> -->
 		<BlazorWasmPrerenderingMode>WebAssemblyPrerendered</BlazorWasmPrerenderingMode>
@@ -9,9 +9,6 @@
 		<WasmEnableWebcil>false</WasmEnableWebcil>
 	</PropertyGroup>
 	<ItemGroup>
-		<EmbeddedResource Include="ILLink.Substitutions.xml">
-			<LogicalName>ILLink.Substitutions.xml</LogicalName>
-		</EmbeddedResource>
 		<Compile Include="Types.fs" />
 		<Compile Include="Utils.fs" />
 		<Compile Include="Theme.fs" />
@@ -48,12 +45,11 @@
 		<Compile Include="Startup.fs" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="BlazorWasmPreRendering.Build" Version="5.0.0" />
-		<PackageReference Include="FSharp.SystemTextJson" Version="1.3.13" />
+		<PackageReference Include="BlazorWasmPreRendering.Build" Version="7.0.0" />
+		<PackageReference Include="FSharp.SystemTextJson" Version="1.4.36" />
 		<PackageReference Include="Majorsoft.Blazor.WebAssembly.Logging.Console" Version="1.5.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.*" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.*" PrivateAssets="all" />
-		<PackageReference Include="System.Text.Json" Version="9.0.*" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.*" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.*" PrivateAssets="all" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Bindings\Fun.Blazor.Microsoft.Web\Fun.Blazor.Microsoft.Web.fsproj" />
