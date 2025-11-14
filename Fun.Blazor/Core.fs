@@ -63,7 +63,7 @@ type FunComponent() as this =
         with _ ->
             null
 
-    member _.RendererInfo = 
+    member _.RendererInfo =
         try
             base.RendererInfo
         with _ ->
@@ -103,7 +103,7 @@ type FunBlazorComponent() as this =
 
     interface IHandleEvent with
         /// We should be careful with this, because aspnetcore team may change the HandleEventAsync. So we should sync with their implementation.
-        /// https://github.com/dotnet/aspnetcore/blob/8b30d862de6c9146f466061d51aa3f1414ee2337/src/Components/Components/src/ComponentBase.cs#L301
+        /// https://github.com/dotnet/aspnetcore/blob/main/src/Components/Components/src/ComponentBase.cs#L301
         member _.HandleEventAsync(callback, arg) =
             let taskResult = callback.InvokeAsync(arg)
             let shouldAwaitTask =
@@ -115,6 +115,7 @@ type FunBlazorComponent() as this =
                 task {
                     try
                         do! taskResult
+                        if not this.DisableEventTriggerStateHasChanged then this.ForceRerender()
                     with e when not taskResult.IsCanceled ->
                         raise e
                 }
