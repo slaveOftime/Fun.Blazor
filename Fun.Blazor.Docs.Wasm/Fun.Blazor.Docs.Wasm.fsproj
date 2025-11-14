@@ -7,6 +7,8 @@
 		<BlazorWasmPrerenderingRootComponentType>Fun.Blazor.Docs.Wasm.App.App</BlazorWasmPrerenderingRootComponentType>
 		<BlazorWasmPrerenderingDeleteLoadingContents>true</BlazorWasmPrerenderingDeleteLoadingContents>
 		<WasmEnableWebcil>false</WasmEnableWebcil>
+		<OverrideHtmlAssetPlaceholders>true</OverrideHtmlAssetPlaceholders>
+		<RunAOTCompilation>false</RunAOTCompilation>
 	</PropertyGroup>
 	<ItemGroup>
 		<Compile Include="Types.fs" />
