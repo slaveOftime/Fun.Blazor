@@ -10,8 +10,8 @@ open Fun.Blazor
 open Fun.Blazor.Router
 
 
-let private createTestContext () =
-    let textContext = new TestContext()
+let private createBunitContext () =
+    let textContext = new BunitContext()
 
     textContext.Services.AddScoped<INavigationInterception>(fun _ -> Mock.Of<INavigationInterception>())
     |> ignore
@@ -55,11 +55,11 @@ let ``Giraffe style routes normal cases`` () =
             fun x -> failwith $"No route matched for {x}"
         ]
 
-    use testContext = createTestContext ()
+    use BunitContext = createBunitContext ()
 
     let testRoute url =
-        testContext.Services.GetService<NavigationManager>().NavigateTo(url)
-        let result = testContext.RenderNode route
+        BunitContext.Services.GetService<NavigationManager>().NavigateTo(url)
+        let result = BunitContext.RenderNode route
         result.MarkupMatches(url)
 
     testRoute "/r1"
@@ -107,8 +107,8 @@ let ``Giraffe style routes should work for nested route`` () =
         })
     }
 
-    use testContext = createTestContext ()
-    let result = testContext.RenderNode node
+    use BunitContext = createBunitContext ()
+    let result = BunitContext.RenderNode node
 
     result.Find("#demo1").Click()
     result.MarkupMatches

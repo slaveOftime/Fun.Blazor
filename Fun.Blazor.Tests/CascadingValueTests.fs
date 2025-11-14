@@ -9,8 +9,8 @@ open Bunit
 open Fun.Blazor
 
 
-let private createTestContext () =
-    let textContext = new TestContext()
+let private createBunitContext () =
+    let textContext = new BunitContext()
 
     textContext.Services.AddScoped<INavigationInterception>(fun _ -> Mock.Of<INavigationInterception>())
     |> ignore
@@ -32,7 +32,7 @@ type DemoConsumer'() =
 
 [<Fact>]
 let ``Consume cascading value correctly`` () =
-    let context = createTestContext ()
+    let context = createBunitContext ()
 
     let demo =
         CascadingValue'() {

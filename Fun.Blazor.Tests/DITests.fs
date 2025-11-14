@@ -11,8 +11,8 @@ type DemoService() =
     member val Count = 1 with get, set
 
 
-let private createTestContext () =
-    let textContext = new TestContext()
+let private createBunitContext () =
+    let textContext = new BunitContext()
 
     textContext.Services.AddScoped<DemoService>() |> ignore
 
@@ -21,7 +21,7 @@ let private createTestContext () =
 
 [<Fact>]
 let ``html adaptive tests`` () =
-    let context = createTestContext ()
+    let context = createBunitContext ()
 
     let consumer count =
         html.inject (fun (hook: IComponentHook) ->
@@ -50,7 +50,7 @@ let ``html adaptive tests`` () =
 
 [<Fact>]
 let ``html inject async should work`` () = task {
-    let context = createTestContext ()
+    let context = createBunitContext ()
 
     let node =
         html.inject (fun () -> task {

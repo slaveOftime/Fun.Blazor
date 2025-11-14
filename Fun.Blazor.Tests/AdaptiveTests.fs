@@ -9,8 +9,8 @@ open Bunit
 open Fun.Blazor
 
 
-let private createTestContext () =
-    let textContext = new TestContext()
+let private createBunitContext () =
+    let textContext = new BunitContext()
 
     textContext.Services.AddScoped<INavigationInterception>(fun _ -> Mock.Of<INavigationInterception>())
     |> ignore
@@ -20,7 +20,7 @@ let private createTestContext () =
 
 [<Fact>]
 let ``html adaptive tests`` () =
-    let context = createTestContext ()
+    let context = createBunitContext ()
 
     let store1 = cval 1
     let store2 = cval 1
@@ -50,7 +50,7 @@ let ``html adaptive tests`` () =
 
 [<Fact>]
 let ``html adaptive bind collections tests`` () =
-    let context = createTestContext ()
+    let context = createBunitContext ()
 
     let comp = adapt {
         let! s1 = AList.ofList [ 4; 3 ]
@@ -68,7 +68,7 @@ let ``html adaptive bind collections tests`` () =
 
 [<Fact>]
 let ``html adaptive complex condition tests`` () =
-    let context = createTestContext ()
+    let context = createBunitContext ()
 
     let store1 = cval 1
     let store2 = cval 1

@@ -13,7 +13,7 @@ open Moq
 
 [<Fact>]
 let ``TriggerBuilder should work`` () =
-    let context = new TestContext()
+    let context = new BunitContext()
 
     let result =
         context.RenderNode(
@@ -100,7 +100,7 @@ type LiverCounter() as this =
 
 [<Fact>]
 let ``hxRequestxxx should work`` () =
-    let context = new TestContext()
+    let context = new BunitContext()
     context.Services.AddTransient<IHttpContextAccessor>(fun _ -> Mock.Of<IHttpContextAccessor>()) |> ignore
 
     let result =

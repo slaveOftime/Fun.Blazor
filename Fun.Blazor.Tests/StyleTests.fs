@@ -8,7 +8,7 @@ open Fun.Css
 
 [<Fact>]
 let ``basic style should work``() =
-    let textContext = new TestContext()
+    let textContext = new BunitContext()
     let count = 3
 
     let dom = fragment {
