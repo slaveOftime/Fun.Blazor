@@ -338,7 +338,7 @@ pipeline "test" {
 pipeline "benchmark" {
     description "Benchmark rendering performance"
     stage "run" {
-        workingDir "Benchmark/BenchmarkV2"
+        workingDir "Benchmark/Benchmark"
         run "dotnet run -c Release"
     }
     runIfOnlySpecified
