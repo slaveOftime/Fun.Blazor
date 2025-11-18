@@ -1,7 +1,7 @@
 # Code Generation
 
 ```
-dotnet tool install -g Fun.Blazor.Cli --version 4.0.0
+dotnet tool install -g Fun.Blazor.Cli --version 4.1.1
 ```
 
 Generate CE DSL for a **package** or **project**.
@@ -64,3 +64,81 @@ Generate CE DSL for a **package** or **project**.
             }
         ]
     ```
+
+## A demo workthrough
+
+```bash
+dotnet new install Fun.Blazor.Templates
+dotnet tool install -g Fun.Blazor.Cli --version 4.1.1
+```
+
+```bash
+dotnet new fun-wasm -o FunWasm
+cd FunWasm
+```
+
+```bash
+dotnet add package MudBlazor
+```
+
+Modify the `fsproj` as below:
+
+```text
+- <PackageReference Include="MudBlazor" Version="8.14.0" />
++ <PackageReference Include="MudBlazor" Version="8.14.0" FunBlazor="" />
+```
+
+```bash
+dotnet fun-blazor generate
+```
+
+After it is done, you can follow the MudBlazor official document:
+
+For `Startup.fs`:
+
+```text
++ open MudBlazor.Services
+
++ builder.Services.AddMudServices()
+```
+
+For `wwwroot\index.html```
+
+```text
++ <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet" />
+
++ <script src="_content/MudBlazor/MudBlazor.min.js"></script>
+```
+
+Now you can use it in your `App.fs`:
+
+```fsharp
+[<AutoOpen>]
+module FunWasm.App
+
+open FSharp.Data.Adaptive
+open MudBlazor
+open Fun.Blazor
+
+let app = fragment {
+    MudThemeProvider''
+    adapt {
+        let amount = 1
+        let! count, setCount = cval(1).WithSetter()
+        div {
+            div { $"Here is the count {count}" }
+            MudButton'' {
+                Color Color.Primary
+                Variant Variant.Filled
+                OnClick(fun _ -> setCount (count + amount))
+                "Increase by "
+                amount
+            }
+        }
+    }
+}
+```
+
+```bash
+dotnet run
+```

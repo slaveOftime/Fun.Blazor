@@ -11,7 +11,7 @@
 [![Nuget](https://img.shields.io/nuget/vpre/Fun.Blazor.Templates)](https://www.nuget.org/packages/Fun.Blazor.Templates) 👈 always try to use the latest one.
 
 ```shell
-dotnet new --install Fun.Blazor.Templates::4.1.1
+dotnet new --install Fun.Blazor.Templates::4.2.0
 # We have multiple templates to get you started, you can run this to check
 dotnet new list --tag Fun.Blazor
 # You can try the simplest one:

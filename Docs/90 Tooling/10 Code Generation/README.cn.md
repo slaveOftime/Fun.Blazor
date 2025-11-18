@@ -1,7 +1,7 @@
 # 代码生成
 
 ```
-dotnet tool install -g Fun.Blazor.Cli --version 4.0.0
+dotnet tool install -g Fun.Blazor.Cli --version 4.1.1
 ```
 
 为一个**包**或**项目**生成 CE DSL。
