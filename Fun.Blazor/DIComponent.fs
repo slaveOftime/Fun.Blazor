@@ -282,6 +282,8 @@ type DIComponent<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typ
 
         if initializedTasks <> null then
             for makeTask in initializedTasks do
+                // Prevent task await issue in debug mode for wasm runtime
+                if this.IsWasmRuntime then do! Task.Yield()
                 do! makeTask ()
     }
 
@@ -294,6 +296,8 @@ type DIComponent<'T> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typ
     override _.OnParametersSetAsync() = task {
         if parameterSetTasks <> null then
             for makeTask in parameterSetTasks do
+                // Prevent task await issue in debug mode for wasm runtime
+                if this.IsWasmRuntime then do! Task.Yield()
                 do! makeTask ()
     }
 

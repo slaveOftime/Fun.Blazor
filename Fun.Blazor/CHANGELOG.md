@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [4.1.9] - 2025-11-21
+
+- Fix task await issue for html.inject especially when debugging for OnInitializedAsync
+
 ## [4.1.8] - 2025-11-14
 
 - Fix task await issue for html.inject especially when debugging
