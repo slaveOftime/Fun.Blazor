@@ -701,6 +701,24 @@ type RadzenTableRowBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     inherit RadzenComponentWithChildrenBuilder<'FunBlazorGeneric>()
 
 
+/// Represents a table of contents item.
+type RadzenTocItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit RadzenComponentWithChildrenBuilder<'FunBlazorGeneric>()
+    /// Gets or sets the text displayed in the table of contents.
+    [<CustomOperation("Text")>] member inline _.Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Text" => x)
+    /// Gets or sets the custom content of the item.
+    [<CustomOperation("Template")>] member inline _.Template ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("Template", fragment)
+    /// Gets or sets the custom content of the item.
+    [<CustomOperation("Template")>] member inline _.Template ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("Template", fragment { yield! fragments })
+    /// Gets or sets the custom content of the item.
+    [<CustomOperation("Template")>] member inline _.Template ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("Template", html.text x)
+    /// Gets or sets the custom content of the item.
+    [<CustomOperation("Template")>] member inline _.Template ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("Template", html.text x)
+    /// Gets or sets the custom content of the item.
+    [<CustomOperation("Template")>] member inline _.Template ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("Template", html.text x)
+    /// Gets or sets the CSS selector of the element to scroll to.
+    [<CustomOperation("Selector")>] member inline _.Selector ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Selector" => x)
+
 type RadzenMenuItemWrapperBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit RadzenComponentWithChildrenBuilder<'FunBlazorGeneric>()
     /// Gets or sets the menu item.
@@ -1307,6 +1325,9 @@ type RadzenDropDownBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> 
     /// Gets or sets a callback invoked when rendering each dropdown item.
     /// Use this to customize item attributes, such as adding CSS classes or data attributes based on item properties.
     [<CustomOperation("ItemRender")>] member inline _.ItemRender ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("ItemRender" => (System.Action<Radzen.DropDownItemRenderEventArgs<'TValue>>fn))
+    /// Gets or sets the keyboard key that triggers opening the popup when OpenOnFocus is enabled.
+    /// Default is "Enter".
+    [<CustomOperation("OpenPopupKey")>] member inline _.OpenPopupKey ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("OpenPopupKey" => x)
     /// Gets or sets the maximum number of selected item labels to display in the input before showing a count summary.
     /// When multiple selection is enabled and more items are selected than this value, the input will show "N items selected" instead of listing all labels.
     /// Only applicable when Multiple is true.
@@ -1350,6 +1371,22 @@ type RadzenDropDownDataGridBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGen
     [<CustomOperation("RowRender")>] member inline _.RowRender ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("RowRender" => (System.Action<Radzen.RowRenderEventArgs<System.Object>>fn))
     /// Gets or sets the cell render callback. Use it to set cell attributes.
     [<CustomOperation("CellRender")>] member inline _.CellRender ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("CellRender" => (System.Action<Radzen.DataGridCellRenderEventArgs<System.Object>>fn))
+    /// Gets or sets the load child data callback.
+    [<CustomOperation("LoadChildData")>] member inline _.LoadChildData ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.DataGridLoadChildDataEventArgs<System.Object> -> unit) = render ==> html.callback("LoadChildData", fn)
+    /// Gets or sets the load child data callback.
+    [<CustomOperation("LoadChildData")>] member inline _.LoadChildData ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.DataGridLoadChildDataEventArgs<System.Object> -> Task<unit>) = render ==> html.callbackTask("LoadChildData", fn)
+    /// Gets or sets the column resized callback.
+    [<CustomOperation("ColumnResized")>] member inline _.ColumnResized ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.DataGridColumnResizedEventArgs<System.Object> -> unit) = render ==> html.callback("ColumnResized", fn)
+    /// Gets or sets the column resized callback.
+    [<CustomOperation("ColumnResized")>] member inline _.ColumnResized ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.DataGridColumnResizedEventArgs<System.Object> -> Task<unit>) = render ==> html.callbackTask("ColumnResized", fn)
+    /// Gets or sets the column reordering callback.
+    [<CustomOperation("ColumnReordering")>] member inline _.ColumnReordering ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.DataGridColumnReorderingEventArgs<System.Object> -> unit) = render ==> html.callback("ColumnReordering", fn)
+    /// Gets or sets the column reordering callback.
+    [<CustomOperation("ColumnReordering")>] member inline _.ColumnReordering ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.DataGridColumnReorderingEventArgs<System.Object> -> Task<unit>) = render ==> html.callbackTask("ColumnReordering", fn)
+    /// Gets or sets the column reordered callback.
+    [<CustomOperation("ColumnReordered")>] member inline _.ColumnReordered ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.DataGridColumnReorderedEventArgs<System.Object> -> unit) = render ==> html.callback("ColumnReordered", fn)
+    /// Gets or sets the column reordered callback.
+    [<CustomOperation("ColumnReordered")>] member inline _.ColumnReordered ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.DataGridColumnReorderedEventArgs<System.Object> -> Task<unit>) = render ==> html.callbackTask("ColumnReordered", fn)
     /// Gets or sets the footer template.
     [<CustomOperation("FooterTemplate")>] member inline _.FooterTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("FooterTemplate", fragment)
     /// Gets or sets the footer template.
@@ -1374,6 +1411,9 @@ type RadzenDropDownDataGridBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGen
     [<CustomOperation("OpenOnFocus")>] member inline _.OpenOnFocus ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("OpenOnFocus" =>>> true)
     /// Gets or sets a value indicating whether popup should open on focus. Set to false by default.
     [<CustomOperation("OpenOnFocus")>] member inline _.OpenOnFocus ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("OpenOnFocus" =>>> x)
+    /// Gets or sets the keyboard key that triggers opening the popup when OpenOnFocus is enabled.
+    /// Default is "Enter".
+    [<CustomOperation("OpenPopupKey")>] member inline _.OpenPopupKey ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("OpenPopupKey" => x)
     /// Gets or sets the value template.
     [<CustomOperation("ValueTemplate")>] member inline _.ValueTemplate ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Object -> NodeRenderFragment) = render ==> html.renderFragment("ValueTemplate", fn)
     /// Gets or sets a value indicating DataGrid density.
@@ -5341,18 +5381,30 @@ type EditorDropDownBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
 
 type PopupBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit RadzenComponentBuilder<'FunBlazorGeneric>()
+    /// Determines whether the popup content is rendered only when open.
     [<CustomOperation("Lazy")>] member inline _.Lazy ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Lazy" =>>> true)
+    /// Determines whether the popup content is rendered only when open.
     [<CustomOperation("Lazy")>] member inline _.Lazy ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Lazy" =>>> x)
-    /// Gets or sets a value indicating whether to focus the first focusable HTML element. Set to true by default.
-    [<CustomOperation("AutoFocusFirstElement")>] member inline _.AutoFocusFirstElement ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AutoFocusFirstElement" =>>> true)
-    /// Gets or sets a value indicating whether to focus the first focusable HTML element. Set to true by default.
-    [<CustomOperation("AutoFocusFirstElement")>] member inline _.AutoFocusFirstElement ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("AutoFocusFirstElement" =>>> x)
+    /// Specifies whether to prevent the default action on mouse down.
     [<CustomOperation("PreventDefault")>] member inline _.PreventDefault ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("PreventDefault" =>>> true)
+    /// Specifies whether to prevent the default action on mouse down.
     [<CustomOperation("PreventDefault")>] member inline _.PreventDefault ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("PreventDefault" =>>> x)
+    /// Specifies whether the first element in the popup should be automatically focused.
+    [<CustomOperation("AutoFocusFirstElement")>] member inline _.AutoFocusFirstElement ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AutoFocusFirstElement" =>>> true)
+    /// Specifies whether the first element in the popup should be automatically focused.
+    [<CustomOperation("AutoFocusFirstElement")>] member inline _.AutoFocusFirstElement ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("AutoFocusFirstElement" =>>> x)
+    /// Event callback triggered when the popup is opened.
     [<CustomOperation("Open")>] member inline _.Open ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> unit) = render ==> html.callback("Open", fn)
+    /// Event callback triggered when the popup is opened.
     [<CustomOperation("Open")>] member inline _.Open ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> Task<unit>) = render ==> html.callbackTask("Open", fn)
+    /// Event callback triggered when the popup is closed.
     [<CustomOperation("Close")>] member inline _.Close ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> unit) = render ==> html.callback("Close", fn)
+    /// Event callback triggered when the popup is closed.
     [<CustomOperation("Close")>] member inline _.Close ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> Task<unit>) = render ==> html.callbackTask("Close", fn)
+    /// Specifies whether the popup should close when clicking outside of it.
+    [<CustomOperation("CloseOnClickOutside")>] member inline _.CloseOnClickOutside ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("CloseOnClickOutside" =>>> true)
+    /// Specifies whether the popup should close when clicking outside of it.
+    [<CustomOperation("CloseOnClickOutside")>] member inline _.CloseOnClickOutside ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("CloseOnClickOutside" =>>> x)
 
             
 namespace rec Radzen.Blazor.DslInternals.Blazor
@@ -6444,6 +6496,8 @@ type RadzenDataGridColumnBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneri
     [<CustomOperation("OrderIndex")>] member inline _.OrderIndex ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("OrderIndex" => x)
     /// Gets or sets the sort order.
     [<CustomOperation("SortOrder")>] member inline _.SortOrder ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Radzen.SortOrder>) = render ==> ("SortOrder" => x)
+    /// Gets or sets the sequence of the SortOrders to use when sorting the column interactively.
+    [<CustomOperation("SortOrderSequence")>] member inline _.SortOrderSequence ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Radzen.SortOrder>[]) = render ==> ("SortOrderSequence" => x)
     /// Gets or sets a value indicating whether this RadzenDataGridColumn`1 is visible.
     [<CustomOperation("Visible")>] member inline _.Visible ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Visible" =>>> true)
     /// Gets or sets a value indicating whether this RadzenDataGridColumn`1 is visible.
@@ -6708,6 +6762,8 @@ type RadzenPivotFieldBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :>
     [<CustomOperation("Title")>] member inline _.Title ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
     /// Gets or sets the sort order.
     [<CustomOperation("SortOrder")>] member inline _.SortOrder ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Radzen.SortOrder>) = render ==> ("SortOrder" => x)
+    /// Gets or sets the sequence of the SortOrders to use when sorting the column interactively.
+    [<CustomOperation("SortOrderSequence")>] member inline _.SortOrderSequence ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Radzen.SortOrder>[]) = render ==> ("SortOrderSequence" => x)
     /// Gets or sets a value indicating whether this column is sortable.
     [<CustomOperation("Sortable")>] member inline _.Sortable ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Sortable" =>>> true)
     /// Gets or sets a value indicating whether this column is sortable.
@@ -6929,24 +6985,6 @@ type RadzenTicksBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.As
     [<CustomOperation("LineType")>] member inline _.LineType ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Blazor.LineType) = render ==> ("LineType" => x)
     /// Gets or sets the template.
     [<CustomOperation("Template")>] member inline _.Template ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.Blazor.TickTemplateContext -> NodeRenderFragment) = render ==> html.renderFragment("Template", fn)
-
-/// Represents a table of contents item.
-type RadzenTocItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
-    /// Gets or sets the text displayed in the table of contents.
-    [<CustomOperation("Text")>] member inline _.Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Text" => x)
-    /// Gets or sets the custom content of the item.
-    [<CustomOperation("Template")>] member inline _.Template ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("Template", fragment)
-    /// Gets or sets the custom content of the item.
-    [<CustomOperation("Template")>] member inline _.Template ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("Template", fragment { yield! fragments })
-    /// Gets or sets the custom content of the item.
-    [<CustomOperation("Template")>] member inline _.Template ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("Template", html.text x)
-    /// Gets or sets the custom content of the item.
-    [<CustomOperation("Template")>] member inline _.Template ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("Template", html.text x)
-    /// Gets or sets the custom content of the item.
-    [<CustomOperation("Template")>] member inline _.Template ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("Template", html.text x)
-    /// Gets or sets the CSS selector of the element to scroll to.
-    [<CustomOperation("Selector")>] member inline _.Selector ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Selector" => x)
 
 /// A component which is an item in a RadzenTree
 type RadzenTreeItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -7764,6 +7802,11 @@ module DslCE =
     type RadzenTableRow' 
         /// RadzenTableRow component.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenTableRow>)>] () = inherit RadzenTableRowBuilder<Radzen.Blazor.RadzenTableRow>()
+
+    /// Represents a table of contents item.
+    type RadzenTocItem' 
+        /// Represents a table of contents item.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenTocItem>)>] () = inherit RadzenTocItemBuilder<Radzen.Blazor.RadzenTocItem>()
     type RadzenMenuItemWrapper' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenMenuItemWrapper>)>] () = inherit RadzenMenuItemWrapperBuilder<Radzen.Blazor.RadzenMenuItemWrapper>()
 
     /// Base class of Radzen validator components.
@@ -9371,11 +9414,6 @@ module DslCE =
         /// Tick configuration of IChartAxis. 
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenTicks>)>] () = inherit RadzenTicksBuilder<Radzen.Blazor.RadzenTicks>()
 
-    /// Represents a table of contents item.
-    type RadzenTocItem' 
-        /// Represents a table of contents item.
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Radzen.Blazor.RadzenTocItem>)>] () = inherit RadzenTocItemBuilder<Radzen.Blazor.RadzenTocItem>()
-
     /// A component which is an item in a RadzenTree
     type RadzenTreeItem' 
         /// A component which is an item in a RadzenTree
@@ -9439,6 +9477,7 @@ module DslCEInstances =
     let RadzenTableHeaderCell'' = RadzenTableHeaderCell'()
     let RadzenTableHeaderRow'' = RadzenTableHeaderRow'()
     let RadzenTableRow'' = RadzenTableRow'()
+    let RadzenTocItem'' = RadzenTocItem'()
     let RadzenMenuItemWrapper'' = RadzenMenuItemWrapper'()
     let ValidatorBase'' = ValidatorBase'()
     let RadzenCompareValidator'' = RadzenCompareValidator'()
@@ -9627,7 +9666,6 @@ module DslCEInstances =
     let RadzenTabsItem'' = RadzenTabsItem'()
     let RadzenTheme'' = RadzenTheme'()
     let RadzenTicks'' = RadzenTicks'()
-    let RadzenTocItem'' = RadzenTocItem'()
     let RadzenTreeItem'' = RadzenTreeItem'()
     let RadzenTreeLevel'' = RadzenTreeLevel'()
     let RadzenChartTooltip'' = RadzenChartTooltip'()

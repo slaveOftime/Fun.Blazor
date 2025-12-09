@@ -964,6 +964,12 @@ type MudFormComponentBuilder<'FunBlazorGeneric, 'T, 'U when 'FunBlazorGeneric :>
     [<CustomOperation("RequiredError")>] member inline _.RequiredError ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("RequiredError" => x)
     /// The text displayed if the Error property is true.
     [<CustomOperation("ErrorText")>] member inline _.ErrorText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ErrorText" => x)
+    /// The text displayed if the Error property is true.
+    [<CustomOperation("ErrorText'")>] member inline _.ErrorText' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.String * (System.String -> unit)) = render ==> html.bind("ErrorText", valueFn)
+    /// Occurs when ErrorText has changed.
+    [<CustomOperation("ErrorTextChanged")>] member inline _.ErrorTextChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.String -> unit) = render ==> html.callback("ErrorTextChanged", fn)
+    /// Occurs when ErrorText has changed.
+    [<CustomOperation("ErrorTextChanged")>] member inline _.ErrorTextChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.String -> Task<unit>) = render ==> html.callbackTask("ErrorTextChanged", fn)
     /// Displays an error.
     [<CustomOperation("Error")>] member inline _.Error ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Error" =>>> true)
     /// Displays an error.
@@ -1927,7 +1933,7 @@ type MudColorPickerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     [<CustomOperation("DragEffect")>] member inline _.DragEffect ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("DragEffect" =>>> true)
     /// Continues to update the selected color while the mouse button is down.
     [<CustomOperation("DragEffect")>] member inline _.DragEffect ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("DragEffect" =>>> x)
-    /// The custom icon to dislay for the close button.
+    /// The custom icon to display for the close button.
     [<CustomOperation("CloseIcon")>] member inline _.CloseIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("CloseIcon" => x)
     /// The icon to display for the spectrum mode button.
     [<CustomOperation("SpectrumIcon")>] member inline _.SpectrumIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("SpectrumIcon" => x)
@@ -3072,6 +3078,8 @@ type MudDataGridBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric :> Microsof
     [<CustomOperation("Culture")>] member inline _.Culture ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Globalization.CultureInfo) = render ==> ("Culture" => x)
     /// The content shown for each cell.
     [<CustomOperation("ChildRowContent")>] member inline _.ChildRowContent ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: MudBlazor.CellContext<'T> -> NodeRenderFragment) = render ==> html.renderFragment("ChildRowContent", fn)
+    /// The custom renderer function for child row content.
+    [<CustomOperation("ChildRowRenderer")>] member inline _.ChildRowRenderer ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: MudBlazor.CellContext<'T> -> NodeRenderFragment) = render ==> html.renderFragment("ChildRowRenderer", fn)
     /// The content shown when there are no rows to display.
     [<CustomOperation("NoRecordsContent")>] member inline _.NoRecordsContent ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("NoRecordsContent", fragment)
     /// The content shown when there are no rows to display.
@@ -5307,6 +5315,14 @@ type MudTabPanelBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.As
     [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> unit) = render ==> html.callback("OnClick", fn)
     /// Occurs when this tab is clicked.
     [<CustomOperation("OnClick")>] member inline _.OnClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> Task<unit>) = render ==> html.callbackTask("OnClick", fn)
+    /// Gets or sets the callback that is invoked when a mouse down event occurs.
+    [<CustomOperation("OnMouseDown")>] member inline _.OnMouseDown ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> unit) = render ==> html.callback("OnMouseDown", fn)
+    /// Gets or sets the callback that is invoked when a mouse down event occurs.
+    [<CustomOperation("OnMouseDown")>] member inline _.OnMouseDown ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> Task<unit>) = render ==> html.callbackTask("OnMouseDown", fn)
+    /// Gets or sets the callback that is invoked when a context menu event occurs.
+    [<CustomOperation("OnContextMenu")>] member inline _.OnContextMenu ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> unit) = render ==> html.callback("OnContextMenu", fn)
+    /// Gets or sets the callback that is invoked when a context menu event occurs.
+    [<CustomOperation("OnContextMenu")>] member inline _.OnContextMenu ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> Task<unit>) = render ==> html.callbackTask("OnContextMenu", fn)
     /// The content within this tab's title.
     [<CustomOperation("TabContent")>] member inline _.TabContent ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("TabContent", fragment)
     /// The content within this tab's title.
@@ -6007,6 +6023,8 @@ type ChartTooltipBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.A
     [<CustomOperation("Color")>] member inline _.Color ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Color" => x)
     /// The font size of the Title and Subtitle.
     [<CustomOperation("FontSize")>] member inline _.FontSize ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("FontSize" => x)
+    /// The padding size of the tooltip background in px.
+    [<CustomOperation("PaddingSize")>] member inline _.PaddingSize ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("PaddingSize" => x)
     /// The color of the Title and Subtitle.
     [<CustomOperation("FontColor")>] member inline _.FontColor ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("FontColor" => x)
     /// The width of the border.
