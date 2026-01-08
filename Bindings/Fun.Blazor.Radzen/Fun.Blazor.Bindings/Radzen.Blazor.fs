@@ -1387,6 +1387,14 @@ type RadzenDropDownDataGridBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGen
     [<CustomOperation("ColumnReordered")>] member inline _.ColumnReordered ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.DataGridColumnReorderedEventArgs<System.Object> -> unit) = render ==> html.callback("ColumnReordered", fn)
     /// Gets or sets the column reordered callback.
     [<CustomOperation("ColumnReordered")>] member inline _.ColumnReordered ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.DataGridColumnReorderedEventArgs<System.Object> -> Task<unit>) = render ==> html.callbackTask("ColumnReordered", fn)
+    /// Gets or sets the callback invoked when the user right-clicks the component.
+    /// Commonly used with ContextMenuService to display context menus.
+    /// Receives mouse event arguments containing click position.
+    [<CustomOperation("ContextMenuDataGrid")>] member inline _.ContextMenuDataGrid ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> unit) = render ==> html.callback("ContextMenuDataGrid", fn)
+    /// Gets or sets the callback invoked when the user right-clicks the component.
+    /// Commonly used with ContextMenuService to display context menus.
+    /// Receives mouse event arguments containing click position.
+    [<CustomOperation("ContextMenuDataGrid")>] member inline _.ContextMenuDataGrid ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Microsoft.AspNetCore.Components.Web.MouseEventArgs -> Task<unit>) = render ==> html.callbackTask("ContextMenuDataGrid", fn)
     /// Gets or sets the footer template.
     [<CustomOperation("FooterTemplate")>] member inline _.FooterTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("FooterTemplate", fragment)
     /// Gets or sets the footer template.
@@ -1687,6 +1695,14 @@ open Radzen.Blazor.DslInternals
 /// Common uses include phone numbers, dates, credit cards, SSN, postal codes, or any fixed-format data entry. The mask helps prevent input errors and improves data consistency.
 type RadzenMaskBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FormComponentWithAutoCompleteBuilder<'FunBlazorGeneric, System.String>()
+    /// Gets or sets whether the component should update the bound value immediately as the user types (oninput event),
+    /// rather than waiting for the input to lose focus (onchange event).
+    /// This enables real-time value updates but may trigger more frequent change events.
+    [<CustomOperation("Immediate")>] member inline _.Immediate ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Immediate" =>>> true)
+    /// Gets or sets whether the component should update the bound value immediately as the user types (oninput event),
+    /// rather than waiting for the input to lose focus (onchange event).
+    /// This enables real-time value updates but may trigger more frequent change events.
+    [<CustomOperation("Immediate")>] member inline _.Immediate ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Immediate" =>>> x)
     /// Gets or sets whether the masked input is read-only and cannot be edited.
     /// When true, displays the formatted value but prevents user input.
     [<CustomOperation("ReadOnly")>] member inline _.ReadOnly ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ReadOnly" =>>> true)
@@ -1717,6 +1733,14 @@ type RadzenMaskBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.Asp
 /// and can be configured with or without the up/down buttons. Handles overflow protection and respects the numeric type's natural limits.
 type RadzenNumericBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit FormComponentWithAutoCompleteBuilder<'FunBlazorGeneric, 'TValue>()
+    /// Gets or sets whether the component should update the bound value immediately as the user types (oninput event),
+    /// rather than waiting for the input to lose focus (onchange event).
+    /// This enables real-time value updates but may trigger more frequent change events.
+    [<CustomOperation("Immediate")>] member inline _.Immediate ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Immediate" =>>> true)
+    /// Gets or sets whether the component should update the bound value immediately as the user types (oninput event),
+    /// rather than waiting for the input to lose focus (onchange event).
+    /// This enables real-time value updates but may trigger more frequent change events.
+    [<CustomOperation("Immediate")>] member inline _.Immediate ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Immediate" =>>> x)
     /// Gets or sets additional HTML attributes to be applied to the underlying input element.
     /// This allows passing custom attributes like data-* attributes, aria-* attributes, or other HTML attributes directly to the input.
     [<CustomOperation("InputAttributes")>] member inline _.InputAttributes ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>) = render ==> ("InputAttributes" => x)
@@ -2430,6 +2454,12 @@ type RadzenDataGridBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> M
     [<CustomOperation("ShowExpandColumn")>] member inline _.ShowExpandColumn ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowExpandColumn" =>>> true)
     /// Gets or sets whether the expandable indicator column is visible.
     [<CustomOperation("ShowExpandColumn")>] member inline _.ShowExpandColumn ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowExpandColumn" =>>> x)
+    /// Gets or sets a value indicating whether all rows can be expanded at once from the header.
+    /// Setting is only available when ExpandMode is set to DataGridExpandMode.Multiple.
+    [<CustomOperation("ShowExpandAll")>] member inline _.ShowExpandAll ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowExpandAll" =>>> true)
+    /// Gets or sets a value indicating whether all rows can be expanded at once from the header.
+    /// Setting is only available when ExpandMode is set to DataGridExpandMode.Multiple.
+    [<CustomOperation("ShowExpandAll")>] member inline _.ShowExpandAll ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowExpandAll" =>>> x)
     /// Gets or sets the edit mode.
     [<CustomOperation("EditMode")>] member inline _.EditMode ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.DataGridEditMode) = render ==> ("EditMode" => x)
     /// Gets or set the filter icon to use.
@@ -2698,6 +2728,10 @@ type RadzenDataGridBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> M
     [<CustomOperation("ShowGroupExpandColumn")>] member inline _.ShowGroupExpandColumn ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowGroupExpandColumn" =>>> true)
     /// Gets or sets a value indicating whether to show group visibility column
     [<CustomOperation("ShowGroupExpandColumn")>] member inline _.ShowGroupExpandColumn ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowGroupExpandColumn" =>>> x)
+    /// Gets or sets the title attribute of the expand all button.
+    [<CustomOperation("ExpandAllTitle")>] member inline _.ExpandAllTitle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ExpandAllTitle" => x)
+    /// Gets or sets the title attribute of the collapse all button.
+    [<CustomOperation("CollapseAllTitle")>] member inline _.CollapseAllTitle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("CollapseAllTitle" => x)
     /// Gets or sets the grid lines.
     [<CustomOperation("GridLines")>] member inline _.GridLines ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.DataGridGridLines) = render ==> ("GridLines" => x)
     /// Gets or sets the ability to automatically goto the first page when sorting is changed.
@@ -6506,6 +6540,12 @@ type RadzenDataGridColumnBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneri
     [<CustomOperation("HeaderTooltip")>] member inline _.HeaderTooltip ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("HeaderTooltip" => x)
     /// Gets or sets the title.
     [<CustomOperation("Title")>] member inline _.Title ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
+    /// Indicates whether the column should automatically use the Name
+    /// of the bound property as the header.
+    [<CustomOperation("UseDisplayName")>] member inline _.UseDisplayName ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("UseDisplayName" =>>> true)
+    /// Indicates whether the column should automatically use the Name
+    /// of the bound property as the header.
+    [<CustomOperation("UseDisplayName")>] member inline _.UseDisplayName ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("UseDisplayName" =>>> x)
     /// Gets or sets the title in column picker.
     /// Value of Title is used when ColumnPickerTitle is not set
     [<CustomOperation("ColumnPickerTitle")>] member inline _.ColumnPickerTitle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ColumnPickerTitle" => x)

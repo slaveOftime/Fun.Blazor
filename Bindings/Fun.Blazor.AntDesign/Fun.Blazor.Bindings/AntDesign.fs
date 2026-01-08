@@ -467,6 +467,7 @@ type ButtonBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetC
     [<CustomOperation("Ghost")>] member inline _.Ghost ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Ghost" =>>> x)
     [<CustomOperation("HtmlType")>] member inline _.HtmlType ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("HtmlType" => x)
     [<CustomOperation("Icon")>] member inline _.Icon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Icon" => x)
+    [<CustomOperation("IconFont")>] member inline _.IconFont ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("IconFont" => x)
     [<CustomOperation("Loading")>] member inline _.Loading ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Loading" =>>> true)
     [<CustomOperation("Loading")>] member inline _.Loading ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Loading" =>>> x)
     [<CustomOperation("AutoLoading")>] member inline _.AutoLoading ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AutoLoading" =>>> true)
