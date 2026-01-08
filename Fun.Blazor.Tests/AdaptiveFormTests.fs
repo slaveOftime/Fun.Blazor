@@ -5,6 +5,9 @@ open Fun.Blazor
 
 type DemoForm = { Name: string; Age: int }
 
+let private ageValidators = [ Validators.maxValue 20 (sprintf "age cannot be bigger than %d") ]
+
+
 [<Fact>]
 let ``adaptive form state tests`` () =
     let data = { Name = "n1"; Age = 20 }
@@ -35,9 +38,7 @@ let ``adaptive sub form state tests`` () =
     use form = new AdaptiveForm<BigForm, string>(data)
 
     let subForm =
-        form
-            .GetSubForm(fun x -> x.Demo)
-            .AddValidators((fun x -> x.Age), false, [ Validators.maxValue 20 (sprintf "age cannot be bigger than %d") ])
+        form.GetSubForm(fun x -> x.Demo).AddValidators((fun x -> x.Age), false, ageValidators)
 
 
     Assert.Equal<string>([], form.GetErrors())
@@ -69,3 +70,31 @@ let ``adaptive sub form state tests`` () =
     Assert.Equal(false, form.UseHasChanges().Value)
 
     Assert.Equal({| Timeout = 10 |}, form.GetValue<{| Timeout: int |}>())
+
+
+[<Fact>]
+let ``adaptive form lazyValidate test`` () =
+    let data = { Name = "n1"; Age = 30 }
+
+    use form =
+        (new AdaptiveForm<DemoForm, string>(data)).AddValidators((fun x -> x.Age), false, ageValidators)
+    Assert.Equal(1, form.GetErrors().Length)
+
+    use form =
+        (new AdaptiveForm<DemoForm, string>(data, lazyValidate = true)).AddValidators((fun x -> x.Age), false, ageValidators)
+    Assert.Equal(0, form.GetErrors().Length)
+
+
+[<Fact>]
+let ``adaptive sub form lazyValidate test`` () =
+    let data = { Timeout = 10; Demo = { Name = "n1"; Age = 30 } }
+
+    use form = new AdaptiveForm<BigForm, string>(data)
+    let _ =
+        form.GetSubForm(fun x -> x.Demo).AddValidators((fun x -> x.Age), false, ageValidators)
+    Assert.Equal(1, form.GetErrors().Length)
+
+    use form = new AdaptiveForm<BigForm, string>(data, lazyValidate = true)
+    let _ =
+        form.GetSubForm(fun x -> x.Demo).AddValidators((fun x -> x.Age), false, ageValidators)
+    Assert.Equal(0, form.GetErrors().Length)
