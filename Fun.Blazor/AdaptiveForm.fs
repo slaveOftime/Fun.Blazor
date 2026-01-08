@@ -19,9 +19,11 @@ type internal IAdaptiveForm =
     /// Normally the type is already konwn, but if you want to get a different type, you can pass it here.
     abstract member GetValueObj: ?otherType: Type -> obj
 
-
-type AdaptiveForm<'T, 'Error>(defaultValue: 'T) as this =
+/// By default, when call AddValidators, it will trigger validation immediately.
+/// But with lazyValidate = true, you can trun it off, so only the related field value changed will trigger the validation.
+type AdaptiveForm<'T, 'Error>(defaultValue: 'T, ?lazyValidate: bool) as this =
     let ty = typeof<'T>
+    let lazyValidate' = defaultArg lazyValidate false
 
     let getProps ty =
         if FSharp.Reflection.FSharpType.IsRecord ty then
@@ -88,7 +90,11 @@ type AdaptiveForm<'T, 'Error>(defaultValue: 'T) as this =
                 |> Option.defaultValue []
                 |> errors.[name].Publish
 
-        field.AddCallback(unbox<'Prop> >> validate) |> disposes.Add
+        if lazyValidate' then
+            field.AddLazyCallback(unbox<'Prop> >> validate)
+        else
+            field.AddCallback(unbox<'Prop> >> validate)
+        |> disposes.Add
 
         this
 
@@ -169,7 +175,7 @@ type AdaptiveForm<'T, 'Error>(defaultValue: 'T) as this =
     /// Use this to create a sub form for complex type. The loading/errors/changes will sync to the root form. And all the resource will be cleaned together with root form.
     /// When you use this you should not call UseFieldXXX for the same property, because the sub form is intend to be lazy instead of updating the field every time the sub fields are changed.
     /// Once you called this, the sub form will be the single truth of the source for this field.
-    member _.GetSubForm(propSelector: Expression<Func<'T, 'Prop>>, ?mapError: 'SubError -> 'Error) =
+    member _.GetSubForm(propSelector: Expression<Func<'T, 'Prop>>, ?mapError: 'SubError -> 'Error, ?lazyValidate) =
         let mapError = defaultArg mapError unbox<'Error>
 
         let fieldName = getExpressionName propSelector
@@ -179,7 +185,8 @@ type AdaptiveForm<'T, 'Error>(defaultValue: 'T) as this =
             subForms[fieldName] |> unbox
 
         else
-            let subForm = new AdaptiveForm<'Prop, 'SubError>(unbox<'Prop> field.Value)
+            let subForm =
+                new AdaptiveForm<'Prop, 'SubError>(unbox<'Prop> field.Value, lazyValidate = defaultArg lazyValidate lazyValidate')
 
             disposes.AddRange [|
                 subForm :> IDisposable
@@ -237,8 +244,8 @@ type AdaptiveForm<'T, 'Error>(defaultValue: 'T) as this =
 type AdaptiveFormExtensions =
     /// Create an adaptive form with default value, and dispose it after the component is disposed.
     [<Extension>]
-    static member UseAdaptiveForm<'T, 'Error>(this: IComponentHook, defaultValue) =
-        let form = new AdaptiveForm<'T, 'Error>(defaultValue)
+    static member UseAdaptiveForm<'T, 'Error>(this: IComponentHook, defaultValue, ?lazyValidate) =
+        let form = new AdaptiveForm<'T, 'Error>(defaultValue, ?lazyValidate = lazyValidate)
         this.AddDispose form
         form
 

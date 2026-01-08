@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [4.1.10] - 2026-01-08
+
+- Support `lazyValidate` for AdaptiveForm and UseAdaptiveForm
+
 ## [4.1.9] - 2025-11-21
 
 - Fix task await issue for html.inject especially when debugging for OnInitializedAsync
