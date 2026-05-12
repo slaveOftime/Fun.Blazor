@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+- Document trailing-apostrophe DSL naming convention (`html'`, `class'`, `type'`)
+
 ## [4.1.10] - 2026-01-08
 
 - Support `lazyValidate` for AdaptiveForm and UseAdaptiveForm

@@ -14,6 +14,13 @@ open Microsoft.AspNetCore.Components.Web
 #endif
 
 
+/// Static helpers for building Fun.Blazor render fragments, such as
+/// <c>html.raw</c>, <c>html.inject</c>, <c>html.fragment</c>, <c>html.blazor</c>,
+/// and others.
+///
+/// Note: this class does not represent the <c>&lt;html&gt;</c> root element.
+/// For that element CE, use <c>html'</c> (apostrophe-escaped to disambiguate
+/// from this class). See README for the naming convention.
 type html() =
 
     /// Helper method to create an empty node
