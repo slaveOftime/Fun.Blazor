@@ -63,6 +63,33 @@ type CountPage() =
     }
 ```
 
+## Naming convention: trailing apostrophe
+
+Some DSL names would collide with F# keywords or with other identifiers in scope.
+The Fun.Blazor DSL disambiguates those with a trailing apostrophe:
+
+- `class'` — sets the `class` attribute (`class` is an F# keyword)
+- `type'` — sets the `type` attribute (`type` is an F# keyword)
+- `html'` — the `<html>` root element CE (the bare `html` is a static utility
+  class that owns helpers such as `html.raw`, `html.inject`, `html.fragment`)
+
+So a full document is authored as:
+
+```fsharp
+fragment {
+    html.raw "<!DOCTYPE html>"
+    html' {
+        lang "en"
+        head { title { "My app" } }
+        body { ... }
+    }
+}
+```
+
+Writing the bare `html { ... }` instead produces
+`FS0501: The object constructor 'html' takes 0 argument(s) but is here given 1`
+because F# resolves the bare name to the static class above.
+
 ## Local development
 
 You can run **dotnet fsi build.fsx -- -h** to check what is available to help you get started.
