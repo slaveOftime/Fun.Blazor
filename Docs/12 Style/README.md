@@ -120,7 +120,7 @@ That would produce something like
 
 ## Sharing Inline Styles Globally
 
-There are some cases where you'd like yo have certain styles available for any element you can also create an extension operation method to create something to reuse.
+There are some cases where you'd like to have certain styles available for any element. You can also create an extension operation method to create something to reuse.
 
 We'll add a couple of "stacks" to our styles using flexbox, for this we have to extend the style builder in Fun.Blazor.
 
