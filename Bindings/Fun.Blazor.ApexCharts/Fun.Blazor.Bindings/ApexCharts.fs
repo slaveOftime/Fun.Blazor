@@ -23,10 +23,9 @@ type ApexChartBuilder<'FunBlazorGeneric, 'TItem when 'TItem : not struct and 'Fu
     [<CustomOperation("Width")>] member inline _.Width ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Object) = render ==> ("Width" => x)
     /// Height of the chart. The default value 'auto' is calculated based on the golden ratio 1.618 which roughly translates to a 16:10 aspect ratio. Examples:
     /// 
-    /// 
     /// height: 400 
     /// height: '400px' 
-    /// height: '100%' 
+    /// height: '100%'
     [<CustomOperation("Height")>] member inline _.Height ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Object) = render ==> ("Height" => x)
     /// Fires when user clicks on the x-axis labels.
     [<CustomOperation("OnXAxisLabelClick")>] member inline _.OnXAxisLabelClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.XAxisLabelClicked<'TItem> -> unit) = render ==> html.callback("OnXAxisLabelClick", fn)
@@ -276,6 +275,7 @@ type ApexChartTooltipBuilder<'FunBlazorGeneric, 'TItem when 'TItem : not struct 
     /// Tooltip allows you to preview data when user hovers over the chart area.
     [<CustomOperation("ApexTooltip")>] member inline _.ApexTooltip ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.HoverData<'TItem> -> NodeRenderFragment) = render ==> html.renderFragment("ApexTooltip", fn)
     [<CustomOperation("Data")>] member inline _.Data ([<InlineIfLambda>] render: AttrRenderFragment, x: ApexCharts.HoverData<'TItem>) = render ==> ("Data" => x)
+    /// Represents a reference to a JavaScript object.
     [<CustomOperation("JsApexchart")>] member inline _.JsApexchart ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.JSInterop.IJSObjectReference) = render ==> ("JsApexchart" => x)
 
             
@@ -294,47 +294,47 @@ module DslCE =
     /// Main component to create an Apex chart in Blazor
     type ApexChart'<'TItem when 'TItem : not struct> 
         /// Main component to create an Apex chart in Blazor
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<ApexCharts.ApexChart<_>>)>] () = inherit ApexChartBuilder<ApexCharts.ApexChart<'TItem>, 'TItem>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "ApexCharts.ApexChart`1", "Blazor-ApexCharts")>] () = inherit ApexChartBuilder<ApexCharts.ApexChart<'TItem>, 'TItem>()
 
     /// Component to create a single-value RadialBar chart in Blazor
     type ApexGauge' 
         /// Component to create a single-value RadialBar chart in Blazor
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<ApexCharts.ApexGauge>)>] () = inherit ApexGaugeBuilder<ApexCharts.ApexGauge>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "ApexCharts.ApexGauge", "Blazor-ApexCharts")>] () = inherit ApexGaugeBuilder<ApexCharts.ApexGauge>()
 
     /// Base class to create a data series for a chart
     type ApexBaseSeries'<'TItem when 'TItem : not struct> 
         /// Base class to create a data series for a chart
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<ApexCharts.ApexBaseSeries<_>>)>] () = inherit ApexBaseSeriesBuilder<ApexCharts.ApexBaseSeries<'TItem>, 'TItem>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "ApexCharts.ApexBaseSeries`1", "Blazor-ApexCharts")>] () = inherit ApexBaseSeriesBuilder<ApexCharts.ApexBaseSeries<'TItem>, 'TItem>()
 
     /// Component to create a BoxPlot data series in Blazor
     type ApexBoxPlotSeries'<'TItem when 'TItem : not struct> 
         /// Component to create a BoxPlot data series in Blazor
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<ApexCharts.ApexBoxPlotSeries<_>>)>] () = inherit ApexBoxPlotSeriesBuilder<ApexCharts.ApexBoxPlotSeries<'TItem>, 'TItem>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "ApexCharts.ApexBoxPlotSeries`1", "Blazor-ApexCharts")>] () = inherit ApexBoxPlotSeriesBuilder<ApexCharts.ApexBoxPlotSeries<'TItem>, 'TItem>()
 
     /// Component to create a Bubble data series in Blazor
     type ApexBubbleSeries'<'TItem when 'TItem : not struct> 
         /// Component to create a Bubble data series in Blazor
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<ApexCharts.ApexBubbleSeries<_>>)>] () = inherit ApexBubbleSeriesBuilder<ApexCharts.ApexBubbleSeries<'TItem>, 'TItem>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "ApexCharts.ApexBubbleSeries`1", "Blazor-ApexCharts")>] () = inherit ApexBubbleSeriesBuilder<ApexCharts.ApexBubbleSeries<'TItem>, 'TItem>()
 
     /// Component to create a Candlestick data series in Blazor
     type ApexCandleSeries'<'TItem when 'TItem : not struct> 
         /// Component to create a Candlestick data series in Blazor
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<ApexCharts.ApexCandleSeries<_>>)>] () = inherit ApexCandleSeriesBuilder<ApexCharts.ApexCandleSeries<'TItem>, 'TItem>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "ApexCharts.ApexCandleSeries`1", "Blazor-ApexCharts")>] () = inherit ApexCandleSeriesBuilder<ApexCharts.ApexCandleSeries<'TItem>, 'TItem>()
 
     /// Component to create various data series types in Blazor
     type ApexPointSeries'<'TItem when 'TItem : not struct> 
         /// Component to create various data series types in Blazor
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<ApexCharts.ApexPointSeries<_>>)>] () = inherit ApexPointSeriesBuilder<ApexCharts.ApexPointSeries<'TItem>, 'TItem>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "ApexCharts.ApexPointSeries`1", "Blazor-ApexCharts")>] () = inherit ApexPointSeriesBuilder<ApexCharts.ApexPointSeries<'TItem>, 'TItem>()
 
     /// Component to create a RangeArea data series in Blazor
     type ApexRangeAreaSeries'<'TItem when 'TItem : not struct> 
         /// Component to create a RangeArea data series in Blazor
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<ApexCharts.ApexRangeAreaSeries<_>>)>] () = inherit ApexRangeAreaSeriesBuilder<ApexCharts.ApexRangeAreaSeries<'TItem>, 'TItem>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "ApexCharts.ApexRangeAreaSeries`1", "Blazor-ApexCharts")>] () = inherit ApexRangeAreaSeriesBuilder<ApexCharts.ApexRangeAreaSeries<'TItem>, 'TItem>()
 
     /// Component to create a RangeBar data series in Blazor
     type ApexRangeSeries'<'TItem when 'TItem : not struct> 
         /// Component to create a RangeBar data series in Blazor
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<ApexCharts.ApexRangeSeries<_>>)>] () = inherit ApexRangeSeriesBuilder<ApexCharts.ApexRangeSeries<'TItem>, 'TItem>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "ApexCharts.ApexRangeSeries`1", "Blazor-ApexCharts")>] () = inherit ApexRangeSeriesBuilder<ApexCharts.ApexRangeSeries<'TItem>, 'TItem>()
 
 [<AutoOpen>]
 module DslCEInstances =
@@ -364,7 +364,7 @@ module DslCE =
     /// Component for .Net Tooltip
     type ApexChartTooltip'<'TItem when 'TItem : not struct> 
         /// Component for .Net Tooltip
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<ApexCharts.Internal.ApexChartTooltip<_>>)>] () = inherit ApexChartTooltipBuilder<ApexCharts.Internal.ApexChartTooltip<'TItem>, 'TItem>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "ApexCharts.Internal.ApexChartTooltip`1", "Blazor-ApexCharts")>] () = inherit ApexChartTooltipBuilder<ApexCharts.Internal.ApexChartTooltip<'TItem>, 'TItem>()
 
 [<AutoOpen>]
 module DslCEInstances =

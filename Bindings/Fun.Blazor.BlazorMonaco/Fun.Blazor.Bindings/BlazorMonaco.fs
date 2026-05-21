@@ -215,11 +215,11 @@ module DslCE =
     open System.Diagnostics.CodeAnalysis
     open BlazorMonaco.DslInternals
 
-    type Editor' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<BlazorMonaco.Editor.Editor>)>] () = inherit EditorBuilder<BlazorMonaco.Editor.Editor>()
-    type CodeEditor' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<BlazorMonaco.Editor.CodeEditor>)>] () = inherit CodeEditorBuilder<BlazorMonaco.Editor.CodeEditor>()
-    type StandaloneCodeEditor' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<BlazorMonaco.Editor.StandaloneCodeEditor>)>] () = inherit StandaloneCodeEditorBuilder<BlazorMonaco.Editor.StandaloneCodeEditor>()
-    type DiffEditor' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<BlazorMonaco.Editor.DiffEditor>)>] () = inherit DiffEditorBuilder<BlazorMonaco.Editor.DiffEditor>()
-    type StandaloneDiffEditor' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<BlazorMonaco.Editor.StandaloneDiffEditor>)>] () = inherit StandaloneDiffEditorBuilder<BlazorMonaco.Editor.StandaloneDiffEditor>()
+    type Editor' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "BlazorMonaco.Editor.Editor", "BlazorMonaco")>] () = inherit EditorBuilder<BlazorMonaco.Editor.Editor>()
+    type CodeEditor' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "BlazorMonaco.Editor.CodeEditor", "BlazorMonaco")>] () = inherit CodeEditorBuilder<BlazorMonaco.Editor.CodeEditor>()
+    type StandaloneCodeEditor' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "BlazorMonaco.Editor.StandaloneCodeEditor", "BlazorMonaco")>] () = inherit StandaloneCodeEditorBuilder<BlazorMonaco.Editor.StandaloneCodeEditor>()
+    type DiffEditor' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "BlazorMonaco.Editor.DiffEditor", "BlazorMonaco")>] () = inherit DiffEditorBuilder<BlazorMonaco.Editor.DiffEditor>()
+    type StandaloneDiffEditor' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "BlazorMonaco.Editor.StandaloneDiffEditor", "BlazorMonaco")>] () = inherit StandaloneDiffEditorBuilder<BlazorMonaco.Editor.StandaloneDiffEditor>()
 
 [<AutoOpen>]
 module DslCEInstances =

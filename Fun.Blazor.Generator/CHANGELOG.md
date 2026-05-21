@@ -1,5 +1,9 @@
 # Changelog
 
+## [4.1.1] - 2026-05-21
+
+- Use "DynamicDependency(DynamicallyAccessedMemberTypes.All, "namespace.name", "assemblyName") to simplify things
+
 ## [4.1.0] - 2024-11-14
 
 - Auto generate ILLink.Substitutions.xml for bindings

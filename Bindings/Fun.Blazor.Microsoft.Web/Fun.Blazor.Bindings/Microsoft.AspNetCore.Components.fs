@@ -251,6 +251,10 @@ type InputCheckboxBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
 
 /// An input component for editing date values.
 /// The supported types for the date value are:
+/// DateTime
+/// DateTimeOffset
+/// DateOnly
+/// TimeOnly
 type InputDateBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit Forms.InputBaseBuilder<'FunBlazorGeneric, 'TValue>()
     /// Gets or sets the type of HTML input to be rendered.
@@ -344,7 +348,7 @@ module DslCE =
     /// A base class for error boundary components.
     type ErrorBoundaryBase' 
         /// A base class for error boundary components.
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.ErrorBoundaryBase>)>] () = inherit ErrorBoundaryBaseBuilder<Microsoft.AspNetCore.Components.ErrorBoundaryBase>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Microsoft.AspNetCore.Components.ErrorBoundaryBase", "Microsoft.AspNetCore.Components")>] () = inherit ErrorBoundaryBaseBuilder<Microsoft.AspNetCore.Components.ErrorBoundaryBase>()
 
 [<AutoOpen>]
 module DslCEInstances =
@@ -366,22 +370,22 @@ module DslCE =
     /// Captures errors thrown from its child content.
     type ErrorBoundary' 
         /// Captures errors thrown from its child content.
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Web.ErrorBoundary>)>] () = inherit ErrorBoundaryBuilder<Microsoft.AspNetCore.Components.Web.ErrorBoundary>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Microsoft.AspNetCore.Components.Web.ErrorBoundary", "Microsoft.AspNetCore.Components.Web")>] () = inherit ErrorBoundaryBuilder<Microsoft.AspNetCore.Components.Web.ErrorBoundary>()
 
     /// Provides content to HeadOutlet components.
     type HeadContent' 
         /// Provides content to HeadOutlet components.
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Web.HeadContent>)>] () = inherit HeadContentBuilder<Microsoft.AspNetCore.Components.Web.HeadContent>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Microsoft.AspNetCore.Components.Web.HeadContent", "Microsoft.AspNetCore.Components.Web")>] () = inherit HeadContentBuilder<Microsoft.AspNetCore.Components.Web.HeadContent>()
 
     /// Renders content provided by HeadContent components.
     type HeadOutlet' 
         /// Renders content provided by HeadContent components.
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Web.HeadOutlet>)>] () = inherit HeadOutletBuilder<Microsoft.AspNetCore.Components.Web.HeadOutlet>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Microsoft.AspNetCore.Components.Web.HeadOutlet", "Microsoft.AspNetCore.Components.Web")>] () = inherit HeadOutletBuilder<Microsoft.AspNetCore.Components.Web.HeadOutlet>()
 
     /// Enables rendering an HTML <title> to a HeadOutlet component.
     type PageTitle' 
         /// Enables rendering an HTML <title> to a HeadOutlet component.
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Web.PageTitle>)>] () = inherit PageTitleBuilder<Microsoft.AspNetCore.Components.Web.PageTitle>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Microsoft.AspNetCore.Components.Web.PageTitle", "Microsoft.AspNetCore.Components.Web")>] () = inherit PageTitleBuilder<Microsoft.AspNetCore.Components.Web.PageTitle>()
 
 [<AutoOpen>]
 module DslCEInstances =
@@ -410,14 +414,14 @@ module DslCE =
         /// After navigating from one page to another, sets focus to an element
         /// matching a CSS selector. This can be used to build an accessible
         /// navigation system compatible with screen readers.
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Routing.FocusOnNavigate>)>] () = inherit FocusOnNavigateBuilder<Microsoft.AspNetCore.Components.Routing.FocusOnNavigate>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Microsoft.AspNetCore.Components.Routing.FocusOnNavigate", "Microsoft.AspNetCore.Components.Web")>] () = inherit FocusOnNavigateBuilder<Microsoft.AspNetCore.Components.Routing.FocusOnNavigate>()
 
     /// A component that renders an anchor tag, automatically toggling its 'active'
     /// class based on whether its 'href' matches the current URI.
     type NavLink' 
         /// A component that renders an anchor tag, automatically toggling its 'active'
         /// class based on whether its 'href' matches the current URI.
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Routing.NavLink>)>] () = inherit NavLinkBuilder<Microsoft.AspNetCore.Components.Routing.NavLink>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Microsoft.AspNetCore.Components.Routing.NavLink", "Microsoft.AspNetCore.Components.Web")>] () = inherit NavLinkBuilder<Microsoft.AspNetCore.Components.Routing.NavLink>()
 
 [<AutoOpen>]
 module DslCEInstances =
@@ -440,7 +444,7 @@ module DslCE =
     /// Provides functionality for rendering a virtualized list of items.
     type Virtualize'<'TItem> 
         /// Provides functionality for rendering a virtualized list of items.
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Web.Virtualization.Virtualize<_>>)>] () = inherit VirtualizeBuilder<Microsoft.AspNetCore.Components.Web.Virtualization.Virtualize<'TItem>, 'TItem>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Microsoft.AspNetCore.Components.Web.Virtualization.Virtualize`1", "Microsoft.AspNetCore.Components.Web")>] () = inherit VirtualizeBuilder<Microsoft.AspNetCore.Components.Web.Virtualization.Virtualize<'TItem>, 'TItem>()
 
 [<AutoOpen>]
 module DslCEInstances =
@@ -462,12 +466,12 @@ module DslCE =
     /// Renders a form element that cascades an EditContext to descendants.
     type EditForm' 
         /// Renders a form element that cascades an EditContext to descendants.
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Forms.EditForm>)>] () = inherit EditFormBuilder<Microsoft.AspNetCore.Components.Forms.EditForm>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Microsoft.AspNetCore.Components.Forms.EditForm", "Microsoft.AspNetCore.Components.Web")>] () = inherit EditFormBuilder<Microsoft.AspNetCore.Components.Forms.EditForm>()
 
     /// A component used for editing a value of type .
     type Editor'<'T> 
         /// A component used for editing a value of type .
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Forms.Editor<_>>)>] () = inherit EditorBuilder<Microsoft.AspNetCore.Components.Forms.Editor<'T>, 'T>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Microsoft.AspNetCore.Components.Forms.Editor`1", "Microsoft.AspNetCore.Components.Web")>] () = inherit EditorBuilder<Microsoft.AspNetCore.Components.Forms.Editor<'T>, 'T>()
 
     /// A base class for form input components. This base class automatically
     /// integrates with an EditContext, which must be supplied
@@ -476,71 +480,79 @@ module DslCE =
         /// A base class for form input components. This base class automatically
         /// integrates with an EditContext, which must be supplied
         /// as a cascading parameter.
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Forms.InputBase<_>>)>] () = inherit InputBaseBuilder<Microsoft.AspNetCore.Components.Forms.InputBase<'TValue>, 'TValue>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Microsoft.AspNetCore.Components.Forms.InputBase`1", "Microsoft.AspNetCore.Components.Web")>] () = inherit InputBaseBuilder<Microsoft.AspNetCore.Components.Forms.InputBase<'TValue>, 'TValue>()
 
     /// An input component for editing Boolean values.
     type InputCheckbox' 
         /// An input component for editing Boolean values.
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Forms.InputCheckbox>)>] () = inherit InputCheckboxBuilder<Microsoft.AspNetCore.Components.Forms.InputCheckbox>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Microsoft.AspNetCore.Components.Forms.InputCheckbox", "Microsoft.AspNetCore.Components.Web")>] () = inherit InputCheckboxBuilder<Microsoft.AspNetCore.Components.Forms.InputCheckbox>()
 
     /// An input component for editing date values.
     /// The supported types for the date value are:
+    /// DateTime
+    /// DateTimeOffset
+    /// DateOnly
+    /// TimeOnly
     type InputDate'<'TValue> 
         /// An input component for editing date values.
         /// The supported types for the date value are:
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Forms.InputDate<_>>)>] () = inherit InputDateBuilder<Microsoft.AspNetCore.Components.Forms.InputDate<'TValue>, 'TValue>()
+        /// DateTime
+        /// DateTimeOffset
+        /// DateOnly
+        /// TimeOnly
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Microsoft.AspNetCore.Components.Forms.InputDate`1", "Microsoft.AspNetCore.Components.Web")>] () = inherit InputDateBuilder<Microsoft.AspNetCore.Components.Forms.InputDate<'TValue>, 'TValue>()
 
     /// An hidden input component for storing String values.
     type InputHidden' 
         /// An hidden input component for storing String values.
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Forms.InputHidden>)>] () = inherit InputHiddenBuilder<Microsoft.AspNetCore.Components.Forms.InputHidden>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Microsoft.AspNetCore.Components.Forms.InputHidden", "Microsoft.AspNetCore.Components.Web")>] () = inherit InputHiddenBuilder<Microsoft.AspNetCore.Components.Forms.InputHidden>()
 
     /// An input component for editing numeric values.
     /// Supported numeric types are Int32, Int64, Int16, Single, Double, Decimal.
     type InputNumber'<'TValue> 
         /// An input component for editing numeric values.
         /// Supported numeric types are Int32, Int64, Int16, Single, Double, Decimal.
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Forms.InputNumber<_>>)>] () = inherit InputNumberBuilder<Microsoft.AspNetCore.Components.Forms.InputNumber<'TValue>, 'TValue>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Microsoft.AspNetCore.Components.Forms.InputNumber`1", "Microsoft.AspNetCore.Components.Web")>] () = inherit InputNumberBuilder<Microsoft.AspNetCore.Components.Forms.InputNumber<'TValue>, 'TValue>()
 
     /// Groups child InputRadio`1 components.
     type InputRadioGroup'<'TValue> 
         /// Groups child InputRadio`1 components.
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Forms.InputRadioGroup<_>>)>] () = inherit InputRadioGroupBuilder<Microsoft.AspNetCore.Components.Forms.InputRadioGroup<'TValue>, 'TValue>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Microsoft.AspNetCore.Components.Forms.InputRadioGroup`1", "Microsoft.AspNetCore.Components.Web")>] () = inherit InputRadioGroupBuilder<Microsoft.AspNetCore.Components.Forms.InputRadioGroup<'TValue>, 'TValue>()
 
     /// A dropdown selection component.
     type InputSelect'<'TValue> 
         /// A dropdown selection component.
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Forms.InputSelect<_>>)>] () = inherit InputSelectBuilder<Microsoft.AspNetCore.Components.Forms.InputSelect<'TValue>, 'TValue>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Microsoft.AspNetCore.Components.Forms.InputSelect`1", "Microsoft.AspNetCore.Components.Web")>] () = inherit InputSelectBuilder<Microsoft.AspNetCore.Components.Forms.InputSelect<'TValue>, 'TValue>()
 
     /// An input component for editing String values.
     type InputText' 
         /// An input component for editing String values.
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Forms.InputText>)>] () = inherit InputTextBuilder<Microsoft.AspNetCore.Components.Forms.InputText>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Microsoft.AspNetCore.Components.Forms.InputText", "Microsoft.AspNetCore.Components.Web")>] () = inherit InputTextBuilder<Microsoft.AspNetCore.Components.Forms.InputText>()
 
     /// A multiline input component for editing String values.
     type InputTextArea' 
         /// A multiline input component for editing String values.
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Forms.InputTextArea>)>] () = inherit InputTextAreaBuilder<Microsoft.AspNetCore.Components.Forms.InputTextArea>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Microsoft.AspNetCore.Components.Forms.InputTextArea", "Microsoft.AspNetCore.Components.Web")>] () = inherit InputTextAreaBuilder<Microsoft.AspNetCore.Components.Forms.InputTextArea>()
 
     /// A component that wraps the HTML file input element and supplies a Stream for each file's contents.
     type InputFile' 
         /// A component that wraps the HTML file input element and supplies a Stream for each file's contents.
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Forms.InputFile>)>] () = inherit InputFileBuilder<Microsoft.AspNetCore.Components.Forms.InputFile>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Microsoft.AspNetCore.Components.Forms.InputFile", "Microsoft.AspNetCore.Components.Web")>] () = inherit InputFileBuilder<Microsoft.AspNetCore.Components.Forms.InputFile>()
 
     /// An input component used for selecting a value from a group of choices.
     type InputRadio'<'TValue> 
         /// An input component used for selecting a value from a group of choices.
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Forms.InputRadio<_>>)>] () = inherit InputRadioBuilder<Microsoft.AspNetCore.Components.Forms.InputRadio<'TValue>, 'TValue>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Microsoft.AspNetCore.Components.Forms.InputRadio`1", "Microsoft.AspNetCore.Components.Web")>] () = inherit InputRadioBuilder<Microsoft.AspNetCore.Components.Forms.InputRadio<'TValue>, 'TValue>()
 
     /// Displays a list of validation messages for a specified field within a cascaded EditContext.
     type ValidationMessage'<'TValue> 
         /// Displays a list of validation messages for a specified field within a cascaded EditContext.
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Forms.ValidationMessage<_>>)>] () = inherit ValidationMessageBuilder<Microsoft.AspNetCore.Components.Forms.ValidationMessage<'TValue>, 'TValue>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Microsoft.AspNetCore.Components.Forms.ValidationMessage`1", "Microsoft.AspNetCore.Components.Web")>] () = inherit ValidationMessageBuilder<Microsoft.AspNetCore.Components.Forms.ValidationMessage<'TValue>, 'TValue>()
 
     /// Displays a list of validation messages from a cascaded EditContext.
     type ValidationSummary' 
         /// Displays a list of validation messages from a cascaded EditContext.
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Forms.ValidationSummary>)>] () = inherit ValidationSummaryBuilder<Microsoft.AspNetCore.Components.Forms.ValidationSummary>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Microsoft.AspNetCore.Components.Forms.ValidationSummary", "Microsoft.AspNetCore.Components.Web")>] () = inherit ValidationSummaryBuilder<Microsoft.AspNetCore.Components.Forms.ValidationSummary>()
 
 [<AutoOpen>]
 module DslCEInstances =

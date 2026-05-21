@@ -57,13 +57,13 @@ module DslCE =
     /// A base class for components that display differing content depending on the user's authorization status.
     type AuthorizeViewCore' 
         /// A base class for components that display differing content depending on the user's authorization status.
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Authorization.AuthorizeViewCore>)>] () = inherit AuthorizeViewCoreBuilder<Microsoft.AspNetCore.Components.Authorization.AuthorizeViewCore>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Microsoft.AspNetCore.Components.Authorization.AuthorizeViewCore", "Microsoft.AspNetCore.Components.Authorization")>] () = inherit AuthorizeViewCoreBuilder<Microsoft.AspNetCore.Components.Authorization.AuthorizeViewCore>()
 
     /// Displays differing content depending on the user's authorization status.
     type AuthorizeView' 
         /// Displays differing content depending on the user's authorization status.
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Authorization.AuthorizeView>)>] () = inherit AuthorizeViewBuilder<Microsoft.AspNetCore.Components.Authorization.AuthorizeView>()
-    type CascadingAuthenticationState' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.Authorization.CascadingAuthenticationState>)>] () = inherit CascadingAuthenticationStateBuilder<Microsoft.AspNetCore.Components.Authorization.CascadingAuthenticationState>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Microsoft.AspNetCore.Components.Authorization.AuthorizeView", "Microsoft.AspNetCore.Components.Authorization")>] () = inherit AuthorizeViewBuilder<Microsoft.AspNetCore.Components.Authorization.AuthorizeView>()
+    type CascadingAuthenticationState' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Microsoft.AspNetCore.Components.Authorization.CascadingAuthenticationState", "Microsoft.AspNetCore.Components.Authorization")>] () = inherit CascadingAuthenticationStateBuilder<Microsoft.AspNetCore.Components.Authorization.CascadingAuthenticationState>()
 
 [<AutoOpen>]
 module DslCEInstances =

@@ -162,13 +162,13 @@ module DslCE =
     open System.Diagnostics.CodeAnalysis
     open Blazor.Diagrams.DslInternals
 
-    type DiagramCanvas' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Blazor.Diagrams.Components.DiagramCanvas>)>] () = inherit DiagramCanvasBuilder<Blazor.Diagrams.Components.DiagramCanvas>()
-    type LinkWidget' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Blazor.Diagrams.Components.LinkWidget>)>] () = inherit LinkWidgetBuilder<Blazor.Diagrams.Components.LinkWidget>()
-    type DefaultGroupWidget' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Blazor.Diagrams.Components.DefaultGroupWidget>)>] () = inherit DefaultGroupWidgetBuilder<Blazor.Diagrams.Components.DefaultGroupWidget>()
-    type DefaultLinkLabelWidget' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Blazor.Diagrams.Components.DefaultLinkLabelWidget>)>] () = inherit DefaultLinkLabelWidgetBuilder<Blazor.Diagrams.Components.DefaultLinkLabelWidget>()
-    type GroupNodes' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Blazor.Diagrams.Components.GroupNodes>)>] () = inherit GroupNodesBuilder<Blazor.Diagrams.Components.GroupNodes>()
-    type NodeWidget' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Blazor.Diagrams.Components.NodeWidget>)>] () = inherit NodeWidgetBuilder<Blazor.Diagrams.Components.NodeWidget>()
-    type SvgNodeWidget' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Blazor.Diagrams.Components.SvgNodeWidget>)>] () = inherit SvgNodeWidgetBuilder<Blazor.Diagrams.Components.SvgNodeWidget>()
+    type DiagramCanvas' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Blazor.Diagrams.Components.DiagramCanvas", "Blazor.Diagrams")>] () = inherit DiagramCanvasBuilder<Blazor.Diagrams.Components.DiagramCanvas>()
+    type LinkWidget' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Blazor.Diagrams.Components.LinkWidget", "Blazor.Diagrams")>] () = inherit LinkWidgetBuilder<Blazor.Diagrams.Components.LinkWidget>()
+    type DefaultGroupWidget' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Blazor.Diagrams.Components.DefaultGroupWidget", "Blazor.Diagrams")>] () = inherit DefaultGroupWidgetBuilder<Blazor.Diagrams.Components.DefaultGroupWidget>()
+    type DefaultLinkLabelWidget' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Blazor.Diagrams.Components.DefaultLinkLabelWidget", "Blazor.Diagrams")>] () = inherit DefaultLinkLabelWidgetBuilder<Blazor.Diagrams.Components.DefaultLinkLabelWidget>()
+    type GroupNodes' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Blazor.Diagrams.Components.GroupNodes", "Blazor.Diagrams")>] () = inherit GroupNodesBuilder<Blazor.Diagrams.Components.GroupNodes>()
+    type NodeWidget' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Blazor.Diagrams.Components.NodeWidget", "Blazor.Diagrams")>] () = inherit NodeWidgetBuilder<Blazor.Diagrams.Components.NodeWidget>()
+    type SvgNodeWidget' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Blazor.Diagrams.Components.SvgNodeWidget", "Blazor.Diagrams")>] () = inherit SvgNodeWidgetBuilder<Blazor.Diagrams.Components.SvgNodeWidget>()
 
 [<AutoOpen>]
 module DslCEInstances =
@@ -192,9 +192,9 @@ module DslCE =
     open System.Diagnostics.CodeAnalysis
     open Blazor.Diagrams.DslInternals.Widgets
 
-    type GridWidget' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Blazor.Diagrams.Components.Widgets.GridWidget>)>] () = inherit GridWidgetBuilder<Blazor.Diagrams.Components.Widgets.GridWidget>()
-    type NavigatorWidget' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Blazor.Diagrams.Components.Widgets.NavigatorWidget>)>] () = inherit NavigatorWidgetBuilder<Blazor.Diagrams.Components.Widgets.NavigatorWidget>()
-    type SelectionBoxWidget' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Blazor.Diagrams.Components.Widgets.SelectionBoxWidget>)>] () = inherit SelectionBoxWidgetBuilder<Blazor.Diagrams.Components.Widgets.SelectionBoxWidget>()
+    type GridWidget' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Blazor.Diagrams.Components.Widgets.GridWidget", "Blazor.Diagrams")>] () = inherit GridWidgetBuilder<Blazor.Diagrams.Components.Widgets.GridWidget>()
+    type NavigatorWidget' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Blazor.Diagrams.Components.Widgets.NavigatorWidget", "Blazor.Diagrams")>] () = inherit NavigatorWidgetBuilder<Blazor.Diagrams.Components.Widgets.NavigatorWidget>()
+    type SelectionBoxWidget' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Blazor.Diagrams.Components.Widgets.SelectionBoxWidget", "Blazor.Diagrams")>] () = inherit SelectionBoxWidgetBuilder<Blazor.Diagrams.Components.Widgets.SelectionBoxWidget>()
 
 [<AutoOpen>]
 module DslCEInstances =
@@ -214,12 +214,12 @@ module DslCE =
     open System.Diagnostics.CodeAnalysis
     open Blazor.Diagrams.DslInternals.Renderers
 
-    type GroupRenderer' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Blazor.Diagrams.Components.Renderers.GroupRenderer>)>] () = inherit GroupRendererBuilder<Blazor.Diagrams.Components.Renderers.GroupRenderer>()
-    type LinkLabelRenderer' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Blazor.Diagrams.Components.Renderers.LinkLabelRenderer>)>] () = inherit LinkLabelRendererBuilder<Blazor.Diagrams.Components.Renderers.LinkLabelRenderer>()
-    type LinkRenderer' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Blazor.Diagrams.Components.Renderers.LinkRenderer>)>] () = inherit LinkRendererBuilder<Blazor.Diagrams.Components.Renderers.LinkRenderer>()
-    type LinkVertexRenderer' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Blazor.Diagrams.Components.Renderers.LinkVertexRenderer>)>] () = inherit LinkVertexRendererBuilder<Blazor.Diagrams.Components.Renderers.LinkVertexRenderer>()
-    type NodeRenderer' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Blazor.Diagrams.Components.Renderers.NodeRenderer>)>] () = inherit NodeRendererBuilder<Blazor.Diagrams.Components.Renderers.NodeRenderer>()
-    type PortRenderer' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Blazor.Diagrams.Components.Renderers.PortRenderer>)>] () = inherit PortRendererBuilder<Blazor.Diagrams.Components.Renderers.PortRenderer>()
+    type GroupRenderer' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Blazor.Diagrams.Components.Renderers.GroupRenderer", "Blazor.Diagrams")>] () = inherit GroupRendererBuilder<Blazor.Diagrams.Components.Renderers.GroupRenderer>()
+    type LinkLabelRenderer' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Blazor.Diagrams.Components.Renderers.LinkLabelRenderer", "Blazor.Diagrams")>] () = inherit LinkLabelRendererBuilder<Blazor.Diagrams.Components.Renderers.LinkLabelRenderer>()
+    type LinkRenderer' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Blazor.Diagrams.Components.Renderers.LinkRenderer", "Blazor.Diagrams")>] () = inherit LinkRendererBuilder<Blazor.Diagrams.Components.Renderers.LinkRenderer>()
+    type LinkVertexRenderer' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Blazor.Diagrams.Components.Renderers.LinkVertexRenderer", "Blazor.Diagrams")>] () = inherit LinkVertexRendererBuilder<Blazor.Diagrams.Components.Renderers.LinkVertexRenderer>()
+    type NodeRenderer' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Blazor.Diagrams.Components.Renderers.NodeRenderer", "Blazor.Diagrams")>] () = inherit NodeRendererBuilder<Blazor.Diagrams.Components.Renderers.NodeRenderer>()
+    type PortRenderer' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Blazor.Diagrams.Components.Renderers.PortRenderer", "Blazor.Diagrams")>] () = inherit PortRendererBuilder<Blazor.Diagrams.Components.Renderers.PortRenderer>()
 
 [<AutoOpen>]
 module DslCEInstances =
@@ -242,11 +242,11 @@ module DslCE =
     open System.Diagnostics.CodeAnalysis
     open Blazor.Diagrams.DslInternals.Controls
 
-    type ControlsLayerRenderer' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Blazor.Diagrams.Components.Controls.ControlsLayerRenderer>)>] () = inherit ControlsLayerRendererBuilder<Blazor.Diagrams.Components.Controls.ControlsLayerRenderer>()
-    type ArrowHeadControlWidget' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Blazor.Diagrams.Components.Controls.ArrowHeadControlWidget>)>] () = inherit ArrowHeadControlWidgetBuilder<Blazor.Diagrams.Components.Controls.ArrowHeadControlWidget>()
-    type BoundaryControlWidget' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Blazor.Diagrams.Components.Controls.BoundaryControlWidget>)>] () = inherit BoundaryControlWidgetBuilder<Blazor.Diagrams.Components.Controls.BoundaryControlWidget>()
-    type DragNewLinkControlWidget' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Blazor.Diagrams.Components.Controls.DragNewLinkControlWidget>)>] () = inherit DragNewLinkControlWidgetBuilder<Blazor.Diagrams.Components.Controls.DragNewLinkControlWidget>()
-    type RemoveControlWidget' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Blazor.Diagrams.Components.Controls.RemoveControlWidget>)>] () = inherit RemoveControlWidgetBuilder<Blazor.Diagrams.Components.Controls.RemoveControlWidget>()
+    type ControlsLayerRenderer' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Blazor.Diagrams.Components.Controls.ControlsLayerRenderer", "Blazor.Diagrams")>] () = inherit ControlsLayerRendererBuilder<Blazor.Diagrams.Components.Controls.ControlsLayerRenderer>()
+    type ArrowHeadControlWidget' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Blazor.Diagrams.Components.Controls.ArrowHeadControlWidget", "Blazor.Diagrams")>] () = inherit ArrowHeadControlWidgetBuilder<Blazor.Diagrams.Components.Controls.ArrowHeadControlWidget>()
+    type BoundaryControlWidget' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Blazor.Diagrams.Components.Controls.BoundaryControlWidget", "Blazor.Diagrams")>] () = inherit BoundaryControlWidgetBuilder<Blazor.Diagrams.Components.Controls.BoundaryControlWidget>()
+    type DragNewLinkControlWidget' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Blazor.Diagrams.Components.Controls.DragNewLinkControlWidget", "Blazor.Diagrams")>] () = inherit DragNewLinkControlWidgetBuilder<Blazor.Diagrams.Components.Controls.DragNewLinkControlWidget>()
+    type RemoveControlWidget' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Blazor.Diagrams.Components.Controls.RemoveControlWidget", "Blazor.Diagrams")>] () = inherit RemoveControlWidgetBuilder<Blazor.Diagrams.Components.Controls.RemoveControlWidget>()
 
 [<AutoOpen>]
 module DslCEInstances =

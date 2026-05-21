@@ -8,7 +8,7 @@ open Fun.Blazor.Cli
 type WatchCommand() =
     inherit Command<WatchSettings>()
 
-    override _.Execute(_, settings) =
+    override _.Execute(_, settings, _) =
         Watch.WatcherServer.runServer settings
         0
 
@@ -16,7 +16,7 @@ type WatchCommand() =
 type GenerateCommand() =
     inherit Command<CodeGenSettings>()
 
-    override _.Execute(_, settings) =
+    override _.Execute(_, settings, _) =
         let path =
             if Path.IsPathRooted settings.Project && File.Exists settings.Project then
                 Some settings.Project

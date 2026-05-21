@@ -1,5 +1,10 @@
 # Changelog
 
+
+## [4.1.2] - 2026-05-21
+
+- Make the --generator-version default value to 4.1.1
+
 ## [4.1.1] - 2025-11-18
 
 - Make the --generator-version default value to 4.1.0

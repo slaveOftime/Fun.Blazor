@@ -190,27 +190,27 @@ module DslCE =
     /// An abstract base class for columns in a QuickGrid`1.
     type ColumnBase'<'TGridItem> 
         /// An abstract base class for columns in a QuickGrid`1.
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.QuickGrid.ColumnBase<_>>)>] () = inherit ColumnBaseBuilder<Microsoft.AspNetCore.Components.QuickGrid.ColumnBase<'TGridItem>, 'TGridItem>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Microsoft.AspNetCore.Components.QuickGrid.ColumnBase`1", "Microsoft.AspNetCore.Components.QuickGrid")>] () = inherit ColumnBaseBuilder<Microsoft.AspNetCore.Components.QuickGrid.ColumnBase<'TGridItem>, 'TGridItem>()
 
     /// Represents a QuickGrid`1 column whose cells display a single value.
     type PropertyColumn'<'TGridItem, 'TProp> 
         /// Represents a QuickGrid`1 column whose cells display a single value.
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn<_, _>>)>] () = inherit PropertyColumnBuilder<Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn<'TGridItem, 'TProp>, 'TGridItem, 'TProp>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn`2", "Microsoft.AspNetCore.Components.QuickGrid")>] () = inherit PropertyColumnBuilder<Microsoft.AspNetCore.Components.QuickGrid.PropertyColumn<'TGridItem, 'TProp>, 'TGridItem, 'TProp>()
 
     /// Represents a QuickGrid`1 column whose cells render a supplied template.
     type TemplateColumn'<'TGridItem> 
         /// Represents a QuickGrid`1 column whose cells render a supplied template.
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.QuickGrid.TemplateColumn<_>>)>] () = inherit TemplateColumnBuilder<Microsoft.AspNetCore.Components.QuickGrid.TemplateColumn<'TGridItem>, 'TGridItem>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Microsoft.AspNetCore.Components.QuickGrid.TemplateColumn`1", "Microsoft.AspNetCore.Components.QuickGrid")>] () = inherit TemplateColumnBuilder<Microsoft.AspNetCore.Components.QuickGrid.TemplateColumn<'TGridItem>, 'TGridItem>()
 
     /// A component that provides a user interface for PaginationState.
     type Paginator' 
         /// A component that provides a user interface for PaginationState.
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.QuickGrid.Paginator>)>] () = inherit PaginatorBuilder<Microsoft.AspNetCore.Components.QuickGrid.Paginator>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Microsoft.AspNetCore.Components.QuickGrid.Paginator", "Microsoft.AspNetCore.Components.QuickGrid")>] () = inherit PaginatorBuilder<Microsoft.AspNetCore.Components.QuickGrid.Paginator>()
 
     /// A component that displays a grid.
     type QuickGrid'<'TGridItem> 
         /// A component that displays a grid.
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.QuickGrid.QuickGrid<_>>)>] () = inherit QuickGridBuilder<Microsoft.AspNetCore.Components.QuickGrid.QuickGrid<'TGridItem>, 'TGridItem>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Microsoft.AspNetCore.Components.QuickGrid.QuickGrid`1", "Microsoft.AspNetCore.Components.QuickGrid")>] () = inherit QuickGridBuilder<Microsoft.AspNetCore.Components.QuickGrid.QuickGrid<'TGridItem>, 'TGridItem>()
 
 [<AutoOpen>]
 module DslCEInstances =
@@ -236,7 +236,7 @@ module DslCE =
     /// For internal use only. Do not use.
     type Defer' 
         /// For internal use only. Do not use.
-        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<Microsoft.AspNetCore.Components.QuickGrid.Infrastructure.Defer>)>] () = inherit DeferBuilder<Microsoft.AspNetCore.Components.QuickGrid.Infrastructure.Defer>()
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Microsoft.AspNetCore.Components.QuickGrid.Infrastructure.Defer", "Microsoft.AspNetCore.Components.QuickGrid")>] () = inherit DeferBuilder<Microsoft.AspNetCore.Components.QuickGrid.Infrastructure.Defer>()
 
 [<AutoOpen>]
 module DslCEInstances =

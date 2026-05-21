@@ -315,7 +315,6 @@ let generateCode (targetNamespace: string) (opens: string) (tys: Type seq) useIn
                         originalTypeWithGenerics :: (getTypeNames meta.generics) |> createGenerics |> closeGenerics
 
                     let typeName = meta.ty |> getTypeShortName
-                    let typeFullName = meta.ty |> getTypeName |> (fun x -> x.Split("<")[0])
 
                     let genericStr = meta.generics |> getTypeNames |> createGenerics
 
@@ -324,13 +323,8 @@ let generateCode (targetNamespace: string) (opens: string) (tys: Type seq) useIn
 
                     let genericStrWithoutConstraint = genericStr |> closeGenerics
 
-                    let linkerGenericStr =
-                        if meta.generics.Length > 0 then
-                            "<" + (meta.generics |> Seq.map (fun _ -> "_") |> String.concat ", ") + ">"
-                        else
-                            ""
                     let linkerAttrStr =
-                        $"[<DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof<{typeFullName}{linkerGenericStr}>)>]"
+                        $"[<DynamicDependency(DynamicallyAccessedMemberTypes.All, \"{meta.ty.Namespace}.{meta.ty.Name}\", \"{meta.ty.Assembly.GetName().Name}\")>]"
 
                     let typeComment =
                         meta.ty.GetXmlDocsSummary() |> makeSummaryDoc 4 |> addStrIfNotEmpty "\n"
