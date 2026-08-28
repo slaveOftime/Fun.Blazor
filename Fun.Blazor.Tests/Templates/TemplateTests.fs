@@ -17,7 +17,8 @@ let ``Template should work`` () =
 
     let result =
         context.RenderNode(
-            Template.html $"""
+            Template.html
+                $"""
                 <div class="{classes}">
                     {segment1}
                     {segment2}
@@ -49,13 +50,14 @@ let ``SSRTemplate should work`` () =
 
     let result =
         context.RenderNode(
-            SSRTemplate.html $"""
+            SSRTemplate.html
+                $"""
                 <div class="{classes}">
                     {segment1}
                     {segment2}
                     {segment3}
                 </div>
-                {[for i in 1..10 -> segment4 i]}
+                {[ for i in 1..10 -> segment4 i ]}
             """
         )
 

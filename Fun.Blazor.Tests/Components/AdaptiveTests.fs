@@ -25,11 +25,12 @@ let ``html adaptive tests`` () =
     let store1 = cval 1
     let store2 = cval 1
 
-    let comp = adapt {
-        let! s1 = store1
-        let! s2 = store2
-        html.text $"s1={s1};s2={s2}"
-    }
+    let comp =
+        adapt {
+            let! s1 = store1
+            let! s2 = store2
+            html.text $"s1={s1};s2={s2}"
+        }
 
     let result = context.RenderNode comp
 
@@ -52,14 +53,15 @@ let ``html adaptive tests`` () =
 let ``html adaptive bind collections tests`` () =
     let context = createBunitContext ()
 
-    let comp = adapt {
-        let! s1 = AList.ofList [ 4; 3 ]
-        let! s2 = ASet.ofList [ 2; 1 ]
-        for x in s1 do
-            html.text x
-        for x in Seq.sort s2 do
-            html.text x
-    }
+    let comp =
+        adapt {
+            let! s1 = AList.ofList [ 4; 3 ]
+            let! s2 = ASet.ofList [ 2; 1 ]
+            for x in s1 do
+                html.text x
+            for x in Seq.sort s2 do
+                html.text x
+        }
 
     let result = context.RenderNode comp
 
@@ -73,14 +75,19 @@ let ``html adaptive complex condition tests`` () =
     let store1 = cval 1
     let store2 = cval 1
 
-    let comp = adapt {
-        let! s1 = store1
-        let! s2 = store2
-        region { if s1 >= 2 then div { $"s1={s1}" } }
-        if s2 >= 2 then div { $"s2={s2}" }
-        for i in 3..4 do
-            div { i }
-    }
+    let comp =
+        adapt {
+            let! s1 = store1
+            let! s2 = store2
+            region {
+                if s1 >= 2 then
+                    div { $"s1={s1}" }
+            }
+            if s2 >= 2 then
+                div { $"s2={s2}" }
+            for i in 3..4 do
+                div { i }
+        }
 
     let result = context.RenderNode comp
 

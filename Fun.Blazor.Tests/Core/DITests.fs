@@ -49,17 +49,20 @@ let ``html adaptive tests`` () =
 
 
 [<Fact>]
-let ``html inject async should work`` () = task {
-    let context = createBunitContext ()
+let ``html inject async should work`` () =
+    task {
+        let context = createBunitContext ()
 
-    let node =
-        html.inject (fun () -> task {
-            do! Task.Delay 500
-            return div { "hi" }
-        })
+        let node =
+            html.inject (fun () ->
+                task {
+                    do! Task.Delay 500
+                    return div { "hi" }
+                }
+            )
 
-    let result = context.RenderNode node
-    result.MarkupMatches("")
-    do! Task.Delay 1000
-    result.MarkupMatches("""<div>hi</div>""")
-}
+        let result = context.RenderNode node
+        result.MarkupMatches("")
+        do! Task.Delay 1000
+        result.MarkupMatches("""<div>hi</div>""")
+    }

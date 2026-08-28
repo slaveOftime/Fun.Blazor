@@ -5,7 +5,8 @@ open Fun.Blazor
 
 type DemoForm = { Name: string; Age: int }
 
-let private ageValidators = [ Validators.maxValue 20 (sprintf "age cannot be bigger than %d") ]
+let private ageValidators =
+    [ Validators.maxValue 20 (sprintf "age cannot be bigger than %d") ]
 
 
 [<Fact>]

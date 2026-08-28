@@ -17,47 +17,46 @@ let ``TriggerBuilder should work`` () =
 
     let result =
         context.RenderNode(
-            html.fragment [|
-                div {
-                    hxGet "/test"
-                    hxTrigger (
-                        HxTrigger(
-                            hxEvt.load,
-                            sse = true,
-                            filter = "ctlKey",
-                            once = true,
-                            changed = true,
-                            delayMs = 100,
-                            throttleMs = 200,
-                            from = "#from",
-                            target = "#target",
-                            consume = true,
-                            queue = HxQueue.First,
-                            root = "#root",
-                            threshold = 0.2
-                        )
-                            .AddTrigger(hxEvt.mouse.click)
-                    )
-                }
-                div {
-                    hxTrigger'(hxEvt.mouse.dblclick, once = true)
-                        .AddTrigger(hxEvt.mouse.click)
-                        .AddTrigger(hxEvt.mouse.mousemove)
-                        .AddTrigger(hxEvt.mouse.mouseover)
-                    "TEST"
-                }
-                div {
-                    hxTrigger hxEvt.revealed
-                    hxSwap_beforebegin'().Swap(1).Settle(2).FocusScroll(true).ScrollTop("#target").ShowTop()
-                }
-                div {
-                    hxPost "/test2"
-                    hxTarget_find "#find"
-                    hxSwap_afterend'(OOB).FocusScroll(true)
-                }
-                div { hxSwap_delete }
-                div { hxSwap_delete OOB }
-            |]
+            html.fragment
+                [| div {
+                       hxGet "/test"
+                       hxTrigger (
+                           HxTrigger(
+                               hxEvt.load,
+                               sse = true,
+                               filter = "ctlKey",
+                               once = true,
+                               changed = true,
+                               delayMs = 100,
+                               throttleMs = 200,
+                               from = "#from",
+                               target = "#target",
+                               consume = true,
+                               queue = HxQueue.First,
+                               root = "#root",
+                               threshold = 0.2
+                           )
+                               .AddTrigger(hxEvt.mouse.click)
+                       )
+                   }
+                   div {
+                       hxTrigger'(hxEvt.mouse.dblclick, once = true)
+                           .AddTrigger(hxEvt.mouse.click)
+                           .AddTrigger(hxEvt.mouse.mousemove)
+                           .AddTrigger(hxEvt.mouse.mouseover)
+                       "TEST"
+                   }
+                   div {
+                       hxTrigger hxEvt.revealed
+                       hxSwap_beforebegin'().Swap(1).Settle(2).FocusScroll(true).ScrollTop("#target").ShowTop()
+                   }
+                   div {
+                       hxPost "/test2"
+                       hxTarget_find "#find"
+                       hxSwap_afterend'(OOB).FocusScroll(true)
+                   }
+                   div { hxSwap_delete }
+                   div { hxSwap_delete OOB } |]
         )
 
     result.MarkupMatches(
@@ -88,20 +87,22 @@ type LiverCounter() as this =
     [<Parameter>]
     member val Initial = 0 with get, set
 
-    override _.GetNodes() = taskSeq {
-        for count in this.Initial .. (this.Initial + 3) do
-            div {
-                "count="
-                count
-            }
-            do! Async.Sleep 1000
-    }
+    override _.GetNodes() =
+        taskSeq {
+            for count in this.Initial .. (this.Initial + 3) do
+                div {
+                    "count="
+                    count
+                }
+                do! Async.Sleep 1000
+        }
 
 
 [<Fact>]
 let ``hxRequestxxx should work`` () =
     let context = new BunitContext()
-    context.Services.AddTransient<IHttpContextAccessor>(fun _ -> Mock.Of<IHttpContextAccessor>()) |> ignore
+    context.Services.AddTransient<IHttpContextAccessor>(fun _ -> Mock.Of<IHttpContextAccessor>())
+    |> ignore
 
     let result =
         context.RenderNode(

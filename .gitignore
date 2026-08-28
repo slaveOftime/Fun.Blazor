@@ -373,3 +373,6 @@ global.json
 /Fun.Blazor.Docs.Wasm/wwwroot/docs
 /Fun.Htmx/Properties
 /Fun.Blazor.Docs.Wasm.Release
+/Fun.Blazor.Docs.Wasm/wwwroot/Demos
+/Fun.Blazor.Docs.Wasm/wwwroot/Docs
+

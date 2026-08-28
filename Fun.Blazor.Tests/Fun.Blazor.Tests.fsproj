@@ -1,39 +1,37 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>net10.0</TargetFramework>
+		<OutputType>Exe</OutputType>
+		<IsTestProject>true</IsTestProject>
 		<IsPackable>false</IsPackable>
 		<GenerateProgramFile>false</GenerateProgramFile>
+		<TestingPlatformCommandLineArguments>--coverage --coverage-output-format cobertura</TestingPlatformCommandLineArguments>
 	</PropertyGroup>
 	<ItemGroup>
-		<Compile Include="Utils.fs" />
-		<Compile Include="DITests.fs" />
-		<Compile Include="AdaptiveTests.fs" />
-		<Compile Include="AdaptiveFormTests.fs" />
-		<Compile Include="RouterTests.fs" />
-		<Compile Include="I18nTests.fs" />
-		<Compile Include="HookTests.fs" />
-		<Compile Include="DomTests.fs" />
-		<Compile Include="StyleTests.fs" />
-		<Compile Include="PostRenderFragmentTests.fs" />
-		<Compile Include="CascadingValueTests.fs" />
-		<Compile Include="ServerTests.fs" />
-		<Compile Include="HtmxTests.fs" />
-		<Compile Include="TemplateTests.fs" />
-		<Compile Include="QueryBuilderTests.fs" />
-		<Compile Include="Program.fs" />
+		<Compile Include="Infrastructure/Utils.fs" />
+		<Compile Include="Core/DITests.fs" />
+		<Compile Include="Core/I18nTests.fs" />
+		<Compile Include="Core/QueryBuilderTests.fs" />
+		<Compile Include="Components/AdaptiveTests.fs" />
+		<Compile Include="Components/AdaptiveFormTests.fs" />
+		<Compile Include="Components/HookTests.fs" />
+		<Compile Include="Components/RouterTests.fs" />
+		<Compile Include="Rendering/CascadingValueTests.fs" />
+		<Compile Include="Rendering/DomTests.fs" />
+		<Compile Include="Rendering/PostRenderFragmentTests.fs" />
+		<Compile Include="Rendering/StyleTests.fs" />
+		<Compile Include="Integration/ServerTests.fs" />
+		<Compile Include="Integration/HtmxTests.fs" />
+		<Compile Include="Templates/TemplateTests.fs" />
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="FsUnit.xUnit" Version="7.1.1" />
-		<PackageReference Include="Microsoft.AspNetCore.TestHost" Version="10.0.*" />
+		<PackageReference Include="Microsoft.AspNetCore.TestHost" Version="10.0.11" />
 		<PackageReference Include="Moq" Version="4.20.72" />
-		<PackageReference Include="bunit" Version="2.0.66" />
-		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
-		<PackageReference Include="xunit" Version="2.9.3" />
+		<PackageReference Include="bunit" Version="2.9.0" />
+		<PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage" Version="18.0.6" />
+		<PackageReference Include="xunit.v3" Version="3.2.2" />
 		<PackageReference Include="xunit.runner.visualstudio" Version="3.1.5">
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-			<PrivateAssets>all</PrivateAssets>
-		</PackageReference>
-		<PackageReference Include="coverlet.collector" Version="6.0.4">
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
