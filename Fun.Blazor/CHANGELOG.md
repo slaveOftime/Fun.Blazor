@@ -2,7 +2,10 @@
 
 ## [Unreleased]
 
+## [4.1.11] - 2026-08-28
+
 - Document trailing-apostrophe DSL naming convention (`html'`, `class'`, `type'`)
+- Update Fun.Css to **1.1.0**
 
 ## [4.1.10] - 2026-01-08
 

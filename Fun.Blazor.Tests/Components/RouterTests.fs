@@ -25,35 +25,34 @@ let ``Giraffe style routes normal cases`` () =
         Map.toList >> List.sortBy fst >> List.map (fun (k, v) -> $"{k}={v}") >> String.concat "&"
 
     let route =
-        html.route [
-            routeCi "/r1" (html.text "/r1")
-            routeCif "/r1/%i" (fun x -> html.text $"/r1/{x}")
-            routeCif "/r1/r2/%s" (fun x -> html.text $"/r1/r2/{x}")
-            subRouteCi "/r2" [
-                routeCi "/r3" (html.text "/r2/r3")
-                routeCif "/r3/%i" (fun x -> html.text $"/r2/r3/{x}")
-                routeCif "/r3/r4/%s" (fun x -> html.text $"/r2/r3/r4/{x}")
-            ]
-            routeCiWithQueries "/r3" (fun x -> html.text $"/r3?{formatQueries x}")
-            routeCifWithQueries "/r3/%i" (fun x q -> html.text $"/r3/{x}?{formatQueries q}")
+        html.route
+            [ routeCi "/r1" (html.text "/r1")
+              routeCif "/r1/%i" (fun x -> html.text $"/r1/{x}")
+              routeCif "/r1/r2/%s" (fun x -> html.text $"/r1/r2/{x}")
+              subRouteCi
+                  "/r2"
+                  [ routeCi "/r3" (html.text "/r2/r3")
+                    routeCif "/r3/%i" (fun x -> html.text $"/r2/r3/{x}")
+                    routeCif "/r3/r4/%s" (fun x -> html.text $"/r2/r3/r4/{x}") ]
+              routeCiWithQueries "/r3" (fun x -> html.text $"/r3?{formatQueries x}")
+              routeCifWithQueries "/r3/%i" (fun x q -> html.text $"/r3/{x}?{formatQueries q}")
 
-            routeCi "/citest" (html.text "/CiTest")
+              routeCi "/citest" (html.text "/CiTest")
 
-            routeCi "/application/greate test1" (html.text "/application/greate%20test1")
-            routeCif
-                "/application/%s"
-                (fun x ->
-                    if x = "greate test2" then
-                        html.text "/application/greate%20test2"
-                    else
-                        html.text "failed"
-                )
+              routeCi "/application/greate test1" (html.text "/application/greate%20test1")
+              routeCif
+                  "/application/%s"
+                  (fun x ->
+                      if x = "greate test2" then
+                          html.text "/application/greate%20test2"
+                      else
+                          html.text "failed"
+                  )
 
-            routeCif "/tail/%s{*}" (fun _ -> html.text $"/tail/1/tail")
-            routeCi "/tail2{*}" (html.text $"/tail2/2/tail2")
+              routeCif "/tail/%s{*}" (fun _ -> html.text $"/tail/1/tail")
+              routeCi "/tail2{*}" (html.text $"/tail2/2/tail2")
 
-            fun x -> failwith $"No route matched for {x}"
-        ]
+              fun x -> failwith $"No route matched for {x}" ]
 
     use BunitContext = createBunitContext ()
 
@@ -84,33 +83,35 @@ let ``Giraffe style routes should work for nested route`` () =
     let nestedRoute =
         html.injectWithNoKey (fun () ->
             count <- count + 1
-            html.fragment [|
-                div {
-                    "count="
-                    count
-                }
-                div { html.route [| routeCi "/demo1" (html.text "demo1"); routeCi "/demo2" (html.text "demo2") |] }
-            |]
+            html.fragment
+                [| div {
+                       "count="
+                       count
+                   }
+                   div { html.route [| routeCi "/demo1" (html.text "demo1"); routeCi "/demo2" (html.text "demo2") |] } |]
         )
 
-    let node = div {
-        html.route [| routeAny nestedRoute |]
-        html.inject (fun (nav: NavigationManager) -> fragment {
-            button {
-                id "demo1"
-                onclick (fun _ -> nav.NavigateTo("/demo1"))
-            }
-            button {
-                id "demo2"
-                onclick (fun _ -> nav.NavigateTo("/demo2"))
-            }
-        })
-    }
+    let node =
+        div {
+            html.route [| routeAny nestedRoute |]
+            html.inject (fun (nav: NavigationManager) ->
+                fragment {
+                    button {
+                        id "demo1"
+                        onclick (fun _ -> nav.NavigateTo("/demo1"))
+                    }
+                    button {
+                        id "demo2"
+                        onclick (fun _ -> nav.NavigateTo("/demo2"))
+                    }
+                }
+            )
+        }
 
     use BunitContext = createBunitContext ()
     let result = BunitContext.RenderNode node
 
-    result.Find("#demo1").Click()
+    result.Find<FunFragmentComponent>("#demo1").Click()
     result.MarkupMatches
         """
         <div>
@@ -121,7 +122,7 @@ let ``Giraffe style routes should work for nested route`` () =
         </div>
         """
 
-    result.Find("#demo2").Click()
+    result.Find<FunFragmentComponent>("#demo2").Click()
     result.MarkupMatches
         """
         <div>
@@ -132,7 +133,7 @@ let ``Giraffe style routes should work for nested route`` () =
         </div>
         """
 
-    result.Find("#demo1").Click()
+    result.Find<FunFragmentComponent>("#demo1").Click()
     result.MarkupMatches
         """
          <div>

@@ -127,6 +127,48 @@ type ApexChartBuilder<'FunBlazorGeneric, 'TItem when 'TItem : not struct and 'Fu
     [<CustomOperation("OnAnnotationPointMouseLeave")>] member inline _.OnAnnotationPointMouseLeave ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.AnnotationEvent<'TItem> -> unit) = render ==> html.callback("OnAnnotationPointMouseLeave", fn)
     /// Fires when user mouse leaves an annotation point.
     [<CustomOperation("OnAnnotationPointMouseLeave")>] member inline _.OnAnnotationPointMouseLeave ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.AnnotationEvent<'TItem> -> Task<unit>) = render ==> html.callbackTask("OnAnnotationPointMouseLeave", fn)
+    /// Fires when a draggable (ink) annotation is created (ApexCharts v6.0). Requires Enabled
+    /// and is a gated premium feature.
+    [<CustomOperation("OnAnnotationCreated")>] member inline _.OnAnnotationCreated ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.InkAnnotationEventData -> unit) = render ==> html.callback("OnAnnotationCreated", fn)
+    /// Fires when a draggable (ink) annotation is created (ApexCharts v6.0). Requires Enabled
+    /// and is a gated premium feature.
+    [<CustomOperation("OnAnnotationCreated")>] member inline _.OnAnnotationCreated ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.InkAnnotationEventData -> Task<unit>) = render ==> html.callbackTask("OnAnnotationCreated", fn)
+    /// Fires when a draggable (ink) annotation is dragged (ApexCharts v6.0). Requires Enabled
+    /// and is a gated premium feature.
+    [<CustomOperation("OnAnnotationDragged")>] member inline _.OnAnnotationDragged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.InkAnnotationEventData -> unit) = render ==> html.callback("OnAnnotationDragged", fn)
+    /// Fires when a draggable (ink) annotation is dragged (ApexCharts v6.0). Requires Enabled
+    /// and is a gated premium feature.
+    [<CustomOperation("OnAnnotationDragged")>] member inline _.OnAnnotationDragged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.InkAnnotationEventData -> Task<unit>) = render ==> html.callbackTask("OnAnnotationDragged", fn)
+    /// Fires when a draggable (ink) annotation's text is edited (ApexCharts v6.0). Requires Enabled
+    /// and is a gated premium feature.
+    [<CustomOperation("OnAnnotationEdited")>] member inline _.OnAnnotationEdited ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.InkAnnotationEventData -> unit) = render ==> html.callback("OnAnnotationEdited", fn)
+    /// Fires when a draggable (ink) annotation's text is edited (ApexCharts v6.0). Requires Enabled
+    /// and is a gated premium feature.
+    [<CustomOperation("OnAnnotationEdited")>] member inline _.OnAnnotationEdited ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.InkAnnotationEventData -> Task<unit>) = render ==> html.callbackTask("OnAnnotationEdited", fn)
+    /// Fires when a draggable (ink) annotation is restyled (ApexCharts v6.0). Requires Enabled
+    /// and is a gated premium feature.
+    [<CustomOperation("OnAnnotationStyled")>] member inline _.OnAnnotationStyled ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.InkAnnotationEventData -> unit) = render ==> html.callback("OnAnnotationStyled", fn)
+    /// Fires when a draggable (ink) annotation is restyled (ApexCharts v6.0). Requires Enabled
+    /// and is a gated premium feature.
+    [<CustomOperation("OnAnnotationStyled")>] member inline _.OnAnnotationStyled ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.InkAnnotationEventData -> Task<unit>) = render ==> html.callbackTask("OnAnnotationStyled", fn)
+    /// Fires when a draggable (ink) annotation is deleted (ApexCharts v6.0). Requires Enabled
+    /// and is a gated premium feature.
+    [<CustomOperation("OnAnnotationDeleted")>] member inline _.OnAnnotationDeleted ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.InkAnnotationEventData -> unit) = render ==> html.callback("OnAnnotationDeleted", fn)
+    /// Fires when a draggable (ink) annotation is deleted (ApexCharts v6.0). Requires Enabled
+    /// and is a gated premium feature.
+    [<CustomOperation("OnAnnotationDeleted")>] member inline _.OnAnnotationDeleted ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.InkAnnotationEventData -> Task<unit>) = render ==> html.callbackTask("OnAnnotationDeleted", fn)
+    /// Fires when the measure ruler completes a measurement (ApexCharts v6.0). Requires Enabled
+    /// and is a gated premium feature.
+    [<CustomOperation("OnMeasured")>] member inline _.OnMeasured ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.MeasuredData -> unit) = render ==> html.callback("OnMeasured", fn)
+    /// Fires when the measure ruler completes a measurement (ApexCharts v6.0). Requires Enabled
+    /// and is a gated premium feature.
+    [<CustomOperation("OnMeasured")>] member inline _.OnMeasured ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.MeasuredData -> Task<unit>) = render ==> html.callbackTask("OnMeasured", fn)
+    /// Fires when the active storyboard beat changes (ApexCharts v6.0). Requires a bound storyboard
+    /// (StoryboardBindAsync) and is a gated premium feature.
+    [<CustomOperation("OnBeatChange")>] member inline _.OnBeatChange ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.BeatChangeData -> unit) = render ==> html.callback("OnBeatChange", fn)
+    /// Fires when the active storyboard beat changes (ApexCharts v6.0). Requires a bound storyboard
+    /// (StoryboardBindAsync) and is a gated premium feature.
+    [<CustomOperation("OnBeatChange")>] member inline _.OnBeatChange ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: ApexCharts.BeatChangeData -> Task<unit>) = render ==> html.callbackTask("OnBeatChange", fn)
     /// A custom function to execute for generating Y-axis labels. Only supported in Blazor WebAssembly!
     [<CustomOperation("FormatYAxisLabel")>] member inline _.FormatYAxisLabel ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("FormatYAxisLabel" => (System.Func<System.Decimal, System.String>fn))
     /// A custom function to execute for generating X-axis labels. Only supported in Blazor WebAssembly!
@@ -174,6 +216,10 @@ type ApexBoxPlotSeriesBuilder<'FunBlazorGeneric, 'TItem when 'TItem : not struct
     [<CustomOperation("Quantile3")>] member inline _.Quantile3 ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("Quantile3" => (System.Func<'TItem, System.Decimal>fn))
     /// Expression to get the highest Y-Value for each X-Value. This will determine where the upper whisker is drawn.
     [<CustomOperation("Max")>] member inline _.Max ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("Max" => (System.Func<'TItem, System.Decimal>fn))
+    /// Optional expression to get the raw individual observations for each box. When provided (and
+    /// Points is enabled with Show set to true),
+    /// the observations are overlaid as jittered dots on the box. Leave null to keep the classic box plot.
+    [<CustomOperation("Points")>] member inline _.Points ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("Points" => (System.Func<'TItem, System.Collections.Generic.IEnumerable<System.Decimal>>fn))
     /// Expression to determine the ordering of X-Values in the series
     [<CustomOperation("OrderBy")>] member inline _.OrderBy ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("OrderBy" => (System.Func<ApexCharts.ListPoint<'TItem>, System.Object>fn))
     /// Expression to determine the inverse ordering of X-Values in the series
@@ -259,6 +305,20 @@ type ApexRangeSeriesBuilder<'FunBlazorGeneric, 'TItem when 'TItem : not struct a
     /// Function to conditionally modify individual data points in the series
     [<CustomOperation("DataPointMutator")>] member inline _.DataPointMutator ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("DataPointMutator" => (System.Action<ApexCharts.ListPoint<'TItem>>fn))
 
+/// Component to create a Violin data series in Blazor.
+type ApexViolinSeriesBuilder<'FunBlazorGeneric, 'TItem when 'TItem : not struct and 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit ApexBaseSeriesBuilder<'FunBlazorGeneric, 'TItem>()
+    /// Expression to get a single raw observation from each item. All observations sharing the same
+    /// XValue are grouped into one violin's distribution.
+    [<CustomOperation("YValue")>] member inline _.YValue ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("YValue" => (System.Func<'TItem, System.Decimal>fn))
+    /// Expression to determine the ordering of X-Values (categories) in the series
+    [<CustomOperation("OrderBy")>] member inline _.OrderBy ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("OrderBy" => (System.Func<ApexCharts.ViolinPoint<'TItem>, System.Object>fn))
+    /// Expression to determine the inverse ordering of X-Values (categories) in the series
+    [<CustomOperation("OrderByDescending")>] member inline _.OrderByDescending ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("OrderByDescending" => (System.Func<ApexCharts.ViolinPoint<'TItem>, System.Object>fn))
+    /// Function to conditionally modify individual violins in the series (for example to set a
+    /// per-violin FillColor).
+    [<CustomOperation("DataPointMutator")>] member inline _.DataPointMutator ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("DataPointMutator" => (System.Action<ApexCharts.ViolinPoint<'TItem>>fn))
+
             
 namespace rec ApexCharts.DslInternals.Internal
 
@@ -336,6 +396,11 @@ module DslCE =
         /// Component to create a RangeBar data series in Blazor
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "ApexCharts.ApexRangeSeries`1", "Blazor-ApexCharts")>] () = inherit ApexRangeSeriesBuilder<ApexCharts.ApexRangeSeries<'TItem>, 'TItem>()
 
+    /// Component to create a Violin data series in Blazor.
+    type ApexViolinSeries'<'TItem when 'TItem : not struct> 
+        /// Component to create a Violin data series in Blazor.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "ApexCharts.ApexViolinSeries`1", "Blazor-ApexCharts")>] () = inherit ApexViolinSeriesBuilder<ApexCharts.ApexViolinSeries<'TItem>, 'TItem>()
+
 [<AutoOpen>]
 module DslCEInstances =
   
@@ -351,6 +416,7 @@ module DslCEInstances =
     let ApexPointSeries''<'TItem when 'TItem : not struct> = ApexPointSeries'<'TItem>()
     let ApexRangeAreaSeries''<'TItem when 'TItem : not struct> = ApexRangeAreaSeries'<'TItem>()
     let ApexRangeSeries''<'TItem when 'TItem : not struct> = ApexRangeSeries'<'TItem>()
+    let ApexViolinSeries''<'TItem when 'TItem : not struct> = ApexViolinSeries'<'TItem>()
             
 namespace ApexCharts.Internal
 

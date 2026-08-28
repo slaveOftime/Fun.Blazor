@@ -42,14 +42,13 @@ let ``Yield key value attributes`` () =
                 "hidden2", false
                 "onclick", (fun () -> task { count <- count + 1 })
                 "onchange", (fun () -> count <- count + 1)
-                childContent [
-                    html.text $"count={count}"
-                    MudButton'() {
-                        "att1", 1
-                        "att2", true
-                        "Hi"
-                    }
-                ]
+                childContent
+                    [ html.text $"count={count}"
+                      MudButton'() {
+                          "att1", 1
+                          "att2", true
+                          "Hi"
+                      } ]
             }
         )
 
@@ -66,7 +65,7 @@ let ``Yield key value attributes`` () =
         """
         )
 
-        do! result.Find("div").ClickAsync(null)
+        do! result.Find<FunFragmentComponent>("div").ClickAsync(null)
         result.MarkupMatches(
             """
             <div data="1" data-theme="dark" style="color: red" width="10" height="100.1" hidden1=""  >
@@ -78,7 +77,7 @@ let ``Yield key value attributes`` () =
         """
         )
 
-        result.Find("div").Change(null)
+        result.Find<FunFragmentComponent>("div").Change(null)
         result.MarkupMatches(
             """
             <div data="1" data-theme="dark" style="color: red" width="10" height="100.1" hidden1=""  >
@@ -113,13 +112,13 @@ let ``DOM events simple`` () =
         let result = context.RenderNode demo
         result.MarkupMatches("""<div>count=0</div>""")
 
-        do! result.Find("div").ClickAsync(null)
+        do! result.Find<FunFragmentComponent>("div").ClickAsync(null)
         result.MarkupMatches("""<div>count=1</div>""")
 
-        do! result.Find("div").ChangeAsync(null)
+        do! result.Find<FunFragmentComponent>("div").ChangeAsync(null)
         result.MarkupMatches("""<div>count=2</div>""")
 
-        result.Find("div").Change(null)
+        result.Find<FunFragmentComponent>("div").Change(null)
         result.MarkupMatches("""<div>count=3</div>""")
     }
 
@@ -129,16 +128,18 @@ let ``DOM events simple`` () =
 let ``DOM share attrs`` () =
     let context = createBunitContext ()
 
-    let sharedImgAttr = input {
-        style { width 10 }
-        readonly true
-        asAttrRenderFragment
-    }
+    let sharedImgAttr =
+        input {
+            style { width 10 }
+            readonly true
+            asAttrRenderFragment
+        }
 
-    let demo = input {
-        src "test"
-        sharedImgAttr
-    }
+    let demo =
+        input {
+            src "test"
+            sharedImgAttr
+        }
 
     let result = context.RenderNode demo
     result.MarkupMatches("""<input src="test" style="width: 10px; " readonly="">""")
@@ -180,25 +181,27 @@ type IFunBlazorBuilder with
 let ``DOM CE attribute share check`` () =
     let context = createBunitContext ()
 
-    let tempAttr = domAttr {
-        demo 123
-        asAttrRenderFragment
-    }
-
-    
-    let demo = div {
-        tempAttr
-        title' "t"
-        demo 3456
-        demo 34567
-        aria.busy true
-        123
-        MudButton'' {
-            tempAttr
-            demo 456
-            "cool"
+    let tempAttr =
+        domAttr {
+            demo 123
+            asAttrRenderFragment
         }
-    }
+
+
+    let demo =
+        div {
+            tempAttr
+            title' "t"
+            demo 3456
+            demo 34567
+            aria.busy true
+            123
+            MudButton'' {
+                tempAttr
+                demo 456
+                "cool"
+            }
+        }
     let result = context.RenderNode demo
     result.MarkupMatches(
         """
@@ -216,12 +219,13 @@ let ``DOM CE attribute share check`` () =
 let ``Check some attributes`` () =
     let context = createBunitContext ()
 
-    let demo = input {
-        hidden true
-        value true
-        type' InputTypes.``datetime-local``
-        autocomplete AutoCompleteValues.name.family_name
-    }
+    let demo =
+        input {
+            hidden true
+            value true
+            type' InputTypes.``datetime-local``
+            autocomplete AutoCompleteValues.name.family_name
+        }
 
     let result = context.RenderNode demo
     result.MarkupMatches(
@@ -231,10 +235,11 @@ let ``Check some attributes`` () =
         """
     )
 
-    let demo = InputFile'() {
-        hidden true
-        value true
-    }
+    let demo =
+        InputFile'() {
+            hidden true
+            value true
+        }
 
     let result = context.RenderNode demo
     result.MarkupMatches(
@@ -275,10 +280,11 @@ let ``script tag should work`` () =
     """
     )
 
-    let demo = script {
-        "let x = 123;"
-        "let y = 456;"
-    }
+    let demo =
+        script {
+            "let x = 123;"
+            "let y = 456;"
+        }
 
     let result = context.RenderNode demo
     result.MarkupMatches(
@@ -293,14 +299,9 @@ let ``Yield RenderFragment directly`` () =
     let context = createBunitContext ()
 
     let demo =
-        div.create [|
-            div { RenderFragment(fun builder -> builder.AddContent(0, "foo")) }
-            div {
-                childContent [
-                    html.renderFragment (RenderFragment(fun builder -> builder.AddContent(0, "foo2")))
-                ]
-            }
-        |]
+        div.create
+            [| div { RenderFragment(fun builder -> builder.AddContent(0, "foo")) }
+               div { childContent [ html.renderFragment (RenderFragment(fun builder -> builder.AddContent(0, "foo2"))) ] } |]
 
     let result = context.RenderNode demo
     result.MarkupMatches("<div><div>foo</div><div>foo2</div></div>")
@@ -312,21 +313,19 @@ let ``Sections should work`` () =
     let context = createBunitContext ()
 
     let demo =
-        div.create [|
-            SectionOutlet'() { SectionId "by-id" }
-            SectionOutlet'() { SectionName "by-name" }
-            div.create [|
-                html.text "foo"
-                SectionContent'() {
-                    SectionId "by-id"
-                    div { "id" }
-                }
-                SectionContent'() {
-                    SectionName "by-name"
-                    div { "name" }
-                }
-            |]
-        |]
+        div.create
+            [| SectionOutlet'() { SectionId "by-id" }
+               SectionOutlet'() { SectionName "by-name" }
+               div.create
+                   [| html.text "foo"
+                      SectionContent'() {
+                          SectionId "by-id"
+                          div { "id" }
+                      }
+                      SectionContent'() {
+                          SectionName "by-name"
+                          div { "name" }
+                      } |] |]
 
     let result = context.RenderNode demo
     result.MarkupMatches(
@@ -345,10 +344,11 @@ let ``Sections should work`` () =
 let ``for loop should work for element`` () =
     let context = createBunitContext ()
 
-    let demo = div {
-        for i in 1..3 do
-            if i < 2 then p { i } else span { i }
-    }
+    let demo =
+        div {
+            for i in 1..3 do
+                if i < 2 then p { i } else span { i }
+        }
 
     let result = context.RenderNode demo
     result.MarkupMatches(
@@ -366,14 +366,15 @@ let ``for loop should work for element`` () =
 let ``should work for component`` () =
     let context = createBunitContext ()
 
-    let demo = MudPaper'() {
-        class' "p-2"
-        style {
-            overflowHidden
-            height "100%"
+    let demo =
+        MudPaper'() {
+            class' "p-2"
+            style {
+                overflowHidden
+                height "100%"
+            }
+            div { "foo" }
         }
-        div { "foo" }
-    }
 
     let result = context.RenderNode demo
     result.MarkupMatches(
@@ -389,10 +390,11 @@ let ``should work for component`` () =
 let ``for loop should work for component`` () =
     let context = createBunitContext ()
 
-    let demo = MudCard'() {
-        for i in 1..3 do
-            if i < 2 then MudButton'() { i } else span { i }
-    }
+    let demo =
+        MudCard'() {
+            for i in 1..3 do
+                if i < 2 then MudButton'() { i } else span { i }
+        }
 
     let result = context.RenderNode demo
     result.MarkupMatches(
@@ -412,10 +414,11 @@ let ``for loop should work for component`` () =
 let ``bool attribute should work for component`` () =
     let context = createBunitContext ()
 
-    let demo = MudButton'' {
-        Disabled
-        "demo"
-    }
+    let demo =
+        MudButton'' {
+            Disabled
+            "demo"
+        }
 
     let result = context.RenderNode demo
     result.MarkupMatches(
@@ -426,10 +429,11 @@ let ``bool attribute should work for component`` () =
     """
     )
 
-    let demo = MudButton'' {
-        Disabled false
-        "demo"
-    }
+    let demo =
+        MudButton'' {
+            Disabled false
+            "demo"
+        }
 
     let result = context.RenderNode demo
     result.MarkupMatches(
@@ -460,12 +464,11 @@ let ``html blazor should work with ComponentAttrBuilder`` () =
 let ``support yield seq`` () =
     let context = createBunitContext ()
 
-    let demo = div {
-        [|
-            for i in 1..3 do
-                if i < 2 then p { i } else span { i }
-        |]
-    }
+    let demo =
+        div {
+            [| for i in 1..3 do
+                   if i < 2 then p { i } else span { i } |]
+        }
 
     let result = context.RenderNode demo
     result.MarkupMatches(
@@ -478,12 +481,11 @@ let ``support yield seq`` () =
     "
     )
 
-    let demo = MudCard'() {
-        [|
-            for i in 1..3 do
-                if i < 2 then MudButton'() { i } else span { i }
-        |]
-    }
+    let demo =
+        MudCard'() {
+            [| for i in 1..3 do
+                   if i < 2 then MudButton'() { i } else span { i } |]
+        }
 
     let result = context.RenderNode demo
     result.MarkupMatches(
@@ -500,12 +502,13 @@ let ``support yield seq`` () =
 
 
 [<Fact>]
-let ``renderAsString should work`` () = task {
-    let services = ServiceCollection().AddLogging()
-    let serviceProvider = services.BuildServiceProvider()
-    let! actual = div { "hi" } |> html.renderAsString serviceProvider
-    Assert.Equal("<div>hi</div>", actual)
-}
+let ``renderAsString should work`` () =
+    task {
+        let services = ServiceCollection().AddLogging()
+        let serviceProvider = services.BuildServiceProvider()
+        let! actual = div { "hi" } |> html.renderAsString serviceProvider
+        Assert.Equal("<div>hi</div>", actual)
+    }
 
 
 [<Fact>]
@@ -524,12 +527,14 @@ let ``empty body ce should work`` () =
     )
 
 
-    let demo2 = div {
-        div
-        div { }
-        if true then a { }
-        MudSpacer'' { }
-    }
+    let demo2 =
+        div {
+            div
+            div { }
+            if true then
+                a { }
+            MudSpacer'' { }
+        }
 
     let result = context.RenderNode demo2
     result.MarkupMatches(
@@ -543,15 +548,21 @@ let ``empty body ce should work`` () =
         """
     )
 
-    let demo3 = MudContainer'' {
-        div
-        div { }
-        if true then a { }
-        MudSpacer'' { }
-        if true then
-            MudButton'' { if true then MudIcon'' { Icon Icons.Material.Filled.Add } }
-        if false then section { }
-    }
+    let demo3 =
+        MudContainer'' {
+            div
+            div { }
+            if true then
+                a { }
+            MudSpacer'' { }
+            if true then
+                MudButton'' {
+                    if true then
+                        MudIcon'' { Icon Icons.Material.Filled.Add }
+                }
+            if false then
+                section { }
+        }
 
     let result = context.RenderNode demo3
     result.MarkupMatches(
@@ -578,11 +589,12 @@ let ``empty body ce should work`` () =
 let ``form should work`` () =
     let context = createBunitContext ()
 
-    let demo = form {
-        dataEnhance true
-        formName "demo"
-        input { value 1 }
-    }
+    let demo =
+        form {
+            dataEnhance true
+            formName "demo"
+            input { value 1 }
+        }
 
     let result = context.RenderNode demo
     result.MarkupMatches(
@@ -598,10 +610,11 @@ let ``form should work`` () =
 let ``ComponentAttrBuilder should yield correctly`` () =
     let context = createBunitContext ()
 
-    let demo = MudPaper'' {
-        ComponentAttrBuilder<MudPaper>().Add((fun x -> x.Height), "200px").Add((fun x -> x.Outlined), true)
-        "cool"
-    }
+    let demo =
+        MudPaper'' {
+            ComponentAttrBuilder<MudPaper>().Add((fun x -> x.Height), "200px").Add((fun x -> x.Outlined), true)
+            "cool"
+        }
 
     let result = context.RenderNode demo
     result.MarkupMatches(
