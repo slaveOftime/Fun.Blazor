@@ -639,6 +639,7 @@ type ReuseTabsBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspN
     [<CustomOperation("Body")>] member inline _.Body ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("Body", html.text x)
     [<CustomOperation("Body")>] member inline _.Body ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("Body", html.text x)
     [<CustomOperation("Locale")>] member inline _.Locale ([<InlineIfLambda>] render: AttrRenderFragment, x: AntDesign.ReuseTabsLocale) = render ==> ("Locale" => x)
+    [<CustomOperation("ScanAssemblies")>] member inline _.ScanAssemblies ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Reflection.Assembly[]) = render ==> ("ScanAssemblies" => x)
     [<CustomOperation("HidePages")>] member inline _.HidePages ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("HidePages" =>>> true)
     [<CustomOperation("HidePages")>] member inline _.HidePages ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("HidePages" =>>> x)
     [<CustomOperation("ReuseTabsRouteData")>] member inline _.ReuseTabsRouteData ([<InlineIfLambda>] render: AttrRenderFragment, x: AntDesign.ReuseTabsRouteData) = render ==> ("ReuseTabsRouteData" => x)

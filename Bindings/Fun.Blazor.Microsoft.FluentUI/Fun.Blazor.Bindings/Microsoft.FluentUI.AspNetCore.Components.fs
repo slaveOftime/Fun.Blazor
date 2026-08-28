@@ -3733,6 +3733,14 @@ type MessageBoxBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.Asp
     inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
     [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.FluentUI.AspNetCore.Components.MessageBoxContent) = render ==> ("Content" => x)
 
+type RenderFragmentDialogBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
+    [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("Content", fragment)
+    [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("Content", fragment { yield! fragments })
+    [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("Content", html.text x)
+    [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("Content", html.text x)
+    [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("Content", html.text x)
+
 type FluentDialogProviderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
 
@@ -3905,14 +3913,6 @@ type FluentToastProviderBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micr
     /// Gets or sets whether to show a close button on a toast. Default is true.
     /// [Obsolete("This parameter will be removed in a future version. It is and should not not used.")]
     [<CustomOperation("ShowCloseButton")>] member inline _.ShowCloseButton ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowCloseButton" =>>> x)
-
-type RenderFragmentDialogBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
-    [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("Content", fragment)
-    [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("Content", fragment { yield! fragments })
-    [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("Content", html.text x)
-    [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("Content", html.text x)
-    [<CustomOperation("Content")>] member inline _.Content ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("Content", html.text x)
 
 type FluentPageScriptBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
@@ -4977,6 +4977,7 @@ module DslCE =
     type FluentDesignTheme' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Microsoft.FluentUI.AspNetCore.Components.FluentDesignTheme", "Microsoft.FluentUI.AspNetCore.Components")>] () = inherit FluentDesignThemeBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentDesignTheme>()
     type FluentSplashScreen' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Microsoft.FluentUI.AspNetCore.Components.FluentSplashScreen", "Microsoft.FluentUI.AspNetCore.Components")>] () = inherit FluentSplashScreenBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentSplashScreen>()
     type MessageBox' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Microsoft.FluentUI.AspNetCore.Components.MessageBox", "Microsoft.FluentUI.AspNetCore.Components")>] () = inherit MessageBoxBuilder<Microsoft.FluentUI.AspNetCore.Components.MessageBox>()
+    type RenderFragmentDialog' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Microsoft.FluentUI.AspNetCore.Components.RenderFragmentDialog", "Microsoft.FluentUI.AspNetCore.Components")>] () = inherit RenderFragmentDialogBuilder<Microsoft.FluentUI.AspNetCore.Components.RenderFragmentDialog>()
     type FluentDialogProvider' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Microsoft.FluentUI.AspNetCore.Components.FluentDialogProvider", "Microsoft.FluentUI.AspNetCore.Components")>] () = inherit FluentDialogProviderBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentDialogProvider>()
 
     /// Extends the OnKeyDown blazor event to provide a more fluent way to evaluate the key code.
@@ -4993,7 +4994,6 @@ module DslCE =
     type ConfirmationToast' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Microsoft.FluentUI.AspNetCore.Components.ConfirmationToast", "Microsoft.FluentUI.AspNetCore.Components")>] () = inherit ConfirmationToastBuilder<Microsoft.FluentUI.AspNetCore.Components.ConfirmationToast>()
     type ProgressToast' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Microsoft.FluentUI.AspNetCore.Components.ProgressToast", "Microsoft.FluentUI.AspNetCore.Components")>] () = inherit ProgressToastBuilder<Microsoft.FluentUI.AspNetCore.Components.ProgressToast>()
     type FluentToastProvider' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Microsoft.FluentUI.AspNetCore.Components.FluentToastProvider", "Microsoft.FluentUI.AspNetCore.Components")>] () = inherit FluentToastProviderBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentToastProvider>()
-    type RenderFragmentDialog' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Microsoft.FluentUI.AspNetCore.Components.RenderFragmentDialog", "Microsoft.FluentUI.AspNetCore.Components")>] () = inherit RenderFragmentDialogBuilder<Microsoft.FluentUI.AspNetCore.Components.RenderFragmentDialog>()
     type FluentPageScript' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Microsoft.FluentUI.AspNetCore.Components.FluentPageScript", "Microsoft.FluentUI.AspNetCore.Components")>] () = inherit FluentPageScriptBuilder<Microsoft.FluentUI.AspNetCore.Components.FluentPageScript>()
 
 [<AutoOpen>]
@@ -5118,6 +5118,7 @@ module DslCEInstances =
     let FluentDesignTheme'' = FluentDesignTheme'()
     let FluentSplashScreen'' = FluentSplashScreen'()
     let MessageBox'' = MessageBox'()
+    let RenderFragmentDialog'' = RenderFragmentDialog'()
     let FluentDialogProvider'' = FluentDialogProvider'()
     let FluentKeyCode'' = FluentKeyCode'()
     let FluentKeyCodeProvider'' = FluentKeyCodeProvider'()
@@ -5128,7 +5129,6 @@ module DslCEInstances =
     let ConfirmationToast'' = ConfirmationToast'()
     let ProgressToast'' = ProgressToast'()
     let FluentToastProvider'' = FluentToastProvider'()
-    let RenderFragmentDialog'' = RenderFragmentDialog'()
     let FluentPageScript'' = FluentPageScript'()
             
 namespace Microsoft.FluentUI.AspNetCore.Components.DesignTokens
