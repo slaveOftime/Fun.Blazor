@@ -89,11 +89,11 @@ type QueryBuilder<'T>() =
         query.Remove(getExpressionName expression)
         this
 
-    /// Null property will be ignored. If typpe is IComponent then only property which is annotated with ParameterAttribute will be taken.
+    /// Null properties are ignored. For IComponent values, only properties annotated with ParameterAttribute are included.
     /// This will override existing query values.
     member this.Add(state: obj) =
         let ty = state.GetType()
-        let isComponent = ty.IsAssignableTo(typeof<IComponent>)
+        let isComponent = typeof<IComponent>.IsAssignableFrom(ty)
 
         state.GetType().GetProperties(BindingFlags.Instance ||| BindingFlags.Public)
         |> Seq.choose (fun p ->
