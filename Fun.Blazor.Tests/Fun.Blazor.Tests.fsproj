@@ -12,6 +12,7 @@
 		<Compile Include="Core/DITests.fs" />
 		<Compile Include="Core/I18nTests.fs" />
 		<Compile Include="Core/QueryBuilderTests.fs" />
+		<Compile Include="Core/StoreTests.fs" />
 		<Compile Include="Components/AdaptiveTests.fs" />
 		<Compile Include="Components/AdaptiveFormTests.fs" />
 		<Compile Include="Components/HookTests.fs" />
