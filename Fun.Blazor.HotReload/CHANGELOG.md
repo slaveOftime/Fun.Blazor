@@ -1,5 +1,12 @@
 # Changelog
 
+## [Unreleased]
+
+- Add net10.0 target
+- Pin MessagePack to 2.5.302 (security fixes)
+- Reuse the interpreter `EvalContext` per render entry across saves so only changed declarations are re-added, instead of re-emitting shell types on every edit
+- Remove obsolete `TypeAttributes.Serializable` from emitted shell types (FS0044)
+
 ## [4.1.0-beta001] - 2024-10-18
 
 - Drop net6.0 7.0 support for Fun.Blazor.Cli

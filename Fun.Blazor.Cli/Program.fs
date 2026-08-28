@@ -61,7 +61,7 @@ module Program =
         application.Configure(fun config ->
             config
                 .AddCommand<WatchCommand>("watch")
-                .WithDescription("Used for hot-reload (obsolete)")
+                .WithDescription("Watch a project and hot-reload UI changes over SignalR (experimental)")
                 .WithExample([| "watch"; "{your fsharp project}"; "--server"; "https://localhost:5001" |])
             |> ignore
 

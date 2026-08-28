@@ -103,19 +103,19 @@ type StaticAssetsWatcher(scf: IServiceScopeFactory) =
             cssWatcher <- ValueSome(makeCssWatcher dir)
 
             cssWatcher.Value.Changed
-            |> Observable.throttle (TimeSpan.FromMilliseconds 300)
+            |> Observable.throttle (TimeSpan.FromMilliseconds 300.0)
             |> Observable.subscribe (fun x -> sendCode x.Name)
 
             cssWatcher.Value.Created
-            |> Observable.throttle (TimeSpan.FromMilliseconds 300)
+            |> Observable.throttle (TimeSpan.FromMilliseconds 300.0)
             |> Observable.subscribe (fun x -> sendCode x.Name)
 
             cssWatcher.Value.Created
-            |> Observable.throttle (TimeSpan.FromMilliseconds 300)
+            |> Observable.throttle (TimeSpan.FromMilliseconds 300.0)
             |> Observable.subscribe (fun x -> sendCode x.Name)
 
             cssWatcher.Value.Renamed
-            |> Observable.throttle (TimeSpan.FromMilliseconds 300)
+            |> Observable.throttle (TimeSpan.FromMilliseconds 300.0)
             |> Observable.subscribe (fun x -> sendCode x.Name)
 
             cssWatcher.Value.Deleted |> Observable.subscribe (fun x -> sendEmptyCode x.Name)

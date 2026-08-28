@@ -368,7 +368,9 @@ type Convert(includeRanges: bool, tolerateIncomplete: bool) =
         // TODO: FCS should do this instance --> static transformation for us
         if memb.IsInstanceMember && not memb.IsInstanceMemberInCompiledCode then
             if memb.IsExtensionMember then
-                Array.append [| DNamedType(convEntityRef memb.ApparentEnclosingEntity, [||]) |] paramTypesR
+                match memb.ApparentEnclosingEntity with
+                | Some enc -> Array.append [| DNamedType(convEntityRef enc, [||]) |] paramTypesR
+                | None -> paramTypesR
             else
                 let instanceType = memb.FullType.GenericArguments.[0]
                 Array.append [| convType instanceType |] paramTypesR
@@ -403,7 +405,10 @@ type Convert(includeRanges: bool, tolerateIncomplete: bool) =
             )
         if memb.IsInstanceMember && not memb.IsInstanceMemberInCompiledCode then
             if memb.IsExtensionMember then
-                let instanceTypeR = DNamedType(convEntityRef memb.ApparentEnclosingEntity, [||])
+                let instanceTypeR =
+                    match memb.ApparentEnclosingEntity with
+                    | Some enc -> DNamedType(convEntityRef enc, [||])
+                    | None -> DVariableType "$this"
                 let thisParam =
                     {
                         Name = "$this"
@@ -459,7 +464,7 @@ type Convert(includeRanges: bool, tolerateIncomplete: bool) =
         if entity.IsFSharpAbbreviation then
             failwith "convEntityDef: can't convert a type abbreviation"
         {
-            QualifiedName = entity.QualifiedName
+            QualifiedName = defaultArg entity.QualifiedName entity.CompiledName
             Name = entity.CompiledName
             BaseType = entity.BaseType |> Option.map convType
             DeclaredInterfaces = entity.DeclaredInterfaces |> Seq.toArray |> Array.map convType
@@ -484,7 +489,7 @@ type Convert(includeRanges: bool, tolerateIncomplete: bool) =
         if entity.IsArrayType then failwith "convEntityRef: can't convert an array"
         if entity.IsFSharpAbbreviation then
             failwith "convEntityRef: can't convert a type abbreviation"
-        DEntityRef entity.QualifiedName
+        DEntityRef (defaultArg entity.QualifiedName entity.CompiledName)
 
     and stripTypeAbbreviations (typ: FSharpType) : FSharpType = if typ.IsAbbreviation then stripTypeAbbreviations typ.AbbreviatedType else typ
 

@@ -22,6 +22,56 @@ type Source =
 let private checker = FSharpChecker.Create(keepAssemblyContents = true)
 
 
+/// Resolve the full reference set (framework ref-pack assemblies + NuGet/project
+/// refs) for a project via `dotnet msbuild -getItem:ReferencePath`. Dotnet.ProjInfo's
+/// getFscArgs no longer emits -r: arguments on modern SDKs (net6+), so without this
+/// the checker can't resolve even System.Object and produces no implementation file.
+let private resolveReferences (fsprojFile: string) (msbuildArgs: string list) : string list =
+    try
+        let projDir = Path.GetDirectoryName fsprojFile
+        let extraArgs = msbuildArgs |> String.concat " "
+        let args =
+            sprintf
+                "msbuild \"%s\" -t:ResolveAssemblyReferences -getItem:ReferencePath %s"
+                fsprojFile
+                extraArgs
+
+        let psi = System.Diagnostics.ProcessStartInfo()
+        psi.FileName <- "dotnet"
+        psi.WorkingDirectory <- projDir
+        psi.Arguments <- args
+        psi.RedirectStandardOutput <- true
+        psi.RedirectStandardError <- true
+        psi.UseShellExecute <- false
+        psi.CreateNoWindow <- true
+
+        use p = new System.Diagnostics.Process()
+        p.StartInfo <- psi
+        p.Start() |> ignore
+        let output = p.StandardOutput.ReadToEnd()
+        p.WaitForExit()
+
+        // The output is JSON: { "Items": { "ReferencePath": [ { "Identity": "..." } ] } }
+        // Parse minimal: pull every "Identity": "<path>" entry.
+        let refs =
+            System.Text.RegularExpressions.Regex.Matches(output, "\"Identity\"\\s*:\\s*\"([^\"]+\\.dll)\"")
+            |> Seq.cast<System.Text.RegularExpressions.Match>
+            |> Seq.map (fun m -> m.Groups.[1].Value)
+            |> Seq.filter (fun s -> s.EndsWith(".dll"))
+            |> Seq.distinct
+            |> Seq.toList
+
+        if refs.IsEmpty then
+            printfn "fslive: WARNING reference resolution returned no assemblies"
+        else
+            printfn "fslive: resolved %d references for the project" refs.Length
+        refs
+    with
+    | ex ->
+        printfn "fslive: reference resolution failed: %s" ex.Message
+        []
+
+
 let private editDirAndFile (fileName: string) =
     let infoDir = Path.Combine(Path.GetDirectoryName fileName, ".fsharp")
     let editFile = Path.Combine(infoDir, Path.GetFileName fileName + ".edit")
@@ -105,11 +155,17 @@ let process' sendCode (source: Source) (msbuildArgs: string list) =
             | Ok (options, sourceFiles, _log) ->
                 let options = { options with SourceFiles = Array.ofList sourceFiles }
                 let sourceFilesSet = Set.ofList sourceFiles
-                let options =
-                    { options with
-                        OtherOptions = options.OtherOptions |> Array.filter (fun s -> not (sourceFilesSet.Contains(s)))
-                    }
-                Result.Ok options
+                let otherOptions = options.OtherOptions |> Array.filter (fun s -> not (sourceFilesSet.Contains(s)))
+
+                // Modern SDKs don't emit -r: in fsc args; add resolved references.
+                let otherOptions =
+                    if otherOptions |> Array.exists (fun s -> s.StartsWith("-r:")) then
+                        otherOptions
+                    else
+                        let refs = resolveReferences fullPath msbuildArgs
+                        Array.append otherOptions (refs |> List.toArray |> Array.map (fun r -> "-r:" + r))
+
+                Result.Ok { options with OtherOptions = otherOptions }
             | Error err -> failwithf "Couldn't parse project file: %A" err
 
         | SourceFiles sourceFiles ->
@@ -159,6 +215,12 @@ let process' sendCode (source: Source) (msbuildArgs: string list) =
                     Result.Error(Some parseResults.ParseTree, None, None, None)
 
                 | FSharpCheckFileAnswer.Succeeded res ->
+                    if res.HasErrors then
+                        for e in res.Diagnostics do
+                            printfn "fslive: check diagnostic: %O" e
+                    match res.ImplementationFile with
+                    | None -> printfn "fslive: WARNING no implementation file for %s (references may be unresolved)" sourceFile
+                    | Some _ -> ()
                     let mutable hasErrors = false
                     if hasErrors then
                         Result.Error(Some parseResults.ParseTree, None, Some [ "error" ], res.ImplementationFile)
@@ -202,18 +264,53 @@ let process' sendCode (source: Source) (msbuildArgs: string list) =
             | err -> printfn "fslive: ERROR SENDING: %A" (err.ToString())
 
 
-        let changed why =
+        // Cache which source files are hot-reload enabled so we don't re-read
+        // every file from disk on each change event. The set is refreshed when a
+        // file changes (its marker may have been added/removed).
+        let hotReloadEnabled = System.Collections.Concurrent.ConcurrentDictionary<string, bool>()
+
+        let isEnabled file =
+            hotReloadEnabled.GetOrAdd(file, isFileHotReloadEnabled)
+
+
+        // Queue of files that changed since the last compile. Change events are
+        // debounced so a burst of editor events (save-all, format-on-save, etc.)
+        // collapses into a single re-check, and only the files that actually
+        // changed are re-checked/sent instead of the whole hot-reload set.
+        let pendingChanges = System.Collections.Concurrent.ConcurrentDictionary<string, DateTime>()
+        let compileGate = obj ()
+        let mutable compileScheduled = false
+
+        let debounceMs = 200
+
+
+        let recheckChanged why =
             try
                 printfn "fslive: COMPILING (%s)...." why
                 lastCompileStart <- System.DateTime.Now
 
-                let result = options.SourceFiles |> Array.filter isFileHotReloadEnabled |> checkFiles
+                let changedFiles = pendingChanges.Keys |> Seq.toArray
+                pendingChanges.Clear()
 
-                match result with
-                | Result.Error res -> Result.Error res
-                | Result.Ok allFileContents ->
-                    List.map snd allFileContents |> List.toArray |> sendCode
+                // Refresh the hot-reload marker for changed files, then keep only
+                // the ones still enabled.
+                let targets =
+                    changedFiles
+                    |> Array.choose (fun f ->
+                        let enabled = isFileHotReloadEnabled f
+                        hotReloadEnabled.[f] <- enabled
+                        if enabled then Some f else None)
+
+                match targets with
+                | [||] ->
+                    printfn "fslive: no hot-reload files changed, skipping"
                     Result.Ok()
+                | _ ->
+                    match checkFiles targets with
+                    | Result.Error res -> Result.Error res
+                    | Result.Ok fileContents ->
+                        List.map snd fileContents |> List.toArray |> sendCode
+                        Result.Ok()
 
             with
             | err ->
@@ -221,6 +318,24 @@ let process' sendCode (source: Source) (msbuildArgs: string list) =
                 for loc in err.EvalLocationStack do
                     printfn "   --> %O" loc
                 Result.Error(None, Some err, None, None)
+
+
+        let scheduleCompile (changedFile: string) =
+            pendingChanges.[changedFile] <- DateTime.Now
+            lock compileGate (fun () ->
+                if compileScheduled then
+                    ()
+                else
+                    compileScheduled <- true
+                    async {
+                        do! Async.Sleep debounceMs
+                        lock compileGate (fun () -> compileScheduled <- false)
+                        let sw = System.Diagnostics.Stopwatch.StartNew()
+                        recheckChanged (sprintf "Changed %s" changedFile) |> ignore
+                        printfn "finished changes in %d ms" sw.ElapsedMilliseconds
+                    }
+                    |> Async.Start
+            )
 
 
         let mkWatcher (sourceFile: string) =
@@ -238,23 +353,21 @@ let process' sendCode (source: Source) (msbuildArgs: string list) =
                 ||| NotifyFilters.LastWrite
                 ||| NotifyFilters.Size
 
-            let fileChange msg path =
+            let fileChange path =
                 let lastWriteTime =
                     try
                         max (File.GetCreationTime(sourceFile)) (File.GetLastWriteTime(sourceFile))
                     with
                     | _ -> DateTime.MaxValue
-                printfn "change %s, lastCOmpileStart=%A, lastWriteTime = %O" sourceFile lastCompileStart lastWriteTime
-                if isFileHotReloadEnabled path && lastWriteTime > lastCompileStart then
-                    let sw = System.Diagnostics.Stopwatch.StartNew()
-                    printfn "changed %s" sourceFile
-                    changed msg |> ignore
-                    printfn "finished changes in %d ms" sw.ElapsedMilliseconds
+                if lastWriteTime > lastCompileStart then
+                    // Cheap check first (cached), then enqueue for a debounced
+                    // compile. The marker refresh happens inside recheckChanged.
+                    if isEnabled path || isFileHotReloadEnabled path then
+                        scheduleCompile sourceFile
 
-            watcher.Changed.Add(fun e -> fileChange (sprintf "Changed %s" fileName) e.FullPath)
-            watcher.Created.Add(fun e -> fileChange (sprintf "Created %s" fileName) e.FullPath)
-            watcher.Deleted.Add(fun e -> fileChange (sprintf "Deleted %s" fileName) e.FullPath)
-            watcher.Renamed.Add(fun e -> fileChange (sprintf "Renamed %s" fileName) e.OldFullPath)
+            watcher.Changed.Add(fun e -> fileChange e.FullPath)
+            watcher.Created.Add(fun e -> fileChange e.FullPath)
+            watcher.Renamed.Add(fun e -> fileChange e.FullPath)
             watcher
 
 

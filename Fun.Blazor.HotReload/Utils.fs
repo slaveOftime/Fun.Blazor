@@ -33,9 +33,19 @@ let rec internal tryFindMemberByName fullName (decls: DDecl []) =
     )
 
 
+/// Cache one EvalContext per render entry so successive saves only add the
+/// changed declarations (AddDecls is incremental) instead of re-emitting all
+/// shell types and re-initializing the interpreter on every edit.
+let internal evalContexts = System.Collections.Concurrent.ConcurrentDictionary<string, EvalContext>()
+
+let internal getEvalContext (renderEntryName: string) =
+    evalContexts.GetOrAdd(renderEntryName, fun _ ->
+        EvalContext(System.Reflection.Assembly.GetEntryAssembly().GetName()))
+
+
 /// Starts the HttpServer listening for changes
 let internal reload<'T> renderEntryName (codeData: (string * DFile) []) (updateRenderFn: ('T -> NodeRenderFragment) -> unit) =
-    let interp = EvalContext(System.Reflection.Assembly.GetEntryAssembly().GetName())
+    let interp = getEvalContext renderEntryName
 
     let unsupport () =
         printfn "*** LiveUpdate failure:"

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net8.0</TargetFrameworks>
+		<TargetFrameworks>net8.0;net10.0</TargetFrameworks>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<TrimMode>link</TrimMode>
 		<IsTrimmable>true</IsTrimmable>
@@ -17,6 +17,7 @@
 
 	<ItemGroup>
 		<PackageReference Update="FSharp.Core" Version="9.0.100" />
+		<PackageReference Include="MessagePack" Version="2.5.302" />
 		<PackageReference Include="MessagePack.FSharpExtensions" Version="4.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="9.0.0" />
 	</ItemGroup>

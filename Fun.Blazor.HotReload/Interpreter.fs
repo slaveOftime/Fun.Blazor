@@ -1100,7 +1100,6 @@ type EvalContext(assemblyName: AssemblyName, ?dyntypes: bool, ?assemblyResolver:
                             ||| (if encTypB.IsNone then TypeAttributes.Public else TypeAttributes.NestedPublic)
                             ||| (TypeAttributes.AutoClass)
                             ||| (TypeAttributes.AnsiClass)
-                            ||| (TypeAttributes.Serializable)
                             ||| (if entityDef.CustomAttributes
                                     |> Array.exists (fun ca ->
                                         let (DEntityRef (typeName)) = ca.AttributeType

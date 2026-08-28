@@ -1,6 +1,15 @@
 # Changelog
 
 
+## [Unreleased]
+
+- Retarget Fun.Blazor.Cli to net10.0
+- Update FSharp.Compiler.Service to 43.12.400 and adapt to its option-based `ApparentEnclosingEntity`/`QualifiedName` API
+- Update Spectre.Console to 0.57.2, CliWrap to 3.10.5, Microsoft.Build.Utilities.Core to 18.9.6 and pin MessagePack to 2.5.302 (security fixes)
+- Re-enable and improve the `watch` hot-reload command:
+    - Resolve project references via `dotnet msbuild -getItem:ReferencePath` so hot reload works on modern (net6+) SDKs where `getFscArgs` no longer emits `-r:` arguments
+    - Only re-check the files that actually changed (debounced), instead of re-checking every hot-reload file on each save — much faster on large CE-heavy projects
+
 ## [4.1.2] - 2026-05-21
 
 - Make the --generator-version default value to 4.1.1
