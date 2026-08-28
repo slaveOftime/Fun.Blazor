@@ -142,7 +142,24 @@ let private isFileHotReloadEnabled (file: string) =
     result
 
 
-let process' sendCode (source: Source) (msbuildArgs: string list) =
+/// Extract the declared module/type entity names from a checked implementation file,
+/// so we can locate which file contains a given render entry ("Module.member").
+let private entityNamesOfImplFile (i: FSharpImplementationFileContents) =
+    let names = ResizeArray<string>()
+    let rec walk (decls: FSharpImplementationFileDeclaration list) =
+        for d in decls do
+            match d with
+            | FSharpImplementationFileDeclaration.Entity (e, sub) ->
+                if not e.IsNamespace then
+                    names.Add(defaultArg e.QualifiedName e.CompiledName)
+                walk sub
+            | FSharpImplementationFileDeclaration.MemberOrFunctionOrValue _ -> ()
+            | FSharpImplementationFileDeclaration.InitAction _ -> ()
+    walk i.Declarations
+    names.ToArray()
+
+
+let process' sendCode (source: Source) (msbuildArgs: string list) (getEntries: unit -> string []) =
     let useEditFiles = false
     let mutable lastCompileStart = System.DateTime.Now
 
@@ -153,9 +170,15 @@ let process' sendCode (source: Source) (msbuildArgs: string list) =
             let fullPath = Path.GetFullPath fsprojFile
             match FSharpDaemon.ProjectCracker.load (new System.Collections.Concurrent.ConcurrentDictionary<_, _>()) fullPath msbuildArgs with
             | Ok (options, sourceFiles, _log) ->
-                let options = { options with SourceFiles = Array.ofList sourceFiles }
                 let sourceFilesSet = Set.ofList sourceFiles
                 let otherOptions = options.OtherOptions |> Array.filter (fun s -> not (sourceFilesSet.Contains(s)))
+                let projectDir = Path.GetDirectoryName fullPath
+                let sourceFiles =
+                    sourceFiles
+                    |> List.map (fun file ->
+                        if Path.IsPathRooted file then file else Path.Combine(projectDir, file))
+                    |> List.map Path.GetFullPath
+                let options = { options with SourceFiles = Array.ofList sourceFiles }
 
                 // Modern SDKs don't emit -r: in fsc args; add resolved references.
                 let otherOptions =
@@ -204,10 +227,15 @@ let process' sendCode (source: Source) (msbuildArgs: string list) =
     | Result.Error () -> failwith "fslive: error processing project options or script"
 
     | Result.Ok options ->
+        let entityRefsByFile = System.Collections.Concurrent.ConcurrentDictionary<string, DEntityRef []>()
+        let fileVersions = System.Collections.Concurrent.ConcurrentDictionary<string, int>()
+
         let rec checkFile count sourceFile =
             try
+                let fileVersion =
+                    fileVersions.AddOrUpdate(Path.GetFullPath sourceFile, 1, fun _ version -> version + 1)
                 let parseResults, checkResults =
-                    checker.ParseAndCheckFileInProject(sourceFile, 0, SourceText.ofString (readFile useEditFiles sourceFile), options)
+                    checker.ParseAndCheckFileInProject(sourceFile, fileVersion, SourceText.ofString (readFile useEditFiles sourceFile), options)
                     |> Async.RunSynchronously
                 match checkResults with
                 | FSharpCheckFileAnswer.Aborted ->
@@ -215,6 +243,20 @@ let process' sendCode (source: Source) (msbuildArgs: string list) =
                     Result.Error(Some parseResults.ParseTree, None, None, None)
 
                 | FSharpCheckFileAnswer.Succeeded res ->
+                    entityRefsByFile.[Path.GetFullPath sourceFile] <-
+                        res.GetAllUsesOfAllSymbolsInFile()
+                        |> Seq.choose (fun (symbolUse: FSharpSymbolUse) ->
+                            if symbolUse.IsFromDefinition then
+                                None
+                            else
+                                match symbolUse.Symbol with
+                                | :? FSharpMemberOrFunctionOrValue as value when value.IsModuleValueOrMember ->
+                                    value.DeclaringEntity
+                                    |> Option.map (fun entity -> DEntityRef(defaultArg entity.QualifiedName entity.CompiledName))
+                                | _ -> None)
+                        |> Seq.distinct
+                        |> Seq.toArray
+
                     if res.HasErrors then
                         for e in res.Diagnostics do
                             printfn "fslive: check diagnostic: %O" e
@@ -250,10 +292,12 @@ let process' sendCode (source: Source) (msbuildArgs: string list) =
             loop (List.ofArray files) []
 
 
-        let sendCode fileContents =
+        // Accepts already-converted (fileName * DFile) pairs so unchanged files can be
+        // served from the PortaCode cache without reconversion.
+        let sendConverted (changes: (string * DFile) []) =
             try
                 printfn "fslive: Serialize code ..."
-                let data = { Changes = Array.map convFile fileContents }.ToBytes()
+                let data = { Changes = changes }.ToBytes()
                 printfn "fslive: GOT Serialized data, length = %d" data.Length
 
                 printfn "fslive: SENDING ... "
@@ -283,6 +327,114 @@ let process' sendCode (source: Source) (msbuildArgs: string list) =
 
         let debounceMs = 200
 
+        // Per-file PortaCode cache. FCS caches type-checks, but the PortaCode AST
+        // conversion + serialization run per call, so we only reconvert files that
+        // actually changed and reuse the cached DFile for the rest.
+        let portaCache = System.Collections.Concurrent.ConcurrentDictionary<string, string * DFile>()
+
+        // Map of declared entity (module/type) qualified name -> the file that declares
+        // it. Used to locate the file containing a registered render entry.
+        let entityToFile = System.Collections.Concurrent.ConcurrentDictionary<string, string>()
+
+        // Entity references used by each converted file. This lets us follow actual
+        // cross-file value dependencies instead of re-evaluating every marked file
+        // between a change and the entry in compilation order.
+        let indexEntities (implFile: FSharpImplementationFileContents) =
+            let file = Path.GetFullPath implFile.FileName
+            for name in entityNamesOfImplFile implFile do
+                entityToFile.[name] <- file
+
+        // The module part of a render entry name ("Full.Name.Module.member" -> "Full.Name.Module").
+        let entryModule (entryName: string) =
+            match entryName.LastIndexOf '.' with
+            | i when i > 0 -> Some entryName.[.. i - 1]
+            | _ -> None
+
+        // Files that contain a registered render entry and are hot-reload enabled.
+        let entryFiles () =
+            getEntries ()
+            |> Array.choose entryModule
+            |> Array.choose (fun m ->
+                match entityToFile.TryGetValue m with
+                | true, f when isEnabled f -> Some f
+                | _ -> None)
+            |> Array.distinct
+
+        let sourceFiles =
+            options.SourceFiles
+            |> Array.map Path.GetFullPath
+
+        let sourceOrder =
+            sourceFiles
+            |> Array.mapi (fun index file -> file, index)
+            |> dict
+
+        let orderFiles files =
+            files
+            |> Array.distinct
+            |> Array.sortBy (fun file -> sourceOrder.[file])
+
+        let referencedEntities (dfile: DFile) =
+            let refs = System.Collections.Generic.HashSet<DEntityRef>(HashIdentity.Structural)
+            let bindings =
+                System.Reflection.BindingFlags.Public
+                ||| System.Reflection.BindingFlags.NonPublic
+
+            let rec visit (value: obj) =
+                match value with
+                | null -> ()
+                | :? DMemberRef as memberRef -> refs.Add memberRef.Entity |> ignore
+                | :? string -> ()
+                | :? System.Collections.IEnumerable as items ->
+                    for item in items do visit item
+                | value ->
+                    let ty = value.GetType()
+
+                    if ty.Assembly = typeof<DFile>.Assembly then
+                        if Microsoft.FSharp.Reflection.FSharpType.IsUnion(ty, bindings) then
+                            let _, fields = Microsoft.FSharp.Reflection.FSharpValue.GetUnionFields(value, ty, bindings)
+                            for field in fields do visit field
+                        elif Microsoft.FSharp.Reflection.FSharpType.IsRecord(ty, bindings) then
+                            for field in Microsoft.FSharp.Reflection.FSharpValue.GetRecordFields(value, bindings) do
+                                visit field
+
+            visit dfile.Code
+            refs |> Seq.toArray
+
+        let cacheConverted (implFile: FSharpImplementationFileContents) =
+            indexEntities implFile
+            let fileName, dfile = convFile implFile
+            let file = Path.GetFullPath fileName
+            portaCache.[file] <- (fileName, dfile)
+            entityRefsByFile.[file] <-
+                match entityRefsByFile.TryGetValue file with
+                | true, symbolRefs -> Array.append symbolRefs (referencedEntities dfile) |> Array.distinct
+                | _ -> referencedEntities dfile
+
+        // Follow actual reverse dependencies in F# compilation order. A later file is
+        // affected when one of its member references belongs to an already affected file.
+        let affectedFiles (changedFiles: string []) =
+            let affected = System.Collections.Generic.HashSet<string>(changedFiles)
+
+            for file in sourceFiles do
+                if isEnabled file && not (affected.Contains file) then
+                    match entityRefsByFile.TryGetValue file with
+                    | true, entityRefs ->
+                        let dependsOnAffected =
+                            entityRefs
+                            |> Array.exists (fun (DEntityRef entityName) ->
+                                match entityToFile.TryGetValue entityName with
+                                | true, dependencyFile -> affected.Contains dependencyFile
+                                | _ -> false)
+
+                        if dependsOnAffected then affected.Add file |> ignore
+                    | _ -> ()
+
+            entryFiles ()
+            |> Array.iter (affected.Add >> ignore)
+
+            affected |> Seq.toArray |> orderFiles
+
 
         let recheckChanged why =
             try
@@ -294,22 +446,51 @@ let process' sendCode (source: Source) (msbuildArgs: string list) =
 
                 // Refresh the hot-reload marker for changed files, then keep only
                 // the ones still enabled.
-                let targets =
+                let enabledChanged =
                     changedFiles
                     |> Array.choose (fun f ->
                         let enabled = isFileHotReloadEnabled f
                         hotReloadEnabled.[f] <- enabled
-                        if enabled then Some f else None)
+                        if enabled then Some(Path.GetFullPath f) else None)
 
-                match targets with
+                match enabledChanged with
                 | [||] ->
                     printfn "fslive: no hot-reload files changed, skipping"
                     Result.Ok()
                 | _ ->
-                    match checkFiles targets with
+                    let affected = affectedFiles enabledChanged
+                    printfn
+                        "fslive: affected files: %s"
+                        (affected |> Array.map Path.GetFileName |> String.concat ", ")
+
+                    // Only changed files need a fresh FCS check and PortaCode conversion.
+                    // Unchanged dependents are re-evaluated from the startup cache.
+                    let missingFromCache =
+                        affected
+                        |> Array.filter (portaCache.ContainsKey >> not)
+
+                    let toRecheck =
+                        Array.append enabledChanged missingFromCache
+                        |> orderFiles
+
+                    match checkFiles toRecheck with
                     | Result.Error res -> Result.Error res
                     | Result.Ok fileContents ->
-                        List.map snd fileContents |> List.toArray |> sendCode
+                        // Refresh the entity index + PortaCode cache for the re-checked files.
+                        for (_, implFile) in fileContents do
+                            cacheConverted implFile
+
+                        // Re-evaluate the affected path in F# compilation order. This is
+                        // important for cached module values: an entry may reference an
+                        // intermediate value (e.g. App.app -> Routes.routes -> HomeView.home).
+                        let toSend =
+                            affected
+                            |> Array.choose (fun f ->
+                                match portaCache.TryGetValue f with
+                                | true, df -> Some df
+                                | _ -> None)
+
+                        sendConverted toSend
                         Result.Ok()
 
             with
@@ -381,6 +562,25 @@ let process' sendCode (source: Source) (msbuildArgs: string list) =
 
         for watcher in watchers do
             watcher.EnableRaisingEvents <- true
+
+        // One-time index of all hot-reload-enabled files so the entity->file map and the
+        // PortaCode cache are warm. Without this, editing a helper before ever editing
+        // the entry would not know which file holds the entry. FCS caches the checks, so
+        // later edits only reconvert changed files.
+        async {
+            let enabledFiles =
+                options.SourceFiles
+                |> Array.map Path.GetFullPath
+                |> Array.filter isEnabled
+
+            match checkFiles enabledFiles with
+            | Result.Error _ -> printfn "fslive: initial indexing had errors (non-fatal)"
+            | Result.Ok fileContents ->
+                for (_, implFile) in fileContents do
+                    cacheConverted implFile
+                printfn "fslive: indexed %d hot-reload files" fileContents.Length
+        }
+        |> Async.Start
 
         { new IDisposable with
             member _.Dispose() =

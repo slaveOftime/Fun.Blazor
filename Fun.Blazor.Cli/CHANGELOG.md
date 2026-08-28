@@ -9,6 +9,9 @@
 - Re-enable and improve the `watch` hot-reload command:
     - Resolve project references via `dotnet msbuild -getItem:ReferencePath` so hot reload works on modern (net6+) SDKs where `getFscArgs` no longer emits `-r:` arguments
     - Only re-check the files that actually changed (debounced), instead of re-checking every hot-reload file on each save — much faster on large CE-heavy projects
+    - Convert only changed files, then combine compiler symbol uses (including argument-less module values) with portable-AST member references to send their actual cached dependency closure through the render-entry files (registered by the client via the new `RegisterEntry` hub call) in F# compilation order. This refreshes intermediate module values (for example `Counter.entry` → `DemoMaps.demos` → `DocView.docView` → `Routes.routes` → `App.app`) without evaluating unrelated component classes or re-converting the whole hot-reload set
+    - Index the enabled `// hot-reload` files once at startup (entity → file map + converted-AST cache) so entry files can be located cheaply per save
+    - Increment the FCS source version on every check so repeated edits cannot reuse a stale parse/check result
 
 ## [4.1.2] - 2026-05-21
 

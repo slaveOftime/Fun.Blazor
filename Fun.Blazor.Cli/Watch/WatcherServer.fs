@@ -15,8 +15,23 @@ open Fun.Blazor.Cli
 open Fun.Blazor.Cli.Watch
 
 
-type HotReloadHub() =
+/// Render-entry names ("Full.Name.Module.member") registered by connected clients.
+/// Shared between the hub (which populates it) and the code watcher (which uses it to
+/// decide which extra files to re-check so a helper edit re-renders the entry).
+type EntryRegistry() =
+    let entries = System.Collections.Concurrent.ConcurrentDictionary<string, byte>()
+    member _.Add(entryName: string) = entries.TryAdd(entryName, 0uy) |> ignore
+    member _.All = entries.Keys |> Seq.toArray
+
+
+type HotReloadHub(registry: EntryRegistry) =
     inherit Hub()
+
+    /// Called by a hot-reload component on connect to declare its render entry, so the
+    /// watcher knows which file must be re-sent when one of its helper files changes.
+    member _.RegisterEntry(entryName: string) =
+        printfn "hot-reload entry registered: %s" entryName
+        registry.Add entryName
 
 
 type CodeWatcher(scf: IServiceScopeFactory) =
@@ -26,6 +41,7 @@ type CodeWatcher(scf: IServiceScopeFactory) =
         let sp = scf.CreateScope().ServiceProvider
         let settings = sp.GetService<WatchSettings>()
         let hotReloadHub = sp.GetService<IHubContext<HotReloadHub>>()
+        let entryRegistry = sp.GetService<EntryRegistry>()
 
         let fsharpProj =
             if File.Exists settings.Project then
@@ -43,7 +59,7 @@ type CodeWatcher(scf: IServiceScopeFactory) =
 
         printfn "Start code watcher"
 
-        use _ = process' sendCode (Source.FSharpProj fsharpProj) []
+        use _ = process' sendCode (Source.FSharpProj fsharpProj) [] (fun () -> entryRegistry.All)
 
         while not token.IsCancellationRequested do
             do! Task.Delay 2000
@@ -143,6 +159,7 @@ let runServer (setting: WatchSettings) =
             webBuilder
                 .ConfigureServices(fun services ->
                     services.AddSingleton(setting)
+                    services.AddSingleton<EntryRegistry>()
                     services.AddHostedService<CodeWatcher>()
                     services.AddHostedService<StaticAssetsWatcher>()
                     services.AddCors()

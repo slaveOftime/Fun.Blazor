@@ -129,6 +129,33 @@ type HotReloadComponent<'T>() as this =
         if firstRender then
             let hubBundle = Cache.getHubBundle this.Host
 
+            // Tell the watch server which render entry this component owns, so the server
+            // re-sends the entry's file when one of its helper files changes (keeping the
+            // per-save re-check small instead of re-checking every hot-reload file). The
+            // hub connects asynchronously, so wait for it to be connected (and re-register
+            // on reconnect).
+            let registerEntry () =
+                task {
+                    try
+                        if hubBundle.Hub.State = HubConnectionState.Connected then
+                            do! hubBundle.Hub.InvokeAsync("RegisterEntry", this.RenderEntryName)
+                    with
+                    | ex -> printfn "RegisterEntry failed: %s" ex.Message
+                }
+
+            // Wait until the (async) connection is up, then register; also re-register on reconnect.
+            let rec waitAndRegister attempts =
+                task {
+                    if hubBundle.Hub.State = HubConnectionState.Connected then
+                        do! registerEntry ()
+                    elif attempts > 0 then
+                        do! System.Threading.Tasks.Task.Delay 500
+                        do! waitAndRegister (attempts - 1)
+                }
+
+            waitAndRegister 60 |> ignore
+            hubBundle.Hub.add_Reconnected (fun _ -> task { do! registerEntry () } :> System.Threading.Tasks.Task)
+
             disposes <-
                 [
                     hubBundle.CodeObserver.AddInstantCallback(fun code ->

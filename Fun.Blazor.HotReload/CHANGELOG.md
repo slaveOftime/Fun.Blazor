@@ -6,6 +6,10 @@
 - Pin MessagePack to 2.5.302 (security fixes)
 - Reuse the interpreter `EvalContext` per render entry across saves so only changed declarations are re-added, instead of re-emitting shell types on every edit
 - Remove obsolete `TypeAttributes.Serializable` from emitted shell types (FS0044)
+- Make interpretation resilient: a declaration that cannot be interpreted is now skipped and reported in the console with its source location instead of failing the whole update, and the last good render is kept on screen when an update fails (softens Limitation #1)
+- Register each render entry name with the watch server over SignalR (`RegisterEntry`) after connect (and on reconnect). This lets the server resend the entry file together with any changed helper file, so editing a helper that does not contain the entry still propagates instead of failing with "couldn't find declaration called '...'"
+- Promote compiled F# module resolutions to interpreted entities while preserving compiled records, unions, and concrete class identities. This refreshes cross-file module getters so applied updates visibly reach the render tree without replacing Blazor component types
+- Support delegates and quotations over compiled record types, and instantiate generic methods on generic types with their method type arguments
 
 ## [4.1.0-beta001] - 2024-10-18
 

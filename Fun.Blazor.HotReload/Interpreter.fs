@@ -966,10 +966,7 @@ type EvalContext(assemblyName: AssemblyName, ?dyntypes: bool, ?assemblyResolver:
             match iminfo.GetMethods(bindAll) |> Array.tryFind (fun m -> m.MetadataToken = minfo.MetadataToken) with
             | Some minfo2 ->
                 if minfo.IsGenericMethod then
-                    try
-                        minfo2.MakeGenericMethod(typeArgs1V)
-                    with
-                    | _ -> minfo2.MakeGenericMethod(typeArgs2V)
+                    minfo2.MakeGenericMethod(typeArgs2V)
                 else
                     minfo2
             | None -> failwithf "didn't find a matching method for %A with the right token" minfo
@@ -1541,9 +1538,39 @@ type EvalContext(assemblyName: AssemblyName, ?dyntypes: bool, ?assemblyResolver:
             for decl in decls do
                 match decl with
                 | DDeclEntity (entityDef, subDecls) ->
-                    // Add any types not emitted as shell types
-                    if not (entityResolutions.ContainsKey(entityDef.Ref)) then
-                        entityResolutions.[entityDef.Ref] <- UEntity entityDef
+                    // Prefer a newly supplied interpreted entity over a resolution from
+                    // the compiled assembly. An entry-only update may have resolved its
+                    // helper modules to compiled types before those helpers are edited;
+                    // keeping that resolution would make later cross-file calls continue
+                    // to use the original compiled getters. Also refresh an existing
+                    // UEntity so changed entity metadata is not left stale.
+                    //
+                    // Emitted shell types must retain their runtime type identity.
+                    let preservesCompiledIdentity =
+                        entityDef.IsUnion
+                        || entityDef.IsRecord
+                        || entityDef.IsStruct
+                        || entityDef.IsInterface
+
+                    let existingResolution =
+                        match entityResolutions.TryGetValue(entityDef.Ref) with
+                        | true, resolution -> resolution
+                        | _ -> resolveEntity entityDef.Ref
+
+                    let shouldInterpret =
+                        not preservesCompiledIdentity
+                        && match existingResolution with
+                           | UEntity _ -> true
+                           | REntity(runtimeType, false) -> runtimeType.IsAbstract && runtimeType.IsSealed
+                           | REntity(_, true) -> false
+
+                    match existingResolution with
+                    | REntity(_, true) -> ()
+                    | _ when shouldInterpret -> entityResolutions.[entityDef.Ref] <- UEntity entityDef
+                    | _ when preservesCompiledIdentity -> ()
+                    | _ ->
+                        // Non-module classes retain their compiled runtime identity.
+                        resolveEntity entityDef.Ref |> ignore
 
                     for membDef in entityDef.DeclaredDispatchSlots do
                         let ty = resolveEntity (membDef.EnclosingEntity)
@@ -1930,10 +1957,9 @@ type EvalContext(assemblyName: AssemblyName, ?dyntypes: bool, ?assemblyResolver:
     member ctxt.EvalNewDelegate(env, elementType, argExpr: DExpr) =
         let elementTypeR = resolveType (env, elementType)
         match elementTypeR with
-        | RType ty ->
+        | RTypeErased env ty ->
             let fn = ctxt.EvalExpr(env, argExpr).Value
             protectInvoke (fun () -> Delegate.CreateDelegate(ty, fn, "Invoke")) |> Value
-        | _ -> failwithf "Unhandled NewDelegate %A" elementType
 
     member ctxt.EvalApplication(env, funcExpr, typeArgs, argExprs) =
         let funcV = ctxt.EvalExpr(env, funcExpr)

@@ -48,31 +48,38 @@ dotnet new --install Fun.Blazor.Templates
 
 The interpreter (`EvalContext`) is reused per render entry across saves, so after the first save only the changed declarations are re-added and re-evaluated. The first save is the most expensive; subsequent saves of the same entry are much faster. Keeping the number of hot-reload-enabled files small keeps the per-save F# check cheap too.
 
+On the CLI side, the work on each save is now bounded to what actually changed:
+
+- A single long-lived `FSharpChecker` is kept, and files are checked with `ParseAndCheckFileInProject`, so the F# compiler service caches the type-check of every unchanged file. Only the edited file is re-type-checked against those cached dependencies.
+- Only changed files are re-checked and converted to the portable AST. The server combines compiler symbol uses (including argument-less module values) with portable-AST member references, then sends the actual cached dependency closure through the render-entry files in F# compilation order. Intermediate module values are refreshed before the entry is evaluated without evaluating unrelated files. Entry files are discovered automatically: the client registers each entry name with the watch server over SignalR (`RegisterEntry`), and the server maps it back to its file via a one-time index of the enabled `// hot-reload` files built at startup.
+
+The net effect is that editing a helper file (one that does not contain the entry) now re-evaluates the entry so the change propagates — fixing the `couldn't find declaration called '...App.app'` failure — while keeping the per-save cost to roughly a few hundred ms instead of several seconds for a full-set resend.
+
 ## Limitations
 
-- The entry file and **yourComponent** should be defined in different files.
+- Not all F# expressions can be interpreted. **This is now tolerated rather than fatal:** when a declaration cannot be interpreted it is skipped and reported in the browser console with its source location, and the last good render is kept on screen instead of the update failing (or the UI going blank). So you can keep complex logic in a hot-reload file if you want — the parts that can't be interpreted simply won't update until you move them out and save again.
 
-- Not all F# expressions can be parsed correctly, so it's better to separate your UI logic and UI layout into different files and only add **// hot-reload** to the UI layout file.
-
-    For example, if you want to add an extension method to the IComponentHook to access the backend server, you can separate it into a new file.
-
-    The file structure could be like this:
+    For the best experience, still separate UI layout from heavy logic and only add **// hot-reload** to the layout files:
 
     ```
     YourComponent
         Stores.fs
-        Hooks.fs
+        Hooks.fs          // extension methods, backend access, etc. (no marker needed)
         Control1.fs // hot-reload
         Control2.fs // hot-reload
     ```
 
-- The first save will take more time.
+    When you hit an uninterpretable construct, the console message tells you exactly which declaration/line to move into a non hot-reload file.
+
+- The first save will take more time (the interpreter emits its shell types and does a full initial check). Subsequent saves of the same entry reuse the interpreter and only re-check the changed files.
 
 - To get hot-reload for other components that are defined in different files:
 
     - Those components must be defined in the same project.
-    - Those components must be referenced directly by **yourComponent**.
+    - Those components must be referenced (transitively) by **yourComponent**, so that they are part of its render tree.
     - You also need to add **// hot-reload** to those files that contain the components.
+
+    These requirements come from how the CLI watches files: it only re-checks files that carry the **// hot-reload** marker, and only components reachable from your entry point get re-rendered. A failed update now keeps the previous render, so a missing marker or an uninterpretable helper will not blank your UI — it just won't update until you fix it.
 
 - You should not enable too many files for hot-reload because of performance concerns.
 

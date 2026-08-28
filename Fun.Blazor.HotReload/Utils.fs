@@ -57,6 +57,13 @@ let internal reload<'T> renderEntryName (codeData: (string * DFile) []) (updateR
 
     let success () = Some { Quacked = "LiveUpdate successful" }
 
+    let reportDiagnostics (diags: DDiagnostic []) =
+        if diags.Length > 0 then
+            printfn "*** LiveUpdate: %d declaration(s) could not be interpreted and were skipped." diags.Length
+            printfn "***   The last good render is kept. Move the reported code into a non hot-reload file."
+            for d in diags do
+                printfn "%O" d
+
     let switchD (files: (string * DFile) []) =
         lock
             interp
@@ -67,23 +74,33 @@ let internal reload<'T> renderEntryName (codeData: (string * DFile) []) (updateR
                             printfn "LiveUpdate: adding declarations...."
                             interp.AddDecls file.Code
 
-                        for (_, file) in files do
-                            printfn "LiveUpdate: evaluating decls in code package for side effects...."
-                            interp.EvalDecls(envEmpty, file.Code)
-                        Result.Ok()
+                        // Evaluate declarations optimistically: a member that cannot be
+                        // interpreted (Limitation #1) is skipped and reported with its
+                        // location instead of failing the whole update.
+                        let diags =
+                            [|
+                                for (_, file) in files do
+                                    printfn "LiveUpdate: evaluating decls in code package for side effects...."
+                                    yield! interp.TryEvalDecls(envEmpty, file.Code)
+                            |]
+                        Result.Ok diags
                     with
                     | exn -> Result.Error exn
 
                 match res with
                 | Result.Error exn ->
+                    // Registration itself failed (e.g. an entity could not be resolved). Keep the
+                    // last good render and report the failure with whatever location info we have.
                     printfn "*** LiveUpdate failure:"
                     printfn "***   [x] got code package"
-                    printfn "***   FAIL: the evaluation of the declarations in the code package failed: %A" exn
+                    printfn "***   FAIL: the declarations could not be registered: %s" exn.Message
+                    printfn "%O" (DiagnosticFromException exn)
                     {
-                        Quacked = sprintf "couldn't quack! the evaluation of the declarations in the code package failed: %A" exn
+                        Quacked = sprintf "couldn't quack! the declarations could not be registered: %s" exn.Message
                     }
 
-                | Result.Ok () ->
+                | Result.Ok diags ->
+                    reportDiagnostics diags
                     match files.Length with
                     | 0 -> { Quacked = "couldn't quack! Files were empty!" }
                     | _ ->
@@ -94,13 +111,11 @@ let internal reload<'T> renderEntryName (codeData: (string * DFile) []) (updateR
 
                                 match renderEntry with
                                 | None -> None
-                                | Some (membDef, _) ->
+                                | Some (membDef, body) ->
                                     printfn $"LiveUpdate: evaluating '{renderEntryName}'...."
 
                                     if membDef.Parameters.Length > 0 then
-                                        printfn $"LiveUpdate: evaluating '{renderEntryName}'...."
-                                        let method = interp.ResolveMethod membDef.Ref membDef.Range
-                                        match method with
+                                        match interp.ResolveMethod membDef.Ref membDef.Range with
                                         | ResolvedMember.UMethod (_, method) ->
                                             match method.Value with
                                             | :? MethodLambdaValue as (MethodLambdaValue fn) ->
@@ -113,30 +128,40 @@ let internal reload<'T> renderEntryName (codeData: (string * DFile) []) (updateR
                                         | _ -> unsupport ()
 
                                     else
-                                        let entity = interp.ResolveEntity(membDef.EnclosingEntity)
-                                        let _, programObj = interp.GetExprDeclResult(entity, membDef.Name)
-                                        match getVal programObj with
-                                        | :? NodeRenderFragment as render ->
-                                            updateRenderFn (fun _ -> render)
-                                            success ()
-                                        | :? MethodLambdaValue as (MethodLambdaValue fn) ->
-                                            try
-                                                updateRenderFn (fun _ -> unbox (fn ([||], [||])))
+                                        // Evaluate the entry expression here so a failure is caught and
+                                        // reported with its location instead of crashing the update.
+                                        match interp.TryEvalExpr(envEmpty, body, membDef.Range) with
+                                        | Result.Error err ->
+                                            printfn "*** LiveUpdate failure evaluating '%s':" renderEntryName
+                                            printfn "%O" (DiagnosticFromException err)
+                                            Some { Quacked = $"couldn't quack! evaluating '{renderEntryName}' failed: {err.Message}" }
+                                        | Result.Ok programObj ->
+                                            match getVal programObj with
+                                            | :? NodeRenderFragment as render ->
+                                                updateRenderFn (fun _ -> render)
                                                 success ()
-                                            with
-                                            | _ -> unsupport ()
-                                        | p -> unsupport ()
+                                            | :? MethodLambdaValue as (MethodLambdaValue fn) ->
+                                                try
+                                                    updateRenderFn (fun _ -> unbox (fn ([||], [||])))
+                                                    success ()
+                                                with
+                                                | _ -> unsupport ()
+                                            | p -> unsupport ()
                             )
 
                         match result with
+                        | Some res -> res
                         | None ->
+                            // The CLI sends the affected dependent path through the entry.
+                            // Reaching here means the entry genuinely isn't defined in a
+                            // hot-reload-enabled file.
                             printfn "*** LiveUpdate failure:"
                             printfn "***   [x] got code package"
-                            printfn "***   FAIL: couldn't find declaration called '%s'" renderEntryName
+                            printfn "***   FAIL: couldn't find declaration called '%s' in any hot-reload file." renderEntryName
+                            printfn "***         Make sure the file that defines it has '// hot-reload' at the top."
                             {
                                 Quacked = $"couldn't quack! No declaration called '{renderEntryName}'!"
                             }
-                        | Some res -> res
             )
 
     let sw = System.Diagnostics.Stopwatch.StartNew()
