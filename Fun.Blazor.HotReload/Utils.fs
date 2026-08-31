@@ -43,7 +43,7 @@ let internal evalContexts = System.Collections.Concurrent.ConcurrentDictionary<s
 
 let internal getEvalContext (renderEntryName: string) =
     evalContexts.GetOrAdd(renderEntryName, fun _ ->
-        EvalContext(System.Reflection.Assembly.GetEntryAssembly().GetName()))
+        EvalContext(System.Reflection.Assembly.GetEntryAssembly().GetName(), dyntypes = true))
 
 
 /// Starts the HttpServer listening for changes
