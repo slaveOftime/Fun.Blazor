@@ -13,6 +13,80 @@ open MessagePack
 open Fun.Blazor
 
 
+/// Self-contained JS for the hot-reload feedback UI: a bottom snackbar
+/// (ready/indexed/applied) and a pulsing "watching" dot in the corner. Injected at
+/// runtime by HotReloadComponent when the host page didn't include hotReloadJSInterop.
+/// Hovering the toast or the dot shows a tip explaining hot reload.
+[<AutoOpen>]
+module HotReloadUI =
+    let UIScript =
+        """
+            // Minimal hot-reload feedback UI: a bottom snackbar (ready/indexed/applied)
+            // and a small pulsing dot in the corner while a change is being applied.
+            window.hotReloadUI = (() => {
+                const STYLE_ID = "fun-blazor-hot-reload-ui-style"
+                const ensureStyle = () => {
+                    if (document.getElementById(STYLE_ID)) return
+                    const s = document.createElement("style")
+                    s.id = STYLE_ID
+                    s.innerText = `
+                        .fb-hr-toast {
+                            position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%) translateY(20px);
+                            background: rgba(30,30,30,.95); color: #fff; padding: 8px 16px; border-radius: 6px;
+                            font: 13px/1.4 system-ui, sans-serif; box-shadow: 0 2px 10px rgba(0,0,0,.4);
+                            opacity: 0; transition: opacity .2s, transform .2s; pointer-events: none; z-index: 99999;
+                            display: flex; align-items: center; gap: 8px; white-space: nowrap;
+                        }
+                        .fb-hr-toast.fb-hr-show { opacity: 1; transform: translateX(-50%) translateY(0); }
+                        .fb-hr-dot { width: 8px; height: 8px; border-radius: 50%; flex: 0 0 auto; }
+                        .fb-hr-dot.ready { background: #4caf50; }
+                        .fb-hr-dot.info  { background: #2196f3; }
+                        .fb-hr-watch {
+                            position: fixed; right: 16px; bottom: 16px; width: 12px; height: 12px; border-radius: 50%;
+                            background: #ff9800; z-index: 99999; pointer-events: none;
+                            animation: fb-hr-pulse 1s ease-in-out infinite;
+                        }
+                        @keyframes fb-hr-pulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: .35; transform: scale(1.35); } }
+                    `
+                    document.head.appendChild(s)
+                }
+                const TIP = "Fun.Blazor hot reload: edit a file marked // hot-reload and save to apply changes in place."
+                let toastTimer = null
+                const toast = (msg, kind) => {
+                    ensureStyle()
+                    let el = document.querySelector(".fb-hr-toast")
+                    if (!el) { el = document.createElement("div"); el.className = "fb-hr-toast"; el.title = TIP; document.body.appendChild(el) }
+                    el.innerHTML = ""
+                    const dot = document.createElement("span")
+                    dot.className = "fb-hr-dot " + (kind || "info")
+                    el.appendChild(dot)
+                    el.appendChild(document.createTextNode(msg))
+                    el.classList.add("fb-hr-show")
+                    if (toastTimer) clearTimeout(toastTimer)
+                    toastTimer = setTimeout(() => el.classList.remove("fb-hr-show"), 3000)
+                }
+                const setWatching = (on) => {
+                    ensureStyle()
+                    let el = document.querySelector(".fb-hr-watch")
+                    if (on && !el) {
+                        el = document.createElement("div")
+                        el.className = "fb-hr-watch"
+                        el.title = TIP
+                        el.style.pointerEvents = "auto"
+                        document.body.appendChild(el)
+                    }
+                    else if (!on && el) el.remove()
+                }
+                return {
+                    ready:   () => toast("Hot reload ready — edits will be applied", "ready"),
+                    indexed: () => toast("Hot reload indexed", "ready"),
+                    applied: () => { setWatching(false); toast("Hot reload applied", "ready") },
+                    watching: () => setWatching(true)
+                }
+            })()
+        """
+
+
 type private CssChanges = { Name: string; Css: string }
 
 type private HubBundle =
@@ -124,6 +198,21 @@ type HotReloadComponent<'T>() as this =
 
     override _.Render() = this.RenderFn this.RenderFnArg
 
+    // Fire-and-forget JS UI feedback. Injects the feedback UI once if the host page
+    // didn't include the hotReloadJSInterop script, so it works out of the box.
+    // No-ops silently if JS interop isn't available yet (e.g. prerendering).
+    member private this.invokeUI(fn: string) =
+        task {
+            try
+                let! exists = this.JS.InvokeAsync<bool>("eval", "typeof window.hotReloadUI !== 'undefined'").AsTask()
+                if not exists then
+                    do! this.JS.InvokeAsync<obj>("eval", UIScript).AsTask() :> System.Threading.Tasks.Task
+                do! this.JS.InvokeAsync<obj>(fn).AsTask() :> System.Threading.Tasks.Task
+            with
+            | _ -> ()
+        }
+        |> ignore
+
 
     override _.OnAfterRender(firstRender) =
         if firstRender then
@@ -139,6 +228,10 @@ type HotReloadComponent<'T>() as this =
                     try
                         if hubBundle.Hub.State = HubConnectionState.Connected then
                             do! hubBundle.Hub.InvokeAsync("RegisterEntry", this.RenderEntryName)
+                            // Connected and the entry is registered: the server has indexed
+                            // the project and this entry will receive edits.
+                            this.invokeUI "hotReloadUI.ready"
+                            this.invokeUI "hotReloadUI.indexed"
                     with
                     | ex -> printfn "RegisterEntry failed: %s" ex.Message
                 }
@@ -159,12 +252,16 @@ type HotReloadComponent<'T>() as this =
             disposes <-
                 [
                     hubBundle.CodeObserver.AddInstantCallback(fun code ->
+                        // A change arrived from the watcher: show the "watching" indicator
+                        // until the new render is applied.
+                        this.invokeUI "hotReloadUI.watching"
                         Utils.reload<'T>
                             this.RenderEntryName
                             code
                             (fun x ->
                                 Cache.lastRenderFns.AddOrUpdate(this.RenderEntryName, (fun _ -> box x), (fun _ _ -> box x))
                                 setRender x
+                                this.invokeUI "hotReloadUI.applied"
                             )
                     )
 

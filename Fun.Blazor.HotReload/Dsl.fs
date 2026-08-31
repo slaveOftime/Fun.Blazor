@@ -32,9 +32,12 @@ type html with
     /// Apply style text to a apecific style tag in the end of html body to override other style
     /// This is supposed to be used for hot-reload
     /// * If you are using Visual Studio this should not be necessary
+    /// Also injects a small self-contained UI helper (window.hotReloadUI, defined in
+    /// HotReloadComponent.UIScript) used by HotReloadComponent to show a snackbar and
+    /// a "watching" indicator without requiring any markup in the host app.
     static member inline hotReloadJSInterop =
         js
-            """
+            ("""
             window.hotReloadStyle = (id, style) => {
                 let ele = document.getElementById(id)
                 if (ele) {
@@ -46,4 +49,5 @@ type html with
                     document.body.appendChild(ele)
                 }
             }
-        """
+            """
+             + UIScript)
