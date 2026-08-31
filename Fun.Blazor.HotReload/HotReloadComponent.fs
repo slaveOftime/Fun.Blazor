@@ -13,75 +13,110 @@ open MessagePack
 open Fun.Blazor
 
 
-/// Self-contained JS for the hot-reload feedback UI: a bottom snackbar
-/// (ready/indexed/applied) and a pulsing "watching" dot in the corner. Injected at
-/// runtime by HotReloadComponent when the host page didn't include hotReloadJSInterop.
-/// Hovering the toast or the dot shows a tip explaining hot reload.
+/// Self-contained JS for the hot-reload feedback UI: a status banner fixed to the
+/// bottom of the page that logs timestamped messages, so the developer can see what is
+/// happening behind the scenes. Injected at runtime by HotReloadComponent when the host
+/// page didn't include hotReloadJSInterop. Toggle visibility with Ctrl+Alt+H.
 [<AutoOpen>]
 module HotReloadUI =
     let UIScript =
         """
-            // Minimal hot-reload feedback UI: a bottom snackbar (ready/indexed/applied)
-            // and a small pulsing dot in the corner while a change is being applied.
+            // Hot-reload status banner: a fixed bottom bar that logs timestamped messages
+            // (connecting, indexed, applying, applied). Toggle with Ctrl+Alt+H.
             window.hotReloadUI = (() => {
                 const STYLE_ID = "fun-blazor-hot-reload-ui-style"
+                const BANNER_ID = "fun-blazor-hot-reload-banner"
                 const ensureStyle = () => {
                     if (document.getElementById(STYLE_ID)) return
                     const s = document.createElement("style")
                     s.id = STYLE_ID
                     s.innerText = `
-                        .fb-hr-toast {
-                            position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%) translateY(20px);
-                            background: rgba(30,30,30,.95); color: #fff; padding: 8px 16px; border-radius: 6px;
-                            font: 13px/1.4 system-ui, sans-serif; box-shadow: 0 2px 10px rgba(0,0,0,.4);
-                            opacity: 0; transition: opacity .2s, transform .2s; pointer-events: none; z-index: 99999;
-                            display: flex; align-items: center; gap: 8px; white-space: nowrap;
+                        #${BANNER_ID} {
+                            position: fixed; left: 0; right: 0; bottom: 0; z-index: 99999;
+                            background: rgba(24,24,24,.97); color: #d4d4d4;
+                            font: 12px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+                            border-top: 1px solid #3a3a3a; box-shadow: 0 -2px 12px rgba(0,0,0,.4);
+                            display: flex; flex-direction: column; max-height: 132px;
                         }
-                        .fb-hr-toast.fb-hr-show { opacity: 1; transform: translateX(-50%) translateY(0); }
-                        .fb-hr-dot { width: 8px; height: 8px; border-radius: 50%; flex: 0 0 auto; }
-                        .fb-hr-dot.ready { background: #4caf50; }
-                        .fb-hr-dot.info  { background: #2196f3; }
-                        .fb-hr-watch {
-                            position: fixed; right: 16px; bottom: 16px; width: 12px; height: 12px; border-radius: 50%;
-                            background: #ff9800; z-index: 99999; pointer-events: none;
-                            animation: fb-hr-pulse 1s ease-in-out infinite;
+                        #${BANNER_ID} .fb-hr-head {
+                            display: flex; align-items: center; gap: 8px; padding: 4px 12px;
+                            background: rgba(45,45,45,.9); color: #fff; flex: 0 0 auto; cursor: pointer; user-select: none;
                         }
-                        @keyframes fb-hr-pulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: .35; transform: scale(1.35); } }
+                        #${BANNER_ID} .fb-hr-head .fb-hr-dot { width: 8px; height: 8px; border-radius: 50%; background: #888; flex: 0 0 auto; }
+                        #${BANNER_ID}[data-state="ready"]    .fb-hr-head .fb-hr-dot { background: #4caf50; }
+                        #${BANNER_ID}[data-state="watching"] .fb-hr-head .fb-hr-dot { background: #ff9800; animation: fb-hr-pulse 1s ease-in-out infinite; }
+                        #${BANNER_ID}[data-state="error"]    .fb-hr-head .fb-hr-dot { background: #f44336; }
+                        #${BANNER_ID} .fb-hr-head .fb-hr-title { font-weight: 600; letter-spacing: .3px; }
+                        #${BANNER_ID} .fb-hr-head .fb-hr-state { margin-left: auto; color: #aaa; }
+                        #${BANNER_ID} .fb-hr-head .fb-hr-hint { color: #777; font-size: 11px; }
+                        #${BANNER_ID} .fb-hr-log { overflow-y: auto; padding: 4px 12px 8px; flex: 1 1 auto; }
+                        #${BANNER_ID} .fb-hr-log .fb-hr-line { white-space: pre-wrap; word-break: break-word; }
+                        #${BANNER_ID} .fb-hr-log .fb-hr-time { color: #6a9955; margin-right: 8px; }
+                        #${BANNER_ID} .fb-hr-log .fb-hr-line.error { color: #f48771; }
+                        #${BANNER_ID} .fb-hr-log .fb-hr-line.ok { color: #4ec9b0; }
+                        @keyframes fb-hr-pulse { 0%,100% { opacity: 1; } 50% { opacity: .3; } }
                     `
                     document.head.appendChild(s)
                 }
-                const TIP = "Fun.Blazor hot reload: edit a file marked // hot-reload and save to apply changes in place."
-                let toastTimer = null
-                const toast = (msg, kind) => {
+                const banner = () => {
                     ensureStyle()
-                    let el = document.querySelector(".fb-hr-toast")
-                    if (!el) { el = document.createElement("div"); el.className = "fb-hr-toast"; el.title = TIP; document.body.appendChild(el) }
-                    el.innerHTML = ""
-                    const dot = document.createElement("span")
-                    dot.className = "fb-hr-dot " + (kind || "info")
-                    el.appendChild(dot)
-                    el.appendChild(document.createTextNode(msg))
-                    el.classList.add("fb-hr-show")
-                    if (toastTimer) clearTimeout(toastTimer)
-                    toastTimer = setTimeout(() => el.classList.remove("fb-hr-show"), 3000)
+                    let b = document.getElementById(BANNER_ID)
+                    if (b) return b
+                    b = document.createElement("div")
+                    b.id = BANNER_ID
+                    b.setAttribute("data-state", "init")
+                    b.innerHTML = `
+                        <div class="fb-hr-head" title="Click to collapse / expand">
+                            <span class="fb-hr-dot"></span>
+                            <span class="fb-hr-title">Fun.Blazor Hot Reload</span>
+                            <span class="fb-hr-hint">Ctrl+Alt+H to hide</span>
+                            <span class="fb-hr-state">connecting…</span>
+                        </div>
+                        <div class="fb-hr-log"></div>
+                    `
+                    b.querySelector(".fb-hr-head").addEventListener("click", () => {
+                        const log = b.querySelector(".fb-hr-log")
+                        log.style.display = log.style.display === "none" ? "" : "none"
+                    })
+                    document.body.appendChild(b)
+                    return b
                 }
-                const setWatching = (on) => {
-                    ensureStyle()
-                    let el = document.querySelector(".fb-hr-watch")
-                    if (on && !el) {
-                        el = document.createElement("div")
-                        el.className = "fb-hr-watch"
-                        el.title = TIP
-                        el.style.pointerEvents = "auto"
-                        document.body.appendChild(el)
-                    }
-                    else if (!on && el) el.remove()
+                const setState = (state, label) => {
+                    const b = banner()
+                    b.setAttribute("data-state", state)
+                    b.querySelector(".fb-hr-state").textContent = label
+                }
+                const log = (msg, cls) => {
+                    const b = banner()
+                    const logEl = b.querySelector(".fb-hr-log")
+                    const line = document.createElement("div")
+                    line.className = "fb-hr-line" + (cls ? " " + cls : "")
+                    const time = document.createElement("span")
+                    time.className = "fb-hr-time"
+                    time.textContent = new Date().toLocaleTimeString()
+                    line.appendChild(time)
+                    line.appendChild(document.createTextNode(msg))
+                    logEl.appendChild(line)
+                    logEl.scrollTop = logEl.scrollHeight
+                    while (logEl.children.length > 100) logEl.removeChild(logEl.firstChild)
+                }
+                // Toggle banner visibility with Ctrl+Alt+H.
+                if (!window.__fbHrHotkeyBound) {
+                    window.__fbHrHotkeyBound = true
+                    document.addEventListener("keydown", (e) => {
+                        if (e.ctrlKey && e.altKey && (e.key === "h" || e.key === "H")) {
+                            e.preventDefault()
+                            const b = document.getElementById(BANNER_ID)
+                            if (b) b.style.display = b.style.display === "none" ? "" : "none"
+                        }
+                    })
                 }
                 return {
-                    ready:   () => toast("Hot reload ready — edits will be applied", "ready"),
-                    indexed: () => toast("Hot reload indexed", "ready"),
-                    applied: () => { setWatching(false); toast("Hot reload applied", "ready") },
-                    watching: () => setWatching(true)
+                    ready:   () => { setState("ready", "ready — edits will be applied"); log("Connected to watcher. Edit a file marked // hot-reload and save to apply changes in place.", "ok") },
+                    indexed: () => { setState("ready", "ready — edits will be applied"); log("Project indexed: PortaCode cache warm, entry registered.", "ok") },
+                    watching: () => { setState("watching", "applying changes…"); log("Change detected — re-checking and applying…") },
+                    applied: (ms) => { setState("ready", "ready — edits will be applied"); log("Applied" + (ms ? " in " + ms + " ms" : "") + ".", "ok") },
+                    error:   (msg) => { setState("error", "error"); log(msg || "Hot reload error", "error") }
                 }
             })()
         """
@@ -201,13 +236,13 @@ type HotReloadComponent<'T>() as this =
     // Fire-and-forget JS UI feedback. Injects the feedback UI once if the host page
     // didn't include the hotReloadJSInterop script, so it works out of the box.
     // No-ops silently if JS interop isn't available yet (e.g. prerendering).
-    member private this.invokeUI(fn: string) =
+    member private this.invokeUI(fn: string, [<System.ParamArray>] args: obj []) =
         task {
             try
                 let! exists = this.JS.InvokeAsync<bool>("eval", "typeof window.hotReloadUI !== 'undefined'").AsTask()
                 if not exists then
                     do! this.JS.InvokeAsync<obj>("eval", UIScript).AsTask() :> System.Threading.Tasks.Task
-                do! this.JS.InvokeAsync<obj>(fn).AsTask() :> System.Threading.Tasks.Task
+                do! this.JS.InvokeAsync<obj>(fn, args).AsTask() :> System.Threading.Tasks.Task
             with
             | _ -> ()
         }
@@ -230,8 +265,8 @@ type HotReloadComponent<'T>() as this =
                             do! hubBundle.Hub.InvokeAsync("RegisterEntry", this.RenderEntryName)
                             // Connected and the entry is registered: the server has indexed
                             // the project and this entry will receive edits.
-                            this.invokeUI "hotReloadUI.ready"
-                            this.invokeUI "hotReloadUI.indexed"
+                            this.invokeUI("hotReloadUI.ready")
+                            this.invokeUI("hotReloadUI.indexed")
                     with
                     | ex -> printfn "RegisterEntry failed: %s" ex.Message
                 }
@@ -252,17 +287,23 @@ type HotReloadComponent<'T>() as this =
             disposes <-
                 [
                     hubBundle.CodeObserver.AddInstantCallback(fun code ->
-                        // A change arrived from the watcher: show the "watching" indicator
-                        // until the new render is applied.
-                        this.invokeUI "hotReloadUI.watching"
-                        Utils.reload<'T>
-                            this.RenderEntryName
-                            code
-                            (fun x ->
-                                Cache.lastRenderFns.AddOrUpdate(this.RenderEntryName, (fun _ -> box x), (fun _ _ -> box x))
-                                setRender x
-                                this.invokeUI "hotReloadUI.applied"
-                            )
+                        // A change arrived from the watcher: show the banner in the
+                        // "applying" state until the new render is applied.
+                        this.invokeUI("hotReloadUI.watching")
+                        let sw = System.Diagnostics.Stopwatch.StartNew()
+                        try
+                            Utils.reload<'T>
+                                this.RenderEntryName
+                                code
+                                (fun x ->
+                                    Cache.lastRenderFns.AddOrUpdate(this.RenderEntryName, (fun _ -> box x), (fun _ _ -> box x))
+                                    setRender x
+                                    this.invokeUI("hotReloadUI.applied", box sw.ElapsedMilliseconds)
+                                )
+                        with
+                        | ex ->
+                            printfn "LiveUpdate failed: %s" ex.Message
+                            this.invokeUI("hotReloadUI.error", box ($"Apply failed: {ex.Message}. See browser console for details."))
                     )
 
                     hubBundle.CssObserver.AddInstantCallback(fun data ->
