@@ -112,10 +112,9 @@ module HotReloadUI =
                     })
                 }
                 return {
-                    ready:   () => { setState("ready", "ready — edits will be applied"); log("Connected to watcher. Edit a file marked // hot-reload and save to apply changes in place.", "ok") },
-                    waiting: () => { if (!document.getElementById(BANNER_ID)) { setState("init", "waiting for watcher…"); log("Hot-reload entry is live but the watcher is not reachable yet. Start it with: fun-blazor watch <project.fsproj>. This banner hides again when the watcher connects.") } },
-                    indexing: () => { setState("init", "indexing…"); log("Watcher connected, indexing source files (PortaCode cache warming). Edits won't apply until indexing finishes.") },
-                    indexed: () => { setState("ready", "ready — edits will be applied"); log("Project indexed: PortaCode cache is warm. Edits to hot-reload files will now be applied in place.", "ok") },
+                    waiting: () => { setState("init", "hot reload not ready"); log("Hot reload is not ready: the watcher is not reachable. Start it with: fun-blazor watch <project.fsproj>. Will connect automatically once it is up (no restart needed).") },
+                    indexing: () => { setState("init", "hot reload not ready"); log("Hot reload is not ready yet: watcher connected, indexing source files (PortaCode cache warming). Edits saved now will not be applied until indexing finishes.") },
+                    indexed: () => { setState("ready", "ready — edits will be applied"); log("Hot reload is ready: watcher connected and all source files indexed. Edits to hot-reload files will now be applied in place.", "ok") },
                     watching: () => { setState("watching", "applying changes…"); const b = banner(); if (b.style.display === "none") b.style.display = ""; log("Change detected — re-checking and applying…") },
                     applied: (ms) => { setState("ready", "ready — edits will be applied"); log("Applied" + (ms ? " in " + ms + " ms" : "") + ".", "ok") },
                     error:   (msg) => { setState("error", "error"); log(msg || "Hot reload error", "error") }
@@ -268,43 +267,43 @@ type HotReloadComponent<'T>() as this =
             )
             |> ignore
 
+            // Inject the banner immediately so the "not ready" state is visible right
+            // away, before the hub is connected.
+            this.invokeUI("hotReloadUI.waiting")
+
             // Tell the watch server which render entry this component owns, so the server
             // re-sends the entry's file when one of its helper files changes (keeping the
             // per-save re-check small instead of re-checking every hot-reload file). The
-            // hub connects asynchronously, so wait for it to be connected (and re-register
-            // on reconnect).
+            // server replies via "IndexingState" with whether its cache is already warm,
+            // which drives the banner's indexing/indexed message.
             let registerEntry () =
                 task {
                     try
                         if hubBundle.Hub.State = HubConnectionState.Connected then
                             do! hubBundle.Hub.InvokeAsync("RegisterEntry", this.RenderEntryName)
-                            // Connected and the entry is registered. The server replies
-                            // via "IndexingState" with whether its cache is already warm,
-                            // which drives the banner's indexing/indexed message.
-                            this.invokeUI("hotReloadUI.ready")
                     with
                     | ex -> printfn "RegisterEntry failed: %s" ex.Message
                 }
 
-            // Wait until the (async) connection is up, then register; also re-register on reconnect.
-            let rec waitAndRegister attempts =
-                task {
-                    if hubBundle.Hub.State = HubConnectionState.Connected then
-                        do! registerEntry ()
-                    elif attempts > 0 then
-                        do! System.Threading.Tasks.Task.Delay 500
-                        do! waitAndRegister (attempts - 1)
-                }
-
-            waitAndRegister 60 |> ignore
             hubBundle.Hub.add_Reconnected (fun _ -> task { do! registerEntry () } :> System.Threading.Tasks.Task)
 
-            // If the watcher is still not connected shortly after startup (e.g. the CLI
-            // isn't running), show a one-time hint instead of leaving the page silent.
+            // Keep trying to connect until the watcher comes up: if the CLI is started
+            // after the app, the banner transitions to ready automatically without an
+            // app restart. The hub.StartAsync in makeHubBundle is fire-and-forget, so
+            // poll for the Connected state and re-kick StartAsync while Disconnected.
             task {
-                do! System.Threading.Tasks.Task.Delay 5000
-                if hubBundle.Hub.State <> HubConnectionState.Connected then
-                    this.invokeUI("hotReloadUI.waiting")
+                let mutable connected = hubBundle.Hub.State = HubConnectionState.Connected
+                while not connected do
+                    if hubBundle.Hub.State = HubConnectionState.Disconnected then
+                        try
+                            do! hubBundle.Hub.StartAsync()
+                        with
+                        | _ -> ()
+                    if hubBundle.Hub.State = HubConnectionState.Connected then
+                        connected <- true
+                    else
+                        do! System.Threading.Tasks.Task.Delay 1000
+                do! registerEntry ()
             }
             |> ignore
 
