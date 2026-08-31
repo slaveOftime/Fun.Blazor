@@ -143,7 +143,7 @@ let private entityNamesOfImplFile (i: FSharpImplementationFileContents) =
     names.ToArray()
 
 
-let process' sendCode (source: Source) (msbuildArgs: string list) (getEntries: unit -> string []) =
+let process' sendCode (source: Source) (msbuildArgs: string list) (getEntries: unit -> string []) (notifyIndexingDone: unit -> unit) =
     let mutable lastCompileStart = System.DateTime.Now
 
 
@@ -549,6 +549,8 @@ let process' sendCode (source: Source) (msbuildArgs: string list) (getEntries: u
         // PortaCode cache are warm for the whole dependency closure (including
         // unmarked intermediate files between a changed file and the render entry).
         // FCS caches the checks, so later edits only reconvert changed files.
+        // notifyIndexingDone tells the server (and connected clients) when the cache is
+        // actually warm so the UI doesn't claim "indexed" prematurely.
         async {
             let allFiles = options.SourceFiles |> Array.map Path.GetFullPath
 
@@ -558,6 +560,7 @@ let process' sendCode (source: Source) (msbuildArgs: string list) (getEntries: u
                 for (_, implFile) in fileContents do
                     cacheConverted implFile
                 printfn "fslive: indexed %d source files" fileContents.Length
+                notifyIndexingDone ()
         }
         |> Async.Start
 

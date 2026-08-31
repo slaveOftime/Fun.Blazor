@@ -24,14 +24,24 @@ type EntryRegistry() =
     member _.All = entries.Keys |> Seq.toArray
 
 
-type HotReloadHub(registry: EntryRegistry) =
+/// Whether the one-time startup PortaCode indexing has finished. Set by the code
+/// watcher and read by the hub so connecting clients can be told whether the cache is
+/// warm yet (edits sent before indexing completes are not applied correctly).
+type IndexingState() =
+    member val IsDone = false with get, set
+
+
+type HotReloadHub(registry: EntryRegistry, indexing: IndexingState) =
     inherit Hub()
 
     /// Called by a hot-reload component on connect to declare its render entry, so the
     /// watcher knows which file must be re-sent when one of its helper files changes.
-    member _.RegisterEntry(entryName: string) =
+    member this.RegisterEntry(entryName: string) =
         printfn "hot-reload entry registered: %s" entryName
         registry.Add entryName
+        // Tell the just-connected client whether startup indexing already finished, so
+        // its banner doesn't claim "indexed" while the cache is still warming.
+        this.Clients.Caller.SendAsync("IndexingState", indexing.IsDone)
 
 
 type CodeWatcher(scf: IServiceScopeFactory) =
@@ -42,6 +52,7 @@ type CodeWatcher(scf: IServiceScopeFactory) =
         let settings = sp.GetService<WatchSettings>()
         let hotReloadHub = sp.GetService<IHubContext<HotReloadHub>>()
         let entryRegistry = sp.GetService<EntryRegistry>()
+        let indexingState = sp.GetService<IndexingState>()
 
         let fsharpProj =
             if File.Exists settings.Project then
@@ -68,7 +79,19 @@ type CodeWatcher(scf: IServiceScopeFactory) =
 
         printfn "Start code watcher"
 
-        use _ = process' sendCode (Source.FSharpProj fsharpProj) [] (fun () -> entryRegistry.All)
+        // Called when startup indexing finishes: mark it and notify all clients so
+        // their banners can switch from "indexing…" to "ready".
+        let notifyIndexingDone () =
+            indexingState.IsDone <- true
+            async {
+                try
+                    do! hotReloadHub.Clients.All.SendAsync("IndexingState", true) |> Async.AwaitTask |> Async.Ignore
+                with
+                | ex -> printfn "fslive: send indexing state failed: %s" ex.Message
+            }
+            |> Async.Start
+
+        use _ = process' sendCode (Source.FSharpProj fsharpProj) [] (fun () -> entryRegistry.All) notifyIndexingDone
 
         while not token.IsCancellationRequested do
             do! Task.Delay 2000
@@ -178,6 +201,7 @@ let runServer (setting: WatchSettings) =
                 .ConfigureServices(fun services ->
                     services.AddSingleton(setting)
                     services.AddSingleton<EntryRegistry>()
+                    services.AddSingleton<IndexingState>()
                     services.AddHostedService<CodeWatcher>()
                     services.AddHostedService<StaticAssetsWatcher>()
                     services.AddCors()

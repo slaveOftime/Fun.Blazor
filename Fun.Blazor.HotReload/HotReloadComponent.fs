@@ -114,8 +114,9 @@ module HotReloadUI =
                 return {
                     ready:   () => { setState("ready", "ready — edits will be applied"); log("Connected to watcher. Edit a file marked // hot-reload and save to apply changes in place.", "ok") },
                     waiting: () => { if (!document.getElementById(BANNER_ID)) { setState("init", "waiting for watcher…"); log("Hot-reload entry is live but the watcher is not reachable yet. Start it with: fun-blazor watch <project.fsproj>. This banner hides again when the watcher connects.") } },
-                    indexed: () => { setState("ready", "ready — edits will be applied"); log("Project indexed: PortaCode cache warm, entry registered.", "ok") },
-                    watching: () => { setState("watching", "applying changes…"); log("Change detected — re-checking and applying…") },
+                    indexing: () => { setState("init", "indexing…"); log("Watcher connected, indexing source files (PortaCode cache warming). Edits won't apply until indexing finishes.") },
+                    indexed: () => { setState("ready", "ready — edits will be applied"); log("Project indexed: PortaCode cache is warm. Edits to hot-reload files will now be applied in place.", "ok") },
+                    watching: () => { setState("watching", "applying changes…"); const b = banner(); if (b.style.display === "none") b.style.display = ""; log("Change detected — re-checking and applying…") },
                     applied: (ms) => { setState("ready", "ready — edits will be applied"); log("Applied" + (ms ? " in " + ms + " ms" : "") + ".", "ok") },
                     error:   (msg) => { setState("error", "error"); log(msg || "Hot reload error", "error") }
                 }
@@ -254,6 +255,19 @@ type HotReloadComponent<'T>() as this =
         if firstRender then
             let hubBundle = Cache.getHubBundle this.Host
 
+            // The server tells us when its one-time startup indexing has finished (and
+            // replies with the current state when we RegisterEntry). Only then may the
+            // banner claim "ready" — edits sent before indexing completes are dropped.
+            hubBundle.Hub.On<bool>(
+                "IndexingState",
+                fun isDone ->
+                    if isDone then
+                        this.invokeUI("hotReloadUI.indexed")
+                    else
+                        this.invokeUI("hotReloadUI.indexing")
+            )
+            |> ignore
+
             // Tell the watch server which render entry this component owns, so the server
             // re-sends the entry's file when one of its helper files changes (keeping the
             // per-save re-check small instead of re-checking every hot-reload file). The
@@ -264,10 +278,10 @@ type HotReloadComponent<'T>() as this =
                     try
                         if hubBundle.Hub.State = HubConnectionState.Connected then
                             do! hubBundle.Hub.InvokeAsync("RegisterEntry", this.RenderEntryName)
-                            // Connected and the entry is registered: the server has indexed
-                            // the project and this entry will receive edits.
+                            // Connected and the entry is registered. The server replies
+                            // via "IndexingState" with whether its cache is already warm,
+                            // which drives the banner's indexing/indexed message.
                             this.invokeUI("hotReloadUI.ready")
-                            this.invokeUI("hotReloadUI.indexed")
                     with
                     | ex -> printfn "RegisterEntry failed: %s" ex.Message
                 }
