@@ -51,7 +51,7 @@ The interpreter (`EvalContext`) is reused per render entry across saves, so afte
 On the CLI side, the work on each save is now bounded to what actually changed:
 
 - A single long-lived `FSharpChecker` is kept, and files are checked with `ParseAndCheckFileInProject`, so the F# compiler service caches the type-check of every unchanged file. Only the edited file is re-type-checked against those cached dependencies.
-- Only changed files are re-checked and converted to the portable AST. The server combines compiler symbol uses (including argument-less module values) with portable-AST member references, then sends the actual cached dependency closure through the render-entry files in F# compilation order. Intermediate module values are refreshed before the entry is evaluated without evaluating unrelated files. Entry files are discovered automatically: the client registers each entry name with the watch server over SignalR (`RegisterEntry`), and the server maps it back to its file via a one-time index of the enabled `// hot-reload` files built at startup.
+- Only changed files are re-checked and converted to the portable AST. The server combines compiler symbol uses (including argument-less module values) with portable-AST member references, then sends the actual cached dependency closure through the render-entry files in F# compilation order. Intermediate module values are refreshed before the entry is evaluated without evaluating unrelated files. The dependency closure is walked over **all** project files, so intermediate files between a changed file and the entry are re-evaluated even when they don't carry the marker. Entry files are discovered automatically: the client registers each entry name with the watch server over SignalR (`RegisterEntry`), and the server maps it back to its file via a one-time index of all project source files built at startup.
 
 The net effect is that editing a helper file (one that does not contain the entry) now re-evaluates the entry so the change propagates — fixing the `couldn't find declaration called '...App.app'` failure — while keeping the per-save cost to roughly a few hundred ms instead of several seconds for a full-set resend.
 
@@ -77,11 +77,11 @@ The net effect is that editing a helper file (one that does not contain the entr
 
     - Those components must be defined in the same project.
     - Those components must be referenced (transitively) by **yourComponent**, so that they are part of its render tree.
-    - You also need to add **// hot-reload** to those files that contain the components.
+    - Add **// hot-reload** only to the files you actually edit and want to see update. Files *between* an edited file and the entry no longer need the marker — the server re-evaluates the whole dependency closure (including unmarked intermediate files) so cached module values like `DemoMaps.demos` are refreshed.
 
-    These requirements come from how the CLI watches files: it only re-checks files that carry the **// hot-reload** marker, and only components reachable from your entry point get re-rendered. A failed update now keeps the previous render, so a missing marker or an uninterpretable helper will not blank your UI — it just won't update until you fix it.
+    The **// hot-reload** marker now only controls *which saves trigger a recompile*, not which files are sent. Only components reachable from your entry point get re-rendered. A failed update keeps the previous render, so an uninterpretable helper will not blank your UI — it just won't update until you fix it.
 
-- You should not enable too many files for hot-reload because of performance concerns.
+- Every save of a marked file re-checks that file, so keeping the number of marked files small keeps the per-save F# check cheap. (The full dependency index is built once at startup and is cached afterwards, so unmarked files no longer add to per-save cost.)
 
 - It does not support adding a new file, renaming files, or other similar actions. Only modifying an existing file is supported.
 

@@ -1,5 +1,4 @@
-﻿// hot-reload
-[<AutoOpen>]
+﻿[<AutoOpen>]
 module Fun.Blazor.Docs.Wasm.Routes
 
 open System

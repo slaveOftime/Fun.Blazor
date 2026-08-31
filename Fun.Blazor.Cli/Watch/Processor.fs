@@ -413,11 +413,15 @@ let process' sendCode (source: Source) (msbuildArgs: string list) (getEntries: u
 
         // Follow actual reverse dependencies in F# compilation order. A later file is
         // affected when one of its member references belongs to an already affected file.
+        // This walks the whole dependency closure regardless of the "// hot-reload"
+        // marker: the marker only decides which files *trigger* a recompile when saved,
+        // but intermediate files between a changed file and the render entry must still
+        // be re-evaluated so their cached module values are refreshed.
         let affectedFiles (changedFiles: string []) =
             let affected = System.Collections.Generic.HashSet<string>(changedFiles)
 
             for file in sourceFiles do
-                if isEnabled file && not (affected.Contains file) then
+                if not (affected.Contains file) then
                     match entityRefsByFile.TryGetValue file with
                     | true, entityRefs ->
                         let dependsOnAffected =
@@ -563,22 +567,19 @@ let process' sendCode (source: Source) (msbuildArgs: string list) (getEntries: u
         for watcher in watchers do
             watcher.EnableRaisingEvents <- true
 
-        // One-time index of all hot-reload-enabled files so the entity->file map and the
-        // PortaCode cache are warm. Without this, editing a helper before ever editing
-        // the entry would not know which file holds the entry. FCS caches the checks, so
-        // later edits only reconvert changed files.
+        // One-time index of all project source files so the entity->file map and the
+        // PortaCode cache are warm for the whole dependency closure (including
+        // unmarked intermediate files between a changed file and the render entry).
+        // FCS caches the checks, so later edits only reconvert changed files.
         async {
-            let enabledFiles =
-                options.SourceFiles
-                |> Array.map Path.GetFullPath
-                |> Array.filter isEnabled
+            let allFiles = options.SourceFiles |> Array.map Path.GetFullPath
 
-            match checkFiles enabledFiles with
+            match checkFiles allFiles with
             | Result.Error _ -> printfn "fslive: initial indexing had errors (non-fatal)"
             | Result.Ok fileContents ->
                 for (_, implFile) in fileContents do
                     cacheConverted implFile
-                printfn "fslive: indexed %d hot-reload files" fileContents.Length
+                printfn "fslive: indexed %d source files" fileContents.Length
         }
         |> Async.Start
 
