@@ -113,6 +113,7 @@ module HotReloadUI =
                 }
                 return {
                     ready:   () => { setState("ready", "ready — edits will be applied"); log("Connected to watcher. Edit a file marked // hot-reload and save to apply changes in place.", "ok") },
+                    waiting: () => { if (!document.getElementById(BANNER_ID)) { setState("init", "waiting for watcher…"); log("Hot-reload entry is live but the watcher is not reachable yet. Start it with: fun-blazor watch <project.fsproj>. This banner hides again when the watcher connects.") } },
                     indexed: () => { setState("ready", "ready — edits will be applied"); log("Project indexed: PortaCode cache warm, entry registered.", "ok") },
                     watching: () => { setState("watching", "applying changes…"); log("Change detected — re-checking and applying…") },
                     applied: (ms) => { setState("ready", "ready — edits will be applied"); log("Applied" + (ms ? " in " + ms + " ms" : "") + ".", "ok") },
@@ -284,26 +285,39 @@ type HotReloadComponent<'T>() as this =
             waitAndRegister 60 |> ignore
             hubBundle.Hub.add_Reconnected (fun _ -> task { do! registerEntry () } :> System.Threading.Tasks.Task)
 
+            // If the watcher is still not connected shortly after startup (e.g. the CLI
+            // isn't running), show a one-time hint instead of leaving the page silent.
+            task {
+                do! System.Threading.Tasks.Task.Delay 5000
+                if hubBundle.Hub.State <> HubConnectionState.Connected then
+                    this.invokeUI("hotReloadUI.waiting")
+            }
+            |> ignore
+
             disposes <-
                 [
                     hubBundle.CodeObserver.AddInstantCallback(fun code ->
-                        // A change arrived from the watcher: show the banner in the
-                        // "applying" state until the new render is applied.
-                        this.invokeUI("hotReloadUI.watching")
-                        let sw = System.Diagnostics.Stopwatch.StartNew()
-                        try
-                            Utils.reload<'T>
-                                this.RenderEntryName
-                                code
-                                (fun x ->
-                                    Cache.lastRenderFns.AddOrUpdate(this.RenderEntryName, (fun _ -> box x), (fun _ _ -> box x))
-                                    setRender x
-                                    this.invokeUI("hotReloadUI.applied", box sw.ElapsedMilliseconds)
-                                )
-                        with
-                        | ex ->
-                            printfn "LiveUpdate failed: %s" ex.Message
-                            this.invokeUI("hotReloadUI.error", box ($"Apply failed: {ex.Message}. See browser console for details."))
+                        // The observer fires once with its initial empty value when the
+                        // callback is attached — that's not a real change, so skip it to
+                        // avoid a bogus "Change detected" message when no watcher is up.
+                        if not (Array.isEmpty code) then
+                            // A change arrived from the watcher: show the banner in the
+                            // "applying" state until the new render is applied.
+                            this.invokeUI("hotReloadUI.watching")
+                            let sw = System.Diagnostics.Stopwatch.StartNew()
+                            try
+                                Utils.reload<'T>
+                                    this.RenderEntryName
+                                    code
+                                    (fun x ->
+                                        Cache.lastRenderFns.AddOrUpdate(this.RenderEntryName, (fun _ -> box x), (fun _ _ -> box x))
+                                        setRender x
+                                        this.invokeUI("hotReloadUI.applied", box sw.ElapsedMilliseconds)
+                                    )
+                            with
+                            | ex ->
+                                printfn "LiveUpdate failed: %s" ex.Message
+                                this.invokeUI("hotReloadUI.error", box ($"Apply failed: {ex.Message}. See browser console for details."))
                     )
 
                     hubBundle.CssObserver.AddInstantCallback(fun data ->
