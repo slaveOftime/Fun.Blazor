@@ -1,4 +1,15 @@
 ﻿// Copyright 2018 Fabulous contributors. See LICENSE.md for license.
+//
+// Processor: the hot-reload watcher's core. Responsibilities, in order below:
+//   1. resolve project options + assembly references (resolveReferences)
+//   2. check files with FSharp.Compiler.Service (checkFile / checkFiles)
+//   3. convert checked files to PortaCode and maintain per-file caches
+//      (portaCache, entityToFile, entityRefsByFile)
+//   4. compute the reverse-dependency closure of a change (affectedFiles)
+//   5. debounce file-watch events and trigger re-checks (scheduleCompile / recheckChanged)
+//   6. watch source files (mkWatcher) and warm the cache at startup
+// The "// hot-reload" first-line marker only decides which files *trigger* a
+// recompile when saved; the dependency closure re-evaluates intermediate files.
 
 [<AutoOpen>]
 module Fun.Blazor.Cli.Watch.Processor
@@ -72,37 +83,10 @@ let private resolveReferences (fsprojFile: string) (msbuildArgs: string list) : 
         []
 
 
-let private editDirAndFile (fileName: string) =
-    let infoDir = Path.Combine(Path.GetDirectoryName fileName, ".fsharp")
-    let editFile = Path.Combine(infoDir, Path.GetFileName fileName + ".edit")
-    if not (Directory.Exists infoDir) then
-        Directory.CreateDirectory infoDir |> ignore
-    infoDir, editFile
-
-
-let private readFile useEditFiles (fileName: string) =
-    let readAllText file =
-        use fs = File.Open(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)
-        use sr = new StreamReader(fs)
-        sr.ReadToEnd()
-
-    if useEditFiles then
-        let infoDir, editFile = editDirAndFile fileName
-        let preferEditFile =
-            try
-                Directory.Exists infoDir
-                && File.Exists editFile
-                && File.Exists fileName
-                && File.GetLastWriteTime(editFile) > File.GetLastWriteTime(fileName)
-            with
-            | _ -> false
-        if preferEditFile then
-            printfn "*** preferring %s to %s ***" editFile fileName
-            readAllText editFile
-        else
-            readAllText fileName
-    else
-        readAllText fileName
+let private readFile (fileName: string) =
+    use fs = File.Open(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)
+    use sr = new StreamReader(fs)
+    sr.ReadToEnd()
 
 
 let private convFile (i: FSharpImplementationFileContents) =
@@ -160,7 +144,6 @@ let private entityNamesOfImplFile (i: FSharpImplementationFileContents) =
 
 
 let process' sendCode (source: Source) (msbuildArgs: string list) (getEntries: unit -> string []) =
-    let useEditFiles = false
     let mutable lastCompileStart = System.DateTime.Now
 
 
@@ -201,7 +184,7 @@ let process' sendCode (source: Source) (msbuildArgs: string list) (getEntries: u
             Result.Ok options
 
         | Script script ->
-            let text = readFile useEditFiles script
+            let text = readFile script
             let otherFlags = msbuildArgs @ [ "--targetprofile:netcore" ]
             let options, errors =
                 checker.GetProjectOptionsFromScript(
@@ -235,7 +218,7 @@ let process' sendCode (source: Source) (msbuildArgs: string list) (getEntries: u
                 let fileVersion =
                     fileVersions.AddOrUpdate(Path.GetFullPath sourceFile, 1, fun _ version -> version + 1)
                 let parseResults, checkResults =
-                    checker.ParseAndCheckFileInProject(sourceFile, fileVersion, SourceText.ofString (readFile useEditFiles sourceFile), options)
+                    checker.ParseAndCheckFileInProject(sourceFile, fileVersion, SourceText.ofString (readFile sourceFile), options)
                     |> Async.RunSynchronously
                 match checkResults with
                 | FSharpCheckFileAnswer.Aborted ->
@@ -263,11 +246,7 @@ let process' sendCode (source: Source) (msbuildArgs: string list) (getEntries: u
                     match res.ImplementationFile with
                     | None -> printfn "fslive: WARNING no implementation file for %s (references may be unresolved)" sourceFile
                     | Some _ -> ()
-                    let mutable hasErrors = false
-                    if hasErrors then
-                        Result.Error(Some parseResults.ParseTree, None, Some [ "error" ], res.ImplementationFile)
-                    else
-                        Result.Ok(Some parseResults.ParseTree, res.ImplementationFile)
+                    Result.Ok(Some parseResults.ParseTree, res.ImplementationFile)
             with
             | :? System.IO.IOException when count = 0 ->
                 System.Threading.Thread.Sleep 500
@@ -560,7 +539,6 @@ let process' sendCode (source: Source) (msbuildArgs: string list) (getEntries: u
             [
                 for sourceFile in options.SourceFiles do
                     yield mkWatcher sourceFile
-                    if useEditFiles then yield mkWatcher sourceFile
             ]
 
 

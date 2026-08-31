@@ -1,4 +1,11 @@
 ﻿// Copyright 2018 Fabulous contributors. See LICENSE.md for license.
+//
+// Interpreter: evaluates PortaCode (CodeModel) declarations dynamically. This is the
+// core of hot reload — it walks the D* AST and executes it via reflection, emitting
+// dynamic "shell" types where needed. Task computation expressions are intercepted
+// and driven by DynTaskCE. Split into: type resolution (ResolvedEntity/ResolvedType/
+// ResolvedMember), shell-type emission (EmitShellTypes/AddDecls), and expression
+// evaluation (EvalExpr and the Eval* members of EvalContext).
 module FSharp.Compiler.PortaCode.Interpreter
 
 open System

@@ -37,16 +37,33 @@ let bindAll =
 let bindAllStatic =
     BindingFlags.Public ||| BindingFlags.NonPublic ||| BindingFlags.Static
 
+// Reflection lookups are cached per type: interpreted task CEs apply continuations
+// and awaiters on every bind, so re-searching members each call dominates the cost.
+let private invokeCache = System.Collections.Concurrent.ConcurrentDictionary<Type, MethodInfo>()
+let private getAwaiterCache = System.Collections.Concurrent.ConcurrentDictionary<Type, MethodInfo>()
+let private taskResultCache = System.Collections.Concurrent.ConcurrentDictionary<Type, PropertyInfo>()
+
+type private AwaiterShape =
+    { IsCompleted: PropertyInfo
+      GetResult: MethodInfo
+      OnCompleted: MethodInfo }
+let private awaiterShapeCache = System.Collections.Concurrent.ConcurrentDictionary<Type, AwaiterShape>()
+
 /// Apply an interpreted (or compiled) one argument function value to an argument.
 let apply1 (f: obj) (arg: obj) : obj =
     let t = f.GetType()
     let m =
-        t.GetMethods(bindAll)
-        |> Array.tryFind (fun m -> m.Name = "Invoke" && m.GetParameters().Length = 1)
+        invokeCache.GetOrAdd(t, fun t ->
+            t.GetMethods(bindAll)
+            |> Array.tryFind (fun m -> m.Name = "Invoke" && m.GetParameters().Length = 1)
+            |> function
+                | None -> null
+                | Some m -> m)
 
-    match m with
-    | None -> failwithf "DynTaskCE: failed to find Invoke on function value of type %A" t
-    | Some m -> m.Invoke(f, [| arg |])
+    if isNull m then
+        failwithf "DynTaskCE: failed to find Invoke on function value of type %A" t
+    else
+        m.Invoke(f, [| arg |])
 
 /// Await an arbitrary task-like value and return its result (null for unit / non-generic results).
 let rec awaitObj (o: obj) : Async<obj> =
@@ -77,41 +94,42 @@ let rec awaitObj (o: obj) : Async<obj> =
         | a ->
             // General awaitable pattern: GetAwaiter / IsCompleted / OnCompleted / GetResult
             let ty = a.GetType()
-            let getAwaiterM = ty.GetMethod("GetAwaiter", Type.EmptyTypes)
+            let getAwaiterM =
+                getAwaiterCache.GetOrAdd(ty, fun t -> t.GetMethod("GetAwaiter", Type.EmptyTypes))
 
             if isNull getAwaiterM then
                 return failwithf "DynTaskCE: value of type %A is not awaitable" ty
             else
                 let awaiter = getAwaiterM.Invoke(a, [||])
                 let awaiterTy = awaiter.GetType()
-                let isCompletedProp = awaiterTy.GetProperty("IsCompleted")
-
-                if isCompletedProp.GetValue(awaiter) :?> bool then
-                    let getResultM = awaiterTy.GetMethod("GetResult", Type.EmptyTypes)
-                    return getResultM.Invoke(awaiter, [||])
-                else
-                    let onCompletedM =
-                        awaiterTy.GetMethod("UnsafeOnCompleted", [| typeof<Action> |])
-                        |> function
-                            | null -> awaiterTy.GetMethod("OnCompleted", [| typeof<Action> |])
+                let shape =
+                    awaiterShapeCache.GetOrAdd(awaiterTy, fun t ->
+                        let onCompletedM =
+                            match t.GetMethod("UnsafeOnCompleted", [| typeof<Action> |]) with
+                            | null -> t.GetMethod("OnCompleted", [| typeof<Action> |])
                             | m -> m
+                        { IsCompleted = t.GetProperty("IsCompleted")
+                          GetResult = t.GetMethod("GetResult", Type.EmptyTypes)
+                          OnCompleted = onCompletedM })
 
-                    if isNull onCompletedM then
+                if shape.IsCompleted.GetValue(awaiter) :?> bool then
+                    return shape.GetResult.Invoke(awaiter, [||])
+                else
+                    if isNull shape.OnCompleted then
                         return failwithf "DynTaskCE: awaiter of type %A does not implement OnCompleted" awaiterTy
                     else
-                        let getResultM = awaiterTy.GetMethod("GetResult", Type.EmptyTypes)
                         return!
                             Async.FromContinuations(fun (cont, econt, _ccont) ->
                                 let action =
                                     Action(fun () ->
                                         try
-                                            cont (getResultM.Invoke(awaiter, [||]))
+                                            cont (shape.GetResult.Invoke(awaiter, [||]))
                                         with e ->
                                             econt e
                                     )
 
                                 try
-                                    onCompletedM.Invoke(awaiter, [| action |]) |> ignore
+                                    shape.OnCompleted.Invoke(awaiter, [| action |]) |> ignore
                                 with e ->
                                     econt e
                             )
@@ -124,7 +142,7 @@ and awaitTask (t: Task) : Async<obj> =
         let ty = t.GetType()
 
         if ty.IsGenericType && ty.GetGenericTypeDefinition() = typedefof<Task<_>> then
-            let resultProp = ty.GetProperty("Result")
+            let resultProp = taskResultCache.GetOrAdd(ty, fun t -> t.GetProperty("Result"))
             return resultProp.GetValue(t)
         else
             return null

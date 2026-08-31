@@ -1,5 +1,9 @@
 ﻿// Copyright 2018 Fabulous contributors. See LICENSE.md for license.
-
+//
+// CodeModel: the portable AST ("PortaCode") that is the hot-reload wire format.
+// The CLI converts F# checked implementation files into these D* types, serializes
+// them with MessagePack, and sends them to the browser. The interpreter (see
+// Interpreter.fs) walks this model to evaluate the code dynamically in the app.
 module FSharp.Compiler.PortaCode.CodeModel
 
 open MessagePack

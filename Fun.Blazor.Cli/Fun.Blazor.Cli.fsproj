@@ -19,7 +19,6 @@
 		<Compile Include="..\Fun.Blazor.HotReload\DynTaskCE.fs" Link="Watch\DynTaskCE.fs" />
 		<Compile Include="..\Fun.Blazor.HotReload\Interpreter.fs" Link="Watch\Interpreter.fs" />
 		<Compile Include="Watch\FromCompilerService.fs" />
-		<Compile Include="Watch\LiveCheckEvaluation.fs" />
 		<Compile Include="Watch\Processor.fs" />
 		<Compile Include="Watch\WatcherServer.fs" />
 		<Compile Include="CodeGen\CodeGenProject.fs" />

@@ -55,7 +55,16 @@ type CodeWatcher(scf: IServiceScopeFactory) =
             else
                 failwith "No fsharp project found."
 
-        let sendCode (x: byte[]) = hotReloadHub.Clients.All.SendAsync("CodeChanged", x).Wait()
+        // Fire-and-forget with error logging so a slow/disconnected client cannot
+        // stall the compile loop.
+        let sendCode (x: byte[]) =
+            async {
+                try
+                    do! hotReloadHub.Clients.All.SendAsync("CodeChanged", x) |> Async.AwaitTask |> Async.Ignore
+                with
+                | ex -> printfn "fslive: send code failed: %s" ex.Message
+            }
+            |> Async.Start
 
         printfn "Start code watcher"
 
@@ -100,17 +109,30 @@ type StaticAssetsWatcher(scf: IServiceScopeFactory) =
             else
                 Path.GetFullPath settings.StaticAssetsDir
 
+        let send name (content: string) =
+            async {
+                try
+                    do! hotReloadHub.Clients.All.SendAsync("CssChanged", name, content) |> Async.AwaitTask |> Async.Ignore
+                with
+                | ex -> printfn "css send failed for %s: %s" name ex.Message
+            }
+            |> Async.Start
+
         let sendCode (name: string) =
             printfn "css changed: %s" name
-            use fs =
-                File.Open(Path.Combine(dir, name), FileMode.Open, FileAccess.Read, FileShare.ReadWrite)
-            use sr = new StreamReader(fs)
-            hotReloadHub.Clients.All.SendAsync("CssChanged", name, sr.ReadToEnd()).Wait()
-            printfn "css changes is sent: %s" name
+            try
+                let content =
+                    use fs =
+                        File.Open(Path.Combine(dir, name), FileMode.Open, FileAccess.Read, FileShare.ReadWrite)
+                    use sr = new StreamReader(fs)
+                    sr.ReadToEnd()
+                send name content
+            with
+            | ex -> printfn "css read failed for %s: %s" name ex.Message
 
         let sendEmptyCode (name: string) =
             printfn "css removed: %s" name
-            hotReloadHub.Clients.All.SendAsync("CssChanged", name, "").Wait()
+            send name ""
 
 
         if Directory.Exists dir then
@@ -119,10 +141,6 @@ type StaticAssetsWatcher(scf: IServiceScopeFactory) =
             cssWatcher <- ValueSome(makeCssWatcher dir)
 
             cssWatcher.Value.Changed
-            |> Observable.throttle (TimeSpan.FromMilliseconds 300.0)
-            |> Observable.subscribe (fun x -> sendCode x.Name)
-
-            cssWatcher.Value.Created
             |> Observable.throttle (TimeSpan.FromMilliseconds 300.0)
             |> Observable.subscribe (fun x -> sendCode x.Name)
 

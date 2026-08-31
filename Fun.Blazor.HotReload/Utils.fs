@@ -1,4 +1,7 @@
-﻿module Fun.Blazor.HotReload.Utils
+﻿// Client-side "apply a hot-reload code package" logic. Receives the serialized
+// PortaCode changes from the watcher hub, evaluates them via the interpreter, and
+// swaps in the new render function for each registered entry.
+module Fun.Blazor.HotReload.Utils
 
 open FSharp.Compiler.PortaCode.CodeModel
 open FSharp.Compiler.PortaCode.Interpreter

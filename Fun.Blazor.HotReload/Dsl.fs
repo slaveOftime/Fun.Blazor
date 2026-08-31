@@ -1,4 +1,6 @@
-﻿[<AutoOpen>]
+﻿// Public DSL surface for hot reload: `html.hotReloadComp` wraps a render function in
+// a HotReloadComponent that registers it as a reloadable entry with the watcher.
+[<AutoOpen>]
 module Fun.Blazor.HotReloadDsl
 
 open Fun.Blazor
