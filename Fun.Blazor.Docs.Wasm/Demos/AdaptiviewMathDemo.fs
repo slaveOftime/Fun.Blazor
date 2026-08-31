@@ -38,7 +38,7 @@ let entry =
                         left 0
                         right 0
                         height 2
-                        backgroundColor "hotpink"
+                        backgroundColor Fun.Css.color.blueViolet
                     }
                     DateTime.Now.ToString()
                 }

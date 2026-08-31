@@ -1,4 +1,5 @@
-﻿module Fun.Blazor.Docs.Wasm.Demos.AdaptiveForm
+﻿// hot-reload
+module Fun.Blazor.Docs.Wasm.Demos.AdaptiveForm
 
 open System
 open FSharp.Data.Adaptive
@@ -91,8 +92,8 @@ let entry =
                     false,
                     [
                         required (NameIsTooShort 0)
-                        minLength 2 NameIsTooShort
-                        maxLength 10 NameIsTooLong
+                        minLength 1 NameIsTooShort
+                        maxLength 5 NameIsTooLong
                     ]
                 )
                 .AddValidators(

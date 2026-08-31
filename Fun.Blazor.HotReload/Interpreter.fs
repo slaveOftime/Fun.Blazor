@@ -8,6 +8,7 @@ open System.Collections.Concurrent
 open System.Collections.Generic
 open FSharp.Quotations
 open FSharp.Compiler.PortaCode.CodeModel
+open FSharp.Compiler.PortaCode.DynTaskCE
 open FSharp.Reflection
 
 type ResolvedEntity =
@@ -2089,22 +2090,27 @@ type EvalContext(assemblyName: AssemblyName, ?dyntypes: bool, ?assemblyResolver:
                 let argsV =
                     if iminfo.Name = "Yield" && argsV.Length = 0 then [| box () |] else argsV
 
-                let res = protectInvoke (fun () -> iminfo.Invoke(objOptV, argsV)) |> Value
+                match tryInterceptTaskBuilderMethod iminfo objOptV argsV with
+                | Some resV ->
+                    sink.NotifyCallAndReturn(Some membRef, range, Choice1Of2 minfo, Array.append typeArgs1V typeArgs2V, argsV, Value resV)
+                    Value resV
+                | None ->
+                    let res = protectInvoke (fun () -> iminfo.Invoke(objOptV, argsV)) |> Value
 
-                sink.NotifyCallAndReturn(Some membRef, range, Choice1Of2 minfo, Array.append typeArgs1V typeArgs2V, argsV, res)
+                    sink.NotifyCallAndReturn(Some membRef, range, Choice1Of2 minfo, Array.append typeArgs1V typeArgs2V, argsV, res)
 
-                // Copy back the out parameters - note that argsV will have been mutates
-                let parameters = minfo.GetParameters()
-                for i in 0 .. parameters.Length - 1 do
-                    if parameters.[i].ParameterType.IsByRef then
-                        match argExprs.[i] with
-                        | DExpr.AddressOf (DExpr.Value vref) when not vref.IsThisValue && vref.IsMutable ->
-                            match env.Vals.TryGetValue vref.Name with
-                            | true, rv -> rv.Value <- argsV.[i]
-                            | _ -> failwithf "didn't find mutable value in the environment at %A" range
-                        | _ -> failwithf "can't yet interpret passing fields byref"
+                    // Copy back the out parameters - note that argsV will have been mutates
+                    let parameters = minfo.GetParameters()
+                    for i in 0 .. parameters.Length - 1 do
+                        if parameters.[i].ParameterType.IsByRef then
+                            match argExprs.[i] with
+                            | DExpr.AddressOf (DExpr.Value vref) when not vref.IsThisValue && vref.IsMutable ->
+                                match env.Vals.TryGetValue vref.Name with
+                                | true, rv -> rv.Value <- argsV.[i]
+                                | _ -> failwithf "didn't find mutable value in the environment at %A" range
+                            | _ -> failwithf "can't yet interpret passing fields byref"
 
-                res
+                    res
 
             | RMethod (:? ConstructorInfo as cinfo), RTypesErased env _typeArgs1V, RTypesErased env _typeArgs2V ->
                 protectInvoke (fun () -> cinfo.Invoke(argsV)) |> Value
@@ -2240,6 +2246,17 @@ type EvalContext(assemblyName: AssemblyName, ?dyntypes: bool, ?assemblyResolver:
         let rangeTypeR = resolveType (env, rangeType)
         match domainTypeR, rangeTypeR with
         | RTypeErased env domainTypeV, RTypeErased env rangeTypeV ->
+            // The F# task CE uses thunks/continuations typed with the sealed
+            // 'ResumableCode' delegate. When the body is interpreted, its builder
+            // calls are intercepted and produce DynCode values which cannot be
+            // unboxed to ResumableCode by the typed wrapper created by MakeFunction.
+            // Those function values are only ever consumed by the intercepted
+            // builder methods, so the signature can be erased to obj -> obj.
+            let eraseRange =
+                rangeTypeV.IsGenericType
+                && rangeTypeV.GetGenericTypeDefinition().FullName = "Microsoft.FSharp.Core.CompilerServices.ResumableCode`2"
+            let domainTypeV = if eraseRange then typeof<obj> else domainTypeV
+            let rangeTypeV = if eraseRange then typeof<obj> else rangeTypeV
             let funcTypeV = typedefof<int -> int>.MakeGenericType (domainTypeV, rangeTypeV)
             FSharp.Reflection.FSharpValue.MakeFunction(
                 funcTypeV,

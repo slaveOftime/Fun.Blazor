@@ -1,3 +1,4 @@
+// hot-reload
 module Fun.Blazor.Docs.Wasm.Demos.AdaptiviewMixDemo
 
 open System

@@ -9,6 +9,7 @@
 
 	<ItemGroup>
 		<Compile Include="CodeModel.fs" />
+		<Compile Include="DynTaskCE.fs" />
 		<Compile Include="Interpreter.fs" />
 		<Compile Include="Utils.fs" />
 		<Compile Include="HotReloadComponent.fs" />

@@ -1,4 +1,5 @@
-﻿[<AutoOpen>]
+﻿// hot-reload
+[<AutoOpen>]
 module Fun.Blazor.Docs.Wasm.Demos.ElmishDemo
 
 open System.Threading.Tasks

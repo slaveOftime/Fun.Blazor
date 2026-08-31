@@ -53,9 +53,9 @@ let entry = div {
             // But you can yield another CombineKeyValue delegate like:
             // css is short name to build a CssBuilder which will return as a CombineKeyValue delegate
             match 1 with
-            | 1 -> css { backgroundColor "red" }
-            | 2 -> css { backgroundColor "blue" }
-            | _ -> css { backgroundColor "green" }
+            | 1 -> css { backgroundColor color.aliceBlue }
+            | 2 -> css { backgroundColor color.antiqueWhite }
+            | _ -> css { backgroundColor color.green }
         }
     }
 }
