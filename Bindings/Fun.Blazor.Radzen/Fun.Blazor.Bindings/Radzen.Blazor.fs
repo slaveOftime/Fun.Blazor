@@ -91,6 +91,21 @@ type RadzenRowBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspN
     /// Accepts CSS length values (e.g., "1rem", "16px", "2em") or unitless numbers (interpreted as pixels).
     /// Only applicable when columns wrap due to exceeding the 12-column limit.
     [<CustomOperation("RowGap")>] member inline _.RowGap ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("RowGap" => x)
+    /// Gets or sets how many columns (1-12) fit on each line of the row by default.
+    /// Applies to child RadzenColumn components that do not set a Size for the current breakpoint; a column Size always takes precedence.
+    [<CustomOperation("Columns")>] member inline _.Columns ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("Columns" => x)
+    /// Overrides the default Columns on mobile devices.
+    [<CustomOperation("ColumnsXS")>] member inline _.ColumnsXS ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("ColumnsXS" => x)
+    /// Overrides the default Columns on small tablets and larger devices.
+    [<CustomOperation("ColumnsSM")>] member inline _.ColumnsSM ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("ColumnsSM" => x)
+    /// Overrides the default Columns on tablets and larger devices.
+    [<CustomOperation("ColumnsMD")>] member inline _.ColumnsMD ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("ColumnsMD" => x)
+    /// Overrides the default Columns on desktops and larger devices.
+    [<CustomOperation("ColumnsLG")>] member inline _.ColumnsLG ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("ColumnsLG" => x)
+    /// Overrides the default Columns on large desktops and larger devices.
+    [<CustomOperation("ColumnsXL")>] member inline _.ColumnsXL ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("ColumnsXL" => x)
+    /// Overrides the default Columns on very large displays.
+    [<CustomOperation("ColumnsXX")>] member inline _.ColumnsXX ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("ColumnsXX" => x)
 
 /// A flexbox container component that arranges child elements in a vertical or horizontal stack with configurable spacing and alignment.
 /// RadzenStack provides a simpler alternative to RadzenRow/RadzenColumn for linear layouts without the 12-column grid constraint.
@@ -776,6 +791,8 @@ type ValidatorBaseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     [<CustomOperation("Popup")>] member inline _.Popup ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Popup" =>>> true)
     /// Determines if the validator is displayed as a popup or not. Set to false by default.
     [<CustomOperation("Popup")>] member inline _.Popup ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Popup" =>>> x)
+    /// Specifies the side of the validated component on which the validator is displayed when Popup is true. Set to Bottom by default.
+    [<CustomOperation("PopupPosition")>] member inline _.PopupPosition ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.TooltipPosition) = render ==> ("PopupPosition" => x)
 
 /// A validator component that compares a form input's value against another value or another component's value using a specified comparison operator.
 /// RadzenCompareValidator is commonly used for password confirmation, numeric range validation, or ensuring field values match expected criteria.
@@ -1042,7 +1059,7 @@ type RadzenToggleButtonBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micro
     [<CustomOperation("ToggleShade")>] member inline _.ToggleShade ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Shade) = render ==> ("ToggleShade" => x)
     /// Gets or sets the variant used when the button is toggled.
     [<CustomOperation("ToggleVariant")>] member inline _.ToggleVariant ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Radzen.Variant>) = render ==> ("ToggleVariant" => x)
-    /// Gets or sets the aria-label attribute.
+    /// Gets or sets the aria-label attribute. When not set, an aria-label attribute supplied through Attributes is used.
     [<CustomOperation("AriaLabel")>] member inline _.AriaLabel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("AriaLabel" => x)
 
 /// A linear progress bar component for indicating task completion or ongoing processes.
@@ -1171,6 +1188,7 @@ type RadzenChartBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.As
     /// Gets or sets the synchronization group of the chart. Charts which share the same group display
     /// a synchronized crosshair and active data points: hovering one chart highlights the same category in the others.
     /// Charts in a group should plot the same kind of category (e.g. the same dates).
+    /// Groups are scoped to the current Blazor circuit, so charts rendered for different users or browser tabs never synchronize with each other even when they use the same group name.
     [<CustomOperation("SyncGroup")>] member inline _.SyncGroup ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("SyncGroup" => x)
     /// Gets or sets the callback invoked when a user clicks on a data point or segment in a chart series.
     /// Provides information about the clicked series, data item, and value in the event arguments.
@@ -1192,6 +1210,14 @@ type RadzenChartBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.As
     [<CustomOperation("AllowPan")>] member inline _.AllowPan ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AllowPan" =>>> true)
     /// Gets or sets whether pan via scrollbar is enabled.
     [<CustomOperation("AllowPan")>] member inline _.AllowPan ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("AllowPan" =>>> x)
+    /// Gets or sets whether the chart renders its own scrollbar below the plot when zoomed. Set to false to drive the visible range from
+    /// outside the chart instead, e.g. with a standalone RadzenRangeNavigator bound to ViewStart and ViewEnd
+    /// that is shared by several charts. Hiding the scrollbar also releases the space reserved for it. Mouse wheel zoom is not affected.
+    [<CustomOperation("ShowScrollbar")>] member inline _.ShowScrollbar ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowScrollbar" =>>> true)
+    /// Gets or sets whether the chart renders its own scrollbar below the plot when zoomed. Set to false to drive the visible range from
+    /// outside the chart instead, e.g. with a standalone RadzenRangeNavigator bound to ViewStart and ViewEnd
+    /// that is shared by several charts. Hiding the scrollbar also releases the space reserved for it. Mouse wheel zoom is not affected.
+    [<CustomOperation("ShowScrollbar")>] member inline _.ShowScrollbar ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowScrollbar" =>>> x)
     /// Gets or sets the zoom level as a percentage. A value of 100 means no zoom (full range visible).
     /// Higher values zoom in (e.g., 200 shows half the range, 400 shows a quarter).
     /// Set to 100 to reset zoom. Supports two-way binding with @bind-Zoom.
@@ -1207,10 +1233,14 @@ type RadzenChartBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.As
     /// Used for two-way binding with @bind-Zoom.
     [<CustomOperation("ZoomChanged")>] member inline _.ZoomChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Double -> Task<unit>) = render ==> html.callbackTask("ZoomChanged", fn)
     /// Gets or sets the callback invoked when the visible range changes due to zoom or pan.
-    /// Provides the current zoom level and visible range fractions.
+    /// Provides the current zoom level and visible range fractions. A handler may re-anchor the range by assigning new values
+    /// to the variables bound to ViewStart and ViewEnd; the chart adopts the values it receives
+    /// once the handler completes, e.g. start = 1 - (args.ViewEnd - args.ViewStart); end = 1; keeps the latest data in view while zooming.
     [<CustomOperation("ViewChange")>] member inline _.ViewChange ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.ChartViewChangeEventArgs -> unit) = render ==> html.callback("ViewChange", fn)
     /// Gets or sets the callback invoked when the visible range changes due to zoom or pan.
-    /// Provides the current zoom level and visible range fractions.
+    /// Provides the current zoom level and visible range fractions. A handler may re-anchor the range by assigning new values
+    /// to the variables bound to ViewStart and ViewEnd; the chart adopts the values it receives
+    /// once the handler completes, e.g. start = 1 - (args.ViewEnd - args.ViewStart); end = 1; keeps the latest data in view while zooming.
     [<CustomOperation("ViewChange")>] member inline _.ViewChange ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.ChartViewChangeEventArgs -> Task<unit>) = render ==> html.callbackTask("ViewChange", fn)
     /// Gets or sets the start of the visible range as a fraction (0-1) of the full category range.
     /// Supports two-way binding with @bind-ViewStart.
@@ -1322,7 +1352,9 @@ type DataBoundFormComponentBuilder<'FunBlazorGeneric, 'T when 'FunBlazorGeneric 
     [<CustomOperation("ValueChanged")>] member inline _.ValueChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: 'T -> unit) = render ==> html.callback("ValueChanged", fn)
     /// Gets or sets the value changed.
     [<CustomOperation("ValueChanged")>] member inline _.ValueChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: 'T -> Task<unit>) = render ==> html.callbackTask("ValueChanged", fn)
-    /// Gets or sets the text property.
+    /// Gets or sets the name of the property used as the display text of each item.
+    /// Required when Data contains objects and no Template is set; otherwise the item's
+    /// ToString result is displayed, which for plain classes is the type name.
     [<CustomOperation("TextProperty")>] member inline _.TextProperty ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("TextProperty" => x)
     /// Gets or sets the data.
     [<CustomOperation("Data")>] member inline _.Data ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.IEnumerable) = render ==> ("Data" => x)
@@ -2361,6 +2393,38 @@ type RadzenHtmlEditorBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microso
     /// Gets or sets the callback which when a file is uploaded.
     [<CustomOperation("UploadComplete")>] member inline _.UploadComplete ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.UploadCompleteEventArgs -> Task<unit>) = render ==> html.callbackTask("UploadComplete", fn)
 
+/// A Markdown editor component with a toolbar, keyboard shortcuts, and a Design/Source mode switcher.
+type RadzenMarkdownEditorBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit FormComponentBuilder<'FunBlazorGeneric, System.String>()
+    /// Gets or sets the mode of the editor. Two-way bindable.
+    [<CustomOperation("Mode")>] member inline _.Mode ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.MarkdownEditorMode) = render ==> ("Mode" => x)
+    /// Gets or sets the mode of the editor. Two-way bindable.
+    [<CustomOperation("Mode'")>] member inline _.Mode' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: Radzen.MarkdownEditorMode * (Radzen.MarkdownEditorMode -> unit)) = render ==> html.bind("Mode", valueFn)
+    /// A callback invoked when the user switches the mode.
+    [<CustomOperation("ModeChanged")>] member inline _.ModeChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.MarkdownEditorMode -> unit) = render ==> html.callback("ModeChanged", fn)
+    /// A callback invoked when the user switches the mode.
+    [<CustomOperation("ModeChanged")>] member inline _.ModeChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.MarkdownEditorMode -> Task<unit>) = render ==> html.callbackTask("ModeChanged", fn)
+    /// Specifies whether the toolbar is shown. Set to true by default.
+    [<CustomOperation("ShowToolbar")>] member inline _.ShowToolbar ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowToolbar" =>>> true)
+    /// Specifies whether the toolbar is shown. Set to true by default.
+    [<CustomOperation("ShowToolbar")>] member inline _.ShowToolbar ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowToolbar" =>>> x)
+    /// Specifies whether Input is raised on every keystroke. Set to false by default.
+    /// Unlike Immediate, Value is always updated on input; this only controls whether Input is raised per keystroke.
+    [<CustomOperation("Immediate")>] member inline _.Immediate ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Immediate" =>>> true)
+    /// Specifies whether Input is raised on every keystroke. Set to false by default.
+    /// Unlike Immediate, Value is always updated on input; this only controls whether Input is raised per keystroke.
+    [<CustomOperation("Immediate")>] member inline _.Immediate ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Immediate" =>>> x)
+    /// A callback invoked on every keystroke when Immediate is true.
+    [<CustomOperation("Input")>] member inline _.Input ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.String -> unit) = render ==> html.callback("Input", fn)
+    /// A callback invoked on every keystroke when Immediate is true.
+    [<CustomOperation("Input")>] member inline _.Input ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.String -> Task<unit>) = render ==> html.callbackTask("Input", fn)
+    /// A callback invoked after a command is executed, either by a built-in tool, a shortcut, ExecuteCommandAsync or a RadzenMarkdownEditorCustomTool.
+    [<CustomOperation("Execute")>] member inline _.Execute ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.MarkdownEditorExecuteEventArgs -> unit) = render ==> html.callback("Execute", fn)
+    /// A callback invoked after a command is executed, either by a built-in tool, a shortcut, ExecuteCommandAsync or a RadzenMarkdownEditorCustomTool.
+    [<CustomOperation("Execute")>] member inline _.Execute ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.MarkdownEditorExecuteEventArgs -> Task<unit>) = render ==> html.callbackTask("Execute", fn)
+    /// The number of visible text rows of the textarea. Set to 10 by default.
+    [<CustomOperation("Rows")>] member inline _.Rows ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("Rows" => x)
+
 /// A radio button group component that allows users to select a single option from a list of choices.
 /// RadzenRadioButtonList displays multiple radio buttons with configurable layout, orientation, and data binding.
 /// Presents mutually exclusive options where only one can be selected at a time.
@@ -2714,6 +2778,12 @@ type RadzenDataGridBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> M
     [<CustomOperation("LoadChildData")>] member inline _.LoadChildData ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.DataGridLoadChildDataEventArgs<'TItem> -> unit) = render ==> html.callback("LoadChildData", fn)
     /// Gets or sets the load child data callback.
     [<CustomOperation("LoadChildData")>] member inline _.LoadChildData ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.DataGridLoadChildDataEventArgs<'TItem> -> Task<unit>) = render ==> html.callbackTask("LoadChildData", fn)
+    /// Gets or sets the accessible name of the grid, exposed via the aria-label attribute on the role="grid" or role="treegrid" element.
+    /// When not set, an aria-label attribute supplied through Attributes is used.
+    [<CustomOperation("AriaLabel")>] member inline _.AriaLabel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("AriaLabel" => x)
+    /// Gets or sets the id of the element that labels the grid, exposed via the aria-labelledby attribute on the role="grid" or role="treegrid" element.
+    /// When not set, an aria-labelledby attribute supplied through Attributes is used.
+    [<CustomOperation("AriaLabelledBy")>] member inline _.AriaLabelledBy ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("AriaLabelledBy" => x)
     /// Gets or sets the expand child item aria label text.
     [<CustomOperation("ExpandChildItemAriaLabel")>] member inline _.ExpandChildItemAriaLabel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ExpandChildItemAriaLabel" => x)
     /// Gets or sets the expand group aria label text.
@@ -3102,6 +3172,16 @@ type RadzenDataGridBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> M
     [<CustomOperation("ShowGroupExpandColumn")>] member inline _.ShowGroupExpandColumn ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowGroupExpandColumn" =>>> true)
     /// Gets or sets a value indicating whether to show group visibility column
     [<CustomOperation("ShowGroupExpandColumn")>] member inline _.ShowGroupExpandColumn ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowGroupExpandColumn" =>>> x)
+    /// Gets or sets a value indicating whether all groups can be expanded or collapsed at once from the header of the group expand column.
+    /// The button is rendered only when the DataGrid is grouped and ShowGroupExpandColumn is true.
+    [<CustomOperation("ShowGroupExpandAll")>] member inline _.ShowGroupExpandAll ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowGroupExpandAll" =>>> true)
+    /// Gets or sets a value indicating whether all groups can be expanded or collapsed at once from the header of the group expand column.
+    /// The button is rendered only when the DataGrid is grouped and ShowGroupExpandColumn is true.
+    [<CustomOperation("ShowGroupExpandAll")>] member inline _.ShowGroupExpandAll ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowGroupExpandAll" =>>> x)
+    /// Gets or sets the title attribute of the expand all groups button.
+    [<CustomOperation("ExpandAllGroupsTitle")>] member inline _.ExpandAllGroupsTitle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ExpandAllGroupsTitle" => x)
+    /// Gets or sets the title attribute of the collapse all groups button.
+    [<CustomOperation("CollapseAllGroupsTitle")>] member inline _.CollapseAllGroupsTitle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("CollapseAllGroupsTitle" => x)
     /// Gets or sets the title attribute of the expand all button.
     [<CustomOperation("ExpandAllTitle")>] member inline _.ExpandAllTitle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ExpandAllTitle" => x)
     /// Gets or sets the title attribute of the collapse all button.
@@ -3493,10 +3573,88 @@ type RadzenAIChatBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.A
     [<CustomOperation("SessionIdChanged")>] member inline _.SessionIdChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.String -> unit) = render ==> html.callback("SessionIdChanged", fn)
     /// Event callback that is invoked when a session ID is created or retrieved.
     [<CustomOperation("SessionIdChanged")>] member inline _.SessionIdChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.String -> Task<unit>) = render ==> html.callbackTask("SessionIdChanged", fn)
+    /// Gets or sets the user the conversation belongs to. Stored in UserId so that IConversationStore implementations can list the conversations of a user.
+    [<CustomOperation("UserId")>] member inline _.UserId ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("UserId" => x)
     /// Specifies additional custom attributes that will be rendered by the input.
     [<CustomOperation("InputAttributes")>] member inline _.InputAttributes ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>) = render ==> ("InputAttributes" => x)
     /// Gets or sets the title displayed in the chat header.
     [<CustomOperation("Title")>] member inline _.Title ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
+    /// Gets or sets the content rendered in the chat header between Title and the clear button, for example a conversation switcher.
+    /// The header is rendered when a title, the clear button or this template is set.
+    [<CustomOperation("HeaderTemplate")>] member inline _.HeaderTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("HeaderTemplate", fragment)
+    /// Gets or sets the content rendered in the chat header between Title and the clear button, for example a conversation switcher.
+    /// The header is rendered when a title, the clear button or this template is set.
+    [<CustomOperation("HeaderTemplate")>] member inline _.HeaderTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("HeaderTemplate", fragment { yield! fragments })
+    /// Gets or sets the content rendered in the chat header between Title and the clear button, for example a conversation switcher.
+    /// The header is rendered when a title, the clear button or this template is set.
+    [<CustomOperation("HeaderTemplate")>] member inline _.HeaderTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("HeaderTemplate", html.text x)
+    /// Gets or sets the content rendered in the chat header between Title and the clear button, for example a conversation switcher.
+    /// The header is rendered when a title, the clear button or this template is set.
+    [<CustomOperation("HeaderTemplate")>] member inline _.HeaderTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("HeaderTemplate", html.text x)
+    /// Gets or sets the content rendered in the chat header between Title and the clear button, for example a conversation switcher.
+    /// The header is rendered when a title, the clear button or this template is set.
+    [<CustomOperation("HeaderTemplate")>] member inline _.HeaderTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("HeaderTemplate", html.text x)
+    /// Gets or sets the content rendered in the input area above the text box, below the pending attachments, for example a status line or a notice about the attachments.
+    [<CustomOperation("InputHeaderTemplate")>] member inline _.InputHeaderTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("InputHeaderTemplate", fragment)
+    /// Gets or sets the content rendered in the input area above the text box, below the pending attachments, for example a status line or a notice about the attachments.
+    [<CustomOperation("InputHeaderTemplate")>] member inline _.InputHeaderTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("InputHeaderTemplate", fragment { yield! fragments })
+    /// Gets or sets the content rendered in the input area above the text box, below the pending attachments, for example a status line or a notice about the attachments.
+    [<CustomOperation("InputHeaderTemplate")>] member inline _.InputHeaderTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("InputHeaderTemplate", html.text x)
+    /// Gets or sets the content rendered in the input area above the text box, below the pending attachments, for example a status line or a notice about the attachments.
+    [<CustomOperation("InputHeaderTemplate")>] member inline _.InputHeaderTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("InputHeaderTemplate", html.text x)
+    /// Gets or sets the content rendered in the input area above the text box, below the pending attachments, for example a status line or a notice about the attachments.
+    [<CustomOperation("InputHeaderTemplate")>] member inline _.InputHeaderTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("InputHeaderTemplate", html.text x)
+    /// Gets or sets the content rendered in the input area below the text box, for example a model picker or action buttons.
+    [<CustomOperation("InputFooterTemplate")>] member inline _.InputFooterTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("InputFooterTemplate", fragment)
+    /// Gets or sets the content rendered in the input area below the text box, for example a model picker or action buttons.
+    [<CustomOperation("InputFooterTemplate")>] member inline _.InputFooterTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("InputFooterTemplate", fragment { yield! fragments })
+    /// Gets or sets the content rendered in the input area below the text box, for example a model picker or action buttons.
+    [<CustomOperation("InputFooterTemplate")>] member inline _.InputFooterTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("InputFooterTemplate", html.text x)
+    /// Gets or sets the content rendered in the input area below the text box, for example a model picker or action buttons.
+    [<CustomOperation("InputFooterTemplate")>] member inline _.InputFooterTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("InputFooterTemplate", html.text x)
+    /// Gets or sets the content rendered in the input area below the text box, for example a model picker or action buttons.
+    [<CustomOperation("InputFooterTemplate")>] member inline _.InputFooterTemplate ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("InputFooterTemplate", html.text x)
+    /// Gets or sets the text of the input. Bind it with @bind-Input to read what the user has typed or to set the text from code, for example to offer a prompt.
+    [<CustomOperation("Input")>] member inline _.Input ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Input" => x)
+    /// Gets or sets the text of the input. Bind it with @bind-Input to read what the user has typed or to set the text from code, for example to offer a prompt.
+    [<CustomOperation("Input'")>] member inline _.Input' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.String * (System.String -> unit)) = render ==> html.bind("Input", valueFn)
+    /// Event callback that is invoked when the text of the input changes.
+    [<CustomOperation("InputChanged")>] member inline _.InputChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.String -> unit) = render ==> html.callback("InputChanged", fn)
+    /// Event callback that is invoked when the text of the input changes.
+    [<CustomOperation("InputChanged")>] member inline _.InputChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.String -> Task<unit>) = render ==> html.callbackTask("InputChanged", fn)
+    /// Gets or sets whether messages sent while a response is being generated are accepted instead of ignored. Default is false.
+    /// Such a message appears in the conversation right away, marked as queued, and is offered to the service with TryQueueMessageAsync as a request whose
+    /// MessageId is the Id of the displayed message. A service that takes it tells the chat when the model reads it by
+    /// yielding a ChatResponseUpdate with User and that id: the message then moves to the end of the conversation, loses the queued mark and the rest of
+    /// the response goes into a new assistant message under it. A service that does not take the message is sent it with the next request once the response completes;
+    /// Stop drops the messages waiting for that and returns their text to the input, while messages a service took stay for the service to remove with RemoveMessage.
+    /// The send button stays next to the stop button while the response streams.
+    [<CustomOperation("QueueMessages")>] member inline _.QueueMessages ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("QueueMessages" =>>> true)
+    /// Gets or sets whether messages sent while a response is being generated are accepted instead of ignored. Default is false.
+    /// Such a message appears in the conversation right away, marked as queued, and is offered to the service with TryQueueMessageAsync as a request whose
+    /// MessageId is the Id of the displayed message. A service that takes it tells the chat when the model reads it by
+    /// yielding a ChatResponseUpdate with User and that id: the message then moves to the end of the conversation, loses the queued mark and the rest of
+    /// the response goes into a new assistant message under it. A service that does not take the message is sent it with the next request once the response completes;
+    /// Stop drops the messages waiting for that and returns their text to the input, while messages a service took stay for the service to remove with RemoveMessage.
+    /// The send button stays next to the stop button while the response streams.
+    [<CustomOperation("QueueMessages")>] member inline _.QueueMessages ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("QueueMessages" =>>> x)
+    /// Gets or sets whether the avatars of the user and the assistant are rendered next to the messages. Default is true.
+    [<CustomOperation("ShowAvatars")>] member inline _.ShowAvatars ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowAvatars" =>>> true)
+    /// Gets or sets whether the avatars of the user and the assistant are rendered next to the messages. Default is true.
+    [<CustomOperation("ShowAvatars")>] member inline _.ShowAvatars ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowAvatars" =>>> x)
+    /// Gets or sets the text of the send button. Default is null: the button shows only its icon.
+    [<CustomOperation("SendButtonText")>] member inline _.SendButtonText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("SendButtonText" => x)
+    /// Gets or sets the icon of the send button. Default is send.
+    [<CustomOperation("SendButtonIcon")>] member inline _.SendButtonIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("SendButtonIcon" => x)
+    /// Gets or sets the text of the stop button shown while a response streams. Default is null: the button shows only its icon.
+    [<CustomOperation("StopButtonText")>] member inline _.StopButtonText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("StopButtonText" => x)
+    /// Gets or sets the icon of the stop button. Default is stop_circle.
+    [<CustomOperation("StopButtonIcon")>] member inline _.StopButtonIcon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("StopButtonIcon" => x)
+    /// Gets or sets the template rendered next to the time of an assistant message instead of the default token count, when ShowUsage is true and the message has Usage.
+    /// Use it to show what AdditionalCounts carries, for example credits.
+    [<CustomOperation("UsageTemplate")>] member inline _.UsageTemplate ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.Blazor.ChatMessage -> NodeRenderFragment) = render ==> html.renderFragment("UsageTemplate", fn)
+    /// Gets or sets the template rendered at the end of every message, after its text and sources, for example the files an answer changed.
+    [<CustomOperation("MessageFooterTemplate")>] member inline _.MessageFooterTemplate ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.Blazor.ChatMessage -> NodeRenderFragment) = render ==> html.renderFragment("MessageFooterTemplate", fn)
     /// Gets or sets the placeholder text for the input field.
     [<CustomOperation("Placeholder")>] member inline _.Placeholder ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Placeholder" => x)
     /// Gets or sets the message displayed when there are no messages.
@@ -3513,14 +3671,70 @@ type RadzenAIChatBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.A
     [<CustomOperation("Temperature")>] member inline _.Temperature ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Double>) = render ==> ("Temperature" => x)
     /// Gets or sets the max tokens.
     [<CustomOperation("MaxTokens")>] member inline _.MaxTokens ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("MaxTokens" => x)
-    /// Gets or sets the endpoint URL for the AI service.
+    /// Gets or sets the endpoint URL of the AI provider, overriding Endpoint. In a WebAssembly application use Proxy instead, so the request goes through your server.
     [<CustomOperation("Endpoint")>] member inline _.Endpoint ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Endpoint" => x)
-    /// Gets or sets the proxy URL for the AI service.
+    /// Gets or sets the URL of a server endpoint that forwards the requests to the AI provider and adds the API key, overriding Proxy.
     [<CustomOperation("Proxy")>] member inline _.Proxy ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Proxy" => x)
-    /// Gets or sets the API key for authentication.
+    /// Gets or sets the API key, overriding ApiKey. Blazor Server only: the component throws when a key is set in a WebAssembly application, because it would be visible to every user. Keep the key on the server and use Proxy.
     [<CustomOperation("ApiKey")>] member inline _.ApiKey ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ApiKey" => x)
-    /// Gets or sets the API key header name.
+    /// Gets or sets the header the API key is sent with, overriding ApiKeyHeader.
     [<CustomOperation("ApiKeyHeader")>] member inline _.ApiKeyHeader ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ApiKeyHeader" => x)
+    /// Gets or sets the tools the model can call. Create them with AIFunctionFactory; wrap a tool in ApprovalRequiredAIFunction to ask the user before it runs.
+    /// Tools are invoked automatically and rendered in the assistant message; use ToolCallTemplate to customize how.
+    [<CustomOperation("Tools")>] member inline _.Tools ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<Microsoft.Extensions.AI.AITool>) = render ==> ("Tools" => x)
+    /// Gets or sets whether the model may call several tools in one response. null (the default) leaves it to the provider.
+    /// Set to false when using tools that require approval so that each call is approved on its own.
+    [<CustomOperation("AllowMultipleToolCalls")>] member inline _.AllowMultipleToolCalls ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Boolean>) = render ==> ("AllowMultipleToolCalls" => x)
+    /// Gets or sets whether the user can attach files to messages. Images are sent to the model as image content and need a multimodal model;
+    /// text files (txt, csv, md, json, xml and similar) are sent as text, PDF files as file content for providers that support it. Default is false.
+    [<CustomOperation("AllowAttachments")>] member inline _.AllowAttachments ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AllowAttachments" =>>> true)
+    /// Gets or sets whether the user can attach files to messages. Images are sent to the model as image content and need a multimodal model;
+    /// text files (txt, csv, md, json, xml and similar) are sent as text, PDF files as file content for providers that support it. Default is false.
+    [<CustomOperation("AllowAttachments")>] member inline _.AllowAttachments ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("AllowAttachments" =>>> x)
+    /// Gets or sets the accepted attachment types as an accept attribute value, for example image/*,.txt,.csv,.pdf. Default is image/*.
+    [<CustomOperation("AcceptedAttachmentTypes")>] member inline _.AcceptedAttachmentTypes ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("AcceptedAttachmentTypes" => x)
+    /// Gets or sets the maximum size of an attachment in bytes. Default is 4 MB.
+    [<CustomOperation("MaxAttachmentSize")>] member inline _.MaxAttachmentSize ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int64) = render ==> ("MaxAttachmentSize" => x)
+    /// Gets or sets the maximum total size in bytes of the attachments of a message. A file the user picks that would push the pending attachments over it is not attached and Error is raised.
+    /// Checked after AttachmentAdding, on the attachment it leaves. Attachments added from code with AddAttachment are not checked. Default is null: no limit.
+    [<CustomOperation("MaxTotalAttachmentSize")>] member inline _.MaxTotalAttachmentSize ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int64>) = render ==> ("MaxTotalAttachmentSize" => x)
+    /// Gets or sets whether the token usage reported by the model is shown next to the time of assistant messages. Default is false.
+    [<CustomOperation("ShowUsage")>] member inline _.ShowUsage ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowUsage" =>>> true)
+    /// Gets or sets whether the token usage reported by the model is shown next to the time of assistant messages. Default is false.
+    [<CustomOperation("ShowUsage")>] member inline _.ShowUsage ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowUsage" =>>> x)
+    /// Event callback that is invoked when an attachment cannot be read, for example because it exceeds MaxAttachmentSize.
+    [<CustomOperation("Error")>] member inline _.Error ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Exception -> unit) = render ==> html.callback("Error", fn)
+    /// Event callback that is invoked when an attachment cannot be read, for example because it exceeds MaxAttachmentSize.
+    [<CustomOperation("Error")>] member inline _.Error ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Exception -> Task<unit>) = render ==> html.callbackTask("Error", fn)
+    /// Event callback that is invoked with every file the user picks before it is attached. Set Cancel to reject it or replace
+    /// Attachment, for example with a scaled down image. Files added from code with AddAttachment do not raise it.
+    [<CustomOperation("AttachmentAdding")>] member inline _.AttachmentAdding ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.Blazor.ChatAttachmentAddingEventArgs -> unit) = render ==> html.callback("AttachmentAdding", fn)
+    /// Event callback that is invoked with every file the user picks before it is attached. Set Cancel to reject it or replace
+    /// Attachment, for example with a scaled down image. Files added from code with AddAttachment do not raise it.
+    [<CustomOperation("AttachmentAdding")>] member inline _.AttachmentAdding ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.Blazor.ChatAttachmentAddingEventArgs -> Task<unit>) = render ==> html.callbackTask("AttachmentAdding", fn)
+    /// Gets or sets whether the reasoning of models that expose it is rendered as a collapsible block in assistant messages. Default is true.
+    [<CustomOperation("ShowReasoning")>] member inline _.ShowReasoning ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowReasoning" =>>> true)
+    /// Gets or sets whether the reasoning of models that expose it is rendered as a collapsible block in assistant messages. Default is true.
+    [<CustomOperation("ShowReasoning")>] member inline _.ShowReasoning ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowReasoning" =>>> x)
+    /// Gets or sets whether tool calls are rendered in assistant messages. Default is true.
+    [<CustomOperation("ShowToolCalls")>] member inline _.ShowToolCalls ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowToolCalls" =>>> true)
+    /// Gets or sets whether tool calls are rendered in assistant messages. Default is true.
+    [<CustomOperation("ShowToolCalls")>] member inline _.ShowToolCalls ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowToolCalls" =>>> x)
+    /// Gets or sets whether the sources of an answer are rendered under it. Default is true.
+    /// Sources are the CitationAnnotation annotations the provider attaches to the response and the ChatCitation instances tools return.
+    [<CustomOperation("ShowCitations")>] member inline _.ShowCitations ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowCitations" =>>> true)
+    /// Gets or sets whether the sources of an answer are rendered under it. Default is true.
+    /// Sources are the CitationAnnotation annotations the provider attaches to the response and the ChatCitation instances tools return.
+    [<CustomOperation("ShowCitations")>] member inline _.ShowCitations ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowCitations" =>>> x)
+    /// Gets or sets the template used to render a source. The default renders a numbered link with the title and the snippet as tooltip.
+    [<CustomOperation("CitationTemplate")>] member inline _.CitationTemplate ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.Blazor.ChatCitation -> NodeRenderFragment) = render ==> html.renderFragment("CitationTemplate", fn)
+    /// Gets or sets the template used to render a tool call. The template is responsible for rendering approval UI for calls in the
+    /// AwaitingApproval state; call ApproveToolCall or RejectToolCall to answer them.
+    [<CustomOperation("ToolCallTemplate")>] member inline _.ToolCallTemplate ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.Blazor.ChatToolCall -> NodeRenderFragment) = render ==> html.renderFragment("ToolCallTemplate", fn)
+    /// Event callback that is invoked when a tool call completes, fails or is rejected.
+    [<CustomOperation("ToolCallCompleted")>] member inline _.ToolCallCompleted ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.Blazor.ChatToolCall -> unit) = render ==> html.callback("ToolCallCompleted", fn)
+    /// Event callback that is invoked when a tool call completes, fails or is rejected.
+    [<CustomOperation("ToolCallCompleted")>] member inline _.ToolCallCompleted ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.Blazor.ChatToolCall -> Task<unit>) = render ==> html.callbackTask("ToolCallCompleted", fn)
     /// Gets or sets whether to show the clear chat button.
     [<CustomOperation("ShowClearButton")>] member inline _.ShowClearButton ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowClearButton" =>>> true)
     /// Gets or sets whether to show the clear chat button.
@@ -3533,7 +3747,8 @@ type RadzenAIChatBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.A
     [<CustomOperation("ReadOnly")>] member inline _.ReadOnly ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ReadOnly" =>>> true)
     /// Gets or sets whether the input is read-only.
     [<CustomOperation("ReadOnly")>] member inline _.ReadOnly ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ReadOnly" =>>> x)
-    /// Gets or sets the message template.
+    /// Gets or sets the template that renders every message in place of the default rendering. Call RenderMessage from it to keep the default rendering for some messages,
+    /// for example to render only the entries the application adds with AddMessage your way, or to add content under a message.
     [<CustomOperation("MessageTemplate")>] member inline _.MessageTemplate ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.Blazor.ChatMessage -> NodeRenderFragment) = render ==> html.renderFragment("MessageTemplate", fn)
     /// Gets or sets the empty template shown when there are no messages.
     [<CustomOperation("EmptyTemplate")>] member inline _.EmptyTemplate ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("EmptyTemplate", fragment)
@@ -3574,6 +3789,72 @@ type RadzenAIChatBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.A
     /// Event callback that is invoked when the AI response is received.
     [<CustomOperation("ResponseReceived")>] member inline _.ResponseReceived ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.String -> Task<unit>) = render ==> html.callbackTask("ResponseReceived", fn)
 
+/// A prompt box for one-shot AI tasks: the user types or picks a prompt, the model's answer streams into an output panel and
+/// commands such as "Shorter" or "Translate" refine it. Set Context to run the prompts against a piece of text,
+/// for example the content of an editor. Uses the IChatClient configured for IAIChatService.
+type RadzenAIPromptBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit RadzenComponentBuilder<'FunBlazorGeneric>()
+    /// Gets or sets the prompt text.
+    [<CustomOperation("Value")>] member inline _.Value ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Value" => x)
+    /// Gets or sets the prompt text.
+    [<CustomOperation("Value'")>] member inline _.Value' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.String * (System.String -> unit)) = render ==> html.bind("Value", valueFn)
+    /// Event callback that is invoked when the prompt text changes.
+    [<CustomOperation("ValueChanged")>] member inline _.ValueChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.String -> unit) = render ==> html.callback("ValueChanged", fn)
+    /// Event callback that is invoked when the prompt text changes.
+    [<CustomOperation("ValueChanged")>] member inline _.ValueChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.String -> Task<unit>) = render ==> html.callbackTask("ValueChanged", fn)
+    /// Gets or sets the generated output.
+    [<CustomOperation("Output")>] member inline _.Output ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Output" => x)
+    /// Gets or sets the generated output.
+    [<CustomOperation("Output'")>] member inline _.Output' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.String * (System.String -> unit)) = render ==> html.bind("Output", valueFn)
+    /// Event callback that is invoked when the output changes, including while it streams.
+    [<CustomOperation("OutputChanged")>] member inline _.OutputChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.String -> unit) = render ==> html.callback("OutputChanged", fn)
+    /// Event callback that is invoked when the output changes, including while it streams.
+    [<CustomOperation("OutputChanged")>] member inline _.OutputChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.String -> Task<unit>) = render ==> html.callbackTask("OutputChanged", fn)
+    /// Gets or sets the text the prompts apply to, for example the content of an editor or the selected text. When set, the model receives it together with the prompt.
+    [<CustomOperation("Context")>] member inline _.Context ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Context" => x)
+    /// Gets or sets the system prompt.
+    [<CustomOperation("SystemPrompt")>] member inline _.SystemPrompt ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("SystemPrompt" => x)
+    /// Gets or sets the prompts offered as suggestions under the input.
+    [<CustomOperation("Suggestions")>] member inline _.Suggestions ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<System.String>) = render ==> ("Suggestions" => x)
+    /// Gets or sets the commands shown under the output. A command sends the current output together with its Prompt and replaces the output with the result.
+    [<CustomOperation("Commands")>] member inline _.Commands ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<Radzen.Blazor.AIPromptCommand>) = render ==> ("Commands" => x)
+    /// Gets or sets whether the output panel is rendered. Set to false to show the output elsewhere via OutputChanged.
+    [<CustomOperation("ShowOutput")>] member inline _.ShowOutput ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowOutput" =>>> true)
+    /// Gets or sets whether the output panel is rendered. Set to false to show the output elsewhere via OutputChanged.
+    [<CustomOperation("ShowOutput")>] member inline _.ShowOutput ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowOutput" =>>> x)
+    /// Gets or sets a template that renders the output instead of the default Markdown rendering.
+    [<CustomOperation("OutputTemplate")>] member inline _.OutputTemplate ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.String -> NodeRenderFragment) = render ==> html.renderFragment("OutputTemplate", fn)
+    /// Specifies additional custom attributes that will be rendered by the input.
+    [<CustomOperation("InputAttributes")>] member inline _.InputAttributes ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>) = render ==> ("InputAttributes" => x)
+    /// Gets or sets the placeholder of the input.
+    [<CustomOperation("Placeholder")>] member inline _.Placeholder ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Placeholder" => x)
+    /// Gets or sets the text of the generate button.
+    [<CustomOperation("GenerateText")>] member inline _.GenerateText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("GenerateText" => x)
+    /// Gets or sets the text of the stop button shown while generating.
+    [<CustomOperation("StopText")>] member inline _.StopText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("StopText" => x)
+    /// Gets or sets the title of the copy button.
+    [<CustomOperation("CopyTitle")>] member inline _.CopyTitle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("CopyTitle" => x)
+    /// Gets or sets the title of the regenerate button.
+    [<CustomOperation("RetryTitle")>] member inline _.RetryTitle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("RetryTitle" => x)
+    /// Gets or sets whether the component is disabled.
+    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Disabled" =>>> true)
+    /// Gets or sets whether the component is disabled.
+    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Disabled" =>>> x)
+    /// Gets or sets the model name. Falls back to the configured Model.
+    [<CustomOperation("ModelId")>] member inline _.ModelId ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ModelId" => x)
+    /// Gets or sets the temperature.
+    [<CustomOperation("Temperature")>] member inline _.Temperature ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Double>) = render ==> ("Temperature" => x)
+    /// Gets or sets the maximum number of output tokens.
+    [<CustomOperation("MaxTokens")>] member inline _.MaxTokens ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("MaxTokens" => x)
+    /// Event callback that is invoked when the model finishes generating.
+    [<CustomOperation("Generated")>] member inline _.Generated ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.Blazor.AIPromptGeneratedEventArgs -> unit) = render ==> html.callback("Generated", fn)
+    /// Event callback that is invoked when the model finishes generating.
+    [<CustomOperation("Generated")>] member inline _.Generated ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.Blazor.AIPromptGeneratedEventArgs -> Task<unit>) = render ==> html.callbackTask("Generated", fn)
+    /// Event callback that is invoked when the request fails. When not set the error message is shown as the output.
+    [<CustomOperation("Error")>] member inline _.Error ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Exception -> unit) = render ==> html.callback("Error", fn)
+    /// Event callback that is invoked when the request fails. When not set the error message is shown as the output.
+    [<CustomOperation("Error")>] member inline _.Error ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Exception -> Task<unit>) = render ==> html.callbackTask("Error", fn)
+
 /// Dark or light theme switch. Requires ThemeService to be registered in the DI container.
 type RadzenAppearanceToggleBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit RadzenComponentBuilder<'FunBlazorGeneric>()
@@ -3589,6 +3870,9 @@ type RadzenAppearanceToggleBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> M
     [<CustomOperation("LightTheme")>] member inline _.LightTheme ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("LightTheme" => x)
     /// Gets or sets the dark theme. Not set by default - the component uses the dark version of the current theme.
     [<CustomOperation("DarkTheme")>] member inline _.DarkTheme ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("DarkTheme" => x)
+    /// Gets or sets the accessible name of the button, exposed via the aria-label attribute. The button reports aria-pressed="true" while the dark theme is active.
+    /// When not set, an aria-label attribute supplied through Attributes is used, otherwise the localized "Dark theme" text.
+    [<CustomOperation("AriaLabel")>] member inline _.AriaLabel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("AriaLabel" => x)
 
 /// A small label component used to display counts, statuses, or short text labels with semantic color coding.
 /// RadzenBadge is a compact visual indicator commonly used for notification counts, status indicators, tags, or highlighting important information.
@@ -4115,6 +4399,10 @@ type RadzenDatePickerBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :
     /// Gets or sets whether multiple dates can be selected.
     /// When enabled, users can select multiple dates from the calendar, and the value will be a collection of DateTimes.
     [<CustomOperation("Multiple")>] member inline _.Multiple ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Multiple" =>>> x)
+    /// Gets or sets how users change the displayed month and year in the calendar.
+    /// DropDown displays month and year drop-downs in the calendar header.
+    /// DrillDown makes the calendar title a button which drills up to a month grid and a year grid.
+    [<CustomOperation("NavigationMode")>] member inline _.NavigationMode ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.DatePickerNavigationMode) = render ==> ("NavigationMode" => x)
     /// Gets or sets the previous month aria label text.
     [<CustomOperation("CalendarWeekTitle")>] member inline _.CalendarWeekTitle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("CalendarWeekTitle" => x)
     /// Gets or sets the toggle popup aria label text.
@@ -4135,6 +4423,10 @@ type RadzenDatePickerBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :
     [<CustomOperation("PrevMonthAriaLabel")>] member inline _.PrevMonthAriaLabel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("PrevMonthAriaLabel" => x)
     /// Gets or sets the next month aria label text.
     [<CustomOperation("NextMonthAriaLabel")>] member inline _.NextMonthAriaLabel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("NextMonthAriaLabel" => x)
+    /// Gets or sets the previous year aria label text.
+    [<CustomOperation("PrevYearAriaLabel")>] member inline _.PrevYearAriaLabel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("PrevYearAriaLabel" => x)
+    /// Gets or sets the next year aria label text.
+    [<CustomOperation("NextYearAriaLabel")>] member inline _.NextYearAriaLabel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("NextYearAriaLabel" => x)
     /// Gets or sets the toggle Am/Pm aria label text.
     [<CustomOperation("ToggleAmPmAriaLabel")>] member inline _.ToggleAmPmAriaLabel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ToggleAmPmAriaLabel" => x)
     /// Gets or sets the suffix appended to a day cell's aria label when the date is today.
@@ -4143,6 +4435,10 @@ type RadzenDatePickerBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :
     [<CustomOperation("SelectedAriaLabel")>] member inline _.SelectedAriaLabel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("SelectedAriaLabel" => x)
     /// Gets or sets the suffix appended to a day cell's aria label when the date is disabled.
     [<CustomOperation("DisabledAriaLabel")>] member inline _.DisabledAriaLabel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("DisabledAriaLabel" => x)
+    /// Gets or sets the suffix appended to a day cell's aria label when the date is the start of the selected range.
+    [<CustomOperation("RangeStartAriaLabel")>] member inline _.RangeStartAriaLabel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("RangeStartAriaLabel" => x)
+    /// Gets or sets the suffix appended to a day cell's aria label when the date is the end of the selected range.
+    [<CustomOperation("RangeEndAriaLabel")>] member inline _.RangeEndAriaLabel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("RangeEndAriaLabel" => x)
     /// Specifies additional custom attributes that will be rendered by the input.
     [<CustomOperation("InputAttributes")>] member inline _.InputAttributes ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IReadOnlyDictionary<System.String, System.Object>) = render ==> ("InputAttributes" => x)
     /// Gets or sets the year formatter. Set to FormatYear by default.
@@ -4180,6 +4476,12 @@ type RadzenDatePickerBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :
     [<CustomOperation("CurrentDateChanged")>] member inline _.CurrentDateChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.DateTime -> unit) = render ==> html.callback("CurrentDateChanged", fn)
     /// Gets or set the current date changed callback.
     [<CustomOperation("CurrentDateChanged")>] member inline _.CurrentDateChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.DateTime -> Task<unit>) = render ==> html.callbackTask("CurrentDateChanged", fn)
+    /// Gets or sets the callback invoked when the user picks a month in the month grid, by click or keyboard.
+    /// It is not invoked when the displayed month changes by navigation, for example with the arrow keys.
+    [<CustomOperation("MonthSelect")>] member inline _.MonthSelect ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.DateTime -> unit) = render ==> html.callback("MonthSelect", fn)
+    /// Gets or sets the callback invoked when the user picks a month in the month grid, by click or keyboard.
+    /// It is not invoked when the displayed month changes by navigation, for example with the arrow keys.
+    [<CustomOperation("MonthSelect")>] member inline _.MonthSelect ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.DateTime -> Task<unit>) = render ==> html.callbackTask("MonthSelect", fn)
     /// Parse the input using an function outside the Radzen-library
     [<CustomOperation("ParseInput")>] member inline _.ParseInput ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("ParseInput" => (System.Func<System.String, System.Nullable<System.DateTime>>fn))
     /// Gets or sets a value indicating whether this RadzenDatePicker`1 is inline - only Calender.
@@ -4210,9 +4512,13 @@ type RadzenDatePickerBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :
     [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Disabled" =>>> true)
     /// Gets or sets a value indicating whether this RadzenDatePicker`1 is disabled.
     [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Disabled" =>>> x)
-    /// Gets or sets a value indicating whether days part is shown.
+    /// Gets or sets a value indicating whether days part is shown. When false and NavigationMode is
+    /// DrillDown the calendar opens in the month grid, the title drills up to the year grid
+    /// and picking a month updates CurrentDateChanged without leaving the month grid.
     [<CustomOperation("ShowDays")>] member inline _.ShowDays ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowDays" =>>> true)
-    /// Gets or sets a value indicating whether days part is shown.
+    /// Gets or sets a value indicating whether days part is shown. When false and NavigationMode is
+    /// DrillDown the calendar opens in the month grid, the title drills up to the year grid
+    /// and picking a month updates CurrentDateChanged without leaving the month grid.
     [<CustomOperation("ShowDays")>] member inline _.ShowDays ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowDays" =>>> x)
     /// Gets or sets a value indicating whether time part is shown.
     [<CustomOperation("ShowTime")>] member inline _.ShowTime ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowTime" =>>> true)
@@ -4294,6 +4600,21 @@ type RadzenDatePickerBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :
     [<CustomOperation("ValueExpression")>] member inline _.ValueExpression ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Linq.Expressions.Expression<System.Func<'TValue>>) = render ==> ("ValueExpression" => x)
     /// Gets or sets the render mode.
     [<CustomOperation("PopupRenderMode")>] member inline _.PopupRenderMode ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.PopupRenderMode) = render ==> ("PopupRenderMode" => x)
+
+/// A date range picker component that provides a calendar popup for selecting a start and end date.
+/// RadzenDateRangePicker binds to a DateRange value with nullable Start and End dates.
+/// Displays a text input rendering both dates separated by Separator and a calendar icon button. Clicking opens a popup calendar.
+/// The popup shows two months side by side by default - use DisplayMonths to change the number of displayed months.
+/// The first click in the calendar selects the start date, the second click selects the end date and closes the popup.
+/// Clicking a date before the pending start date restarts the selection from that date. While picking the end date the days
+/// between the start date and the hovered day are highlighted as a preview of the prospective range.
+/// Supports min/max date constraints, disabled dates via DateRender, inline calendar mode, and culture-specific formatting.
+type RadzenDateRangePickerBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit Blazor.RadzenDatePickerBuilder<'FunBlazorGeneric, Radzen.DateRange>()
+    /// Gets or sets the text separating the start and end dates in the input.
+    [<CustomOperation("Separator")>] member inline _.Separator ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Separator" => x)
+    /// Gets or sets the number of months displayed side by side in the calendar. Clamped between 1 and 6.
+    [<CustomOperation("DisplayMonths")>] member inline _.DisplayMonths ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("DisplayMonths" => x)
 
 /// RadzenDropZoneItem component.
 type RadzenDropZoneItemBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -4496,6 +4817,12 @@ type RadzenFormFieldBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsof
     [<CustomOperation("AllowFloatingLabel")>] member inline _.AllowFloatingLabel ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AllowFloatingLabel" =>>> true)
     /// Gets or sets a value indicating whether the label is floating or fixed on top.
     [<CustomOperation("AllowFloatingLabel")>] member inline _.AllowFloatingLabel ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("AllowFloatingLabel" =>>> x)
+    /// Gets or sets a value indicating whether clicking the Start content, the End content or the empty area inside the form field border focuses the input.
+    /// Clicks on interactive Start or End content such as buttons and links are not affected.
+    [<CustomOperation("FocusOnClick")>] member inline _.FocusOnClick ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("FocusOnClick" =>>> true)
+    /// Gets or sets a value indicating whether clicking the Start content, the End content or the empty area inside the form field border focuses the input.
+    /// Clicks on interactive Start or End content such as buttons and links are not affected.
+    [<CustomOperation("FocusOnClick")>] member inline _.FocusOnClick ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("FocusOnClick" =>>> x)
     /// Gets or sets the name of the form field. Used to associate the label with a component.
     [<CustomOperation("Component")>] member inline _.Component ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Component" => x)
     /// Gets or sets the design variant of the form field.
@@ -4563,7 +4890,12 @@ type RadzenGanttBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> Micr
     [<CustomOperation("DayWidthPx")>] member inline _.DayWidthPx ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("DayWidthPx" => x)
     /// Number of weeks to render in Week view.
     [<CustomOperation("WeeksInView")>] member inline _.WeeksInView ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("WeeksInView" => x)
-    /// Date format for header cells.
+    /// Number of years to render in the multi-year Years view when ViewStart and
+    /// ViewEnd are not set. Default is 3.
+    [<CustomOperation("YearsInView")>] member inline _.YearsInView ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("YearsInView" => x)
+    /// Date format for the day labels of the Day zoom and the week range labels of the Month zoom.
+    /// When not set, the short date pattern of Culture without its year part is used,
+    /// for example M/d for en-US and dd/MM for en-GB.
     [<CustomOperation("HeaderDateFormat")>] member inline _.HeaderDateFormat ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("HeaderDateFormat" => x)
     /// Raised when a task bar is clicked.
     [<CustomOperation("TaskClick")>] member inline _.TaskClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: 'TItem -> unit) = render ==> html.callback("TaskClick", fn)
@@ -4865,6 +5197,79 @@ type RadzenGanttBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> Micr
     [<CustomOperation("FooterCellRender")>] member inline _.FooterCellRender ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("FooterCellRender" => (System.Action<Radzen.DataGridCellRenderEventArgs<'TItem>>fn))
     /// Render callback.
     [<CustomOperation("Render")>] member inline _.Render ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("Render" => (System.Action<Radzen.DataGridRenderEventArgs<'TItem>>fn))
+    /// Gets or sets the view mode. Defaults to Task.
+    /// When set to Resource, rows represent resources and
+    /// task bars are grouped by their assigned resource.
+    [<CustomOperation("ViewMode")>] member inline _.ViewMode ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Blazor.GanttViewMode) = render ==> ("ViewMode" => x)
+    /// Collection of resource items. Each item can be any POCO — properties are accessed
+    /// via ResourceIdProperty and ResourceTextProperty.
+    /// Only used when ViewMode is Resource.
+    [<CustomOperation("ResourceData")>] member inline _.ResourceData ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.IEnumerable) = render ==> ("ResourceData" => x)
+    /// Property name on ResourceData items that holds the unique resource identifier.
+    /// Must match values of TaskResourceIdProperty on the task items.
+    [<CustomOperation("ResourceIdProperty")>] member inline _.ResourceIdProperty ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ResourceIdProperty" => x)
+    /// Property name on ResourceData items used for hierarchical parent-child relationships.
+    /// When set, resources are displayed in a tree structure. Tasks of collapsed descendant resources
+    /// are rolled up onto the nearest visible ancestor row.
+    [<CustomOperation("ResourceParentIdProperty")>] member inline _.ResourceParentIdProperty ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ResourceParentIdProperty" => x)
+    /// Property name on ResourceData items used for the resource display text.
+    /// Used as the default column when ResourceColumns is not set.
+    [<CustomOperation("ResourceTextProperty")>] member inline _.ResourceTextProperty ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ResourceTextProperty" => x)
+    /// Property name on task items () that holds the assigned resource identifier.
+    /// The value must match ResourceIdProperty values on ResourceData items.
+    [<CustomOperation("TaskResourceIdProperty")>] member inline _.TaskResourceIdProperty ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("TaskResourceIdProperty" => x)
+    /// Optional columns definition for the resource grid in the left pane.
+    /// Use RadzenDataGridColumn`1 with TItem="object".
+    /// Only used when ViewMode is Resource.
+    [<CustomOperation("ResourceColumns")>] member inline _.ResourceColumns ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("ResourceColumns", fragment)
+    /// Optional columns definition for the resource grid in the left pane.
+    /// Use RadzenDataGridColumn`1 with TItem="object".
+    /// Only used when ViewMode is Resource.
+    [<CustomOperation("ResourceColumns")>] member inline _.ResourceColumns ([<InlineIfLambda>] render: AttrRenderFragment, fragments: NodeRenderFragment seq) = render ==> html.renderFragment("ResourceColumns", fragment { yield! fragments })
+    /// Optional columns definition for the resource grid in the left pane.
+    /// Use RadzenDataGridColumn`1 with TItem="object".
+    /// Only used when ViewMode is Resource.
+    [<CustomOperation("ResourceColumns")>] member inline _.ResourceColumns ([<InlineIfLambda>] render: AttrRenderFragment, x: string) = render ==> html.renderFragment("ResourceColumns", html.text x)
+    /// Optional columns definition for the resource grid in the left pane.
+    /// Use RadzenDataGridColumn`1 with TItem="object".
+    /// Only used when ViewMode is Resource.
+    [<CustomOperation("ResourceColumns")>] member inline _.ResourceColumns ([<InlineIfLambda>] render: AttrRenderFragment, x: int) = render ==> html.renderFragment("ResourceColumns", html.text x)
+    /// Optional columns definition for the resource grid in the left pane.
+    /// Use RadzenDataGridColumn`1 with TItem="object".
+    /// Only used when ViewMode is Resource.
+    [<CustomOperation("ResourceColumns")>] member inline _.ResourceColumns ([<InlineIfLambda>] render: AttrRenderFragment, x: float) = render ==> html.renderFragment("ResourceColumns", html.text x)
+    /// When enabled, tasks whose resource identifier is null or does not match any
+    /// ResourceData item are shown in an "Unassigned" row at the bottom.
+    /// The row item is a GanttUnassignedResource instance — custom
+    /// ResourceColumns templates can type-check for it.
+    /// Only used when ViewMode is Resource.
+    [<CustomOperation("ShowUnassignedTasks")>] member inline _.ShowUnassignedTasks ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowUnassignedTasks" =>>> true)
+    /// When enabled, tasks whose resource identifier is null or does not match any
+    /// ResourceData item are shown in an "Unassigned" row at the bottom.
+    /// The row item is a GanttUnassignedResource instance — custom
+    /// ResourceColumns templates can type-check for it.
+    /// Only used when ViewMode is Resource.
+    [<CustomOperation("ShowUnassignedTasks")>] member inline _.ShowUnassignedTasks ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowUnassignedTasks" =>>> x)
+    /// Gets or sets the display text of the unassigned tasks row. Defaults to "Unassigned".
+    [<CustomOperation("UnassignedText")>] member inline _.UnassignedText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("UnassignedText" => x)
+    /// When enabled, an accumulated workload histogram is displayed below the timeline,
+    /// synchronized with its horizontal scroll. Each timeline column shows the total of
+    /// HistogramValueProperty over the tasks active in that time unit,
+    /// or the task count when no property is set.
+    [<CustomOperation("ShowHistogram")>] member inline _.ShowHistogram ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowHistogram" =>>> true)
+    /// When enabled, an accumulated workload histogram is displayed below the timeline,
+    /// synchronized with its horizontal scroll. Each timeline column shows the total of
+    /// HistogramValueProperty over the tasks active in that time unit,
+    /// or the task count when no property is set.
+    [<CustomOperation("ShowHistogram")>] member inline _.ShowHistogram ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowHistogram" =>>> x)
+    /// Optional numeric property name on task items accumulated by the histogram.
+    /// When not set, the histogram counts active tasks per time unit.
+    [<CustomOperation("HistogramValueProperty")>] member inline _.HistogramValueProperty ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("HistogramValueProperty" => x)
+    /// Optional capacity threshold for the histogram. A capacity line is drawn at this value
+    /// and columns exceeding it are highlighted as overallocated.
+    [<CustomOperation("HistogramCapacity")>] member inline _.HistogramCapacity ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Double>) = render ==> ("HistogramCapacity" => x)
+    /// Gets or sets the accessible label of the histogram. Defaults to "Workload".
+    [<CustomOperation("HistogramLabel")>] member inline _.HistogramLabel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("HistogramLabel" => x)
 
 /// RadzenGoogleMap component.
 type RadzenGoogleMapBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -4879,6 +5284,10 @@ type RadzenGoogleMapBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsof
     [<CustomOperation("MarkerClick")>] member inline _.MarkerClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.Blazor.RadzenGoogleMapMarker -> unit) = render ==> html.callback("MarkerClick", fn)
     /// Gets or sets the marker click callback.
     [<CustomOperation("MarkerClick")>] member inline _.MarkerClick ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.Blazor.RadzenGoogleMapMarker -> Task<unit>) = render ==> html.callbackTask("MarkerClick", fn)
+    /// Gets or sets the callback raised when the visible map area changes. It fires once the map is loaded and each time the map becomes idle after panning or zooming.
+    [<CustomOperation("BoundsChanged")>] member inline _.BoundsChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.GoogleMapBoundsChangedEventArgs -> unit) = render ==> html.callback("BoundsChanged", fn)
+    /// Gets or sets the callback raised when the visible map area changes. It fires once the map is loaded and each time the map becomes idle after panning or zooming.
+    [<CustomOperation("BoundsChanged")>] member inline _.BoundsChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.GoogleMapBoundsChangedEventArgs -> Task<unit>) = render ==> html.callbackTask("BoundsChanged", fn)
     /// Gets or sets the Google API key.
     [<CustomOperation("ApiKey")>] member inline _.ApiKey ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ApiKey" => x)
     /// Gets or sets the Google Map Id.
@@ -4985,6 +5394,90 @@ type RadzenIconBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.Asp
     /// Material Symbols supports different styles: Outlined (default), Filled, Rounded, and Sharp.
     /// The style affects the icon's visual appearance (e.g., Filled icons have solid shapes vs. outlined strokes).
     [<CustomOperation("IconStyle")>] member inline _.IconStyle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Radzen.IconStyle>) = render ==> ("IconStyle" => x)
+
+/// An AI assistant for a text field: a button that opens a RadzenAIPrompt in a popup and applies the result to the bound value.
+/// Bind Value to the same value as the field; set TargetId to the id of the input or textarea so that a selection inside it becomes the context and only the selection is replaced.
+type RadzenInlineAIPromptBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit RadzenComponentBuilder<'FunBlazorGeneric>()
+    /// Gets or sets the text of the field the assistant works on.
+    [<CustomOperation("Value")>] member inline _.Value ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Value" => x)
+    /// Gets or sets the text of the field the assistant works on.
+    [<CustomOperation("Value'")>] member inline _.Value' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.String * (System.String -> unit)) = render ==> html.bind("Value", valueFn)
+    /// Gets or sets the callback invoked when the assistant changes the value.
+    [<CustomOperation("ValueChanged")>] member inline _.ValueChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.String -> unit) = render ==> html.callback("ValueChanged", fn)
+    /// Gets or sets the callback invoked when the assistant changes the value.
+    [<CustomOperation("ValueChanged")>] member inline _.ValueChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.String -> Task<unit>) = render ==> html.callbackTask("ValueChanged", fn)
+    /// Gets or sets the id of the input or textarea the assistant works on. When set, the text selected in it when the popup opens is used as context and replaced by the result;
+    /// without a selection, or without a target, the whole Value is used.
+    [<CustomOperation("TargetId")>] member inline _.TargetId ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("TargetId" => x)
+    /// Gets or sets the system prompt. The default asks the model to return only the resulting text without explanations or markdown.
+    [<CustomOperation("SystemPrompt")>] member inline _.SystemPrompt ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("SystemPrompt" => x)
+    /// Gets or sets the prompts offered as buttons, for example "Fix grammar" or "Make it shorter".
+    [<CustomOperation("Suggestions")>] member inline _.Suggestions ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<System.String>) = render ==> ("Suggestions" => x)
+    /// Gets or sets the commands that refine the output, for example shorter, formal or translate.
+    [<CustomOperation("Commands")>] member inline _.Commands ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<Radzen.Blazor.AIPromptCommand>) = render ==> ("Commands" => x)
+    /// Gets or sets the placeholder of the prompt input.
+    [<CustomOperation("Placeholder")>] member inline _.Placeholder ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Placeholder" => x)
+    /// Gets or sets the template that renders the output instead of markdown.
+    [<CustomOperation("OutputTemplate")>] member inline _.OutputTemplate ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.String -> NodeRenderFragment) = render ==> html.renderFragment("OutputTemplate", fn)
+    /// Gets or sets the model. Uses the model of AIChatServiceOptions when not set.
+    [<CustomOperation("ModelId")>] member inline _.ModelId ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ModelId" => x)
+    /// Gets or sets the sampling temperature.
+    [<CustomOperation("Temperature")>] member inline _.Temperature ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Double>) = render ==> ("Temperature" => x)
+    /// Gets or sets the maximum number of output tokens.
+    [<CustomOperation("MaxTokens")>] member inline _.MaxTokens ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("MaxTokens" => x)
+    /// Gets or sets whether the button that opens the popup is rendered. Set to false and call OpenAsync to open the popup from your own trigger. Default is true.
+    [<CustomOperation("ShowButton")>] member inline _.ShowButton ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowButton" =>>> true)
+    /// Gets or sets whether the button that opens the popup is rendered. Set to false and call OpenAsync to open the popup from your own trigger. Default is true.
+    [<CustomOperation("ShowButton")>] member inline _.ShowButton ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowButton" =>>> x)
+    /// Gets or sets the icon of the button. Default is auto_awesome.
+    [<CustomOperation("Icon")>] member inline _.Icon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Icon" => x)
+    /// Gets or sets the color of the icon.
+    [<CustomOperation("IconColor")>] member inline _.IconColor ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("IconColor" => x)
+    /// Gets or sets the text of the button. The button shows only the icon when not set.
+    [<CustomOperation("Text")>] member inline _.Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Text" => x)
+    /// Gets or sets the title of the button and the accessible name of the popup. Default is "AI assistant".
+    [<CustomOperation("Title")>] member inline _.Title ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
+    /// Gets or sets the text of the button that replaces the value with the output. Default is "Replace".
+    [<CustomOperation("ReplaceText")>] member inline _.ReplaceText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ReplaceText" => x)
+    /// Gets or sets the text of the replace button when a selection is replaced. Default is "Replace selection".
+    [<CustomOperation("ReplaceSelectionText")>] member inline _.ReplaceSelectionText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ReplaceSelectionText" => x)
+    /// Gets or sets the text of the button that appends the output to the value. Default is "Append".
+    [<CustomOperation("AppendText")>] member inline _.AppendText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("AppendText" => x)
+    /// Gets or sets the text of the button that discards the output. Default is "Discard".
+    [<CustomOperation("DiscardText")>] member inline _.DiscardText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("DiscardText" => x)
+    /// Gets or sets the style of the button. Default is Base.
+    [<CustomOperation("ButtonStyle")>] member inline _.ButtonStyle ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.ButtonStyle) = render ==> ("ButtonStyle" => x)
+    /// Gets or sets the variant of the button. Default is Text.
+    [<CustomOperation("Variant")>] member inline _.Variant ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Variant) = render ==> ("Variant" => x)
+    /// Gets or sets the shade of the button.
+    [<CustomOperation("Shade")>] member inline _.Shade ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Shade) = render ==> ("Shade" => x)
+    /// Gets or sets the size of the button. Default is Small.
+    [<CustomOperation("Size")>] member inline _.Size ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.ButtonSize) = render ==> ("Size" => x)
+    /// Gets or sets whether the button is disabled.
+    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Disabled" =>>> true)
+    /// Gets or sets whether the button is disabled.
+    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Disabled" =>>> x)
+    /// Gets or sets the callback invoked when the model produces an output.
+    [<CustomOperation("Generated")>] member inline _.Generated ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.Blazor.AIPromptGeneratedEventArgs -> unit) = render ==> html.callback("Generated", fn)
+    /// Gets or sets the callback invoked when the model produces an output.
+    [<CustomOperation("Generated")>] member inline _.Generated ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.Blazor.AIPromptGeneratedEventArgs -> Task<unit>) = render ==> html.callbackTask("Generated", fn)
+    /// Gets or sets the callback invoked after the output is applied to the value, with the new value.
+    [<CustomOperation("Applied")>] member inline _.Applied ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.String -> unit) = render ==> html.callback("Applied", fn)
+    /// Gets or sets the callback invoked after the output is applied to the value, with the new value.
+    [<CustomOperation("Applied")>] member inline _.Applied ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.String -> Task<unit>) = render ==> html.callbackTask("Applied", fn)
+    /// Gets or sets the callback invoked when a request fails.
+    [<CustomOperation("Error")>] member inline _.Error ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Exception -> unit) = render ==> html.callback("Error", fn)
+    /// Gets or sets the callback invoked when a request fails.
+    [<CustomOperation("Error")>] member inline _.Error ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Exception -> Task<unit>) = render ==> html.callbackTask("Error", fn)
+    /// Gets or sets the callback invoked when the popup opens.
+    [<CustomOperation("Open")>] member inline _.Open ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> unit) = render ==> html.callback("Open", fn)
+    /// Gets or sets the callback invoked when the popup opens.
+    [<CustomOperation("Open")>] member inline _.Open ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> Task<unit>) = render ==> html.callbackTask("Open", fn)
+    /// Gets or sets the callback invoked when the popup closes.
+    [<CustomOperation("Close")>] member inline _.Close ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> unit) = render ==> html.callback("Close", fn)
+    /// Gets or sets the callback invoked when the popup closes.
+    [<CustomOperation("Close")>] member inline _.Close ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> Task<unit>) = render ==> html.callbackTask("Close", fn)
 
 /// A label component for associating descriptive text with form input components.
 /// RadzenLabel creates accessible labels linked to input fields via the HTML for/id relationship.
@@ -5587,6 +6080,11 @@ type RadzenProfileMenuItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Mi
     [<CustomOperation("Target")>] member inline _.Target ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Target" => x)
     /// Gets or sets the path.
     [<CustomOperation("Path")>] member inline _.Path ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Path" => x)
+    /// Specifies the form method attribute. Used together with Action. Defaults to post.
+    [<CustomOperation("Method")>] member inline _.Method ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Method" => x)
+    /// Specifies the form action attribute. When set the item renders a form with a submit button that submits to the specified URL.
+    /// The form includes the antiforgery token when the application provides one and Method is not get.
+    [<CustomOperation("Action")>] member inline _.Action ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Action" => x)
     /// Gets or sets the navigation link match.
     [<CustomOperation("Match")>] member inline _.Match ([<InlineIfLambda>] render: AttrRenderFragment, x: Microsoft.AspNetCore.Components.Routing.NavLinkMatch) = render ==> ("Match" => x)
     /// Gets or sets the icon.
@@ -5721,6 +6219,14 @@ type RadzenRangeNavigatorBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Mic
     /// Receives a DateTime for date ranges or a Double for numeric ranges.
     /// Takes precedence over HandleLabelFormatString when set.
     [<CustomOperation("HandleLabelFormatter")>] member inline _.HandleLabelFormatter ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("HandleLabelFormatter" => (System.Func<System.Object, System.String>fn))
+    /// Gets or sets whether hovering the navigator shows the nearest point's category and value.
+    /// Date and numeric categories are formatted the same way as the handle labels.
+    [<CustomOperation("ShowTooltip")>] member inline _.ShowTooltip ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowTooltip" =>>> true)
+    /// Gets or sets whether hovering the navigator shows the nearest point's category and value.
+    /// Date and numeric categories are formatted the same way as the handle labels.
+    [<CustomOperation("ShowTooltip")>] member inline _.ShowTooltip ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowTooltip" =>>> x)
+    /// Gets or sets the format string for the value shown in the tooltip, e.g. "{0:N0}". Defaults to "{0:N}" when not set.
+    [<CustomOperation("TooltipFormatString")>] member inline _.TooltipFormatString ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("TooltipFormatString" => x)
     /// Gets or sets whether an axis with tick labels is displayed below the navigator.
     [<CustomOperation("ShowAxis")>] member inline _.ShowAxis ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowAxis" =>>> true)
     /// Gets or sets whether an axis with tick labels is displayed below the navigator.
@@ -5730,10 +6236,10 @@ type RadzenRangeNavigatorBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Mic
     /// When not set, defaults to a short representation based on the data type.
     [<CustomOperation("AxisFormatString")>] member inline _.AxisFormatString ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("AxisFormatString" => x)
     /// Gets or sets the minimum value for the axis. Use when there are no child series to define the range.
-    /// Supports DateTime and numeric types.
+    /// Supports DateTime, DateOnly and numeric types.
     [<CustomOperation("Min")>] member inline _.Min ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Object) = render ==> ("Min" => x)
     /// Gets or sets the maximum value for the axis. Use when there are no child series to define the range.
-    /// Supports DateTime and numeric types.
+    /// Supports DateTime, DateOnly and numeric types.
     [<CustomOperation("Max")>] member inline _.Max ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Object) = render ==> ("Max" => x)
 
 /// RadzenSankeyDiagram component.
@@ -5834,6 +6340,10 @@ type RadzenSchedulerBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> 
     [<CustomOperation("Date")>] member inline _.Date ([<InlineIfLambda>] render: AttrRenderFragment, x: System.DateTime) = render ==> ("Date" => x)
     /// Specifies the property of  which will set Text.
     [<CustomOperation("TextProperty")>] member inline _.TextProperty ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("TextProperty" => x)
+    /// Specifies the property of  which will set AllDay.
+    /// Views with an all-day row display such appointments in it instead of the time grid. When not set an appointment is
+    /// considered all-day when it spans the entire visible day.
+    [<CustomOperation("AllDayProperty")>] member inline _.AllDayProperty ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("AllDayProperty" => x)
     /// Specifies whether to Show or Hide the Scheduler Header. Defaults to true />.
     [<CustomOperation("ShowHeader")>] member inline _.ShowHeader ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowHeader" =>>> true)
     /// Specifies whether to Show or Hide the Scheduler Header. Defaults to true />.
@@ -5850,6 +6360,12 @@ type RadzenSchedulerBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> 
     [<CustomOperation("ShowDateTitle")>] member inline _.ShowDateTitle ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowDateTitle" =>>> true)
     /// Gets or sets a value indicating whether the date title is visible. Set to true by default.
     [<CustomOperation("ShowDateTitle")>] member inline _.ShowDateTitle ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowDateTitle" =>>> x)
+    /// Gets or sets a value indicating whether clicking the date title opens a date picker that navigates the scheduler to the selected date.
+    /// Month and year views offer months instead of days. Set to false by default.
+    [<CustomOperation("AllowDateSelection")>] member inline _.AllowDateSelection ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AllowDateSelection" =>>> true)
+    /// Gets or sets a value indicating whether clicking the date title opens a date picker that navigates the scheduler to the selected date.
+    /// Month and year views offer months instead of days. Set to false by default.
+    [<CustomOperation("AllowDateSelection")>] member inline _.AllowDateSelection ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("AllowDateSelection" =>>> x)
     /// A callback that will be invoked when the user clicks a slot in the current view. Commonly used to add new appointments.
     [<CustomOperation("SlotSelect")>] member inline _.SlotSelect ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.SchedulerSlotSelectEventArgs -> unit) = render ==> html.callback("SlotSelect", fn)
     /// A callback that will be invoked when the user clicks a slot in the current view. Commonly used to add new appointments.
@@ -5900,6 +6416,12 @@ type RadzenSchedulerBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> 
     /// A callback that will be invoked when an appointment is being dragged and then dropped on a different slot.
     /// Commonly used to change it to a different timeslot.
     [<CustomOperation("AppointmentMove")>] member inline _.AppointmentMove ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.SchedulerAppointmentMoveEventArgs -> Task<unit>) = render ==> html.callbackTask("AppointmentMove", fn)
+    /// A callback that will be invoked when the start or end edge of an appointment is dragged to a different time slot in a day, week or multi-day view.
+    /// Commonly used to change the appointment duration. The new boundaries snap to the current MinutesPerSlot of the view.
+    [<CustomOperation("AppointmentResize")>] member inline _.AppointmentResize ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.SchedulerAppointmentResizeEventArgs -> unit) = render ==> html.callback("AppointmentResize", fn)
+    /// A callback that will be invoked when the start or end edge of an appointment is dragged to a different time slot in a day, week or multi-day view.
+    /// Commonly used to change the appointment duration. The new boundaries snap to the current MinutesPerSlot of the view.
+    [<CustomOperation("AppointmentResize")>] member inline _.AppointmentResize ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.SchedulerAppointmentResizeEventArgs -> Task<unit>) = render ==> html.callbackTask("AppointmentResize", fn)
 
 /// RadzenSelectBarItem component.
 type RadzenSelectBarItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -5954,6 +6476,54 @@ type RadzenSkeletonBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     /// Gets or sets the animation effect applied to the skeleton placeholder.
     /// None (static), Pulse (fade in/out), or Wave (shimmer effect moving across).
     [<CustomOperation("Animation")>] member inline _.Animation ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.SkeletonAnimation) = render ==> ("Animation" => x)
+
+/// A button that fills a form model from the text in the clipboard with the help of an AI model. Reads the clipboard, asks the
+/// IChatClient configured for IAIChatService to extract the public properties of 
+/// from it and assigns the values. Put it inside a RadzenTemplateForm`1 bound to the same model.
+type RadzenSmartPasteButtonBuilder<'FunBlazorGeneric, 'TModel when 'TModel : not struct and 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit RadzenComponentBuilder<'FunBlazorGeneric>()
+    /// Gets or sets the model to fill. Required.
+    [<CustomOperation("Data")>] member inline _.Data ([<InlineIfLambda>] render: AttrRenderFragment, x: 'TModel) = render ==> ("Data" => x)
+    /// Gets or sets the names of the properties to fill. All public writable properties of simple types are filled when not set.
+    [<CustomOperation("Fields")>] member inline _.Fields ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<System.String>) = render ==> ("Fields" => x)
+    /// Gets or sets additional instructions for the model, for example the expected language or format of a field.
+    [<CustomOperation("Instructions")>] member inline _.Instructions ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Instructions" => x)
+    /// Gets or sets the model name. Falls back to the configured Model.
+    [<CustomOperation("ModelId")>] member inline _.ModelId ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ModelId" => x)
+    /// Gets or sets the button text. Default is Smart paste.
+    [<CustomOperation("Text")>] member inline _.Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Text" => x)
+    /// Gets or sets the button title (tooltip).
+    [<CustomOperation("Title")>] member inline _.Title ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
+    /// Gets or sets the text shown while the model is working.
+    [<CustomOperation("BusyText")>] member inline _.BusyText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("BusyText" => x)
+    /// Gets or sets the icon. Default is content_paste_go.
+    [<CustomOperation("Icon")>] member inline _.Icon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Icon" => x)
+    /// Gets or sets the icon color.
+    [<CustomOperation("IconColor")>] member inline _.IconColor ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("IconColor" => x)
+    /// Gets or sets the button style.
+    [<CustomOperation("ButtonStyle")>] member inline _.ButtonStyle ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.ButtonStyle) = render ==> ("ButtonStyle" => x)
+    /// Gets or sets the button variant.
+    [<CustomOperation("Variant")>] member inline _.Variant ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Variant) = render ==> ("Variant" => x)
+    /// Gets or sets the button shade.
+    [<CustomOperation("Shade")>] member inline _.Shade ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Shade) = render ==> ("Shade" => x)
+    /// Gets or sets the button size.
+    [<CustomOperation("Size")>] member inline _.Size ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.ButtonSize) = render ==> ("Size" => x)
+    /// Gets or sets whether the button is disabled.
+    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Disabled" =>>> true)
+    /// Gets or sets whether the button is disabled.
+    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Disabled" =>>> x)
+    /// Event callback that is invoked after the model is filled. Receives Data.
+    [<CustomOperation("Pasted")>] member inline _.Pasted ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: 'TModel -> unit) = render ==> html.callback("Pasted", fn)
+    /// Event callback that is invoked after the model is filled. Receives Data.
+    [<CustomOperation("Pasted")>] member inline _.Pasted ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: 'TModel -> Task<unit>) = render ==> html.callbackTask("Pasted", fn)
+    /// Event callback that is invoked when the clipboard is empty or cannot be read.
+    [<CustomOperation("EmptyClipboard")>] member inline _.EmptyClipboard ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> unit) = render ==> html.callback("EmptyClipboard", fn)
+    /// Event callback that is invoked when the clipboard is empty or cannot be read.
+    [<CustomOperation("EmptyClipboard")>] member inline _.EmptyClipboard ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: unit -> Task<unit>) = render ==> html.callbackTask("EmptyClipboard", fn)
+    /// Event callback that is invoked when the model request fails.
+    [<CustomOperation("Error")>] member inline _.Error ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Exception -> unit) = render ==> html.callback("Error", fn)
+    /// Event callback that is invoked when the model request fails.
+    [<CustomOperation("Error")>] member inline _.Error ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Exception -> Task<unit>) = render ==> html.callbackTask("Error", fn)
 
 /// RadzenSpeechToTextButton component. Enables speech to text functionality.
 /// This is only supported on select browsers. See https://caniuse.com/?search=SpeechRecognition
@@ -6203,6 +6773,22 @@ type RadzenSpreadsheetBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micros
     [<CustomOperation("ShowSheetTabs")>] member inline _.ShowSheetTabs ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowSheetTabs" =>>> true)
     /// When true (the default) the sheet tab strip is rendered below the grid.
     [<CustomOperation("ShowSheetTabs")>] member inline _.ShowSheetTabs ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowSheetTabs" =>>> x)
+    /// When true (the default) the column headers (A, B, C, ...) are rendered above the grid.
+    /// Set to false to hide them together with their resize handles and the whole-column
+    /// selection they provide. The space they occupy is released as well.
+    [<CustomOperation("ShowColumnHeaders")>] member inline _.ShowColumnHeaders ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowColumnHeaders" =>>> true)
+    /// When true (the default) the column headers (A, B, C, ...) are rendered above the grid.
+    /// Set to false to hide them together with their resize handles and the whole-column
+    /// selection they provide. The space they occupy is released as well.
+    [<CustomOperation("ShowColumnHeaders")>] member inline _.ShowColumnHeaders ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowColumnHeaders" =>>> x)
+    /// When true (the default) the row headers (1, 2, 3, ...) are rendered to the left of the grid.
+    /// Set to false to hide them together with their resize handles and the whole-row
+    /// selection they provide. The space they occupy is released as well.
+    [<CustomOperation("ShowRowHeaders")>] member inline _.ShowRowHeaders ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowRowHeaders" =>>> true)
+    /// When true (the default) the row headers (1, 2, 3, ...) are rendered to the left of the grid.
+    /// Set to false to hide them together with their resize handles and the whole-row
+    /// selection they provide. The space they occupy is released as well.
+    [<CustomOperation("ShowRowHeaders")>] member inline _.ShowRowHeaders ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowRowHeaders" =>>> x)
     /// The zero-based index of the active sheet. Supports two-way binding via
     /// @bind-SelectedSheetIndex. Values outside the sheet range are clamped.
     /// Setting it selects the matching sheet even when ShowSheetTabs is
@@ -6427,7 +7013,7 @@ type RadzenStepsItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsof
 /// Provides a container for RadzenTabsItem components, each representing one tab and its associated content panel.
 /// Supports tab positioning at Top, Bottom, Left, Right, TopRight, or BottomRight, server-side rendering (default) or client-side rendering for improved interactivity,
 /// programmatic selection via SelectedIndex with two-way binding, Change event when tabs are switched, dynamic tab addition/removal using AddTab() and RemoveItem(),
-/// keyboard navigation (Arrow keys, Home, End, Space, Enter) for accessibility, and disabled tabs to prevent selection.
+/// keyboard navigation (Arrow keys, Home, End, Space, Enter) for accessibility, closable tabs (Closable, the Close event and the Delete key) and disabled tabs to prevent selection.
 /// Use Server render mode for standard Blazor rendering, or Client mode for faster tab switching with JavaScript.
 type RadzenTabsBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit RadzenComponentBuilder<'FunBlazorGeneric>()
@@ -6477,6 +7063,16 @@ type RadzenTabsBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.Asp
     /// Gets or sets the callback invoked when tabs are reordered via drag and drop.
     /// Provides a TabsReorderEventArgs with the old and new index of the moved tab.
     [<CustomOperation("Reorder")>] member inline _.Reorder ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.Blazor.TabsReorderEventArgs -> Task<unit>) = render ==> html.callbackTask("Reorder", fn)
+    /// Gets or sets the callback invoked when the user closes a tab whose Closable is true, either by clicking its close icon or by pressing Delete while the tab has keyboard focus.
+    /// The tab is not removed by the component: remove it from the collection that renders the tabs in this callback.
+    /// When the selected tab is removed the following tab is selected (or the preceding one when the removed tab was last) and SelectedIndexChanged is raised.
+    [<CustomOperation("Close")>] member inline _.Close ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.Blazor.TabsCloseEventArgs -> unit) = render ==> html.callback("Close", fn)
+    /// Gets or sets the callback invoked when the user closes a tab whose Closable is true, either by clicking its close icon or by pressing Delete while the tab has keyboard focus.
+    /// The tab is not removed by the component: remove it from the collection that renders the tabs in this callback.
+    /// When the selected tab is removed the following tab is selected (or the preceding one when the removed tab was last) and SelectedIndexChanged is raised.
+    [<CustomOperation("Close")>] member inline _.Close ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.Blazor.TabsCloseEventArgs -> Task<unit>) = render ==> html.callbackTask("Close", fn)
+    /// Gets or sets the tooltip of the close icon rendered in a tab whose Closable is true.
+    [<CustomOperation("CloseTitle")>] member inline _.CloseTitle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("CloseTitle" => x)
     /// Gets or sets the render fragment containing RadzenTabsItem components that define the tabs.
     /// Each RadzenTabsItem represents one tab with its header and content.
     [<CustomOperation("Tabs")>] member inline _.Tabs ([<InlineIfLambda>] render: AttrRenderFragment, fragment: NodeRenderFragment) = render ==> html.renderFragment("Tabs", fragment)
@@ -6498,6 +7094,16 @@ type RadzenTabsBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.Asp
     /// Gets or sets the id of the element that labels the tab list via aria-labelledby.
     /// Use this when a visible element already provides the accessible name for the group of tabs.
     [<CustomOperation("AriaLabelledBy")>] member inline _.AriaLabelledBy ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("AriaLabelledBy" => x)
+    /// Gets or sets how tab titles that do not fit in the available space are laid out.
+    /// Default shrinks the titles to their minimum size and lets the tab list overflow, Wrap wraps them to additional lines, Scroll scrolls the tab list
+    /// and Collapse moves the titles that do not fit into a dropdown menu opened from a button at the end of the tab list. The selected tab always stays visible.
+    [<CustomOperation("Overflow")>] member inline _.Overflow ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.TabsOverflow) = render ==> ("Overflow" => x)
+    /// Gets or sets the accessible name of the button that opens the menu with the collapsed tabs when Overflow is Collapse.
+    [<CustomOperation("MoreAriaLabel")>] member inline _.MoreAriaLabel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("MoreAriaLabel" => x)
+    /// Gets or sets the accessible name of the button that scrolls the tab list towards its start when Overflow is Scroll.
+    [<CustomOperation("ScrollBackwardAriaLabel")>] member inline _.ScrollBackwardAriaLabel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ScrollBackwardAriaLabel" => x)
+    /// Gets or sets the accessible name of the button that scrolls the tab list towards its end when Overflow is Scroll.
+    [<CustomOperation("ScrollForwardAriaLabel")>] member inline _.ScrollForwardAriaLabel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ScrollForwardAriaLabel" => x)
 
 /// A component which represents a form. Provides validation support.
 type RadzenTemplateFormBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -6584,6 +7190,14 @@ type RadzenTileLayoutBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microso
     [<CustomOperation("AllowResize")>] member inline _.AllowResize ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AllowResize" =>>> true)
     /// Gets or sets a value indicating whether tiles can be resized while in EditMode.
     [<CustomOperation("AllowResize")>] member inline _.AllowResize ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("AllowResize" =>>> x)
+    /// Gets or sets a value indicating whether a tile can be moved or resized over another tile while in EditMode.
+    /// When false a move or resize that would make the tile intersect another visible tile is blocked and the tile
+    /// stays at its last valid position. Tiles that already overlap can still be dragged apart.
+    [<CustomOperation("AllowOverlap")>] member inline _.AllowOverlap ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("AllowOverlap" =>>> true)
+    /// Gets or sets a value indicating whether a tile can be moved or resized over another tile while in EditMode.
+    /// When false a move or resize that would make the tile intersect another visible tile is blocked and the tile
+    /// stays at its last valid position. Tiles that already overlap can still be dragged apart.
+    [<CustomOperation("AllowOverlap")>] member inline _.AllowOverlap ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("AllowOverlap" =>>> x)
     /// Gets or sets a value indicating whether to render a grid overlay.
     [<CustomOperation("ShowGrid")>] member inline _.ShowGrid ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowGrid" =>>> true)
     /// Gets or sets a value indicating whether to render a grid overlay.
@@ -6726,6 +7340,22 @@ type RadzenTimelineItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micro
     [<CustomOperation("PointVariant")>] member inline _.PointVariant ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Variant) = render ==> ("PointVariant" => x)
     /// Specifies the Shadow level from 0 (no shadow) to 10. Set to 1 by default.
     [<CustomOperation("PointShadow")>] member inline _.PointShadow ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("PointShadow" => x)
+    /// Gets or sets additional CSS classes applied to the point element itself, rather than to the item.
+    /// Use it to style the marker beyond what PointStyle and PointVariant express -
+    /// a focus ring on the active step, a transition, an animation.
+    [<CustomOperation("PointClass")>] member inline _.PointClass ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("PointClass" => x)
+    /// Gets or sets the style of the connector running from this item to the next one rendered.
+    /// The last item has no outgoing connector, so its value is ignored. Leave it null to keep the
+    /// theme line colour.
+    [<CustomOperation("LineStyle")>] member inline _.LineStyle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<Radzen.PointStyle>) = render ==> ("LineStyle" => x)
+    /// Gets or sets whether this item is the step currently in progress. It is marked
+    /// aria-current="step" and its point is drawn with a ring in the point's own colour.
+    /// At most one item in a timeline should set it.
+    [<CustomOperation("Current")>] member inline _.Current ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Current" =>>> true)
+    /// Gets or sets whether this item is the step currently in progress. It is marked
+    /// aria-current="step" and its point is drawn with a ring in the point's own colour.
+    /// At most one item in a timeline should set it.
+    [<CustomOperation("Current")>] member inline _.Current ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Current" =>>> x)
 
 /// RadzenTimeSpanPicker component.
 type RadzenTimeSpanPickerBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -7045,6 +7675,39 @@ type RadzenUploadBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.A
     /// Gets or sets the error callback.
     [<CustomOperation("Error")>] member inline _.Error ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.UploadErrorEventArgs -> Task<unit>) = render ==> html.callbackTask("Error", fn)
 
+/// An on-screen virtual keyboard for touch HMI and kiosk scenarios. Attaches to the inputs rendered inside it and
+/// opens automatically when one of them gets focus. Key presses insert text in the focused input and raise the native
+/// input and change events so @bind-Value of the wrapped components updates as if typed on a physical keyboard.
+type RadzenVirtualKeyboardBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit RadzenComponentBuilder<'FunBlazorGeneric>()
+    /// Gets or sets the set of keys displayed by the keyboard. Set to Alphanumeric by default.
+    [<CustomOperation("Type")>] member inline _.Type ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.VirtualKeyboardType) = render ==> ("Type" => x)
+    /// Gets or sets where the keyboard is displayed. Set to Bottom by default.
+    [<CustomOperation("Placement")>] member inline _.Placement ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.VirtualKeyboardPlacement) = render ==> ("Placement" => x)
+    /// Gets or sets a custom key layout which replaces the default one for the current Type.
+    /// Use the Qwerty, Qwertz and
+    /// Azerty presets for locale-aware layouts or
+    /// FromRows to define your own keys.
+    [<CustomOperation("Layout")>] member inline _.Layout ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.VirtualKeyboardLayout) = render ==> ("Layout" => x)
+    /// Gets or sets the text inserted by the {decimal} key. The decimal separator of Culture is used by default.
+    [<CustomOperation("DecimalSeparator")>] member inline _.DecimalSeparator ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("DecimalSeparator" => x)
+    /// Gets or sets the aria-label of the keyboard panel.
+    [<CustomOperation("AriaLabel")>] member inline _.AriaLabel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("AriaLabel" => x)
+    /// Gets or sets the aria-label of the backspace key.
+    [<CustomOperation("BackspaceAriaLabel")>] member inline _.BackspaceAriaLabel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("BackspaceAriaLabel" => x)
+    /// Gets or sets the aria-label of the enter key.
+    [<CustomOperation("EnterAriaLabel")>] member inline _.EnterAriaLabel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("EnterAriaLabel" => x)
+    /// Gets or sets the aria-label of the shift key.
+    [<CustomOperation("ShiftAriaLabel")>] member inline _.ShiftAriaLabel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ShiftAriaLabel" => x)
+    /// Gets or sets the aria-label of the space key.
+    [<CustomOperation("SpaceAriaLabel")>] member inline _.SpaceAriaLabel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("SpaceAriaLabel" => x)
+    /// Gets or sets the aria-label of the tab key.
+    [<CustomOperation("TabAriaLabel")>] member inline _.TabAriaLabel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("TabAriaLabel" => x)
+    /// Gets or sets the aria-label of the clear key.
+    [<CustomOperation("ClearAriaLabel")>] member inline _.ClearAriaLabel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ClearAriaLabel" => x)
+    /// Gets or sets the aria-label of the close key.
+    [<CustomOperation("CloseAriaLabel")>] member inline _.CloseAriaLabel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("CloseAriaLabel" => x)
+
             
 namespace rec Radzen.Blazor.DslInternals.Blazor.Rendering
 
@@ -7069,6 +7732,8 @@ type EditorDropDownBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     [<CustomOperation("PopupStyle")>] member inline _.PopupStyle ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("PopupStyle" => x)
     [<CustomOperation("Placeholder")>] member inline _.Placeholder ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Placeholder" => x)
     [<CustomOperation("EnabledModes")>] member inline _.EnabledModes ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.HtmlEditorMode) = render ==> ("EnabledModes" => x)
+    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Disabled" =>>> true)
+    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Disabled" =>>> x)
     [<CustomOperation("Value")>] member inline _.Value ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Value" => x)
     [<CustomOperation("Value'")>] member inline _.Value' ([<InlineIfLambda>] render: AttrRenderFragment, valueFn: System.String * (System.String -> unit)) = render ==> html.bind("Value", valueFn)
     [<CustomOperation("ValueChanged")>] member inline _.ValueChanged ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.String -> unit) = render ==> html.callback("ValueChanged", fn)
@@ -7180,9 +7845,11 @@ type AxisBaseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNe
     /// Gets or sets the width of the axis in pixels. If not set, the width is calculated automatically based on the axis content.
     /// The parameter only has effect for vertically rendered value axes. It is ignored on the category axis in normal charts and on value axes in inverted (bar) charts
     [<CustomOperation("Width")>] member inline _.Width ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("Width" => x)
-    /// Specifies the minimum value of the axis.
+    /// Specifies the minimum value of the axis. The axis starts exactly at this value. Unless Max or Step is also set
+    /// the other end of the axis is still rounded to a tick and the ticks are placed on multiples of the step.
     [<CustomOperation("Min")>] member inline _.Min ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Object) = render ==> ("Min" => x)
-    /// Specifies the maximum value of the axis.
+    /// Specifies the maximum value of the axis. The axis ends exactly at this value. Unless Min or Step is also set
+    /// the other end of the axis is still rounded to a tick and the ticks are placed on multiples of the step.
     [<CustomOperation("Max")>] member inline _.Max ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Object) = render ==> ("Max" => x)
     /// Specifies the step of the axis.
     [<CustomOperation("Step")>] member inline _.Step ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Object) = render ==> ("Step" => x)
@@ -7214,13 +7881,26 @@ type AxisBaseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNe
     /// instead of the chart edge. For example, setting CrossesAt="0" on the category axis
     /// positions it where 0 is on the value axis.
     [<CustomOperation("CrossesAt")>] member inline _.CrossesAt ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Object) = render ==> ("CrossesAt" => x)
-    /// Specifies the label rotation angle in degrees. Set to null by default which means no rotation is applied. Has higher precedence than LabelAutoRotation.
+    /// Specifies the label rotation angle in degrees. Applies to horizontal axes. When set the labels are always rotated by this angle.
+    /// Has higher precedence than LabelAutoRotation. On a category axis whose LabelFit is
+    /// Auto it only sets the angle - labels that would overlap at this angle are still skipped and labels longer than
+    /// the available space are still shortened with an ellipsis. Set to null by default which means no explicit rotation.
     [<CustomOperation("LabelRotation")>] member inline _.LabelRotation ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Double>) = render ==> ("LabelRotation" => x)
-    /// Specifies the automatic label rotation angle in degrees. If set RadzenChart will automatically rotate the labels to fit the available space by the specified value. Has lower precedence than LabelRotation.
+    /// Specifies the automatic label rotation angle in degrees. Applies to horizontal axes. When set the labels are rotated by this angle only when they
+    /// do not fit the available space - on a category axis whose LabelFit is Auto,
+    /// only when they still do not fit after labels are skipped. Has lower precedence than LabelRotation. On a category axis whose LabelFit
+    /// is Auto it replaces the default angle of -45 degrees - rotated labels that would overlap are still skipped and
+    /// labels longer than the available space are still shortened with an ellipsis. Set to null by default which means no explicit rotation.
     [<CustomOperation("LabelAutoRotation")>] member inline _.LabelAutoRotation ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Double>) = render ==> ("LabelAutoRotation" => x)
 
 type RadzenCategoryAxisBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit Blazor.AxisBaseBuilder<'FunBlazorGeneric>()
+    /// Specifies how category labels that do not fit the available space are displayed. A Template displays every category
+    /// unchanged. Auto fits the labels once the chart knows its size: LabelRotation and
+    /// LabelAutoRotation only choose the angle of the rotated labels, which are still skipped when they overlap and shortened when they
+    /// are too long. None displays every label in full, rotated only as LabelRotation and
+    /// LabelAutoRotation specify. Shortened labels keep their full text in the SVG title shown on hover and in the series tooltips.
+    [<CustomOperation("LabelFit")>] member inline _.LabelFit ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Blazor.CategoryAxisLabelFit) = render ==> ("LabelFit" => x)
     [<CustomOperation("Padding")>] member inline _.Padding ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Double) = render ==> ("Padding" => x)
     /// Specifies whether categories are placed between ticks (reserving half a band at each end) or
     /// on the ticks (flush to the plot edges). The default is Between.
@@ -7229,6 +7909,10 @@ type RadzenCategoryAxisBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micro
 type RadzenValueAxisBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit Blazor.AxisBaseBuilder<'FunBlazorGeneric>()
     [<CustomOperation("Name")>] member inline _.Name ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Name" => x)
+    /// Specifies how the axis range is determined from the plotted series when Min and Max are not set;
+    /// ignored when Logarithmic is true. When all plotted values are equal the axis extends from zero past that value
+    /// in every mode.
+    [<CustomOperation("Range")>] member inline _.Range ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Blazor.ValueAxisRange) = render ==> ("Range" => x)
 
 /// Base class of RadzenChart series.
 type CartesianSeriesBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -7556,6 +8240,8 @@ type RadzenFullStackedBarSeriesBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazor
     [<CustomOperation("GradientStartOpacity")>] member inline _.GradientStartOpacity ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Double) = render ==> ("GradientStartOpacity" => x)
     /// Specifies the opacity at the baseline of the gradient fill. Used when FillMode is Gradient.
     [<CustomOperation("GradientEndOpacity")>] member inline _.GradientEndOpacity ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Double) = render ==> ("GradientEndOpacity" => x)
+    /// Specifies the stack this series belongs to. Series with the same stack group stack on top of each other and every distinct group renders as its own bar placed next to the other groups and next to any plain bar series in the chart. Series without a group share one stack.
+    [<CustomOperation("StackGroup")>] member inline _.StackGroup ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("StackGroup" => x)
 
 /// Renders 100% stacked column series in RadzenChart.
 /// Values are normalized so that each category totals 100%.
@@ -7584,6 +8270,8 @@ type RadzenFullStackedColumnSeriesBuilder<'FunBlazorGeneric, 'TItem when 'FunBla
     [<CustomOperation("GradientStartOpacity")>] member inline _.GradientStartOpacity ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Double) = render ==> ("GradientStartOpacity" => x)
     /// Specifies the opacity at the baseline of the gradient fill. Used when FillMode is Gradient.
     [<CustomOperation("GradientEndOpacity")>] member inline _.GradientEndOpacity ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Double) = render ==> ("GradientEndOpacity" => x)
+    /// Specifies the stack this series belongs to. Series with the same stack group stack on top of each other and every distinct group renders as its own column placed next to the other groups and next to any plain column series in the chart. Series without a group share one stack.
+    [<CustomOperation("StackGroup")>] member inline _.StackGroup ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("StackGroup" => x)
 
 /// Renders 100% stacked line series in RadzenChart.
 type RadzenFullStackedLineSeriesBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -8055,6 +8743,8 @@ type RadzenStackedBarSeriesBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGene
     [<CustomOperation("GradientStartOpacity")>] member inline _.GradientStartOpacity ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Double) = render ==> ("GradientStartOpacity" => x)
     /// Specifies the opacity at the baseline of the gradient fill. Used when FillMode is Gradient.
     [<CustomOperation("GradientEndOpacity")>] member inline _.GradientEndOpacity ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Double) = render ==> ("GradientEndOpacity" => x)
+    /// Specifies the stack this series belongs to. Series with the same stack group stack on top of each other and every distinct group renders as its own bar placed next to the other groups and next to any plain bar series in the chart. Series without a group share one stack.
+    [<CustomOperation("StackGroup")>] member inline _.StackGroup ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("StackGroup" => x)
 
 /// Renders column series in RadzenChart
 type RadzenStackedColumnSeriesBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -8082,6 +8772,8 @@ type RadzenStackedColumnSeriesBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorG
     [<CustomOperation("GradientStartOpacity")>] member inline _.GradientStartOpacity ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Double) = render ==> ("GradientStartOpacity" => x)
     /// Specifies the opacity at the baseline of the gradient fill. Used when FillMode is Gradient.
     [<CustomOperation("GradientEndOpacity")>] member inline _.GradientEndOpacity ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Double) = render ==> ("GradientEndOpacity" => x)
+    /// Specifies the stack this series belongs to. Series with the same stack group stack on top of each other and every distinct group renders as its own column placed next to the other groups and next to any plain column series in the chart. Series without a group share one stack.
+    [<CustomOperation("StackGroup")>] member inline _.StackGroup ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("StackGroup" => x)
 
 /// Renders stacked line series in RadzenChart.
 type RadzenStackedLineSeriesBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -8213,6 +8905,12 @@ type RadzenChartRangeNavigatorBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :
     /// Receives a DateTime for date ranges or a Double for numeric ranges.
     /// Takes precedence over HandleLabelFormatString when set.
     [<CustomOperation("HandleLabelFormatter")>] member inline _.HandleLabelFormatter ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("HandleLabelFormatter" => (System.Func<System.Object, System.String>fn))
+    /// Gets or sets a value indicating whether hovering the navigator shows the nearest point's category and value.
+    [<CustomOperation("ShowTooltip")>] member inline _.ShowTooltip ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowTooltip" =>>> true)
+    /// Gets or sets a value indicating whether hovering the navigator shows the nearest point's category and value.
+    [<CustomOperation("ShowTooltip")>] member inline _.ShowTooltip ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowTooltip" =>>> x)
+    /// Gets or sets the format string used to format the value shown in the tooltip.
+    [<CustomOperation("TooltipFormatString")>] member inline _.TooltipFormatString ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("TooltipFormatString" => x)
 
 /// Contains RadzenChart tooltip configuration.
 type RadzenChartTooltipOptionsBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -8270,6 +8968,9 @@ type RadzenLegendBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.A
     [<CustomOperation("Visible")>] member inline _.Visible ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Visible" =>>> true)
     /// Gets or sets a value indicating whether this RadzenLegend is visible.
     [<CustomOperation("Visible")>] member inline _.Visible ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Visible" =>>> x)
+    /// Gets or sets the template which renders the content of every legend item instead of its text.
+    /// The marker and the click behavior of the legend item are preserved. The chart measures the rendered legend and reserves the space it needs.
+    [<CustomOperation("ItemTemplate")>] member inline _.ItemTemplate ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.LegendItemContext -> NodeRenderFragment) = render ==> html.renderFragment("ItemTemplate", fn)
 
 /// Class RadzenMarkers.
 type RadzenMarkersBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -8768,6 +9469,18 @@ type SchedulerViewBaseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micros
     /// Gets or sets a function which returns the view title. It is invoked with the first and the last date displayed by the view.
     /// Takes precedence over TitleFormat.
     [<CustomOperation("TitleFormatter")>] member inline _.TitleFormatter ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("TitleFormatter" => (System.Func<System.DateTime, System.DateTime, System.String>fn))
+    /// Gets or sets a value indicating whether the view groups appointments by the resource types of the scheduler
+    /// (declared as RadzenSchedulerResource child content). Set to false by default.
+    [<CustomOperation("GroupByResource")>] member inline _.GroupByResource ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("GroupByResource" =>>> true)
+    /// Gets or sets a value indicating whether the view groups appointments by the resource types of the scheduler
+    /// (declared as RadzenSchedulerResource child content). Set to false by default.
+    [<CustomOperation("GroupByResource")>] member inline _.GroupByResource ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("GroupByResource" =>>> x)
+    /// Gets or sets a comma-separated list of resource type names (Name) to group by, in nesting order.
+    /// All declared resource types in order of declaration are used when not set.
+    [<CustomOperation("GroupBy")>] member inline _.GroupBy ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("GroupBy" => x)
+    /// Gets or sets the orientation of the resource groups. Horizontal renders the groups side by side, vertical renders them one below the other.
+    /// Set to Vertical by default. The day view uses Horizontal by default and renders the resources as columns which share the time ruler.
+    [<CustomOperation("GroupOrientation")>] member inline _.GroupOrientation ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Orientation) = render ==> ("GroupOrientation" => x)
 
 /// A base class for RadzenScheduler`1 views.
 type SchedulerYearViewBaseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -8839,6 +9552,14 @@ type RadzenDayViewBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.
     [<CustomOperation("EndTime")>] member inline _.EndTime ([<InlineIfLambda>] render: AttrRenderFragment, x: System.TimeSpan) = render ==> ("EndTime" => x)
     /// Gets or sets slot size in minutes. Set to 30 by default.
     [<CustomOperation("MinutesPerSlot")>] member inline _.MinutesPerSlot ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("MinutesPerSlot" => x)
+    /// Gets or sets a value indicating whether a dedicated all-day row is displayed when the view groups appointments by resource.
+    /// Appointments which span the entire visible day are displayed in it instead of the time grid. Set to true by default.
+    [<CustomOperation("ShowAllDay")>] member inline _.ShowAllDay ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowAllDay" =>>> true)
+    /// Gets or sets a value indicating whether a dedicated all-day row is displayed when the view groups appointments by resource.
+    /// Appointments which span the entire visible day are displayed in it instead of the time grid. Set to true by default.
+    [<CustomOperation("ShowAllDay")>] member inline _.ShowAllDay ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowAllDay" =>>> x)
+    /// Gets or sets the text displayed in the header of the all-day row when the view groups appointments by resource. Set to All day by default.
+    [<CustomOperation("AllDayText")>] member inline _.AllDayText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("AllDayText" => x)
 
 /// Displays the appointments in a month day in RadzenScheduler`1
 type RadzenMonthViewBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -8865,6 +9586,14 @@ type RadzenMultiDayViewBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micro
     [<CustomOperation("EndTime")>] member inline _.EndTime ([<InlineIfLambda>] render: AttrRenderFragment, x: System.TimeSpan) = render ==> ("EndTime" => x)
     /// Gets or sets slot size in minutes. Set to 30 by default.
     [<CustomOperation("MinutesPerSlot")>] member inline _.MinutesPerSlot ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("MinutesPerSlot" => x)
+    /// Gets or sets a value indicating whether a dedicated all-day row is displayed when the view groups appointments by resource.
+    /// All-day appointments are displayed in it instead of the time grid. Set to true by default.
+    [<CustomOperation("ShowAllDay")>] member inline _.ShowAllDay ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowAllDay" =>>> true)
+    /// Gets or sets a value indicating whether a dedicated all-day row is displayed when the view groups appointments by resource.
+    /// All-day appointments are displayed in it instead of the time grid. Set to true by default.
+    [<CustomOperation("ShowAllDay")>] member inline _.ShowAllDay ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowAllDay" =>>> x)
+    /// Gets or sets the text displayed in the header of the all-day row when the view groups appointments by resource. Set to All day by default.
+    [<CustomOperation("AllDayText")>] member inline _.AllDayText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("AllDayText" => x)
     /// Gets or sets number of days to view. Set to 2 by default.
     [<CustomOperation("NumberOfDays")>] member inline _.NumberOfDays ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("NumberOfDays" => x)
     /// Gets or sets number of days to advance when using prev / next. Set to 1 by default.
@@ -8885,6 +9614,14 @@ type RadzenWeekViewBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     [<CustomOperation("EndTime")>] member inline _.EndTime ([<InlineIfLambda>] render: AttrRenderFragment, x: System.TimeSpan) = render ==> ("EndTime" => x)
     /// Gets or sets slot size in minutes. Set to 30 by default.
     [<CustomOperation("MinutesPerSlot")>] member inline _.MinutesPerSlot ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("MinutesPerSlot" => x)
+    /// Gets or sets a value indicating whether a dedicated all-day row is displayed when the view groups appointments by resource.
+    /// All-day appointments are displayed in it instead of the time grid. Set to true by default.
+    [<CustomOperation("ShowAllDay")>] member inline _.ShowAllDay ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowAllDay" =>>> true)
+    /// Gets or sets a value indicating whether a dedicated all-day row is displayed when the view groups appointments by resource.
+    /// All-day appointments are displayed in it instead of the time grid. Set to true by default.
+    [<CustomOperation("ShowAllDay")>] member inline _.ShowAllDay ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowAllDay" =>>> x)
+    /// Gets or sets the text displayed in the header of the all-day row when the view groups appointments by resource. Set to All day by default.
+    [<CustomOperation("AllDayText")>] member inline _.AllDayText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("AllDayText" => x)
 
 type RadzenGanttDayViewBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit Blazor.SchedulerViewBaseBuilder<'FunBlazorGeneric>()
@@ -8895,6 +9632,10 @@ type RadzenGanttMonthViewBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneri
     [<CustomOperation("Text")>] member inline _.Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Text" => x)
 
 type RadzenGanttWeekViewBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit Blazor.SchedulerViewBaseBuilder<'FunBlazorGeneric>()
+    [<CustomOperation("Text")>] member inline _.Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Text" => x)
+
+type RadzenGanttYearsViewBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit Blazor.SchedulerViewBaseBuilder<'FunBlazorGeneric>()
     [<CustomOperation("Text")>] member inline _.Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Text" => x)
 
@@ -8965,6 +9706,133 @@ open FSharp.Data.Adaptive
 open Fun.Blazor
 open Fun.Blazor.Operators
 open Radzen.Blazor.DslInternals
+
+/// Base class for RadzenMarkdownEditor toolbar tools.
+type RadzenMarkdownEditorButtonBaseBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
+    /// The keyboard shortcut of this tool, e.g. Ctrl+B. Only Ctrl/Cmd combinations are supported, e.g. Ctrl+B (Cmd on macOS).
+    [<CustomOperation("Shortcut")>] member inline _.Shortcut ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Shortcut" => x)
+
+/// A RadzenMarkdownEditor tool which makes the selection bold.
+type RadzenMarkdownEditorBoldBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit Blazor.RadzenMarkdownEditorButtonBaseBuilder<'FunBlazorGeneric>()
+    /// The tooltip of the tool. Localized by default.
+    [<CustomOperation("Title")>] member inline _.Title ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
+    /// The keyboard shortcut of this tool, e.g. Ctrl+B. Only Ctrl/Cmd combinations are supported, e.g. Ctrl+B (Cmd on macOS).
+    [<CustomOperation("Shortcut")>] member inline _.Shortcut ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Shortcut" => x)
+
+/// A RadzenMarkdownEditor tool which wraps the selection in inline code.
+type RadzenMarkdownEditorCodeBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit Blazor.RadzenMarkdownEditorButtonBaseBuilder<'FunBlazorGeneric>()
+    /// The tooltip of the tool. Localized by default.
+    [<CustomOperation("Title")>] member inline _.Title ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
+
+/// A RadzenMarkdownEditor tool which wraps the selection in a fenced code block.
+type RadzenMarkdownEditorCodeBlockBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit Blazor.RadzenMarkdownEditorButtonBaseBuilder<'FunBlazorGeneric>()
+    /// The tooltip of the tool. Localized by default.
+    [<CustomOperation("Title")>] member inline _.Title ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
+
+/// A RadzenMarkdownEditor tool which inserts a horizontal rule.
+type RadzenMarkdownEditorHorizontalRuleBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit Blazor.RadzenMarkdownEditorButtonBaseBuilder<'FunBlazorGeneric>()
+    /// The tooltip of the tool. Localized by default.
+    [<CustomOperation("Title")>] member inline _.Title ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
+
+/// A RadzenMarkdownEditor tool which inserts an image.
+type RadzenMarkdownEditorImageBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit Blazor.RadzenMarkdownEditorButtonBaseBuilder<'FunBlazorGeneric>()
+    /// The tooltip of the tool. Localized by default.
+    [<CustomOperation("Title")>] member inline _.Title ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
+
+/// A RadzenMarkdownEditor tool which makes the selection italic.
+type RadzenMarkdownEditorItalicBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit Blazor.RadzenMarkdownEditorButtonBaseBuilder<'FunBlazorGeneric>()
+    /// The tooltip of the tool. Localized by default.
+    [<CustomOperation("Title")>] member inline _.Title ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
+    /// The keyboard shortcut of this tool, e.g. Ctrl+B. Only Ctrl/Cmd combinations are supported, e.g. Ctrl+B (Cmd on macOS).
+    [<CustomOperation("Shortcut")>] member inline _.Shortcut ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Shortcut" => x)
+
+/// A RadzenMarkdownEditor tool which inserts a link.
+type RadzenMarkdownEditorLinkBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit Blazor.RadzenMarkdownEditorButtonBaseBuilder<'FunBlazorGeneric>()
+    /// The tooltip of the tool. Localized by default.
+    [<CustomOperation("Title")>] member inline _.Title ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
+    /// The keyboard shortcut of this tool, e.g. Ctrl+B. Only Ctrl/Cmd combinations are supported, e.g. Ctrl+B (Cmd on macOS).
+    [<CustomOperation("Shortcut")>] member inline _.Shortcut ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Shortcut" => x)
+
+/// A RadzenMarkdownEditor tool which converts the selected lines to a numbered list.
+type RadzenMarkdownEditorOrderedListBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit Blazor.RadzenMarkdownEditorButtonBaseBuilder<'FunBlazorGeneric>()
+    /// The tooltip of the tool. Localized by default.
+    [<CustomOperation("Title")>] member inline _.Title ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
+
+/// A RadzenMarkdownEditor tool which quotes the selected lines.
+type RadzenMarkdownEditorQuoteBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit Blazor.RadzenMarkdownEditorButtonBaseBuilder<'FunBlazorGeneric>()
+    /// The tooltip of the tool. Localized by default.
+    [<CustomOperation("Title")>] member inline _.Title ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
+
+/// A RadzenMarkdownEditor tool which restores the next state from the editor's history.
+type RadzenMarkdownEditorRedoBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit Blazor.RadzenMarkdownEditorButtonBaseBuilder<'FunBlazorGeneric>()
+    /// The tooltip of the tool. Localized by default.
+    [<CustomOperation("Title")>] member inline _.Title ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
+
+/// A RadzenMarkdownEditor tool which switches between the Design and Source views.
+type RadzenMarkdownEditorSourceBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit Blazor.RadzenMarkdownEditorButtonBaseBuilder<'FunBlazorGeneric>()
+    /// The tooltip of the tool. Localized by default.
+    [<CustomOperation("Title")>] member inline _.Title ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
+
+/// A RadzenMarkdownEditor tool which strikes through the selection.
+/// Not rendered by RadzenMarkdown, which does not support GitHub-flavoured strikethrough/task lists; therefore not part of the default toolbar.
+type RadzenMarkdownEditorStrikethroughBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit Blazor.RadzenMarkdownEditorButtonBaseBuilder<'FunBlazorGeneric>()
+    /// The tooltip of the tool. Localized by default.
+    [<CustomOperation("Title")>] member inline _.Title ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
+
+/// A RadzenMarkdownEditor tool which inserts a table. Opens a dialog for the number of rows and columns.
+type RadzenMarkdownEditorTableBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit Blazor.RadzenMarkdownEditorButtonBaseBuilder<'FunBlazorGeneric>()
+    /// The tooltip of the tool. Localized by default.
+    [<CustomOperation("Title")>] member inline _.Title ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
+
+/// A RadzenMarkdownEditor tool which executes a table command at the caret. Enabled only when the caret is inside a table.
+type RadzenMarkdownEditorTableCommandButtonBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit Blazor.RadzenMarkdownEditorButtonBaseBuilder<'FunBlazorGeneric>()
+    /// The table command to execute. One of the Table commands of MarkdownEditorCommands.
+    [<CustomOperation("TableCommand")>] member inline _.TableCommand ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("TableCommand" => x)
+    /// The command value. The alignment (left, center, right or none) for TableAlign.
+    [<CustomOperation("Value")>] member inline _.Value ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Value" => x)
+    /// The tooltip of the tool.
+    [<CustomOperation("Title")>] member inline _.Title ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
+    /// The icon of the tool.
+    [<CustomOperation("Icon")>] member inline _.Icon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Icon" => x)
+
+/// A RadzenMarkdownEditor tool group which inserts tables and edits their rows, columns and column alignment.
+type RadzenMarkdownEditorTableToolsBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit Blazor.RadzenMarkdownEditorButtonBaseBuilder<'FunBlazorGeneric>()
+
+
+/// A RadzenMarkdownEditor tool which converts the selected lines to a task list.
+/// Not rendered by RadzenMarkdown, which does not support GitHub-flavoured strikethrough/task lists; therefore not part of the default toolbar.
+type RadzenMarkdownEditorTaskListBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit Blazor.RadzenMarkdownEditorButtonBaseBuilder<'FunBlazorGeneric>()
+    /// The tooltip of the tool. Localized by default.
+    [<CustomOperation("Title")>] member inline _.Title ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
+
+/// A RadzenMarkdownEditor tool which restores the previous state from the editor's history.
+type RadzenMarkdownEditorUndoBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit Blazor.RadzenMarkdownEditorButtonBaseBuilder<'FunBlazorGeneric>()
+    /// The tooltip of the tool. Localized by default.
+    [<CustomOperation("Title")>] member inline _.Title ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
+
+/// A RadzenMarkdownEditor tool which converts the selected lines to a bulleted list.
+type RadzenMarkdownEditorUnorderedListBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit Blazor.RadzenMarkdownEditorButtonBaseBuilder<'FunBlazorGeneric>()
+    /// The tooltip of the tool. Localized by default.
+    [<CustomOperation("Title")>] member inline _.Title ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
 
 /// Base class for toggle-style format toolbar buttons (Bold, Italic, Underline, Strikethrough, TextWrap).
 /// Subclasses only need to override GetValue and WithValue.
@@ -9227,6 +10095,44 @@ type GanttTimelineViewBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :
     [<CustomOperation("NonWorkingDays")>] member inline _.NonWorkingDays ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<System.DayOfWeek>) = render ==> ("NonWorkingDays" => x)
     [<CustomOperation("Markers")>] member inline _.Markers ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<Radzen.Blazor.GanttMarker>) = render ==> ("Markers" => x)
     [<CustomOperation("TaskRender")>] member inline _.TaskRender ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("TaskRender" => (System.Action<Radzen.Blazor.GanttBarRenderEventArgs<'TItem>>fn))
+    /// Optional lane assignment per item for resource view stacking.
+    /// Maps each appointment data object to its lane index within the row.
+    /// When null, all items render in lane 0 (default task view behavior).
+    [<CustomOperation("LaneByItem")>] member inline _.LaneByItem ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IReadOnlyDictionary<System.Object, System.Int32>) = render ==> ("LaneByItem" => x)
+    /// Optional lane count per row for resource view stacking.
+    /// Maps each row index to the number of lanes needed. Rows with more lanes get taller.
+    /// When null, all rows use RowHeightPx (default task view behavior).
+    [<CustomOperation("LaneCountByRow")>] member inline _.LaneCountByRow ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IReadOnlyDictionary<System.Int32, System.Int32>) = render ==> ("LaneCountByRow" => x)
+
+/// Renders the resources of the scheduler as columns for a single day. Used by RadzenDayView when
+/// GroupByResource is set to true and the group orientation is horizontal.
+/// Renders a header row per resource type - the columns are every combination of resource items.
+type ResourceDayViewBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit Blazor.Rendering.DropableViewBaseBuilder<'FunBlazorGeneric>()
+    /// Gets or sets the start of the visible day.
+    [<CustomOperation("StartDate")>] member inline _.StartDate ([<InlineIfLambda>] render: AttrRenderFragment, x: System.DateTime) = render ==> ("StartDate" => x)
+    /// Gets or sets the end of the visible day.
+    [<CustomOperation("EndDate")>] member inline _.EndDate ([<InlineIfLambda>] render: AttrRenderFragment, x: System.DateTime) = render ==> ("EndDate" => x)
+    /// Gets or sets the start time.
+    [<CustomOperation("StartTime")>] member inline _.StartTime ([<InlineIfLambda>] render: AttrRenderFragment, x: System.TimeSpan) = render ==> ("StartTime" => x)
+    /// Gets or sets the end time.
+    [<CustomOperation("EndTime")>] member inline _.EndTime ([<InlineIfLambda>] render: AttrRenderFragment, x: System.TimeSpan) = render ==> ("EndTime" => x)
+    /// Gets or sets the time format.
+    [<CustomOperation("TimeFormat")>] member inline _.TimeFormat ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("TimeFormat" => x)
+    /// Gets or sets the slot size in minutes.
+    [<CustomOperation("MinutesPerSlot")>] member inline _.MinutesPerSlot ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("MinutesPerSlot" => x)
+    /// Gets or sets the appointments to display.
+    [<CustomOperation("Appointments")>] member inline _.Appointments ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IList<Radzen.Blazor.AppointmentData>) = render ==> ("Appointments" => x)
+    /// Gets or sets the resource types to group by in nesting order.
+    [<CustomOperation("Types")>] member inline _.Types ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IList<Radzen.Blazor.RadzenSchedulerResource>) = render ==> ("Types" => x)
+    /// Gets or sets a value indicating whether the all-day row is displayed.
+    [<CustomOperation("ShowAllDay")>] member inline _.ShowAllDay ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowAllDay" =>>> true)
+    /// Gets or sets a value indicating whether the all-day row is displayed.
+    [<CustomOperation("ShowAllDay")>] member inline _.ShowAllDay ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowAllDay" =>>> x)
+    /// Gets or sets the text displayed in the header of the all-day row.
+    [<CustomOperation("AllDayText")>] member inline _.AllDayText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("AllDayText" => x)
+    /// Gets or sets the accessible label of the view content.
+    [<CustomOperation("AriaLabel")>] member inline _.AriaLabel ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("AriaLabel" => x)
 
 type AgendaViewBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit Blazor.Rendering.DropableViewBaseBuilder<'FunBlazorGeneric>()
@@ -9237,6 +10143,7 @@ type AgendaViewBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.Asp
     [<CustomOperation("ShowTimeDisplay")>] member inline _.ShowTimeDisplay ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowTimeDisplay" =>>> true)
     [<CustomOperation("ShowTimeDisplay")>] member inline _.ShowTimeDisplay ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowTimeDisplay" =>>> x)
     [<CustomOperation("Appointments")>] member inline _.Appointments ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IList<Radzen.Blazor.AppointmentData>) = render ==> ("Appointments" => x)
+    [<CustomOperation("Resources")>] member inline _.Resources ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IDictionary<System.String, System.Object>) = render ==> ("Resources" => x)
 
 type DayViewBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit Blazor.Rendering.DropableViewBaseBuilder<'FunBlazorGeneric>()
@@ -9247,6 +10154,7 @@ type DayViewBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNet
     [<CustomOperation("TimeFormat")>] member inline _.TimeFormat ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("TimeFormat" => x)
     [<CustomOperation("MinutesPerSlot")>] member inline _.MinutesPerSlot ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("MinutesPerSlot" => x)
     [<CustomOperation("Appointments")>] member inline _.Appointments ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IList<Radzen.Blazor.AppointmentData>) = render ==> ("Appointments" => x)
+    [<CustomOperation("Resources")>] member inline _.Resources ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IDictionary<System.String, System.Object>) = render ==> ("Resources" => x)
 
 type MonthViewBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit Blazor.Rendering.DropableViewBaseBuilder<'FunBlazorGeneric>()
@@ -9255,6 +10163,7 @@ type MonthViewBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspN
     [<CustomOperation("MaxAppointmentsInSlot")>] member inline _.MaxAppointmentsInSlot ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Nullable<System.Int32>) = render ==> ("MaxAppointmentsInSlot" => x)
     [<CustomOperation("MoreText")>] member inline _.MoreText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("MoreText" => x)
     [<CustomOperation("Appointments")>] member inline _.Appointments ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<Radzen.Blazor.AppointmentData>) = render ==> ("Appointments" => x)
+    [<CustomOperation("Resources")>] member inline _.Resources ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IDictionary<System.String, System.Object>) = render ==> ("Resources" => x)
 
 type WeekViewBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit Blazor.Rendering.DropableViewBaseBuilder<'FunBlazorGeneric>()
@@ -9266,6 +10175,12 @@ type WeekViewBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNe
     [<CustomOperation("HeaderFormat")>] member inline _.HeaderFormat ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("HeaderFormat" => x)
     [<CustomOperation("MinutesPerSlot")>] member inline _.MinutesPerSlot ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("MinutesPerSlot" => x)
     [<CustomOperation("Appointments")>] member inline _.Appointments ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IList<Radzen.Blazor.AppointmentData>) = render ==> ("Appointments" => x)
+    [<CustomOperation("Resources")>] member inline _.Resources ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IDictionary<System.String, System.Object>) = render ==> ("Resources" => x)
+    [<CustomOperation("ShowHours")>] member inline _.ShowHours ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowHours" =>>> true)
+    [<CustomOperation("ShowHours")>] member inline _.ShowHours ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowHours" =>>> x)
+    [<CustomOperation("ShowAllDay")>] member inline _.ShowAllDay ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowAllDay" =>>> true)
+    [<CustomOperation("ShowAllDay")>] member inline _.ShowAllDay ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowAllDay" =>>> x)
+    [<CustomOperation("AllDayText")>] member inline _.AllDayText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("AllDayText" => x)
 
 type YearPlannerViewBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit Blazor.Rendering.DropableViewBaseBuilder<'FunBlazorGeneric>()
@@ -9275,6 +10190,7 @@ type YearPlannerViewBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsof
     [<CustomOperation("MaxAppointmentsInSlot")>] member inline _.MaxAppointmentsInSlot ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("MaxAppointmentsInSlot" => x)
     [<CustomOperation("MoreText")>] member inline _.MoreText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("MoreText" => x)
     [<CustomOperation("Appointments")>] member inline _.Appointments ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<Radzen.Blazor.AppointmentData>) = render ==> ("Appointments" => x)
+    [<CustomOperation("Resources")>] member inline _.Resources ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IDictionary<System.String, System.Object>) = render ==> ("Resources" => x)
 
 type YearTimelineViewBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit Blazor.Rendering.DropableViewBaseBuilder<'FunBlazorGeneric>()
@@ -9284,6 +10200,7 @@ type YearTimelineViewBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microso
     [<CustomOperation("MaxAppointmentsInSlot")>] member inline _.MaxAppointmentsInSlot ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("MaxAppointmentsInSlot" => x)
     [<CustomOperation("MoreText")>] member inline _.MoreText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("MoreText" => x)
     [<CustomOperation("Appointments")>] member inline _.Appointments ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<Radzen.Blazor.AppointmentData>) = render ==> ("Appointments" => x)
+    [<CustomOperation("Resources")>] member inline _.Resources ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IDictionary<System.String, System.Object>) = render ==> ("Resources" => x)
 
 /// Base component for all chart ticks. 
 type TickBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -9300,6 +10217,8 @@ type TickBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCor
     [<CustomOperation("LineType")>] member inline _.LineType ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Blazor.LineType) = render ==> ("LineType" => x)
     /// Gets or sets the text of the tick. 
     [<CustomOperation("Text")>] member inline _.Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Text" => x)
+    /// Gets or sets the full text of a tick whose Text is shortened. When set, it is rendered as the SVG title of the tick, which browsers display on hover. 
+    [<CustomOperation("FullText")>] member inline _.FullText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("FullText" => x)
 
 type CategoryAxisTickBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit Blazor.Rendering.TickBuilder<'FunBlazorGeneric>()
@@ -9684,6 +10603,8 @@ type RadzenDataGridColumnBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneri
     [<CustomOperation("Type")>] member inline _.Type ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Type) = render ==> ("Type" => x)
     /// Gets or sets the IFormatProvider used for FormatString.
     [<CustomOperation("FormatProvider")>] member inline _.FormatProvider ([<InlineIfLambda>] render: AttrRenderFragment, x: System.IFormatProvider) = render ==> ("FormatProvider" => x)
+    /// Gets or sets the function that provides the value exported for this column. Enables exporting columns without a Property, such as template columns. FormatString is applied to the returned value.
+    [<CustomOperation("ExportValue")>] member inline _.ExportValue ([<InlineIfLambda>] render: AttrRenderFragment, fn) = render ==> ("ExportValue" => (System.Func<'TItem, System.Object>fn))
     /// Gets or sets the filter operator.
     [<CustomOperation("FilterOperator")>] member inline _.FilterOperator ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.FilterOperator) = render ==> ("FilterOperator" => x)
     /// Gets or sets the filter operators.
@@ -9691,12 +10612,15 @@ type RadzenDataGridColumnBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneri
     /// Gets or sets the second filter operator.
     [<CustomOperation("SecondFilterOperator")>] member inline _.SecondFilterOperator ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.FilterOperator) = render ==> ("SecondFilterOperator" => x)
 
-type RadzenDropDownDataGridColumnBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit Blazor.RadzenDataGridColumnBuilder<'FunBlazorGeneric, System.Object>()
-
-
+/// RadzenGanttColumn. TItem flows into the DAM-annotated RadzenDataGridColumn<TItem> base; mirror
+/// the annotation here so the Razor-generated partial satisfies IL2091 (@typeparam cannot carry
+/// attributes in this Razor version).
 type RadzenGanttColumnBuilder<'FunBlazorGeneric, 'TItem when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit Blazor.RadzenDataGridColumnBuilder<'FunBlazorGeneric, 'TItem>()
+
+
+type RadzenDropDownDataGridColumnBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit Blazor.RadzenDataGridColumnBuilder<'FunBlazorGeneric, System.Object>()
 
 
 /// RadzenDataGridFilterMenu.
@@ -9986,6 +10910,60 @@ type RadzenListBoxItemBuilder<'FunBlazorGeneric, 'TValue when 'FunBlazorGeneric 
     [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Disabled" =>>> true)
     [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Disabled" =>>> x)
 
+/// A custom tool in RadzenMarkdownEditor. Either renders a button which raises Execute
+/// with CommandName, or arbitrary content via Template.
+type RadzenMarkdownEditorCustomToolBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
+    /// Determines if the tool is visible.
+    [<CustomOperation("Visible")>] member inline _.Visible ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Visible" =>>> true)
+    /// Determines if the tool is visible.
+    [<CustomOperation("Visible")>] member inline _.Visible ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Visible" =>>> x)
+    /// The icon of the tool. Set to "settings" by default.
+    [<CustomOperation("Icon")>] member inline _.Icon ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Icon" => x)
+    /// The icon color.
+    [<CustomOperation("IconColor")>] member inline _.IconColor ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("IconColor" => x)
+    /// Custom content rendered instead of the button. Receives the editor.
+    [<CustomOperation("Template")>] member inline _.Template ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.Blazor.RadzenMarkdownEditor -> NodeRenderFragment) = render ==> html.renderFragment("Template", fn)
+    /// Specifies whether the tool is rendered as selected.
+    [<CustomOperation("Selected")>] member inline _.Selected ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Selected" =>>> true)
+    /// Specifies whether the tool is rendered as selected.
+    [<CustomOperation("Selected")>] member inline _.Selected ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Selected" =>>> x)
+    /// Specifies whether the tool is disabled.
+    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Disabled" =>>> true)
+    /// Specifies whether the tool is disabled.
+    [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Disabled" =>>> x)
+    /// The command name passed to Execute when the tool is clicked.
+    [<CustomOperation("CommandName")>] member inline _.CommandName ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("CommandName" => x)
+    /// The tooltip of the tool.
+    [<CustomOperation("Title")>] member inline _.Title ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
+
+/// A RadzenMarkdownEditor tool which makes the selected paragraphs headings of a chosen level or normal text.
+type RadzenMarkdownEditorFormatBlockBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
+    /// The placeholder displayed when no paragraph or heading is selected. Set to "Format block" by default.
+    [<CustomOperation("Placeholder")>] member inline _.Placeholder ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Placeholder" => x)
+    /// The tooltip of the tool. Set to "Text style" by default.
+    [<CustomOperation("Title")>] member inline _.Title ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Title" => x)
+    /// The text of the normal paragraph item. Set to "Normal" by default.
+    [<CustomOperation("NormalText")>] member inline _.NormalText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("NormalText" => x)
+    /// The text of the level 1 heading item. Set to "Heading 1" by default.
+    [<CustomOperation("Heading1Text")>] member inline _.Heading1Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Heading1Text" => x)
+    /// The text of the level 2 heading item. Set to "Heading 2" by default.
+    [<CustomOperation("Heading2Text")>] member inline _.Heading2Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Heading2Text" => x)
+    /// The text of the level 3 heading item. Set to "Heading 3" by default.
+    [<CustomOperation("Heading3Text")>] member inline _.Heading3Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Heading3Text" => x)
+    /// The text of the level 4 heading item. Set to "Heading 4" by default.
+    [<CustomOperation("Heading4Text")>] member inline _.Heading4Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Heading4Text" => x)
+    /// The text of the level 5 heading item. Set to "Heading 5" by default.
+    [<CustomOperation("Heading5Text")>] member inline _.Heading5Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Heading5Text" => x)
+    /// The text of the level 6 heading item. Set to "Heading 6" by default.
+    [<CustomOperation("Heading6Text")>] member inline _.Heading6Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Heading6Text" => x)
+
+/// A visual separator between RadzenMarkdownEditor toolbar tools.
+type RadzenMarkdownEditorSeparatorBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
+
+
 /// RadzenMediaQuery fires its Change event when the media query specified via Query matches or not.
 type RadzenMediaQueryBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
@@ -10212,6 +11190,27 @@ type RadzenRangeNavigatorLineSeriesBuilder<'FunBlazorGeneric, 'TItem when 'FunBl
     /// Specifies how the area below the line is filled. Set to Solid by default.
     [<CustomOperation("FillMode")>] member inline _.FillMode ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Blazor.FillMode) = render ==> ("FillMode" => x)
 
+/// Defines a resource type (rooms, people, equipment) of RadzenScheduler`1. Declare one instance per resource type as child content of the scheduler.
+/// Views group appointments by the declared resource types when their GroupByResource property is set to true.
+/// The order of declaration determines the grouping hierarchy - the first resource type is the top level.
+type RadzenSchedulerResourceBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
+    /// Gets or sets the name of the resource type. Used as key in Resources and related event arguments.
+    /// Set to the value of Property by default.
+    [<CustomOperation("Name")>] member inline _.Name ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Name" => x)
+    /// Gets or sets the collection of resource items of this type.
+    [<CustomOperation("Data")>] member inline _.Data ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.IEnumerable) = render ==> ("Data" => x)
+    /// Specifies the property of an appointment data item which contains the value of the resource it belongs to.
+    /// The property value is compared to the value of ValueProperty of every resource item. Collection properties are
+    /// supported - the appointment is displayed for every resource item whose value the collection contains.
+    [<CustomOperation("Property")>] member inline _.Property ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Property" => x)
+    /// Specifies the property of a resource item which contains its display text. The resource item itself is used when not set.
+    [<CustomOperation("TextProperty")>] member inline _.TextProperty ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("TextProperty" => x)
+    /// Specifies the property of a resource item which contains its unique value. The resource item itself is used when not set.
+    [<CustomOperation("ValueProperty")>] member inline _.ValueProperty ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("ValueProperty" => x)
+    /// Gets or sets the template used to render the headers of this resource type in views which group appointments by resource. The resource item is passed as context.
+    [<CustomOperation("HeaderTemplate")>] member inline _.HeaderTemplate ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Object -> NodeRenderFragment) = render ==> html.renderFragment("HeaderTemplate", fn)
+
 /// Configures the legend of a RadzenSpiderChart.
 type RadzenSpiderLegendBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
@@ -10255,6 +11254,12 @@ type RadzenTabsItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft
     [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Disabled" =>>> true)
     /// Gets or sets a value indicating whether this RadzenTabsItem is disabled.
     [<CustomOperation("Disabled")>] member inline _.Disabled ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Disabled" =>>> x)
+    /// Gets or sets a value indicating whether the user can close this tab. A closable tab renders a close icon and is closed with the Delete key while it has keyboard focus.
+    /// Closing raises Close; the tab itself has to be removed by the application in that callback.
+    [<CustomOperation("Closable")>] member inline _.Closable ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("Closable" =>>> true)
+    /// Gets or sets a value indicating whether the user can close this tab. A closable tab renders a close icon and is closed with the Delete key while it has keyboard focus.
+    /// Closing raises Close; the tab itself has to be removed by the application in that callback.
+    [<CustomOperation("Closable")>] member inline _.Closable ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("Closable" =>>> x)
 
 /// Registers and manages the current theme. Requires ThemeService to be registered in the DI container.
 type RadzenThemeBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
@@ -10911,6 +11916,11 @@ type AppointmentBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.As
     [<CustomOperation("Click")>] member inline _.Click ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.Blazor.AppointmentData -> Task<unit>) = render ==> html.callbackTask("Click", fn)
     [<CustomOperation("DragStart")>] member inline _.DragStart ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.Blazor.AppointmentData -> unit) = render ==> html.callback("DragStart", fn)
     [<CustomOperation("DragStart")>] member inline _.DragStart ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: Radzen.Blazor.AppointmentData -> Task<unit>) = render ==> html.callbackTask("DragStart", fn)
+    [<CustomOperation("MinutesPerSlot")>] member inline _.MinutesPerSlot ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("MinutesPerSlot" => x)
+    [<CustomOperation("CanResizeStart")>] member inline _.CanResizeStart ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("CanResizeStart" =>>> true)
+    [<CustomOperation("CanResizeStart")>] member inline _.CanResizeStart ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("CanResizeStart" =>>> x)
+    [<CustomOperation("CanResizeEnd")>] member inline _.CanResizeEnd ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("CanResizeEnd" =>>> true)
+    [<CustomOperation("CanResizeEnd")>] member inline _.CanResizeEnd ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("CanResizeEnd" =>>> x)
     [<CustomOperation("Data")>] member inline _.Data ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Blazor.AppointmentData) = render ==> ("Data" => x)
     [<CustomOperation("ShowAppointmentContent")>] member inline _.ShowAppointmentContent ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("ShowAppointmentContent" =>>> true)
     [<CustomOperation("ShowAppointmentContent")>] member inline _.ShowAppointmentContent ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("ShowAppointmentContent" =>>> x)
@@ -11089,7 +12099,7 @@ type LegendBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetC
 
 
 type LegendItemBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
-    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
+    inherit ComponentWithDomAndChildAttrBuilder<'FunBlazorGeneric>()
     [<CustomOperation("Color")>] member inline _.Color ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Color" => x)
     [<CustomOperation("Text")>] member inline _.Text ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Text" => x)
     [<CustomOperation("MarkerType")>] member inline _.MarkerType ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Blazor.MarkerType) = render ==> ("MarkerType" => x)
@@ -11198,6 +12208,10 @@ type PathBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCor
     [<CustomOperation("Fill")>] member inline _.Fill ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("Fill" => x)
     [<CustomOperation("StrokeWidth")>] member inline _.StrokeWidth ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Double) = render ==> ("StrokeWidth" => x)
     [<CustomOperation("LineType")>] member inline _.LineType ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Blazor.LineType) = render ==> ("LineType" => x)
+    /// Gets or sets whether a solid line ends flat at its first and last points instead of extending past them with round caps.
+    [<CustomOperation("FlatEnds")>] member inline _.FlatEnds ([<InlineIfLambda>] render: AttrRenderFragment) = render ==> ("FlatEnds" =>>> true)
+    /// Gets or sets whether a solid line ends flat at its first and last points instead of extending past them with round caps.
+    [<CustomOperation("FlatEnds")>] member inline _.FlatEnds ([<InlineIfLambda>] render: AttrRenderFragment, x: bool) = render ==> ("FlatEnds" =>>> x)
 
 type RadialGradientDefBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
@@ -11224,6 +12238,14 @@ type RadialGradientDefBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Micros
     /// The opacity at the rim stop.
     [<CustomOperation("EndOpacity")>] member inline _.EndOpacity ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Double) = render ==> ("EndOpacity" => x)
 
+type ResourceGroupsBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
+    inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
+    [<CustomOperation("Types")>] member inline _.Types ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IList<Radzen.Blazor.RadzenSchedulerResource>) = render ==> ("Types" => x)
+    [<CustomOperation("Orientation")>] member inline _.Orientation ([<InlineIfLambda>] render: AttrRenderFragment, x: Radzen.Orientation) = render ==> ("Orientation" => x)
+    [<CustomOperation("Depth")>] member inline _.Depth ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Int32) = render ==> ("Depth" => x)
+    [<CustomOperation("Path")>] member inline _.Path ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IDictionary<System.String, System.Object>) = render ==> ("Path" => x)
+    [<CustomOperation("ChildContent")>] member inline _.ChildContent ([<InlineIfLambda>] render: AttrRenderFragment, [<InlineIfLambda>] fn: System.Collections.Generic.IDictionary<System.String, System.Object> -> NodeRenderFragment) = render ==> html.renderFragment("ChildContent", fn)
+
 type SpiderLegendBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNetCore.Components.IComponent>() =
     inherit ComponentWithDomAttrBuilder<'FunBlazorGeneric>()
 
@@ -11248,6 +12270,7 @@ type YearViewBuilder<'FunBlazorGeneric when 'FunBlazorGeneric :> Microsoft.AspNe
     [<CustomOperation("MoreText")>] member inline _.MoreText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("MoreText" => x)
     [<CustomOperation("NoDayEventsText")>] member inline _.NoDayEventsText ([<InlineIfLambda>] render: AttrRenderFragment, x: System.String) = render ==> ("NoDayEventsText" => x)
     [<CustomOperation("Appointments")>] member inline _.Appointments ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IEnumerable<Radzen.Blazor.AppointmentData>) = render ==> ("Appointments" => x)
+    [<CustomOperation("Resources")>] member inline _.Resources ([<InlineIfLambda>] render: AttrRenderFragment, x: System.Collections.Generic.IDictionary<System.String, System.Object>) = render ==> ("Resources" => x)
 
             
 
@@ -12058,6 +13081,11 @@ module DslCE =
         /// The Value property contains HTML markup. Use UploadUrl to configure where images are uploaded. Add custom tools for domain-specific functionality like inserting templates or special content.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.RadzenHtmlEditor", "Radzen.Blazor")>] () = inherit RadzenHtmlEditorBuilder<Radzen.Blazor.RadzenHtmlEditor>()
 
+    /// A Markdown editor component with a toolbar, keyboard shortcuts, and a Design/Source mode switcher.
+    type RadzenMarkdownEditor' 
+        /// A Markdown editor component with a toolbar, keyboard shortcuts, and a Design/Source mode switcher.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.RadzenMarkdownEditor", "Radzen.Blazor")>] () = inherit RadzenMarkdownEditorBuilder<Radzen.Blazor.RadzenMarkdownEditor>()
+
     /// A radio button group component that allows users to select a single option from a list of choices.
     /// RadzenRadioButtonList displays multiple radio buttons with configurable layout, orientation, and data binding.
     /// Presents mutually exclusive options where only one can be selected at a time.
@@ -12220,6 +13248,15 @@ module DslCE =
         /// RadzenAIChat component that provides a modern chat interface with AI integration and conversation memory.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.RadzenAIChat", "Radzen.Blazor")>] () = inherit RadzenAIChatBuilder<Radzen.Blazor.RadzenAIChat>()
 
+    /// A prompt box for one-shot AI tasks: the user types or picks a prompt, the model's answer streams into an output panel and
+    /// commands such as "Shorter" or "Translate" refine it. Set Context to run the prompts against a piece of text,
+    /// for example the content of an editor. Uses the IChatClient configured for IAIChatService.
+    type RadzenAIPrompt' 
+        /// A prompt box for one-shot AI tasks: the user types or picks a prompt, the model's answer streams into an output panel and
+        /// commands such as "Shorter" or "Translate" refine it. Set Context to run the prompts against a piece of text,
+        /// for example the content of an editor. Uses the IChatClient configured for IAIChatService.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.RadzenAIPrompt", "Radzen.Blazor")>] () = inherit RadzenAIPromptBuilder<Radzen.Blazor.RadzenAIPrompt>()
+
     /// Dark or light theme switch. Requires ThemeService to be registered in the DI container.
     type RadzenAppearanceToggle' 
         /// Dark or light theme switch. Requires ThemeService to be registered in the DI container.
@@ -12325,6 +13362,25 @@ module DslCE =
         /// inline calendar mode (always visible), time-only mode, multiple date selection, and culture-specific formatting.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.RadzenDatePicker`1", "Radzen.Blazor")>] () = inherit RadzenDatePickerBuilder<Radzen.Blazor.RadzenDatePicker<'TValue>, 'TValue>()
 
+    /// A date range picker component that provides a calendar popup for selecting a start and end date.
+    /// RadzenDateRangePicker binds to a DateRange value with nullable Start and End dates.
+    /// Displays a text input rendering both dates separated by Separator and a calendar icon button. Clicking opens a popup calendar.
+    /// The popup shows two months side by side by default - use DisplayMonths to change the number of displayed months.
+    /// The first click in the calendar selects the start date, the second click selects the end date and closes the popup.
+    /// Clicking a date before the pending start date restarts the selection from that date. While picking the end date the days
+    /// between the start date and the hovered day are highlighted as a preview of the prospective range.
+    /// Supports min/max date constraints, disabled dates via DateRender, inline calendar mode, and culture-specific formatting.
+    type RadzenDateRangePicker' 
+        /// A date range picker component that provides a calendar popup for selecting a start and end date.
+        /// RadzenDateRangePicker binds to a DateRange value with nullable Start and End dates.
+        /// Displays a text input rendering both dates separated by Separator and a calendar icon button. Clicking opens a popup calendar.
+        /// The popup shows two months side by side by default - use DisplayMonths to change the number of displayed months.
+        /// The first click in the calendar selects the start date, the second click selects the end date and closes the popup.
+        /// Clicking a date before the pending start date restarts the selection from that date. While picking the end date the days
+        /// between the start date and the hovered day are highlighted as a preview of the prospective range.
+        /// Supports min/max date constraints, disabled dates via DateRender, inline calendar mode, and culture-specific formatting.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.RadzenDateRangePicker", "Radzen.Blazor")>] () = inherit RadzenDateRangePickerBuilder<Radzen.Blazor.RadzenDateRangePicker>()
+
     /// RadzenDropZoneItem component.
     type RadzenDropZoneItem'<'TItem> 
         /// RadzenDropZoneItem component.
@@ -12425,6 +13481,13 @@ module DslCE =
         /// and support for Outlined (default), Filled, Rounded, and Sharp variants via IconStyle.
         /// Icon names use underscores (e.g., "home", "account_circle", "check_circle"). See Material Symbols documentation for the full icon list.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.RadzenIcon", "Radzen.Blazor")>] () = inherit RadzenIconBuilder<Radzen.Blazor.RadzenIcon>()
+
+    /// An AI assistant for a text field: a button that opens a RadzenAIPrompt in a popup and applies the result to the bound value.
+    /// Bind Value to the same value as the field; set TargetId to the id of the input or textarea so that a selection inside it becomes the context and only the selection is replaced.
+    type RadzenInlineAIPrompt' 
+        /// An AI assistant for a text field: a button that opens a RadzenAIPrompt in a popup and applies the result to the bound value.
+        /// Bind Value to the same value as the field; set TargetId to the id of the input or textarea so that a selection inside it becomes the context and only the selection is replaced.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.RadzenInlineAIPrompt", "Radzen.Blazor")>] () = inherit RadzenInlineAIPromptBuilder<Radzen.Blazor.RadzenInlineAIPrompt>()
 
     /// A label component for associating descriptive text with form input components.
     /// RadzenLabel creates accessible labels linked to input fields via the HTML for/id relationship.
@@ -12624,6 +13687,15 @@ module DslCE =
         /// Animations (None, Pulse, Wave) can be applied for additional loading feedback. Use multiple skeletons to represent the full structure of your loading content.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.RadzenSkeleton", "Radzen.Blazor")>] () = inherit RadzenSkeletonBuilder<Radzen.Blazor.RadzenSkeleton>()
 
+    /// A button that fills a form model from the text in the clipboard with the help of an AI model. Reads the clipboard, asks the
+    /// IChatClient configured for IAIChatService to extract the public properties of 
+    /// from it and assigns the values. Put it inside a RadzenTemplateForm`1 bound to the same model.
+    type RadzenSmartPasteButton'<'TModel when 'TModel : not struct> 
+        /// A button that fills a form model from the text in the clipboard with the help of an AI model. Reads the clipboard, asks the
+        /// IChatClient configured for IAIChatService to extract the public properties of 
+        /// from it and assigns the values. Put it inside a RadzenTemplateForm`1 bound to the same model.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.RadzenSmartPasteButton`1", "Radzen.Blazor")>] () = inherit RadzenSmartPasteButtonBuilder<Radzen.Blazor.RadzenSmartPasteButton<'TModel>, 'TModel>()
+
     /// RadzenSpeechToTextButton component. Enables speech to text functionality.
     /// This is only supported on select browsers. See https://caniuse.com/?search=SpeechRecognition
     /// <RadzenSpeechToTextButton Change=@(args => Console.WriteLine($"Value: {args}")) />
@@ -12722,7 +13794,7 @@ module DslCE =
     /// Provides a container for RadzenTabsItem components, each representing one tab and its associated content panel.
     /// Supports tab positioning at Top, Bottom, Left, Right, TopRight, or BottomRight, server-side rendering (default) or client-side rendering for improved interactivity,
     /// programmatic selection via SelectedIndex with two-way binding, Change event when tabs are switched, dynamic tab addition/removal using AddTab() and RemoveItem(),
-    /// keyboard navigation (Arrow keys, Home, End, Space, Enter) for accessibility, and disabled tabs to prevent selection.
+    /// keyboard navigation (Arrow keys, Home, End, Space, Enter) for accessibility, closable tabs (Closable, the Close event and the Delete key) and disabled tabs to prevent selection.
     /// Use Server render mode for standard Blazor rendering, or Client mode for faster tab switching with JavaScript.
     type RadzenTabs' 
         /// A tabbed interface component that organizes content into multiple panels with clickable tabs for navigation.
@@ -12730,7 +13802,7 @@ module DslCE =
         /// Provides a container for RadzenTabsItem components, each representing one tab and its associated content panel.
         /// Supports tab positioning at Top, Bottom, Left, Right, TopRight, or BottomRight, server-side rendering (default) or client-side rendering for improved interactivity,
         /// programmatic selection via SelectedIndex with two-way binding, Change event when tabs are switched, dynamic tab addition/removal using AddTab() and RemoveItem(),
-        /// keyboard navigation (Arrow keys, Home, End, Space, Enter) for accessibility, and disabled tabs to prevent selection.
+        /// keyboard navigation (Arrow keys, Home, End, Space, Enter) for accessibility, closable tabs (Closable, the Close event and the Delete key) and disabled tabs to prevent selection.
         /// Use Server render mode for standard Blazor rendering, or Client mode for faster tab switching with JavaScript.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.RadzenTabs", "Radzen.Blazor")>] () = inherit RadzenTabsBuilder<Radzen.Blazor.RadzenTabs>()
 
@@ -12846,6 +13918,15 @@ module DslCE =
         /// automatic image preview for image files, file removal support, and built-in drag-and-drop for file selection.
         /// Uploads files to the URL endpoint via HTTP POST multipart/form-data. Server-side endpoint must accept file uploads and return appropriate responses.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.RadzenUpload", "Radzen.Blazor")>] () = inherit RadzenUploadBuilder<Radzen.Blazor.RadzenUpload>()
+
+    /// An on-screen virtual keyboard for touch HMI and kiosk scenarios. Attaches to the inputs rendered inside it and
+    /// opens automatically when one of them gets focus. Key presses insert text in the focused input and raise the native
+    /// input and change events so @bind-Value of the wrapped components updates as if typed on a physical keyboard.
+    type RadzenVirtualKeyboard' 
+        /// An on-screen virtual keyboard for touch HMI and kiosk scenarios. Attaches to the inputs rendered inside it and
+        /// opens automatically when one of them gets focus. Key presses insert text in the focused input and raise the native
+        /// input and change events so @bind-Value of the wrapped components updates as if typed on a physical keyboard.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.RadzenVirtualKeyboard", "Radzen.Blazor")>] () = inherit RadzenVirtualKeyboardBuilder<Radzen.Blazor.RadzenVirtualKeyboard>()
 
     /// Base class of components that are rendered inside a RadzenChart.
     type RadzenChartComponentBase' 
@@ -13425,7 +14506,107 @@ module DslCE =
     type RadzenGanttDayView'<'TItem> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.RadzenGanttDayView`1", "Radzen.Blazor")>] () = inherit RadzenGanttDayViewBuilder<Radzen.Blazor.RadzenGanttDayView<'TItem>, 'TItem>()
     type RadzenGanttMonthView'<'TItem> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.RadzenGanttMonthView`1", "Radzen.Blazor")>] () = inherit RadzenGanttMonthViewBuilder<Radzen.Blazor.RadzenGanttMonthView<'TItem>, 'TItem>()
     type RadzenGanttWeekView'<'TItem> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.RadzenGanttWeekView`1", "Radzen.Blazor")>] () = inherit RadzenGanttWeekViewBuilder<Radzen.Blazor.RadzenGanttWeekView<'TItem>, 'TItem>()
+    type RadzenGanttYearsView'<'TItem> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.RadzenGanttYearsView`1", "Radzen.Blazor")>] () = inherit RadzenGanttYearsViewBuilder<Radzen.Blazor.RadzenGanttYearsView<'TItem>, 'TItem>()
     type RadzenGanttYearView'<'TItem> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.RadzenGanttYearView`1", "Radzen.Blazor")>] () = inherit RadzenGanttYearViewBuilder<Radzen.Blazor.RadzenGanttYearView<'TItem>, 'TItem>()
+
+    /// Base class for RadzenMarkdownEditor toolbar tools.
+    type RadzenMarkdownEditorButtonBase' 
+        /// Base class for RadzenMarkdownEditor toolbar tools.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.RadzenMarkdownEditorButtonBase", "Radzen.Blazor")>] () = inherit RadzenMarkdownEditorButtonBaseBuilder<Radzen.Blazor.RadzenMarkdownEditorButtonBase>()
+
+    /// A RadzenMarkdownEditor tool which makes the selection bold.
+    type RadzenMarkdownEditorBold' 
+        /// A RadzenMarkdownEditor tool which makes the selection bold.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.RadzenMarkdownEditorBold", "Radzen.Blazor")>] () = inherit RadzenMarkdownEditorBoldBuilder<Radzen.Blazor.RadzenMarkdownEditorBold>()
+
+    /// A RadzenMarkdownEditor tool which wraps the selection in inline code.
+    type RadzenMarkdownEditorCode' 
+        /// A RadzenMarkdownEditor tool which wraps the selection in inline code.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.RadzenMarkdownEditorCode", "Radzen.Blazor")>] () = inherit RadzenMarkdownEditorCodeBuilder<Radzen.Blazor.RadzenMarkdownEditorCode>()
+
+    /// A RadzenMarkdownEditor tool which wraps the selection in a fenced code block.
+    type RadzenMarkdownEditorCodeBlock' 
+        /// A RadzenMarkdownEditor tool which wraps the selection in a fenced code block.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.RadzenMarkdownEditorCodeBlock", "Radzen.Blazor")>] () = inherit RadzenMarkdownEditorCodeBlockBuilder<Radzen.Blazor.RadzenMarkdownEditorCodeBlock>()
+
+    /// A RadzenMarkdownEditor tool which inserts a horizontal rule.
+    type RadzenMarkdownEditorHorizontalRule' 
+        /// A RadzenMarkdownEditor tool which inserts a horizontal rule.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.RadzenMarkdownEditorHorizontalRule", "Radzen.Blazor")>] () = inherit RadzenMarkdownEditorHorizontalRuleBuilder<Radzen.Blazor.RadzenMarkdownEditorHorizontalRule>()
+
+    /// A RadzenMarkdownEditor tool which inserts an image.
+    type RadzenMarkdownEditorImage' 
+        /// A RadzenMarkdownEditor tool which inserts an image.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.RadzenMarkdownEditorImage", "Radzen.Blazor")>] () = inherit RadzenMarkdownEditorImageBuilder<Radzen.Blazor.RadzenMarkdownEditorImage>()
+
+    /// A RadzenMarkdownEditor tool which makes the selection italic.
+    type RadzenMarkdownEditorItalic' 
+        /// A RadzenMarkdownEditor tool which makes the selection italic.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.RadzenMarkdownEditorItalic", "Radzen.Blazor")>] () = inherit RadzenMarkdownEditorItalicBuilder<Radzen.Blazor.RadzenMarkdownEditorItalic>()
+
+    /// A RadzenMarkdownEditor tool which inserts a link.
+    type RadzenMarkdownEditorLink' 
+        /// A RadzenMarkdownEditor tool which inserts a link.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.RadzenMarkdownEditorLink", "Radzen.Blazor")>] () = inherit RadzenMarkdownEditorLinkBuilder<Radzen.Blazor.RadzenMarkdownEditorLink>()
+
+    /// A RadzenMarkdownEditor tool which converts the selected lines to a numbered list.
+    type RadzenMarkdownEditorOrderedList' 
+        /// A RadzenMarkdownEditor tool which converts the selected lines to a numbered list.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.RadzenMarkdownEditorOrderedList", "Radzen.Blazor")>] () = inherit RadzenMarkdownEditorOrderedListBuilder<Radzen.Blazor.RadzenMarkdownEditorOrderedList>()
+
+    /// A RadzenMarkdownEditor tool which quotes the selected lines.
+    type RadzenMarkdownEditorQuote' 
+        /// A RadzenMarkdownEditor tool which quotes the selected lines.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.RadzenMarkdownEditorQuote", "Radzen.Blazor")>] () = inherit RadzenMarkdownEditorQuoteBuilder<Radzen.Blazor.RadzenMarkdownEditorQuote>()
+
+    /// A RadzenMarkdownEditor tool which restores the next state from the editor's history.
+    type RadzenMarkdownEditorRedo' 
+        /// A RadzenMarkdownEditor tool which restores the next state from the editor's history.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.RadzenMarkdownEditorRedo", "Radzen.Blazor")>] () = inherit RadzenMarkdownEditorRedoBuilder<Radzen.Blazor.RadzenMarkdownEditorRedo>()
+
+    /// A RadzenMarkdownEditor tool which switches between the Design and Source views.
+    type RadzenMarkdownEditorSource' 
+        /// A RadzenMarkdownEditor tool which switches between the Design and Source views.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.RadzenMarkdownEditorSource", "Radzen.Blazor")>] () = inherit RadzenMarkdownEditorSourceBuilder<Radzen.Blazor.RadzenMarkdownEditorSource>()
+
+    /// A RadzenMarkdownEditor tool which strikes through the selection.
+    /// Not rendered by RadzenMarkdown, which does not support GitHub-flavoured strikethrough/task lists; therefore not part of the default toolbar.
+    type RadzenMarkdownEditorStrikethrough' 
+        /// A RadzenMarkdownEditor tool which strikes through the selection.
+        /// Not rendered by RadzenMarkdown, which does not support GitHub-flavoured strikethrough/task lists; therefore not part of the default toolbar.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.RadzenMarkdownEditorStrikethrough", "Radzen.Blazor")>] () = inherit RadzenMarkdownEditorStrikethroughBuilder<Radzen.Blazor.RadzenMarkdownEditorStrikethrough>()
+
+    /// A RadzenMarkdownEditor tool which inserts a table. Opens a dialog for the number of rows and columns.
+    type RadzenMarkdownEditorTable' 
+        /// A RadzenMarkdownEditor tool which inserts a table. Opens a dialog for the number of rows and columns.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.RadzenMarkdownEditorTable", "Radzen.Blazor")>] () = inherit RadzenMarkdownEditorTableBuilder<Radzen.Blazor.RadzenMarkdownEditorTable>()
+
+    /// A RadzenMarkdownEditor tool which executes a table command at the caret. Enabled only when the caret is inside a table.
+    type RadzenMarkdownEditorTableCommandButton' 
+        /// A RadzenMarkdownEditor tool which executes a table command at the caret. Enabled only when the caret is inside a table.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.RadzenMarkdownEditorTableCommandButton", "Radzen.Blazor")>] () = inherit RadzenMarkdownEditorTableCommandButtonBuilder<Radzen.Blazor.RadzenMarkdownEditorTableCommandButton>()
+
+    /// A RadzenMarkdownEditor tool group which inserts tables and edits their rows, columns and column alignment.
+    type RadzenMarkdownEditorTableTools' 
+        /// A RadzenMarkdownEditor tool group which inserts tables and edits their rows, columns and column alignment.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.RadzenMarkdownEditorTableTools", "Radzen.Blazor")>] () = inherit RadzenMarkdownEditorTableToolsBuilder<Radzen.Blazor.RadzenMarkdownEditorTableTools>()
+
+    /// A RadzenMarkdownEditor tool which converts the selected lines to a task list.
+    /// Not rendered by RadzenMarkdown, which does not support GitHub-flavoured strikethrough/task lists; therefore not part of the default toolbar.
+    type RadzenMarkdownEditorTaskList' 
+        /// A RadzenMarkdownEditor tool which converts the selected lines to a task list.
+        /// Not rendered by RadzenMarkdown, which does not support GitHub-flavoured strikethrough/task lists; therefore not part of the default toolbar.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.RadzenMarkdownEditorTaskList", "Radzen.Blazor")>] () = inherit RadzenMarkdownEditorTaskListBuilder<Radzen.Blazor.RadzenMarkdownEditorTaskList>()
+
+    /// A RadzenMarkdownEditor tool which restores the previous state from the editor's history.
+    type RadzenMarkdownEditorUndo' 
+        /// A RadzenMarkdownEditor tool which restores the previous state from the editor's history.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.RadzenMarkdownEditorUndo", "Radzen.Blazor")>] () = inherit RadzenMarkdownEditorUndoBuilder<Radzen.Blazor.RadzenMarkdownEditorUndo>()
+
+    /// A RadzenMarkdownEditor tool which converts the selected lines to a bulleted list.
+    type RadzenMarkdownEditorUnorderedList' 
+        /// A RadzenMarkdownEditor tool which converts the selected lines to a bulleted list.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.RadzenMarkdownEditorUnorderedList", "Radzen.Blazor")>] () = inherit RadzenMarkdownEditorUnorderedListBuilder<Radzen.Blazor.RadzenMarkdownEditorUnorderedList>()
 
     /// Base class for toggle-style format toolbar buttons (Bold, Italic, Underline, Strikethrough, TextWrap).
     /// Subclasses only need to override GetValue and WithValue.
@@ -13516,8 +14697,16 @@ module DslCE =
         /// and Visible property with responsive breakpoint properties (visible-sm, visible-md, etc.).
         /// Use Template for complete control over cell rendering, or EditTemplate for edit mode cells.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.RadzenDataGridColumn`1", "Radzen.Blazor")>] () = inherit RadzenDataGridColumnBuilder<Radzen.Blazor.RadzenDataGridColumn<'TItem>, 'TItem>()
+
+    /// RadzenGanttColumn. TItem flows into the DAM-annotated RadzenDataGridColumn<TItem> base; mirror
+    /// the annotation here so the Razor-generated partial satisfies IL2091 (@typeparam cannot carry
+    /// attributes in this Razor version).
+    type RadzenGanttColumn'<'TItem> 
+        /// RadzenGanttColumn. TItem flows into the DAM-annotated RadzenDataGridColumn<TItem> base; mirror
+        /// the annotation here so the Razor-generated partial satisfies IL2091 (@typeparam cannot carry
+        /// attributes in this Razor version).
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.RadzenGanttColumn`1", "Radzen.Blazor")>] () = inherit RadzenGanttColumnBuilder<Radzen.Blazor.RadzenGanttColumn<'TItem>, 'TItem>()
     type RadzenDropDownDataGridColumn' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.RadzenDropDownDataGridColumn", "Radzen.Blazor")>] () = inherit RadzenDropDownDataGridColumnBuilder<Radzen.Blazor.RadzenDropDownDataGridColumn>()
-    type RadzenGanttColumn'<'TItem> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.RadzenGanttColumn`1", "Radzen.Blazor")>] () = inherit RadzenGanttColumnBuilder<Radzen.Blazor.RadzenGanttColumn<'TItem>, 'TItem>()
 
     /// RadzenDataGridFilterMenu.
     type RadzenDataGridFilterMenu'<'TItem> 
@@ -13619,6 +14808,23 @@ module DslCE =
         /// RadzenListBoxItem component.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.RadzenListBoxItem`1", "Radzen.Blazor")>] () = inherit RadzenListBoxItemBuilder<Radzen.Blazor.RadzenListBoxItem<'TValue>, 'TValue>()
 
+    /// A custom tool in RadzenMarkdownEditor. Either renders a button which raises Execute
+    /// with CommandName, or arbitrary content via Template.
+    type RadzenMarkdownEditorCustomTool' 
+        /// A custom tool in RadzenMarkdownEditor. Either renders a button which raises Execute
+        /// with CommandName, or arbitrary content via Template.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.RadzenMarkdownEditorCustomTool", "Radzen.Blazor")>] () = inherit RadzenMarkdownEditorCustomToolBuilder<Radzen.Blazor.RadzenMarkdownEditorCustomTool>()
+
+    /// A RadzenMarkdownEditor tool which makes the selected paragraphs headings of a chosen level or normal text.
+    type RadzenMarkdownEditorFormatBlock' 
+        /// A RadzenMarkdownEditor tool which makes the selected paragraphs headings of a chosen level or normal text.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.RadzenMarkdownEditorFormatBlock", "Radzen.Blazor")>] () = inherit RadzenMarkdownEditorFormatBlockBuilder<Radzen.Blazor.RadzenMarkdownEditorFormatBlock>()
+
+    /// A visual separator between RadzenMarkdownEditor toolbar tools.
+    type RadzenMarkdownEditorSeparator' 
+        /// A visual separator between RadzenMarkdownEditor toolbar tools.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.RadzenMarkdownEditorSeparator", "Radzen.Blazor")>] () = inherit RadzenMarkdownEditorSeparatorBuilder<Radzen.Blazor.RadzenMarkdownEditorSeparator>()
+
     /// RadzenMediaQuery fires its Change event when the media query specified via Query matches or not.
     type RadzenMediaQuery' 
         /// RadzenMediaQuery fires its Change event when the media query specified via Query matches or not.
@@ -13663,6 +14869,15 @@ module DslCE =
     type RadzenRangeNavigatorLineSeries'<'TItem> 
         /// Renders a filled area with a line stroke inside a RadzenRangeNavigator.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.RadzenRangeNavigatorLineSeries`1", "Radzen.Blazor")>] () = inherit RadzenRangeNavigatorLineSeriesBuilder<Radzen.Blazor.RadzenRangeNavigatorLineSeries<'TItem>, 'TItem>()
+
+    /// Defines a resource type (rooms, people, equipment) of RadzenScheduler`1. Declare one instance per resource type as child content of the scheduler.
+    /// Views group appointments by the declared resource types when their GroupByResource property is set to true.
+    /// The order of declaration determines the grouping hierarchy - the first resource type is the top level.
+    type RadzenSchedulerResource' 
+        /// Defines a resource type (rooms, people, equipment) of RadzenScheduler`1. Declare one instance per resource type as child content of the scheduler.
+        /// Views group appointments by the declared resource types when their GroupByResource property is set to true.
+        /// The order of declaration determines the grouping hierarchy - the first resource type is the top level.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.RadzenSchedulerResource", "Radzen.Blazor")>] () = inherit RadzenSchedulerResourceBuilder<Radzen.Blazor.RadzenSchedulerResource>()
 
     /// Configures the legend of a RadzenSpiderChart.
     type RadzenSpiderLegend' 
@@ -13797,6 +15012,7 @@ module DslCEInstances =
     let RadzenColorPicker'' = RadzenColorPicker'()
     let RadzenFileInput''<'TValue> = RadzenFileInput'<'TValue>()
     let RadzenHtmlEditor'' = RadzenHtmlEditor'()
+    let RadzenMarkdownEditor'' = RadzenMarkdownEditor'()
     let RadzenRadioButtonList''<'TValue> = RadzenRadioButtonList'<'TValue>()
     let RadzenRating'' = RadzenRating'()
     let RadzenSecurityCode'' = RadzenSecurityCode'()
@@ -13811,6 +15027,7 @@ module DslCEInstances =
     let RadzenAccordion'' = RadzenAccordion'()
     let RadzenAccordionItem'' = RadzenAccordionItem'()
     let RadzenAIChat'' = RadzenAIChat'()
+    let RadzenAIPrompt'' = RadzenAIPrompt'()
     let RadzenAppearanceToggle'' = RadzenAppearanceToggle'()
     let RadzenBadge'' = RadzenBadge'()
     let RadzenBarcode'' = RadzenBarcode'()
@@ -13822,6 +15039,7 @@ module DslCEInstances =
     let RadzenChipItem'' = RadzenChipItem'()
     let RadzenDataFilter''<'TItem> = RadzenDataFilter'<'TItem>()
     let RadzenDatePicker''<'TValue> = RadzenDatePicker'<'TValue>()
+    let RadzenDateRangePicker'' = RadzenDateRangePicker'()
     let RadzenDropZoneItem''<'TItem> = RadzenDropZoneItem'<'TItem>()
     let RadzenFabMenu'' = RadzenFabMenu'()
     let RadzenFieldset'' = RadzenFieldset'()
@@ -13833,6 +15051,7 @@ module DslCEInstances =
     let RadzenHeading'' = RadzenHeading'()
     let RadzenHeatmap'' = RadzenHeatmap'()
     let RadzenIcon'' = RadzenIcon'()
+    let RadzenInlineAIPrompt'' = RadzenInlineAIPrompt'()
     let RadzenLabel'' = RadzenLabel'()
     let RadzenLink'' = RadzenLink'()
     let RadzenLogin'' = RadzenLogin'()
@@ -13851,6 +15070,7 @@ module DslCEInstances =
     let RadzenSelectBarItem'' = RadzenSelectBarItem'()
     let RadzenSidebarToggle'' = RadzenSidebarToggle'()
     let RadzenSkeleton'' = RadzenSkeleton'()
+    let RadzenSmartPasteButton''<'TModel when 'TModel : not struct> = RadzenSmartPasteButton'<'TModel>()
     let RadzenSpeechToTextButton'' = RadzenSpeechToTextButton'()
     let RadzenSpiderChart'' = RadzenSpiderChart'()
     let RadzenSpiderColumnSeries''<'TItem> = RadzenSpiderColumnSeries'<'TItem>()
@@ -13874,6 +15094,7 @@ module DslCEInstances =
     let RadzenTree'' = RadzenTree'()
     let RadzenTreemap'' = RadzenTreemap'()
     let RadzenUpload'' = RadzenUpload'()
+    let RadzenVirtualKeyboard'' = RadzenVirtualKeyboard'()
     let RadzenChartComponentBase'' = RadzenChartComponentBase'()
     let RadzenGridLines'' = RadzenGridLines'()
     let RadzenSeriesValueLine'' = RadzenSeriesValueLine'()
@@ -13971,7 +15192,27 @@ module DslCEInstances =
     let RadzenGanttDayView''<'TItem> = RadzenGanttDayView'<'TItem>()
     let RadzenGanttMonthView''<'TItem> = RadzenGanttMonthView'<'TItem>()
     let RadzenGanttWeekView''<'TItem> = RadzenGanttWeekView'<'TItem>()
+    let RadzenGanttYearsView''<'TItem> = RadzenGanttYearsView'<'TItem>()
     let RadzenGanttYearView''<'TItem> = RadzenGanttYearView'<'TItem>()
+    let RadzenMarkdownEditorButtonBase'' = RadzenMarkdownEditorButtonBase'()
+    let RadzenMarkdownEditorBold'' = RadzenMarkdownEditorBold'()
+    let RadzenMarkdownEditorCode'' = RadzenMarkdownEditorCode'()
+    let RadzenMarkdownEditorCodeBlock'' = RadzenMarkdownEditorCodeBlock'()
+    let RadzenMarkdownEditorHorizontalRule'' = RadzenMarkdownEditorHorizontalRule'()
+    let RadzenMarkdownEditorImage'' = RadzenMarkdownEditorImage'()
+    let RadzenMarkdownEditorItalic'' = RadzenMarkdownEditorItalic'()
+    let RadzenMarkdownEditorLink'' = RadzenMarkdownEditorLink'()
+    let RadzenMarkdownEditorOrderedList'' = RadzenMarkdownEditorOrderedList'()
+    let RadzenMarkdownEditorQuote'' = RadzenMarkdownEditorQuote'()
+    let RadzenMarkdownEditorRedo'' = RadzenMarkdownEditorRedo'()
+    let RadzenMarkdownEditorSource'' = RadzenMarkdownEditorSource'()
+    let RadzenMarkdownEditorStrikethrough'' = RadzenMarkdownEditorStrikethrough'()
+    let RadzenMarkdownEditorTable'' = RadzenMarkdownEditorTable'()
+    let RadzenMarkdownEditorTableCommandButton'' = RadzenMarkdownEditorTableCommandButton'()
+    let RadzenMarkdownEditorTableTools'' = RadzenMarkdownEditorTableTools'()
+    let RadzenMarkdownEditorTaskList'' = RadzenMarkdownEditorTaskList'()
+    let RadzenMarkdownEditorUndo'' = RadzenMarkdownEditorUndo'()
+    let RadzenMarkdownEditorUnorderedList'' = RadzenMarkdownEditorUnorderedList'()
     let RadzenSpreadsheetFormatToggleToolBase'' = RadzenSpreadsheetFormatToggleToolBase'()
     let RadzenSpreadsheetBold'' = RadzenSpreadsheetBold'()
     let RadzenSpreadsheetItalic'' = RadzenSpreadsheetItalic'()
@@ -14000,8 +15241,8 @@ module DslCEInstances =
     let RadzenDataFilterItem''<'TItem> = RadzenDataFilterItem'<'TItem>()
     let RadzenDataFilterProperty''<'TItem> = RadzenDataFilterProperty'<'TItem>()
     let RadzenDataGridColumn''<'TItem> = RadzenDataGridColumn'<'TItem>()
-    let RadzenDropDownDataGridColumn'' = RadzenDropDownDataGridColumn'()
     let RadzenGanttColumn''<'TItem> = RadzenGanttColumn'<'TItem>()
+    let RadzenDropDownDataGridColumn'' = RadzenDropDownDataGridColumn'()
     let RadzenDataGridFilterMenu''<'TItem> = RadzenDataGridFilterMenu'<'TItem>()
     let RadzenDataGridFooterCell''<'TItem> = RadzenDataGridFooterCell'<'TItem>()
     let RadzenDataGridGroupFooterCell''<'TItem> = RadzenDataGridGroupFooterCell'<'TItem>()
@@ -14022,6 +15263,9 @@ module DslCEInstances =
     let RadzenLinearGaugeScalePointer'' = RadzenLinearGaugeScalePointer'()
     let RadzenLinearGaugeScaleRange'' = RadzenLinearGaugeScaleRange'()
     let RadzenListBoxItem''<'TValue> = RadzenListBoxItem'<'TValue>()
+    let RadzenMarkdownEditorCustomTool'' = RadzenMarkdownEditorCustomTool'()
+    let RadzenMarkdownEditorFormatBlock'' = RadzenMarkdownEditorFormatBlock'()
+    let RadzenMarkdownEditorSeparator'' = RadzenMarkdownEditorSeparator'()
     let RadzenMediaQuery'' = RadzenMediaQuery'()
     let RadzenPivotField''<'TItem> = RadzenPivotField'<'TItem>()
     let RadzenPivotAggregate''<'TItem> = RadzenPivotAggregate'<'TItem>()
@@ -14031,6 +15275,7 @@ module DslCEInstances =
     let RadzenRadialGaugeScalePointer'' = RadzenRadialGaugeScalePointer'()
     let RadzenRadialGaugeScaleRange'' = RadzenRadialGaugeScaleRange'()
     let RadzenRangeNavigatorLineSeries''<'TItem> = RadzenRangeNavigatorLineSeries'<'TItem>()
+    let RadzenSchedulerResource'' = RadzenSchedulerResource'()
     let RadzenSpiderLegend'' = RadzenSpiderLegend'()
     let RadzenSSRSViewerParameter'' = RadzenSSRSViewerParameter'()
     let RadzenTabsItem'' = RadzenTabsItem'()
@@ -14089,6 +15334,15 @@ module DslCE =
     type GanttTimelineView'<'TItem> 
         /// GanttTimelineView component.
         [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.Rendering.GanttTimelineView`1", "Radzen.Blazor")>] () = inherit GanttTimelineViewBuilder<Radzen.Blazor.Rendering.GanttTimelineView<'TItem>, 'TItem>()
+
+    /// Renders the resources of the scheduler as columns for a single day. Used by RadzenDayView when
+    /// GroupByResource is set to true and the group orientation is horizontal.
+    /// Renders a header row per resource type - the columns are every combination of resource items.
+    type ResourceDayView' 
+        /// Renders the resources of the scheduler as columns for a single day. Used by RadzenDayView when
+        /// GroupByResource is set to true and the group orientation is horizontal.
+        /// Renders a header row per resource type - the columns are every combination of resource items.
+        [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.Rendering.ResourceDayView", "Radzen.Blazor")>] () = inherit ResourceDayViewBuilder<Radzen.Blazor.Rendering.ResourceDayView>()
     type AgendaView' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.Rendering.AgendaView", "Radzen.Blazor")>] () = inherit AgendaViewBuilder<Radzen.Blazor.Rendering.AgendaView>()
     type DayView' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.Rendering.DayView", "Radzen.Blazor")>] () = inherit DayViewBuilder<Radzen.Blazor.Rendering.DayView>()
     type MonthView' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.Rendering.MonthView", "Radzen.Blazor")>] () = inherit MonthViewBuilder<Radzen.Blazor.Rendering.MonthView>()
@@ -14143,6 +15397,7 @@ module DslCE =
     type Markers'<'TItem> [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.Rendering.Markers`1", "Radzen.Blazor")>] () = inherit MarkersBuilder<Radzen.Blazor.Rendering.Markers<'TItem>, 'TItem>()
     type Path' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.Rendering.Path", "Radzen.Blazor")>] () = inherit PathBuilder<Radzen.Blazor.Rendering.Path>()
     type RadialGradientDef' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.Rendering.RadialGradientDef", "Radzen.Blazor")>] () = inherit RadialGradientDefBuilder<Radzen.Blazor.Rendering.RadialGradientDef>()
+    type ResourceGroups' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.Rendering.ResourceGroups", "Radzen.Blazor")>] () = inherit ResourceGroupsBuilder<Radzen.Blazor.Rendering.ResourceGroups>()
     type SpiderLegend' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.Rendering.SpiderLegend", "Radzen.Blazor")>] () = inherit SpiderLegendBuilder<Radzen.Blazor.Rendering.SpiderLegend>()
     type Text' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.Rendering.Text", "Radzen.Blazor")>] () = inherit TextBuilder<Radzen.Blazor.Rendering.Text>()
     type TooltipOverlay' [<DynamicDependency(DynamicallyAccessedMemberTypes.All, "Radzen.Blazor.Rendering.TooltipOverlay", "Radzen.Blazor")>] () = inherit TooltipOverlayBuilder<Radzen.Blazor.Rendering.TooltipOverlay>()
@@ -14162,6 +15417,7 @@ module DslCEInstances =
     let ValueAxisTitle'' = ValueAxisTitle'()
     let DropableViewBase'' = DropableViewBase'()
     let GanttTimelineView''<'TItem> = GanttTimelineView'<'TItem>()
+    let ResourceDayView'' = ResourceDayView'()
     let AgendaView'' = AgendaView'()
     let DayView'' = DayView'()
     let MonthView'' = MonthView'()
@@ -14200,6 +15456,7 @@ module DslCEInstances =
     let Markers''<'TItem> = Markers'<'TItem>()
     let Path'' = Path'()
     let RadialGradientDef'' = RadialGradientDef'()
+    let ResourceGroups'' = ResourceGroups'()
     let SpiderLegend'' = SpiderLegend'()
     let Text'' = Text'()
     let TooltipOverlay'' = TooltipOverlay'()
