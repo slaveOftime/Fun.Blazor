@@ -13,6 +13,9 @@ jobs:
   build-and-push-nuget-packages-for-bindings:
 
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write  # required for NuGet.org trusted publishing (OIDC)
 
     steps:
     - uses: actions/checkout@v5
@@ -22,7 +25,14 @@ jobs:
       with:
         dotnet-version: 10.0.x  
 
+    - name: NuGet login (OIDC -> short-lived API key)
+      id: nuget-login
+      uses: NuGet/login@v1
+      with:
+        # nuget.org profile name (the owner of the trusted publishing policy)
+        user: slaveoftime
+
     - name: Run build.fsx
       env:
-        NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        NUGET_API_KEY: ${{ steps.nuget-login.outputs.NUGET_API_KEY }}
       run: dotnet fsi build.fsx -- -p packages --bindings
